@@ -2,51 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B5510D598
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 13:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C7510D5B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 13:32:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47PYSW0tXqzDrBn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 23:18:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47PYnH0b6kzDqTG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 23:32:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="SNCyuNH+"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47PYPP6TlhzDqgl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 23:15:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.b="O2AWhh36"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47PYPP2Sdhz9sPj;
- Fri, 29 Nov 2019 23:15:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1575029737;
- bh=39ex8pURGBPP/cI+i8/QOxDKC5Z+vDOw38ntqGTRCiI=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=O2AWhh36egxFR57pLhYvUBOZ5yWL4+glWq2k2agZPrZyjMXpoRDM0Xh6/r4BpYSpK
- IZxSeIuoo3MxY7f3+WhXpJlEDP0DeLEJnJOJa6yko2wUlAJwRQAs5sM4kJAqP84u/k
- qnSNQaZFEUAJGap25F9IXNTlOJuYb+l15xMl6VbWFQr2htLq/2oI59f3r7GKLCvpF+
- TLDmN/hbCbd4mNzMOlYa+E1RyfYeJ0tzh07/+affo2GRrWG9tQU2q4FCj80H+I+Q6X
- QySn2vHzUkULu7/q0LWxQVVQ8gl794sPOnH8xR0cHX/5Si8Yt/pXD5qK6ofrsS+eAw
- g7lxemDZWhqzQ==
-Date: Fri, 29 Nov 2019 23:15:36 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: Fixes tag needs some work in the powerpc tree
-Message-ID: <20191129231536.1fbd41ba@canb.auug.org.au>
-In-Reply-To: <20191129231200.1f5ae2a9@canb.auug.org.au>
-References: <20191129231200.1f5ae2a9@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47PYjl0jSmzDr7P
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 23:29:44 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id 6so9810710pgk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 04:29:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=lnTkdY6JVf48jCKaReWad7d/qEHhWQwMJZ+Le786aD8=;
+ b=SNCyuNH+lmNdFMtvn3hhTqO5zWCOV0d/A+BEBsFoA0Z6/aS0i5eqOsuEHN6x9myuKN
+ YmZLa/PjSHSf+jWF9QDdA+rPRA5EKag1KLopEqliyi1QDCxajXh0Ej1RJ109GL+pJSe/
+ TUTxSVFU8h0g4xmRAa7MpSZeQmdPTIodb2UP4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=lnTkdY6JVf48jCKaReWad7d/qEHhWQwMJZ+Le786aD8=;
+ b=RohY4/XrLJuXyiwhDjxjbLCqRAeOdKsg5JpSAH5z75f1tdDvsdKZlCynxVQvfdaLVz
+ II027Wv/r10Tv1AzdzxoX85++FhA6xVPUgmkB4H89Mx9K93jzQ6kfb2oNeZOtw0qItx+
+ hNDD3SsWcI6Xur3YQUBilwcW+/mFtGGvebRoXFkXMHnBthfy6mastxpC22J+CKArrO/Z
+ SkCKFES1G9JELqBuHOS2hEJzxvjZkGH9xZY2Yv5Fv8PrhBtIknsKARXTbQCQEjwUX14k
+ UCUBehJSY2teDp9sd4YDB2TGTt/qGxHocdib2C3tXhyje1noMSRFIHyy4R+Gl/iyhbiJ
+ MOEQ==
+X-Gm-Message-State: APjAAAWL+9iuW/OckxelpdgTYhhN7w82Ck3mdqVOnoxrszRXTy4JZJxZ
+ LwQqJmjH/OlGzu6UffOC2bVJpg==
+X-Google-Smtp-Source: APXvYqxkjjxpRxx8ObUyCKyWmKC8o0q+4ERGDnAe9MyV+XIb1ure1q+BP3hhk2gXh2T4EsYBmmr6MA==
+X-Received: by 2002:a65:66d7:: with SMTP id c23mr13939244pgw.40.1575030581240; 
+ Fri, 29 Nov 2019 04:29:41 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-4092-39f5-bb9d-b59a.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:4092:39f5:bb9d:b59a])
+ by smtp.gmail.com with ESMTPSA id b7sm14724610pjo.3.2019.11.29.04.29.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Nov 2019 04:29:40 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [PATCH v11 1/4] kasan: support backing vmalloc space with real
+ shadow memory
+In-Reply-To: <56cf8aab-c61b-156c-f681-d2354aed22bb@virtuozzo.com>
+References: <20191031093909.9228-1-dja@axtens.net>
+ <20191031093909.9228-2-dja@axtens.net> <1573835765.5937.130.camel@lca.pw>
+ <871ru5hnfh.fsf@dja-thinkpad.axtens.net>
+ <952ec26a-9492-6f71-bab1-c1def887e528@virtuozzo.com>
+ <CACT4Y+ZGO8b88fUyFe-WtV3Ubr11ChLY2mqk8YKWN9o0meNtXA@mail.gmail.com>
+ <CACT4Y+Z+VhfVpkfg-WFq_kFMY=DE+9b_DCi-mCSPK-udaf_Arg@mail.gmail.com>
+ <CACT4Y+Yog=PHF1SsLuoehr2rcbmfvLUW+dv7Vo+1RfdTOx7AUA@mail.gmail.com>
+ <2297c356-0863-69ce-85b6-8608081295ed@virtuozzo.com>
+ <CACT4Y+ZNAfkrE0M=eCHcmy2LhPG_kKbg4mOh54YN6Bgb4b3F5w@mail.gmail.com>
+ <56cf8aab-c61b-156c-f681-d2354aed22bb@virtuozzo.com>
+Date: Fri, 29 Nov 2019 23:29:37 +1100
+Message-ID: <871rtqg91q.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/U8m6Gu/o4QploGI=pgWxJU/";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,47 +86,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ the arch/x86 maintainers <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>, Linux-MM <linux-mm@kvack.org>,
+ Alexander Potapenko <glider@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Qian Cai <cai@lca.pw>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/U8m6Gu/o4QploGI=pgWxJU/
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+>>> Nope, it's vm_map_ram() not being handled
+>> 
+>> 
+>> Another suspicious one. Related to kasan/vmalloc?
+>
+> Very likely the same as with ion:
+>
+> # git grep vm_map_ram|grep xfs
+> fs/xfs/xfs_buf.c:                * vm_map_ram() will allocate auxiliary structures (e.g.
+> fs/xfs/xfs_buf.c:                       bp->b_addr = vm_map_ram(bp->b_pages, bp->b_page_count,
 
-hmm, that subject is completely wrong, sorry.
+Aaargh, that's an embarassing miss.
 
-On Fri, 29 Nov 2019 23:12:00 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->=20
-> Commit
->=20
->   6f090192f822 ("x86/efi: remove unused variables")
->=20
-> is missing a Signed-off-by from its committer.
+It's a bit intricate because kasan_vmalloc_populate function is
+currently set up to take a vm_struct not a vmap_area, but I'll see if I
+can get something simple out this evening - I'm away for the first part
+of next week.
 
---=20
-Cheers,
-Stephen Rothwell
+Do you have to do anything interesting to get it to explode with xfs? Is
+it as simple as mounting a drive and doing some I/O? Or do you need to
+do something more involved?
 
---Sig_/U8m6Gu/o4QploGI=pgWxJU/
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Regards,
+Daniel
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl3hC+gACgkQAVBC80lX
-0Gyd5Af/bQ9GCeJy6v8qKErFbbWh+CMiHzvI4mTDrpRAYdxxAi2UZIIG8PmaIqCk
-/kvxH0DbJ9XSOhQbd2+TioUJVn+jXk0O6sUKQjVgqS1LHENcznL6t+r0f2qUE9D4
-UO4bb2A9ZQ/Hu1mDx3kVixFhwQAXNRtnYTiIoUuBZfQyK8v6xrpXc1fN7OqaqNEF
-5NGtDxhdtRg1Pc3LuyDgBO7+oo1/1satcBhPSx7fHa5Z5+gMZBrTdk6R8lxKDH9c
-+Vq9kWcFMV/sOMGefcfiLy5HDMaSDRC0F7q3eVnUCTRinpj/OlB3FTJcmn2gtwsm
-Kt+wM8e24eFEi63gMtqXxgHpCjVg9w==
-=vSa4
------END PGP SIGNATURE-----
-
---Sig_/U8m6Gu/o4QploGI=pgWxJU/--
+>  
+>> 
+>> BUG: unable to handle page fault for address: fffff52005b80000
+>> #PF: supervisor read access in kernel mode
+>> #PF: error_code(0x0000) - not-present page
+>> PGD 7ffcd067 P4D 7ffcd067 PUD 2cd10067 PMD 66d76067 PTE 0
+>> Oops: 0000 [#1] PREEMPT SMP KASAN
+>> CPU: 2 PID: 9211 Comm: syz-executor.2 Not tainted 5.4.0-next-20191129+ #6
+>> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+>> rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+>> RIP: 0010:xfs_sb_read_verify+0xe9/0x540 fs/xfs/libxfs/xfs_sb.c:691
+>> Code: fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 1e 04 00 00 4d 8b ac 24
+>> 30 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <0f> b6
+>> 04 02 84 c0 74 08 3c 03 0f 8e ad 03 00 00 41 8b 45 00 bf 58
+>> RSP: 0018:ffffc9000a58f8d0 EFLAGS: 00010a06
+>> RAX: dffffc0000000000 RBX: 1ffff920014b1f1d RCX: ffffc9000af42000
+>> RDX: 1ffff92005b80000 RSI: ffffffff82914404 RDI: ffff88805cdb1460
+>> RBP: ffffc9000a58fab0 R08: ffff8880610cd380 R09: ffffed1005a87045
+>> R10: ffffed1005a87044 R11: ffff88802d438223 R12: ffff88805cdb1340
+>> R13: ffffc9002dc00000 R14: ffffc9000a58fa88 R15: ffff888061b5c000
+>> FS:  00007fb49bda9700(0000) GS:ffff88802d400000(0000) knlGS:0000000000000000
+>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> CR2: fffff52005b80000 CR3: 0000000060769006 CR4: 0000000000760ee0
+>> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>> PKRU: 55555554
+>> Call Trace:
+>>  xfs_buf_ioend+0x228/0xdc0 fs/xfs/xfs_buf.c:1162
+>>  __xfs_buf_submit+0x38b/0xe50 fs/xfs/xfs_buf.c:1485
+>>  xfs_buf_submit fs/xfs/xfs_buf.h:268 [inline]
+>>  xfs_buf_read_uncached+0x15c/0x560 fs/xfs/xfs_buf.c:897
+>>  xfs_readsb+0x2d0/0x540 fs/xfs/xfs_mount.c:298
+>>  xfs_fc_fill_super+0x3e6/0x11f0 fs/xfs/xfs_super.c:1415
+>>  get_tree_bdev+0x444/0x620 fs/super.c:1340
+>>  xfs_fc_get_tree+0x1c/0x20 fs/xfs/xfs_super.c:1550
+>>  vfs_get_tree+0x8e/0x300 fs/super.c:1545
+>>  do_new_mount fs/namespace.c:2822 [inline]
+>>  do_mount+0x152d/0x1b50 fs/namespace.c:3142
+>>  ksys_mount+0x114/0x130 fs/namespace.c:3351
+>>  __do_sys_mount fs/namespace.c:3365 [inline]
+>>  __se_sys_mount fs/namespace.c:3362 [inline]
+>>  __x64_sys_mount+0xbe/0x150 fs/namespace.c:3362
+>>  do_syscall_64+0xfa/0x780 arch/x86/entry/common.c:294
+>>  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+>> RIP: 0033:0x46736a
+>> Code: 48 c7 c1 bc ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f
+>> 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d
+>> 01 f0 ff ff 73 01 c3 48 c7 c1 bc ff ff ff f7 d8 64 89 01 48
+>> RSP: 002b:00007fb49bda8a78 EFLAGS: 00000202 ORIG_RAX: 00000000000000a5
+>> RAX: ffffffffffffffda RBX: 00007fb49bda8af0 RCX: 000000000046736a
+>> RDX: 00007fb49bda8ad0 RSI: 0000000020000140 RDI: 00007fb49bda8af0
+>> RBP: 00007fb49bda8ad0 R08: 00007fb49bda8b30 R09: 00007fb49bda8ad0
+>> R10: 0000000000000000 R11: 0000000000000202 R12: 00007fb49bda8b30
+>> R13: 00000000004b1c60 R14: 00000000004b006d R15: 00007fb49bda96bc
+>> Modules linked in:
+>> Dumping ftrace buffer:
+>>    (ftrace buffer empty)
+>> CR2: fffff52005b80000
+>> ---[ end trace eddd8949d4c898df ]---
+>> RIP: 0010:xfs_sb_read_verify+0xe9/0x540 fs/xfs/libxfs/xfs_sb.c:691
+>> Code: fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 1e 04 00 00 4d 8b ac 24
+>> 30 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <0f> b6
+>> 04 02 84 c0 74 08 3c 03 0f 8e ad 03 00 00 41 8b 45 00 bf 58
+>> RSP: 0018:ffffc9000a58f8d0 EFLAGS: 00010a06
+>> RAX: dffffc0000000000 RBX: 1ffff920014b1f1d RCX: ffffc9000af42000
+>> RDX: 1ffff92005b80000 RSI: ffffffff82914404 RDI: ffff88805cdb1460
+>> RBP: ffffc9000a58fab0 R08: ffff8880610cd380 R09: ffffed1005a87045
+>> R10: ffffed1005a87044 R11: ffff88802d438223 R12: ffff88805cdb1340
+>> R13: ffffc9002dc00000 R14: ffffc9000a58fa88 R15: ffff888061b5c000
+>> FS:  00007fb49bda9700(0000) GS:ffff88802d400000(0000) knlGS:0000000000000000
+>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> CR2: fffff52005b80000 CR3: 0000000060769006 CR4: 0000000000760ee0
+>> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>> PKRU: 55555554
+>> 
+>
+> -- 
+> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/56cf8aab-c61b-156c-f681-d2354aed22bb%40virtuozzo.com.
