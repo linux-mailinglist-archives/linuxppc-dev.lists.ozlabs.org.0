@@ -2,76 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A1810DA71
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 21:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC3910DA77
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 21:10:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Plt94LP0zDqQv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 07:07:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47PlxM1VddzDrFr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 07:10:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhsharma@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhsharma@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="g67Pbjtj"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="B8Qyy3Zw"; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Plhx6j0JzDrDN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 06:59:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Plj16CtgzDrDN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 06:59:49 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1575057583;
+ s=mimecast20190719; t=1575057587;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wgbAkKrJxLS1NEOR+82/qBcYhhrIFUtkNwc9k9kwPFE=;
- b=g67PbjtjNW2gWVaxWntJxYAWFPxQoPMwMGyEZBjGur+Ax4vwQzmWHaM9aPz2bR9OW8OF/T
- 58WuqQQcW+DvV9yq6FLt/uVpJA+CgRKZvPfmMYexmrHtKE3QW7M5WlNKSU2SUzRcs1c1YP
- AqT9Xpi1FRHKBxwmV+MyWmW9EPJwEms=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-224-rBFZdBG-Oomt83380yTufw-1; Fri, 29 Nov 2019 14:59:41 -0500
-Received: by mail-pg1-f200.google.com with SMTP id p21so4987410pgh.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 11:59:41 -0800 (PST)
+ bh=2FRKI5+6EDUKwn2QzAstv2u6dW0Q8/ilQLcz5atGxuE=;
+ b=B8Qyy3ZwqX1aKoo9QY+0r/F4xriA8glP+aBdWc4fGEKWl7zFQP9mtmf1bQ1TCkZaKATqgF
+ UG3gBc0yRgdaoXAYJy9C2UigbTFr0MlMjndq11X/gZW+wFDvV0LJoqJqOpidQ23+niT2fZ
+ pyed1rdA0fF4UCSBEop9ba9XcK0Qf7A=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-139-a83V2uh9Mn6gXcEMkXHJQQ-1; Fri, 29 Nov 2019 14:59:45 -0500
+Received: by mail-pg1-f199.google.com with SMTP id e16so17050039pgi.22
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 11:59:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=iJyjrUFfcmHAhH3JG4K3fZfDXNCj7aMMhMdC/cxhP5Q=;
- b=eXLUZIdQC1w+DADEGDhPjzxS3I5uotGRJvKnvnumizpTCWPhB2tebuLGGfk9Skq+mF
- tPnrHzwRZV4dqEage5E/XXzWKpMD7t2ormD/zwLcK2zU+txBXQNNv5VLyuSo4U7v4p0y
- GwExAsRA5G9n+UXiy+a1K08+xHOqWMZL8bkML/dwG1i0ywuxzKDpyc7Ts0agO3415fdR
- Zz5CIYuysUAxa2BJG8yMqdjiop6ZHDWZhdwCx+xoDzR8eME4Pc69J9l8Xp+dNKNyAwME
- vo3CkPrd4M6+/XVbs5o9yDU6S3/Esqmf6kTmogmEhCPO6iwuRIAvmZj3WcLf9oJ96LRr
- 9jtw==
-X-Gm-Message-State: APjAAAWQDRMq+z8aHSPXAvwXXEXEQMeu3CZdM2XRP4dkYemY74cSGhIT
- BQOW7a8kNxG09V6JDf+Sf3oCuI80CdtWUhb3X26JxGQXew6x6EyPc0w6DoOord2q9yiEnceHGWU
- gpAxbUjma7ls09mr1dA7piSklCg==
-X-Received: by 2002:a63:fb03:: with SMTP id o3mr18525466pgh.378.1575057580572; 
- Fri, 29 Nov 2019 11:59:40 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxSS9+ZN7GKT/MIwc8aGAoCV6a/ldIDRYJOYbBvx5BLhqOQbU8FUr1Poz3Dix0kBpRLDW39Sw==
-X-Received: by 2002:a63:fb03:: with SMTP id o3mr18525441pgh.378.1575057580274; 
- Fri, 29 Nov 2019 11:59:40 -0800 (PST)
+ bh=BgAr5VVOQXh1yien5qVgdgmIL5RHbScoYGF2ala0/ak=;
+ b=KTCjOD0Jk/OxxkgvAXDOOzbznZxhtf5PhWKSaGV9YZhPBxTrK60g43yp/k1Fc4DEXu
+ 7ngLpcOrCJq2Pta5LnIalMybVsz1s9f/evwYKTKncHHRM8QOKtzNmXZ0T30bIdHjPpew
+ hVkxGaE2Exm31D6Crq+iA76QYDZ8JYThDXFCX4wi97z/ATAUZB0KasMH/UUCCWQEcNSE
+ lPMh16lGhEeEJtJ0K8qUUbJHFGZ+xjjODV7dvADi5HP7bXpo8HZZjK51S7QrH8oF5T1z
+ Q7Qj6ttPC0hgE/99mgDL3qnEc6JgY+3n6YSSKMmDzq1RZrhEs1sCZVOP6PRh3zYOzspM
+ 8GfA==
+X-Gm-Message-State: APjAAAWmHnNKsWDDxzd83SI1OhFpctQBj+RRDUzW5KWmbFAVnsWFaW0w
+ ioLKgFIcgaz7mArE9S3EX0/NF3H+WhpeVkuDhPNReeIl97aHG4yOPheewPNvrwVP+84Glfd9Zc8
+ A1CGgpq9tRXVqDYhq0XL/Xuy98g==
+X-Received: by 2002:a17:90a:fb53:: with SMTP id
+ iq19mr20314629pjb.138.1575057584293; 
+ Fri, 29 Nov 2019 11:59:44 -0800 (PST)
+X-Google-Smtp-Source: APXvYqz4gnI9c2bYrtjkLwMhPYvWHvZw+YasEX6lAkryf7HpqeVi2n8s5GR/Ai2re8lnbcSS3E4aLw==
+X-Received: by 2002:a17:90a:fb53:: with SMTP id
+ iq19mr20314608pjb.138.1575057584113; 
+ Fri, 29 Nov 2019 11:59:44 -0800 (PST)
 Received: from localhost ([122.177.85.74])
- by smtp.gmail.com with ESMTPSA id jx12sm6300003pjb.26.2019.11.29.11.59.38
+ by smtp.gmail.com with ESMTPSA id 67sm15725427pfw.82.2019.11.29.11.59.42
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 29 Nov 2019 11:59:39 -0800 (PST)
+ Fri, 29 Nov 2019 11:59:43 -0800 (PST)
 From: Bhupesh Sharma <bhsharma@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ in
- vmcoreinfo
-Date: Sat, 30 Nov 2019 01:29:16 +0530
-Message-Id: <1575057559-25496-3-git-send-email-bhsharma@redhat.com>
+Subject: [RESEND PATCH v5 3/5] Documentation/arm64: Fix a simple typo in
+ memory.rst
+Date: Sat, 30 Nov 2019 01:29:17 +0530
+Message-Id: <1575057559-25496-4-git-send-email-bhsharma@redhat.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
 References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
-X-MC-Unique: rBFZdBG-Oomt83380yTufw-1
+X-MC-Unique: a83V2uh9Mn6gXcEMkXHJQQ-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
@@ -86,116 +88,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
+Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-doc@vger.kernel.org,
  Will Deacon <will@kernel.org>, bhsharma@redhat.com, x86@kernel.org,
- kexec@lists.infradead.org, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
- James Morse <james.morse@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Anderson <anderson@redhat.com>, bhupesh.linux@gmail.com,
+ kexec@lists.infradead.org, James Morse <james.morse@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, bhupesh.linux@gmail.com,
  linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
  Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vabits_actual variable on arm64 indicates the actual VA space size,
-and allows a single binary to support both 48-bit and 52-bit VA
-spaces.
+Fix a simple typo in arm64/memory.rst
 
-If the ARMv8.2-LVA optional feature is present, and we are running
-with a 64KB page size; then it is possible to use 52-bits of address
-space for both userspace and kernel addresses. However, any kernel
-binary that supports 52-bit must also be able to fall back to 48-bit
-at early boot time if the hardware feature is not present.
-
-Since TCR_EL1.T1SZ indicates the size offset of the memory region
-addressed by TTBR1_EL1 (and hence can be used for determining the
-vabits_actual value) it makes more sense to export the same in
-vmcoreinfo rather than vabits_actual variable, as the name of the
-variable can change in future kernel versions, but the architectural
-constructs like TCR_EL1.T1SZ can be used better to indicate intended
-specific fields to user-space.
-
-User-space utilities like makedumpfile and crash-utility, need to
-read/write this value from/to vmcoreinfo for determining if a virtual
-address lies in the linear map range.
-
-The user-space computation for determining whether an address lies in
-the linear map range is the same as we have in kernel-space:
-
-  #define __is_lm_address(addr)=09(!(((u64)addr) & BIT(vabits_actual - 1)))
-
-I have sent out user-space patches for makedumpfile and crash-utility
-to add features for obtaining vabits_actual value from TCR_EL1.T1SZ (see
-[0] and [1]).
-
-Akashi reported that he was able to use this patchset and the user-space
-changes to get user-space working fine with the 52-bit kernel VA
-changes (see [2]).
-
-[0]. http://lists.infradead.org/pipermail/kexec/2019-November/023966.html
-[1]. http://lists.infradead.org/pipermail/kexec/2019-November/024006.html
-[2]. http://lists.infradead.org/pipermail/kexec/2019-November/023992.html
-
+Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: James Morse <james.morse@arm.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Will Deacon <will@kernel.org>
 Cc: Steve Capper <steve.capper@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Dave Anderson <anderson@redhat.com>
-Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>
-Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-doc@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Cc: kexec@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
 Signed-off-by: Bhupesh Sharma <bhsharma@redhat.com>
 ---
- arch/arm64/include/asm/pgtable-hwdef.h | 1 +
- arch/arm64/kernel/crash_core.c         | 9 +++++++++
- 2 files changed, 10 insertions(+)
+ Documentation/arm64/memory.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/pgtable-hwdef.h b/arch/arm64/include/as=
-m/pgtable-hwdef.h
-index d9fbd433cc17..d2e7aff5821e 100644
---- a/arch/arm64/include/asm/pgtable-hwdef.h
-+++ b/arch/arm64/include/asm/pgtable-hwdef.h
-@@ -215,6 +215,7 @@
- #define TCR_TxSZ(x)=09=09(TCR_T0SZ(x) | TCR_T1SZ(x))
- #define TCR_TxSZ_WIDTH=09=096
- #define TCR_T0SZ_MASK=09=09(((UL(1) << TCR_TxSZ_WIDTH) - 1) << TCR_T0SZ_OF=
-FSET)
-+#define TCR_T1SZ_MASK=09=09(((UL(1) << TCR_TxSZ_WIDTH) - 1) << TCR_T1SZ_OF=
-FSET)
+diff --git a/Documentation/arm64/memory.rst b/Documentation/arm64/memory.rs=
+t
+index 02e02175e6f5..cf03b3290800 100644
+--- a/Documentation/arm64/memory.rst
++++ b/Documentation/arm64/memory.rst
+@@ -129,7 +129,7 @@ this logic.
 =20
- #define TCR_EPD0_SHIFT=09=097
- #define TCR_EPD0_MASK=09=09(UL(1) << TCR_EPD0_SHIFT)
-diff --git a/arch/arm64/kernel/crash_core.c b/arch/arm64/kernel/crash_core.=
-c
-index ca4c3e12d8c5..f78310ba65ea 100644
---- a/arch/arm64/kernel/crash_core.c
-+++ b/arch/arm64/kernel/crash_core.c
-@@ -7,6 +7,13 @@
- #include <linux/crash_core.h>
- #include <asm/memory.h>
+ As a single binary will need to support both 48-bit and 52-bit VA
+ spaces, the VMEMMAP must be sized large enough for 52-bit VAs and
+-also must be sized large enought to accommodate a fixed PAGE_OFFSET.
++also must be sized large enough to accommodate a fixed PAGE_OFFSET.
 =20
-+static inline u64 get_tcr_el1_t1sz(void);
-+
-+static inline u64 get_tcr_el1_t1sz(void)
-+{
-+=09return (read_sysreg(tcr_el1) & TCR_T1SZ_MASK) >> TCR_T1SZ_OFFSET;
-+}
-+
- void arch_crash_save_vmcoreinfo(void)
- {
- =09VMCOREINFO_NUMBER(VA_BITS);
-@@ -15,5 +22,7 @@ void arch_crash_save_vmcoreinfo(void)
- =09=09=09=09=09=09kimage_voffset);
- =09vmcoreinfo_append_str("NUMBER(PHYS_OFFSET)=3D0x%llx\n",
- =09=09=09=09=09=09PHYS_OFFSET);
-+=09vmcoreinfo_append_str("NUMBER(tcr_el1_t1sz)=3D0x%llx\n",
-+=09=09=09=09=09=09get_tcr_el1_t1sz());
- =09vmcoreinfo_append_str("KERNELOFFSET=3D%lx\n", kaslr_offset());
- }
+ Most code in the kernel should not need to consider the VA_BITS, for
+ code that does need to know the VA size the variables are
 --=20
 2.7.4
 
