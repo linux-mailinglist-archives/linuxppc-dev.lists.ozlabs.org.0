@@ -2,52 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A8710E594
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 06:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF4A10E598
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 06:53:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RDg36LL7zDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 16:48:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RDn10WJYzDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 16:53:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RDdH1s78zDqG9
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 16:46:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Z7SpYTKu"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47RDdG73XDz9sNx;
- Mon,  2 Dec 2019 16:46:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575265603;
- bh=B+FQnkVuwPIY8u8J60CbDV7Nb4472pZsaQxisci+JSo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Z7SpYTKusmHLF4lnxPzcpbGwT0kxZvJAMjCJho3IXex6tvW9ESDUO30zW19WrkSy0
- IzYC0fU5ZPnchkm9BeZVU7ji7d5yFA1GK0LhEgu/0SzQwxJOr1MwH3jO9q5dj3Freg
- bufmW2abuna36hd2+bmbkclX5BLIGKMePgukT/uOm7wd/SfhUqhRcAxCrOks4SOn7j
- mGjpJtzxamYSDajIOVHqsbxIhZR1m+L+qfa7WBOHxP375CyPuTalilXs+p+Vt3Rm1o
- FxDPz+z54luIqMOArnZtPaES01q5ztYQYHbqhERdoSYnHIHVAWZsQOPOau3+Pnl7pO
- ESnibXzHnEzbQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jan Stancek <jstancek@redhat.com>, CKI Project <cki-project@redhat.com>
-Subject: Re: =?utf-8?Q?=E2=9D=8C?= FAIL: Test report for kernel
- 5.3.13-3b5f971.cki (stable-queue)
-In-Reply-To: <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
-References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
- <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
-Date: Mon, 02 Dec 2019 16:46:40 +1100
-Message-ID: <8736e3ffen.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (unknown [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47RDl43yJDzDq5W
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 16:51:44 +1100 (AEDT)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id CBF4DAE800ED;
+ Mon,  2 Dec 2019 00:50:39 -0500 (EST)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel RFC 00/4] powerpc/powernv/ioda: Move TCE bypass base to
+ PE
+Date: Mon,  2 Dec 2019 16:51:39 +1100
+Message-Id: <20191202055139.9364-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191202015953.127902-1-aik@ozlabs.ru>
+References: <20191202015953.127902-1-aik@ozlabs.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,192 +40,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Memory Management <mm-qe@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- LTP Mailing List <ltp@lists.linux.it>,
- Linux Stable maillist <stable@vger.kernel.org>
+Cc: kvm@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Alistair Popple <alistair@popple.id.au>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jan,
+We are about to allow another location for the second DMA window and
+we will need to advertise it outside of the powernv platform code.
 
-Jan Stancek <jstancek@redhat.com> writes:
-> ----- Original Message -----
->>=20
->> Hello,
->>=20
->> We ran automated tests on a recent commit from this kernel tree:
->>=20
->>        Kernel repo:
->>        git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue=
-.git
->>             Commit: 3b5f97139acc - KVM: PPC: Book3S HV: Flush link stack=
- on
->>             guest exit to host kernel
+This moves bypass base address to iommu_table_group so drivers such as
+VFIO SPAPR TCE can see it.
 
-I can't find this commit, I assume it's roughly the same as:
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+ arch/powerpc/include/asm/iommu.h          |  1 +
+ arch/powerpc/platforms/powernv/pci.h      |  1 -
+ arch/powerpc/platforms/powernv/npu-dma.c  |  1 +
+ arch/powerpc/platforms/powernv/pci-ioda.c | 18 +++++++++---------
+ 4 files changed, 11 insertions(+), 10 deletions(-)
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.gi=
-t/commit/?h=3Dlinux-5.3.y&id=3D0815f75f90178bc7e1933cf0d0c818b5f3f5a20c
+diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+index 350101e11ddb..479439ef003e 100644
+--- a/arch/powerpc/include/asm/iommu.h
++++ b/arch/powerpc/include/asm/iommu.h
+@@ -194,6 +194,7 @@ struct iommu_table_group {
+ 	__u64 pgsizes; /* Bitmap of supported page sizes */
+ 	__u32 max_dynamic_windows_supported;
+ 	__u32 max_levels;
++	__u64 tce64_start;
+ 
+ 	struct iommu_group *group;
+ 	struct iommu_table *tables[IOMMU_TABLE_GROUP_MAX_TABLES];
+diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+index f914f0b14e4e..faf9d7e95a85 100644
+--- a/arch/powerpc/platforms/powernv/pci.h
++++ b/arch/powerpc/platforms/powernv/pci.h
+@@ -67,7 +67,6 @@ struct pnv_ioda_pe {
+ 
+ 	/* 64-bit TCE bypass region */
+ 	bool			tce_bypass_enabled;
+-	uint64_t		tce_bypass_base;
+ 
+ 	/* MSIs. MVE index is identical for for 32 and 64 bit MSI
+ 	 * and -1 if not supported. (It's actually identical to the
+diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+index b95b9e3c4c98..97a479848003 100644
+--- a/arch/powerpc/platforms/powernv/npu-dma.c
++++ b/arch/powerpc/platforms/powernv/npu-dma.c
+@@ -469,6 +469,7 @@ struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
+ 	table_group->tce32_start = pe->table_group.tce32_start;
+ 	table_group->tce32_size = pe->table_group.tce32_size;
+ 	table_group->max_levels = pe->table_group.max_levels;
++	table_group->tce64_start = pe->table_group.tce64_start;
+ 	if (!table_group->pgsizes)
+ 		table_group->pgsizes = pe->table_group.pgsizes;
+ 
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index c28d0d9b7ee0..9e55bd9d7ecd 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1747,7 +1747,7 @@ static void pnv_pci_ioda_dma_dev_setup(struct pnv_phb *phb, struct pci_dev *pdev
+ 
+ 	pe = &phb->ioda.pe_array[pdn->pe_number];
+ 	WARN_ON(get_dma_ops(&pdev->dev) != &dma_iommu_ops);
+-	pdev->dev.archdata.dma_offset = pe->tce_bypass_base;
++	pdev->dev.archdata.dma_offset = pe->table_group.tce64_start;
+ 	set_iommu_table_base(&pdev->dev, pe->table_group.tables[0]);
+ 	/*
+ 	 * Note: iommu_add_device() will fail here as
+@@ -1839,7 +1839,8 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
+ 
+ 	pe = &phb->ioda.pe_array[pdn->pe_number];
+ 	if (pe->tce_bypass_enabled) {
+-		u64 top = pe->tce_bypass_base + memblock_end_of_DRAM() - 1;
++		u64 top = pe->table_group.tce64_start +
++			memblock_end_of_DRAM() - 1;
+ 		if (dma_mask >= top)
+ 			return true;
+ 	}
+@@ -1873,7 +1874,7 @@ static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
+ 
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+ 		set_iommu_table_base(&dev->dev, pe->table_group.tables[0]);
+-		dev->dev.archdata.dma_offset = pe->tce_bypass_base;
++		dev->dev.archdata.dma_offset = pe->table_group.tce64_start;
+ 
+ 		if ((pe->flags & PNV_IODA_PE_BUS_ALL) && dev->subordinate)
+ 			pnv_ioda_setup_bus_dma(pe, dev->subordinate);
+@@ -2333,13 +2334,13 @@ static void pnv_pci_ioda2_set_bypass(struct pnv_ioda_pe *pe, bool enable)
+ 		rc = opal_pci_map_pe_dma_window_real(pe->phb->opal_id,
+ 						     pe->pe_number,
+ 						     window_id,
+-						     pe->tce_bypass_base,
++						     pe->table_group.tce64_start,
+ 						     top);
+ 	} else {
+ 		rc = opal_pci_map_pe_dma_window_real(pe->phb->opal_id,
+ 						     pe->pe_number,
+ 						     window_id,
+-						     pe->tce_bypass_base,
++						     pe->table_group.tce64_start,
+ 						     0);
+ 	}
+ 	if (rc)
+@@ -2355,7 +2356,8 @@ static long pnv_pci_ioda2_create_table(struct iommu_table_group *table_group,
+ 	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
+ 			table_group);
+ 	int nid = pe->phb->hose->node;
+-	__u64 bus_offset = num ? pe->tce_bypass_base : table_group->tce32_start;
++	__u64 bus_offset = num ?
++		pe->table_group.tce64_start : table_group->tce32_start;
+ 	long ret;
+ 	struct iommu_table *tbl;
+ 
+@@ -2705,9 +2707,6 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
+ 	if (!pnv_pci_ioda_pe_dma_weight(pe))
+ 		return;
+ 
+-	/* TVE #1 is selected by PCI address bit 59 */
+-	pe->tce_bypass_base = 1ull << 59;
+-
+ 	/* The PE will reserve all possible 32-bits space */
+ 	pe_info(pe, "Setting up 32-bit TCE table at 0..%08x\n",
+ 		phb->ioda.m32_pci_base);
+@@ -2715,6 +2714,7 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
+ 	/* Setup linux iommu table */
+ 	pe->table_group.tce32_start = 0;
+ 	pe->table_group.tce32_size = phb->ioda.m32_pci_base;
++	pe->table_group.tce64_start = 1UL << 59;
+ 	pe->table_group.max_dynamic_windows_supported =
+ 			IOMMU_TABLE_GROUP_MAX_TABLES;
+ 	pe->table_group.max_levels = POWERNV_IOMMU_MAX_LEVELS;
+-- 
+2.17.1
 
->> The results of these automated tests are provided below.
->>=20
->>     Overall result: FAILED (see details below)
->>              Merge: OK
->>            Compile: OK
->>              Tests: FAILED
->>=20
->> All kernel binaries, config files, and logs are available for download h=
-ere:
->>=20
->>   https://artifacts.cki-project.org/pipelines/314344
->>=20
->> One or more kernel tests failed:
->>=20
->>     ppc64le:
->>      =E2=9D=8C LTP
->
-> I suspect kernel bug.
-
-Looks that way, but I can't reproduce it on a machine here.
-
-I have the same CPU revision and am booting the exact kernel binary &
-modules linked above.
-
-> There were couple of 'math' runtest related failures in recent couple day=
-s.
-> In all cases, some data file used by test was missing. Presumably because
-> binary that generates it crashed.
->
-> I managed to reproduce one failure with this CKI build, which I believe
-> is the same problem.
->
-> We crash early during load, before any LTP code runs:
->
-> (gdb) r
-> Starting program: /mnt/testarea/ltp/testcases/bin/genasin
-
-What is this /mnt/testarea? Looks like it's setup by some of the beaker
-scripts or something?
-
-I'm running LTP out of /home, which is ext4 directly on disk.
-
-I tried getting the tests-beaker stuff working on my machine, but I
-couldn't find all the libraries and so on it requires.
-
-
-> Program received signal SIGBUS, Bus error.
-> dl_main (phdr=3D0x10000040, phnum=3D<optimized out>, user_entry=3D0x7ffff=
-fffe760, auxv=3D<optimized out>) at rtld.c:1362
-> 1362        switch (ph->p_type)
-> (gdb) bt
-> #0  dl_main (phdr=3D0x10000040, phnum=3D<optimized out>, user_entry=3D0x7=
-fffffffe760, auxv=3D<optimized out>) at rtld.c:1362
-> #1  0x00007ffff7fcf3c8 in _dl_sysdep_start (start_argptr=3D<optimized out=
->, dl_main=3D0x7ffff7fb37b0 <dl_main>) at ../elf/dl-sysdep.c:253
-> #2  0x00007ffff7fb1d1c in _dl_start_final (arg=3Darg@entry=3D0x7fffffffee=
-20, info=3Dinfo@entry=3D0x7fffffffe870) at rtld.c:445
-> #3  0x00007ffff7fb2f5c in _dl_start (arg=3D0x7fffffffee20) at rtld.c:537
-> #4  0x00007ffff7fb14d8 in _start () from /lib64/ld64.so.2
-> (gdb) f 0
-> #0  dl_main (phdr=3D0x10000040, phnum=3D<optimized out>, user_entry=3D0x7=
-fffffffe760, auxv=3D<optimized out>) at rtld.c:1362
-> 1362        switch (ph->p_type)
-> (gdb) l
-> 1357      /* And it was opened directly.  */
-> 1358      ++main_map->l_direct_opencount;
-> 1359
-> 1360      /* Scan the program header table for the dynamic section.  */
-> 1361      for (ph =3D phdr; ph < &phdr[phnum]; ++ph)
-> 1362        switch (ph->p_type)
-> 1363          {
-> 1364          case PT_PHDR:
-> 1365            /* Find out the load address.  */
-> 1366            main_map->l_addr =3D (ElfW(Addr)) phdr - ph->p_vaddr;
->
-> (gdb) p ph
-> $1 =3D (const Elf64_Phdr *) 0x10000040
->
-> (gdb) p *ph
-> Cannot access memory at address 0x10000040
->
-> (gdb) info proc map
-> process 1110670
-> Mapped address spaces:
->
->           Start Addr           End Addr       Size     Offset objfile
->           0x10000000         0x10010000    0x10000        0x0 /mnt/testar=
-ea/ltp/testcases/bin/genasin
->           0x10010000         0x10030000    0x20000        0x0 /mnt/testar=
-ea/ltp/testcases/bin/genasin
->       0x7ffff7f90000     0x7ffff7fb0000    0x20000        0x0 [vdso]
->       0x7ffff7fb0000     0x7ffff7fe0000    0x30000        0x0 /usr/lib64/=
-ld-2.30.so
->       0x7ffff7fe0000     0x7ffff8000000    0x20000    0x20000 /usr/lib64/=
-ld-2.30.so
->       0x7ffffffd0000     0x800000000000    0x30000        0x0 [stack]
->
-> (gdb) x/1x 0x10000040
-> 0x10000040:     Cannot access memory at address 0x10000040
-
-Yeah that's weird.
-
-> # /mnt/testarea/ltp/testcases/bin/genasin
-> Bus error (core dumped)
->
-> However, as soon as I copy that binary somewhere else, it works fine:
->
-> # cp /mnt/testarea/ltp/testcases/bin/genasin /tmp
-> # /tmp/genasin
-> # echo $?
-> 0
-
-Is /tmp a real disk or tmpfs?
-
-cheers
-
-> # cp /mnt/testarea/ltp/testcases/bin/genasin /mnt/testarea/ltp/testcases/=
-bin/genasin2
-> # /mnt/testarea/ltp/testcases/bin/genasin2
-> # echo $?
-> 0
->
-> # /mnt/testarea/ltp/testcases/bin/genasin
-> Bus error (core dumped)
->
-> # diff /mnt/testarea/ltp/testcases/bin/genasin /mnt/testarea/ltp/testcase=
-s/bin/genasin2; echo $?
-> 0
->
-> # lscpu
-> Architecture:                    ppc64le
-> Byte Order:                      Little Endian
-> CPU(s):                          160
-> On-line CPU(s) list:             0-159
-> Thread(s) per core:              4
-> Core(s) per socket:              20
-> Socket(s):                       2
-> NUMA node(s):                    2
-> Model:                           2.2 (pvr 004e 1202)
-> Model name:                      POWER9, altivec supported
-> Frequency boost:                 enabled
-> CPU max MHz:                     3800.0000
-> CPU min MHz:                     2166.0000
-> L1d cache:                       1.3 MiB
-> L1i cache:                       1.3 MiB
-> L2 cache:                        10 MiB
-> L3 cache:                        200 MiB
-> NUMA node0 CPU(s):               0-79
-> NUMA node8 CPU(s):               80-159
-> Vulnerability Itlb multihit:     Not affected
-> Vulnerability L1tf:              Not affected
-> Vulnerability Mds:               Not affected
-> Vulnerability Meltdown:          Mitigation; RFI Flush, L1D private per t=
-hread
-> Vulnerability Spec store bypass: Mitigation; Kernel entry/exit barrier (e=
-ieio)
-> Vulnerability Spectre v1:        Mitigation; __user pointer sanitization,=
- ori31 speculation barrier enabled
-> Vulnerability Spectre v2:        Mitigation; Indirect branch cache disabl=
-ed, Software link stack flush
-> Vulnerability Tsx async abort:   Not affected
