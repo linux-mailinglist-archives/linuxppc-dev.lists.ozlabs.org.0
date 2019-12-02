@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17E010E6D0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:19:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D9E10E6C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:14:48 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RHw54JCZzDqLM
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:14:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RJ1b2j3jzDqSg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:19:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,63 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="dBB7rcYa"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="dz3vZEta"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RHXN6FqszDqSB
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 18:57:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RHdh3MQRzDqS9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 19:02:16 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47RHXB5kv6z9txt5;
- Mon,  2 Dec 2019 08:57:30 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47RHdX1YxWz9txsq;
+ Mon,  2 Dec 2019 09:02:08 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=dBB7rcYa; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=dz3vZEta; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id TEHXNNCSGy1Q; Mon,  2 Dec 2019 08:57:30 +0100 (CET)
+ with ESMTP id Nugd4Uyqk_4B; Mon,  2 Dec 2019 09:02:08 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47RHXB4Yvnz9txsp;
- Mon,  2 Dec 2019 08:57:30 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47RHdX0WK3z9txsn;
+ Mon,  2 Dec 2019 09:02:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1575273450; bh=BOyz3x2j8FqwDgap1e4M4TWLLhjHOTpc8nf8rczMHLA=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=dBB7rcYagcdpzDPv19SjvEFDXdH0yAB2KFkvaS8RBc+12wgXF73tZgEo7s1jegx37
- uR7YEa4uBs+tynuo3pJBw/fQz3zdHg2OwXTiIGh3H83LRPvR2HMlm8y7FN/Vw7hQRT
- +oELpgdx2pWxmE5iDi7ShOXIhfsscd7QVLbWOTOw=
+ t=1575273728; bh=R0DzOApn8sfF6b/fIqfYO/uTeigqDJ/6K0S4/0UVFJk=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=dz3vZEtadKms4NZFO1roHSBY77uzZ4IfNjpoaJ37R8kS7ULKFb7jlQ8u9G4hLdEvn
+ nRQ/4smn+bRRPHn2mXT6WrHGYhdvlRAANdOw5gh0HPPOvewfgcAHAWRABgChxxXmAp
+ e8xvSG7vOaqC5RZ2eqPwjrm9Sf+iGEL/CMn5LhCg=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4292E8B79B;
- Mon,  2 Dec 2019 08:57:35 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A9F248B79B;
+ Mon,  2 Dec 2019 09:02:12 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Yi90lTl3K24X; Mon,  2 Dec 2019 08:57:35 +0100 (CET)
+ with ESMTP id kizfJgE835l1; Mon,  2 Dec 2019 09:02:12 +0100 (CET)
 Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1DC4B8B79A;
- Mon,  2 Dec 2019 08:57:35 +0100 (CET)
-Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 18A1363600; Mon,  2 Dec 2019 07:57:35 +0000 (UTC)
-Message-Id: <b4e79f963845545bcce1459cd6fcfe46bdde7863.1575273217.git.christophe.leroy@c-s.fr>
-In-Reply-To: <cover.1575273217.git.christophe.leroy@c-s.fr>
-References: <cover.1575273217.git.christophe.leroy@c-s.fr>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5ED478B770;
+ Mon,  2 Dec 2019 09:02:12 +0100 (CET)
+Subject: Re: [PATCH v3 4/8] powerpc/vdso32: inline __get_datapage()
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <cover.1572342582.git.christophe.leroy@c-s.fr>
+ <9c9fe32df8633e6ba8e670274dc3eef82a1b5a65.1572342582.git.christophe.leroy@c-s.fr>
+ <874kywbrjv.fsf@mpe.ellerman.id.au> <871ru0beke.fsf@mpe.ellerman.id.au>
+ <dd5e359b-5864-f8e3-876a-ec606b51eb65@c-s.fr>
+ <87sgm8zhw0.fsf@mpe.ellerman.id.au>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v4 8/8] powerpc/vdso32: miscellaneous optimisations
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon,  2 Dec 2019 07:57:35 +0000 (UTC)
+Message-ID: <688fe6fa-5bca-4fa6-dda3-603e515be60d@c-s.fr>
+Date: Mon, 2 Dec 2019 08:02:11 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
+MIME-Version: 1.0
+In-Reply-To: <87sgm8zhw0.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,107 +84,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, arnd@arndb.de
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Various optimisations by inverting branches and removing
-redundant instructions.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/vdso32/datapage.S     |  3 +--
- arch/powerpc/kernel/vdso32/getcpu.S       |  6 +++---
- arch/powerpc/kernel/vdso32/gettimeofday.S | 18 +++++++++---------
- 3 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
-index 1095d818f94a..217bb630f8f9 100644
---- a/arch/powerpc/kernel/vdso32/datapage.S
-+++ b/arch/powerpc/kernel/vdso32/datapage.S
-@@ -30,11 +30,10 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
-   .cfi_startproc
- 	mflr	r12
-   .cfi_register lr,r12
--	mr	r4,r3
-+	mr.	r4,r3
- 	get_datapage	r3, r0
- 	mtlr	r12
- 	addi	r3,r3,CFG_SYSCALL_MAP32
--	cmpli	cr0,r4,0
- 	beqlr
- 	li	r0,NR_syscalls
- 	stw	r0,0(r4)
-diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso32/getcpu.S
-index 90b39af14383..ff5e214fec41 100644
---- a/arch/powerpc/kernel/vdso32/getcpu.S
-+++ b/arch/powerpc/kernel/vdso32/getcpu.S
-@@ -25,10 +25,10 @@ V_FUNCTION_BEGIN(__kernel_getcpu)
- 	rlwinm  r7,r5,16,31-15,31-0
- 	beq	cr0,1f
- 	stw	r6,0(r3)
--1:	beq	cr1,2f
--	stw	r7,0(r4)
--2:	crclr	cr0*4+so
-+1:	crclr	cr0*4+so
- 	li	r3,0			/* always success */
-+	beqlr	cr1
-+	stw	r7,0(r4)
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_getcpu)
-diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-index 20ae38f3a5a3..a3951567118a 100644
---- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-@@ -32,10 +32,9 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
- 	mflr	r12
-   .cfi_register lr,r12
- 
--	mr	r10,r3			/* r10 saves tv */
-+	mr.	r10,r3			/* r10 saves tv */
- 	mr	r11,r4			/* r11 saves tz */
- 	get_datapage	r9, r0
--	cmplwi	r10,0			/* check if tv is NULL */
- 	beq	3f
- 	LOAD_REG_IMMEDIATE(r7, 1000000)	/* load up USEC_PER_SEC */
- 	bl	__do_get_tspec@local	/* get sec/usec from tb & kernel */
-@@ -43,15 +42,16 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
- 	stw	r4,TVAL32_TV_USEC(r10)
- 
- 3:	cmplwi	r11,0			/* check if tz is NULL */
--	beq	1f
-+	mtlr	r12
-+	crclr	cr0*4+so
-+	li	r3,0
-+	beqlr
-+
- 	lwz	r4,CFG_TZ_MINUTEWEST(r9)/* fill tz */
- 	lwz	r5,CFG_TZ_DSTTIME(r9)
- 	stw	r4,TZONE_TZ_MINWEST(r11)
- 	stw	r5,TZONE_TZ_DSTTIME(r11)
- 
--1:	mtlr	r12
--	crclr	cr0*4+so
--	li	r3,0
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_gettimeofday)
-@@ -245,10 +245,10 @@ V_FUNCTION_BEGIN(__kernel_time)
- 	lwz	r3,STAMP_XTIME_SEC+LOPART(r9)
- 
- 	cmplwi	r11,0			/* check if t is NULL */
--	beq	2f
--	stw	r3,0(r11)		/* store result at *t */
--2:	mtlr	r12
-+	mtlr	r12
- 	crclr	cr0*4+so
-+	beqlr
-+	stw	r3,0(r11)		/* store result at *t */
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_time)
--- 
-2.13.3
+On 11/28/2019 05:31 AM, Michael Ellerman wrote:
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> Le 22/11/2019 à 07:38, Michael Ellerman a écrit :
+>>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>>>> __get_datapage() is only a few instructions to retrieve the
+>>>>> address of the page where the kernel stores data to the VDSO.
+>>>>>
+>>>>> By inlining this function into its users, a bl/blr pair and
+>>>>> a mflr/mtlr pair is avoided, plus a few reg moves.
+>>>>>
+>>>>> The improvement is noticeable (about 55 nsec/call on an 8xx)
+>>>>>
+>>>>> vdsotest before the patch:
+>>>>> gettimeofday:    vdso: 731 nsec/call
+>>>>> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
+>>>>> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
+>>>>>
+>>>>> vdsotest after the patch:
+>>>>> gettimeofday:    vdso: 677 nsec/call
+>>>>> clock-gettime-realtime-coarse:    vdso: 613 nsec/call
+>>>>> clock-gettime-monotonic-coarse:    vdso: 690 nsec/call
+>>>>>
+>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>>
+>>>> This doesn't build with gcc 4.6.3:
+>>>>
+>>>>     /linux/arch/powerpc/kernel/vdso32/gettimeofday.S: Assembler messages:
+>>>>     /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:41: Error: unsupported relocation against __kernel_datapage_offset
+>>>>     /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:86: Error: unsupported relocation against __kernel_datapage_offset
+>>>>     /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:213: Error: unsupported relocation against __kernel_datapage_offset
+>>>>     /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:247: Error: unsupported relocation against __kernel_datapage_offset
+>>>>     make[4]: *** [arch/powerpc/kernel/vdso32/gettimeofday.o] Error 1
+>>>
+>>> Actually I guess it's binutils, which is v2.22 in this case.
+>>>
+>>> Needed this:
+>>>
+>>> diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
+>>> index 12785f72f17d..0048db347ddf 100644
+>>> --- a/arch/powerpc/include/asm/vdso_datapage.h
+>>> +++ b/arch/powerpc/include/asm/vdso_datapage.h
+>>> @@ -117,7 +117,7 @@ extern struct vdso_data *vdso_data;
+>>>    .macro get_datapage ptr, tmp
+>>>    	bcl	20, 31, .+4
+>>>    	mflr	\ptr
+>>> -	addi	\ptr, \ptr, __kernel_datapage_offset - (.-4)
+>>> +	addi	\ptr, \ptr, (__kernel_datapage_offset - (.-4))@l
+>>>    	lwz	\tmp, 0(\ptr)
+>>>    	add	\ptr, \tmp, \ptr
+>>>    .endm
+>>>
+>>
+>> Are you still planning to getting this series merged ? Do you need any
+>> help / rebase / re-spin ?
+> 
+> Not sure. I'll possibly send a 2nd pull request next week with it
+> included.
+> 
 
+v3 conflicts with 2038 cleanup series from Arnd merged yesterday by 
+Linus (ceb307474506 ("Merge tag 'y2038-cleanups-5.5' of 
+git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground"))
+
+Not seen your Ack in that series.
+
+I sent out v4 of my series, rebased on top of 2038 cleanup series.
+
+Christophe
