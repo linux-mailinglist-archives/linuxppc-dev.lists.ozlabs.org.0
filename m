@@ -1,62 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3E210E60C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 07:42:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035A910E608
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 07:41:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RFqw55CCzDqSp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 17:41:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RFt42lPWzDqQr
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 17:42:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RFns3J20zDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 17:39:13 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RFqS2D6zzDqSm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 17:40:36 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB26Wgg4006619; Mon, 2 Dec 2019 01:39:03 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wknu9ce33-1
+ xB26Wkw3110614; Mon, 2 Dec 2019 01:40:27 -0500
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wm6rppqjy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Dec 2019 01:39:03 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB26ZDtL023999;
- Mon, 2 Dec 2019 06:39:02 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04wdc.us.ibm.com with ESMTP id 2wkg26898m-1
+ Mon, 02 Dec 2019 01:40:27 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB26eOkL024428;
+ Mon, 2 Dec 2019 06:40:26 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 2wkg26cc1j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Dec 2019 06:39:02 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB26d0bR55050654
+ Mon, 02 Dec 2019 06:40:26 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB26ePhr44302694
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Dec 2019 06:39:00 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0AAFC6057;
- Mon,  2 Dec 2019 06:39:00 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83587C6059;
- Mon,  2 Dec 2019 06:38:59 +0000 (GMT)
+ Mon, 2 Dec 2019 06:40:25 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFD432805E;
+ Mon,  2 Dec 2019 06:40:25 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A34C828058;
+ Mon,  2 Dec 2019 06:40:24 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.124.35.144])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  2 Dec 2019 06:38:59 +0000 (GMT)
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon,  2 Dec 2019 06:40:24 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/papr_scm: Update debug message
-Date: Mon,  2 Dec 2019 12:08:55 +0530
-Message-Id: <20191202063855.154321-1-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH] powerpc/pmem: Convert to EXPORT_SYMBOL_GPL
+Date: Mon,  2 Dec 2019 12:10:18 +0530
+Message-Id: <20191202064018.155083-1-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -64,10 +63,10 @@ X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-01_04:2019-11-29,2019-12-01 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- bulkscore=0 adultscore=0 mlxlogscore=804 phishscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 suspectscore=1 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=1 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 mlxlogscore=939
+ lowpriorityscore=0 impostorscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1910280000 definitions=main-1912020058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,37 +85,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Resource struct p->res is assigned later. Avoid using %pR before the resource
-struct is assigned.
+All other architecture export this as GPL symbol
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/papr_scm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/lib/pmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index f87b474d25a7..978ba47e7db5 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -69,7 +69,8 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
- 		return rc;
- 
- 	p->bound_addr = saved;
--	dev_dbg(&p->pdev->dev, "bound drc 0x%x to %pR\n", p->drc_index, &p->res);
-+	dev_dbg(&p->pdev->dev, "bound drc 0x%x to 0x%lx\n",
-+		p->drc_index, (unsigned long)saved);
- 	return rc;
+diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+index 377712e85605..0666a8d29596 100644
+--- a/arch/powerpc/lib/pmem.c
++++ b/arch/powerpc/lib/pmem.c
+@@ -17,14 +17,14 @@ void arch_wb_cache_pmem(void *addr, size_t size)
+ 	unsigned long start = (unsigned long) addr;
+ 	flush_dcache_range(start, start + size);
  }
+-EXPORT_SYMBOL(arch_wb_cache_pmem);
++EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
  
-@@ -133,7 +134,7 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
- 		goto err_out;
+ void arch_invalidate_pmem(void *addr, size_t size)
+ {
+ 	unsigned long start = (unsigned long) addr;
+ 	flush_dcache_range(start, start + size);
+ }
+-EXPORT_SYMBOL(arch_invalidate_pmem);
++EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
  
- 	p->bound_addr = start_addr;
--	dev_dbg(&p->pdev->dev, "bound drc 0x%x to %pR\n", p->drc_index, &p->res);
-+	dev_dbg(&p->pdev->dev, "bound drc 0x%x to 0x%lx\n", p->drc_index, start_addr);
- 	return rc;
- 
- err_out:
+ /*
+  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
 -- 
 2.23.0
 
