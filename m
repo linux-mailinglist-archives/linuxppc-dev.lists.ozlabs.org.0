@@ -1,73 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9B10EB5B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 15:10:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RRpc085jzDqNb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 01:10:32 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 706A710ED3D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 17:34:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RW172mQCzDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 03:34:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jstancek@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="ZCvet+uA"; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RRgV02kgzDqNR
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 01:04:20 +1100 (AEDT)
-Received: from mail-qt1-f181.google.com ([209.85.160.181]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1M6UqP-1ii4lI3AT3-006xSJ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec
- 2019 15:04:13 +0100
-Received: by mail-qt1-f181.google.com with SMTP id w47so37372179qtk.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 06:04:11 -0800 (PST)
-X-Gm-Message-State: APjAAAWy9dIhAG2ZMhSQIhVivFYzSMb1EgAqg5eN34+F3U3GQmnigYiV
- 1ZWirX39zuInMU9agAKbzL76VXpTyqFIpQlQCIg=
-X-Google-Smtp-Source: APXvYqzY2KEySxcGaO1R0Ld5UfDskq+N3EoKgH5LDEY9SHFisuuB6M4zP0b90vsGoCLiwhc3LVgsBhBPXEnHoaHQQbs=
-X-Received: by 2002:ac8:27ab:: with SMTP id w40mr15859502qtw.18.1575295450496; 
- Mon, 02 Dec 2019 06:04:10 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RVz80KgRzDqNd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 03:33:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1575304382;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JpEh+m3IUPpD3ZuffVtnmrdQ4ORagqFqM7OpNTqT+3U=;
+ b=ZCvet+uA0ZHGO80SpZa2FL8rMMpwHJb76NV0A/ZkRMf9TjvbdfR78qjp6Z1iHDvA39Q3UB
+ iMSxzcH6zrqv+QQDOgGX6boPsxor05JCHn8D/ARrFE7EkxUnncsJfS+eLXC4I3l17crik1
+ 6ZgVJisCkBoYXUbMpLFABo1BBhNUaQs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-179-5wjuG0DUOtamm041Da2Gjg-1; Mon, 02 Dec 2019 07:31:02 -0500
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EC430107ACC5;
+ Mon,  2 Dec 2019 12:31:00 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9EF661001901;
+ Mon,  2 Dec 2019 12:31:00 +0000 (UTC)
+Received: from zmail17.collab.prod.int.phx2.redhat.com
+ (zmail17.collab.prod.int.phx2.redhat.com [10.5.83.19])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 2E7FF1809565;
+ Mon,  2 Dec 2019 12:31:00 +0000 (UTC)
+Date: Mon, 2 Dec 2019 07:30:59 -0500 (EST)
+From: Jan Stancek <jstancek@redhat.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
+In-Reply-To: <8736e3ffen.fsf@mpe.ellerman.id.au>
+References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
+ <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
+ <8736e3ffen.fsf@mpe.ellerman.id.au>
+Subject: =?utf-8?Q?Re:_=E2=9D=8C_FAIL:_Test_report_for_kernel?=
+ =?utf-8?Q?_5.3.13-3b5f971.cki_(stable-queue)?=
 MIME-Version: 1.0
-References: <20191108210236.1296047-1-arnd@arndb.de>
- <20191108210824.1534248-7-arnd@arndb.de>
- <4faa78cd0a86cf5d0aea9bb16d03145c5745450b.camel@codethink.co.uk>
- <CAK8P3a1nRq98ngfKnR2Du+7_vOxSRFD9AyjHyUCsAtk_gLR_Uw@mail.gmail.com>
- <20191121172529.Horde.0uDMS4xQ-xexjp4a2mIoXQ5@messagerie.si.c-s.fr>
- <CAK8P3a1UmAYTx=Vv06xP=O-oYD8_HzNqMG0-p7GPP2xgzs+75w@mail.gmail.com>
- <85ba697d-1a09-f1b0-b6b6-a511a2920f93@c-s.fr>
-In-Reply-To: <85ba697d-1a09-f1b0-b6b6-a511a2920f93@c-s.fr>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 2 Dec 2019 15:03:53 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3-LCvF_V50k9Mwzc1coUjKc9kqVzYuD6bS6pg71hRJXQ@mail.gmail.com>
-Message-ID: <CAK8P3a3-LCvF_V50k9Mwzc1coUjKc9kqVzYuD6bS6pg71hRJXQ@mail.gmail.com>
-Subject: Re: [Y2038] [PATCH 07/23] y2038: vdso: powerpc: avoid timespec
- references
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
+X-Originating-IP: [10.43.17.163, 10.4.195.17]
+Thread-Topic: =?utf-8?B?4p2MIEZBSUw6?= Test report for kernel
+ 5.3.13-3b5f971.cki (stable-queue)
+Thread-Index: cteAZVs1buDEh+CFMxyFiJYhnT9cJA==
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-MC-Unique: 5wjuG0DUOtamm041Da2Gjg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RxqWQ+A3nA9wkoRKMPapsqGtBEAn/SZwUyFQXujWSBl4MMoTitJ
- lSoKwbG1zsRYr8Eff3Cp1bdbaqIoEm5AqgIIFIFcOnYhLi5SMvRfqVss5o0ce1qlmNQexcl
- Mlmj4L3MEjKQ0vzRluzcJXlsECq48SeFhnku80Np413SjwreDjBlviozkUf4Vu5RfVEaGk2
- 6NArRNaU+B4B1Q9h8Y20A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XzJD3ODFwM0=:cvKL0Iptwh5ajLCKZ3dinZ
- Jsfsr5heZU/cSlyLGtIgSnjpG5tIzzJSgiRs2+XJ57/s0lxq1QetCEhkgHonj4ChGRdyTITPE
- J9Umn42seOUA8R3iVQND3piSz5R2mXdQLxcZnxJk0V8Ff2NuU8J2Hox3b1GhQgjAevfzHjaHn
- 5ofWZ1XPu8hnPPDjNceAHyMS+fiP24CUTm9zrLoY4znNm7Z7iUpzCgoT4jDEc683SNhoaaX0O
- zEUkKugyYpsKQ0H9UryR+aAkDMLE6K+dKmjgRTfCF1KuIrmaXTi64h5XTkjdnJAUtqytIjEQr
- AHVINfvd2nMC8sPj/eLOz49sGnXVTkYn2aW88tDwQF0jTO0LQNwJKHRxYb1Y3LIxf6bpYNMkt
- 2Gy2Scr6SbclDAZ9RUhjc2x2pRM9TMNpkuutNhWJs50yFOzHmH/tUFL8IGZHXc3Kx4VXi7Wdr
- MYiNzL22RwHI2IQRNZT4NX5bDXPxb+VoRvtx+qRLHM08b508DrNJWnzEtMA799tjvA4Afi+Gl
- WSZuteWAT8RtS+fda9zY8xL7pH0l8zxOGeoj6SO4di95+ukI+P3CosCOlzTq7RxqSQSpaqNAS
- g+3NMAQK1GguD7NCb3o4E2/Iz2Ed3ZkLyh8ZNvX+UCQuX7+B1JA2bZgBRIPr6uc7wZiYDJ40E
- NzwuYtwDlk9uzB/or5ZRR5q/5tucZ1h1+MMTRKMfrwdrOJSqC0ZR9w6FZvjp4Z9tso7wsHqx9
- vQ8J/ulLAW2PjMzm7p+iliMdEwnrNJiPdpizi2HLcjbetvh3rSdqUc5fNlqejbxQaCWQk2QWk
- LiFev0dXDC9l3Jbyws+a0UIH2EHSAgUrVN837Hs0fTNQEuRznXO7Oi/OTfhXRiXITrYUszcn8
- nW8GVfTy4KZ2XVVROiyQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,123 +82,243 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ben Hutchings <ben.hutchings@codethink.co.uk>,
- y2038 Mailman List <y2038@lists.linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Allison Randal <allison@lohutok.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Memory Management <mm-qe@redhat.com>,
+ LTP Mailing List <ltp@lists.linux.it>,
+ Linux Stable maillist <stable@vger.kernel.org>,
+ CKI Project <cki-project@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 2, 2019 at 1:55 PM Christophe Leroy <christophe.leroy@c-s.fr> w=
-rote:
-> Le 27/11/2019 =C3=A0 12:03, Arnd Bergmann a =C3=A9crit :
-> > On Thu, Nov 21, 2019 at 5:25 PM Christophe Leroy
-> > <christophe.leroy@c-s.fr> wrote:
-> >> Arnd Bergmann <arnd@arndb.de> a =C3=A9crit :
-> >>> On Wed, Nov 20, 2019 at 11:43 PM Ben Hutchings
-> >>> <ben.hutchings@codethink.co.uk> wrote:
-> >>>>
-> >>>> On Fri, 2019-11-08 at 22:07 +0100, Arnd Bergmann wrote:
-> >>>>> @@ -192,7 +190,7 @@ V_FUNCTION_BEGIN(__kernel_time)
-> >>>>>        bl      __get_datapage@local
-> >>>>>        mr      r9, r3                  /* datapage ptr in r9 */
-> >>>>>
-> >>>>> -     lwz     r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
-> >>>>> +     lwz     r3,STAMP_XTIME_SEC+LOWPART(r9)
-> >>>>
-> >>>> "LOWPART" should be "LOPART".
-> >>>>
-> >>>
-> >>> Thanks, fixed both instances in a patch on top now. I considered fold=
-ing
-> >>> it into the original patch, but as it's close to the merge window I'd
-> >>> rather not rebase it, and this way I also give you credit for
-> >>> finding the bug.
-> >>
-> >> Take care, might conflict with
-> >> https://github.com/linuxppc/linux/commit/5e381d727fe8834ca5a126f510194=
-a7a4ac6dd3a
+
+
+----- Original Message -----
+> Hi Jan,
+>=20
+> Jan Stancek <jstancek@redhat.com> writes:
+> > ----- Original Message -----
+> >>=20
+> >> Hello,
+> >>=20
+> >> We ran automated tests on a recent commit from this kernel tree:
+> >>=20
+> >>        Kernel repo:
+> >>        git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-que=
+ue.git
+> >>             Commit: 3b5f97139acc - KVM: PPC: Book3S HV: Flush link sta=
+ck
+> >>             on
+> >>             guest exit to host kernel
+>=20
+> I can't find this commit, I assume it's roughly the same as:
+>=20
+>   https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
+git/commit/?h=3Dlinux-5.3.y&id=3D0815f75f90178bc7e1933cf0d0c818b5f3f5a20c
+
+Hi,
+
+yes, that looks like same one:
+  https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/c=
+ommit/?h=3D3b5f97139acc
+
+Looking at CKI reports for past 2 weeks, there were 3 (unexplained) SIGBUS =
+related failures:
+
+5.3.13-3b5f971.cki@upstream-stable
+LTP genpower Bus error
+
+5.4.0-rc8-4b17a56.cki@upstream-stable
+LTP genatan Bus error
+
+5.3.11-200.fc30
+xfstests
++/var/lib/xfstests/tests/generic/248: line 38: 161943 Bus error            =
+   (core dumped) $TEST_PROG $TESTFILE
+
+All 3 are from ppc64le, all power9 systems.
+
+>=20
+> >> The results of these automated tests are provided below.
+> >>=20
+> >>     Overall result: FAILED (see details below)
+> >>              Merge: OK
+> >>            Compile: OK
+> >>              Tests: FAILED
+> >>=20
+> >> All kernel binaries, config files, and logs are available for download
+> >> here:
+> >>=20
+> >>   https://artifacts.cki-project.org/pipelines/314344
+> >>=20
+> >> One or more kernel tests failed:
+> >>=20
+> >>     ppc64le:
+> >>      =E2=9D=8C LTP
 > >
-> > Sorry for my late reply. I see this commit and no other variant of it h=
-as
-> > made it into linux-next by now, so I assume this is not getting sent fo=
-r v5.5
-> > and it's not stopping me from sending my own pull request.
+> > I suspect kernel bug.
+>=20
+> Looks that way, but I can't reproduce it on a machine here.
+>=20
+> I have the same CPU revision and am booting the exact kernel binary &
+> modules linked above.
+
+I can semi-reliably reproduce it with:
+(where LTP is installed to /mnt/testarea/ltp)
+
+while [ True ]; do
+        echo 3 > /proc/sys/vm/drop_caches
+        rm -f /mnt/testarea/ltp/results/RUNTEST.log /mnt/testarea/ltp/outpu=
+t/RUNTEST.run.log
+        ./runltp -p -d results -l RUNTEST.log -o RUNTEST.run.log -f math
+        grep FAIL /mnt/testarea/ltp/results/RUNTEST.log && exit 1
+done
+
+and some stress activity in other terminal (e.g. kernel build).
+Sometimes in minutes, sometimes in hours. I did try couple
+older kernels and could reproduce it with v4.19 and v5.0 as well.
+
+v4.18 ran OK for 2 hours, assuming that one is good, it could be
+related to xfs switching to iomap in 4.19-rc1.
+
+Tracing so far led me to filemap_fault(), where it reached this -EIO,
+before returning SIGBUS.
+
+page_not_uptodate:
+        /*
+         * Umm, take care of errors if the page isn't up-to-date.
+         * Try to re-read it _once_. We do this synchronously,
+         * because there really aren't any performance issues here
+         * and we need to check for errors.
+         */
+        ClearPageError(page);
+        fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
+        error =3D mapping->a_ops->readpage(file, page);
+        if (!error) {
+                wait_on_page_locked(page);
+                if (!PageUptodate(page))
+                        error =3D -EIO;
+        }
+
+...
+        return VM_FAULT_SIGBUS;
+
+>=20
+> > There were couple of 'math' runtest related failures in recent couple d=
+ays.
+> > In all cases, some data file used by test was missing. Presumably becau=
+se
+> > binary that generates it crashed.
 > >
-> > Please let me know if I missed something and this will cause problems.
+> > I managed to reproduce one failure with this CKI build, which I believe
+> > is the same problem.
 > >
-> > On a related note: are you still working on the generic lib/vdso suppor=
-t for
-> > powerpc? Without that, future libc implementations that use 64-bit time=
-_t
-> > will have to use the slow clock_gettime64 syscall instead of the vdso,
-> > which has a significant performance impact.
->
-> I have left this generic lib/vdso subject aside for the moment, because
-> performance is disappointing and its architecture doesn't real fit with
-> powerpc ABI.
->
->  From a performance point of view, it is manipulating 64 bits vars where
-> is could use 32 bits vars. Of course I understand that y2038 will anyway
-> force the use of 64 bits for seconds, but at the time being powerpc32
-> VDSO is using 32 bits vars for both secs and ns, it make the difference.
+> > We crash early during load, before any LTP code runs:
+> >
+> > (gdb) r
+> > Starting program: /mnt/testarea/ltp/testcases/bin/genasin
+>=20
+> What is this /mnt/testarea? Looks like it's setup by some of the beaker
+> scripts or something?
 
-Do you think we could optimize the common code? This sounds like
-it could improve things for other architectures as well.
+Correct, it's where beaker script installs LTP. It's not a real mount,
+just a directory on /. In my case it's xfs. It should match default
+Fedora-31 Server ppc64le installation.
 
-> Also, the generic VDSO is playing too much with data on stacks and
-> associated memory read/write/copies, which kills performance on RISC
-> processors like powerpc. Inlining do_hres() for instance significantly
-> improves that as it allow handling the 'struct __kernel_timespec ts' on
-> registers instead of using stack.
+>=20
+> I'm running LTP out of /home, which is ext4 directly on disk.
+>=20
+> I tried getting the tests-beaker stuff working on my machine, but I
+> couldn't find all the libraries and so on it requires.
+>=20
+>=20
+> > Program received signal SIGBUS, Bus error.
+> > dl_main (phdr=3D0x10000040, phnum=3D<optimized out>, user_entry=3D0x7ff=
+fffffe760,
+> > auxv=3D<optimized out>) at rtld.c:1362
+> > 1362        switch (ph->p_type)
+> > (gdb) bt
+> > #0  dl_main (phdr=3D0x10000040, phnum=3D<optimized out>,
+> > user_entry=3D0x7fffffffe760, auxv=3D<optimized out>) at rtld.c:1362
+> > #1  0x00007ffff7fcf3c8 in _dl_sysdep_start (start_argptr=3D<optimized o=
+ut>,
+> > dl_main=3D0x7ffff7fb37b0 <dl_main>) at ../elf/dl-sysdep.c:253
+> > #2  0x00007ffff7fb1d1c in _dl_start_final (arg=3Darg@entry=3D0x7fffffff=
+ee20,
+> > info=3Dinfo@entry=3D0x7fffffffe870) at rtld.c:445
+> > #3  0x00007ffff7fb2f5c in _dl_start (arg=3D0x7fffffffee20) at rtld.c:53=
+7
+> > #4  0x00007ffff7fb14d8 in _start () from /lib64/ld64.so.2
+> > (gdb) f 0
+> > #0  dl_main (phdr=3D0x10000040, phnum=3D<optimized out>,
+> > user_entry=3D0x7fffffffe760, auxv=3D<optimized out>) at rtld.c:1362
+> > 1362        switch (ph->p_type)
+> > (gdb) l
+> > 1357      /* And it was opened directly.  */
+> > 1358      ++main_map->l_direct_opencount;
+> > 1359
+> > 1360      /* Scan the program header table for the dynamic section.  */
+> > 1361      for (ph =3D phdr; ph < &phdr[phnum]; ++ph)
+> > 1362        switch (ph->p_type)
+> > 1363          {
+> > 1364          case PT_PHDR:
+> > 1365            /* Find out the load address.  */
+> > 1366            main_map->l_addr =3D (ElfW(Addr)) phdr - ph->p_vaddr;
+> >
+> > (gdb) p ph
+> > $1 =3D (const Elf64_Phdr *) 0x10000040
+> >
+> > (gdb) p *ph
+> > Cannot access memory at address 0x10000040
+> >
+> > (gdb) info proc map
+> > process 1110670
+> > Mapped address spaces:
+> >
+> >           Start Addr           End Addr       Size     Offset objfile
+> >           0x10000000         0x10010000    0x10000        0x0
+> >           /mnt/testarea/ltp/testcases/bin/genasin
+> >           0x10010000         0x10030000    0x20000        0x0
+> >           /mnt/testarea/ltp/testcases/bin/genasin
+> >       0x7ffff7f90000     0x7ffff7fb0000    0x20000        0x0 [vdso]
+> >       0x7ffff7fb0000     0x7ffff7fe0000    0x30000        0x0
+> >       /usr/lib64/ld-2.30.so
+> >       0x7ffff7fe0000     0x7ffff8000000    0x20000    0x20000
+> >       /usr/lib64/ld-2.30.so
+> >       0x7ffffffd0000     0x800000000000    0x30000        0x0 [stack]
+> >
+> > (gdb) x/1x 0x10000040
+> > 0x10000040:     Cannot access memory at address 0x10000040
+>=20
+> Yeah that's weird.
+>=20
+> > # /mnt/testarea/ltp/testcases/bin/genasin
+> > Bus error (core dumped)
+> >
+> > However, as soon as I copy that binary somewhere else, it works fine:
+> >
+> > # cp /mnt/testarea/ltp/testcases/bin/genasin /tmp
+> > # /tmp/genasin
+> > # echo $?
+> > 0
+>=20
+> Is /tmp a real disk or tmpfs?
 
-That should be easy enough to change in the common code, as
-long as adding 'inline' does not cause harm on x86 and arm.
+tmpfs
 
-> Regarding powerpc ABI, the issue is that errors shall be reported by
-> setting the SO bit in CR register, and this cannot be done in C.
-> This means:
-> - The VDSO entry point must be in ASM and the generic VDSO C function
-> must be called from there, it cannot be the VDSO entry point.
-> - The VDSO fallback (ie the system call) cannot be done from the generic
-> VDSO C function, it must be called from the ASM as well.
+Filesystem                           Type      1K-blocks     Used  Availabl=
+e Use% Mounted on
+devtmpfs                             devtmpfs  254530176        0  25453017=
+6   0% /dev
+tmpfs                                tmpfs     267992768        0  26799276=
+8   0% /dev/shm
+tmpfs                                tmpfs     267992768     9152  26798361=
+6   1% /run
+/dev/mapper/fedora_ibm--p9b--03-root xfs        15718400 13029284    268911=
+6  83% /
+tmpfs                                tmpfs     267992768        0  26799276=
+8   0% /tmp
+/dev/sda1                            xfs         1038336   944588      9374=
+8  91% /boot
+tmpfs                                tmpfs      53598528        0   5359852=
+8   0% /run/user/0
 
-As far as I can tell, both the VDSO entry point and the fallback are
-in architecture specific code on all architectures, so this does not
-seem to be a show-stopper.
-
-It also seems that they might be combined as long the current
-powerpc code could be changed to use the generic vdso_data
-structure definition: the existing code can keep being used for
-gettimeofday(), clock_gettime(CLOCK_MONOTONIC, ...) and
-clock_gettime(CLOCK_REALTIME), while the generic implementation
-can be called for clock_gettime64(), clock_getres() and clock_gettime()
-with other time clock IDs.
-
-> Last point/question, what's the point in using 64 bits for nanoseconds
-> on 32 bits arches ?
-
-The __kernel_timespec structure is defined with two 64-bit members so
-it has the same layout on both 32-bit and 64-bit architectures, which
-lets us share the implementation of the compat syscall handlers
-even on big-endian architectures, and it avoids accidentally leaking four
-bytes of stack data when copying a timespec from kernel to user
-space. The high 32 bits of the nanosecond are expected to always
-be zero when copying to user space, and to be ignored when copied
-into the kernel (see get_timespec64()).
-
-Note that C99 and POSIX require tv_nsec to be 'long', so 64-bit
-architectures have to make it 64-bit wide, and 32-bit architectures
-end up including padding for it.
-
-In the vdso_data, the "nsec" value is shifted, so it actually needs
-more bits. I don't know if this is a strict requirement, or if we could
-change it to be 32 bits non-shifted during the update at the cost
-of losing 1 nanosecond of accuracy.
-
-      Arnd
