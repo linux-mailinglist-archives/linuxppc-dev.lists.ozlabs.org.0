@@ -1,34 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1481410E59E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 06:55:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF4A10E598
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 06:53:27 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RDn10WJYzDqS7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 16:53:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RDqp0sBTzDqSB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 16:55:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (unknown [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 47RDl43yJDzDq5W
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 16:51:44 +1100 (AEDT)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id CBF4DAE800ED;
- Mon,  2 Dec 2019 00:50:39 -0500 (EST)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel RFC 00/4] powerpc/powernv/ioda: Move TCE bypass base to
- PE
-Date: Mon,  2 Dec 2019 16:51:39 +1100
-Message-Id: <20191202055139.9364-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191202015953.127902-1-aik@ozlabs.ru>
-References: <20191202015953.127902-1-aik@ozlabs.ru>
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RDn50y5lzDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 16:53:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="noH5xNFo"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47RDn32QZ8z9sPL;
+ Mon,  2 Dec 2019 16:53:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1575266008;
+ bh=EH+luGXjEilyQ8e+4eAH4LRNqk79yUFe6oQvFYlUr4k=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=noH5xNFoZXpnOmGLtGuWcghVmhFwCLZEThi4IM+78KPiDy/A0K25QrTucZRFgHP4w
+ p2UM2USUd7MJu6d/A3e/ccqQDysB0pqm//W3VLWOjSJkms+GcIcpkZBglp3shAkzHi
+ RZjxs5MUi7Nr6wZG0CZoxOL4RIqdc2dVDsEY/IGWMv0fCVY89W6dj1rFiZxl2I2Ypr
+ f1S3RlnKxSPmoNNdJ0AicXhAYf/uqa2zcQMFULONaZNMVJthAQMinzzwXbfXBu51PT
+ Dlux5u8JToEHyTEfhuOlQpqbXMouCkWZi+nWI+na3hSy6B9D1f6/pFDHTJb5DjlUoB
+ k0lXg7QDgxh0A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Aurelien Jarno <aurelien@aurel32.net>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] libbpf: fix readelf output parsing on powerpc with recent
+ binutils
+In-Reply-To: <20191201195728.4161537-1-aurelien@aurel32.net>
+References: <20191201195728.4161537-1-aurelien@aurel32.net>
+Date: Mon, 02 Dec 2019 16:53:26 +1100
+Message-ID: <87zhgbe0ix.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,141 +57,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alistair Popple <alistair@popple.id.au>,
- Alex Williamson <alex.williamson@redhat.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andriin@fb.com>, Alexei Starovoitov <ast@kernel.org>,
+ "open list:BPF \(Safe dynamic programs and tools\)" <netdev@vger.kernel.org>,
+ Yonghong Song <yhs@fb.com>,
+ "open list:BPF \(Safe dynamic programs and tools\)" <bpf@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, debian-kernel@lists.debian.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We are about to allow another location for the second DMA window and
-we will need to advertise it outside of the powernv platform code.
+Aurelien Jarno <aurelien@aurel32.net> writes:
+> On powerpc with recent versions of binutils, readelf outputs an extra
+> field when dumping the symbols of an object file. For example:
+>
+>     35: 0000000000000838    96 FUNC    LOCAL  DEFAULT [<localentry>: 8]     1 btf_is_struct
+>
+> The extra "[<localentry>: 8]" prevents the GLOBAL_SYM_COUNT variable to
+> be computed correctly and causes the checkabi target to fail.
+>
+> Fix that by looking for the symbol name in the last field instead of the
+> 8th one. This way it should also cope with future extra fields.
+>
+> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> ---
+>  tools/lib/bpf/Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-This moves bypass base address to iommu_table_group so drivers such as
-VFIO SPAPR TCE can see it.
+Thanks for fixing that, it's been on my very long list of test failures
+for a while.
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
- arch/powerpc/include/asm/iommu.h          |  1 +
- arch/powerpc/platforms/powernv/pci.h      |  1 -
- arch/powerpc/platforms/powernv/npu-dma.c  |  1 +
- arch/powerpc/platforms/powernv/pci-ioda.c | 18 +++++++++---------
- 4 files changed, 11 insertions(+), 10 deletions(-)
+Tested-by: Michael Ellerman <mpe@ellerman.id.au>
 
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 350101e11ddb..479439ef003e 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -194,6 +194,7 @@ struct iommu_table_group {
- 	__u64 pgsizes; /* Bitmap of supported page sizes */
- 	__u32 max_dynamic_windows_supported;
- 	__u32 max_levels;
-+	__u64 tce64_start;
- 
- 	struct iommu_group *group;
- 	struct iommu_table *tables[IOMMU_TABLE_GROUP_MAX_TABLES];
-diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index f914f0b14e4e..faf9d7e95a85 100644
---- a/arch/powerpc/platforms/powernv/pci.h
-+++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -67,7 +67,6 @@ struct pnv_ioda_pe {
- 
- 	/* 64-bit TCE bypass region */
- 	bool			tce_bypass_enabled;
--	uint64_t		tce_bypass_base;
- 
- 	/* MSIs. MVE index is identical for for 32 and 64 bit MSI
- 	 * and -1 if not supported. (It's actually identical to the
-diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index b95b9e3c4c98..97a479848003 100644
---- a/arch/powerpc/platforms/powernv/npu-dma.c
-+++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -469,6 +469,7 @@ struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
- 	table_group->tce32_start = pe->table_group.tce32_start;
- 	table_group->tce32_size = pe->table_group.tce32_size;
- 	table_group->max_levels = pe->table_group.max_levels;
-+	table_group->tce64_start = pe->table_group.tce64_start;
- 	if (!table_group->pgsizes)
- 		table_group->pgsizes = pe->table_group.pgsizes;
- 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index c28d0d9b7ee0..9e55bd9d7ecd 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1747,7 +1747,7 @@ static void pnv_pci_ioda_dma_dev_setup(struct pnv_phb *phb, struct pci_dev *pdev
- 
- 	pe = &phb->ioda.pe_array[pdn->pe_number];
- 	WARN_ON(get_dma_ops(&pdev->dev) != &dma_iommu_ops);
--	pdev->dev.archdata.dma_offset = pe->tce_bypass_base;
-+	pdev->dev.archdata.dma_offset = pe->table_group.tce64_start;
- 	set_iommu_table_base(&pdev->dev, pe->table_group.tables[0]);
- 	/*
- 	 * Note: iommu_add_device() will fail here as
-@@ -1839,7 +1839,8 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
- 
- 	pe = &phb->ioda.pe_array[pdn->pe_number];
- 	if (pe->tce_bypass_enabled) {
--		u64 top = pe->tce_bypass_base + memblock_end_of_DRAM() - 1;
-+		u64 top = pe->table_group.tce64_start +
-+			memblock_end_of_DRAM() - 1;
- 		if (dma_mask >= top)
- 			return true;
- 	}
-@@ -1873,7 +1874,7 @@ static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
- 
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
- 		set_iommu_table_base(&dev->dev, pe->table_group.tables[0]);
--		dev->dev.archdata.dma_offset = pe->tce_bypass_base;
-+		dev->dev.archdata.dma_offset = pe->table_group.tce64_start;
- 
- 		if ((pe->flags & PNV_IODA_PE_BUS_ALL) && dev->subordinate)
- 			pnv_ioda_setup_bus_dma(pe, dev->subordinate);
-@@ -2333,13 +2334,13 @@ static void pnv_pci_ioda2_set_bypass(struct pnv_ioda_pe *pe, bool enable)
- 		rc = opal_pci_map_pe_dma_window_real(pe->phb->opal_id,
- 						     pe->pe_number,
- 						     window_id,
--						     pe->tce_bypass_base,
-+						     pe->table_group.tce64_start,
- 						     top);
- 	} else {
- 		rc = opal_pci_map_pe_dma_window_real(pe->phb->opal_id,
- 						     pe->pe_number,
- 						     window_id,
--						     pe->tce_bypass_base,
-+						     pe->table_group.tce64_start,
- 						     0);
- 	}
- 	if (rc)
-@@ -2355,7 +2356,8 @@ static long pnv_pci_ioda2_create_table(struct iommu_table_group *table_group,
- 	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
- 			table_group);
- 	int nid = pe->phb->hose->node;
--	__u64 bus_offset = num ? pe->tce_bypass_base : table_group->tce32_start;
-+	__u64 bus_offset = num ?
-+		pe->table_group.tce64_start : table_group->tce32_start;
- 	long ret;
- 	struct iommu_table *tbl;
- 
-@@ -2705,9 +2707,6 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
- 	if (!pnv_pci_ioda_pe_dma_weight(pe))
- 		return;
- 
--	/* TVE #1 is selected by PCI address bit 59 */
--	pe->tce_bypass_base = 1ull << 59;
--
- 	/* The PE will reserve all possible 32-bits space */
- 	pe_info(pe, "Setting up 32-bit TCE table at 0..%08x\n",
- 		phb->ioda.m32_pci_base);
-@@ -2715,6 +2714,7 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
- 	/* Setup linux iommu table */
- 	pe->table_group.tce32_start = 0;
- 	pe->table_group.tce32_size = phb->ioda.m32_pci_base;
-+	pe->table_group.tce64_start = 1UL << 59;
- 	pe->table_group.max_dynamic_windows_supported =
- 			IOMMU_TABLE_GROUP_MAX_TABLES;
- 	pe->table_group.max_levels = POWERNV_IOMMU_MAX_LEVELS;
--- 
-2.17.1
+cheers
 
+> diff --git a/tools/lib/bpf/Makefile b/tools/lib/bpf/Makefile
+> index 99425d0be6ff..333900cf3f4f 100644
+> --- a/tools/lib/bpf/Makefile
+> +++ b/tools/lib/bpf/Makefile
+> @@ -147,7 +147,7 @@ TAGS_PROG := $(if $(shell which etags 2>/dev/null),etags,ctags)
+>  
+>  GLOBAL_SYM_COUNT = $(shell readelf -s --wide $(BPF_IN_SHARED) | \
+>  			   cut -d "@" -f1 | sed 's/_v[0-9]_[0-9]_[0-9].*//' | \
+> -			   awk '/GLOBAL/ && /DEFAULT/ && !/UND/ {print $$8}' | \
+> +			   awk '/GLOBAL/ && /DEFAULT/ && !/UND/ {print $$NF}' | \
+>  			   sort -u | wc -l)
+>  VERSIONED_SYM_COUNT = $(shell readelf -s --wide $(OUTPUT)libbpf.so | \
+>  			      grep -Eo '[^ ]+@LIBBPF_' | cut -d@ -f1 | sort -u | wc -l)
+> @@ -216,7 +216,7 @@ check_abi: $(OUTPUT)libbpf.so
+>  		     "versioned in $(VERSION_SCRIPT)." >&2;		 \
+>  		readelf -s --wide $(OUTPUT)libbpf-in.o |		 \
+>  		    cut -d "@" -f1 | sed 's/_v[0-9]_[0-9]_[0-9].*//' |	 \
+> -		    awk '/GLOBAL/ && /DEFAULT/ && !/UND/ {print $$8}'|   \
+> +		    awk '/GLOBAL/ && /DEFAULT/ && !/UND/ {print $$NF}'|  \
+>  		    sort -u > $(OUTPUT)libbpf_global_syms.tmp;		 \
+>  		readelf -s --wide $(OUTPUT)libbpf.so |			 \
+>  		    grep -Eo '[^ ]+@LIBBPF_' | cut -d@ -f1 |		 \
+> -- 
+> 2.24.0
