@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B9E10E6B3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:09:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA7710E6A4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:04:45 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RHhV70dnzDqNx
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:04:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RHnW0JChzDqPK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:09:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="YYvg6cX3"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="u3k4vTtV"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RHXG54RRzDqSG
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 18:57:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RHXG4DSSzDqS9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 18:57:33 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47RHX43YFBz9txsw;
- Mon,  2 Dec 2019 08:57:24 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47RHX55VPrz9txt0;
+ Mon,  2 Dec 2019 08:57:25 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=YYvg6cX3; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=u3k4vTtV; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id l-jbatJ-bfN7; Mon,  2 Dec 2019 08:57:24 +0100 (CET)
+ with ESMTP id YpKDb2vRMwTF; Mon,  2 Dec 2019 08:57:25 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47RHX42VwWz9txsp;
- Mon,  2 Dec 2019 08:57:24 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47RHX54QHKz9txsp;
+ Mon,  2 Dec 2019 08:57:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1575273444; bh=t2TcjAXQwbJ/ZxftLdVw7Flcwu9C9bWYKYR/K2stZ7w=;
+ t=1575273445; bh=F1lZuWS+PyLbK6sq+A4k6BmEnOC0Gj9jYu0JPSBEWhE=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=YYvg6cX3v17pKP+gw15aBbixS2FYyKCKlNsICOHoVnZMvEhYQSEH35cc17EWmc5MR
- QMF+ecN1X3n+KyWYh2mFlZ0Nb6JG8u2QyJqgMrMqgIJ3yLRoQFI95kyi76BA0qNk1H
- tFEEB9AXCAjpmCsg1vsRG5UFO4+xJNl4+xIbB3pE=
+ b=u3k4vTtVnQxEpjQzahRrU5ApkwGtcJ9Ocjjbeg2aq+AnrdUsEXYTBSmNSolR3CVsB
+ E/9AS69itgUYNRsuEQrNG6dtLJmqmDCN0IzZ/o7de4JXzao053I68jCZNX+jbwn9oX
+ kEM2EEW3cQBc/tLDMBVffrZZg2K6oHJNskCyF4WM=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F08DC8B79B;
- Mon,  2 Dec 2019 08:57:28 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2CADE8B79C;
+ Mon,  2 Dec 2019 08:57:30 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gAsUzDDXcpJY; Mon,  2 Dec 2019 08:57:28 +0100 (CET)
+ with ESMTP id aY637NVkfqSP; Mon,  2 Dec 2019 08:57:30 +0100 (CET)
 Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CAB788B79A;
- Mon,  2 Dec 2019 08:57:28 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DF20C8B79A;
+ Mon,  2 Dec 2019 08:57:29 +0100 (CET)
 Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C594163600; Mon,  2 Dec 2019 07:57:28 +0000 (UTC)
-Message-Id: <d1d24a376e396540194eeb85a2efe481e92ade24.1575273217.git.christophe.leroy@c-s.fr>
+ id D986963600; Mon,  2 Dec 2019 07:57:29 +0000 (UTC)
+Message-Id: <a55eca3a5e85233838c2349783bcb5164dae1d09.1575273217.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1575273217.git.christophe.leroy@c-s.fr>
 References: <cover.1575273217.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v4 2/8] powerpc/vdso32: Add support for
- CLOCK_{REALTIME/MONOTONIC}_COARSE
+Subject: [PATCH v4 3/8] powerpc: Fix vDSO clock_getres()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon,  2 Dec 2019 07:57:28 +0000 (UTC)
+Date: Mon,  2 Dec 2019 07:57:29 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,148 +80,135 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is copied and adapted from commit 5c929885f1bb ("powerpc/vdso64:
-Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-from Santosh Sivaraj <santosh@fossix.org>
+From: Vincenzo Frascino <vincenzo.frascino@arm.com>
 
-Benchmark from vdsotest-all:
-clock-gettime-realtime: syscall: 3601 nsec/call
-clock-gettime-realtime:    libc: 1072 nsec/call
-clock-gettime-realtime:    vdso: 931 nsec/call
-clock-gettime-monotonic: syscall: 4034 nsec/call
-clock-gettime-monotonic:    libc: 1213 nsec/call
-clock-gettime-monotonic:    vdso: 1076 nsec/call
-clock-gettime-realtime-coarse: syscall: 2722 nsec/call
-clock-gettime-realtime-coarse:    libc: 805 nsec/call
-clock-gettime-realtime-coarse:    vdso: 668 nsec/call
-clock-gettime-monotonic-coarse: syscall: 2949 nsec/call
-clock-gettime-monotonic-coarse:    libc: 882 nsec/call
-clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
+clock_getres in the vDSO library has to preserve the same behaviour
+of posix_get_hrtimer_res().
 
-Additional test passed with:
-	vdsotest -d 30 clock-gettime-monotonic-coarse verify
+In particular, posix_get_hrtimer_res() does:
+    sec = 0;
+    ns = hrtimer_resolution;
+and hrtimer_resolution depends on the enablement of the high
+resolution timers that can happen either at compile or at run time.
 
+Fix the powerpc vdso implementation of clock_getres keeping a copy of
+hrtimer_resolution in vdso data and using that directly.
+
+Fixes: a7f290dad32e ("[PATCH] powerpc: Merge vdso's and add vdso support
+to 32 bits kernel")
+Cc: stable@vger.kernel.org
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+[chleroy: changed CLOCK_REALTIME_RES to CLOCK_HRTIMER_RES]
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Cc: Santosh Sivaraj <santosh@fossix.org>
-Link: https://github.com/linuxppc/issues/issues/41
 ---
-v4: Using STAMP_XTIME_SEC and STAMP_XTIMER_NSEC instead of STAMP_XTIME following merge of latest 2038 fixing series.
----
- arch/powerpc/kernel/vdso32/gettimeofday.S | 64 +++++++++++++++++++++++++++----
- 1 file changed, 57 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/vdso_datapage.h  | 2 ++
+ arch/powerpc/kernel/asm-offsets.c         | 2 +-
+ arch/powerpc/kernel/time.c                | 1 +
+ arch/powerpc/kernel/vdso32/gettimeofday.S | 7 +++++--
+ arch/powerpc/kernel/vdso64/gettimeofday.S | 7 +++++--
+ 5 files changed, 14 insertions(+), 5 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
+index a115970a6809..40f13f3626d3 100644
+--- a/arch/powerpc/include/asm/vdso_datapage.h
++++ b/arch/powerpc/include/asm/vdso_datapage.h
+@@ -83,6 +83,7 @@ struct vdso_data {
+ 	__s64 wtom_clock_sec;			/* Wall to monotonic clock sec */
+ 	__s64 stamp_xtime_sec;			/* xtime secs as at tb_orig_stamp */
+ 	__s64 stamp_xtime_nsec;			/* xtime nsecs as at tb_orig_stamp */
++	__u32 hrtimer_res;			/* hrtimer resolution */
+    	__u32 syscall_map_64[SYSCALL_MAP_SIZE]; /* map of syscalls  */
+    	__u32 syscall_map_32[SYSCALL_MAP_SIZE]; /* map of syscalls */
+ };
+@@ -105,6 +106,7 @@ struct vdso_data {
+ 	__s32 stamp_xtime_sec;		/* xtime seconds as at tb_orig_stamp */
+ 	__s32 stamp_xtime_nsec;		/* xtime nsecs as at tb_orig_stamp */
+ 	__u32 stamp_sec_fraction;	/* fractional seconds of stamp_xtime */
++	__u32 hrtimer_res;		/* hrtimer resolution */
+    	__u32 syscall_map_32[SYSCALL_MAP_SIZE]; /* map of syscalls */
+ 	__u32 dcache_block_size;	/* L1 d-cache block size     */
+ 	__u32 icache_block_size;	/* L1 i-cache block size     */
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index f22bd6d1fe93..3d47aec7becf 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -388,6 +388,7 @@ int main(void)
+ 	OFFSET(STAMP_XTIME_SEC, vdso_data, stamp_xtime_sec);
+ 	OFFSET(STAMP_XTIME_NSEC, vdso_data, stamp_xtime_nsec);
+ 	OFFSET(STAMP_SEC_FRAC, vdso_data, stamp_sec_fraction);
++	OFFSET(CLOCK_HRTIMER_RES, vdso_data, hrtimer_res);
+ 	OFFSET(CFG_ICACHE_BLOCKSZ, vdso_data, icache_block_size);
+ 	OFFSET(CFG_DCACHE_BLOCKSZ, vdso_data, dcache_block_size);
+ 	OFFSET(CFG_ICACHE_LOGBLOCKSZ, vdso_data, icache_log_block_size);
+@@ -413,7 +414,6 @@ int main(void)
+ 	DEFINE(CLOCK_REALTIME_COARSE, CLOCK_REALTIME_COARSE);
+ 	DEFINE(CLOCK_MONOTONIC_COARSE, CLOCK_MONOTONIC_COARSE);
+ 	DEFINE(NSEC_PER_SEC, NSEC_PER_SEC);
+-	DEFINE(CLOCK_REALTIME_RES, MONOTONIC_RES_NSEC);
+ 
+ #ifdef CONFIG_BUG
+ 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 2d13cea13954..1168e8b37e30 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -960,6 +960,7 @@ void update_vsyscall(struct timekeeper *tk)
+ 	vdso_data->stamp_xtime_sec = xt.tv_sec;
+ 	vdso_data->stamp_xtime_nsec = xt.tv_nsec;
+ 	vdso_data->stamp_sec_fraction = frac_sec;
++	vdso_data->hrtimer_res = hrtimer_resolution;
+ 	smp_wmb();
+ 	++(vdso_data->tb_update_count);
+ }
 diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-index c8e6902cb01b..7c1be86c1e90 100644
+index 7c1be86c1e90..e9ce8ee56edb 100644
 --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
 +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-@@ -69,7 +69,13 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
- 	cmpli	cr0,r3,CLOCK_REALTIME
- 	cmpli	cr1,r3,CLOCK_MONOTONIC
+@@ -204,12 +204,15 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
  	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
--	bne	cr0,99f
-+
-+	cmpli	cr5,r3,CLOCK_REALTIME_COARSE
-+	cmpli	cr6,r3,CLOCK_MONOTONIC_COARSE
-+	cror	cr5*4+eq,cr5*4+eq,cr6*4+eq
-+
-+	cror	cr0*4+eq,cr0*4+eq,cr5*4+eq
-+	bne	cr0, .Lgettime_fallback
+ 	bne	cr0,99f
  
- 	mflr	r12			/* r12 saves lr */
-   .cfi_register lr,r12
-@@ -78,8 +84,10 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
- 	mr	r9,r3			/* datapage ptr in r9 */
- 	lis	r7,NSEC_PER_SEC@h	/* want nanoseconds */
- 	ori	r7,r7,NSEC_PER_SEC@l
--50:	bl	__do_get_tspec@local	/* get sec/nsec from tb & kernel */
--	bne	cr1,80f			/* not monotonic -> all done */
-+	beq	cr5, .Lcoarse_clocks
-+.Lprecise_clocks:
-+	bl	__do_get_tspec@local	/* get sec/nsec from tb & kernel */
-+	bne	cr1, .Lfinish		/* not monotonic -> all done */
++	mflr	r12
++  .cfi_register lr,r12
++	bl	__get_datapage@local	/* get data page */
++	lwz	r5, CLOCK_HRTIMER_RES(r3)
++	mtlr	r12
+ 	li	r3,0
+ 	cmpli	cr0,r4,0
+ 	crclr	cr0*4+so
+ 	beqlr
+-	lis	r5,CLOCK_REALTIME_RES@h
+-	ori	r5,r5,CLOCK_REALTIME_RES@l
+ 	stw	r3,TSPC32_TV_SEC(r4)
+ 	stw	r5,TSPC32_TV_NSEC(r4)
+ 	blr
+diff --git a/arch/powerpc/kernel/vdso64/gettimeofday.S b/arch/powerpc/kernel/vdso64/gettimeofday.S
+index 1f24e411af80..1c9a04703250 100644
+--- a/arch/powerpc/kernel/vdso64/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso64/gettimeofday.S
+@@ -186,12 +186,15 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
+ 	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
+ 	bne	cr0,99f
  
- 	/*
- 	 * CLOCK_MONOTONIC
-@@ -103,12 +111,53 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
- 	add	r9,r9,r0
- 	lwz	r0,(CFG_TB_UPDATE_COUNT+LOPART)(r9)
-         cmpl    cr0,r8,r0		/* check if updated */
--	bne-	50b
-+	bne-	.Lprecise_clocks
-+	b	.Lfinish_monotonic
-+
-+	/*
-+	 * For coarse clocks we get data directly from the vdso data page, so
-+	 * we don't need to call __do_get_tspec, but we still need to do the
-+	 * counter trick.
-+	 */
-+.Lcoarse_clocks:
-+	lwz	r8,(CFG_TB_UPDATE_COUNT+LOPART)(r9)
-+	andi.	r0,r8,1                 /* pending update ? loop */
-+	bne-	.Lcoarse_clocks
-+	add	r9,r9,r0		/* r0 is already 0 */
-+
-+	/*
-+	 * CLOCK_REALTIME_COARSE, below values are needed for MONOTONIC_COARSE
-+	 * too
-+	 */
-+	lwz	r3,STAMP_XTIME_SEC+LOPART(r9)
-+	lwz	r4,STAMP_XTIME_NSEC+LOPART(r9)
-+	bne	cr6,1f
-+
-+	/* CLOCK_MONOTONIC_COARSE */
-+	lwz	r5,(WTOM_CLOCK_SEC+LOPART)(r9)
-+	lwz	r6,WTOM_CLOCK_NSEC(r9)
-+
-+	/* check if counter has updated */
-+	or	r0,r6,r5
-+1:	or	r0,r0,r3
-+	or	r0,r0,r4
-+	xor	r0,r0,r0
-+	add	r3,r3,r0
-+	lwz	r0,CFG_TB_UPDATE_COUNT+LOPART(r9)
-+	cmpl	cr0,r0,r8               /* check if updated */
-+	bne-	.Lcoarse_clocks
-+
-+	/* Counter has not updated, so continue calculating proper values for
-+	 * sec and nsec if monotonic coarse, or just return with the proper
-+	 * values for realtime.
-+	 */
-+	bne	cr6, .Lfinish
- 
- 	/* Calculate and store result. Note that this mimics the C code,
- 	 * which may cause funny results if nsec goes negative... is that
- 	 * possible at all ?
- 	 */
-+.Lfinish_monotonic:
- 	add	r3,r3,r5
- 	add	r4,r4,r6
- 	cmpw	cr0,r4,r7
-@@ -116,11 +165,12 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
- 	blt	1f
- 	subf	r4,r7,r4
- 	addi	r3,r3,1
--1:	bge	cr1,80f
-+1:	bge	cr1, .Lfinish
- 	addi	r3,r3,-1
- 	add	r4,r4,r7
- 
--80:	stw	r3,TSPC32_TV_SEC(r11)
-+.Lfinish:
-+	stw	r3,TSPC32_TV_SEC(r11)
- 	stw	r4,TSPC32_TV_NSEC(r11)
- 
- 	mtlr	r12
-@@ -131,7 +181,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
- 	/*
- 	 * syscall fallback
- 	 */
--99:
-+.Lgettime_fallback:
- 	li	r0,__NR_clock_gettime
-   .cfi_restore lr
- 	sc
++	mflr	r12
++  .cfi_register lr,r12
++	bl	V_LOCAL_FUNC(__get_datapage)
++	lwz	r5, CLOCK_HRTIMER_RES(r3)
++	mtlr	r12
+ 	li	r3,0
+ 	cmpldi	cr0,r4,0
+ 	crclr	cr0*4+so
+ 	beqlr
+-	lis	r5,CLOCK_REALTIME_RES@h
+-	ori	r5,r5,CLOCK_REALTIME_RES@l
+ 	std	r3,TSPC64_TV_SEC(r4)
+ 	std	r5,TSPC64_TV_NSEC(r4)
+ 	blr
 -- 
 2.13.3
 
