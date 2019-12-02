@@ -2,75 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706A710ED3D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 17:34:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAE010F2F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 23:53:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RW172mQCzDqQB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 03:34:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RgQN6LglzDqNS
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 09:53:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jstancek@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.1.57; helo=eur02-he1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="ZCvet+uA"; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="ImnkRo0m"; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+Received: from EUR02-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr10057.outbound.protection.outlook.com [40.107.1.57])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RVz80KgRzDqNd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 03:33:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1575304382;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JpEh+m3IUPpD3ZuffVtnmrdQ4ORagqFqM7OpNTqT+3U=;
- b=ZCvet+uA0ZHGO80SpZa2FL8rMMpwHJb76NV0A/ZkRMf9TjvbdfR78qjp6Z1iHDvA39Q3UB
- iMSxzcH6zrqv+QQDOgGX6boPsxor05JCHn8D/ARrFE7EkxUnncsJfS+eLXC4I3l17crik1
- 6ZgVJisCkBoYXUbMpLFABo1BBhNUaQs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-179-5wjuG0DUOtamm041Da2Gjg-1; Mon, 02 Dec 2019 07:31:02 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EC430107ACC5;
- Mon,  2 Dec 2019 12:31:00 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9EF661001901;
- Mon,  2 Dec 2019 12:31:00 +0000 (UTC)
-Received: from zmail17.collab.prod.int.phx2.redhat.com
- (zmail17.collab.prod.int.phx2.redhat.com [10.5.83.19])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 2E7FF1809565;
- Mon,  2 Dec 2019 12:31:00 +0000 (UTC)
-Date: Mon, 2 Dec 2019 07:30:59 -0500 (EST)
-From: Jan Stancek <jstancek@redhat.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Message-ID: <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
-In-Reply-To: <8736e3ffen.fsf@mpe.ellerman.id.au>
-References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
- <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
- <8736e3ffen.fsf@mpe.ellerman.id.au>
-Subject: =?utf-8?Q?Re:_=E2=9D=8C_FAIL:_Test_report_for_kernel?=
- =?utf-8?Q?_5.3.13-3b5f971.cki_(stable-queue)?=
-MIME-Version: 1.0
-X-Originating-IP: [10.43.17.163, 10.4.195.17]
-Thread-Topic: =?utf-8?B?4p2MIEZBSUw6?= Test report for kernel
- 5.3.13-3b5f971.cki (stable-queue)
-Thread-Index: cteAZVs1buDEh+CFMxyFiJYhnT9cJA==
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: 5wjuG0DUOtamm041Da2Gjg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RgNR45nBzDqKD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 09:52:04 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j+L6IKyFsPNxONHE8p32DtpovjvFP+0kx3L6s7LJ1s+3yRVAyGcloIE92RKyQ+rEJfnELTb8juTIgeHa0A+NALKzoR/0uXviYZ0fg77VPsWSPQJSeqzB8d8nqf1054O50gFNTmfi97XryzU0/VN+5Y4VjUt4ZLoT5L1n8nFBpGDoJ2bktqAIpr4Hv8GGatueo7qMZ1n+aWweCmkvJfWx2/w0Dfx2wEzXaoHJw1qkToO/7MzeeNnuzEET7udzhvknrz/31fjoe+NZWNLS6zoyUO9PpQC1zCxD1RPC34+e1o/mDF4SsbCGVaSvha8bwwyNOee4iic19KONefK/dvVQAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z8FyuXm79w//A8asyiSVH3/UepC+XF9SGERVHtcW1+M=;
+ b=SuHlgac0rtibdh4w5zlA7vIFhDUrxUTBpt2UeCp5vH3t2DxyF4Vvn2hkmXt/4mZz8w6xon4/qUChN/8+wSlkwNuNgNyxYcQVeXVKpKlFhJl/e4lkYk3J11PIBguDcGmlMP9Tb4F1Voloaepucu+ED+ts6Zmzo6VV8CKp56fcrz1pPQ2z0Siz84m6Qu3LBFOyrYXsI0GkyHjR24POoZibHGTgOMWbYzvA5UqUhoOtWDokaBk6VGkvJs4WjdKZ3O2yC1lagvOrz+Oq8XN1bL1CQoXGRdeMTJY81uj4TBjNEdMlPIv8kj8WoZQEGz0pSvymw9Ytnl/nAacu55gBovkkVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z8FyuXm79w//A8asyiSVH3/UepC+XF9SGERVHtcW1+M=;
+ b=ImnkRo0m+54eJ7tv6jesz+T8D2BzdKsVkjbHT2kcVdiKR3s0PahkfVUAx7NFp6DqetPb6j/WWqtre/KrPTjFKscd/fUFD7LbyiX/LiwkERoRNqSfKo4w64qvDZKQAn0gbXqOd4Vnqy/WfDXVO/I9VowiKPrgrNggGfTr+E0Th+Q=
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
+ VE1PR04MB6639.eurprd04.prod.outlook.com (10.255.118.11) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2495.20; Mon, 2 Dec 2019 22:51:58 +0000
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::e948:7a32:ae88:906d]) by VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::e948:7a32:ae88:906d%4]) with mapi id 15.20.2495.014; Mon, 2 Dec 2019
+ 22:51:57 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: David Miller <davem@davemloft.net>
+Subject: RE: [PATCH v6 44/49] net/wan/fsl_ucc_hdlc: avoid use of IS_ERR_VALUE()
+Thread-Topic: [PATCH v6 44/49] net/wan/fsl_ucc_hdlc: avoid use of
+ IS_ERR_VALUE()
+Thread-Index: AQHVpfw8xYSflyw9IkOdsMxlnEQBn6enLxpw
+Date: Mon, 2 Dec 2019 22:51:57 +0000
+Message-ID: <VE1PR04MB6687B5428E3E4FA0F8F77DF08F430@VE1PR04MB6687.eurprd04.prod.outlook.com>
+References: <20191128145554.1297-1-linux@rasmusvillemoes.dk>
+ <20191128145554.1297-45-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191128145554.1297-45-linux@rasmusvillemoes.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=leoyang.li@nxp.com; 
+x-originating-ip: [64.157.242.222]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: f8e19fe5-4c13-4dc1-c242-08d7777a3c6a
+x-ms-traffictypediagnostic: VE1PR04MB6639:|VE1PR04MB6639:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VE1PR04MB66394E3D2D3794331BAA4C378F430@VE1PR04MB6639.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 0239D46DB6
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(376002)(396003)(136003)(346002)(366004)(39860400002)(13464003)(189003)(199004)(71190400001)(54906003)(305945005)(7696005)(6436002)(55016002)(478600001)(66556008)(9686003)(6116002)(66476007)(3846002)(33656002)(81166006)(6506007)(53546011)(102836004)(229853002)(316002)(26005)(52536014)(81156014)(8676002)(186003)(5660300002)(76176011)(446003)(8936002)(64756008)(66946007)(74316002)(256004)(76116006)(11346002)(2906002)(66066001)(99286004)(6246003)(25786009)(86362001)(14454004)(6916009)(71200400001)(66446008)(7736002)(4326008);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6639;
+ H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: oHI+Ro1l1oUKotJ9dFwGUR+h9jhDj4qj0OJdjxd8pXEJUo0HpRfigtCooYWyPQfW3GPxUZPCykti0e545kdIT94ePVd5XGWj/FNPFCDpaBYRtD3Q/nmrFKtCn6bV/PJlG9qWesacx4regJGyHnok8vtkptn7Ktt1OCpHC5844G4Mxz0ZDfqZGiOj/dZ8gPVO14talZsntRqOIyQWDAyyZnS7InFxQM5vPjDM6rGXh36yBdx29NQV5QXUQzW0L86toxKPeT2HG2tdiNnxu6bMAUg4UdUJ4DP9qwERov4ky2l+mTQjRyLFEbZx+1e3/pPav/5kuQS/hLzD6kHVUReKAyN+eJ1LayTZyTzqnUa/h3ti8mFtqrzEQDuCARuMAYiTe1FBI9B3i4IavS86M96BjeVfcYFzH0hv/gz5EhDlfLH4wnkjQHnTDycWo+NcFpqV
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8e19fe5-4c13-4dc1-c242-08d7777a3c6a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2019 22:51:57.8420 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4Cmoq7GJ25Rua++mGquLIq17ARcLHN5IKcLl5Fy30JWq85NVWNdYgiCKuMpoDkPteTmltYYeK4m4dPjOifD+EA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6639
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,243 +104,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Memory Management <mm-qe@redhat.com>,
- LTP Mailing List <ltp@lists.linux.it>,
- Linux Stable maillist <stable@vger.kernel.org>,
- CKI Project <cki-project@redhat.com>
+Cc: Timur Tabi <timur@kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
------ Original Message -----
-> Hi Jan,
->=20
-> Jan Stancek <jstancek@redhat.com> writes:
-> > ----- Original Message -----
-> >>=20
-> >> Hello,
-> >>=20
-> >> We ran automated tests on a recent commit from this kernel tree:
-> >>=20
-> >>        Kernel repo:
-> >>        git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-que=
-ue.git
-> >>             Commit: 3b5f97139acc - KVM: PPC: Book3S HV: Flush link sta=
-ck
-> >>             on
-> >>             guest exit to host kernel
->=20
-> I can't find this commit, I assume it's roughly the same as:
->=20
->   https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
-git/commit/?h=3Dlinux-5.3.y&id=3D0815f75f90178bc7e1933cf0d0c818b5f3f5a20c
+> -----Original Message-----
+> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Sent: Thursday, November 28, 2019 8:56 AM
+> To: Qiang Zhao <qiang.zhao@nxp.com>; Leo Li <leoyang.li@nxp.com>;
+> Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
+> linux-kernel@vger.kernel.org; Scott Wood <oss@buserror.net>; Timur Tabi
+> <timur@kernel.org>; Rasmus Villemoes <linux@rasmusvillemoes.dk>;
+> netdev@vger.kernel.org
+> Subject: [PATCH v6 44/49] net/wan/fsl_ucc_hdlc: avoid use of
+> IS_ERR_VALUE()
 
-Hi,
+Hi David,
 
-yes, that looks like same one:
-  https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/c=
-ommit/?h=3D3b5f97139acc
+Would you help to review patch 44-47 in the series?  If it is fine with you=
+, I can take these 4 patches with the whole series though soc tree to enabl=
+e the QE drivers on ARM and PPC64 with your ACK.
 
-Looking at CKI reports for past 2 weeks, there were 3 (unexplained) SIGBUS =
-related failures:
-
-5.3.13-3b5f971.cki@upstream-stable
-LTP genpower Bus error
-
-5.4.0-rc8-4b17a56.cki@upstream-stable
-LTP genatan Bus error
-
-5.3.11-200.fc30
-xfstests
-+/var/lib/xfstests/tests/generic/248: line 38: 161943 Bus error            =
-   (core dumped) $TEST_PROG $TESTFILE
-
-All 3 are from ppc64le, all power9 systems.
+Thanks,
+Leo
 
 >=20
-> >> The results of these automated tests are provided below.
-> >>=20
-> >>     Overall result: FAILED (see details below)
-> >>              Merge: OK
-> >>            Compile: OK
-> >>              Tests: FAILED
-> >>=20
-> >> All kernel binaries, config files, and logs are available for download
-> >> here:
-> >>=20
-> >>   https://artifacts.cki-project.org/pipelines/314344
-> >>=20
-> >> One or more kernel tests failed:
-> >>=20
-> >>     ppc64le:
-> >>      =E2=9D=8C LTP
-> >
-> > I suspect kernel bug.
+> When building this on a 64-bit platform gcc rightly warns that the error
+> checking is broken (-ENOMEM stored in an u32 does not compare greater
+> than (unsigned long)-MAX_ERRNO). Instead, now that
+> qe_muram_alloc() returns s32, use that type to store the return value and
+> use standard kernel style "ret < 0".
 >=20
-> Looks that way, but I can't reproduce it on a machine here.
->=20
-> I have the same CPU revision and am booting the exact kernel binary &
-> modules linked above.
-
-I can semi-reliably reproduce it with:
-(where LTP is installed to /mnt/testarea/ltp)
-
-while [ True ]; do
-        echo 3 > /proc/sys/vm/drop_caches
-        rm -f /mnt/testarea/ltp/results/RUNTEST.log /mnt/testarea/ltp/outpu=
-t/RUNTEST.run.log
-        ./runltp -p -d results -l RUNTEST.log -o RUNTEST.run.log -f math
-        grep FAIL /mnt/testarea/ltp/results/RUNTEST.log && exit 1
-done
-
-and some stress activity in other terminal (e.g. kernel build).
-Sometimes in minutes, sometimes in hours. I did try couple
-older kernels and could reproduce it with v4.19 and v5.0 as well.
-
-v4.18 ran OK for 2 hours, assuming that one is good, it could be
-related to xfs switching to iomap in 4.19-rc1.
-
-Tracing so far led me to filemap_fault(), where it reached this -EIO,
-before returning SIGBUS.
-
-page_not_uptodate:
-        /*
-         * Umm, take care of errors if the page isn't up-to-date.
-         * Try to re-read it _once_. We do this synchronously,
-         * because there really aren't any performance issues here
-         * and we need to check for errors.
-         */
-        ClearPageError(page);
-        fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
-        error =3D mapping->a_ops->readpage(file, page);
-        if (!error) {
-                wait_on_page_locked(page);
-                if (!PageUptodate(page))
-                        error =3D -EIO;
-        }
-
-...
-        return VM_FAULT_SIGBUS;
-
->=20
-> > There were couple of 'math' runtest related failures in recent couple d=
-ays.
-> > In all cases, some data file used by test was missing. Presumably becau=
-se
-> > binary that generates it crashed.
-> >
-> > I managed to reproduce one failure with this CKI build, which I believe
-> > is the same problem.
-> >
-> > We crash early during load, before any LTP code runs:
-> >
-> > (gdb) r
-> > Starting program: /mnt/testarea/ltp/testcases/bin/genasin
->=20
-> What is this /mnt/testarea? Looks like it's setup by some of the beaker
-> scripts or something?
-
-Correct, it's where beaker script installs LTP. It's not a real mount,
-just a directory on /. In my case it's xfs. It should match default
-Fedora-31 Server ppc64le installation.
-
->=20
-> I'm running LTP out of /home, which is ext4 directly on disk.
->=20
-> I tried getting the tests-beaker stuff working on my machine, but I
-> couldn't find all the libraries and so on it requires.
->=20
->=20
-> > Program received signal SIGBUS, Bus error.
-> > dl_main (phdr=3D0x10000040, phnum=3D<optimized out>, user_entry=3D0x7ff=
-fffffe760,
-> > auxv=3D<optimized out>) at rtld.c:1362
-> > 1362        switch (ph->p_type)
-> > (gdb) bt
-> > #0  dl_main (phdr=3D0x10000040, phnum=3D<optimized out>,
-> > user_entry=3D0x7fffffffe760, auxv=3D<optimized out>) at rtld.c:1362
-> > #1  0x00007ffff7fcf3c8 in _dl_sysdep_start (start_argptr=3D<optimized o=
-ut>,
-> > dl_main=3D0x7ffff7fb37b0 <dl_main>) at ../elf/dl-sysdep.c:253
-> > #2  0x00007ffff7fb1d1c in _dl_start_final (arg=3Darg@entry=3D0x7fffffff=
-ee20,
-> > info=3Dinfo@entry=3D0x7fffffffe870) at rtld.c:445
-> > #3  0x00007ffff7fb2f5c in _dl_start (arg=3D0x7fffffffee20) at rtld.c:53=
-7
-> > #4  0x00007ffff7fb14d8 in _start () from /lib64/ld64.so.2
-> > (gdb) f 0
-> > #0  dl_main (phdr=3D0x10000040, phnum=3D<optimized out>,
-> > user_entry=3D0x7fffffffe760, auxv=3D<optimized out>) at rtld.c:1362
-> > 1362        switch (ph->p_type)
-> > (gdb) l
-> > 1357      /* And it was opened directly.  */
-> > 1358      ++main_map->l_direct_opencount;
-> > 1359
-> > 1360      /* Scan the program header table for the dynamic section.  */
-> > 1361      for (ph =3D phdr; ph < &phdr[phnum]; ++ph)
-> > 1362        switch (ph->p_type)
-> > 1363          {
-> > 1364          case PT_PHDR:
-> > 1365            /* Find out the load address.  */
-> > 1366            main_map->l_addr =3D (ElfW(Addr)) phdr - ph->p_vaddr;
-> >
-> > (gdb) p ph
-> > $1 =3D (const Elf64_Phdr *) 0x10000040
-> >
-> > (gdb) p *ph
-> > Cannot access memory at address 0x10000040
-> >
-> > (gdb) info proc map
-> > process 1110670
-> > Mapped address spaces:
-> >
-> >           Start Addr           End Addr       Size     Offset objfile
-> >           0x10000000         0x10010000    0x10000        0x0
-> >           /mnt/testarea/ltp/testcases/bin/genasin
-> >           0x10010000         0x10030000    0x20000        0x0
-> >           /mnt/testarea/ltp/testcases/bin/genasin
-> >       0x7ffff7f90000     0x7ffff7fb0000    0x20000        0x0 [vdso]
-> >       0x7ffff7fb0000     0x7ffff7fe0000    0x30000        0x0
-> >       /usr/lib64/ld-2.30.so
-> >       0x7ffff7fe0000     0x7ffff8000000    0x20000    0x20000
-> >       /usr/lib64/ld-2.30.so
-> >       0x7ffffffd0000     0x800000000000    0x30000        0x0 [stack]
-> >
-> > (gdb) x/1x 0x10000040
-> > 0x10000040:     Cannot access memory at address 0x10000040
->=20
-> Yeah that's weird.
->=20
-> > # /mnt/testarea/ltp/testcases/bin/genasin
-> > Bus error (core dumped)
-> >
-> > However, as soon as I copy that binary somewhere else, it works fine:
-> >
-> > # cp /mnt/testarea/ltp/testcases/bin/genasin /tmp
-> > # /tmp/genasin
-> > # echo $?
-> > 0
->=20
-> Is /tmp a real disk or tmpfs?
-
-tmpfs
-
-Filesystem                           Type      1K-blocks     Used  Availabl=
-e Use% Mounted on
-devtmpfs                             devtmpfs  254530176        0  25453017=
-6   0% /dev
-tmpfs                                tmpfs     267992768        0  26799276=
-8   0% /dev/shm
-tmpfs                                tmpfs     267992768     9152  26798361=
-6   1% /run
-/dev/mapper/fedora_ibm--p9b--03-root xfs        15718400 13029284    268911=
-6  83% /
-tmpfs                                tmpfs     267992768        0  26799276=
-8   0% /tmp
-/dev/sda1                            xfs         1038336   944588      9374=
-8  91% /boot
-tmpfs                                tmpfs      53598528        0   5359852=
-8   0% /run/user/0
+> Reviewed-by: Timur Tabi <timur@kernel.org>
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
