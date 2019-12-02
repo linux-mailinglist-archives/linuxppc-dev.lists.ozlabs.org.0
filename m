@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0362810E6A1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE2310E6CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:17:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RHfJ2pmrzDqKV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:02:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RHyq2n14zDqJc
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:17:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="bblCPYuN"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="XZVl7Io7"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RHXH1PBnzDqSJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 18:57:35 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RHXN6MVWzDqSG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 18:57:40 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47RHX656Q5z9txt2;
- Mon,  2 Dec 2019 08:57:26 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47RHX74r7jz9txsq;
+ Mon,  2 Dec 2019 08:57:27 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=bblCPYuN; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=XZVl7Io7; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id vP5LoNkWLm7o; Mon,  2 Dec 2019 08:57:26 +0100 (CET)
+ with ESMTP id jjgBe-GCs8b6; Mon,  2 Dec 2019 08:57:27 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47RHX645Ntz9txsp;
- Mon,  2 Dec 2019 08:57:26 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47RHX73q13z9txsp;
+ Mon,  2 Dec 2019 08:57:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1575273446; bh=34AgENn3LP2F0xBcKj3nh7FTCsEI1E8QD6VctPYAQOs=;
+ t=1575273447; bh=2DISVNeXcgsWhL21VEb4CkXGT+x8cPvV0oATp0J5wZE=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=bblCPYuNvB9bwt4bpd4gI/kJc+nomzfnr019BgljxWK7U0W55DD5htgf8k6ftpYi7
- MaAT/AT9qN5mqJJs6dl+ZsrkWqcHyD7TGPQaI3GRWCThekcdJQYUBbrQEf8LYv7f0R
- fU2WJ+JIjPI8w5hI5IWL5X9EaQEPWnwYU+u6DQJk=
+ b=XZVl7Io7oAgGm8OQqG/bPAFR9WT1FnHCCUg7CTOzpFmSHP4hbLJ1Q6cPVcTM8kjsU
+ 1+SSACmXM3Zb5XQLlvY/VC5H1VuLsl+YcNoyCiiVirCuxvckDY9Yk4/a32J3eYK9/6
+ G/96bPoVjexNrkYZ6gxqDXb3lpsKqOb/zzOTzCxI=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2AE1A8B79B;
- Mon,  2 Dec 2019 08:57:31 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 28BC38B79B;
+ Mon,  2 Dec 2019 08:57:32 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ta0_7kHH6YWV; Mon,  2 Dec 2019 08:57:31 +0100 (CET)
+ with ESMTP id TRgs7LG8Wt7N; Mon,  2 Dec 2019 08:57:32 +0100 (CET)
 Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id ECA188B79A;
- Mon,  2 Dec 2019 08:57:30 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EFFA28B79A;
+ Mon,  2 Dec 2019 08:57:31 +0100 (CET)
 Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E344C63600; Mon,  2 Dec 2019 07:57:30 +0000 (UTC)
-Message-Id: <c39ef7f3dfa25356b01e211d539671f279086c09.1575273217.git.christophe.leroy@c-s.fr>
+ id EA40B63600; Mon,  2 Dec 2019 07:57:31 +0000 (UTC)
+Message-Id: <dfa7b35e27e01964fcda84bf1ed8b2b31cf93826.1575273217.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1575273217.git.christophe.leroy@c-s.fr>
 References: <cover.1575273217.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v4 4/8] powerpc/vdso32: inline __get_datapage()
+Subject: [PATCH v4 5/8] powerpc/vdso32: Don't read cache line size from the
+ datapage on PPC32.
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon,  2 Dec 2019 07:57:30 +0000 (UTC)
+Date: Mon,  2 Dec 2019 07:57:31 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,205 +81,139 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-__get_datapage() is only a few instructions to retrieve the
-address of the page where the kernel stores data to the VDSO.
+On PPC32, the cache lines have a fixed size known at build time.
 
-By inlining this function into its users, a bl/blr pair and
-a mflr/mtlr pair is avoided, plus a few reg moves.
-
-The improvement is noticeable (about 55 nsec/call on an 8xx)
-
-vdsotest before the patch:
-gettimeofday:    vdso: 731 nsec/call
-clock-gettime-realtime-coarse:    vdso: 668 nsec/call
-clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
-
-vdsotest after the patch:
-gettimeofday:    vdso: 677 nsec/call
-clock-gettime-realtime-coarse:    vdso: 613 nsec/call
-clock-gettime-monotonic-coarse:    vdso: 690 nsec/call
+Don't read it from the datapage.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
 ---
-v3: define get_datapage macro in asm/vdso_datapage.h
-v4: fixed build failure with old binutils
----
- arch/powerpc/include/asm/vdso_datapage.h  | 10 ++++++++++
- arch/powerpc/kernel/vdso32/cacheflush.S   |  9 ++++-----
- arch/powerpc/kernel/vdso32/datapage.S     | 28 +++-------------------------
- arch/powerpc/kernel/vdso32/gettimeofday.S | 12 +++++-------
- 4 files changed, 22 insertions(+), 37 deletions(-)
+ arch/powerpc/include/asm/vdso_datapage.h |  4 ----
+ arch/powerpc/kernel/asm-offsets.c        |  2 +-
+ arch/powerpc/kernel/vdso.c               |  5 -----
+ arch/powerpc/kernel/vdso32/cacheflush.S  | 23 +++++++++++++++++++++++
+ 4 files changed, 24 insertions(+), 10 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
-index 40f13f3626d3..ee5319a6f4e3 100644
+index ee5319a6f4e3..b9ef6cf50ea5 100644
 --- a/arch/powerpc/include/asm/vdso_datapage.h
 +++ b/arch/powerpc/include/asm/vdso_datapage.h
-@@ -118,6 +118,16 @@ struct vdso_data {
+@@ -108,10 +108,6 @@ struct vdso_data {
+ 	__u32 stamp_sec_fraction;	/* fractional seconds of stamp_xtime */
+ 	__u32 hrtimer_res;		/* hrtimer resolution */
+    	__u32 syscall_map_32[SYSCALL_MAP_SIZE]; /* map of syscalls */
+-	__u32 dcache_block_size;	/* L1 d-cache block size     */
+-	__u32 icache_block_size;	/* L1 i-cache block size     */
+-	__u32 dcache_log_block_size;	/* L1 d-cache log block size */
+-	__u32 icache_log_block_size;	/* L1 i-cache log block size */
+ };
  
- extern struct vdso_data *vdso_data;
+ #endif /* CONFIG_PPC64 */
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 3d47aec7becf..0013197d89a6 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -389,11 +389,11 @@ int main(void)
+ 	OFFSET(STAMP_XTIME_NSEC, vdso_data, stamp_xtime_nsec);
+ 	OFFSET(STAMP_SEC_FRAC, vdso_data, stamp_sec_fraction);
+ 	OFFSET(CLOCK_HRTIMER_RES, vdso_data, hrtimer_res);
++#ifdef CONFIG_PPC64
+ 	OFFSET(CFG_ICACHE_BLOCKSZ, vdso_data, icache_block_size);
+ 	OFFSET(CFG_DCACHE_BLOCKSZ, vdso_data, dcache_block_size);
+ 	OFFSET(CFG_ICACHE_LOGBLOCKSZ, vdso_data, icache_log_block_size);
+ 	OFFSET(CFG_DCACHE_LOGBLOCKSZ, vdso_data, dcache_log_block_size);
+-#ifdef CONFIG_PPC64
+ 	OFFSET(CFG_SYSCALL_MAP64, vdso_data, syscall_map_64);
+ 	OFFSET(TVAL64_TV_SEC, __kernel_old_timeval, tv_sec);
+ 	OFFSET(TVAL64_TV_USEC, __kernel_old_timeval, tv_usec);
+diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+index eae9ddaecbcf..b9a108411c0d 100644
+--- a/arch/powerpc/kernel/vdso.c
++++ b/arch/powerpc/kernel/vdso.c
+@@ -728,11 +728,6 @@ static int __init vdso_init(void)
+ 	 */
+ 	vdso64_pages = (&vdso64_end - &vdso64_start) >> PAGE_SHIFT;
+ 	DBG("vdso64_kbase: %p, 0x%x pages\n", vdso64_kbase, vdso64_pages);
+-#else
+-	vdso_data->dcache_block_size = L1_CACHE_BYTES;
+-	vdso_data->dcache_log_block_size = L1_CACHE_SHIFT;
+-	vdso_data->icache_block_size = L1_CACHE_BYTES;
+-	vdso_data->icache_log_block_size = L1_CACHE_SHIFT;
+ #endif /* CONFIG_PPC64 */
  
-+#else /* __ASSEMBLY__ */
-+
-+.macro get_datapage ptr, tmp
-+	bcl	20, 31, .+4
-+	mflr	\ptr
-+	addi	\ptr, \ptr, (__kernel_datapage_offset - (.-4))@l
-+	lwz	\tmp, 0(\ptr)
-+	add	\ptr, \tmp, \ptr
-+.endm
-+
- #endif /* __ASSEMBLY__ */
  
- #endif /* __KERNEL__ */
 diff --git a/arch/powerpc/kernel/vdso32/cacheflush.S b/arch/powerpc/kernel/vdso32/cacheflush.S
-index 7f882e7b9f43..d178ec8c279d 100644
+index d178ec8c279d..3440ddf21c8b 100644
 --- a/arch/powerpc/kernel/vdso32/cacheflush.S
 +++ b/arch/powerpc/kernel/vdso32/cacheflush.S
-@@ -8,6 +8,7 @@
- #include <asm/processor.h>
- #include <asm/ppc_asm.h>
+@@ -10,6 +10,7 @@
  #include <asm/vdso.h>
-+#include <asm/vdso_datapage.h>
+ #include <asm/vdso_datapage.h>
  #include <asm/asm-offsets.h>
++#include <asm/cache.h>
  
  	.text
-@@ -24,14 +25,12 @@ V_FUNCTION_BEGIN(__kernel_sync_dicache)
+ 
+@@ -23,28 +24,44 @@
+  */
+ V_FUNCTION_BEGIN(__kernel_sync_dicache)
    .cfi_startproc
++#ifdef CONFIG_PPC64
  	mflr	r12
    .cfi_register lr,r12
--	mr	r11,r3
--	bl	__get_datapage@local
-+	get_datapage	r10, r0
+ 	get_datapage	r10, r0
  	mtlr	r12
--	mr	r10,r3
++#endif
  
++#ifdef CONFIG_PPC64
  	lwz	r7,CFG_DCACHE_BLOCKSZ(r10)
  	addi	r5,r7,-1
--	andc	r6,r11,r5		/* round low to line bdy */
-+	andc	r6,r3,r5		/* round low to line bdy */
++#else
++	li	r5, L1_CACHE_BYTES - 1
++#endif
+ 	andc	r6,r3,r5		/* round low to line bdy */
  	subf	r8,r6,r4		/* compute length */
  	add	r8,r8,r5		/* ensure we get enough */
++#ifdef CONFIG_PPC64
  	lwz	r9,CFG_DCACHE_LOGBLOCKSZ(r10)
-@@ -48,7 +47,7 @@ V_FUNCTION_BEGIN(__kernel_sync_dicache)
+ 	srw.	r8,r8,r9		/* compute line count */
++#else
++	srwi.	r8, r8, L1_CACHE_SHIFT
++	mr	r7, r6
++#endif
+ 	crclr	cr0*4+so
+ 	beqlr				/* nothing to do? */
+ 	mtctr	r8
+ 1:	dcbst	0,r6
++#ifdef CONFIG_PPC64
+ 	add	r6,r6,r7
++#else
++	addi	r6, r6, L1_CACHE_BYTES
++#endif
+ 	bdnz	1b
+ 	sync
  
+ /* Now invalidate the instruction cache */
+ 
++#ifdef CONFIG_PPC64
  	lwz	r7,CFG_ICACHE_BLOCKSZ(r10)
  	addi	r5,r7,-1
--	andc	r6,r11,r5		/* round low to line bdy */
-+	andc	r6,r3,r5		/* round low to line bdy */
- 	subf	r8,r6,r4		/* compute length */
- 	add	r8,r8,r5
- 	lwz	r9,CFG_ICACHE_LOGBLOCKSZ(r10)
-diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
-index 6c7401bd284e..1095d818f94a 100644
---- a/arch/powerpc/kernel/vdso32/datapage.S
-+++ b/arch/powerpc/kernel/vdso32/datapage.S
-@@ -10,35 +10,13 @@
- #include <asm/asm-offsets.h>
- #include <asm/unistd.h>
- #include <asm/vdso.h>
-+#include <asm/vdso_datapage.h>
- 
- 	.text
- 	.global	__kernel_datapage_offset;
- __kernel_datapage_offset:
- 	.long	0
- 
--V_FUNCTION_BEGIN(__get_datapage)
--  .cfi_startproc
--	/* We don't want that exposed or overridable as we want other objects
--	 * to be able to bl directly to here
--	 */
--	.protected __get_datapage
--	.hidden __get_datapage
--
--	mflr	r0
--  .cfi_register lr,r0
--
--	bcl	20,31,data_page_branch
--data_page_branch:
--	mflr	r3
--	mtlr	r0
--	addi	r3, r3, __kernel_datapage_offset-data_page_branch
--	lwz	r0,0(r3)
--  .cfi_restore lr
--	add	r3,r0,r3
--	blr
--  .cfi_endproc
--V_FUNCTION_END(__get_datapage)
--
- /*
-  * void *__kernel_get_syscall_map(unsigned int *syscall_count) ;
-  *
-@@ -53,7 +31,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
- 	mflr	r12
-   .cfi_register lr,r12
- 	mr	r4,r3
--	bl	__get_datapage@local
-+	get_datapage	r3, r0
- 	mtlr	r12
- 	addi	r3,r3,CFG_SYSCALL_MAP32
- 	cmpli	cr0,r4,0
-@@ -75,7 +53,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
-   .cfi_startproc
- 	mflr	r12
-   .cfi_register lr,r12
--	bl	__get_datapage@local
-+	get_datapage	r3, r0
- 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
- 	lwz	r3,CFG_TB_TICKS_PER_SEC(r3)
- 	mtlr	r12
-diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-index e9ce8ee56edb..74973548529a 100644
---- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-@@ -9,6 +9,7 @@
- #include <asm/processor.h>
- #include <asm/ppc_asm.h>
- #include <asm/vdso.h>
-+#include <asm/vdso_datapage.h>
- #include <asm/asm-offsets.h>
- #include <asm/unistd.h>
- 
-@@ -33,8 +34,7 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
- 
- 	mr	r10,r3			/* r10 saves tv */
- 	mr	r11,r4			/* r11 saves tz */
--	bl	__get_datapage@local	/* get data page */
--	mr	r9, r3			/* datapage ptr in r9 */
-+	get_datapage	r9, r0
- 	cmplwi	r10,0			/* check if tv is NULL */
- 	beq	3f
- 	lis	r7,1000000@ha		/* load up USEC_PER_SEC */
-@@ -80,8 +80,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
- 	mflr	r12			/* r12 saves lr */
-   .cfi_register lr,r12
- 	mr	r11,r4			/* r11 saves tp */
--	bl	__get_datapage@local	/* get data page */
--	mr	r9,r3			/* datapage ptr in r9 */
-+	get_datapage	r9, r0
- 	lis	r7,NSEC_PER_SEC@h	/* want nanoseconds */
- 	ori	r7,r7,NSEC_PER_SEC@l
- 	beq	cr5, .Lcoarse_clocks
-@@ -206,7 +205,7 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
- 
- 	mflr	r12
-   .cfi_register lr,r12
--	bl	__get_datapage@local	/* get data page */
-+	get_datapage	r3, r0
- 	lwz	r5, CLOCK_HRTIMER_RES(r3)
- 	mtlr	r12
+ 	andc	r6,r3,r5		/* round low to line bdy */
+@@ -54,9 +71,15 @@ V_FUNCTION_BEGIN(__kernel_sync_dicache)
+ 	srw.	r8,r8,r9		/* compute line count */
+ 	crclr	cr0*4+so
+ 	beqlr				/* nothing to do? */
++#endif
+ 	mtctr	r8
++#ifdef CONFIG_PPC64
+ 2:	icbi	0,r6
+ 	add	r6,r6,r7
++#else
++2:	icbi	0, r7
++	addi	r7, r7, L1_CACHE_BYTES
++#endif
+ 	bdnz	2b
+ 	isync
  	li	r3,0
-@@ -240,8 +239,7 @@ V_FUNCTION_BEGIN(__kernel_time)
-   .cfi_register lr,r12
- 
- 	mr	r11,r3			/* r11 holds t */
--	bl	__get_datapage@local
--	mr	r9, r3			/* datapage ptr in r9 */
-+	get_datapage	r9, r0
- 
- 	lwz	r3,STAMP_XTIME_SEC+LOPART(r9)
- 
 -- 
 2.13.3
 
