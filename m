@@ -2,70 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219BC10E4CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 04:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC7A10E582
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 06:38:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47R9854D16zDqJ1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 14:09:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RDRg4FbZzDqS9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 16:38:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="t5g7oyFi"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=popple.id.au
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=alistair@popple.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=popple.id.au
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47R96G4QBKzDqHf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 14:08:05 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id x7so915444pgl.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Dec 2019 19:08:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=T/3Jk2G7QYOuw7L/bhLrZNQCJHwcPGj/jaH8bLpv9Sg=;
- b=t5g7oyFi45mOfl7610T8xPu0YKW0EjTrz7A43Jcw2PvTbPZ4KOvJben3A2sm7Ikqaf
- tin1Qzhxe7MNlTTYgpIC+mkJGyFwFTIb2xcfy6guMTxetZGG7JC8UMOZ0pg76NT5wJbS
- p/FlCcH4pUsC+tZbaUvYhPadFb0NX0LI22R6Y7VUOxJBwsI1NveKD8aCeFzuec+0RpFP
- 6eH1Cjl45PbZeT9203MEy4Lq9W3OJZ22vwndq+3sAFaPJxkDpRuoJSJvvPibLp/Iv4ia
- zbmx7rJurnPo9LOqTYiLnDRSTyzTjcC7XXulrP1Wx+8mOam8KhZ5b04RTT60o3PTG5ez
- d7FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=T/3Jk2G7QYOuw7L/bhLrZNQCJHwcPGj/jaH8bLpv9Sg=;
- b=hc93QB0YlGPEz17kDV3UmBk+xwSufkE8CP8o5ypnFdInoe/tn/THlwHb+qwtPA0aV9
- U3tTJkknPzDeqAo+MgcBNyYb45hMZ2FR5J4dAigLX0biK6pfhhiJbo7DRctXDPqBKekU
- OrD6x9G1Pp4O+3jeB5kGYPyaEj28SOg2YBEJUW6g4tKqkhRUlp9RalT/uW93gmX7XQ/q
- wNGGG7Ksav64sQyjDc3/YwWk2bF8w21Y/Vy8LsAz2WtfCVNLf1LCXHJvCFW2NSIjtFd+
- S2nONs32AIuBvq1vjaX/M3VkLYrV1/EFRsbGsRWX6R1Zb7j3kYVCYTNhdHz73D1UZpm/
- f5rw==
-X-Gm-Message-State: APjAAAVjGAUfi2XwBHHe805rzc14O71c1mQEWluvUw+0gCWeHJUucQuE
- lpNSjAdrM3tOPQicdnkas9+NAlMl
-X-Google-Smtp-Source: APXvYqyKSf6ORPRMm2zRCo3rITLZXzQ1wIzuEv9/axQXHeX4TAm0mFrSVDdWfKQnsRcmMTk1owmUzw==
-X-Received: by 2002:aa7:870c:: with SMTP id b12mr10097760pfo.82.1575256082192; 
- Sun, 01 Dec 2019 19:08:02 -0800 (PST)
-Received: from sol.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id q41sm21743646pja.20.2019.12.01.19.08.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2019 19:08:01 -0800 (PST)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/mm: Remove kvm radix prefetch workaround for Power9
- DD2.2
-Date: Mon,  2 Dec 2019 14:07:31 +1100
-Message-Id: <20191202030731.26714-1-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RDPq3m41zDq8F
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 16:36:46 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB25ae27024701
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Dec 2019 00:36:41 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wm6smd402-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 00:36:41 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alistair@popple.id.au>;
+ Mon, 2 Dec 2019 05:36:34 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 2 Dec 2019 05:36:31 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB25aUWF34603136
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 2 Dec 2019 05:36:30 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C8451A405B;
+ Mon,  2 Dec 2019 05:36:30 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C3DDA4054;
+ Mon,  2 Dec 2019 05:36:30 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  2 Dec 2019 05:36:30 +0000 (GMT)
+Received: from townsend.localnet (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8277EA01A4;
+ Mon,  2 Dec 2019 16:36:27 +1100 (AEDT)
+From: Alistair Popple <alistair@popple.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel RFC 0/4] powerpc/powenv/ioda: Allow huge DMA window
+ at 4GB
+Date: Mon, 02 Dec 2019 16:36:28 +1100
+In-Reply-To: <20191202015953.127902-1-aik@ozlabs.ru>
+References: <20191202015953.127902-1-aik@ozlabs.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-TM-AS-GCONF: 00
+x-cbid: 19120205-0012-0000-0000-0000036F706C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120205-0013-0000-0000-000021AB267B
+Message-Id: <22858805.RAHADn2P79@townsend>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-01_04:2019-11-29,2019-12-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ suspectscore=82 clxscore=1034 malwarescore=0 adultscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912020049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,117 +93,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with
-KVM") introduced a number of workarounds as coming out of a guest with
-the mmu enabled would make the cpu would start running in hypervisor
-state with the PID value from the guest. The cpu will then start
-prefetching for the hypervisor with that PID value.
+On Monday, 2 December 2019 12:59:49 PM AEDT Alexey Kardashevskiy wrote:
+> Here is an attempt to support bigger DMA space for devices
+> supporting DMA masks less than 59 bits (GPUs come into mind
+> first). POWER9 PHBs have an option to map 2 windows at 0
+> and select a windows based on DMA address being below or above
+> 4GB.
+> 
+> This adds the "iommu=iommu_bypass" kernel parameter and
 
-In Power9 DD2.2 the cpu behaviour was modified to fix this. When
-accessing Quadrant 0 in hypervisor mode with LPID != 0 prefetching will
-not be performed. This means that we can get rid of the workarounds for
-Power9 DD2.2 and later revisions.
+Would it be possible to just enable this by default if the platform supports 
+it? Are there any downsides? Adding it as an option seems like it would make 
+things harder to support and reduces the amount of testing/use it would get.
 
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
- arch/powerpc/kvm/book3s_hv_rmhandlers.S  |  9 +++++++++
- arch/powerpc/mm/book3s64/radix_pgtable.c | 18 ++++++++++++------
- arch/powerpc/mm/book3s64/radix_tlb.c     |  5 +++++
- 3 files changed, 26 insertions(+), 6 deletions(-)
+> supports VFIO+pseries machine - current this requires telling
+> upstream+unmodified QEMU about this via
+> -global spapr-pci-host-bridge.dma64_win_addr=0x100000000
+> or per-phb property. 4/4 advertises the new option but
+> there is no automation around it in QEMU (should it be?).
+> 
+> For now it is either 1<<59 or 4GB mode; dynamic switching is
+> not supported (could be via sysfs).
+> 
+> This is based on sha1
+> a6ed68d6468b Linus Torvalds "Merge tag 'drm-next-2019-11-27' of git://
+anongit.freedesktop.org/drm/drm".
 
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index faebcbb8c4db..6bbc5fbc7ea9 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1793,6 +1793,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
- 	tlbsync
- 	ptesync
+Are you sure? I am getting the following rejected hunk trying to apply the 
+first patch in the series:
+
+--- arch/powerpc/platforms/powernv/pci-ioda.c
++++ arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -2349,15 +2349,10 @@ static void pnv_pci_ioda2_set_bypass(struct 
+pnv_ioda_pe *pe, bool enable)
+                pe->tce_bypass_enabled = enable;
+ }
  
-+	/* We do not need this work around from POWER9 DD2.2 and onwards */
-+	mfspr	r3, SPRN_PVR
-+	srwi	r6, r3, 16
-+	cmpwi	cr0, r6, PVR_POWER9
-+	bne	cr0, 2f
-+	andi.	r3, r3, 0xfff
-+	cmpwi	cr0, r3, 0x202
-+	bge	cr0, 2f
-+
- 	/* Radix: Handle the case where the guest used an illegal PID */
- 	LOAD_REG_ADDR(r4, mmu_base_pid)
- 	lwz	r3, VCPU_GUEST_PID(r9)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 6ee17d09649c..1f280124994e 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -312,6 +312,7 @@ static void __init radix_init_pgtable(void)
+-static long pnv_pci_ioda2_create_table(struct iommu_table_group *table_group,
+-               int num, __u32 page_shift, __u64 window_size, __u32 levels,
++static long pnv_pci_ioda2_create_table(int nid, int num, __u64 bus_offset,
++               __u32 page_shift, __u64 window_size, __u32 levels,
+                bool alloc_userspace_copy, struct iommu_table **ptbl)
  {
- 	unsigned long rts_field;
- 	struct memblock_region *reg;
-+	unsigned int pvr;
+-       struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
+-                       table_group);
+-       int nid = pe->phb->hose->node;
+-       __u64 bus_offset = num ?
+-               pe->table_group.tce64_start : table_group->tce32_start;
+        long ret;
+        struct iommu_table *tbl;
+
+- Alistair
  
- 	/* We don't support slb for radix */
- 	mmu_slb_size = 0;
-@@ -336,24 +337,29 @@ static void __init radix_init_pgtable(void)
- 	}
- 
- 	/* Find out how many PID bits are supported */
-+	pvr = mfspr(SPRN_PVR);
- 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
- 		if (!mmu_pid_bits)
- 			mmu_pid_bits = 20;
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
- 		/*
--		 * When KVM is possible, we only use the top half of the
--		 * PID space to avoid collisions between host and guest PIDs
--		 * which can cause problems due to prefetch when exiting the
--		 * guest with AIL=3
-+		 * Before Power9 DD2.2, when KVM is possible, we only use the
-+		 * top half of the PID space to avoid collisions between host
-+		 * and guest PIDs which can cause problems due to prefetch when
-+		 * exiting the guest with AIL=3
- 		 */
--		mmu_base_pid = 1 << (mmu_pid_bits - 1);
-+		if (PVR_VER(pvr) == PVR_POWER9 && ((0xfff & pvr) < 0x202))
-+			mmu_base_pid = 1;
-+		else
-+			mmu_base_pid = 1 << (mmu_pid_bits - 1);
- #else
- 		mmu_base_pid = 1;
- #endif
- 	} else {
- 		/* The guest uses the bottom half of the PID space */
- 		if (!mmu_pid_bits)
--			mmu_pid_bits = 19;
-+			mmu_pid_bits = (PVR_VER(pvr) == PVR_POWER9 &&
-+					((0xfff & pvr) < 0x202)) ? 19 : 20;
- 		mmu_base_pid = 1;
- 	}
- 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 67af871190c6..cc86d8a88b86 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -1217,10 +1217,15 @@ void radix__flush_tlb_all(void)
- extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
- {
- 	unsigned long pid = mm->context.id;
-+	unsigned int pvr;
- 
- 	if (unlikely(pid == MMU_NO_CONTEXT))
- 		return;
- 
-+	pvr = mfspr(SPRN_PVR);
-+	if (PVR_VER(pvr) != PVR_POWER9 || ((0xfff & pvr) >= 0x202))
-+		return;
-+
- 	/*
- 	 * If this context hasn't run on that CPU before and KVM is
- 	 * around, there's a slim chance that the guest on another
--- 
-2.20.1
+> Please comment. Thanks.
+> 
+> 
+> 
+> Alexey Kardashevskiy (4):
+>   powerpc/powernv/ioda: Rework for huge DMA window at 4GB
+>   powerpc/powernv/ioda: Allow smaller TCE table levels
+>   powerpc/powernv/phb4: Add 4GB IOMMU bypass mode
+>   vfio/spapr_tce: Advertise and allow a huge DMA windows at 4GB
+> 
+>  arch/powerpc/include/asm/iommu.h              |   1 +
+>  arch/powerpc/include/asm/opal-api.h           |  11 +-
+>  arch/powerpc/include/asm/opal.h               |   2 +
+>  arch/powerpc/platforms/powernv/pci.h          |   1 +
+>  include/uapi/linux/vfio.h                     |   2 +
+>  arch/powerpc/platforms/powernv/opal-call.c    |   2 +
+>  arch/powerpc/platforms/powernv/pci-ioda-tce.c |   4 +-
+>  arch/powerpc/platforms/powernv/pci-ioda.c     | 219 ++++++++++++++----
+>  drivers/vfio/vfio_iommu_spapr_tce.c           |  10 +-
+>  9 files changed, 202 insertions(+), 50 deletions(-)
+> 
+> 
+
+
+
 
