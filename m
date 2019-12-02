@@ -1,81 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D2A10E62E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 07:52:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RG4t2R6GzDqF1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 17:52:14 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D794E10E69A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 09:00:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RHbV0gVWzDqSP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2019 19:00:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Wgcjl/mH"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RFyM15D1zDqDN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 17:46:34 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB26gFRw022879
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Dec 2019 01:46:32 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2wm6byy9nx-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 01:46:31 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Mon, 2 Dec 2019 06:46:29 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 2 Dec 2019 06:46:26 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB26kP6b43122710
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Dec 2019 06:46:25 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CA0F211C07A;
- Mon,  2 Dec 2019 06:46:21 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A783311C0E1;
- Mon,  2 Dec 2019 06:46:12 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.214.136])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  2 Dec 2019 06:46:12 +0000 (GMT)
-From: Ram Pai <linuxram@us.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v4 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for Secure
- VMs aswell.
-Date: Sun,  1 Dec 2019 22:45:24 -0800
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1575269124-17885-2-git-send-email-linuxram@us.ibm.com>
-References: <1575269124-17885-1-git-send-email-linuxram@us.ibm.com>
- <1575269124-17885-2-git-send-email-linuxram@us.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19120206-0012-0000-0000-0000036F7831
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120206-0013-0000-0000-000021AB2E5F
-Message-Id: <1575269124-17885-3-git-send-email-linuxram@us.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-01_04:2019-11-29,2019-12-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- adultscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 mlxlogscore=955
- suspectscore=0 lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912020059
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RHXG52syzDqSD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2019 18:57:31 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47RHX23YRzz9txst;
+ Mon,  2 Dec 2019 08:57:22 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Wgcjl/mH; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id wbr5-YSii243; Mon,  2 Dec 2019 08:57:22 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47RHX22Vzvz9txsp;
+ Mon,  2 Dec 2019 08:57:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1575273442; bh=1VTYpgup2uhvlpjcEO1SnVZguqXhZuS72WEv23JiwbA=;
+ h=From:Subject:To:Cc:Date:From;
+ b=Wgcjl/mHdna71Mhb57OFol7QJB+1+UdR+t2AhxHSQvq8vBpA2A5Glo2m5qr2uPelT
+ e4RAhzLNwNo79qCFf0Lu9wE0ahv+/Ce9uV9RKPEykg2l4kp08ZutxOjb4HoEXXl4D/
+ KMLb+VR8TSiz7fZIl9MZ4Qh0Jepwyx/Dk+Uy3wsE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EDB7B8B79B;
+ Mon,  2 Dec 2019 08:57:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id S44Rn1Yq615f; Mon,  2 Dec 2019 08:57:26 +0100 (CET)
+Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.103])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C7EEA8B79A;
+ Mon,  2 Dec 2019 08:57:26 +0100 (CET)
+Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 9857363600; Mon,  2 Dec 2019 07:57:26 +0000 (UTC)
+Message-Id: <cover.1575273217.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v4 0/8] powerpc/vdso32 enhancement and optimisation
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon,  2 Dec 2019 07:57:26 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,61 +73,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, aik@ozlabs.ru, linuxram@us.ibm.com,
- mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
- cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com, hch@lst.de,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit edea902c1c1e ("powerpc/pseries/iommu: Don't use dma_iommu_ops on
-	       secure guests")
-disabled dma_iommu_ops path, for secure VMs. The rationale for disabling
-the dma_iommu_ops path, was to use the dma_direct path, since it had
-inbuilt support for bounce-buffering through SWIOTLB.
+This series:
+- adds getcpu() on non SMP ppc32
+- adds coarse clocks in clock_gettime
+- fixes and adds all clocks in clock_getres
+- optimises the retrieval of the datapage address
+- optimises the cache functions
 
-However dma_iommu_ops is functionally much richer. Depending on the
-capabilities of the platform, it can handle direct DMA; with or without
-bounce buffering, and it can handle indirect DMA. Hence its better to
-leverage the richer functionality supported by dma_iommu_ops.
+v4:
+- Rebased on top of ceb307474506 ("Merge tag 'y2038-cleanups-5.5' of git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground")
+- Fixed build failure with old binutils reported by mpe (patch 4)
 
-Renable dma_iommu_ops path for pseries Secure VMs.
+v3:
+- Dropped the 'fast syscall' hack for getcpu() on SMP.
+- Moved get_datapage macro into asm/vdso_datapage.h so that it can be used on PPC64 as well.
 
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
----
- arch/powerpc/platforms/pseries/iommu.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+v2:
+- Used named labels in patch 2
+- Added patch from Vincenzo to fix clock_getres() (patch 3)
+- Removed unnecessary label in patch 4 as suggested by Segher
+- Added patches 5 to 8
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 0720831..6adf4d3 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -36,7 +36,6 @@
- #include <asm/udbg.h>
- #include <asm/mmzone.h>
- #include <asm/plpar_wrappers.h>
--#include <asm/svm.h>
- #include <asm/ultravisor.h>
- 
- #include "pseries.h"
-@@ -1337,15 +1336,7 @@ void iommu_init_early_pSeries(void)
- 	of_reconfig_notifier_register(&iommu_reconfig_nb);
- 	register_memory_notifier(&iommu_mem_nb);
- 
--	/*
--	 * Secure guest memory is inacessible to devices so regular DMA isn't
--	 * possible.
--	 *
--	 * In that case keep devices' dma_map_ops as NULL so that the generic
--	 * DMA code path will use SWIOTLB to bounce buffers for DMA.
--	 */
--	if (!is_secure_guest())
--		set_pci_dma_ops(&dma_iommu_ops);
-+	set_pci_dma_ops(&dma_iommu_ops);
- }
- 
- static int __init disable_multitce(char *str)
+Christophe Leroy (8):
+  powerpc/32: Add VDSO version of getcpu on non SMP
+  powerpc/vdso32: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE
+  powerpc: Fix vDSO clock_getres()
+  powerpc/vdso32: inline __get_datapage()
+  powerpc/vdso32: Don't read cache line size from the datapage on PPC32.
+  powerpc/vdso32: use LOAD_REG_IMMEDIATE()
+  powerpc/vdso32: implement clock_getres entirely
+  powerpc/vdso32: miscellaneous optimisations
+
+ arch/powerpc/include/asm/vdso_datapage.h  |  16 +++-
+ arch/powerpc/kernel/asm-offsets.c         |   7 +-
+ arch/powerpc/kernel/time.c                |   1 +
+ arch/powerpc/kernel/vdso.c                |   5 --
+ arch/powerpc/kernel/vdso32/Makefile       |   4 +-
+ arch/powerpc/kernel/vdso32/cacheflush.S   |  32 ++++++--
+ arch/powerpc/kernel/vdso32/datapage.S     |  31 +-------
+ arch/powerpc/kernel/vdso32/getcpu.S       |  23 +++++-
+ arch/powerpc/kernel/vdso32/gettimeofday.S | 124 +++++++++++++++++++++---------
+ arch/powerpc/kernel/vdso32/vdso32.lds.S   |   2 +-
+ arch/powerpc/kernel/vdso64/gettimeofday.S |   7 +-
+ 11 files changed, 164 insertions(+), 88 deletions(-)
+
 -- 
-1.8.3.1
+2.13.3
 
