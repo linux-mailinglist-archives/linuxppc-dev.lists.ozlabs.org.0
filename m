@@ -2,56 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB3D10FA75
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 10:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634A310FA84
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 10:14:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Rx3q4ghDzDqVS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 20:08:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RxBh6107zDqVk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 20:14:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
- helo=mail-oi1-f195.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
- [209.85.167.195])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Oyk10zwb"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Rx1p6wQ3zDqRR
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 20:06:52 +1100 (AEDT)
-Received: by mail-oi1-f195.google.com with SMTP id v140so2481212oie.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2019 01:06:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=99SpjBDj/3zwk9C1FEoFJcHmxVqPzeCRBXa6juwGTEo=;
- b=DRJsxjlZ9iDGSjz72sJKad0CavewjSMeEdrKUfNMj1j4Kzz50U8czRCN3v/CvarbuK
- ZQ0N/SMf8H2wWeYlkk35RpHB4ezgve1kcrfp4BmR5ySXb+0enUFEsHkpycfuLiWscGGg
- 1+r4ooFN51Ah3zzInR+zwk8Hc292/GjoyIawBY3Zv/VnNkNyIsIVU2CDL99a6P+ER5/a
- 8wZ5C6esuTc2cI6XTeEtU8fITMw89Ej56ITDrTMDnMaTCXrY5DhXoA7bqOXeF71Nxc5Q
- ZZn6bb1y9URYv9km9/snE4Myk4cUr/Ggpo0YUAGjC9YnGJTS2AHaQSrna1Gqn+JM+zjQ
- rGLw==
-X-Gm-Message-State: APjAAAWRtCaoexmLd69vAkV670Ew310G9N89iu3NGem7Fv1i9dwg9qsB
- 7RwGeTz4n5rqhKrtC4iOsZeD4M603xQgz099dgQ=
-X-Google-Smtp-Source: APXvYqwjoAhTRQ0xt52tIil49EnXS94YzS6iwjxlAYBuKV4vu5fc6aAklzn5FAd1MfYR6UoPe+55WjaSd8AcyJHVit0=
-X-Received: by 2002:aca:4e87:: with SMTP id c129mr511543oib.153.1575364009649; 
- Tue, 03 Dec 2019 01:06:49 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Rx8S1lwwzDqSD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 20:12:38 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47Rx8J0kcjz9vBK7;
+ Tue,  3 Dec 2019 10:12:32 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Oyk10zwb; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id tQkAB2K9bzU1; Tue,  3 Dec 2019 10:12:32 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47Rx8H6djZz9vBK2;
+ Tue,  3 Dec 2019 10:12:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1575364351; bh=Tfzyfftdxt7nNkAel0mvTxcsHw6cENeeVt1BDJa4Wwk=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=Oyk10zwbEQZj+hz/ApbAX7bZU2VISoBlDzphx0qgX4vuGI5JovpO7+XhDvgSS4Ht7
+ 8HTSc9mACgVCHkmuTGygTYKD88Z8cVYQajNaAgNEy52275tEGgvrZkFa67Z5XWulIZ
+ cL/BkLM5Crlkacm12sfXyMktVPVbHlCut51DSplo=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 000188B7D7;
+ Tue,  3 Dec 2019 10:12:32 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Ni-i5GC6tlVU; Tue,  3 Dec 2019 10:12:32 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 79DBB8B787;
+ Tue,  3 Dec 2019 10:12:32 +0100 (CET)
+Subject: Re: [PATCH 0/9] Improve boot command line handling
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ danielwa@cisco.com
+References: <cover.1554195798.git.christophe.leroy@c-s.fr>
+Message-ID: <8eb90163-0e6b-c5ee-179a-c20773d54e58@c-s.fr>
+Date: Tue, 3 Dec 2019 10:12:32 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-References: <71cf82d5-5986-43b7-cf1c-acba429a89d6@c-s.fr>
- <3a95d445-1f5c-7750-f0de-ddc427800b3b@kernel.dk>
-In-Reply-To: <3a95d445-1f5c-7750-f0de-ddc427800b3b@kernel.dk>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 3 Dec 2019 10:06:37 +0100
-Message-ID: <CAMuHMdUzqnPpbSXB1JaY-+BbAvKno3akSYi6c8ZLQfLuOCC7rg@mail.gmail.com>
-Subject: Re: Build failure on latest powerpc/merge (311ae9e159d8 io_uring: fix
- dead-hung for non-iter fixed rw)
-To: Jens Axboe <axboe@kernel.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <cover.1554195798.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,68 +79,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-sh list <linux-sh@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Pavel Begunkov <asml.silence@gmail.com>
+Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jens,
 
-On Fri, Nov 29, 2019 at 5:06 PM Jens Axboe <axboe@kernel.dk> wrote:
-> On 11/29/19 6:53 AM, Christophe Leroy wrote:
-> >     CC      fs/io_uring.o
-> > fs/io_uring.c: In function =E2=80=98loop_rw_iter=E2=80=99:
-> > fs/io_uring.c:1628:21: error: implicit declaration of function =E2=80=
-=98kmap=E2=80=99
-> > [-Werror=3Dimplicit-function-declaration]
-> >       iovec.iov_base =3D kmap(iter->bvec->bv_page)
-> >                        ^
-> > fs/io_uring.c:1628:19: warning: assignment makes pointer from integer
-> > without a cast [-Wint-conversion]
-> >       iovec.iov_base =3D kmap(iter->bvec->bv_page)
-> >                      ^
-> > fs/io_uring.c:1643:4: error: implicit declaration of function =E2=80=98=
-kunmap=E2=80=99
-> > [-Werror=3Dimplicit-function-declaration]
-> >       kunmap(iter->bvec->bv_page);
-> >       ^
-> >
-> >
-> > Reverting commit 311ae9e159d8 ("io_uring: fix dead-hung for non-iter
-> > fixed rw") clears the failure.
-> >
-> > Most likely an #include is missing.
->
-> Huh weird how the build bots didn't catch that. Does the below work?
 
-Thanks, this fixes the same issue on SuperH:
+Le 02/04/2019 à 11:08, Christophe Leroy a écrit :
+> The purpose of this series is to improve and enhance the
+> handling of kernel boot arguments.
+> 
+> It is first focussed on powerpc but also extends the capability
+> for other arches.
+> 
+> This is based on suggestion from Daniel Walker <danielwa@cisco.com>
 
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Looks like nobody has been interested in that series.
 
-> --- a/fs/io_uring.c
-> +++ b/fs/io_uring.c
-> @@ -69,6 +69,7 @@
->   #include <linux/nospec.h>
->   #include <linux/sizes.h>
->   #include <linux/hugetlb.h>
-> +#include <linux/highmem.h>
->
->   #define CREATE_TRACE_POINTS
->   #include <trace/events/io_uring.h>
+It doesn't apply anymore and I don't plan to rebase it, I'll retire it.
 
-Gr{oetje,eeting}s,
+Christophe
 
-                        Geert
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+> 
+> Christophe Leroy (9):
+>    powerpc: enable appending of CONFIG_CMDLINE to bootloader's cmdline.
+>    Add generic function to build command line.
+>    drivers: of: use cmdline building function
+>    powerpc/prom_init: get rid of PROM_SCRATCH_SIZE
+>    powerpc: convert to generic builtin command line
+>    Add capability to prepend the command line
+>    powerpc: add capability to prepend default command line
+>    Gives arches opportunity to use generically defined boot cmdline
+>      manipulation
+>    powerpc: use generic CMDLINE manipulations
+> 
+>   arch/powerpc/Kconfig                   | 23 ++------------
+>   arch/powerpc/kernel/prom_init.c        | 38 ++++++++++-------------
+>   arch/powerpc/kernel/prom_init_check.sh |  2 +-
+>   drivers/of/fdt.c                       | 23 +++-----------
+>   include/linux/cmdline.h                | 37 ++++++++++++++++++++++
+>   init/Kconfig                           | 56 ++++++++++++++++++++++++++++++++++
+>   6 files changed, 117 insertions(+), 62 deletions(-)
+>   create mode 100644 include/linux/cmdline.h
+> 
