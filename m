@@ -2,89 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F9410FF3C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 14:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 773A2110074
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 15:37:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47S3Jn0WsnzDqTs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 00:50:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47S4MV4T0yzDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 01:37:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kamalesh@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jstancek@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="MPWja/rl"; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47S3576xD4zDqPF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 00:40:11 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB3DbwF7048912
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Dec 2019 08:39:59 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2wm6g9yq98-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2019 08:39:59 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kamalesh@linux.vnet.ibm.com>;
- Tue, 3 Dec 2019 13:39:57 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Dec 2019 13:39:54 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB3DdqR152756702
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Dec 2019 13:39:52 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C8ABA4066;
- Tue,  3 Dec 2019 13:39:52 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B3CA6A4064;
- Tue,  3 Dec 2019 13:39:50 +0000 (GMT)
-Received: from JAVRIS.in.ibm.com (unknown [9.85.70.93])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  3 Dec 2019 13:39:50 +0000 (GMT)
-Subject: Re: [PATCH 1/3] powerpc/pseries: Account for SPURR ticks on idle CPUs
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Nathan Lynch <nathanl@linux.ibm.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>
-References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
- <1574856072-30972-2-git-send-email-ego@linux.vnet.ibm.com>
-From: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-Date: Tue, 3 Dec 2019 19:09:48 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47S4K60sTnzDqVs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 01:35:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1575383735;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=caPtWip/0Fp5+ectyuqp7DEQ7XYV0c3s4L4d01Olulc=;
+ b=MPWja/rlmjUeUwMiEpEN/M3lQ/jj51zxjBe1DJVBF0DmxgzO6reqXOXN0BbUpPcrusXqae
+ NTxpi5BgF5xk1W/E8PN+y+YzY2XQAXRkdbfzJt/O7pFzLv44FMSITXoBG08B/1q+O9VQZm
+ hu1kDMr1QtvZ+a0JgnxqsRdO9ich8gY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-153-nTjUyosROfSoxodUoDcwQA-1; Tue, 03 Dec 2019 09:35:30 -0500
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3ED932F2E;
+ Tue,  3 Dec 2019 14:35:29 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 123BB600CC;
+ Tue,  3 Dec 2019 14:35:28 +0000 (UTC)
+Received: from zmail17.collab.prod.int.phx2.redhat.com
+ (zmail17.collab.prod.int.phx2.redhat.com [10.5.83.19])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 5EEB35BBFA;
+ Tue,  3 Dec 2019 14:35:28 +0000 (UTC)
+Date: Tue, 3 Dec 2019 09:35:28 -0500 (EST)
+From: Jan Stancek <jstancek@redhat.com>
+To: Christoph Hellwig <hch@infradead.org>
+Message-ID: <433638211.14837331.1575383728189.JavaMail.zimbra@redhat.com>
+In-Reply-To: <20191203130757.GA2267@infradead.org>
+References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
+ <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
+ <8736e3ffen.fsf@mpe.ellerman.id.au>
+ <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
+ <1766807082.14812757.1575377439007.JavaMail.zimbra@redhat.com>
+ <20191203130757.GA2267@infradead.org>
+Subject: Re: [bug] userspace hitting sporadic SIGBUS on xfs (Power9,
+ ppc64le), v4.19 and later
 MIME-Version: 1.0
-In-Reply-To: <1574856072-30972-2-git-send-email-ego@linux.vnet.ibm.com>
+X-Originating-IP: [10.43.17.163, 10.4.195.10]
+Thread-Topic: userspace hitting sporadic SIGBUS on xfs (Power9, ppc64le),
+ v4.19 and later
+Thread-Index: cD3CqeEaO/UMqfbg0OYzRaML88GplQ==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MC-Unique: nTjUyosROfSoxodUoDcwQA-1
+X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19120313-0008-0000-0000-0000033C5BAE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120313-0009-0000-0000-00004A5B7680
-Message-Id: <6ec054a4-e87b-6d3f-c23f-bbb6b219c77a@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-03_03:2019-12-02,2019-12-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- impostorscore=0 suspectscore=0 spamscore=0 mlxscore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912030107
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,25 +85,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: darrick wong <darrick.wong@oracle.com>,
+ Memory Management <mm-qe@redhat.com>,
+ Linux Stable maillist <stable@vger.kernel.org>, linux-xfs@vger.kernel.org,
+ CKI Project <cki-project@redhat.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, LTP Mailing List <ltp@lists.linux.it>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/27/19 5:31 PM, Gautham R. Shenoy wrote:
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> 
-> On PSeries LPARs, to compute the utilization, tools such as lparstat
-> need to know the [S]PURR ticks when the CPUs were busy or idle.
-> 
-> In the pseries cpuidle driver, we keep track of the idle PURR ticks in
-> the VPA variable "wait_state_cycles". This patch extends the support
-> to account for the idle SPURR ticks.
 
-Thanks for working on it.
-
+----- Original Message -----
+> On Tue, Dec 03, 2019 at 07:50:39AM -0500, Jan Stancek wrote:
+> > My theory is that there's a race in iomap. There appear to be
+> > interleaved calls to iomap_set_range_uptodate() for same page
+> > with varying offset and length. Each call sees bitmap as _not_
+> > entirely "uptodate" and hence doesn't call SetPageUptodate().
+> > Even though each bit in bitmap ends up uptodate by the time
+> > all calls finish.
 > 
-> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> Weird.  That should be prevented by the page lock that all callers
+> of iomap_set_range_uptodate.  But in case I miss something, does
+> the patch below trigger?  If not it is not jut a race, but might
+> be some weird ordering problem with the bitops, especially if it
+> only triggers on ppc, which is very weakly ordered.
+> 
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index d33c7bc5ee92..25e942c71590 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
+> @@ -148,6 +148,8 @@ iomap_set_range_uptodate(struct page *page, unsigned off,
+> unsigned len)
+>  	unsigned int i;
+>  	bool uptodate = true;
+>  
+> +	WARN_ON_ONCE(!PageLocked(page));
+> +
+>  	if (iop) {
+>  		for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
+>  			if (i >= first && i <= last)
+> 
 
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+Hit it pretty quick this time:
+
+# uptime
+ 09:27:42 up 22 min,  2 users,  load average: 0.09, 13.38, 26.18
+
+# /mnt/testarea/ltp/testcases/bin/genbessel                                                                                                                                     
+Bus error (core dumped)
+
+# dmesg | grep -i -e warn -e call                                                                                                                                               
+[    0.000000] dt-cpu-ftrs: not enabling: system-call-vectored (disabled or unsupported by kernel)
+[    0.000000] random: get_random_u64 called from cache_random_seq_create+0x98/0x1e0 with crng_init=0
+[    0.000000] rcu:     Offload RCU callbacks from CPUs: (none).
+[    5.312075] megaraid_sas 0031:01:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009
+[    5.357307] megaraid_sas 0031:01:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009
+[    5.485126] megaraid_sas 0031:01:00.0: megasas_enable_intr_fusion is called outbound_intr_mask:0x40000000
+
+So, extra WARN_ON_ONCE applied on top of v5.4-8836-g81b6b96475ac
+did not trigger.
+
+Is it possible for iomap code to submit multiple bio-s for same
+locked page and then receive callbacks in parallel?
 
