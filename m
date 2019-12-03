@@ -2,77 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA3010FE1E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 13:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A5D10FE63
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 14:07:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47S2431TB6zDqWk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 23:54:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47S2MH56CszDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 00:07:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jstancek@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="MqDtkLKX"; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47S20B0fhkzDqTm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 23:50:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1575377445;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vUK+qbv4vcR++ilRAwdwA/Hrp9NPAPx99bcSEG1xv8w=;
- b=MqDtkLKXV5FWiVTfwBWsuyDRDAUbVCn+lFGbDRVEbCyUmVUamgzFtLg7FQqqy43k18enwo
- udmLBoWGKvvOVpsn3nBpYm9HhNnzxPSMZ9NuS1Mwx8Ug43/u+r3bDF6VehEy2jpIg02fxM
- E/uMDEAu0FT6WLNCNVdLil5nVfR1pEw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-329-twkIHNhdORWSSUH0wNu3iA-1; Tue, 03 Dec 2019 07:50:41 -0500
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0AABB18C35A4;
- Tue,  3 Dec 2019 12:50:40 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D0F9A67E5D;
- Tue,  3 Dec 2019 12:50:39 +0000 (UTC)
-Received: from zmail17.collab.prod.int.phx2.redhat.com
- (zmail17.collab.prod.int.phx2.redhat.com [10.5.83.19])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 4498918089C8;
- Tue,  3 Dec 2019 12:50:39 +0000 (UTC)
-Date: Tue, 3 Dec 2019 07:50:39 -0500 (EST)
-From: Jan Stancek <jstancek@redhat.com>
-To: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, hch@infradead.org,
- darrick.wong@oracle.com
-Message-ID: <1766807082.14812757.1575377439007.JavaMail.zimbra@redhat.com>
-In-Reply-To: <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
-References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
- <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
- <8736e3ffen.fsf@mpe.ellerman.id.au>
- <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
-Subject: [bug] userspace hitting sporadic SIGBUS on xfs (Power9, ppc64le),
- v4.19 and later
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47S2J04VlyzDqTm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 00:04:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="VBhQwAU2"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47S2Hy2kcFz9sP6;
+ Wed,  4 Dec 2019 00:04:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1575378271;
+ bh=Nb1I9Pw4Szleb7pQzOoCNntR4NmjasZkWR6215KZoeI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VBhQwAU2RS2Ewhqy2KlM6E10NtjSthPAasmSLU+RkJFX7//4mrqv74pUM4/ofqNQ3
+ ZC9ISHXUQHIFFbZQeN5i0fYnKIh+13l8bjQR3xLYJUJdSuoe+9yZvzWHwZCcdOoKdA
+ //KzKkt1OJ/2PorwwFq8mq3p6cROt5yG1wKgrhynNsHYXTh9ZPbltfeCf+J7rnG+w9
+ 0T3A+Na9X68SH2/KQYzKdPJqQbFNFKh9hy+05OL+7Vv14arO1NF0bECZ42dh378jzF
+ VZ+2teRZoErfmscL+xbTCpPYutJP1cehQE158vObnpL1ON2Y6SVoXK7FUg9WRW42Wx
+ TaerOje4++O5A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Marco Elver <elver@google.com>, Daniel Axtens <dja@axtens.net>
+Subject: Re: [PATCH v2 1/2] kasan: support instrumented bitops combined with
+ generic bitops
+In-Reply-To: <CANpmjNN-=F6GK_jHPUx8OdpboK7nMV=i=sKKfSsKwKEHnMTG0g@mail.gmail.com>
+References: <20190820024941.12640-1-dja@axtens.net>
+ <877e6vutiu.fsf@dja-thinkpad.axtens.net>
+ <878sp57z44.fsf@dja-thinkpad.axtens.net>
+ <CANpmjNOCxTxTpbB_LwUQS5jzfQ_2zbZVAc4nKf0FRXmrwO-7sA@mail.gmail.com>
+ <87a78xgu8o.fsf@dja-thinkpad.axtens.net>
+ <87y2wbf0xx.fsf@dja-thinkpad.axtens.net>
+ <CANpmjNN-=F6GK_jHPUx8OdpboK7nMV=i=sKKfSsKwKEHnMTG0g@mail.gmail.com>
+Date: Wed, 04 Dec 2019 00:04:23 +1100
+Message-ID: <87r21lef1k.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Originating-IP: [10.43.17.163, 10.4.195.10]
-Thread-Topic: =?utf-8?B?4p2MIEZBSUw6?= Test report for kernel
- 5.3.13-3b5f971.cki (stable-queue)
-Thread-Index: cteAZVs1buDEh+CFMxyFiJYhnT9cJLxMrbue
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-MC-Unique: twkIHNhdORWSSUH0wNu3iA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,147 +63,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Memory Management <mm-qe@redhat.com>,
- Linux Stable maillist <stable@vger.kernel.org>,
- CKI Project <cki-project@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- LTP Mailing List <ltp@lists.linux.it>
+Cc: linux-arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org,
+ the arch/x86 maintainers <x86@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ kasan-dev <kasan-dev@googlegroups.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Marco Elver <elver@google.com> writes:
+> On Wed, 20 Nov 2019 at 08:42, Daniel Axtens <dja@axtens.net> wrote:
+>>
+>> > But the docs do seem to indicate that it's atomic (for whatever that
+>> > means for a single read operation?), so you are right, it should live in
+>> > instrumented-atomic.h.
+>>
+>> Actually, on further inspection, test_bit has lived in
+>> bitops/non-atomic.h since it was added in 4117b02132d1 ("[PATCH] bitops:
+>> generic __{,test_and_}{set,clear,change}_bit() and test_bit()")
+>>
+>> So to match that, the wrapper should live in instrumented-non-atomic.h
+>> too.
+>>
+>> If test_bit should move, that would need to be a different patch. But I
+>> don't really know if it makes too much sense to stress about a read
+>> operation, as opposed to a read/modify/write...
+>
+> That's fair enough. I suppose this can stay where it is because it's
+> not hurting anyone per-se, but the only bad thing about it is that
+> kernel-api documentation will present test_bit() in non-atomic
+> operations.
 
-(This bug report is summary from thread [1] with some additions)
+I only just noticed this thread as I was about to send a pull request
+for these two commits.
 
-User-space binaries on Power9 ppc64le (with 64k pages) on xfs
-filesystem are sporadically hitting SIGBUS:
+I think I agree that test_bit() shouldn't move (yet), but I dislike that
+the documentation ends up being confusing due to this patch.
 
----------- 8< ----------
-(gdb) r
-Starting program: /mnt/testarea/ltp/testcases/bin/genasin
+So I'm inclined to append or squash in the patch below, which removes
+the new headers from the documentation. The end result is the docs look
+more or less the same, just the ordering of some of the functions
+changes. But we don't end up with test_bit() under the "Non-atomic"
+header, and then also documented in Documentation/atomic_bitops.txt.
 
-Program received signal SIGBUS, Bus error.
-dl_main (phdr=0x10000040, phnum=<optimized out>, user_entry=0x7fffffffe760, auxv=<optimized out>) at rtld.c:1362
-1362        switch (ph->p_type)
+Thoughts?
 
-(gdb) p ph
-$1 = (const Elf64_Phdr *) 0x10000040
-
-(gdb) p *ph
-Cannot access memory at address 0x10000040
-
-(gdb) info proc map
-process 1110670
-Mapped address spaces:
-
-          Start Addr           End Addr       Size     Offset objfile
-          0x10000000         0x10010000    0x10000        0x0 /mnt/testarea/ltp/testcases/bin/genasin
-          0x10010000         0x10030000    0x20000        0x0 /mnt/testarea/ltp/testcases/bin/genasin
-      0x7ffff7f90000     0x7ffff7fb0000    0x20000        0x0 [vdso]
-      0x7ffff7fb0000     0x7ffff7fe0000    0x30000        0x0 /usr/lib64/ld-2.30.so
-      0x7ffff7fe0000     0x7ffff8000000    0x20000    0x20000 /usr/lib64/ld-2.30.so
-      0x7ffffffd0000     0x800000000000    0x30000        0x0 [stack]
-
-(gdb) x/1x 0x10000040
-0x10000040:     Cannot access memory at address 0x10000040
----------- >8 ----------
-
-When this happens the binary continues to hit SIGBUS until page
-is released, for example by: echo 3 > /proc/sys/vm/drop_caches
-
-The issue goes back to at least v4.19.
-
-I can semi-reliably reproduce it with LTP is installed to /mnt/testarea/ltp by:
-while [ True ]; do
-        echo 3 > /proc/sys/vm/drop_caches
-        rm -f /mnt/testarea/ltp/results/RUNTEST.log /mnt/testarea/ltp/output/RUNTEST.run.log
-        ./runltp -p -d results -l RUNTEST.log -o RUNTEST.run.log -f math
-        grep FAIL /mnt/testarea/ltp/results/RUNTEST.log && exit 1
-done
-
-and some stress activity in other terminal (e.g. kernel build).
-Sometimes in minutes, sometimes in hours. It is not reliable
-enough to get meaningful bisect results.
-
-My theory is that there's a race in iomap. There appear to be
-interleaved calls to iomap_set_range_uptodate() for same page
-with varying offset and length. Each call sees bitmap as _not_
-entirely "uptodate" and hence doesn't call SetPageUptodate().
-Even though each bit in bitmap ends up uptodate by the time
-all calls finish.
-
-For example, with following traces:
-
-iomap_set_range_uptodate()
-...
-        if (uptodate && !PageError(page))
-                SetPageUptodate(page);
-+       
-+       if (mycheck(page)) {
-+               trace_printk("page: %px, iop: %px, uptodate: %d, !PageError(page): %d, flags: %lx\n", page, iop, uptodate, !PageError(page), page->flags);
-+               trace_printk("first: %u, last: %u, off: %u, len: %u, i: %u\n", first, last, off, len, i);
-+       }
-
-I get:
-         genacos-18471 [057] ....   162.465730: iomap_readpages: mapping: c000003f185a1ab0
-         genacos-18471 [057] ....   162.465732: iomap_page_create: iomap_page_create page: c00c00000fe26180, page->private: 0000000000000000, iop: c000003fc70a19c0, flags: 3ffff800000001
-         genacos-18471 [057] ....   162.465736: iomap_set_range_uptodate: page: c00c00000fe26180, iop: c000003fc70a19c0, uptodate: 0, !PageError(page): 1, flags: 3ffff800002001
-         genacos-18471 [057] ....   162.465736: iomap_set_range_uptodate: first: 1, last: 14, off: 4096, len: 57344, i: 16
-          <idle>-0     [060] ..s.   162.534862: iomap_set_range_uptodate: page: c00c00000fe26180, iop: c000003fc70a19c0, uptodate: 0, !PageError(page): 1, flags: 3ffff800002081
-          <idle>-0     [061] ..s.   162.534862: iomap_set_range_uptodate: page: c00c00000fe26180, iop: c000003fc70a19c0, uptodate: 0, !PageError(page): 1, flags: 3ffff800002081
-          <idle>-0     [060] ..s.   162.534864: iomap_set_range_uptodate: first: 0, last: 0, off: 0, len: 4096, i: 16
-          <idle>-0     [061] ..s.   162.534864: iomap_set_range_uptodate: first: 15, last: 15, off: 61440, len: 4096, i: 16
-
-This page doesn't have Uptodate flag set, which leads to filemap_fault()
-returning VM_FAULT_SIGBUS:
-
-crash> p/x ((struct page *) 0xc00c00000fe26180)->flags                                                                                                                                             
-$1 = 0x3ffff800002032
-
-crash> kmem -g 0x3ffff800002032
-FLAGS: 3ffff800002032
-  PAGE-FLAG       BIT  VALUE
-  PG_error          1  0000002
-  PG_dirty          4  0000010
-  PG_lru            5  0000020
-  PG_private_2     13  0002000
-  PG_fscache       13  0002000
-  PG_savepinned     4  0000010
-  PG_double_map    13  0002000
-
-But iomap_page->uptodate in page->private suggests all bits are uptodate:
-
-crash> p/x ((struct page *) 0xc00c00000fe26180)->private
-$2 = 0xc000003fc70a19c0
-
-crash> p/x ((struct iomap_page *) 0xc000003fc70a19c0)->uptodate                                                                                                                                    
-$3 = {0xffff, 0x0}
+cheers
 
 
-It appears (after ~4 hours) that I can avoid the problem if I split
-the loop so that bits are checked only after all updates are made.
-Not sure if this correct approach, or just making it less reproducible:
-
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index e25901ae3ff4..abe37031c93d 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -131,7 +131,11 @@ iomap_set_range_uptodate(struct page *page, unsigned off, unsigned len)
-                for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
-                        if (i >= first && i <= last)
-                                set_bit(i, iop->uptodate);
--                       else if (!test_bit(i, iop->uptodate))
-+               }
-+               for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
-+                       if (i >= first && i <= last)
-+                               continue;
-+                       if (!test_bit(i, iop->uptodate))
-                                uptodate = false;
-                }
-        }
-
-Thanks,
-Jan
-
-[1] https://lore.kernel.org/stable/1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com/T/#u
-
+diff --git a/Documentation/core-api/kernel-api.rst b/Documentation/core-api/kernel-api.rst
+index 2caaeb55e8dd..4ac53a1363f6 100644
+--- a/Documentation/core-api/kernel-api.rst
++++ b/Documentation/core-api/kernel-api.rst
+@@ -57,21 +57,12 @@ The Linux kernel provides more basic utility functions.
+ Bit Operations
+ --------------
+ 
+-Atomic Operations
+-~~~~~~~~~~~~~~~~~
+-
+ .. kernel-doc:: include/asm-generic/bitops/instrumented-atomic.h
+    :internal:
+ 
+-Non-atomic Operations
+-~~~~~~~~~~~~~~~~~~~~~
+-
+ .. kernel-doc:: include/asm-generic/bitops/instrumented-non-atomic.h
+    :internal:
+ 
+-Locking Operations
+-~~~~~~~~~~~~~~~~~~
+-
+ .. kernel-doc:: include/asm-generic/bitops/instrumented-lock.h
+    :internal:
+ 
