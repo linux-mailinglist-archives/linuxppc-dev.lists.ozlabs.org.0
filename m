@@ -1,53 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2A510FC4F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 12:15:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E412B10FB7E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 11:14:18 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RyWW4Y7ZzDqWv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 21:14:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Rzt71g9czDqGc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 22:15:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=hslester96@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="EwECi3FP"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="g7RcBsG1"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RyTG5Bv3zDqV9
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 21:12:18 +1100 (AEDT)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DD68A206DF;
- Tue,  3 Dec 2019 10:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575367935;
- bh=njEa6+IrLjuvJPILzHBnWSOeMyzbeQ4z6Q3+166H/eE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=EwECi3FPLB/gvnYoP5ns47k1Roo8LLto0gKhd1RbDt8bHESwF/OS5NpOW/mDzvbBU
- aNAi2vigGNx3RvjT6bsRLY06FdN/918p4dNXEvOAMkx+FqMjBl+PWB3UrR7P1cM92U
- sGuAtpf5TUSO3fHv9ZfheiDtJ8l0aAS48yG5iCLU=
-Date: Tue, 3 Dec 2019 10:12:03 +0000
-From: Will Deacon <will@kernel.org>
-To: Bhupesh Sharma <bhsharma@redhat.com>
-Subject: Re: [PATCH v5 0/5] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
- for arm64 and MAX_PHYSMEM_BITS for all archs)
-Message-ID: <20191203101202.GA6815@willie-the-truck>
-References: <1574972621-25750-1-git-send-email-bhsharma@redhat.com>
- <20191129102421.GA28322@willie-the-truck>
- <CACi5LpNQPw41kGsW+d0PyZaC7gSrbgwT2VxwyO5r3j83h-mkEQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Rzqj2rgRzDqGc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 22:13:20 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id w23so318346pjd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2019 03:13:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PPxVVC8nLDBEci1WSeW2S69uGVw9UleHZ5a7bu0I1Xs=;
+ b=g7RcBsG1I43aqXOgX8NNWXdzwyKNnQzBaNigzS3hH9D+dPCt1yXrXC8KBQAxmAGw1V
+ xIVzEZChlfDG+nQak288bYsUyD9FbjuWB5Hzwm9gi3Sc7px/7s/hrq5rBogS1I/+NkHs
+ YlJ/+VAmQtSSMduDkdWU0dBpiA9oXDKOYfzFFxYwh8rKlAwK9S0R+nzfs0I5JMyJkcia
+ VKZR8p9/KzWzukCGkgsTulEh7Q+hcEUGvxxswb3M63yMSulPhT32jXbFavKL4bQwnGny
+ wl9QyR/fQTj4HCWqeF7iY3iuOaH5dRvExDdcoN2F9oeNqVKE+tn2djXq8qI967rtQEFd
+ 9lHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PPxVVC8nLDBEci1WSeW2S69uGVw9UleHZ5a7bu0I1Xs=;
+ b=r/VIBnJde7Bz9wRwBuDd26wTTWv+524b5UCN/LyEzjL0wKQGvsKk1UX275KdibMxDD
+ OyD39N8RuOYSPbqNlnnZD+DRyTXlQCnHjxpfFEKcITk2TpGTDiebAUy44d5M9LW3fuuS
+ kyrIy6S40GUepXnRfQs5So0HX3spyy17j2JpVAraK715t6sTfEUzBlYA/ExjKIGtsqXO
+ 9crTkrke20LHmxXYzuH2/CGyGuz9kLAGgzSEGefTrhT/pZ2UfOeIjCQjbdXGrHBGmLu6
+ aQ1Ap2wb4M4fhLNij7Xsdfq6tZYX9ww67EozULhkyFnQbx6+rT0hWRh7Sldtrjb46zh4
+ GbnQ==
+X-Gm-Message-State: APjAAAXM+iOsmlGua8a6QqlSAp5dpKgB37N0G9gEaWkwuM9m7QT3IHF8
+ u/mDf/6bbqaBSvHpE3Q47bE=
+X-Google-Smtp-Source: APXvYqwVXNPxflvrN2v14hE+cqab22DeGQaHc2v2d7g8tdd1ATtAmfxDtIDe+nffB7gaEjuEQcQb5w==
+X-Received: by 2002:a17:902:9692:: with SMTP id
+ n18mr4397865plp.152.1575371596975; 
+ Tue, 03 Dec 2019 03:13:16 -0800 (PST)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+ by smtp.gmail.com with ESMTPSA id p5sm3160077pgj.63.2019.12.03.03.13.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Dec 2019 03:13:16 -0800 (PST)
+From: Chuhong Yuan <hslester96@gmail.com>
+To: 
+Subject: [PATCH resend] ASoC: fsl_audmix: add missed pm_runtime_disable
+Date: Tue,  3 Dec 2019 19:13:03 +0800
+Message-Id: <20191203111303.12933-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACi5LpNQPw41kGsW+d0PyZaC7gSrbgwT2VxwyO5r3j83h-mkEQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,52 +77,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
- kexec mailing list <kexec@lists.infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
- Boris Petkov <bp@alien8.de>, Dave Anderson <anderson@redhat.com>,
- James Morse <james.morse@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Bhupesh SHARMA <bhupesh.linux@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Steve Capper <steve.capper@arm.com>
+Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Takashi Iwai <tiwai@suse.com>, Chuhong Yuan <hslester96@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 30, 2019 at 01:35:36AM +0530, Bhupesh Sharma wrote:
-> On Fri, Nov 29, 2019 at 3:54 PM Will Deacon <will@kernel.org> wrote:
-> > On Fri, Nov 29, 2019 at 01:53:36AM +0530, Bhupesh Sharma wrote:
-> > > Changes since v4:
-> > > ----------------
-> > > - v4 can be seen here:
-> > >   http://lists.infradead.org/pipermail/kexec/2019-November/023961.html
-> > > - Addressed comments from Dave and added patches for documenting
-> > >   new variables appended to vmcoreinfo documentation.
-> > > - Added testing report shared by Akashi for PATCH 2/5.
-> >
-> > Please can you fix your mail setup? The last two times you've sent this
-> > series it seems to get split into two threads, which is really hard to
-> > track in my inbox:
-> >
-> > First thread:
-> >
-> > https://lore.kernel.org/lkml/1574972621-25750-1-git-send-email-bhsharma@redhat.com/
-> >
-> > Second thread:
-> >
-> > https://lore.kernel.org/lkml/1574972716-25858-1-git-send-email-bhsharma@redhat.com/
-> 
-> There seems to be some issue with my server's msmtp settings. I have
-> tried resending the v5 (see
-> <http://lists.infradead.org/pipermail/linux-arm-kernel/2019-November/696833.html>).
-> 
-> I hope the threading is ok this time.
+The driver forgets to call pm_runtime_disable in probe failure
+and remove.
+Add the missed calls to fix it.
 
-Much better now, thanks for sorting it out.
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+ sound/soc/fsl/fsl_audmix.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Will
+diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
+index a1db1bce330f..5faecbeb5497 100644
+--- a/sound/soc/fsl/fsl_audmix.c
++++ b/sound/soc/fsl/fsl_audmix.c
+@@ -505,15 +505,20 @@ static int fsl_audmix_probe(struct platform_device *pdev)
+ 					      ARRAY_SIZE(fsl_audmix_dai));
+ 	if (ret) {
+ 		dev_err(dev, "failed to register ASoC DAI\n");
+-		return ret;
++		goto err_disable_pm;
+ 	}
+ 
+ 	priv->pdev = platform_device_register_data(dev, mdrv, 0, NULL, 0);
+ 	if (IS_ERR(priv->pdev)) {
+ 		ret = PTR_ERR(priv->pdev);
+ 		dev_err(dev, "failed to register platform %s: %d\n", mdrv, ret);
++		goto err_disable_pm;
+ 	}
+ 
++	return 0;
++
++err_disable_pm:
++	pm_runtime_disable(dev);
+ 	return ret;
+ }
+ 
+@@ -521,6 +526,8 @@ static int fsl_audmix_remove(struct platform_device *pdev)
+ {
+ 	struct fsl_audmix *priv = dev_get_drvdata(&pdev->dev);
+ 
++	pm_runtime_disable(&pdev->dev);
++
+ 	if (priv->pdev)
+ 		platform_device_unregister(priv->pdev);
+ 
+-- 
+2.24.0
+
