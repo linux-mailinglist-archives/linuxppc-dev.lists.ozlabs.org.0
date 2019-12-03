@@ -2,154 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959F810F699
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 06:05:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA6110F6A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 06:08:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Rqfm2zZKzDq60
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 16:05:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Rqkf3r6WzDqVp
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 16:08:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=frowand.list@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="fRZlsUEK"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="l0jFSHDs"; 
  dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RpmH27KWzDqRw
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 15:24:47 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id g4so958438pjs.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 20:24:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Rprr2QFwzDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 15:28:44 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id bb5so1160243plb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 20:28:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=+iD8qt10cwcl+Zcsb9BMw7NrGdk2excR5RtcTLqorng=;
- b=fRZlsUEKeesPhpBKwtBZ3hr6Eb3W7sHOi0Qp4DUzi/hnUk3HwLTAtWtYMjYCMfPcTu
- gXBPVFTqju6MwrkT9lB6XNgYoCoHYKtyzpmCbsnki+XlMkrd1hJJcCdjdIOk9FQHt9Xr
- vlYTtHN3fLQZYwpurHVbg6Rzo/dA7xmQ0p19sHFII7jDP0gEC4uWvg8ZyrLDVhtteDet
- SAitGE+Q7af2+IuluPuwIyoKJ6YJu0qc8qXiUwZcB9XC+eD8TXTuIhKphNENUo13trOu
- hxwyPSP+yLm1gsZo8Xu8A3QHxoD98KwE88mYy8Zrxro+txg1kRcM325+qU+0q508BQvA
- L/vQ==
+ bh=8P0w8KphPi6rSrjLTuNVBYxVFByFC+P3r7zINnUs9yo=;
+ b=l0jFSHDsYFZrJ/3j/Urpo5WxfkgRi8/R1tPnVmM2caEP1VMwT48aKb9kjejbHYaOb2
+ R86pPb1HcLcxs+sb5KAan4OgH/WM/SC7gvKXvzbBtlTDIG2LjJ6jEJuSjvxSee61vc44
+ 9+16aZZUZzN29ObOxeflZdw9b3p8N3SHrvp38KH1XZo1zj0P9kmiy8kjxx7KNaDDccrL
+ GaHxI6YauyIKB7JAQpPjUrTNagZ9F98RGLfZ5QD1vowJUJvyiFBus70Ko+ND4Ri4fy8J
+ mbm9CkCYJcvQtDR+jdpBtRNorenC26EJM3PHpXfxFEYejaGbltn2xpZllNNzqt90ebvy
+ dXMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=+iD8qt10cwcl+Zcsb9BMw7NrGdk2excR5RtcTLqorng=;
- b=sOtht240HT7ddBrV56k06EsjuL0YEuyGuhJ1ogKfDEtL3R82AMsEdpwo+8SrdY/J+2
- 9koEpQbxdqY/mko6nvtLG7P/J/TEV7cTtj+FRLUKROQgmZnGFsq/9rdBWduuc7YxraWJ
- cYV5A1goVngNr7kzsz7r6djQXdUvt4sJlr4jH9xSymaTweJRVHuzJrFJ/YbC/q0MwG1d
- CZkthY+OsYLWKS92qiR/lQihROYd5020M+NeQiN2u4lnupAutQrnLgyx2vevN4yHa2sD
- fWYohTFh1M6+8SiM4eB1SqQEkvQNIxP61PwQt03qm3TQxgalHOgBpQsUFVIvUaoCyI1Q
- YTUQ==
-X-Gm-Message-State: APjAAAV74UT2VGh2gX+nQtemO72+5rplZa+NEGz8QzT86WzD7skEzcqi
- Mev30Rnhwm0gQ4YFJpL45PyaNA==
-X-Google-Smtp-Source: APXvYqyQ9uGUgptAxHIcsMNtfijcK7Tl29cWW8S4VkvfWfDY3I9RkjgUHWpUi775jWhM2qvC7cP1iQ==
-X-Received: by 2002:a17:902:a714:: with SMTP id
- w20mr2908080plq.162.1575347085100; 
- Mon, 02 Dec 2019 20:24:45 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id c1sm1227509pfa.51.2019.12.02.20.24.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2019 20:24:44 -0800 (PST)
-Subject: Re: [PATCH v4 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-To: Ram Pai <linuxram@us.ibm.com>
-References: <1575269124-17885-1-git-send-email-linuxram@us.ibm.com>
- <1575269124-17885-2-git-send-email-linuxram@us.ibm.com>
- <f08ace25-fa94-990b-1b6d-a1c0f30d6348@ozlabs.ru>
- <20191203020850.GA12354@oc0525413822.ibm.com>
- <0b56ce3e-6c32-5f3b-e7cc-0d419a61d71d@ozlabs.ru>
- <20191203040509.GB12354@oc0525413822.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <a0f19e65-81eb-37bd-928b-7a57a8660e3d@ozlabs.ru>
-Date: Tue, 3 Dec 2019 15:24:37 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=8P0w8KphPi6rSrjLTuNVBYxVFByFC+P3r7zINnUs9yo=;
+ b=U5OXxWJqao8UGJiwrSG/wno+kfiwg+96n16Nw9Qv6hLremgh9u1q7lXvs+6GO3/6HX
+ 8Y79N26uS7W7f2tG2sHd8IMgK95Rom82E4hL3npLh735emrNjdXVF8GGN9VcKtv+aQtB
+ wpIj+qjcUcC95zaua2VsF+ocZX/2ch0WE/1x1Vxor0KARB6VLzCq+kGqXaQlqKG6nca6
+ KNumO0crfLBqIQkEegL5EA1wTB8FSfJd2rli2XzEau9eD48nWMfGw3IbPRjQQRlF9LQp
+ MICrP3ZsFcYVKSud+pC+poJwCOu/qYktPU7uX7EWVPphGcJjLZbKmEFWdaUFFLXDIcGt
+ DjoA==
+X-Gm-Message-State: APjAAAWJaW+l1n9ARoZjIVmVVB3tqnisHTLhiZ88gFL0mUr7IBoGNiJ6
+ Zv/zniJaZL3gnEDbyIy+6NUYWVGM
+X-Google-Smtp-Source: APXvYqzwqRAsSdznW4XG3Ui5vku/ABziTBOhdYEpqNTvUk+8U8iut83jQCqVLved3nwihcIYAsm47g==
+X-Received: by 2002:a17:90a:ff12:: with SMTP id
+ ce18mr532136pjb.117.1575347321896; 
+ Mon, 02 Dec 2019 20:28:41 -0800 (PST)
+Received: from ?IPv6:240d:1a:90a:7900:8c84:6439:19bd:b6b0?
+ ([240d:1a:90a:7900:8c84:6439:19bd:b6b0])
+ by smtp.gmail.com with ESMTPSA id q6sm1202357pfl.140.2019.12.02.20.28.39
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 02 Dec 2019 20:28:41 -0800 (PST)
+Subject: Re: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
+ <e1f232f5-3847-a519-5cce-95a26512e82b@gmail.com>
+ <87tv6idp37.fsf@mpe.ellerman.id.au>
+From: Frank Rowand <frowand.list@gmail.com>
+Message-ID: <67e1da87-7f5a-3972-bc16-28bae2350c12@gmail.com>
+Date: Mon, 2 Dec 2019 22:28:37 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191203040509.GB12354@oc0525413822.ibm.com>
+In-Reply-To: <87tv6idp37.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -164,138 +88,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, ram.n.pai@gmail.com, cai@lca.pw,
- tglx@linutronix.de, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de, bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh+dt@kernel.org>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 03/12/2019 15:05, Ram Pai wrote:
-> On Tue, Dec 03, 2019 at 01:15:04PM +1100, Alexey Kardashevskiy wrote:
->>
->>
->> On 03/12/2019 13:08, Ram Pai wrote:
->>> On Tue, Dec 03, 2019 at 11:56:43AM +1100, Alexey Kardashevskiy wrote:
->>>>
->>>>
->>>> On 02/12/2019 17:45, Ram Pai wrote:
->>>>> H_PUT_TCE_INDIRECT hcall uses a page filled with TCE entries, as one of
->>>>> its parameters. One page is dedicated per cpu, for the lifetime of the
->>>>> kernel for this purpose. On secure VMs, contents of this page, when
->>>>> accessed by the hypervisor, retrieves encrypted TCE entries.  Hypervisor
->>>>> needs to know the unencrypted entries, to update the TCE table
->>>>> accordingly.  There is nothing secret or sensitive about these entries.
->>>>> Hence share the page with the hypervisor.
->>>>
->>>> This unsecures a page in the guest in a random place which creates an
->>>> additional attack surface which is hard to exploit indeed but
->>>> nevertheless it is there.
->>>> A safer option would be not to use the
->>>> hcall-multi-tce hyperrtas option (which translates FW_FEATURE_MULTITCE
->>>> in the guest).
+On 12/2/19 10:12 PM, Michael Ellerman wrote:
+> Frank Rowand <frowand.list@gmail.com> writes:
+>> On 11/29/19 9:10 AM, Sebastian Andrzej Siewior wrote:
+>>> I've been looking at phandle_cache and noticed the following: The raw
+>>> phandle value as generated by dtc starts at zero and is incremented by
+>>> one for each phandle entry. The qemu pSeries model is using Slof (which
+>>> is probably the same thing as used on real hardware) and this looks like
+>>> a poiner value for the phandle.
+>>> With
+>>> 	qemu-system-ppc64le -m 16G -machine pseries -smp 8 
 >>>
+>>> I got the following output:
+>>> | entries: 64
+>>> | phandle 7e732468 slot 28 hash c
+>>> | phandle 7e732ad0 slot 10 hash 27
+>>> | phandle 7e732ee8 slot 28 hash 3a
+>>> | phandle 7e734160 slot 20 hash 36
+>>> | phandle 7e734318 slot 18 hash 3a
+>>> | phandle 7e734428 slot 28 hash 33
+>>> | phandle 7e734538 slot 38 hash 2c
+>>> | phandle 7e734850 slot 10 hash e
+>>> | phandle 7e735220 slot 20 hash 2d
+>>> | phandle 7e735bf0 slot 30 hash d
+>>> | phandle 7e7365c0 slot 0 hash 2d
+>>> | phandle 7e736f90 slot 10 hash d
+>>> | phandle 7e737960 slot 20 hash 2d
+>>> | phandle 7e738330 slot 30 hash d
+>>> | phandle 7e738d00 slot 0 hash 2d
+>>> | phandle 7e739730 slot 30 hash 38
+>>> | phandle 7e73bd08 slot 8 hash 17
+>>> | phandle 7e73c2e0 slot 20 hash 32
+>>> | phandle 7e73c7f8 slot 38 hash 37
+>>> | phandle 7e782420 slot 20 hash 13
+>>> | phandle 7e782ed8 slot 18 hash 1b
+>>> | phandle 7e73ce28 slot 28 hash 39
+>>> | phandle 7e73d390 slot 10 hash 22
+>>> | phandle 7e73d9a8 slot 28 hash 1a
+>>> | phandle 7e73dc28 slot 28 hash 37
+>>> | phandle 7e73de00 slot 0 hash a
+>>> | phandle 7e73e028 slot 28 hash 0
+>>> | phandle 7e7621a8 slot 28 hash 36
+>>> | phandle 7e73e458 slot 18 hash 1e
+>>> | phandle 7e73e608 slot 8 hash 1e
+>>> | phandle 7e740078 slot 38 hash 28
+>>> | phandle 7e740180 slot 0 hash 1d
+>>> | phandle 7e740240 slot 0 hash 33
+>>> | phandle 7e740348 slot 8 hash 29
+>>> | phandle 7e740410 slot 10 hash 2
+>>> | phandle 7e740eb0 slot 30 hash 3e
+>>> | phandle 7e745390 slot 10 hash 33
+>>> | phandle 7e747b08 slot 8 hash c
+>>> | phandle 7e748528 slot 28 hash f
+>>> | phandle 7e74a6e0 slot 20 hash 18
+>>> | phandle 7e74aab0 slot 30 hash b
+>>> | phandle 7e74f788 slot 8 hash d
+>>> | Used entries: 8, hashed: 29
 >>>
->>> Hmm... How do we not use it?  AFAICT hcall-multi-tce option gets invoked
->>> automatically when IOMMU option is enabled.
+>>> So the hash array has 64 entries out which only 8 are populated. Using
+>>> hash_32() populates 29 entries.
+>>> Could someone with real hardware verify this?
+>>> I'm not sure how important this performance wise, it looks just like a
+>>> waste using only 1/8 of the array.
 >>
->> It is advertised by QEMU but the guest does not have to use it.
+>> The hash used is based on the assumptions you noted, and as stated in the
+>> code, that phandle property values are in a contiguous range of 1..n
+>> (not starting from zero), which is what dtc generates.
 > 
-> Are you suggesting that even normal-guest, not use hcall-multi-tce?
-> or just secure-guest?  
+>> We knew that for systems that do not match the assumptions that the hash
+>> will not be optimal.
+> 
+> If we're going to have the phandle cache it should at least make some
+> attempt to work across the systems that Linux supports.
+> 
+>> Unless there is a serious performance problem for
+>> such systems, I do not want to make the phandle hash code more complicated
+>> to optimize for these cases.  And the pseries have been performing ok
+>> without phandle related performance issues that I remember hearing since
+>> before the cache was added, which could have only helped the performance.
+>> Yes, if your observations are correct, some memory is being wasted, but
+>> a 64 entry cache is not very large on a pseries.
+> 
+> A single line change to use an actual hash function is hardly
+> complicating it, compared to the amount of code already there.
 
+With a dtc generated devicetree, the hash is perfect, with no
+misses.  That single line change then makes the hash bad for
+dtc generated devicetrees.
 
-Just secure.
+The cache was added to address a problem with a system with a
+dtc generated devicetree.  I had not heard of any phandle
+lookup performance issues on ppc systems.  An imperfect hash
+for ppc should not make the ppc performance worse (unless
+every single phandle value hashes to a single bucket).  So
+the ppc performance is likely better than it was before
+the hash was added, even without an optimal hash algorithm.
 
+So the change would not be a single line change.  It would
+be a change to use different hash algorithms for dtc
+generated device trees versus other device trees.
+
+Another possibility would be to make the cache be dependent
+upon not CONFIG_PPC.  It might be possible to disable the
+cache with a minimal code change.
 
 > 
->>
->>> This happens even
->>> on a normal VM when IOMMU is enabled.
->>>
->>>
->>>>
->>>> Also what is this for anyway? 
->>>
->>> This is for sending indirect-TCE entries to the hypervisor.
->>> The hypervisor must be able to read those TCE entries, so that it can 
->>> use those entires to populate the TCE table with the correct mappings.
->>>
->>>> if I understand things right, you cannot
->>>> map any random guest memory, you should only be mapping that 64MB-ish
->>>> bounce buffer array but 1) I do not see that happening (I may have
->>>> missed it) 2) it should be done once and it takes a little time for
->>>> whatever memory size we allow for bounce buffers anyway. Thanks,
->>>
->>> Any random guest memory can be shared by the guest. 
->>
->> Yes but we do not want this to be this random. 
+> cheers
 > 
-> It is not sharing some random page. It is sharing a page that is
-> ear-marked for communicating TCE entries. Yes the address of the page
-> can be random, depending on where the allocator decides to allocate it.
-> The purpose of the page is not random.
 
-I was talking about the location.
-
-
-> That page is used for one specific purpose; to communicate the TCE
-> entries to the hypervisor.  
-> 
->> I thought the whole idea
->> of swiotlb was to restrict the amount of shared memory to bare minimum,
->> what do I miss?
-> 
-> I think, you are making a incorrect connection between this patch and
-> SWIOTLB.  This patch has nothing to do with SWIOTLB.
-
-I can see this and this is the confusing part.
-
-
->>
->>> Maybe you are confusing this with the SWIOTLB bounce buffers used by
->>> PCI devices, to transfer data to the hypervisor?
->>
->> Is not this for pci+swiotlb? 
-> 
-> 
-> No. This patch is NOT for PCI+SWIOTLB.  The SWIOTLB pages are a
-> different set of pages allocated and earmarked for bounce buffering.
-> 
-> This patch is purely to help the hypervisor setup the TCE table, in the
-> presence of a IOMMU.
-
-Then the hypervisor should be able to access the guest pages mapped for
-DMA and these pages should be made unsecure for this to work. Where/when
-does this happen?
-
-
->> The cover letter suggests it is for
->> virtio-scsi-_pci_ with 	iommu_platform=on which makes it a
->> normal pci device just like emulated XHCI. Thanks,
-> 
-> Well, I guess, the cover letter is probably confusing. There are two
-> patches, which togather enable virtio on secure guests, in the presence
-> of IOMMU.
-> 
-> The second patch enables virtio in the presence of a IOMMU, to use
-> DMA_ops+SWIOTLB infrastructure, to correctly navigate the I/O to virtio
-> devices.
-
-The second patch does nothing in relation to the problem being solved.
-
-
-> However that by itself wont work if the TCE entires are not correctly
-> setup in the TCE tables.  The first patch; i.e this patch, helps
-> accomplish that.
->> Hope this clears up the confusion.
-
-
-
-
-
--- 
-Alexey
