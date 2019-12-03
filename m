@@ -1,63 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2341104CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 20:11:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47SBRM66FKzDqRR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 06:11:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7626C1105CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 21:16:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SCtk40L9zDqST
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 07:16:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+febdd2e10d904463134d+5945+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=46.105.49.171; helo=4.mo178.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="CCSUVIoh"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 4198 seconds by postgrey-1.36 at bilbo;
+ Wed, 04 Dec 2019 07:14:39 AEDT
+Received: from 4.mo178.mail-out.ovh.net (4.mo178.mail-out.ovh.net
+ [46.105.49.171])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47SBP908JbzDqN0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 06:09:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=py4BlJOG+aJY1t5dKR8XIt0EiXOF2BwKLJexNHJri1k=; b=CCSUVIohdJ+y56P3xd+6FuQGU
- pJYOCKIHCMeXs7AEXlZL6jhxvHAl+0Lgy118AvAwu1hxc2FV5vGBpf8rZt6LFK4FJKxxYFA30S7Bh
- KJ0LY7pWJ3PZAwiaVZggg4EVTZwgYy27V7jjcaRIRwvPQrHjVi22wX2Pzuqg5TkXtAGAkFpgxlgWD
- YcKt33G2jpjmQMTuNJCApdFpefsW4WxBHjE48iux4CMjK64jcO495icX9To0oB233ho0UJWxLpJeZ
- HavcCSh+2GXDTbHO6nABmvKZ0ENQel24dDe2TsBsZugZ+3E2226e6X6Qtl2lnKDGErDmdcNtk8o+d
- aJmH63Ccg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1icDY5-0001tg-8N; Tue, 03 Dec 2019 19:09:25 +0000
-Date: Tue, 3 Dec 2019 11:09:25 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Stancek <jstancek@redhat.com>
-Subject: Re: [bug] userspace hitting sporadic SIGBUS on xfs (Power9,
- ppc64le), v4.19 and later
-Message-ID: <20191203190925.GA5150@infradead.org>
-References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
- <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
- <8736e3ffen.fsf@mpe.ellerman.id.au>
- <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
- <1766807082.14812757.1575377439007.JavaMail.zimbra@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SCrH1QlDzDqMp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 07:14:34 +1100 (AEDT)
+Received: from player758.ha.ovh.net (unknown [10.109.146.122])
+ by mo178.mail-out.ovh.net (Postfix) with ESMTP id AD61B84296
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 17:37:07 +0100 (CET)
+Received: from kaod.org (lfbn-1-2229-223.w90-76.abo.wanadoo.fr [90.76.50.223])
+ (Authenticated sender: clg@kaod.org)
+ by player758.ha.ovh.net (Postfix) with ESMTPSA id 011DDCE34EE3;
+ Tue,  3 Dec 2019 16:36:58 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/xive: skip ioremap() of ESB pages for LSI interrupts
+Date: Tue,  3 Dec 2019 17:36:42 +0100
+Message-Id: <20191203163642.2428-1-clg@kaod.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1766807082.14812757.1575377439007.JavaMail.zimbra@redhat.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 10318591172321971121
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudejjedgledvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdqfffguegfifdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkffogggtgfesthekredtredtjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpledtrdejiedrhedtrddvvdefnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejheekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,83 +53,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: hch@infradead.org, darrick.wong@oracle.com,
- Memory Management <mm-qe@redhat.com>,
- Linux Stable maillist <stable@vger.kernel.org>, linux-xfs@vger.kernel.org,
- CKI Project <cki-project@redhat.com>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, LTP Mailing List <ltp@lists.linux.it>
+Cc: lvivier@redhat.com, Greg Kurz <groug@kaod.org>, stable@vger.kernel.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Please try the patch below:
+The PCI INTx interrupts and other LSI interrupts are handled differently
+under a sPAPR platform. When the interrupt source characteristics are
+queried, the hypervisor returns an H_INT_ESB flag to inform the OS
+that it should be using the H_INT_ESB hcall for interrupt management
+and not loads and stores on the interrupt ESB pages.
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 512856a88106..340c15400423 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -28,6 +28,7 @@
- struct iomap_page {
- 	atomic_t		read_count;
- 	atomic_t		write_count;
-+	spinlock_t		uptodate_lock;
- 	DECLARE_BITMAP(uptodate, PAGE_SIZE / 512);
- };
+A default -1 value is returned for the addresses of the ESB pages. The
+driver ignores this condition today and performs a bogus IO mapping.
+Recent changes and the DEBUG_VM configuration option make the bug
+visible with :
+
+[    0.015518] kernel BUG at arch/powerpc/include/asm/book3s/64/pgtable.h:612!
+[    0.015578] Oops: Exception in kernel mode, sig: 5 [#1]
+[    0.015627] LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=1024 NUMA pSeries
+[    0.015697] Modules linked in:
+[    0.015739] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.4.0-0.rc6.git0.1.fc32.ppc64le #1
+[    0.015812] NIP:  c000000000f63294 LR: c000000000f62e44 CTR: 0000000000000000
+[    0.015889] REGS: c0000000fa45f0d0 TRAP: 0700   Not tainted  (5.4.0-0.rc6.git0.1.fc32.ppc64le)
+[    0.015971] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 44000424  XER: 00000000
+[    0.016050] CFAR: c000000000f63128 IRQMASK: 0
+[    0.016050] GPR00: c000000000f62e44 c0000000fa45f360 c000000001be5400 0000000000000000
+[    0.016050] GPR04: c0000000019c7d38 c0000000fa340030 00000000fa330009 c000000001c15e18
+[    0.016050] GPR08: 0000000000000040 ffe0000000000000 0000000000000000 8418dd352dbd190f
+[    0.016050] GPR12: 0000000000000000 c000000001e00000 c00a000080060000 c00a000080060000
+[    0.016050] GPR16: 0000ffffffffffff 80000000000001ae c000000001c24d98 ffffffffffff0000
+[    0.016050] GPR20: c00a00008007ffff c000000001cafca0 c00a00008007ffff ffffffffffff0000
+[    0.016050] GPR24: c00a000080080000 c00a000080080000 c000000001cafca8 c00a000080080000
+[    0.016050] GPR28: c0000000fa32e010 c00a000080060000 ffffffffffff0000 c0000000fa330000
+[    0.016711] NIP [c000000000f63294] ioremap_page_range+0x4c4/0x6e0
+[    0.016778] LR [c000000000f62e44] ioremap_page_range+0x74/0x6e0
+[    0.016846] Call Trace:
+[    0.016876] [c0000000fa45f360] [c000000000f62e44] ioremap_page_range+0x74/0x6e0 (unreliable)
+[    0.016969] [c0000000fa45f460] [c0000000000934bc] do_ioremap+0x8c/0x120
+[    0.017037] [c0000000fa45f4b0] [c0000000000938e8] __ioremap_caller+0x128/0x140
+[    0.017116] [c0000000fa45f500] [c0000000000931a0] ioremap+0x30/0x50
+[    0.017184] [c0000000fa45f520] [c0000000000d1380] xive_spapr_populate_irq_data+0x170/0x260
+[    0.017263] [c0000000fa45f5c0] [c0000000000cc90c] xive_irq_domain_map+0x8c/0x170
+[    0.017344] [c0000000fa45f600] [c000000000219124] irq_domain_associate+0xb4/0x2d0
+[    0.017424] [c0000000fa45f690] [c000000000219fe0] irq_create_mapping+0x1e0/0x3b0
+[    0.017506] [c0000000fa45f730] [c00000000021ad6c] irq_create_fwspec_mapping+0x27c/0x3e0
+[    0.017586] [c0000000fa45f7c0] [c00000000021af68] irq_create_of_mapping+0x98/0xb0
+[    0.017666] [c0000000fa45f830] [c0000000008d4e48] of_irq_parse_and_map_pci+0x168/0x230
+[    0.017746] [c0000000fa45f910] [c000000000075428] pcibios_setup_device+0x88/0x250
+[    0.017826] [c0000000fa45f9a0] [c000000000077b84] pcibios_setup_bus_devices+0x54/0x100
+[    0.017906] [c0000000fa45fa10] [c0000000000793f0] __of_scan_bus+0x160/0x310
+[    0.017973] [c0000000fa45faf0] [c000000000075fc0] pcibios_scan_phb+0x330/0x390
+[    0.018054] [c0000000fa45fba0] [c00000000139217c] pcibios_init+0x8c/0x128
+[    0.018121] [c0000000fa45fc20] [c0000000000107b0] do_one_initcall+0x60/0x2c0
+[    0.018201] [c0000000fa45fcf0] [c000000001384624] kernel_init_freeable+0x290/0x378
+[    0.018280] [c0000000fa45fdb0] [c000000000010d24] kernel_init+0x2c/0x148
+[    0.018348] [c0000000fa45fe20] [c00000000000bdbc] ret_from_kernel_thread+0x5c/0x80
+[    0.018427] Instruction dump:
+[    0.018468] 41820014 3920fe7f 7d494838 7d290074 7929d182 f8e10038 69290001 0b090000
+[    0.018552] 7a098420 0b090000 7bc95960 7929a802 <0b090000> 7fc68b78 e8610048 7dc47378
+
+Cc: stable@vger.kernel.org # v4.14+
+Fixes: bed81ee181dd ("powerpc/xive: introduce H_INT_ESB hcall")
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ arch/powerpc/sysdev/xive/spapr.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 33c10749edec..55dc61cb4867 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -392,20 +392,28 @@ static int xive_spapr_populate_irq_data(u32 hw_irq, struct xive_irq_data *data)
+ 	data->esb_shift = esb_shift;
+ 	data->trig_page = trig_page;
  
-@@ -51,6 +52,7 @@ iomap_page_create(struct inode *inode, struct page *page)
- 	iop = kmalloc(sizeof(*iop), GFP_NOFS | __GFP_NOFAIL);
- 	atomic_set(&iop->read_count, 0);
- 	atomic_set(&iop->write_count, 0);
-+	spin_lock_init(&iop->uptodate_lock);
- 	bitmap_zero(iop->uptodate, PAGE_SIZE / SECTOR_SIZE);
- 
++	data->hw_irq = hw_irq;
++
  	/*
-@@ -139,25 +141,38 @@ iomap_adjust_read_range(struct inode *inode, struct iomap_page *iop,
- }
+ 	 * No chip-id for the sPAPR backend. This has an impact how we
+ 	 * pick a target. See xive_pick_irq_target().
+ 	 */
+ 	data->src_chip = XIVE_INVALID_CHIP_ID;
  
- static void
--iomap_set_range_uptodate(struct page *page, unsigned off, unsigned len)
-+iomap_iop_set_range_uptodate(struct page *page, unsigned off, unsigned len)
- {
- 	struct iomap_page *iop = to_iomap_page(page);
- 	struct inode *inode = page->mapping->host;
- 	unsigned first = off >> inode->i_blkbits;
- 	unsigned last = (off + len - 1) >> inode->i_blkbits;
--	unsigned int i;
- 	bool uptodate = true;
-+	unsigned long flags;
-+	unsigned int i;
- 
--	if (iop) {
--		for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
--			if (i >= first && i <= last)
--				set_bit(i, iop->uptodate);
--			else if (!test_bit(i, iop->uptodate))
--				uptodate = false;
--		}
-+	spin_lock_irqsave(&iop->uptodate_lock, flags);
-+	for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
-+		if (i >= first && i <= last)
-+			set_bit(i, iop->uptodate);
-+		else if (!test_bit(i, iop->uptodate))
-+			uptodate = false;
++	/*
++	 * When the H_INT_ESB flag is set, the H_INT_ESB hcall should
++	 * be used for interrupt management. Skip the remapping of the
++	 * ESB pages which are not available.
++	 */
++	if (data->flags & XIVE_IRQ_FLAG_H_INT_ESB)
++		return 0;
++
+ 	data->eoi_mmio = ioremap(data->eoi_page, 1u << data->esb_shift);
+ 	if (!data->eoi_mmio) {
+ 		pr_err("Failed to map EOI page for irq 0x%x\n", hw_irq);
+ 		return -ENOMEM;
  	}
  
--	if (uptodate && !PageError(page))
-+	if (uptodate)
-+		SetPageUptodate(page);
-+	spin_unlock_irqrestore(&iop->uptodate_lock, flags);
-+}
-+
-+static void
-+iomap_set_range_uptodate(struct page *page, unsigned off, unsigned len)
-+{
-+	if (PageError(page))
-+		return;
-+
-+	if (page_has_private(page))
-+		iomap_iop_set_range_uptodate(page, off, len);
-+	else
- 		SetPageUptodate(page);
- }
- 
+-	data->hw_irq = hw_irq;
+-
+ 	/* Full function page supports trigger */
+ 	if (flags & XIVE_SRC_TRIGGER) {
+ 		data->trig_mmio = data->eoi_mmio;
+-- 
+2.21.0
+
