@@ -2,83 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C1810FB00
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 10:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E412B10FB7E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 11:14:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Rxw51BBHzDqW0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 20:47:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RyWW4Y7ZzDqWv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 21:14:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="EwECi3FP"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RxsP4mnkzDqVC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 20:44:40 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB39gEuN061759
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Dec 2019 04:44:36 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wm6s6ag4a-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2019 04:44:36 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Tue, 3 Dec 2019 09:44:33 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Dec 2019 09:44:30 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB39iTJv47841338
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Dec 2019 09:44:29 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 173314203F;
- Tue,  3 Dec 2019 09:44:29 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E4EBE42045;
- Tue,  3 Dec 2019 09:44:26 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.124.35.39])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  3 Dec 2019 09:44:26 +0000 (GMT)
-Date: Tue, 3 Dec 2019 15:14:24 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v11 0/7] KVM: PPC: Driver to manage pages of secure guest
-References: <20191125030631.7716-1-bharata@linux.ibm.com>
- <20191128050411.GF23438@in.ibm.com>
- <alpine.LSU.2.11.1912011214180.1410@eggly.anvils>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RyTG5Bv3zDqV9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 21:12:18 +1100 (AEDT)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id DD68A206DF;
+ Tue,  3 Dec 2019 10:12:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1575367935;
+ bh=njEa6+IrLjuvJPILzHBnWSOeMyzbeQ4z6Q3+166H/eE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=EwECi3FPLB/gvnYoP5ns47k1Roo8LLto0gKhd1RbDt8bHESwF/OS5NpOW/mDzvbBU
+ aNAi2vigGNx3RvjT6bsRLY06FdN/918p4dNXEvOAMkx+FqMjBl+PWB3UrR7P1cM92U
+ sGuAtpf5TUSO3fHv9ZfheiDtJ8l0aAS48yG5iCLU=
+Date: Tue, 3 Dec 2019 10:12:03 +0000
+From: Will Deacon <will@kernel.org>
+To: Bhupesh Sharma <bhsharma@redhat.com>
+Subject: Re: [PATCH v5 0/5] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
+ for arm64 and MAX_PHYSMEM_BITS for all archs)
+Message-ID: <20191203101202.GA6815@willie-the-truck>
+References: <1574972621-25750-1-git-send-email-bhsharma@redhat.com>
+ <20191129102421.GA28322@willie-the-truck>
+ <CACi5LpNQPw41kGsW+d0PyZaC7gSrbgwT2VxwyO5r3j83h-mkEQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LSU.2.11.1912011214180.1410@eggly.anvils>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19120309-0028-0000-0000-000003C3F85A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120309-0029-0000-0000-0000248710E9
-Message-Id: <20191203094424.GA25855@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-03_01:2019-11-29,2019-12-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 clxscore=1015 priorityscore=1501
- phishscore=0 bulkscore=0 malwarescore=0 spamscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912030079
+In-Reply-To: <CACi5LpNQPw41kGsW+d0PyZaC7gSrbgwT2VxwyO5r3j83h-mkEQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,35 +59,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
+Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
+ kexec mailing list <kexec@lists.infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
+ Boris Petkov <bp@alien8.de>, Dave Anderson <anderson@redhat.com>,
+ James Morse <james.morse@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Bhupesh SHARMA <bhupesh.linux@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Ingo Molnar <mingo@kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Dec 01, 2019 at 12:24:50PM -0800, Hugh Dickins wrote:
-> On Thu, 28 Nov 2019, Bharata B Rao wrote:
-> > On Mon, Nov 25, 2019 at 08:36:24AM +0530, Bharata B Rao wrote:
-> > > Hi,
-> > > 
-> > > This is the next version of the patchset that adds required support
-> > > in the KVM hypervisor to run secure guests on PEF-enabled POWER platforms.
-> > > 
-> > 
-> > Here is a fix for the issue Hugh identified with the usage of ksm_madvise()
-> > in this patchset. It applies on top of this patchset.
+On Sat, Nov 30, 2019 at 01:35:36AM +0530, Bhupesh Sharma wrote:
+> On Fri, Nov 29, 2019 at 3:54 PM Will Deacon <will@kernel.org> wrote:
+> > On Fri, Nov 29, 2019 at 01:53:36AM +0530, Bhupesh Sharma wrote:
+> > > Changes since v4:
+> > > ----------------
+> > > - v4 can be seen here:
+> > >   http://lists.infradead.org/pipermail/kexec/2019-November/023961.html
+> > > - Addressed comments from Dave and added patches for documenting
+> > >   new variables appended to vmcoreinfo documentation.
+> > > - Added testing report shared by Akashi for PATCH 2/5.
+> >
+> > Please can you fix your mail setup? The last two times you've sent this
+> > series it seems to get split into two threads, which is really hard to
+> > track in my inbox:
+> >
+> > First thread:
+> >
+> > https://lore.kernel.org/lkml/1574972621-25750-1-git-send-email-bhsharma@redhat.com/
+> >
+> > Second thread:
+> >
+> > https://lore.kernel.org/lkml/1574972716-25858-1-git-send-email-bhsharma@redhat.com/
 > 
-> It looks correct to me, and I hope will not spoil your performance in any
-> way that matters.  But I have to say, the patch would be so much clearer,
-> if you just named your bool "downgraded" instead of "downgrade".
+> There seems to be some issue with my server's msmtp settings. I have
+> tried resending the v5 (see
+> <http://lists.infradead.org/pipermail/linux-arm-kernel/2019-November/696833.html>).
+> 
+> I hope the threading is ok this time.
 
-Thanks for confirming. Yes "downgraded" would have been more
-appropriate, will probably change it when we do any next change in this
-part of the code.
+Much better now, thanks for sorting it out.
 
-Regards,
-Bharata.
-
+Will
