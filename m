@@ -1,51 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D497210F66D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 05:56:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC01110F667
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 05:53:43 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47RqPb5gV8zDq9K
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 15:53:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RqT30G4SzDq9K
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 15:56:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RpHf2JQXzDqQk
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 15:03:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="KeUDQn2U"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47RpHd0Ltkz9sPL;
- Tue,  3 Dec 2019 15:03:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575345805;
- bh=RAD7zDxGO7bo8/pxUNwsyQf6S0CGEZrtpNTlNxtet6w=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KeUDQn2UknEEXnsZQIAHDAs4nIBg5cmQpfbBAOpoaEu603Yk+9SI+iSgAQeIv0nVR
- QPyzMaPGO1cW5m/XxByMso6zYXQWLVuoZ6Zs8wgaB8uLFkCbW1RcXH5yOhNmv3Mb0s
- ODb0b/Feen77PNQW3a3xt9GXMC4UD8PCfr/1iNOF49OjOnEMyDvR5fO28OS8bNgrHl
- q1I9rhdpKl1A0qxC32HLyVQ+0fH114gptlKYWqJYZ5o8f6DIptufGqpKwDRVy+Rc9R
- MuswPfKopS1l8ajVZEsJpBk8DxTLRb9Mz5YXVewTrhOWjUGxkj7FgoKTcFt9VBVxx3
- qI+908SFbcBFg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
-In-Reply-To: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
-References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
-Date: Tue, 03 Dec 2019 15:03:22 +1100
-Message-ID: <87wobedpit.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RpL04Ck0zDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 15:05:28 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB341sUU005535
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Dec 2019 23:05:25 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wm6rr135t-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 23:05:25 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Tue, 3 Dec 2019 04:05:23 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 3 Dec 2019 04:05:18 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB345HpG37355640
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Dec 2019 04:05:17 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 891994C05C;
+ Tue,  3 Dec 2019 04:05:17 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9B844C046;
+ Tue,  3 Dec 2019 04:05:13 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.85.173.229])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  3 Dec 2019 04:05:13 +0000 (GMT)
+Date: Mon, 2 Dec 2019 20:05:09 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <1575269124-17885-1-git-send-email-linuxram@us.ibm.com>
+ <1575269124-17885-2-git-send-email-linuxram@us.ibm.com>
+ <f08ace25-fa94-990b-1b6d-a1c0f30d6348@ozlabs.ru>
+ <20191203020850.GA12354@oc0525413822.ibm.com>
+ <0b56ce3e-6c32-5f3b-e7cc-0d419a61d71d@ozlabs.ru>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b56ce3e-6c32-5f3b-e7cc-0d419a61d71d@ozlabs.ru>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19120304-4275-0000-0000-0000038A335C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120304-4276-0000-0000-0000389DCF51
+Message-Id: <20191203040509.GB12354@oc0525413822.ibm.com>
+Subject: RE: [PATCH v4 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
+ with the hypervisor.
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-02_06:2019-11-29,2019-12-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=18 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 impostorscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912030034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,448 +93,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
+ linux-kernel@vger.kernel.org, ram.n.pai@gmail.com, cai@lca.pw,
+ tglx@linutronix.de, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ hch@lst.de, bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
-> I've been looking at phandle_cache and noticed the following: The raw
-> phandle value as generated by dtc starts at zero and is incremented by
-> one for each phandle entry. The qemu pSeries model is using Slof (which
-> is probably the same thing as used on real hardware) and this looks like
-> a poiner value for the phandle.
+On Tue, Dec 03, 2019 at 01:15:04PM +1100, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 03/12/2019 13:08, Ram Pai wrote:
+> > On Tue, Dec 03, 2019 at 11:56:43AM +1100, Alexey Kardashevskiy wrote:
+> >>
+> >>
+> >> On 02/12/2019 17:45, Ram Pai wrote:
+> >>> H_PUT_TCE_INDIRECT hcall uses a page filled with TCE entries, as one of
+> >>> its parameters. One page is dedicated per cpu, for the lifetime of the
+> >>> kernel for this purpose. On secure VMs, contents of this page, when
+> >>> accessed by the hypervisor, retrieves encrypted TCE entries.  Hypervisor
+> >>> needs to know the unencrypted entries, to update the TCE table
+> >>> accordingly.  There is nothing secret or sensitive about these entries.
+> >>> Hence share the page with the hypervisor.
+> >>
+> >> This unsecures a page in the guest in a random place which creates an
+> >> additional attack surface which is hard to exploit indeed but
+> >> nevertheless it is there.
+> >> A safer option would be not to use the
+> >> hcall-multi-tce hyperrtas option (which translates FW_FEATURE_MULTITCE
+> >> in the guest).
+> > 
+> > 
+> > Hmm... How do we not use it?  AFAICT hcall-multi-tce option gets invoked
+> > automatically when IOMMU option is enabled.
+> 
+> It is advertised by QEMU but the guest does not have to use it.
 
-We don't use SLOF on bare metal these days.
+Are you suggesting that even normal-guest, not use hcall-multi-tce?
+or just secure-guest?  
 
-I've certainly heard it said that on some OF's the phandle was just ==
-the address of the internal representation, and I guess maybe for SLOF
-that is true.
+> 
+> > This happens even
+> > on a normal VM when IOMMU is enabled.
+> > 
+> > 
+> >>
+> >> Also what is this for anyway? 
+> > 
+> > This is for sending indirect-TCE entries to the hypervisor.
+> > The hypervisor must be able to read those TCE entries, so that it can 
+> > use those entires to populate the TCE table with the correct mappings.
+> > 
+> >> if I understand things right, you cannot
+> >> map any random guest memory, you should only be mapping that 64MB-ish
+> >> bounce buffer array but 1) I do not see that happening (I may have
+> >> missed it) 2) it should be done once and it takes a little time for
+> >> whatever memory size we allow for bounce buffers anyway. Thanks,
+> > 
+> > Any random guest memory can be shared by the guest. 
+> 
+> Yes but we do not want this to be this random. 
 
-They seem to vary wildly though, eg. on an Apple G5:
+It is not sharing some random page. It is sharing a page that is
+ear-marked for communicating TCE entries. Yes the address of the page
+can be random, depending on where the allocator decides to allocate it.
+The purpose of the page is not random.
 
-  $ find /proc/device-tree/ -name phandle | xargs lsprop | head -10
-  /proc/device-tree/vsp@0,f9000000/veo@f9180000/phandle ff970848
-  /proc/device-tree/vsp@0,f9000000/phandle ff970360
-  /proc/device-tree/vsp@0,f9000000/veo@f9080000/phandle ff970730
-  /proc/device-tree/nvram@0,fff04000/phandle ff967fb8
-  /proc/device-tree/xmodem/phandle ff9655e8
-  /proc/device-tree/multiboot/phandle ff9504f0
-  /proc/device-tree/diagnostics/phandle ff965550
-  /proc/device-tree/options/phandle ff893cf0
-  /proc/device-tree/openprom/client-services/phandle ff8925b8
-  /proc/device-tree/openprom/phandle ff892458
+That page is used for one specific purpose; to communicate the TCE
+entries to the hypervisor.  
 
-That machine does not have enough RAM for those to be 32-bit real
-addresses. I think Apple OF is running in virtual mode though (?), so
-maybe they are pointers?
+> I thought the whole idea
+> of swiotlb was to restrict the amount of shared memory to bare minimum,
+> what do I miss?
 
-And on an IBM pseries machine they're a bit all over the place:
+I think, you are making a incorrect connection between this patch and
+SWIOTLB.  This patch has nothing to do with SWIOTLB.
 
-  /proc/device-tree/cpus/PowerPC,POWER8@40/ibm,phandle 10000040
-  /proc/device-tree/cpus/l2-cache@2005/ibm,phandle 00002005
-  /proc/device-tree/cpus/PowerPC,POWER8@30/ibm,phandle 10000030
-  /proc/device-tree/cpus/PowerPC,POWER8@20/ibm,phandle 10000020
-  /proc/device-tree/cpus/PowerPC,POWER8@10/ibm,phandle 10000010
-  /proc/device-tree/cpus/l2-cache@2003/ibm,phandle 00002003
-  /proc/device-tree/cpus/l2-cache@200a/ibm,phandle 0000200a
-  /proc/device-tree/cpus/l3-cache@3108/ibm,phandle 00003108
-  /proc/device-tree/cpus/l2-cache@2001/ibm,phandle 00002001
-  /proc/device-tree/cpus/l3-cache@3106/ibm,phandle 00003106
-  /proc/device-tree/cpus/ibm,phandle fffffff8
-  /proc/device-tree/cpus/l3-cache@3104/ibm,phandle 00003104
-  /proc/device-tree/cpus/l2-cache@2008/ibm,phandle 00002008
-  /proc/device-tree/cpus/l3-cache@3102/ibm,phandle 00003102
-  /proc/device-tree/cpus/l2-cache@2006/ibm,phandle 00002006
-  /proc/device-tree/cpus/l3-cache@3100/ibm,phandle 00003100
-  /proc/device-tree/cpus/PowerPC,POWER8@8/ibm,phandle 10000008
-  /proc/device-tree/cpus/l2-cache@2004/ibm,phandle 00002004
-  /proc/device-tree/cpus/PowerPC,POWER8@48/ibm,phandle 10000048
-  /proc/device-tree/cpus/PowerPC,POWER8@38/ibm,phandle 10000038
-  /proc/device-tree/cpus/l2-cache@2002/ibm,phandle 00002002
-  /proc/device-tree/cpus/PowerPC,POWER8@28/ibm,phandle 10000028
-  /proc/device-tree/cpus/l3-cache@3107/ibm,phandle 00003107
-  /proc/device-tree/cpus/PowerPC,POWER8@18/ibm,phandle 10000018
-  /proc/device-tree/cpus/l2-cache@2000/ibm,phandle 00002000
-  /proc/device-tree/cpus/l3-cache@3105/ibm,phandle 00003105
-  /proc/device-tree/cpus/l3-cache@3103/ibm,phandle 00003103
-  /proc/device-tree/cpus/l3-cache@310a/ibm,phandle 0000310a
-  /proc/device-tree/cpus/PowerPC,POWER8@0/ibm,phandle 10000000
-  /proc/device-tree/cpus/l2-cache@2007/ibm,phandle 00002007
-  /proc/device-tree/cpus/l3-cache@3101/ibm,phandle 00003101
-  /proc/device-tree/pci@80000002000001b/ibm,phandle 2000001b
-
-
-> With
-> 	qemu-system-ppc64le -m 16G -machine pseries -smp 8 
->
-> I got the following output:
-> | entries: 64
-> | phandle 7e732468 slot 28 hash c
-> | phandle 7e732ad0 slot 10 hash 27
-> | phandle 7e732ee8 slot 28 hash 3a
-> | phandle 7e734160 slot 20 hash 36
-> | phandle 7e734318 slot 18 hash 3a
-> | phandle 7e734428 slot 28 hash 33
-> | phandle 7e734538 slot 38 hash 2c
-> | phandle 7e734850 slot 10 hash e
-> | phandle 7e735220 slot 20 hash 2d
-> | phandle 7e735bf0 slot 30 hash d
-> | phandle 7e7365c0 slot 0 hash 2d
-> | phandle 7e736f90 slot 10 hash d
-> | phandle 7e737960 slot 20 hash 2d
-> | phandle 7e738330 slot 30 hash d
-> | phandle 7e738d00 slot 0 hash 2d
-> | phandle 7e739730 slot 30 hash 38
-> | phandle 7e73bd08 slot 8 hash 17
-> | phandle 7e73c2e0 slot 20 hash 32
-> | phandle 7e73c7f8 slot 38 hash 37
-> | phandle 7e782420 slot 20 hash 13
-> | phandle 7e782ed8 slot 18 hash 1b
-> | phandle 7e73ce28 slot 28 hash 39
-> | phandle 7e73d390 slot 10 hash 22
-> | phandle 7e73d9a8 slot 28 hash 1a
-> | phandle 7e73dc28 slot 28 hash 37
-> | phandle 7e73de00 slot 0 hash a
-> | phandle 7e73e028 slot 28 hash 0
-> | phandle 7e7621a8 slot 28 hash 36
-> | phandle 7e73e458 slot 18 hash 1e
-> | phandle 7e73e608 slot 8 hash 1e
-> | phandle 7e740078 slot 38 hash 28
-> | phandle 7e740180 slot 0 hash 1d
-> | phandle 7e740240 slot 0 hash 33
-> | phandle 7e740348 slot 8 hash 29
-> | phandle 7e740410 slot 10 hash 2
-> | phandle 7e740eb0 slot 30 hash 3e
-> | phandle 7e745390 slot 10 hash 33
-> | phandle 7e747b08 slot 8 hash c
-> | phandle 7e748528 slot 28 hash f
-> | phandle 7e74a6e0 slot 20 hash 18
-> | phandle 7e74aab0 slot 30 hash b
-> | phandle 7e74f788 slot 8 hash d
-> | Used entries: 8, hashed: 29
->
-> So the hash array has 64 entries out which only 8 are populated. Using
-> hash_32() populates 29 entries.
-> Could someone with real hardware verify this?
-> I'm not sure how important this performance wise, it looks just like a
-> waste using only 1/8 of the array.
-
-On the G5 it's similarly inefficient:
-
-[    0.005444] OF: of_populate_phandle_cache(222) entries: 256
-[    0.005457] OF: of_populate_phandle_cache(231) phandle ff88e0c0 slot c0 hash da
-[    0.005469] OF: of_populate_phandle_cache(231) phandle ff890a20 slot 20 hash a3
-[    0.005480] OF: of_populate_phandle_cache(231) phandle ff890c88 slot 88 hash ed
-[    0.005499] OF: of_populate_phandle_cache(231) phandle ff891138 slot 38 hash 49
-[    0.005513] OF: of_populate_phandle_cache(231) phandle ff8920c0 slot c0 hash fc
-[    0.005528] OF: of_populate_phandle_cache(231) phandle ff892248 slot 48 hash b7
-[    0.005542] OF: of_populate_phandle_cache(231) phandle ff892458 slot 58 hash 64
-[    0.005557] OF: of_populate_phandle_cache(231) phandle ff8925b8 slot b8 hash d8
-[    0.005571] OF: of_populate_phandle_cache(231) phandle ff8938a8 slot a8 hash 9d
-[    0.005585] OF: of_populate_phandle_cache(231) phandle ff893a68 slot 68 hash bc
-[    0.005599] OF: of_populate_phandle_cache(231) phandle ff893c58 slot 58 hash 31
-[    0.005614] OF: of_populate_phandle_cache(231) phandle ff893cf0 slot f0 hash 40
-[    0.005628] OF: of_populate_phandle_cache(231) phandle ff893d88 slot 88 hash 4f
-[    0.005642] OF: of_populate_phandle_cache(231) phandle ff894178 slot 78 hash 55
-[    0.005657] OF: of_populate_phandle_cache(231) phandle ff894ac8 slot c8 hash f0
-[    0.005671] OF: of_populate_phandle_cache(231) phandle ff895548 slot 48 hash a9
-[    0.005685] OF: of_populate_phandle_cache(231) phandle ff8a0118 slot 18 hash e
-[    0.005700] OF: of_populate_phandle_cache(231) phandle ff8a09d0 slot d0 hash 9a
-[    0.005714] OF: of_populate_phandle_cache(231) phandle ff8a22f8 slot f8 hash 77
-[    0.005729] OF: of_populate_phandle_cache(231) phandle ff8a5470 slot 70 hash af
-[    0.005743] OF: of_populate_phandle_cache(231) phandle ff8aa718 slot 18 hash 15
-[    0.005757] OF: of_populate_phandle_cache(231) phandle ff8ad4b8 slot b8 hash 72
-[    0.005771] OF: of_populate_phandle_cache(231) phandle ff8ae2d0 slot d0 hash 94
-[    0.005786] OF: of_populate_phandle_cache(231) phandle ff8aff38 slot 38 hash 3c
-[    0.005800] OF: of_populate_phandle_cache(231) phandle ff8b0a10 slot 10 hash 93
-[    0.005815] OF: of_populate_phandle_cache(231) phandle ff8b3880 slot 80 hash 63
-[    0.005829] OF: of_populate_phandle_cache(231) phandle ff8b4288 slot 88 hash 46
-[    0.005843] OF: of_populate_phandle_cache(231) phandle ff8b61d0 slot d0 hash f
-[    0.005858] OF: of_populate_phandle_cache(231) phandle ff8b8d20 slot 20 hash 4c
-[    0.005872] OF: of_populate_phandle_cache(231) phandle ff8bba60 slot 60 hash fe
-[    0.005886] OF: of_populate_phandle_cache(231) phandle ff929568 slot 68 hash bd
-[    0.005901] OF: of_populate_phandle_cache(231) phandle ff92bb30 slot 30 hash 1d
-[    0.005915] OF: of_populate_phandle_cache(231) phandle ff92e180 slot 80 hash 6f
-[    0.005929] OF: of_populate_phandle_cache(231) phandle ff931b98 slot 98 hash 8
-[    0.005944] OF: of_populate_phandle_cache(231) phandle ff938788 slot 88 hash 85
-[    0.005958] OF: of_populate_phandle_cache(231) phandle ff938850 slot 50 hash e9
-[    0.005972] OF: of_populate_phandle_cache(231) phandle ff94f338 slot 38 hash 15
-[    0.005987] OF: of_populate_phandle_cache(231) phandle ff94f3f0 slot f0 hash 5d
-[    0.006001] OF: of_populate_phandle_cache(231) phandle ff94fb08 slot 8 hash 3
-[    0.006014] OF: of_populate_phandle_cache(231) phandle ff950058 slot 58 hash 7d
-[    0.006028] OF: of_populate_phandle_cache(231) phandle ff9504f0 slot f0 hash ae
-[    0.006043] OF: of_populate_phandle_cache(231) phandle ff965550 slot 50 hash 89
-[    0.006057] OF: of_populate_phandle_cache(231) phandle ff9655e8 slot e8 hash 98
-[    0.006071] OF: of_populate_phandle_cache(231) phandle ff967fb8 slot b8 hash 29
-[    0.006086] OF: of_populate_phandle_cache(231) phandle ff969740 slot 40 hash 1f
-[    0.006100] OF: of_populate_phandle_cache(231) phandle ff969a20 slot 20 hash 40
-[    0.006114] OF: of_populate_phandle_cache(231) phandle ff96a5b0 slot b0 hash df
-[    0.006129] OF: of_populate_phandle_cache(231) phandle ff96acb0 slot b0 hash 5a
-[    0.006143] OF: of_populate_phandle_cache(231) phandle ff96adf8 slot f8 hash a3
-[    0.006157] OF: of_populate_phandle_cache(231) phandle ff96b088 slot 88 hash 35
-[    0.006171] OF: of_populate_phandle_cache(231) phandle ff9c1100 slot 0 hash dd
-[    0.006186] OF: of_populate_phandle_cache(231) phandle ff9f0428 slot 28 hash 88
-[    0.006200] OF: of_populate_phandle_cache(231) phandle ff9f3c60 slot 60 hash c9
-[    0.006214] OF: of_populate_phandle_cache(231) phandle ff9f1230 slot 30 hash 8e
-[    0.006228] OF: of_populate_phandle_cache(231) phandle ff96c240 slot 40 hash ce
-[    0.006242] OF: of_populate_phandle_cache(231) phandle ff96d050 slot 50 hash e2
-[    0.006256] OF: of_populate_phandle_cache(231) phandle ff9bca00 slot 0 hash 3f
-[    0.006271] OF: of_populate_phandle_cache(231) phandle ff9f3080 slot 80 hash 9c
-[    0.006285] OF: of_populate_phandle_cache(231) phandle ff96e148 slot 48 hash 25
-[    0.006299] OF: of_populate_phandle_cache(231) phandle ff970960 slot 60 hash a4
-[    0.006313] OF: of_populate_phandle_cache(231) phandle ff972038 slot 38 hash 61
-[    0.006328] OF: of_populate_phandle_cache(231) phandle ff9723e0 slot e0 hash e6
-[    0.006342] OF: of_populate_phandle_cache(231) phandle ff972808 slot 8 hash 50
-[    0.006356] OF: of_populate_phandle_cache(231) phandle ff9729c0 slot c0 hash 60
-[    0.006370] OF: of_populate_phandle_cache(231) phandle ff972b78 slot 78 hash 71
-[    0.006385] OF: of_populate_phandle_cache(231) phandle ff972da8 slot a8 hash 58
-[    0.006399] OF: of_populate_phandle_cache(231) phandle ff972f00 slot 0 hash bd
-[    0.006414] OF: of_populate_phandle_cache(231) phandle ff973058 slot 58 hash 22
-[    0.006428] OF: of_populate_phandle_cache(231) phandle ff973210 slot 10 hash 33
-[    0.006442] OF: of_populate_phandle_cache(231) phandle ff973360 slot 60 hash 8a
-[    0.006456] OF: of_populate_phandle_cache(231) phandle ff973520 slot 20 hash a9
-[    0.006471] OF: of_populate_phandle_cache(231) phandle ff973670 slot 70 hash 0
-[    0.006485] OF: of_populate_phandle_cache(231) phandle ff973828 slot 28 hash 11
-[    0.006499] OF: of_populate_phandle_cache(231) phandle ff9739e0 slot e0 hash 22
-[    0.006513] OF: of_populate_phandle_cache(231) phandle ff973b40 slot 40 hash 95
-[    0.006528] OF: of_populate_phandle_cache(231) phandle ff973d88 slot 88 hash a7
-[    0.006542] OF: of_populate_phandle_cache(231) phandle ff973fb0 slot b0 hash 7f
-[    0.006556] OF: of_populate_phandle_cache(231) phandle ff974168 slot 68 hash 90
-[    0.006570] OF: of_populate_phandle_cache(231) phandle ff974320 slot 20 hash a1
-[    0.006584] OF: of_populate_phandle_cache(231) phandle ff974560 slot 60 hash a4
-[    0.006599] OF: of_populate_phandle_cache(231) phandle ff975178 slot 78 hash 35
-[    0.006613] OF: of_populate_phandle_cache(231) phandle ff975ce8 slot e8 hash 9a
-[    0.006628] OF: of_populate_phandle_cache(231) phandle ff9768a8 slot a8 hash 8f
-[    0.006642] OF: of_populate_phandle_cache(231) phandle ff976fa8 slot a8 hash a
-[    0.006656] OF: of_populate_phandle_cache(231) phandle ff9770a8 slot a8 hash d3
-[    0.006670] OF: of_populate_phandle_cache(231) phandle ff9772a0 slot a0 hash 56
-[    0.006685] OF: of_populate_phandle_cache(231) phandle ff977468 slot 68 hash 83
-[    0.006699] OF: of_populate_phandle_cache(231) phandle ff9f3710 slot 10 hash 50
-[    0.006713] OF: of_populate_phandle_cache(231) phandle ff977600 slot 0 hash 5a
-[    0.006728] OF: of_populate_phandle_cache(231) phandle ff977978 slot 78 hash 8a
-[    0.006742] OF: of_populate_phandle_cache(231) phandle ff994880 slot 80 hash 43
-[    0.006757] OF: of_populate_phandle_cache(231) phandle ff9f1f80 slot 80 hash 4b
-[    0.006771] OF: of_populate_phandle_cache(231) phandle ff9f2190 slot 90 hash f9
-[    0.006785] OF: of_populate_phandle_cache(231) phandle ff9f24b8 slot b8 hash 9a
-[    0.006800] OF: of_populate_phandle_cache(231) phandle ff9f2638 slot 38 hash 46
-[    0.006814] OF: of_populate_phandle_cache(231) phandle ff9f2980 slot 80 hash 20
-[    0.006828] OF: of_populate_phandle_cache(231) phandle ff99ccd0 slot d0 hash 37
-[    0.006843] OF: of_populate_phandle_cache(231) phandle ff9a5120 slot 20 hash 2b
-[    0.006857] OF: of_populate_phandle_cache(231) phandle ff96f258 slot 58 hash 92
-[    0.006872] OF: of_populate_phandle_cache(231) phandle ff9a5520 slot 20 hash 4d
-[    0.006886] OF: of_populate_phandle_cache(231) phandle ff9a6438 slot 38 hash 38
-[    0.006901] OF: of_populate_phandle_cache(231) phandle ff9a9340 slot 40 hash 16
-[    0.006915] OF: of_populate_phandle_cache(231) phandle ff9a99d0 slot d0 hash ca
-[    0.006929] OF: of_populate_phandle_cache(231) phandle ff9acba0 slot a0 hash 9f
-[    0.006944] OF: of_populate_phandle_cache(231) phandle ff9ad210 slot 10 hash 1a
-[    0.006959] OF: of_populate_phandle_cache(231) phandle ff970360 slot 60 hash f1
-[    0.006973] OF: of_populate_phandle_cache(231) phandle ff970730 slot 30 hash be
-[    0.006987] OF: of_populate_phandle_cache(231) phandle ff970848 slot 48 hash b1
-[    0.007002] OF: of_populate_phandle_cache(231) phandle ff977ab8 slot b8 hash c4
-[    0.007016] OF: of_populate_phandle_cache(231) phandle ff977c98 slot 98 hash 1c
-[    0.007030] OF: of_populate_phandle_cache(231) phandle ff97f300 slot 0 hash 44
-[    0.007044] OF: of_populate_phandle_cache(231) phandle ff97f4e8 slot e8 hash aa
-[    0.007059] OF: of_populate_phandle_cache(231) phandle ff97f708 slot 8 hash 74
-[    0.007073] OF: of_populate_phandle_cache(231) phandle ff97f920 slot 20 hash 30
-[    0.007087] OF: of_populate_phandle_cache(231) phandle ff97fb40 slot 40 hash fa
-[    0.007102] OF: of_populate_phandle_cache(231) phandle ff97fd18 slot 18 hash 44
-[    0.007116] OF: of_populate_phandle_cache(231) phandle ff97fee8 slot e8 hash 7f
-[    0.007130] OF: of_populate_phandle_cache(231) phandle ff9800c0 slot c0 hash c9
-[    0.007144] OF: of_populate_phandle_cache(231) phandle ff980298 slot 98 hash 13
-[    0.007158] OF: of_populate_phandle_cache(231) phandle ff980430 slot 30 hash ea
-[    0.007172] OF: of_populate_phandle_cache(231) phandle ff9806c8 slot c8 hash 8a
-[    0.007187] OF: of_populate_phandle_cache(231) phandle ff980898 slot 98 hash c6
-[    0.007201] OF: of_populate_phandle_cache(231) phandle ff980ba8 slot a8 hash 3c
-[    0.007215] OF: of_populate_phandle_cache(231) phandle ff982648 slot 48 hash b7
-[    0.007230] OF: of_populate_phandle_cache(231) phandle ff982df0 slot f0 hash 5e
-[    0.007244] OF: of_populate_phandle_cache(231) phandle ff98e7a0 slot a0 hash 81
-[    0.007259] OF: of_populate_phandle_cache(231) phandle ff98e998 slot 98 hash 4
-[    0.007273] OF: of_populate_phandle_cache(231) phandle ff98eb28 slot 28 hash cd
-[    0.007287] OF: of_populate_phandle_cache(231) phandle ff98ecb8 slot b8 hash 97
-[    0.007301] OF: of_populate_phandle_cache(231) phandle ff98ee50 slot 50 hash 6e
-[    0.007316] OF: of_populate_phandle_cache(231) phandle ff98efe8 slot e8 hash 46
-[    0.007330] OF: of_populate_phandle_cache(231) phandle ff98f178 slot 78 hash f
-[    0.007344] OF: of_populate_phandle_cache(231) phandle ff98f310 slot 10 hash e7
-[    0.007358] OF: of_populate_phandle_cache(231) phandle ff98f4a8 slot a8 hash be
-[    0.007379] OF: of_populate_phandle_cache(242) Used entries: 31, hashed: 111
+> 
+> > Maybe you are confusing this with the SWIOTLB bounce buffers used by
+> > PCI devices, to transfer data to the hypervisor?
+> 
+> Is not this for pci+swiotlb? 
 
 
-And some output from a "real" pseries machine (IBM OF), which is
-slightly better:
+No. This patch is NOT for PCI+SWIOTLB.  The SWIOTLB pages are a
+different set of pages allocated and earmarked for bounce buffering.
 
-[    0.129026] OF: of_populate_phandle_cache(222) entries: 128
-[    0.129030] OF: of_populate_phandle_cache(231) phandle ffffffff slot 7f hash 4f
-[    0.129034] OF: of_populate_phandle_cache(231) phandle cbffa0 slot 20 hash 2a
-[    0.129038] OF: of_populate_phandle_cache(231) phandle fffffff7 slot 77 hash 47
-[    0.129043] OF: of_populate_phandle_cache(231) phandle fffffff8 slot 78 hash 78
-[    0.129046] OF: of_populate_phandle_cache(231) phandle 10000000 slot 0 hash 38
-[    0.129050] OF: of_populate_phandle_cache(231) phandle 10000008 slot 8 hash 3f
-[    0.129055] OF: of_populate_phandle_cache(231) phandle 10000010 slot 10 hash 46
-[    0.129058] OF: of_populate_phandle_cache(231) phandle 10000018 slot 18 hash 4d
-[    0.129062] OF: of_populate_phandle_cache(231) phandle 10000020 slot 20 hash 54
-[    0.129066] OF: of_populate_phandle_cache(231) phandle 10000028 slot 28 hash 5b
-[    0.129070] OF: of_populate_phandle_cache(231) phandle 10000030 slot 30 hash 62
-[    0.129074] OF: of_populate_phandle_cache(231) phandle 10000038 slot 38 hash 69
-[    0.129078] OF: of_populate_phandle_cache(231) phandle 10000040 slot 40 hash 71
-[    0.129082] OF: of_populate_phandle_cache(231) phandle 10000048 slot 48 hash 78
-[    0.129086] OF: of_populate_phandle_cache(231) phandle 2000 slot 0 hash 8
-[    0.129089] OF: of_populate_phandle_cache(231) phandle 2001 slot 1 hash 39
-[    0.129093] OF: of_populate_phandle_cache(231) phandle 2002 slot 2 hash 6a
-[    0.129097] OF: of_populate_phandle_cache(231) phandle 2003 slot 3 hash 1b
-[    0.129100] OF: of_populate_phandle_cache(231) phandle 2004 slot 4 hash 4b
-[    0.129104] OF: of_populate_phandle_cache(231) phandle 2005 slot 5 hash 7c
-[    0.129108] OF: of_populate_phandle_cache(231) phandle 2006 slot 6 hash 2d
-[    0.129112] OF: of_populate_phandle_cache(231) phandle 2007 slot 7 hash 5e
-[    0.129115] OF: of_populate_phandle_cache(231) phandle 2008 slot 8 hash f
-[    0.129119] OF: of_populate_phandle_cache(231) phandle 200a slot a hash 71
-[    0.129123] OF: of_populate_phandle_cache(231) phandle 3100 slot 0 hash 30
-[    0.129127] OF: of_populate_phandle_cache(231) phandle 3101 slot 1 hash 61
-[    0.129130] OF: of_populate_phandle_cache(231) phandle 3102 slot 2 hash 12
-[    0.129134] OF: of_populate_phandle_cache(231) phandle 3103 slot 3 hash 43
-[    0.129138] OF: of_populate_phandle_cache(231) phandle 3104 slot 4 hash 74
-[    0.129141] OF: of_populate_phandle_cache(231) phandle 3105 slot 5 hash 25
-[    0.129145] OF: of_populate_phandle_cache(231) phandle 3106 slot 6 hash 56
-[    0.129148] OF: of_populate_phandle_cache(231) phandle 3107 slot 7 hash 7
-[    0.129152] OF: of_populate_phandle_cache(231) phandle 3108 slot 8 hash 37
-[    0.129156] OF: of_populate_phandle_cache(231) phandle 310a slot a hash 19
-[    0.129160] OF: of_populate_phandle_cache(231) phandle dd08a0 slot 20 hash 26
-[    0.129164] OF: of_populate_phandle_cache(231) phandle dd2a58 slot 58 hash 37
-[    0.129168] OF: of_populate_phandle_cache(231) phandle fffffff9 slot 79 hash 29
-[    0.129172] OF: of_populate_phandle_cache(231) phandle fffffff6 slot 76 hash 17
-[    0.129176] OF: of_populate_phandle_cache(231) phandle fffffff4 slot 74 hash 35
-[    0.129180] OF: of_populate_phandle_cache(231) phandle fffffff5 slot 75 hash 66
-[    0.129184] OF: of_populate_phandle_cache(231) phandle fffffff3 slot 73 hash 4
-[    0.129188] OF: of_populate_phandle_cache(231) phandle c9cca8 slot 28 hash 32
-[    0.129191] OF: of_populate_phandle_cache(231) phandle dd2bc8 slot 48 hash 7f
-[    0.129195] OF: of_populate_phandle_cache(231) phandle 25000015 slot 15 hash 24
-[    0.129199] OF: of_populate_phandle_cache(231) phandle 2500001b slot 1b hash 49
-[    0.129203] OF: of_populate_phandle_cache(231) phandle 2500001e slot 1e hash 5c
-[    0.129207] OF: of_populate_phandle_cache(231) phandle fffffffa slot 7a hash 5a
-[    0.129211] OF: of_populate_phandle_cache(231) phandle 80000100 slot 0 hash 24
-[    0.129215] OF: of_populate_phandle_cache(231) phandle 80000140 slot 40 hash 5d
-[    0.129219] OF: of_populate_phandle_cache(231) phandle fffffffe slot 7e hash 1e
-[    0.129223] OF: of_populate_phandle_cache(231) phandle fffffffb slot 7b hash b
-[    0.129227] OF: of_populate_phandle_cache(231) phandle c9ed48 slot 48 hash 49
-[    0.129231] OF: of_populate_phandle_cache(231) phandle db9740 slot 40 hash 4c
-[    0.129235] OF: of_populate_phandle_cache(231) phandle d609a0 slot 20 hash 34
-[    0.129238] OF: of_populate_phandle_cache(231) phandle dcd820 slot 20 hash 67
-[    0.129242] OF: of_populate_phandle_cache(231) phandle dae0a0 slot 20 hash 75
-[    0.129246] OF: of_populate_phandle_cache(231) phandle d21df0 slot 70 hash 44
-[    0.129250] OF: of_populate_phandle_cache(231) phandle cc2ec8 slot 48 hash 36
-[    0.129254] OF: of_populate_phandle_cache(231) phandle d6a2a8 slot 28 hash 27
-[    0.129258] OF: of_populate_phandle_cache(231) phandle d23330 slot 30 hash 37
-[    0.129262] OF: of_populate_phandle_cache(231) phandle dd0320 slot 20 hash 3e
-[    0.129266] OF: of_populate_phandle_cache(231) phandle dae248 slot 48 hash 6f
-[    0.129270] OF: of_populate_phandle_cache(231) phandle d981d8 slot 58 hash 2f
-[    0.129274] OF: of_populate_phandle_cache(231) phandle da3da8 slot 28 hash 26
-[    0.129278] OF: of_populate_phandle_cache(231) phandle d88480 slot 0 hash 4a
-[    0.129282] OF: of_populate_phandle_cache(231) phandle d8e118 slot 18 hash 5a
-[    0.129285] OF: of_populate_phandle_cache(231) phandle d8ff50 slot 50 hash 4c
-[    0.129289] OF: of_populate_phandle_cache(231) phandle e9da68 slot 68 hash 59
-[    0.129293] OF: of_populate_phandle_cache(231) phandle ebc460 slot 60 hash 3a
-[    0.129297] OF: of_populate_phandle_cache(231) phandle d91c48 slot 48 hash 20
-[    0.129301] OF: of_populate_phandle_cache(231) phandle d3b5f0 slot 70 hash f
-[    0.129305] OF: of_populate_phandle_cache(231) phandle d428d0 slot 50 hash 7d
-[    0.129309] OF: of_populate_phandle_cache(231) phandle d80ae0 slot 60 hash 58
-[    0.129313] OF: of_populate_phandle_cache(231) phandle d9a500 slot 0 hash 8
-[    0.129316] OF: of_populate_phandle_cache(231) phandle dacc78 slot 78 hash 7c
-[    0.129320] OF: of_populate_phandle_cache(231) phandle cc4930 slot 30 hash 42
-[    0.129324] OF: of_populate_phandle_cache(231) phandle db2510 slot 10 hash 7b
-[    0.129328] OF: of_populate_phandle_cache(231) phandle dcca28 slot 28 hash 73
-[    0.129332] OF: of_populate_phandle_cache(231) phandle d28488 slot 8 hash 3f
-[    0.129336] OF: of_populate_phandle_cache(231) phandle d589f8 slot 78 hash 61
-[    0.129340] OF: of_populate_phandle_cache(231) phandle ecf870 slot 70 hash 69
-[    0.129344] OF: of_populate_phandle_cache(231) phandle d97948 slot 48 hash d
-[    0.129348] OF: of_populate_phandle_cache(231) phandle d27720 slot 20 hash 4a
-[    0.129352] OF: of_populate_phandle_cache(231) phandle d513c8 slot 48 hash 7f
-[    0.129356] OF: of_populate_phandle_cache(231) phandle dd0228 slot 28 hash 61
-[    0.129360] OF: of_populate_phandle_cache(231) phandle d76568 slot 68 hash 4e
-[    0.129364] OF: of_populate_phandle_cache(231) phandle d4a390 slot 10 hash 70
-[    0.129368] OF: of_populate_phandle_cache(231) phandle cf3a10 slot 10 hash f
-[    0.129372] OF: of_populate_phandle_cache(231) phandle d0bc58 slot 58 hash 7c
-[    0.129376] OF: of_populate_phandle_cache(231) phandle 20000015 slot 15 hash 72
-[    0.129380] OF: of_populate_phandle_cache(231) phandle e21228 slot 28 hash 75
-[    0.129384] OF: of_populate_phandle_cache(231) phandle e33b48 slot 48 hash 64
-[    0.129388] OF: of_populate_phandle_cache(231) phandle e38f08 slot 8 hash 11
-[    0.129392] OF: of_populate_phandle_cache(231) phandle e3b8a0 slot 20 hash 27
-[    0.129396] OF: of_populate_phandle_cache(231) phandle e3e378 slot 78 hash 5b
-[    0.129400] OF: of_populate_phandle_cache(231) phandle e43740 slot 40 hash f
-[    0.129404] OF: of_populate_phandle_cache(231) phandle 2000001b slot 1b hash 18
-[    0.129408] OF: of_populate_phandle_cache(231) phandle e45fc8 slot 48 hash 32
-[    0.129412] OF: of_populate_phandle_cache(231) phandle e5be68 slot 68 hash 55
-[    0.129416] OF: of_populate_phandle_cache(231) phandle 2000001e slot 1e hash 2a
-[    0.129420] OF: of_populate_phandle_cache(231) phandle 2204001e slot 1e hash 7e
-[    0.129423] OF: of_populate_phandle_cache(231) phandle e6c880 slot 0 hash 18
-[    0.129427] OF: of_populate_phandle_cache(231) phandle e7bca0 slot 20 hash 45
-[    0.129431] OF: of_populate_phandle_cache(231) phandle e8b0c0 slot 40 hash 71
-[    0.129435] OF: of_populate_phandle_cache(231) phandle fffffffd slot 7d hash 6d
-[    0.129439] OF: of_populate_phandle_cache(231) phandle fffffffc slot 7c hash 3c
-[    0.129443] OF: of_populate_phandle_cache(231) phandle df1d80 slot 0 hash 49
-[    0.129447] OF: of_populate_phandle_cache(231) phandle df3488 slot 8 hash 52
-[    0.129451] OF: of_populate_phandle_cache(231) phandle df3d80 slot 0 hash 52
-[    0.129454] OF: of_populate_phandle_cache(231) phandle df3198 slot 18 hash 34
-[    0.129458] OF: of_populate_phandle_cache(231) phandle df2888 slot 8 hash 1f
-[    0.129462] OF: of_populate_phandle_cache(231) phandle 30000000 slot 0 hash 28
-[    0.129467] OF: of_populate_phandle_cache(242) Used entries: 39, hashed: 81
+This patch is purely to help the hypervisor setup the TCE table, in the
+presence of a IOMMU.
 
+>The cover letter suggests it is for
+> virtio-scsi-_pci_ with 	iommu_platform=on which makes it a
+> normal pci device just like emulated XHCI. Thanks,
 
+Well, I guess, the cover letter is probably confusing. There are two
+patches, which togather enable virtio on secure guests, in the presence
+of IOMMU.
 
-So yeah using hash_32() is quite a bit better in both cases.
+The second patch enables virtio in the presence of a IOMMU, to use
+DMA_ops+SWIOTLB infrastructure, to correctly navigate the I/O to virtio
+devices.
 
-And if I'm reading your patch right it would be a single line change to
-switch, so that seems like it's worth doing to me.
+However that by itself wont work if the TCE entires are not correctly
+setup in the TCE tables.  The first patch; i.e this patch, helps
+accomplish that.
 
-cheers
+Hope this clears up the confusion.
+RP
 
-
-> The patch used for testing:
->
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 1d667eb730e19..2640d4bc81a9a 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -197,6 +197,7 @@ void of_populate_phandle_cache(void)
->  	u32 cache_entries;
->  	struct device_node *np;
->  	u32 phandles = 0;
-> +	struct device_node **cache2;
->  
->  	raw_spin_lock_irqsave(&devtree_lock, flags);
->  
-> @@ -214,14 +215,32 @@ void of_populate_phandle_cache(void)
->  
->  	phandle_cache = kcalloc(cache_entries, sizeof(*phandle_cache),
->  				GFP_ATOMIC);
-> +	cache2 = kcalloc(cache_entries, sizeof(*phandle_cache), GFP_ATOMIC);
->  	if (!phandle_cache)
->  		goto out;
->  
-> +	pr_err("%s(%d) entries: %d\n", __func__, __LINE__, cache_entries);
->  	for_each_of_allnodes(np)
->  		if (np->phandle && np->phandle != OF_PHANDLE_ILLEGAL) {
-> +			int slot;
->  			of_node_get(np);
->  			phandle_cache[np->phandle & phandle_cache_mask] = np;
-> +			slot = hash_32(np->phandle, __ffs(cache_entries));
-> +			cache2[slot] = np;
-> +			pr_err("%s(%d) phandle %x slot %x hash %x\n", __func__, __LINE__,
-> +			       np->phandle, np->phandle & phandle_cache_mask, slot);
->  		}
-> +	{
-> +		int i, filled = 0, filled_hash = 0;
-> +
-> +		for (i = 0; i < cache_entries; i++) {
-> +			if (phandle_cache[i])
-> +				filled++;
-> +			if (cache2[i])
-> +				filled_hash++;
-> +		}
-> +		pr_err("%s(%d) Used entries: %d, hashed: %d\n", __func__, __LINE__, filled, filled_hash);
-> +	}
->  
->  out:
->  	raw_spin_unlock_irqrestore(&devtree_lock, flags);
->
-> Sebastian
