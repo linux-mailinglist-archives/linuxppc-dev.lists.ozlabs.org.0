@@ -2,59 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158EF110301
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 17:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACAF110456
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 19:37:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47S7V24zVhzDqWp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 03:58:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47S9hX6Zg7zDqJS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 05:37:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="WpZaeT3v"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47S7S24vc2zDqJ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 03:56:50 +1100 (AEDT)
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com
- [209.85.160.180])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1FE8C206EC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 16:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575392208;
- bh=2lYntF80jSmeqB4A/DzJDtoIs7czCONpon40J9pdHrQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=WpZaeT3vOrSLGx/La/YG4mHSjjm7A1zScT2JhFKy37HwVp4dCnJpzi5ldpvaOhFkS
- 1aujn56DN2oxsV5NMsvTKfrPfKurAAsxwii7C5H7F95IrBKOX0zCYF7ck8l+xwrCXr
- FapbYWeHFr1e2m4RY7m6O8HZl59y51i9LJMulFmc=
-Received: by mail-qt1-f180.google.com with SMTP id d5so4497553qto.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2019 08:56:48 -0800 (PST)
-X-Gm-Message-State: APjAAAUrZHiwBK/PwLVVlwFapr9Tb/YgtvMiIbvxVyFnePojdO7BagrT
- CF4NLQOt2ueZV62FoQ4wNpuVp6wIuaAqEQq1Zw==
-X-Google-Smtp-Source: APXvYqzuIgD9VwLAeCUG8AaPW3sC2UvyTHw3WE6Wjkbwac76yQtEuRAQ7GTea2JOUFUx5bLLNGHf7iWk9TvTrFvVUko=
-X-Received: by 2002:ac8:2cd0:: with SMTP id 16mr4561326qtx.136.1575392206992; 
- Tue, 03 Dec 2019 08:56:46 -0800 (PST)
-MIME-Version: 1.0
-References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
- <e1f232f5-3847-a519-5cce-95a26512e82b@gmail.com>
- <87tv6idp37.fsf@mpe.ellerman.id.au>
- <67e1da87-7f5a-3972-bc16-28bae2350c12@gmail.com>
-In-Reply-To: <67e1da87-7f5a-3972-bc16-28bae2350c12@gmail.com>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Tue, 3 Dec 2019 10:56:35 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKieG5=teL7gABPKbJOQfvoS9s-ZPF-=R0yEE_LUoy-Kw@mail.gmail.com>
-Message-ID: <CAL_JsqKieG5=teL7gABPKbJOQfvoS9s-ZPF-=R0yEE_LUoy-Kw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47S9fR3GzdzDq5W
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 05:35:59 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id xB3IZXE4022796;
+ Tue, 3 Dec 2019 12:35:33 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id xB3IZV1r022795;
+ Tue, 3 Dec 2019 12:35:31 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 3 Dec 2019 12:35:31 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
-To: Frank Rowand <frowand.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20191203183531.GT24609@gate.crashing.org>
+References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
+ <87wobedpit.fsf@mpe.ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wobedpit.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,142 +52,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org,
+Cc: devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 2, 2019 at 10:28 PM Frank Rowand <frowand.list@gmail.com> wrote:
->
-> On 12/2/19 10:12 PM, Michael Ellerman wrote:
-> > Frank Rowand <frowand.list@gmail.com> writes:
-> >> On 11/29/19 9:10 AM, Sebastian Andrzej Siewior wrote:
-> >>> I've been looking at phandle_cache and noticed the following: The raw
-> >>> phandle value as generated by dtc starts at zero and is incremented by
-> >>> one for each phandle entry. The qemu pSeries model is using Slof (which
-> >>> is probably the same thing as used on real hardware) and this looks like
-> >>> a poiner value for the phandle.
-> >>> With
-> >>>     qemu-system-ppc64le -m 16G -machine pseries -smp 8
-> >>>
-> >>> I got the following output:
-> >>> | entries: 64
-> >>> | phandle 7e732468 slot 28 hash c
-> >>> | phandle 7e732ad0 slot 10 hash 27
-> >>> | phandle 7e732ee8 slot 28 hash 3a
-> >>> | phandle 7e734160 slot 20 hash 36
-> >>> | phandle 7e734318 slot 18 hash 3a
-> >>> | phandle 7e734428 slot 28 hash 33
-> >>> | phandle 7e734538 slot 38 hash 2c
-> >>> | phandle 7e734850 slot 10 hash e
-> >>> | phandle 7e735220 slot 20 hash 2d
-> >>> | phandle 7e735bf0 slot 30 hash d
-> >>> | phandle 7e7365c0 slot 0 hash 2d
-> >>> | phandle 7e736f90 slot 10 hash d
-> >>> | phandle 7e737960 slot 20 hash 2d
-> >>> | phandle 7e738330 slot 30 hash d
-> >>> | phandle 7e738d00 slot 0 hash 2d
-> >>> | phandle 7e739730 slot 30 hash 38
-> >>> | phandle 7e73bd08 slot 8 hash 17
-> >>> | phandle 7e73c2e0 slot 20 hash 32
-> >>> | phandle 7e73c7f8 slot 38 hash 37
-> >>> | phandle 7e782420 slot 20 hash 13
-> >>> | phandle 7e782ed8 slot 18 hash 1b
-> >>> | phandle 7e73ce28 slot 28 hash 39
-> >>> | phandle 7e73d390 slot 10 hash 22
-> >>> | phandle 7e73d9a8 slot 28 hash 1a
-> >>> | phandle 7e73dc28 slot 28 hash 37
-> >>> | phandle 7e73de00 slot 0 hash a
-> >>> | phandle 7e73e028 slot 28 hash 0
-> >>> | phandle 7e7621a8 slot 28 hash 36
-> >>> | phandle 7e73e458 slot 18 hash 1e
-> >>> | phandle 7e73e608 slot 8 hash 1e
-> >>> | phandle 7e740078 slot 38 hash 28
-> >>> | phandle 7e740180 slot 0 hash 1d
-> >>> | phandle 7e740240 slot 0 hash 33
-> >>> | phandle 7e740348 slot 8 hash 29
-> >>> | phandle 7e740410 slot 10 hash 2
-> >>> | phandle 7e740eb0 slot 30 hash 3e
-> >>> | phandle 7e745390 slot 10 hash 33
-> >>> | phandle 7e747b08 slot 8 hash c
-> >>> | phandle 7e748528 slot 28 hash f
-> >>> | phandle 7e74a6e0 slot 20 hash 18
-> >>> | phandle 7e74aab0 slot 30 hash b
-> >>> | phandle 7e74f788 slot 8 hash d
-> >>> | Used entries: 8, hashed: 29
-> >>>
-> >>> So the hash array has 64 entries out which only 8 are populated. Using
-> >>> hash_32() populates 29 entries.
-> >>> Could someone with real hardware verify this?
-> >>> I'm not sure how important this performance wise, it looks just like a
-> >>> waste using only 1/8 of the array.
-> >>
-> >> The hash used is based on the assumptions you noted, and as stated in the
-> >> code, that phandle property values are in a contiguous range of 1..n
-> >> (not starting from zero), which is what dtc generates.
-> >
-> >> We knew that for systems that do not match the assumptions that the hash
-> >> will not be optimal.
-> >
-> > If we're going to have the phandle cache it should at least make some
-> > attempt to work across the systems that Linux supports.
-> >
-> >> Unless there is a serious performance problem for
-> >> such systems, I do not want to make the phandle hash code more complicated
-> >> to optimize for these cases.  And the pseries have been performing ok
-> >> without phandle related performance issues that I remember hearing since
-> >> before the cache was added, which could have only helped the performance.
-> >> Yes, if your observations are correct, some memory is being wasted, but
-> >> a 64 entry cache is not very large on a pseries.
-> >
-> > A single line change to use an actual hash function is hardly
-> > complicating it, compared to the amount of code already there.
->
-> With a dtc generated devicetree, the hash is perfect, with no
-> misses.  That single line change then makes the hash bad for
-> dtc generated devicetrees.
+Hi!
 
-To quantify that, I did some tests with the hash algo and it's about a
-10% collision rate using phandle values of 1-$cache_size. There's
-never more than 2 phandles colliding in a slot. The actual impact
-would be less given 100% thrashing seems unlikely.
+On Tue, Dec 03, 2019 at 03:03:22PM +1100, Michael Ellerman wrote:
+> Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
+> I've certainly heard it said that on some OF's the phandle was just ==
+> the address of the internal representation, and I guess maybe for SLOF
+> that is true.
 
-> The cache was added to address a problem with a system with a
-> dtc generated devicetree.
+It is (or was).  In many OFs it is just the effective address of some
+node structure.  SLOF runs with translation off normally.
 
-The cache was added to address a problem with a system with a large
-number of nodes and phandles (814 phandles in the reported case). dtc
-happens to be used in that case.
+> They seem to vary wildly though, eg. on an Apple G5:
 
-> I had not heard of any phandle
-> lookup performance issues on ppc systems.  An imperfect hash
-> for ppc should not make the ppc performance worse (unless
-> every single phandle value hashes to a single bucket).  So
-> the ppc performance is likely better than it was before
-> the hash was added, even without an optimal hash algorithm.
->
-> So the change would not be a single line change.  It would
-> be a change to use different hash algorithms for dtc
-> generated device trees versus other device trees.
->
-> Another possibility would be to make the cache be dependent
-> upon not CONFIG_PPC.  It might be possible to disable the
-> cache with a minimal code change.
+Apple OF runs with translation on usually.  IIRC these are effective
+addresses as well.
 
-I'd rather not do that.
+The OF they have on G5 machines is mostly 32-bit, for compatibility is my
+guess (for userland things dealing with addresses from OF, importantly).
 
-And yes, as mentioned earlier I don't like the complexity. I didn't
-from the start and I'm  I'm still of the opinion we should have a
-fixed or 1 time sized true cache (i.e. smaller than total # of
-phandles). That would solve the RT memory allocation and locking issue
-too.
+>   $ find /proc/device-tree/ -name phandle | xargs lsprop | head -10
+>   /proc/device-tree/vsp@0,f9000000/veo@f9180000/phandle ff970848
+>   /proc/device-tree/vsp@0,f9000000/phandle ff970360
+>   /proc/device-tree/vsp@0,f9000000/veo@f9080000/phandle ff970730
+>   /proc/device-tree/nvram@0,fff04000/phandle ff967fb8
+>   /proc/device-tree/xmodem/phandle ff9655e8
+>   /proc/device-tree/multiboot/phandle ff9504f0
+>   /proc/device-tree/diagnostics/phandle ff965550
+>   /proc/device-tree/options/phandle ff893cf0
+>   /proc/device-tree/openprom/client-services/phandle ff8925b8
+>   /proc/device-tree/openprom/phandle ff892458
+> 
+> That machine does not have enough RAM for those to be 32-bit real
+> addresses. I think Apple OF is running in virtual mode though (?), so
+> maybe they are pointers?
 
-For reference, the performance difference between the current
-implementation (assuming fixes haven't regressed it) was ~400ms vs. a
-~340ms improvement with a 64 entry cache (using a mask, not a hash).
-IMO, 340ms improvement was good enough.
+Yes, I think the default is to have 8MB ram at the top of 4GB (which is
+the physical address of the bootrom, btw) for OF.
 
-Rob
+> And on an IBM pseries machine they're a bit all over the place:
+> 
+>   /proc/device-tree/cpus/PowerPC,POWER8@40/ibm,phandle 10000040
+>   /proc/device-tree/cpus/l2-cache@2005/ibm,phandle 00002005
+>   /proc/device-tree/cpus/PowerPC,POWER8@30/ibm,phandle 10000030
+>   /proc/device-tree/cpus/PowerPC,POWER8@20/ibm,phandle 10000020
+>   /proc/device-tree/cpus/PowerPC,POWER8@10/ibm,phandle 10000010
+>   /proc/device-tree/cpus/l2-cache@2003/ibm,phandle 00002003
+>   /proc/device-tree/cpus/l2-cache@200a/ibm,phandle 0000200a
+>   /proc/device-tree/cpus/l3-cache@3108/ibm,phandle 00003108
+>   /proc/device-tree/cpus/l2-cache@2001/ibm,phandle 00002001
+>   /proc/device-tree/cpus/l3-cache@3106/ibm,phandle 00003106
+>   /proc/device-tree/cpus/ibm,phandle fffffff8
+>   /proc/device-tree/cpus/l3-cache@3104/ibm,phandle 00003104
+>   /proc/device-tree/cpus/l2-cache@2008/ibm,phandle 00002008
+>   /proc/device-tree/cpus/l3-cache@3102/ibm,phandle 00003102
+>   /proc/device-tree/cpus/l2-cache@2006/ibm,phandle 00002006
+>   /proc/device-tree/cpus/l3-cache@3100/ibm,phandle 00003100
+>   /proc/device-tree/cpus/PowerPC,POWER8@8/ibm,phandle 10000008
+>   /proc/device-tree/cpus/l2-cache@2004/ibm,phandle 00002004
+>   /proc/device-tree/cpus/PowerPC,POWER8@48/ibm,phandle 10000048
+>   /proc/device-tree/cpus/PowerPC,POWER8@38/ibm,phandle 10000038
+>   /proc/device-tree/cpus/l2-cache@2002/ibm,phandle 00002002
+>   /proc/device-tree/cpus/PowerPC,POWER8@28/ibm,phandle 10000028
+>   /proc/device-tree/cpus/l3-cache@3107/ibm,phandle 00003107
+>   /proc/device-tree/cpus/PowerPC,POWER8@18/ibm,phandle 10000018
+>   /proc/device-tree/cpus/l2-cache@2000/ibm,phandle 00002000
+>   /proc/device-tree/cpus/l3-cache@3105/ibm,phandle 00003105
+>   /proc/device-tree/cpus/l3-cache@3103/ibm,phandle 00003103
+>   /proc/device-tree/cpus/l3-cache@310a/ibm,phandle 0000310a
+>   /proc/device-tree/cpus/PowerPC,POWER8@0/ibm,phandle 10000000
+>   /proc/device-tree/cpus/l2-cache@2007/ibm,phandle 00002007
+>   /proc/device-tree/cpus/l3-cache@3101/ibm,phandle 00003101
+>   /proc/device-tree/pci@80000002000001b/ibm,phandle 2000001b
+
+Some (the 1000xxxx) look like addresses as well.
+
+> > So the hash array has 64 entries out which only 8 are populated. Using
+> > hash_32() populates 29 entries.
+
+> On the G5 it's similarly inefficient:
+> [    0.007379] OF: of_populate_phandle_cache(242) Used entries: 31, hashed: 111
+
+> And some output from a "real" pseries machine (IBM OF), which is
+> slightly better:
+> [    0.129467] OF: of_populate_phandle_cache(242) Used entries: 39, hashed: 81
+
+> So yeah using hash_32() is quite a bit better in both cases.
+
+Yup, no surprise there.  And hash_32 is very cheap to compute.
+
+> And if I'm reading your patch right it would be a single line change to
+> switch, so that seems like it's worth doing to me.
+
+Agreed!
+
+Btw.  Some OFs mangle the phandles some way, to make it easier to catch
+people using it as an address (and similarly, mangle ihandles differently,
+so you catch confusion between ihandles and phandles as well).  Like a
+simple xor, with some odd number preferably.  You should assume *nothing*
+about phandles, they are opaque identifiers.
+
+
+Segher
