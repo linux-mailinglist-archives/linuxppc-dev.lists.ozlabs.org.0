@@ -2,45 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACAF110456
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 19:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2341104CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 20:11:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47S9hX6Zg7zDqJS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 05:37:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SBRM66FKzDqRR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 06:11:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+febdd2e10d904463134d+5945+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="CCSUVIoh"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47S9fR3GzdzDq5W
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 05:35:59 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id xB3IZXE4022796;
- Tue, 3 Dec 2019 12:35:33 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id xB3IZV1r022795;
- Tue, 3 Dec 2019 12:35:31 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 3 Dec 2019 12:35:31 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
-Message-ID: <20191203183531.GT24609@gate.crashing.org>
-References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
- <87wobedpit.fsf@mpe.ellerman.id.au>
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SBP908JbzDqN0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 06:09:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=py4BlJOG+aJY1t5dKR8XIt0EiXOF2BwKLJexNHJri1k=; b=CCSUVIohdJ+y56P3xd+6FuQGU
+ pJYOCKIHCMeXs7AEXlZL6jhxvHAl+0Lgy118AvAwu1hxc2FV5vGBpf8rZt6LFK4FJKxxYFA30S7Bh
+ KJ0LY7pWJ3PZAwiaVZggg4EVTZwgYy27V7jjcaRIRwvPQrHjVi22wX2Pzuqg5TkXtAGAkFpgxlgWD
+ YcKt33G2jpjmQMTuNJCApdFpefsW4WxBHjE48iux4CMjK64jcO495icX9To0oB233ho0UJWxLpJeZ
+ HavcCSh+2GXDTbHO6nABmvKZ0ENQel24dDe2TsBsZugZ+3E2226e6X6Qtl2lnKDGErDmdcNtk8o+d
+ aJmH63Ccg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1icDY5-0001tg-8N; Tue, 03 Dec 2019 19:09:25 +0000
+Date: Tue, 3 Dec 2019 11:09:25 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Stancek <jstancek@redhat.com>
+Subject: Re: [bug] userspace hitting sporadic SIGBUS on xfs (Power9,
+ ppc64le), v4.19 and later
+Message-ID: <20191203190925.GA5150@infradead.org>
+References: <cki.6C6A189643.3T2ZUWEMOI@redhat.com>
+ <1738119916.14437244.1575151003345.JavaMail.zimbra@redhat.com>
+ <8736e3ffen.fsf@mpe.ellerman.id.au>
+ <1420623640.14527843.1575289859701.JavaMail.zimbra@redhat.com>
+ <1766807082.14812757.1575377439007.JavaMail.zimbra@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87wobedpit.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <1766807082.14812757.1575377439007.JavaMail.zimbra@redhat.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,113 +69,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
+Cc: hch@infradead.org, darrick.wong@oracle.com,
+ Memory Management <mm-qe@redhat.com>,
+ Linux Stable maillist <stable@vger.kernel.org>, linux-xfs@vger.kernel.org,
+ CKI Project <cki-project@redhat.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, LTP Mailing List <ltp@lists.linux.it>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+Please try the patch below:
 
-On Tue, Dec 03, 2019 at 03:03:22PM +1100, Michael Ellerman wrote:
-> Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
-> I've certainly heard it said that on some OF's the phandle was just ==
-> the address of the internal representation, and I guess maybe for SLOF
-> that is true.
-
-It is (or was).  In many OFs it is just the effective address of some
-node structure.  SLOF runs with translation off normally.
-
-> They seem to vary wildly though, eg. on an Apple G5:
-
-Apple OF runs with translation on usually.  IIRC these are effective
-addresses as well.
-
-The OF they have on G5 machines is mostly 32-bit, for compatibility is my
-guess (for userland things dealing with addresses from OF, importantly).
-
->   $ find /proc/device-tree/ -name phandle | xargs lsprop | head -10
->   /proc/device-tree/vsp@0,f9000000/veo@f9180000/phandle ff970848
->   /proc/device-tree/vsp@0,f9000000/phandle ff970360
->   /proc/device-tree/vsp@0,f9000000/veo@f9080000/phandle ff970730
->   /proc/device-tree/nvram@0,fff04000/phandle ff967fb8
->   /proc/device-tree/xmodem/phandle ff9655e8
->   /proc/device-tree/multiboot/phandle ff9504f0
->   /proc/device-tree/diagnostics/phandle ff965550
->   /proc/device-tree/options/phandle ff893cf0
->   /proc/device-tree/openprom/client-services/phandle ff8925b8
->   /proc/device-tree/openprom/phandle ff892458
-> 
-> That machine does not have enough RAM for those to be 32-bit real
-> addresses. I think Apple OF is running in virtual mode though (?), so
-> maybe they are pointers?
-
-Yes, I think the default is to have 8MB ram at the top of 4GB (which is
-the physical address of the bootrom, btw) for OF.
-
-> And on an IBM pseries machine they're a bit all over the place:
-> 
->   /proc/device-tree/cpus/PowerPC,POWER8@40/ibm,phandle 10000040
->   /proc/device-tree/cpus/l2-cache@2005/ibm,phandle 00002005
->   /proc/device-tree/cpus/PowerPC,POWER8@30/ibm,phandle 10000030
->   /proc/device-tree/cpus/PowerPC,POWER8@20/ibm,phandle 10000020
->   /proc/device-tree/cpus/PowerPC,POWER8@10/ibm,phandle 10000010
->   /proc/device-tree/cpus/l2-cache@2003/ibm,phandle 00002003
->   /proc/device-tree/cpus/l2-cache@200a/ibm,phandle 0000200a
->   /proc/device-tree/cpus/l3-cache@3108/ibm,phandle 00003108
->   /proc/device-tree/cpus/l2-cache@2001/ibm,phandle 00002001
->   /proc/device-tree/cpus/l3-cache@3106/ibm,phandle 00003106
->   /proc/device-tree/cpus/ibm,phandle fffffff8
->   /proc/device-tree/cpus/l3-cache@3104/ibm,phandle 00003104
->   /proc/device-tree/cpus/l2-cache@2008/ibm,phandle 00002008
->   /proc/device-tree/cpus/l3-cache@3102/ibm,phandle 00003102
->   /proc/device-tree/cpus/l2-cache@2006/ibm,phandle 00002006
->   /proc/device-tree/cpus/l3-cache@3100/ibm,phandle 00003100
->   /proc/device-tree/cpus/PowerPC,POWER8@8/ibm,phandle 10000008
->   /proc/device-tree/cpus/l2-cache@2004/ibm,phandle 00002004
->   /proc/device-tree/cpus/PowerPC,POWER8@48/ibm,phandle 10000048
->   /proc/device-tree/cpus/PowerPC,POWER8@38/ibm,phandle 10000038
->   /proc/device-tree/cpus/l2-cache@2002/ibm,phandle 00002002
->   /proc/device-tree/cpus/PowerPC,POWER8@28/ibm,phandle 10000028
->   /proc/device-tree/cpus/l3-cache@3107/ibm,phandle 00003107
->   /proc/device-tree/cpus/PowerPC,POWER8@18/ibm,phandle 10000018
->   /proc/device-tree/cpus/l2-cache@2000/ibm,phandle 00002000
->   /proc/device-tree/cpus/l3-cache@3105/ibm,phandle 00003105
->   /proc/device-tree/cpus/l3-cache@3103/ibm,phandle 00003103
->   /proc/device-tree/cpus/l3-cache@310a/ibm,phandle 0000310a
->   /proc/device-tree/cpus/PowerPC,POWER8@0/ibm,phandle 10000000
->   /proc/device-tree/cpus/l2-cache@2007/ibm,phandle 00002007
->   /proc/device-tree/cpus/l3-cache@3101/ibm,phandle 00003101
->   /proc/device-tree/pci@80000002000001b/ibm,phandle 2000001b
-
-Some (the 1000xxxx) look like addresses as well.
-
-> > So the hash array has 64 entries out which only 8 are populated. Using
-> > hash_32() populates 29 entries.
-
-> On the G5 it's similarly inefficient:
-> [    0.007379] OF: of_populate_phandle_cache(242) Used entries: 31, hashed: 111
-
-> And some output from a "real" pseries machine (IBM OF), which is
-> slightly better:
-> [    0.129467] OF: of_populate_phandle_cache(242) Used entries: 39, hashed: 81
-
-> So yeah using hash_32() is quite a bit better in both cases.
-
-Yup, no surprise there.  And hash_32 is very cheap to compute.
-
-> And if I'm reading your patch right it would be a single line change to
-> switch, so that seems like it's worth doing to me.
-
-Agreed!
-
-Btw.  Some OFs mangle the phandles some way, to make it easier to catch
-people using it as an address (and similarly, mangle ihandles differently,
-so you catch confusion between ihandles and phandles as well).  Like a
-simple xor, with some odd number preferably.  You should assume *nothing*
-about phandles, they are opaque identifiers.
-
-
-Segher
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 512856a88106..340c15400423 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -28,6 +28,7 @@
+ struct iomap_page {
+ 	atomic_t		read_count;
+ 	atomic_t		write_count;
++	spinlock_t		uptodate_lock;
+ 	DECLARE_BITMAP(uptodate, PAGE_SIZE / 512);
+ };
+ 
+@@ -51,6 +52,7 @@ iomap_page_create(struct inode *inode, struct page *page)
+ 	iop = kmalloc(sizeof(*iop), GFP_NOFS | __GFP_NOFAIL);
+ 	atomic_set(&iop->read_count, 0);
+ 	atomic_set(&iop->write_count, 0);
++	spin_lock_init(&iop->uptodate_lock);
+ 	bitmap_zero(iop->uptodate, PAGE_SIZE / SECTOR_SIZE);
+ 
+ 	/*
+@@ -139,25 +141,38 @@ iomap_adjust_read_range(struct inode *inode, struct iomap_page *iop,
+ }
+ 
+ static void
+-iomap_set_range_uptodate(struct page *page, unsigned off, unsigned len)
++iomap_iop_set_range_uptodate(struct page *page, unsigned off, unsigned len)
+ {
+ 	struct iomap_page *iop = to_iomap_page(page);
+ 	struct inode *inode = page->mapping->host;
+ 	unsigned first = off >> inode->i_blkbits;
+ 	unsigned last = (off + len - 1) >> inode->i_blkbits;
+-	unsigned int i;
+ 	bool uptodate = true;
++	unsigned long flags;
++	unsigned int i;
+ 
+-	if (iop) {
+-		for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
+-			if (i >= first && i <= last)
+-				set_bit(i, iop->uptodate);
+-			else if (!test_bit(i, iop->uptodate))
+-				uptodate = false;
+-		}
++	spin_lock_irqsave(&iop->uptodate_lock, flags);
++	for (i = 0; i < PAGE_SIZE / i_blocksize(inode); i++) {
++		if (i >= first && i <= last)
++			set_bit(i, iop->uptodate);
++		else if (!test_bit(i, iop->uptodate))
++			uptodate = false;
+ 	}
+ 
+-	if (uptodate && !PageError(page))
++	if (uptodate)
++		SetPageUptodate(page);
++	spin_unlock_irqrestore(&iop->uptodate_lock, flags);
++}
++
++static void
++iomap_set_range_uptodate(struct page *page, unsigned off, unsigned len)
++{
++	if (PageError(page))
++		return;
++
++	if (page_has_private(page))
++		iomap_iop_set_range_uptodate(page, off, len);
++	else
+ 		SetPageUptodate(page);
+ }
+ 
