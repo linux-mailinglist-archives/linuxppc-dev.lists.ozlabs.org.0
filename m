@@ -2,90 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AC210F6D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 06:13:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AE110F6D4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 06:15:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Rqr242mVzDqVr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 16:13:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47RqtC16sCzDqV8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 16:14:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47RqHF5RhRzDqBW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 15:48:09 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB34loWS092141
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Dec 2019 23:48:06 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2wm6c15a0g-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47RqQk1Tl2zDqBd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 15:54:37 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB34q4Fa113643
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Dec 2019 23:54:34 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wnehxkphc-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 23:48:05 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2019 23:54:34 -0500
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 3 Dec 2019 04:48:03 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Tue, 3 Dec 2019 04:54:31 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Dec 2019 04:47:55 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB34lsqd54722746
+ Tue, 3 Dec 2019 04:54:23 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB34sN8M62259362
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Dec 2019 04:47:55 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8F1111C050;
- Tue,  3 Dec 2019 04:47:54 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8365A11C04C;
- Tue,  3 Dec 2019 04:47:54 +0000 (GMT)
+ Tue, 3 Dec 2019 04:54:23 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 06A70AE053;
+ Tue,  3 Dec 2019 04:54:23 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A7D29AE04D;
+ Tue,  3 Dec 2019 04:54:22 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  3 Dec 2019 04:47:54 +0000 (GMT)
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  3 Dec 2019 04:54:22 +0000 (GMT)
 Received: from [9.81.204.28] (unknown [9.81.204.28])
  (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1E457A01B6;
- Tue,  3 Dec 2019 15:47:51 +1100 (AEDT)
-Subject: Re: [PATCH v2 02/27] nvdimm: remove prototypes for nonexistent
- functions
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3E1DEA01B6;
+ Tue,  3 Dec 2019 15:54:19 +1100 (AEDT)
+Subject: Re: [PATCH v2 26/27] powerpc: Enable OpenCAPI Storage Class Memory
+ driver on bare metal
 To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
 References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203034655.51561-3-alastair@au1.ibm.com>
+ <20191203034655.51561-27-alastair@au1.ibm.com>
 From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 3 Dec 2019 15:47:51 +1100
+Date: Tue, 3 Dec 2019 15:54:20 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191203034655.51561-3-alastair@au1.ibm.com>
+In-Reply-To: <20191203034655.51561-27-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19120304-0020-0000-0000-00000392D376
+x-cbid: 19120304-0016-0000-0000-000002D01E08
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120304-0021-0000-0000-000021E9F1E2
-Message-Id: <7d78054e-54a2-5fbc-5570-474e58cefe63@linux.ibm.com>
+x-cbparentid: 19120304-0017-0000-0000-000033321546
+Message-Id: <a993926f-72c0-af1c-220c-38dd90377ef0@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-02_06:2019-11-29,2019-12-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- adultscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 mlxlogscore=693
- suspectscore=0 lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912030042
+ lowpriorityscore=0
+ phishscore=0 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ suspectscore=0 impostorscore=0 mlxlogscore=891 priorityscore=1501
+ mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912030043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,12 +122,34 @@ Sender: "Linuxppc-dev"
 On 3/12/19 2:46 pm, Alastair D'Silva wrote:
 > From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> These functions don't exist, so remove the prototypes for them.
+> Enable OpenCAPI Storage Class Memory driver on bare metal
 > 
 > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+I'd suggest a summary line more like
+
+powerpc/configs: Enable OpenCAPI SCM driver in powernv_defconfig
+
+and a commit message to match.
+
+
+> ---
+>   arch/powerpc/configs/powernv_defconfig | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
+> index 6658cceb928c..a8f46aece8a4 100644
+> --- a/arch/powerpc/configs/powernv_defconfig
+> +++ b/arch/powerpc/configs/powernv_defconfig
+> @@ -352,3 +352,7 @@ CONFIG_KVM_BOOK3S_64=m
+>   CONFIG_KVM_BOOK3S_64_HV=m
+>   CONFIG_VHOST_NET=m
+>   CONFIG_PRINTK_TIME=y
+> +CONFIG_OCXL_SCM=m
+> +CONFIG_DEV_DAX=m
+> +CONFIG_DEV_DAX_PMEM=m
+> +CONFIG_FS_DAX=m
+> 
 
 -- 
 Andrew Donnellan              OzLabs, ADL Canberra
