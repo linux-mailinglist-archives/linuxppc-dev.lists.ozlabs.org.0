@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BC410FDBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 13:36:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008BD10FDD2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 13:40:11 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47S1lq6kxMzDqSR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 23:40:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47S1gD6KKKzDqTj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2019 23:36:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,25 +18,28 @@ Authentication-Results: lists.ozlabs.org;
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47S1WL6fqtzDqTT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47S1WL6hT2zDqTb
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2019 23:29:10 +1100 (AEDT)
 Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 882F51A1340;
- Tue,  3 Dec 2019 13:29:06 +0100 (CET)
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id ECC0B1A1319;
+ Tue,  3 Dec 2019 13:29:07 +0100 (CET)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
  [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C7F6A1A0383;
- Tue,  3 Dec 2019 13:29:01 +0100 (CET)
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6F65B1A1308;
+ Tue,  3 Dec 2019 13:29:03 +0100 (CET)
 Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 77C614028F;
- Tue,  3 Dec 2019 20:28:55 +0800 (SGT)
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 16A16402F0;
+ Tue,  3 Dec 2019 20:28:56 +0800 (SGT)
 From: Biwen Li <biwen.li@nxp.com>
 To: leoyang.li@nxp.com, shawnguo@kernel.org, robh+dt@kernel.org,
  mark.rutland@arm.com, ran.wang_1@nxp.com
-Subject: [v5 1/3] soc: fsl: handle RCPM errata A-008646 on SoC LS1021A
-Date: Tue,  3 Dec 2019 20:28:16 +0800
-Message-Id: <20191203122818.21941-1-biwen.li@nxp.com>
+Subject: [v5 2/3] arm: dts: ls1021a: fix that FlexTimer cannot wakeup system
+ in deep sleep
+Date: Tue,  3 Dec 2019 20:28:17 +0800
+Message-Id: <20191203122818.21941-2-biwen.li@nxp.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191203122818.21941-1-biwen.li@nxp.com>
+References: <20191203122818.21941-1-biwen.li@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,117 +59,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Description:
-	- Reading configuration register RCPM_IPPDEXPCR1
-	  always return zero
-
-Workaround:
-	- Save register RCPM_IPPDEXPCR1's value to
-	  register SCFG_SPARECR8.(uboot's psci also
-	  need reading value from the register SCFG_SPARECR8
-	  to set register RCPM_IPPDEXPCR1)
-
-Impact:
-	- FlexTimer module will cannot wakeup system in
-	  deep sleep on SoC LS1021A
+The patch fixes a bug that FlexTimer cannot
+wakeup system in deep sleep.
 
 Signed-off-by: Biwen Li <biwen.li@nxp.com>
 ---
 Change in v5:
-	- update the patch, because of rcpm driver has updated.
+	- none
 
 Change in v4:
-	- rename property name
+	- update property name
 	  fsl,ippdexpcr-alt-addr -> fsl,ippdexpcr1-alt-addr
 
 Change in v3:
-	- update commit message
-	- rename property name
+  	- update property name
 	  fsl,rcpm-scfg -> fsl,ippdexpcr-alt-addr
-
+  	  
 Change in v2:
-  	- fix stype problems
+  	- none
 
- drivers/soc/fsl/rcpm.c | 47 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/ls1021a.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
-index a093dbe6d2cb..775c618f0456 100644
---- a/drivers/soc/fsl/rcpm.c
-+++ b/drivers/soc/fsl/rcpm.c
-@@ -6,13 +6,16 @@
- //
- // Author: Ran Wang <ran.wang_1@nxp.com>
- 
-+#include <linux/acpi.h>
- #include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/mfd/syscon.h>
- #include <linux/module.h>
--#include <linux/platform_device.h>
- #include <linux/of_address.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/suspend.h>
--#include <linux/kernel.h>
- 
- #define RCPM_WAKEUP_CELL_MAX_SIZE	7
- 
-@@ -37,6 +40,9 @@ static int rcpm_pm_prepare(struct device *dev)
- 	struct device_node	*np = dev->of_node;
- 	u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1];
- 	u32 setting[RCPM_WAKEUP_CELL_MAX_SIZE] = {0};
-+	struct regmap *scfg_addr_regmap = NULL;
-+	u32 reg_offset[RCPM_WAKEUP_CELL_MAX_SIZE + 1];
-+	u32 reg_value = 0;
- 
- 	rcpm = dev_get_drvdata(dev);
- 	if (!rcpm)
-@@ -90,6 +96,43 @@ static int rcpm_pm_prepare(struct device *dev)
- 			tmp |= ioread32be(address);
- 			iowrite32be(tmp, address);
- 		}
-+		/*
-+		 * Workaround of errata A-008646 on SoC LS1021A:
-+		 * There is a bug of register ippdexpcr1.
-+		 * Reading configuration register RCPM_IPPDEXPCR1
-+		 * always return zero. So save ippdexpcr1's value
-+		 * to register SCFG_SPARECR8.And the value of
-+		 * ippdexpcr1 will be read from SCFG_SPARECR8.
-+		 */
-+		if (device_property_present(dev, "fsl,ippdexpcr1-alt-addr")) {
-+			if (dev_of_node(dev)) {
-+				scfg_addr_regmap = syscon_regmap_lookup_by_phandle(np,
-+										   "fsl,ippdexpcr1-alt-addr");
-+			} else if (is_acpi_node(dev->fwnode)) {
-+				dev_err(dev, "not support acpi for rcpm\n");
-+				continue;
-+			}
+diff --git a/arch/arm/boot/dts/ls1021a.dtsi b/arch/arm/boot/dts/ls1021a.dtsi
+index 816e2926c448..6659d83c3aa2 100644
+--- a/arch/arm/boot/dts/ls1021a.dtsi
++++ b/arch/arm/boot/dts/ls1021a.dtsi
+@@ -988,6 +988,12 @@
+ 			compatible = "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-2.1+";
+ 			reg = <0x0 0x1ee2140 0x0 0x8>;
+ 			#fsl,rcpm-wakeup-cells = <2>;
 +
-+			if (scfg_addr_regmap && (i == 1)) {
-+				if (device_property_read_u32_array(dev,
-+				    "fsl,ippdexpcr1-alt-addr",
-+				    reg_offset,
-+				    1 + sizeof(u64)/sizeof(u32))) {
-+					scfg_addr_regmap = NULL;
-+					continue;
-+				}
-+				/* Read value from register SCFG_SPARECR8 */
-+				regmap_read(scfg_addr_regmap,
-+					    (u32)(((u64)(reg_offset[1] << (sizeof(u32) * 8) |
-+					    reg_offset[2])) & 0xffffffff),
-+					    &reg_value);
-+				/* Write value to register SCFG_SPARECR8 */
-+				regmap_write(scfg_addr_regmap,
-+					     (u32)(((u64)(reg_offset[1] << (sizeof(u32) * 8) |
-+					     reg_offset[2])) & 0xffffffff),
-+					     tmp | reg_value);
-+			}
-+		}
- 	}
++			/*
++			 * The second and third entry compose an alt offset
++			 * address for IPPDEXPCR1(SCFG_SPARECR8)
++			 */
++			fsl,ippdexpcr1-alt-addr = <&scfg 0x0 0x51c>;
+ 		};
  
- 	return 0;
+ 		ftm_alarm0: timer0@29d0000 {
 -- 
 2.17.1
 
