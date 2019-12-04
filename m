@@ -2,67 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFBF112500
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 09:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35396112625
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 09:58:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47SX9H4MzRzDqG6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 19:30:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SXnW5bQ0zDqTm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 19:58:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
- helo=mail-qt1-x844.google.com; envelope-from=shengjiu.wang@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="gvBjg1YJ"; 
- dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47SX745ws4zDqSn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 19:28:32 +1100 (AEDT)
-Received: by mail-qt1-x844.google.com with SMTP id 38so6846520qtb.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Dec 2019 00:28:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uCZKNDAWGqV6WX7WGX2zLuCaauh33mKw/9lBmVTJ0ho=;
- b=gvBjg1YJe/IrgjhMS9JhufqyINkwEbIy+RWFYHR8NZAu2kCC5HDcADIa9KOonJVUMh
- x7npQ2M1Gwtzb01zbPcFN1d4+1KPuGhN7931x+ADgxvT34FpDGlSRmRTWzKDgOgXXFZE
- yW4H9qRNanJnl1JyGi5SuSKkGCbT/3MFLiuLhzleGytWEbahqN2qHO/Ttikp4/rhPLVX
- MFgI2W3MZsQ8Bg2XD/YSh30Yl3ktzvucbKdheQMnZDcOiwr4GddhWIHvVnsENi0TGRXD
- 6UV8U7GFZdjRzKAjddqxcWGaxBxUQ+rTHYcacIHRLMig57fygCtyIb8nGXoTTddswSIW
- Fp5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=uCZKNDAWGqV6WX7WGX2zLuCaauh33mKw/9lBmVTJ0ho=;
- b=Gv/tN+P1zsDkPMHC/BZ64bUkvTTtFJdLmv86PH+HhieDY2Tk4jblv+8f5PFPpNq1cr
- BMMt7Q38g0aQgr+p1awSQBfaF+1XHjnOL0KnQ353SoDs0hlxXZr/Y0bwyLgde67S6t3j
- qzPtMprCDrjT7tAy6TOnpJ0hm+t2clcg0vEL1t2VmcIwS1V4JgAbbpX4Ptq+2xv3C31i
- v/VdqH6qZIIHqI+7qP/lXPdMJwqzrjPlnq5x0jnexRYr3dN8AOb+fbxCsEbDZ//JoETb
- QuFCJEoBUpxxMeXyIKTRrQI27Y8qYouU42/yg7aTJCuH+bxyFLSrJ6t6WCDlALoYgRef
- Puiw==
-X-Gm-Message-State: APjAAAVS31jAkA6mb3lMZEnqzF67SJdqbN2PI4/3TAmHJHzl+Rin8qJ5
- tUbveEbY4at/OQqgl0axZKZeUqAjT74DZc7HRp8=
-X-Google-Smtp-Source: APXvYqy42lrbvBO0PxmylNsnUOfkNboxvBZlj0DuNVhD+5LgfpHEOmahKkd9pLCkOj8ycJdUS1RZFPe6vl3a7cNcC9M=
-X-Received: by 2002:ac8:7652:: with SMTP id i18mr1580423qtr.292.1575448108482; 
- Wed, 04 Dec 2019 00:28:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SXlb4rL3zDqPQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 19:56:41 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id A08A768BFE; Wed,  4 Dec 2019 09:56:34 +0100 (CET)
+Date: Wed, 4 Dec 2019 09:56:34 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: Bug 205201 - Booting halts if Dawicontrol DC-2976 UW SCSI
+ board installed, unless RAM size limited to 3500M
+Message-ID: <20191204085634.GA25929@lst.de>
+References: <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
+ <6eec5c42-019c-a988-fc2a-cb804194683d@xenosoft.de>
+ <d0252d29-7a03-20e1-ccd7-e12d906e4bdf@arm.com>
+ <b3217742-2c0b-8447-c9ac-608b93265363@xenosoft.de>
+ <20191121180226.GA3852@lst.de>
+ <2fde79cf-875f-94e6-4a1b-f73ebb2e2c32@xenosoft.de>
+ <20191125073923.GA30168@lst.de>
+ <4681f5fe-c095-15f5-9221-4b55e940bafc@xenosoft.de>
+ <20191126164026.GA8026@lst.de> <20191127065624.GB16913@linux.ibm.com>
 MIME-Version: 1.0
-References: <45ef9ee8c6265743a9c30d8e4d9dcbac1ee3aabe.1575286886.git.shengjiu.wang@nxp.com>
- <CAOMZO5AXnw7QDdfKkZ+FBwuWWvr+t0rRsHQ4muW-T00he2f73Q@mail.gmail.com>
-In-Reply-To: <CAOMZO5AXnw7QDdfKkZ+FBwuWWvr+t0rRsHQ4muW-T00he2f73Q@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 4 Dec 2019 16:28:17 +0800
-Message-ID: <CAA+D8AN-UrAyixp+cOw3h=V7xLfCNQRB0XDhxCeYAmnZo9UWBw@mail.gmail.com>
-Subject: Re: [alsa-devel] [PATCH v4 1/2] ASoC: dt-bindings: fsl_asrc: add
- compatible string for imx8qm & imx8qxp
-To: Fabio Estevam <festevam@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191127065624.GB16913@linux.ibm.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,31 +53,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Takashi Iwai <tiwai@suse.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net, rtd2@xtra.co.nz,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Rob Herring <robh+dt@kernel.org>, paulus@samba.org,
+ mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ "contact@a-eon.com" <contact@a-eon.com>, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>, nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Wed, Nov 27, 2019 at 08:56:25AM +0200, Mike Rapoport wrote:
+> On Tue, Nov 26, 2019 at 05:40:26PM +0100, Christoph Hellwig wrote:
+> > On Tue, Nov 26, 2019 at 12:26:38PM +0100, Christian Zigotzky wrote:
+> > > Hello Christoph,
+> > >
+> > > The PCI TV card works with your patch! I was able to patch your Git kernel 
+> > > with the patch above.
+> > >
+> > > I haven't found any error messages in the dmesg yet.
+> > 
+> > Thanks.  Unfortunately this is a bit of a hack as we need to set
+> > the mask based on runtime information like the magic FSL PCIe window.
+> > Let me try to draft something better up, and thanks already for testing
+> > this one!
+> 
+> Maybe we'll simply force bottom up allocation before calling
+> swiotlb_init()? Anyway, it's the last memblock allocation.
 
-On Mon, Dec 2, 2019 at 8:58 PM Fabio Estevam <festevam@gmail.com> wrote:
->
-> On Mon, Dec 2, 2019 at 8:56 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
->
-> > -  - compatible         : Contains "fsl,imx35-asrc" or "fsl,imx53-asrc".
-> > +  - compatible         : Contains "fsl,imx35-asrc", "fsl,imx53-asrc",
-> > +                         "fsl,imx8qm-asrc", "fsl,imx8qxp-asrc"
->
-> You missed the word "or" as in the original binding.
-
-will update it in v5.
-
-Best regards
-Wang Shengjiu
+So I think we should go with this fix (plus a source code comment) for
+now.  Revamping the whole memory initialization is going to take a
+while, and this fix also is easily backportable.
