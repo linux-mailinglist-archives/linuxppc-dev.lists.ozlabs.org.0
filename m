@@ -2,49 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74041112AFC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0688F112B74
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:26:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Sd026WJbzDqTT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:07:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SdPW1G21zDqTT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:26:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::9;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="FODUzhHA"; 
+ dkim-atps=neutral
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47SctC3tX6zDqSJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:02:42 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 63A8F1A047C;
- Wed,  4 Dec 2019 13:02:38 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 20B011A0474;
- Wed,  4 Dec 2019 13:02:32 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 70DB7402BC;
- Wed,  4 Dec 2019 20:02:24 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
- lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, robh+dt@kernel.org,
- mark.rutland@arm.com, devicetree@vger.kernel.org
-Subject: [PATCH v5 2/2] ASoC: fsl_asrc: Add support for imx8qm & imx8qxp
-Date: Wed,  4 Dec 2019 20:00:19 +0800
-Message-Id: <f33dfe3157b5ab200e09ccbf9ab73d31fac6664b.1575452454.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <b9352edb014c1ee8530c0fd8829c2b044b3da649.1575452454.git.shengjiu.wang@nxp.com>
-References: <b9352edb014c1ee8530c0fd8829c2b044b3da649.1575452454.git.shengjiu.wang@nxp.com>
-In-Reply-To: <b9352edb014c1ee8530c0fd8829c2b044b3da649.1575452454.git.shengjiu.wang@nxp.com>
-References: <b9352edb014c1ee8530c0fd8829c2b044b3da649.1575452454.git.shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SdJv5qDgzDqM3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:22:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1575462134;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=H2XdL0WH9WfdbiDKiy00K13CMFaOvBkQg2NsnPLwBhw=;
+ b=FODUzhHA3CE20iMAq9hpsLbt0vbAbjjwwoLDT5coM0CJ+wayW9zmUKqomHVKgFfP4X
+ 7oYXxMa/mJFCBqJy6nIzwmPUs6DYRh8dDdoWnmfo/e6ecWL3+v86j1yEXlaEz6uq98fI
+ FyVWHo5vPa2cKj8nTg+BCtfVKUjrYwqJ7bthcFXv+e6bbz6uO2SaoizbdNo4wMq9Pzqg
+ a9rwrAtHL6qJuoBhSL/kgHgYzmdE/kIr+gh/gXh/LymZB76qF6om3EdCxU/vt4jACapt
+ 4hCPePeBshAibghAO53yMCXjwYK1QKbuo49bYu1ilSOnHWiQxmeTGOZMnNnlJVGrZxPf
+ 8ZXw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2ZxiLpgl3fPNI3J+howFgN/UFpfqH4qvEmeI241"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a01:598:b103:5c16:7d2b:6241:f205:b3e2]
+ by smtp.strato.de (RZmta 46.0.2 AUTH) with ESMTPSA id v035a1vB4CM2CvE
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1
+ with 256 ECDH bits, eq. 3072 bits RSA))
+ (Client did not present a certificate);
+ Wed, 4 Dec 2019 13:22:02 +0100 (CET)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (1.0)
+Subject: Re: Bug 205201 - Booting halts if Dawicontrol DC-2976 UW SCSI board
+ installed, unless RAM size limited to 3500M
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+X-Mailer: iPhone Mail (16G102)
+In-Reply-To: <20191204085634.GA25929@lst.de>
+Date: Wed, 4 Dec 2019 13:22:01 +0100
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1D79E674-5A47-4268-AA96-DA02E8A51929@xenosoft.de>
+References: <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
+ <6eec5c42-019c-a988-fc2a-cb804194683d@xenosoft.de>
+ <d0252d29-7a03-20e1-ccd7-e12d906e4bdf@arm.com>
+ <b3217742-2c0b-8447-c9ac-608b93265363@xenosoft.de>
+ <20191121180226.GA3852@lst.de>
+ <2fde79cf-875f-94e6-4a1b-f73ebb2e2c32@xenosoft.de>
+ <20191125073923.GA30168@lst.de>
+ <4681f5fe-c095-15f5-9221-4b55e940bafc@xenosoft.de>
+ <20191126164026.GA8026@lst.de> <20191127065624.GB16913@linux.ibm.com>
+ <20191204085634.GA25929@lst.de>
+To: Christoph Hellwig <hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,404 +77,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net, rtd2@xtra.co.nz,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
+ iommu@lists.linux-foundation.org, Rob Herring <robh+dt@kernel.org>,
+ paulus@samba.org, mad skateman <madskateman@gmail.com>,
+ "contact@a-eon.com" <contact@a-eon.com>, Robin Murphy <robin.murphy@arm.com>,
+ nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are two asrc module in imx8qm & imx8qxp, each module has
-different clock configuration, and the DMA type is EDMA.
+I think we have to wait to Roland=E2=80=99s test results with his SCSI PCI c=
+ard.
 
-So in this patch, we define the new clocks, refine the clock map,
-and include struct fsl_asrc_soc_data for different soc usage.
+Christian
 
-The EDMA channel is fixed with each dma request, one dma request
-corresponding to one dma channel. So we need to request dma
-channel with dma request of asrc module.
+Sent from my iPhone
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
----
-changes in v2
-- use !use_edma to wrap code in fsl_asrc_dma
-- add Acked-by: Nicolin Chen
-
-changes in v3
-- remove the acked-by for commit is updated
-- read "fsl,asrc-clk-map" property, and update table
-  clk_map_imx8qm.
-
-changes in v4
-- Add table clk_map_imx8qxp
-- add Acked-by: Nicolin Chen
-
-changes in v5
-- none
-
- sound/soc/fsl/fsl_asrc.c     | 125 +++++++++++++++++++++++++++++------
- sound/soc/fsl/fsl_asrc.h     |  64 +++++++++++++++++-
- sound/soc/fsl/fsl_asrc_dma.c |  39 +++++++----
- 3 files changed, 193 insertions(+), 35 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index a3cfceea7d2f..0dcebc24c312 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -41,26 +41,65 @@ static struct snd_pcm_hw_constraint_list fsl_asrc_rate_constraints = {
-  * The following tables map the relationship between asrc_inclk/asrc_outclk in
-  * fsl_asrc.h and the registers of ASRCSR
-  */
--static unsigned char input_clk_map_imx35[] = {
-+static unsigned char input_clk_map_imx35[ASRC_CLK_MAP_LEN] = {
- 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
- };
- 
--static unsigned char output_clk_map_imx35[] = {
-+static unsigned char output_clk_map_imx35[ASRC_CLK_MAP_LEN] = {
- 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
- };
- 
- /* i.MX53 uses the same map for input and output */
--static unsigned char input_clk_map_imx53[] = {
-+static unsigned char input_clk_map_imx53[ASRC_CLK_MAP_LEN] = {
- /*	0x0  0x1  0x2  0x3  0x4  0x5  0x6  0x7  0x8  0x9  0xa  0xb  0xc  0xd  0xe  0xf */
- 	0x0, 0x1, 0x2, 0x7, 0x4, 0x5, 0x6, 0x3, 0x8, 0x9, 0xa, 0xb, 0xc, 0xf, 0xe, 0xd,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
- };
- 
--static unsigned char output_clk_map_imx53[] = {
-+static unsigned char output_clk_map_imx53[ASRC_CLK_MAP_LEN] = {
- /*	0x0  0x1  0x2  0x3  0x4  0x5  0x6  0x7  0x8  0x9  0xa  0xb  0xc  0xd  0xe  0xf */
- 	0x8, 0x9, 0xa, 0x7, 0xc, 0x5, 0x6, 0xb, 0x0, 0x1, 0x2, 0x3, 0x4, 0xf, 0xe, 0xd,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
- };
- 
--static unsigned char *clk_map[2];
-+/**
-+ * i.MX8QM/i.MX8QXP uses the same map for input and output.
-+ * clk_map_imx8qm[0] is for i.MX8QM asrc0
-+ * clk_map_imx8qm[1] is for i.MX8QM asrc1
-+ * clk_map_imx8qxp[0] is for i.MX8QXP asrc0
-+ * clk_map_imx8qxp[1] is for i.MX8QXP asrc1
-+ */
-+static unsigned char clk_map_imx8qm[2][ASRC_CLK_MAP_LEN] = {
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf,
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0x7, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0xb, 0xc, 0xf, 0xf, 0xd, 0xe, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	0x4, 0x5, 0x6, 0xf, 0x8, 0x9, 0xa, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+};
-+
-+static unsigned char clk_map_imx8qxp[2][ASRC_CLK_MAP_LEN] = {
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0xf, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xf, 0xf,
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0x7, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0x7, 0x8, 0xf, 0xf, 0x9, 0xa, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	0xf, 0xf, 0x6, 0xf, 0xf, 0xf, 0xa, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+};
- 
- /**
-  * Select the pre-processing and post-processing options
-@@ -353,8 +392,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
- 	}
- 
- 	/* Validate input and output clock sources */
--	clk_index[IN] = clk_map[IN][config->inclk];
--	clk_index[OUT] = clk_map[OUT][config->outclk];
-+	clk_index[IN] = asrc_priv->clk_map[IN][config->inclk];
-+	clk_index[OUT] = asrc_priv->clk_map[OUT][config->outclk];
- 
- 	/* We only have output clock for ideal ratio mode */
- 	clk = asrc_priv->asrck_clk[clk_index[ideal ? OUT : IN]];
-@@ -398,13 +437,13 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
- 	/* Set the channel number */
- 	channels = config->channel_num;
- 
--	if (asrc_priv->channel_bits < 4)
-+	if (asrc_priv->soc->channel_bits < 4)
- 		channels /= 2;
- 
- 	/* Update channels for current pair */
- 	regmap_update_bits(asrc_priv->regmap, REG_ASRCNCR,
--			   ASRCNCR_ANCi_MASK(index, asrc_priv->channel_bits),
--			   ASRCNCR_ANCi(index, channels, asrc_priv->channel_bits));
-+			   ASRCNCR_ANCi_MASK(index, asrc_priv->soc->channel_bits),
-+			   ASRCNCR_ANCi(index, channels, asrc_priv->soc->channel_bits));
- 
- 	/* Default setting: Automatic selection for processing mode */
- 	regmap_update_bits(asrc_priv->regmap, REG_ASRCTR,
-@@ -531,7 +570,7 @@ static int fsl_asrc_dai_startup(struct snd_pcm_substream *substream,
- 	struct fsl_asrc *asrc_priv = snd_soc_dai_get_drvdata(dai);
- 
- 	/* Odd channel number is not valid for older ASRC (channel_bits==3) */
--	if (asrc_priv->channel_bits == 3)
-+	if (asrc_priv->soc->channel_bits == 3)
- 		snd_pcm_hw_constraint_step(substream->runtime, 0,
- 					   SNDRV_PCM_HW_PARAM_CHANNELS, 2);
- 
-@@ -905,6 +944,7 @@ static int fsl_asrc_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	void __iomem *regs;
- 	int irq, ret, i;
-+	u32 map_idx;
- 	char tmp[16];
- 
- 	asrc_priv = devm_kzalloc(&pdev->dev, sizeof(*asrc_priv), GFP_KERNEL);
-@@ -964,14 +1004,37 @@ static int fsl_asrc_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	asrc_priv->soc = of_device_get_match_data(&pdev->dev);
-+	if (!asrc_priv->soc) {
-+		dev_err(&pdev->dev, "failed to get soc data\n");
-+		return -ENODEV;
-+	}
-+
- 	if (of_device_is_compatible(np, "fsl,imx35-asrc")) {
--		asrc_priv->channel_bits = 3;
--		clk_map[IN] = input_clk_map_imx35;
--		clk_map[OUT] = output_clk_map_imx35;
--	} else {
--		asrc_priv->channel_bits = 4;
--		clk_map[IN] = input_clk_map_imx53;
--		clk_map[OUT] = output_clk_map_imx53;
-+		asrc_priv->clk_map[IN] = input_clk_map_imx35;
-+		asrc_priv->clk_map[OUT] = output_clk_map_imx35;
-+	} else if (of_device_is_compatible(np, "fsl,imx53-asrc")) {
-+		asrc_priv->clk_map[IN] = input_clk_map_imx53;
-+		asrc_priv->clk_map[OUT] = output_clk_map_imx53;
-+	} else if (of_device_is_compatible(np, "fsl,imx8qm-asrc") ||
-+		   of_device_is_compatible(np, "fsl,imx8qxp-asrc")) {
-+		ret = of_property_read_u32(np, "fsl,asrc-clk-map", &map_idx);
-+		if (ret) {
-+			dev_err(&pdev->dev, "failed to get clk map index\n");
-+			return ret;
-+		}
-+
-+		if (map_idx > 1) {
-+			dev_err(&pdev->dev, "unsupported clk map index\n");
-+			return -EINVAL;
-+		}
-+		if (of_device_is_compatible(np, "fsl,imx8qm-asrc")) {
-+			asrc_priv->clk_map[IN] = clk_map_imx8qm[map_idx];
-+			asrc_priv->clk_map[OUT] = clk_map_imx8qm[map_idx];
-+		} else {
-+			asrc_priv->clk_map[IN] = clk_map_imx8qxp[map_idx];
-+			asrc_priv->clk_map[OUT] = clk_map_imx8qxp[map_idx];
-+		}
- 	}
- 
- 	ret = fsl_asrc_init(asrc_priv);
-@@ -1113,9 +1176,31 @@ static const struct dev_pm_ops fsl_asrc_pm = {
- 	SET_SYSTEM_SLEEP_PM_OPS(fsl_asrc_suspend, fsl_asrc_resume)
- };
- 
-+static const struct fsl_asrc_soc_data fsl_asrc_imx35_data = {
-+	.use_edma = false,
-+	.channel_bits = 3,
-+};
-+
-+static const struct fsl_asrc_soc_data fsl_asrc_imx53_data = {
-+	.use_edma = false,
-+	.channel_bits = 4,
-+};
-+
-+static const struct fsl_asrc_soc_data fsl_asrc_imx8qm_data = {
-+	.use_edma = true,
-+	.channel_bits = 4,
-+};
-+
-+static const struct fsl_asrc_soc_data fsl_asrc_imx8qxp_data = {
-+	.use_edma = true,
-+	.channel_bits = 4,
-+};
-+
- static const struct of_device_id fsl_asrc_ids[] = {
--	{ .compatible = "fsl,imx35-asrc", },
--	{ .compatible = "fsl,imx53-asrc", },
-+	{ .compatible = "fsl,imx35-asrc", .data = &fsl_asrc_imx35_data },
-+	{ .compatible = "fsl,imx53-asrc", .data = &fsl_asrc_imx53_data },
-+	{ .compatible = "fsl,imx8qm-asrc", .data = &fsl_asrc_imx8qm_data },
-+	{ .compatible = "fsl,imx8qxp-asrc", .data = &fsl_asrc_imx8qxp_data },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, fsl_asrc_ids);
-diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
-index 2b57e8c53728..8a821132d9d0 100644
---- a/sound/soc/fsl/fsl_asrc.h
-+++ b/sound/soc/fsl/fsl_asrc.h
-@@ -308,6 +308,29 @@ enum asrc_inclk {
- 	INCLK_SSI3_TX = 0x0b,
- 	INCLK_SPDIF_TX = 0x0c,
- 	INCLK_ASRCK1_CLK = 0x0f,
-+
-+	/* clocks for imx8 */
-+	INCLK_AUD_PLL_DIV_CLK0 = 0x10,
-+	INCLK_AUD_PLL_DIV_CLK1 = 0x11,
-+	INCLK_AUD_CLK0         = 0x12,
-+	INCLK_AUD_CLK1         = 0x13,
-+	INCLK_ESAI0_RX_CLK     = 0x14,
-+	INCLK_ESAI0_TX_CLK     = 0x15,
-+	INCLK_SPDIF0_RX        = 0x16,
-+	INCLK_SPDIF1_RX        = 0x17,
-+	INCLK_SAI0_RX_BCLK     = 0x18,
-+	INCLK_SAI0_TX_BCLK     = 0x19,
-+	INCLK_SAI1_RX_BCLK     = 0x1a,
-+	INCLK_SAI1_TX_BCLK     = 0x1b,
-+	INCLK_SAI2_RX_BCLK     = 0x1c,
-+	INCLK_SAI3_RX_BCLK     = 0x1d,
-+	INCLK_ASRC0_MUX_CLK    = 0x1e,
-+
-+	INCLK_ESAI1_RX_CLK     = 0x20,
-+	INCLK_ESAI1_TX_CLK     = 0x21,
-+	INCLK_SAI6_TX_BCLK     = 0x22,
-+	INCLK_HDMI_RX_SAI0_RX_BCLK     = 0x24,
-+	INCLK_HDMI_TX_SAI0_TX_BCLK     = 0x25,
- };
- 
- enum asrc_outclk {
-@@ -325,9 +348,33 @@ enum asrc_outclk {
- 	OUTCLK_SSI3_RX = 0x0b,
- 	OUTCLK_SPDIF_RX = 0x0c,
- 	OUTCLK_ASRCK1_CLK = 0x0f,
-+
-+	/* clocks for imx8 */
-+	OUTCLK_AUD_PLL_DIV_CLK0 = 0x10,
-+	OUTCLK_AUD_PLL_DIV_CLK1 = 0x11,
-+	OUTCLK_AUD_CLK0         = 0x12,
-+	OUTCLK_AUD_CLK1         = 0x13,
-+	OUTCLK_ESAI0_RX_CLK     = 0x14,
-+	OUTCLK_ESAI0_TX_CLK     = 0x15,
-+	OUTCLK_SPDIF0_RX        = 0x16,
-+	OUTCLK_SPDIF1_RX        = 0x17,
-+	OUTCLK_SAI0_RX_BCLK     = 0x18,
-+	OUTCLK_SAI0_TX_BCLK     = 0x19,
-+	OUTCLK_SAI1_RX_BCLK     = 0x1a,
-+	OUTCLK_SAI1_TX_BCLK     = 0x1b,
-+	OUTCLK_SAI2_RX_BCLK     = 0x1c,
-+	OUTCLK_SAI3_RX_BCLK     = 0x1d,
-+	OUTCLK_ASRCO_MUX_CLK    = 0x1e,
-+
-+	OUTCLK_ESAI1_RX_CLK     = 0x20,
-+	OUTCLK_ESAI1_TX_CLK     = 0x21,
-+	OUTCLK_SAI6_TX_BCLK     = 0x22,
-+	OUTCLK_HDMI_RX_SAI0_RX_BCLK     = 0x24,
-+	OUTCLK_HDMI_TX_SAI0_TX_BCLK     = 0x25,
- };
- 
- #define ASRC_CLK_MAX_NUM	16
-+#define ASRC_CLK_MAP_LEN	0x30
- 
- enum asrc_word_width {
- 	ASRC_WIDTH_24_BIT = 0,
-@@ -387,6 +434,17 @@ struct dma_block {
- 	unsigned int length;
- };
- 
-+/**
-+ * fsl_asrc_soc_data: soc specific data
-+ *
-+ * @use_edma: using edma as dma device or not
-+ * @channel_bits: width of ASRCNCR register for each pair
-+ */
-+struct fsl_asrc_soc_data {
-+	bool use_edma;
-+	unsigned int channel_bits;
-+};
-+
- /**
-  * fsl_asrc_pair: ASRC Pair private data
-  *
-@@ -431,8 +489,9 @@ struct fsl_asrc_pair {
-  * @asrck_clk: clock sources to driver ASRC internal logic
-  * @lock: spin lock for resource protection
-  * @pair: pair pointers
-- * @channel_bits: width of ASRCNCR register for each pair
-+ * @soc: soc specific data
-  * @channel_avail: non-occupied channel numbers
-+ * @clk_map: clock map for input/output clock
-  * @asrc_rate: default sample rate for ASoC Back-Ends
-  * @asrc_width: default sample width for ASoC Back-Ends
-  * @regcache_cfg: store register value of REG_ASRCFG
-@@ -450,8 +509,9 @@ struct fsl_asrc {
- 	spinlock_t lock;
- 
- 	struct fsl_asrc_pair *pair[ASRC_PAIR_MAX_NUM];
--	unsigned int channel_bits;
-+	const struct fsl_asrc_soc_data *soc;
- 	unsigned int channel_avail;
-+	unsigned char *clk_map[2];
- 
- 	int asrc_rate;
- 	int asrc_width;
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index d6146de9acd2..48486a78b7b4 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -197,21 +197,34 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	dma_cap_set(DMA_SLAVE, mask);
- 	dma_cap_set(DMA_CYCLIC, mask);
- 
--	/* Get DMA request of Back-End */
--	tmp_chan = dma_request_slave_channel(dev_be, tx ? "tx" : "rx");
--	tmp_data = tmp_chan->private;
--	pair->dma_data.dma_request = tmp_data->dma_request;
--	dma_release_channel(tmp_chan);
-+	/*
-+	 * An EDMA DEV_TO_DEV channel is fixed and bound with DMA event of each
-+	 * peripheral, unlike SDMA channel that is allocated dynamically. So no
-+	 * need to configure dma_request and dma_request2, but get dma_chan via
-+	 * dma_request_slave_channel directly with dma name of Front-End device
-+	 */
-+	if (!asrc_priv->soc->use_edma) {
-+		/* Get DMA request of Back-End */
-+		tmp_chan = dma_request_slave_channel(dev_be, tx ? "tx" : "rx");
-+		tmp_data = tmp_chan->private;
-+		pair->dma_data.dma_request = tmp_data->dma_request;
-+		dma_release_channel(tmp_chan);
- 
--	/* Get DMA request of Front-End */
--	tmp_chan = fsl_asrc_get_dma_channel(pair, dir);
--	tmp_data = tmp_chan->private;
--	pair->dma_data.dma_request2 = tmp_data->dma_request;
--	pair->dma_data.peripheral_type = tmp_data->peripheral_type;
--	pair->dma_data.priority = tmp_data->priority;
--	dma_release_channel(tmp_chan);
-+		/* Get DMA request of Front-End */
-+		tmp_chan = fsl_asrc_get_dma_channel(pair, dir);
-+		tmp_data = tmp_chan->private;
-+		pair->dma_data.dma_request2 = tmp_data->dma_request;
-+		pair->dma_data.peripheral_type = tmp_data->peripheral_type;
-+		pair->dma_data.priority = tmp_data->priority;
-+		dma_release_channel(tmp_chan);
-+
-+		pair->dma_chan[dir] =
-+			dma_request_channel(mask, filter, &pair->dma_data);
-+	} else {
-+		pair->dma_chan[dir] =
-+			fsl_asrc_get_dma_channel(pair, dir);
-+	}
- 
--	pair->dma_chan[dir] = dma_request_channel(mask, filter, &pair->dma_data);
- 	if (!pair->dma_chan[dir]) {
- 		dev_err(dev, "failed to request DMA channel for Back-End\n");
- 		return -EINVAL;
--- 
-2.21.0
-
+> On 4. Dec 2019, at 09:56, Christoph Hellwig <hch@lst.de> wrote:
+>=20
+>> On Wed, Nov 27, 2019 at 08:56:25AM +0200, Mike Rapoport wrote:
+>>> On Tue, Nov 26, 2019 at 05:40:26PM +0100, Christoph Hellwig wrote:
+>>>> On Tue, Nov 26, 2019 at 12:26:38PM +0100, Christian Zigotzky wrote:
+>>>> Hello Christoph,
+>>>>=20
+>>>> The PCI TV card works with your patch! I was able to patch your Git ker=
+nel=20
+>>>> with the patch above.
+>>>>=20
+>>>> I haven't found any error messages in the dmesg yet.
+>>>=20
+>>> Thanks.  Unfortunately this is a bit of a hack as we need to set
+>>> the mask based on runtime information like the magic FSL PCIe window.
+>>> Let me try to draft something better up, and thanks already for testing
+>>> this one!
+>>=20
+>> Maybe we'll simply force bottom up allocation before calling
+>> swiotlb_init()? Anyway, it's the last memblock allocation.
+>=20
+> So I think we should go with this fix (plus a source code comment) for
+> now.  Revamping the whole memory initialization is going to take a
+> while, and this fix also is easily backportable.
