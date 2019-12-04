@@ -1,49 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7056112AEF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:05:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE718112A08
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 12:23:37 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Sc122SRvzDqND
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 22:23:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ScxD6K2wzDqVD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:05:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Sbx41vkCzDqMW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 22:20:08 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="XpMSckWm"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 47Sbx25hk3z9sPn; Wed,  4 Dec 2019 22:20:06 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 47Sbx23pcmz9sR1; Wed,  4 Dec 2019 22:20:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575458406;
- bh=RMWRAZwwgQN245RNDHoLGpEfZTTGRpaWbqsOmoV4m10=;
- h=From:To:Cc:Subject:Date:From;
- b=XpMSckWmnEfztrCYf+YqL1t0UyDy/krGzoeqHHG+Ddx23tDjETbuUfZZHy86k3JgS
- WHmJ9rB4KlU0yEU2JZQcuX6ZU9Utb++aJxcQpN9oyoJ93a7SvWCymGfvNymrEPKJmO
- S96+frlpOpYV3PbHZM2JatODfk22JOqbsatqtRc2/Yc26lm2q/sTU7EgrtoZhXxGSY
- JRX15DlckcNWn7Qz2bKTG80vev8E9NHRwB9fTmFhSeqSjKjisPrIZnM6blXFfQgTud
- 0xYHxvX5n8Cgc4rDYe8S8cBYgXzMyW9SMkoENVTvTvpCCUIxOsKo3BkiD1Yas0CDPQ
- BzrtQN0bhoFDQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] docs/core-api: Remove possibly confusing sub-headings from
- Bit Operations
-Date: Wed,  4 Dec 2019 22:19:57 +1100
-Message-Id: <20191204111957.4754-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SctC43JXzDqSR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:02:40 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 79266200421;
+ Wed,  4 Dec 2019 13:02:36 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 69C7F20010B;
+ Wed,  4 Dec 2019 13:02:30 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 086AC402AD;
+ Wed,  4 Dec 2019 20:02:22 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, robh+dt@kernel.org,
+ mark.rutland@arm.com, devicetree@vger.kernel.org
+Subject: [PATCH v5 1/2] ASoC: dt-bindings: fsl_asrc: add compatible string for
+ imx8qm & imx8qxp
+Date: Wed,  4 Dec 2019 20:00:18 +0800
+Message-Id: <b9352edb014c1ee8530c0fd8829c2b044b3da649.1575452454.git.shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,77 +53,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, elver@google.com, corbet@lwn.net,
- linux-doc@vger.kernel.org, dja@axtens.net
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The recent commit 81d2c6f81996 ("kasan: support instrumented bitops
-combined with generic bitops"), split the KASAN instrumented bitops
-into separate headers for atomic, non-atomic and locking operations.
+Add compatible string "fsl,imx8qm-asrc" for imx8qm platform,
+"fsl,imx8qxp-asrc" for imx8qxp platform.
 
-This was done to allow arches to include just the instrumented bitops
-they need, while also using some of the generic bitops in
-asm-generic/bitops (which are automatically instrumented). The generic
-bitops are already split into atomic, non-atomic and locking headers.
+There are two asrc modules in imx8qm & imx8qxp, the clock mapping is
+different for each other, so add new property "fsl,asrc-clk-map"
+to distinguish them.
 
-This split required an update to kernel-api.rst because it included
-include/asm-generic/bitops-instrumented.h, which no longer exists. So
-now kernel-api.rst includes all three instrumented headers to get the
-definitions for all the bitops.
-
-When adding the three headers it seemed sensible to add sub-headings
-for each, ie. "Atomic", "Non-atomic" and "Locking".
-
-The confusion is that test_bit() is (and always has been) in
-non-atomic.h, but is documented elsewhere (atomic_bitops.txt) as being
-atomic. So having it appear under the "Non-atomic" heading is possibly
-confusing.
-
-Probably test_bit() should move from bitops/non-atomic.h to atomic.h,
-but that has flow on effects. For now just remove the newly added
-sub-headings in the documentation, so we at least aren't adding to the
-confusion about whether test_bit() is atomic or not.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- Documentation/core-api/kernel-api.rst | 9 ---------
- 1 file changed, 9 deletions(-)
+changes in v2
+-none
 
-Just FYI. I've applied this to my topic/kasan-bitops branch which I plan to ask
-Linus to pull before the end of the merge window.
+changes in v3
+-use only one compatible string "fsl,imx8qm-asrc",
+-add new property "fsl,asrc-clk-map".
 
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=topic/kasan-bitops
+changes in v4
+-add "fsl,imx8qxp-asrc"
 
-cheers
+changes in v5
+-refine the comments for compatible
 
-diff --git a/Documentation/core-api/kernel-api.rst b/Documentation/core-api/kernel-api.rst
-index 2caaeb55e8dd..4ac53a1363f6 100644
---- a/Documentation/core-api/kernel-api.rst
-+++ b/Documentation/core-api/kernel-api.rst
-@@ -57,21 +57,12 @@ The Linux kernel provides more basic utility functions.
- Bit Operations
- --------------
+ Documentation/devicetree/bindings/sound/fsl,asrc.txt | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
+index 1d4d9f938689..cb9a25165503 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
++++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
+@@ -8,7 +8,12 @@ three substreams within totally 10 channels.
  
--Atomic Operations
--~~~~~~~~~~~~~~~~~
--
- .. kernel-doc:: include/asm-generic/bitops/instrumented-atomic.h
-    :internal:
+ Required properties:
  
--Non-atomic Operations
--~~~~~~~~~~~~~~~~~~~~~
--
- .. kernel-doc:: include/asm-generic/bitops/instrumented-non-atomic.h
-    :internal:
+-  - compatible		: Contains "fsl,imx35-asrc" or "fsl,imx53-asrc".
++  - compatible		: Compatible list, should contain one of the following
++			  compatibles:
++			  "fsl,imx35-asrc",
++			  "fsl,imx53-asrc",
++			  "fsl,imx8qm-asrc",
++			  "fsl,imx8qxp-asrc",
  
--Locking Operations
--~~~~~~~~~~~~~~~~~~
--
- .. kernel-doc:: include/asm-generic/bitops/instrumented-lock.h
-    :internal:
+   - reg			: Offset and length of the register set for the device.
  
+@@ -35,6 +40,11 @@ Required properties:
+ 
+    - fsl,asrc-width	: Defines a mutual sample width used by DPCM Back Ends.
+ 
++   - fsl,asrc-clk-map   : Defines clock map used in driver. which is required
++			  by imx8qm/imx8qxp platform
++			  <0> - select the map for asrc0 in imx8qm/imx8qxp
++			  <1> - select the map for asrc1 in imx8qm/imx8qxp
++
+ Optional properties:
+ 
+    - big-endian		: If this property is absent, the little endian mode
 -- 
 2.21.0
 
