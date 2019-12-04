@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D6C113358
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 19:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4113A11347A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 19:24:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Sn9n4BB2zDqVD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 05:16:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SnMC4SNczDqV7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 05:24:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="WV0SKNYv"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="x1sGwgPw"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Smx81gxWzDqK6
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 05:05:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Sn5P2Q8PzDqBZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 05:12:57 +1100 (AEDT)
 Received: from localhost (unknown [217.68.49.72])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4AC7D20659;
- Wed,  4 Dec 2019 18:05:45 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A1B1E20674;
+ Wed,  4 Dec 2019 18:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575482745;
- bh=CcGoJg+UihYBaV8Tf12lR+9gsdgjxSjD2C2kvFXqYcg=;
+ s=default; t=1575483174;
+ bh=SeAsYV7SVBrdZa76EEz+x99Xd94q22fntAQUgeEiTRU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=WV0SKNYv7xUHczwgmcrOkJHxPsWG4HMP0JhEVf0AVmyw2QymHqp7oehCQxvfPEOoW
- LlqGqGxEwMl/KXOsAmsNxYHoBmb/i7IabE70bac6xCrCB2K8MCED6mKhLFWv1enUTS
- ydjFxk/okd8fhrgGOumQL0g/Gq4muaFtFWT+a9Do=
+ b=x1sGwgPwK0mJQa7CZp4Iajt0gdpVU8TkmsLoT6ras0HgFsM2nMe5O4zP7F9ayt9t7
+ +mlrfSGm3Mkqvk62KDFiSk5YaCnqlfJsgLRdIFQmn9SFgJyzmNa4AgRVKh4jbu7fCO
+ oaxIIslenYcc5a/qRZ+gk/n4ErZYEeyxmJzTwDpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.14 118/209] net/wan/fsl_ucc_hdlc: Avoid double free in
+Subject: [PATCH 4.9 080/125] net/wan/fsl_ucc_hdlc: Avoid double free in
  ucc_hdlc_probe()
-Date: Wed,  4 Dec 2019 18:55:30 +0100
-Message-Id: <20191204175331.248253856@linuxfoundation.org>
+Date: Wed,  4 Dec 2019 18:56:25 +0100
+Message-Id: <20191204175323.901550823@linuxfoundation.org>
 X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191204175321.609072813@linuxfoundation.org>
-References: <20191204175321.609072813@linuxfoundation.org>
+In-Reply-To: <20191204175308.377746305@linuxfoundation.org>
+References: <20191204175308.377746305@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 18b648648adb2..289dff262948d 100644
+index 7a62316c570d2..b2c1e872d5ed5 100644
 --- a/drivers/net/wan/fsl_ucc_hdlc.c
 +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -1114,7 +1114,6 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
+@@ -1117,7 +1117,6 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
  	if (register_hdlc_device(dev)) {
  		ret = -ENOBUFS;
  		pr_err("ucc_hdlc: unable to register hdlc device\n");
