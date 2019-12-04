@@ -1,49 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5EF11369C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 21:41:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47SrP93VdWzDqWS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 07:41:49 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D605B1136A4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 21:44:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SrSQ4JpSzDqL8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 07:44:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.96.204; helo=9.mo5.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 21436 seconds by postgrey-1.36 at bilbo;
- Thu, 05 Dec 2019 07:40:01 AEDT
-Received: from 9.mo5.mail-out.ovh.net (9.mo5.mail-out.ovh.net [178.32.96.204])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47SrM565RJzDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 07:39:57 +1100 (AEDT)
-Received: from player770.ha.ovh.net (unknown [10.108.16.7])
- by mo5.mail-out.ovh.net (Postfix) with ESMTP id A5DDD25D828
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 15:42:35 +0100 (CET)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player770.ha.ovh.net (Postfix) with ESMTPSA id 90CCFCE77CBA;
- Wed,  4 Dec 2019 14:42:24 +0000 (UTC)
-Date: Wed, 4 Dec 2019 15:42:20 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/xive: skip ioremap() of ESB pages for LSI
- interrupts
-Message-ID: <20191204154220.7affb01f@bahia.w3ibm.bluemix.net>
-In-Reply-To: <47Sfr1448xz9sR1@ozlabs.org>
-References: <20191203163642.2428-1-clg@kaod.org> <47Sfr1448xz9sR1@ozlabs.org>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SrQK4xgXzDqKT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 07:42:48 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB4KggoC117140
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Dec 2019 15:42:46 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wnp67gun9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Dec 2019 15:42:46 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Wed, 4 Dec 2019 20:42:44 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Dec 2019 20:42:39 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB4Kgcup52166818
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Dec 2019 20:42:38 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F4424C058;
+ Wed,  4 Dec 2019 20:42:38 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 136024C046;
+ Wed,  4 Dec 2019 20:42:35 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.80.193.7])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed,  4 Dec 2019 20:42:34 +0000 (GMT)
+Date: Wed, 4 Dec 2019 12:42:32 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+References: <f08ace25-fa94-990b-1b6d-a1c0f30d6348@ozlabs.ru>
+ <20191203020850.GA12354@oc0525413822.ibm.com>
+ <0b56ce3e-6c32-5f3b-e7cc-0d419a61d71d@ozlabs.ru>
+ <20191203040509.GB12354@oc0525413822.ibm.com>
+ <a0f19e65-81eb-37bd-928b-7a57a8660e3d@ozlabs.ru>
+ <20191203165204.GA5079@oc0525413822.ibm.com>
+ <3a17372a-fcee-efbf-0a05-282ffb1adc90@ozlabs.ru>
+ <20191204004958.GB5063@oc0525413822.ibm.com>
+ <5963ff32-2119-be7c-d1e5-63457888a73b@ozlabs.ru>
+ <20191204033618.GA5031@umbus.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Ovh-Tracer-Id: 14256989045691881862
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudejledgieeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdqfffguegfifdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkpheptddrtddrtddrtddpkedvrddvheefrddvtdekrddvgeeknecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjedtrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191204033618.GA5031@umbus.fritz.box>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19120420-0020-0000-0000-00000393EC24
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120420-0021-0000-0000-000021EB164F
+Message-Id: <20191204204232.GE5063@oc0525413822.ibm.com>
+Subject: RE: [PATCH v4 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
+ with the hypervisor.
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-04_03:2019-12-04,2019-12-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=18 spamscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912040170
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,118 +98,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>, stable@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: andmike@us.ibm.com, mst@redhat.com, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
+ cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  5 Dec 2019 00:30:56 +1100 (AEDT)
-Michael Ellerman <patch-notifications@ellerman.id.au> wrote:
+On Wed, Dec 04, 2019 at 02:36:18PM +1100, David Gibson wrote:
+> On Wed, Dec 04, 2019 at 12:08:09PM +1100, Alexey Kardashevskiy wrote:
+> > 
+> > 
+> > On 04/12/2019 11:49, Ram Pai wrote:
+> > > On Wed, Dec 04, 2019 at 11:04:04AM +1100, Alexey Kardashevskiy wrote:
+> > >>
+> > >>
+> > >> On 04/12/2019 03:52, Ram Pai wrote:
+> > >>> On Tue, Dec 03, 2019 at 03:24:37PM +1100, Alexey Kardashevskiy wrote:
+> > >>>>
+> > >>>>
+> > >>>> On 03/12/2019 15:05, Ram Pai wrote:
+> > >>>>> On Tue, Dec 03, 2019 at 01:15:04PM +1100, Alexey Kardashevskiy wrote:
+> > >>>>>>
+> > >>>>>>
+> > >>>>>> On 03/12/2019 13:08, Ram Pai wrote:
+> > >>>>>>> On Tue, Dec 03, 2019 at 11:56:43AM +1100, Alexey Kardashevskiy wrote:
+> > >>>>>>>>
+> > >>>>>>>>
+> > >>>>>>>> On 02/12/2019 17:45, Ram Pai wrote:
+> > >>>>>>>>> H_PUT_TCE_INDIRECT hcall uses a page filled with TCE entries, as one of
+> > >>>>>>>>> its parameters. One page is dedicated per cpu, for the lifetime of the
+> > >>>>>>>>> kernel for this purpose. On secure VMs, contents of this page, when
+> > >>>>>>>>> accessed by the hypervisor, retrieves encrypted TCE entries.  Hypervisor
+> > >>>>>>>>> needs to know the unencrypted entries, to update the TCE table
+> > >>>>>>>>> accordingly.  There is nothing secret or sensitive about these entries.
+> > >>>>>>>>> Hence share the page with the hypervisor.
+> > >>>>>>>>
+> > >>>>>>>> This unsecures a page in the guest in a random place which creates an
+> > >>>>>>>> additional attack surface which is hard to exploit indeed but
+> > >>>>>>>> nevertheless it is there.
+> > >>>>>>>> A safer option would be not to use the
+> > >>>>>>>> hcall-multi-tce hyperrtas option (which translates FW_FEATURE_MULTITCE
+> > >>>>>>>> in the guest).
+> > >>>>>>>
+> > >>>>>>>
+> > >>>>>>> Hmm... How do we not use it?  AFAICT hcall-multi-tce option gets invoked
+> > >>>>>>> automatically when IOMMU option is enabled.
+> > >>>>>>
+> > >>>>>> It is advertised by QEMU but the guest does not have to use it.
+> > >>>>>
+> > >>>>> Are you suggesting that even normal-guest, not use hcall-multi-tce?
+> > >>>>> or just secure-guest?  
+> > >>>>
+> > >>>>
+> > >>>> Just secure.
+> > >>>
+> > >>> hmm..  how are the TCE entries communicated to the hypervisor, if
+> > >>> hcall-multi-tce is disabled?
+> > >>
+> > >> Via H_PUT_TCE which updates 1 entry at once (sets or clears).
+> > >> hcall-multi-tce  enables H_PUT_TCE_INDIRECT (512 entries at once) and
+> > >> H_STUFF_TCE (clearing, up to 4bln at once? many), these are simply an
+> > >> optimization.
+> > > 
+> > > Do you still think, secure-VM should use H_PUT_TCE and not
+> > > H_PUT_TCE_INDIRECT?  And normal VM should use H_PUT_TCE_INDIRECT?
+> > > Is there any advantage of special casing it for secure-VMs.
+> > 
+> > 
+> > Reducing the amount of insecure memory at random location.
+> 
+> The other approach we could use for that - which would still allow
+> H_PUT_TCE_INDIRECT, would be to allocate the TCE buffer page from the
+> same pool that we use for the bounce buffers.  I assume there must
+> already be some sort of allocator for that?
 
-> On Tue, 2019-12-03 at 16:36:42 UTC, =3D?UTF-8?q?C=3DC3=3DA9dric=3D20Le=3D=
-20Goater?=3D wrote:
-> > The PCI INTx interrupts and other LSI interrupts are handled differently
-> > under a sPAPR platform. When the interrupt source characteristics are
-> > queried, the hypervisor returns an H_INT_ESB flag to inform the OS
-> > that it should be using the H_INT_ESB hcall for interrupt management
-> > and not loads and stores on the interrupt ESB pages.
-> >=20
-> > A default -1 value is returned for the addresses of the ESB pages. The
-> > driver ignores this condition today and performs a bogus IO mapping.
-> > Recent changes and the DEBUG_VM configuration option make the bug
-> > visible with :
-> >=20
-> > [    0.015518] kernel BUG at arch/powerpc/include/asm/book3s/64/pgtable=
-.h:612!
-> > [    0.015578] Oops: Exception in kernel mode, sig: 5 [#1]
-> > [    0.015627] LE PAGE_SIZE=3D64K MMU=3DRadix MMU=3DHash SMP NR_CPUS=3D=
-1024 NUMA pSeries
-> > [    0.015697] Modules linked in:
-> > [    0.015739] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.4.0-0.rc6.gi=
-t0.1.fc32.ppc64le #1
-> > [    0.015812] NIP:  c000000000f63294 LR: c000000000f62e44 CTR: 0000000=
-000000000
-> > [    0.015889] REGS: c0000000fa45f0d0 TRAP: 0700   Not tainted  (5.4.0-=
-0.rc6.git0.1.fc32.ppc64le)
-> > [    0.015971] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 4=
-4000424  XER: 00000000
-> > [    0.016050] CFAR: c000000000f63128 IRQMASK: 0
-> > [    0.016050] GPR00: c000000000f62e44 c0000000fa45f360 c000000001be540=
-0 0000000000000000
-> > [    0.016050] GPR04: c0000000019c7d38 c0000000fa340030 00000000fa33000=
-9 c000000001c15e18
-> > [    0.016050] GPR08: 0000000000000040 ffe0000000000000 000000000000000=
-0 8418dd352dbd190f
-> > [    0.016050] GPR12: 0000000000000000 c000000001e00000 c00a00008006000=
-0 c00a000080060000
-> > [    0.016050] GPR16: 0000ffffffffffff 80000000000001ae c000000001c24d9=
-8 ffffffffffff0000
-> > [    0.016050] GPR20: c00a00008007ffff c000000001cafca0 c00a00008007fff=
-f ffffffffffff0000
-> > [    0.016050] GPR24: c00a000080080000 c00a000080080000 c000000001cafca=
-8 c00a000080080000
-> > [    0.016050] GPR28: c0000000fa32e010 c00a000080060000 ffffffffffff000=
-0 c0000000fa330000
-> > [    0.016711] NIP [c000000000f63294] ioremap_page_range+0x4c4/0x6e0
-> > [    0.016778] LR [c000000000f62e44] ioremap_page_range+0x74/0x6e0
-> > [    0.016846] Call Trace:
-> > [    0.016876] [c0000000fa45f360] [c000000000f62e44] ioremap_page_range=
-+0x74/0x6e0 (unreliable)
-> > [    0.016969] [c0000000fa45f460] [c0000000000934bc] do_ioremap+0x8c/0x=
-120
-> > [    0.017037] [c0000000fa45f4b0] [c0000000000938e8] __ioremap_caller+0=
-x128/0x140
-> > [    0.017116] [c0000000fa45f500] [c0000000000931a0] ioremap+0x30/0x50
-> > [    0.017184] [c0000000fa45f520] [c0000000000d1380] xive_spapr_populat=
-e_irq_data+0x170/0x260
-> > [    0.017263] [c0000000fa45f5c0] [c0000000000cc90c] xive_irq_domain_ma=
-p+0x8c/0x170
-> > [    0.017344] [c0000000fa45f600] [c000000000219124] irq_domain_associa=
-te+0xb4/0x2d0
-> > [    0.017424] [c0000000fa45f690] [c000000000219fe0] irq_create_mapping=
-+0x1e0/0x3b0
-> > [    0.017506] [c0000000fa45f730] [c00000000021ad6c] irq_create_fwspec_=
-mapping+0x27c/0x3e0
-> > [    0.017586] [c0000000fa45f7c0] [c00000000021af68] irq_create_of_mapp=
-ing+0x98/0xb0
-> > [    0.017666] [c0000000fa45f830] [c0000000008d4e48] of_irq_parse_and_m=
-ap_pci+0x168/0x230
-> > [    0.017746] [c0000000fa45f910] [c000000000075428] pcibios_setup_devi=
-ce+0x88/0x250
-> > [    0.017826] [c0000000fa45f9a0] [c000000000077b84] pcibios_setup_bus_=
-devices+0x54/0x100
-> > [    0.017906] [c0000000fa45fa10] [c0000000000793f0] __of_scan_bus+0x16=
-0/0x310
-> > [    0.017973] [c0000000fa45faf0] [c000000000075fc0] pcibios_scan_phb+0=
-x330/0x390
-> > [    0.018054] [c0000000fa45fba0] [c00000000139217c] pcibios_init+0x8c/=
-0x128
-> > [    0.018121] [c0000000fa45fc20] [c0000000000107b0] do_one_initcall+0x=
-60/0x2c0
-> > [    0.018201] [c0000000fa45fcf0] [c000000001384624] kernel_init_freeab=
-le+0x290/0x378
-> > [    0.018280] [c0000000fa45fdb0] [c000000000010d24] kernel_init+0x2c/0=
-x148
-> > [    0.018348] [c0000000fa45fe20] [c00000000000bdbc] ret_from_kernel_th=
-read+0x5c/0x80
-> > [    0.018427] Instruction dump:
-> > [    0.018468] 41820014 3920fe7f 7d494838 7d290074 7929d182 f8e10038 69=
-290001 0b090000
-> > [    0.018552] 7a098420 0b090000 7bc95960 7929a802 <0b090000> 7fc68b78 =
-e8610048 7dc47378
-> >=20
-> > Cc: stable@vger.kernel.org # v4.14+
-> > Fixes: bed81ee181dd ("powerpc/xive: introduce H_INT_ESB hcall")
-> > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
->=20
-> Applied to powerpc fixes, thanks.
->=20
-> https://git.kernel.org/powerpc/c/b67a95f2abff0c34e5667c15ab8900de73d8d087
->=20
+The allocator for swiotlb is buried deep in the swiotlb code. It is 
+not exposed to the outside-swiotlb world. Will have to do major surgery
+to expose it.
 
-My R-b tag is missing... I guess I didn't review it quick enough :)
+I was thinking, maybe we share the page, finish the INDIRECT_TCE call,
+and unshare the page.  This will address Alexey's concern of having
+shared pages at random location, and will also give me my performance
+optimization.  Alexey: ok?
 
-> cheers
+RP
 
