@@ -2,79 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A9511221B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 05:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A08A112289
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 06:31:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47SQxD1VgBzDqSy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 15:34:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SSBP0gVQzDq61
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 16:31:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="iH/GkB/i"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47SQvL0Z5RzDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 15:32:59 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47SQvB1X8Wz9v3nv;
- Wed,  4 Dec 2019 05:32:54 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=iH/GkB/i; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Rjy7c9LzwKGl; Wed,  4 Dec 2019 05:32:54 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47SQvB0NRVz9v3nt;
- Wed,  4 Dec 2019 05:32:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1575433974; bh=JpFN3Nh7EoLxvzsnF7qnjZOmLclHkS0vKsPmhr9E1rY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=iH/GkB/irOi2Glg4L74cAldoyoVItS8ctviRTvxAZRFX+JtQxGP2s8VqMePMeuWkh
- yLOXAen36+IZLAyTa0ypzL/6w1cGK+w5tZBtoyIvVMQv4jf2Bfu4bStE5R4rz3FTet
- Vg9585kYP6cFkfhf/qdplxHaO7voIqLyJruy1YDY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BAF1A8B838;
- Wed,  4 Dec 2019 05:32:54 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mxoDTfKPwG7V; Wed,  4 Dec 2019 05:32:54 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D6298B815;
- Wed,  4 Dec 2019 05:32:54 +0100 (CET)
-Subject: Re: [PATCH v4 2/2] powerpc/irq: inline call_do_irq() and
- call_do_softirq()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <f12fb9a6cc52d83ee9ddf15a36ee12ac77e6379f.1570684298.git.christophe.leroy@c-s.fr>
- <5ca6639b7c1c21ee4b4138b7cfb31d6245c4195c.1570684298.git.christophe.leroy@c-s.fr>
- <877e3tbvsa.fsf@mpe.ellerman.id.au>
- <20191121101552.GR16031@gate.crashing.org>
- <87y2w49rgo.fsf@mpe.ellerman.id.au> <20191125142556.GU9491@gate.crashing.org>
- <5fdb1c92-8bf4-01ca-f81c-214870c33be3@c-s.fr>
- <20191127145958.GG9491@gate.crashing.org>
- <2072e066-1ffb-867e-60ec-04a6bb9075c1@c-s.fr>
- <20191129184658.GR9491@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <ebc67964-e5a9-acd0-0011-61ba23692f7e@c-s.fr>
-Date: Wed, 4 Dec 2019 05:32:54 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SS8N213XzDq61
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 16:29:23 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB45RI2T010781; Wed, 4 Dec 2019 00:29:16 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wnp66eh2b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Dec 2019 00:29:15 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB45Qc8x007999;
+ Wed, 4 Dec 2019 05:29:15 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 2wkg26u3vw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Dec 2019 05:29:15 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB45TEBP50856424
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Dec 2019 05:29:14 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4312E2805A;
+ Wed,  4 Dec 2019 05:29:14 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F012428058;
+ Wed,  4 Dec 2019 05:29:12 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.204.200.104])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Dec 2019 05:29:12 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/pmem: Fix kernel crash due to wrong range value usage
+ in flush_dcache_range
+Date: Wed,  4 Dec 2019 10:59:09 +0530
+Message-Id: <20191204052909.59145-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191129184658.GR9491@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-04_01:2019-12-04,2019-12-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=1 spamscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912040040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,64 +80,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+This patch fix the below kernel crash.
 
-Le 29/11/2019 à 19:46, Segher Boessenkool a écrit :
-> Hi!
-> 
-> On Wed, Nov 27, 2019 at 04:15:15PM +0100, Christophe Leroy wrote:
->> Le 27/11/2019 à 15:59, Segher Boessenkool a écrit :
->>> On Wed, Nov 27, 2019 at 02:50:30PM +0100, Christophe Leroy wrote:
->>>> So what do we do ? We just drop the "r2" clobber ?
->>>
->>> You have to make sure your asm code works for all ABIs.  This is quite
->>> involved if you do a call to an external function.  The compiler does
->>> *not* see this call, so you will have to make sure that all that the
->>> compiler and linker do will work, or prevent some of those things (say,
->>> inlining of the function containing the call).
->>
->> But the whole purpose of the patch is to inline the call to __do_irq()
->> in order to avoid the trampoline function.
-> 
-> Yes, so you call __do_irq.  You have to make sure that what you tell the
-> compiler -- and what you *don't tell the compiler -- works with what the
-> ABIs require, and what the called function expects and provides.
-> 
->>> That does not fix everything.  The called function requires a specific
->>> value in r2 on entry.
->>
->> Euh ... but there is nothing like that when using existing
->> call_do_irq().
-> 
->> How does GCC know that call_do_irq() has same TOC as __do_irq() ?
-> 
-> The existing call_do_irq isn't C code.  It doesn't do anything with r2,
-> as far as I can see; __do_irq just gets whatever the caller of call_do_irq
-> has.
-> 
-> So I guess all the callers of call_do_irq have the correct r2 value always
-> already?  In that case everything Just Works.
+ BUG: Unable to handle kernel data access on read at 0xc000000380000000
+ Faulting instruction address: 0xc00000000008b6f0
+cpu 0x5: Vector: 300 (Data Access) at [c0000000d8587790]
+    pc: c00000000008b6f0: arch_remove_memory+0x150/0x210
+    lr: c00000000008b720: arch_remove_memory+0x180/0x210
+    sp: c0000000d8587a20
+   msr: 800000000280b033
+   dar: c000000380000000
+ dsisr: 40000000
+  current = 0xc0000000d8558600
+  paca    = 0xc00000000fff8f00   irqmask: 0x03   irq_happened: 0x01
+    pid   = 1220, comm = ndctl
+enter ? for help
+ memunmap_pages+0x33c/0x410
+ devm_action_release+0x30/0x50
+ release_nodes+0x30c/0x3a0
+ device_release_driver_internal+0x178/0x240
+ unbind_store+0x74/0x190
+ drv_attr_store+0x44/0x60
+ sysfs_kf_write+0x74/0xa0
+ kernfs_fop_write+0x1b0/0x260
+ __vfs_write+0x3c/0x70
+ vfs_write+0xe4/0x200
+ ksys_write+0x7c/0x140
+ system_call+0x5c/0x68
 
-Indeed, there is only one caller for call_do_irq() which is do_IRQ().
-And do_IRQ() is also calling __do_irq() directly (when the stack pointer 
-is already set to IRQ stack). do_IRQ() and __do_irq() are both in 
-arch/powerpc/kernel/irq.c
+Fixes: 076265907cf9 ("powerpc: Chunk calls to flush_dcache_range in arch_*_memory")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/mm/mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-As far as I can see when replacing the call to call_do_irq() by a call 
-to __do_irq(), the compiler doesn't do anything special with r2, and 
-doesn't add any nop after the bl either, whereas for all calls outside 
-irq.c, there is a nop added. So I guess that's ok ?
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index ad299e72ec30..9488b63dfc87 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -121,7 +121,7 @@ static void flush_dcache_range_chunked(unsigned long start, unsigned long stop,
+ 	unsigned long i;
+ 
+ 	for (i = start; i < stop; i += chunk) {
+-		flush_dcache_range(i, min(stop, start + chunk));
++		flush_dcache_range(i, min(stop, i + chunk));
+ 		cond_resched();
+ 	}
+ }
+-- 
+2.23.0
 
-Now that call_do_irq() is inlined, we can even define __do_irq() as static.
-
-And that's the same for do_softirq_own_stack(), it is only called from 
-do_softirq() which is defined in the same file as __do_softirq() 
-(kernel/softirq.c)
-
-Christophe
