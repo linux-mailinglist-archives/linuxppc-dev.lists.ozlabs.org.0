@@ -1,48 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D40112BA1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:39:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Sdh52wqKzDqVN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:39:01 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B35D112C06
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:48:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47SdvH4SWjzDqM3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:48:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="A+OJZidz"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Sdc80hxRzDqLN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:35:35 +1100 (AEDT)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D7B2A20862;
- Wed,  4 Dec 2019 12:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575462933;
- bh=M1Wf/f30+BvSWegCWZV9CQ1OJDcWNvDUUneWC9hFQOQ=;
- h=From:To:Cc:Subject:Date:From;
- b=A+OJZidzgtdJt6409seAEyH45Ss0kz2SBVJ8TWk3Q0UceO0y4S6OsXy2bjaslg5lP
- LK6ARqr0xZruFvxNrlV5jBQ6dU6ReePVQk9HAWRwyTXGhM4FszRdjBL0OgxolzqKS0
- a9CRC+a0jEEIjKw+N+wMhE7DRPXw7GklS56VuPLw=
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: ensure that swiotlb buffer is allocated from low
- memory
-Date: Wed,  4 Dec 2019 14:35:24 +0200
-Message-Id: <20191204123524.22919-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.24.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47SdpY3jsDzDqMy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:44:36 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB4CgJnU085212; Wed, 4 Dec 2019 07:44:31 -0500
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wnjeb0a5m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Dec 2019 07:44:30 -0500
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB4CZ8p3022319;
+ Wed, 4 Dec 2019 12:37:30 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 2wkg26xf7u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Dec 2019 12:37:30 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB4CbT5J40632730
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Dec 2019 12:37:29 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4C8A2805A;
+ Wed,  4 Dec 2019 12:37:29 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 97A812805C;
+ Wed,  4 Dec 2019 12:37:29 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.31.190])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Dec 2019 12:37:29 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id ACABD2E2EB4; Wed,  4 Dec 2019 18:07:28 +0530 (IST)
+Date: Wed, 4 Dec 2019 18:07:28 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/3] powerpc/sysfs: Show idle_purr and idle_spurr for
+ every CPU
+Message-ID: <20191204123728.GD5197@in.ibm.com>
+References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1574856072-30972-3-git-send-email-ego@linux.vnet.ibm.com>
+ <9b8f82b0-86dd-d524-aae6-34f8c33bd2c2@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b8f82b0-86dd-d524-aae6-34f8c33bd2c2@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-04_03:2019-12-04,2019-12-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 spamscore=0 mlxlogscore=999 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912040103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,62 +87,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Darren Stevens <darren@stevens-zone.net>,
- Robin Murphy <robin.murphy@arm.com>, Mike Rapoport <rppt@linux.ibm.com>,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
- mad skateman <madskateman@gmail.com>,
- Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>,
- Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Hi Kamalesh,
 
-Some powerpc platforms (e.g. 85xx) limit DMA-able memory way below 4G. If a
-system has more physical memory than this limit, the swiotlb buffer is not
-addressable because it is allocated from memblock using top-down mode.
+On Tue, Dec 03, 2019 at 07:07:53PM +0530, Kamalesh Babulal wrote:
+> On 11/27/19 5:31 PM, Gautham R. Shenoy wrote:
+> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+> > 
+> > On Pseries LPARs, to calculate utilization, we need to know the
+> > [S]PURR ticks when the CPUs were busy or idle.
+> > 
+> > The total PURR and SPURR ticks are already exposed via the per-cpu
+> > sysfs files /sys/devices/system/cpu/cpuX/purr and
+> > /sys/devices/system/cpu/cpuX/spurr.
+> > 
+> > This patch adds support for exposing the idle PURR and SPURR ticks via
+> > /sys/devices/system/cpu/cpuX/idle_purr and
+> > /sys/devices/system/cpu/cpuX/idle_spurr.
+> 
+> The patch looks good to me, with a minor file mode nit pick mentioned below.
+> 
+> > 
+> > Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> > ---
+> >  arch/powerpc/kernel/sysfs.c | 32 ++++++++++++++++++++++++++++++++
+> >  1 file changed, 32 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+> > index 80a676d..42ade55 100644
+> > --- a/arch/powerpc/kernel/sysfs.c
+> > +++ b/arch/powerpc/kernel/sysfs.c
+> > @@ -1044,6 +1044,36 @@ static ssize_t show_physical_id(struct device *dev,
+> >  }
+> >  static DEVICE_ATTR(physical_id, 0444, show_physical_id, NULL);
+> > 
+> > +static ssize_t idle_purr_show(struct device *dev,
+> > +			      struct device_attribute *attr, char *buf)
+> > +{
+> > +	struct cpu *cpu = container_of(dev, struct cpu, dev);
+> > +	unsigned int cpuid = cpu->dev.id;
+> > +	struct lppaca *cpu_lppaca_ptr = paca_ptrs[cpuid]->lppaca_ptr;
+> > +	u64 idle_purr_cycles = be64_to_cpu(cpu_lppaca_ptr->wait_state_cycles);
+> > +
+> > +	return sprintf(buf, "%llx\n", idle_purr_cycles);
+> > +}
+> > +static DEVICE_ATTR_RO(idle_purr);
+> 
+> per cpu purr/spurr sysfs file is created with file mode 0400. Using
+> DEVICE_ATTR_RO for their idle_* variants will create sysfs files with 0444 as
+> their file mode, you should probably use DEVICE_ATTR() with file mode 0400 to
+> have consist permission for both variants.
 
-Force memblock to bottom-up mode before calling swiotlb_init() to ensure
-that the swiotlb buffer is DMA-able.
+Thanks for catching this. I missed checking the permissions of purr
+and spurr. Will send another version.
 
-Link: https://lkml.kernel.org/r/F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Darren Stevens <darren@stevens-zone.net>
-Cc: mad skateman <madskateman@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Rob Herring <robh+dt@kernel.org>
----
- arch/powerpc/mm/mem.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index be941d382c8d..14c2c53e3f9e 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -260,6 +260,14 @@ void __init mem_init(void)
- 	BUILD_BUG_ON(MMU_PAGE_COUNT > 16);
- 
- #ifdef CONFIG_SWIOTLB
-+	/*
-+	 * Some platforms (e.g. 85xx) limit DMA-able memory way below
-+	 * 4G. We force memblock to bottom-up mode to ensure that the
-+	 * memory allocated in swiotlb_init() is DMA-able.
-+	 * As it's the last memblock allocation, no need to reset it
-+	 * back to to-down.
-+	 */
-+	memblock_set_bottom_up(true);
- 	swiotlb_init(0);
- #endif
- 
--- 
-2.24.0
-
+> 
+> -- 
+> Kamalesh
