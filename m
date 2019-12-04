@@ -2,33 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B35D112C06
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E23112C16
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 13:53:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47SdvH4SWjzDqM3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:48:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Sf0C1s12zDqKb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:52:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47SdpY3jsDzDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:44:36 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB4CgJnU085212; Wed, 4 Dec 2019 07:44:31 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Sdr00fVNzDqNs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2019 23:45:51 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB4Ci9F2132410; Wed, 4 Dec 2019 07:45:39 -0500
 Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
  [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wnjeb0a5m-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2wntctddr4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Dec 2019 07:44:30 -0500
+ Wed, 04 Dec 2019 07:40:42 -0500
 Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
  by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB4CZ8p3022319;
  Wed, 4 Dec 2019 12:37:30 GMT
@@ -71,11 +71,11 @@ X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-04_03:2019-12-04,2019-12-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0
- mlxscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 spamscore=0 mlxlogscore=999 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912040103
+ impostorscore=0 phishscore=0
+ bulkscore=0 adultscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
+ spamscore=0 mlxscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1912040103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
