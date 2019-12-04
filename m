@@ -1,162 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6E71137FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 00:08:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD3A1137A8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2019 23:34:56 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Stvd594TzDqYn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 09:34:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Svf847sVzDqSn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 10:08:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="uMS/NAAQ"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="WOgaivyj"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Stjs0s6DzDqXJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 09:26:24 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id b1so533845pgq.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Dec 2019 14:26:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=WuS+epwtlykmkeLsdcdL+jgUGc7m71KuRzIwHTzO75U=;
- b=uMS/NAAQcVsPCZpzd51ky8GrMVlkWa8WVFzC8FoZdxq5FNcwlqEnjsrHPswlamOprW
- UvUTkdze6o+kq19ps1Og2ihLF9eI+p4dvHQTSzdWvVusFCHuSZXu74btoNi2GnT63t00
- zOvxH8dvkmK5ov7BG8IbOiKQCkf/eMnbMqBJtNMinzdRyUrTuIkFKseDA9kkq/izCG8w
- aIPdVqFJM6gRmnQ06k1J1SMqtJKZv3BIw/vDUIGPQESKJqZFItYPD0cxm8OT6XCeVgKX
- CDUh8T8E3PtWgqyQ0DyF7jPlEM/jrkkeGm3ETrOmB0x6JSPDCj5iciDXtpnpdqcUOjz4
- EEcw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Svbv2MDpzDqST
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 10:06:16 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id b19so600132pfd.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Dec 2019 15:06:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gHjbdz8YjglfRyBOQRN/xcfeVAsHrq3SRybElugHfXs=;
+ b=WOgaivyjec8eNc7t/z/69gcnZ/tfy4hJffPd8m2IrtyDPvRQr3G2j6nG07CG2TGoCX
+ Rzy2HnJ1Vs9kLN1fjNjV+eC0+eUCM7aXHvsTlvWAQRuSvZBLkDsnY32o/CcYgvAoyBYM
+ X7Q6VtONRRCMXZA6dDXObNbnIqoy5LaInC9VGt/JGCEoO+PYJau48csR6XcRjgA/uu/X
+ gMWFzqZ4d2lemYk55mInJlQYdtHBTbXElcfBSlnfrmuo9SOWrcpMRIWzekgOfYvjI9+l
+ r5bjLVS4UNCzoqIxMvHpt7UNmePvP6+GJXzw8Gp7Og0QAPOfOoJXs47HhAIh2G4RsUHl
+ 4FYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=WuS+epwtlykmkeLsdcdL+jgUGc7m71KuRzIwHTzO75U=;
- b=MeU4OHaXFVi8y5OcqhrFrWa3l/sc7ikTht9NWrlY56woDllolCl9n0wVShtCR3NF5t
- 6ocOEUP7JxvifnzTJbSPd946gSke7JgrsMZjtEMr1oCc+Hzd4jrFA7Pnh191TMNbuQnD
- JViO0rW9zpu8mt2H5tLfuotvlpRyoFn53PnevcHi0MVbiyvdCPNAfPPg8e4M4O9ogUTI
- jpOta12VlR9npKPZvf2LIQua11Con3rMUamYRENIzKb5YJAnFpNTDARKrAyUOvr9dTZh
- p5xn2Jw84nwneyBUHCAIymD8FJFmmE29WnIVwOMsjFJvZswIi7hYBE44v4/l13UrC8qz
- dtRQ==
-X-Gm-Message-State: APjAAAUNQ61SeIuU/k0mAKMXRtLVtVkaqqBaQeDFm2n0K6Rdpt7R8WP/
- I1/eNaRGdKx33A9WMkRMaC9TKg==
-X-Google-Smtp-Source: APXvYqynl2RRnkwLmzKxlgHMHjXddBtPWQGOBV2CJG+0t0BsdTfOpBeuZ/mOgCFtitHewZHrjb2WxQ==
-X-Received: by 2002:a63:4a1a:: with SMTP id x26mr5523761pga.298.1575498381278; 
- Wed, 04 Dec 2019 14:26:21 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id o7sm10014067pfg.138.2019.12.04.14.26.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Dec 2019 14:26:20 -0800 (PST)
-Subject: Re: [PATCH v4 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-To: Ram Pai <linuxram@us.ibm.com>, David Gibson <david@gibson.dropbear.id.au>
-References: <f08ace25-fa94-990b-1b6d-a1c0f30d6348@ozlabs.ru>
- <20191203020850.GA12354@oc0525413822.ibm.com>
- <0b56ce3e-6c32-5f3b-e7cc-0d419a61d71d@ozlabs.ru>
- <20191203040509.GB12354@oc0525413822.ibm.com>
- <a0f19e65-81eb-37bd-928b-7a57a8660e3d@ozlabs.ru>
- <20191203165204.GA5079@oc0525413822.ibm.com>
- <3a17372a-fcee-efbf-0a05-282ffb1adc90@ozlabs.ru>
- <20191204004958.GB5063@oc0525413822.ibm.com>
- <5963ff32-2119-be7c-d1e5-63457888a73b@ozlabs.ru>
- <20191204033618.GA5031@umbus.fritz.box>
- <20191204204232.GE5063@oc0525413822.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
- EePO1JqpVuIow/wGud9xaPA5uvuVgRS1q7RU8otD+7VLDFzPRiRE4Jfr2CW89Ox6BF+q5ZPV
- /pS4v4G9eOrw1v09lEKHB9WtiBVhhxKK1LnUjPEH3ifkOkgW7jFfoYgTdtB3XaXVgYnNPDFo
- PTBYsJy+wr89XfyHr2Ev7BB3Xaf7qICXdBF8MEVY8t/UFsesg4wFWOuzCfqxFmKEaPDZlTuR
- tfLAeVpslNfWCi5ybPlowLx6KJqOsI9R2a9o4qRXWGP7IwiMRAC3iiPyk9cknt8ee6EUIxI6
- t847eFaVKI/6WcxhszI0R6Cj+N4y+1rHfkGWYWupCiHwj9DjILW9iEAncVgQmkNPpUsZECLT
- WQzMuVSxjuXW4nJ6f4OFHqL2dU//qR+BM/eJ0TT3OnfLcPqfucGxubhT7n/CXUxEy+mvWwnm
- s9p4uqVpTfEuzQ0/bE6t7dZdPBua7eYox1AQnk8JQDwC3Rn9kZq2O7u5KuJP5MfludMmQevm
- pHYEMF4vZuIpWcOrrSctJfIIEyhDoDmR34bCXAZfNJ4p4H6TPqPh671uMQV82CfTxTrMhGFq
- 8WYU2AH86FrVQfWoH09z1WqhlOm/KZhAV5FndwVjQJs1MRXD8QARAQABtCRBbGV4ZXkgS2Fy
- ZGFzaGV2c2tpeSA8YWlrQG96bGFicy5ydT6JAjgEEwECACIFAk+rT0sCGwMGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAAAoJEIYTPdgrwSC5fAIP/0wf/oSYaCq9PhO0UP9zLSEz66SSZUf7
- AM9O1rau1lJpT8RoNa0hXFXIVbqPPKPZgorQV8SVmYRLr0oSmPnTiZC82x2dJGOR8x4E01gK
- TanY53J/Z6+CpYykqcIpOlGsytUTBA+AFOpdaFxnJ9a8p2wA586fhCZHVpV7W6EtUPH1SFTQ
- q5xvBmr3KkWGjz1FSLH4FeB70zP6uyuf/B2KPmdlPkyuoafl2UrU8LBADi/efc53PZUAREih
- sm3ch4AxaL4QIWOmlE93S+9nHZSRo9jgGXB1LzAiMRII3/2Leg7O4hBHZ9Nki8/fbDo5///+
- kD4L7UNbSUM/ACWHhd4m1zkzTbyRzvL8NAVQ3rckLOmju7Eu9whiPueGMi5sihy9VQKHmEOx
- OMEhxLRQbzj4ypRLS9a+oxk1BMMu9cd/TccNy0uwx2UUjDQw/cXw2rRWTRCxoKmUsQ+eNWEd
- iYLW6TCfl9CfHlT6A7Zmeqx2DCeFafqEd69DqR9A8W5rx6LQcl0iOlkNqJxxbbW3ddDsLU/Y
- r4cY20++WwOhSNghhtrroP+gouTOIrNE/tvG16jHs8nrYBZuc02nfX1/gd8eguNfVX/ZTHiR
- gHBWe40xBKwBEK2UeqSpeVTohYWGBkcd64naGtK9qHdo1zY1P55lHEc5Uhlk743PgAnOi27Q
- ns5zuQINBE+rT0sBEACnV6GBSm+25ACT+XAE0t6HHAwDy+UKfPNaQBNTTt31GIk5aXb2Kl/p
- AgwZhQFEjZwDbl9D/f2GtmUHWKcCmWsYd5M/6Ljnbp0Ti5/xi6FyfqnO+G/wD2VhGcKBId1X
- Em/B5y1kZVbzcGVjgD3HiRTqE63UPld45bgK2XVbi2+x8lFvzuFq56E3ZsJZ+WrXpArQXib2
- hzNFwQleq/KLBDOqTT7H+NpjPFR09Qzfa7wIU6pMNF2uFg5ihb+KatxgRDHg70+BzQfa6PPA
- o1xioKXW1eHeRGMmULM0Eweuvpc7/STD3K7EJ5bBq8svoXKuRxoWRkAp9Ll65KTUXgfS+c0x
- gkzJAn8aTG0z/oEJCKPJ08CtYQ5j7AgWJBIqG+PpYrEkhjzSn+DZ5Yl8r+JnZ2cJlYsUHAB9
- jwBnWmLCR3gfop65q84zLXRQKWkASRhBp4JK3IS2Zz7Nd/Sqsowwh8x+3/IUxVEIMaVoUaxk
- Wt8kx40h3VrnLTFRQwQChm/TBtXqVFIuv7/Mhvvcq11xnzKjm2FCnTvCh6T2wJw3de6kYjCO
- 7wsaQ2y3i1Gkad45S0hzag/AuhQJbieowKecuI7WSeV8AOFVHmgfhKti8t4Ff758Z0tw5Fpc
- BFDngh6Lty9yR/fKrbkkp6ux1gJ2QncwK1v5kFks82Cgj+DSXK6GUQARAQABiQIfBBgBAgAJ
- BQJPq09LAhsMAAoJEIYTPdgrwSC5NYEP/2DmcEa7K9A+BT2+G5GXaaiFa098DeDrnjmRvumJ
- BhA1UdZRdfqICBADmKHlJjj2xYo387sZpS6ABbhrFxM6s37g/pGPvFUFn49C47SqkoGcbeDz
- Ha7JHyYUC+Tz1dpB8EQDh5xHMXj7t59mRDgsZ2uVBKtXj2ZkbizSHlyoeCfs1gZKQgQE8Ffc
- F8eWKoqAQtn3j4nE3RXbxzTJJfExjFB53vy2wV48fUBdyoXKwE85fiPglQ8bU++0XdOr9oyy
- j1llZlB9t3tKVv401JAdX8EN0++ETiOovQdzE1m+6ioDCtKEx84ObZJM0yGSEGEanrWjiwsa
- nzeK0pJQM9EwoEYi8TBGhHC9ksaAAQipSH7F2OHSYIlYtd91QoiemgclZcSgrxKSJhyFhmLr
- QEiEILTKn/pqJfhHU/7R7UtlDAmFMUp7ByywB4JLcyD10lTmrEJ0iyRRTVfDrfVP82aMBXgF
- tKQaCxcmLCaEtrSrYGzd1sSPwJne9ssfq0SE/LM1J7VdCjm6OWV33SwKrfd6rOtvOzgadrG6
- 3bgUVBw+bsXhWDd8tvuCXmdY4bnUblxF2B6GOwSY43v6suugBttIyW5Bl2tXSTwP+zQisOJo
- +dpVG2pRr39h+buHB3NY83NEPXm1kUOhduJUA17XUY6QQCAaN4sdwPqHq938S3EmtVhsuQIN
- BFq54uIBEACtPWrRdrvqfwQF+KMieDAMGdWKGSYSfoEGGJ+iNR8v255IyCMkty+yaHafvzpl
- PFtBQ/D7Fjv+PoHdFq1BnNTk8u2ngfbre9wd9MvTDsyP/TmpF0wyyTXhhtYvE267Av4X/BQT
- lT9IXKyAf1fP4BGYdTNgQZmAjrRsVUW0j6gFDrN0rq2J9emkGIPvt9rQt6xGzrd6aXonbg5V
- j6Uac1F42ESOZkIh5cN6cgnGdqAQb8CgLK92Yc8eiCVCH3cGowtzQ2m6U32qf30cBWmzfSH0
- HeYmTP9+5L8qSTA9s3z0228vlaY0cFGcXjdodBeVbhqQYseMF9FXiEyRs28uHAJEyvVZwI49
- CnAgVV/n1eZa5qOBpBL+ZSURm8Ii0vgfvGSijPGbvc32UAeAmBWISm7QOmc6sWa1tobCiVmY
- SNzj5MCNk8z4cddoKIc7Wt197+X/X5JPUF5nQRvg3SEHvfjkS4uEst9GwQBpsbQYH9MYWq2P
- PdxZ+xQE6v7cNB/pGGyXqKjYCm6v70JOzJFmheuUq0Ljnfhfs15DmZaLCGSMC0Amr+rtefpA
- y9FO5KaARgdhVjP2svc1F9KmTUGinSfuFm3quadGcQbJw+lJNYIfM7PMS9fftq6vCUBoGu3L
- j4xlgA/uQl/LPneu9mcvit8JqcWGS3fO+YeagUOon1TRqQARAQABiQRsBBgBCAAgFiEEZSrP
- ibrORRTHQ99dhhM92CvBILkFAlq54uICGwICQAkQhhM92CvBILnBdCAEGQEIAB0WIQQIhvWx
- rCU+BGX+nH3N7sq0YorTbQUCWrni4gAKCRDN7sq0YorTbVVSD/9V1xkVFyUCZfWlRuryBRZm
- S4GVaNtiV2nfUfcThQBfF0sSW/aFkLP6y+35wlOGJE65Riw1C2Ca9WQYk0xKvcZrmuYkK3DZ
- 0M9/Ikkj5/2v0vxz5Z5w/9+IaCrnk7pTnHZuZqOh23NeVZGBls/IDIvvLEjpD5UYicH0wxv+
- X6cl1RoP2Kiyvenf0cS73O22qSEw0Qb9SId8wh0+ClWet2E7hkjWFkQfgJ3hujR/JtwDT/8h
- 3oCZFR0KuMPHRDsCepaqb/k7VSGTLBjVDOmr6/C9FHSjq0WrVB9LGOkdnr/xcISDZcMIpbRm
- EkIQ91LkT/HYIImL33ynPB0SmA+1TyMgOMZ4bakFCEn1vxB8Ir8qx5O0lHMOiWMJAp/PAZB2
- r4XSSHNlXUaWUg1w3SG2CQKMFX7vzA31ZeEiWO8tj/c2ZjQmYjTLlfDK04WpOy1vTeP45LG2
- wwtMA1pKvQ9UdbYbovz92oyZXHq81+k5Fj/YA1y2PI4MdHO4QobzgREoPGDkn6QlbJUBf4To
- pEbIGgW5LRPLuFlOPWHmIS/sdXDrllPc29aX2P7zdD/ivHABslHmt7vN3QY+hG0xgsCO1JG5
- pLORF2N5XpM95zxkZqvYfC5tS/qhKyMcn1kC0fcRySVVeR3tUkU8/caCqxOqeMe2B6yTiU1P
- aNDq25qYFLeYxg67D/4w/P6BvNxNxk8hx6oQ10TOlnmeWp1q0cuutccblU3ryRFLDJSngTEu
- ZgnOt5dUFuOZxmMkqXGPHP1iOb+YDznHmC0FYZFG2KAc9pO0WuO7uT70lL6larTQrEneTDxQ
- CMQLP3qAJ/2aBH6SzHIQ7sfbsxy/63jAiHiT3cOaxAKsWkoV2HQpnmPOJ9u02TPjYmdpeIfa
- X2tXyeBixa3i/6dWJ4nIp3vGQicQkut1YBwR7dJq67/FCV3Mlj94jI0myHT5PIrCS2S8LtWX
- ikTJSxWUKmh7OP5mrqhwNe0ezgGiWxxvyNwThOHc5JvpzJLd32VDFilbxgu4Hhnf6LcgZJ2c
- Zd44XWqUu7FzVOYaSgIvTP0hNrBYm/E6M7yrLbs3JY74fGzPWGRbBUHTZXQEqQnZglXaVB5V
- ZhSFtHopZnBSCUSNDbB+QGy4B/E++Bb02IBTGl/JxmOwG+kZUnymsPvTtnNIeTLHxN/H/ae0
- c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
- DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
- XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <c2dda233-2a11-a066-5d44-68e2a0b5121e@ozlabs.ru>
-Date: Thu, 5 Dec 2019 09:26:14 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gHjbdz8YjglfRyBOQRN/xcfeVAsHrq3SRybElugHfXs=;
+ b=ZpfiErNNfWYV0oL18KRANBRruccOMdayJCPYclBgqjlHFisPVYggLYL64ogUTwqP01
+ zWqkt4DjaTrKZKP89eyUpyFa1f5vBLQV0pRhxCRwNCUDo7WrSrw3S0IPIov9VTwcHS4W
+ w3KE8iREHjXJf5BNFYdStDXHkk1gQ+HIDhfRAPor1SDVqVhRd69w0OSr9SWtJGpcGbO+
+ RoOPYSR21L3XiFlur+Tzb1W6lINb4BVZsk8AN0qW7mSShoGw0cnXhs+ufEdnLEHtf02s
+ F77I+eAHoPoQvi2npdX80I1bPmlsXMIraxonMTAO1VpWUJ+vJ4fYoMu5jJ7ekk3NFSqe
+ aKyA==
+X-Gm-Message-State: APjAAAUQmZ38jY1sFlTuG+Nl4OmEFRb43G7D/GXzrypjQSNcRgBR8nc9
+ UfSaHbtVoemrFK134fZR1nKc6tZjFD8=
+X-Google-Smtp-Source: APXvYqxs4dYZg/KwhQ5UGxhF1Q5lBhQQd8YBuClZ4a8U+GLRMeiPsj79W6q9+SVIHYLExSq5nxObhQ==
+X-Received: by 2002:a63:fc5d:: with SMTP id r29mr6184652pgk.282.1575500772790; 
+ Wed, 04 Dec 2019 15:06:12 -0800 (PST)
+Received: from sol.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id j28sm8672575pgb.36.2019.12.04.15.06.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Dec 2019 15:06:12 -0800 (PST)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	kvm-ppc@vger.kernel.org
+Subject: [PATCH v2] powerpc/mm: Remove kvm radix prefetch workaround for
+ Power9 DD2.2
+Date: Thu,  5 Dec 2019 10:05:19 +1100
+Message-Id: <20191204230519.5987-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191204204232.GE5063@oc0525413822.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,101 +78,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, ram.n.pai@gmail.com, cai@lca.pw,
- tglx@linutronix.de, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de, bauerman@linux.ibm.com
+Cc: Jordan Niethe <jniethe5@gmail.com>, oohall@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Commit a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with
+KVM") introduced a number of workarounds as coming out of a guest with
+the mmu enabled would make the cpu would start running in hypervisor
+state with the PID value from the guest. The cpu will then start
+prefetching for the hypervisor with that PID value.
 
+In Power9 DD2.2 the cpu behaviour was modified to fix this. When
+accessing Quadrant 0 in hypervisor mode with LPID != 0 prefetching will
+not be performed. This means that we can get rid of the workarounds for
+Power9 DD2.2 and later revisions. Add a new cpu feature
+CPU_FTR_P9_RADIX_PREFETCH_BUG to indicate if the workarounds are needed.
 
-On 05/12/2019 07:42, Ram Pai wrote:
-> On Wed, Dec 04, 2019 at 02:36:18PM +1100, David Gibson wrote:
->> On Wed, Dec 04, 2019 at 12:08:09PM +1100, Alexey Kardashevskiy wrote:
->>>
->>>
->>> On 04/12/2019 11:49, Ram Pai wrote:
->>>> On Wed, Dec 04, 2019 at 11:04:04AM +1100, Alexey Kardashevskiy wrote:
->>>>>
->>>>>
->>>>> On 04/12/2019 03:52, Ram Pai wrote:
->>>>>> On Tue, Dec 03, 2019 at 03:24:37PM +1100, Alexey Kardashevskiy wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 03/12/2019 15:05, Ram Pai wrote:
->>>>>>>> On Tue, Dec 03, 2019 at 01:15:04PM +1100, Alexey Kardashevskiy wrote:
->>>>>>>>>
->>>>>>>>>
->>>>>>>>> On 03/12/2019 13:08, Ram Pai wrote:
->>>>>>>>>> On Tue, Dec 03, 2019 at 11:56:43AM +1100, Alexey Kardashevskiy wrote:
->>>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>> On 02/12/2019 17:45, Ram Pai wrote:
->>>>>>>>>>>> H_PUT_TCE_INDIRECT hcall uses a page filled with TCE entries, as one of
->>>>>>>>>>>> its parameters. One page is dedicated per cpu, for the lifetime of the
->>>>>>>>>>>> kernel for this purpose. On secure VMs, contents of this page, when
->>>>>>>>>>>> accessed by the hypervisor, retrieves encrypted TCE entries.  Hypervisor
->>>>>>>>>>>> needs to know the unencrypted entries, to update the TCE table
->>>>>>>>>>>> accordingly.  There is nothing secret or sensitive about these entries.
->>>>>>>>>>>> Hence share the page with the hypervisor.
->>>>>>>>>>>
->>>>>>>>>>> This unsecures a page in the guest in a random place which creates an
->>>>>>>>>>> additional attack surface which is hard to exploit indeed but
->>>>>>>>>>> nevertheless it is there.
->>>>>>>>>>> A safer option would be not to use the
->>>>>>>>>>> hcall-multi-tce hyperrtas option (which translates FW_FEATURE_MULTITCE
->>>>>>>>>>> in the guest).
->>>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> Hmm... How do we not use it?  AFAICT hcall-multi-tce option gets invoked
->>>>>>>>>> automatically when IOMMU option is enabled.
->>>>>>>>>
->>>>>>>>> It is advertised by QEMU but the guest does not have to use it.
->>>>>>>>
->>>>>>>> Are you suggesting that even normal-guest, not use hcall-multi-tce?
->>>>>>>> or just secure-guest?  
->>>>>>>
->>>>>>>
->>>>>>> Just secure.
->>>>>>
->>>>>> hmm..  how are the TCE entries communicated to the hypervisor, if
->>>>>> hcall-multi-tce is disabled?
->>>>>
->>>>> Via H_PUT_TCE which updates 1 entry at once (sets or clears).
->>>>> hcall-multi-tce  enables H_PUT_TCE_INDIRECT (512 entries at once) and
->>>>> H_STUFF_TCE (clearing, up to 4bln at once? many), these are simply an
->>>>> optimization.
->>>>
->>>> Do you still think, secure-VM should use H_PUT_TCE and not
->>>> H_PUT_TCE_INDIRECT?  And normal VM should use H_PUT_TCE_INDIRECT?
->>>> Is there any advantage of special casing it for secure-VMs.
->>>
->>>
->>> Reducing the amount of insecure memory at random location.
->>
->> The other approach we could use for that - which would still allow
->> H_PUT_TCE_INDIRECT, would be to allocate the TCE buffer page from the
->> same pool that we use for the bounce buffers.  I assume there must
->> already be some sort of allocator for that?
-> 
-> The allocator for swiotlb is buried deep in the swiotlb code. It is 
-> not exposed to the outside-swiotlb world. Will have to do major surgery
-> to expose it.
-> 
-> I was thinking, maybe we share the page, finish the INDIRECT_TCE call,
-> and unshare the page.  This will address Alexey's concern of having
-> shared pages at random location, and will also give me my performance
-> optimization.  Alexey: ok?
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+v2: Use a cpu feature instead of open coding the PVR check
+---
+ arch/powerpc/include/asm/cputable.h      |  6 ++++--
+ arch/powerpc/kernel/dt_cpu_ftrs.c        | 13 ++++++++-----
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S  |  2 ++
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  6 +++++-
+ arch/powerpc/mm/book3s64/radix_tlb.c     |  3 +++
+ 5 files changed, 22 insertions(+), 8 deletions(-)
 
-
-I really do not see the point. I really think we should to 1:1 mapping
-of swtiotlb buffers using the default 32bit window using H_PUT_TCE and
-this should be more than enough, I do not think the amount of code will
-be dramatically different compared to unsecuring and securing a page or
-using one of swtiotlb pages for this purpose. Thanks,
-
-
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index cf00ff0d121d..944a39c4c3a0 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -212,6 +212,7 @@ static inline void cpu_feature_keys_init(void) { }
+ #define CPU_FTR_P9_TLBIE_STQ_BUG	LONG_ASM_CONST(0x0000400000000000)
+ #define CPU_FTR_P9_TIDR			LONG_ASM_CONST(0x0000800000000000)
+ #define CPU_FTR_P9_TLBIE_ERAT_BUG	LONG_ASM_CONST(0x0001000000000000)
++#define CPU_FTR_P9_RADIX_PREFETCH_BUG	LONG_ASM_CONST(0x0002000000000000)
+ 
+ #ifndef __ASSEMBLY__
+ 
+@@ -459,8 +460,9 @@ static inline void cpu_feature_keys_init(void) { }
+ 	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
+ 	    CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_PKEY | \
+ 	    CPU_FTR_P9_TLBIE_STQ_BUG | CPU_FTR_P9_TLBIE_ERAT_BUG | CPU_FTR_P9_TIDR)
+-#define CPU_FTRS_POWER9_DD2_0 CPU_FTRS_POWER9
+-#define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1)
++#define CPU_FTRS_POWER9_DD2_0 CPU_FTRS_POWER9 | CPU_FTR_P9_RADIX_PREFETCH_BUG
++#define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | CPU_FTR_P9_RADIX_PREFETCH_BUG | \
++			       CPU_FTR_POWER9_DD2_1)
+ #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
+ 			       CPU_FTR_P9_TM_HV_ASSIST | \
+ 			       CPU_FTR_P9_TM_XER_SO_BUG)
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 180b3a5d1001..182b4047c1ef 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -727,17 +727,20 @@ static __init void cpufeatures_cpu_quirks(void)
+ 	/*
+ 	 * Not all quirks can be derived from the cpufeatures device tree.
+ 	 */
+-	if ((version & 0xffffefff) == 0x004e0200)
+-		; /* DD2.0 has no feature flag */
+-	else if ((version & 0xffffefff) == 0x004e0201)
++	if ((version & 0xffffefff) == 0x004e0200) {
++		/* DD2.0 has no feature flag */
++		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
++	} else if ((version & 0xffffefff) == 0x004e0201) {
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+-	else if ((version & 0xffffefff) == 0x004e0202) {
++		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
++	} else if ((version & 0xffffefff) == 0x004e0202) {
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+-	} else if ((version & 0xffff0000) == 0x004e0000)
++	} else if ((version & 0xffff0000) == 0x004e0000) {
+ 		/* DD2.1 and up have DD2_1 */
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
++	}
+ 
+ 	if ((version & 0xffff0000) == 0x004e0000) {
+ 		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index faebcbb8c4db..72b08bb17200 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -1793,6 +1793,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 	tlbsync
+ 	ptesync
+ 
++BEGIN_FTR_SECTION
+ 	/* Radix: Handle the case where the guest used an illegal PID */
+ 	LOAD_REG_ADDR(r4, mmu_base_pid)
+ 	lwz	r3, VCPU_GUEST_PID(r9)
+@@ -1822,6 +1823,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 	addi	r7,r7,0x1000
+ 	bdnz	1b
+ 	ptesync
++END_FTR_SECTION_IFSET(CPU_FTR_P9_RADIX_PREFETCH_BUG)
+ 
+ 2:
+ #endif /* CONFIG_PPC_RADIX_MMU */
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 6ee17d09649c..25cd2a5a6f9f 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -336,7 +336,11 @@ static void __init radix_init_pgtable(void)
+ 	}
+ 
+ 	/* Find out how many PID bits are supported */
+-	if (cpu_has_feature(CPU_FTR_HVMODE)) {
++	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
++		if (!mmu_pid_bits)
++			mmu_pid_bits = 20;
++		mmu_base_pid = 1;
++	} else if (cpu_has_feature(CPU_FTR_HVMODE)) {
+ 		if (!mmu_pid_bits)
+ 			mmu_pid_bits = 20;
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 67af871190c6..d3ab36b33650 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -1221,6 +1221,9 @@ extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
+ 	if (unlikely(pid == MMU_NO_CONTEXT))
+ 		return;
+ 
++	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
++		return;
++
+ 	/*
+ 	 * If this context hasn't run on that CPU before and KVM is
+ 	 * around, there's a slim chance that the guest on another
 -- 
-Alexey
+2.20.1
+
