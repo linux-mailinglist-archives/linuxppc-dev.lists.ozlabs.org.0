@@ -1,66 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A87F113DAC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 10:20:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDB4113D46
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 09:45:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47T8Sh1LkQzDqYh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 19:45:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47T9D51R1LzDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 20:20:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::342;
- helo=mail-wm1-x342.google.com; envelope-from=daniel.baluta@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
+ helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="U2VSti3x"; 
+ dmarc=none (p=none dis=none) header.from=walle.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=walle.cc header.i=@walle.cc header.b="lgf9fTIK"; 
  dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
+Received: from ssl.serverraum.org (ssl.serverraum.org
+ [IPv6:2a01:4f8:151:8464::1:2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47T8QW4Nw9zDqYP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 19:44:03 +1100 (AEDT)
-Received: by mail-wm1-x342.google.com with SMTP id p17so2665528wmi.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Dec 2019 00:44:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=lU1EvzM/eLD0n0vZaZM7AMkwMVY8sZSz0h3WsdV8t0E=;
- b=U2VSti3xVYS3TZPRfEbXKHUduQrzXSc5f+w1SuhjId7MWQwy7oOm4AD/MgMfRrvBTD
- 8BVTycGLuJp8sE6OQ+FG0TCjsXTjRI964j4m5fup+dxVQ1Mlsa/+9p6kWM4HQEUnLUPB
- jDoOpTvvmLrggMmDLQIrbrpt5LlAn6GbQjyJzvu+gdCJX+gp30vQL38CMQoJbw+vSUBh
- vzqWSDfZ60M9svZzy8bab7AWE7X0RDQRXDUrvfoAx35v2NKnCNG3v2WH50/J0oJuj6Vy
- N0t0vFI5R42CNnD2QpW2oIE8fwT3iMnetrtWzEp9GEPetG4/UuqNqfJVlZQZR3k3ONod
- jj8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lU1EvzM/eLD0n0vZaZM7AMkwMVY8sZSz0h3WsdV8t0E=;
- b=ktgpSMmGbnDS+6j/6xCx3gJsZ36nlHmivX/sisAPolp7G7rksx3TWLXfIya96frKpC
- WiLFD0W+zDr8qtiPAeh+SG3rsTM3kI/kU9U4sEpAHqLU7TyML+RvLyDyrlnIfk2z1knp
- g9f7NSESI+M6N9tdE5xSWspnyDSe1IyQzANZz5htYq5W8CQyURvQt6Z+T1Jzbz4ew+jN
- sWAtxoVGdABCxi34g9v5Owb3yGZnGtldaCHx2fKpJ488jJofhIzCqwwZeko+s6NMvu1E
- kVaJIZ8wfWOe2fK6andfD281uv5O2ynbl37mtVh3Zg/3jiNnhuNfKOl6/hQb/uujHRra
- TT5A==
-X-Gm-Message-State: APjAAAVhFqJDTHimHAwiAH9P0lwi3lL88pjzpSgFuVwM5JW4YL/RYvuQ
- Bl6Txq0K0GjVgc4fqBzwe0LcD8+JJNNve3wVyCQ=
-X-Google-Smtp-Source: APXvYqzHaKRUEfbiAOswMp49ewBcixg21LL6YP05PzNudQhdouGxpQM6W2U/QiJNtYTg+vZqQcCAgBCV7oa+geJPtRg=
-X-Received: by 2002:a1c:4944:: with SMTP id w65mr3776661wma.39.1575535439089; 
- Thu, 05 Dec 2019 00:43:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47T9BC4j7lzDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2019 20:18:27 +1100 (AEDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ssl.serverraum.org (Postfix) with ESMTPSA id 27B372305C;
+ Thu,  5 Dec 2019 10:18:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
+ s=mail2016061301; t=1575537492;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2/Tl9y0vlxprYCBrvMb1aya8Frr3Lyxlo7NlxWTMqUU=;
+ b=lgf9fTIKUVaOWWjXw/69XcooxlrBdTSukoRwUQcp1g0v/iSfnIdYWw+ete1aMsIxdMWXZO
+ +36NxPACCHWHppH36Gg7oSGBQRvd7i3DE5L8XyacL/MHGEw5nVY8Nf1FE6RED7DZzTdSmC
+ OMxzTgAFh2qQ1Csg8+1STlDZxi+7KTk=
 MIME-Version: 1.0
-References: <20191128223802.18228-1-michael@walle.cc>
-In-Reply-To: <20191128223802.18228-1-michael@walle.cc>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 5 Dec 2019 10:43:46 +0200
-Message-ID: <CAEnQRZCnQAUVowOJw5aPe9rYWU5DKR4bFbmQLYV2BzYqOhRJmQ@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Thu, 05 Dec 2019 10:18:10 +0100
+From: Michael Walle <michael@walle.cc>
+To: Daniel Baluta <daniel.baluta@gmail.com>
 Subject: Re: [PATCH] ASoC: fsl_sai: add IRQF_SHARED
-To: Michael Walle <michael@walle.cc>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAEnQRZCnQAUVowOJw5aPe9rYWU5DKR4bFbmQLYV2BzYqOhRJmQ@mail.gmail.com>
+References: <20191128223802.18228-1-michael@walle.cc>
+ <CAEnQRZCnQAUVowOJw5aPe9rYWU5DKR4bFbmQLYV2BzYqOhRJmQ@mail.gmail.com>
+Message-ID: <a5accae02f840f7e25099c2ccd7b02ff@walle.cc>
+X-Sender: michael@walle.cc
+User-Agent: Roundcube Webmail/1.3.8
+X-Spamd-Bar: +
+X-Spam-Level: *
+X-Rspamd-Server: web
+X-Spam-Status: No, score=1.40
+X-Spam-Score: 1.40
+X-Rspamd-Queue-Id: 27B372305C
+X-Spamd-Result: default: False [1.40 / 15.00]; TO_DN_SOME(0.00)[];
+ FREEMAIL_TO(0.00)[gmail.com]; RCVD_COUNT_ZERO(0.00)[0];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MID_RHS_MATCH_FROM(0.00)[]; ARC_NA(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; TAGGED_RCPT(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; DKIM_SIGNED(0.00)[];
+ RCPT_COUNT_TWELVE(0.00)[12]; NEURAL_HAM(-0.00)[-0.696];
+ FREEMAIL_CC(0.00)[alsa-project.org,lists.ozlabs.org,vger.kernel.org,kernel.org,gmail.com,perex.cz,suse.com];
+ SUSPICIOUS_RECIPS(1.50)[]
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,20 +91,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 29, 2019 at 12:40 AM Michael Walle <michael@walle.cc> wrote:
->
-> The LS1028A SoC uses the same interrupt line for adjacent SAIs. Use
-> IRQF_SHARED to be able to use these SAIs simultaneously.
+Hi Daniel,
 
-Hi Michael,
+Am 2019-12-05 09:43, schrieb Daniel Baluta:
+> On Fri, Nov 29, 2019 at 12:40 AM Michael Walle <michael@walle.cc> 
+> wrote:
+>> 
+>> The LS1028A SoC uses the same interrupt line for adjacent SAIs. Use
+>> IRQF_SHARED to be able to use these SAIs simultaneously.
+> 
+> Hi Michael,
+> 
+> Thanks for the patch. We have a similar change inside our internal tree
+> (it is on my long TODO list to upstream :D).
+> 
+> We add the shared flag conditionally on a dts property.
+> 
+> Do you think it is a good idea to always add shared flag? I'm thinking
+> on SAI IP integrations where the interrupt is edge triggered.
 
-Thanks for the patch. We have a similar change inside our internal tree
-(it is on my long TODO list to upstream :D).
+Mhh, I don't really get the point to make the flag conditionally. If
+there is only one user, the flag won't hurt, correct?
 
-We add the shared flag conditionally on a dts property.
+If there are two users, we need the flag anyway.
 
-Do you think it is a good idea to always add shared flag? I'm thinking
-on SAI IP integrations where the interrupt is edge triggered.
+> AFAIK edge triggered interrupts do not get along very well
+> with sharing an interrupt line.
 
-AFAIK edge triggered interrupts do not get along very well
-with sharing an interrupt line.
+So in that case you shouldn't use shared edge triggered interrupts in 
+the
+SoC in the first place, I guess.
+
+-michael
