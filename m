@@ -1,70 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540F1114824
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 21:35:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47TSBv5t6KzDqbY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 07:35:03 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3CD114838
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2019 21:39:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47TSHR2D01zDqbk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 07:38:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=pauld@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=robherring2@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="P16XpMux"; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47TMGD2DpczDqZS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 03:52:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1575564753;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=anfDWVusi5N36MRztAUZYmAyYRGj+YufNIguVozKE5Q=;
- b=P16XpMuxF0+Xnx0vXk4vKOpvjZ4f6lyOpyih1NLPIYfyax0cwWs2swpsfjlCvzWeaJgKCz
- OKwVXFqMU/hzj4RW4h7QyEM+pi+T1TOfBV6TXdOakie+rcfjHcukZPTDiNp6o0RstVoifm
- gBZj+X2PWH0oGSDSFQbJ+wgeFs4TMMo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-84-WE44cf5-PBKVKsVS8LET5g-1; Thu, 05 Dec 2019 08:51:33 -0500
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7171F107ACFB;
- Thu,  5 Dec 2019 13:51:31 +0000 (UTC)
-Received: from lorien.usersys.redhat.com (ovpn-116-240.phx2.redhat.com
- [10.3.116.240])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 73F4B5D6A5;
- Thu,  5 Dec 2019 13:51:25 +0000 (UTC)
-Date: Thu, 5 Dec 2019 08:51:23 -0500
-From: Phil Auld <pauld@redhat.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 2/2] powerpc/shared: Use static key to detect shared
- processor
-Message-ID: <20191205135123.GB18693@lorien.usersys.redhat.com>
-References: <20191205083218.25824-1-srikar@linux.vnet.ibm.com>
- <20191205083218.25824-2-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47TSDR5T8wzDqb1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 07:36:22 +1100 (AEDT)
+Received: by mail-oi1-f193.google.com with SMTP id x195so4040523oix.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Dec 2019 12:36:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=ZxDdi4tWZwGx16qsUivpeEYi/QdxFDG6lu1aaAIGIhQ=;
+ b=U5LBmvcL0lefhyRW03sM+z0CVcc1REabOYZdN+Zu9cp6LdeSuUmtyGuEa0GwsQ5wLM
+ Om5aaluMWtuBtgFhyI95ktEGH8VwJrJCWaEwl02uAXLmZTBAtiEF0p5ED9B9rQ+qErL0
+ xDlciD67b5FBk2LDquU9nqRwqVKVN67iYJoe2NKivyeT1AOS89/Q8K/wbv+Fvn9Z6Nfc
+ 2FNVkp19AY5DmvFl4bYJSzwSzKWKvJ5Ht7uY22vhgWHBdvo6s9KjXaUEYjhB1ywRg8BU
+ UzrfoGQdn/9mfTEhnoBdADEjtCplHXr2BtU2Fy6iBYDSzihrtnQqV1WW0Qc8QPuGbVlo
+ +DHA==
+X-Gm-Message-State: APjAAAWI7e9nrqgxwozA68FthpySEsU+KAmkZjyub+jfdrYAxw7ZJCdt
+ FM/h8Emw4Q70iau2pZQo/w==
+X-Google-Smtp-Source: APXvYqzYl1PiM/lOBJJsKXVawc+2jiuwRnCBFFqCTTpp7sRvT16zLjnLLQFobFKmhv+5fOCdXqzUnw==
+X-Received: by 2002:aca:ad11:: with SMTP id w17mr9342474oie.85.1575578179673; 
+ Thu, 05 Dec 2019 12:36:19 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net.
+ [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id e6sm3766415otl.12.2019.12.05.12.36.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Dec 2019 12:36:18 -0800 (PST)
+Date: Thu, 5 Dec 2019 14:36:18 -0600
+From: Rob Herring <robh@kernel.org>
+To: Haren Myneni <haren@linux.vnet.ibm.com>
+Subject: Re: [PATCH 01/14] powerpc/vas: Describe vas-port and interrupts
+ properties
+Message-ID: <20191205203618.GA26880@bogus>
+References: <1574816523.13250.4.camel@hbabu-laptop>
 MIME-Version: 1.0
-In-Reply-To: <20191205083218.25824-2-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-MC-Unique: WE44cf5-PBKVKsVS8LET5g-1
-X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-X-Mailman-Approved-At: Fri, 06 Dec 2019 07:33:31 +1100
+In-Reply-To: <1574816523.13250.4.camel@hbabu-laptop>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,63 +68,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Parth Shah <parth@linux.ibm.com>,
- Ihor Pasichnyk <Ihor.Pasichnyk@ibm.com>, Waiman Long <longman@redhat.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, mikey@neuling.org, herbert@gondor.apana.org.au,
+ npiggin@gmail.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 05, 2019 at 02:02:18PM +0530 Srikar Dronamraju wrote:
-> With the static key shared processor available, is_shared_processor()
-> can return without having to query the lppaca structure.
->=20
-> Cc: Parth Shah <parth@linux.ibm.com>
-> Cc: Ihor Pasichnyk <Ihor.Pasichnyk@ibm.com>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Phil Auld <pauld@redhat.com>
-> Cc: Waiman Long <longman@redhat.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+On Tue, Nov 26, 2019 at 05:02:03PM -0800, Haren Myneni wrote:
+> [PATCH 01/14] powerpc/vas: Describe vas-port and interrupts properties
+
+Something wrong here with the subject in the body.
+
+> 
+> Signed-off-by: Haren Myneni <haren@us.ibm.com>
 > ---
-> Changelog v1 (https://patchwork.ozlabs.org/patch/1204192/) ->v2:
-> Now that we no more refer to lppaca, remove the comment.
->=20
-> Changelog v2->v3:
-> Code is now under CONFIG_PPC_SPLPAR as it depends on CONFIG_PPC_PSERIES.
-> This was suggested by Waiman Long.
->=20
->  arch/powerpc/include/asm/spinlock.h | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/a=
-sm/spinlock.h
-> index de817c25deff..e83d57f27566 100644
-> --- a/arch/powerpc/include/asm/spinlock.h
-> +++ b/arch/powerpc/include/asm/spinlock.h
-> @@ -111,13 +111,8 @@ static inline void splpar_rw_yield(arch_rwlock_t *lo=
-ck) {};
-> =20
->  static inline bool is_shared_processor(void)
->  {
-> -/*
-> - * LPPACA is only available on Pseries so guard anything LPPACA related =
-to
-> - * allow other platforms (which include this common header) to compile.
-> - */
-> -#ifdef CONFIG_PPC_PSERIES
-> -=09return (IS_ENABLED(CONFIG_PPC_SPLPAR) &&
-> -=09=09lppaca_shared_proc(local_paca->lppaca_ptr));
-> +#ifdef CONFIG_PPC_SPLPAR
-> +=09return static_branch_unlikely(&shared_processor);
->  #else
->  =09return false;
->  #endif
-> --=20
-> 2.18.1
->=20
+>  Documentation/devicetree/bindings/powerpc/ibm,vas.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/powerpc/ibm,vas.txt b/Documentation/devicetree/bindings/powerpc/ibm,vas.txt
+> index bf11d2f..12de08b 100644
+> --- a/Documentation/devicetree/bindings/powerpc/ibm,vas.txt
+> +++ b/Documentation/devicetree/bindings/powerpc/ibm,vas.txt
+> @@ -11,6 +11,8 @@ Required properties:
+>    window context start and length, OS/User window context start and length,
+>    "Paste address" start and length, "Paste window id" start bit and number
+>    of bits)
+> +- ibm,vas-port : Port address for the interrupt.
 
-Fwiw,
+What's the size of this property?
 
-Acked-by: Phil Auld <pauld@redhat.com>
---=20
-
+> +- interrupts: IRQ value for each VAS instance and level.
+>  
+>  Example:
+>  
+> @@ -18,5 +20,8 @@ Example:
+>  		compatible = "ibm,vas", "ibm,power9-vas";
+>  		reg = <0x6019100000000 0x2000000 0x6019000000000 0x100000000 0x8000000000000 0x100000000 0x20 0x10>;
+>  		name = "vas";
+> +		interrupts = <0x1f 0>;
+> +		interrupt-parent = <&mpic>;
+>  		ibm,vas-id = <0x1>;
+> +		ibm,vas-port = <0x6010001000000>;
+>  	};
+> -- 
+> 1.8.3.1
+> 
+> 
+> 
