@@ -2,69 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970CA1150B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 13:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB6F1150BA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 14:00:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Tt0W0mljzDqKP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 23:57:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Tt451tJ0zDqKK
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Dec 2019 00:00:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47TskM2qwCzDqcq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:45:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47TslY6LnVzDqPR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:46:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="M9gl0sSC"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47TskL3V0Qz8wHr
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:45:14 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47TskL0kpMz9sRG; Fri,  6 Dec 2019 23:45:14 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="M9gl0sSC"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47TskJ61M1z9sR4
- for <linuxppc-dev@ozlabs.org>; Fri,  6 Dec 2019 23:45:12 +1100 (AEDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id ED01D205F4;
- Fri,  6 Dec 2019 12:45:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575636310;
- bh=GHMiXwT065uPwUwIIqQU+AS8Kz5f4G24qOnNzLCcVR8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=M9gl0sSCJbv/ZU5qkoIHQlVe78vfB54tu/5RvIJNlSEZQtkeyvaQmDmwSUPODHIKE
- IuuuoGKl3uaJ2EDiwtpNhJ0PznME4zlZefVzyVR0ZFIb3kvz3snk3mdk2/vjZ6P0Ao
- JBjQwUoGO385uoxocK0605KJsvMdMdttKgJpGwPs=
-Date: Fri, 6 Dec 2019 13:45:08 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH v4 3/6] powerpc/fadump: reorganize /sys/kernel/fadump_*
- sysfs files
-Message-ID: <20191206124508.GA1360047@kroah.com>
-References: <20191206122434.29587-1-sourabhjain@linux.ibm.com>
- <20191206122434.29587-4-sourabhjain@linux.ibm.com>
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="LDjqbEKi"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47TslW10tCz9s4Y;
+ Fri,  6 Dec 2019 23:46:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1575636375;
+ bh=oyct4tPxjrlkjB1zVGbKoKAWyEMXqFKQz+rA6a80J+Q=;
+ h=From:To:Cc:Subject:Date:From;
+ b=LDjqbEKiUq8oNBats/yrnw90N+Rzv6Z+iiPnbOmZZ7DL568ZE4JOjjBHlEHFJfoeC
+ O8SOYmwLdmsN/V6kENixnnz/vOn5jzuNy7pWqQswsJTHN0f6lUjVdWV07IzT1YCnzG
+ 1kL6GA7mRfq+HW2DeqJRjs0wlndNWkpM8er9OpYHENOK74c0gU4iuMOYCsOKOIFdBq
+ X+dupxBqvuGoTt7G8GxlraeFfKp5A0+6fkI8sOnQrpLnXb8TO52AAXLDQdhAsk4l/7
+ Pel8A8JoKvjlh+CqVUqwUBN4H7e+QZd4Je2t+OCOU6hgqTDNkgZRQDLShw8uq+fP7g
+ X1AGIjbhox6vg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.5-2 tag
+ (topic/kasan-bitops)
+Date: Fri, 06 Dec 2019 23:46:11 +1100
+Message-ID: <87blslei5o.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191206122434.29587-4-sourabhjain@linux.ibm.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,55 +55,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Cc: linux-s390@vger.kernel.org, elver@google.com, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 06, 2019 at 05:54:31PM +0530, Sourabh Jain wrote:
-> +static struct kobj_attribute release_attr = __ATTR(release_mem,
->  						0200, NULL,
->  						fadump_release_memory_store);
-> -static struct kobj_attribute fadump_attr = __ATTR(fadump_enabled,
-> +static struct kobj_attribute enable_attr = __ATTR(enabled,
->  						0444, fadump_enabled_show,
->  						NULL);
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-__ATTR_RO()?
+Hi Linus,
 
-> -static struct kobj_attribute fadump_register_attr = __ATTR(fadump_registered,
-> +static struct kobj_attribute register_attr = __ATTR(registered,
->  						0644, fadump_register_show,
->  						fadump_register_store);
+Please pull another powerpc update for 5.5.
 
-__ATTR_RW()?
+As you'll see from the diffstat this is mostly not powerpc code. In order to do
+KASAN instrumentation of bitops we needed to juggle some of the generic bitops
+headers.
 
-And then use an ATTRIBUTE_GROUP() macro to create a group so that you
-then can do:
+Because those changes potentially affect several architectures I wasn't
+confident putting them directly into my tree, so I've had them sitting in a
+topic branch. That branch (topic/kasan-bitops) has been in linux-next for a
+month, and I've not had any feedback that it's caused any problems.
 
-> @@ -1452,11 +1450,47 @@ static void fadump_init_files(void)
->  		printk(KERN_ERR "fadump: unable to create debugfs file"
->  				" fadump_region\n");
->  
-> +	rc = sysfs_create_file(fadump_kobj, &enable_attr.attr);
-> +	if (rc)
-> +		pr_err("unable to create enabled sysfs file (%d)\n",
-> +		       rc);
-> +	rc = sysfs_create_file(fadump_kobj, &register_attr.attr);
-> +	if (rc)
-> +		pr_err("unable to create registered sysfs file (%d)\n",
-> +		       rc);
-> +	if (fw_dump.dump_active) {
-> +		rc = sysfs_create_file(fadump_kobj, &release_attr.attr);
-> +		if (rc)
-> +			pr_err("unable to create release_mem sysfs file (%d)\n",
-> +			       rc);
-> +	}
+So I think this is good to merge, but it's a standalone pull so if anyone does
+object it's not a problem.
 
-a single call to sysfs_create_groups() here instead of trying to unwind
-the mess if something went wrong.
+cheers
 
-thanks,
 
-greg k-h
+The following changes since commit da0c9ea146cbe92b832f1b0f694840ea8eb33cce:
+
+  Linux 5.4-rc2 (2019-10-06 14:27:30 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.5-2
+
+for you to fetch changes up to 4f4afc2c9599520300b3f2b3666d2034fca03df3:
+
+  docs/core-api: Remove possibly confusing sub-headings from Bit Operations (2019-12-04 21:20:28 +1100)
+
+- ------------------------------------------------------------------
+powerpc updates for 5.5 #2
+
+A few commits splitting the KASAN instrumented bitops header in
+three, to match the split of the asm-generic bitops headers.
+
+This is needed on powerpc because we use asm-generic/bitops/non-atomic.h,
+for the non-atomic bitops, whereas the existing KASAN instrumented
+bitops assume all the underlying operations are provided by the arch
+as arch_foo() versions.
+
+Thanks to:
+  Daniel Axtens & Christophe Leroy.
+
+- ------------------------------------------------------------------
+Daniel Axtens (2):
+      kasan: support instrumented bitops combined with generic bitops
+      powerpc: support KASAN instrumentation of bitops
+
+Michael Ellerman (1):
+      docs/core-api: Remove possibly confusing sub-headings from Bit Operations
+
+
+ Documentation/core-api/kernel-api.rst                |   8 +-
+ arch/powerpc/include/asm/bitops.h                    |  51 ++--
+ arch/s390/include/asm/bitops.h                       |   4 +-
+ arch/x86/include/asm/bitops.h                        |   4 +-
+ include/asm-generic/bitops-instrumented.h            | 263 --------------------
+ include/asm-generic/bitops/instrumented-atomic.h     | 100 ++++++++
+ include/asm-generic/bitops/instrumented-lock.h       |  81 ++++++
+ include/asm-generic/bitops/instrumented-non-atomic.h | 114 +++++++++
+ 8 files changed, 337 insertions(+), 288 deletions(-)
+ delete mode 100644 include/asm-generic/bitops-instrumented.h
+ create mode 100644 include/asm-generic/bitops/instrumented-atomic.h
+ create mode 100644 include/asm-generic/bitops/instrumented-lock.h
+ create mode 100644 include/asm-generic/bitops/instrumented-non-atomic.h
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl3qSS4ACgkQUevqPMjh
+pYCp1Q//TrG2tPMDPHpWqCzNdWoh96zpIo2UsauDcc8l+XT7shkwHcGnpoECgCfK
+NjhP77qqXI61E+5qUCfO16/j5g6PbvvG/E/xlQEdgX7lIxBeGs4IkoRU8QjkJ9w5
+wAjG/XwaMJ21CQY2F51dn9NPQUvFxKV0o6QJ+/pIFBnv0eeYCtRWno7+tZGIiMhk
+ExfJhR0rnBdBc6oonNOTAfWn5u51FRRqUeICeo4iFoICu5v4cTbPiU3/8bZYzhSb
+wM9WdG+/IUs02PffIQF4GDyMmzi/Qm3Ujl3tUIEaFHlfN9pF6X7Yog7Co26CShJj
+No4wJK5rS3ECXmwo7Yd69sV9FZrMZZvGY9x7p7bEE7mqk1fHMaM3DMXvR8Gx6UGM
+NCXX2QIIigz3RUTbj3CW2iZa9R/FTSFXs3Ih4YDDJdPNanYpcX3/wE6mpwsco8do
+lxWcN1AMGXLiaNdQ8IkRZ6hOLH/Po34RvDo1P1mS06NzfyyTZW7JNiUtU2HSqPRs
+vjIkHDM7585ika6jeDHU4cJaLy7bsCNV2fLsHWDE3Xno43g7qcKGOx+PtO25XubZ
+iP1vojR4Qml+e3ySf6dDiOIDltSWZwjCGtbi2gmdErHiLdLeJX2XGjC36Qnep6u6
+15HIWzX41tg8y4QRJDmPyeDm3Ccbabz+m4LaccbdObgGWVwxwgA=
+=06Wr
+-----END PGP SIGNATURE-----
