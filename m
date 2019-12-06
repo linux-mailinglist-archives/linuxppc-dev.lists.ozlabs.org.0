@@ -1,51 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFB71153BA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 15:59:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Twhr04v0zDqKj
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Dec 2019 01:59:08 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB54911572D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 19:30:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47V1N81hz9zDqgF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Dec 2019 05:30:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=80.241.56.172; helo=mout-p-202.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Tvqp1H2DzDqdP
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2019 01:20:06 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mout-p-202.mailbox.org (Postfix) with ESMTPS id 47Tvql22RHzQkK1;
- Fri,  6 Dec 2019 15:20:03 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
- [80.241.56.122]) (amavisd-new, port 10030)
- with ESMTP id 8G5RMpKVsMbp; Fri,  6 Dec 2019 15:19:58 +0100 (CET)
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
- David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andriin@fb.com>, Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH v18 13/13] Documentation: path-lookup: include new LOOKUP flags
-Date: Sat,  7 Dec 2019 01:13:38 +1100
-Message-Id: <20191206141338.23338-14-cyphar@cyphar.com>
-In-Reply-To: <20191206141338.23338-1-cyphar@cyphar.com>
-References: <20191206141338.23338-1-cyphar@cyphar.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47V1Ky3hcTzDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2019 05:28:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47V1Ky2Hwsz99jf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2019 05:28:06 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47V1Ky1hsLz9sR7; Sat,  7 Dec 2019 05:28:06 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47V1Kx4lKcz9sPf
+ for <linuxppc-dev@ozlabs.org>; Sat,  7 Dec 2019 05:28:04 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB6IJ3c9030539
+ for <linuxppc-dev@ozlabs.org>; Fri, 6 Dec 2019 13:28:03 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wq9hmr2kn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 06 Dec 2019 13:28:02 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
+ Fri, 6 Dec 2019 18:28:00 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 6 Dec 2019 18:27:57 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xB6IRujK46203136
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Dec 2019 18:27:56 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CED3552052;
+ Fri,  6 Dec 2019 18:27:56 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.33.202])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E5A8752050;
+ Fri,  6 Dec 2019 18:27:54 +0000 (GMT)
+Subject: Re: [PATCH v4 2/6] sysfs: wrap __compat_only_sysfs_link_entry_to_kobj
+ function to change the symlink name
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20191206122434.29587-1-sourabhjain@linux.ibm.com>
+ <20191206122434.29587-3-sourabhjain@linux.ibm.com>
+ <20191206124642.GB1360047@kroah.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+Date: Fri, 6 Dec 2019 23:57:53 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191206124642.GB1360047@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19120618-0016-0000-0000-000002D25BFE
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120618-0017-0000-0000-0000333467BE
+Message-Id: <3aabdf19-ccbf-e99a-c560-2b110e8b536a@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-06_06:2019-12-05,2019-12-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 impostorscore=0
+ clxscore=1015 spamscore=0 mlxlogscore=999 phishscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912060149
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,165 +104,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-api@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- linux-sh@vger.kernel.org, David Drysdale <drysdale@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- dev@opencontainers.org, Aleksa Sarai <cyphar@cyphar.com>,
- Andy Lutomirski <luto@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christian Brauner <christian@brauner.io>, libc-alpha@sourceware.org,
- linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- netdev@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
- linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that we have new LOOKUP flags, we should document them in the
-relevant path-walking documentation. And now that we've settled on a
-common name for nd_jump_link() style symlinks ("magic links"), use that
-term where magic-link semantics are described.
 
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
----
- Documentation/filesystems/path-lookup.rst | 68 +++++++++++++++++++++--
- 1 file changed, 62 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/filesystems/path-lookup.rst b/Documentation/filesystems/path-lookup.rst
-index 434a07b0002b..a3216979298b 100644
---- a/Documentation/filesystems/path-lookup.rst
-+++ b/Documentation/filesystems/path-lookup.rst
-@@ -13,6 +13,7 @@ It has subsequently been updated to reflect changes in the kernel
- including:
- 
- - per-directory parallel name lookup.
-+- ``openat2()`` resolution restriction flags.
- 
- Introduction to pathname lookup
- ===============================
-@@ -235,6 +236,13 @@ renamed.  If ``d_lookup`` finds that a rename happened while it
- unsuccessfully scanned a chain in the hash table, it simply tries
- again.
- 
-+``rename_lock`` is also used to detect and defend against potential attacks
-+against ``LOOKUP_BENEATH`` and ``LOOKUP_IN_ROOT`` when resolving ".." (where
-+the parent directory is moved outside the root, bypassing the ``path_equal()``
-+check). If ``rename_lock`` is updated during the lookup and the path encounters
-+a "..", a potential attack occurred and ``handle_dots()`` will bail out with
-+``-EAGAIN``.
-+
- inode->i_rwsem
- ~~~~~~~~~~~~~~
- 
-@@ -348,6 +356,13 @@ any changes to any mount points while stepping up.  This locking is
- needed to stabilize the link to the mounted-on dentry, which the
- refcount on the mount itself doesn't ensure.
- 
-+``mount_lock`` is also used to detect and defend against potential attacks
-+against ``LOOKUP_BENEATH`` and ``LOOKUP_IN_ROOT`` when resolving ".." (where
-+the parent directory is moved outside the root, bypassing the ``path_equal()``
-+check). If ``mount_lock`` is updated during the lookup and the path encounters
-+a "..", a potential attack occurred and ``handle_dots()`` will bail out with
-+``-EAGAIN``.
-+
- RCU
- ~~~
- 
-@@ -405,6 +420,10 @@ is requested.  Keeping a reference in the ``nameidata`` ensures that
- only one root is in effect for the entire path walk, even if it races
- with a ``chroot()`` system call.
- 
-+It should be noted that in the case of ``LOOKUP_IN_ROOT`` or
-+``LOOKUP_BENEATH``, the effective root becomes the directory file descriptor
-+passed to ``openat2()`` (which exposes these ``LOOKUP_`` flags).
-+
- The root is needed when either of two conditions holds: (1) either the
- pathname or a symbolic link starts with a "'/'", or (2) a "``..``"
- component is being handled, since "``..``" from the root must always stay
-@@ -1149,7 +1168,7 @@ so ``NULL`` is returned to indicate that the symlink can be released and
- the stack frame discarded.
- 
- The other case involves things in ``/proc`` that look like symlinks but
--aren't really::
-+aren't really (and are therefore commonly referred to as "magic-links")::
- 
-      $ ls -l /proc/self/fd/1
-      lrwx------ 1 neilb neilb 64 Jun 13 10:19 /proc/self/fd/1 -> /dev/pts/4
-@@ -1286,7 +1305,9 @@ A few flags
- A suitable way to wrap up this tour of pathname walking is to list
- the various flags that can be stored in the ``nameidata`` to guide the
- lookup process.  Many of these are only meaningful on the final
--component, others reflect the current state of the pathname lookup.
-+component, others reflect the current state of the pathname lookup, and some
-+apply restrictions to all path components encountered in the path lookup.
-+
- And then there is ``LOOKUP_EMPTY``, which doesn't fit conceptually with
- the others.  If this is not set, an empty pathname causes an error
- very early on.  If it is set, empty pathnames are not considered to be
-@@ -1310,13 +1331,48 @@ longer needed.
- ``LOOKUP_JUMPED`` means that the current dentry was chosen not because
- it had the right name but for some other reason.  This happens when
- following "``..``", following a symlink to ``/``, crossing a mount point
--or accessing a "``/proc/$PID/fd/$FD``" symlink.  In this case the
--filesystem has not been asked to revalidate the name (with
--``d_revalidate()``).  In such cases the inode may still need to be
--revalidated, so ``d_op->d_weak_revalidate()`` is called if
-+or accessing a "``/proc/$PID/fd/$FD``" symlink (also known as a "magic
-+link"). In this case the filesystem has not been asked to revalidate the
-+name (with ``d_revalidate()``).  In such cases the inode may still need
-+to be revalidated, so ``d_op->d_weak_revalidate()`` is called if
- ``LOOKUP_JUMPED`` is set when the look completes - which may be at the
- final component or, when creating, unlinking, or renaming, at the penultimate component.
- 
-+Resolution-restriction flags
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+In order to allow userspace to protect itself against certain race conditions
-+and attack scenarios involving changing path components, a series of flags are
-+available which apply restrictions to all path components encountered during
-+path lookup. These flags are exposed through ``openat2()``'s ``resolve`` field.
-+
-+``LOOKUP_NO_SYMLINKS`` blocks all symlink traversals (including magic-links).
-+This is distinctly different from ``LOOKUP_FOLLOW``, because the latter only
-+relates to restricting the following of trailing symlinks.
-+
-+``LOOKUP_NO_MAGICLINKS`` blocks all magic-link traversals. Filesystems must
-+ensure that they return errors from ``nd_jump_link()``, because that is how
-+``LOOKUP_NO_MAGICLINKS`` and other magic-link restrictions are implemented.
-+
-+``LOOKUP_NO_XDEV`` blocks all ``vfsmount`` traversals (this includes both
-+bind-mounts and ordinary mounts). Note that the ``vfsmount`` which contains the
-+lookup is determined by the first mountpoint the path lookup reaches --
-+absolute paths start with the ``vfsmount`` of ``/``, and relative paths start
-+with the ``dfd``'s ``vfsmount``. Magic-links are only permitted if the
-+``vfsmount`` of the path is unchanged.
-+
-+``LOOKUP_BENEATH`` blocks any path components which resolve outside the
-+starting point of the resolution. This is done by blocking ``nd_jump_root()``
-+as well as blocking ".." if it would jump outside the starting point.
-+``rename_lock`` and ``mount_lock`` are used to detect attacks against the
-+resolution of "..". Magic-links are also blocked.
-+
-+``LOOKUP_IN_ROOT`` resolves all path components as though the starting point
-+were the filesystem root. ``nd_jump_root()`` brings the resolution back to to
-+the starting point, and ".." at the starting point will act as a no-op. As with
-+``LOOKUP_BENEATH``, ``rename_lock`` and ``mount_lock`` are used to detect
-+attacks against ".." resolution. Magic-links are also blocked.
-+
- Final-component flags
- ~~~~~~~~~~~~~~~~~~~~~
- 
--- 
-2.24.0
+On 12/6/19 6:16 PM, Greg KH wrote:
+> On Fri, Dec 06, 2019 at 05:54:30PM +0530, Sourabh Jain wrote:
+>> The __compat_only_sysfs_link_entry_to_kobj function creates a symlink to a
+>> kobject but doesn't provide an option to change the symlink file name.
+>>
+>> This patch adds a wrapper function create_sysfs_symlink_entry_to_kobj that
+>> extends the __compat_only_sysfs_link_entry_to_kobj functionality which
+>> allows function caller to customize the symlink name.
+>>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>  fs/sysfs/group.c      | 28 +++++++++++++++++++++++++---
+>>  include/linux/sysfs.h | 12 ++++++++++++
+>>  2 files changed, 37 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
+>> index d41c21fef138..5eb38145b957 100644
+>> --- a/fs/sysfs/group.c
+>> +++ b/fs/sysfs/group.c
+>> @@ -424,6 +424,25 @@ EXPORT_SYMBOL_GPL(sysfs_remove_link_from_group);
+>>  int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
+>>  				      struct kobject *target_kobj,
+>>  				      const char *target_name)
+>> +{
+>> +	return create_sysfs_symlink_entry_to_kobj(kobj, target_kobj,
+>> +						target_name, NULL);
+>> +}
+>> +EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
+>> +
+>> +/**
+>> + * create_sysfs_symlink_entry_to_kobj - add a symlink to a kobject pointing
+>> + * to a group or an attribute
+>> + * @kobj:		The kobject containing the group.
+>> + * @target_kobj:	The target kobject.
+>> + * @target_name:	The name of the target group or attribute.
+>> + * @symlink_name:	The name of the symlink file (target_name will be
+>> + *			considered if symlink_name is NULL).
+>> + */
+>> +int create_sysfs_symlink_entry_to_kobj(struct kobject *kobj,
+>> +				       struct kobject *target_kobj,
+>> +				       const char *target_name,
+>> +				       const char *symlink_name)
+>>  {
+>>  	struct kernfs_node *target;
+>>  	struct kernfs_node *entry;
+>> @@ -448,12 +467,15 @@ int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
+>>  		return -ENOENT;
+>>  	}
+>>  
+>> -	link = kernfs_create_link(kobj->sd, target_name, entry);
+>> +	if (!symlink_name)
+>> +		symlink_name = target_name;
+>> +
+>> +	link = kernfs_create_link(kobj->sd, symlink_name, entry);
+>>  	if (IS_ERR(link) && PTR_ERR(link) == -EEXIST)
+>> -		sysfs_warn_dup(kobj->sd, target_name);
+>> +		sysfs_warn_dup(kobj->sd, symlink_name);
+>>  
+>>  	kernfs_put(entry);
+>>  	kernfs_put(target);
+>>  	return PTR_ERR_OR_ZERO(link);
+>>  }
+>> -EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
+>> +EXPORT_SYMBOL_GPL(create_sysfs_symlink_entry_to_kobj);
+>> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+>> index 5420817ed317..123c6f10333a 100644
+>> --- a/include/linux/sysfs.h
+>> +++ b/include/linux/sysfs.h
+>> @@ -300,6 +300,10 @@ void sysfs_remove_link_from_group(struct kobject *kobj, const char *group_name,
+>>  int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
+>>  				      struct kobject *target_kobj,
+>>  				      const char *target_name);
+>> +int create_sysfs_symlink_entry_to_kobj(struct kobject *kobj,
+>> +				       struct kobject *target_kobj,
+>> +				       const char *target_name,
+>> +				       const char *symlink_name);
+> 
+> sysfs_create_symlink_entry_to_kobj()?
+> 
+> I can't remember why we put __compat_only there, perhaps because we do
+> not want people to really use this unless you really really have to?
+
+We don't have much option here. I tried replicating the sysfs files
+in older patch series but creating symlink at old location is much
+better approach.
+
+The __compat_only_sysfs_link_entry_to_kobj function is pretty generic,
+unable to understand the reason behind restricting its usage.
+
+> 
+> So then keep compat_only here as well?
+
+Sure, I will rename the wrapper function.
+
+But how about changing the function signature instead of creating
+a wrapper function?
+
+Considering the fact that there are only two places this function
+has called.
+
+> 
+> What breaks if you remove those undocumented sysfs files?  What
+> userspace tool do you have that will even notice?
+
+The scripts used in kdump service need those sysfs files to control
+the dump collection. So we can't just move the sysfs files to the
+new location.
+
+Thanks,
+Sourabh Jain
 
