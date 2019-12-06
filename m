@@ -1,83 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB043115070
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 13:29:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9049B114E3D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 10:37:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47TnY70Xb0zDqGY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 20:36:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47TsNX4SWmzDqbg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 23:29:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=svaidy@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47TsGm5q9tzDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:24:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47TsGm1Y20z8swt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:24:48 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47TsGm11qjz9sRH; Fri,  6 Dec 2019 23:24:48 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47TnVQ2pShzDqQX
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 20:34:37 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 47TsGl3Rwmz9sRD
+ for <linuxppc-dev@ozlabs.org>; Fri,  6 Dec 2019 23:24:47 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB69WQ4g126586
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 Dec 2019 04:34:34 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2wq9f8vevw-1
+ xB6CHnPb006334
+ for <linuxppc-dev@ozlabs.org>; Fri, 6 Dec 2019 07:24:44 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2wq2tvw8b4-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Dec 2019 04:34:34 -0500
+ for <linuxppc-dev@ozlabs.org>; Fri, 06 Dec 2019 07:24:44 -0500
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <svaidy@linux.ibm.com>;
- Fri, 6 Dec 2019 09:34:32 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
+ Fri, 6 Dec 2019 12:24:42 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 6 Dec 2019 09:34:29 -0000
+ Fri, 6 Dec 2019 12:24:40 -0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xB69XlKb27066822
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB6COclV38207704
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Dec 2019 09:33:47 GMT
+ Fri, 6 Dec 2019 12:24:38 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11E014C063;
- Fri,  6 Dec 2019 09:34:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B0FDA4C040;
+ Fri,  6 Dec 2019 12:24:38 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1B7144C05C;
- Fri,  6 Dec 2019 09:34:26 +0000 (GMT)
-Received: from drishya.in.ibm.com (unknown [9.199.32.63])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri,  6 Dec 2019 09:34:25 +0000 (GMT)
-Date: Fri, 6 Dec 2019 15:04:23 +0530
-From: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 1/2] powerpc/vcpu: Assume dedicated processors as
- non-preempt
-References: <20191205083218.25824-1-srikar@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20191205083218.25824-1-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+ by IMSVA (Postfix) with ESMTP id 16A064C044;
+ Fri,  6 Dec 2019 12:24:37 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.124.35.191])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Dec 2019 12:24:36 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v4 0/6] reorganize and add FADump sysfs files
+Date: Fri,  6 Dec 2019 17:54:28 +0530
+X-Mailer: git-send-email 2.17.2
 X-TM-AS-GCONF: 00
-x-cbid: 19120609-0028-0000-0000-000003C5CD8A
+x-cbid: 19120612-0020-0000-0000-00000394F60D
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120609-0029-0000-0000-00002488F273
-Message-Id: <20191206093423.GB30262@drishya.in.ibm.com>
+x-cbparentid: 19120612-0021-0000-0000-000021EC28EA
+Message-Id: <20191206122434.29587-1-sourabhjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-06_02:2019-12-04,2019-12-06 signatures=0
+ definitions=2019-12-06_03:2019-12-05,2019-12-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011 impostorscore=0
- mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912060082
+ mlxscore=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=754 clxscore=1015 bulkscore=0 impostorscore=0
+ phishscore=0 spamscore=0 suspectscore=1 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1912060105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,175 +97,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: svaidy@linux.ibm.com
-Cc: Juri Lelli <juri.lelli@redhat.com>,
- "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, Phil Auld <pauld@redhat.com>,
- Parth Shah <parth@linux.ibm.com>, Ihor Pasichnyk <Ihor.Pasichnyk@ibm.com>,
- Waiman Long <longman@redhat.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, gregkh@linuxfoundation.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Srikar Dronamraju <srikar@linux.vnet.ibm.com> [2019-12-05 14:02:17]:
+Currently, FADump sysfs files are present inside /sys/kernel directory.
+But as the number of FADump sysfs file increases it is not a good idea to
+push all of them in /sys/kernel directory. It is better to have separate
+directory to keep all the FADump sysfs files.
 
-> With commit 247f2f6f3c70 ("sched/core: Don't schedule threads on pre-empted
-> vCPUs"), scheduler avoids preempted vCPUs to schedule tasks on wakeup.
-> This leads to wrong choice of CPU, which in-turn leads to larger wakeup
-> latencies. Eventually, it leads to performance regression in latency
-> sensitive benchmarks like soltp, schbench etc.
-> 
-> On Powerpc, vcpu_is_preempted only looks at yield_count. If the
-> yield_count is odd, the vCPU is assumed to be preempted. However
-> yield_count is increased whenever LPAR enters CEDE state. So any CPU
-> that has entered CEDE state is assumed to be preempted.
-> 
-> Even if vCPU of dedicated LPAR is preempted/donated, it should have
-> right of first-use since they are suppose to own the vCPU.
-> 
-> On a Power9 System with 32 cores
->  # lscpu
-> Architecture:        ppc64le
-> Byte Order:          Little Endian
-> CPU(s):              128
-> On-line CPU(s) list: 0-127
-> Thread(s) per core:  8
-> Core(s) per socket:  1
-> Socket(s):           16
-> NUMA node(s):        2
-> Model:               2.2 (pvr 004e 0202)
-> Model name:          POWER9 (architected), altivec supported
-> Hypervisor vendor:   pHyp
-> Virtualization type: para
-> L1d cache:           32K
-> L1i cache:           32K
-> L2 cache:            512K
-> L3 cache:            10240K
-> NUMA node0 CPU(s):   0-63
-> NUMA node1 CPU(s):   64-127
-> 
->   # perf stat -a -r 5 ./schbench
-> v5.4                                     v5.4 + patch
-> Latency percentiles (usec)               Latency percentiles (usec)
-> 	50.0000th: 45                    	50.0000th: 39
-> 	75.0000th: 62                    	75.0000th: 53
-> 	90.0000th: 71                    	90.0000th: 67
-> 	95.0000th: 77                    	95.0000th: 76
-> 	*99.0000th: 91                   	*99.0000th: 89
-> 	99.5000th: 707                   	99.5000th: 93
-> 	99.9000th: 6920                  	99.9000th: 118
-> 	min=0, max=10048                 	min=0, max=211
-> Latency percentiles (usec)               Latency percentiles (usec)
-> 	50.0000th: 45                    	50.0000th: 34
-> 	75.0000th: 61                    	75.0000th: 45
-> 	90.0000th: 72                    	90.0000th: 53
-> 	95.0000th: 79                    	95.0000th: 56
-> 	*99.0000th: 691                  	*99.0000th: 61
-> 	99.5000th: 3972                  	99.5000th: 63
-> 	99.9000th: 8368                  	99.9000th: 78
-> 	min=0, max=16606                 	min=0, max=228
-> Latency percentiles (usec)               Latency percentiles (usec)
-> 	50.0000th: 45                    	50.0000th: 34
-> 	75.0000th: 61                    	75.0000th: 45
-> 	90.0000th: 71                    	90.0000th: 53
-> 	95.0000th: 77                    	95.0000th: 57
-> 	*99.0000th: 106                  	*99.0000th: 63
-> 	99.5000th: 2364                  	99.5000th: 68
-> 	99.9000th: 7480                  	99.9000th: 100
-> 	min=0, max=10001                 	min=0, max=134
-> Latency percentiles (usec)               Latency percentiles (usec)
-> 	50.0000th: 45                    	50.0000th: 34
-> 	75.0000th: 62                    	75.0000th: 46
-> 	90.0000th: 72                    	90.0000th: 53
-> 	95.0000th: 78                    	95.0000th: 56
-> 	*99.0000th: 93                   	*99.0000th: 61
-> 	99.5000th: 108                   	99.5000th: 64
-> 	99.9000th: 6792                  	99.9000th: 85
-> 	min=0, max=17681                 	min=0, max=121
-> Latency percentiles (usec)               Latency percentiles (usec)
-> 	50.0000th: 46                    	50.0000th: 33
-> 	75.0000th: 62                    	75.0000th: 44
-> 	90.0000th: 73                    	90.0000th: 51
-> 	95.0000th: 79                    	95.0000th: 54
-> 	*99.0000th: 113                  	*99.0000th: 61
-> 	99.5000th: 2724                  	99.5000th: 64
-> 	99.9000th: 6184                  	99.9000th: 82
-> 	min=0, max=9887                  	min=0, max=121
-> 
->  Performance counter stats for 'system wide' (5 runs):
-> 
-> context-switches    43,373  ( +-  0.40% )   44,597 ( +-  0.55% )
-> cpu-migrations       1,211  ( +-  5.04% )      220 ( +-  6.23% )
-> page-faults         15,983  ( +-  5.21% )   15,360 ( +-  3.38% )
-> 
-> Waiman Long suggested using static_keys.
-> 
-> Reported-by: Parth Shah <parth@linux.ibm.com>
-> Reported-by: Ihor Pasichnyk <Ihor.Pasichnyk@ibm.com>
-> Cc: Parth Shah <parth@linux.ibm.com>
-> Cc: Ihor Pasichnyk <Ihor.Pasichnyk@ibm.com>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Phil Auld <pauld@redhat.com>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> Tested-by: Juri Lelli <juri.lelli@redhat.com>
-> Ack-by: Waiman Long <longman@redhat.com>
-> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
-> Changelog v1 (https://patchwork.ozlabs.org/patch/1204190/) ->v3:
-> Code is now under CONFIG_PPC_SPLPAR as it depends on CONFIG_PPC_PSERIES.
-> This was suggested by Waiman Long.
-> 
->  arch/powerpc/include/asm/spinlock.h | 5 +++--
->  arch/powerpc/mm/numa.c              | 4 ++++
->  2 files changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-> index e9a960e28f3c..de817c25deff 100644
-> --- a/arch/powerpc/include/asm/spinlock.h
-> +++ b/arch/powerpc/include/asm/spinlock.h
-> @@ -35,11 +35,12 @@
->  #define LOCK_TOKEN	1
->  #endif
->  
-> -#ifdef CONFIG_PPC_PSERIES
-> +#ifdef CONFIG_PPC_SPLPAR
-> +DECLARE_STATIC_KEY_FALSE(shared_processor);
->  #define vcpu_is_preempted vcpu_is_preempted
->  static inline bool vcpu_is_preempted(int cpu)
->  {
-> -	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
-> +	if (!static_branch_unlikely(&shared_processor))
->  		return false;
->  	return !!(be32_to_cpu(lppaca_of(cpu).yield_count) & 1);
+Patch series reorganizes the FADump sysfs files and avail all the existing
+FADump sysfs files present inside /sys/kernel into a new directory
+/sys/kernel/fadump. The backward compatibility is maintained by adding a
+symlink for every sysfs file that has moved to new location. Also a new
+FADump sys interface is added to get the amount of memory reserved by FADump
+for saving the crash dump.
 
-This condition check resolves the scheduler task wakeup latency
-regression.  Make a static key is better in the fast path.
+Changelog:
+v1 -> v2:
+ - Move fadump_release_opalcore sysfs to FADump Kobject instead of
+   replicating.
+ - Changed the patch order 1,2,3,4 -> 2,1,3,4 (First add the ABI doc for
+   exisiting sysfs file then replicate them under FADump kobject).
 
->  }
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 50d68d21ddcc..ffb971f3a63c 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -1568,9 +1568,13 @@ int prrn_is_enabled(void)
->  	return prrn_enabled;
->  }
->  
-> +DEFINE_STATIC_KEY_FALSE(shared_processor);
-> +EXPORT_SYMBOL_GPL(shared_processor);
-> +
->  void __init shared_proc_topology_init(void)
->  {
->  	if (lppaca_shared_proc(get_lppaca())) {
-> +		static_branch_enable(&shared_processor);
->  		bitmap_fill(cpumask_bits(&cpu_associativity_changes_mask),
->  			    nr_cpumask_bits);
->  		numa_update_cpu_topology(false);
+v2 -> v3:
+ - Remove the fadump_ prefix from replicated FADump sysfs file names.
 
+ v3 -> v4:
+ - New patch that adds a wrapper function to create symlink with
+   custom symlink file name.
+ - Add symlink instead of replicating the FADump sysfs files.
+ - Move the OPAL core rel
 
-Reviewed-by: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+Sourabh Jain (6):
+  Documentation/ABI: add ABI documentation for /sys/kernel/fadump_*
+  sysfs: wrap __compat_only_sysfs_link_entry_to_kobj function to change
+    the symlink name
+  powerpc/fadump: reorganize /sys/kernel/fadump_* sysfs files
+  powerpc/powernv: move core and fadump_release_opalcore under new
+    kobject
+  Documentation/ABI: mark /sys/kernel/fadump_* sysfs files deprecated
+  powerpc/fadump: sysfs for fadump memory reservation
 
-Thanks Srikar for the fix.
+ .../ABI/obsolete/sysfs-kernel-fadump_enabled  |  9 +++
+ .../obsolete/sysfs-kernel-fadump_registered   | 10 +++
+ .../obsolete/sysfs-kernel-fadump_release_mem  | 10 +++
+ .../sysfs-kernel-fadump_release_opalcore      |  9 +++
+ Documentation/ABI/testing/sysfs-kernel-fadump | 40 +++++++++
+ .../powerpc/firmware-assisted-dump.rst        | 28 +++++--
+ arch/powerpc/kernel/fadump.c                  | 81 +++++++++++++++----
+ arch/powerpc/platforms/powernv/opal-core.c    | 31 +++++--
+ fs/sysfs/group.c                              | 28 ++++++-
+ include/linux/sysfs.h                         | 12 +++
+ 10 files changed, 225 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_registered
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_release_mem
+ create mode 100644 Documentation/ABI/removed/sysfs-kernel-fadump_release_opalcore
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump
 
---Vaidy
+-- 
+2.17.2
 
