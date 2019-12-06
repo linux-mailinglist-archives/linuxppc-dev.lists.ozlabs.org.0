@@ -1,49 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB6F1150BA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 14:00:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Tt451tJ0zDqKK
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Dec 2019 00:00:37 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0551150CD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 14:05:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Tt9c302vzDqLP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Dec 2019 00:05:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47TslY6LnVzDqPR
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:46:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Tsm84K6QzDqJk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:46:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="LDjqbEKi"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47TslW10tCz9s4Y;
- Fri,  6 Dec 2019 23:46:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575636375;
- bh=oyct4tPxjrlkjB1zVGbKoKAWyEMXqFKQz+rA6a80J+Q=;
- h=From:To:Cc:Subject:Date:From;
- b=LDjqbEKiUq8oNBats/yrnw90N+Rzv6Z+iiPnbOmZZ7DL568ZE4JOjjBHlEHFJfoeC
- O8SOYmwLdmsN/V6kENixnnz/vOn5jzuNy7pWqQswsJTHN0f6lUjVdWV07IzT1YCnzG
- 1kL6GA7mRfq+HW2DeqJRjs0wlndNWkpM8er9OpYHENOK74c0gU4iuMOYCsOKOIFdBq
- X+dupxBqvuGoTt7G8GxlraeFfKp5A0+6fkI8sOnQrpLnXb8TO52AAXLDQdhAsk4l/7
- Pel8A8JoKvjlh+CqVUqwUBN4H7e+QZd4Je2t+OCOU6hgqTDNkgZRQDLShw8uq+fP7g
- X1AGIjbhox6vg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.5-2 tag
- (topic/kasan-bitops)
-Date: Fri, 06 Dec 2019 23:46:11 +1100
-Message-ID: <87blslei5o.fsf@mpe.ellerman.id.au>
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="bvhYDo2l"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47Tsm80mCVz8t6V
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 23:46:48 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47Tsm76pRGz9sRK; Fri,  6 Dec 2019 23:46:47 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="bvhYDo2l"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47Tsm70xXBz9sR0
+ for <linuxppc-dev@ozlabs.org>; Fri,  6 Dec 2019 23:46:47 +1100 (AEDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A2891205F4;
+ Fri,  6 Dec 2019 12:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1575636405;
+ bh=SiHbrHvdA3rQHB7384b21HC7KlecqzAg0pEqLEmEU+k=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=bvhYDo2l759TzwwMNJLmF2Upiy+Z2dSlP5KZtcVmlnmshB0fLqoxbBswp4UckLaGT
+ vTPUiOopAy4WPsaIpb7t5X32xmR8tMNG0qF2AaRpTQ0acMimrlD6kB14SwXO/O10SA
+ lESz9K0w2rqU90/c66FvdbnAaj9KbNvXrb2s2lvk=
+Date: Fri, 6 Dec 2019 13:46:42 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: Re: [PATCH v4 2/6] sysfs: wrap
+ __compat_only_sysfs_link_entry_to_kobj function to change the symlink name
+Message-ID: <20191206124642.GB1360047@kroah.com>
+References: <20191206122434.29587-1-sourabhjain@linux.ibm.com>
+ <20191206122434.29587-3-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191206122434.29587-3-sourabhjain@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,96 +76,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, elver@google.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Fri, Dec 06, 2019 at 05:54:30PM +0530, Sourabh Jain wrote:
+> The __compat_only_sysfs_link_entry_to_kobj function creates a symlink to a
+> kobject but doesn't provide an option to change the symlink file name.
+> 
+> This patch adds a wrapper function create_sysfs_symlink_entry_to_kobj that
+> extends the __compat_only_sysfs_link_entry_to_kobj functionality which
+> allows function caller to customize the symlink name.
+> 
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+>  fs/sysfs/group.c      | 28 +++++++++++++++++++++++++---
+>  include/linux/sysfs.h | 12 ++++++++++++
+>  2 files changed, 37 insertions(+), 3 deletions(-)
+> 
+> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
+> index d41c21fef138..5eb38145b957 100644
+> --- a/fs/sysfs/group.c
+> +++ b/fs/sysfs/group.c
+> @@ -424,6 +424,25 @@ EXPORT_SYMBOL_GPL(sysfs_remove_link_from_group);
+>  int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
+>  				      struct kobject *target_kobj,
+>  				      const char *target_name)
+> +{
+> +	return create_sysfs_symlink_entry_to_kobj(kobj, target_kobj,
+> +						target_name, NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
+> +
+> +/**
+> + * create_sysfs_symlink_entry_to_kobj - add a symlink to a kobject pointing
+> + * to a group or an attribute
+> + * @kobj:		The kobject containing the group.
+> + * @target_kobj:	The target kobject.
+> + * @target_name:	The name of the target group or attribute.
+> + * @symlink_name:	The name of the symlink file (target_name will be
+> + *			considered if symlink_name is NULL).
+> + */
+> +int create_sysfs_symlink_entry_to_kobj(struct kobject *kobj,
+> +				       struct kobject *target_kobj,
+> +				       const char *target_name,
+> +				       const char *symlink_name)
+>  {
+>  	struct kernfs_node *target;
+>  	struct kernfs_node *entry;
+> @@ -448,12 +467,15 @@ int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
+>  		return -ENOENT;
+>  	}
+>  
+> -	link = kernfs_create_link(kobj->sd, target_name, entry);
+> +	if (!symlink_name)
+> +		symlink_name = target_name;
+> +
+> +	link = kernfs_create_link(kobj->sd, symlink_name, entry);
+>  	if (IS_ERR(link) && PTR_ERR(link) == -EEXIST)
+> -		sysfs_warn_dup(kobj->sd, target_name);
+> +		sysfs_warn_dup(kobj->sd, symlink_name);
+>  
+>  	kernfs_put(entry);
+>  	kernfs_put(target);
+>  	return PTR_ERR_OR_ZERO(link);
+>  }
+> -EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
+> +EXPORT_SYMBOL_GPL(create_sysfs_symlink_entry_to_kobj);
+> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+> index 5420817ed317..123c6f10333a 100644
+> --- a/include/linux/sysfs.h
+> +++ b/include/linux/sysfs.h
+> @@ -300,6 +300,10 @@ void sysfs_remove_link_from_group(struct kobject *kobj, const char *group_name,
+>  int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
+>  				      struct kobject *target_kobj,
+>  				      const char *target_name);
+> +int create_sysfs_symlink_entry_to_kobj(struct kobject *kobj,
+> +				       struct kobject *target_kobj,
+> +				       const char *target_name,
+> +				       const char *symlink_name);
 
-Hi Linus,
+sysfs_create_symlink_entry_to_kobj()?
 
-Please pull another powerpc update for 5.5.
+I can't remember why we put __compat_only there, perhaps because we do
+not want people to really use this unless you really really have to?
 
-As you'll see from the diffstat this is mostly not powerpc code. In order to do
-KASAN instrumentation of bitops we needed to juggle some of the generic bitops
-headers.
+So then keep compat_only here as well?
 
-Because those changes potentially affect several architectures I wasn't
-confident putting them directly into my tree, so I've had them sitting in a
-topic branch. That branch (topic/kasan-bitops) has been in linux-next for a
-month, and I've not had any feedback that it's caused any problems.
+What breaks if you remove those undocumented sysfs files?  What
+userspace tool do you have that will even notice?
 
-So I think this is good to merge, but it's a standalone pull so if anyone does
-object it's not a problem.
+thanks,
 
-cheers
-
-
-The following changes since commit da0c9ea146cbe92b832f1b0f694840ea8eb33cce:
-
-  Linux 5.4-rc2 (2019-10-06 14:27:30 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.5-2
-
-for you to fetch changes up to 4f4afc2c9599520300b3f2b3666d2034fca03df3:
-
-  docs/core-api: Remove possibly confusing sub-headings from Bit Operations (2019-12-04 21:20:28 +1100)
-
-- ------------------------------------------------------------------
-powerpc updates for 5.5 #2
-
-A few commits splitting the KASAN instrumented bitops header in
-three, to match the split of the asm-generic bitops headers.
-
-This is needed on powerpc because we use asm-generic/bitops/non-atomic.h,
-for the non-atomic bitops, whereas the existing KASAN instrumented
-bitops assume all the underlying operations are provided by the arch
-as arch_foo() versions.
-
-Thanks to:
-  Daniel Axtens & Christophe Leroy.
-
-- ------------------------------------------------------------------
-Daniel Axtens (2):
-      kasan: support instrumented bitops combined with generic bitops
-      powerpc: support KASAN instrumentation of bitops
-
-Michael Ellerman (1):
-      docs/core-api: Remove possibly confusing sub-headings from Bit Operations
-
-
- Documentation/core-api/kernel-api.rst                |   8 +-
- arch/powerpc/include/asm/bitops.h                    |  51 ++--
- arch/s390/include/asm/bitops.h                       |   4 +-
- arch/x86/include/asm/bitops.h                        |   4 +-
- include/asm-generic/bitops-instrumented.h            | 263 --------------------
- include/asm-generic/bitops/instrumented-atomic.h     | 100 ++++++++
- include/asm-generic/bitops/instrumented-lock.h       |  81 ++++++
- include/asm-generic/bitops/instrumented-non-atomic.h | 114 +++++++++
- 8 files changed, 337 insertions(+), 288 deletions(-)
- delete mode 100644 include/asm-generic/bitops-instrumented.h
- create mode 100644 include/asm-generic/bitops/instrumented-atomic.h
- create mode 100644 include/asm-generic/bitops/instrumented-lock.h
- create mode 100644 include/asm-generic/bitops/instrumented-non-atomic.h
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl3qSS4ACgkQUevqPMjh
-pYCp1Q//TrG2tPMDPHpWqCzNdWoh96zpIo2UsauDcc8l+XT7shkwHcGnpoECgCfK
-NjhP77qqXI61E+5qUCfO16/j5g6PbvvG/E/xlQEdgX7lIxBeGs4IkoRU8QjkJ9w5
-wAjG/XwaMJ21CQY2F51dn9NPQUvFxKV0o6QJ+/pIFBnv0eeYCtRWno7+tZGIiMhk
-ExfJhR0rnBdBc6oonNOTAfWn5u51FRRqUeICeo4iFoICu5v4cTbPiU3/8bZYzhSb
-wM9WdG+/IUs02PffIQF4GDyMmzi/Qm3Ujl3tUIEaFHlfN9pF6X7Yog7Co26CShJj
-No4wJK5rS3ECXmwo7Yd69sV9FZrMZZvGY9x7p7bEE7mqk1fHMaM3DMXvR8Gx6UGM
-NCXX2QIIigz3RUTbj3CW2iZa9R/FTSFXs3Ih4YDDJdPNanYpcX3/wE6mpwsco8do
-lxWcN1AMGXLiaNdQ8IkRZ6hOLH/Po34RvDo1P1mS06NzfyyTZW7JNiUtU2HSqPRs
-vjIkHDM7585ika6jeDHU4cJaLy7bsCNV2fLsHWDE3Xno43g7qcKGOx+PtO25XubZ
-iP1vojR4Qml+e3ySf6dDiOIDltSWZwjCGtbi2gmdErHiLdLeJX2XGjC36Qnep6u6
-15HIWzX41tg8y4QRJDmPyeDm3Ccbabz+m4LaccbdObgGWVwxwgA=
-=06Wr
------END PGP SIGNATURE-----
+greg k-h
