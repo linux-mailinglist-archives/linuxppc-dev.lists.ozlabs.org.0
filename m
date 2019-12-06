@@ -1,52 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6781149FE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 00:49:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47TXVm5hHlzDqZb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 10:49:04 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2D4114A8F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 02:39:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47TZyQ4xvszDqbt
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 12:39:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=frowand.list@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="XhhuwqAD"; 
+ dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47TXSd12lzzDqRg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 10:47:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="MU6YF9GW"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47TXSZ3xJZz9sP3;
- Fri,  6 Dec 2019 10:47:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575589632;
- bh=wAZuwdnJoPe3+FgYUjdUVPeIo9sHGAkp3Xkas6yjm7o=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MU6YF9GWTfd+tSG/eJAgCm9dAGjrBKg1tM8fmqVstE+pyyvxQYftJIoyoJb4UoB+n
- iAbTbh3Pzzo6U+76W/pknMo72GC/k0S1fYx5sHZEhRM59UMTHvAiBUE60m4ExKYWVL
- C9NUXPbo7ahc/uMdvxR1csPyXMZ7CYcLSZDxo11uNeAi/Nu/yzGdgls9NslSAk428x
- idE3FkCFbLHtWe+rfMPVDTvP4/i51RKKfG0P+3E5aZKO5LgfigGuK0JokmQuYWskVA
- 7hohWPDKM2dZXUXEezikSBZ12IjI8PlsxLaxK0Su1ZU6KUaa1hGNMe7tHhlDuruHgU
- Lc4GFzX64uDjg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 2/5] powerpc/kprobes: Mark newly allocated probes as RO
-In-Reply-To: <8736f636bl.fsf@mpe.ellerman.id.au>
-References: <20191030073111.140493-1-ruscur@russell.cc>
- <20191030073111.140493-3-ruscur@russell.cc>
- <8736f636bl.fsf@mpe.ellerman.id.au>
-Date: Fri, 06 Dec 2019 10:47:10 +1100
-Message-ID: <87eexie3nl.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47TZvy1CDszDqZj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 12:37:33 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id w5so2017381pjh.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Dec 2019 17:37:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=QFmhbe9ddbtIYeSdC4Wa6/rdFsIq9qRHGhAnGj5nGkM=;
+ b=XhhuwqADs6mLxYXgwr9goFhkfDgRSSlIDeSDp3BPh5piuUlXXTwlcYbOlpQpNgMgDu
+ YUfilYWd5Pe33/hwFfPgE1+gaEDpZ8RZqKkFOn5Cfx8edqpK6FivqoUZf1C4v5SP03gs
+ ytYTOLQ4muvA1/RYOaFlae7Z4g5g8BB/u2hlyjIOesyNVUlbY25a0AtASk2pNlVITADw
+ wpXfOm0j2FGxn0IkeMSYMNx6/+QxUgmnfKW86LiGjV0hKmRgftZga+/JnMfKI5jfkHzb
+ sKqY9nUqVAdzg1rmSehXuyhqm6A3M/ROZv9PcMPAAvRmx4FNRxZuan4Dv/1RZeh7D9J2
+ jEvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=QFmhbe9ddbtIYeSdC4Wa6/rdFsIq9qRHGhAnGj5nGkM=;
+ b=tl3iR4hv7r/kwZgTn1RYsw4dkRrc5sEHub/llPLcHA/gnhFZM2ITi9532f1h1GGmw+
+ 1y4cRO5tkbjXBvW3jC8ZYHI4+wSMQMyvFxzg9H4ylPU7youg47lzqafknSNA6vUSNi8M
+ pi1TDv+MKGUtO2Va4yZ2QYKO6Hr1BpKPA1F07HSq8F1P5PY5gzh59AExH9NzOgyobwqR
+ VQOhm3jsnQF58nT9PY8/iqbkaz/wCwKFs3BYsYO8Xynmv4szVMXrmMEfDV/iPPHB5h9j
+ UzhY7/ZC9hNXbx7ZC+2PazafFzZOBLowVKHiXB6p8WyUpxk1/YaDc/Fe1XItHsilw2RM
+ 9Z8Q==
+X-Gm-Message-State: APjAAAVqgmWOZ7AcAgp1tM1QqaKcDT43B0Q5MaI61AS6jsTo8D7h+Flo
+ fmsArViur2q2l5A3BTkMhlM=
+X-Google-Smtp-Source: APXvYqxzIHtC1cYPN+CFT0NVT86qIF5tw1U2wBpSj9uhHmEuxmfJAzpLazXlVC8A19qan9GSD8coaA==
+X-Received: by 2002:a17:902:12c:: with SMTP id
+ 41mr12061982plb.224.1575596250288; 
+ Thu, 05 Dec 2019 17:37:30 -0800 (PST)
+Received: from ?IPv6:240d:1a:90a:7900:b0a6:2318:ed21:5e5?
+ ([240d:1a:90a:7900:b0a6:2318:ed21:5e5])
+ by smtp.gmail.com with ESMTPSA id o12sm924967pjf.19.2019.12.05.17.37.26
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 05 Dec 2019 17:37:29 -0800 (PST)
+Subject: Re: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
+ <87wobedpit.fsf@mpe.ellerman.id.au>
+ <20191203183531.GT24609@gate.crashing.org>
+From: Frank Rowand <frowand.list@gmail.com>
+Message-ID: <493a7da7-774c-1515-b43a-80d72c9d3c19@gmail.com>
+Date: Thu, 5 Dec 2019 19:37:24 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191203183531.GT24609@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,100 +87,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dja@axtens.net, joel@jms.id.au, ajd@linux.ibm.com, npiggin@gmail.com,
- kernel-hardening@lists.openwall.com
+Cc: devicetree@vger.kernel.org,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Russell Currey <ruscur@russell.cc> writes:
->> With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will be one
->> W+X page at boot by default.  This can be tested with
->> CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking the
->> kernel log during boot.
+On 12/3/19 12:35 PM, Segher Boessenkool wrote:
+> Hi!
+> 
+> On Tue, Dec 03, 2019 at 03:03:22PM +1100, Michael Ellerman wrote:
+>> Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
+>> I've certainly heard it said that on some OF's the phandle was just ==
+>> the address of the internal representation, and I guess maybe for SLOF
+>> that is true.
+> 
+> It is (or was).  In many OFs it is just the effective address of some
+> node structure.  SLOF runs with translation off normally.
+> 
+>> They seem to vary wildly though, eg. on an Apple G5:
+> 
+> Apple OF runs with translation on usually.  IIRC these are effective
+> addresses as well.
+> 
+> The OF they have on G5 machines is mostly 32-bit, for compatibility is my
+> guess (for userland things dealing with addresses from OF, importantly).
+> 
+>>   $ find /proc/device-tree/ -name phandle | xargs lsprop | head -10
+>>   /proc/device-tree/vsp@0,f9000000/veo@f9180000/phandle ff970848
+>>   /proc/device-tree/vsp@0,f9000000/phandle ff970360
+>>   /proc/device-tree/vsp@0,f9000000/veo@f9080000/phandle ff970730
+>>   /proc/device-tree/nvram@0,fff04000/phandle ff967fb8
+>>   /proc/device-tree/xmodem/phandle ff9655e8
+>>   /proc/device-tree/multiboot/phandle ff9504f0
+>>   /proc/device-tree/diagnostics/phandle ff965550
+>>   /proc/device-tree/options/phandle ff893cf0
+>>   /proc/device-tree/openprom/client-services/phandle ff8925b8
+>>   /proc/device-tree/openprom/phandle ff892458
 >>
->> powerpc doesn't implement its own alloc() for kprobes like other
->> architectures do, but we couldn't immediately mark RO anyway since we do
->> a memcpy to the page we allocate later.  After that, nothing should be
->> allowed to modify the page, and write permissions are removed well
->> before the kprobe is armed.
+>> That machine does not have enough RAM for those to be 32-bit real
+>> addresses. I think Apple OF is running in virtual mode though (?), so
+>> maybe they are pointers?
+> 
+> Yes, I think the default is to have 8MB ram at the top of 4GB (which is
+> the physical address of the bootrom, btw) for OF.
+> 
+>> And on an IBM pseries machine they're a bit all over the place:
 >>
->> Thus mark newly allocated probes as read-only once it's safe to do so.
->>
->> Signed-off-by: Russell Currey <ruscur@russell.cc>
->> ---
->>  arch/powerpc/kernel/kprobes.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
->> index 2d27ec4feee4..2610496de7c7 100644
->> --- a/arch/powerpc/kernel/kprobes.c
->> +++ b/arch/powerpc/kernel/kprobes.c
->> @@ -24,6 +24,7 @@
->>  #include <asm/sstep.h>
->>  #include <asm/sections.h>
->>  #include <linux/uaccess.h>
->> +#include <linux/set_memory.h>
->>  
->>  DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
->>  DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
->> @@ -131,6 +132,8 @@ int arch_prepare_kprobe(struct kprobe *p)
->>  			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
->>  	}
->>  
->> +	set_memory_ro((unsigned long)p->ainsn.insn, 1);
->> +
->
-> That comes from:
-> 	p->ainsn.insn = get_insn_slot();
->
->
-> Which ends up in __get_insn_slot() I think. And that looks very much
-> like it's going to hand out multiple slots per page, which isn't going
-> to work because you've just marked the whole page RO.
->
-> So I would expect this to crash on the 2nd kprobe that's installed. Have
-> you tested it somehow?
+>>   /proc/device-tree/cpus/PowerPC,POWER8@40/ibm,phandle 10000040
+>>   /proc/device-tree/cpus/l2-cache@2005/ibm,phandle 00002005
+>>   /proc/device-tree/cpus/PowerPC,POWER8@30/ibm,phandle 10000030
+>>   /proc/device-tree/cpus/PowerPC,POWER8@20/ibm,phandle 10000020
+>>   /proc/device-tree/cpus/PowerPC,POWER8@10/ibm,phandle 10000010
+>>   /proc/device-tree/cpus/l2-cache@2003/ibm,phandle 00002003
+>>   /proc/device-tree/cpus/l2-cache@200a/ibm,phandle 0000200a
+>>   /proc/device-tree/cpus/l3-cache@3108/ibm,phandle 00003108
+>>   /proc/device-tree/cpus/l2-cache@2001/ibm,phandle 00002001
+>>   /proc/device-tree/cpus/l3-cache@3106/ibm,phandle 00003106
+>>   /proc/device-tree/cpus/ibm,phandle fffffff8
+>>   /proc/device-tree/cpus/l3-cache@3104/ibm,phandle 00003104
+>>   /proc/device-tree/cpus/l2-cache@2008/ibm,phandle 00002008
+>>   /proc/device-tree/cpus/l3-cache@3102/ibm,phandle 00003102
+>>   /proc/device-tree/cpus/l2-cache@2006/ibm,phandle 00002006
+>>   /proc/device-tree/cpus/l3-cache@3100/ibm,phandle 00003100
+>>   /proc/device-tree/cpus/PowerPC,POWER8@8/ibm,phandle 10000008
+>>   /proc/device-tree/cpus/l2-cache@2004/ibm,phandle 00002004
+>>   /proc/device-tree/cpus/PowerPC,POWER8@48/ibm,phandle 10000048
+>>   /proc/device-tree/cpus/PowerPC,POWER8@38/ibm,phandle 10000038
+>>   /proc/device-tree/cpus/l2-cache@2002/ibm,phandle 00002002
+>>   /proc/device-tree/cpus/PowerPC,POWER8@28/ibm,phandle 10000028
+>>   /proc/device-tree/cpus/l3-cache@3107/ibm,phandle 00003107
+>>   /proc/device-tree/cpus/PowerPC,POWER8@18/ibm,phandle 10000018
+>>   /proc/device-tree/cpus/l2-cache@2000/ibm,phandle 00002000
+>>   /proc/device-tree/cpus/l3-cache@3105/ibm,phandle 00003105
+>>   /proc/device-tree/cpus/l3-cache@3103/ibm,phandle 00003103
+>>   /proc/device-tree/cpus/l3-cache@310a/ibm,phandle 0000310a
+>>   /proc/device-tree/cpus/PowerPC,POWER8@0/ibm,phandle 10000000
+>>   /proc/device-tree/cpus/l2-cache@2007/ibm,phandle 00002007
+>>   /proc/device-tree/cpus/l3-cache@3101/ibm,phandle 00003101
+>>   /proc/device-tree/pci@80000002000001b/ibm,phandle 2000001b
+> 
+> Some (the 1000xxxx) look like addresses as well.
+> 
+>>> So the hash array has 64 entries out which only 8 are populated. Using
+>>> hash_32() populates 29 entries.
+> 
+>> On the G5 it's similarly inefficient:
+>> [    0.007379] OF: of_populate_phandle_cache(242) Used entries: 31, hashed: 111
+> 
+>> And some output from a "real" pseries machine (IBM OF), which is
+>> slightly better:
+>> [    0.129467] OF: of_populate_phandle_cache(242) Used entries: 39, hashed: 81
+> 
+>> So yeah using hash_32() is quite a bit better in both cases.
+> 
+> Yup, no surprise there.  And hash_32 is very cheap to compute.
+> 
+>> And if I'm reading your patch right it would be a single line change to>> switch, so that seems like it's worth doing to me.
+> 
+> Agreed!
+> 
+> Btw.  Some OFs mangle the phandles some way, to make it easier to catch
+> people using it as an address (and similarly, mangle ihandles differently,
+> so you catch confusion between ihandles and phandles as well).  Like a
+> simple xor, with some odd number preferably.  You should assume *nothing*
+> about phandles, they are opaque identifiers.
 
-I'm not sure if this is the issue I was talking about, but it doesn't
-survive ftracetest:
+For arm32 machines that use dtc to generate the devicetree, which is a
+very large user base, we certainly can make assumptions about phandles.
+Especially because the complaints about the overhead of phandle based
+lookups have been voiced by users of this specific set of machines.
 
-  [ 1139.576047] ------------[ cut here ]------------
-  [ 1139.576322] kernel BUG at mm/memory.c:2036!
-  cpu 0x1f: Vector: 700 (Program Check) at [c000001fd6c675d0]
-      pc: c00000000035d018: apply_to_page_range+0x318/0x610
-      lr: c0000000000900bc: change_memory_attr+0x4c/0x70
-      sp: c000001fd6c67860
-     msr: 9000000000029033
-    current = 0xc000001fa4a47880
-    paca    = 0xc000001ffffe5c80   irqmask: 0x03   irq_happened: 0x01
-      pid   = 7168, comm = ftracetest
-  kernel BUG at mm/memory.c:2036!
-  Linux version 5.4.0-gcc-8.2.0-11694-gf1f9aa266811 (michael@Raptor-2.ozlabs.ibm.com) (gcc version 8.2.0 (crosstool-NG 1.24.0-rc1.16-9627a04)) #1384 SMP Thu Dec 5 22:11:09 AEDT 2019
-  enter ? for help
-  [c000001fd6c67940] c0000000000900bc change_memory_attr+0x4c/0x70
-  [c000001fd6c67970] c000000000053c48 arch_prepare_kprobe+0xb8/0x120
-  [c000001fd6c679e0] c00000000022f718 register_kprobe+0x608/0x790
-  [c000001fd6c67a40] c00000000022fc50 register_kretprobe+0x230/0x350
-  [c000001fd6c67a80] c0000000002849b4 __register_trace_kprobe+0xf4/0x1a0
-  [c000001fd6c67af0] c000000000285b18 trace_kprobe_create+0x738/0xf70
-  [c000001fd6c67c30] c000000000286378 create_or_delete_trace_kprobe+0x28/0x70
-  [c000001fd6c67c50] c00000000025f024 trace_run_command+0xc4/0xe0
-  [c000001fd6c67ca0] c00000000025f128 trace_parse_run_command+0xe8/0x230
-  [c000001fd6c67d40] c0000000002845d0 probes_write+0x20/0x40
-  [c000001fd6c67d60] c0000000003eef4c __vfs_write+0x3c/0x70
-  [c000001fd6c67d80] c0000000003f26a0 vfs_write+0xd0/0x200
-  [c000001fd6c67dd0] c0000000003f2a3c ksys_write+0x7c/0x140
-  [c000001fd6c67e20] c00000000000b9e0 system_call+0x5c/0x68
-  --- Exception: c01 (System Call) at 00007fff8f06e420
-  SP (7ffff93d6830) is in userspace
-  1f:mon> client_loop: send disconnect: Broken pipe
+For systems with a devicetree that does not follow the assumptions, the
+phandle cache should not measurably increase the overhead of phandle
+based lookups.  For these systems, they might not see an overhead
+reduction from the existence of the cache and they may or may not
+see the overhead reduction.  This was explicitly stated during the
+reviews of the possible phandle cache implementation alternatives.
 
+If you have measurements of a system where implementing the phandle
+cache increased the overhead, and the additional overhead is a concern
+(such as significantly increasing boot time) then please share that
+information with us.  Otherwise this is just a theoretical exercise.
 
-Sorry I didn't get any more info on the crash, I lost the console and
-then some CI bot stole the machine 8)
+-Frank
 
-You should be able to reproduce just by running ftracetest.
+> 
+> 
+> Segher
+> 
 
-cheers
