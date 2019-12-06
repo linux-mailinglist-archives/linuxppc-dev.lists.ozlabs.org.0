@@ -2,67 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB639114B5E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 04:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA01114E0E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 10:16:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Td9w0qJ7zDqbl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 14:19:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Tn5517HmzDqcv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 20:16:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=jniethe5@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="NivpDNQq"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Td7k74PszDqZC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 14:17:54 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id h14so2581611pfe.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Dec 2019 19:17:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=gkGpgdPUBIiEgGfl9znwx+fNhWGwOTyCZKNW1OnKDWI=;
- b=NivpDNQqCm6+EHJQmbuS/r1/mFkX+QMB85cqTZmH3QLdFI57wW85OXpUIBlMFDay8g
- WwWRn1/IpUw9upaWXLXCD2O6DodzNh7LtVFEwarx8JaHaaI4qIbKKwaXSUdAz0XviS+d
- jGSem92P4JX+DrukV5ycbO7XV77KRvx9qTNeENSyM4ukp3Pxz9tLYOqyZctfFFdnrNEv
- 4zA2Tk58DS19NJwLBytaz09Ua5+TUUWINQoc782tRMOHbx2/SBIC1fN1CEDBL1hGPldC
- SMbFcTE1KCxAj7MpqpRa9VbjB+A5Pibd0NRW/dmkLi5e2Szhy3KUrHp5alWIWcqu12lA
- GauQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=gkGpgdPUBIiEgGfl9znwx+fNhWGwOTyCZKNW1OnKDWI=;
- b=qeIsuuxT1/Te99LA0cJk3+VwOZRj+IlzhoF1F6dUPlp3XPKbIbBifZfnh28UYqUXGM
- WjQNnI/cQxSzSa7E92iwENCu04kX8tgpkBPFp+gBHZA5ybdkZA9fdQfDQWpBwX3j/vLk
- HASU2uALG/kkhoBQsVrInjtjlhCuKmrRU74Ga2vrTTfvm31WsUO7Qp83j7sMcc95vaSN
- egwIpOFDlXcYNeW4K1eAF6YghzJKvdBT3yJaAHZWZtJOdCESESkGVLEWX0pbM2g/xAwV
- 0YzyWSNAfizCo282fCW4Ltc5zSbJp6+Esb/8jBjN6gF2wX0rGe0iK+ds6OtTEOteCJfq
- KdzA==
-X-Gm-Message-State: APjAAAUM/C957NfBDF7vKVBV0cTO86UoDX8ouaPu9OUiObVQYNfrR6Wm
- WbgD7Nied0VksKxL5aZgcnBBWN6H0F8=
-X-Google-Smtp-Source: APXvYqw3FP4Rmg1+rXKd9S+wTKwCfh/HU6E8rrdBG+sheEXPvtpHSKiE2LV22En6hpK/QqzGopSyMQ==
-X-Received: by 2002:a62:fb0e:: with SMTP id x14mr12535849pfm.194.1575602271386; 
- Thu, 05 Dec 2019 19:17:51 -0800 (PST)
-Received: from tee480.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id o3sm1072635pju.13.2019.12.05.19.17.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2019 19:17:50 -0800 (PST)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	kvm-ppc@vger.kernel.org
-Subject: [PATCH v3] powerpc/mm: Remove kvm radix prefetch workaround for
- Power9 DD2.2
-Date: Fri,  6 Dec 2019 14:17:22 +1100
-Message-Id: <20191206031722.25781-1-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Tn2z6sLxzDqYj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 20:14:18 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB6973se023704
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 Dec 2019 04:14:14 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wq55t83f1-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Dec 2019 04:14:14 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Fri, 6 Dec 2019 09:14:11 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 6 Dec 2019 09:14:09 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB69E8sr38338590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Dec 2019 09:14:08 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3A0C9AE051;
+ Fri,  6 Dec 2019 09:14:08 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD41DAE056;
+ Fri,  6 Dec 2019 09:14:07 +0000 (GMT)
+Received: from localhost (unknown [9.124.35.239])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Dec 2019 09:14:07 +0000 (GMT)
+Date: Fri, 06 Dec 2019 14:44:06 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 0/3] pseries: Track and expose idle PURR and SPURR ticks
+To: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, Nathan Lynch
+ <nathanl@linux.ibm.com>
+References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
+ <87r21ju3ud.fsf@linux.ibm.com>
+ <48823589-b105-0da3-e532-f633ade8f0d9@linux.vnet.ibm.com>
+ <87k17au4rw.fsf@linux.ibm.com> <1575566328.nhfi897fmd.naveen@linux.ibm.com>
+In-Reply-To: <1575566328.nhfi897fmd.naveen@linux.ibm.com>
+MIME-Version: 1.0
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 19120609-0016-0000-0000-000002D21208
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120609-0017-0000-0000-000033341B13
+Message-Id: <1575623305.dgcux6u43j.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-06_02:2019-12-04,2019-12-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ adultscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999 lowpriorityscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912060080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,141 +92,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oohall@gmail.com, Jordan Niethe <jniethe5@gmail.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with
-KVM") introduced a number of workarounds as coming out of a guest with
-the mmu enabled would make the cpu would start running in hypervisor
-state with the PID value from the guest. The cpu will then start
-prefetching for the hypervisor with that PID value.
+Naveen N. Rao wrote:
+> Hi Nathan,
+>=20
+> Nathan Lynch wrote:
+>> Hi Kamalesh,
+>>=20
+>> Kamalesh Babulal <kamalesh@linux.vnet.ibm.com> writes:
+>>> On 12/5/19 3:54 AM, Nathan Lynch wrote:
+>>>> "Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
+>>>>>
+>>>>> Tools such as lparstat which are used to compute the utilization need
+>>>>> to know [S]PURR ticks when the cpu was busy or idle. The [S]PURR
+>>>>> counters are already exposed through sysfs.  We already account for
+>>>>> PURR ticks when we go to idle so that we can update the VPA area. Thi=
+s
+>>>>> patchset extends support to account for SPURR ticks when idle, and
+>>>>> expose both via per-cpu sysfs files.
+>>>>=20
+>>>> Does anything really want to use PURR instead of SPURR? Seems like we
+>>>> should expose only SPURR idle values if possible.
+>>>>=20
+>>>
+>>> lparstat is one of the consumers of PURR idle metric
+>>> (https://groups.google.com/forum/#!topic/powerpc-utils-devel/fYRo69xO9r=
+4).=20
+>>> Agree, on the argument that system utilization metrics based on SPURR
+>>> accounting is accurate in comparison to PURR, which isn't proportional =
+to
+>>> CPU frequency.  PURR has been traditionally used to understand the syst=
+em
+>>> utilization, whereas SPURR is used for understanding how much capacity =
+is
+>>> left/exceeding in the system based on the current power saving mode.
+>>=20
+>> I'll phrase my question differently: does SPURR complement or supercede
+>> PURR? You seem to be saying they serve different purposes. If PURR is
+>> actually useful rather then vestigial then I have no objection to
+>> exposing idle_purr.
+>=20
+> SPURR complements PURR, so we need both. SPURR/PURR ratio helps provide=20
+> an indication of the available headroom in terms of core resources, at=20
+> maximum frequency.
 
-In Power9 DD2.2 the cpu behaviour was modified to fix this. When
-accessing Quadrant 0 in hypervisor mode with LPID != 0 prefetching will
-not be performed. This means that we can get rid of the workarounds for
-Power9 DD2.2 and later revisions. Add a new cpu feature
-CPU_FTR_P9_RADIX_PREFETCH_BUG to indicate if the workarounds are needed.
+Re-reading this today morning, I realize that this isn't entirely=20
+accurate. SPURR alone is sufficient to understand core resource=20
+utilization.
 
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
-v2: Use a cpu feature instead of open coding the PVR check
-v3: Put parentheses around CPU_FTRS_POWER9_DD2_0 value
----
- arch/powerpc/include/asm/cputable.h      |  7 +++++--
- arch/powerpc/kernel/dt_cpu_ftrs.c        | 13 ++++++++-----
- arch/powerpc/kvm/book3s_hv_rmhandlers.S  |  2 ++
- arch/powerpc/mm/book3s64/radix_pgtable.c |  6 +++++-
- arch/powerpc/mm/book3s64/radix_tlb.c     |  3 +++
- 5 files changed, 23 insertions(+), 8 deletions(-)
+Kamalesh is using PURR to display non-normalized utilization values=20
+(under 'actual' column), as reported by lparstat on AIX. I am not=20
+entirely sure if it is ok to derive these based on the SPURR busy/idle=20
+ratio.
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index cf00ff0d121d..40a4d3c6fd99 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -212,6 +212,7 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTR_P9_TLBIE_STQ_BUG	LONG_ASM_CONST(0x0000400000000000)
- #define CPU_FTR_P9_TIDR			LONG_ASM_CONST(0x0000800000000000)
- #define CPU_FTR_P9_TLBIE_ERAT_BUG	LONG_ASM_CONST(0x0001000000000000)
-+#define CPU_FTR_P9_RADIX_PREFETCH_BUG	LONG_ASM_CONST(0x0002000000000000)
- 
- #ifndef __ASSEMBLY__
- 
-@@ -459,8 +460,10 @@ static inline void cpu_feature_keys_init(void) { }
- 	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
- 	    CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_PKEY | \
- 	    CPU_FTR_P9_TLBIE_STQ_BUG | CPU_FTR_P9_TLBIE_ERAT_BUG | CPU_FTR_P9_TIDR)
--#define CPU_FTRS_POWER9_DD2_0 CPU_FTRS_POWER9
--#define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1)
-+#define CPU_FTRS_POWER9_DD2_0 (CPU_FTRS_POWER9 | CPU_FTR_P9_RADIX_PREFETCH_BUG)
-+#define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | \
-+			       CPU_FTR_P9_RADIX_PREFETCH_BUG | \
-+			       CPU_FTR_POWER9_DD2_1)
- #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
- 			       CPU_FTR_P9_TM_HV_ASSIST | \
- 			       CPU_FTR_P9_TM_XER_SO_BUG)
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 180b3a5d1001..182b4047c1ef 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -727,17 +727,20 @@ static __init void cpufeatures_cpu_quirks(void)
- 	/*
- 	 * Not all quirks can be derived from the cpufeatures device tree.
- 	 */
--	if ((version & 0xffffefff) == 0x004e0200)
--		; /* DD2.0 has no feature flag */
--	else if ((version & 0xffffefff) == 0x004e0201)
-+	if ((version & 0xffffefff) == 0x004e0200) {
-+		/* DD2.0 has no feature flag */
-+		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
-+	} else if ((version & 0xffffefff) == 0x004e0201) {
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
--	else if ((version & 0xffffefff) == 0x004e0202) {
-+		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
-+	} else if ((version & 0xffffefff) == 0x004e0202) {
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
--	} else if ((version & 0xffff0000) == 0x004e0000)
-+	} else if ((version & 0xffff0000) == 0x004e0000) {
- 		/* DD2.1 and up have DD2_1 */
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
-+	}
- 
- 	if ((version & 0xffff0000) == 0x004e0000) {
- 		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index faebcbb8c4db..72b08bb17200 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1793,6 +1793,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
- 	tlbsync
- 	ptesync
- 
-+BEGIN_FTR_SECTION
- 	/* Radix: Handle the case where the guest used an illegal PID */
- 	LOAD_REG_ADDR(r4, mmu_base_pid)
- 	lwz	r3, VCPU_GUEST_PID(r9)
-@@ -1822,6 +1823,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
- 	addi	r7,r7,0x1000
- 	bdnz	1b
- 	ptesync
-+END_FTR_SECTION_IFSET(CPU_FTR_P9_RADIX_PREFETCH_BUG)
- 
- 2:
- #endif /* CONFIG_PPC_RADIX_MMU */
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 6ee17d09649c..25cd2a5a6f9f 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -336,7 +336,11 @@ static void __init radix_init_pgtable(void)
- 	}
- 
- 	/* Find out how many PID bits are supported */
--	if (cpu_has_feature(CPU_FTR_HVMODE)) {
-+	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
-+		if (!mmu_pid_bits)
-+			mmu_pid_bits = 20;
-+		mmu_base_pid = 1;
-+	} else if (cpu_has_feature(CPU_FTR_HVMODE)) {
- 		if (!mmu_pid_bits)
- 			mmu_pid_bits = 20;
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 67af871190c6..d3ab36b33650 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -1221,6 +1221,9 @@ extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
- 	if (unlikely(pid == MMU_NO_CONTEXT))
- 		return;
- 
-+	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
-+		return;
-+
- 	/*
- 	 * If this context hasn't run on that CPU before and KVM is
- 	 * around, there's a slim chance that the guest on another
--- 
-2.20.1
+- Naveen
 
