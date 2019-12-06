@@ -1,84 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740AB114AC0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 03:03:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47TbVB4KG8zDqRp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 13:03:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB639114B5E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 04:19:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Td9w0qJ7zDqbl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2019 14:19:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=frowand.list@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Y6tCO3KX"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="NivpDNQq"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47TbRz3lRDzDqLS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 13:01:51 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id o9so2022282plk.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Dec 2019 18:01:51 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Td7k74PszDqZC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2019 14:17:54 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id h14so2581611pfe.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Dec 2019 19:17:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=yawCDzrn1DZPzEC7TC2gsk/hjYWQ4hmDMD32WCjrPbk=;
- b=Y6tCO3KXQbX6mVGeqhEP97b/3pfwbgbG9fZAKtX3DfI/5sQ9/x7c0+d98HmaKY8VMk
- S2YGlDSiYypUevwgwsDJ+10qNi8s2juIbE2sT4w6Q0MFWvg9pU+EfmMeTH2ei41cQ8Mp
- d1JnDTZVyy9JhLP8EV0BqACLfqAQzxgyrjXYiOb7l0cAGo4oYw+Pv/SAgD8qnSKaC/0a
- rD8FXgrCkyGEUJ/on8f71AZB3mNkw0p/h6EJheutKQYEjo2QLb/ufPFHz0rchJEzVzcc
- aeqBqtuXQ1qK8dJGu6BXkoLkSNdJlG5XyKU+BTgBve2FPORSOYD8PpKRkR9sbaJ6yNhB
- 0eUw==
+ h=from:to:cc:subject:date:message-id;
+ bh=gkGpgdPUBIiEgGfl9znwx+fNhWGwOTyCZKNW1OnKDWI=;
+ b=NivpDNQqCm6+EHJQmbuS/r1/mFkX+QMB85cqTZmH3QLdFI57wW85OXpUIBlMFDay8g
+ WwWRn1/IpUw9upaWXLXCD2O6DodzNh7LtVFEwarx8JaHaaI4qIbKKwaXSUdAz0XviS+d
+ jGSem92P4JX+DrukV5ycbO7XV77KRvx9qTNeENSyM4ukp3Pxz9tLYOqyZctfFFdnrNEv
+ 4zA2Tk58DS19NJwLBytaz09Ua5+TUUWINQoc782tRMOHbx2/SBIC1fN1CEDBL1hGPldC
+ SMbFcTE1KCxAj7MpqpRa9VbjB+A5Pibd0NRW/dmkLi5e2Szhy3KUrHp5alWIWcqu12lA
+ GauQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=yawCDzrn1DZPzEC7TC2gsk/hjYWQ4hmDMD32WCjrPbk=;
- b=PQaxjPOooUMGkAsU8Gk/B6pZo9Wo+f+uvXyHC41pJqTPnUboypehbHj8IYKvPqyYKJ
- M9an2M1mj/z/WOrbw1S34IW89RcpK6zBFOQ/xWBG3mH73HYBIiuke5SdMNbYx6L7Dlvm
- lCMoNRpbm0sGzHc/zJIQpTz8yhZfL6gUfJ+Zt4AegQgHqPxF21sBElYJXxTojyhrt8+a
- 2BhbMaQ3duuK5ooX1kFdR1y5L3DYqqN891zQNp1govMjLSbKTJ1oL8z5wfYSSxjoBTi8
- 29E7QiF/4Lxe7fehXQe43vJxt1dteaOeTG7XwhNd2oNKRhA+Y1y3xYsxf2a1FhGPdZ+u
- ZDDg==
-X-Gm-Message-State: APjAAAVMHLifPXMPja2knOnIDvF1dV7SP6mlEcQNjEgAET4D5mxygLPO
- ywkKkL2OfafzoxUYryslIYM=
-X-Google-Smtp-Source: APXvYqw2ueWFPqikZhD0a2qq1gWWV/hMz4rEndjfA9geXRuajF2h7mb6m0NVl6+8/W2Sr5Om8zAeDg==
-X-Received: by 2002:a17:90a:348c:: with SMTP id
- p12mr12729041pjb.105.1575597708183; 
- Thu, 05 Dec 2019 18:01:48 -0800 (PST)
-Received: from ?IPv6:240d:1a:90a:7900:b0a6:2318:ed21:5e5?
- ([240d:1a:90a:7900:b0a6:2318:ed21:5e5])
- by smtp.gmail.com with ESMTPSA id z1sm14087108pfk.61.2019.12.05.18.01.45
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 05 Dec 2019 18:01:47 -0800 (PST)
-Subject: Re: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Rob Herring <robh+dt@kernel.org>
-References: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
- <e1f232f5-3847-a519-5cce-95a26512e82b@gmail.com>
- <87tv6idp37.fsf@mpe.ellerman.id.au>
- <67e1da87-7f5a-3972-bc16-28bae2350c12@gmail.com>
- <CAL_JsqKieG5=teL7gABPKbJOQfvoS9s-ZPF-=R0yEE_LUoy-Kw@mail.gmail.com>
- <20191205163538.mzunfrpox7jbrssl@linutronix.de>
-From: Frank Rowand <frowand.list@gmail.com>
-Message-ID: <084ed924-eaed-5232-a9f6-fe60128fe11a@gmail.com>
-Date: Thu, 5 Dec 2019 20:01:41 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191205163538.mzunfrpox7jbrssl@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=gkGpgdPUBIiEgGfl9znwx+fNhWGwOTyCZKNW1OnKDWI=;
+ b=qeIsuuxT1/Te99LA0cJk3+VwOZRj+IlzhoF1F6dUPlp3XPKbIbBifZfnh28UYqUXGM
+ WjQNnI/cQxSzSa7E92iwENCu04kX8tgpkBPFp+gBHZA5ybdkZA9fdQfDQWpBwX3j/vLk
+ HASU2uALG/kkhoBQsVrInjtjlhCuKmrRU74Ga2vrTTfvm31WsUO7Qp83j7sMcc95vaSN
+ egwIpOFDlXcYNeW4K1eAF6YghzJKvdBT3yJaAHZWZtJOdCESESkGVLEWX0pbM2g/xAwV
+ 0YzyWSNAfizCo282fCW4Ltc5zSbJp6+Esb/8jBjN6gF2wX0rGe0iK+ds6OtTEOteCJfq
+ KdzA==
+X-Gm-Message-State: APjAAAUM/C957NfBDF7vKVBV0cTO86UoDX8ouaPu9OUiObVQYNfrR6Wm
+ WbgD7Nied0VksKxL5aZgcnBBWN6H0F8=
+X-Google-Smtp-Source: APXvYqw3FP4Rmg1+rXKd9S+wTKwCfh/HU6E8rrdBG+sheEXPvtpHSKiE2LV22En6hpK/QqzGopSyMQ==
+X-Received: by 2002:a62:fb0e:: with SMTP id x14mr12535849pfm.194.1575602271386; 
+ Thu, 05 Dec 2019 19:17:51 -0800 (PST)
+Received: from tee480.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id o3sm1072635pju.13.2019.12.05.19.17.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Dec 2019 19:17:50 -0800 (PST)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	kvm-ppc@vger.kernel.org
+Subject: [PATCH v3] powerpc/mm: Remove kvm radix prefetch workaround for
+ Power9 DD2.2
+Date: Fri,  6 Dec 2019 14:17:22 +1100
+Message-Id: <20191206031722.25781-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,64 +74,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: oohall@gmail.com, Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/5/19 10:35 AM, Sebastian Andrzej Siewior wrote:
-> On 2019-12-03 10:56:35 [-0600], Rob Herring wrote:
->>> Another possibility would be to make the cache be dependent
->>> upon not CONFIG_PPC.  It might be possible to disable the
->>> cache with a minimal code change.
->>
->> I'd rather not do that.
->>
->> And yes, as mentioned earlier I don't like the complexity. I didn't
->> from the start and I'm  I'm still of the opinion we should have a
->> fixed or 1 time sized true cache (i.e. smaller than total # of
->> phandles). That would solve the RT memory allocation and locking issue
->> too.
->>
->> For reference, the performance difference between the current
->> implementation (assuming fixes haven't regressed it) was ~400ms vs. a
->> ~340ms improvement with a 64 entry cache (using a mask, not a hash).
->> IMO, 340ms improvement was good enough.
-> 
-> Okay. So the 814 phandles would result in an array with 1024 slots. That
-> would need 4KiB of memory.
+Commit a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with
+KVM") introduced a number of workarounds as coming out of a guest with
+the mmu enabled would make the cpu would start running in hypervisor
+state with the PID value from the guest. The cpu will then start
+prefetching for the hypervisor with that PID value.
 
-Is this amount of memory an issue for this system?
+In Power9 DD2.2 the cpu behaviour was modified to fix this. When
+accessing Quadrant 0 in hypervisor mode with LPID != 0 prefetching will
+not be performed. This means that we can get rid of the workarounds for
+Power9 DD2.2 and later revisions. Add a new cpu feature
+CPU_FTR_P9_RADIX_PREFETCH_BUG to indicate if the workarounds are needed.
 
-If module support is not configured into the kernel then the cache is
-removed and memory freed in a late initcall.  I don't know if that helps
-your use case or not.
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+v2: Use a cpu feature instead of open coding the PVR check
+v3: Put parentheses around CPU_FTRS_POWER9_DD2_0 value
+---
+ arch/powerpc/include/asm/cputable.h      |  7 +++++--
+ arch/powerpc/kernel/dt_cpu_ftrs.c        | 13 ++++++++-----
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S  |  2 ++
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  6 +++++-
+ arch/powerpc/mm/book3s64/radix_tlb.c     |  3 +++
+ 5 files changed, 23 insertions(+), 8 deletions(-)
 
-
-> What about we go back to the fix 64 slots array but with hash32 for the
-> lookup? Without the hash we would be 60ms slower during boot (compared
-> to now, based on ancient data) but then the hash isn't expensive so we
-> end up with better coverage of the memory on systems which don't have a
-> plain enumeration of the phandle.
-
-That performance data is specific to one particular system.  It does not
-generalize to all devicetree based systems.  So don't draw too many
-conclusions from it.  If you want to understand the boot performance
-impact for your system, you need to measure the alternatives on
-your system.
-
-Is there a memory usage issue for the systems that led to this thread?
-Unless there is a documented memory issue, I do not want to expand an
-issue with poor cache bucket percent utilization to the other issue
-of cache size.
-
--Frank
-
-> 
->> Rob
-> 
-> Sebastian
-> 
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index cf00ff0d121d..40a4d3c6fd99 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -212,6 +212,7 @@ static inline void cpu_feature_keys_init(void) { }
+ #define CPU_FTR_P9_TLBIE_STQ_BUG	LONG_ASM_CONST(0x0000400000000000)
+ #define CPU_FTR_P9_TIDR			LONG_ASM_CONST(0x0000800000000000)
+ #define CPU_FTR_P9_TLBIE_ERAT_BUG	LONG_ASM_CONST(0x0001000000000000)
++#define CPU_FTR_P9_RADIX_PREFETCH_BUG	LONG_ASM_CONST(0x0002000000000000)
+ 
+ #ifndef __ASSEMBLY__
+ 
+@@ -459,8 +460,10 @@ static inline void cpu_feature_keys_init(void) { }
+ 	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
+ 	    CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_PKEY | \
+ 	    CPU_FTR_P9_TLBIE_STQ_BUG | CPU_FTR_P9_TLBIE_ERAT_BUG | CPU_FTR_P9_TIDR)
+-#define CPU_FTRS_POWER9_DD2_0 CPU_FTRS_POWER9
+-#define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1)
++#define CPU_FTRS_POWER9_DD2_0 (CPU_FTRS_POWER9 | CPU_FTR_P9_RADIX_PREFETCH_BUG)
++#define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | \
++			       CPU_FTR_P9_RADIX_PREFETCH_BUG | \
++			       CPU_FTR_POWER9_DD2_1)
+ #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
+ 			       CPU_FTR_P9_TM_HV_ASSIST | \
+ 			       CPU_FTR_P9_TM_XER_SO_BUG)
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 180b3a5d1001..182b4047c1ef 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -727,17 +727,20 @@ static __init void cpufeatures_cpu_quirks(void)
+ 	/*
+ 	 * Not all quirks can be derived from the cpufeatures device tree.
+ 	 */
+-	if ((version & 0xffffefff) == 0x004e0200)
+-		; /* DD2.0 has no feature flag */
+-	else if ((version & 0xffffefff) == 0x004e0201)
++	if ((version & 0xffffefff) == 0x004e0200) {
++		/* DD2.0 has no feature flag */
++		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
++	} else if ((version & 0xffffefff) == 0x004e0201) {
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+-	else if ((version & 0xffffefff) == 0x004e0202) {
++		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
++	} else if ((version & 0xffffefff) == 0x004e0202) {
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+-	} else if ((version & 0xffff0000) == 0x004e0000)
++	} else if ((version & 0xffff0000) == 0x004e0000) {
+ 		/* DD2.1 and up have DD2_1 */
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
++	}
+ 
+ 	if ((version & 0xffff0000) == 0x004e0000) {
+ 		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index faebcbb8c4db..72b08bb17200 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -1793,6 +1793,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 	tlbsync
+ 	ptesync
+ 
++BEGIN_FTR_SECTION
+ 	/* Radix: Handle the case where the guest used an illegal PID */
+ 	LOAD_REG_ADDR(r4, mmu_base_pid)
+ 	lwz	r3, VCPU_GUEST_PID(r9)
+@@ -1822,6 +1823,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 	addi	r7,r7,0x1000
+ 	bdnz	1b
+ 	ptesync
++END_FTR_SECTION_IFSET(CPU_FTR_P9_RADIX_PREFETCH_BUG)
+ 
+ 2:
+ #endif /* CONFIG_PPC_RADIX_MMU */
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 6ee17d09649c..25cd2a5a6f9f 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -336,7 +336,11 @@ static void __init radix_init_pgtable(void)
+ 	}
+ 
+ 	/* Find out how many PID bits are supported */
+-	if (cpu_has_feature(CPU_FTR_HVMODE)) {
++	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
++		if (!mmu_pid_bits)
++			mmu_pid_bits = 20;
++		mmu_base_pid = 1;
++	} else if (cpu_has_feature(CPU_FTR_HVMODE)) {
+ 		if (!mmu_pid_bits)
+ 			mmu_pid_bits = 20;
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 67af871190c6..d3ab36b33650 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -1221,6 +1221,9 @@ extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
+ 	if (unlikely(pid == MMU_NO_CONTEXT))
+ 		return;
+ 
++	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
++		return;
++
+ 	/*
+ 	 * If this context hasn't run on that CPU before and KVM is
+ 	 * around, there's a slim chance that the guest on another
+-- 
+2.20.1
 
