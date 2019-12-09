@@ -1,65 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5CA117881
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 22:30:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WxDX2fQVzDqMW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 08:30:04 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0442011788F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 22:39:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WxQr22wdzDqNy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 08:39:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=deltatee.com (client-ip=207.54.116.67; helo=ale.deltatee.com;
- envelope-from=logang@deltatee.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=deltatee.com
-Received: from ale.deltatee.com (ale.deltatee.com [207.54.116.67])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Wx9T6sBGzDqSk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 08:27:25 +1100 (AEDT)
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
- by ale.deltatee.com with esmtp (Exim 4.92)
- (envelope-from <logang@deltatee.com>)
- id 1ieQYj-0005SY-26; Mon, 09 Dec 2019 14:27:14 -0700
-To: Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@kernel.org>
-References: <20191209191346.5197-1-logang@deltatee.com>
- <20191209191346.5197-6-logang@deltatee.com>
- <ce50d9da-c60e-05a1-a86b-3bb3629de502@redhat.com>
- <f34a4c52-cc95-15ed-8a72-c05ab4fd6d33@deltatee.com>
- <20191209204128.GC7658@dhcp22.suse.cz>
- <CAPcyv4iKKw8cuFyDrY2VLN2ecd-qAbDCfYa7SufuhUb59e89Rw@mail.gmail.com>
-From: Logan Gunthorpe <logang@deltatee.com>
-Message-ID: <05e82397-4d89-a54d-5334-2ddca6c94f19@deltatee.com>
-Date: Mon, 9 Dec 2019 14:27:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <CAPcyv4iKKw8cuFyDrY2VLN2ecd-qAbDCfYa7SufuhUb59e89Rw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-CA
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WxP22qHyzDqMd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 08:37:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47WxP21tW6z8sZq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 08:37:26 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47WxP21KTyz9sPK; Tue, 10 Dec 2019 08:37:26 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47WxP14DBvz9sP3
+ for <linuxppc-dev@ozlabs.org>; Tue, 10 Dec 2019 08:37:25 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB9LbMho081246
+ for <linuxppc-dev@ozlabs.org>; Mon, 9 Dec 2019 16:37:23 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wskna2qc4-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 09 Dec 2019 16:37:23 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
+ Mon, 9 Dec 2019 21:37:04 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 9 Dec 2019 21:37:00 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB9Lawl152625544
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 9 Dec 2019 21:36:58 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9511A42042;
+ Mon,  9 Dec 2019 21:36:58 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D2784203F;
+ Mon,  9 Dec 2019 21:36:57 +0000 (GMT)
+Received: from dhcp-9-31-102-17.watson.ibm.com (unknown [9.31.102.17])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  9 Dec 2019 21:36:57 +0000 (GMT)
+Subject: Re: [PATCH v10 0/9] powerpc: Enabling IMA arch specific secure boot
+ policies
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Date: Mon, 09 Dec 2019 16:36:56 -0500
+In-Reply-To: <5254346f-4ba7-c820-e127-d46b84f2e6e6@linux.microsoft.com>
+References: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
+ <5254346f-4ba7-c820-e127-d46b84f2e6e6@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: peterz@infradead.org, luto@kernel.org,
- dave.hansen@linux.intel.com, bp@alien8.de, mingo@redhat.com,
- tglx@linutronix.de, benh@kernel.crashing.org, will@kernel.org,
- catalin.marinas@arm.com, akpm@linux-foundation.org, hch@lst.de,
- linux-mm@kvack.org, platform-driver-x86@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- david@redhat.com, mhocko@kernel.org, dan.j.williams@intel.com
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 5/6] mm, memory_hotplug: Provide argument for the pgprot_t
- in arch_add_memory()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+X-TM-AS-GCONF: 00
+x-cbid: 19120921-4275-0000-0000-0000038D66CB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120921-4276-0000-0000-000038A115A8
+Message-Id: <1575927416.4557.25.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-09_04:2019-12-09,2019-12-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0
+ mlxscore=0 phishscore=0 impostorscore=0 mlxlogscore=928 spamscore=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912090170
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,59 +106,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-ia64@vger.kernel.org,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Linux-sh <linux-sh@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
- Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2019-12-09 2:00 p.m., Dan Williams wrote:
->>>> Can we fiddle that into "struct mhp_restrictions" instead?
->>>
->>> Yes, if that's what people want, it's pretty trivial to do. I chose not
->>> to do it that way because it doesn't get passed down to add_pages() and
->>> it's not really a "restriction". If I don't hear any objections, I will
->>> do that for v2.
->>
->> I do agree that restriction is not the best fit. But I consider prot
->> argument to complicate the API to all users even though it is not really
->> clear whether we are going to have many users really benefiting from it.
->> Look at the vmalloc API and try to find how many users of __vmalloc do
->> not use PAGE_KERNEL.
+On Mon, 2019-12-09 at 12:27 -0800, Lakshmi Ramasubramanian wrote:
+> Hi Mimi,
 > 
-> At least for this I can foresee at least one more user in the
-> pipeline, encrypted memory support for persistent memory mappings that
-> will store the key-id in the ptes.
+> On 10/30/2019 8:31 PM, Mimi Zohar wrote:
 > 
->>
->> So I can see two options. One of them is to add arch_add_memory_prot
->> that would allow to have give and extra prot argument or simply call
->> an arch independent API to change the protection after arch_add_memory.
->> The later sounds like much less code. The memory shouldn't be in use by
->> anybody at that stage yet AFAIU. Maybe there even is an API like that.
+> > This patchset extends the previous version[1] by adding support for
+> > checking against a blacklist of binary hashes.
+> > 
+> > The IMA subsystem supports custom, built-in, arch-specific policies to
+> > define the files to be measured and appraised. These policies are honored
+> > based on priority, where arch-specific policy is the highest and custom
+> > is the lowest.
 > 
-> I'm ok with passing it the same way as altmap or a new
-> arch_add_memory_prot() my only hangup with after the fact changes is
-> the wasted effort it inflicts in the init path for potentially large
-> address ranges.
+> Has this change been signed off and merged for the next update of the 
+> kernel (v5.5)?
 
-Yes, I'll change the way it's passed in for v2 as that seems to be
-generally agreed upon. I can also add a patch to make the name change.
+Yes, refer to the linuxppc mailing list archives.
 
-And, yes, given our testing, the wasted effort is quite significant so
-I'm against changing the prots after the fact.
+Mimi
 
-Logan
+[1] https://lists.ozlabs.org/pipermail/linuxppc-dev/
 
