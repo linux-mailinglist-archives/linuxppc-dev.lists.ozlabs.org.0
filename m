@@ -1,75 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C82116678
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:39:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WX770fp2zDqQ5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:38:59 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C08CD116685
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:44:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WXFr4y0JzDqM4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:44:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="GzhS+DwH"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WX580FHvzDqNJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 16:37:15 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47WX4x3wfVz9v6RT;
- Mon,  9 Dec 2019 06:37:05 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=GzhS+DwH; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iB1Z137g_8ck; Mon,  9 Dec 2019 06:37:05 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47WX4x2Ccpz9v6RS;
- Mon,  9 Dec 2019 06:37:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1575869825; bh=FEaKJXbXjOZ1lXq1C/Q2UlBfDCkQh9ayeBwDENy5BRg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=GzhS+DwHmvcH7W0kx9/VDg8rH//PkeuA5gm9WiyQKP6X5IuU8WLySJ0Y45zfEKN53
- MxN/37bQh9VhThRUzXfCuA5ZbNpmiEL8Bq9aPGzYggZBvIaeMlHiE88lB63mQINyA4
- HacB28XxQpEZuPIshNaU3cWXTW9h2ZYOK3uGtVr4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B1EF48B789;
- Mon,  9 Dec 2019 06:37:09 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id z_yjYl-8tdf1; Mon,  9 Dec 2019 06:37:09 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B3758B755;
- Mon,  9 Dec 2019 06:37:09 +0100 (CET)
-Subject: Re: [PATCH V2 00/13] powerpc/vas: Page fault handling for user space
- NX requests
-To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au,
- hch@infradead.org, mikey@neuling.org, npiggin@gmail.com,
- herbert@gondor.apana.org.au, linuxppc-dev@lists.ozlabs.org,
- devicetree@vger.kernel.org
-References: <1575861522.16318.9.camel@hbabu-laptop>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <8ba807dd-9d5a-e42a-60e8-f9ad648026bf@c-s.fr>
-Date: Mon, 9 Dec 2019 06:37:09 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WXD94xSvzDqDW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 16:43:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="igRorkS9"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47WXD73mCSz9sP6;
+ Mon,  9 Dec 2019 16:43:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1575870201;
+ bh=EU4lPc5IWHfktnisegd6j5Y6xKovFoBVkVjlsMX4/pE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=igRorkS97HOON5GNqt21oBCytjvq3MO/I/pbqKeA+/w/EC95/C9ComNHV83pfOIJo
+ b4BGFIKg3r1DHuXk2sPf8s03P3Ccx8hYkery5YB1CDqnFS8wlBMbZBLR3vtejfl7jy
+ h6x4j9eJEGkJyxOc4uI8gM+N1rH/AVk/tDaClHwM+fcgo3GK4PTf+I/L3YSt4sLzOe
+ RiNCkQNfxvAXHlPpCsDKltYrZ92IGr8D/O4Hj8MjwAiYJrgDx589PIR6zviioFUxG3
+ +7ISbse34yFB4L6wshgcHwRY2JHcyhf5nNMe6B1HMP9BmG6lP0V29ZZes4qk3i1bZa
+ 6BWY4Z7Sl5Y9Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc: ensure that swiotlb buffer is allocated from low
+ memory
+In-Reply-To: <20191204123524.22919-1-rppt@kernel.org>
+References: <20191204123524.22919-1-rppt@kernel.org>
+Date: Mon, 09 Dec 2019 16:43:17 +1100
+Message-ID: <87h82aqcju.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <1575861522.16318.9.camel@hbabu-laptop>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,93 +57,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sukadev@linux.vnet.ibm.com
+Cc: linux-arch@vger.kernel.org, Darren Stevens <darren@stevens-zone.net>,
+ Robin Murphy <robin.murphy@arm.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Mike Rapoport <rppt@kernel.org> writes:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> Some powerpc platforms (e.g. 85xx) limit DMA-able memory way below 4G. If a
+> system has more physical memory than this limit, the swiotlb buffer is not
+> addressable because it is allocated from memblock using top-down mode.
+>
+> Force memblock to bottom-up mode before calling swiotlb_init() to ensure
+> that the swiotlb buffer is DMA-able.
+>
+> Link: https://lkml.kernel.org/r/F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de
 
-What do you mean by NX ?
-Up to now, NX has been standing for No-eXecute. That's a bit in segment 
-registers on book3s/32 to forbid executing code.
+This wasn't bisected, but I thought it was a regression. Do we know what
+commit caused it?
 
-Therefore, some of your text is really misleading. If NX means something 
-else for you, your text must be unambiguous.
+Was it 25078dc1f74b ("powerpc: use mm zones more sensibly") ?
 
-Christophe
+Or was that a red herring?
 
-Le 09/12/2019 à 04:18, Haren Myneni a écrit :
-> 
-> Applications will send compression / decompression requests to NX with
-> COPY/PASTE instructions. When NX is processing these requests, can hit
-> fault on the request buffer (not in memory). It issues an interrupt and
-> pastes fault CRB in fault FIFO. Expects kernel to handle this fault and
-> return credits for both send and fault windows after processing.
-> 
-> This patch series adds IRQ and fault window setup, and NX fault handling:
-> - Read IRQ# from "interrupts" property and configure IRQ per VAS instance.
-> - Set port# for each window to generate an interrupt when noticed fault.
-> - Set fault window and FIFO on which NX paste fault CRB.
-> - Setup IRQ thread fault handler per VAS instance.
-> - When receiving an interrupt, Read CRBs from fault FIFO and update
->    coprocessor_status_block (CSB) in the corresponding CRB with translation
->    failure (CSB_CC_TRANSLATION). After issuing NX requests, process polls
->    on CSB address. When it sees translation error, can touch the request
->    buffer to bring the page in to memory and reissue NX request.
-> - If copy_to_user fails on user space CSB address, OS sends SEGV signal.
-> 
-> Tested these patches with NX-GZIP support and will be posting this series
-> soon.
-> 
-> Patch 2: Define nx_fault_stamp on which NX writes fault status for the fault
->           CRB
-> Patch 3: Read interrupts and port properties per VAS instance
-> Patch 4: Setup fault window per each VAS instance. This window is used for
->           NX to paste fault CRB in FIFO.
-> Patches 5 & 6: Setup threaded IRQ per VAS and register NX with fault window
-> 	 ID and port number for each send window so that NX paste fault CRB
-> 	 in this window.
-> Patch 7: Reference to pid and mm so that pid is not used until window closed.
-> 	 Needed for multi thread application where child can open a window
-> 	 and can be used by parent later.
-> Patches 8 and 9: Process CRBs from fault FIFO and notify tasks by
->           updating CSB or through signals.
-> Patches 10 and 11: Return credits for send and fault windows after handling
->          faults.
-> Patch 13:Fix closing send window after all credits are returned. This issue
->           happens only for user space requests. No page faults on kernel
->           request buffer.
-> 
-> Changelog:
-> V2:
->    - Use threaded IRQ instead of own kernel thread handler
->    - Use pswid insted of user space CSB address to find valid CRB
->    - Removed unused macros and other changes as suggested by Christoph Hellwig
-> 
-> Haren Myneni (13):
->    powerpc/vas: Describe vas-port and interrupts properties
->    powerpc/vas: Define nx_fault_stamp in coprocessor_request_block
->    powerpc/vas: Read interrupts and vas-port device tree properties
->    powerpc/vas: Setup fault window per VAS instance
->    powerpc/vas: Setup thread IRQ handler per VAS instance
->    powerpc/vas: Register NX with fault window ID and IRQ port value
->    powerpc/vas: Take reference to PID and mm for user space windows
->    powerpc/vas: Update CSB and notify process for fault CRBs
->    powerpc/vas: Print CRB and FIFO values
->    powerpc/vas: Do not use default credits for receive window
->    powerpc/VAS: Return credits after handling fault
->    powerpc/vas: Display process stuck message
->    powerpc/vas: Free send window in VAS instance after credits returned
-> 
->   .../devicetree/bindings/powerpc/ibm,vas.txt        |   5 +
->   arch/powerpc/include/asm/icswx.h                   |  18 +-
->   arch/powerpc/platforms/powernv/Makefile            |   2 +-
->   arch/powerpc/platforms/powernv/vas-debug.c         |   2 +-
->   arch/powerpc/platforms/powernv/vas-fault.c         | 337 +++++++++++++++++++++
->   arch/powerpc/platforms/powernv/vas-window.c        | 173 ++++++++++-
->   arch/powerpc/platforms/powernv/vas.c               |  77 ++++-
->   arch/powerpc/platforms/powernv/vas.h               |  38 ++-
->   8 files changed, 627 insertions(+), 25 deletions(-)
->   create mode 100644 arch/powerpc/platforms/powernv/vas-fault.c
-> 
+cheers
+
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Darren Stevens <darren@stevens-zone.net>
+> Cc: mad skateman <madskateman@gmail.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> ---
+>  arch/powerpc/mm/mem.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index be941d382c8d..14c2c53e3f9e 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -260,6 +260,14 @@ void __init mem_init(void)
+>  	BUILD_BUG_ON(MMU_PAGE_COUNT > 16);
+>  
+>  #ifdef CONFIG_SWIOTLB
+> +	/*
+> +	 * Some platforms (e.g. 85xx) limit DMA-able memory way below
+> +	 * 4G. We force memblock to bottom-up mode to ensure that the
+> +	 * memory allocated in swiotlb_init() is DMA-able.
+> +	 * As it's the last memblock allocation, no need to reset it
+> +	 * back to to-down.
+> +	 */
+> +	memblock_set_bottom_up(true);
+>  	swiotlb_init(0);
+>  #endif
+>  
+> -- 
+> 2.24.0
