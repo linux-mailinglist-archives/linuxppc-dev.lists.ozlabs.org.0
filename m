@@ -1,70 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A08F1167FA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 09:12:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WbWq32R8zDqQ6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 19:12:07 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3523116818
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 09:28:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WbtY21QjzDqRM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 19:28:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WbTy0CkHzDqPR
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 19:10:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="W4PAq+1v"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47WbTx5qMJz994t
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 19:10:29 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47WbTx5F7pz9sR1; Mon,  9 Dec 2019 19:10:29 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jstancek@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="W4PAq+1v"; 
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="JhhP0HRp"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47WbTx2rs9z9sPh
- for <linuxppc-dev@ozlabs.org>; Mon,  9 Dec 2019 19:10:27 +1100 (AEDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Wbrt6w3SzDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 19:26:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1575880008;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xuQftgKLhIdfbe43m9PaVlygiTsJJ2gGUjVhGbD1VTM=;
+ b=JhhP0HRpLHb/+ubPnNwToEoILbSOQ+xFAH3VHp0BZzz8f+Mup4pWRFDTFRczBreZ96g33y
+ OirWuUwBZoDDWtjRB3bOQ+cQ1Yj5x9roZTQBUz3eYm7PFy+cltdObbsA+Rh4S1kLw5VOy8
+ RPEfFPdLwkS4kEUHpLCGGgRNmphmnZM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-20-LYEmGze7OVu4X7zepRIt7g-1; Mon, 09 Dec 2019 03:26:41 -0500
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CB7C8205ED;
- Mon,  9 Dec 2019 08:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575879025;
- bh=iTTgNq9RENesPj9dq9RXmXWCptL56RAD7KSlfOxJCCw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=W4PAq+1v4SGp/ZC4mYVV7bkWkkmkMeSJN+xHAOiJzVl2h/doEl1GKjIvH5q+6RYhq
- gMLOvR7IoUhVnPu8dES0A6xwdvMRlcUpogiTH7lyvohxD6WvV+UK1kZu1e5Q/qMsZJ
- T6v3PF7wMHVW2NSsTGCJpMFoQKJcGMMPH7delpuo=
-Date: Mon, 9 Dec 2019 09:10:23 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH v5 3/6] powerpc/fadump: reorganize /sys/kernel/fadump_*
- sysfs files
-Message-ID: <20191209081023.GC706232@kroah.com>
-References: <20191209045826.30076-1-sourabhjain@linux.ibm.com>
- <20191209045826.30076-4-sourabhjain@linux.ibm.com>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A580C801E7A;
+ Mon,  9 Dec 2019 08:26:39 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 69C1C60BE1;
+ Mon,  9 Dec 2019 08:26:39 +0000 (UTC)
+Received: from zmail17.collab.prod.int.phx2.redhat.com
+ (zmail17.collab.prod.int.phx2.redhat.com [10.5.83.19])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id BC9DA18089C8;
+ Mon,  9 Dec 2019 08:26:38 +0000 (UTC)
+Date: Mon, 9 Dec 2019 03:26:38 -0500 (EST)
+From: Jan Stancek <jstancek@redhat.com>
+To: dftxbs3e <dftxbs3e@free.fr>
+Message-ID: <35957501.15762152.1575879998305.JavaMail.zimbra@redhat.com>
+In-Reply-To: <f874ea14-becc-9c4b-2f2f-351573e6a751@sandeen.net>
+References: <9c0af967-4916-4e8b-e77f-087515793d77@free.fr>
+ <e9a171cc-6827-5c43-092a-9dcd8a997b5a@free.fr>
+ <f874ea14-becc-9c4b-2f2f-351573e6a751@sandeen.net>
+Subject: Re: [bug] userspace hitting sporadic SIGBUS on xfs (Power9,
+ ppc64le), v4.19 and later
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191209045826.30076-4-sourabhjain@linux.ibm.com>
+X-Originating-IP: [10.43.17.163, 10.4.195.30]
+Thread-Topic: userspace hitting sporadic SIGBUS on xfs (Power9, ppc64le),
+ v4.19 and later
+Thread-Index: Dxe2axPz7lr/TlY+65kmscNpeXn5Kw==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-MC-Unique: LYEmGze7OVu4X7zepRIt7g-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,31 +82,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Cc: hch@infradead.org, darrick wong <darrick.wong@oracle.com>,
+ Memory Management <mm-qe@redhat.com>, Eric Sandeen <sandeen@sandeen.net>,
+ linux-xfs@vger.kernel.org, CKI Project <cki-project@redhat.com>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ LTP Mailing List <ltp@lists.linux.it>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 09, 2019 at 10:28:23AM +0530, Sourabh Jain wrote:
-> +#define CREATE_SYMLINK(target, symlink_name) do {\
-> +	rc = compat_only_sysfs_link_entry_to_kobj(kernel_kobj, fadump_kobj, \
-> +						  target, symlink_name); \
-> +	if (rc) \
-> +		pr_err("unable to create %s symlink (%d)", symlink_name, rc); \
-> +} while (0)
 
+----- Original Message -----
+> 
+> 
+> On 12/6/19 6:09 PM, dftxbs3e wrote:
+> > Hello!
+> > 
+> > I am very happy that someone has found this issue.
+> > 
+> > I have been suffering from rather random SIGBUS errors in similar
+> > conditions described by the author.
+> > 
+> > I don't have much troubleshooting information to provide, however, I hit
+> > the issue regularly so I could investigate during that.
+> > 
+> > How do you debug such an issue? I tried a debugger etc. but besides
+> > crashing with SIGBUS, I couldnt get any other meaningful information.
 
-No need for a macro, just spell it all out.  And properly clean up if an
-error happens, you are just printing it out and moving on, which is
-probably NOT what you want to do, right?
+If it's same issue, you could check if dropping caches helps.
+Figure out what page is it with crash or systemtap and look at page->flags
+and ((struct iomap_page *)page->private)->uptodate bitmap.
 
-> +static struct attribute_group fadump_group = {
-> +	.attrs = fadump_attrs,
-> +};
+> 
+> You may want to test the patch Christoph sent on the original thread for
+> this issue.
 
-ATTRIBUTE_GROUPS()?
+Or v5.5-rc1, Christoph's patch has been merged:
+  1cea335d1db1 ("iomap: fix sub-page uptodate handling")
 
-thanks,
-
-greg k-h
