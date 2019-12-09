@@ -2,32 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FB911668B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B30B211668F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:50:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WXKr6dVqzDqNr
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:48:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WXN81CvHzDqJM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:50:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WXGG0KXrzDqHJ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WXGG5S65zDqHJ
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 16:45:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 47WXGF5D4Xz9sR0; Mon,  9 Dec 2019 16:45:09 +1100 (AEDT)
+ id 47WXGG4fxnz9sR4; Mon,  9 Dec 2019 16:45:10 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 48e626ac85b43cc589dd1b3b8004f7f85f03544d
-In-Reply-To: <20191127072035.4283-1-anju@linux.vnet.ibm.com>
-To: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+X-powerpc-patch-commit: 551003fff7235ce935bc1fefb72d12b63a408bd0
+In-Reply-To: <20191202064018.155083-1-aneesh.kumar@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3] platforms/powernv: Avoid re-registration of imc
- debugfs directory
-Message-Id: <47WXGF5D4Xz9sR0@ozlabs.org>
-Date: Mon,  9 Dec 2019 16:45:09 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/pmem: Convert to EXPORT_SYMBOL_GPL
+Message-Id: <47WXGG4fxnz9sR4@ozlabs.org>
+Date: Mon,  9 Dec 2019 16:45:10 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,32 +38,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, anju@linux.vnet.ibm.com, nasastry@in.ibm.com
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-11-27 at 07:20:35 UTC, Anju T Sudhakar wrote:
-> export_imc_mode_and_cmd() function which creates the debugfs interface for
-> imc-mode and imc-command, is invoked when each nest pmu units is
-> registered.
-> When the first nest pmu unit is registered, export_imc_mode_and_cmd()
-> creates 'imc' directory under `/debug/powerpc/`. In the subsequent
-> invocations debugfs_create_dir() function returns, since the directory
-> already exists.
+On Mon, 2019-12-02 at 06:40:18 UTC, "Aneesh Kumar K.V" wrote:
+> All other architecture export this as GPL symbol
 > 
-> The recent commit <c33d442328f55> (debugfs: make error message a bit more
-> verbose), throws a warning if we try to invoke `debugfs_create_dir()`
-> with an already existing directory name.
-> 
-> Address this warning by making the debugfs directory registration
-> in the opal_imc_counters_probe() function, i.e invoke
-> export_imc_mode_and_cmd() function from the probe function.
-> 
-> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
 Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/48e626ac85b43cc589dd1b3b8004f7f85f03544d
+https://git.kernel.org/powerpc/c/551003fff7235ce935bc1fefb72d12b63a408bd0
 
 cheers
