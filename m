@@ -1,90 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908E11163BC
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Dec 2019 21:41:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WJBW2NNPzDqMT
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 07:41:07 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F583116562
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 04:24:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WT7w2ltDzDqLd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 14:24:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=sandeen.net (client-ip=63.231.237.45; helo=sandeen.net;
- envelope-from=sandeen@sandeen.net; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sandeen.net
-X-Greylist: delayed 537 seconds by postgrey-1.36 at bilbo;
- Mon, 09 Dec 2019 07:39:34 AEDT
-Received: from sandeen.net (sandeen.net [63.231.237.45])
- by lists.ozlabs.org (Postfix) with ESMTP id 47WJ8k1N4GzDqMT
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 07:39:34 +1100 (AEDT)
-Received: from [10.0.0.4] (erlite [10.0.0.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sandeen.net (Postfix) with ESMTPSA id 15E034A0;
- Sun,  8 Dec 2019 14:30:34 -0600 (CST)
-Subject: Re: [bug] userspace hitting sporadic SIGBUS on xfs (Power9, ppc64le), 
- v4.19 and later
-To: dftxbs3e <dftxbs3e@free.fr>, Jan Stancek <jstancek@redhat.com>,
- linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, hch@infradead.org,
- darrick.wong@oracle.com, linuxppc-dev@lists.ozlabs.org,
- Memory Management <mm-qe@redhat.com>, LTP Mailing List <ltp@lists.linux.it>,
- CKI Project <cki-project@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>
-References: <9c0af967-4916-4e8b-e77f-087515793d77@free.fr>
- <e9a171cc-6827-5c43-092a-9dcd8a997b5a@free.fr>
-From: Eric Sandeen <sandeen@sandeen.net>
-Autocrypt: addr=sandeen@sandeen.net; prefer-encrypt=mutual; keydata=
- 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 pA==
-Message-ID: <f874ea14-becc-9c4b-2f2f-351573e6a751@sandeen.net>
-Date: Sun, 8 Dec 2019 14:30:33 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.0
-MIME-Version: 1.0
-In-Reply-To: <e9a171cc-6827-5c43-092a-9dcd8a997b5a@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WT3p42FTzDqJQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 14:20:48 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB93COJ3026553; Sun, 8 Dec 2019 22:20:25 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wrte588jg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 08 Dec 2019 22:20:25 -0500
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xB93CwxW027647;
+ Sun, 8 Dec 2019 22:20:24 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wrte588ja-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 08 Dec 2019 22:20:24 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xB93GLVZ009672;
+ Mon, 9 Dec 2019 03:20:23 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04dal.us.ibm.com with ESMTP id 2wr3q631jw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Dec 2019 03:20:23 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB93KMKF66584954
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 9 Dec 2019 03:20:22 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 29BE46A051;
+ Mon,  9 Dec 2019 03:20:22 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 900B36A04D;
+ Mon,  9 Dec 2019 03:20:21 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  9 Dec 2019 03:20:21 +0000 (GMT)
+Subject: [PATCH V2 00/13] powerpc/vas: Page fault handling for user space
+ NX requests
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, hch@infradead.org, mikey@neuling.org,
+ npiggin@gmail.com, herbert@gondor.apana.org.au,
+ linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Date: Sun, 08 Dec 2019 19:18:42 -0800
+Message-ID: <1575861522.16318.9.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-08_07:2019-12-05,2019-12-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=2 mlxscore=0
+ malwarescore=0 clxscore=1011 bulkscore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912090028
+X-Mailman-Approved-At: Mon, 09 Dec 2019 14:23:07 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,27 +92,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: sukadev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+Applications will send compression / decompression requests to NX with
+COPY/PASTE instructions. When NX is processing these requests, can hit
+fault on the request buffer (not in memory). It issues an interrupt and
+pastes fault CRB in fault FIFO. Expects kernel to handle this fault and
+return credits for both send and fault windows after processing.
 
-On 12/6/19 6:09 PM, dftxbs3e wrote:
-> Hello!
-> 
-> I am very happy that someone has found this issue.
-> 
-> I have been suffering from rather random SIGBUS errors in similar
-> conditions described by the author.
-> 
-> I don't have much troubleshooting information to provide, however, I hit
-> the issue regularly so I could investigate during that.
-> 
-> How do you debug such an issue? I tried a debugger etc. but besides
-> crashing with SIGBUS, I couldnt get any other meaningful information.
+This patch series adds IRQ and fault window setup, and NX fault handling:
+- Read IRQ# from "interrupts" property and configure IRQ per VAS instance.
+- Set port# for each window to generate an interrupt when noticed fault.
+- Set fault window and FIFO on which NX paste fault CRB.
+- Setup IRQ thread fault handler per VAS instance.
+- When receiving an interrupt, Read CRBs from fault FIFO and update
+  coprocessor_status_block (CSB) in the corresponding CRB with translation
+  failure (CSB_CC_TRANSLATION). After issuing NX requests, process polls
+  on CSB address. When it sees translation error, can touch the request
+  buffer to bring the page in to memory and reissue NX request.
+- If copy_to_user fails on user space CSB address, OS sends SEGV signal.
 
-You may want to test the patch Christoph sent on the original thread for
-this issue.
+Tested these patches with NX-GZIP support and will be posting this series
+soon.
 
--Eric
+Patch 2: Define nx_fault_stamp on which NX writes fault status for the fault
+         CRB
+Patch 3: Read interrupts and port properties per VAS instance
+Patch 4: Setup fault window per each VAS instance. This window is used for
+         NX to paste fault CRB in FIFO.
+Patches 5 & 6: Setup threaded IRQ per VAS and register NX with fault window
+	 ID and port number for each send window so that NX paste fault CRB
+	 in this window.
+Patch 7: Reference to pid and mm so that pid is not used until window closed.
+	 Needed for multi thread application where child can open a window
+	 and can be used by parent later.
+Patches 8 and 9: Process CRBs from fault FIFO and notify tasks by
+         updating CSB or through signals.
+Patches 10 and 11: Return credits for send and fault windows after handling
+        faults.
+Patch 13:Fix closing send window after all credits are returned. This issue
+         happens only for user space requests. No page faults on kernel
+         request buffer.
+
+Changelog:
+V2:
+  - Use threaded IRQ instead of own kernel thread handler
+  - Use pswid insted of user space CSB address to find valid CRB
+  - Removed unused macros and other changes as suggested by Christoph Hellwig
+
+Haren Myneni (13):
+  powerpc/vas: Describe vas-port and interrupts properties
+  powerpc/vas: Define nx_fault_stamp in coprocessor_request_block
+  powerpc/vas: Read interrupts and vas-port device tree properties
+  powerpc/vas: Setup fault window per VAS instance
+  powerpc/vas: Setup thread IRQ handler per VAS instance
+  powerpc/vas: Register NX with fault window ID and IRQ port value
+  powerpc/vas: Take reference to PID and mm for user space windows
+  powerpc/vas: Update CSB and notify process for fault CRBs
+  powerpc/vas: Print CRB and FIFO values
+  powerpc/vas: Do not use default credits for receive window
+  powerpc/VAS: Return credits after handling fault
+  powerpc/vas: Display process stuck message
+  powerpc/vas: Free send window in VAS instance after credits returned
+
+ .../devicetree/bindings/powerpc/ibm,vas.txt        |   5 +
+ arch/powerpc/include/asm/icswx.h                   |  18 +-
+ arch/powerpc/platforms/powernv/Makefile            |   2 +-
+ arch/powerpc/platforms/powernv/vas-debug.c         |   2 +-
+ arch/powerpc/platforms/powernv/vas-fault.c         | 337 +++++++++++++++++++++
+ arch/powerpc/platforms/powernv/vas-window.c        | 173 ++++++++++-
+ arch/powerpc/platforms/powernv/vas.c               |  77 ++++-
+ arch/powerpc/platforms/powernv/vas.h               |  38 ++-
+ 8 files changed, 627 insertions(+), 25 deletions(-)
+ create mode 100644 arch/powerpc/platforms/powernv/vas-fault.c
+
+-- 
+1.8.3.1
+
+
+
