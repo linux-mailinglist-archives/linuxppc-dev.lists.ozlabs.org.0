@@ -1,72 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C4D11781F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 22:14:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067961177E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 22:02:42 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Wwcv0wGdzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 08:02:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WwtW1sKFzDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 08:14:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="xJUcW/ZJ"; 
+ unprotected) header.d=google.com header.i=@google.com header.b="wTf08lNe"; 
  dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WwZW2qCCzDqN7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 08:00:27 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id a15so13548422otf.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2019 13:00:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Wwrf6n7bzDqB2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 08:12:50 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id q127so7729770pga.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2019 13:12:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=VMFJWolzCCUGyRUuaILC3spwwtCuqvBuPYOOVXEp/aA=;
- b=xJUcW/ZJZqhBrirgnJUXRH9YFWt+xzEM6e4gecFQ6NSsUXaM8QRtq93mV3xIMtdnxI
- hwZO34hrDP+h/SvMzEgMKtvQJdml3hl4u8Dk2JbZ+yNZrYeuwfs+GQHvGkrOXCYjVYBM
- h1YB45XPZeWKDmwzWRJaxFbllbHyJwyu4Y4ZrjVAHuwCJoklEOKkhF2iY7wakYwatD0Y
- yTsZilbwBrxKad2PDw+AsboTcGf+TSYC6FfXq2xZl9CL2FrRHGKjDB93f5M6o2gRfjWa
- f5oibYzs7r3R8ibaS0mzMWQ1NjYVhoDKOJkf0PiqFM7DbE27F0s5OMjWrpQToA9BqDrr
- kc+g==
+ :cc; bh=reyZZJheLd9yHQxDntXi/qlyLtQlfdLU5vTmTSU2J4w=;
+ b=wTf08lNeP17+SN7FmdBXOMHbX47zfgrkLvREVS5gXOgqNTkW7U9Cch1XQfVdtEc2gg
+ aA15kTWlGED0Hum556nKwbzPSZ5EaE4X6MGEueaj7Fi6Qf2Kl1yQtEOaa7LRyKmcV8gs
+ BoFFOpT0JRzbBNq7FVQNPow/WgjFEiCVdYwIFQbWXYeI7iLuTtQs4HzlzkTrJ0fB26iv
+ HaCAtSASApe9u958UOkUL/qCoc9ebU/VQmMKcH+gECZA2newVCGxrAi5qjtPLCV8WyXX
+ blp+7DgHmrwGR2Oht2SHVZ8shW+/F7czJteB5NgIYPKJ+elPO390ybYmu8eTbz2MgtAs
+ jQfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=VMFJWolzCCUGyRUuaILC3spwwtCuqvBuPYOOVXEp/aA=;
- b=Ruy2UyHrrpewN6ERkmuv98rV0gfMIjsiOqXCDpTy7RwjEPBthS58XgoywcQaRJ/edv
- q0Kb/BqzbmDdx1/wqZkgOerbumPQiHMjFAGZ9xdgIw1AJzwuJWiU2Xg7y79T8nS4rA0i
- /ac9z5BroWMzYqMrvMHn+6J9cfiR0040fp+rKJQnLwq97csfG9Os4vZXaV91Rg2WrG9g
- J/xZPC7i9WUPjbMOFHoPwXkJJEpZpkz/Lr60/U301FvEdvM7IGyjdFLQRsWFAaf4b1G4
- AO7AwcKoGrXRp/+8ZiX1Cov6mFyLG37Rfxup/WMuodxADUuEfGdsmtufa3uNjvoVhqCF
- sI1g==
-X-Gm-Message-State: APjAAAXG2Az50EQmD5ieHldPFKgJdmKWTgidCnrhmJW088nnWsJjOCMU
- WEmwq+IXdJlln0kA1qdLF744Vlmtk/UqHQb9WiZPJA==
-X-Google-Smtp-Source: APXvYqwi+gYj1cVL4mF8Xopoq9y5To6+x5iJhC9e0WbcEazDDmPLdLZBK/hlPgH1EYJCfb16RNbXAt7Qn0TURN7r5Vw=
-X-Received: by 2002:a9d:4789:: with SMTP id b9mr21728446otf.247.1575925224491; 
- Mon, 09 Dec 2019 13:00:24 -0800 (PST)
+ bh=reyZZJheLd9yHQxDntXi/qlyLtQlfdLU5vTmTSU2J4w=;
+ b=V8gtun7i1HWO7zEDnsDgmIpbXWOMni5ilqkl8vQ/0E5OGaqPIcJxDdg+l8m5Q5S6Hk
+ m5DBeWyvKGPDvNqMMH2qafeKJ/Nl7MWGfP5ef9FuPunQ4BcQH5v3VXwPQk7nL69GOxHn
+ y3SNyeEMBESZmGBMz8vdFW9mqq4qsceZFpvSl44pF8I6m8k0P8Gdrob49BeL8JN5kSIk
+ DdfFgXj8FReJzTEAVCjMWZ9+8gO7pC11YLVgeMxhaToKUJs4pLAPjcONg0yKGc3LXzT6
+ GT+CoCPwZvmf7/GAkkc5qDTJBBKOA4073i+404NcydhWZfAC9zj7UIEMTVNaUwTzl5nW
+ pXtw==
+X-Gm-Message-State: APjAAAUJTvBYDCX4KjICpuHRF5pUAlSKka4UjMMdO/k+Zl/l4Vf4Ru6F
+ PE7S3mmzHgsZgx52CnMOobGhtLebTDRdIEB7qQ29QA==
+X-Google-Smtp-Source: APXvYqwLGMPwEIVk+sSMIlstyIzR4bv6rsf8nn9gwB56VsbsfzQTut0FeK9yEhGwUb5Py3QiR4RBRkiRmZBRsJWcnXg=
+X-Received: by 2002:a65:590f:: with SMTP id f15mr20500805pgu.381.1575925966701; 
+ Mon, 09 Dec 2019 13:12:46 -0800 (PST)
 MIME-Version: 1.0
-References: <20191209191346.5197-1-logang@deltatee.com>
- <20191209191346.5197-6-logang@deltatee.com>
- <ce50d9da-c60e-05a1-a86b-3bb3629de502@redhat.com>
- <f34a4c52-cc95-15ed-8a72-c05ab4fd6d33@deltatee.com>
- <20191209204128.GC7658@dhcp22.suse.cz>
-In-Reply-To: <20191209204128.GC7658@dhcp22.suse.cz>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 9 Dec 2019 13:00:13 -0800
-Message-ID: <CAPcyv4iKKw8cuFyDrY2VLN2ecd-qAbDCfYa7SufuhUb59e89Rw@mail.gmail.com>
-Subject: Re: [PATCH 5/6] mm, memory_hotplug: Provide argument for the pgprot_t
- in arch_add_memory()
-To: Michal Hocko <mhocko@kernel.org>
+References: <20191209200338.12546-1-natechancellor@gmail.com>
+In-Reply-To: <20191209200338.12546-1-natechancellor@gmail.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Mon, 9 Dec 2019 13:12:35 -0800
+Message-ID: <CAKwvOdkWYqYD-036putggpCyq44xuLVsN9krzC98pmHoKe_0uw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/44x: Adjust indentation in
+ ibm4xx_denali_fixup_memsize
+To: Nathan Chancellor <natechancellor@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,105 +73,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-ia64@vger.kernel.org,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Logan Gunthorpe <logang@deltatee.com>,
- Linux-sh <linux-sh@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
- Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Borislav Petkov <bp@alien8.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 9, 2019 at 12:47 PM Michal Hocko <mhocko@kernel.org> wrote:
+On Mon, Dec 9, 2019 at 12:04 PM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
 >
-> On Mon 09-12-19 13:24:19, Logan Gunthorpe wrote:
-> >
-> >
-> > On 2019-12-09 12:23 p.m., David Hildenbrand wrote:
-> > > On 09.12.19 20:13, Logan Gunthorpe wrote:
-> > >> devm_memremap_pages() is currently used by the PCI P2PDMA code to create
-> > >> struct page mappings for IO memory. At present, these mappings are created
-> > >> with PAGE_KERNEL which implies setting the PAT bits to be WB. However, on
-> > >> x86, an mtrr register will typically override this and force the cache
-> > >> type to be UC-. In the case firmware doesn't set this register it is
-> > >> effectively WB and will typically result in a machine check exception
-> > >> when it's accessed.
-> > >>
-> > >> Other arches are not currently likely to function correctly seeing they
-> > >> don't have any MTRR registers to fall back on.
-> > >>
-> > >> To solve this, add an argument to arch_add_memory() to explicitly
-> > >> set the pgprot value to a specific value.
-> > >>
-> > >> Of the arches that support MEMORY_HOTPLUG: x86_64, s390 and arm64 is a
-> > >> simple change to pass the pgprot_t down to their respective functions
-> > >> which set up the page tables. For x86_32, set the page tables explicitly
-> > >> using _set_memory_prot() (seeing they are already mapped). For sh, reject
-> > >> anything but PAGE_KERNEL settings -- this should be fine, for now, seeing
-> > >> sh doesn't support ZONE_DEVICE anyway.
-> > >>
-> > >> Cc: Dan Williams <dan.j.williams@intel.com>
-> > >> Cc: David Hildenbrand <david@redhat.com>
-> > >> Cc: Michal Hocko <mhocko@suse.com>
-> > >> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-> > >> ---
-> > >>  arch/arm64/mm/mmu.c            | 4 ++--
-> > >>  arch/ia64/mm/init.c            | 5 ++++-
-> > >>  arch/powerpc/mm/mem.c          | 4 ++--
-> > >>  arch/s390/mm/init.c            | 4 ++--
-> > >>  arch/sh/mm/init.c              | 5 ++++-
-> > >>  arch/x86/mm/init_32.c          | 7 ++++++-
-> > >>  arch/x86/mm/init_64.c          | 4 ++--
-> > >>  include/linux/memory_hotplug.h | 2 +-
-> > >>  mm/memory_hotplug.c            | 2 +-
-> > >>  mm/memremap.c                  | 2 +-
-> > >>  10 files changed, 25 insertions(+), 14 deletions(-)
-> > >>
-> > >> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> > >> index 60c929f3683b..48b65272df15 100644
-> > >> --- a/arch/arm64/mm/mmu.c
-> > >> +++ b/arch/arm64/mm/mmu.c
-> > >> @@ -1050,7 +1050,7 @@ int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
-> > >>  }
-> > >>
-> > >>  #ifdef CONFIG_MEMORY_HOTPLUG
-> > >> -int arch_add_memory(int nid, u64 start, u64 size,
-> > >> +int arch_add_memory(int nid, u64 start, u64 size, pgprot_t prot,
-> > >>                    struct mhp_restrictions *restrictions)
-> > >
-> > > Can we fiddle that into "struct mhp_restrictions" instead?
-> >
-> > Yes, if that's what people want, it's pretty trivial to do. I chose not
-> > to do it that way because it doesn't get passed down to add_pages() and
-> > it's not really a "restriction". If I don't hear any objections, I will
-> > do that for v2.
+> Clang warns:
 >
-> I do agree that restriction is not the best fit. But I consider prot
-> argument to complicate the API to all users even though it is not really
-> clear whether we are going to have many users really benefiting from it.
-> Look at the vmalloc API and try to find how many users of __vmalloc do
-> not use PAGE_KERNEL.
-
-At least for this I can foresee at least one more user in the
-pipeline, encrypted memory support for persistent memory mappings that
-will store the key-id in the ptes.
-
+> ../arch/powerpc/boot/4xx.c:231:3: warning: misleading indentation;
+> statement is not part of the previous 'else' [-Wmisleading-indentation]
+>         val = SDRAM0_READ(DDR0_42);
+>         ^
+> ../arch/powerpc/boot/4xx.c:227:2: note: previous statement is here
+>         else
+>         ^
 >
-> So I can see two options. One of them is to add arch_add_memory_prot
-> that would allow to have give and extra prot argument or simply call
-> an arch independent API to change the protection after arch_add_memory.
-> The later sounds like much less code. The memory shouldn't be in use by
-> anybody at that stage yet AFAIU. Maybe there even is an API like that.
+> This is because there is a space at the beginning of this line; remove
+> it so that the indentation is consistent according to the Linux kernel
+> coding style and clang no longer warns.
+>
+> Fixes: d23f5099297c ("[POWERPC] 4xx: Adds decoding of 440SPE memory size to boot wrapper library")
 
-I'm ok with passing it the same way as altmap or a new
-arch_add_memory_prot() my only hangup with after the fact changes is
-the wasted effort it inflicts in the init path for potentially large
-address ranges.
+ah, can even see it in the diff. Thanks for the patch.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+
+> Link: https://github.com/ClangBuiltLinux/linux/issues/780
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  arch/powerpc/boot/4xx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/boot/4xx.c b/arch/powerpc/boot/4xx.c
+> index 1699e9531552..00c4d843a023 100644
+> --- a/arch/powerpc/boot/4xx.c
+> +++ b/arch/powerpc/boot/4xx.c
+> @@ -228,7 +228,7 @@ void ibm4xx_denali_fixup_memsize(void)
+>                 dpath = 8; /* 64 bits */
+>
+>         /* get address pins (rows) */
+> -       val = SDRAM0_READ(DDR0_42);
+> +       val = SDRAM0_READ(DDR0_42);
+>
+>         row = DDR_GET_VAL(val, DDR_APIN, DDR_APIN_SHIFT);
+>         if (row > max_row)
+> --
+> 2.24.0
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20191209200338.12546-1-natechancellor%40gmail.com.
+
+
+
+-- 
+Thanks,
+~Nick Desaulniers
