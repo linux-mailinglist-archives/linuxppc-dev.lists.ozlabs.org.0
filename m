@@ -2,44 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90842116DBB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 14:12:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9AB116DDD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 14:24:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WkBP6kVrzDqQJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 00:12:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WkSN06VFzDqNK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 00:24:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47Wk3d27jKzDqKf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 00:06:34 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D6538328;
- Mon,  9 Dec 2019 05:06:30 -0800 (PST)
-Received: from [10.1.194.43] (e112269-lin.cambridge.arm.com [10.1.194.43])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E43BF3F718;
- Mon,  9 Dec 2019 05:06:27 -0800 (PST)
-Subject: Re: [PATCH v16 06/25] powerpc: mm: Add p?d_leaf() definitions
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <20191206135316.47703-1-steven.price@arm.com>
- <20191206135316.47703-7-steven.price@arm.com>
- <875ziprc27.fsf@mpe.ellerman.id.au>
-From: Steven Price <steven.price@arm.com>
-Message-ID: <6dec1a22-963a-226e-c7c8-c445daa35d29@arm.com>
-Date: Mon, 9 Dec 2019 13:06:26 +0000
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WkPH2MjTzDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 00:21:54 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xB9DCWoZ092532
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 9 Dec 2019 08:21:48 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2wrt58b9g4-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2019 08:21:48 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Mon, 9 Dec 2019 13:21:46 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 9 Dec 2019 13:21:43 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB9DLgab48169020
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 9 Dec 2019 13:21:42 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 309744C044;
+ Mon,  9 Dec 2019 13:21:42 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D04CD4C040;
+ Mon,  9 Dec 2019 13:21:41 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  9 Dec 2019 13:21:41 +0000 (GMT)
+Received: from [9.81.215.63] (unknown [9.81.215.63])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 091D7A01E4;
+ Tue, 10 Dec 2019 00:21:39 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc: Fix __clear_user() with KUAP enabled
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20191209105946.13474-1-ajd@linux.ibm.com>
+ <3349b5d5-c277-a868-8a27-ef168aae7daa@c-s.fr>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Tue, 10 Dec 2019 00:21:39 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <875ziprc27.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <3349b5d5-c277-a868-8a27-ef168aae7daa@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19120913-0008-0000-0000-0000033F1E48
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120913-0009-0000-0000-00004A5E4B21
+Message-Id: <2c1b5fd9-dc8b-c6f5-85c8-619179676229@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-09_04:2019-12-09,2019-12-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ adultscore=0 spamscore=0 impostorscore=0 mlxlogscore=904 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912090115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,142 +96,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <Mark.Rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, "Liang,
- Kan" <kan.liang@linux.intel.com>, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
- kvm-ppc@vger.kernel.org, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-kernel@vger.kernel.org,
- James Morse <james.morse@arm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: syzbot+f25ecf4b2982d8c7a640@syzkaller-ppc64.appspotmail.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/12/2019 11:08, Michael Ellerman wrote:
-> Steven Price <steven.price@arm.com> writes:
->> walk_page_range() is going to be allowed to walk page tables other than
->> those of user space. For this it needs to know when it has reached a
->> 'leaf' entry in the page tables. This information is provided by the
->> p?d_leaf() functions/macros.
+On 9/12/19 10:50 pm, Christophe Leroy wrote:
+> 
+> 
+> Le 09/12/2019 à 11:59, Andrew Donnellan a écrit :
+>> The KUAP implementation adds calls in clear_user() to enable and disable
+>> access to userspace memory. However, it doesn't add these to
+>> __clear_user(), which is used in the ptrace regset code.
 >>
->> For powerpc pmd_large() already exists and does what we want, so hoist
->> it out of the CONFIG_TRANSPARENT_HUGEPAGE condition and implement the
->> other levels. Macros are used to provide the generic p?d_leaf() names.
->>
->> CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> CC: Paul Mackerras <paulus@samba.org>
->> CC: Michael Ellerman <mpe@ellerman.id.au>
->> CC: linuxppc-dev@lists.ozlabs.org
->> CC: kvm-ppc@vger.kernel.org
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>  arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++------
->>  1 file changed, 21 insertions(+), 9 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> index b01624e5c467..3dd7b6f5edd0 100644
->> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> @@ -923,6 +923,12 @@ static inline int pud_present(pud_t pud)
->>  	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PRESENT));
->>  }
->>  
->> +#define pud_leaf	pud_large
->> +static inline int pud_large(pud_t pud)
->> +{
->> +	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
->> +}
+>> As there's only one direct user of __clear_user(), and the time taken to
+>> set the AMR for KUAP purposes is going to dominate the cost of a quick
+>> access_ok(), there's not much point having a separate path.
 > 
-> We already have:
+> No risk that access_ok() fails ?
 > 
-> #define pud_is_leaf pud_is_leaf
-> static inline bool pud_is_leaf(pud_t pud)
-> {
-> 	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
-> }
-> 
-> And so on.
-> 
-> These went in relatively recently in:
-> 
->   d6eacedd1f0e ("powerpc/book3s: Use config independent helpers for page table walk")
-> 
-> 
-> Assuming those all work for you, maybe your patch in this series should
-> just do:
-> 
-> #define pud_leaf pud_is_leaf
-> 
-> And so on. And then we can do a patch later to change the arch/powerpc
-> code to use pud_leaf() etc. directly and drop the "is" versions.
 
-Thanks for pointing this out - these didn't exist when I started this
-patch series, but yes it would be a good idea to make use of them now.
-Followed by cleaning up to use the shorter p?d_leaf() versions in a
-later patch.
+The only user of __clear_user() is the regset code, and 
+copy_regset_{to,from}_user() already checks access_ok().
 
-Thanks,
+I think ideally we could get rid of __clear_user() completely.
 
-Steve
+> There is also a call to might_fault() in clear_user(), isn't it a problem ?
 
-> cheers
-> 
-> 
->> @@ -966,6 +972,12 @@ static inline int pgd_present(pgd_t pgd)
->>  	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PRESENT));
->>  }
->>  
->> +#define pgd_leaf	pgd_large
->> +static inline int pgd_large(pgd_t pgd)
->> +{
->> +	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
->> +}
->> +
->>  static inline pte_t pgd_pte(pgd_t pgd)
->>  {
->>  	return __pte_raw(pgd_raw(pgd));
->> @@ -1133,6 +1145,15 @@ static inline bool pmd_access_permitted(pmd_t pmd, bool write)
->>  	return pte_access_permitted(pmd_pte(pmd), write);
->>  }
->>  
->> +#define pmd_leaf	pmd_large
->> +/*
->> + * returns true for pmd migration entries, THP, devmap, hugetlb
->> + */
->> +static inline int pmd_large(pmd_t pmd)
->> +{
->> +	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
->> +}
->> +
->>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>  extern pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot);
->>  extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
->> @@ -1159,15 +1180,6 @@ pmd_hugepage_update(struct mm_struct *mm, unsigned long addr, pmd_t *pmdp,
->>  	return hash__pmd_hugepage_update(mm, addr, pmdp, clr, set);
->>  }
->>  
->> -/*
->> - * returns true for pmd migration entries, THP, devmap, hugetlb
->> - * But compile time dependent on THP config
->> - */
->> -static inline int pmd_large(pmd_t pmd)
->> -{
->> -	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
->> -}
->> -
->>  static inline pmd_t pmd_mknotpresent(pmd_t pmd)
->>  {
->>  	return __pmd(pmd_val(pmd) & ~_PAGE_PRESENT);
->> -- 
->> 2.20.1
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+I don't think it's a problem, just some lockdep debugging?
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
