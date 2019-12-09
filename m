@@ -2,51 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C55116C2B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 12:17:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D86116C8F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 12:52:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Wgf90sjYzDqNN
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 22:17:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WhQP4MgYzDqF7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 22:52:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="sOSTsvaS"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WgbS455KzDqQL
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 22:15:32 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="ICflxezx"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47WgbP58Jyz9sPT;
- Mon,  9 Dec 2019 22:15:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575890132;
- bh=ivv4mE7Cr1A3kfsmagNzfPIiXMkqIAmjoGySHTdZaAc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ICflxezxfXgKJj2TRHo09PDXTraGDxZcWeBZTgTzH+exDGc5sfNSJtteSmALMo6wo
- +xGFAmmj9EMgYtJ3g0PR0ekeoO+N6Ros3jf/BcrWAyrO/l4o8gkoBlcKNVA0BMNk3P
- BkExbGo9kBfcQIgVHiXmwUgsyIK/DcisYja4s0FeDH0xtkT0uTcayOAnq8ygAkMGN1
- MZuCTNGeZmxNUEu06CCARatSHqlxKRp4H9x3t3ZetkQduwregnmEb6ICzjAcUmeFnl
- vvHvM5TJNsW2k4oa3jTbFih+LomGYOdYWUulN+nXKTHZCDifgsXGktZo8oT5u56fT5
- Pew9Pt07D3rUA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 0/2] mm: remove the memory isolate notifier
-In-Reply-To: <990e19a3-b758-aaca-0ea2-c04e191cb6dc@redhat.com>
-References: <20191114131911.11783-1-david@redhat.com>
- <990e19a3-b758-aaca-0ea2-c04e191cb6dc@redhat.com>
-Date: Mon, 09 Dec 2019 22:15:28 +1100
-Message-ID: <8736dtrbqn.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WhMS0ZMyzDqNj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 22:50:10 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47WhMF2tW2z9vBmq;
+ Mon,  9 Dec 2019 12:50:01 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=sOSTsvaS; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6pXJKZlbewDD; Mon,  9 Dec 2019 12:50:01 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47WhMF1qCSz9vBmp;
+ Mon,  9 Dec 2019 12:50:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1575892201; bh=0x1LWwsT3BNeET0V8+O9mXpF4LpLRPACmPWfUToxcpw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=sOSTsvaSb5GedAdefeaYqE5sRI5Vw9GdrxpGEXmkA1rsYPXOn4wy/FL9F0AUkjfr6
+ lvbPBIdHRYOTTrseENMfCjuiljc2Xmr7mWKkoHCNiOGfHsqAnvC4rjvuj1imFSc+K1
+ VlDAwsyn/S5A48D3ZR3Y7Q17m9jqqt7KN1Ui2cE0=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1E5AB8B7D1;
+ Mon,  9 Dec 2019 12:50:06 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id e4ZbXAqFAKqP; Mon,  9 Dec 2019 12:50:06 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BB3578B7C5;
+ Mon,  9 Dec 2019 12:50:05 +0100 (CET)
+Subject: Re: [PATCH] powerpc: Fix __clear_user() with KUAP enabled
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20191209105946.13474-1-ajd@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3349b5d5-c277-a868-8a27-ef168aae7daa@c-s.fr>
+Date: Mon, 9 Dec 2019 12:50:05 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191209105946.13474-1-ajd@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,40 +77,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Qian Cai <cai@lca.pw>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Mel Gorman <mgorman@techsingularity.net>, Pingfan Liu <kernelfans@gmail.com>,
- linux-mm@kvack.org, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Arun KS <arunks@codeaurora.org>, Wei Yang <richardw.yang@linux.intel.com>,
- Alexander Potapenko <glider@google.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
+Cc: syzbot+f25ecf4b2982d8c7a640@syzkaller-ppc64.appspotmail.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-David Hildenbrand <david@redhat.com> writes:
-> On 14.11.19 14:19, David Hildenbrand wrote:
->> This is the MM part of
->> 	https://lkml.org/lkml/2019/10/31/487
->> 
->> "We can get rid of the memory isolate notifier by switching to balloon
->> compaction in powerpc's CMM (Collaborative Memory Management). The memory
->> isolate notifier was only necessary to allow to offline memory blocks that
->> contain inflated/"loaned" pages - which also possible when the inflated
->> pages are movable (via balloon compaction). [...]"
->> 
->> Michael queued the POWERPC bits that remove the single user, but I am
->> missing ACKs for the MM bits. I think it makes sense to let these two
->> patches also go via Michael's tree, to avoid collissions. Thoughts?
->
-> The prereqs (powerpc bits) are upstream - I assume Michael didn't want
-> to mess with MM patches.
 
-Yes, sorry I meant to send you a mail saying so.
 
-cheers
+Le 09/12/2019 à 11:59, Andrew Donnellan a écrit :
+> The KUAP implementation adds calls in clear_user() to enable and disable
+> access to userspace memory. However, it doesn't add these to
+> __clear_user(), which is used in the ptrace regset code.
+> 
+> As there's only one direct user of __clear_user(), and the time taken to
+> set the AMR for KUAP purposes is going to dominate the cost of a quick
+> access_ok(), there's not much point having a separate path.
+
+No risk that access_ok() fails ?
+
+There is also a call to might_fault() in clear_user(), isn't it a problem ?
+
+> 
+> Rename __clear_user() to clear_user_asm(), and make __clear_user() just
+> call clear_user().
+> 
+> Reported-by: syzbot+f25ecf4b2982d8c7a640@syzkaller-ppc64.appspotmail.com
+> Reported-by: Daniel Axtens <dja@axtens.net>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Russell Currey <ruscur@russell.cc>
+> Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/uaccess.h | 9 +++++++--
+>   arch/powerpc/lib/string_32.S       | 4 ++--
+>   arch/powerpc/lib/string_64.S       | 6 +++---
+>   3 files changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index 15002b51ff18..d05bc0a4cafa 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -401,7 +401,7 @@ copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
+>   	return n;
+>   }
+>   
+> -extern unsigned long __clear_user(void __user *addr, unsigned long size);
+> +extern unsigned long clear_user_asm(void __user *addr, unsigned long size);
+>   
+>   static inline unsigned long clear_user(void __user *addr, unsigned long size)
+>   {
+> @@ -409,12 +409,17 @@ static inline unsigned long clear_user(void __user *addr, unsigned long size)
+>   	might_fault();
+>   	if (likely(access_ok(addr, size))) {
+>   		allow_write_to_user(addr, size);
+> -		ret = __clear_user(addr, size);
+> +		ret = clear_user_asm(addr, size);
+>   		prevent_write_to_user(addr, size);
+>   	}
+
+What about changing the above by the following ?
+
+    	if (likely(access_ok(addr, size)))		ret = __clear_user(addr, size);
+
+>   	return ret;
+>   }
+>   
+> +static inline unsigned long __clear_user(void __user *addr, unsigned long size)
+> +{
+> +        return clear_user(addr, size);
+> +}
+> +
+
+Then
+
+static inline unsigned long __clear_user(void __user *addr, unsigned 
+long size)
+{
+	allow_write_to_user(addr, size);
+	ret = clear_user_asm(addr, size);
+	prevent_write_to_user(addr, size);
+
+	return ret;
+}
+
+>   extern long strncpy_from_user(char *dst, const char __user *src, long count);
+>   extern __must_check long strnlen_user(const char __user *str, long n);
+
+
+Christophe
