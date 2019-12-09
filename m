@@ -2,73 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B68117C23
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 01:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B971117C6A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 01:30:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47X0lH2LYczDqVL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 11:08:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47X1Dl4WB7zDqVT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 11:30:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
- helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=178.32.97.215; helo=14.mo1.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=walle.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=walle.cc header.i=@walle.cc header.b="LUb2ArSK"; 
- dkim-atps=neutral
-Received: from ssl.serverraum.org (ssl.serverraum.org
- [IPv6:2a01:4f8:151:8464::1:2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 10802 seconds by postgrey-1.36 at bilbo;
+ Tue, 10 Dec 2019 11:28:58 AEDT
+Received: from 14.mo1.mail-out.ovh.net (14.mo1.mail-out.ovh.net
+ [178.32.97.215])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47X0jN4kbTzDqSF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 11:06:47 +1100 (AEDT)
-Received: from apollo.fritz.box (unknown
- [IPv6:2a02:810c:c200:2e91:6257:18ff:fec4:ca34])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id 3DB0D2304C;
- Tue, 10 Dec 2019 01:06:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1575936398;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SQSB7aaTDeosGfScfkElLltHtjKOhiB3ySxyA9Xk4pM=;
- b=LUb2ArSKFj734DrOu29xTCX5VFhRmcC3RSuas9H1v/tSYzhwBSW1kMjgdhtDLqHIG7dFAn
- PyiSvI3s+28kf1XW5HIv9jMMMn+s9bFSG8hOBc1DXqRC2K75rCMD/hLVHIOTqeSQEOeKhh
- 2YmXlEbmCsCeHfJKLa1JCJZEBJLbIxU=
-From: Michael Walle <michael@walle.cc>
-To: yinbo.zhu@nxp.com
-Subject: Re: [PATCH v1 3/4] arm64: dts: ls1028a: fix little-big endian issue
- for dcfg
-Date: Tue, 10 Dec 2019 01:06:23 +0100
-Message-Id: <20191210000623.22321-1-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190814072649.8237-3-yinbo.zhu@nxp.com>
-References: <20190814072649.8237-3-yinbo.zhu@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47X1By0sx2zDqT6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 11:28:53 +1100 (AEDT)
+Received: from player791.ha.ovh.net (unknown [10.108.35.210])
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id 839371A3EB1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 21:51:46 +0100 (CET)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player791.ha.ovh.net (Postfix) with ESMTPSA id 84B93CF70276;
+ Mon,  9 Dec 2019 20:51:40 +0000 (UTC)
+Date: Mon, 9 Dec 2019 21:51:39 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH v3] ocxl: Fix potential memory leak on context creation
+Message-ID: <20191209215139.53de41dd@bahia.w3ibm.bluemix.net>
+In-Reply-To: <20191209105513.8566-1-fbarrat@linux.ibm.com>
+References: <20191209105513.8566-1-fbarrat@linux.ibm.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: ++++++
-X-Spam-Level: ******
-X-Rspamd-Server: web
-X-Spam-Status: Yes, score=6.40
-X-Spam-Score: 6.40
-X-Rspamd-Queue-Id: 3DB0D2304C
-X-Spamd-Result: default: False [6.40 / 15.00]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- TAGGED_RCPT(0.00)[dt]; MIME_GOOD(-0.10)[text/plain];
- BROKEN_CONTENT_TYPE(1.50)[]; DKIM_SIGNED(0.00)[];
- RCPT_COUNT_TWELVE(0.00)[21]; MID_CONTAINS_FROM(1.00)[];
- NEURAL_HAM(-0.00)[-0.685]; RCVD_COUNT_ZERO(0.00)[0];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- ASN(0.00)[asn:31334, ipnet:2a02:810c::/31, country:DE];
- SUSPICIOUS_RECIPS(1.50)[]
-X-Spam: Yes
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 12961641203386784101
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudeltddgudegfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrddvheefrddvtdekrddvgeeknecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejledurdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,41 +55,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, amit.jain_1@nxp.com,
- linux-kernel@vger.kernel.org, rajesh.bhagat@nxp.com, alison.wang@nxp.com,
- alexandru.marginean@nxp.com, catalin.horghidan@nxp.com, Ashish.Kumar@nxp.com,
- xiaobo.xie@nxp.com, claudiu.manoil@nxp.com, robh+dt@kernel.org,
- rajat.srivastava@nxp.com, vabhav.sharma@nxp.com, yangbo.lu@nxp.com,
- jiafei.pan@nxp.com, leoyang.li@nxp.com, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, Michael Walle <michael@walle.cc>
+Cc: clombard@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, alastair@au1.ibm.com,
+ andrew.donnellan@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> dcfg use little endian that SoC register value will be correct
+On Mon,  9 Dec 2019 11:55:13 +0100
+Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+
+> If we couldn't fully init a context, we were leaking memory.
 > 
-> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
+> Fixes: b9721d275cc2 ("ocxl: Allow external drivers to use OpenCAPI contexts")
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > ---
->  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch is still missing. Any news?
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-Tested-by: Michael Walle <michael@walle.cc>
-
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> index b0d4f8916ede..5538e8e354b2 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> @@ -162,7 +162,7 @@
->  		dcfg: syscon@1e00000 {
->  			compatible = "fsl,ls1028a-dcfg", "syscon";
->  			reg = <0x0 0x1e00000 0x0 0x10000>;
-> -			big-endian;
-> +			little-endian;
->  		};
->  
->  		scfg: syscon@1fc0000 {
-> -- 
-> 2.17.1
+> Changlog:
+> v3:
+> 	code cleanup (Greg)
+> v2:
+> 	reset context pointer in case of allocation failure (Andrew)
 > 
+> 
+>  drivers/misc/ocxl/context.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+> index 994563a078eb..de8a66b9d76b 100644
+> --- a/drivers/misc/ocxl/context.c
+> +++ b/drivers/misc/ocxl/context.c
+> @@ -10,18 +10,17 @@ int ocxl_context_alloc(struct ocxl_context **context, struct ocxl_afu *afu,
+>  	int pasid;
+>  	struct ocxl_context *ctx;
+>  
+> -	*context = kzalloc(sizeof(struct ocxl_context), GFP_KERNEL);
+> -	if (!*context)
+> +	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+> +	if (!ctx)
+>  		return -ENOMEM;
+>  
+> -	ctx = *context;
+> -
+>  	ctx->afu = afu;
+>  	mutex_lock(&afu->contexts_lock);
+>  	pasid = idr_alloc(&afu->contexts_idr, ctx, afu->pasid_base,
+>  			afu->pasid_base + afu->pasid_max, GFP_KERNEL);
+>  	if (pasid < 0) {
+>  		mutex_unlock(&afu->contexts_lock);
+> +		kfree(ctx);
+>  		return pasid;
+>  	}
+>  	afu->pasid_count++;
+> @@ -43,6 +42,7 @@ int ocxl_context_alloc(struct ocxl_context **context, struct ocxl_afu *afu,
+>  	 * duration of the life of the context
+>  	 */
+>  	ocxl_afu_get(afu);
+> +	*context = ctx;
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(ocxl_context_alloc);
+
