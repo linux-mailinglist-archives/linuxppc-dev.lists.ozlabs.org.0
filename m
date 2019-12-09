@@ -1,67 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A2B1166CA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 07:21:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WY416cvLzDqQG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 17:21:21 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 540261167B6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 08:56:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Wb9Q33vdzDqQP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 18:56:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="k+3+cau9"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="cdeQwFjY"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WY1Y0019zDqM9
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 17:19:12 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47WY1N5pW7z9v4lR;
- Mon,  9 Dec 2019 07:19:04 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=k+3+cau9; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id BW3lvxHKxxyX; Mon,  9 Dec 2019 07:19:04 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47WY1N4hL2z9v4lQ;
- Mon,  9 Dec 2019 07:19:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1575872344; bh=0qj55DfE4nkebN4TjIg5yIgzcs/5M0B/cUT404z7tUg=;
- h=From:Subject:To:Cc:Date:From;
- b=k+3+cau9ARsQLx/l/9Ri93q+/p3RH9IHwjIq21/HUWUm+F4Ge94oK6JWa4FMQalTU
- ypuuclOinPir7eLmW8PvNC3LN45H3oen7isysb8PmVuiL8CUvzZRZa8mC2XGITkwTm
- CyCQT9f7VvpVPYXCAKR4n0XzJy12c3uRh17Z3Nxg=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D34D8B7B0;
- Mon,  9 Dec 2019 07:19:09 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id dl1G665l3XmX; Mon,  9 Dec 2019 07:19:09 +0100 (CET)
-Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F0A1A8B755;
- Mon,  9 Dec 2019 07:19:08 +0100 (CET)
-Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id D618763679; Mon,  9 Dec 2019 06:19:08 +0000 (UTC)
-Message-Id: <e033aa8116ab12b7ca9a9c75189ad0741e3b9b5f.1575872340.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/irq: fix stack overflow verification
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon,  9 Dec 2019 06:19:08 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Wb7Q1XgZzDqDD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 18:54:25 +1100 (AEDT)
+Received: from rapoport-lnx (nesher1.haifa.il.ibm.com [195.110.40.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0EAA2206D3;
+ Mon,  9 Dec 2019 07:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1575878063;
+ bh=l5RNIqY71fgRQ4gflWGJ6VKGFQXsfgVwTeBzBRWCnmA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=cdeQwFjYFMVzFUr+WBxPM2UoXcUM34dHDHDlXse6W6pGhUNw4fXvyRJZsZxwoSt7e
+ /90E+MSe4ehpwRUS2sdbf77ubqB8d1DrkO2CSKEuGO9YsT9AvJPnhG7JbgbZEksY6H
+ qnqAaymyoD4xlJ8PxUL70giW5qfYCn6C8GYHBKGs=
+Date: Mon, 9 Dec 2019 09:54:15 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: ensure that swiotlb buffer is allocated from
+ low memory
+Message-ID: <20191209075413.GA4137@rapoport-lnx>
+References: <20191204123524.22919-1-rppt@kernel.org>
+ <87h82aqcju.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h82aqcju.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,50 +58,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, Darren Stevens <darren@stevens-zone.net>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+ Robin Murphy <robin.murphy@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before commit 0366a1c70b89 ("powerpc/irq: Run softirqs off the top of
-the irq stack"), check_stack_overflow() was called by do_IRQ(), before
-switching to the irq stack.
-In that commit, do_IRQ() was renamed __do_irq(), and is now executing
-on the irq stack, so check_stack_overflow() has just become almost
-useless.
+On Mon, Dec 09, 2019 at 04:43:17PM +1100, Michael Ellerman wrote:
+> Mike Rapoport <rppt@kernel.org> writes:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> >
+> > Some powerpc platforms (e.g. 85xx) limit DMA-able memory way below 4G. If a
+> > system has more physical memory than this limit, the swiotlb buffer is not
+> > addressable because it is allocated from memblock using top-down mode.
+> >
+> > Force memblock to bottom-up mode before calling swiotlb_init() to ensure
+> > that the swiotlb buffer is DMA-able.
+> >
+> > Link: https://lkml.kernel.org/r/F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de
+> 
+> This wasn't bisected, but I thought it was a regression. Do we know what
+> commit caused it?
+> 
+> Was it 25078dc1f74b ("powerpc: use mm zones more sensibly") ?
 
-Move check_stack_overflow() call in do_IRQ() to do the check while
-still on the current stack.
+swiotlb buffer is initialized before zones are actually used, so probably
+not :)
+ 
+> Or was that a red herring?
+> 
+> cheers
+> 
+> > Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Cc: Christoph Hellwig <hch@lst.de>
+> > Cc: Darren Stevens <darren@stevens-zone.net>
+> > Cc: mad skateman <madskateman@gmail.com>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+> > Cc: Paul Mackerras <paulus@samba.org>
+> > Cc: Robin Murphy <robin.murphy@arm.com>
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > ---
+> >  arch/powerpc/mm/mem.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> > index be941d382c8d..14c2c53e3f9e 100644
+> > --- a/arch/powerpc/mm/mem.c
+> > +++ b/arch/powerpc/mm/mem.c
+> > @@ -260,6 +260,14 @@ void __init mem_init(void)
+> >  	BUILD_BUG_ON(MMU_PAGE_COUNT > 16);
+> >  
+> >  #ifdef CONFIG_SWIOTLB
+> > +	/*
+> > +	 * Some platforms (e.g. 85xx) limit DMA-able memory way below
+> > +	 * 4G. We force memblock to bottom-up mode to ensure that the
+> > +	 * memory allocated in swiotlb_init() is DMA-able.
+> > +	 * As it's the last memblock allocation, no need to reset it
+> > +	 * back to to-down.
+> > +	 */
+> > +	memblock_set_bottom_up(true);
+> >  	swiotlb_init(0);
+> >  #endif
+> >  
+> > -- 
+> > 2.24.0
 
-Fixes: 0366a1c70b89 ("powerpc/irq: Run softirqs off the top of the irq stack")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/irq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 0aebd7843c73..e2bce937d51f 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -667,8 +667,6 @@ void __do_irq(struct pt_regs *regs)
- 
- 	trace_irq_entry(regs);
- 
--	check_stack_overflow();
--
- 	/*
- 	 * Query the platform PIC for the interrupt & ack it.
- 	 *
-@@ -701,6 +699,8 @@ void do_IRQ(struct pt_regs *regs)
- 	irqsp = hardirq_ctx[raw_smp_processor_id()];
- 	sirqsp = softirq_ctx[raw_smp_processor_id()];
- 
-+	check_stack_overflow();
-+
- 	/* Already there ? */
- 	if (unlikely(cursp == irqsp || cursp == sirqsp)) {
- 		__do_irq(regs);
 -- 
-2.13.3
-
+Sincerely yours,
+Mike.
