@@ -1,51 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190C4116A74
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 11:03:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Wf0V3QHLzDqPn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 21:03:38 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA73116B8A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 11:55:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Wg7h04tGzDqQl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 21:54:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WdyN5MYBzDqHk
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 21:01:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Wg5m2RCkzDqGZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 21:53:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="C9i3VS3O"; dkim-atps=neutral
+ header.b="J4L8Im/v"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47WdyM6xgYz9sNH;
- Mon,  9 Dec 2019 21:01:47 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47Wg5l45Wvz9sP6;
+ Mon,  9 Dec 2019 21:53:15 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575885708;
- bh=1KtN7qLMllH/q+Kqm/un5INLnk57teTueciXuqp1oeE=;
+ s=201909; t=1575888796;
+ bh=Sx8iWlX5fXNNlqxjgYMOs3SvPENuiEFrugWvdXWYq5o=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=C9i3VS3O8PUjc+xREKhmGyaEW2QduQ/VPI/G/WEXjpO0ub/msUP/7uj/sr3HD97/Q
- WE0mc/lyJz9ZjlzEKraSGIH8dEWc+ddEOiC8GvaEnKRlnEf5/90UJl17RvQAXIjyld
- oPhHsPlD34c49T7fTJZyWNH0Qq1kFbJlW4k3ZdasBrqdrfH3OW2ETH1/q4koopCv6u
- A/imGS6PdY/M4EhRTn890uM6WnXyhT0vulAXVsfwzBMpNX4PaFH8e02geIAVbRnSnC
- rN72FCTBcHMu84sZAkBciqv/RyZp/OOibX+TK1hIBqH2rv1X+NXsROH2kd6Q/M2eWL
- HU742/gdGTklg==
+ b=J4L8Im/vg/Tt++EhvqfFa7Bo1cQsG4hCAPfpeP2fg44UAP67R/2X7N0oTcZHNRpWj
+ oVJIHl24WiU8flkmL4B/x/bmIjVnPQHFYMPPxtC+4Zahmt162zCOWwzYIqDCIsMWOw
+ LQF07hgKMnLUlSeXMIty4R9ZIL6VBU6mPLEMMufnGZSLg6hoQwlDUGzT/yWsmfbLzA
+ A7fr4MWpjDvvR2rWKrmrz4HD0hhTDufo4iXGgumnh1XR18Tc017OCuf6wb1nd2sST3
+ 8os8Hx7trY8PNyubwVGnBZjAAS3smHHf2sjXQ9i/+bBQmP4lZPeMM2PGxURE+MSWlU
+ zD64Hn9ejlcFw==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kajol Jain <kjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RESEND PATCH v2] powerpc/kernel/sysfs: Add PMU_SYSFS config
- option to enable PMU SPRs sysfs file creation
-In-Reply-To: <20191205052558.2091-1-kjain@linux.ibm.com>
-References: <20191205052558.2091-1-kjain@linux.ibm.com>
-Date: Mon, 09 Dec 2019 21:01:44 +1100
-Message-ID: <87d0cxrf5j.fsf@mpe.ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v4 2/2] powerpc/irq: inline call_do_irq() and
+ call_do_softirq()
+In-Reply-To: <20191207174057.GY3152@gate.crashing.org>
+References: <20191121101552.GR16031@gate.crashing.org>
+ <87y2w49rgo.fsf@mpe.ellerman.id.au> <20191125142556.GU9491@gate.crashing.org>
+ <5fdb1c92-8bf4-01ca-f81c-214870c33be3@c-s.fr>
+ <20191127145958.GG9491@gate.crashing.org>
+ <2072e066-1ffb-867e-60ec-04a6bb9075c1@c-s.fr>
+ <20191129184658.GR9491@gate.crashing.org>
+ <ebc67964-e5a9-acd0-0011-61ba23692f7e@c-s.fr>
+ <20191206205953.GQ3152@gate.crashing.org>
+ <2a22feca-d6d6-6cb0-6c76-035234fa8742@c-s.fr>
+ <20191207174057.GY3152@gate.crashing.org>
+Date: Mon, 09 Dec 2019 21:53:11 +1100
+Message-ID: <878snlrcrs.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,51 +68,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nageswara R Sastry <nasastry@in.ibm.com>, kjain@linux.ibm.com,
- anju@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kajol Jain <kjain@linux.ibm.com> writes:
-> Many of the performance moniroting unit (PMU) SPRs are
-> exposed in the sysfs. "perf" API is the primary interface to program
-> PMU and collect counter data in the system. So expose these
-> PMU SPRs in the absence of CONFIG_PERF_EVENTS.
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Sat, Dec 07, 2019 at 10:42:28AM +0100, Christophe Leroy wrote:
+>> Le 06/12/2019 =C3=A0 21:59, Segher Boessenkool a =C3=A9crit=C2=A0:
+>> >If the compiler can see the callee wants the same TOC as the caller has,
+>> >it does not arrange to set (and restore) it, no.  If it sees it may be
+>> >different, it does arrange for that (and the linker then will check if
+>> >it actually needs to do anything, and do that if needed).
+>> >
+>> >In this case, the compiler cannot know the callee wants the same TOC,
+>> >which complicates thing a lot -- but it all works out.
+>>=20
+>> Do we have a way to make sure which TOC the functions are using ? Is=20
+>> there several TOC at all in kernel code ?
 >
-> Patch adds a new CONFIG option 'CONFIG_PMU_SYSFS'. The new config
-> option used in kernel/sysfs.c for PMU SPRs sysfs file creation and
-> this new option is enabled only if 'CONFIG_PERF_EVENTS' option is
-> disabled.
-...
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index 12543e53fa96..f3ad579c559f 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -417,6 +417,14 @@ config PPC_MM_SLICES
->  config PPC_HAVE_PMU_SUPPORT
->         bool
->  
-> +config PMU_SYSFS
-> +	bool
-> +	default y if !PERF_EVENTS
-> +	help
-> +	  This option enables PMU SPR sysfs file creation. Since PMU SPRs are
-> +	  intended to be used via "perf" interface, config option is enabled
-> +	  only when CONFIG_PERF_EVENTS is disabled.
+> Kernel modules have their own TOC, I think?
 
-This could break existing users that expect the sysfs files to exist.
+Yes.
 
-The situation we have is that all these registers are currently exposed
-in sysfs, but we don't *think* anything/anyone is using them.
+>> >I think things can still go wrong if any of this is inlined into a kern=
+el
+>> >module?  Is there anything that prevents this / can this not happen for
+>> >some fundamental reason I don't see?
+>>=20
+>> This can't happen can it ?
+>> do_softirq_own_stack() is an outline function, defined in powerpc irq.c
+>> Its only caller is do_softirq() which is an outline function defined in=
+=20
+>> kernel/softirq.c
+>>=20
+>> That prevents inlining, doesn't it ?
+>
+> Hopefully, sure.  Would be nice if it was clearer that this works...  It
+> is too much like working by chance, the way it is :-(
 
-But we're not sure, so we can't just remove them entirely. And we also
-can't make them incompatible with perf, because then a user has to
-choose the sysfs files OR perf, which could break someone's setup.
+There's no way any of that code can end up in a module. Or at least if
+there is, that's a bug.
 
-So the option must be user selectable, it should not depend on
-PERF_EVENTS, and it should be 'default n' (which is the default).
+>> Anyway, until we clarify all this I'll limit my patch to PPC32 which is=
+=20
+>> where the real benefit is I guess.
+>>=20
+>> At the end, maybe the solution should be to switch to IRQ stack=20
+>> immediately in the exception entry as x86_64 do ?
 
-That way it's off by default, unless someone turns it on deliberately.
+Yeah that might be cleaner.
 
 cheers
