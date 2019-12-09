@@ -1,93 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C82116678
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:39:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5CE11660F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:11:45 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WWWd3QKmzDqPn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:11:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WX770fp2zDqQ5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:38:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WWDv6sJ9zDqNf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 15:58:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47WWDv3HSPz8xtf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 15:58:55 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47WWDv1bg4z9sR0; Mon,  9 Dec 2019 15:58:55 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="GzhS+DwH"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47WWDt4tLJz9sR8
- for <linuxppc-dev@ozlabs.org>; Mon,  9 Dec 2019 15:58:54 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB94ujnd051326
- for <linuxppc-dev@ozlabs.org>; Sun, 8 Dec 2019 23:58:52 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wr8kvqgg7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sun, 08 Dec 2019 23:58:52 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
- Mon, 9 Dec 2019 04:58:50 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 9 Dec 2019 04:58:48 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB94wkbh18153684
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Dec 2019 04:58:46 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B0BE5A4051;
- Mon,  9 Dec 2019 04:58:46 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C819A4040;
- Mon,  9 Dec 2019 04:58:45 +0000 (GMT)
-Received: from localhost.in.ibm.com (unknown [9.124.35.249])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  9 Dec 2019 04:58:44 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v5 6/6] powerpc/fadump: sysfs for fadump memory reservation
-Date: Mon,  9 Dec 2019 10:28:26 +0530
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20191209045826.30076-1-sourabhjain@linux.ibm.com>
-References: <20191209045826.30076-1-sourabhjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19120904-0028-0000-0000-000003C6B563
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120904-0029-0000-0000-00002489DF31
-Message-Id: <20191209045826.30076-7-sourabhjain@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-09_01:2019-12-09,2019-12-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=969
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- phishscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
- suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912090042
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WX580FHvzDqNJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 16:37:15 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47WX4x3wfVz9v6RT;
+ Mon,  9 Dec 2019 06:37:05 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=GzhS+DwH; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id iB1Z137g_8ck; Mon,  9 Dec 2019 06:37:05 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47WX4x2Ccpz9v6RS;
+ Mon,  9 Dec 2019 06:37:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1575869825; bh=FEaKJXbXjOZ1lXq1C/Q2UlBfDCkQh9ayeBwDENy5BRg=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=GzhS+DwHmvcH7W0kx9/VDg8rH//PkeuA5gm9WiyQKP6X5IuU8WLySJ0Y45zfEKN53
+ MxN/37bQh9VhThRUzXfCuA5ZbNpmiEL8Bq9aPGzYggZBvIaeMlHiE88lB63mQINyA4
+ HacB28XxQpEZuPIshNaU3cWXTW9h2ZYOK3uGtVr4=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B1EF48B789;
+ Mon,  9 Dec 2019 06:37:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id z_yjYl-8tdf1; Mon,  9 Dec 2019 06:37:09 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B3758B755;
+ Mon,  9 Dec 2019 06:37:09 +0100 (CET)
+Subject: Re: [PATCH V2 00/13] powerpc/vas: Page fault handling for user space
+ NX requests
+To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au,
+ hch@infradead.org, mikey@neuling.org, npiggin@gmail.com,
+ herbert@gondor.apana.org.au, linuxppc-dev@lists.ozlabs.org,
+ devicetree@vger.kernel.org
+References: <1575861522.16318.9.camel@hbabu-laptop>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <8ba807dd-9d5a-e42a-60e8-f9ad648026bf@c-s.fr>
+Date: Mon, 9 Dec 2019 06:37:09 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
+MIME-Version: 1.0
+In-Reply-To: <1575861522.16318.9.camel@hbabu-laptop>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,87 +81,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, gregkh@linuxfoundation.org, hbathini@linux.ibm.com
+Cc: sukadev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a sys interface to allow querying the memory reserved by FADump for
-saving the crash dump.
+Hi,
 
-Also added Documentation/ABI for the new sysfs file.
+What do you mean by NX ?
+Up to now, NX has been standing for No-eXecute. That's a bit in segment 
+registers on book3s/32 to forbid executing code.
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- Documentation/ABI/testing/sysfs-kernel-fadump    | 7 +++++++
- Documentation/powerpc/firmware-assisted-dump.rst | 5 +++++
- arch/powerpc/kernel/fadump.c                     | 9 +++++++++
- 3 files changed, 21 insertions(+)
+Therefore, some of your text is really misleading. If NX means something 
+else for you, your text must be unambiguous.
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
-index 5d988b919e81..8f7a64a81783 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump
-+++ b/Documentation/ABI/testing/sysfs-kernel-fadump
-@@ -31,3 +31,10 @@ Description:	write only
- 		the system is booted to capture the vmcore using FADump.
- 		It is used to release the memory reserved by FADump to
- 		save the crash dump.
-+
-+What:		/sys/kernel/fadump/mem_reserved
-+Date:		Dec 2019
-+Contact:	linuxppc-dev@lists.ozlabs.org
-+Description:	read only
-+		Provide information about the amount of memory reserved by
-+		FADump to save the crash dump in bytes.
-diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index 365c10209ef3..04993eaf3113 100644
---- a/Documentation/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -268,6 +268,11 @@ Here is the list of files under kernel sysfs:
-     be handled and vmcore will not be captured. This interface can be
-     easily integrated with kdump service start/stop.
- 
-+ /sys/kernel/fadump/mem_reserved
-+
-+   This is used to display the memory reserved by FADump for saving the
-+   crash dump.
-+
-  /sys/kernel/fadump_release_mem
-     This file is available only when FADump is active during
-     second kernel. This is used to release the reserved memory
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 35ecb51edc50..6f367e5b7970 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1364,6 +1364,13 @@ static ssize_t enabled_show(struct kobject *kobj,
- 	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
- }
- 
-+static ssize_t mem_reserved_show(struct kobject *kobj,
-+				 struct kobj_attribute *attr,
-+				 char *buf)
-+{
-+	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
-+}
-+
- static ssize_t registered_show(struct kobject *kobj,
- 			       struct kobj_attribute *attr,
- 			       char *buf)
-@@ -1431,10 +1438,12 @@ EXPORT_SYMBOL_GPL(fadump_kobj);
- static struct kobj_attribute release_attr = __ATTR_WO(release_mem);
- static struct kobj_attribute enable_attr = __ATTR_RO(enabled);
- static struct kobj_attribute register_attr = __ATTR_RW(registered);
-+static struct kobj_attribute mem_reserved_attr = __ATTR_RO(mem_reserved);
- 
- static struct attribute *fadump_attrs[] = {
- 	&enable_attr.attr,
- 	&register_attr.attr,
-+	&mem_reserved_attr.attr,
- 	NULL,
- };
- 
--- 
-2.17.2
+Christophe
 
+Le 09/12/2019 à 04:18, Haren Myneni a écrit :
+> 
+> Applications will send compression / decompression requests to NX with
+> COPY/PASTE instructions. When NX is processing these requests, can hit
+> fault on the request buffer (not in memory). It issues an interrupt and
+> pastes fault CRB in fault FIFO. Expects kernel to handle this fault and
+> return credits for both send and fault windows after processing.
+> 
+> This patch series adds IRQ and fault window setup, and NX fault handling:
+> - Read IRQ# from "interrupts" property and configure IRQ per VAS instance.
+> - Set port# for each window to generate an interrupt when noticed fault.
+> - Set fault window and FIFO on which NX paste fault CRB.
+> - Setup IRQ thread fault handler per VAS instance.
+> - When receiving an interrupt, Read CRBs from fault FIFO and update
+>    coprocessor_status_block (CSB) in the corresponding CRB with translation
+>    failure (CSB_CC_TRANSLATION). After issuing NX requests, process polls
+>    on CSB address. When it sees translation error, can touch the request
+>    buffer to bring the page in to memory and reissue NX request.
+> - If copy_to_user fails on user space CSB address, OS sends SEGV signal.
+> 
+> Tested these patches with NX-GZIP support and will be posting this series
+> soon.
+> 
+> Patch 2: Define nx_fault_stamp on which NX writes fault status for the fault
+>           CRB
+> Patch 3: Read interrupts and port properties per VAS instance
+> Patch 4: Setup fault window per each VAS instance. This window is used for
+>           NX to paste fault CRB in FIFO.
+> Patches 5 & 6: Setup threaded IRQ per VAS and register NX with fault window
+> 	 ID and port number for each send window so that NX paste fault CRB
+> 	 in this window.
+> Patch 7: Reference to pid and mm so that pid is not used until window closed.
+> 	 Needed for multi thread application where child can open a window
+> 	 and can be used by parent later.
+> Patches 8 and 9: Process CRBs from fault FIFO and notify tasks by
+>           updating CSB or through signals.
+> Patches 10 and 11: Return credits for send and fault windows after handling
+>          faults.
+> Patch 13:Fix closing send window after all credits are returned. This issue
+>           happens only for user space requests. No page faults on kernel
+>           request buffer.
+> 
+> Changelog:
+> V2:
+>    - Use threaded IRQ instead of own kernel thread handler
+>    - Use pswid insted of user space CSB address to find valid CRB
+>    - Removed unused macros and other changes as suggested by Christoph Hellwig
+> 
+> Haren Myneni (13):
+>    powerpc/vas: Describe vas-port and interrupts properties
+>    powerpc/vas: Define nx_fault_stamp in coprocessor_request_block
+>    powerpc/vas: Read interrupts and vas-port device tree properties
+>    powerpc/vas: Setup fault window per VAS instance
+>    powerpc/vas: Setup thread IRQ handler per VAS instance
+>    powerpc/vas: Register NX with fault window ID and IRQ port value
+>    powerpc/vas: Take reference to PID and mm for user space windows
+>    powerpc/vas: Update CSB and notify process for fault CRBs
+>    powerpc/vas: Print CRB and FIFO values
+>    powerpc/vas: Do not use default credits for receive window
+>    powerpc/VAS: Return credits after handling fault
+>    powerpc/vas: Display process stuck message
+>    powerpc/vas: Free send window in VAS instance after credits returned
+> 
+>   .../devicetree/bindings/powerpc/ibm,vas.txt        |   5 +
+>   arch/powerpc/include/asm/icswx.h                   |  18 +-
+>   arch/powerpc/platforms/powernv/Makefile            |   2 +-
+>   arch/powerpc/platforms/powernv/vas-debug.c         |   2 +-
+>   arch/powerpc/platforms/powernv/vas-fault.c         | 337 +++++++++++++++++++++
+>   arch/powerpc/platforms/powernv/vas-window.c        | 173 ++++++++++-
+>   arch/powerpc/platforms/powernv/vas.c               |  77 ++++-
+>   arch/powerpc/platforms/powernv/vas.h               |  38 ++-
+>   8 files changed, 627 insertions(+), 25 deletions(-)
+>   create mode 100644 arch/powerpc/platforms/powernv/vas-fault.c
+> 
