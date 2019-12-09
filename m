@@ -2,53 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80C011744E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 19:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7670117522
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 20:01:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WsM15myvzDqPC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 05:35:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WsxJ2gDpzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:01:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=mark.brown@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WsK75xPQzDqBd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 05:33:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
- :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
- Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=8zgmO8yIumpWTktN/WLnCjKv5dav9LhhmBQXS3TWUg8=; b=eNqP4p7owxWNWsbfq6onLxwlig
- lmiOYyGS8vCUjkzr+ed5MFL4EZw8QPfltFoMQAMkTBGeglMNlCLuOkhY9HqyAN4GSkY0Vgva0cjJh
- dmWKgQJXVQkyShp0GMPCz88nmEUCKdZIw7nghIelP7W3hYTXFI5RcPOmgPuyskrv8V8XxTaSPrVxg
- LrdyC0smjo6V5/ylW+B1b70NTBYQWYdajHbKZGXMMJ2827jh/pnwREcdhyW7upbnOzab/uwTty5dV
- MP3jnbgpGMQS4xifzcHuAgqGSySIt3EjNsS+HfsYY2ijlI/clx0qtibK0EJC9SjDZmwf9XRjOKTAi
- rvapDXwg==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1ieNqg-0000pS-2A; Mon, 09 Dec 2019 18:33:34 +0000
-Date: Mon, 9 Dec 2019 10:33:33 -0800
-From: Matthew Wilcox <willy@infradead.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc: add support for folded p4d page tables
-Message-ID: <20191209183333.GG32169@bombadil.infradead.org>
-References: <20191209150908.6207-1-rppt@kernel.org>
- <7f4c038d-e971-b61f-3d3a-60a5faddfc0a@c-s.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7f4c038d-e971-b61f-3d3a-60a5faddfc0a@c-s.fr>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47Wsty01TtzDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 05:59:32 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83963328;
+ Mon,  9 Dec 2019 10:59:28 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 04BB93F6CF;
+ Mon,  9 Dec 2019 10:59:27 -0800 (PST)
+Date: Mon, 09 Dec 2019 18:59:26 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Michael Walle <michael@walle.cc>
+Subject: Applied "ASoC: fsl_sai: add IRQF_SHARED" to the asoc tree
+In-Reply-To: <20191128223802.18228-1-michael@walle.cc>
+Message-Id: <applied-20191128223802.18228-1-michael@walle.cc>
+X-Patchwork-Hint: ignore
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,29 +42,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+ Jaroslav Kysela <perex@perex.cz>, Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 09, 2019 at 06:46:36PM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 09/12/2019 à 16:09, Mike Rapoport a écrit :
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > Implement primitives necessary for the 4th level folding, add walks of p4d
-> > level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
-> > 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Tested on 8xx and 83xx, no problem observed (ie book3s/32 and nohash/32)
-> 
-> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> 
-> Christophe
+The patch
 
-Did you add anything else to the next 1100 lines that you didn't bother
-to snip?  I can't be arsed to scroll through them all looking.
+   ASoC: fsl_sai: add IRQF_SHARED
+
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.6
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 2eb2d314a80eb8bb1a6faf2a74321d4497e1687d Mon Sep 17 00:00:00 2001
+From: Michael Walle <michael@walle.cc>
+Date: Thu, 28 Nov 2019 23:38:02 +0100
+Subject: [PATCH] ASoC: fsl_sai: add IRQF_SHARED
+
+The LS1028A SoC uses the same interrupt line for adjacent SAIs. Use
+IRQF_SHARED to be able to use these SAIs simultaneously.
+
+Signed-off-by: Michael Walle <michael@walle.cc>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20191128223802.18228-1-michael@walle.cc
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/fsl_sai.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index b517e4bc1b87..8c3ea7300972 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -958,7 +958,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
+ 
+-	ret = devm_request_irq(&pdev->dev, irq, fsl_sai_isr, 0, np->name, sai);
++	ret = devm_request_irq(&pdev->dev, irq, fsl_sai_isr, IRQF_SHARED,
++			       np->name, sai);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to claim irq %u\n", irq);
+ 		return ret;
+-- 
+2.20.1
+
