@@ -1,36 +1,119 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDB6117528
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 20:03:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Wszf69cGzDqQM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:03:42 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 851681175A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 20:25:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WtSp66dHzDqQV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:25:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=mark.brown@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47Wsvw1BCtzDqPf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 06:00:27 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19850113E;
- Mon,  9 Dec 2019 11:00:25 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C6E73F6CF;
- Mon,  9 Dec 2019 11:00:24 -0800 (PST)
-Date: Mon, 09 Dec 2019 19:00:23 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Applied "spi: fsl: don't map irq during probe" to the spi tree
-In-Reply-To: <518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr>
-Message-Id: <applied-518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr>
-X-Patchwork-Hint: ignore
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="A4uZ4EVm"; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WtQs6RTFzDqHY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 06:23:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1575919426;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=00YX7DspdEWQKLHyHwK2miKeLnhqyZ2f3RIwSXrO4z0=;
+ b=A4uZ4EVmKJzzpZv2a1dPQcPKJeJtvwKn1rGkNq2JUgUDe6c2Mn2eSYFQYXLqaVZjZQCKcc
+ KA4ChU3FsO9uwM4c6Rsdov+nYf7ncaWeBSxHcv2fTVhZMxX8x6rkA5LOPM/5aigd5IKQVA
+ OLY25guonKLAkB0DxXlYMI75/lT/Z1I=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-164-CGOrIuU7M-WKL-Tj27NBfA-1; Mon, 09 Dec 2019 14:23:42 -0500
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EA7421852E22;
+ Mon,  9 Dec 2019 19:23:38 +0000 (UTC)
+Received: from [10.36.116.214] (ovpn-116-214.ams2.redhat.com [10.36.116.214])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 59312194BB;
+ Mon,  9 Dec 2019 19:23:34 +0000 (UTC)
+Subject: Re: [PATCH 5/6] mm, memory_hotplug: Provide argument for the pgprot_t
+ in arch_add_memory()
+To: Logan Gunthorpe <logang@deltatee.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20191209191346.5197-1-logang@deltatee.com>
+ <20191209191346.5197-6-logang@deltatee.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <ce50d9da-c60e-05a1-a86b-3bb3629de502@redhat.com>
+Date: Mon, 9 Dec 2019 20:23:33 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
+MIME-Version: 1.0
+In-Reply-To: <20191209191346.5197-6-logang@deltatee.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: CGOrIuU7M-WKL-Tj27NBfA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,128 +125,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Michal Hocko <mhocko@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch
+On 09.12.19 20:13, Logan Gunthorpe wrote:
+> devm_memremap_pages() is currently used by the PCI P2PDMA code to create
+> struct page mappings for IO memory. At present, these mappings are created
+> with PAGE_KERNEL which implies setting the PAT bits to be WB. However, on
+> x86, an mtrr register will typically override this and force the cache
+> type to be UC-. In the case firmware doesn't set this register it is
+> effectively WB and will typically result in a machine check exception
+> when it's accessed.
+> 
+> Other arches are not currently likely to function correctly seeing they
+> don't have any MTRR registers to fall back on.
+> 
+> To solve this, add an argument to arch_add_memory() to explicitly
+> set the pgprot value to a specific value.
+> 
+> Of the arches that support MEMORY_HOTPLUG: x86_64, s390 and arm64 is a
+> simple change to pass the pgprot_t down to their respective functions
+> which set up the page tables. For x86_32, set the page tables explicitly
+> using _set_memory_prot() (seeing they are already mapped). For sh, reject
+> anything but PAGE_KERNEL settings -- this should be fine, for now, seeing
+> sh doesn't support ZONE_DEVICE anyway.
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> ---
+>  arch/arm64/mm/mmu.c            | 4 ++--
+>  arch/ia64/mm/init.c            | 5 ++++-
+>  arch/powerpc/mm/mem.c          | 4 ++--
+>  arch/s390/mm/init.c            | 4 ++--
+>  arch/sh/mm/init.c              | 5 ++++-
+>  arch/x86/mm/init_32.c          | 7 ++++++-
+>  arch/x86/mm/init_64.c          | 4 ++--
+>  include/linux/memory_hotplug.h | 2 +-
+>  mm/memory_hotplug.c            | 2 +-
+>  mm/memremap.c                  | 2 +-
+>  10 files changed, 25 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 60c929f3683b..48b65272df15 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1050,7 +1050,7 @@ int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
+>  }
+>  
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+> -int arch_add_memory(int nid, u64 start, u64 size,
+> +int arch_add_memory(int nid, u64 start, u64 size, pgprot_t prot,
+>  			struct mhp_restrictions *restrictions)
 
-   spi: fsl: don't map irq during probe
+Can we fiddle that into "struct mhp_restrictions" instead?
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 3194d2533efffae8b815d84729ecc58b6a9000ab Mon Sep 17 00:00:00 2001
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Date: Mon, 9 Dec 2019 15:27:27 +0000
-Subject: [PATCH] spi: fsl: don't map irq during probe
-
-With lastest kernel, the following warning is observed at startup:
-
-[    1.500609] ------------[ cut here ]------------
-[    1.505225] remove_proc_entry: removing non-empty directory 'irq/22', leaking at least 'fsl_spi'
-[    1.514234] WARNING: CPU: 0 PID: 1 at fs/proc/generic.c:682 remove_proc_entry+0x198/0x1c0
-[    1.522403] CPU: 0 PID: 1 Comm: swapper Not tainted 5.4.0-s3k-dev-02248-g93532430a4ff #2564
-[    1.530724] NIP:  c0197694 LR: c0197694 CTR: c0050d80
-[    1.535762] REGS: df4a5af0 TRAP: 0700   Not tainted  (5.4.0-02248-g93532430a4ff)
-[    1.543818] MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 22028222  XER: 00000000
-[    1.550524]
-[    1.550524] GPR00: c0197694 df4a5ba8 df4a0000 00000054 00000000 00000000 00004a38 00000010
-[    1.550524] GPR08: c07c5a30 00000800 00000000 00001032 22000208 00000000 c0004b14 00000000
-[    1.550524] GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 c0830000 c07fc078
-[    1.550524] GPR24: c08e8ca0 df665d10 df60ea98 c07c9db8 00000001 df5d5ae3 df5d5a80 df43f8e3
-[    1.585327] NIP [c0197694] remove_proc_entry+0x198/0x1c0
-[    1.590628] LR [c0197694] remove_proc_entry+0x198/0x1c0
-[    1.595829] Call Trace:
-[    1.598280] [df4a5ba8] [c0197694] remove_proc_entry+0x198/0x1c0 (unreliable)
-[    1.605321] [df4a5bd8] [c0067acc] unregister_irq_proc+0x5c/0x70
-[    1.611238] [df4a5bf8] [c005fbc4] free_desc+0x3c/0x80
-[    1.616286] [df4a5c18] [c005fe2c] irq_free_descs+0x70/0xa8
-[    1.621778] [df4a5c38] [c033d3fc] of_fsl_spi_probe+0xdc/0x3cc
-[    1.627525] [df4a5c88] [c02f0f64] platform_drv_probe+0x44/0xa4
-[    1.633350] [df4a5c98] [c02eee44] really_probe+0x1ac/0x418
-[    1.638829] [df4a5cc8] [c02ed3e8] bus_for_each_drv+0x64/0xb0
-[    1.644481] [df4a5cf8] [c02ef950] __device_attach+0xd4/0x128
-[    1.650132] [df4a5d28] [c02ed61c] bus_probe_device+0xa0/0xbc
-[    1.655783] [df4a5d48] [c02ebbe8] device_add+0x544/0x74c
-[    1.661096] [df4a5d88] [c0382b78] of_platform_device_create_pdata+0xa4/0x100
-[    1.668131] [df4a5da8] [c0382cf4] of_platform_bus_create+0x120/0x20c
-[    1.674474] [df4a5df8] [c0382d50] of_platform_bus_create+0x17c/0x20c
-[    1.680818] [df4a5e48] [c0382e88] of_platform_bus_probe+0x9c/0xf0
-[    1.686907] [df4a5e68] [c0751404] __machine_initcall_cmpcpro_cmpcpro_declare_of_platform_devices+0x74/0x1a4
-[    1.696629] [df4a5e98] [c072a4cc] do_one_initcall+0x8c/0x1d4
-[    1.702282] [df4a5ef8] [c072a768] kernel_init_freeable+0x154/0x204
-[    1.708455] [df4a5f28] [c0004b2c] kernel_init+0x18/0x110
-[    1.713769] [df4a5f38] [c00122ac] ret_from_kernel_thread+0x14/0x1c
-[    1.719926] Instruction dump:
-[    1.722889] 2c030000 4182004c 3863ffb0 3c80c05f 80e3005c 388436a0 3c60c06d 7fa6eb78
-[    1.730630] 7fe5fb78 38840280 38634178 4be8c611 <0fe00000> 4bffff6c 3c60c071 7fe4fb78
-[    1.738556] ---[ end trace 05d0720bf2e352e2 ]---
-
-The problem comes from the error path which calls
-irq_dispose_mapping() while the IRQ has been requested with
-devm_request_irq().
-
-IRQ doesn't need to be mapped with irq_of_parse_and_map(). The only
-need is to get the IRQ virtual number. For that, use
-of_irq_to_resource() instead of the
-irq_of_parse_and_map()/irq_dispose_mapping() pair.
-
-Fixes: 500a32abaf81 ("spi: fsl: Call irq_dispose_mapping in err path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Link: https://lore.kernel.org/r/518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-fsl-spi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 4b70887cf443..d0ad9709f4a6 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -746,8 +746,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	if (ret)
- 		goto err;
- 
--	irq = irq_of_parse_and_map(np, 0);
--	if (!irq) {
-+	irq = of_irq_to_resource(np, 0, NULL);
-+	if (irq <= 0) {
- 		ret = -EINVAL;
- 		goto err;
- 	}
-@@ -761,7 +761,6 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	return 0;
- 
- err:
--	irq_dispose_mapping(irq);
- 	return ret;
- }
- 
 -- 
-2.20.1
+Thanks,
+
+David / dhildenb
 
