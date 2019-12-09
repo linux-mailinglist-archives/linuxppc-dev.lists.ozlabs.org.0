@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAB2116601
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:09:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47WWTR5RYwzDqHw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:09:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5CE11660F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 06:11:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47WWWd3QKmzDqPn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2019 16:11:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47WWDv3FXFzDqNZ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47WWDv6sJ9zDqNf
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 15:58:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47WWDv0wFlz8t70
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47WWDv3HSPz8xtf
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2019 15:58:55 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 47WWDt6WwLz9sRD; Mon,  9 Dec 2019 15:58:54 +1100 (AEDT)
+ id 47WWDv1bg4z9sR0; Mon,  9 Dec 2019 15:58:55 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
@@ -33,65 +33,61 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47WWDt1TWMz9sR0
- for <linuxppc-dev@ozlabs.org>; Mon,  9 Dec 2019 15:58:53 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 47WWDt4tLJz9sR8
+ for <linuxppc-dev@ozlabs.org>; Mon,  9 Dec 2019 15:58:54 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xB94upcW116415
+ xB94ujnd051326
  for <linuxppc-dev@ozlabs.org>; Sun, 8 Dec 2019 23:58:52 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wrtemj744-1
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wr8kvqgg7-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
  for <linuxppc-dev@ozlabs.org>; Sun, 08 Dec 2019 23:58:52 -0500
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
- Mon, 9 Dec 2019 04:58:49 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Mon, 9 Dec 2019 04:58:50 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 9 Dec 2019 04:58:45 -0000
+ Mon, 9 Dec 2019 04:58:48 -0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xB94wiWM54526014
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xB94wkbh18153684
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Dec 2019 04:58:44 GMT
+ Mon, 9 Dec 2019 04:58:46 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F0FCA4057;
- Mon,  9 Dec 2019 04:58:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B0BE5A4051;
+ Mon,  9 Dec 2019 04:58:46 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F979A4055;
- Mon,  9 Dec 2019 04:58:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1C819A4040;
+ Mon,  9 Dec 2019 04:58:45 +0000 (GMT)
 Received: from localhost.in.ibm.com (unknown [9.124.35.249])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  9 Dec 2019 04:58:42 +0000 (GMT)
+ Mon,  9 Dec 2019 04:58:44 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v5 5/6] Documentation/ABI: mark /sys/kernel/fadump_* sysfs
- files deprecated
-Date: Mon,  9 Dec 2019 10:28:25 +0530
+Subject: [PATCH v5 6/6] powerpc/fadump: sysfs for fadump memory reservation
+Date: Mon,  9 Dec 2019 10:28:26 +0530
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20191209045826.30076-1-sourabhjain@linux.ibm.com>
 References: <20191209045826.30076-1-sourabhjain@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=yes
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19120904-0020-0000-0000-00000395B176
+x-cbid: 19120904-0028-0000-0000-000003C6B563
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120904-0021-0000-0000-000021ECEA33
-Message-Id: <20191209045826.30076-6-sourabhjain@linux.ibm.com>
+x-cbparentid: 19120904-0029-0000-0000-00002489DF31
+Message-Id: <20191209045826.30076-7-sourabhjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-09_01:2019-12-09,2019-12-08 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- clxscore=1015 lowpriorityscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 impostorscore=0
- phishscore=0 suspectscore=1 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-1912090042
+ mlxscore=0 mlxlogscore=969
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
+ suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912090042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,77 +106,79 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a deprecation note in FADump sysfs ABI documentation files and move
-them from ABI/testing to ABI/obsolete directory.
+Add a sys interface to allow querying the memory reserved by FADump for
+saving the crash dump.
+
+Also added Documentation/ABI for the new sysfs file.
 
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- .../ABI/{testing => obsolete}/sysfs-kernel-fadump_enabled | 2 ++
- .../{testing => obsolete}/sysfs-kernel-fadump_registered  | 2 ++
- .../{testing => obsolete}/sysfs-kernel-fadump_release_mem | 2 ++
- Documentation/powerpc/firmware-assisted-dump.rst          | 8 ++++++++
- 4 files changed, 14 insertions(+)
- rename Documentation/ABI/{testing => obsolete}/sysfs-kernel-fadump_enabled (73%)
- rename Documentation/ABI/{testing => obsolete}/sysfs-kernel-fadump_registered (77%)
- rename Documentation/ABI/{testing => obsolete}/sysfs-kernel-fadump_release_mem (78%)
+ Documentation/ABI/testing/sysfs-kernel-fadump    | 7 +++++++
+ Documentation/powerpc/firmware-assisted-dump.rst | 5 +++++
+ arch/powerpc/kernel/fadump.c                     | 9 +++++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_enabled b/Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled
-similarity index 73%
-rename from Documentation/ABI/testing/sysfs-kernel-fadump_enabled
-rename to Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled
-index f73632b1c006..e9c2de8b3688 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump_enabled
-+++ b/Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled
-@@ -1,3 +1,5 @@
-+This ABI is renamed and moved to a new location /sys/kernel/fadump/enabled.
+diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
+index 5d988b919e81..8f7a64a81783 100644
+--- a/Documentation/ABI/testing/sysfs-kernel-fadump
++++ b/Documentation/ABI/testing/sysfs-kernel-fadump
+@@ -31,3 +31,10 @@ Description:	write only
+ 		the system is booted to capture the vmcore using FADump.
+ 		It is used to release the memory reserved by FADump to
+ 		save the crash dump.
 +
- What:		/sys/kernel/fadump_enabled
- Date:		Feb 2012
- Contact:	linuxppc-dev@lists.ozlabs.org
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_registered b/Documentation/ABI/obsolete/sysfs-kernel-fadump_registered
-similarity index 77%
-rename from Documentation/ABI/testing/sysfs-kernel-fadump_registered
-rename to Documentation/ABI/obsolete/sysfs-kernel-fadump_registered
-index dcf925e53f0f..0360be39c98e 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump_registered
-+++ b/Documentation/ABI/obsolete/sysfs-kernel-fadump_registered
-@@ -1,3 +1,5 @@
-+This ABI is renamed and moved to a new location /sys/kernel/fadump/registered.¬
-+
- What:		/sys/kernel/fadump_registered
- Date:		Feb 2012
- Contact:	linuxppc-dev@lists.ozlabs.org
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem b/Documentation/ABI/obsolete/sysfs-kernel-fadump_release_mem
-similarity index 78%
-rename from Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
-rename to Documentation/ABI/obsolete/sysfs-kernel-fadump_release_mem
-index 9c20d64ab48d..6ce0b129ab12 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
-+++ b/Documentation/ABI/obsolete/sysfs-kernel-fadump_release_mem
-@@ -1,3 +1,5 @@
-+This ABI is renamed and moved to a new location /sys/kernel/fadump/release_mem.¬
-+
- What:		/sys/kernel/fadump_release_mem
- Date:		Feb 2012
- Contact:	linuxppc-dev@lists.ozlabs.org
++What:		/sys/kernel/fadump/mem_reserved
++Date:		Dec 2019
++Contact:	linuxppc-dev@lists.ozlabs.org
++Description:	read only
++		Provide information about the amount of memory reserved by
++		FADump to save the crash dump in bytes.
 diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index 345a3405206e..365c10209ef3 100644
+index 365c10209ef3..04993eaf3113 100644
 --- a/Documentation/powerpc/firmware-assisted-dump.rst
 +++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -295,6 +295,14 @@ Note: /sys/kernel/fadump_release_opalcore sysfs has moved to
+@@ -268,6 +268,11 @@ Here is the list of files under kernel sysfs:
+     be handled and vmcore will not be captured. This interface can be
+     easily integrated with kdump service start/stop.
  
-     echo 1  > /sys/firmware/opal/mpipl/release_core
++ /sys/kernel/fadump/mem_reserved
++
++   This is used to display the memory reserved by FADump for saving the
++   crash dump.
++
+  /sys/kernel/fadump_release_mem
+     This file is available only when FADump is active during
+     second kernel. This is used to release the reserved memory
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 35ecb51edc50..6f367e5b7970 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1364,6 +1364,13 @@ static ssize_t enabled_show(struct kobject *kobj,
+ 	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
+ }
  
-+Note: The following FADump sysfs files are deprecated.
++static ssize_t mem_reserved_show(struct kobject *kobj,
++				 struct kobj_attribute *attr,
++				 char *buf)
++{
++	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
++}
 +
-+    Deprecated                           Alternative
-+    --------------------------------------------------------------------
-+    /sys/kernel/fadump_enabled           /sys/kernel/fadump/enabled
-+    /sys/kernel/fadump_registered        /sys/kernel/fadump/registered
-+    /sys/kernel/fadump_release_mem       /sys/kernel/fadump/release_mem
-+
- Here is the list of files under powerpc debugfs:
- (Assuming debugfs is mounted on /sys/kernel/debug directory.)
+ static ssize_t registered_show(struct kobject *kobj,
+ 			       struct kobj_attribute *attr,
+ 			       char *buf)
+@@ -1431,10 +1438,12 @@ EXPORT_SYMBOL_GPL(fadump_kobj);
+ static struct kobj_attribute release_attr = __ATTR_WO(release_mem);
+ static struct kobj_attribute enable_attr = __ATTR_RO(enabled);
+ static struct kobj_attribute register_attr = __ATTR_RW(registered);
++static struct kobj_attribute mem_reserved_attr = __ATTR_RO(mem_reserved);
+ 
+ static struct attribute *fadump_attrs[] = {
+ 	&enable_attr.attr,
+ 	&register_attr.attr,
++	&mem_reserved_attr.attr,
+ 	NULL,
+ };
  
 -- 
 2.17.2
