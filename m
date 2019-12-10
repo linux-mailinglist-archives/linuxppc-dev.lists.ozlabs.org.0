@@ -1,75 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A30118012
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:57:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47X8V75FXHzDqVs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 16:57:35 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CAA11808B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 07:37:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47X9Mr1HxZzDqXX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 17:37:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
- helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="Z0uGtjzd"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="FnZPC6Pa"; 
  dkim-atps=neutral
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
- [216.228.121.65])
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47X8SD5LGWzDqJ3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 16:55:56 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5def33600000>; Mon, 09 Dec 2019 21:55:45 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Mon, 09 Dec 2019 21:55:50 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Mon, 09 Dec 2019 21:55:50 -0800
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 10 Dec
- 2019 05:55:50 +0000
-Received: from [10.2.166.216] (10.124.1.5) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 10 Dec
- 2019 05:55:49 +0000
-Subject: Re: [PATCH v8 20/26] powerpc: book3s64: convert to pin_user_pages()
- and put_user_page()
-From: John Hubbard <jhubbard@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20191209225344.99740-1-jhubbard@nvidia.com>
- <20191209225344.99740-21-jhubbard@nvidia.com>
- <08f5d716-8b31-b016-4994-19fbe829dc28@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <61e0c3a5-992e-4571-e22d-d63286ce10ec@nvidia.com>
-Date: Mon, 9 Dec 2019 21:53:00 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47X9Km5xVKzDqWk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 17:35:22 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47X9Kb5hrrz9vBmx;
+ Tue, 10 Dec 2019 07:35:15 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=FnZPC6Pa; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id mLr7XqX7TPBB; Tue, 10 Dec 2019 07:35:15 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47X9Kb4HChz9vBmv;
+ Tue, 10 Dec 2019 07:35:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1575959715; bh=EUHakfQZwNjDyNpMu0Q8JwdIe7wmUpTzbd0Lye8z+SQ=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=FnZPC6Pa0+yhD/+AxgFA095UyCvnSy+8dA9WpzskPNJpa9JYz8RLDZQmjFZ4fDCcC
+ MPDkpw+RQEw0lBhYKZqX6UcRKNgPIdbmDO3176Htuq0NDMK42R5an/d9/v8zbfGE4n
+ qxqo3oesJHRGuIzPAd50/B6guDsbrzmJAVIeyFWw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6EFD58B802;
+ Tue, 10 Dec 2019 07:35:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id qPcjq3_4_bHw; Tue, 10 Dec 2019 07:35:16 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BCADD8B754;
+ Tue, 10 Dec 2019 07:35:15 +0100 (CET)
+Subject: Re: [PATCH v2 1/4] mm: define MAX_PTRS_PER_{PTE,PMD,PUD}
+To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kasan-dev@googlegroups.com, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
+References: <20191210044714.27265-1-dja@axtens.net>
+ <20191210044714.27265-2-dja@axtens.net>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <80f340f2-0323-8092-7e6d-c93b26fb7cf7@c-s.fr>
+Date: Tue, 10 Dec 2019 07:35:15 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <08f5d716-8b31-b016-4994-19fbe829dc28@nvidia.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1575957345; bh=hOQHo4yBws9X1nqgVCC1VdrUiF9Z86xIO4U2wGVXRCw=;
- h=X-PGP-Universal:Subject:From:To:CC:References:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=Z0uGtjzdMedDuhQsG1jpU7HmbXe0kx1+9sLgOIk8Tsa+qSKrJwruITPp5YqsEqw/n
- J6r9xabZ4a9OQN/Wl8LVj9LrtdwAy11ChiFmcjZZVTuORyZEi3yR7n2LRqkwn66Ltr
- eeIwWiN6PGMYv9eL7SAOfeP4KVVco/4prZuZTjVwpd53jjxNLLJqGfcC9sxeGP6ykt
- D8DJTJbSiZvX3LC8FmFbEGS2I/TRo6uZZSD6HwdT5k7HU7OxF7PBsCrAkF07RmEA1a
- ZcPVotCE1aYXgj3rJWRvh8EJXUvCr0vK9kwBlCNWSwhBERf1C6gVTs8+AjkAsxO8km
- d4nN+/tFy5PPg==
+In-Reply-To: <20191210044714.27265-2-dja@axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,75 +82,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul
- Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/9/19 3:46 PM, John Hubbard wrote:
-> On 12/9/19 2:53 PM, John Hubbard wrote:
-> ...
->> @@ -212,10 +211,9 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
->>   		if (!page)
->>   			continue;
->>   
->> -		if (mem->hpas[i] & MM_IOMMU_TABLE_GROUP_PAGE_DIRTY)
->> -			SetPageDirty(page);
->> +		put_user_pages_dirty_lock(&page, 1,
->> +				mem->hpas[i] & MM_IOMMU_TABLE_GROUP_PAGE_DIRTY);
->>   
->> -		put_page(page);
+
+
+Le 10/12/2019 à 05:47, Daniel Axtens a écrit :
+> powerpc has boot-time configurable PTRS_PER_PTE, PMD and PUD. The
+> values are selected based on the MMU under which the kernel is
+> booted. This is much like how 4 vs 5-level paging on x86_64 leads to
+> boot-time configurable PTRS_PER_P4D.
 > 
+> So far, this hasn't leaked out of arch/powerpc. But with KASAN, we
+> have static arrays based on PTRS_PER_*, so for powerpc support must
+> provide constant upper bounds for generic code.
 > 
-> Correction: this is somehow missing the fixes that resulted from Jan Kara's review (he
-> noted that we can't take a page lock in this context). I must have picked up the
-> wrong version of it, when I rebased for -rc1.
+> Define MAX_PTRS_PER_{PTE,PMD,PUD} for this purpose.
+> 
+> I have configured these constants:
+>   - in asm-generic headers
+>   - on arches that implement KASAN: x86, s390, arm64, xtensa and powerpc
+
+I think we shoud avoid spreading default values all over the place when 
+all arches but one uses the default.
+
+I would drop this patch 1, squash the powerpc part of it in the last 
+patch, and define defaults in patch 2, see my comments there.
+
+> 
+> I haven't wired up any other arches just yet - there is no user of
+> the constants outside of the KASAN code I add in the next patch, so
+> missing the constants on arches that don't support KASAN shouldn't
+> break anything.
+> 
+> Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> ---
+>   arch/arm64/include/asm/pgtable-hwdef.h       | 3 +++
+>   arch/powerpc/include/asm/book3s/64/hash.h    | 4 ++++
+>   arch/powerpc/include/asm/book3s/64/pgtable.h | 7 +++++++
+>   arch/powerpc/include/asm/book3s/64/radix.h   | 5 +++++
+>   arch/s390/include/asm/pgtable.h              | 3 +++
+>   arch/x86/include/asm/pgtable_types.h         | 5 +++++
+>   arch/xtensa/include/asm/pgtable.h            | 1 +
+>   include/asm-generic/pgtable-nop4d-hack.h     | 9 +++++----
+>   include/asm-generic/pgtable-nopmd.h          | 9 +++++----
+>   include/asm-generic/pgtable-nopud.h          | 9 +++++----
+>   10 files changed, 43 insertions(+), 12 deletions(-)
 > 
 
-Andrew, given that the series is now in -mm, what's the preferred way for me to fix this?
-Send a v9 version of the whole series? Or something else?
-
-I'm still learning the ropes...
-
-thanks,
--- 
-John Hubbard
-NVIDIA
-
-> Will fix in the next version (including the commit description). Here's what the
-> corrected hunk will look like:
-> 
-> @@ -215,7 +214,8 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
->                  if (mem->hpas[i] & MM_IOMMU_TABLE_GROUP_PAGE_DIRTY)
->                          SetPageDirty(page);
->   
-> -               put_page(page);
-> +               put_user_page(page);
-> +
->                  mem->hpas[i] = 0;
->          }
->   }
-> 
-> 
-> thanks,
-> 
+Christophe
