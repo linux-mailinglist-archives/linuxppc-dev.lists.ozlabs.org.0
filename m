@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F861183C4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 10:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BE81183CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 10:39:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XFN44fykzDqW8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 20:37:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XFQ84pBdzDqXJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 20:39:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::142;
- helo=mail-lf1-x142.google.com; envelope-from=bsingharora@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::242;
+ helo=mail-lj1-x242.google.com; envelope-from=bsingharora@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="ABNDcXBa"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="UBiVzNjP"; 
  dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XFKq08rvzDqW6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 20:35:37 +1100 (AEDT)
-Received: by mail-lf1-x142.google.com with SMTP id 15so13162132lfr.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 01:35:37 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XFLr4dtnzDqWP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 20:36:36 +1100 (AEDT)
+Received: by mail-lj1-x242.google.com with SMTP id c19so19001305lji.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 01:36:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:references:from:message-id:date:user-agent:mime-version
  :in-reply-to:content-language:content-transfer-encoding;
- bh=sPqiW8fjJ6bClKJe5WkINQ65vkoeIkKhHU7yZhPYmGg=;
- b=ABNDcXBaBSFTY1MBOuehy4WQ2SFh6x6aVPCz/0w0olzbOzjmzqV5odtrNM5JpBQtjJ
- 9yVNHZYJ+hXqU9+/ETxhdBza83LPN/PRKXds16dNfcf9TTYEf9CyjvF5L98Jae+Wc19O
- IIiOY/fNFDogBF/Qk0JhyV3/RVe0p0oRK8TFL2jmzqXdbMog4rxb7aAQFIA4b/UxfOvo
- cjXEKKsu2cnN2A4AescnBek882x0vlYO15PHe5wRgyTWW41pATbeTF+ttmU2UFRbaCok
- KRa6NF+JMCG9iUjkwZDsbU0r5+0k5eVzKKwIzLflfdCV2LgN2kV0nBUgi+Hmv5uIBHn8
- 2ajA==
+ bh=gXjxkm88DEjZBFBOVgYS/nXq7WpsnAwIahBe1LGrB6M=;
+ b=UBiVzNjP9aLMEiA7IC7YrACjXTaPDc9hQMibmR6mvQ2w5h2mcCTC9EkN995AN07C3h
+ dbarlfB4UYV1kmfgjxkEetgiW/0lmCFZPD1RV2yf7SMmHbmt5kWl3v8fKQ2C/Tom/sZc
+ 1A5J74odxics4FORavwIVtIBailZYZvoG6ESd6ppFoWRQ/b6ORBJ5uCeCcEYX6Qdmc5x
+ x/g7FCVHEhjHGf7+XfjwozXLtrf0kaajg/vIYnqw9H71l4SuFOrtDO/lztKSviCuXmNj
+ 2OR9+EoTAXh63GHszKYj1+zJxtYsT8ForpsjXGRBO4gxper4nFuzQ3A5G53npQ/hCq+g
+ H1zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=sPqiW8fjJ6bClKJe5WkINQ65vkoeIkKhHU7yZhPYmGg=;
- b=ag1itvUDLcQhwho4NLzhd2axWtyWIOWNFXSVgKTNLfixFPv5zzssz3tiwwtUp0YD0u
- Pfm0u9JNaObJj+FYFNCkltzAiHEZweKB6Sx/rszhvZXmUKrqecMXpOr2XhDakH/++/Kg
- 0SEUw34OMGMPmd/CbyElB58KnBeoMeVTpaXVIxT9E1REZJHpigGWDvhmViCRn0iAXliE
- kfC2HfA6+VWMZWA5VjGtbAwd8clpj8VpD8/Vej1mgXY0xrO1np3fPPt6HfQVqFYdyxAg
- I53zSgyypKjGGf8GMA+L9ymqP0xbGLJiAuFODeEZjTPXtWxIU3zYISIJvhjPCf8OmKbS
- fG/g==
-X-Gm-Message-State: APjAAAW2n0YAadWQo6wP8HifOKHezDheeeeh55GgPTZ6xiyVD3XMF6Eg
- TEOAZbHyp8oZBTdkeG2jd8E=
-X-Google-Smtp-Source: APXvYqwioSlPYO6hoFk7LGARsxqMyzh3CVbgGfmrhGJmH3QfKEy1cMr4MWEHUZicpl9ULfHvpu8eWw==
-X-Received: by 2002:ac2:4316:: with SMTP id l22mr2852226lfh.115.1575970533025; 
- Tue, 10 Dec 2019 01:35:33 -0800 (PST)
+ bh=gXjxkm88DEjZBFBOVgYS/nXq7WpsnAwIahBe1LGrB6M=;
+ b=B0TvdE/gh8X4F0SAZ6xPUdEjIuBBv9a0nBwoZYxmY9Z1KaAITBCw3Q9eUEUyQT9Fn4
+ G9sxc9WcBx9cvKmbfS2k7tzOcEKn3/U+BwElIhUfdnqAJNHYVtLOlyAjuz9jXGLYn2NU
+ BXbntBLGt4Rz5WXuGJAAtSU7Kdk46043eTheX3SW9A6Kdg1cyRP5agYT1oM624tR6IU6
+ RrqjEeEnnzSe6xUreZYTdURqbb9JVR5zROLph5LXObxZgYlw9xpRE+hJIS++kIKxXflf
+ zE3C6NPHJTBako52SefLIeWSB99ekYmMxH9naNKeTgeIpyC0C0zAP1zvp0PnNWuP16Kv
+ OhMA==
+X-Gm-Message-State: APjAAAVOY8psGJDUo/MIC/zfATr3Khc1vr60x3vJx62r86mg3lUmPpki
+ uEQ5JB7oUmZ2x1oLaiBmQ3I=
+X-Google-Smtp-Source: APXvYqzgHWnb8WU25vCn8dceHQNUvqh7F9YCfgdEcTPnY24QYOgLeeWBuTndcT1N2jJAkfd3EaJ+zA==
+X-Received: by 2002:a2e:9015:: with SMTP id h21mr3537646ljg.69.1575970592330; 
+ Tue, 10 Dec 2019 01:36:32 -0800 (PST)
 Received: from [192.168.68.106] ([193.119.54.228])
- by smtp.gmail.com with ESMTPSA id 140sm1193677lfk.78.2019.12.10.01.35.27
+ by smtp.gmail.com with ESMTPSA id m21sm1186222lfh.53.2019.12.10.01.36.27
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 10 Dec 2019 01:35:32 -0800 (PST)
-Subject: Re: [PATCH v2 1/4] mm: define MAX_PTRS_PER_{PTE,PMD,PUD}
+ Tue, 10 Dec 2019 01:36:31 -0800 (PST)
+Subject: Re: [PATCH v2 2/4] kasan: use MAX_PTRS_PER_* for early shadow
 To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
  linux-s390@vger.kernel.org, linux-xtensa@linux-xtensa.org,
@@ -66,14 +66,14 @@ To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
  kasan-dev@googlegroups.com, christophe.leroy@c-s.fr,
  aneesh.kumar@linux.ibm.com
 References: <20191210044714.27265-1-dja@axtens.net>
- <20191210044714.27265-2-dja@axtens.net>
+ <20191210044714.27265-3-dja@axtens.net>
 From: Balbir Singh <bsingharora@gmail.com>
-Message-ID: <50ac061a-caa9-ed4e-c9a4-1f86bb0552bd@gmail.com>
-Date: Tue, 10 Dec 2019 20:35:22 +1100
+Message-ID: <a31459ee-2019-2f7b-0dc1-235374579508@gmail.com>
+Date: Tue, 10 Dec 2019 20:36:24 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191210044714.27265-2-dja@axtens.net>
+In-Reply-To: <20191210044714.27265-3-dja@axtens.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -95,115 +95,67 @@ Sender: "Linuxppc-dev"
 
 
 On 10/12/19 3:47 pm, Daniel Axtens wrote:
-> powerpc has boot-time configurable PTRS_PER_PTE, PMD and PUD. The
-> values are selected based on the MMU under which the kernel is
-> booted. This is much like how 4 vs 5-level paging on x86_64 leads to
-> boot-time configurable PTRS_PER_P4D.
-> 
-> So far, this hasn't leaked out of arch/powerpc. But with KASAN, we
-> have static arrays based on PTRS_PER_*, so for powerpc support must
-> provide constant upper bounds for generic code.
-> 
-> Define MAX_PTRS_PER_{PTE,PMD,PUD} for this purpose.
-> 
-> I have configured these constants:
->  - in asm-generic headers
->  - on arches that implement KASAN: x86, s390, arm64, xtensa and powerpc
-> 
-> I haven't wired up any other arches just yet - there is no user of
-> the constants outside of the KASAN code I add in the next patch, so
-> missing the constants on arches that don't support KASAN shouldn't
-> break anything.
-
-I would suggest limiting this to powerpc for now and use
-
-#ifndef MAX_PTRS_PER_PUD
-#define MAX_PTRS_PER_PUD	PTRS_PER_PUD
-#endif
-
-style code in KASAN. It just keeps the change surface to a limited
-value, till other arch's see value in migrating to support it.
-
+> This helps with powerpc support, and should have no effect on
+> anything else.
 > 
 > Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
 > Signed-off-by: Daniel Axtens <dja@axtens.net>
-> ---
->  arch/arm64/include/asm/pgtable-hwdef.h       | 3 +++
->  arch/powerpc/include/asm/book3s/64/hash.h    | 4 ++++
->  arch/powerpc/include/asm/book3s/64/pgtable.h | 7 +++++++
->  arch/powerpc/include/asm/book3s/64/radix.h   | 5 +++++
->  arch/s390/include/asm/pgtable.h              | 3 +++
->  arch/x86/include/asm/pgtable_types.h         | 5 +++++
->  arch/xtensa/include/asm/pgtable.h            | 1 +
->  include/asm-generic/pgtable-nop4d-hack.h     | 9 +++++----
->  include/asm-generic/pgtable-nopmd.h          | 9 +++++----
->  include/asm-generic/pgtable-nopud.h          | 9 +++++----
->  10 files changed, 43 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable-hwdef.h b/arch/arm64/include/asm/pgtable-hwdef.h
-> index d9fbd433cc17..485e1f3c5c6f 100644
-> --- a/arch/arm64/include/asm/pgtable-hwdef.h
-> +++ b/arch/arm64/include/asm/pgtable-hwdef.h
-> @@ -41,6 +41,7 @@
->  #define ARM64_HW_PGTABLE_LEVEL_SHIFT(n)	((PAGE_SHIFT - 3) * (4 - (n)) + 3)
->  
->  #define PTRS_PER_PTE		(1 << (PAGE_SHIFT - 3))
-> +#define MAX_PTRS_PER_PTE	PTRS_PER_PTE
->  
->  /*
->   * PMD_SHIFT determines the size a level 2 page table entry can map.
-> @@ -50,6 +51,7 @@
->  #define PMD_SIZE		(_AC(1, UL) << PMD_SHIFT)
->  #define PMD_MASK		(~(PMD_SIZE-1))
->  #define PTRS_PER_PMD		PTRS_PER_PTE
-> +#define MAX_PTRS_PER_PMD	PTRS_PER_PMD
->  #endif
->  
->  /*
-> @@ -60,6 +62,7 @@
->  #define PUD_SIZE		(_AC(1, UL) << PUD_SHIFT)
->  #define PUD_MASK		(~(PUD_SIZE-1))
->  #define PTRS_PER_PUD		PTRS_PER_PTE
-> +#define MAX_PTRS_PER_PUD	PTRS_PER_PUD
->  #endif
->  
->  /*
-> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
-> index 2781ebf6add4..fce329b8452e 100644
-> --- a/arch/powerpc/include/asm/book3s/64/hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
-> @@ -18,6 +18,10 @@
->  #include <asm/book3s/64/hash-4k.h>
->  #endif
->  
-> +#define H_PTRS_PER_PTE		(1 << H_PTE_INDEX_SIZE)
-> +#define H_PTRS_PER_PMD		(1 << H_PMD_INDEX_SIZE)
-> +#define H_PTRS_PER_PUD		(1 << H_PUD_INDEX_SIZE)
-> +
->  /* Bits to set in a PMD/PUD/PGD entry valid bit*/
->  #define HASH_PMD_VAL_BITS		(0x8000000000000000UL)
->  #define HASH_PUD_VAL_BITS		(0x8000000000000000UL)
-> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> index b01624e5c467..209817235a44 100644
-> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> @@ -231,6 +231,13 @@ extern unsigned long __pmd_frag_size_shift;
->  #define PTRS_PER_PUD	(1 << PUD_INDEX_SIZE)
->  #define PTRS_PER_PGD	(1 << PGD_INDEX_SIZE)
->  
-> +#define MAX_PTRS_PER_PTE	((H_PTRS_PER_PTE > R_PTRS_PER_PTE) ? \
-> +				  H_PTRS_PER_PTE : R_PTRS_PER_PTE)
-> +#define MAX_PTRS_PER_PMD	((H_PTRS_PER_PMD > R_PTRS_PER_PMD) ? \
-> +				  H_PTRS_PER_PMD : R_PTRS_PER_PMD)
-> +#define MAX_PTRS_PER_PUD	((H_PTRS_PER_PUD > R_PTRS_PER_PUD) ? \
-> +				  H_PTRS_PER_PUD : R_PTRS_PER_PUD)
-> +
 
-How about reusing max
-
-#define MAX_PTRS_PER_PTE  max(H_PTRS_PER_PTE, R_PTRS_PER_PTE)
-#define MAX_PTRS_PER_PMD  max(H_PTRS_PER_PMD, R_PTRS_PER_PMD)
-#define MAX_PTRS_PER_PUD  max(H_PTRS_PER_PUD, R_PTRS_PER_PUD)
+If you follow the recommendations by Christophe and I, you don't need this patch
 
 Balbir Singh.
 
+> ---
+>  include/linux/kasan.h | 6 +++---
+>  mm/kasan/init.c       | 6 +++---
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index e18fe54969e9..d2f2a4ffcb12 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -15,9 +15,9 @@ struct task_struct;
+>  #include <asm/pgtable.h>
+>  
+>  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
+> -extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE];
+> -extern pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD];
+> -extern pud_t kasan_early_shadow_pud[PTRS_PER_PUD];
+> +extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE];
+> +extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
+> +extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
+>  extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
+>  
+>  int kasan_populate_early_shadow(const void *shadow_start,
+> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+> index ce45c491ebcd..8b54a96d3b3e 100644
+> --- a/mm/kasan/init.c
+> +++ b/mm/kasan/init.c
+> @@ -46,7 +46,7 @@ static inline bool kasan_p4d_table(pgd_t pgd)
+>  }
+>  #endif
+>  #if CONFIG_PGTABLE_LEVELS > 3
+> -pud_t kasan_early_shadow_pud[PTRS_PER_PUD] __page_aligned_bss;
+> +pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD] __page_aligned_bss;
+>  static inline bool kasan_pud_table(p4d_t p4d)
+>  {
+>  	return p4d_page(p4d) == virt_to_page(lm_alias(kasan_early_shadow_pud));
+> @@ -58,7 +58,7 @@ static inline bool kasan_pud_table(p4d_t p4d)
+>  }
+>  #endif
+>  #if CONFIG_PGTABLE_LEVELS > 2
+> -pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD] __page_aligned_bss;
+> +pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD] __page_aligned_bss;
+>  static inline bool kasan_pmd_table(pud_t pud)
+>  {
+>  	return pud_page(pud) == virt_to_page(lm_alias(kasan_early_shadow_pmd));
+> @@ -69,7 +69,7 @@ static inline bool kasan_pmd_table(pud_t pud)
+>  	return false;
+>  }
+>  #endif
+> -pte_t kasan_early_shadow_pte[PTRS_PER_PTE] __page_aligned_bss;
+> +pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE] __page_aligned_bss;
+>  
+>  static inline bool kasan_pte_table(pmd_t pmd)
+>  {
+> 
