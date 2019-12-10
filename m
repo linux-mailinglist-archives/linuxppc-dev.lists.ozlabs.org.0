@@ -1,155 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78877117FC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:34:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47X7yx710xzDqVZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 16:34:01 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2F5117FE0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:40:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47X86b4n7zzDqX0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 16:40:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="U/nyOafu"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47X7x11drpzDqVV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 16:32:20 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id 6so8324119pgk.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2019 21:32:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=khs0JYT3icTEz87CRGHfNZ1NvuYiS5x92cbG2QDN5k4=;
- b=U/nyOafuFU3z3HLexVjZ1c91yWuKr0q53l++k+67EOCYa2MTOmWBHej5KiQ/hzBwdF
- y1JPzq4m0bPrnFzoWQFE+xJBnv5KD4uvOhTO31fP9Jy+N1YNVjMEbYLfQUIy51mU/uCn
- IMZTPG3FlnWDZXkBZJDEu3hRXhC0/cPEj2A1uNcFcAHlc3Op5cmJbTwqucMRgowMEJAY
- FlPsqpZR9KjnmEVaQRO0Hl3rdsel5QQJ7HSu3J0+LNSKSVS7wazBA9zfDKldEwbusL5t
- VMyf1b8dRbTfAMexiofBuxiFfIwmqb6WfE47z5X73q4898/J25wGe+g9fuFx6dDwUmHs
- Tg4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=khs0JYT3icTEz87CRGHfNZ1NvuYiS5x92cbG2QDN5k4=;
- b=JVQO0chFvMwgNHxllt6Zkzp2WOgYA1xa88jDT0cvMZpNztBmLXiHxEBYeIbJiXwJTf
- vgfkVf5rFTOH6yr6nz7ha5UqkLpXABb4h1xEK7ZWCa5fxyJUDoimbd/jIsmfXDLeWesG
- uBXnPk5OiQtLXlxsZgLzUH4/Q/BrKEYORoSeFFUCVp4Lr644rvAkwMFqlKgsypRPsrZK
- xKqcqZDu1xp7V3sUdHcHUFgJLT0W6/ph93ITFoZsp6DTgEt0zm6K5gp+/E8LkYHMW42H
- Vbwk4AI6H1XfmZG179On9NRiKNZ5iAtMeCWdNdohxrW7iLO/TiwguOSqYCywwuaie7Y4
- uHwA==
-X-Gm-Message-State: APjAAAUoFUZvIS9CDAA5ovxGkxQ1tEZrQN6wvGg+SKguOJjIhdh1VWeN
- 3hS9awxvfP2YL4wqIVEIS9+dcw==
-X-Google-Smtp-Source: APXvYqx1GRRCgN7b/PwRX2eqdgZWbxrTDKxcwU8oUZxrbvuRp5tIImLtoSp2V9LQjcNFS74EJw/FYQ==
-X-Received: by 2002:a62:4ec7:: with SMTP id c190mr31934546pfb.68.1575955937718; 
- Mon, 09 Dec 2019 21:32:17 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 67sm1365460pfw.82.2019.12.09.21.32.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Dec 2019 21:32:17 -0800 (PST)
-Subject: Re: [PATCH v5 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-To: Ram Pai <linuxram@us.ibm.com>
-References: <1575681159-30356-1-git-send-email-linuxram@us.ibm.com>
- <1575681159-30356-2-git-send-email-linuxram@us.ibm.com>
- <ed0f048c-bb40-c6c6-887c-ef68c9e411a2@ozlabs.ru>
- <20191210051244.GB5702@oc0525413822.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <c4b48f55-e4e3-222a-0aa0-9b4783e19584@ozlabs.ru>
-Date: Tue, 10 Dec 2019 16:32:10 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47X84h0sDczDqVk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 16:39:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="oh0C7uIz"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47X84f2hMWz9sPh;
+ Tue, 10 Dec 2019 16:38:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1575956339;
+ bh=AJJmChoZySTIyWE83Z5yC6HwYtTJxCcMfpSc/t0wIek=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oh0C7uIziTe2KFhQXT/UZFD1ykXWT3KzZy2GcDl1bv9Dgscgs8Vy/RZzaP7VAcTpC
+ MMq0t512TOWxCJMxZiqCmYyfxgXuYG0l0ciZpHbcB65d0iqoYz9SwBckWY7nsM6Zt5
+ 3XuNlzQzqy3qCrJoLgqqIbX2n/S45HM+FCZaBqnfwny6IzhU6rLZU0fqE0AztOyY4M
+ ymIjtDnrIpmw8cYROGAFOQUBDQUTaUf43JYHGh1Cr3NDFu0zNTHdCwiqVc3dEMVBMt
+ vOVYhCat2y1NcuEBHN6KiMqCofdccvmhbtopsyDcjwCt0mBXDAYzn3t0WCRK01gEG3
+ uKc9wTuBc4Dqw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.5-2 tag
+ (topic/kasan-bitops)
+In-Reply-To: <20191206131650.GM2827@hirez.programming.kicks-ass.net>
+References: <87blslei5o.fsf@mpe.ellerman.id.au>
+ <20191206131650.GM2827@hirez.programming.kicks-ass.net>
+Date: Tue, 10 Dec 2019 16:38:54 +1100
+Message-ID: <87wob4pwnl.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20191210051244.GB5702@oc0525413822.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -161,61 +58,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- leonardo@linux.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
- cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: linux-s390@vger.kernel.org, elver@google.com, Will Deacon <will@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ linux-arch@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+ linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Peter Zijlstra <peterz@infradead.org> writes:
+> On Fri, Dec 06, 2019 at 11:46:11PM +1100, Michael Ellerman wrote:
+>> -----BEGIN PGP SIGNED MESSAGE-----
+>> Hash: SHA256
+>> 
+>> Hi Linus,
+>> 
+>> Please pull another powerpc update for 5.5.
+>> 
+>> As you'll see from the diffstat this is mostly not powerpc code. In order to do
+>> KASAN instrumentation of bitops we needed to juggle some of the generic bitops
+>> headers.
+>> 
+>> Because those changes potentially affect several architectures I wasn't
+>> confident putting them directly into my tree, so I've had them sitting in a
+>> topic branch. That branch (topic/kasan-bitops) has been in linux-next for a
+>> month, and I've not had any feedback that it's caused any problems.
+>> 
+>> So I think this is good to merge, but it's a standalone pull so if anyone does
+>> object it's not a problem.
+>
+> No objections, but here:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=topic/kasan-bitops&id=81d2c6f81996e01fbcd2b5aeefbb519e21c806e9
+>
+> you write:
+>
+>   "Currently bitops-instrumented.h assumes that the architecture provides
+> atomic, non-atomic and locking bitops (e.g. both set_bit and __set_bit).
+> This is true on x86 and s390, but is not always true: there is a
+> generic bitops/non-atomic.h header that provides generic non-atomic
+> operations, and also a generic bitops/lock.h for locking operations."
+>
+> Is there any actual benefit for PPC to using their own atomic bitops
+> over bitops/lock.h ? I'm thinking that the generic code is fairly
+> optimal for most LL/SC architectures.
 
+Good question, I'll have a look.
 
-On 10/12/2019 16:12, Ram Pai wrote:
-> On Tue, Dec 10, 2019 at 02:07:36PM +1100, Alexey Kardashevskiy wrote:
->>
->>
->> On 07/12/2019 12:12, Ram Pai wrote:
->>> H_PUT_TCE_INDIRECT hcall uses a page filled with TCE entries, as one of
->>> its parameters.  On secure VMs, hypervisor cannot access the contents of
->>> this page since it gets encrypted.  Hence share the page with the
->>> hypervisor, and unshare when done.
->>
->>
->> I thought the idea was to use H_PUT_TCE and avoid sharing any extra
->> pages. There is small problem that when DDW is enabled,
->> FW_FEATURE_MULTITCE is ignored (easy to fix); I also noticed complains
->> about the performance on slack but this is caused by initial cleanup of
->> the default TCE window (which we do not use anyway) and to battle this
->> we can simply reduce its size by adding
-> 
-> something that takes hardly any time with H_PUT_TCE_INDIRECT,  takes
-> 13secs per device for H_PUT_TCE approach, during boot. This is with a
-> 30GB guest. With larger guest, the time will further detoriate.
+There seems to be confusion about what the type of the bit number is,
+which is leading to sign extension in some cases and not others.
 
+eg, comparing the generic clear_bit_unlock() vs ours:
 
-No it will not, I checked. The time is the same for 2GB and 32GB guests-
-the delay is caused by clearing the small DMA window which is small by
-the space mapped (1GB) but quite huge in TCEs as it uses 4K pages; and
-for DDW window + emulated devices the IOMMU page size will be 2M/16M/1G
-(depends on the system) so the number of TCEs is much smaller.
+ 1 c000000000031890 <generic_clear_bit_unlock>:             1 c0000000000319a0 <ppc_clear_bit_unlock>:
+                                                            2         extsw   r3,r3
+                                                            3         li      r10,1
+                                                            4         srawi   r9,r3,6
+                                                            5         addze   r9,r9
+                                                            6         rlwinm  r8,r9,6,0,25
+                                                            7         extsw   r9,r9
+                                                            8         subf    r3,r8,r3
+ 2         rlwinm  r9,r3,29,3,28                            9         rldicr  r9,r9,3,60
+                                                           10         sld     r3,r10,r3
+ 3         add     r4,r4,r9                                11         add     r4,r4,r9
+ 4         lwsync                                          12         lwsync
+ 5         li      r9,-2
+ 6         clrlwi  r3,r3,26
+ 7         rotld   r3,r9,r3
+ 8         ldarx   r9,0,r4                                 13         ldarx   r9,0,r4
+ 9         and     r10,r3,r9                               14         andc    r9,r9,r3
+10         stdcx.  r10,0,r4                                15         stdcx.  r9,0,r4
+11         bne-    <generic_clear_bit_unlock+0x18>         16         bne-    <ppc_clear_bit_unlock+0x2c>
+12         blr                                             17         blr
 
+It looks like in actual usage it often doesn't matter, ie. when we pass
+a constant bit number it all gets inlined and the compiler works it out.
 
-> 
->>
->> -global
->> spapr-pci-host-bridge.dma_win_size=0x4000000
-> 
-> This option, speeds it up tremendously.  But than should this option be
-> enabled in qemu by default?  only for secure VMs? for both VMs?
+It looks like the type should be unsigned long?
 
+  Documentation/core-api/atomic_ops.rst:  void __clear_bit_unlock(unsigned long nr, unsigned long *addr);
+  arch/mips/include/asm/bitops.h:static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *addr)
+  arch/powerpc/include/asm/bitops.h:static inline void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
+  arch/riscv/include/asm/bitops.h:static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *addr)
+  arch/s390/include/asm/bitops.h:static inline void arch___clear_bit_unlock(unsigned long nr,
+  include/asm-generic/bitops/instrumented-lock.h:static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
+  include/asm-generic/bitops/lock.h:static inline void __clear_bit_unlock(unsigned int nr,
 
-As discussed in slack, by default we do not need to clear the entire TCE
-table and we only have to map swiotlb buffer using the small window. It
-is a guest kernel change only. Thanks,
+So I guess step one is to convert our versions to use unsigned long, so
+we're at least not tripping over that difference when comparing the
+assembly.
 
-
-
--- 
-Alexey
+cheers
