@@ -1,52 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B41118000
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:53:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2F5117FE0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 06:40:42 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47X86b4n7zzDqX0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 16:40:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47X8Nx2v5czDqWZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 16:53:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47X84h0sDczDqVk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 16:39:00 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64;
+ helo=hqnvemgate25.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="oh0C7uIz"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47X84f2hMWz9sPh;
- Tue, 10 Dec 2019 16:38:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1575956339;
- bh=AJJmChoZySTIyWE83Z5yC6HwYtTJxCcMfpSc/t0wIek=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oh0C7uIziTe2KFhQXT/UZFD1ykXWT3KzZy2GcDl1bv9Dgscgs8Vy/RZzaP7VAcTpC
- MMq0t512TOWxCJMxZiqCmYyfxgXuYG0l0ciZpHbcB65d0iqoYz9SwBckWY7nsM6Zt5
- 3XuNlzQzqy3qCrJoLgqqIbX2n/S45HM+FCZaBqnfwny6IzhU6rLZU0fqE0AztOyY4M
- ymIjtDnrIpmw8cYROGAFOQUBDQUTaUf43JYHGh1Cr3NDFu0zNTHdCwiqVc3dEMVBMt
- vOVYhCat2y1NcuEBHN6KiMqCofdccvmhbtopsyDcjwCt0mBXDAYzn3t0WCRK01gEG3
- uKc9wTuBc4Dqw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.5-2 tag
- (topic/kasan-bitops)
-In-Reply-To: <20191206131650.GM2827@hirez.programming.kicks-ass.net>
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
-Date: Tue, 10 Dec 2019 16:38:54 +1100
-Message-ID: <87wob4pwnl.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="jHN/De11"; 
+ dkim-atps=neutral
+Received: from hqnvemgate25.nvidia.com (hqnvemgate25.nvidia.com
+ [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47X8Ly3Cs6zDqVm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 16:51:22 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5def324d0000>; Mon, 09 Dec 2019 21:51:10 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Mon, 09 Dec 2019 21:51:16 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Mon, 09 Dec 2019 21:51:16 -0800
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 10 Dec
+ 2019 05:51:15 +0000
+Received: from [10.2.166.216] (10.124.1.5) by DRHQMAIL107.nvidia.com
+ (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 10 Dec
+ 2019 05:51:14 +0000
+Subject: Re: [PATCH v8 17/26] media/v4l2-core: set pages dirty upon releasing
+ DMA buffers
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20191209225344.99740-1-jhubbard@nvidia.com>
+ <20191209225344.99740-18-jhubbard@nvidia.com>
+ <20191209165627.bf657cb8fdf660e8f91e966c@linux-foundation.org>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <fc100f4b-2c14-b56b-488a-e2d54d61d575@nvidia.com>
+Date: Mon, 9 Dec 2019 21:48:24 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191209165627.bf657cb8fdf660e8f91e966c@linux-foundation.org>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1575957070; bh=KRjfdSXWCfXtj0zEL6nFRN1GkUl6vp+XI3HBba/YpY8=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=jHN/De11w2qJ/2Whqsz+5DRlqwutNcV+vDNiSEKXdDcKWt78VSxoGM0nLPdizxgSb
+ M4m/UOUskWnEyCPODO9f1DYcD6hEBbJk74+kHw/LlXQq1xUnySbFRplwJNaq5NrVaz
+ jsqdkry+cVNaNaRw3VxAVr3+cs8cvcJ783ZVBXMfF/rtOeLzgMzsIx2ydS3WZJvth1
+ OfB3+NCkepaNAqgI1WYky+kXprKnYMmI09kgA9JzYnAnbh34pgq9lGMtxcjGnUZ1yV
+ PAP6rWIOB+cdLSKZhfV+SBX5T+eEKD+BSQbO+Vj2XcjLK4iwQtiCrGuqh1R5ggXhEY
+ xtGKcG+Qp/n6Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,95 +81,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, elver@google.com, Will Deacon <will@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-arch@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul
+ Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Christoph Hellwig <hch@lst.de>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ stable@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Peter Zijlstra <peterz@infradead.org> writes:
-> On Fri, Dec 06, 2019 at 11:46:11PM +1100, Michael Ellerman wrote:
->> -----BEGIN PGP SIGNED MESSAGE-----
->> Hash: SHA256
->> 
->> Hi Linus,
->> 
->> Please pull another powerpc update for 5.5.
->> 
->> As you'll see from the diffstat this is mostly not powerpc code. In order to do
->> KASAN instrumentation of bitops we needed to juggle some of the generic bitops
->> headers.
->> 
->> Because those changes potentially affect several architectures I wasn't
->> confident putting them directly into my tree, so I've had them sitting in a
->> topic branch. That branch (topic/kasan-bitops) has been in linux-next for a
->> month, and I've not had any feedback that it's caused any problems.
->> 
->> So I think this is good to merge, but it's a standalone pull so if anyone does
->> object it's not a problem.
->
-> No objections, but here:
->
->   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=topic/kasan-bitops&id=81d2c6f81996e01fbcd2b5aeefbb519e21c806e9
->
-> you write:
->
->   "Currently bitops-instrumented.h assumes that the architecture provides
-> atomic, non-atomic and locking bitops (e.g. both set_bit and __set_bit).
-> This is true on x86 and s390, but is not always true: there is a
-> generic bitops/non-atomic.h header that provides generic non-atomic
-> operations, and also a generic bitops/lock.h for locking operations."
->
-> Is there any actual benefit for PPC to using their own atomic bitops
-> over bitops/lock.h ? I'm thinking that the generic code is fairly
-> optimal for most LL/SC architectures.
+On 12/9/19 4:56 PM, Andrew Morton wrote:
+> On Mon, 9 Dec 2019 14:53:35 -0800 John Hubbard <jhubbard@nvidia.com> wrote:
+> 
+>> After DMA is complete, and the device and CPU caches are synchronized,
+>> it's still required to mark the CPU pages as dirty, if the data was
+>> coming from the device. However, this driver was just issuing a
+>> bare put_page() call, without any set_page_dirty*() call.
+>>
+>> Fix the problem, by calling set_page_dirty_lock() if the CPU pages
+>> were potentially receiving data from the device.
+>>
+>> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>> Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+>> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+>> Cc: <stable@vger.kernel.org>
+> 
+> What are the user-visible effects of this change?
 
-Good question, I'll have a look.
+I'll have to defer to Hans or other experts, because I merely spotted
+this by reading the code.
 
-There seems to be confusion about what the type of the bit number is,
-which is leading to sign extension in some cases and not others.
+> 
+> As it's cc:stable I'd normally send this to Linus within 1-2 weeks, or
+> sooner.  Please confirm that this is a standalone fix, independent of
+> the rest of this series.
+> 
+> 
 
-eg, comparing the generic clear_bit_unlock() vs ours:
+Yes, this is a stand-alone fix. Of course, as part of this series, the
+put_page() gets converted to put_user_pages_dirty() in the next patch,
+and that in turn gets renamed to unpin_user_pages_dirty() in a later
+patch. Just so we keep that in mind when moving patches around.
 
- 1 c000000000031890 <generic_clear_bit_unlock>:             1 c0000000000319a0 <ppc_clear_bit_unlock>:
-                                                            2         extsw   r3,r3
-                                                            3         li      r10,1
-                                                            4         srawi   r9,r3,6
-                                                            5         addze   r9,r9
-                                                            6         rlwinm  r8,r9,6,0,25
-                                                            7         extsw   r9,r9
-                                                            8         subf    r3,r8,r3
- 2         rlwinm  r9,r3,29,3,28                            9         rldicr  r9,r9,3,60
-                                                           10         sld     r3,r10,r3
- 3         add     r4,r4,r9                                11         add     r4,r4,r9
- 4         lwsync                                          12         lwsync
- 5         li      r9,-2
- 6         clrlwi  r3,r3,26
- 7         rotld   r3,r9,r3
- 8         ldarx   r9,0,r4                                 13         ldarx   r9,0,r4
- 9         and     r10,r3,r9                               14         andc    r9,r9,r3
-10         stdcx.  r10,0,r4                                15         stdcx.  r9,0,r4
-11         bne-    <generic_clear_bit_unlock+0x18>         16         bne-    <ppc_clear_bit_unlock+0x2c>
-12         blr                                             17         blr
 
-It looks like in actual usage it often doesn't matter, ie. when we pass
-a constant bit number it all gets inlined and the compiler works it out.
-
-It looks like the type should be unsigned long?
-
-  Documentation/core-api/atomic_ops.rst:  void __clear_bit_unlock(unsigned long nr, unsigned long *addr);
-  arch/mips/include/asm/bitops.h:static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *addr)
-  arch/powerpc/include/asm/bitops.h:static inline void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
-  arch/riscv/include/asm/bitops.h:static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *addr)
-  arch/s390/include/asm/bitops.h:static inline void arch___clear_bit_unlock(unsigned long nr,
-  include/asm-generic/bitops/instrumented-lock.h:static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
-  include/asm-generic/bitops/lock.h:static inline void __clear_bit_unlock(unsigned int nr,
-
-So I guess step one is to convert our versions to use unsigned long, so
-we're at least not tripping over that difference when comparing the
-assembly.
-
-cheers
+thanks,
+-- 
+John Hubbard
+NVIDIA
