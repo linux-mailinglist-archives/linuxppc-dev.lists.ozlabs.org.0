@@ -2,53 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D2A117CD1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 01:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9F7117D54
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 02:44:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47X1rz6bTSzDqVF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 11:58:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47X2t459Q8zDqVr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 12:44:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47X2r85bw0zDqN7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 12:42:48 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47X2r75tw7z8svl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 12:42:47 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47X2r74S57z9sR0; Tue, 10 Dec 2019 12:42:47 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="uQ6utAA3"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47X1pn44vvzDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 11:56:31 +1100 (AEDT)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CE73720637;
- Tue, 10 Dec 2019 00:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1575939389;
- bh=BbLBjR8wcrsANoTlWrEqQPyK+DvAKxv254F1InccAcs=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=uQ6utAA370KB9xY5+qeGGsoo1HH/Hnt/LDZgeHbTSoRMRHkI8VQJNf4H7ZKlSmj42
- WZSNKaK/IM6JgWSl9QfalBJQuyJfmeZpwpLLwj0NmbsOrQL4FJSoG0TjuPsUzwfCOi
- N9YkLgu4ONG2hyyuwLyRSMczlQwBZdl/iQWpJ6W0=
-Date: Mon, 9 Dec 2019 16:56:27 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v8 17/26] media/v4l2-core: set pages dirty upon
- releasing DMA buffers
-Message-Id: <20191209165627.bf657cb8fdf660e8f91e966c@linux-foundation.org>
-In-Reply-To: <20191209225344.99740-18-jhubbard@nvidia.com>
-References: <20191209225344.99740-1-jhubbard@nvidia.com>
- <20191209225344.99740-18-jhubbard@nvidia.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by ozlabs.org (Postfix) with ESMTPS id 47X2r670qLz9sPh
+ for <linuxppc-dev@ozlabs.org>; Tue, 10 Dec 2019 12:42:45 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBA1g8jV031463
+ for <linuxppc-dev@ozlabs.org>; Mon, 9 Dec 2019 20:42:43 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wskq788m9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 09 Dec 2019 20:42:43 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
+ Tue, 10 Dec 2019 01:42:41 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 10 Dec 2019 01:42:38 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBA1gbPr54394894
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Dec 2019 01:42:37 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 19DDA11C04A;
+ Tue, 10 Dec 2019 01:42:37 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6145311C052;
+ Tue, 10 Dec 2019 01:42:35 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.59.157])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Dec 2019 01:42:35 +0000 (GMT)
+Subject: Re: [PATCH v5 3/6] powerpc/fadump: reorganize /sys/kernel/fadump_*
+ sysfs files
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20191209045826.30076-1-sourabhjain@linux.ibm.com>
+ <20191209045826.30076-4-sourabhjain@linux.ibm.com>
+ <20191209081023.GC706232@kroah.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+Date: Tue, 10 Dec 2019 07:12:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
+MIME-Version: 1.0
+In-Reply-To: <20191209081023.GC706232@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19121001-0012-0000-0000-00000373505B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121001-0013-0000-0000-000021AF20DB
+Message-Id: <64537bac-5fc3-bda8-4cac-338436b30d3e@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-09_05:2019-12-09,2019-12-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015
+ malwarescore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912100014
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,50 +107,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?ISO-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
- =?ISO-8859-1?Q?J=E9r?= =?ISO-8859-1?Q?=F4me?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- stable@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-doc@vger.kernel.org, mahesh@linux.vnet.ibm.com, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 9 Dec 2019 14:53:35 -0800 John Hubbard <jhubbard@nvidia.com> wrote:
 
-> After DMA is complete, and the device and CPU caches are synchronized,
-> it's still required to mark the CPU pages as dirty, if the data was
-> coming from the device. However, this driver was just issuing a
-> bare put_page() call, without any set_page_dirty*() call.
+
+On 12/9/19 1:40 PM, Greg KH wrote:
+> On Mon, Dec 09, 2019 at 10:28:23AM +0530, Sourabh Jain wrote:
+>> +#define CREATE_SYMLINK(target, symlink_name) do {\
+>> +	rc = compat_only_sysfs_link_entry_to_kobj(kernel_kobj, fadump_kobj, \
+>> +						  target, symlink_name); \
+>> +	if (rc) \
+>> +		pr_err("unable to create %s symlink (%d)", symlink_name, rc); \
+>> +} while (0)
 > 
-> Fix the problem, by calling set_page_dirty_lock() if the CPU pages
-> were potentially receiving data from the device.
 > 
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: <stable@vger.kernel.org>
+> No need for a macro, just spell it all out.  And properly clean up if an
+> error happens, you are just printing it out and moving on, which is
+> probably NOT what you want to do, right?
 
-What are the user-visible effects of this change?
+Yeah actually there is no point in keeping the fadump_enabled symlink if fadump_registered
+symlink creation fails.
 
-As it's cc:stable I'd normally send this to Linus within 1-2 weeks, or
-sooner.  Please confirm that this is a standalone fix, independent of
-the rest of this series.
+And it is even better to unregister the FADump if fadump_group creation fails.
+
+> 
+>> +static struct attribute_group fadump_group = {
+>> +	.attrs = fadump_attrs,
+>> +};
+> 
+> ATTRIBUTE_GROUPS()?
+
+Thanks, I will use this macro.
+
+-Sourabh Jain
+
 
 
