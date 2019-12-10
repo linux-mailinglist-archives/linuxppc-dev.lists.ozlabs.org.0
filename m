@@ -2,47 +2,118 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E50118621
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 12:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 947E7118645
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 12:28:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XHlh3TF5zDqZk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 22:24:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XHqM4lf1zDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 22:27:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="SRCfYNsI"; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XHgN5yqczDqYV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 22:20:55 +1100 (AEDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2019 03:20:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,299,1571727600"; 
- d="gz'50?scan'50,208,50";a="244811667"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga002.fm.intel.com with ESMTP; 10 Dec 2019 03:20:50 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1iedZR-000HYZ-UF; Tue, 10 Dec 2019 19:20:49 +0800
-Date: Tue, 10 Dec 2019 19:20:05 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH v2 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-Message-ID: <201912101903.uTvLRIgy%lkp@intel.com>
-References: <20191210044714.27265-5-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XHn546RJzDqSv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 22:26:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1575977157;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=1sfmtCAUUhHcjd98y89BbPgwjzi6ORHzMVPlzdumt7c=;
+ b=SRCfYNsIW3JqEUsYTFm5BoqITXj2um1aYEXWA5i2wf44mHPV6HNR0Yfa+g32cOIhUjflZv
+ I3Qen3+5diwvfsjUdYKSWR5DHwL9YG+Ucs5GyloJ5SdFTFxHtwRml6Q1MyHW76VfA2sjok
+ C14GaGavJzR+kk9DpCt14t0ByJ0fI44=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-423-I1kxIsanPWW9ImTAvoKXeg-1; Tue, 10 Dec 2019 06:25:54 -0500
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6061A107ACFC;
+ Tue, 10 Dec 2019 11:25:51 +0000 (UTC)
+Received: from [10.36.117.222] (ovpn-117-222.ams2.redhat.com [10.36.117.222])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 24CDF1084196;
+ Tue, 10 Dec 2019 11:25:46 +0000 (UTC)
+Subject: Re: [PATCH 5/6] mm, memory_hotplug: Provide argument for the pgprot_t
+ in arch_add_memory()
+To: Michal Hocko <mhocko@kernel.org>
+References: <20191209191346.5197-1-logang@deltatee.com>
+ <20191209191346.5197-6-logang@deltatee.com>
+ <ce50d9da-c60e-05a1-a86b-3bb3629de502@redhat.com>
+ <f34a4c52-cc95-15ed-8a72-c05ab4fd6d33@deltatee.com>
+ <CAPcyv4hpXCZxV5p7WaeGgE7ceujBBa5NOz9Z8fepDHOt6zHO2A@mail.gmail.com>
+ <20191210100432.GC10404@dhcp22.suse.cz>
+ <6da2b279-6a6d-d89c-a34c-962ed021d91d@redhat.com>
+ <20191210103452.GF10404@dhcp22.suse.cz>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <a9d6cfe8-39fb-accf-acdc-7cce5578bf2f@redhat.com>
+Date: Tue, 10 Dec 2019 12:25:46 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="g62ettbvkg3kwp6n"
-Content-Disposition: inline
-In-Reply-To: <20191210044714.27265-5-dja@axtens.net>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20191210103452.GF10404@dhcp22.suse.cz>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-MC-Unique: I1kxIsanPWW9ImTAvoKXeg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,259 +125,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- kbuild-all@lists.01.org, linux-s390@vger.kernel.org,
- aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, Daniel Axtens <dja@axtens.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ linux-s390 <linux-s390@vger.kernel.org>, linux-ia64@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ Linux-sh <linux-sh@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
+ Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Borislav Petkov <bp@alien8.de>,
+ Dan Williams <dan.j.williams@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10.12.19 11:34, Michal Hocko wrote:
+> On Tue 10-12-19 11:09:46, David Hildenbrand wrote:
+>> On 10.12.19 11:04, Michal Hocko wrote:
+>>> On Mon 09-12-19 12:43:40, Dan Williams wrote:
+>>>> On Mon, Dec 9, 2019 at 12:24 PM Logan Gunthorpe <logang@deltatee.com> wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> On 2019-12-09 12:23 p.m., David Hildenbrand wrote:
+>>>>>> On 09.12.19 20:13, Logan Gunthorpe wrote:
+>>> [...]
+>>>>>>>  #ifdef CONFIG_MEMORY_HOTPLUG
+>>>>>>> -int arch_add_memory(int nid, u64 start, u64 size,
+>>>>>>> +int arch_add_memory(int nid, u64 start, u64 size, pgprot_t prot,
+>>>>>>>                      struct mhp_restrictions *restrictions)
+>>>>>>
+>>>>>> Can we fiddle that into "struct mhp_restrictions" instead?
+>>>>>
+>>>>> Yes, if that's what people want, it's pretty trivial to do. I chose not
+>>>>> to do it that way because it doesn't get passed down to add_pages() and
+>>>>> it's not really a "restriction". If I don't hear any objections, I will
+>>>>> do that for v2.
+>>>>
+>>>> +1 to storing this information alongside the altmap in that structure.
+>>>> However, I agree struct mhp_restrictions, with the MHP_MEMBLOCK_API
+>>>> flag now gone, has lost all of its "restrictions". How about dropping
+>>>> the 'flags' property and renaming the struct to 'struct
+>>>> mhp_modifiers'?
+>>>
+>>> Hmm, this email somehow didn't end up in my inbox so I have missed it
+>>> before replying.
+>>>
+>>> Well, mhp_modifiers makes some sense and it would reduce the API
+>>> proliferation but how do you expect the prot part to be handled?
+>>> I really do not want people to think about PAGE_KERNEL or which
+>>> protection to use because my experience tells that this will get copied
+>>> without much thinking or simply will break with some odd usecases.
+>>> So how exactly this would be used?
+>>
+>> I was thinking about exactly the same "issue".
+>>
+>> 1. default initialization via a function
+>>
+>> memhp_modifier_default_init(&modified);
+>>
+>> 2. a flag that unlocks the prot field (default:0). Without the flag, it
+>> is ignored. We can keep the current initialization then.
+>>
+>> Other ideas?
+> 
+> 3. a prot mask to apply on top of PAGE_KERNEL? Or would that be
+> insufficient/clumsy?
+> 
 
---g62ettbvkg3kwp6n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+If it works for the given use case, I guess this would be simple and ok.
 
-Hi Daniel,
+-- 
+Thanks,
 
-Thank you for the patch! Yet something to improve:
+David / dhildenb
 
-[auto build test ERROR on next-20191209]
-[also build test ERROR on linus/master v5.5-rc1]
-[cannot apply to powerpc/next asm-generic/master v5.4]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-
-url:    https://github.com/0day-ci/linux/commits/Daniel-Axtens/KASAN-for-powerpc64-radix-plus-generic-mm-change/20191210-171342
-base:    6cf8298daad041cd15dc514d8a4f93ca3636c84e
-config: powerpc-allnoconfig (attached as .config)
-compiler: powerpc-linux-gcc (GCC) 7.5.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # save the attached .config to linux build tree
-        GCC_VERSION=7.5.0 make.cross ARCH=powerpc 
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from include/linux/printk.h:7:0,
-                    from include/linux/kernel.h:15,
-                    from arch/powerpc/kernel/prom.c:15:
-   arch/powerpc/kernel/prom.c: In function 'early_reserve_mem':
->> include/linux/kern_levels.h:5:18: error: format '%llu' expects argument of type 'long long unsigned int', but argument 3 has type 'phys_addr_t {aka unsigned int}' [-Werror=format=]
-    #define KERN_SOH "\001"  /* ASCII Start Of Header */
-                     ^
-   include/linux/kern_levels.h:11:18: note: in expansion of macro 'KERN_SOH'
-    #define KERN_ERR KERN_SOH "3" /* error conditions */
-                     ^~~~~~~~
-   include/linux/printk.h:304:9: note: in expansion of macro 'KERN_ERR'
-     printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
-            ^~~~~~~~
->> arch/powerpc/kernel/prom.c:694:4: note: in expansion of macro 'pr_err'
-       pr_err("===========================================\n"
-       ^~~~~~
-   arch/powerpc/kernel/prom.c:697:48: note: format string is defined here
-        "The actual physical memory detected is %llu MB.\n"
-                                                ~~~^
-                                                %u
-   cc1: all warnings being treated as errors
---
-   In file included from include/linux/printk.h:7:0,
-                    from include/linux/kernel.h:15,
-                    from arch/powerpc//kernel/prom.c:15:
-   arch/powerpc//kernel/prom.c: In function 'early_reserve_mem':
->> include/linux/kern_levels.h:5:18: error: format '%llu' expects argument of type 'long long unsigned int', but argument 3 has type 'phys_addr_t {aka unsigned int}' [-Werror=format=]
-    #define KERN_SOH "\001"  /* ASCII Start Of Header */
-                     ^
-   include/linux/kern_levels.h:11:18: note: in expansion of macro 'KERN_SOH'
-    #define KERN_ERR KERN_SOH "3" /* error conditions */
-                     ^~~~~~~~
-   include/linux/printk.h:304:9: note: in expansion of macro 'KERN_ERR'
-     printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
-            ^~~~~~~~
-   arch/powerpc//kernel/prom.c:694:4: note: in expansion of macro 'pr_err'
-       pr_err("===========================================\n"
-       ^~~~~~
-   arch/powerpc//kernel/prom.c:697:48: note: format string is defined here
-        "The actual physical memory detected is %llu MB.\n"
-                                                ~~~^
-                                                %u
-   cc1: all warnings being treated as errors
-
-vim +/pr_err +694 arch/powerpc/kernel/prom.c
-
-   675	
-   676		if (IS_ENABLED(CONFIG_KASAN) && IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
-   677			kasan_memory_size =
-   678				((phys_addr_t)CONFIG_PHYS_MEM_SIZE_FOR_KASAN << 20);
-   679	
-   680			if (top_phys_addr < kasan_memory_size) {
-   681				/*
-   682				 * We are doomed. Attempts to call e.g. panic() are
-   683				 * likely to fail because they call out into
-   684				 * instrumented code, which will almost certainly
-   685				 * access memory beyond the end of physical
-   686				 * memory. Hang here so that at least the NIP points
-   687				 * somewhere that will help you debug it if you look at
-   688				 * it in qemu.
-   689				 */
-   690				while (true)
-   691					;
-   692			} else if (top_phys_addr > kasan_memory_size) {
-   693				/* print a biiiig warning in hopes people notice */
- > 694				pr_err("===========================================\n"
-   695					"Physical memory exceeds compiled-in maximum!\n"
-   696					"This kernel was compiled for KASAN with %u MB physical memory.\n"
-   697					"The actual physical memory detected is %llu MB.\n"
-   698					"Memory above the compiled limit will not be used!\n"
-   699					"===========================================\n",
-   700					CONFIG_PHYS_MEM_SIZE_FOR_KASAN,
-   701					top_phys_addr / (1024 * 1024));
-   702			}
-   703	
-   704			kasan_shadow_start = _ALIGN_DOWN(kasan_memory_size * 7 / 8,
-   705							 PAGE_SIZE);
-   706			DBG("reserving %llx -> %llx for KASAN",
-   707			    kasan_shadow_start, top_phys_addr);
-   708			memblock_reserve(kasan_shadow_start,
-   709					 top_phys_addr - kasan_shadow_start);
-   710		}
-   711	}
-   712	
-
----
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
-
---g62ettbvkg3kwp6n
-Content-Type: application/gzip
-Content-Disposition: attachment; filename=".config.gz"
-Content-Transfer-Encoding: base64
-
-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
-/kQSmnpMEcrnDaxA1fj/NY/aVLRaAAA=
-
---g62ettbvkg3kwp6n--
