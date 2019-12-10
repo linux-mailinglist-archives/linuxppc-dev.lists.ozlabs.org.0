@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DA01197F3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 22:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55142119AAE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2019 23:08:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XYN96gHHzDqH4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 08:38:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XZ2S6xq5zDq8X
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 09:08:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,35 +15,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="bL7mO6Tn"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="e7KyGFKM"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XYJl4RHxzDqYp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 08:35:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XYz05vVlzDqTQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 09:05:32 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DF9D12465E;
- Tue, 10 Dec 2019 21:35:48 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id EB90A2053B;
+ Tue, 10 Dec 2019 22:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1576013749;
+ s=default; t=1576015530;
  bh=pEEjz3Ac7oHki0v/6nYWxfjSb4k9VlXfoHypBWSLk2w=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=bL7mO6TnbAbB7n2KJiUOKc0+gws81hak0G7ajfwHHBU98B8JqU832SbtiaF5OQqIw
- tlX4BTZUSlKtFFex9Qq4nku/ke6FG7IaigNVsATZt6BPh3PZZFLPk4F2n6B/ue1NgH
- wIY50STImDssk8nCtqoOxd1BkSp4yEHQsjWZx6MI=
+ b=e7KyGFKMlsY01hdZi535qKpbwBeufSPRHo2DCE4ls2B7Xhj2hMY2gzvjumppMjh5Z
+ YhcgKxA+mqpt8E4sOTVKwYr3c1KIeiAoWuyobE8ZFna9RVZT46PMpyTc6PDdwAdg/z
+ p9toLvE8MsOfUFYGtc79PUlwy/Am8VEXjaicFxD4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 171/177] crypto: vmx - Avoid weird build failures
-Date: Tue, 10 Dec 2019 16:32:15 -0500
-Message-Id: <20191210213221.11921-171-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 125/130] crypto: vmx - Avoid weird build failures
+Date: Tue, 10 Dec 2019 17:02:56 -0500
+Message-Id: <20191210220301.13262-125-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
-References: <20191210213221.11921-1-sashal@kernel.org>
+In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
+References: <20191210220301.13262-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
