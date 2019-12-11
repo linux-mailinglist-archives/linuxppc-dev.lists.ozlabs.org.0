@@ -2,54 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF279119FB9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 00:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A50A119FFD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 01:29:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XcVL1XpdzDqHf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 10:59:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Xd8k5VqHzDqTY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 11:29:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=cxmp=2a=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64;
+ helo=hqnvemgate25.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="mtQrj5I0"; 
+ dkim-atps=neutral
+Received: from hqnvemgate25.nvidia.com (hqnvemgate25.nvidia.com
+ [216.228.121.64])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XcPH0gRwzDqcN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 10:54:58 +1100 (AEDT)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
- data access at 0x00f0fd0d
-Date: Tue, 10 Dec 2019 23:54:54 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cf_kernel_version see_also
-Message-ID: <bug-205099-206035-PIyJinbXTE@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
-References: <bug-205099-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Xd6P2CtszDqXK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 11:27:08 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5df037d10000>; Tue, 10 Dec 2019 16:26:57 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 10 Dec 2019 16:27:03 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 10 Dec 2019 16:27:03 -0800
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Dec
+ 2019 00:27:03 +0000
+Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
+ (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Dec
+ 2019 00:27:02 +0000
+Subject: Re: [PATCH v8 24/26] mm/gup: track FOLL_PIN pages
+To: Jan Kara <jack@suse.cz>
+References: <20191209225344.99740-1-jhubbard@nvidia.com>
+ <20191209225344.99740-25-jhubbard@nvidia.com>
+ <20191210133932.GH1551@quack2.suse.cz>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <918e9f4b-d1bc-95b4-3768-f6a28d625d58@nvidia.com>
+Date: Tue, 10 Dec 2019 16:27:02 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
+In-Reply-To: <20191210133932.GH1551@quack2.suse.cz>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1576024017; bh=qZMhuX1AH+ipTqKh5IOl5OAO53v7INQFJxlKSWfldSI=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=mtQrj5I0dTbE0p+0Duy/yLLURBp189gBz9/n7w24993utz/qyGtSs7PPQAv+iIImb
+ JZ8mcjPAxzh+nh7PkxaNbrLb3BrJ2IB5TLP1oCbepwYNd9zP8BSYgamyM4DvGzILi8
+ XQkGoEiIlVo58hcTQukHAefGfROo8agytuwS+0sfjZ1Jg7ij7PU3d1I4gxsqVd70Fa
+ GkNwTpmVy0rbDSvIttlOcb1nzarUHfrPPIMHBT+ByVSSyhRxc5/lScetmOjddYAdyE
+ GT/eTQw2K0oKAfFgOT8KfXo08uqKjO85NJPryhNn/fDyZhmI4MaNcIcj91kNrcZeuR
+ Z4qb08ZWAeRjQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,82 +80,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah
+ Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>, Mike
+ Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
+On 12/10/19 5:39 AM, Jan Kara wrote:
+...
+>> +void grab_page(struct page *page, unsigned int flags)
+>> +{
+>> +	if (flags & FOLL_GET)
+>> +		get_page(page);
+>> +	else if (flags & FOLL_PIN) {
+>> +		get_page(page);
+>> +		WARN_ON_ONCE(flags & FOLL_GET);
+>> +		/*
+>> +		 * Use get_page(), above, to do the refcount error
+>> +		 * checking. Then just add in the remaining references:
+>> +		 */
+>> +		page_ref_add(page, GUP_PIN_COUNTING_BIAS - 1);
+> 
+> This is wrong for two reasons:
+> 
+> 1) You miss compound_head() indirection from get_page() for this
+> page_ref_add().
 
-Erhard F. (erhard_f@mailbox.org) changed:
+whoops, yes that is missing.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-     Kernel Version|5.4-rc1                     |5.5-rc1
-           See Also|https://bugzilla.kernel.org |
-                   |/show_bug.cgi?id=3D204479     |
+> 
+> 2) page_ref_add() could overflow the counter without noticing.
+> 
+> Especially with GUP_PIN_COUNTING_BIAS being non-trivial, it is realistic
+> that an attacker might try to overflow the page refcount and we have to
+> protect the kernel against that. So I think that all the places that would
+> use grab_page() actually need to use try_grab_page() and then gracefully
+> deal with the failure.
+> 
 
---- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
-Unchanged in 5.5-rc1.
+OK, I've replaced grab_page() everywhere with try_grab_page(), with the
+above issues fixed. The v7 patchset had error handling for grab_page() failures,
+that had been reviewed, so relevants parts of that have reappeared.
 
-[..]
-[   19.425679] BUG: Unable to handle kernel data access on read at 0x00f0fd=
-0d
-[   19.425693] Faulting instruction address: 0xf165a560
-[   19.426731] Oops: Kernel access of bad area, sig: 11 [#1]
-[   19.426745] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 DEBUG_PAGEALLOC=
- PowerMac
-[   19.426757] Modules linked in: raid6_pq(+) zlib_inflate ehci_pci(+) ohci=
-_hcd
-hwmon ehci_hcd i2c_algo_bit drm_kms_helper sungem syscopyarea sungem_phy
-sysfillrect firewire_ohci firewire_core sysimgblt crc_itu_t sr_mod fb_sys_f=
-ops
-usbcore ttm cdrom snd_aoa_i2sbus snd_aoa_soundbus usb_common snd_pcm snd_ti=
-mer
-snd soundcore drm ssb pcmcia drm_panel_orientation_quirks pcmcia_core
-uninorth_agp agpgart
-[   19.426986] CPU: 1 PID: 127 Comm: modprobe Tainted: G        W=20=20=20=
-=20=20=20=20=20
-5.5.0-rc1-PowerMacG4 #3
-[   19.426997] NIP:  f165a560 LR: f165a4e8 CTR: c0247f54
-[   19.427009] REGS: e86d9740 TRAP: 0300   Tainted: G        W=20=20=20=20=
-=20=20=20=20=20
-(5.5.0-rc1-PowerMacG4)
-[   19.427014] MSR:  02009032 <VEC,EE,ME,IR,DR,RI>  CR: 22228828  XER: 0000=
-0000
-[   19.427048] DAR: 00f0fd0d DSISR: 40000000=20
-               GPR00: e86d9998 e86d97f8 ee26c720 f166d070 00000010 00000000
-f165a4e8 00000000=20
-               GPR08: 00000000 00f0fd0d e7171aea fffffff0 c0247f54 00b25ff4
-00000060 00000050=20
-               GPR16: f166d000 ec077000 ec076000 00000070 00000060 00000050
-00000040 00000030=20
-               GPR24: 00000020 00000010 00000012 e86d9a84 e86d9a48 ec077010
-ec076010 00000000=20
-[   19.427198] NIP [f165a560] raid6_altivec8_gen_syndrome_real+0x3c0/0x480
-[raid6_pq]
-[   19.427228] LR [f165a4e8] raid6_altivec8_gen_syndrome_real+0x348/0x480
-[raid6_pq]
-[   19.427234] Call Trace:
-[   19.427242] [e86d97f8] [0000000a] 0xa (unreliable)
-[   19.427277] [e86d99e8] [f165a654] raid6_altivec8_gen_syndrome+0x34/0x58
-[raid6_pq]
-[   19.427309] [e86d9a08] [f15d83d8] init_module+0x3d8/0x528 [raid6_pq]
-[   19.427334] [e86d9b18] [c0005828] do_one_initcall+0xb8/0x36c
-[   19.427355] [e86d9be8] [c010e5e0] do_init_module+0xa8/0x2c4
-[   19.427369] [e86d9c18] [c01114c0] load_module+0x2be4/0x2d68
-[   19.427383] [e86d9e18] [c01118b8] sys_finit_module+0x100/0x138
-[   19.427397] [e86d9f38] [c001a274] ret_from_syscall+0x0/0x34
-[   19.427410] --- interrupt: c01 at 0x96ff78
-                   LR =3D 0xafda14
-[   19.427416] Instruction dump:
-[   19.427429] 1304c4c4 7d2048ce 39210090 1325ccc4 7d6048ce 1346d4c4 812100=
-88
-1367dcc4=20
-[   19.427463] 7d1098ce 115f5b06 116b5800 8141008c <7c0048ce> 392100a0 7d80=
-48ce
-392100b0=20
-[   19.427505] ---[ end trace 161d8d283bc9b7b8 ]---
+I had initially hesitated to do this, but now I've gone ahead and added:
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+#define page_ref_zero_or_close_to_bias_overflow(page) \
+	((unsigned int) page_ref_count(page) + \
+		GUP_PIN_COUNTING_BIAS <= GUP_PIN_COUNTING_BIAS)
+
+...which is used in the new try_grab_page() for protection.
+
+
+>> @@ -278,11 +425,23 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+>>  		goto retry;
+>>  	}
+>>  
+>> -	if (flags & FOLL_GET) {
+>> +	if (flags & (FOLL_PIN | FOLL_GET)) {
+>> +		/*
+>> +		 * Allow try_get_page() to take care of error handling, for
+>> +		 * both cases: FOLL_GET or FOLL_PIN:
+>> +		 */
+>>  		if (unlikely(!try_get_page(page))) {
+>>  			page = ERR_PTR(-ENOMEM);
+>>  			goto out;
+>>  		}
+>> +
+>> +		if (flags & FOLL_PIN) {
+>> +			WARN_ON_ONCE(flags & FOLL_GET);
+>> +
+>> +			/* We got a +1 refcount from try_get_page(), above. */
+>> +			page_ref_add(page, GUP_PIN_COUNTING_BIAS - 1);
+>> +			__update_proc_vmstat(page, NR_FOLL_PIN_REQUESTED, 1);
+>> +		}
+>>  	}
+> 
+> The same problem here as above, plus this place should use the same
+> try_grab..() helper, shouldn't it?
+
+
+Yes, now that the new try_grab_page() has behavior that matches what
+this call site needs. Done.
+
+
+> 
+>> @@ -544,8 +703,8 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
+>>  	/* make this handle hugepd */
+>>  	page = follow_huge_addr(mm, address, flags & FOLL_WRITE);
+>>  	if (!IS_ERR(page)) {
+>> -		BUG_ON(flags & FOLL_GET);
+>> -		return page;
+>> +		WARN_ON_ONCE(flags & (FOLL_GET | FOLL_PIN));
+>> +		return NULL;
+> 
+> I agree with the change to WARN_ON_ONCE but why is correct the change of
+> the return value? Note that this is actually a "success branch".
+> 
+
+Good catch, thanks! I worked through the logic...correctly at first, but then I must 
+have become temporarily dazed by the raw destructive power of the pre-existing 
+BUG_ON() statement, and screwed it up after all. :)
+
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
+
