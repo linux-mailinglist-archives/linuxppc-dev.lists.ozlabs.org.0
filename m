@@ -2,62 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B492511A501
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 08:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3255811A517
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 08:29:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XpK60jWCzDqkb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:22:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XpTx5X8jzDqTL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:29:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
- envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=dolbeau.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
- [209.85.128.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XpH33FbHzDqjv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 18:20:15 +1100 (AEDT)
-Received: by mail-wm1-f65.google.com with SMTP id n9so5834555wmd.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 23:20:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=0IGEKOX80mWd/tAnrQpu7UJ2fkPQRSvZdDK4BowFsHo=;
- b=nDNaN0TSsFxskZDcVXx4DtJiHphzPjbK+u8gsU/TLJrMW/3uflW5UuZ6vaBHOpnDT2
- fM2NV/0nPMgO5m/jIdOofh4G4Ek/WVX5qP+psjDCDb2+piB/SCz8vYabSGSVKE+xT33F
- a0Ya21CBLcmHtpMM9I7OLiyav3ND1Lvn0pq2QCBqVO81RHqiSHGeNfHvjOmBcVN5pf80
- PlRE85i1ZnB/HuLpZo99+CsTWxjSHGDlmIqMkXQZGAeO6N6B7k9eeY0tMLrK9ZuDOxC5
- Eooroh3bCZ3uhpb5TDSz3qJACmw3uIB7yCFKxWkE5q80G53mb/kCMGcA41bZtau7qZxK
- FFsg==
-X-Gm-Message-State: APjAAAWvUIy8ZUgQqmeL5+iL3N/A4KuFVy5e3wE9oME2x09D+7H66LUe
- 0/98GY8Kqo87XET/UFgU2aYeG3h5DJEyn2pIMOQ=
-X-Google-Smtp-Source: APXvYqypUTpXiAsTO/PelgqAnB9ENCDtpdO4/KQu3kTfjaWkGDOSHTCXu3hXohQ6KqGvFTF7tAUJ2ZFGFTMTvlbaU14=
-X-Received: by 2002:a05:600c:2318:: with SMTP id
- 24mr1760131wmo.48.1576048811398; 
- Tue, 10 Dec 2019 23:20:11 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XpSF35XhzDqQj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 18:28:12 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id E1E81AE3D;
+ Wed, 11 Dec 2019 07:28:07 +0000 (UTC)
+Date: Wed, 11 Dec 2019 08:28:06 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Daniel Axtens <dja@axtens.net>
+Subject: Re: [PATCH] powerpc/fault: kernel can extend a user process's stack
+Message-ID: <20191211072806.GI3986@kitsune.suse.cz>
+References: <20191211014337.28128-1-dja@axtens.net>
 MIME-Version: 1.0
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
- <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
- <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
- <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
- <87eexbk3gw.fsf@linux.ibm.com>
-In-Reply-To: <87eexbk3gw.fsf@linux.ibm.com>
-From: Romain Dolbeau <romain@dolbeau.org>
-Date: Wed, 11 Dec 2019 08:19:59 +0100
-Message-ID: <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
-Subject: Call for report - G5/PPC970 status (was: Re: Found the commit for:
- 5.3.7 64-bits kernel doesn't boot on G5 Quad [regression])
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191211014337.28128-1-dja@axtens.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,43 +46,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC List Debian <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Tom Lane <tgl@sss.pgh.pa.us>, linuxppc-dev@lists.ozlabs.org,
+ Daniel Black <daniel@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le mer. 11 d=C3=A9c. 2019 =C3=A0 03:20, Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> a =C3=A9crit :
-> The PowerMac system we have internally was not able to recreate this.
-
-To narrow down the issue - is that a PCI/PCI-X (7,3 [1]) or PCIe G5 (11,2 [=
-1]) ?
-Single, dual or quad ?
-
-Same question to anyone else with a G5 / PPC970 - what is it and does
-it boot recent PPC64 Linux kernel ?
-
-Christian from the original report has a quad, like me (so powermac11,2).
-
-There was also a report of a powermac7.3 working in the original discussion=
-,
-single or dual unspecified.
-
-So this might be a Quad thing, or a more general 11,2 thing...
-
-> At this point, I am not sure what would cause the Machine check with
-> that patch series because we have not changed the VA bits in that patch.
-
-Any test I could run that would help you tracking the bug ?
-
-Cordially,
-
-Romain
-
-[1] <https://en.wikipedia.org/wiki/Power_Mac_G5#Product_revision_history>
-
-
---
-Romain Dolbeau
+On Wed, Dec 11, 2019 at 12:43:37PM +1100, Daniel Axtens wrote:
+> If a process page-faults trying to write beyond the end of its
+> stack, we attempt to grow the stack.
+> 
+> However, if the kernel attempts to write beyond the end of a
+> process's stack, it takes a bad fault. This can occur when the
+> kernel is trying to set up a signal frame.
+> 
+> Permit the kernel to grow a process's stack. The same general
+> limits as to how and when the stack can be grown apply: the kernel
+> code still passes through expand_stack(), so anything that goes
+> beyond e.g. the rlimit should still be blocked.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=205183
+Fixes: 14cf11af6cf6 ("powerpc: Merge enough to start building in
+arch/powerpc.")
+> Reported-by: Tom Lane <tgl@sss.pgh.pa.us>
+> Cc: Daniel Black <daniel@linux.ibm.com>
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> ---
+>  arch/powerpc/mm/fault.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index b5047f9b5dec..00183731ea22 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -287,7 +287,17 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
+>  			if (!res)
+>  				return !store_updates_sp(inst);
+>  			*must_retry = true;
+> +		} else if ((flags & FAULT_FLAG_WRITE) &&
+> +			   !(flags & FAULT_FLAG_USER)) {
+> +			/*
+> +			 * the kernel can also attempt to write beyond the end
+> +			 * of a process's stack - for example setting up a
+> +			 * signal frame. We assume this is valid, subject to
+> +			 * the checks in expand_stack() later.
+> +			 */
+> +			return false;
+>  		}
+> +
+>  		return true;
+>  	}
+>  	return false;
+> -- 
+> 2.20.1
+> 
