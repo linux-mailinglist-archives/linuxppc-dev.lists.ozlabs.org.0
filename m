@@ -1,75 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B492511A501
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 08:22:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED69E11A3C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 06:24:26 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XljM2TPDzDql2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 16:24:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XpK60jWCzDqkb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:22:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
+ envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="d+vkKjwN"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ dmarc=none (p=none dis=none) header.from=dolbeau.org
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
+ [209.85.128.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Xlfk2gyzzDqf2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 16:22:04 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id 2so1188371pfx.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 21:22:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
- bh=OGsdV5jSDDEFcnOk4gJS+m/O081C8UQbyskvOH4VTPw=;
- b=d+vkKjwN/B7Eemt4aTf5+2EppVPiUSkGgGmMGibO69VudKHjSmIcTbfwnpxCCc+oVT
- 2S6XUMuiwAyy1OK8j/g/0ywNzRSnfEzqdVVtBSWr6aCDKX4cMZa65yqdTSngOAoSerQG
- ZZ/fl2c0wRuhrRu2sVo6USDP7/ZGWJSzW6Sc4=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XpH33FbHzDqjv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 18:20:15 +1100 (AEDT)
+Received: by mail-wm1-f65.google.com with SMTP id n9so5834555wmd.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 23:20:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=OGsdV5jSDDEFcnOk4gJS+m/O081C8UQbyskvOH4VTPw=;
- b=aq6k3/ddJyWQo8F6TLPrp+jbKIMJ21Lm/J5x2aFp/rpm8kmiWio4nj7eIq0/jqmz73
- BoqP3qRKn6lqp0Ksre9hKmMnYGc8JpRXw0lRIB7XRU16hiTTWxciyVBSB1HKalGwlvTN
- t8naqSCfMwozZxBdAGSZfUVgZxK0NU0pQd5Bc0jA7ueJU3M4MDFXOGPQH9EeH+PvidZ9
- xc7HytXas6bxGRwSAmKUsj+txKjhjpTC8VaUBev63C/LjqaLKUAje3wHAXkL0o9/Rxam
- y0QpU0vXx81XqNP5AVFaaD3lPwbhhBBjj4j5QHl8a9pH/qYhWoU97imFhEuB9kc9mARO
- 0DAQ==
-X-Gm-Message-State: APjAAAUyptgq/8mKlcdMcmKlEv4KpOS9kLbWBcLAytafTDDa5wzFsUKe
- RpdiDOD4ay1+6RFE2W3VEG3s3Q==
-X-Google-Smtp-Source: APXvYqy8kiPOFzQDhHNR7yZIAuZ3DCi8vXHTVH/NuDcXMhPAyICB5cohpd05/qlLbtvTlkWmL2TaeA==
-X-Received: by 2002:a63:5d4d:: with SMTP id o13mr2058179pgm.182.1576041721369; 
- Tue, 10 Dec 2019 21:22:01 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-899f-c50f-5647-b1f9.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:899f:c50f:5647:b1f9])
- by smtp.gmail.com with ESMTPSA id y62sm966374pfg.45.2019.12.10.21.21.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2019 21:22:00 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Balbir Singh <bsingharora@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kasan-dev@googlegroups.com,
- christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com
-Subject: Re: [PATCH v2 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-In-Reply-To: <71751e27-e9c5-f685-7a13-ca2e007214bc@gmail.com>
-References: <20191210044714.27265-1-dja@axtens.net>
- <20191210044714.27265-5-dja@axtens.net>
- <71751e27-e9c5-f685-7a13-ca2e007214bc@gmail.com>
-Date: Wed, 11 Dec 2019 16:21:57 +1100
-Message-ID: <875zincu8a.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=0IGEKOX80mWd/tAnrQpu7UJ2fkPQRSvZdDK4BowFsHo=;
+ b=nDNaN0TSsFxskZDcVXx4DtJiHphzPjbK+u8gsU/TLJrMW/3uflW5UuZ6vaBHOpnDT2
+ fM2NV/0nPMgO5m/jIdOofh4G4Ek/WVX5qP+psjDCDb2+piB/SCz8vYabSGSVKE+xT33F
+ a0Ya21CBLcmHtpMM9I7OLiyav3ND1Lvn0pq2QCBqVO81RHqiSHGeNfHvjOmBcVN5pf80
+ PlRE85i1ZnB/HuLpZo99+CsTWxjSHGDlmIqMkXQZGAeO6N6B7k9eeY0tMLrK9ZuDOxC5
+ Eooroh3bCZ3uhpb5TDSz3qJACmw3uIB7yCFKxWkE5q80G53mb/kCMGcA41bZtau7qZxK
+ FFsg==
+X-Gm-Message-State: APjAAAWvUIy8ZUgQqmeL5+iL3N/A4KuFVy5e3wE9oME2x09D+7H66LUe
+ 0/98GY8Kqo87XET/UFgU2aYeG3h5DJEyn2pIMOQ=
+X-Google-Smtp-Source: APXvYqypUTpXiAsTO/PelgqAnB9ENCDtpdO4/KQu3kTfjaWkGDOSHTCXu3hXohQ6KqGvFTF7tAUJ2ZFGFTMTvlbaU14=
+X-Received: by 2002:a05:600c:2318:: with SMTP id
+ 24mr1760131wmo.48.1576048811398; 
+ Tue, 10 Dec 2019 23:20:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+ <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+ <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
+ <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
+ <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
+ <87eexbk3gw.fsf@linux.ibm.com>
+In-Reply-To: <87eexbk3gw.fsf@linux.ibm.com>
+From: Romain Dolbeau <romain@dolbeau.org>
+Date: Wed, 11 Dec 2019 08:19:59 +0100
+Message-ID: <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
+Subject: Call for report - G5/PPC970 status (was: Re: Found the commit for:
+ 5.3.7 64-bits kernel doesn't boot on G5 Quad [regression])
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,111 +69,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Balbir,
+Le mer. 11 d=C3=A9c. 2019 =C3=A0 03:20, Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> a =C3=A9crit :
+> The PowerMac system we have internally was not able to recreate this.
 
->> +Discontiguous memory can occur when you have a machine with memory spread
->> +across multiple nodes. For example, on a Talos II with 64GB of RAM:
->> +
->> + - 32GB runs from 0x0 to 0x0000_0008_0000_0000,
->> + - then there's a gap,
->> + - then the final 32GB runs from 0x0000_2000_0000_0000 to 0x0000_2008_0000_0000
->> +
->> +This can create _significant_ issues:
->> +
->> + - If we try to treat the machine as having 64GB of _contiguous_ RAM, we would
->> +   assume that ran from 0x0 to 0x0000_0010_0000_0000. We'd then reserve the
->> +   last 1/8th - 0x0000_000e_0000_0000 to 0x0000_0010_0000_0000 as the shadow
->> +   region. But when we try to access any of that, we'll try to access pages
->> +   that are not physically present.
->> +
->
-> If we reserved memory for KASAN from each node (discontig region), we might survive
-> this no? May be we need NUMA aware KASAN? That might be a generic change, just thinking
-> out loud.
+To narrow down the issue - is that a PCI/PCI-X (7,3 [1]) or PCIe G5 (11,2 [=
+1]) ?
+Single, dual or quad ?
 
-The challenge is that - AIUI - in inline instrumentation, the compiler
-doesn't generate calls to things like __asan_loadN and
-__asan_storeN. Instead it uses -fasan-shadow-offset to compute the
-checks, and only calls the __asan_report* family of functions if it
-detects an issue. This also matches what I can observe with objdump
-across outline and inline instrumentation settings.
+Same question to anyone else with a G5 / PPC970 - what is it and does
+it boot recent PPC64 Linux kernel ?
 
-This means that for this sort of thing to work we would need to either
-drop back to out-of-line calls, or teach the compiler how to use a
-nonlinear, NUMA aware mem-to-shadow mapping.
+Christian from the original report has a quad, like me (so powermac11,2).
 
-I'll document this a bit better in the next spin.
+There was also a report of a powermac7.3 working in the original discussion=
+,
+single or dual unspecified.
 
->> +	if (IS_ENABLED(CONFIG_KASAN) && IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
->> +		kasan_memory_size =
->> +			((phys_addr_t)CONFIG_PHYS_MEM_SIZE_FOR_KASAN << 20);
->> +
->> +		if (top_phys_addr < kasan_memory_size) {
->> +			/*
->> +			 * We are doomed. Attempts to call e.g. panic() are
->> +			 * likely to fail because they call out into
->> +			 * instrumented code, which will almost certainly
->> +			 * access memory beyond the end of physical
->> +			 * memory. Hang here so that at least the NIP points
->> +			 * somewhere that will help you debug it if you look at
->> +			 * it in qemu.
->> +			 */
->> +			while (true)
->> +				;
->
-> Again with the right hooks in check_memory_region_inline() these are recoverable,
-> or so I think
+So this might be a Quad thing, or a more general 11,2 thing...
 
-So unless I misunderstand the circumstances in which
-check_memory_region_inline is used, this isn't going to help with inline
-instrumentation.
+> At this point, I am not sure what would cause the Machine check with
+> that patch series because we have not changed the VA bits in that patch.
 
->> +void __init kasan_init(void)
->> +{
->> +	int i;
->> +	void *k_start = kasan_mem_to_shadow((void *)RADIX_KERN_VIRT_START);
->> +	void *k_end = kasan_mem_to_shadow((void *)RADIX_VMEMMAP_END);
->> +
->> +	pte_t pte = __pte(__pa(kasan_early_shadow_page) |
->> +			  pgprot_val(PAGE_KERNEL) | _PAGE_PTE);
->> +
->> +	if (!early_radix_enabled())
->> +		panic("KASAN requires radix!");
->> +
->
-> I think this is avoidable, we could use a static key for disabling kasan in
-> the generic code. I wonder what happens if someone tries to boot this
-> image on a Power8 box and keeps panic'ing with no easy way of recovering.
+Any test I could run that would help you tracking the bug ?
 
-Again, assuming I understand correctly that the compiler generates raw
-IR->asm for these checks rather than calling out to a function, then I
-don't think we get a way to intercept those checks. It's too late to do
-anything at the __asan report stage because that will already have
-accessed memory that's not set up properly.
+Cordially,
 
-If you try to boot this on a Power8 box it will panic and you'll have to
-boot into another kernel from the bootloader. I don't think it's
-avoidable without disabling inline instrumentation, but I'd love to be
-proven wrong.
+Romain
 
->
-> NOTE: I can't test any of these, well may be with qemu, let me see if I can spin
-> the series and provide more feedback
+[1] <https://en.wikipedia.org/wiki/Power_Mac_G5#Product_revision_history>
 
-It's actually super easy to do simple boot tests with qemu, it works fine in TCG,
-Michael's wiki page at
-https://github.com/linuxppc/wiki/wiki/Booting-with-Qemu is very helpful.
 
-I did this a lot in development.
-
-My full commandline, fwiw, is:
-
-qemu-system-ppc64  -m 8G -M pseries -cpu power9  -kernel ../out-3s-radix/vmlinux  -nographic -chardev stdio,id=charserial0,mux=on -device spapr-vty,chardev=charserial0,reg=0x30000000 -initrd ./rootfs-le.cpio.xz -mon chardev=charserial0,mode=readline -nodefaults -smp 4
-
-Regards,
-Daniel
-
+--
+Romain Dolbeau
