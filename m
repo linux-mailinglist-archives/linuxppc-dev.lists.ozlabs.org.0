@@ -2,84 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7619711B9B8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F269E11B9E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:18:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3Ny6Cj0zDqGx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:11:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3YS6t2VzDqq0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:18:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1CS4fp3zDqgj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:32:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47Y1CQ5y38z8wHf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:32:50 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47Y1CQ49yrz9sj3; Thu, 12 Dec 2019 02:32:50 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="au4WMGwj"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47Y1CM6gQcz9shq
- for <linuxppc-dev@ozlabs.org>; Thu, 12 Dec 2019 02:32:47 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBBFWPGb080981; Wed, 11 Dec 2019 10:32:44 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wtf83van8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Dec 2019 10:32:43 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBBFBPpg002198;
- Wed, 11 Dec 2019 15:32:43 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma02dal.us.ibm.com with ESMTP id 2wr3q6y9j7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Dec 2019 15:32:43 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBBFWg1S54264180
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Dec 2019 15:32:42 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B252AE05F;
- Wed, 11 Dec 2019 15:32:42 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 03A43AE05C;
- Wed, 11 Dec 2019 15:32:41 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.41.178.211])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 11 Dec 2019 15:32:41 +0000 (GMT)
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH] net/ibmvnic: Fix typo in retry check
-Date: Wed, 11 Dec 2019 09:32:39 -0600
-Message-Id: <1576078359-9220-1-git-send-email-tlfalcon@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-11_04:2019-12-11,2019-12-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- spamscore=0 priorityscore=1501 suspectscore=1 mlxscore=0 adultscore=0
- clxscore=1015 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912110131
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1GL1bq2zDqdP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:35:22 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C21D324679;
+ Wed, 11 Dec 2019 15:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1576078519;
+ bh=sSeF2pOcrcOoEKD/5DY8hdbuJunIM9Yesp2liHcaKRI=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=au4WMGwjFGt9pH2XXTIMyyvKnoSZw+VyUkhChBkSDtEpaxYGTOd9eyGvOOwVuBuLS
+ tNIEw7D3itivzfq6pJLmWMfEyAPhlukLkSwO8odr+3ZupcQov8rLgF497Vfx4e3+d3
+ VCSZCOreQa7ky3QfNHpWBQNyFmz9aucFodHb+zBQ=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 08/42] powerpc/pseries: Mark
+ accumulate_stolen_time() as notrace
+Date: Wed, 11 Dec 2019 10:34:36 -0500
+Message-Id: <20191211153510.23861-8-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191211153510.23861-1-sashal@kernel.org>
+References: <20191211153510.23861-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,34 +60,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Thomas Falcon <tlfalcon@linux.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This conditional is missing a bang, with the intent
-being to break when the retry count reaches zero.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-Fixes: 476d96ca9c ("ibmvnic: Bound waits for device queries")
-Suggested-by: Juliet Kim <minkim@linux.ibm.com>
-Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+[ Upstream commit eb8e20f89093b64f48975c74ccb114e6775cee22 ]
+
+accumulate_stolen_time() is called prior to interrupt state being
+reconciled, which can trip the warning in arch_local_irq_restore():
+
+  WARNING: CPU: 5 PID: 1017 at arch/powerpc/kernel/irq.c:258 .arch_local_irq_restore+0x9c/0x130
+  ...
+  NIP .arch_local_irq_restore+0x9c/0x130
+  LR  .rb_start_commit+0x38/0x80
+  Call Trace:
+    .ring_buffer_lock_reserve+0xe4/0x620
+    .trace_function+0x44/0x210
+    .function_trace_call+0x148/0x170
+    .ftrace_ops_no_ops+0x180/0x1d0
+    ftrace_call+0x4/0x8
+    .accumulate_stolen_time+0x1c/0xb0
+    decrementer_common+0x124/0x160
+
+For now just mark it as notrace. We may change the ordering to call it
+after interrupt state has been reconciled, but that is a larger
+change.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191024055932.27940-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 2 +-
+ arch/powerpc/kernel/time.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index efb0f10..2d84523 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -184,7 +184,7 @@ static int ibmvnic_wait_for_completion(struct ibmvnic_adapter *adapter,
- 			netdev_err(netdev, "Device down!\n");
- 			return -ENODEV;
- 		}
--		if (retry--)
-+		if (!retry--)
- 			break;
- 		if (wait_for_completion_timeout(comp_done, div_timeout))
- 			return 0;
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index ab7b661b6da3a..412ac5d45160b 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -257,7 +257,7 @@ static u64 scan_dispatch_log(u64 stop_tb)
+  * Accumulate stolen time by scanning the dispatch trace log.
+  * Called on entry from user mode.
+  */
+-void accumulate_stolen_time(void)
++void notrace accumulate_stolen_time(void)
+ {
+ 	u64 sst, ust;
+ 	u8 save_soft_enabled = local_paca->soft_enabled;
 -- 
-1.8.3.1
+2.20.1
 
