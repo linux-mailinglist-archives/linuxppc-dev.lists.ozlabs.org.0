@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FAB11A2FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 04:26:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ECDA11A2F9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 04:24:43 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Xj3D48JmzDqCY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 14:24:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Xj5c2P28zDqjN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 14:26:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,37 +16,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="S5kPqP9c"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="hHu2itqp"; 
  dkim-atps=neutral
 Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
  [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XhMS4tpQzDqb9
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XhMT0LSVzDqYd
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 13:53:40 +1100 (AEDT)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
  hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5df05a280000>; Tue, 10 Dec 2019 18:53:28 -0800
+ id <B5df05a2a0000>; Tue, 10 Dec 2019 18:53:30 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Tue, 10 Dec 2019 18:53:34 -0800
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 10 Dec 2019 18:53:36 -0800
 X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Tue, 10 Dec 2019 18:53:34 -0800
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Dec
- 2019 02:53:34 +0000
-Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
- Frontend Transport; Wed, 11 Dec 2019 02:53:33 +0000
+ by hqpgpgate101.nvidia.com on Tue, 10 Dec 2019 18:53:36 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Dec
+ 2019 02:53:35 +0000
+Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
+ Frontend Transport; Wed, 11 Dec 2019 02:53:34 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
  rnnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5df05a2c0001>; Tue, 10 Dec 2019 18:53:33 -0800
+ id <B5df05a2e0000>; Tue, 10 Dec 2019 18:53:34 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v9 19/25] vfio,
- mm: pin_user_pages (FOLL_PIN) and put_user_page() conversion
-Date: Tue, 10 Dec 2019 18:53:12 -0800
-Message-ID: <20191211025318.457113-20-jhubbard@nvidia.com>
+Subject: [PATCH v9 21/25] mm/gup_benchmark: use proper FOLL_WRITE flags
+ instead of hard-coding "1"
+Date: Tue, 10 Dec 2019 18:53:14 -0800
+Message-ID: <20191211025318.457113-22-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191211025318.457113-1-jhubbard@nvidia.com>
 References: <20191211025318.457113-1-jhubbard@nvidia.com>
@@ -55,16 +55,16 @@ X-NVConfidentiality: public
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576032808; bh=wk2NwG+UPRzhGeGA4o6oMgrCb1pvQrHxv3rBUNt8i3I=;
+ t=1576032810; bh=zwwITV4l72pt0LmhAqpHWuQbAhr06rUfgov5x98Cdpc=;
  h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
  In-Reply-To:References:MIME-Version:X-NVConfidentiality:
  Content-Transfer-Encoding:Content-Type;
- b=S5kPqP9c1wkxSz1kO+7Iz9Ir4WgM2EN7DOrwGxqrAIK12aTYPBiHsVCtsvWLJLYzW
- mR94LE7axtSLvm3Xe67Ms1qemz13/7SrCmSY4DBmIqZjoN+t0AYkoANcxwwXIDEk0i
- L+hNEM3RPGspN+3hSRdPS8mVhW4Jl8fHYM6QqHL480yaqgUOaKlSRObXPL3JbrE6SC
- BV8902K7MIosrLGDs5pnQYzBTvqe205mm2rKHuBbUXWLbkeefbaWSuerfJcSaAVuOf
- qmrKgRnIbRD9tce4s0HNaHo0SaKsFdQ/hL8RhvuAMn7soPa4mDXVm/YRFmjTfL0ke0
- fn8CTaM8IVfbA==
+ b=hHu2itqpB8193pGglkk+I/NxK3ENo6htNAGRnzzk4HjD4Z/sSCXk6GZJkw3yBA2IK
+ rBvBrcztQ3qn4+I+MWPz4ojmggXo3gbb8j8SDmMHA2qfwAudJYg/Cn67Ty/DuXhI3A
+ Gr2Gq8KK5XVPA5KhhCm3FEnSSK2s+f6PozB+Bqq46yGPrqcTBtykTzgn9xmC/I/JzW
+ M0hsL/BCe91KXZ50zggFHqzvsbB5yu6ri29rzWEQfJgM97dAalJocgd4N4XykF5CYw
+ LrGYOSgo2iJZHlxd/AYLJif78sBWKERhpozau/TvXqOR0DHWs6XWnSHJBYYx66Ztzb
+ uB7tEIVx+76LA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,58 +101,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-1. Change vfio from get_user_pages_remote(), to
-pin_user_pages_remote().
+Fix the gup benchmark flags to use the symbolic FOLL_WRITE,
+instead of a hard-coded "1" value.
 
-2. Because all FOLL_PIN-acquired pages must be released via
-put_user_page(), also convert the put_page() call over to
-put_user_pages_dirty_lock().
+Also, clean up the filtering of gup flags a little, by just doing
+it once before issuing any of the get_user_pages*() calls. This
+makes it harder to overlook, instead of having little "gup_flags & 1"
+phrases in the function calls.
 
-Note that this effectively changes the code's behavior in
-vfio_iommu_type1.c: put_pfn(): it now ultimately calls
-set_page_dirty_lock(), instead of set_page_dirty(). This is
-probably more accurate.
-
-As Christoph Hellwig put it, "set_page_dirty() is only safe if we are
-dealing with a file backed page where we have reference on the inode it
-hangs off." [1]
-
-[1] https://lore.kernel.org/r/20190723153640.GB720@lst.de
-
-Tested-by: Alex Williamson <alex.williamson@redhat.com>
-Acked-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/vfio/vfio_iommu_type1.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ mm/gup_benchmark.c                         | 9 ++++++---
+ tools/testing/selftests/vm/gup_benchmark.c | 6 +++++-
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type=
-1.c
-index b800fc9a0251..18bfc2fc8e6d 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -309,9 +309,8 @@ static int put_pfn(unsigned long pfn, int prot)
- {
- 	if (!is_invalid_reserved_pfn(pfn)) {
- 		struct page *page =3D pfn_to_page(pfn);
--		if (prot & IOMMU_WRITE)
--			SetPageDirty(page);
--		put_page(page);
-+
-+		put_user_pages_dirty_lock(&page, 1, prot & IOMMU_WRITE);
- 		return 1;
- 	}
- 	return 0;
-@@ -329,7 +328,7 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned=
- long vaddr,
- 		flags |=3D FOLL_WRITE;
+diff --git a/mm/gup_benchmark.c b/mm/gup_benchmark.c
+index 7dd602d7f8db..7fc44d25eca7 100644
+--- a/mm/gup_benchmark.c
++++ b/mm/gup_benchmark.c
+@@ -48,18 +48,21 @@ static int __gup_benchmark_ioctl(unsigned int cmd,
+ 			nr =3D (next - addr) / PAGE_SIZE;
+ 		}
 =20
- 	down_read(&mm->mmap_sem);
--	ret =3D get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
-+	ret =3D pin_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
- 				    page, NULL, NULL);
- 	if (ret =3D=3D 1) {
- 		*pfn =3D page_to_pfn(page[0]);
++		/* Filter out most gup flags: only allow a tiny subset here: */
++		gup->flags &=3D FOLL_WRITE;
++
+ 		switch (cmd) {
+ 		case GUP_FAST_BENCHMARK:
+-			nr =3D get_user_pages_fast(addr, nr, gup->flags & 1,
++			nr =3D get_user_pages_fast(addr, nr, gup->flags,
+ 						 pages + i);
+ 			break;
+ 		case GUP_LONGTERM_BENCHMARK:
+ 			nr =3D get_user_pages(addr, nr,
+-					    (gup->flags & 1) | FOLL_LONGTERM,
++					    gup->flags | FOLL_LONGTERM,
+ 					    pages + i, NULL);
+ 			break;
+ 		case GUP_BENCHMARK:
+-			nr =3D get_user_pages(addr, nr, gup->flags & 1, pages + i,
++			nr =3D get_user_pages(addr, nr, gup->flags, pages + i,
+ 					    NULL);
+ 			break;
+ 		default:
+diff --git a/tools/testing/selftests/vm/gup_benchmark.c b/tools/testing/sel=
+ftests/vm/gup_benchmark.c
+index 485cf06ef013..389327e9b30a 100644
+--- a/tools/testing/selftests/vm/gup_benchmark.c
++++ b/tools/testing/selftests/vm/gup_benchmark.c
+@@ -18,6 +18,9 @@
+ #define GUP_LONGTERM_BENCHMARK	_IOWR('g', 2, struct gup_benchmark)
+ #define GUP_BENCHMARK		_IOWR('g', 3, struct gup_benchmark)
+=20
++/* Just the flags we need, copied from mm.h: */
++#define FOLL_WRITE	0x01	/* check pte is writable */
++
+ struct gup_benchmark {
+ 	__u64 get_delta_usec;
+ 	__u64 put_delta_usec;
+@@ -85,7 +88,8 @@ int main(int argc, char **argv)
+ 	}
+=20
+ 	gup.nr_pages_per_call =3D nr_pages;
+-	gup.flags =3D write;
++	if (write)
++		gup.flags |=3D FOLL_WRITE;
+=20
+ 	fd =3D open("/sys/kernel/debug/gup_benchmark", O_RDWR);
+ 	if (fd =3D=3D -1)
 --=20
 2.24.0
 
