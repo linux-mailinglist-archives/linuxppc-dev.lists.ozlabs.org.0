@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C28B11BA58
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:30:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3qB47gMzDqVP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:30:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B3D11BA75
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:38:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Y4001vFVzDqDZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:38:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="PZNsSbzt"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="C6aZO08m"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1GQ1FxRzDqGb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:35:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1Gk4sYFzDqLR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:35:41 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 98C972467B;
- Wed, 11 Dec 2019 15:35:23 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 67B972173E;
+ Wed, 11 Dec 2019 15:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1576078524;
- bh=KIl2/Dd8MiDaz7LVp0lDFA585AIHjV6zE5yHkKmjLO4=;
+ s=default; t=1576078536;
+ bh=3+uJJG7hueNg9p3/DrFrATOcRJq6tv1/HNF9AtUkpQg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PZNsSbztH+ZRkc5AzN5bhkxxa/ZDUYa1KQS8WKB//re7HXOeHDmlhUPlSnaIxUH/b
- Bx0vrSXwaetX9XhyRpxbhc6iCRyuuC/n+sVzpJOiCM2j2SRmhPhs0f8nHXEV6+pTei
- hcqFUCjeSkn4Sj0RR7rIkG/Q7Ka2VhtjShhbIlcM=
+ b=C6aZO08mMKxZwX6ZsZOH0d93/3Q/YM9aQhNMQlwhOQ4LnnUkOFm5Yg86O9+xCLldp
+ 5yhBHqBEZkM94LK2Guf1FAdvqUhiI8jIOD6lAG1YrudF+eJtBeylAvHxQ13cTBwCnq
+ UhdYrwXgBjesrAYcJDgJUcEDJMfwDmwYN8GmX+3o=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 13/42] powerpc/book3s64/hash: Add cond_resched to
- avoid soft lockup warning
-Date: Wed, 11 Dec 2019 10:34:41 -0500
-Message-Id: <20191211153510.23861-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 24/42] powerpc/pseries/cmm: Implement release()
+ function for sysfs device
+Date: Wed, 11 Dec 2019 10:34:52 -0500
+Message-Id: <20191211153510.23861-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191211153510.23861-1-sashal@kernel.org>
 References: <20191211153510.23861-1-sashal@kernel.org>
@@ -60,81 +60,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ David Hildenbrand <david@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 16f6b67cf03cb43db7104acb2ca877bdc2606c92 ]
+[ Upstream commit 7d8212747435c534c8d564fbef4541a463c976ff ]
 
-With large memory (8TB and more) hotplug, we can get soft lockup
-warnings as below. These were caused by a long loop without any
-explicit cond_resched which is a problem for !PREEMPT kernels.
+When unloading the module, one gets
+  ------------[ cut here ]------------
+  Device 'cmm0' does not have a release() function, it is broken and must be fixed. See Documentation/kobject.txt.
+  WARNING: CPU: 0 PID: 19308 at drivers/base/core.c:1244 .device_release+0xcc/0xf0
+  ...
 
-Avoid this using cond_resched() while inserting hash page table
-entries. We already do similar cond_resched() in __add_pages(), see
-commit f64ac5e6e306 ("mm, memory_hotplug: add scheduling point to
-__add_pages").
+We only have one static fake device. There is nothing to do when
+releasing the device (via cmm_exit()).
 
-  rcu:     3-....: (24002 ticks this GP) idle=13e/1/0x4000000000000002 softirq=722/722 fqs=12001
-   (t=24003 jiffies g=4285 q=2002)
-  NMI backtrace for cpu 3
-  CPU: 3 PID: 3870 Comm: ndctl Not tainted 5.3.0-197.18-default+ #2
-  Call Trace:
-    dump_stack+0xb0/0xf4 (unreliable)
-    nmi_cpu_backtrace+0x124/0x130
-    nmi_trigger_cpumask_backtrace+0x1ac/0x1f0
-    arch_trigger_cpumask_backtrace+0x28/0x3c
-    rcu_dump_cpu_stacks+0xf8/0x154
-    rcu_sched_clock_irq+0x878/0xb40
-    update_process_times+0x48/0x90
-    tick_sched_handle.isra.16+0x4c/0x80
-    tick_sched_timer+0x68/0xe0
-    __hrtimer_run_queues+0x180/0x430
-    hrtimer_interrupt+0x110/0x300
-    timer_interrupt+0x108/0x2f0
-    decrementer_common+0x114/0x120
-  --- interrupt: 901 at arch_add_memory+0xc0/0x130
-      LR = arch_add_memory+0x74/0x130
-    memremap_pages+0x494/0x650
-    devm_memremap_pages+0x3c/0xa0
-    pmem_attach_disk+0x188/0x750
-    nvdimm_bus_probe+0xac/0x2c0
-    really_probe+0x148/0x570
-    driver_probe_device+0x19c/0x1d0
-    device_driver_attach+0xcc/0x100
-    bind_store+0x134/0x1c0
-    drv_attr_store+0x44/0x60
-    sysfs_kf_write+0x64/0x90
-    kernfs_fop_write+0x1a0/0x270
-    __vfs_write+0x3c/0x70
-    vfs_write+0xd0/0x260
-    ksys_write+0xdc/0x130
-    system_call+0x5c/0x68
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191001084656.31277-1-aneesh.kumar@linux.ibm.com
+Link: https://lore.kernel.org/r/20191031142933.10779-2-david@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/hash_utils_64.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/platforms/pseries/cmm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/mm/hash_utils_64.c b/arch/powerpc/mm/hash_utils_64.c
-index de1d8cdd29915..2dc1fc445f357 100644
---- a/arch/powerpc/mm/hash_utils_64.c
-+++ b/arch/powerpc/mm/hash_utils_64.c
-@@ -300,6 +300,7 @@ int htab_bolt_mapping(unsigned long vstart, unsigned long vend,
- 		if (ret < 0)
- 			break;
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+index 66e7227469b8c..b5ff5ee3e39cb 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -391,6 +391,10 @@ static struct bus_type cmm_subsys = {
+ 	.dev_name = "cmm",
+ };
  
-+		cond_resched();
- #ifdef CONFIG_DEBUG_PAGEALLOC
- 		if (debug_pagealloc_enabled() &&
- 			(paddr >> PAGE_SHIFT) < linear_map_hash_count)
++static void cmm_release_device(struct device *dev)
++{
++}
++
+ /**
+  * cmm_sysfs_register - Register with sysfs
+  *
+@@ -406,6 +410,7 @@ static int cmm_sysfs_register(struct device *dev)
+ 
+ 	dev->id = 0;
+ 	dev->bus = &cmm_subsys;
++	dev->release = cmm_release_device;
+ 
+ 	if ((rc = device_register(dev)))
+ 		goto subsys_unregister;
 -- 
 2.20.1
 
