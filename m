@@ -2,43 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52A611BC29
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 19:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B79311BCD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 20:24:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Y5X502c3zDqD3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 05:47:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Y6M90ScdzDqvw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 06:24:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=pq8+=2b=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Y4xc1p6pzDqZx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 05:21:07 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 4FD2668AFE; Wed, 11 Dec 2019 19:20:56 +0100 (CET)
-Date: Wed, 11 Dec 2019 19:20:56 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Michael Roth <mdroth@linux.vnet.ibm.com>
-Subject: Re: [PATCH v5 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for
- Secure VM.
-Message-ID: <20191211182056.GA17052@lst.de>
-References: <1575681159-30356-1-git-send-email-linuxram@us.ibm.com>
- <1575681159-30356-2-git-send-email-linuxram@us.ibm.com>
- <1575681159-30356-3-git-send-email-linuxram@us.ibm.com>
- <157602860458.3810.8599908751067047456@sif>
- <be36117d-204e-bf59-287a-371103186e16@ozlabs.ru>
- <157608763756.3810.12346253559039287143@sif>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Y6JW3w9lzDqnF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 06:22:35 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
+ data access at 0x00f0fd0d
+Date: Wed, 11 Dec 2019 19:22:31 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@c-s.fr
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-205099-206035-jXPooRvRW0@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
+References: <bug-205099-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <157608763756.3810.12346253559039287143@sif>
-User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,46 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- leonardo@linux.ibm.com, ram.n.pai@gmail.com, cai@lca.pw, tglx@linutronix.de,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 11, 2019 at 12:07:17PM -0600, Michael Roth wrote:
-> > io_tlb_start/io_tlb_end are only guaranteed to stay within 4GB and our
-> > default DMA window is 1GB (KVM) or 2GB (PowerVM), ok, we can define
-> > ARCH_LOW_ADDRESS_LIMIT as 1GB.
-> 
-> True, and limiting allocations to under 1GB might be brittle (also saw a
-> patching floating around that increased IO_TLB_DEFAULT_SIZE size to 1GB,
-> which obviously wouldn't work out with this approach, but not sure if
-> that's still needed or not: "powerpc/svm: Increase SWIOTLB buffer size")
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
-FYI, there is a patch out there that allocates the powerpc swiotlb
-from the boottom of the memblock area instead of the top to fix a 85xx
-regression.
+Christophe Leroy (christophe.leroy@c-s.fr) changed:
 
-Also the AMD folks have been asking about non-GFP_DMA32 swiotlb pools
-as they have the same bounce buffer issue with SEV.  I think it is
-entirely doable to have multiple swiotlb pool, I just need a volunteer
-to implement that.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |christophe.leroy@c-s.fr
 
-> 
-> However that's only an issue if we insist on using an identity mapping
-> in the IOMMU, which would be nice because non-IOMMU virtio would
-> magically work, but since that's not a goal of this series I think we do
-> have the option of mapping io_tlb_start at DMA address 0 (or
-> thereabouts).
-> 
-> We'd probably need to modify __phys_to_dma to treat archdata.dma_offset
-> as a negative offset in this case, but it seems like it would work about
-> the same as with DDW offset.
+--- Comment #6 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+Obviously, r9 is wrong
 
-Or switch to the generic version of __phys_to_dma that has a negative
-offset.  We'd just need to look into a signed value for dma_pfn_offset
-to allow for the existing platforms that need the current positive
-offset.
+    2538:       13 04 c4 c4     vxor    v24,v4,v24
+    253c:       7d 20 48 ce     lvx     v9,0,r9
+    2540:       39 21 00 90     addi    r9,r1,144
+    2544:       13 25 cc c4     vxor    v25,v5,v25
+    2548:       7d 60 48 ce     lvx     v11,0,r9
+    254c:       13 46 d4 c4     vxor    v26,v6,v26
+    2550:       81 21 00 88     lwz     r9,136(r1)  <=3D=3D r9 is loaded he=
+re
+    2554:       13 67 dc c4     vxor    v27,v7,v27
+    2558:       7d 11 a8 ce     lvx     v8,r17,r21
+    255c:       11 5f 5b 06     vcmpgtsb v10,v31,v11
+    2560:       11 6b 58 00     vaddubm v11,v11,v11
+    2564:       81 41 00 8c     lwz     r10,140(r1)
+=3D=3D> 2568:       7c 00 48 ce     lvx     v0,0,r9
+    256c:       39 21 00 a0     addi    r9,r1,160
+    2570:       7d 80 48 ce     lvx     v12,0,r9
+    2574:       39 21 00 b0     addi    r9,r1,176
+
+So the stack must be clobbered somewhere
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
