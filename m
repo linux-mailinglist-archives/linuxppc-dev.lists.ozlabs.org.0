@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C30111BA9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:48:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Y4Cv36jHzDqS4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:48:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBC711BAA6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:52:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Y4Jc3xjKzDqL2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:52:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="v9NzHI8D"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="CCqpX0IW"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1Kw0kQ9zDqft
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:38:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1L72vtzzDqDN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:38:39 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B8D5E24656;
- Wed, 11 Dec 2019 15:38:24 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8D88D22527;
+ Wed, 11 Dec 2019 15:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1576078705;
- bh=lZN/lImANi61wob+Y5QU6C9PypHby5KeCddY6twx0FY=;
+ s=default; t=1576078717;
+ bh=ya4+9PImMWnlhOGGsSpFY2Ab5nCH9bNiYtguMOiPB50=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=v9NzHI8DLnEeS1R6oDM0dZoteqEd9X6sNS6Jo9HDAMf4TiI4I+nUK78OZDJjCcoqf
- zxeZQergw5CwW90qasDSKY5mRuzOmkFEuyBRMIJWEdxZho60C9KoGvkLKP4kvbELls
- hJTUKt2AAcUathk10vq+rsLv1Na+zgwSZdzsW2GU=
+ b=CCqpX0IW29GFzt/HOVsfxnQuYT811dLM7BbDAY8bBxMCG6hEP3plXWiGsJbj3deQr
+ 1Q4lC0wdEPV5fWSokXpjguinFXScSv6/0RwpnQdGaKeaQMPl6h+GH70fdr4uJx0h89
+ WiqpIKU/4v03NieB2xubkx0MsK2FKYZT5hzY9yb0=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 11/37] powerpc/security/book3s64: Report L1TF
- status in sysfs
-Date: Wed, 11 Dec 2019 10:37:47 -0500
-Message-Id: <20191211153813.24126-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 22/37] powerpc/pseries/cmm: Implement release()
+ function for sysfs device
+Date: Wed, 11 Dec 2019 10:37:58 -0500
+Message-Id: <20191211153813.24126-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191211153813.24126-1-sashal@kernel.org>
 References: <20191211153813.24126-1-sashal@kernel.org>
@@ -61,48 +61,55 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Anthony Steinhauser <asteinhauser@google.com>
+ David Hildenbrand <david@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anthony Steinhauser <asteinhauser@google.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 8e6b6da91ac9b9ec5a925b6cb13f287a54bd547d ]
+[ Upstream commit 7d8212747435c534c8d564fbef4541a463c976ff ]
 
-Some PowerPC CPUs are vulnerable to L1TF to the same extent as to
-Meltdown. It is also mitigated by flushing the L1D on privilege
-transition.
+When unloading the module, one gets
+  ------------[ cut here ]------------
+  Device 'cmm0' does not have a release() function, it is broken and must be fixed. See Documentation/kobject.txt.
+  WARNING: CPU: 0 PID: 19308 at drivers/base/core.c:1244 .device_release+0xcc/0xf0
+  ...
 
-Currently the sysfs gives a false negative on L1TF on CPUs that I
-verified to be vulnerable, a Power9 Talos II Boston 004e 1202, PowerNV
-T2P9D01.
+We only have one static fake device. There is nothing to do when
+releasing the device (via cmm_exit()).
 
-Signed-off-by: Anthony Steinhauser <asteinhauser@google.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[mpe: Just have cpu_show_l1tf() call cpu_show_meltdown() directly]
-Link: https://lore.kernel.org/r/20191029190759.84821-1-asteinhauser@google.com
+Link: https://lore.kernel.org/r/20191031142933.10779-2-david@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/security.c | 5 +++++
+ arch/powerpc/platforms/pseries/cmm.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index 156cfe6d23b09..fc5c49046aa7d 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -161,6 +161,11 @@ ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, cha
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+index fc44ad0475f84..b126ce49ae7bb 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -391,6 +391,10 @@ static struct bus_type cmm_subsys = {
+ 	.dev_name = "cmm",
+ };
  
- 	return sprintf(buf, "Vulnerable\n");
- }
-+
-+ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *buf)
++static void cmm_release_device(struct device *dev)
 +{
-+	return cpu_show_meltdown(dev, attr, buf);
 +}
- #endif
++
+ /**
+  * cmm_sysfs_register - Register with sysfs
+  *
+@@ -406,6 +410,7 @@ static int cmm_sysfs_register(struct device *dev)
  
- ssize_t cpu_show_spectre_v1(struct device *dev, struct device_attribute *attr, char *buf)
+ 	dev->id = 0;
+ 	dev->bus = &cmm_subsys;
++	dev->release = cmm_release_device;
+ 
+ 	if ((rc = device_register(dev)))
+ 		goto subsys_unregister;
 -- 
 2.20.1
 
