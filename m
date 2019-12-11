@@ -2,64 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5941D11A173
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 03:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B5611A178
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 03:40:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Xh2B4lDBzDqLq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 13:38:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Xh4G0Lk5zDqf3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 13:40:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="cIuZxTR+"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="vdVOjo0M"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Xh086TMvzDqcX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 13:36:55 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id q8so989446pfh.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 18:36:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Xh0W49tYzDqfV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 13:37:15 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id s10so787275plp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2019 18:37:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id;
- bh=qiDNDwSYfR3vPTQQGNF7N5PdmcZBPmQFOyuDOOhHoyg=;
- b=cIuZxTR+rBR5lpRabgLxRLPWwR3gE6I9c2tdW/S8l1Q2azS8O7V0B2ObpyxlhsJaM5
- f4w2omVhHPZZ6vLsI8dREmb/l0A3CUVXSni/nEcSzXJLp1/ohyjOG/J0pkUuVgDMHG4P
- jJGgOeVo9AfD3zOfFsnC9sbxLHg9TMCTIFNzEyeFUHcRH1yzqYqUoDRSj17u3N3ZsWht
- Zi5TlQ08oeVzSUny67kwErnbmsQ/szXOYOgpDTurx9IjKqieK5RDNVb/1T14WN1l0J7Q
- CHdDyvn8rt2l57cQG6HBXpsdTi2+ukiyzdneFaC6RgWmx2TXJfUJkQscLaXZGizwuGTM
- KG9w==
+ bh=4UCktv3Ab9rfNBo0nzD74VBS2H5W9SDg1tuO380qqYk=;
+ b=vdVOjo0M6V5IGx0bEDje0aLfDmnKfEgMsms4fYKNJ4t3DQTlCzTM6XFkbS+9pxhFgR
+ V++9DsLNgdX/HSJ864j+rXTFgmK5ej5ivUY4Jwd3Z7SqcjnC49jA3kR9JDvvkDEQuV2a
+ 0gN/8QbwAxsrBj7k0mnEMPo6AsWdDZ83gI74ZvGeCmOpVAaemJfP1j+ManO5jF7B2oz8
+ LfxYHWIAN4Ms0o+bWT5kdPams1I87h6AXN/6bKwNdryAfJHmsH2Q1QuxX9P0JxxwSv2Q
+ mMju03R8tPiOE1BSMLJzimVQBPWN027mPxBxP1aE4uamWLPao8d2H8fCvbPFfuaZe/Pa
+ WQpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=qiDNDwSYfR3vPTQQGNF7N5PdmcZBPmQFOyuDOOhHoyg=;
- b=JVV0pDBaDp7oQQWoknSpV75SOQkzWHs5hV/XpWJDadSgudIB8OmrtNr6MeKq6NyONR
- F9VNp8IFWIM7N0SGTMa5O0pN5OFO5A6M+oVQI+nYOJhdbA/eSiY6ssga2VVIEMXamG7i
- rIfdw8hqAif0YJmGScVk+iPxYUGZR92aBIxVy4udx5+QaVMwkL+2dTG7NfnWRjWfIamO
- bqWD3OMTgBiQuoku34SyxNzl2YwvEUWYNDUyJ2H9qTA6oyvp+wqY/VXReKMp9qn27zx3
- /CUxcy3s8JkSMlt+WLMxeeAgZsbA+E1Zro0hIH0xAyeMek6IkDsQq80xBT8EC62fzGdp
- bM1g==
-X-Gm-Message-State: APjAAAXQH58fKEGgqpdKW4W9wtYxjbq6BK2zSxuQ1/t+2mnjchgVVim6
- tWwQe1HACKZfmY3TRVoF+5JrVoGO
-X-Google-Smtp-Source: APXvYqyQNX6sNvUaeRjW9bEMYI5+fW2qOf1bZH8+ofL11q9JUKgC/7bPkZho/GwNwNx2VLllR7rzJw==
-X-Received: by 2002:aa7:9d0e:: with SMTP id k14mr1176887pfp.157.1576031812037; 
- Tue, 10 Dec 2019 18:36:52 -0800 (PST)
+ bh=4UCktv3Ab9rfNBo0nzD74VBS2H5W9SDg1tuO380qqYk=;
+ b=LU/Z+6iyEQUWYPA1kOBhXR5OlbteQR6afFvwwo4MOxOdMosDGZRI6SeQnR0PNjB8cV
+ vWZizsT5M1LAp6bc99dULFsfmPx5ACAHf1qK3Z5rgzOYeck5gEATR3Dh5zbDO3lJVfFr
+ ojbmcCtqrTLpJIqTrUgp/rj+ZH6fGfAQC1PjVUtmt85NXprPRUu2yzHrLik4f6EO3jOo
+ eWZaA79oPEy+oijAfOtH0CGQxxZmq/Ts1LjasI7lM/ktpK49ds7eFmE5PdfDA3Hr7DEX
+ zwQbH8O2ZG1L4ZWr51WYVGI3Kat8r07JQ36dkxo5xJfcZDzt2CeI2D4+o2JfjUmttzMa
+ oabg==
+X-Gm-Message-State: APjAAAUFswKlPSyv/L04QGThBPWic4hVYR4Fc6sYUBCrcP1483i8JYeh
+ 96ackVfbVIjvOZbwYGnZ00ADerKk
+X-Google-Smtp-Source: APXvYqzcEKMmxDECbinxRA0rQuUdwjDdnpeSoGykGeyngpSIsbpkWld2zzzaH49PgBdTbOxzE392Rg==
+X-Received: by 2002:a17:90a:db0b:: with SMTP id
+ g11mr790277pjv.140.1576031832935; 
+ Tue, 10 Dec 2019 18:37:12 -0800 (PST)
 Received: from tee480.au.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 23sm298327pjx.29.2019.12.10.18.36.50
+ by smtp.gmail.com with ESMTPSA id j1sm396459pff.107.2019.12.10.18.37.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2019 18:36:51 -0800 (PST)
+ Tue, 10 Dec 2019 18:37:12 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: Use {SAVE,REST}_NVGPRS macros
-Date: Wed, 11 Dec 2019 13:35:52 +1100
-Message-Id: <20191211023552.16480-1-jniethe5@gmail.com>
+Subject: [PATCH 1/2] powerpc/64s/exception: Remove unused parameters from
+ KVMTEST macro
+Date: Wed, 11 Dec 2019 13:37:02 +1100
+Message-Id: <20191211023703.16837-1-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,78 +79,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In entry_64.S there are places that open code saving and restoring the
-non-volatile registers. There are already macros for doing this so use
+The hsrr and n parameters are never used by the KVMTEST macro so remove
 them.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/kernel/entry_64.S | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index 6467bdab8d40..457b86c13c19 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -591,8 +591,7 @@ _GLOBAL(_switch)
- 	std	r0,16(r1)
- 	stdu	r1,-SWITCH_FRAME_SIZE(r1)
- 	/* r3-r13 are caller saved -- Cort */
--	SAVE_8GPRS(14, r1)
--	SAVE_10GPRS(22, r1)
-+	SAVE_NVGPRS(r1)
- 	std	r0,_NIP(r1)	/* Return to switch caller */
- 	mfcr	r23
- 	std	r23,_CCR(r1)
-@@ -716,8 +715,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
- 	mtcrf	0xFF,r6
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index d0018dd17e0a..8bcf562242a2 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -210,7 +210,7 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ #define kvmppc_interrupt kvmppc_interrupt_pr
+ #endif
  
- 	/* r3-r13 are destroyed -- Cort */
--	REST_8GPRS(14, r1)
--	REST_10GPRS(22, r1)
-+	REST_NVGPRS(r1)
+-.macro KVMTEST name, hsrr, n
++.macro KVMTEST name
+ 	lbz	r10,HSTATE_IN_GUEST(r13)
+ 	cmpwi	r10,0
+ 	bne	\name\()_kvm
+@@ -284,7 +284,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ .endm
  
- 	/* convert old thread to its task_struct for return value */
- 	addi	r3,r3,-THREAD
-@@ -1149,8 +1147,7 @@ _GLOBAL(enter_rtas)
-    	 */
- 	SAVE_GPR(2, r1)			/* Save the TOC */
- 	SAVE_GPR(13, r1)		/* Save paca */
--	SAVE_8GPRS(14, r1)		/* Save the non-volatiles */
--	SAVE_10GPRS(22, r1)		/* ditto */
-+	SAVE_NVGPRS(r1)			/* Save the non-volatiles */
- 
- 	mfcr	r4
- 	std	r4,_CCR(r1)
-@@ -1257,8 +1254,7 @@ rtas_restore_regs:
- 	/* relocation is on at this point */
- 	REST_GPR(2, r1)			/* Restore the TOC */
- 	REST_GPR(13, r1)		/* Restore paca */
--	REST_8GPRS(14, r1)		/* Restore the non-volatiles */
--	REST_10GPRS(22, r1)		/* ditto */
-+	REST_NVGPRS(r1)			/* Restore the non-volatiles */
- 
+ #else
+-.macro KVMTEST name, hsrr, n
++.macro KVMTEST name
+ .endm
+ .macro KVM_HANDLER name, vec, hsrr, area, skip
+ .endm
+@@ -431,7 +431,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	SAVE_CTR(r10, \area\())
+ 	mfcr	r9
+ 	.if \kvm
+-		KVMTEST \name \hsrr \vec
++		KVMTEST \name
+ 	.endif
+ 	.if \bitmask
+ 		lbz	r10,PACAIRQSOFTMASK(r13)
+@@ -1444,7 +1444,7 @@ EXC_VIRT_NONE(0x4b00, 0x100)
  	GET_PACA(r13)
- 
-@@ -1292,8 +1288,7 @@ _GLOBAL(enter_prom)
-    	 */
- 	SAVE_GPR(2, r1)
- 	SAVE_GPR(13, r1)
--	SAVE_8GPRS(14, r1)
--	SAVE_10GPRS(22, r1)
-+	SAVE_NVGPRS(r1)
- 	mfcr	r10
- 	mfmsr	r11
- 	std	r10,_CCR(r1)
-@@ -1337,8 +1332,7 @@ _GLOBAL(enter_prom)
- 	/* Restore other registers */
- 	REST_GPR(2, r1)
- 	REST_GPR(13, r1)
--	REST_8GPRS(14, r1)
--	REST_10GPRS(22, r1)
-+	REST_NVGPRS(r1)
- 	ld	r4,_CCR(r1)
- 	mtcr	r4
+ 	std	r10,PACA_EXGEN+EX_R10(r13)
+ 	INTERRUPT_TO_KERNEL
+-	KVMTEST system_call EXC_STD 0xc00 /* uses r10, branch to system_call_kvm */
++	KVMTEST system_call /* uses r10, branch to system_call_kvm */
+ 	mfctr	r9
+ #else
+ 	mr	r9,r13
+@@ -1811,7 +1811,7 @@ EXC_REAL_BEGIN(denorm_exception_hv, 0x1500, 0x100)
+ 	andis.	r10,r10,(HSRR1_DENORM)@h /* denorm? */
+ 	bne+	denorm_assist
+ #endif
+-	KVMTEST denorm_exception_hv, EXC_HV 0x1500
++	KVMTEST denorm_exception_hv
+ 	INT_SAVE_SRR_AND_JUMP denorm_common, EXC_HV, 1
+ EXC_REAL_END(denorm_exception_hv, 0x1500, 0x100)
  
 -- 
 2.17.1
