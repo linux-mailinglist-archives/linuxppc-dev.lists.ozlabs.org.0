@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DF011B985
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:02:34 +0100 (CET)
-Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3Bw0ZF2zDq83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:02:32 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3292911B99A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:06:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3Hv0GrBzDqnr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:06:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="pRwJKRKq"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ACcEPvsB"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1742k5RzDqHP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:29:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Y17c0L21zDqdl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:29:32 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DCB1522B48;
- Wed, 11 Dec 2019 15:29:00 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4BE1B2467A;
+ Wed, 11 Dec 2019 15:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1576078141;
- bh=aDTMiaAONoQZGew9iKu9ugwAijdBg5JVApcfk0mekjg=;
+ s=default; t=1576078170;
+ bh=Hw7bD5PbrKVmf62VIKhLrG1Vqni+JW0i4fW7uGy5yyE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=pRwJKRKq3ZXHRReICsDiWrfv72dlQPkCWhQJru/EQblREgVcGt1KH4cKYe3Xe74v2
- ekCYyc6ykylIe5+ClNXd+pCsD7IfTjnjrwsCMc2iJNROZGPc6Z2ELt+omXyXy40LP4
- cPQjrnNrw4Ru6dTJwT0XYYApZaFDfl4rl3Tpwuak=
+ b=ACcEPvsBjZJftPJ0cvNVrgEBWQo6HTz9RSPkYYyMU4Q8ZLQ3omoIHO8BnXF8Zbx+R
+ IBn8hZBj2tryBoEZOZMjZrpy8LGX8rfgNNlV35eAHEYcCR3W7RXFhzZyWPnl11Jf8Z
+ fBL6OcLp06+hhmM0XCttlgl/kwGXsIhHLGEDlNak=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 28/58] powerpc/pseries/cmm: Implement release()
- function for sysfs device
-Date: Wed, 11 Dec 2019 10:28:01 -0500
-Message-Id: <20191211152831.23507-28-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 54/58] libfdt: define INT32_MAX and UINT32_MAX in
+ libfdt_env.h
+Date: Wed, 11 Dec 2019 10:28:27 -0500
+Message-Id: <20191211152831.23507-54-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191211152831.23507-1-sashal@kernel.org>
 References: <20191211152831.23507-1-sashal@kernel.org>
@@ -60,56 +60,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- David Hildenbrand <david@redhat.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: David Hildenbrand <david@redhat.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-[ Upstream commit 7d8212747435c534c8d564fbef4541a463c976ff ]
+[ Upstream commit a8de1304b7df30e3a14f2a8b9709bb4ff31a0385 ]
 
-When unloading the module, one gets
-  ------------[ cut here ]------------
-  Device 'cmm0' does not have a release() function, it is broken and must be fixed. See Documentation/kobject.txt.
-  WARNING: CPU: 0 PID: 19308 at drivers/base/core.c:1244 .device_release+0xcc/0xf0
-  ...
+The DTC v1.5.1 added references to (U)INT32_MAX.
 
-We only have one static fake device. There is nothing to do when
-releasing the device (via cmm_exit()).
+This is no problem for user-space programs since <stdint.h> defines
+(U)INT32_MAX along with (u)int32_t.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191031142933.10779-2-david@redhat.com
+For the kernel space, libfdt_env.h needs to be adjusted before we
+pull in the changes.
+
+In the kernel, we usually use s/u32 instead of (u)int32_t for the
+fixed-width types.
+
+Accordingly, we already have S/U32_MAX for their max values.
+So, we should not add (U)INT32_MAX to <linux/limits.h> any more.
+
+Instead, add them to the in-kernel libfdt_env.h to compile the
+latest libfdt.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/cmm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/boot/compressed/libfdt_env.h | 4 +++-
+ arch/powerpc/boot/libfdt_env.h        | 2 ++
+ include/linux/libfdt_env.h            | 3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 4ac419c7eb4c9..25224c9e1dc0b 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -425,6 +425,10 @@ static struct bus_type cmm_subsys = {
- 	.dev_name = "cmm",
- };
+diff --git a/arch/arm/boot/compressed/libfdt_env.h b/arch/arm/boot/compressed/libfdt_env.h
+index b36c0289a308e..6a0f1f524466e 100644
+--- a/arch/arm/boot/compressed/libfdt_env.h
++++ b/arch/arm/boot/compressed/libfdt_env.h
+@@ -2,11 +2,13 @@
+ #ifndef _ARM_LIBFDT_ENV_H
+ #define _ARM_LIBFDT_ENV_H
  
-+static void cmm_release_device(struct device *dev)
-+{
-+}
++#include <linux/limits.h>
+ #include <linux/types.h>
+ #include <linux/string.h>
+ #include <asm/byteorder.h>
+ 
+-#define INT_MAX			((int)(~0U>>1))
++#define INT32_MAX	S32_MAX
++#define UINT32_MAX	U32_MAX
+ 
+ typedef __be16 fdt16_t;
+ typedef __be32 fdt32_t;
+diff --git a/arch/powerpc/boot/libfdt_env.h b/arch/powerpc/boot/libfdt_env.h
+index 39155d3b2cefa..ac5d3c947e04e 100644
+--- a/arch/powerpc/boot/libfdt_env.h
++++ b/arch/powerpc/boot/libfdt_env.h
+@@ -6,6 +6,8 @@
+ #include <string.h>
+ 
+ #define INT_MAX			((int)(~0U>>1))
++#define UINT32_MAX		((u32)~0U)
++#define INT32_MAX		((s32)(UINT32_MAX >> 1))
+ 
+ #include "of.h"
+ 
+diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
+index 1aa707ab19bbf..8b54c591678e1 100644
+--- a/include/linux/libfdt_env.h
++++ b/include/linux/libfdt_env.h
+@@ -7,6 +7,9 @@
+ 
+ #include <asm/byteorder.h>
+ 
++#define INT32_MAX	S32_MAX
++#define UINT32_MAX	U32_MAX
 +
- /**
-  * cmm_sysfs_register - Register with sysfs
-  *
-@@ -440,6 +444,7 @@ static int cmm_sysfs_register(struct device *dev)
- 
- 	dev->id = 0;
- 	dev->bus = &cmm_subsys;
-+	dev->release = cmm_release_device;
- 
- 	if ((rc = device_register(dev)))
- 		goto subsys_unregister;
+ typedef __be16 fdt16_t;
+ typedef __be32 fdt32_t;
+ typedef __be64 fdt64_t;
 -- 
 2.20.1
 
