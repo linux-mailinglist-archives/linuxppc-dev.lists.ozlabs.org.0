@@ -1,92 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C28B11BA58
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:30:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBD911B9D2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 18:14:47 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3T04r9hzDqpd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:14:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Y3qB47gMzDqVP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 04:30:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1Fk6hSxzDqLR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:34:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47Y1Fj2bVzz8swC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:34:49 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47Y1Fj0tlXz9t2k; Thu, 12 Dec 2019 02:34:49 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="PZNsSbzt"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47Y1Fh3qx0z9t0w
- for <linuxppc-dev@ozlabs.org>; Thu, 12 Dec 2019 02:34:48 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBBFWQdW020139; Wed, 11 Dec 2019 10:34:46 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wtfbxjkxm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Dec 2019 10:34:45 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBBFYecM028673;
- Wed, 11 Dec 2019 15:34:44 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2wr3q6ya45-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Dec 2019 15:34:44 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBBFYhC315925714
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Dec 2019 15:34:43 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4DC0112063;
- Wed, 11 Dec 2019 15:34:43 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7694A112067;
- Wed, 11 Dec 2019 15:34:43 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.41.178.211])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 11 Dec 2019 15:34:43 +0000 (GMT)
-Subject: Re: [PATCH] net/ibmvnic: Fix typo in retry check
-To: netdev@vger.kernel.org
-References: <1576078359-9220-1-git-send-email-tlfalcon@linux.ibm.com>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <23eafd7b-0c25-d2f8-e837-f4b7fec6fe20@linux.ibm.com>
-Date: Wed, 11 Dec 2019 09:34:43 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Y1GQ1FxRzDqGb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 02:35:26 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 98C972467B;
+ Wed, 11 Dec 2019 15:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1576078524;
+ bh=KIl2/Dd8MiDaz7LVp0lDFA585AIHjV6zE5yHkKmjLO4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=PZNsSbztH+ZRkc5AzN5bhkxxa/ZDUYa1KQS8WKB//re7HXOeHDmlhUPlSnaIxUH/b
+ Bx0vrSXwaetX9XhyRpxbhc6iCRyuuC/n+sVzpJOiCM2j2SRmhPhs0f8nHXEV6+pTei
+ hcqFUCjeSkn4Sj0RR7rIkG/Q7Ka2VhtjShhbIlcM=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 13/42] powerpc/book3s64/hash: Add cond_resched to
+ avoid soft lockup warning
+Date: Wed, 11 Dec 2019 10:34:41 -0500
+Message-Id: <20191211153510.23861-13-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191211153510.23861-1-sashal@kernel.org>
+References: <20191211153510.23861-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <1576078359-9220-1-git-send-email-tlfalcon@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-11_04:2019-12-11,2019-12-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=1 spamscore=0
- mlxlogscore=999 malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912110131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,40 +60,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 
-On 12/11/19 9:32 AM, Thomas Falcon wrote:
-> This conditional is missing a bang, with the intent
-> being to break when the retry count reaches zero.
->
-> Fixes: 476d96ca9c ("ibmvnic: Bound waits for device queries")
-> Suggested-by: Juliet Kim <minkim@linux.ibm.com>
-> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> ---
+[ Upstream commit 16f6b67cf03cb43db7104acb2ca877bdc2606c92 ]
 
-Excuse me, disregard this patch. I used the wrong email address for 
-Juliet. And forgot the intended branch.  I will resend a v2 soon.
+With large memory (8TB and more) hotplug, we can get soft lockup
+warnings as below. These were caused by a long loop without any
+explicit cond_resched which is a problem for !PREEMPT kernels.
 
-Tom
+Avoid this using cond_resched() while inserting hash page table
+entries. We already do similar cond_resched() in __add_pages(), see
+commit f64ac5e6e306 ("mm, memory_hotplug: add scheduling point to
+__add_pages").
 
+  rcu:     3-....: (24002 ticks this GP) idle=13e/1/0x4000000000000002 softirq=722/722 fqs=12001
+   (t=24003 jiffies g=4285 q=2002)
+  NMI backtrace for cpu 3
+  CPU: 3 PID: 3870 Comm: ndctl Not tainted 5.3.0-197.18-default+ #2
+  Call Trace:
+    dump_stack+0xb0/0xf4 (unreliable)
+    nmi_cpu_backtrace+0x124/0x130
+    nmi_trigger_cpumask_backtrace+0x1ac/0x1f0
+    arch_trigger_cpumask_backtrace+0x28/0x3c
+    rcu_dump_cpu_stacks+0xf8/0x154
+    rcu_sched_clock_irq+0x878/0xb40
+    update_process_times+0x48/0x90
+    tick_sched_handle.isra.16+0x4c/0x80
+    tick_sched_timer+0x68/0xe0
+    __hrtimer_run_queues+0x180/0x430
+    hrtimer_interrupt+0x110/0x300
+    timer_interrupt+0x108/0x2f0
+    decrementer_common+0x114/0x120
+  --- interrupt: 901 at arch_add_memory+0xc0/0x130
+      LR = arch_add_memory+0x74/0x130
+    memremap_pages+0x494/0x650
+    devm_memremap_pages+0x3c/0xa0
+    pmem_attach_disk+0x188/0x750
+    nvdimm_bus_probe+0xac/0x2c0
+    really_probe+0x148/0x570
+    driver_probe_device+0x19c/0x1d0
+    device_driver_attach+0xcc/0x100
+    bind_store+0x134/0x1c0
+    drv_attr_store+0x44/0x60
+    sysfs_kf_write+0x64/0x90
+    kernfs_fop_write+0x1a0/0x270
+    __vfs_write+0x3c/0x70
+    vfs_write+0xd0/0x260
+    ksys_write+0xdc/0x130
+    system_call+0x5c/0x68
 
->   drivers/net/ethernet/ibm/ibmvnic.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-> index efb0f10..2d84523 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -184,7 +184,7 @@ static int ibmvnic_wait_for_completion(struct ibmvnic_adapter *adapter,
->   			netdev_err(netdev, "Device down!\n");
->   			return -ENODEV;
->   		}
-> -		if (retry--)
-> +		if (!retry--)
->   			break;
->   		if (wait_for_completion_timeout(comp_done, div_timeout))
->   			return 0;
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191001084656.31277-1-aneesh.kumar@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/mm/hash_utils_64.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/mm/hash_utils_64.c b/arch/powerpc/mm/hash_utils_64.c
+index de1d8cdd29915..2dc1fc445f357 100644
+--- a/arch/powerpc/mm/hash_utils_64.c
++++ b/arch/powerpc/mm/hash_utils_64.c
+@@ -300,6 +300,7 @@ int htab_bolt_mapping(unsigned long vstart, unsigned long vend,
+ 		if (ret < 0)
+ 			break;
+ 
++		cond_resched();
+ #ifdef CONFIG_DEBUG_PAGEALLOC
+ 		if (debug_pagealloc_enabled() &&
+ 			(paddr >> PAGE_SHIFT) < linear_map_hash_count)
+-- 
+2.20.1
+
