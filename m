@@ -1,74 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B9211A5FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 09:38:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13EC11A5B6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 09:17:47 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XqYN6ZkTzDqgn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 19:17:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Xr112hpmzDqkZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 19:38:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="CHN1RTJB"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="Usht71Gx"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XqWJ4WsFzDqgn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 19:15:55 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id q8so1413833pfh.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 00:15:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XqzF1Jc5zDqjn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 19:36:39 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id d199so1433107pfd.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 00:36:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=YdakCL0bZVEMnpfC8eRQK9vZ26HEglM/xaYHaiS1zJM=;
- b=CHN1RTJBH3nnK5LFrX45/kr13tXK8lvxSXxTNF6ymxG3Or+h+uJhXLw5HbcTdafh9Q
- X6BJCG5YTnQm4E5vVxJTnClYhw7L/Jn7R+oVANG+YFHSDtrdxIDXnPagruIFuXr0e755
- hVWEjFjuAmCz4i/SKj5sugVIIsm/BSgHPzkKG/j9OgonIalH9VxjSwNNfg2166tzM9l9
- 9A4FxdnMcgQFoDVuQpGu6XVuTMP4ZU0DAkRH/ftGEudsHHVl1oE8IH/Qpzn8zB0tRZIf
- snxcTwlF3qBDYrg3S6r5Y4HKhCy0HfU5yEeqj8tIWgAfdpGq1G82iyqi5C4ldE9Fe0lo
- xj0g==
+ bh=TyTd+C4knMLMcc86kOqTPFMrzj2GSz56Tr2BiHlr9+E=;
+ b=Usht71GxmrxvJ+OZO6Pq7XSaayiRm2orx4LBvrKT3ZMA0NaW0FN1ZZTJTR4Mp4PFWa
+ rjjVDxWsmIPEWhW2cBWcIWCNhP5IqJssFkCLCx58g4UTdc12WxM3iOBbkyzsnr64aJUw
+ pGo5H/NLFyKolQbjQYlDoQJgXH2VHd0FjIqwRULPoZ7HlqFh8y9CvqNT2tR8u2m9DTZW
+ pueAS0jdYPo7W66xiH/sUOd4O7FcrMRq9HRciXhM0s57Fv2jo89NAl2cyImzzLUG3hLQ
+ FP5qJgJN1Sj6+Y8iUlV4UAytPWUZLqG/Sact7w3RP3NFe5c8YFayvtXjCL/fFlTbczAJ
+ Bz0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=YdakCL0bZVEMnpfC8eRQK9vZ26HEglM/xaYHaiS1zJM=;
- b=ufZyRAcw6PNo6nbymlNu4r/eZ4gCpvKVuSEHsQVq+ChRhzPyyn958qIHuyigr3cAuU
- 2QiqjqEgq7iVRaz6FFWzPLm4AQPmhMTWyP1CysitrJxW1kWXsDHPg/NazhOYQtVA5aVt
- cuuKogMUWfMmYmtnuWVpl1iESpbXOufW9syDiaFCDwq2x/2T+VtZHbjCxSq3nqffkVVZ
- Y/j8ElpdXjNp0oSdkECQ8dCW84oPtCAnVEGs98e2dgEoExtE0yTvYAWEWbie4bK6+NnU
- foAxnQrpFoOfVkCb9kZvpDL07fnQSFNfWRsW2gNunLJWEbtgRse37XPM4EwiXKVsrMde
- loRw==
-X-Gm-Message-State: APjAAAW4bKtkvPc34hSfUqH4FC8S7l0nXsEXSMLqjL5SMZzqNDnOyuKZ
- P+DsaMn5ByLE0AuthDTLXjlT4w==
-X-Google-Smtp-Source: APXvYqynMjx0kdZzHVvQ04aEcahgvUdCFIzWRa1acOWy0X8oB/A7XlwGv0b1SL6O5vSnJ7reVusPLg==
-X-Received: by 2002:aa7:94b0:: with SMTP id a16mr2357275pfl.35.1576052152376; 
- Wed, 11 Dec 2019 00:15:52 -0800 (PST)
+ bh=TyTd+C4knMLMcc86kOqTPFMrzj2GSz56Tr2BiHlr9+E=;
+ b=Fj9/8o1Z5sATs5ieE9k1rfAu58TY7Qw1b2Q0EqImZAp72zegO0tFeKY6H9pjaNvl98
+ FIJVJv9CU2VOzEoz0M08jVTBXO5DdDkQwDQaZ3MUI0rZ4ykUmQRPZiUxBuzf7FesTmQd
+ zn3GMIDg2ju6V5gvzB1lGudbRFrs3xqoUTHwA2eab7wpWesgzxeAb+pdT0SgfM00Hf4D
+ tXzZ8aH6kDWDSUXRHNg7vEPOhs3VqH+4/+x5Pu4c5QDwxB1G1VOE7iMMgyj/YEIIPEeJ
+ Khc0GdE5WoUZkWsAAoeGXvWUbL4mljQzB/idwjGtdoVVJ1n4B8E54OohbPBaBle53g5Q
+ lhjg==
+X-Gm-Message-State: APjAAAXK+UnRddhM5L3wOAq8pvBNqmofkf9ruD4cM9BNB0qCbuKCfUlY
+ hHGvmaPnc5agKZxV9i9PyxEFAg==
+X-Google-Smtp-Source: APXvYqx+DhrCyt73cuUffzsSteZ7KnRWBj0belTAxkWzrn1HcEFEhQmpxGthAEKhvN2FuASSzSlNog==
+X-Received: by 2002:a63:5f91:: with SMTP id t139mr2735712pgb.185.1576053397358; 
+ Wed, 11 Dec 2019 00:36:37 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 200sm1756493pfz.121.2019.12.11.00.15.46
+ by smtp.gmail.com with ESMTPSA id j14sm1737420pgs.57.2019.12.11.00.36.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Dec 2019 00:15:51 -0800 (PST)
-Subject: Re: [PATCH v5 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-To: Ram Pai <linuxram@us.ibm.com>
+ Wed, 11 Dec 2019 00:36:36 -0800 (PST)
+Subject: Re: [PATCH v5 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for
+ Secure VM.
+To: Michael Roth <mdroth@linux.vnet.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ mpe@ellerman.id.au
 References: <1575681159-30356-1-git-send-email-linuxram@us.ibm.com>
  <1575681159-30356-2-git-send-email-linuxram@us.ibm.com>
- <ed0f048c-bb40-c6c6-887c-ef68c9e411a2@ozlabs.ru>
- <20191210051244.GB5702@oc0525413822.ibm.com>
- <c4b48f55-e4e3-222a-0aa0-9b4783e19584@ozlabs.ru>
- <20191210153542.GB5709@oc0525413822.ibm.com>
+ <1575681159-30356-3-git-send-email-linuxram@us.ibm.com>
+ <157602860458.3810.8599908751067047456@sif>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -143,12 +142,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <90f6019b-d756-7f33-21b0-bb49c1c842da@ozlabs.ru>
-Date: Wed, 11 Dec 2019 19:15:44 +1100
+Message-ID: <be36117d-204e-bf59-287a-371103186e16@ozlabs.ru>
+Date: Wed, 11 Dec 2019 19:36:29 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20191210153542.GB5709@oc0525413822.ibm.com>
+In-Reply-To: <157602860458.3810.8599908751067047456@sif>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -163,132 +162,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- leonardo@linux.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
- cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: andmike@us.ibm.com, mst@redhat.com, linux-kernel@vger.kernel.org,
+ ram.n.pai@gmail.com, leonardo@linux.ibm.com, cai@lca.pw, tglx@linutronix.de,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 11/12/2019 02:35, Ram Pai wrote:
-> On Tue, Dec 10, 2019 at 04:32:10PM +1100, Alexey Kardashevskiy wrote:
+On 11/12/2019 12:43, Michael Roth wrote:
+> Quoting Ram Pai (2019-12-06 19:12:39)
+>> Commit edea902c1c1e ("powerpc/pseries/iommu: Don't use dma_iommu_ops on
+>>                 secure guests")
+>> disabled dma_iommu_ops path, for secure VMs. Disabling dma_iommu_ops
+>> path for secure VMs, helped enable dma_direct path.  This enabled
+>> support for bounce-buffering through SWIOTLB.  However it fails to
+>> operate when IOMMU is enabled, since I/O pages are not TCE mapped.
 >>
->>
->> On 10/12/2019 16:12, Ram Pai wrote:
->>> On Tue, Dec 10, 2019 at 02:07:36PM +1100, Alexey Kardashevskiy wrote:
->>>>
->>>>
->>>> On 07/12/2019 12:12, Ram Pai wrote:
->>>>> H_PUT_TCE_INDIRECT hcall uses a page filled with TCE entries, as one of
->>>>> its parameters.  On secure VMs, hypervisor cannot access the contents of
->>>>> this page since it gets encrypted.  Hence share the page with the
->>>>> hypervisor, and unshare when done.
->>>>
->>>>
->>>> I thought the idea was to use H_PUT_TCE and avoid sharing any extra
->>>> pages. There is small problem that when DDW is enabled,
->>>> FW_FEATURE_MULTITCE is ignored (easy to fix); I also noticed complains
->>>> about the performance on slack but this is caused by initial cleanup of
->>>> the default TCE window (which we do not use anyway) and to battle this
->>>> we can simply reduce its size by adding
->>>
->>> something that takes hardly any time with H_PUT_TCE_INDIRECT,  takes
->>> 13secs per device for H_PUT_TCE approach, during boot. This is with a
->>> 30GB guest. With larger guest, the time will further detoriate.
->>
->>
->> No it will not, I checked. The time is the same for 2GB and 32GB guests-
->> the delay is caused by clearing the small DMA window which is small by
->> the space mapped (1GB) but quite huge in TCEs as it uses 4K pages; and
->> for DDW window + emulated devices the IOMMU page size will be 2M/16M/1G
->> (depends on the system) so the number of TCEs is much smaller.
+>> Renable dma_iommu_ops path for pseries Secure VMs.  It handles all
+>> cases including, TCE mapping I/O pages, in the presence of a
+>> IOMMU.
 > 
-> I cant get your results.  What changes did you make to get it?
+> Wasn't clear to me at first, but I guess the main gist of this series is
+> that we want to continue to use SWIOTLB, but also need to create mappings
+> of it's bounce buffers in the IOMMU, so we revert to using dma_iommu_ops
+> and rely on the various dma_iommu_{map,alloc}_bypass() hooks throughout
+> to call into dma_direct_* ops rather than relying on the dma_is_direct(ops)
+> checks in DMA API functions to do the same.
 
 
-Get what? I passed "-m 2G" and "-m 32G", got the same time - 13s spent
-in clearing the default window and the huge window took a fraction of a
-second to create and map.
+Correct. Took me a bit of time to realize what we got here :) We only
+rely on  dma_iommu_ops::.dma_supported to write the DMA offset to a
+device (when creating a huge window), and after that we know it is
+mapped directly and swiotlb gets this 1<<59 offset via __phys_to_dma().
 
 
->>>>
->>>> -global
->>>> spapr-pci-host-bridge.dma_win_size=0x4000000
->>>
->>> This option, speeds it up tremendously.  But than should this option be
->>> enabled in qemu by default?  only for secure VMs? for both VMs?
->>
->>
->> As discussed in slack, by default we do not need to clear the entire TCE
->> table and we only have to map swiotlb buffer using the small window. It
->> is a guest kernel change only. Thanks,
+> That makes sense, but one issue I see with that is that
+> dma_iommu_map_bypass() only tests true if all the following are true:
 > 
-> Can you tell me what code you are talking about here.  Where is the TCE
-> table getting cleared? What code needs to be changed to not clear it?
+> 1) the device requests a 64-bit DMA mask via
+>    dma_set_mask/dma_set_coherent_mask
+> 2) DDW is enabled (i.e. we don't pass disable_ddw on command-line)
+> 
+> dma_is_direct() checks don't have this limitation, so I think for
+> anything cases, such as devices that use a smaller DMA mask, we'll
+> end up falling back to the non-bypass functions in dma_iommu_ops, which
+> will likely break for things like dma_alloc_coherent/dma_map_single
+> since they won't use SWIOTLB pages and won't do the necessary calls to
+> set_memory_unencrypted() to share those non-SWIOTLB buffers with
+> hypervisor.
+> 
+> Maybe that's ok, but I think we should be clearer about how to
+> fail/handle these cases.
+> 
+> Though I also agree with some concerns Alexey stated earlier: it seems
+> wasteful to map the entire DDW window just so these bounce buffers can be
+> mapped.  Especially if you consider the lack of a mapping to be an additional
+> safe-guard against things like buggy device implementations on the QEMU
+> side. E.g. if we leaked pages to the hypervisor on accident, those pages
+> wouldn't be immediately accessible to a device, and would still require
+> additional work get past the IOMMU.
+> 
+> What would it look like if we try to make all this work with disable_ddw passed
+> to kernel command-line (or forced for is_secure_guest())?
+> 
+>   1) dma_iommu_{alloc,map}_bypass() would no longer get us to dma_direct_* ops,
+>      but an additional case or hook that considers is_secure_guest() might do
+>      it.
+>      
+>   2) We'd also need to set up an IOMMU mapping for the bounce buffers via
+>      io_tlb_start/io_tlb_end. We could do it once, on-demand via
+>      dma_iommu_bypass_supported() like we do for the 64-bit DDW window, or
+>      maybe in some init function.
 
 
-pci_dma_bus_setup_pSeriesLP()
-	iommu_init_table()
-		iommu_table_clear()
-			for () tbl->it_ops->get()
+io_tlb_start/io_tlb_end are only guaranteed to stay within 4GB and our
+default DMA window is 1GB (KVM) or 2GB (PowerVM), ok, we can define
+ARCH_LOW_ADDRESS_LIMIT as 1GB.
 
-We do not really need to clear it there, we only need it for VFIO with
-IOMMU SPAPR TCE v1 which reuses these tables but there are
-iommu_take_ownership/iommu_release_ownership to clear these tables. I'll
-send a patch for this.
-
-
-> Is the code in tce_buildmulti_pSeriesLP(), the one that does the clear
-> aswell?
+But it has also been mentioned that we are likely to be having swiotlb
+buffers outside of the first 4GB as they are not just for crippled
+devices any more. So we are likely to have 64bit window, I'd just ditch
+the default window then, I have patches for this but every time I
+thought I have a use case, turned out that I did not.
 
 
-This one does not need to clear TCEs as this creates a window of known
-size and maps it all.
-
-Well, actually, it only maps actual guest RAM, if there are gaps in RAM,
-then TCEs for the gaps will have what hypervisor had there (which is
-zeroes, qemu/kvm clears it anyway).
-
-
-> But before I close, you have not told me clearly, what is the problem
-> with;  'share the page, make the H_PUT_INDIRECT_TCE hcall, unshare the page'.
-
-Between share and unshare you have a (tiny) window of opportunity to
-attack the guest. No, I do not know how exactly.
-
-For example, the hypervisor does a lot of PHB+PCI hotplug-unplug with
-64bit devices - each time this will create a huge window which will
-share/unshare the same page.  No, I do not know how exactly how this can
-be exploited either, we cannot rely of what you or myself know today. My
-point is that we should not be sharing pages at all unless we really
-really have to, and this does not seem to be the case.
-
-But since this seems to an acceptable compromise anyway,
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> That also has the benefit of not requiring devices to support 64-bit DMA.
+> 
+> Alternatively, we could continue to rely on the 64-bit DDW window, but
+> modify call to enable_ddw() to only map the io_tlb_start/end range in
+> the case of is_secure_guest(). This is a little cleaner implementation-wise
+> since we can rely on the existing dma_iommu_{alloc,map}_bypass() hooks, but
+> devices that don't support 64-bit will fail back to not using dma_direct_* ops
+> and fail miserably. We'd probably want to handle that more gracefully.
+> 
+> Or we handle both cases gracefully. To me it makes more sense to enable
+> non-DDW case, then consider adding DDW case later if there's some reason
+> why 64-bit DMA is needed. But would be good to hear if there are other
+> opinions.
 
 
+For now we need to do something with the H_PUT_TCE_INDIRECT's page -
+either disable multitce (but boot time increases) or share the page. The
+patch does the latter. Thanks,
 
 
-
-> Remember this is the same page that is earmarked for doing
-> H_PUT_INDIRECT_TCE, not by my patch, but its already earmarked by the
-> existing code. So it not some random buffer that is picked. Second 
-> this page is temporarily shared and unshared, it does not stay shared
-> for life.  It does not slow the boot. it does not need any
-> special command line options on the qemu.
->> Shared pages technology was put in place, exactly for the purpose of
-> sharing data with the hypervisor.  We are using this technology exactly
-> for that purpose.  And finally I agreed with your concern of having
-> shared pages staying around.  Hence i addressed that concern, by
-> unsharing the page.  At this point, I fail to understand your concern.
-
-
-
+> 
+>>
+>> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+>> ---
+>>  arch/powerpc/platforms/pseries/iommu.c | 11 +----------
+>>  1 file changed, 1 insertion(+), 10 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>> index 67b5009..4e27d66 100644
+>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>> @@ -36,7 +36,6 @@
+>>  #include <asm/udbg.h>
+>>  #include <asm/mmzone.h>
+>>  #include <asm/plpar_wrappers.h>
+>> -#include <asm/svm.h>
+>>  #include <asm/ultravisor.h>
+>>
+>>  #include "pseries.h"
+>> @@ -1346,15 +1345,7 @@ void iommu_init_early_pSeries(void)
+>>         of_reconfig_notifier_register(&iommu_reconfig_nb);
+>>         register_memory_notifier(&iommu_mem_nb);
+>>
+>> -       /*
+>> -        * Secure guest memory is inacessible to devices so regular DMA isn't
+>> -        * possible.
+>> -        *
+>> -        * In that case keep devices' dma_map_ops as NULL so that the generic
+>> -        * DMA code path will use SWIOTLB to bounce buffers for DMA.
+>> -        */
+>> -       if (!is_secure_guest())
+>> -               set_pci_dma_ops(&dma_iommu_ops);
+>> +       set_pci_dma_ops(&dma_iommu_ops);
+>>  }
+>>
+>>  static int __init disable_multitce(char *str)
+>> -- 
+>> 1.8.3.1
+>>
 
 -- 
 Alexey
