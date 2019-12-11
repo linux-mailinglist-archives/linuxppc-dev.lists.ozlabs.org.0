@@ -2,53 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863DB11A006
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 01:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45F411A03A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 01:51:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XdFT0TnGzDqf0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 11:33:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XdfK1Q3HzDqdt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 11:51:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Xd8x1WrzzDqZV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 11:29:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Jn2SQvPi"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47Xd8v5C5Hz9sP3;
- Wed, 11 Dec 2019 11:29:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576024160;
- bh=kmbp6MpyHsnC/owM/o4yDj8cWLNwjC0odjA8A0F3r2Y=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Jn2SQvPiqev5TL35DBK5lCO8mnXg+BTtXzArbhl7WqrvTJu5M+ZoiCVATKvHzLOLD
- /490q3sNuoaS8RrCEOiJfUlfiOE7FyR1xupxy+LuXjQrlnNee0sKWSvxRdwvkmFzJL
- 8cX9BG/37iHETX+SK6OEUNldhJo0kpLbionDwCbFGHrNEr/2bHr8GHHP8EvBJp2w5d
- Oq7Yqge4fyyFATWKyy/JiMHOdF3ZSJiokdKFsNzkoblZu7BIUOmrVNWAjFd0ArDVZD
- MSOu1H54hdcXdP2PAhbK8MNYDb646YZe392xvS8NArPz8yhZ0UaP34j/Lsl3ab+Us5
- zD/LY1lWBWRBw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.5-2 tag
- (topic/kasan-bitops)
-In-Reply-To: <20191210101545.GL2844@hirez.programming.kicks-ass.net>
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
- <87wob4pwnl.fsf@mpe.ellerman.id.au>
- <20191210101545.GL2844@hirez.programming.kicks-ass.net>
-Date: Wed, 11 Dec 2019 11:29:16 +1100
-Message-ID: <87lfrjpuw3.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="UvC0RIny"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XdcF6MyrzDqSt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 11:49:33 +1100 (AEDT)
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
+ [73.231.172.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2ACEC206D5;
+ Wed, 11 Dec 2019 00:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1576025371;
+ bh=mS7zyk9RzK8MLQp+5nvdMy6P3ysyYQCDC3Bah6kmlfs=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=UvC0RIny6iqVEumpqrPw6rq1+xZGMHezDVxIFrfIHyEiEEKaKQc5hGaYaeoZSLVqv
+ OiKjZB9JvOrs5D8lM5PO+WX7OQOLW/u0awaO48QIwAJPLeFa0zJF2HELO5AISWbm2x
+ nMOoibFNiErcex5Kfzt1sOkhZk08/M0uQclzXbn4=
+Date: Tue, 10 Dec 2019 16:49:29 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v8 20/26] powerpc: book3s64: convert to pin_user_pages()
+ and put_user_page()
+Message-Id: <20191210164929.b3f54fe95c3fc4b6c756e65e@linux-foundation.org>
+In-Reply-To: <61e0c3a5-992e-4571-e22d-d63286ce10ec@nvidia.com>
+References: <20191209225344.99740-1-jhubbard@nvidia.com>
+ <20191209225344.99740-21-jhubbard@nvidia.com>
+ <08f5d716-8b31-b016-4994-19fbe829dc28@nvidia.com>
+ <61e0c3a5-992e-4571-e22d-d63286ce10ec@nvidia.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,58 +62,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, elver@google.com, Will Deacon <will@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-arch@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?ISO-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?ISO-8859-1?Q?J=E9r?= =?ISO-8859-1?Q?=F4me?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Peter Zijlstra <peterz@infradead.org> writes:
-> On Tue, Dec 10, 2019 at 04:38:54PM +1100, Michael Ellerman wrote:
->
->> Good question, I'll have a look.
->> 
->> There seems to be confusion about what the type of the bit number is,
->> which is leading to sign extension in some cases and not others.
->
-> Shiny.
->
->> It looks like the type should be unsigned long?
->
-> I'm thinking unsigned makes most sense, I mean, negative bit offsets
-> should 'work' but that's almost always guaranteed to be an out-of-bound
-> operation.
+On Mon, 9 Dec 2019 21:53:00 -0800 John Hubbard <jhubbard@nvidia.com> wrote:
 
-Yeah I agree.
+> > Correction: this is somehow missing the fixes that resulted from Jan Kara's review (he
+> > noted that we can't take a page lock in this context). I must have picked up the
+> > wrong version of it, when I rebased for -rc1.
+> > 
+> 
+> Andrew, given that the series is now in -mm, what's the preferred way for me to fix this?
+> Send a v9 version of the whole series? Or something else?
 
-> As to 'long' vs 'int', I'm not sure, 4G bits is a long bitmap. But I
-> suppose since the bitmap itself is 'unsigned long', we might as well use
-> 'unsigned long' for the bitnr too.
+I think a full resend is warranted at this time - it's only been in
+there a day and there seem to be quite a number of changes to be made.
 
-4G is a lot of bits, but it's not *that* many.
-
-eg. If we had a bit per 4K page on a 32T machine that would be 8G bits.
-
-So unsigned long seems best.
-
->>   Documentation/core-api/atomic_ops.rst:  void __clear_bit_unlock(unsigned long nr, unsigned long *addr);
->>   arch/mips/include/asm/bitops.h:static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *addr)
->>   arch/powerpc/include/asm/bitops.h:static inline void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
->>   arch/riscv/include/asm/bitops.h:static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *addr)
->>   arch/s390/include/asm/bitops.h:static inline void arch___clear_bit_unlock(unsigned long nr,
->>   include/asm-generic/bitops/instrumented-lock.h:static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
->>   include/asm-generic/bitops/lock.h:static inline void __clear_bit_unlock(unsigned int nr,
->> 
->> So I guess step one is to convert our versions to use unsigned long, so
->> we're at least not tripping over that difference when comparing the
->> assembly.
->
-> Yeah, I'll look at fixing the generic code, bitops/atomic.h and
-> bitops/non-atomic.h don't even agree on the type of bitnr.
-
-Thanks.
-
-cheers
