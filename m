@@ -1,54 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4A211A318
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 04:38:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47XjLZ1ZXDzDqDp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 14:37:58 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B853711A311
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 04:34:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47XjG264WSzDqjn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2019 14:34:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64;
- helo=hqnvemgate25.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="LFvC0+w8"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="DV00nLgp"; 
  dkim-atps=neutral
-Received: from hqnvemgate25.nvidia.com (hqnvemgate25.nvidia.com
- [216.228.121.64])
+Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
+ [216.228.121.143])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47XhMY4cQkzDqfH
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47XhMY3MqrzDqd2
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 13:53:43 +1100 (AEDT)
 Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5df05a240001>; Tue, 10 Dec 2019 18:53:25 -0800
+ hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5df05a170000>; Tue, 10 Dec 2019 18:53:11 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
  by hqpgpgate101.nvidia.com (PGP Universal service);
- Tue, 10 Dec 2019 18:53:31 -0800
+ Tue, 10 Dec 2019 18:53:33 -0800
 X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Tue, 10 Dec 2019 18:53:31 -0800
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL105.nvidia.com
+ by hqpgpgate101.nvidia.com on Tue, 10 Dec 2019 18:53:33 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL105.nvidia.com
  (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Dec
- 2019 02:53:30 +0000
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 11 Dec
- 2019 02:53:30 +0000
-Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
- Frontend Transport; Wed, 11 Dec 2019 02:53:30 +0000
+ 2019 02:53:32 +0000
+Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
+ Frontend Transport; Wed, 11 Dec 2019 02:53:31 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
  rnnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5df05a290000>; Tue, 10 Dec 2019 18:53:29 -0800
+ id <B5df05a2a0000>; Tue, 10 Dec 2019 18:53:31 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v9 14/25] drm/via: set FOLL_PIN via pin_user_pages_fast()
-Date: Tue, 10 Dec 2019 18:53:07 -0800
-Message-ID: <20191211025318.457113-15-jhubbard@nvidia.com>
+Subject: [PATCH v9 16/25] net/xdp: set FOLL_PIN via pin_user_pages()
+Date: Tue, 10 Dec 2019 18:53:09 -0800
+Message-ID: <20191211025318.457113-17-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191211025318.457113-1-jhubbard@nvidia.com>
 References: <20191211025318.457113-1-jhubbard@nvidia.com>
@@ -57,16 +54,16 @@ X-NVConfidentiality: public
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576032805; bh=ky7gpstoQdJr5rtxFEQnjpS0lvKe5L6cg7jiu/68ipE=;
+ t=1576032792; bh=JiuMSIu1KROGnYN0FUrQmmZholMbEQnfhCSo9iAG4Tw=;
  h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
  In-Reply-To:References:MIME-Version:X-NVConfidentiality:
  Content-Type:Content-Transfer-Encoding;
- b=LFvC0+w82Ypn+sMKbs8fs6t31wpDg9MkaK5WuVKkO58UZX5B6aqYEHHGY1Ha0IIg5
- CeyXndoKKwWs3zNoIlyK00SDSA3cpjAExrn0ps6oqR23EF0aEe7wZGH/wOkE3kqhOX
- 2fL/Ucq4S/wWX3q22BnWCDfvk0idk5o06SA+ZuPG/QP1685Ia0sOczY12SmnWjEiGF
- M0r6VdUHabeIt5zajlTSJyq8QGi0eHUyeRe14GygOmuCPbbuWr7HftA9sv9bheCNox
- JvUg6RKXPwNSeLSADN5K3Z+qd4xJ2m5MNmXZQAI9gTD1MZJY17SgrpHg/0wSCwruhT
- slf9CB7P6igNQ==
+ b=DV00nLgpH0kt/D9QTCho4pyK08WoYR7CEtApYazviLa3TByMKUwLnyuEhziz89j+E
+ o1iaNt0Z3JJ6me9DfvtNxozjaf3zay0eSm0MZtjmAI/yoLJr3mg/fxgZWpghlVpUgw
+ DypSJNt5GtDa12+lOeK/wAmM7aUI+4+zelaSDamdW2XyxtfiDSsNlHDRM19jROruhy
+ amDv4SbpTEScmGOSj0kNFto1wEJD0zqiVLMeWRLYrfUDgHuG6PHxas1hIKPwQCCXWj
+ 99yRtKESuy3gMy4Z4Sk3RsikVFBAbm2kQ1LoqiQoqb5Csq/ib4KkDBf0LLTeulmTZ4
+ xNNbrLe/0Ot3g==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,12 +79,11 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
  dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul
- Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>, Daniel
- Vetter <daniel.vetter@ffwll.ch>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
  =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
@@ -104,41 +100,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert drm/via to use the new pin_user_pages_fast() call, which sets
+Convert net/xdp to use the new pin_longterm_pages() call, which sets
 FOLL_PIN. Setting FOLL_PIN is now required for code that requires
-tracking of pinned pages, and therefore for any code that calls
-put_user_page().
+tracking of pinned pages.
 
-In partial anticipation of this work, the drm/via driver was already
+In partial anticipation of this work, the net/xdp code was already
 calling put_user_page() instead of put_page(). Therefore, in order to
 convert from the get_user_pages()/put_page() model, to the
 pin_user_pages()/put_user_page() model, the only change required
-is to change get_user_pages() to pin_user_pages().
+here is to change get_user_pages() to pin_user_pages().
 
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Acked-by: Bj=C3=B6rn T=C3=B6pel <bjorn.topel@intel.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/drm/via/via_dmablit.c | 2 +-
+ net/xdp/xdp_umem.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/via/via_dmablit.c b/drivers/gpu/drm/via/via_dm=
-ablit.c
-index 3db000aacd26..37c5e572993a 100644
---- a/drivers/gpu/drm/via/via_dmablit.c
-+++ b/drivers/gpu/drm/via/via_dmablit.c
-@@ -239,7 +239,7 @@ via_lock_all_dma_pages(drm_via_sg_info_t *vsg,  drm_via=
-_dmablit_t *xfer)
- 	vsg->pages =3D vzalloc(array_size(sizeof(struct page *), vsg->num_pages))=
-;
- 	if (NULL =3D=3D vsg->pages)
+diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
+index 3049af269fbf..d071003b5e76 100644
+--- a/net/xdp/xdp_umem.c
++++ b/net/xdp/xdp_umem.c
+@@ -291,7 +291,7 @@ static int xdp_umem_pin_pages(struct xdp_umem *umem)
  		return -ENOMEM;
--	ret =3D get_user_pages_fast((unsigned long)xfer->mem_addr,
-+	ret =3D pin_user_pages_fast((unsigned long)xfer->mem_addr,
- 			vsg->num_pages,
- 			vsg->direction =3D=3D DMA_FROM_DEVICE ? FOLL_WRITE : 0,
- 			vsg->pages);
+=20
+ 	down_read(&current->mm->mmap_sem);
+-	npgs =3D get_user_pages(umem->address, umem->npgs,
++	npgs =3D pin_user_pages(umem->address, umem->npgs,
+ 			      gup_flags | FOLL_LONGTERM, &umem->pgs[0], NULL);
+ 	up_read(&current->mm->mmap_sem);
+=20
 --=20
 2.24.0
 
