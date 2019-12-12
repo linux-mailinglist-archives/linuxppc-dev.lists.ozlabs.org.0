@@ -2,62 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4370C11C6C4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 09:02:49 +0100 (CET)
-Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YR9f4zfRzDqwW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:02:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA6311C6C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 09:04:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YRD86GKHzDqx4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:04:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
- envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=dolbeau.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
- [209.85.128.65])
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=198.137.202.133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [198.137.202.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YR761XlkzDqwH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 19:00:33 +1100 (AEDT)
-Received: by mail-wm1-f65.google.com with SMTP id b11so1234464wmj.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 00:00:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=ViygpI3sZEeIFawFAMzJBuuwFC97dUQTttbjEwZbCFc=;
- b=AuhNm27HM4Cwm0GArkX+wRTk+M9TmEPfyUS3USE4h+SDLsFbbeVw2N4p2musrCIy2+
- Ft6kGeAXMWzDeD1ZiecWNOrQkDmvYPJp1931MKRqL2rpfvOxK0fSRA8U1iXW6UZYw/ZV
- Nb7nINV0ioZADbSLKr9C0K2QHRPLrxWQguIGjW383U/rS7w6sBnH9EfziohJ/pltpTWH
- VaBO6SA6K3vAU5w/iOZRpbM65ZGD3zQZJ6tj3ScRaJnm/7ib0k34SML5otarXYjOTNFN
- dns2G9tuWvJfIdFOTG9/xN4Il1ZFmDHetzuxEWXJX80gGFBVC0a7YZR8Qn/NMTKgg46W
- 8SmQ==
-X-Gm-Message-State: APjAAAUnYqdVyDz4sJCoBW/caeNgGh2EXpAHErxQXeE+igAjA2Y0TGr0
- IYGKvkLgDvcazQBpGklv34i1Jg8nkMRI5Ch525A=
-X-Google-Smtp-Source: APXvYqxABXxEus0Dw4a5xsLEtkLJHOj+oqr7zgTEdsQd14b8fFF7T2vbAA2QpYtFXhTezkHmYySS2i3eRTHkG2gbYoo=
-X-Received: by 2002:a1c:80d4:: with SMTP id b203mr4819582wmd.102.1576137628801; 
- Thu, 12 Dec 2019 00:00:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YR8Q6jhfzDqwn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 19:01:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=zqWbT6EiHg3ERbPkcWc07MTBuZk581MfKCNd9+8m5rE=; b=X06xtzoHXbVmNMkpdX/RnCwMH
+ Bmr3xrgAsNW/zC2cnwEWLqvPg1yNoTZfkNyS30BcfW/CNJCf8Oa9EqcbB+uInw+qeGV4DZcR4vrYv
+ Xqb1k7GvsnS+PzTtoxioJ4GPIrAHvRuq9lNj1KlC9XcJQG0CzKeJxA3fpmpJEu9j0VZsr/OD9nNVF
+ gERkk9nRzHOd01TO3r8RRZnFX9UhII0ulr3pp5lfaZhykPIRbf4jx89HYmsaNY+VQRX/8DkSalG/U
+ 6iPAV7dKze56pInYudqpr3bTYraDfYMAdNKh8fx5ttz1jmHNr8m3NyQ5dFmbaP87lH5YMnp4lXPXa
+ ux4JTyzuA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ifJPI-0002jE-CD; Thu, 12 Dec 2019 08:01:08 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D9ACE300F29;
+ Thu, 12 Dec 2019 08:59:44 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 20E1D20309147; Thu, 12 Dec 2019 09:01:05 +0100 (CET)
+Date: Thu, 12 Dec 2019 09:01:05 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+Message-ID: <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+References: <87blslei5o.fsf@mpe.ellerman.id.au>
+ <20191206131650.GM2827@hirez.programming.kicks-ass.net>
+ <875zimp0ay.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
- <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
- <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
- <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
- <87eexbk3gw.fsf@linux.ibm.com>
- <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
- <716dc1da300bb8e9132b4ff44c02110f@zonnet.nl>
-In-Reply-To: <716dc1da300bb8e9132b4ff44c02110f@zonnet.nl>
-From: Romain Dolbeau <romain@dolbeau.org>
-Date: Thu, 12 Dec 2019 09:00:17 +0100
-Message-ID: <CADuzgbpvGsYZcrYNsdXYqkRSCMqtnq9KFzQ2tLn8aiaNb5T=ZQ@mail.gmail.com>
-Subject: Re: Call for report - G5/PPC970 status
-To: jjhdiederen <jjhdiederen@zonnet.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875zimp0ay.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,32 +71,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- PowerPC List Debian <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le jeu. 12 d=C3=A9c. 2019 =C3=A0 08:32, jjhdiederen <jjhdiederen@zonnet.nl>=
- a =C3=A9crit :
-> PowerMac 7,3 G5 2.5 DP PCI-X Mid-2004 is affected with this bug. The
-> machine freezes at boot due to the new ppc64 kernel.
+On Thu, Dec 12, 2019 at 04:42:13PM +1100, Michael Ellerman wrote:
+> [ trimmed CC a bit ]
+> 
+> Peter Zijlstra <peterz@infradead.org> writes:
+> > On Fri, Dec 06, 2019 at 11:46:11PM +1100, Michael Ellerman wrote:
+> ...
+> > you write:
+> >
+> >   "Currently bitops-instrumented.h assumes that the architecture provides
+> > atomic, non-atomic and locking bitops (e.g. both set_bit and __set_bit).
+> > This is true on x86 and s390, but is not always true: there is a
+> > generic bitops/non-atomic.h header that provides generic non-atomic
+> > operations, and also a generic bitops/lock.h for locking operations."
+> >
+> > Is there any actual benefit for PPC to using their own atomic bitops
+> > over bitops/lock.h ? I'm thinking that the generic code is fairly
+> > optimal for most LL/SC architectures.
+> 
+> Yes and no :)
+> 
+> Some of the generic versions don't generate good code compared to our
+> versions, but that's because READ_ONCE() is triggering stack protector
+> to be enabled.
 
-Thanks for the reports!
+Bah, there's never anything simple, is there :/
 
-So it's not all G5, but it's across generations - the iMac is PCIe.
-Perhaps multiprocessors?
+> For example, comparing an out-of-line copy of the generic and ppc
+> versions of test_and_set_bit_lock():
+> 
+>    1 <generic_test_and_set_bit_lock>:           1 <ppc_test_and_set_bit_lock>:
+>    2         addis   r2,r12,361
+>    3         addi    r2,r2,-4240
+>    4         stdu    r1,-48(r1)
+>    5         rlwinm  r8,r3,29,3,28
+>    6         clrlwi  r10,r3,26                   2         rldicl  r10,r3,58,6
+>    7         ld      r9,3320(r13)
+>    8         std     r9,40(r1)
+>    9         li      r9,0
+>   10         li      r9,1                        3         li      r9,1
+>                                                  4         clrlwi  r3,r3,26
+>                                                  5         rldicr  r10,r10,3,60
+>   11         sld     r9,r9,r10                   6         sld     r3,r9,r3
+>   12         add     r10,r4,r8                   7         add     r4,r4,r10
+>   13         ldx     r8,r4,r8
+>   14         and.    r8,r9,r8
+>   15         bne     34f
+>   16         ldarx   r7,0,r10                    8         ldarx   r9,0,r4,1
+>   17         or      r8,r9,r7                    9         or      r10,r9,r3
+>   18         stdcx.  r8,0,r10                   10         stdcx.  r10,0,r4
+>   19         bne-    16b                        11         bne-    8b
+>   20         isync                              12         isync
+>   21         and     r9,r7,r9                   13         and     r3,r3,r9
+>   22         addic   r7,r9,-1                   14         addic   r9,r3,-1
+>   23         subfe   r7,r7,r9                   15         subfe   r3,r9,r3
+>   24         ld      r9,40(r1)
+>   25         ld      r10,3320(r13)
+>   26         xor.    r9,r9,r10
+>   27         li      r10,0
+>   28         mr      r3,r7
+>   29         bne     36f
+>   30         addi    r1,r1,48
+>   31         blr                                16         blr
+>   32         nop
+>   33         nop
+>   34         li      r7,1
+>   35         b       24b
+>   36         mflr    r0
+>   37         std     r0,64(r1)
+>   38         bl      <__stack_chk_fail+0x8>
+> 
+> 
+> If you squint, the generated code for the actual logic is pretty similar, but
+> the stack protector gunk makes a big mess. It's particularly bad here
+> because the ppc version doesn't even need a stack frame.
+> 
+> I've also confirmed that even when test_and_set_bit_lock() is inlined
+> into an actual call site the stack protector logic still triggers.
 
-Could you share the screen/log of the crash?
+> If I change the READ_ONCE() in test_and_set_bit_lock():
+> 
+> 	if (READ_ONCE(*p) & mask)
+> 		return 1;
+> 
+> to a regular pointer access:
+> 
+> 	if (*p & mask)
+> 		return 1;
+> 
+> Then the generated code looks more or less the same, except for the extra early
+> return in the generic version of test_and_set_bit_lock(), and different handling
+> of the return code by the compiler.
 
-For my G5 with 5.5rc1 I have one, but the photo is terrible:
-<http://www.dolbeau.name/dolbeau/files/Photo0031.jpg>
-Timestamps overlap, as after the 'crash' (backtrace) there was
-more messages from the (S)ATA subsystem.
+So given that the function signature is:
 
-Cordially,
+static inline int test_and_set_bit_lock(unsigned int nr,
+					volatile unsigned long *p)
 
---=20
-Romain Dolbeau
+@p already carries the required volatile qualifier, so READ_ONCE() does
+not add anything here (except for easier to read code and poor code
+generation).
+
+So your proposed change _should_ be fine. Will, I'm assuming you never
+saw this on your ARGH64 builds when you did this code ?
+
+---
+diff --git a/include/asm-generic/bitops/atomic.h b/include/asm-generic/bitops/atomic.h
+index dd90c9792909..10264e8808f8 100644
+--- a/include/asm-generic/bitops/atomic.h
++++ b/include/asm-generic/bitops/atomic.h
+@@ -35,7 +35,7 @@ static inline int test_and_set_bit(unsigned int nr, volatile unsigned long *p)
+ 	unsigned long mask = BIT_MASK(nr);
+ 
+ 	p += BIT_WORD(nr);
+-	if (READ_ONCE(*p) & mask)
++	if (*p & mask)
+ 		return 1;
+ 
+ 	old = atomic_long_fetch_or(mask, (atomic_long_t *)p);
+@@ -48,7 +48,7 @@ static inline int test_and_clear_bit(unsigned int nr, volatile unsigned long *p)
+ 	unsigned long mask = BIT_MASK(nr);
+ 
+ 	p += BIT_WORD(nr);
+-	if (!(READ_ONCE(*p) & mask))
++	if (!(*p & mask))
+ 		return 0;
+ 
+ 	old = atomic_long_fetch_andnot(mask, (atomic_long_t *)p);
+diff --git a/include/asm-generic/bitops/lock.h b/include/asm-generic/bitops/lock.h
+index 3ae021368f48..9baf0a0055b8 100644
+--- a/include/asm-generic/bitops/lock.h
++++ b/include/asm-generic/bitops/lock.h
+@@ -22,7 +22,7 @@ static inline int test_and_set_bit_lock(unsigned int nr,
+ 	unsigned long mask = BIT_MASK(nr);
+ 
+ 	p += BIT_WORD(nr);
+-	if (READ_ONCE(*p) & mask)
++	if (*p & mask)
+ 		return 1;
+ 
+ 	old = atomic_long_fetch_or_acquire(mask, (atomic_long_t *)p);
+@@ -60,7 +60,7 @@ static inline void __clear_bit_unlock(unsigned int nr,
+ 	unsigned long old;
+ 
+ 	p += BIT_WORD(nr);
+-	old = READ_ONCE(*p);
++	old = *p;
+ 	old &= ~BIT_MASK(nr);
+ 	atomic_long_set_release((atomic_long_t *)p, old);
+ }
