@@ -2,67 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146C411C5BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 06:58:47 +0100 (CET)
-Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YNQX2DctzDqg7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 16:58:44 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A654F11C613
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 07:45:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YPSG5CkyzDqw4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 17:45:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
- helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
+ helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
- [216.228.121.65])
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="HejDlK/1"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="Lt8ZKVPt"; dkim-atps=neutral
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
+ [66.111.4.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YNNG3M72zDqsp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 16:56:45 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5df1d68d0000>; Wed, 11 Dec 2019 21:56:29 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Wed, 11 Dec 2019 21:56:36 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Wed, 11 Dec 2019 21:56:36 -0800
-Received: from [10.2.165.195] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 12 Dec
- 2019 05:56:35 +0000
-Subject: Re: [PATCH v9 23/25] mm/gup: track FOLL_PIN pages
-To: Jan Kara <jack@suse.cz>
-References: <20191211025318.457113-1-jhubbard@nvidia.com>
- <20191211025318.457113-24-jhubbard@nvidia.com>
- <20191211112807.GN1551@quack2.suse.cz>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <f961d0b6-c660-85b9-ad01-53bce74e39e9@nvidia.com>
-Date: Wed, 11 Dec 2019 21:53:45 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YPQ22ZW7zDqn4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 17:43:14 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id AE12C22491;
+ Thu, 12 Dec 2019 01:43:10 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Thu, 12 Dec 2019 01:43:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
+ KyeWj8I1QMnmG8BRD33xXuY6tRJtAPepF3GJKhvFlro=; b=HejDlK/1SuGGBh2U
+ VSzZQ1jtkfDeE1LwGxG4T6rprj8MkGil741naD2w3v+l9+WoE5iOq3MmnmG0hVkV
+ 2VgGkNsgtIhJ9oAhNQmJBcbmVZhXt37UqxhCnleuto/eRZs5OR5Oi8+WyrMwsMvT
+ j4PGwLJflSV5qb3l6BP8BAXSR+67igfV/cB7QEUva8AJKdjl3MdmYaU5xOSDQ9c4
+ JIEZiyDp/JbaNr15K7/+y7yw41HI/Q8QEOnalbvvLaeAE5p7X2xqt1kCrJy5Fu34
+ Dz5I2lVY5khYoZwAV2hVFQ009Eya8xLKo/VIfF+GhKoPCmVrU6vkdGrA7BXkyuSX
+ 5JK2DA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=KyeWj8I1QMnmG8BRD33xXuY6tRJtAPepF3GJKhvFl
+ ro=; b=Lt8ZKVPtexLF/AskJaPBbCVVyQFCb/lgfHRlhEaaQ8lArbKqULD8jOTwF
+ pEgEwdIvmy2ZsEZipq/RaD1gRQtUAjGvbVdv9O3tgOT0Jpw0Z4M0pKnC6tBptE9u
+ qHWj/OBV+ukIBZHw8N5pLdHDY+rgSEhlepVeDkOBhK6J2yNflo/Q7jA8nfcisTxe
+ z6E5DN4ZWg8+fMvEu2NI4nq8K1RdbdJBnDTsD9wqCbHN1G2Pp/HbRx3CXxaD9mgH
+ RZYAqI6PuDQbPuGl76osu8Y9tdgOWbNkPcO+Zgh+Buo4oh26TlC0fPPugy3dfkFc
+ ESrCQftm3rtbz9fpoeoNCYBxyujVQ==
+X-ME-Sender: <xms:feHxXaqRFqJfPBu82gMup8LSdZ-MvkSxJKv1oVEfxVCvW742jmUXAw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudeliedgleejucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdluddtmdenucfjughrpefkuf
+ fhvfffjghftggfggfgsehtjeertddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
+ rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrd
+ ekvddruddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghl
+ lhdrtggtnecuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:feHxXUq_6t_Fvu7O6Z9Tvdq7Mg-ukP6SQuxF_8gDM23_fcZDgmCizQ>
+ <xmx:feHxXRY_y0XBFHaDqaJHvdLnnLsaFMT4ZSeyMcv8To-Ewcglvq80Gg>
+ <xmx:feHxXa-AM8F54FMjU8DhkOCGEsPKApZtGbyP7RkDYD4G3Ua-WD_-6w>
+ <xmx:fuHxXXmI5uEodkUlXZid_KiovUsjzRht4SMGI_va0Jm2RqK3nveZnQ>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 19BA230600AB;
+ Thu, 12 Dec 2019 01:43:06 -0500 (EST)
+Message-ID: <d01de33ebe1fb1e0715878383a68e8e174d048a0.camel@russell.cc>
+Subject: Re: [PATCH v5 2/5] powerpc/kprobes: Mark newly allocated probes as RO
+From: Russell Currey <ruscur@russell.cc>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 12 Dec 2019 17:43:03 +1100
+In-Reply-To: <87eexie3nl.fsf@mpe.ellerman.id.au>
+References: <20191030073111.140493-1-ruscur@russell.cc>
+ <20191030073111.140493-3-ruscur@russell.cc>
+ <8736f636bl.fsf@mpe.ellerman.id.au> <87eexie3nl.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 
 MIME-Version: 1.0
-In-Reply-To: <20191211112807.GN1551@quack2.suse.cz>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576130189; bh=WUvMFBOwsTbLT+9CzNbxGtAponFsFsmTJOyg8MjL8ds=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=lsWfVOx2mYuCSEqMXkqo0p3SpKqw9VwSL+20QlVcuyoMSELQtTCN0YxM6RzLVo9oa
- uq4Hl9KFn70q6l1bzqmgaiV5HLk4+H2168Aq1l5uWc+mWWgNKPzhftF1QMyxl40GPe
- nNNgDtbzvAru+MjxE1MbEaMe+90vfqRYKPVuX/JzejQXCe2EVI5eyYy9CwInRuqtjp
- 2idGFh4dXFAMfDwQiKAN1Pz/TUuUoswEkyfXdQEyWp7z5jAlzfpntkPH8s96FOaimZ
- 1olYa+8gPiG8ccYKitvEKwCbv3GPr0UXUD+T0zjEzw7D9d6fQ9awWSzCOfMJ4VZl20
- 16ivttgOjkh4A==
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,131 +91,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
- LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: dja@axtens.net, joel@jms.id.au, ajd@linux.ibm.com, npiggin@gmail.com,
+ kernel-hardening@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/11/19 3:28 AM, Jan Kara wrote:
-...
->=20
-> The patch looks mostly good to me now. Just a few smaller comments below.
->=20
->> Suggested-by: Jan Kara <jack@suse.cz>
->> Suggested-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
->> Reviewed-by: Jan Kara <jack@suse.cz>
->> Reviewed-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
->> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
->=20
-> I think you inherited here the Reviewed-by tags from the "add flags" patc=
-h
-> you've merged into this one but that's not really fair since this patch
-> does much more... In particular I didn't give my Reviewed-by tag for this
-> patch yet.
+On Fri, 2019-12-06 at 10:47 +1100, Michael Ellerman wrote:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > Russell Currey <ruscur@russell.cc> writes:
+> > > With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will
+> > > be one
+> > > W+X page at boot by default.  This can be tested with
+> > > CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking
+> > > the
+> > > kernel log during boot.
+> > > 
+> > > powerpc doesn't implement its own alloc() for kprobes like other
+> > > architectures do, but we couldn't immediately mark RO anyway
+> > > since we do
+> > > a memcpy to the page we allocate later.  After that, nothing
+> > > should be
+> > > allowed to modify the page, and write permissions are removed
+> > > well
+> > > before the kprobe is armed.
+> > > 
+> > > Thus mark newly allocated probes as read-only once it's safe to
+> > > do so.
+> > > 
+> > > Signed-off-by: Russell Currey <ruscur@russell.cc>
+> > > ---
+> > >  arch/powerpc/kernel/kprobes.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/arch/powerpc/kernel/kprobes.c
+> > > b/arch/powerpc/kernel/kprobes.c
+> > > index 2d27ec4feee4..2610496de7c7 100644
+> > > --- a/arch/powerpc/kernel/kprobes.c
+> > > +++ b/arch/powerpc/kernel/kprobes.c
+> > > @@ -24,6 +24,7 @@
+> > >  #include <asm/sstep.h>
+> > >  #include <asm/sections.h>
+> > >  #include <linux/uaccess.h>
+> > > +#include <linux/set_memory.h>
+> > >  
+> > >  DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+> > >  DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+> > > @@ -131,6 +132,8 @@ int arch_prepare_kprobe(struct kprobe *p)
+> > >  			(unsigned long)p->ainsn.insn +
+> > > sizeof(kprobe_opcode_t));
+> > >  	}
+> > >  
+> > > +	set_memory_ro((unsigned long)p->ainsn.insn, 1);
+> > > +
+> > 
+> > That comes from:
+> > 	p->ainsn.insn = get_insn_slot();
+> > 
+> > 
+> > Which ends up in __get_insn_slot() I think. And that looks very
+> > much
+> > like it's going to hand out multiple slots per page, which isn't
+> > going
+> > to work because you've just marked the whole page RO.
+> > 
+> > So I would expect this to crash on the 2nd kprobe that's installed.
+> > Have
+> > you tested it somehow?
+> 
+> I'm not sure if this is the issue I was talking about, but it doesn't
+> survive ftracetest:
+> 
+>   [ 1139.576047] ------------[ cut here ]------------
+>   [ 1139.576322] kernel BUG at mm/memory.c:2036!
+>   cpu 0x1f: Vector: 700 (Program Check) at [c000001fd6c675d0]
+>       pc: c00000000035d018: apply_to_page_range+0x318/0x610
+>       lr: c0000000000900bc: change_memory_attr+0x4c/0x70
+>       sp: c000001fd6c67860
+>      msr: 9000000000029033
+>     current = 0xc000001fa4a47880
+>     paca    = 0xc000001ffffe5c80   irqmask: 0x03   irq_happened: 0x01
+>       pid   = 7168, comm = ftracetest
+>   kernel BUG at mm/memory.c:2036!
+>   Linux version 5.4.0-gcc-8.2.0-11694-gf1f9aa266811 (
+> michael@Raptor-2.ozlabs.ibm.com) (gcc version 8.2.0 (crosstool-NG
+> 1.24.0-rc1.16-9627a04)) #1384 SMP Thu Dec 5 22:11:09 AEDT 2019
+>   enter ? for help
+>   [c000001fd6c67940] c0000000000900bc change_memory_attr+0x4c/0x70
+>   [c000001fd6c67970] c000000000053c48 arch_prepare_kprobe+0xb8/0x120
+>   [c000001fd6c679e0] c00000000022f718 register_kprobe+0x608/0x790
+>   [c000001fd6c67a40] c00000000022fc50 register_kretprobe+0x230/0x350
+>   [c000001fd6c67a80] c0000000002849b4
+> __register_trace_kprobe+0xf4/0x1a0
+>   [c000001fd6c67af0] c000000000285b18 trace_kprobe_create+0x738/0xf70
+>   [c000001fd6c67c30] c000000000286378
+> create_or_delete_trace_kprobe+0x28/0x70
+>   [c000001fd6c67c50] c00000000025f024 trace_run_command+0xc4/0xe0
+>   [c000001fd6c67ca0] c00000000025f128
+> trace_parse_run_command+0xe8/0x230
+>   [c000001fd6c67d40] c0000000002845d0 probes_write+0x20/0x40
+>   [c000001fd6c67d60] c0000000003eef4c __vfs_write+0x3c/0x70
+>   [c000001fd6c67d80] c0000000003f26a0 vfs_write+0xd0/0x200
+>   [c000001fd6c67dd0] c0000000003f2a3c ksys_write+0x7c/0x140
+>   [c000001fd6c67e20] c00000000000b9e0 system_call+0x5c/0x68
+>   --- Exception: c01 (System Call) at 00007fff8f06e420
+>   SP (7ffff93d6830) is in userspace
+>   1f:mon> client_loop: send disconnect: Broken pipe
+> 
+> 
+> Sorry I didn't get any more info on the crash, I lost the console and
+> then some CI bot stole the machine 8)
+> 
+> You should be able to reproduce just by running ftracetest.
 
-OK, I've removed those reviewed-by's. (I felt bad about dropping them, afte=
-r
-people had devoted time to reviewing, but I do see that it's wrong to imply
-that they've reviewed this much much larger thing.)
+The test that blew it up was test.d/kprobe/probepoint.tc for the
+record.  It goes away when replacing the memcpy with a
+patch_instruction().
 
-...
->=20
-> I somewhat wonder about the asymmetry of try_grab_compound_head() vs
-> try_grab_page() in the treatment of 'flags'. How costly would it be to ma=
-ke
-> them symmetric (i.e., either set FOLL_GET for try_grab_compound_head()
-> callers or make sure one of FOLL_GET, FOLL_PIN is set for try_grab_page()=
-)?
->=20
-> Because this difference looks like a subtle catch in the long run...
+> 
+> cheers
 
-Done. It is only a modest code-level change, at least the way I've done it,=
- which is
-setting FOLL_GET for try_grab_compound_head(). In order to do that, I set
-it at the top of the internal gup fast calling stacks, which is actually a =
-good
-design anyway: gup fast is logically doing FOLL_GET in all cases. So settin=
-g
-the flag internally is accurate and consistent with the overall design.
-
-
-> ...
->=20
->> @@ -1522,8 +1536,8 @@ struct page *follow_trans_huge_pmd(struct vm_area_=
-struct *vma,
->>   skip_mlock:
->>   	page +=3D (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
->>   	VM_BUG_ON_PAGE(!PageCompound(page) && !is_zone_device_page(page), pag=
-e);
->> -	if (flags & FOLL_GET)
->> -		get_page(page);
->> +	if (!try_grab_page(page, flags))
->> +		page =3D ERR_PTR(-EFAULT);
->=20
-> I think you need to also move the try_grab_page() earlier in the function=
-.
-> At this point the page may be marked as mlocked and you'd need to undo th=
-at
-> in case try_grab_page() fails.
-
-
-OK, I've moved it up, adding a "subpage" variable in order to make that wor=
-k.
-
->=20
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index ac65bb5e38ac..0aab6fe0072f 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -4356,7 +4356,13 @@ long follow_hugetlb_page(struct mm_struct *mm, st=
-ruct vm_area_struct *vma,
->>   same_page:
->>   		if (pages) {
->>   			pages[i] =3D mem_map_offset(page, pfn_offset);
->> -			get_page(pages[i]);
->> +			if (!try_grab_page(pages[i], flags)) {
->> +				spin_unlock(ptl);
->> +				remainder =3D 0;
->> +				err =3D -ENOMEM;
->> +				WARN_ON_ONCE(1);
->> +				break;
->> +			}
->>   		}
->=20
-> This function does a refcount overflow check early so that it doesn't hav=
-e
-> to do try_get_page() here. So that check can be now removed when you do
-> try_grab_page() here anyway since that early check seems to be just a tin=
-y
-> optimization AFAICT.
->=20
-> 								Honza
->=20
-
-Yes. I've removed it, good spot.
-
-
-thanks,
---=20
-John Hubbard
-NVIDIA
