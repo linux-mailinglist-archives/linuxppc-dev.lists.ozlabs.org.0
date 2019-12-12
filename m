@@ -1,44 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29E311CA77
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 11:19:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YVCt6rbdzDqrW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 21:19:54 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D3911CB21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 11:40:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YVgs0ZQGzDr3l
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 21:40:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=james.morse@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YV9b5RNvzDqW1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 21:17:54 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 340DEB16C;
- Thu, 12 Dec 2019 10:17:45 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 66CA41E0B8F; Thu, 12 Dec 2019 11:17:41 +0100 (CET)
-Date: Thu, 12 Dec 2019 11:17:41 +0100
-From: Jan Kara <jack@suse.cz>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v10 23/25] mm/gup: track FOLL_PIN pages
-Message-ID: <20191212101741.GD10065@quack2.suse.cz>
-References: <20191212081917.1264184-1-jhubbard@nvidia.com>
- <20191212081917.1264184-24-jhubbard@nvidia.com>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47YVdp1XPtzDqf5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 21:38:52 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5204328;
+ Thu, 12 Dec 2019 02:32:41 -0800 (PST)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA63E3F6CF;
+ Thu, 12 Dec 2019 02:32:39 -0800 (PST)
+Subject: Re: [RESEND PATCH v5 5/5] Documentation/vmcoreinfo: Add documentation
+ for 'TCR_EL1.T1SZ'
+To: Bhupesh Sharma <bhsharma@redhat.com>, linux-kernel@vger.kernel.org
+References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
+ <1575057559-25496-6-git-send-email-bhsharma@redhat.com>
+From: James Morse <james.morse@arm.com>
+Message-ID: <8a982138-f1fa-34e8-18fd-49a79cea3652@arm.com>
+Date: Thu, 12 Dec 2019 10:32:38 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191212081917.1264184-24-jhubbard@nvidia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1575057559-25496-6-git-send-email-bhsharma@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,292 +50,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-doc@vger.kernel.org,
+ Will Deacon <will@kernel.org>, x86@kernel.org, kexec@lists.infradead.org,
+ Kazuhito Hagio <k-hagio@ab.jp.nec.com>, Dave Anderson <anderson@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, bhupesh.linux@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 12-12-19 00:19:15, John Hubbard wrote:
-> Add tracking of pages that were pinned via FOLL_PIN.
+Hi Bhupesh,
+
+On 29/11/2019 19:59, Bhupesh Sharma wrote:
+> Add documentation for TCR_EL1.T1SZ variable being added to
+> vmcoreinfo.
 > 
-> As mentioned in the FOLL_PIN documentation, callers who effectively set
-> FOLL_PIN are required to ultimately free such pages via unpin_user_page().
-> The effect is similar to FOLL_GET, and may be thought of as "FOLL_GET
-> for DIO and/or RDMA use".
-> 
-> Pages that have been pinned via FOLL_PIN are identifiable via a
-> new function call:
-> 
->    bool page_dma_pinned(struct page *page);
-> 
-> What to do in response to encountering such a page, is left to later
-> patchsets. There is discussion about this in [1], [2], and [3].
-> 
-> This also changes a BUG_ON(), to a WARN_ON(), in follow_page_mask().
-> 
-> [1] Some slow progress on get_user_pages() (Apr 2, 2019):
->     https://lwn.net/Articles/784574/
-> [2] DMA and get_user_pages() (LPC: Dec 12, 2018):
->     https://lwn.net/Articles/774411/
-> [3] The trouble with get_user_pages() (Apr 30, 2018):
->     https://lwn.net/Articles/753027/
-> 
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Suggested-by: Jérôme Glisse <jglisse@redhat.com>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> It indicates the size offset of the memory region addressed by TTBR1_EL1
 
-Thanks for the patch. As a side note, given this series is rather big, it
-may be better to send just individual updated patches (as replies to the
-review comments) instead of resending the whole series every time. And then
-you can resend the whole series once enough changes accumulate or we reach
-seemingly final state.  That way people don't have to crawl through lots of
-uninteresing emails...  Just something to keep in mind for the future.
+> and hence can be used for determining the vabits_actual value.
 
-I've spotted just one issue in this patch (see below), the rest are just
-small style nits.
+used for determining random-internal-kernel-variable, that might not exist tomorrow.
 
-> +#define page_ref_zero_or_close_to_bias_overflow(page) \
-> +	((unsigned int) page_ref_count(page) + \
-> +		GUP_PIN_COUNTING_BIAS <= GUP_PIN_COUNTING_BIAS)
-> +
+Could you describe how this is useful/necessary if a debugger wants to walk the page
+tables from the core file? I think this is a better argument.
 
-...
+Wouldn't the documentation be better as part of the patch that adds the export?
+(... unless these have to go via different trees? ..)
 
-> +/**
-> + * page_dma_pinned() - report if a page is pinned for DMA.
-> + *
-> + * This function checks if a page has been pinned via a call to
-> + * pin_user_pages*().
-> + *
-> + * The return value is partially fuzzy: false is not fuzzy, because it means
-> + * "definitely not pinned for DMA", but true means "probably pinned for DMA, but
-> + * possibly a false positive due to having at least GUP_PIN_COUNTING_BIAS worth
-> + * of normal page references".
-> + *
-> + * False positives are OK, because: a) it's unlikely for a page to get that many
-> + * refcounts, and b) all the callers of this routine are expected to be able to
-> + * deal gracefully with a false positive.
-> + *
-> + * For more information, please see Documentation/vm/pin_user_pages.rst.
-> + *
-> + * @page:	pointer to page to be queried.
-> + * @Return:	True, if it is likely that the page has been "dma-pinned".
-> + *		False, if the page is definitely not dma-pinned.
-> + */
-> +static inline bool page_dma_pinned(struct page *page)
-> +{
-> +	return (page_ref_count(compound_head(page))) >= GUP_PIN_COUNTING_BIAS;
-> +}
-> +
 
-I realized one think WRT handling of page refcount overflow: Page refcount is
-signed and e.g. try_get_page() fails once the refcount is negative. That
-means that:
-
-a) page_ref_zero_or_close_to_bias_overflow() is not necessary - all places
-that use pinning (i.e., advance refcount by GUP_PIN_COUNTING_BIAS) are not
-necesary, we should just rely on the check for negative value for
-consistency.
-
-b) page_dma_pinned() has to be careful and type page_ref_count() to
-unsigned type for comparison as otherwise overflowed refcount would
-suddently appear as not-pinned.
-
-> +/**
-> + * try_pin_compound_head() - mark a compound page as being used by
-> + * pin_user_pages*().
-> + *
-> + * This is the FOLL_PIN counterpart to try_get_compound_head().
-> + *
-> + * @page:	pointer to page to be marked
-> + * @Return:	the compound head page, with ref appropriately incremented,
-> + * or NULL upon failure.
-> + */
-> +__must_check struct page *try_pin_compound_head(struct page *page, int refs)
-> +{
-> +	struct page *head = try_get_compound_head(page,
-> +						  GUP_PIN_COUNTING_BIAS * refs);
-> +	if (!head)
-> +		return NULL;
-> +
-> +	__update_proc_vmstat(page, NR_FOLL_PIN_REQUESTED, refs);
-> +	return head;
-> +}
-> +
-> +/*
-> + * try_grab_compound_head() - attempt to elevate a page's refcount, by a
-> + * flags-dependent amount.
-> + *
-> + * "grab" names in this file mean, "look at flags to decide whether to use
-> + * FOLL_PIN or FOLL_GET behavior, when incrementing the page's refcount.
-> + *
-> + * Either FOLL_PIN or FOLL_GET (or neither) must be set, but not both at the
-> + * same time. (That's true throughout the get_user_pages*() and
-> + * pin_user_pages*() APIs.) Cases:
-> + *
-> + *	FOLL_GET: page's refcount will be incremented by 1.
-> + *      FOLL_PIN: page's refcount will be incremented by GUP_PIN_COUNTING_BIAS.
-
-Some tab vs space issue here... Generally we don't use tabs inside comments
-for indenting so I'd wote for using just spaces.
-
-> + *
-> + * Return: head page (with refcount appropriately incremented) for success, or
-> + * NULL upon failure. If neither FOLL_GET nor FOLL_PIN was set, that's
-> + * considered failure, and furthermore, a likely bug in the caller, so a warning
-> + * is also emitted.
-> + */
-> +static __maybe_unused struct page *try_grab_compound_head(struct page *page,
-> +							  int refs,
-> +							  unsigned int flags)
-> +{
-> +	if (flags & FOLL_GET)
-> +		return try_get_compound_head(page, refs);
-> +	else if (flags & FOLL_PIN)
-> +		return try_pin_compound_head(page, refs);
-> +
-> +	WARN_ON_ONCE((flags & (FOLL_GET | FOLL_PIN)) == 0);
-
-This could be just WARN_ON_ONCE(1), right?
-
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * try_grab_page() - elevate a page's refcount by a flag-dependent amount
-> + *
-> + * This might not do anything at all, depending on the flags argument.
-> + *
-> + * "grab" names in this file mean, "look at flags to decide whether to use
-> + * FOLL_PIN or FOLL_GET behavior, when incrementing the page's refcount.
-> + *
-> + * @page:	pointer to page to be grabbed
-> + * @flags:	gup flags: these are the FOLL_* flag values.
-> + *
-> + * Either FOLL_PIN or FOLL_GET (or neither) may be set, but not both at the same
-> + * time. Cases:
-> + *
-> + *	FOLL_GET: page's refcount will be incremented by 1.
-> + *      FOLL_PIN: page's refcount will be incremented by GUP_PIN_COUNTING_BIAS.
-
-Again tab vs space difference here.
-
-> + *
-> + * Return: true for success, or if no action was required (if neither FOLL_PIN
-> + * nor FOLL_GET was set, nothing is done). False for failure: FOLL_GET or
-> + * FOLL_PIN was set, but the page could not be grabbed.
-> + */
-> +bool __must_check try_grab_page(struct page *page, unsigned int flags)
-> +{
-> +	if (flags & FOLL_GET)
-> +		return try_get_page(page);
-> +	else if (flags & FOLL_PIN) {
-> +		page = compound_head(page);
-> +		WARN_ON_ONCE(flags & FOLL_GET);
-> +
-> +		if (WARN_ON_ONCE(page_ref_zero_or_close_to_bias_overflow(page)))
-> +			return false;
-
-As I mentioned above, this will need "negative refcount" check instead...
-
-> +
-> +		page_ref_add(page, GUP_PIN_COUNTING_BIAS);
-> +		__update_proc_vmstat(page, NR_FOLL_PIN_REQUESTED, 1);
-> +	}
-> +
-> +	return true;
-> +}
-
-...
-
-> @@ -1468,6 +1482,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
->  {
->  	struct mm_struct *mm = vma->vm_mm;
->  	struct page *page = NULL;
-> +	struct page *subpage = NULL;
+> diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+> index 447b64314f56..f9349f9d3345 100644
+> --- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
+> +++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+> @@ -398,6 +398,12 @@ KERNELOFFSET
+>  The kernel randomization offset. Used to compute the page offset. If
+>  KASLR is disabled, this value is zero.
 >  
->  	assert_spin_locked(pmd_lockptr(mm, pmd));
->  
-> @@ -1486,6 +1501,14 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
->  	VM_BUG_ON_PAGE(!PageHead(page) && !is_zone_device_page(page), page);
->  	if (flags & FOLL_TOUCH)
->  		touch_pmd(vma, addr, pmd, flags);
+> +TCR_EL1.T1SZ
+> +------------
 > +
-> +	subpage = page;
-> +	subpage += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
-> +	VM_BUG_ON_PAGE(!PageCompound(subpage) &&
-> +		       !is_zone_device_page(subpage), subpage);
-> +	if (!try_grab_page(subpage, flags))
-> +		return ERR_PTR(-EFAULT);
-> +
+> +Indicates the size offset of the memory region addressed by TTBR1_EL1
 
-Hum, I think you've made this change more complex than it has to be.
-try_grab_page() is the same for head page or subpage because we increment
-the refcount on the compound_head(page) anyway. So I'd leave this function
-as is (not add subpage or move VM_BUG_ON_PAGE()), just have at this place:
+> +and hence can be used for determining the vabits_actual value.
 
-	if (!try_grab_page(page, flags))
-		return ERR_PTR(-EFAULT);
+'vabits_actual' may not exist when the next person comes to read this documentation (its
+going to rot really quickly).
 
-Also one comment regarding the error code. Some places seem to return -ENOMEM
-when they fail to grab page reference. Shouldn't we rather return that one
-for consistency?
+I think the first half of this text is enough to say what this is for. You should include
+words to the effect that its the hardware value that goes with swapper_pg_dir. You may
+want to point readers to the arm-arm for more details on what the value means.
 
->  	if ((flags & FOLL_MLOCK) && (vma->vm_flags & VM_LOCKED)) {
->  		/*
->  		 * We don't mlock() pte-mapped THPs. This way we can avoid
-> @@ -1509,24 +1532,18 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
->  		 */
->  
->  		if (PageAnon(page) && compound_mapcount(page) != 1)
-> -			goto skip_mlock;
-> +			goto out;
->  		if (PageDoubleMap(page) || !page->mapping)
-> -			goto skip_mlock;
-> +			goto out;
->  		if (!trylock_page(page))
-> -			goto skip_mlock;
-> +			goto out;
->  		lru_add_drain();
->  		if (page->mapping && !PageDoubleMap(page))
->  			mlock_vma_page(page);
->  		unlock_page(page);
->  	}
-> -skip_mlock:
-> -	page += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
-> -	VM_BUG_ON_PAGE(!PageCompound(page) && !is_zone_device_page(page), page);
-> -	if (flags & FOLL_GET)
-> -		get_page(page);
-> -
->  out:
-> -	return page;
-> +	return subpage;
->  }
->  
 
-									Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Thanks,
+
+James
