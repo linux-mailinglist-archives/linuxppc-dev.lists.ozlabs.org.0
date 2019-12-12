@@ -2,84 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FA811C69E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 08:44:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YQn34fySzDqwT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 18:44:55 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4370C11C6C4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 09:02:49 +0100 (CET)
+Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YR9f4zfRzDqwW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:02:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::143;
- helo=mail-lf1-x143.google.com; envelope-from=bsingharora@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
+ envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
+ dmarc=none (p=none dis=none) header.from=dolbeau.org
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
+ [209.85.128.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YQkv6HS7zDqvW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 18:42:59 +1100 (AEDT)
-Received: by mail-lf1-x143.google.com with SMTP id m30so902585lfp.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 23:42:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:references:from:message-id:date:user-agent:mime-version
- :in-reply-to:content-language:content-transfer-encoding;
- bh=PkUsNGoqFdl5gXqJP6bnP2J6yrhC8TrnSK9hjm92v8k=;
- b=NMCNzYEm9Gfegz6VLnF8XP0V5Hn0WezwnX7U9NkH5MQWw+pZmvdE45rMspF3sLqxbF
- ZZnNXwqhT2Q5GUIlC1rnmGWdvyOao7Mv2wdJk0VOhiLJ/8ruwz7CzgzsU9HcBqUHN8xb
- OlyZ2qODoD9obyPBZzL0HLC0LDMy+X8yU/eWI5IZxzHqW/dN5qNLoU6c8k6x83yi0cTH
- yY3XvA65/q1EilVfL5O1Awlr4X/HW8bO8iCGiDKbMOtMsyKX1Owmv2jHdInhOqTPfUY4
- DTV3Brysx5psuGFJ/sIoP9BO6zN1aE1N5mB96sZ/Z4CD9q24KbeourzxSb0xwN0ZLlvx
- 75SA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YR761XlkzDqwH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 19:00:33 +1100 (AEDT)
+Received: by mail-wm1-f65.google.com with SMTP id b11so1234464wmj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 00:00:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=PkUsNGoqFdl5gXqJP6bnP2J6yrhC8TrnSK9hjm92v8k=;
- b=SHuhrOirTYTgYbv89pUBcKhS0YG+Ls6tk0MTRHomoUWYSLWYOgyeg+3R3oxUBcPE0u
- yC0DksM6Sem3OkFwnukDANn6QBoskEy5posPwqx9flwZzOqoUXfXO3s3LMFYOv+IoUgH
- AYxvASp5z1M74a7wP5inf6bCxpYyvE08+R0Xfv+LFLd3Rd5OOfQpkGg5tQGCAzhGrDOW
- q9QBpqblVLjsC0JM+D0f6tWhAtyj+YhTHbxD5Vs1CXt3smo+5capXkhtxTFjPa8OZ+hO
- GSiTACsJXysJXBcZ36aPEQyrauj1kgn8RPwm7Hwmj81EPMUFilgXARaH7ilocCuggq4m
- xVPQ==
-X-Gm-Message-State: APjAAAVK1raK8E9G9H7Sd3JNSRAZn7z6y8QB1p/R1tBjfqg10VM8FtLf
- 83OastJIImXZvB2G5pi5nPE=
-X-Google-Smtp-Source: APXvYqw61Nc9c1M7/MZ1ZVdl9tv4GQZF2ss+5I1aVe+a5lUKM/oLVCrLyFH8YTXcNcxBfb4SaCbXuQ==
-X-Received: by 2002:ac2:5975:: with SMTP id h21mr4695940lfp.165.1576136571817; 
- Wed, 11 Dec 2019 23:42:51 -0800 (PST)
-Received: from [192.168.68.108] (115-64-122-209.tpgi.com.au. [115.64.122.209])
- by smtp.gmail.com with ESMTPSA id
- v5sm2444547ljk.67.2019.12.11.23.42.45
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 11 Dec 2019 23:42:51 -0800 (PST)
-Subject: Re: [PATCH v2 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kasan-dev@googlegroups.com, christophe.leroy@c-s.fr,
- aneesh.kumar@linux.ibm.com, Dmitry Vyukov <dvyukov@google.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>
-References: <20191210044714.27265-1-dja@axtens.net>
- <20191210044714.27265-5-dja@axtens.net>
- <71751e27-e9c5-f685-7a13-ca2e007214bc@gmail.com>
- <875zincu8a.fsf@dja-thinkpad.axtens.net>
- <2e0f21e6-7552-815b-1bf3-b54b0fc5caa9@gmail.com>
- <87wob3aqis.fsf@dja-thinkpad.axtens.net>
-From: Balbir Singh <bsingharora@gmail.com>
-Message-ID: <1bffad2d-db13-9808-afc9-5594f02dcf01@gmail.com>
-Date: Thu, 12 Dec 2019 18:42:40 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=ViygpI3sZEeIFawFAMzJBuuwFC97dUQTttbjEwZbCFc=;
+ b=AuhNm27HM4Cwm0GArkX+wRTk+M9TmEPfyUS3USE4h+SDLsFbbeVw2N4p2musrCIy2+
+ Ft6kGeAXMWzDeD1ZiecWNOrQkDmvYPJp1931MKRqL2rpfvOxK0fSRA8U1iXW6UZYw/ZV
+ Nb7nINV0ioZADbSLKr9C0K2QHRPLrxWQguIGjW383U/rS7w6sBnH9EfziohJ/pltpTWH
+ VaBO6SA6K3vAU5w/iOZRpbM65ZGD3zQZJ6tj3ScRaJnm/7ib0k34SML5otarXYjOTNFN
+ dns2G9tuWvJfIdFOTG9/xN4Il1ZFmDHetzuxEWXJX80gGFBVC0a7YZR8Qn/NMTKgg46W
+ 8SmQ==
+X-Gm-Message-State: APjAAAUnYqdVyDz4sJCoBW/caeNgGh2EXpAHErxQXeE+igAjA2Y0TGr0
+ IYGKvkLgDvcazQBpGklv34i1Jg8nkMRI5Ch525A=
+X-Google-Smtp-Source: APXvYqxABXxEus0Dw4a5xsLEtkLJHOj+oqr7zgTEdsQd14b8fFF7T2vbAA2QpYtFXhTezkHmYySS2i3eRTHkG2gbYoo=
+X-Received: by 2002:a1c:80d4:: with SMTP id b203mr4819582wmd.102.1576137628801; 
+ Thu, 12 Dec 2019 00:00:28 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <87wob3aqis.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+ <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+ <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
+ <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
+ <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
+ <87eexbk3gw.fsf@linux.ibm.com>
+ <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
+ <716dc1da300bb8e9132b4ff44c02110f@zonnet.nl>
+In-Reply-To: <716dc1da300bb8e9132b4ff44c02110f@zonnet.nl>
+From: Romain Dolbeau <romain@dolbeau.org>
+Date: Thu, 12 Dec 2019 09:00:17 +0100
+Message-ID: <CADuzgbpvGsYZcrYNsdXYqkRSCMqtnq9KFzQ2tLn8aiaNb5T=ZQ@mail.gmail.com>
+Subject: Re: Call for report - G5/PPC970 status
+To: jjhdiederen <jjhdiederen@zonnet.nl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,98 +69,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Le jeu. 12 d=C3=A9c. 2019 =C3=A0 08:32, jjhdiederen <jjhdiederen@zonnet.nl>=
+ a =C3=A9crit :
+> PowerMac 7,3 G5 2.5 DP PCI-X Mid-2004 is affected with this bug. The
+> machine freezes at boot due to the new ppc64 kernel.
 
+Thanks for the reports!
 
-On 12/12/19 1:24 am, Daniel Axtens wrote:
-> Hi Balbir,
-> 
->>>>> +Discontiguous memory can occur when you have a machine with memory spread
->>>>> +across multiple nodes. For example, on a Talos II with 64GB of RAM:
->>>>> +
->>>>> + - 32GB runs from 0x0 to 0x0000_0008_0000_0000,
->>>>> + - then there's a gap,
->>>>> + - then the final 32GB runs from 0x0000_2000_0000_0000 to 0x0000_2008_0000_0000
->>>>> +
->>>>> +This can create _significant_ issues:
->>>>> +
->>>>> + - If we try to treat the machine as having 64GB of _contiguous_ RAM, we would
->>>>> +   assume that ran from 0x0 to 0x0000_0010_0000_0000. We'd then reserve the
->>>>> +   last 1/8th - 0x0000_000e_0000_0000 to 0x0000_0010_0000_0000 as the shadow
->>>>> +   region. But when we try to access any of that, we'll try to access pages
->>>>> +   that are not physically present.
->>>>> +
->>>>
->>>> If we reserved memory for KASAN from each node (discontig region), we might survive
->>>> this no? May be we need NUMA aware KASAN? That might be a generic change, just thinking
->>>> out loud.
->>>
->>> The challenge is that - AIUI - in inline instrumentation, the compiler
->>> doesn't generate calls to things like __asan_loadN and
->>> __asan_storeN. Instead it uses -fasan-shadow-offset to compute the
->>> checks, and only calls the __asan_report* family of functions if it
->>> detects an issue. This also matches what I can observe with objdump
->>> across outline and inline instrumentation settings.
->>>
->>> This means that for this sort of thing to work we would need to either
->>> drop back to out-of-line calls, or teach the compiler how to use a
->>> nonlinear, NUMA aware mem-to-shadow mapping.
->>
->> Yes, out of line is expensive, but seems to work well for all use cases.
-> 
-> I'm not sure this is true. Looking at scripts/Makefile.kasan, allocas,
-> stacks and globals will only be instrumented if you can provide
-> KASAN_SHADOW_OFFSET. In the case you're proposing, we can't provide a
-> static offset. I _think_ this is a compiler limitation, where some of
-> those instrumentations only work/make sense with a static offset, but
-> perhaps that's not right? Dmitry and Andrey, can you shed some light on
-> this?
-> 
+So it's not all G5, but it's across generations - the iMac is PCIe.
+Perhaps multiprocessors?
 
-From what I can read, everything should still be supported, the info page
-for gcc states that globals, stack asan should be enabled by default.
-allocas may have limited meaning if stack-protector is turned on (no?)
+Could you share the screen/log of the crash?
 
-> Also, as it currently stands, the speed difference between inline and
-> outline is approximately 2x, and given that we'd like to run this
-> full-time in syzkaller I think there is value in trading off speed for
-> some limitations.
-> 
+For my G5 with 5.5rc1 I have one, but the photo is terrible:
+<http://www.dolbeau.name/dolbeau/files/Photo0031.jpg>
+Timestamps overlap, as after the 'crash' (backtrace) there was
+more messages from the (S)ATA subsystem.
 
-Full speed vs actually working across different configurations?
+Cordially,
 
->> BTW, the current set of patches just hang if I try to make the default
->> mode as out of line
-> 
-> Do you have CONFIG_RELOCATABLE?
-> 
-> I've tested the following process:
-> 
-> # 1) apply patches on a fresh linux-next
-> # 2) output dir
-> mkdir ../out-3s-kasan
-> 
-> # 3) merge in the relevant config snippets
-> cat > kasan.config << EOF
-> CONFIG_EXPERT=y
-> CONFIG_LD_HEAD_STUB_CATCH=y
-> 
-> CONFIG_RELOCATABLE=y
-> 
-> CONFIG_KASAN=y
-> CONFIG_KASAN_GENERIC=y
-> CONFIG_KASAN_OUTLINE=y
-> 
-> CONFIG_PHYS_MEM_SIZE_FOR_KASAN=2048
-> EOF
-> 
-
-I think I got CONFIG_PHYS_MEM_SIZE_FOR_KASN wrong, honestly I don't get why
-we need this size? The size is in MB and the default is 0. 
-
-Why does the powerpc port of KASAN need the SIZE to be explicitly specified?
-
-Balbir Singh.
+--=20
+Romain Dolbeau
