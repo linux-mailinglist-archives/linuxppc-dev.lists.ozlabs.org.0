@@ -1,77 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B3B11DA56
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 00:57:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EEB11D92A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 23:16:26 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Yp6b3qF6zDr8r
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 09:16:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YrMR4djkzDqf6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 10:57:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="DfRCIRQ6"; 
+ dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Yp4N3lBvzDr7x
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 09:14:22 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBCM2jsS061710; Thu, 12 Dec 2019 17:14:06 -0500
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wuq3wpewn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Dec 2019 17:14:06 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBCM5FZh027340;
- Thu, 12 Dec 2019 22:14:10 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 2wr3q71rrt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Dec 2019 22:14:10 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBCME5uk51184072
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Dec 2019 22:14:05 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 306A71245CC;
- Thu, 12 Dec 2019 22:14:05 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 041351245C6;
- Thu, 12 Dec 2019 22:14:04 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.70.94.45])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 12 Dec 2019 22:14:04 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id 66D6D2E2101; Thu, 12 Dec 2019 14:14:03 -0800 (PST)
-Date: Thu, 12 Dec 2019 14:14:03 -0800
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 1/1] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-Message-ID: <20191212221402.GA3575@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YrKb4fJrzDr6f
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 10:56:03 +1100 (AEDT)
+Received: by mail-ot1-x341.google.com with SMTP id 77so3950431oty.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 15:56:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ztKiKS9kDpcRmXJKe1XqlJokHmkmscn2Mwt+6zEVKRM=;
+ b=DfRCIRQ6tmr01hyQQmSe0q5gSVJWhOkt/EPq/AlvrNrHQGoGL3Gu8H6QQGFvKlZMad
+ W0Y7AD86BDCoyNcGu+tGcbU1eSh4fPXyyOckGumgag/AJ8iWA3cAbCAFiZ88ka4hriIV
+ fAyDuWL24tdl7+3rdOfH++JeaBTfUHPVoqj9pRwWRLLuq6hq02PimwRsRrARflNsiGyS
+ PZjpl0NY+aRU6NCK4AFQSPyem/NPjK8zSBuOQUfv3d04ongImCmddN/sKIs1iCh7zLXD
+ qL/X7h9NynaPMycY2EYXPFMl+qU5owEu9UTH4M/dCGVdYN1Q2AH13pydTFWKEp/5flcY
+ uQHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ztKiKS9kDpcRmXJKe1XqlJokHmkmscn2Mwt+6zEVKRM=;
+ b=LiowdJwHeGW6Ib4RWj3SUIU9tLhuFhztq8nCLu3uGp4Dqwr+OVsX2z3SYs2bOtamAU
+ jXOlF3AVkZ1d+QV0YAC+QXIUdHcMIT6rPMiFh6YoaBY+HKmd/sFPabxIJKIG5phSIvWE
+ tRsrRTMydeNg49mHhhUJ+y3RL/21CvdQwYa3O2yuxfQ7d3RCbkCYDBos9cW4eWSiRKz2
+ Iozmhw4gfhUQYI3yqlDbTFZAaV6iD90UV5bj6gP2ec6rgdmuMsJMw4t20PZ4XLnNlcLV
+ sUFxL55UJ2hL5I9sytz1uiWryWUdZMsUcU6JIL3/TA7I91hDLjr3PsYygQwM70FNo5de
+ z54w==
+X-Gm-Message-State: APjAAAVJqxJJKFU7noDXK6+UHFBZM8pkdGFdBbAqlB1cO6nj6035RZh5
+ U4FiYmK3Tb6YLfFJzTwrOg/upDwqh+RkP2V7ecU=
+X-Google-Smtp-Source: APXvYqxFNUX3YKAlxg5/9O9bsfwVjv9Ycx04ZfxPP1KrpE5mDL69ayx/PimyvX8dsXrvpUEoK+sm8wEjFDKqvVvv2LU=
+X-Received: by 2002:a05:6830:50:: with SMTP id
+ d16mr11890289otp.155.1576194954730; 
+ Thu, 12 Dec 2019 15:55:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Operating-System: Linux 2.0.32 on an i486
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-12_07:2019-12-12,2019-12-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1011
- mlxlogscore=999 impostorscore=0 suspectscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912120170
+References: <20191212151656.26151-1-dja@axtens.net>
+ <20191212151656.26151-4-dja@axtens.net>
+In-Reply-To: <20191212151656.26151-4-dja@axtens.net>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Fri, 13 Dec 2019 10:55:43 +1100
+Message-ID: <CACzsE9q1iLgoMLzVy0AYeRvWbj=kY-Ry52y84PGtWw3YXXFipA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] powerpc: Book3S 64-bit "heavyweight" KASAN support
+To: Daniel Axtens <dja@axtens.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,299 +74,673 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <pmac@au1.ibm.com>, linuxram@us.ibm.com,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Cc: aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Dec 13, 2019 at 2:19 AM Daniel Axtens <dja@axtens.net> wrote:
+>
+> KASAN support on Book3S is a bit tricky to get right:
+>
+>  - It would be good to support inline instrumentation so as to be able to
+>    catch stack issues that cannot be caught with outline mode.
+>
+>  - Inline instrumentation requires a fixed offset.
+>
+>  - Book3S runs code in real mode after booting. Most notably a lot of KVM
+>    runs in real mode, and it would be good to be able to instrument it.
+>
+>  - Because code runs in real mode after boot, the offset has to point to
+>    valid memory both in and out of real mode.
+>
+>    [For those not immersed in ppc64, in real mode, the top nibble or 2 bits
+>    (depending on radix/hash mmu) of the address is ignored. The linear
+>    mapping is placed at 0xc000000000000000. This means that a pointer to
+>    part of the linear mapping will work both in real mode, where it will be
+>    interpreted as a physical address of the form 0x000..., and out of real
+>    mode, where it will go via the linear mapping.]
+>
 
-This patch is based on Bharata's v11 KVM patches for secure guests:
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-November/200918.html
+How does hash or radix mmu mode effect how many bits are ignored in real mode?
 
----
-From c0826bac72a658312f3d87e0bb18ecaf08ac2b2e Mon Sep 17 00:00:00 2001
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Date: Fri, 27 Sep 2019 14:30:36 -0500
-Subject: [PATCH v2 1/1] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-
-Implement the H_SVM_INIT_ABORT hcall which the Ultravisor can use to
-abort an SVM after it has issued the H_SVM_INIT_START and before the
-H_SVM_INIT_DONE hcalls. This hcall could be used when Ultravisor
-encounters security violations or other errors when starting an SVM.
-
-Note that this hcall is different from UV_SVM_TERMINATE ucall which
-is used by HV to terminate/cleanup an VM that has becore secure.
-
-The H_SVM_INIT_ABORT should basically undo operations that were done
-since the H_SVM_INIT_START hcall - i.e page-out all the VM pages back
-to normal memory, unregister memslots etc.
-
-(If we do not bring the pages back to normal memory, the text/data
-of the VM would be stuck in secure memory and since the SVM did not
-go secure, its MSR_S bit will be clear and the VM wont be able to
-access its pages even to do a clean exit).
-
-Based on patches and discussion with Paul Mackerras, Ram Pai and
-Bharata Rao.
-
-Signed-off-by: Ram Pai <linuxram@linux.ibm.com>
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
----
-Changelog[v2]:
-	[Paul Mackerras] avoid returning to UV "one last time" after
-	the state is cleaned up.  So, we now have H_SVM_INIT_ABORT:
-	- take the VM's NIP/MSR register states as parameters
-	- inherit the state of other registers as at UV_ESM call.
-	After cleaning up the partial state, HV uses these to return
-	directly to the VM with a failed UV_ESM call.
----
- Documentation/powerpc/ultravisor.rst        | 56 +++++++++++++++++++++
- arch/powerpc/include/asm/hvcall.h           |  1 +
- arch/powerpc/include/asm/kvm_book3s_uvmem.h | 10 +++-
- arch/powerpc/include/asm/kvm_host.h         |  1 +
- arch/powerpc/kvm/book3s_64_mmu_radix.c      |  2 +-
- arch/powerpc/kvm/book3s_hv.c                |  5 +-
- arch/powerpc/kvm/book3s_hv_uvmem.c          | 48 +++++++++++++++++-
- 7 files changed, 117 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/powerpc/ultravisor.rst
-index 730854f73830..ef49c9192775 100644
---- a/Documentation/powerpc/ultravisor.rst
-+++ b/Documentation/powerpc/ultravisor.rst
-@@ -948,6 +948,62 @@ Use cases
-     up its internal state for this virtual machine.
- 
- 
-+H_SVM_INIT_ABORT
-+----------------
-+
-+    Abort the process of securing an SVM.
-+
-+Syntax
-+~~~~~~
-+
-+.. code-block:: c
-+
-+	uint64_t hypercall(const uint64_t H_SVM_INIT_ABORT,
-+		uint64_t guest_pc,      /* guest NIP to return to */
-+		uint64_t guest_msr,     /* guest MSR value */
-+
-+Return values
-+~~~~~~~~~~~~~
-+
-+    One of the following values:
-+
-+	* H_PARAMETER 		on successfully cleaning up the state, Hypervisor will
-+	  return this value to the **guest**, to indicate that the underlying
-+	  UV_ESM ultra call failed.
-+
-+	* H_UNSUPPORTED		if called from the wrong context (e.g. from an SVM
-+	  or before an H_SVM_INIT_START hypercall). This will return to the
-+	  Ultravisor which incorrectly issued the hcall.
-+
-+
-+Description
-+~~~~~~~~~~~
-+
-+    Abort the process of securing a virtual machine. This call must
-+    be made after a prior call to ``H_SVM_INIT_START`` hypercall and
-+    before a call to ``H_SVM_INIT_DONE``.
-+
-+    This hcall will cleanup any partial state that was established for
-+    the VM since the prior ``H_SVM_INIT_START hcall`` including paging
-+    out pages that were paged-into secure memory, unregistering memory
-+    slots etc.
-+
-+    After the partial state is cleaned up, control returns to the address
-+    specified in ``guest_pc`` with the MSR values set to ``guest_msr``.
-+    These parameters are expected to match the state of NIP and MSR
-+    registers of the VM at the time it issued the ``UV_ESM`` ultra call
-+    to transition to a secure VM.
-+
-+Use cases
-+~~~~~~~~~
-+
-+    If after a successful call to ``H_SVM_INIT_START``, the Ultravisor
-+    encounters an error while securing a virtual machine, either due
-+    to lack of resources or because the VM's security information could
-+    not be validated, Ultravisor informs the Hypervisor about it.
-+    Hypervisor should use this call to clean up any internal state for
-+    this virtual machine and return to the VM.
-+
- H_SVM_PAGE_IN
- -------------
- 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 13bd870609c3..e90c073e437e 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -350,6 +350,7 @@
- #define H_SVM_PAGE_OUT		0xEF04
- #define H_SVM_INIT_START	0xEF08
- #define H_SVM_INIT_DONE		0xEF0C
-+#define H_SVM_INIT_ABORT	0xEF14
- 
- /* Values for 2nd argument to H_SET_MODE */
- #define H_SET_MODE_RESOURCE_SET_CIABR		1
-diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-index 50204e228f16..2453bed88b97 100644
---- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-@@ -19,8 +19,9 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
- unsigned long kvmppc_h_svm_init_start(struct kvm *kvm);
- unsigned long kvmppc_h_svm_init_done(struct kvm *kvm);
- int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn);
-+unsigned long kvmppc_h_svm_init_abort(struct kvm_vcpu *vcpu);
- void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
--			     struct kvm *kvm);
-+			     struct kvm *kvm, bool skip_page_out);
- #else
- static inline int kvmppc_uvmem_init(void)
- {
-@@ -62,6 +63,11 @@ static inline unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
- 	return H_UNSUPPORTED;
- }
- 
-+static inline unsigned long kvmppc_h_svm_init_abort(struct kvm_vcpu *vcpu)
-+{
-+	return H_UNSUPPORTED;
-+}
-+
- static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
- {
- 	return -EFAULT;
-@@ -69,6 +75,6 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
- 
- static inline void
- kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
--			struct kvm *kvm) { }
-+			struct kvm *kvm, bool skip_page_out) { }
- #endif /* CONFIG_PPC_UV */
- #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 577ca95fac7c..8310c0407383 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -278,6 +278,7 @@ struct kvm_resize_hpt;
- /* Flag values for kvm_arch.secure_guest */
- #define KVMPPC_SECURE_INIT_START 0x1 /* H_SVM_INIT_START has been called */
- #define KVMPPC_SECURE_INIT_DONE  0x2 /* H_SVM_INIT_DONE completed */
-+#define KVMPPC_SECURE_INIT_ABORT 0x4 /* H_SVM_INIT_ABORT issued */
- 
- struct kvm_arch {
- 	unsigned int lpid;
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index da857c8ba6e4..744dba98e5d1 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -1102,7 +1102,7 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
- 	unsigned int shift;
- 
- 	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START)
--		kvmppc_uvmem_drop_pages(memslot, kvm);
-+		kvmppc_uvmem_drop_pages(memslot, kvm, true);
- 
- 	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
- 		return;
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 597f4bfecf0e..b883d947d038 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1099,6 +1099,9 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 	case H_SVM_INIT_DONE:
- 		ret = kvmppc_h_svm_init_done(vcpu->kvm);
- 		break;
-+	case H_SVM_INIT_ABORT:
-+		ret = kvmppc_h_svm_init_abort(vcpu);
-+		break;
- 
- 	default:
- 		return RESUME_HOST;
-@@ -5493,7 +5496,7 @@ static int kvmhv_svm_off(struct kvm *kvm)
- 			continue;
- 
- 		kvm_for_each_memslot(memslot, slots) {
--			kvmppc_uvmem_drop_pages(memslot, kvm);
-+			kvmppc_uvmem_drop_pages(memslot, kvm, true);
- 			uv_unregister_mem_slot(kvm->arch.lpid, memslot->id);
- 		}
- 	}
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index f24ac3cfb34c..881017dc8ff1 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -259,7 +259,7 @@ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
-  * QEMU page table with normal PTEs from newly allocated pages.
-  */
- void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
--			     struct kvm *kvm)
-+			     struct kvm *kvm, bool skip_page_out)
- {
- 	int i;
- 	struct kvmppc_uvmem_page_pvt *pvt;
-@@ -277,7 +277,8 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 
- 		uvmem_page = pfn_to_page(uvmem_pfn);
- 		pvt = uvmem_page->zone_device_data;
--		pvt->skip_page_out = true;
-+		pvt->skip_page_out = skip_page_out;
-+
- 		mutex_unlock(&kvm->arch.uvmem_lock);
- 
- 		pfn = gfn_to_pfn(kvm, gfn);
-@@ -287,6 +288,49 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 	}
- }
- 
-+unsigned long kvmppc_h_svm_init_abort(struct kvm_vcpu *vcpu)
-+{
-+	int i;
-+	ulong pc, msr;
-+	struct kvm *kvm = vcpu->kvm;
-+
-+	pc = kvmppc_get_gpr(vcpu, 4);
-+	msr = kvmppc_get_gpr(vcpu, 5);
-+
-+	if (!(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START))
-+		return H_UNSUPPORTED;
-+
-+	/*
-+	 * we expect a guest address and guest MSR, so MSR_HV should
-+	 * not be set. Warn and proceed to terminate the VM.
-+	 */
-+	if (msr & MSR_HV) {
-+		pr_warning("MSR_HV set on H_SVM_INIT_ABORT call!\n");
-+		msr &= ~MSR_HV;
-+	}
-+
-+	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
-+		struct kvm_memory_slot *memslot;
-+		struct kvm_memslots *slots = __kvm_memslots(kvm, i);
-+
-+		if (!slots)
-+			continue;
-+
-+		kvm_for_each_memslot(memslot, slots) {
-+			kvmppc_uvmem_drop_pages(memslot, kvm, false);
-+			uv_unregister_mem_slot(kvm->arch.lpid, memslot->id);
-+		}
-+	}
-+
-+	kvm->arch.secure_guest = 0;
-+
-+	/* Return to the point where VM issued UV_ESM ucall */
-+	kvmppc_set_pc(vcpu, pc);
-+	kvmppc_set_msr(vcpu, msr);
-+
-+	return H_PARAMETER;
-+}
-+
- /*
-  * Get a free device PFN from the pool
-  *
--- 
-2.17.2
-
+> One approach is just to give up on inline instrumentation. This way all
+> checks can be delayed until after everything set is up correctly, and the
+> address-to-shadow calculations can be overridden. However, the features and
+> speed boost provided by inline instrumentation are worth trying to do
+> better.
+>
+> If _at compile time_ it is known how much contiguous physical memory a
+> system has, the top 1/8th of the first block of physical memory can be set
+> aside for the shadow. This is a big hammer and comes with 3 big
+> consequences:
+>
+>  - there's no nice way to handle physically discontiguous memory, so only
+>    the first physical memory block can be used.
+>
+>  - kernels will simply fail to boot on machines with less memory than
+>    specified when compiling.
+>
+>  - kernels running on machines with more memory than specified when
+>    compiling will simply ignore the extra memory.
+>
+> Implement and document KASAN this way. The current implementation is Radix
+> only.
+>
+> Despite the limitations, it can still find bugs,
+> e.g. http://patchwork.ozlabs.org/patch/1103775/
+>
+> At the moment, this physical memory limit must be set _even for outline
+> mode_. This may be changed in a later series - a different implementation
+> could be added for outline mode that dynamically allocates shadow at a
+> fixed offset. For example, see https://patchwork.ozlabs.org/patch/795211/
+>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Balbir Singh <bsingharora@gmail.com> # ppc64 out-of-line radix version
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr> # ppc32 version
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+>
+> ---
+> Changes since v2:
+>
+>  - Address feedback from Christophe around cleanups and docs.
+>  - Address feedback from Balbir: at this point I don't have a good solution
+>    for the issues you identify around the limitations of the inline implementation
+>    but I think that it's worth trying to get the stack instrumentation support.
+>    I'm happy to have an alternative and more flexible outline mode - I had
+>    envisoned this would be called 'lightweight' mode as it imposes fewer restrictions.
+>    I've linked to your implementation. I think it's best to add it in a follow-up series.
+>  - Made the default PHYS_MEM_SIZE_FOR_KASAN value 1024MB. I think most people have
+>    guests with at least that much memory in the Radix 64s case so it's a much
+>    saner default - it means that if you just turn on KASAN without reading the
+>    docs you're much more likely to have a bootable kernel, which you will never
+>    have if the value is set to zero! I'm happy to bikeshed the value if we want.
+>
+> Changes since v1:
+>  - Landed kasan vmalloc support upstream
+>  - Lots of feedback from Christophe.
+>
+> Changes since the rfc:
+>
+>  - Boots real and virtual hardware, kvm works.
+>
+>  - disabled reporting when we're checking the stack for exception
+>    frames. The behaviour isn't wrong, just incompatible with KASAN.
+>
+>  - Documentation!
+>
+>  - Dropped old module stuff in favour of KASAN_VMALLOC.
+>
+> The bugs with ftrace and kuap were due to kernel bloat pushing
+> prom_init calls to be done via the plt. Because we did not have
+> a relocatable kernel, and they are done very early, this caused
+> everything to explode. Compile with CONFIG_RELOCATABLE!
+> ---
+>  Documentation/dev-tools/kasan.rst             |   8 +-
+>  Documentation/powerpc/kasan.txt               | 112 +++++++++++++++++-
+>  arch/powerpc/Kconfig                          |   3 +
+>  arch/powerpc/Kconfig.debug                    |  21 ++++
+>  arch/powerpc/Makefile                         |  11 ++
+>  arch/powerpc/include/asm/book3s/64/hash.h     |   4 +
+>  arch/powerpc/include/asm/book3s/64/pgtable.h  |   7 ++
+>  arch/powerpc/include/asm/book3s/64/radix.h    |   5 +
+>  arch/powerpc/include/asm/kasan.h              |  21 +++-
+>  arch/powerpc/kernel/process.c                 |   8 ++
+>  arch/powerpc/kernel/prom.c                    |  64 +++++++++-
+>  arch/powerpc/mm/kasan/Makefile                |   3 +-
+>  .../mm/kasan/{kasan_init_32.c => init_32.c}   |   0
+>  arch/powerpc/mm/kasan/init_book3s_64.c        |  72 +++++++++++
+>  14 files changed, 330 insertions(+), 9 deletions(-)
+>  rename arch/powerpc/mm/kasan/{kasan_init_32.c => init_32.c} (100%)
+>  create mode 100644 arch/powerpc/mm/kasan/init_book3s_64.c
+>
+> diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/kasan.rst
+> index 4af2b5d2c9b4..d99dc580bc11 100644
+> --- a/Documentation/dev-tools/kasan.rst
+> +++ b/Documentation/dev-tools/kasan.rst
+> @@ -22,8 +22,9 @@ global variables yet.
+>  Tag-based KASAN is only supported in Clang and requires version 7.0.0 or later.
+>
+>  Currently generic KASAN is supported for the x86_64, arm64, xtensa and s390
+> -architectures. It is also supported on 32-bit powerpc kernels. Tag-based KASAN
+> -is supported only on arm64.
+> +architectures. It is also supported on powerpc, for 32-bit kernels, and for
+> +64-bit kernels running under the Radix MMU. Tag-based KASAN is supported only
+> +on arm64.
+>
+>  Usage
+>  -----
+> @@ -256,7 +257,8 @@ CONFIG_KASAN_VMALLOC
+>  ~~~~~~~~~~~~~~~~~~~~
+>
+>  With ``CONFIG_KASAN_VMALLOC``, KASAN can cover vmalloc space at the
+> -cost of greater memory usage. Currently this is only supported on x86.
+> +cost of greater memory usage. Currently this is optional on x86, and
+> +required on 64-bit powerpc.
+>
+>  This works by hooking into vmalloc and vmap, and dynamically
+>  allocating real shadow memory to back the mappings.
+> diff --git a/Documentation/powerpc/kasan.txt b/Documentation/powerpc/kasan.txt
+> index a85ce2ff8244..f134a91600ad 100644
+> --- a/Documentation/powerpc/kasan.txt
+> +++ b/Documentation/powerpc/kasan.txt
+> @@ -1,4 +1,4 @@
+> -KASAN is supported on powerpc on 32-bit only.
+> +KASAN is supported on powerpc on 32-bit and Radix 64-bit only.
+>
+>  32 bit support
+>  ==============
+> @@ -10,3 +10,113 @@ fixmap area and occupies one eighth of the total kernel virtual memory space.
+>
+>  Instrumentation of the vmalloc area is not currently supported, but modules
+>  are.
+> +
+> +64 bit support
+> +==============
+> +
+> +Currently, only the radix MMU is supported. There have been versions for Book3E
+> +processors floating around on the mailing list, but nothing has been merged.
+> +
+> +KASAN support on Book3S is a bit tricky to get right:
+> +
+> + - It would be good to support inline instrumentation so as to be able to catch
+> +   stack issues that cannot be caught with outline mode.
+> +
+> + - Inline instrumentation requires a fixed offset.
+> +
+> + - Book3S runs code in real mode after booting. Most notably a lot of KVM runs
+> +   in real mode, and it would be good to be able to instrument it.
+> +
+> + - Because code runs in real mode after boot, the offset has to point to
+> +   valid memory both in and out of real mode.
+> +
+> +One approach is just to give up on inline instrumentation. This way all checks
+> +can be delayed until after everything set is up correctly, and the
+> +address-to-shadow calculations can be overridden. However, the features and
+> +speed boost provided by inline instrumentation are worth trying to do better.
+> +
+> +If _at compile time_ it is known how much contiguous physical memory a system
+> +has, the top 1/8th of the first block of physical memory can be set aside for
+> +the shadow. This is a big hammer and comes with 3 big consequences:
+> +
+> + - there's no nice way to handle physically discontiguous memory, so only the
+> +   first physical memory block can be used.
+> +
+> + - kernels will simply fail to boot on machines with less memory than specified
+> +   when compiling.
+> +
+> + - kernels running on machines with more memory than specified when compiling
+> +   will simply ignore the extra memory.
+> +
+> +At the moment, this physical memory limit must be set _even for outline mode_.
+> +This may be changed in a future version - a different implementation could be
+> +added for outline mode that dynamically allocates shadow at a fixed offset.
+> +For example, see https://patchwork.ozlabs.org/patch/795211/
+> +
+> +This value is configured in CONFIG_PHYS_MEM_SIZE_FOR_KASAN.
+> +
+> +Tips
+> +----
+> +
+> + - Compile with CONFIG_RELOCATABLE.
+> +
+> +   In development, boot hangs were observed when building with ftrace and KUAP
+> +   on. These ended up being due to kernel bloat pushing prom_init calls to be
+> +   done via the PLT. Because the kernel was not relocatable, and the calls are
+> +   done very early, this caused execution to jump off into somewhere
+> +   invalid. Enabling relocation fixes this.
+> +
+> +NUMA/discontiguous physical memory
+> +----------------------------------
+> +
+> +Currently the code cannot really deal with discontiguous physical memory. Only
+> +physical memory that is contiguous from physical address zero can be used. The
+> +size of that memory, not total memory, must be specified when configuring the
+> +kernel.
+> +
+> +Discontiguous memory can occur on machines with memory spread across multiple
+> +nodes. For example, on a Talos II with 64GB of RAM:
+> +
+> + - 32GB runs from 0x0 to 0x0000_0008_0000_0000,
+> + - then there's a gap,
+> + - then the final 32GB runs from 0x0000_2000_0000_0000 to 0x0000_2008_0000_0000
+> +
+> +This can create _significant_ issues:
+> +
+> + - If the machine is treated as having 64GB of _contiguous_ RAM, the
+> +   instrumentation would assume that it ran from 0x0 to
+> +   0x0000_0010_0000_0000. The last 1/8th - 0x0000_000e_0000_0000 to
+> +   0x0000_0010_0000_0000 would be reserved as the shadow region. But when the
+> +   kernel tried to access any of that, it would be trying to access pages that
+> +   are not physically present.
+> +
+> + - If the shadow region size is based on the top address, then the shadow
+> +   region would be 0x2008_0000_0000 / 8 = 0x0401_0000_0000 bytes = 4100 GB of
+> +   memory, clearly more than the 64GB of RAM physically present.
+> +
+> +Therefore, the code currently is restricted to dealing with memory in the node
+> +starting at 0x0. For this system, that's 32GB. If a contiguous physical memory
+> +size greater than the size of the first contiguous region of memory is
+> +specified, the system will be unable to boot or even print an error message.
+> +
+> +The layout of a system's memory can be observed in the messages that the Radix
+> +MMU prints on boot. The Talos II discussed earlier has:
+> +
+> +radix-mmu: Mapped 0x0000000000000000-0x0000000040000000 with 1.00 GiB pages (exec)
+> +radix-mmu: Mapped 0x0000000040000000-0x0000000800000000 with 1.00 GiB pages
+> +radix-mmu: Mapped 0x0000200000000000-0x0000200800000000 with 1.00 GiB pages
+> +
+> +As discussed, this system would be configured for 32768 MB.
+> +
+> +Another system prints:
+> +
+> +radix-mmu: Mapped 0x0000000000000000-0x0000000040000000 with 1.00 GiB pages (exec)
+> +radix-mmu: Mapped 0x0000000040000000-0x0000002000000000 with 1.00 GiB pages
+> +radix-mmu: Mapped 0x0000200000000000-0x0000202000000000 with 1.00 GiB pages
+> +
+> +This machine has more memory: 0x0000_0040_0000_0000 total, but only
+> +0x0000_0020_0000_0000 is physically contiguous from zero, so it would be
+> +configured for 131072 MB of physically contiguous memory.
+> +
+> +This restriction currently also affects outline mode, but this could be
+> +changed in future if an alternative outline implementation is added.
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 6987b0832e5f..2561446e85a8 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -173,6 +173,9 @@ config PPC
+>         select HAVE_ARCH_HUGE_VMAP              if PPC_BOOK3S_64 && PPC_RADIX_MMU
+>         select HAVE_ARCH_JUMP_LABEL
+>         select HAVE_ARCH_KASAN                  if PPC32
+> +       select HAVE_ARCH_KASAN                  if PPC_BOOK3S_64 && PPC_RADIX_MMU
+> +       select HAVE_ARCH_KASAN_VMALLOC          if PPC_BOOK3S_64 && PPC_RADIX_MMU
+> +       select KASAN_VMALLOC                    if KASAN && PPC_BOOK3S_64
+>         select HAVE_ARCH_KGDB
+>         select HAVE_ARCH_MMAP_RND_BITS
+>         select HAVE_ARCH_MMAP_RND_COMPAT_BITS   if COMPAT
+> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+> index 4e1d39847462..5c454f8fa24b 100644
+> --- a/arch/powerpc/Kconfig.debug
+> +++ b/arch/powerpc/Kconfig.debug
+> @@ -394,6 +394,27 @@ config PPC_FAST_ENDIAN_SWITCH
+>         help
+>           If you're unsure what this is, say N.
+>
+> +config PHYS_MEM_SIZE_FOR_KASAN
+> +       int "Contiguous physical memory size for KASAN (MB)" if KASAN && PPC_BOOK3S_64
+> +       default 1024
+> +       help
+> +
+> +         To get inline instrumentation support for KASAN on 64-bit Book3S
+> +         machines, you need to know how much contiguous physical memory your
+> +         system has. A shadow offset will be calculated based on this figure,
+> +         which will be compiled in to the kernel. KASAN will use this offset
+> +         to access its shadow region, which is used to verify memory accesses.
+> +
+> +         If you attempt to boot on a system with less memory than you specify
+> +         here, your system will fail to boot very early in the process. If you
+> +         boot on a system with more memory than you specify, the extra memory
+> +         will wasted - it will be reserved and not used.
+> +
+> +         For systems with discontiguous blocks of physical memory, specify the
+> +         size of the block starting at 0x0. You can determine this by looking
+> +         at the memory layout info printed to dmesg by the radix MMU code
+> +         early in boot. See Documentation/powerpc/kasan.txt.
+> +
+>  config KASAN_SHADOW_OFFSET
+>         hex
+>         depends on KASAN
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index f35730548e42..eff693527462 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -230,6 +230,17 @@ ifdef CONFIG_476FPE_ERR46
+>                 -T $(srctree)/arch/powerpc/platforms/44x/ppc476_modules.lds
+>  endif
+>
+> +ifdef CONFIG_PPC_BOOK3S_64
+> +# The KASAN shadow offset is such that linear map (0xc000...) is shadowed by
+> +# the last 8th of linearly mapped physical memory. This way, if the code uses
+> +# 0xc addresses throughout, accesses work both in in real mode (where the top
+> +# 2 bits are ignored) and outside of real mode.
+> +#
+> +# 0xc000000000000000 >> 3 = 0xa800000000000000 = 12105675798371893248
+> +KASAN_SHADOW_OFFSET = $(shell echo 7 \* 1024 \* 1024 \* $(CONFIG_PHYS_MEM_SIZE_FOR_KASAN) / 8 + 12105675798371893248 | bc)
+> +KBUILD_CFLAGS += -DKASAN_SHADOW_OFFSET=$(KASAN_SHADOW_OFFSET)UL
+> +endif
+> +
+>  # No AltiVec or VSX instructions when building kernel
+>  KBUILD_CFLAGS += $(call cc-option,-mno-altivec)
+>  KBUILD_CFLAGS += $(call cc-option,-mno-vsx)
+> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
+> index 2781ebf6add4..fce329b8452e 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
+> @@ -18,6 +18,10 @@
+>  #include <asm/book3s/64/hash-4k.h>
+>  #endif
+>
+> +#define H_PTRS_PER_PTE         (1 << H_PTE_INDEX_SIZE)
+> +#define H_PTRS_PER_PMD         (1 << H_PMD_INDEX_SIZE)
+> +#define H_PTRS_PER_PUD         (1 << H_PUD_INDEX_SIZE)
+> +
+>  /* Bits to set in a PMD/PUD/PGD entry valid bit*/
+>  #define HASH_PMD_VAL_BITS              (0x8000000000000000UL)
+>  #define HASH_PUD_VAL_BITS              (0x8000000000000000UL)
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index b01624e5c467..209817235a44 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -231,6 +231,13 @@ extern unsigned long __pmd_frag_size_shift;
+>  #define PTRS_PER_PUD   (1 << PUD_INDEX_SIZE)
+>  #define PTRS_PER_PGD   (1 << PGD_INDEX_SIZE)
+>
+> +#define MAX_PTRS_PER_PTE       ((H_PTRS_PER_PTE > R_PTRS_PER_PTE) ? \
+> +                                 H_PTRS_PER_PTE : R_PTRS_PER_PTE)
+> +#define MAX_PTRS_PER_PMD       ((H_PTRS_PER_PMD > R_PTRS_PER_PMD) ? \
+> +                                 H_PTRS_PER_PMD : R_PTRS_PER_PMD)
+> +#define MAX_PTRS_PER_PUD       ((H_PTRS_PER_PUD > R_PTRS_PER_PUD) ? \
+> +                                 H_PTRS_PER_PUD : R_PTRS_PER_PUD)
+> +
+>  /* PMD_SHIFT determines what a second-level page table entry can map */
+>  #define PMD_SHIFT      (PAGE_SHIFT + PTE_INDEX_SIZE)
+>  #define PMD_SIZE       (1UL << PMD_SHIFT)
+> diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
+> index d97db3ad9aae..4f826259de71 100644
+> --- a/arch/powerpc/include/asm/book3s/64/radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/radix.h
+> @@ -35,6 +35,11 @@
+>  #define RADIX_PMD_SHIFT                (PAGE_SHIFT + RADIX_PTE_INDEX_SIZE)
+>  #define RADIX_PUD_SHIFT                (RADIX_PMD_SHIFT + RADIX_PMD_INDEX_SIZE)
+>  #define RADIX_PGD_SHIFT                (RADIX_PUD_SHIFT + RADIX_PUD_INDEX_SIZE)
+> +
+> +#define R_PTRS_PER_PTE         (1 << RADIX_PTE_INDEX_SIZE)
+> +#define R_PTRS_PER_PMD         (1 << RADIX_PMD_INDEX_SIZE)
+> +#define R_PTRS_PER_PUD         (1 << RADIX_PUD_INDEX_SIZE)
+> +
+>  /*
+>   * Size of EA range mapped by our pagetables.
+>   */
+> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
+> index 296e51c2f066..f18268cbdc33 100644
+> --- a/arch/powerpc/include/asm/kasan.h
+> +++ b/arch/powerpc/include/asm/kasan.h
+> @@ -2,6 +2,9 @@
+>  #ifndef __ASM_KASAN_H
+>  #define __ASM_KASAN_H
+>
+> +#include <asm/page.h>
+> +#include <asm/pgtable.h>
+> +
+>  #ifdef CONFIG_KASAN
+>  #define _GLOBAL_KASAN(fn)      _GLOBAL(__##fn)
+>  #define _GLOBAL_TOC_KASAN(fn)  _GLOBAL_TOC(__##fn)
+> @@ -14,13 +17,19 @@
+>
+>  #ifndef __ASSEMBLY__
+>
+> -#include <asm/page.h>
+> +#ifdef CONFIG_KASAN
+> +void kasan_init(void);
+> +#else
+> +static inline void kasan_init(void) { }
+> +#endif
+>
+>  #define KASAN_SHADOW_SCALE_SHIFT       3
+>
+>  #define KASAN_SHADOW_START     (KASAN_SHADOW_OFFSET + \
+>                                  (PAGE_OFFSET >> KASAN_SHADOW_SCALE_SHIFT))
+>
+> +#ifdef CONFIG_PPC32
+> +
+>  #define KASAN_SHADOW_OFFSET    ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
+>
+>  #define KASAN_SHADOW_END       0UL
+> @@ -30,11 +39,17 @@
+>  #ifdef CONFIG_KASAN
+>  void kasan_early_init(void);
+>  void kasan_mmu_init(void);
+> -void kasan_init(void);
+>  #else
+> -static inline void kasan_init(void) { }
+>  static inline void kasan_mmu_init(void) { }
+>  #endif
+> +#endif
+> +
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +
+> +#define KASAN_SHADOW_SIZE ((u64)CONFIG_PHYS_MEM_SIZE_FOR_KASAN * \
+> +                               1024 * 1024 * 1 / 8)
+> +
+> +#endif /* CONFIG_PPC_BOOK3S_64 */
+>
+>  #endif /* __ASSEMBLY */
+>  #endif
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index 4df94b6e2f32..c60ff299f39b 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -2081,7 +2081,14 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
+>                 /*
+>                  * See if this is an exception frame.
+>                  * We look for the "regshere" marker in the current frame.
+> +                *
+> +                * KASAN may complain about this. If it is an exception frame,
+> +                * we won't have unpoisoned the stack in asm when we set the
+> +                * exception marker. If it's not an exception frame, who knows
+> +                * how things are laid out - the shadow could be in any state
+> +                * at all. Just disable KASAN reporting for now.
+>                  */
+> +               kasan_disable_current();
+>                 if (validate_sp(sp, tsk, STACK_INT_FRAME_SIZE)
+>                     && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
+>                         struct pt_regs *regs = (struct pt_regs *)
+> @@ -2091,6 +2098,7 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
+>                                regs->trap, (void *)regs->nip, (void *)lr);
+>                         firstframe = 1;
+>                 }
+> +               kasan_enable_current();
+>
+>                 sp = newsp;
+>         } while (count++ < kstack_depth_to_print);
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index 6620f37abe73..d994c7c39c8d 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -72,6 +72,7 @@ unsigned long tce_alloc_start, tce_alloc_end;
+>  u64 ppc64_rma_size;
+>  #endif
+>  static phys_addr_t first_memblock_size;
+> +static phys_addr_t top_phys_addr;
+>  static int __initdata boot_cpu_count;
+>
+>  static int __init early_parse_mem(char *p)
+> @@ -449,6 +450,26 @@ static bool validate_mem_limit(u64 base, u64 *size)
+>  {
+>         u64 max_mem = 1UL << (MAX_PHYSMEM_BITS);
+>
+> +       /*
+> +        * To handle the NUMA/discontiguous memory case, don't allow a block
+> +        * to be added if it falls completely beyond the configured physical
+> +        * memory. Print an informational message.
+> +        *
+> +        * Frustratingly we also see this with qemu - it seems to split the
+> +        * specified memory into a number of smaller blocks. If this happens
+> +        * under qemu, it probably represents misconfiguration. So we want
+> +        * the message to be noticeable, but not shouty.
+> +        *
+> +        * See Documentation/powerpc/kasan.txt
+> +        */
+> +       if (IS_ENABLED(CONFIG_KASAN) &&
+> +           (base >= ((u64)CONFIG_PHYS_MEM_SIZE_FOR_KASAN << 20))) {
+> +               pr_warn("KASAN: not adding memory block at %llx (size %llx)\n"
+> +                       "This could be due to discontiguous memory or kernel misconfiguration.",
+> +                       base, *size);
+> +               return false;
+> +       }
+> +
+>         if (base >= max_mem)
+>                 return false;
+>         if ((base + *size) > max_mem)
+> @@ -572,8 +593,11 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
+>
+>         /* Add the chunk to the MEMBLOCK list */
+>         if (add_mem_to_memblock) {
+> -               if (validate_mem_limit(base, &size))
+> +               if (validate_mem_limit(base, &size)) {
+>                         memblock_add(base, size);
+> +                       if (base + size > top_phys_addr)
+> +                               top_phys_addr = base + size;
+> +               }
+>         }
+>  }
+>
+> @@ -613,6 +637,8 @@ static void __init early_reserve_mem_dt(void)
+>  static void __init early_reserve_mem(void)
+>  {
+>         __be64 *reserve_map;
+> +       phys_addr_t kasan_shadow_start;
+> +       phys_addr_t kasan_memory_size;
+>
+>         reserve_map = (__be64 *)(((unsigned long)initial_boot_params) +
+>                         fdt_off_mem_rsvmap(initial_boot_params));
+> @@ -651,6 +677,42 @@ static void __init early_reserve_mem(void)
+>                 return;
+>         }
+>  #endif
+> +
+> +       if (IS_ENABLED(CONFIG_KASAN) && IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
+> +               kasan_memory_size =
+> +                       ((phys_addr_t)CONFIG_PHYS_MEM_SIZE_FOR_KASAN << 20);
+> +
+> +               if (top_phys_addr < kasan_memory_size) {
+> +                       /*
+> +                        * We are doomed. We shouldn't even be able to get this
+> +                        * far, but we do in qemu. If we continue and turn
+> +                        * relocations on, we'll take fatal page faults for
+> +                        * memory that's not physically present. Instead,
+> +                        * panic() here: it will be saved to __log_buf even if
+> +                        * it doesn't get printed to the console.
+> +                        */
+> +                       panic("Tried to book a KASAN kernel configured for %u MB with only %llu MB! Aborting.",
+> +                             CONFIG_PHYS_MEM_SIZE_FOR_KASAN,
+> +                             (u64)(top_phys_addr >> 20));
+> +               } else if (top_phys_addr > kasan_memory_size) {
+> +                       /* print a biiiig warning in hopes people notice */
+> +                       pr_err("===========================================\n"
+> +                               "Physical memory exceeds compiled-in maximum!\n"
+> +                               "This kernel was compiled for KASAN with %u MB physical memory.\n"
+> +                               "The physical memory detected is at least %llu MB.\n"
+> +                               "Memory above the compiled limit will not be used!\n"
+> +                               "===========================================\n",
+> +                               CONFIG_PHYS_MEM_SIZE_FOR_KASAN,
+> +                               (u64)(top_phys_addr >> 20));
+> +               }
+> +
+> +               kasan_shadow_start = _ALIGN_DOWN(kasan_memory_size * 7 / 8,
+> +                                                PAGE_SIZE);
+> +               DBG("reserving %llx -> %llx for KASAN",
+> +                   kasan_shadow_start, top_phys_addr);
+> +               memblock_reserve(kasan_shadow_start,
+> +                                top_phys_addr - kasan_shadow_start);
+> +       }
+>  }
+>
+>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+> diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
+> index 6577897673dd..f02b15c78e4d 100644
+> --- a/arch/powerpc/mm/kasan/Makefile
+> +++ b/arch/powerpc/mm/kasan/Makefile
+> @@ -2,4 +2,5 @@
+>
+>  KASAN_SANITIZE := n
+>
+> -obj-$(CONFIG_PPC32)           += kasan_init_32.o
+> +obj-$(CONFIG_PPC32)           += init_32.o
+> +obj-$(CONFIG_PPC_BOOK3S_64)   += init_book3s_64.o
+> diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/init_32.c
+> similarity index 100%
+> rename from arch/powerpc/mm/kasan/kasan_init_32.c
+> rename to arch/powerpc/mm/kasan/init_32.c
+> diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/kasan/init_book3s_64.c
+> new file mode 100644
+> index 000000000000..f961e96be136
+> --- /dev/null
+> +++ b/arch/powerpc/mm/kasan/init_book3s_64.c
+> @@ -0,0 +1,72 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * KASAN for 64-bit Book3S powerpc
+> + *
+> + * Copyright (C) 2019 IBM Corporation
+> + * Author: Daniel Axtens <dja@axtens.net>
+> + */
+> +
+> +#define DISABLE_BRANCH_PROFILING
+> +
+> +#include <linux/kasan.h>
+> +#include <linux/printk.h>
+> +#include <linux/sched/task.h>
+> +#include <asm/pgalloc.h>
+> +
+> +void __init kasan_init(void)
+> +{
+> +       int i;
+> +       void *k_start = kasan_mem_to_shadow((void *)RADIX_KERN_VIRT_START);
+> +       void *k_end = kasan_mem_to_shadow((void *)RADIX_VMEMMAP_END);
+> +
+> +       pte_t pte = __pte(__pa(kasan_early_shadow_page) |
+> +                         pgprot_val(PAGE_KERNEL) | _PAGE_PTE);
+> +
+> +       if (!early_radix_enabled())
+> +               panic("KASAN requires radix!");
+> +
+> +       for (i = 0; i < PTRS_PER_PTE; i++)
+> +               __set_pte_at(&init_mm, (unsigned long)kasan_early_shadow_page,
+> +                            &kasan_early_shadow_pte[i], pte, 0);
+> +
+> +       for (i = 0; i < PTRS_PER_PMD; i++)
+> +               pmd_populate_kernel(&init_mm, &kasan_early_shadow_pmd[i],
+> +                                   kasan_early_shadow_pte);
+> +
+> +       for (i = 0; i < PTRS_PER_PUD; i++)
+> +               pud_populate(&init_mm, &kasan_early_shadow_pud[i],
+> +                            kasan_early_shadow_pmd);
+> +
+> +       memset(kasan_mem_to_shadow((void *)PAGE_OFFSET), KASAN_SHADOW_INIT,
+> +              KASAN_SHADOW_SIZE);
+> +
+> +       kasan_populate_early_shadow(
+> +               kasan_mem_to_shadow((void *)RADIX_KERN_VIRT_START),
+> +               kasan_mem_to_shadow((void *)RADIX_VMALLOC_START));
+> +
+> +       /* leave a hole here for vmalloc */
+> +
+> +       kasan_populate_early_shadow(
+> +               kasan_mem_to_shadow((void *)RADIX_VMALLOC_END),
+> +               kasan_mem_to_shadow((void *)RADIX_VMEMMAP_END));
+> +
+> +       flush_tlb_kernel_range((unsigned long)k_start, (unsigned long)k_end);
+> +
+> +       /* mark early shadow region as RO and wipe */
+> +       pte = __pte(__pa(kasan_early_shadow_page) |
+> +                   pgprot_val(PAGE_KERNEL_RO) | _PAGE_PTE);
+> +       for (i = 0; i < PTRS_PER_PTE; i++)
+> +               __set_pte_at(&init_mm, (unsigned long)kasan_early_shadow_page,
+> +                            &kasan_early_shadow_pte[i], pte, 0);
+> +
+> +       /*
+> +        * clear_page relies on some cache info that hasn't been set up yet.
+> +        * It ends up looping ~forever and blows up other data.
+> +        * Use memset instead.
+> +        */
+> +       memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+> +
+> +       /* Enable error messages */
+> +       init_task.kasan_depth = 0;
+> +       pr_info("KASAN init done (64-bit Book3S heavyweight mode)\n");
+> +}
+> --
+> 2.20.1
+>
