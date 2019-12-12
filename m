@@ -1,48 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4444811D0D7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 16:21:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE2F11D0A3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 16:14:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YclD2BdvzDr4r
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 02:14:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Ycw42G6GzDqrN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 02:21:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Ychk4c0ZzDqrN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 02:11:50 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id xBCFAuSn025295;
- Thu, 12 Dec 2019 09:10:56 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id xBCFApXE025289;
- Thu, 12 Dec 2019 09:10:51 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 12 Dec 2019 09:10:51 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-Message-ID: <20191212151051.GF3152@gate.crashing.org>
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
- <875zimp0ay.fsf@mpe.ellerman.id.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875zimp0ay.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Ycpw2BpZzDqGb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 02:17:10 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id r11so1312563pgf.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 07:17:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=v26BsJHtOrSEIqcupCpn6pVHwbqhLlNjRKE6OChruw8=;
+ b=q7DQztUhC2cJBLWp8U64RWDfNoq8AbBYU8MfDcKAjAFGPJpPnE3FAqVtyqVKY+ZAqn
+ qMLB/MGQif2yiI3NOW7QGUKPa2TozBJMY2FgfNVz0e4txIKABIoAdygoKGywYQN+O2Vo
+ Nkke2edKnZCvy5sqTt3NpxXWt8nNTJADHSHOU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=v26BsJHtOrSEIqcupCpn6pVHwbqhLlNjRKE6OChruw8=;
+ b=CfkJhntMoFmQckKOFLooWGW8seGyy/gcZ0ISziEQCPhtpYOYKBVtHwOhJHomNqxp8I
+ 9NZFem7zPV+Nooxdaf7y9zeyBOwCiure/T1T6rCmJKKICtsyBllvThdPLDJIQe+qXDqw
+ DzFlPRLm6dBv+uFdHmcGW301vS7l0aDrQbH5elZ1P3RkWlA/bTLQThFyMEu74yp61DbO
+ 03vDnh7d9js19gT3rLUFK/mNEScyN/GFixokmrXJmgwQvOpb6AiMrJsxb9OzKhN2R6ZI
+ jxhQMJ7VeA2RUrcVTRL0gG/VeDEWF/rbpPFG/iGYGxG2gevVOPENH3++y60avLy6+mW+
+ KmbQ==
+X-Gm-Message-State: APjAAAXev+OMtbMWeNdKis54u4603p7MoL6Qmp9OFcaTT8DTLSEOtpj4
+ Nhoy0N/Xzy93xIpJ1XgYwbEIjA==
+X-Google-Smtp-Source: APXvYqwZHmuzKnMIkPQu7WYLto/58IR4TZmFj0304fSKWKFda3vIFLGQeA7OjH96Yx4Qnd6rYUHK5g==
+X-Received: by 2002:aa7:90c4:: with SMTP id k4mr10406197pfk.216.1576163822527; 
+ Thu, 12 Dec 2019 07:17:02 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-b116-2689-a4a9-76f8.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:b116:2689:a4a9:76f8])
+ by smtp.gmail.com with ESMTPSA id 5sm6415205pjc.29.2019.12.12.07.17.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 12 Dec 2019 07:17:01 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+ christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
+Subject: [PATCH v3 0/3] KASAN for powerpc64 radix
+Date: Fri, 13 Dec 2019 02:16:53 +1100
+Message-Id: <20191212151656.26151-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,116 +74,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org,
- dja@axtens.net
+Cc: Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Building on the work of Christophe, Aneesh and Balbir, I've ported
+KASAN to 64-bit Book3S kernels running on the Radix MMU.
 
-On Thu, Dec 12, 2019 at 04:42:13PM +1100, Michael Ellerman wrote:
-> Some of the generic versions don't generate good code compared to our
-> versions, but that's because READ_ONCE() is triggering stack protector
-> to be enabled.
+This provides full inline instrumentation on radix, but does require
+that you be able to specify the amount of physically contiguous memory
+on the system at compile time. More details in patch 3.
 
-The *big* difference is the generic code has a special path that does not
-do an atomic access at all.  Either that is a good idea or not, but we
-probably should not change the behaviour here, not without benchmarking
-anyway.
+v3: Reduce the overly ambitious scope of the MAX_PTRS change.
+    Document more things, including around why some of the
+    restrictions apply.
+    Clean up the code more, thanks Christophe.
 
-> For example, comparing an out-of-line copy of the generic and ppc
-> versions of test_and_set_bit_lock():
+v2: The big change is the introduction of tree-wide(ish)
+    MAX_PTRS_PER_{PTE,PMD,PUD} macros in preference to the previous
+    approach, which was for the arch to override the page table array
+    definitions with their own. (And I squashed the annoying
+    intermittent crash!)
 
-(With what GCC version, and what exact flags?)
-
-(A stand-alone testcase would be nice too, btw).
-
-(Michael gave me one, thanks!)
-
-> If you squint, the generated code for the actual logic is pretty similar, but
-> the stack protector gunk makes a big mess.
-
-And with stack protector it cannot shrink-wrap the exit, one of the bigger
-performance costs of the stack protector.  The extra branch in the generic
-code isn't fun either (but maybe it is good for performance?
-
-> It's particularly bad here
-> because the ppc version doesn't even need a stack frame.
-
-You are hit by this:
-
-  if (... || (RECORD_OR_UNION_TYPE_P (var_type)
-              && record_or_union_type_has_array_p (var_type)) ...)
-
-(in the GCC code, stack_protect_decl_p (), cfgexpand.c)
-
-for the variable __u from
-
-#define __READ_ONCE(x, check)                                           \
-({                                                                      \
-        union { typeof(x) __val; char __c[1]; } __u;                    \
-        __read_once_size(&(x), __u.__c, sizeof(x));                     \
-        smp_read_barrier_depends(); /* Enforce dependency ordering from x */ \
-        __u.__val;                                                      \
-})
-
-This is all optimised away later, but at the point this decision is made
-GCC does not know that.
-
-> So READ_ONCE() + STACKPROTECTOR_STRONG is problematic. The root cause is
-> presumably that READ_ONCE() does an access to an on-stack variable,
-> which triggers the heuristics in the compiler that the stack needs
-> protecting.
-
-Not exactly, but the problem is READ_ONCE alright.
-
-> It seems like a compiler "mis-feature" that a constant-sized access to the stack
-> triggers the stack protector logic, especially when the access is eventually
-> optimised away. But I guess that's probably what we get for doing tricks like
-> READ_ONCE() in the first place :/
-
-__c is an array.  That is all that matters.  I don't think it is very
-reasonable to fault GCC for this.
-
-> I tried going back to the version of READ_ONCE() that doesn't use a
-> union, ie. effectively reverting dd36929720f4 ("kernel: make READ_ONCE()
-> valid on const arguments") to get:
-> 
-> #define READ_ONCE(x)							\
-> 	({ typeof(x) __val; __read_once_size(&x, &__val, sizeof(__val)); __val; })
-
-With that, it is that the address of __val is taken:
-
-  ...
-  || TREE_ADDRESSABLE (var)
-  ...
-
-> But it makes no difference, the stack protector stuff still triggers. So
-> I guess it's simply taking the address of a stack variable that triggers
-> it.
-
-Not in the earlier testcase.  Btw, there is no such thing as a "stack
-variable" at that point in the compiler: it just is a local var.
-
-> There seems to be a function attribute to enable stack protector for a
-> function, but not one to disable it:
->   https://gcc.gnu.org/onlinedocs/gcc-9.2.0/gcc/Common-Function-Attributes.html#index-stack_005fprotect-function-attribute
-
-Yes.
-
-> That may not be a good solution even if it did exist, because it would
-> potentially disable stack protector in places where we do want it
-> enabled.
-
-Right, I don't think we want that, such an attribute invites people to
-write dangerous code.  (You already can just put the functions that you
-want to be unsafe in a separate source file...  It sounds even sillier
-that way, heh).
+    Apart from that there's just a lot of cleanup. Christophe, I've
+    addressed most of what you asked for and I will reply to your v1
+    emails to clarify what remains unchanged.
 
 
-Segher
+Daniel Axtens (3):
+  kasan: define and use MAX_PTRS_PER_* for early shadow tables
+  kasan: Document support on 32-bit powerpc
+  powerpc: Book3S 64-bit "heavyweight" KASAN support
+
+ Documentation/dev-tools/kasan.rst             |   7 +-
+ Documentation/powerpc/kasan.txt               | 122 ++++++++++++++++++
+ arch/powerpc/Kconfig                          |   3 +
+ arch/powerpc/Kconfig.debug                    |  21 +++
+ arch/powerpc/Makefile                         |  11 ++
+ arch/powerpc/include/asm/book3s/64/hash.h     |   4 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |   7 +
+ arch/powerpc/include/asm/book3s/64/radix.h    |   5 +
+ arch/powerpc/include/asm/kasan.h              |  21 ++-
+ arch/powerpc/kernel/process.c                 |   8 ++
+ arch/powerpc/kernel/prom.c                    |  64 ++++++++-
+ arch/powerpc/mm/kasan/Makefile                |   3 +-
+ .../mm/kasan/{kasan_init_32.c => init_32.c}   |   0
+ arch/powerpc/mm/kasan/init_book3s_64.c        |  72 +++++++++++
+ include/linux/kasan.h                         |  18 ++-
+ mm/kasan/init.c                               |   6 +-
+ 16 files changed, 359 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/powerpc/kasan.txt
+ rename arch/powerpc/mm/kasan/{kasan_init_32.c => init_32.c} (100%)
+ create mode 100644 arch/powerpc/mm/kasan/init_book3s_64.c
+
+-- 
+2.20.1
+
