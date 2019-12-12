@@ -1,89 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB4811C4B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 05:14:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YL655bj2zDqwJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 15:14:21 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F9E11C4CB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 05:16:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YL8r1pH1zDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 15:16:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="RMIvKHcF"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YL310FYpzDqXZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 15:11:37 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBC47G1E079094
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 23:11:30 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wsrdqxmht-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2019 23:11:30 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Thu, 12 Dec 2019 04:11:27 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 12 Dec 2019 04:11:23 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBC4BLZP33882284
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Dec 2019 04:11:21 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE8A4A405B;
- Thu, 12 Dec 2019 04:11:21 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F944A405F;
- Thu, 12 Dec 2019 04:11:18 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.213.32])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu, 12 Dec 2019 04:11:18 +0000 (GMT)
-Date: Wed, 11 Dec 2019 20:11:15 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-References: <1575681159-30356-1-git-send-email-linuxram@us.ibm.com>
- <1575681159-30356-2-git-send-email-linuxram@us.ibm.com>
- <ed0f048c-bb40-c6c6-887c-ef68c9e411a2@ozlabs.ru>
- <20191210051244.GB5702@oc0525413822.ibm.com>
- <c4b48f55-e4e3-222a-0aa0-9b4783e19584@ozlabs.ru>
- <20191210153542.GB5709@oc0525413822.ibm.com>
- <90f6019b-d756-7f33-21b0-bb49c1c842da@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YL4Q1KqzzDqvv;
+ Thu, 12 Dec 2019 15:12:52 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id 2so34093pfg.12;
+ Wed, 11 Dec 2019 20:12:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=V3SeNtT3ppa9zP3L9+Z59yPkoIWupuDAHL8un8kHrdw=;
+ b=RMIvKHcFZNVRO9P0ZN4fppNBzVbHyhmoxZ7Xs4Bi2aEhs7GDN/Cyrf3CaQTN6rJPh4
+ Wegpd0+DPobU4ZKhUIZ6tBr+FUi2nVbwKhFn6wC3v2g26PuHOiI6Y3VR7ivV/cPISK58
+ HAz7mP2rLsbw1z4C6z5KlCGsHw+wL8Ui2Srcr2ujRy1FqA+CRN+pANbvUPzAABxzgFDo
+ aYoDdnPaRn70ug6PXtyucyEeUAScp8wZyocriAqmw5WwcTQITsvrN7oIC9/m/yDavtxV
+ QufgLKuZuQ7W40Zem6AYs4BOpkvb1J15yBqJyHmg3Rq4/U5WUiNAjvV5t5BE2dWQYi/m
+ HoFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=V3SeNtT3ppa9zP3L9+Z59yPkoIWupuDAHL8un8kHrdw=;
+ b=Zkwyk4U6nqljhmS/iBNY1q+1E69n0CmMVXTedlE/pm6MjCCAg69WQ0A3SE8Q+UDe8g
+ cRALBf7zSYz734tfLwhEPS2BM/KBHvh2qZ3QhTRGy0gxiRC9mxkdUITWd3iZO++qu+bh
+ lwq/2z+H2LDTvshwI1rwauyERoVsDzDS/DgmJnmjUV0xWcBlfb+tnaLISRNmyI7TTt/c
+ wDPGyAb6v7rqDalJQfy8dD6Y0FR1GCoe7sSQioumXjLmacCJ1ENmclvGaevUlIhbOuvp
+ S8SY6boa9P2rT6TqS92HCOVDvJreOIyStzoLkyphvG2Whpzk2+YeBWmx4lE/nCquQvF3
+ Vxrg==
+X-Gm-Message-State: APjAAAUHsdRAXqfKjQobz/hBhaj97biOEvDnTjuvkD+0nHu0MoceqCid
+ 9UtMpK6Ue9znc9afwKBeYhY7ejmt
+X-Google-Smtp-Source: APXvYqztZVVcaUxgJGcTkhKvrPjh9R4L7X4efAdou0xTqRq5KRhmiR1tUQfaE6QOtbjZCpZq20VZjQ==
+X-Received: by 2002:a62:d444:: with SMTP id u4mr7655133pfl.153.1576123965632; 
+ Wed, 11 Dec 2019 20:12:45 -0800 (PST)
+Received: from bobo.local0.net ([202.21.15.182])
+ by smtp.gmail.com with ESMTPSA id y76sm5018768pfc.87.2019.12.11.20.12.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Dec 2019 20:12:44 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: skiboot@lists.ozlabs.org
+Subject: [RFC PATCH] OPAL v4 cpu idle driver skeleton
+Date: Thu, 12 Dec 2019 14:12:37 +1000
+Message-Id: <20191212041237.24401-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <90f6019b-d756-7f33-21b0-bb49c1c842da@ozlabs.ru>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19121204-0020-0000-0000-0000039751A9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19121204-0021-0000-0000-000021EE583B
-Message-Id: <20191212041115.GC5702@oc0525413822.ibm.com>
-Subject: RE: [PATCH v5 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-12_01:2019-12-12,2019-12-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- impostorscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
- bulkscore=0 mlxscore=0 malwarescore=0 suspectscore=48 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912120021
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,72 +76,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- leonardo@linux.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
- cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 11, 2019 at 07:15:44PM +1100, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 11/12/2019 02:35, Ram Pai wrote:
-> > On Tue, Dec 10, 2019 at 04:32:10PM +1100, Alexey Kardashevskiy wrote:
-> >>
-..snip..
-> >> As discussed in slack, by default we do not need to clear the entire TCE
-> >> table and we only have to map swiotlb buffer using the small window. It
-> >> is a guest kernel change only. Thanks,
-> > 
-> > Can you tell me what code you are talking about here.  Where is the TCE
-> > table getting cleared? What code needs to be changed to not clear it?
-> 
-> 
-> pci_dma_bus_setup_pSeriesLP()
-> 	iommu_init_table()
-> 		iommu_table_clear()
-> 			for () tbl->it_ops->get()
-> 
-> We do not really need to clear it there, we only need it for VFIO with
-> IOMMU SPAPR TCE v1 which reuses these tables but there are
-> iommu_take_ownership/iommu_release_ownership to clear these tables. I'll
-> send a patch for this.
+With OPAL using the same endianness, same stack, and with OS
+callbacks, it looks relatively easy to provide a CPU idle driver.
 
-Did some experiments. It spent the first 9s in tce_free_pSeriesLP()
-clearing the tce entries.  And the second 13s in 
-tce_setrange_multi_pSeriesLP_walk().  BTW: the code in
-tce_setrange_multi_pSeriesLP_walk() is modified to use DIRECT_TCE.
+The Linux sreset interrupt won't have to change, if it registers
+almost like isa300_idle_stop_mayloss as the os_stop function,
+then skiboot will call that to stop, and it will return like a
+normal function call returning the srr1 wakeup value.
 
-So it looks like the amount of time spent in
-tce_setrange_multi_pSeriesLP_walk() is a function of the size of the
-memory that is mapped in the ddw.
+This allows the firmware to deal with supported stop states and
+psscr and consequences for saving and restoring various resources,
+and the kernel can implement a simple OPAL idle driver which has
+some interface like wakeup latency requested or something.
 
+Calls in and out of OPAL (once it's running with MMU=on) are not
+much more expensive calling a function in a kernel module, so
+performance should be okay. Kernel can still choose to implement
+an optimised CPU specific driver as it does today.
 
-> 
-..snip..
-> 
-> > But before I close, you have not told me clearly, what is the problem
-> > with;  'share the page, make the H_PUT_INDIRECT_TCE hcall, unshare the page'.
-> 
-> Between share and unshare you have a (tiny) window of opportunity to
-> attack the guest. No, I do not know how exactly.
-> 
-> For example, the hypervisor does a lot of PHB+PCI hotplug-unplug with
-> 64bit devices - each time this will create a huge window which will
-> share/unshare the same page.  No, I do not know how exactly how this can
-> be exploited either, we cannot rely of what you or myself know today. My
-> point is that we should not be sharing pages at all unless we really
-> really have to, and this does not seem to be the case.
-> 
-> But since this seems to an acceptable compromise anyway,
-> 
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> 
+The patch is just a hack with no actual policy or SPR saving in
+it at the moment and only does stop0, but illustrates the mechanism.
 
-Thanks!
-RP
+Thanks,
+Nick
+---
+ core/Makefile.inc       |  2 +-
+ core/opal.c             |  3 +++
+ core/stop.c             | 35 +++++++++++++++++++++++++++++++++++
+ include/opal-api.h      | 10 ++++++----
+ include/opal-internal.h |  1 +
+ 5 files changed, 46 insertions(+), 5 deletions(-)
+ create mode 100644 core/stop.c
+
+diff --git a/core/Makefile.inc b/core/Makefile.inc
+index cc90fb958..653ca544e 100644
+--- a/core/Makefile.inc
++++ b/core/Makefile.inc
+@@ -7,7 +7,7 @@ CORE_OBJS = relocate.o console.o stack.o init.o chip.o mem_region.o vm.o
+ CORE_OBJS += malloc.o lock.o cpu.o utils.o fdt.o opal.o interrupts.o timebase.o
+ CORE_OBJS += opal-msg.o pci.o pci-virt.o pci-slot.o pcie-slot.o
+ CORE_OBJS += pci-opal.o fast-reboot.o device.o exceptions.o trace.o affinity.o
+-CORE_OBJS += vpd.o platform.o nvram.o nvram-format.o hmi.o mce.o
++CORE_OBJS += vpd.o platform.o nvram.o nvram-format.o hmi.o mce.o stop.o
+ CORE_OBJS += console-log.o ipmi.o time-utils.o pel.o pool.o errorlog.o
+ CORE_OBJS += timer.o i2c.o rtc.o flash.o sensor.o ipmi-opal.o
+ CORE_OBJS += flash-subpartition.o bitmap.o buddy.o pci-quirk.o powercap.o psr.o
+diff --git a/core/opal.c b/core/opal.c
+index bb88d7710..d5c1d057b 100644
+--- a/core/opal.c
++++ b/core/opal.c
+@@ -444,6 +444,9 @@ static int64_t opal_register_opal_ops(struct opal_os_ops *__os_ops)
+ 	/* v4 must provide printf */
+ 	os_ops.os_printf = (void *)be64_to_cpu(__os_ops->os_printf);
+ 
++	/* v4 may provide stop (or NULL) */
++	os_ops.os_stop = (void *)be64_to_cpu(__os_ops->os_stop);
++
+ 	set_opal_console_to_raw();
+ 
+ 	checksum_romem();
+diff --git a/core/stop.c b/core/stop.c
+new file mode 100644
+index 000000000..6d98d68e6
+--- /dev/null
++++ b/core/stop.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: Apache-2.0
++/*
++ * Stop idle driver
++ *
++ * Copyright 2019 IBM Corp.
++ */
++
++#define pr_fmt(fmt)	"IDLE: " fmt
++
++#include <skiboot.h>
++#include <opal.h>
++#include <processor.h>
++#include <cpu.h>
++#include <cpu.h>
++
++static int64_t opal_cpu_idle(uint64_t latency, bool radix, __be64 *srr1)
++{
++	uint64_t psscr;
++
++	if (!os_ops.os_stop)
++		return OPAL_UNSUPPORTED;
++
++	if (proc_gen != proc_gen_p9)
++		return OPAL_UNSUPPORTED;
++
++	(void)latency;
++	(void)radix;
++	psscr = OPAL_PM_PSSCR_RL(0) \
++		 | OPAL_PM_PSSCR_MTL(3) \
++		 | OPAL_PM_PSSCR_TR(3);
++	*srr1 = os_ops.os_stop(psscr, true);
++
++	return OPAL_SUCCESS;
++}
++opal_call(OPAL_CPU_IDLE, opal_cpu_idle, 3);
+diff --git a/include/opal-api.h b/include/opal-api.h
+index 169061a26..03f323628 100644
+--- a/include/opal-api.h
++++ b/include/opal-api.h
+@@ -231,6 +231,7 @@
+ #define OPAL_LOOKUP_SYMBOL			182
+ #define OPAL_REGISTER_OS_OPS			183
+ #define OPAL_HANDLE_MCE				184
++#define OPAL_CPU_IDLE				185
+ #define OPAL_LAST				184
+ 
+ #define QUIESCE_HOLD			1 /* Spin all calls at entry */
+@@ -1259,10 +1260,11 @@ struct opal_mpipl_fadump {
+ };
+ 
+ struct opal_os_ops {
+-        __be16  version;
+-        __be16  reserved0;
+-        __be32  reserved1;
+-        __be64  os_printf;      /* void printf(int32_t level, const char *str) */
++	__be16  version;
++	__be16  reserved0;
++	__be32  reserved1;
++	__be64  os_printf;	/* void printf(int32_t level, const char *str) */
++	__be64	os_stop;	/* uint64_t stop(uint64_t psscr, bool save_gprs) */
+ };
+ 
+ #define MCE_HANDLE_CORRECT		0x0001	/* Attempt to correct */
+diff --git a/include/opal-internal.h b/include/opal-internal.h
+index cd968a0fe..2baf79a53 100644
+--- a/include/opal-internal.h
++++ b/include/opal-internal.h
+@@ -20,6 +20,7 @@ struct opal_table_entry {
+ 
+ struct os_ops {
+         void (*os_printf)(uint32_t log_level, const char *str);
++	uint64_t (*os_stop)(uint64_t psscr, bool save_gprs);
+ };
+ 
+ extern bool opal_v4_os;
+-- 
+2.23.0
 
