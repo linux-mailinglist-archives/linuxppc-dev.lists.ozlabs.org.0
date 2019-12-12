@@ -2,69 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F9E11C4CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 05:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2998A11C524
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 06:10:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YL8r1pH1zDqv2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 15:16:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YMLG1hv8zDqwV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 16:09:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="RMIvKHcF"; 
- dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YL4Q1KqzzDqvv;
- Thu, 12 Dec 2019 15:12:52 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id 2so34093pfg.12;
- Wed, 11 Dec 2019 20:12:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=V3SeNtT3ppa9zP3L9+Z59yPkoIWupuDAHL8un8kHrdw=;
- b=RMIvKHcFZNVRO9P0ZN4fppNBzVbHyhmoxZ7Xs4Bi2aEhs7GDN/Cyrf3CaQTN6rJPh4
- Wegpd0+DPobU4ZKhUIZ6tBr+FUi2nVbwKhFn6wC3v2g26PuHOiI6Y3VR7ivV/cPISK58
- HAz7mP2rLsbw1z4C6z5KlCGsHw+wL8Ui2Srcr2ujRy1FqA+CRN+pANbvUPzAABxzgFDo
- aYoDdnPaRn70ug6PXtyucyEeUAScp8wZyocriAqmw5WwcTQITsvrN7oIC9/m/yDavtxV
- QufgLKuZuQ7W40Zem6AYs4BOpkvb1J15yBqJyHmg3Rq4/U5WUiNAjvV5t5BE2dWQYi/m
- HoFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=V3SeNtT3ppa9zP3L9+Z59yPkoIWupuDAHL8un8kHrdw=;
- b=Zkwyk4U6nqljhmS/iBNY1q+1E69n0CmMVXTedlE/pm6MjCCAg69WQ0A3SE8Q+UDe8g
- cRALBf7zSYz734tfLwhEPS2BM/KBHvh2qZ3QhTRGy0gxiRC9mxkdUITWd3iZO++qu+bh
- lwq/2z+H2LDTvshwI1rwauyERoVsDzDS/DgmJnmjUV0xWcBlfb+tnaLISRNmyI7TTt/c
- wDPGyAb6v7rqDalJQfy8dD6Y0FR1GCoe7sSQioumXjLmacCJ1ENmclvGaevUlIhbOuvp
- S8SY6boa9P2rT6TqS92HCOVDvJreOIyStzoLkyphvG2Whpzk2+YeBWmx4lE/nCquQvF3
- Vxrg==
-X-Gm-Message-State: APjAAAUHsdRAXqfKjQobz/hBhaj97biOEvDnTjuvkD+0nHu0MoceqCid
- 9UtMpK6Ue9znc9afwKBeYhY7ejmt
-X-Google-Smtp-Source: APXvYqztZVVcaUxgJGcTkhKvrPjh9R4L7X4efAdou0xTqRq5KRhmiR1tUQfaE6QOtbjZCpZq20VZjQ==
-X-Received: by 2002:a62:d444:: with SMTP id u4mr7655133pfl.153.1576123965632; 
- Wed, 11 Dec 2019 20:12:45 -0800 (PST)
-Received: from bobo.local0.net ([202.21.15.182])
- by smtp.gmail.com with ESMTPSA id y76sm5018768pfc.87.2019.12.11.20.12.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2019 20:12:44 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: skiboot@lists.ozlabs.org
-Subject: [RFC PATCH] OPAL v4 cpu idle driver skeleton
-Date: Thu, 12 Dec 2019 14:12:37 +1000
-Message-Id: <20191212041237.24401-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YMHz06QSzDqSh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 16:07:58 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBC57O5C048562; Thu, 12 Dec 2019 00:07:29 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wtf704v95-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Dec 2019 00:07:29 -0500
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBC57QtT048651;
+ Thu, 12 Dec 2019 00:07:26 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wtf704v7x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Dec 2019 00:07:26 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBC528Ih010339;
+ Thu, 12 Dec 2019 05:07:24 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 2wr3q75s0a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Dec 2019 05:07:24 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBC57NFE8454554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 Dec 2019 05:07:23 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25032124054;
+ Thu, 12 Dec 2019 05:07:23 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4878B124053;
+ Thu, 12 Dec 2019 05:07:22 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 12 Dec 2019 05:07:22 +0000 (GMT)
+Subject: Re: [PATCH V2 00/13] powerpc/vas: Page fault handling for user
+ space NX requests
+From: Haren Myneni <haren@linux.ibm.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+In-Reply-To: <20191209083806.GA3152@gate.crashing.org>
+References: <1575861522.16318.9.camel@hbabu-laptop>
+ <8ba807dd-9d5a-e42a-60e8-f9ad648026bf@c-s.fr>
+ <20191209083806.GA3152@gate.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 11 Dec 2019 21:05:38 -0800
+Message-ID: <1576127138.16318.43.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-12_01:2019-12-12,2019-12-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ priorityscore=1501 adultscore=0 clxscore=1011 malwarescore=0
+ suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912120030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,152 +92,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: devicetree@vger.kernel.org, mikey@neuling.org, herbert@gondor.apana.org.au,
+ npiggin@gmail.com, hch@infradead.org, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With OPAL using the same endianness, same stack, and with OS
-callbacks, it looks relatively easy to provide a CPU idle driver.
+On Mon, 2019-12-09 at 02:38 -0600, Segher Boessenkool wrote:
+> Hi!
+> 
+> On Mon, Dec 09, 2019 at 06:37:09AM +0100, Christophe Leroy wrote:
+> > What do you mean by NX ?
+> 
+> It is the Power9 "Nest Accelerator".  The patch series should ideally
+> mention that right at the start, yeah.
 
-The Linux sreset interrupt won't have to change, if it registers
-almost like isa300_idle_stop_mayloss as the os_stop function,
-then skiboot will call that to stop, and it will return like a
-normal function call returning the srr1 wakeup value.
+Thanks, NX (Nest Accelerator) is introduced since power7+
+(drivers/crypto/nx/)
 
-This allows the firmware to deal with supported stop states and
-psscr and consequences for saving and restoring various resources,
-and the kernel can implement a simple OPAL idle driver which has
-some interface like wakeup latency requested or something.
+Whereas on power9, VAS (Virtual Accelerator Switchboard) is introduced
+which allows to open multiple channels to communicate with NX. kernel or
+user space can interact with NX directly using copy/paste instructions.
+Kernel support with NX-842 compression is already included in kernel. 
 
-Calls in and out of OPAL (once it's running with MMU=on) are not
-much more expensive calling a function in a kernel module, so
-performance should be okay. Kernel can still choose to implement
-an optimised CPU specific driver as it does today.
+In the case of user space, NX can see page fault on the request buffer
+and interrupts OS to handle this fault. This patch series adds page
+fault handling in VAS for user space requests. 
 
-The patch is just a hack with no actual policy or SPR saving in
-it at the moment and only does stop0, but illustrates the mechanism.
+I will repost this patch with more explanation on NX. 
 
-Thanks,
-Nick
----
- core/Makefile.inc       |  2 +-
- core/opal.c             |  3 +++
- core/stop.c             | 35 +++++++++++++++++++++++++++++++++++
- include/opal-api.h      | 10 ++++++----
- include/opal-internal.h |  1 +
- 5 files changed, 46 insertions(+), 5 deletions(-)
- create mode 100644 core/stop.c
+> 
+> > Up to now, NX has been standing for No-eXecute. That's a bit in segment 
+> > registers on book3s/32 to forbid executing code.
+> 
+> That bit is called just N fwiw (and not really specific to 32-bit -- on
+> 64-bit implementations it was part of segment table entries, and of SLB
+> entries on newer machines).
+> 
+> 
+> Segher
 
-diff --git a/core/Makefile.inc b/core/Makefile.inc
-index cc90fb958..653ca544e 100644
---- a/core/Makefile.inc
-+++ b/core/Makefile.inc
-@@ -7,7 +7,7 @@ CORE_OBJS = relocate.o console.o stack.o init.o chip.o mem_region.o vm.o
- CORE_OBJS += malloc.o lock.o cpu.o utils.o fdt.o opal.o interrupts.o timebase.o
- CORE_OBJS += opal-msg.o pci.o pci-virt.o pci-slot.o pcie-slot.o
- CORE_OBJS += pci-opal.o fast-reboot.o device.o exceptions.o trace.o affinity.o
--CORE_OBJS += vpd.o platform.o nvram.o nvram-format.o hmi.o mce.o
-+CORE_OBJS += vpd.o platform.o nvram.o nvram-format.o hmi.o mce.o stop.o
- CORE_OBJS += console-log.o ipmi.o time-utils.o pel.o pool.o errorlog.o
- CORE_OBJS += timer.o i2c.o rtc.o flash.o sensor.o ipmi-opal.o
- CORE_OBJS += flash-subpartition.o bitmap.o buddy.o pci-quirk.o powercap.o psr.o
-diff --git a/core/opal.c b/core/opal.c
-index bb88d7710..d5c1d057b 100644
---- a/core/opal.c
-+++ b/core/opal.c
-@@ -444,6 +444,9 @@ static int64_t opal_register_opal_ops(struct opal_os_ops *__os_ops)
- 	/* v4 must provide printf */
- 	os_ops.os_printf = (void *)be64_to_cpu(__os_ops->os_printf);
- 
-+	/* v4 may provide stop (or NULL) */
-+	os_ops.os_stop = (void *)be64_to_cpu(__os_ops->os_stop);
-+
- 	set_opal_console_to_raw();
- 
- 	checksum_romem();
-diff --git a/core/stop.c b/core/stop.c
-new file mode 100644
-index 000000000..6d98d68e6
---- /dev/null
-+++ b/core/stop.c
-@@ -0,0 +1,35 @@
-+// SPDX-License-Identifier: Apache-2.0
-+/*
-+ * Stop idle driver
-+ *
-+ * Copyright 2019 IBM Corp.
-+ */
-+
-+#define pr_fmt(fmt)	"IDLE: " fmt
-+
-+#include <skiboot.h>
-+#include <opal.h>
-+#include <processor.h>
-+#include <cpu.h>
-+#include <cpu.h>
-+
-+static int64_t opal_cpu_idle(uint64_t latency, bool radix, __be64 *srr1)
-+{
-+	uint64_t psscr;
-+
-+	if (!os_ops.os_stop)
-+		return OPAL_UNSUPPORTED;
-+
-+	if (proc_gen != proc_gen_p9)
-+		return OPAL_UNSUPPORTED;
-+
-+	(void)latency;
-+	(void)radix;
-+	psscr = OPAL_PM_PSSCR_RL(0) \
-+		 | OPAL_PM_PSSCR_MTL(3) \
-+		 | OPAL_PM_PSSCR_TR(3);
-+	*srr1 = os_ops.os_stop(psscr, true);
-+
-+	return OPAL_SUCCESS;
-+}
-+opal_call(OPAL_CPU_IDLE, opal_cpu_idle, 3);
-diff --git a/include/opal-api.h b/include/opal-api.h
-index 169061a26..03f323628 100644
---- a/include/opal-api.h
-+++ b/include/opal-api.h
-@@ -231,6 +231,7 @@
- #define OPAL_LOOKUP_SYMBOL			182
- #define OPAL_REGISTER_OS_OPS			183
- #define OPAL_HANDLE_MCE				184
-+#define OPAL_CPU_IDLE				185
- #define OPAL_LAST				184
- 
- #define QUIESCE_HOLD			1 /* Spin all calls at entry */
-@@ -1259,10 +1260,11 @@ struct opal_mpipl_fadump {
- };
- 
- struct opal_os_ops {
--        __be16  version;
--        __be16  reserved0;
--        __be32  reserved1;
--        __be64  os_printf;      /* void printf(int32_t level, const char *str) */
-+	__be16  version;
-+	__be16  reserved0;
-+	__be32  reserved1;
-+	__be64  os_printf;	/* void printf(int32_t level, const char *str) */
-+	__be64	os_stop;	/* uint64_t stop(uint64_t psscr, bool save_gprs) */
- };
- 
- #define MCE_HANDLE_CORRECT		0x0001	/* Attempt to correct */
-diff --git a/include/opal-internal.h b/include/opal-internal.h
-index cd968a0fe..2baf79a53 100644
---- a/include/opal-internal.h
-+++ b/include/opal-internal.h
-@@ -20,6 +20,7 @@ struct opal_table_entry {
- 
- struct os_ops {
-         void (*os_printf)(uint32_t log_level, const char *str);
-+	uint64_t (*os_stop)(uint64_t psscr, bool save_gprs);
- };
- 
- extern bool opal_v4_os;
--- 
-2.23.0
 
