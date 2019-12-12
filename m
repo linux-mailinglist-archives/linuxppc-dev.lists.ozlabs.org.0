@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F6011C8C5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 10:01:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YSTC1dnfzDqsM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 20:01:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9656011C8DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 10:12:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YSjq4dXLzDqsl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 20:12:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,58 +16,58 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="elg+sSRR"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="YNvksdWl"; 
  dkim-atps=neutral
 Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
  [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YRYC1ZtbzDqf0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 19:19:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YRYJ4ypXzDqwW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 19:19:47 +1100 (AEDT)
 Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
  hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5df1f8020002>; Thu, 12 Dec 2019 00:19:15 -0800
+ id <B5df1f8040003>; Thu, 12 Dec 2019 00:19:17 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
  by hqpgpgate101.nvidia.com (PGP Universal service);
- Thu, 12 Dec 2019 00:19:21 -0800
+ Thu, 12 Dec 2019 00:19:23 -0800
 X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Thu, 12 Dec 2019 00:19:21 -0800
+ by hqpgpgate101.nvidia.com on Thu, 12 Dec 2019 00:19:23 -0800
 Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL107.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 12 Dec
- 2019 08:19:19 +0000
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL109.nvidia.com
+ 2019 08:19:22 +0000
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL109.nvidia.com
  (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 12 Dec
  2019 08:19:19 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
  Transport; Thu, 12 Dec 2019 08:19:19 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
  hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5df1f8060006>; Thu, 12 Dec 2019 00:19:18 -0800
+ id <B5df1f8070001>; Thu, 12 Dec 2019 00:19:19 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v10 04/25] mm: devmap: refactor 1-based refcounting for
- ZONE_DEVICE pages
-Date: Thu, 12 Dec 2019 00:18:56 -0800
-Message-ID: <20191212081917.1264184-5-jhubbard@nvidia.com>
+Subject: [PATCH v10 06/25] mm: fix get_user_pages_remote()'s handling of
+ FOLL_LONGTERM
+Date: Thu, 12 Dec 2019 00:18:58 -0800
+Message-ID: <20191212081917.1264184-7-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191212081917.1264184-1-jhubbard@nvidia.com>
 References: <20191212081917.1264184-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
 X-NVConfidentiality: public
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576138755; bh=r3XA8lSkA5Bnz921S0tMCXc9LaTJg03zUmdbkjLWRbI=;
+ t=1576138757; bh=l4ZzqtVW71Fwvoz1qyCbd1xWWEz8EY4C2cUJdAbaFHs=;
  h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
  In-Reply-To:References:MIME-Version:X-NVConfidentiality:
- Content-Type:Content-Transfer-Encoding;
- b=elg+sSRRzUJLWxg7pEMGo1TjXJDPNYbJwAkjvScwBISUPDcaOwt3JsejxGsKxLFUi
- qBagTKwhdnMYBIkqRIOG581MOnXxwQINdcFFkxRsWxujnFNbIRfalulU1S2D8c/gZ9
- upqBAINw7s4lLJtYFHDFXIeb+beNVFgNf2XU06fnSFm1r4Q1URuF9uFYqCv1KxnaM4
- CiXBKa3U+CMEo8sUhfxanTzS+S669s8HkKaEu5xLpbot4NbK1xzSpz6kFNdTbdLI2w
- aubectHeigApixn4Ccg0/UbmY3RraK/s1yzlGHN9vn38p0PHoottu5mw00BJWl4csT
- 3K09shusUckgg==
+ Content-Transfer-Encoding:Content-Type;
+ b=YNvksdWlyl2599mmaaugSdiX1UCO56zpF5N9DYcD/vZ2p7+o0dY61zE7nU97ta9m/
+ 26nMlVzTBISct5P8uG+3Gi7hnC1NH8nGfefemcNG47ilbQw2tw4L9JhghF53jnZK3Q
+ V3weahbyJyIncwop+hfXFMM69n7/p/MbrvPbFWxTKGxGRYJM3D3rUMcMiAwOqGTi7p
+ F/cnat8bNtoNg+9UU8caJLFv0HRT5uBP2AvEP48Mkn3MVCeW1ldS7kSoU85E5VIOS0
+ fRjFM7oet5MBa/lhRMLh3mRRVxAfPJVusfImFZxrdEcOMr0VdUBQLWZBEAAzrTWzkU
+ LDxG0ypzYUD8A==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,10 +85,10 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
  linux-mm@kvack.org, Paul
  Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Christoph Hellwig <hch@lst.de>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jason
+ Gunthorpe <jgg@mellanox.com>, Vlastimil Babka <vbabka@suse.cz>,
  =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
@@ -105,159 +105,88 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-An upcoming patch changes and complicates the refcounting and
-especially the "put page" aspects of it. In order to keep
-everything clean, refactor the devmap page release routines:
+As it says in the updated comment in gup.c: current FOLL_LONGTERM
+behavior is incompatible with FAULT_FLAG_ALLOW_RETRY because of the
+FS DAX check requirement on vmas.
 
-* Rename put_devmap_managed_page() to page_is_devmap_managed(),
-  and limit the functionality to "read only": return a bool,
-  with no side effects.
+However, the corresponding restriction in get_user_pages_remote() was
+slightly stricter than is actually required: it forbade all
+FOLL_LONGTERM callers, but we can actually allow FOLL_LONGTERM callers
+that do not set the "locked" arg.
 
-* Add a new routine, put_devmap_managed_page(), to handle checking
-  what kind of page it is, and what kind of refcount handling it
-  requires.
+Update the code and comments to loosen the restriction, allowing
+FOLL_LONGTERM in some cases.
 
-* Rename __put_devmap_managed_page() to free_devmap_managed_page(),
-  and limit the functionality to unconditionally freeing a devmap
-  page.
+Also, copy the DAX check ("if a VMA is DAX, don't allow long term
+pinning") from the VFIO call site, all the way into the internals
+of get_user_pages_remote() and __gup_longterm_locked(). That is:
+get_user_pages_remote() calls __gup_longterm_locked(), which in turn
+calls check_dax_vmas(). This check will then be removed from the VFIO
+call site in a subsequent patch.
 
-This is originally based on a separate patch by Ira Weiny, which
-applied to an early version of the put_user_page() experiments.
-Since then, J=C3=A9r=C3=B4me Glisse suggested the refactoring described abo=
-ve.
+Thanks to Jason Gunthorpe for pointing out a clean way to fix this,
+and to Dan Williams for helping clarify the DAX refactoring.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Suggested-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Tested-by: Alex Williamson <alex.williamson@redhat.com>
+Acked-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Jerome Glisse <jglisse@redhat.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- include/linux/mm.h | 17 +++++++++++++----
- mm/memremap.c      | 16 ++--------------
- mm/swap.c          | 24 ++++++++++++++++++++++++
- 3 files changed, 39 insertions(+), 18 deletions(-)
+ mm/gup.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c97ea3b694e6..77a4df06c8a7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -952,9 +952,10 @@ static inline bool is_zone_device_page(const struct pa=
-ge *page)
- #endif
+diff --git a/mm/gup.c b/mm/gup.c
+index 3ecce297a47f..c0c56888e7cc 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -29,6 +29,13 @@ struct follow_page_context {
+ 	unsigned int page_mask;
+ };
 =20
- #ifdef CONFIG_DEV_PAGEMAP_OPS
--void __put_devmap_managed_page(struct page *page);
-+void free_devmap_managed_page(struct page *page);
- DECLARE_STATIC_KEY_FALSE(devmap_managed_key);
--static inline bool put_devmap_managed_page(struct page *page)
-+
-+static inline bool page_is_devmap_managed(struct page *page)
++static __always_inline long __gup_longterm_locked(struct task_struct *tsk,
++						  struct mm_struct *mm,
++						  unsigned long start,
++						  unsigned long nr_pages,
++						  struct page **pages,
++						  struct vm_area_struct **vmas,
++						  unsigned int flags);
+ /*
+  * Return the compound head page with ref appropriately incremented,
+  * or NULL if that failed.
+@@ -1179,13 +1186,23 @@ long get_user_pages_remote(struct task_struct *tsk,=
+ struct mm_struct *mm,
+ 		struct vm_area_struct **vmas, int *locked)
  {
- 	if (!static_branch_unlikely(&devmap_managed_key))
- 		return false;
-@@ -963,7 +964,6 @@ static inline bool put_devmap_managed_page(struct page =
-*page)
- 	switch (page->pgmap->type) {
- 	case MEMORY_DEVICE_PRIVATE:
- 	case MEMORY_DEVICE_FS_DAX:
--		__put_devmap_managed_page(page);
- 		return true;
- 	default:
- 		break;
-@@ -971,7 +971,14 @@ static inline bool put_devmap_managed_page(struct page=
- *page)
- 	return false;
- }
-=20
-+bool put_devmap_managed_page(struct page *page);
-+
- #else /* CONFIG_DEV_PAGEMAP_OPS */
-+static inline bool page_is_devmap_managed(struct page *page)
-+{
-+	return false;
-+}
-+
- static inline bool put_devmap_managed_page(struct page *page)
- {
- 	return false;
-@@ -1028,8 +1035,10 @@ static inline void put_page(struct page *page)
- 	 * need to inform the device driver through callback. See
- 	 * include/linux/memremap.h and HMM for details.
+ 	/*
+-	 * FIXME: Current FOLL_LONGTERM behavior is incompatible with
++	 * Parts of FOLL_LONGTERM behavior are incompatible with
+ 	 * FAULT_FLAG_ALLOW_RETRY because of the FS DAX check requirement on
+-	 * vmas.  As there are no users of this flag in this call we simply
+-	 * disallow this option for now.
++	 * vmas. However, this only comes up if locked is set, and there are
++	 * callers that do request FOLL_LONGTERM, but do not set locked. So,
++	 * allow what we can.
  	 */
--	if (put_devmap_managed_page(page))
-+	if (page_is_devmap_managed(page)) {
-+		put_devmap_managed_page(page);
- 		return;
-+	}
-=20
- 	if (put_page_testzero(page))
- 		__put_page(page);
-diff --git a/mm/memremap.c b/mm/memremap.c
-index e899fa876a62..2ba773859031 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -411,20 +411,8 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
- EXPORT_SYMBOL_GPL(get_dev_pagemap);
-=20
- #ifdef CONFIG_DEV_PAGEMAP_OPS
--void __put_devmap_managed_page(struct page *page)
-+void free_devmap_managed_page(struct page *page)
- {
--	int count =3D page_ref_dec_return(page);
--
--	/* still busy */
--	if (count > 1)
--		return;
--
--	/* only triggered by the dev_pagemap shutdown path */
--	if (count =3D=3D 0) {
--		__put_page(page);
--		return;
--	}
--
- 	/* notify page idle for dax */
- 	if (!is_device_private_page(page)) {
- 		wake_up_var(&page->_refcount);
-@@ -461,5 +449,5 @@ void __put_devmap_managed_page(struct page *page)
- 	page->mapping =3D NULL;
- 	page->pgmap->ops->page_free(page);
- }
--EXPORT_SYMBOL(__put_devmap_managed_page);
-+EXPORT_SYMBOL(free_devmap_managed_page);
- #endif /* CONFIG_DEV_PAGEMAP_OPS */
-diff --git a/mm/swap.c b/mm/swap.c
-index 5341ae93861f..49f7c2eea0ba 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -1102,3 +1102,27 @@ void __init swap_setup(void)
- 	 * _really_ don't want to cluster much more
- 	 */
- }
-+
-+#ifdef CONFIG_DEV_PAGEMAP_OPS
-+bool put_devmap_managed_page(struct page *page)
-+{
-+	bool is_devmap =3D page_is_devmap_managed(page);
-+
-+	if (is_devmap) {
-+		int count =3D page_ref_dec_return(page);
-+
+-	if (WARN_ON_ONCE(gup_flags & FOLL_LONGTERM))
+-		return -EINVAL;
++	if (gup_flags & FOLL_LONGTERM) {
++		if (WARN_ON_ONCE(locked))
++			return -EINVAL;
 +		/*
-+		 * devmap page refcounts are 1-based, rather than 0-based: if
-+		 * refcount is 1, then the page is free and the refcount is
-+		 * stable because nobody holds a reference on the page.
++		 * This will check the vmas (even if our vmas arg is NULL)
++		 * and return -ENOTSUPP if DAX isn't allowed in this case:
 +		 */
-+		if (count =3D=3D 1)
-+			free_devmap_managed_page(page);
-+		else if (!count)
-+			__put_page(page);
++		return __gup_longterm_locked(tsk, mm, start, nr_pages, pages,
++					     vmas, gup_flags | FOLL_TOUCH |
++					     FOLL_REMOTE);
 +	}
-+
-+	return is_devmap;
-+}
-+EXPORT_SYMBOL(put_devmap_managed_page);
-+#endif
+=20
+ 	return __get_user_pages_locked(tsk, mm, start, nr_pages, pages, vmas,
+ 				       locked,
 --=20
 2.24.0
 
