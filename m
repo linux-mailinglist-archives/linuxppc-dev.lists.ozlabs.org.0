@@ -2,62 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15F211D59D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:32:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D0511D624
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:47:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Yj8K3sBbzDr7d
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 05:32:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YjTV6ySjzDr7Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 05:47:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=borntraeger@de.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::243;
+ helo=mail-lj1-x243.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="ESVNK1Mw"; dkim-atps=neutral
+X-Greylist: delayed 3693 seconds by postgrey-1.36 at bilbo;
+ Fri, 13 Dec 2019 05:43:37 AEDT
+Received: from mail-lj1-x243.google.com (unknown [IPv6:2a00:1450:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Yj4y4WNJzDr7Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:29:31 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBCINOwb059734
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 13:29:26 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2wuswr9fxy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 13:29:26 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <borntraeger@de.ibm.com>;
- Thu, 12 Dec 2019 18:29:24 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 12 Dec 2019 18:29:20 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBCITJTv33095812
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Dec 2019 18:29:19 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C4C8A4040;
- Thu, 12 Dec 2019 18:29:19 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 04338A4051;
- Thu, 12 Dec 2019 18:29:19 +0000 (GMT)
-Received: from oc7455500831.ibm.com (unknown [9.152.224.212])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 12 Dec 2019 18:29:18 +0000 (GMT)
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-To: Will Deacon <will@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YjP54yd9zDr1c
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:43:36 +1100 (AEDT)
+Received: by mail-lj1-x243.google.com with SMTP id m6so3444056ljc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 10:43:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=daP2x4GLzegqYAtGzoN/GqQWx/OgbUZpFEmzsIb9AuY=;
+ b=ESVNK1Mwi4VakiBbtSIOLOxnFTfo9yicVGMiebqVDAAObXDl8gUPGjFP3V6AoTVKJc
+ HXbX49wJTIP8gVq4DIOHImreynSyKqrAyaVA413Sj66yFki8qzqdppnMRHspROxc1wIy
+ o3RYW91grmKJW3WGA8r4+DqCoBMnHPzXSZzsw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=daP2x4GLzegqYAtGzoN/GqQWx/OgbUZpFEmzsIb9AuY=;
+ b=gAq4XVBnOqcPN6KHKgR4U0Y+YsKFHNEsW5IXvRtC4ryiHup+ClYYvz2/Qc/rhYYIsh
+ xdz+FXZK/ocezHA80Wj/numH9+GzHQvKnp+LWtdg2LlZF7NxmqmaLNLRjNASGgoYn70/
+ 6mp7NQktGHU4ne+npi7sMM/ky9rn1N7Y75s5iOiDZK1yghctStEVuImMypl1uV00Sdk1
+ kVvhNUkoqh53koSH0DUiIs4CxkPbYXWBGX3DHfMZ8yVkKtFlPbI5bktCsRvcs/HMP1gw
+ iShdcC0KGcdPuyP3bWFBWYBC2Vem26WvsN8PCaQmwF2+0ALKL6/lf2RbgRWw2k7NIPuX
+ 1MJg==
+X-Gm-Message-State: APjAAAUx0Ud+yR5OA7Ntk97KjMt7fM6BISXkpryIHq6D/EvU251MNpfl
+ CBQ9k9uiV5KWgK4XWq61sGwvE8C7msI=
+X-Google-Smtp-Source: APXvYqwLSEUI91t3uR02ymjVRa46GyUXjEqmN4PzLgCHCNrDYCRr53pGtHrhcL1YTeGcU6FdRnKzig==
+X-Received: by 2002:a2e:8953:: with SMTP id b19mr6374121ljk.249.1576176202434; 
+ Thu, 12 Dec 2019 10:43:22 -0800 (PST)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com.
+ [209.85.167.43])
+ by smtp.gmail.com with ESMTPSA id z9sm3421454ljm.40.2019.12.12.10.43.21
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Dec 2019 10:43:21 -0800 (PST)
+Received: by mail-lf1-f43.google.com with SMTP id 15so42883lfr.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 10:43:21 -0800 (PST)
+X-Received: by 2002:ac2:4946:: with SMTP id o6mr6694407lfi.170.1576176201157; 
+ Thu, 12 Dec 2019 10:43:21 -0800 (PST)
+MIME-Version: 1.0
 References: <87blslei5o.fsf@mpe.ellerman.id.au>
  <20191206131650.GM2827@hirez.programming.kicks-ass.net>
  <875zimp0ay.fsf@mpe.ellerman.id.au>
@@ -66,71 +70,15 @@ References: <87blslei5o.fsf@mpe.ellerman.id.au>
  <20191212104610.GW2827@hirez.programming.kicks-ass.net>
  <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
  <20191212180634.GA19020@willie-the-truck>
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
- 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
- nS4h0HDFPrrp1C2EMVYIQrMokWvlFZbCpsdYbBI=
-Date: Thu, 12 Dec 2019 19:29:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
-MIME-Version: 1.0
 In-Reply-To: <20191212180634.GA19020@willie-the-truck>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19121218-0016-0000-0000-000002D43707
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19121218-0017-0000-0000-000033365EAC
-Message-Id: <b37ce52d-89cc-5f2e-827d-c260e63152da@de.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-12_06:2019-12-12,2019-12-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=999 clxscore=1011 priorityscore=1501 adultscore=0
- impostorscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912120141
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 12 Dec 2019 10:43:05 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
+Message-ID: <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+To: Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -145,49 +93,53 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
  Peter Zijlstra <peterz@infradead.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
  Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org,
  dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 12.12.19 19:06, Will Deacon wrote:
-> On Thu, Dec 12, 2019 at 09:41:32AM -0800, Linus Torvalds wrote:
->> On Thu, Dec 12, 2019 at 2:46 AM Peter Zijlstra <peterz@infradead.org> wrote:
->>>
->>> +#ifdef GCC_VERSION < 40800
->>
->> Where does that 4.8 version check come from, and why?
->>
->> Yeah, I know, but this really wants a comment. Sadly it looks like gcc
->> bugzilla is down, so
->>
->>    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58145
->>
->> currently gives an "Internal Server Error" for me.
->>
->> [ Delete the horrid code we have because of gcc bugs ]
->>
->>> +#else /* GCC_VERSION < 40800 */
->>> +
->>> +#define READ_ONCE_NOCHECK(x)                                           \
->>> +({                                                                     \
->>> +       typeof(x) __x = *(volatile typeof(x))&(x);                      \
->>
->> I think we can/should just do this unconditionally if it helps th eissue.
-> 
+On Thu, Dec 12, 2019 at 10:06 AM Will Deacon <will@kernel.org> wrote:
+>
 > I'm currently trying to solve the issue by removing volatile from the bitop
-> function signatures, but it's grotty because there are quite a few callers
-> to fix up. I'm still trying to do it, because removing volatile fields from
-> structurs is generally a "good thing", but I'd be keen to simplify
-> READ_ONCE() as you suggest regardless.
+> function signatures
 
-As I am the one who added the foundation of READ_ONCEs uglyness, I am now in
-favour of re-simplifying it again. I was first a bit scared about re-introducing
-bugs, but the gcc testsuite has this particular case covered, so hopefully we
-should not see the issue with volatile and aggregate types again.
+I really think that's the wrong thing to do.
 
-Christian
+The bitop signature really should be "volatile" (and it should be
+"const volatile" for test_bit, but I'm not sure anybody cares).
 
+Exactly because it's simply valid to say "hey, my data is volatile,
+but do an atomic test of this bit". So it might be volatile in the
+caller.
+
+Now, I generally frown on actual volatile data structures - because
+the data structure volatility often depends on _context_. The same
+data might be volatile in one context (when you do some optimistic
+test on it without locking), but 100% stable in another (when you do
+have a lock).
+
+So I don't want to see "volatile" on data definitions ("jiffies" being
+the one traditional exception), but marking things volatile in code
+(because you know you're working with unlocked data) and then passing
+them down to various helper functions - including the bitops ones - is
+quite traditional and accepted.
+
+In other words, 'volatile" should be treated the same way "const" is
+largely treated in C.
+
+A pointer to "const" data doesn't mean that the data is read-only, or
+that it cannot be modified _elsewhere_, it means that within this
+particular context and this copy of the pointer we promise not to
+write to it.
+
+Similarly, a pointer to "volatile" data doesn't mean that the data
+might not be stable once you take a lock, for example. So it's ok to
+have volatile pointers even if the data declaration itself isn't
+volatile - you're stating something about the context, not something
+fundamental about the data.
+
+And in the context of the bit operations, "volatile" is the correct thing to do.
+
+                     Linus
