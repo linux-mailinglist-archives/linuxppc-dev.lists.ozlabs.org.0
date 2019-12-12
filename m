@@ -1,85 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0EC11C615
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 07:47:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A654F11C613
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 07:45:21 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YPSG5CkyzDqw4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 17:45:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YPVl5qmhzDqw6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 17:47:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
- helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="HejDlK/1"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="Lt8ZKVPt"; dkim-atps=neutral
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
- [66.111.4.28])
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YPQ22ZW7zDqn4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 17:43:14 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id AE12C22491;
- Thu, 12 Dec 2019 01:43:10 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Thu, 12 Dec 2019 01:43:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
- KyeWj8I1QMnmG8BRD33xXuY6tRJtAPepF3GJKhvFlro=; b=HejDlK/1SuGGBh2U
- VSzZQ1jtkfDeE1LwGxG4T6rprj8MkGil741naD2w3v+l9+WoE5iOq3MmnmG0hVkV
- 2VgGkNsgtIhJ9oAhNQmJBcbmVZhXt37UqxhCnleuto/eRZs5OR5Oi8+WyrMwsMvT
- j4PGwLJflSV5qb3l6BP8BAXSR+67igfV/cB7QEUva8AJKdjl3MdmYaU5xOSDQ9c4
- JIEZiyDp/JbaNr15K7/+y7yw41HI/Q8QEOnalbvvLaeAE5p7X2xqt1kCrJy5Fu34
- Dz5I2lVY5khYoZwAV2hVFQ009Eya8xLKo/VIfF+GhKoPCmVrU6vkdGrA7BXkyuSX
- 5JK2DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; bh=KyeWj8I1QMnmG8BRD33xXuY6tRJtAPepF3GJKhvFl
- ro=; b=Lt8ZKVPtexLF/AskJaPBbCVVyQFCb/lgfHRlhEaaQ8lArbKqULD8jOTwF
- pEgEwdIvmy2ZsEZipq/RaD1gRQtUAjGvbVdv9O3tgOT0Jpw0Z4M0pKnC6tBptE9u
- qHWj/OBV+ukIBZHw8N5pLdHDY+rgSEhlepVeDkOBhK6J2yNflo/Q7jA8nfcisTxe
- z6E5DN4ZWg8+fMvEu2NI4nq8K1RdbdJBnDTsD9wqCbHN1G2Pp/HbRx3CXxaD9mgH
- RZYAqI6PuDQbPuGl76osu8Y9tdgOWbNkPcO+Zgh+Buo4oh26TlC0fPPugy3dfkFc
- ESrCQftm3rtbz9fpoeoNCYBxyujVQ==
-X-ME-Sender: <xms:feHxXaqRFqJfPBu82gMup8LSdZ-MvkSxJKv1oVEfxVCvW742jmUXAw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudeliedgleejucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdluddtmdenucfjughrpefkuf
- fhvfffjghftggfggfgsehtjeertddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
- rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrd
- ekvddruddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghl
- lhdrtggtnecuvehluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:feHxXUq_6t_Fvu7O6Z9Tvdq7Mg-ukP6SQuxF_8gDM23_fcZDgmCizQ>
- <xmx:feHxXRY_y0XBFHaDqaJHvdLnnLsaFMT4ZSeyMcv8To-Ewcglvq80Gg>
- <xmx:feHxXa-AM8F54FMjU8DhkOCGEsPKApZtGbyP7RkDYD4G3Ua-WD_-6w>
- <xmx:fuHxXXmI5uEodkUlXZid_KiovUsjzRht4SMGI_va0Jm2RqK3nveZnQ>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 19BA230600AB;
- Thu, 12 Dec 2019 01:43:06 -0500 (EST)
-Message-ID: <d01de33ebe1fb1e0715878383a68e8e174d048a0.camel@russell.cc>
-Subject: Re: [PATCH v5 2/5] powerpc/kprobes: Mark newly allocated probes as RO
-From: Russell Currey <ruscur@russell.cc>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 12 Dec 2019 17:43:03 +1100
-In-Reply-To: <87eexie3nl.fsf@mpe.ellerman.id.au>
-References: <20191030073111.140493-1-ruscur@russell.cc>
- <20191030073111.140493-3-ruscur@russell.cc>
- <8736f636bl.fsf@mpe.ellerman.id.au> <87eexie3nl.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YPSL6jj1zDqwD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 17:45:22 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBC6fsPT034829
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 01:45:16 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2wtbt2ywav-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 01:45:16 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Thu, 12 Dec 2019 06:45:14 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 12 Dec 2019 06:45:10 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xBC6j8o630933420
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 Dec 2019 06:45:08 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76A08A4068;
+ Thu, 12 Dec 2019 06:45:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 31DA3A4062;
+ Thu, 12 Dec 2019 06:45:05 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.80.213.32])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 12 Dec 2019 06:45:04 +0000 (GMT)
+Date: Wed, 11 Dec 2019 22:45:02 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: Michael Roth <mdroth@linux.vnet.ibm.com>
+Subject: Re: [PATCH v5 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for
+ Secure VM.
+References: <1575681159-30356-1-git-send-email-linuxram@us.ibm.com>
+ <1575681159-30356-2-git-send-email-linuxram@us.ibm.com>
+ <1575681159-30356-3-git-send-email-linuxram@us.ibm.com>
+ <157602860458.3810.8599908751067047456@sif>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <157602860458.3810.8599908751067047456@sif>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19121206-0012-0000-0000-000003740526
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121206-0013-0000-0000-000021AFDF29
+Message-Id: <20191212064502.GC5709@oc0525413822.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-12_01:2019-12-12,2019-12-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 suspectscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ mlxlogscore=999 impostorscore=0 clxscore=1015 adultscore=0
+ priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-1912120043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,123 +92,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dja@axtens.net, joel@jms.id.au, ajd@linux.ibm.com, npiggin@gmail.com,
- kernel-hardening@lists.openwall.com
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: andmike@us.ibm.com, mst@redhat.com, aik@ozlabs.ru,
+ linux-kernel@vger.kernel.org, leonardo@linux.ibm.com, ram.n.pai@gmail.com,
+ cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-12-06 at 10:47 +1100, Michael Ellerman wrote:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
-> > Russell Currey <ruscur@russell.cc> writes:
-> > > With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will
-> > > be one
-> > > W+X page at boot by default.  This can be tested with
-> > > CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking
-> > > the
-> > > kernel log during boot.
-> > > 
-> > > powerpc doesn't implement its own alloc() for kprobes like other
-> > > architectures do, but we couldn't immediately mark RO anyway
-> > > since we do
-> > > a memcpy to the page we allocate later.  After that, nothing
-> > > should be
-> > > allowed to modify the page, and write permissions are removed
-> > > well
-> > > before the kprobe is armed.
-> > > 
-> > > Thus mark newly allocated probes as read-only once it's safe to
-> > > do so.
-> > > 
-> > > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > > ---
-> > >  arch/powerpc/kernel/kprobes.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > > 
-> > > diff --git a/arch/powerpc/kernel/kprobes.c
-> > > b/arch/powerpc/kernel/kprobes.c
-> > > index 2d27ec4feee4..2610496de7c7 100644
-> > > --- a/arch/powerpc/kernel/kprobes.c
-> > > +++ b/arch/powerpc/kernel/kprobes.c
-> > > @@ -24,6 +24,7 @@
-> > >  #include <asm/sstep.h>
-> > >  #include <asm/sections.h>
-> > >  #include <linux/uaccess.h>
-> > > +#include <linux/set_memory.h>
-> > >  
-> > >  DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
-> > >  DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
-> > > @@ -131,6 +132,8 @@ int arch_prepare_kprobe(struct kprobe *p)
-> > >  			(unsigned long)p->ainsn.insn +
-> > > sizeof(kprobe_opcode_t));
-> > >  	}
-> > >  
-> > > +	set_memory_ro((unsigned long)p->ainsn.insn, 1);
-> > > +
+On Tue, Dec 10, 2019 at 07:43:24PM -0600, Michael Roth wrote:
+> Quoting Ram Pai (2019-12-06 19:12:39)
+> > Commit edea902c1c1e ("powerpc/pseries/iommu: Don't use dma_iommu_ops on
+> >                 secure guests")
+> > disabled dma_iommu_ops path, for secure VMs. Disabling dma_iommu_ops
+> > path for secure VMs, helped enable dma_direct path.  This enabled
+> > support for bounce-buffering through SWIOTLB.  However it fails to
+> > operate when IOMMU is enabled, since I/O pages are not TCE mapped.
 > > 
-> > That comes from:
-> > 	p->ainsn.insn = get_insn_slot();
-> > 
-> > 
-> > Which ends up in __get_insn_slot() I think. And that looks very
-> > much
-> > like it's going to hand out multiple slots per page, which isn't
-> > going
-> > to work because you've just marked the whole page RO.
-> > 
-> > So I would expect this to crash on the 2nd kprobe that's installed.
-> > Have
-> > you tested it somehow?
+> > Renable dma_iommu_ops path for pseries Secure VMs.  It handles all
+> > cases including, TCE mapping I/O pages, in the presence of a
+> > IOMMU.
 > 
-> I'm not sure if this is the issue I was talking about, but it doesn't
-> survive ftracetest:
+> Wasn't clear to me at first, but I guess the main gist of this series is
+> that we want to continue to use SWIOTLB, but also need to create mappings
+> of it's bounce buffers in the IOMMU, so we revert to using dma_iommu_ops
+> and rely on the various dma_iommu_{map,alloc}_bypass() hooks throughout
+> to call into dma_direct_* ops rather than relying on the dma_is_direct(ops)
+> checks in DMA API functions to do the same.
 > 
->   [ 1139.576047] ------------[ cut here ]------------
->   [ 1139.576322] kernel BUG at mm/memory.c:2036!
->   cpu 0x1f: Vector: 700 (Program Check) at [c000001fd6c675d0]
->       pc: c00000000035d018: apply_to_page_range+0x318/0x610
->       lr: c0000000000900bc: change_memory_attr+0x4c/0x70
->       sp: c000001fd6c67860
->      msr: 9000000000029033
->     current = 0xc000001fa4a47880
->     paca    = 0xc000001ffffe5c80   irqmask: 0x03   irq_happened: 0x01
->       pid   = 7168, comm = ftracetest
->   kernel BUG at mm/memory.c:2036!
->   Linux version 5.4.0-gcc-8.2.0-11694-gf1f9aa266811 (
-> michael@Raptor-2.ozlabs.ibm.com) (gcc version 8.2.0 (crosstool-NG
-> 1.24.0-rc1.16-9627a04)) #1384 SMP Thu Dec 5 22:11:09 AEDT 2019
->   enter ? for help
->   [c000001fd6c67940] c0000000000900bc change_memory_attr+0x4c/0x70
->   [c000001fd6c67970] c000000000053c48 arch_prepare_kprobe+0xb8/0x120
->   [c000001fd6c679e0] c00000000022f718 register_kprobe+0x608/0x790
->   [c000001fd6c67a40] c00000000022fc50 register_kretprobe+0x230/0x350
->   [c000001fd6c67a80] c0000000002849b4
-> __register_trace_kprobe+0xf4/0x1a0
->   [c000001fd6c67af0] c000000000285b18 trace_kprobe_create+0x738/0xf70
->   [c000001fd6c67c30] c000000000286378
-> create_or_delete_trace_kprobe+0x28/0x70
->   [c000001fd6c67c50] c00000000025f024 trace_run_command+0xc4/0xe0
->   [c000001fd6c67ca0] c00000000025f128
-> trace_parse_run_command+0xe8/0x230
->   [c000001fd6c67d40] c0000000002845d0 probes_write+0x20/0x40
->   [c000001fd6c67d60] c0000000003eef4c __vfs_write+0x3c/0x70
->   [c000001fd6c67d80] c0000000003f26a0 vfs_write+0xd0/0x200
->   [c000001fd6c67dd0] c0000000003f2a3c ksys_write+0x7c/0x140
->   [c000001fd6c67e20] c00000000000b9e0 system_call+0x5c/0x68
->   --- Exception: c01 (System Call) at 00007fff8f06e420
->   SP (7ffff93d6830) is in userspace
->   1f:mon> client_loop: send disconnect: Broken pipe
+> That makes sense, but one issue I see with that is that
+> dma_iommu_map_bypass() only tests true if all the following are true:
 > 
+> 1) the device requests a 64-bit DMA mask via
+>    dma_set_mask/dma_set_coherent_mask
+> 2) DDW is enabled (i.e. we don't pass disable_ddw on command-line)
 > 
-> Sorry I didn't get any more info on the crash, I lost the console and
-> then some CI bot stole the machine 8)
+> dma_is_direct() checks don't have this limitation, so I think for
+> anything cases, such as devices that use a smaller DMA mask, we'll
+> end up falling back to the non-bypass functions in dma_iommu_ops, which
+> will likely break for things like dma_alloc_coherent/dma_map_single
+> since they won't use SWIOTLB pages and won't do the necessary calls to
+> set_memory_unencrypted() to share those non-SWIOTLB buffers with
+> hypervisor.
 > 
-> You should be able to reproduce just by running ftracetest.
+> Maybe that's ok, but I think we should be clearer about how to
+> fail/handle these cases.
 
-The test that blew it up was test.d/kprobe/probepoint.tc for the
-record.  It goes away when replacing the memcpy with a
-patch_instruction().
+Yes. makes sense. Device that cannot handle 64bit dma mask will not work.
 
 > 
-> cheers
+> Though I also agree with some concerns Alexey stated earlier: it seems
+> wasteful to map the entire DDW window just so these bounce buffers can be
+> mapped.  Especially if you consider the lack of a mapping to be an additional
+> safe-guard against things like buggy device implementations on the QEMU
+> side. E.g. if we leaked pages to the hypervisor on accident, those pages
+> wouldn't be immediately accessible to a device, and would still require
+> additional work get past the IOMMU.
+
+Well, an accidental unintented page leak to the hypervisor, is a very
+bad thing, regardless of any DMA mapping. The device may not be able to
+access it, but the hypervisor still can access it.
+
+> 
+> What would it look like if we try to make all this work with disable_ddw passed
+> to kernel command-line (or forced for is_secure_guest())?
+> 
+>   1) dma_iommu_{alloc,map}_bypass() would no longer get us to dma_direct_* ops,
+>      but an additional case or hook that considers is_secure_guest() might do
+>      it.
+>      
+>   2) We'd also need to set up an IOMMU mapping for the bounce buffers via
+>      io_tlb_start/io_tlb_end. We could do it once, on-demand via
+>      dma_iommu_bypass_supported() like we do for the 64-bit DDW window, or
+>      maybe in some init function.
+
+Hmm... i not sure how to accomplish (2).   we need use some DDW window
+to setup the mappings. right?  If disable_ddw is set, there wont be any
+ddw.  What am i missing?
+
+> 
+> That also has the benefit of not requiring devices to support 64-bit DMA.
+> 
+> Alternatively, we could continue to rely on the 64-bit DDW window, but
+> modify call to enable_ddw() to only map the io_tlb_start/end range in
+> the case of is_secure_guest(). This is a little cleaner implementation-wise
+> since we can rely on the existing dma_iommu_{alloc,map}_bypass() hooks.
+
+I have been experimenting with this.  Trying to map only the memory
+range from io_tlb_start/io_tlb_end though the 64-bit ddw window.  But
+due to some reason, it wants the io_tlb_start to be aligned to some
+boundary. It looks like a 2^28 boundary. Not sure what dictates that
+boundary.
+   
+
+> , but
+> devices that don't support 64-bit will fail back to not using dma_direct_* ops
+> and fail miserably. We'd probably want to handle that more gracefully.
+
+Yes i will put a warning message to indicate the failure.
+
+> 
+> Or we handle both cases gracefully. To me it makes more sense to enable
+> non-DDW case, then consider adding DDW case later if there's some reason
+> why 64-bit DMA is needed. But would be good to hear if there are other
+> opinions.
+
+educate me a bit here. What is a non-DDW case?  is it possible for a
+device to acccess memory, in the presence of a IOMMU, without a window-mapping?
+
+> 
+> > 
+> > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> > ---
+> >  arch/powerpc/platforms/pseries/iommu.c | 11 +----------
+> >  1 file changed, 1 insertion(+), 10 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> > index 67b5009..4e27d66 100644
+> > --- a/arch/powerpc/platforms/pseries/iommu.c
+> > +++ b/arch/powerpc/platforms/pseries/iommu.c
+> > @@ -36,7 +36,6 @@
+> >  #include <asm/udbg.h>
+> >  #include <asm/mmzone.h>
+> >  #include <asm/plpar_wrappers.h>
+> > -#include <asm/svm.h>
+> >  #include <asm/ultravisor.h>
+> > 
+> >  #include "pseries.h"
+> > @@ -1346,15 +1345,7 @@ void iommu_init_early_pSeries(void)
+> >         of_reconfig_notifier_register(&iommu_reconfig_nb);
+> >         register_memory_notifier(&iommu_mem_nb);
+> > 
+> > -       /*
+> > -        * Secure guest memory is inacessible to devices so regular DMA isn't
+> > -        * possible.
+> > -        *
+> > -        * In that case keep devices' dma_map_ops as NULL so that the generic
+> > -        * DMA code path will use SWIOTLB to bounce buffers for DMA.
+> > -        */
+> > -       if (!is_secure_guest())
+> > -               set_pci_dma_ops(&dma_iommu_ops);
+> > +       set_pci_dma_ops(&dma_iommu_ops);
+> >  }
+> > 
+> >  static int __init disable_multitce(char *str)
+> > -- 
+> > 1.8.3.1
+> > 
+
+-- 
+Ram Pai
 
