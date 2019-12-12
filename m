@@ -1,53 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29E311CA77
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 11:19:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB63F11CA48
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 11:10:02 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YV0P1pZHzDr27
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 21:09:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YVCt6rbdzDqrW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 21:19:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="to/x3BzM"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YTyD5y5qzDqD3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 21:08:04 +1100 (AEDT)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3AC8C22B48;
- Thu, 12 Dec 2019 10:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1576145282;
- bh=8oMGWZ4X5eA0CJO5Djd99i+IOL5EsEg13Vf8WiNVrk8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=to/x3BzMP75kgcqYnhNo7MpRT3Yjg7ArR3k/uhqgmx1WmoBWQUC07i/so0ToXoYbR
- bgM7dtoIqrWrzghk3LxH3nXGLy/b9nIIJF7ZvGf1A+SHKFlGKXgyCmtRnc0L8Uo/rN
- CbEdG0AEDN12X1lwHAh9IeDw1TWI2RDws6lqWZpY=
-Date: Thu, 12 Dec 2019 10:07:56 +0000
-From: Will Deacon <will@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-Message-ID: <20191212100756.GA11317@willie-the-truck>
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
- <875zimp0ay.fsf@mpe.ellerman.id.au>
- <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YV9b5RNvzDqW1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 21:17:54 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 340DEB16C;
+ Thu, 12 Dec 2019 10:17:45 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id 66CA41E0B8F; Thu, 12 Dec 2019 11:17:41 +0100 (CET)
+Date: Thu, 12 Dec 2019 11:17:41 +0100
+From: Jan Kara <jack@suse.cz>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v10 23/25] mm/gup: track FOLL_PIN pages
+Message-ID: <20191212101741.GD10065@quack2.suse.cz>
+References: <20191212081917.1264184-1-jhubbard@nvidia.com>
+ <20191212081917.1264184-24-jhubbard@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191212081917.1264184-24-jhubbard@nvidia.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,116 +50,292 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org,
- dja@axtens.net
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 12, 2019 at 09:01:05AM +0100, Peter Zijlstra wrote:
-> On Thu, Dec 12, 2019 at 04:42:13PM +1100, Michael Ellerman wrote:
-> > Peter Zijlstra <peterz@infradead.org> writes:
-> > > On Fri, Dec 06, 2019 at 11:46:11PM +1100, Michael Ellerman wrote:
-> > Some of the generic versions don't generate good code compared to our
-> > versions, but that's because READ_ONCE() is triggering stack protector
-> > to be enabled.
+On Thu 12-12-19 00:19:15, John Hubbard wrote:
+> Add tracking of pages that were pinned via FOLL_PIN.
 > 
-> Bah, there's never anything simple, is there :/
+> As mentioned in the FOLL_PIN documentation, callers who effectively set
+> FOLL_PIN are required to ultimately free such pages via unpin_user_page().
+> The effect is similar to FOLL_GET, and may be thought of as "FOLL_GET
+> for DIO and/or RDMA use".
 > 
-> > For example, comparing an out-of-line copy of the generic and ppc
-> > versions of test_and_set_bit_lock():
-> > 
-> >    1 <generic_test_and_set_bit_lock>:           1 <ppc_test_and_set_bit_lock>:
-> >    2         addis   r2,r12,361
-> >    3         addi    r2,r2,-4240
-> >    4         stdu    r1,-48(r1)
-> >    5         rlwinm  r8,r3,29,3,28
-> >    6         clrlwi  r10,r3,26                   2         rldicl  r10,r3,58,6
-> >    7         ld      r9,3320(r13)
-> >    8         std     r9,40(r1)
-> >    9         li      r9,0
-> >   10         li      r9,1                        3         li      r9,1
-> >                                                  4         clrlwi  r3,r3,26
-> >                                                  5         rldicr  r10,r10,3,60
-> >   11         sld     r9,r9,r10                   6         sld     r3,r9,r3
-> >   12         add     r10,r4,r8                   7         add     r4,r4,r10
-> >   13         ldx     r8,r4,r8
-> >   14         and.    r8,r9,r8
-> >   15         bne     34f
-> >   16         ldarx   r7,0,r10                    8         ldarx   r9,0,r4,1
-> >   17         or      r8,r9,r7                    9         or      r10,r9,r3
-> >   18         stdcx.  r8,0,r10                   10         stdcx.  r10,0,r4
-> >   19         bne-    16b                        11         bne-    8b
-> >   20         isync                              12         isync
-> >   21         and     r9,r7,r9                   13         and     r3,r3,r9
-> >   22         addic   r7,r9,-1                   14         addic   r9,r3,-1
-> >   23         subfe   r7,r7,r9                   15         subfe   r3,r9,r3
-> >   24         ld      r9,40(r1)
-> >   25         ld      r10,3320(r13)
-> >   26         xor.    r9,r9,r10
-> >   27         li      r10,0
-> >   28         mr      r3,r7
-> >   29         bne     36f
-> >   30         addi    r1,r1,48
-> >   31         blr                                16         blr
-> >   32         nop
-> >   33         nop
-> >   34         li      r7,1
-> >   35         b       24b
-> >   36         mflr    r0
-> >   37         std     r0,64(r1)
-> >   38         bl      <__stack_chk_fail+0x8>
-> > 
-> > 
-> > If you squint, the generated code for the actual logic is pretty similar, but
-> > the stack protector gunk makes a big mess. It's particularly bad here
-> > because the ppc version doesn't even need a stack frame.
-> > 
-> > I've also confirmed that even when test_and_set_bit_lock() is inlined
-> > into an actual call site the stack protector logic still triggers.
+> Pages that have been pinned via FOLL_PIN are identifiable via a
+> new function call:
 > 
-> > If I change the READ_ONCE() in test_and_set_bit_lock():
-> > 
-> > 	if (READ_ONCE(*p) & mask)
-> > 		return 1;
-> > 
-> > to a regular pointer access:
-> > 
-> > 	if (*p & mask)
-> > 		return 1;
-> > 
-> > Then the generated code looks more or less the same, except for the extra early
-> > return in the generic version of test_and_set_bit_lock(), and different handling
-> > of the return code by the compiler.
+>    bool page_dma_pinned(struct page *page);
 > 
-> So given that the function signature is:
+> What to do in response to encountering such a page, is left to later
+> patchsets. There is discussion about this in [1], [2], and [3].
 > 
-> static inline int test_and_set_bit_lock(unsigned int nr,
-> 					volatile unsigned long *p)
+> This also changes a BUG_ON(), to a WARN_ON(), in follow_page_mask().
 > 
-> @p already carries the required volatile qualifier, so READ_ONCE() does
-> not add anything here (except for easier to read code and poor code
-> generation).
+> [1] Some slow progress on get_user_pages() (Apr 2, 2019):
+>     https://lwn.net/Articles/784574/
+> [2] DMA and get_user_pages() (LPC: Dec 12, 2018):
+>     https://lwn.net/Articles/774411/
+> [3] The trouble with get_user_pages() (Apr 30, 2018):
+>     https://lwn.net/Articles/753027/
 > 
-> So your proposed change _should_ be fine. Will, I'm assuming you never
-> saw this on your ARGH64 builds when you did this code ?
+> Suggested-by: Jan Kara <jack@suse.cz>
+> Suggested-by: Jérôme Glisse <jglisse@redhat.com>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-I did see it, but (a) looking at the code out-of-line makes it look a lot
-worse than it actually is (so the ext4 example is really helpful -- thanks
-Michael!) and (b) I chalked it up to a crappy compiler.
+Thanks for the patch. As a side note, given this series is rather big, it
+may be better to send just individual updated patches (as replies to the
+review comments) instead of resending the whole series every time. And then
+you can resend the whole series once enough changes accumulate or we reach
+seemingly final state.  That way people don't have to crawl through lots of
+uninteresing emails...  Just something to keep in mind for the future.
 
-However, see this comment from Arnd on my READ_ONCE series from the other
-day:
+I've spotted just one issue in this patch (see below), the rest are just
+small style nits.
 
-https://lore.kernel.org/lkml/CAK8P3a0f=WvSQSBQ4t0FmEkcFE_mC3oARxaeTviTSkSa-D2qhg@mail.gmail.com
+> +#define page_ref_zero_or_close_to_bias_overflow(page) \
+> +	((unsigned int) page_ref_count(page) + \
+> +		GUP_PIN_COUNTING_BIAS <= GUP_PIN_COUNTING_BIAS)
+> +
 
-In which case, I'm thinking that we should be doing better in READ_ONCE()
-for non-buggy compilers which would also keep the KCSAN folks happy for this
-code (and would help with [1] too).
+...
 
-Will
+> +/**
+> + * page_dma_pinned() - report if a page is pinned for DMA.
+> + *
+> + * This function checks if a page has been pinned via a call to
+> + * pin_user_pages*().
+> + *
+> + * The return value is partially fuzzy: false is not fuzzy, because it means
+> + * "definitely not pinned for DMA", but true means "probably pinned for DMA, but
+> + * possibly a false positive due to having at least GUP_PIN_COUNTING_BIAS worth
+> + * of normal page references".
+> + *
+> + * False positives are OK, because: a) it's unlikely for a page to get that many
+> + * refcounts, and b) all the callers of this routine are expected to be able to
+> + * deal gracefully with a false positive.
+> + *
+> + * For more information, please see Documentation/vm/pin_user_pages.rst.
+> + *
+> + * @page:	pointer to page to be queried.
+> + * @Return:	True, if it is likely that the page has been "dma-pinned".
+> + *		False, if the page is definitely not dma-pinned.
+> + */
+> +static inline bool page_dma_pinned(struct page *page)
+> +{
+> +	return (page_ref_count(compound_head(page))) >= GUP_PIN_COUNTING_BIAS;
+> +}
+> +
 
-[1] https://lkml.org/lkml/2019/11/12/898
+I realized one think WRT handling of page refcount overflow: Page refcount is
+signed and e.g. try_get_page() fails once the refcount is negative. That
+means that:
+
+a) page_ref_zero_or_close_to_bias_overflow() is not necessary - all places
+that use pinning (i.e., advance refcount by GUP_PIN_COUNTING_BIAS) are not
+necesary, we should just rely on the check for negative value for
+consistency.
+
+b) page_dma_pinned() has to be careful and type page_ref_count() to
+unsigned type for comparison as otherwise overflowed refcount would
+suddently appear as not-pinned.
+
+> +/**
+> + * try_pin_compound_head() - mark a compound page as being used by
+> + * pin_user_pages*().
+> + *
+> + * This is the FOLL_PIN counterpart to try_get_compound_head().
+> + *
+> + * @page:	pointer to page to be marked
+> + * @Return:	the compound head page, with ref appropriately incremented,
+> + * or NULL upon failure.
+> + */
+> +__must_check struct page *try_pin_compound_head(struct page *page, int refs)
+> +{
+> +	struct page *head = try_get_compound_head(page,
+> +						  GUP_PIN_COUNTING_BIAS * refs);
+> +	if (!head)
+> +		return NULL;
+> +
+> +	__update_proc_vmstat(page, NR_FOLL_PIN_REQUESTED, refs);
+> +	return head;
+> +}
+> +
+> +/*
+> + * try_grab_compound_head() - attempt to elevate a page's refcount, by a
+> + * flags-dependent amount.
+> + *
+> + * "grab" names in this file mean, "look at flags to decide whether to use
+> + * FOLL_PIN or FOLL_GET behavior, when incrementing the page's refcount.
+> + *
+> + * Either FOLL_PIN or FOLL_GET (or neither) must be set, but not both at the
+> + * same time. (That's true throughout the get_user_pages*() and
+> + * pin_user_pages*() APIs.) Cases:
+> + *
+> + *	FOLL_GET: page's refcount will be incremented by 1.
+> + *      FOLL_PIN: page's refcount will be incremented by GUP_PIN_COUNTING_BIAS.
+
+Some tab vs space issue here... Generally we don't use tabs inside comments
+for indenting so I'd wote for using just spaces.
+
+> + *
+> + * Return: head page (with refcount appropriately incremented) for success, or
+> + * NULL upon failure. If neither FOLL_GET nor FOLL_PIN was set, that's
+> + * considered failure, and furthermore, a likely bug in the caller, so a warning
+> + * is also emitted.
+> + */
+> +static __maybe_unused struct page *try_grab_compound_head(struct page *page,
+> +							  int refs,
+> +							  unsigned int flags)
+> +{
+> +	if (flags & FOLL_GET)
+> +		return try_get_compound_head(page, refs);
+> +	else if (flags & FOLL_PIN)
+> +		return try_pin_compound_head(page, refs);
+> +
+> +	WARN_ON_ONCE((flags & (FOLL_GET | FOLL_PIN)) == 0);
+
+This could be just WARN_ON_ONCE(1), right?
+
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * try_grab_page() - elevate a page's refcount by a flag-dependent amount
+> + *
+> + * This might not do anything at all, depending on the flags argument.
+> + *
+> + * "grab" names in this file mean, "look at flags to decide whether to use
+> + * FOLL_PIN or FOLL_GET behavior, when incrementing the page's refcount.
+> + *
+> + * @page:	pointer to page to be grabbed
+> + * @flags:	gup flags: these are the FOLL_* flag values.
+> + *
+> + * Either FOLL_PIN or FOLL_GET (or neither) may be set, but not both at the same
+> + * time. Cases:
+> + *
+> + *	FOLL_GET: page's refcount will be incremented by 1.
+> + *      FOLL_PIN: page's refcount will be incremented by GUP_PIN_COUNTING_BIAS.
+
+Again tab vs space difference here.
+
+> + *
+> + * Return: true for success, or if no action was required (if neither FOLL_PIN
+> + * nor FOLL_GET was set, nothing is done). False for failure: FOLL_GET or
+> + * FOLL_PIN was set, but the page could not be grabbed.
+> + */
+> +bool __must_check try_grab_page(struct page *page, unsigned int flags)
+> +{
+> +	if (flags & FOLL_GET)
+> +		return try_get_page(page);
+> +	else if (flags & FOLL_PIN) {
+> +		page = compound_head(page);
+> +		WARN_ON_ONCE(flags & FOLL_GET);
+> +
+> +		if (WARN_ON_ONCE(page_ref_zero_or_close_to_bias_overflow(page)))
+> +			return false;
+
+As I mentioned above, this will need "negative refcount" check instead...
+
+> +
+> +		page_ref_add(page, GUP_PIN_COUNTING_BIAS);
+> +		__update_proc_vmstat(page, NR_FOLL_PIN_REQUESTED, 1);
+> +	}
+> +
+> +	return true;
+> +}
+
+...
+
+> @@ -1468,6 +1482,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	struct page *page = NULL;
+> +	struct page *subpage = NULL;
+>  
+>  	assert_spin_locked(pmd_lockptr(mm, pmd));
+>  
+> @@ -1486,6 +1501,14 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
+>  	VM_BUG_ON_PAGE(!PageHead(page) && !is_zone_device_page(page), page);
+>  	if (flags & FOLL_TOUCH)
+>  		touch_pmd(vma, addr, pmd, flags);
+> +
+> +	subpage = page;
+> +	subpage += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
+> +	VM_BUG_ON_PAGE(!PageCompound(subpage) &&
+> +		       !is_zone_device_page(subpage), subpage);
+> +	if (!try_grab_page(subpage, flags))
+> +		return ERR_PTR(-EFAULT);
+> +
+
+Hum, I think you've made this change more complex than it has to be.
+try_grab_page() is the same for head page or subpage because we increment
+the refcount on the compound_head(page) anyway. So I'd leave this function
+as is (not add subpage or move VM_BUG_ON_PAGE()), just have at this place:
+
+	if (!try_grab_page(page, flags))
+		return ERR_PTR(-EFAULT);
+
+Also one comment regarding the error code. Some places seem to return -ENOMEM
+when they fail to grab page reference. Shouldn't we rather return that one
+for consistency?
+
+>  	if ((flags & FOLL_MLOCK) && (vma->vm_flags & VM_LOCKED)) {
+>  		/*
+>  		 * We don't mlock() pte-mapped THPs. This way we can avoid
+> @@ -1509,24 +1532,18 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
+>  		 */
+>  
+>  		if (PageAnon(page) && compound_mapcount(page) != 1)
+> -			goto skip_mlock;
+> +			goto out;
+>  		if (PageDoubleMap(page) || !page->mapping)
+> -			goto skip_mlock;
+> +			goto out;
+>  		if (!trylock_page(page))
+> -			goto skip_mlock;
+> +			goto out;
+>  		lru_add_drain();
+>  		if (page->mapping && !PageDoubleMap(page))
+>  			mlock_vma_page(page);
+>  		unlock_page(page);
+>  	}
+> -skip_mlock:
+> -	page += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
+> -	VM_BUG_ON_PAGE(!PageCompound(page) && !is_zone_device_page(page), page);
+> -	if (flags & FOLL_GET)
+> -		get_page(page);
+> -
+>  out:
+> -	return page;
+> +	return subpage;
+>  }
+>  
+
+									Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
