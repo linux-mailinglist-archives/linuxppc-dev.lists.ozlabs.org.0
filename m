@@ -1,45 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37A811D58C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:30:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEF811D527
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2019 19:20:01 +0100 (CET)
-Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Yhsp5DWJzDr72
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 05:19:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Yj5c0dZDzDqsJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 05:30:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
- envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=dolbeau.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
- [209.85.128.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+X-Greylist: delayed 456 seconds by postgrey-1.36 at bilbo;
+ Fri, 13 Dec 2019 05:28:09 AEDT
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Yhjd29JMzDr3p
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:12:52 +1100 (AEDT)
-Received: by mail-wm1-f65.google.com with SMTP id a5so3421793wmb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 10:12:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=6Jviass20nuXMf4NGwWwzyAHAY+Qd7WTSki9zGwwuvA=;
- b=PYAp8gHl0Bz0vIOKkcdngANVe/UpILsPK1h0tP18RItv+pYXYmbWAx7cKN5/I2LvaB
- aqhtypokbo/ATEEWJcbYxrsvx6XbVwsOcqWcWV78H5esfH2k8YGX+Sy19VaaCRE/wE1Q
- n4K49iv6twoVZIdEM+GD7CDa/dx7DHgQ0uPZpneUSuFCRZNpaYjcHmQBhpH8o9N/ylft
- gYgfLnjNZ0aYqOYX/SZ/Qf0eEVlnwK8ZPKKXXTQPk43Nv24+47qrQ0/HSx0+UuFZs0gk
- GYKAjVze1jv1ipntg3tWsedxRV9+S9kCHNs2R6kKwBjm/AA6EnYMISKZ3Ja9CNQ0IVdp
- 6d2Q==
-X-Gm-Message-State: APjAAAUnWB6cbBSiyiKvRuswgAMPiRxqGmuYFiv76E3heN+AvlwVdotH
- 5V4ruWwuVIpKpweHJHlFupR1KY86lLYym/hhV3Q=
-X-Google-Smtp-Source: APXvYqxIQKUJs24lDXCYMND6/qBalybpjk8dc3plJVu692Su3l7Ivm23i+yu/SwXL783BiQmVKOTGaQu5kDZkx6L1yE=
-X-Received: by 2002:a1c:80d4:: with SMTP id b203mr8041224wmd.102.1576174366253; 
- Thu, 12 Dec 2019 10:12:46 -0800 (PST)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Yj3F1XSMzDqM3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:28:04 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 47Yht00Dswz1s3jH;
+ Thu, 12 Dec 2019 19:20:08 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 47Yhsz6gFpz1qqkw;
+ Thu, 12 Dec 2019 19:20:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id QMB2BbRWX3QE; Thu, 12 Dec 2019 19:20:07 +0100 (CET)
+X-Auth-Info: 0Hf0NttbCm1QVXJW5o4FBJ+J2a2hW1slRtWAJYesO0pfnUDAdHrYEZd8+qlus/eI
+Received: from igel.home (ppp-46-244-184-199.dynamic.mnet-online.de
+ [46.244.184.199])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Thu, 12 Dec 2019 19:20:07 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+ id 57B3B2C0535; Thu, 12 Dec 2019 19:20:06 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Romain Dolbeau <romain@dolbeau.org>
+Subject: Re: Call for report - G5/PPC970 status
 References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
  <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
  <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
@@ -49,17 +53,15 @@ References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
  <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
  <87eexbk3gw.fsf@linux.ibm.com>
  <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
- <716dc1da300bb8e9132b4ff44c02110f@zonnet.nl>
- <CADuzgbpvGsYZcrYNsdXYqkRSCMqtnq9KFzQ2tLn8aiaNb5T=ZQ@mail.gmail.com>
- <9a548855-a273-8fee-4cf2-d5c4b66fd867@physik.fu-berlin.de>
-In-Reply-To: <9a548855-a273-8fee-4cf2-d5c4b66fd867@physik.fu-berlin.de>
-From: Romain Dolbeau <romain@dolbeau.org>
-Date: Thu, 12 Dec 2019 19:12:34 +0100
-Message-ID: <CADuzgbrBdWGU0VFUvSFsypXi3+vr8fKsyzayqMGt5=b5u6FP6g@mail.gmail.com>
-Subject: Re: Call for report - G5/PPC970 status
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Yow: I'm MENTALLY here.. but PHYSICALLY I'm purchasing NAUGAHYDE furniture
+ in the' SUBURBS of PHOENIX!!
+Date: Thu, 12 Dec 2019 19:20:06 +0100
+In-Reply-To: <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
+ (Romain Dolbeau's message of "Wed, 11 Dec 2019 08:19:59 +0100")
+Message-ID: <87mubxl82x.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,30 +75,22 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  PowerPC List Debian <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org, jjhdiederen <jjhdiederen@zonnet.nl>
+ linuxppc-dev@lists.ozlabs.org,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le jeu. 12 d=C3=A9c. 2019 =C3=A0 09:08, John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> a =C3=A9crit :
-> I suggest booting the machine with a netconsole to get a dump of the cras=
-h
-> over the network, see [1].
+On Dez 11 2019, Romain Dolbeau wrote:
 
-I added netconsole (not as a module, directly in the kernel), but I
-get nothing on my receiver 'nc'.
-I don't see the network interface identified anywhere prior to the
-crash, which could explains it
-(I might also have misconfigured the command-line...). The crash is
-probably too early.
+> Same question to anyone else with a G5 / PPC970 - what is it and does
+> it boot recent PPC64 Linux kernel ?
 
-I also tried compiling w/o SMP to see if that changed anything, but
-the kernel won't compile:
-first the ppc_watchdog seems to rely on a SMP symbol, and once I
-disabled it, the MM subsystem was missing some 'numa' symbols.
+My PowerMac7,3 (DP 2.0GHz) can boot 5.5-rc1 without issues.
 
-Cordially,
+Andreas.
 
---=20
-Romain Dolbeau
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
