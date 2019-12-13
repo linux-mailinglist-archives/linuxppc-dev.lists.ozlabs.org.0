@@ -2,58 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDB311E783
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 17:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6349811E898
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 17:43:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZFq80hkxzDrGq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 03:04:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZGhJ4LsHzDrLb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 03:43:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=decadent.org.uk (client-ip=88.96.1.126;
- helo=shadbolt.e.decadent.org.uk; envelope-from=ben@decadent.org.uk;
+ smtp.mailfrom=arista.com (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=dima@arista.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=decadent.org.uk
-X-Greylist: delayed 1352 seconds by postgrey-1.36 at bilbo;
- Sat, 14 Dec 2019 03:02:29 AEDT
-Received: from shadbolt.e.decadent.org.uk (shadbolt.e.decadent.org.uk
- [88.96.1.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=arista.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=arista.com header.i=@arista.com header.b="RDZC2Ziu"; 
+ dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZFmj5JHMzDrGp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 03:02:29 +1100 (AEDT)
-Received: from [167.98.27.226] (helo=deadeye)
- by shadbolt.decadent.org.uk with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <ben@decadent.org.uk>)
- id 1ifn2Y-0001FZ-DR; Fri, 13 Dec 2019 15:39:38 +0000
-Received: from ben by deadeye with local (Exim 4.93-RC7)
- (envelope-from <ben@decadent.org.uk>)
- id 1ifn2X-00056v-9m; Fri, 13 Dec 2019 15:39:37 +0000
-Message-ID: <784d8f924612b91310baca25f2b0acc7ba78b83b.camel@decadent.org.uk>
-Subject: Re: [PATCH] libbpf: fix readelf output parsing on powerpc with
- recent binutils
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Michael Ellerman <mpe@ellerman.id.au>, Thadeu Lima de Souza Cascardo
- <cascardo@canonical.com>, Justin Forbes <jmforbes@linuxtx.org>
-Date: Fri, 13 Dec 2019 15:39:32 +0000
-In-Reply-To: <87a77ypdno.fsf@mpe.ellerman.id.au>
-References: <20191201195728.4161537-1-aurelien@aurel32.net>
- <87zhgbe0ix.fsf@mpe.ellerman.id.au>
- <20191202093752.GA1535@localhost.localdomain>
- <CAFxkdAqg6RaGbRrNN3e_nHfHFR-xxzZgjhi5AnppTxxwdg0VyQ@mail.gmail.com>
- <20191210222553.GA4580@calabresa>
- <CAFxkdAp6Up0qSyp0sH0O1yD+5W3LvY-+-iniBrorcz2pMV+y-g@mail.gmail.com>
- <20191211160133.GB4580@calabresa> <87a77ypdno.fsf@mpe.ellerman.id.au>
-Content-Type: multipart/signed; micalg="pgp-sha512";
- protocol="application/pgp-signature"; boundary="=-XTuTpKbXj3nCdOipqGDS"
-User-Agent: Evolution 3.30.5-1.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZGfR11JjzDrGp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 03:42:06 +1100 (AEDT)
+Received: by mail-wr1-x441.google.com with SMTP id c9so92215wrw.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 08:42:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=arista.com; s=googlenew;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=+Xy8RflunQ2h7lBPgvCLBQe6kC/5oXa7qNJM46i4OvE=;
+ b=RDZC2ZiusGEyrtg6BPZpt/3zIXUDvTioxjK9hCuEm49HHbr3H/dAOfWKhTeLkK3Bp5
+ mwslCzN5062kRXM1mLfDGyALHEWNTkHjICeOQc11+9KBDd7f19DKdFfeznFmkiP2iu/b
+ X4xf0Xn0uq1+4PP0nKj0gPeSALXRk8hr+7z6OQI2nr4636450ZFHJs8VP3HyfFaJsTVP
+ HzWknwSfbUCuDOtglpkghgYl1PzBXP2sQbaCvGZ+HwEkO2egA9fVrLSahpKuX/LZCycb
+ kC6vC6YhGlL6xoAsu0f2oh+y3zZZpvkht74vL/pO8ENbamlFgdAMQPwCftTj41QI1w5d
+ MyeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=+Xy8RflunQ2h7lBPgvCLBQe6kC/5oXa7qNJM46i4OvE=;
+ b=om+Rb8KG/+4elNX6cT73N6yEJsA+DczzwlTTSWJGRRALgFeIX8pec2t8NFoiX9GXGN
+ 08w5wPRKfrhbjN5GbEPGWge3MuLQD+0gb/xJgKM1B3kkXYiK7d91DX1JQYWOkvj/PhS5
+ gRSnTzXfnhtLlSqU/ARQfe7zoGBDgb5KRsduriEkjg2PLsq3XiHM+U3VSU07MjjzFWT2
+ NQGpSnxqJV4gIyL/WZP3xXfBoWwkp8h3Br+YYQztA0Fi7JalCKzAah/Q/wypKx7chPK0
+ EzEjwSzMCifCE6mJHvc1lXHMPqJtPtRIFN3w76y1Mfk2VHHL/NLNsYOwicxpW5TOaetk
+ 1OOA==
+X-Gm-Message-State: APjAAAXHK2vgKEz5XbM1DJ/eNsF4faM3eJKfUT6/CspYW8JdRe2a6uMk
+ Dq/PhVixcyrN0g1+nmZD4X/DZQ==
+X-Google-Smtp-Source: APXvYqzIaw4yXEvzLQQBJqUcuUQde/4MOljSnSzj5+B7FHPM/cAqWL9ZIzlETdg8BqlmTOhn/Pq8vg==
+X-Received: by 2002:a5d:4fd0:: with SMTP id h16mr13243381wrw.255.1576255321811; 
+ Fri, 13 Dec 2019 08:42:01 -0800 (PST)
+Received: from [10.83.36.153] ([217.173.96.166])
+ by smtp.gmail.com with ESMTPSA id g69sm11707225wmg.13.2019.12.13.08.41.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2019 08:42:01 -0800 (PST)
+Subject: Re: [PATCH 00/58] serial/sysrq: Cleanup ifdeffery
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-kernel@vger.kernel.org
+References: <20191213000657.931618-1-dima@arista.com>
+ <524d9848-28a5-7e65-699b-600c49606487@c-s.fr>
+From: Dmitry Safonov <dima@arista.com>
+Message-ID: <0e642e4e-7349-3d92-3e54-cbfd8d417fea@arista.com>
+Date: Fri, 13 Dec 2019 16:41:53 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 167.98.27.226
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk);
- SAEximRunCond expanded to false
+In-Reply-To: <524d9848-28a5-7e65-699b-600c49606487@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,95 +84,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Nick Clifton <nickc@redhat.com>,
- Daniel Borkmann <daniel@iogearbox.net>, "open
- list:BPF \(Safe dynamic programs and tools\)" <netdev@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Alexei Starovoitov <ast@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Yonghong Song <yhs@fb.com>,
- "open list:BPF \(Safe dynamic programs and
- tools\)" <bpf@vger.kernel.org>, Andrii Nakryiko <andriin@fb.com>,
- Martin KaFai Lau <kafai@fb.com>, Aurelien Jarno <aurelien@aurel32.net>,
- debian-kernel@lists.debian.org
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ linux-aspeed@lists.ozlabs.org, Dmitry Safonov <0x7f454c46@gmail.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Paul Mackerras <paulus@samba.org>, "Maciej W. Rozycki" <macro@linux-mips.org>,
+ sparclinux@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Alexandre Torgue <alexandre.torgue@st.com>,
+ Vasiliy Khoruzhick <vasilykh@arista.com>, Alexander Shiyan <shc_work@mail.ru>,
+ Kevin Hilman <khilman@baylibre.com>, Russell King <linux@armlinux.org.uk>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ Joel Stanley <joel@jms.id.au>, linux-serial@vger.kernel.org,
+ Jiri Slaby <jslaby@suse.com>, Orson Zhai <orsonzhai@gmail.com>,
+ Iurii Zaikin <yzaikin@google.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Michal Simek <michal.simek@xilinx.com>, Kees Cook <keescook@chromium.org>,
+ linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+ =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Johan Hovold <johan@kernel.org>, Baolin Wang <baolin.wang7@gmail.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, linux-amlogic@lists.infradead.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Timur Tabi <timur@kernel.org>,
+ Andrew Jeffery <andrew@aj.id.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Patrice Chotard <patrice.chotard@st.com>, Tony Prisk <linux@prisktech.co.nz>,
+ Richard Genoud <richard.genoud@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>, linux-fsdevel@vger.kernel.org,
+ Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Christophe,
 
---=-XTuTpKbXj3nCdOipqGDS
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 12/13/19 5:47 AM, Christophe Leroy wrote:
+> Le 13/12/2019 à 01:05, Dmitry Safonov a écrit :
+[..]
+> 
+> powerpc patchwork didn't get the full series, see
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=148198
 
-On Thu, 2019-12-12 at 11:53 +1100, Michael Ellerman wrote:
-> Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
-[...]
-> > This is a patch on binutils carried by Fedora:
-> >=20
-> > https://src.fedoraproject.org/rpms/binutils/c/b8265c46f7ddae23a792ee830=
-6fbaaeacba83bf8
-> >=20
-> > " b8265c Have readelf display extra symbol information at the end of th=
-e line. "
-> >=20
-> > It has the following comment:
-> >=20
-> > # FIXME:    The proper fix would be to update the scripts that are expe=
-cting
-> > #           a fixed output from readelf.  But it seems that some of the=
-m are
-> > #           no longer being maintained.
-> >=20
-> > This commit is from 2017, had it been on binutils upstream, maybe the s=
-ituation
-> > right now would be different.
->=20
-> Bleeping bleep.
->=20
-> Looks like it was actually ruby that was the original problem:
->=20
->   https://bugzilla.redhat.com/show_bug.cgi?id=3D1479302
->=20
->=20
-> Why it wasn't hacked around in the ruby package I don't know, doing it in
-> the distro binutils package is not ideal.
+Yes, I was under impression that architecture mail-lists want related
+patches. But now I see that from the patchwork point of view it's better
+to have the whole series in inbox.
 
-That wouldn't help people building Ruby from upstream.
+> Can't find them on linux-serial patchwork either
+> (https://patches.linaro.org/project/linux-serial/list/)
 
-Any tool generating tabular output like this should add new fields at
-the end (or show them only if requested), since there are bound to be
-scripts that parse the output like this.  So I think Fedora's change to
-readelf was reasonable, but should have been pushed upstream as soon as
-possible.
+I'm not sure - maybe the frequency of checking is low?
+I see all patches in linux-serial ml:
+https://marc.info/?l=linux-serial&r=1&b=201912&w=2
 
-Now everyone is going to have to deal with both formats.
+> It is impossible to review/test powerpc bits without the first patches
+> of the series, where can the entire series be found ?
 
-Ben.
+Sorry for the inconvenience.
+I can resend without Cc'ing all people just to ppc mail-list if that
+works for you. Or you can clone it directly from my github:
+https://github.com/0x7f454c46/linux/tree/sysrq-serial-seq-v1
 
---=20
-Ben Hutchings
-Horngren's Observation:
-              Among economists, the real world is often a special case.
-
-
-
---=-XTuTpKbXj3nCdOipqGDS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAl3zsLQACgkQ57/I7JWG
-EQn2Yg//TXyohEOZzCVyllfhvYlZubQmABin7AvKKCrohI86PUkKZzydMPKW7wjF
-KSi+xCi62Q52OwskMvIaWjiBzvhijZaFWHB8EPGqRMeJtnbjjwGTTta0ZzPYBBEa
-ngKWvU50Vjqlt8uF7qNXQk3M/mJloOXmqhjPjwuX2Yqa/aWz20NAzV2WQQ9OzNMn
-8HQzX5jHN76CWmMwkqblKqO0yRpb8Cw08bpn42zkVYlIZapxAeBIY4DQP2A+TWPs
-3ElgHxlL3Rgg4qvYqnhIzD7Jr/jOCFIcdD/j5SaNMJV6HzLK5/vUQs0NEA0y6M7I
-91T2k3hhd6pJPpCn4eP0Vc2JQWZQl4P+x0FMlYiXfBiOjdy2cOqDiez0g3i3SqyQ
-6i29+SUSriP5QvPHK8Pg2L4MRuelBoNyuP55IZWonDYpQx1qDoI8ycXgEtPpuP1s
-B41ClX9UNrozPrEuDEcC7tbw+ak+xsJy+PqEF9RYnIJcJ8bJRI2YTR1h8ysWZyOI
-13zEPyAZG2b34rBmUaqA2fBFTG98qPuEV6Amcq4rpdqsdbzTkD1PYCpEtXnqiok/
-C0o/6Wsey1BpfcXsag7xX824BvJkgsWzQnFJ1cto4zmsHxUyLvLh+X5VXilsRgTd
-ongG67DAwcznlANn9XjPGeN3qjDErgSWwXPdUecrKm0+xgMNPo0=
-=ttgq
------END PGP SIGNATURE-----
-
---=-XTuTpKbXj3nCdOipqGDS--
+Thanks,
+          Dmitry
