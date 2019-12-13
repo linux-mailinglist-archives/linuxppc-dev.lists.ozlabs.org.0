@@ -2,74 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0C511E435
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 14:01:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3848D11E474
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 14:22:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Z9lG0YqRzDq69
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 00:00:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZBCv4kRRzDr6v
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 00:22:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.187; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="iQu8Ss5C"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Z9fM3SPPzDrBd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 23:56:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=fWjlDQlwIoBg7I4Z9XSj9pI9UUWfLrkzsxAziGh6H/M=; b=iQu8Ss5CvIW0fiJBxMLgkD1jm
- yz+ajnmICV4TjIDDgyjd7PjqlmuUEvwzpxv4iI6JOc4i4t2KIec0epVoJTyvbUHEiqpxM6AJ+Xt05
- sKMlHGiYwJk4ddTqnO404xiUWfpw8tXg1eqIYVKvSm4e0J/vOrP4MaT79qCHrwdyRKW34PUesKBVP
- u/FrqqKsWXFJr9rj6glrIgaha27VGjLLX/VvZx6keNKxpAzE9YM5ANFtm2gDn8hL2KCBjRWD1jabQ
- sRW9rFRq/ySsD5jIc8sZQIUccKV4JWAI1eusNTtWdFHf/Ti/SiaUpwv58KDQc+kuAmMRc9g/B9vAp
- wYyfUNA/g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ifkUX-0002Gq-OV; Fri, 13 Dec 2019 12:56:22 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 385E5305FFF;
- Fri, 13 Dec 2019 13:54:58 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id EC16A20121961; Fri, 13 Dec 2019 13:56:18 +0100 (CET)
-Date: Fri, 13 Dec 2019 13:56:18 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-Message-ID: <20191213125618.GD2844@hirez.programming.kicks-ass.net>
-References: <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZB6P6Ym9zDrCN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 00:17:31 +1100 (AEDT)
+Received: from mail-qv1-f44.google.com ([209.85.219.44]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1M5Qhx-1igZdL0Xtl-001P2P for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec
+ 2019 14:17:26 +0100
+Received: by mail-qv1-f44.google.com with SMTP id p2so789298qvo.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:17:25 -0800 (PST)
+X-Gm-Message-State: APjAAAULEWx+zYXO+jHyG9nt+l4v0keHHegRx+nwIu30ck4vYU6zykrG
+ CUv7dDPk9o/DaIahQmDDT7ywrVrAXtGwpPEf+Ww=
+X-Google-Smtp-Source: APXvYqzFwFcYikxJ28kBoN0UCn5sg1VzXwQF4a8L8BwcmPohvWspCPfGhWeuKWhSDV04mg28v6cq323o0FLTlhBpJL4=
+X-Received: by 2002:ad4:4021:: with SMTP id q1mr12702039qvp.211.1576243044500; 
+ Fri, 13 Dec 2019 05:17:24 -0800 (PST)
+MIME-Version: 1.0
+References: <87blslei5o.fsf@mpe.ellerman.id.au>
+ <20191206131650.GM2827@hirez.programming.kicks-ass.net>
+ <875zimp0ay.fsf@mpe.ellerman.id.au>
+ <20191212080105.GV2844@hirez.programming.kicks-ass.net>
  <20191212100756.GA11317@willie-the-truck>
  <20191212104610.GW2827@hirez.programming.kicks-ass.net>
  <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
  <20191212180634.GA19020@willie-the-truck>
  <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
  <20191212193401.GB19020@willie-the-truck>
- <20191212202157.GD11457@worktop.programming.kicks-ass.net>
- <20191212205338.GB11802@worktop.programming.kicks-ass.net>
- <20191213104706.xnpqaehmtean3mkd@ltop.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191213104706.xnpqaehmtean3mkd@ltop.local>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 13 Dec 2019 14:17:08 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+Message-ID: <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:d0lF46rXOr8ET59Wh14KT5WJV6vq3eAKKwrkq/BB/TOcZLxIWPU
+ K91d7y8SvULBlhxiT2PnB6ULcPan1dVFl+NUUeCTTTKgG2ngWGxllXkn+iCZnXOZVKWGNht
+ DR5SRMdQPg4QbZaupuPyzFjer1VU/YA4Wjo+MnQzUQd4EpHWj1sxBSN6Px9VhsskhGadP2M
+ TxI8BSqUAjrJCv+bzkNaw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:fPbOIvT4g5I=:E8TRONiKlUJopFNvX12juV
+ u5ceSnO8X/X36DdrJsL6DfWNzaOK5v2hMoY2+Mqm85i34zakqLdJmI8aPzzcdgx0BvDt4UEzi
+ AvvFWjQ2M3kTl4RB2ZIbdPYX97zWeKODwRNmpyVyWt8u3Xlptpn+TrLWUzzUJMeX4Q+7JoFO7
+ Amb/Z94lrVagwpCFpzV88QhevRKmjoxBP5GXJcX4jvTxEuLw0B03tfDj+2Azpb5TV2CxmlXns
+ j5gvPuxopWGzMhvLhR8CYgHtDqhgB7NaiqLzIjeLPBhPG27YHYpvk4lNW9HZ/XVVI2Cz+qKMu
+ hcoowXttVSQD2+2P/XY1JnMMJdKtYv6QSgSjFJ/r55QWjYkh9vOwT2BX88Pt4eq9HQbJcVd86
+ LYz+mU1huP0MA+paszIMZ44YWnd0oDKZz2nQlBbCPKsct3v+KrEVzqUp73LEEC6vwUdty/JwV
+ 4uuTxqgrRoYOaKMtD4XDx+HTOSnXxfbpYmd8J1zdIi8mFkdujdOBlX3VpU0PXxsNQes9JgyTC
+ 6NILotQ3uH2xdRWW9xttlupa4BFwGY3kv0QOvU9DW78sw+Sq9mGsbeUYmSnUYyrmZdID0r/Jo
+ 0RIwmw0JUBNKgiQa/KrrAwc1f7Y/kgd2kwIRID4PYaw7QJJYEMBxgQ0aup7HA6i9kayPNdFyg
+ MqkGhLzakNI+smLa7eoSgbAG9WMO0Y1Dg4/X2Le0vLr6veNQv76MhCUIwjxOtTIfKB8/svEKM
+ 7ds23lNw/l3ThCusZEzPyh4syq1ElhCQTgePTqE2d/EmIyT0AOPRS0AHeEmi/7SB0hMH4SXOZ
+ 6Mx5nG8n2ZSCL8NMDEpj0ICNcbO8uEoQPhMjOumD0r61kz0lJ7zwsplvk5gf431s3AKJfhHHE
+ JNYuC3XYLfxckvAqtjPA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,191 +83,97 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch <linux-arch@vger.kernel.org>, Will Deacon <will@kernel.org>,
- linuxppc-dev@lists.ozlabs.org,
+ Peter Zijlstra <peterz@infradead.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
  Mark Rutland <mark.rutland@arm.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, dja@axtens.net
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 13, 2019 at 11:47:06AM +0100, Luc Van Oostenryck wrote:
-> On Thu, Dec 12, 2019 at 09:53:38PM +0100, Peter Zijlstra wrote:
-> > Now, looking at the current GCC source:
-> > 
-> >   https://github.com/gcc-mirror/gcc/blob/97d7270f894395e513667a031a0c309d1819d05e/gcc/c/c-parser.c#L3707
-> > 
-> > it seems that __typeof__() is supposed to strip all qualifiers from
-> > _Atomic types. That lead me to try:
-> > 
-> > 	typeof(_Atomic typeof(p)) __p = (p);
-> > 
-> > But alas, I still get the same junk you got for ool_store_release() :/
-> 
-> I was checking this to see if Sparse was ready to support this.
-> I was a bit surprised because at first sigth GCC was doing as
-> it claims (typeof striping const & volatile on _Atomic types)
-> but your exampe wasn't working. But it's working if an
-> intermediate var is used:
-> 	_Atomic typeof(p) tmp;
-> 	typeof(tmp) __p = (p);
-> or, uglier but probably more practical:
-> 	typeof(({_Atomic typeof(p) tmp; })) __p = (p);
-> 
-> Go figure!
+On Thu, Dec 12, 2019 at 9:50 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+> On Thu, Dec 12, 2019 at 11:34 AM Will Deacon <will@kernel.org> wrote:
+> > The root of my concern in all of this, and what started me looking at it in
+> > the first place, is the interaction with 'typeof()'. Inheriting 'volatile'
+> > for a pointer means that local variables in macros declared using typeof()
+> > suddenly start generating *hideous* code, particularly when pointless stack
+> > spills get stackprotector all excited.
+>
+> Yeah, removing volatile can be a bit annoying.
+>
+> For the particular case of the bitops, though, it's not an issue.
+> Since you know the type there, you can just cast it.
+>
+> And if we had the rule that READ_ONCE() was an arithmetic type, you could do
+>
+>     typeof(0+(*p)) __var;
+>
+> since you might as well get the integer promotion anyway (on the
+> non-volatile result).
+>
+> But that doesn't work with structures or unions, of course.
+>
+> I'm not entirely sure we have READ_ONCE() with a struct. I do know we
+> have it with 64-bit entities on 32-bit machines, but that's ok with
+> the "0+" trick.
 
-Excellent! I had to change it to something like:
+I'll have my randconfig builder look for instances, so far I found one,
+see below. My feeling is that it would be better to enforce at least
+the size being a 1/2/4/8, to avoid cases where someone thinks
+the access is atomic, but it falls back on a memcpy.
 
-#define unqual_typeof(x)    typeof(({_Atomic typeof(x) ___x __maybe_unused; ___x; }))
+      Arnd
 
-but that does indeed work!
-
-Now I suppose we should wrap that in a symbol that indicates our
-compiler does indeed support _Atomic, otherwise things will come apart.
-
-That is, my gcc-4.6 doesn't seem to have it, while gcc-4.8 does, which
-is exactly the range that needs the daft READ_ONCE() construct, how
-convenient :/
-
-Something a little like this perhaps?
-
----
-
-diff --git a/arch/arm64/include/asm/barrier.h b/arch/arm64/include/asm/barrier.h
-index 7d9cc5ec4971..c389af602da8 100644
---- a/arch/arm64/include/asm/barrier.h
-+++ b/arch/arm64/include/asm/barrier.h
-@@ -75,9 +75,9 @@ static inline unsigned long array_index_mask_nospec(unsigned long idx,
- 
- #define __smp_store_release(p, v)					\
- do {									\
--	typeof(p) __p = (p);						\
--	union { typeof(*p) __val; char __c[1]; } __u =			\
--		{ .__val = (__force typeof(*p)) (v) };			\
-+	unqual_typeof(p) __p = (p);					\
-+	union { unqual_typeof(*p) __val; char __c[1]; } __u =	\
-+		{ .__val = (__force unqual_typeof(*p)) (v) };	\
- 	compiletime_assert_atomic_type(*p);				\
- 	kasan_check_write(__p, sizeof(*p));				\
- 	switch (sizeof(*p)) {						\
-@@ -110,8 +110,8 @@ do {									\
- 
- #define __smp_load_acquire(p)						\
- ({									\
--	union { typeof(*p) __val; char __c[1]; } __u;			\
--	typeof(p) __p = (p);						\
-+	union { unqual_typeof(*p) __val; char __c[1]; } __u;		\
-+	unqual_typeof(p) __p = (p);					\
- 	compiletime_assert_atomic_type(*p);				\
- 	kasan_check_read(__p, sizeof(*p));				\
- 	switch (sizeof(*p)) {						\
-@@ -141,8 +141,8 @@ do {									\
- 
- #define smp_cond_load_relaxed(ptr, cond_expr)				\
- ({									\
--	typeof(ptr) __PTR = (ptr);					\
--	typeof(*ptr) VAL;						\
-+	unqual_typeof(ptr) __PTR = (ptr);				\
-+	unqual_typeof(*ptr) VAL;					\
- 	for (;;) {							\
- 		VAL = READ_ONCE(*__PTR);				\
- 		if (cond_expr)						\
-@@ -154,8 +154,8 @@ do {									\
- 
- #define smp_cond_load_acquire(ptr, cond_expr)				\
- ({									\
--	typeof(ptr) __PTR = (ptr);					\
--	typeof(*ptr) VAL;						\
-+	unqual_typeof(ptr) __PTR = (ptr);				\
-+	unqual_typeof(*ptr) VAL;					\
- 	for (;;) {							\
- 		VAL = smp_load_acquire(__PTR);				\
- 		if (cond_expr)						\
-diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-index 85b28eb80b11..dd5bb055f5ab 100644
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -228,8 +228,8 @@ do {									\
-  */
- #ifndef smp_cond_load_relaxed
- #define smp_cond_load_relaxed(ptr, cond_expr) ({		\
--	typeof(ptr) __PTR = (ptr);				\
--	typeof(*ptr) VAL;					\
-+	unqual_typeof(ptr) __PTR = (ptr);			\
-+	unqual_typeof(*ptr) VAL;				\
- 	for (;;) {						\
- 		VAL = READ_ONCE(*__PTR);			\
- 		if (cond_expr)					\
-@@ -250,7 +250,7 @@ do {									\
-  */
- #ifndef smp_cond_load_acquire
- #define smp_cond_load_acquire(ptr, cond_expr) ({		\
--	typeof(*ptr) _val;					\
-+	unqual_typeof(*ptr) _val;				\
- 	_val = smp_cond_load_relaxed(ptr, cond_expr);		\
- 	smp_acquire__after_ctrl_dep();				\
- 	_val;							\
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index 0eb2a1cc411d..15fd7ea3882a 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -179,3 +179,10 @@
- #endif
- 
- #define __no_fgcse __attribute__((optimize("-fno-gcse")))
-+
-+#if GCC_VERSION < 40800
-+/*
-+ * GCC-4.6 doesn't support _Atomic, which is required to strip qualifiers.
-+ */
-+#define unqual_typeof(x)	typeof(x)
-+#endif
+diff --git a/drivers/xen/time.c b/drivers/xen/time.c
+index 0968859c29d0..adb492c0aa34 100644
+--- a/drivers/xen/time.c
++++ b/drivers/xen/time.c
+@@ -64,7 +64,7 @@ static void xen_get_runstate_snapshot_cpu_delta(
+        do {
+                state_time = get64(&state->state_entry_time);
+                rmb();  /* Hypervisor might update data. */
+-               *res = READ_ONCE(*state);
++               memcpy(res, state, sizeof(*res));
+                rmb();  /* Hypervisor might update data. */
+        } while (get64(&state->state_entry_time) != state_time ||
+                 (state_time & XEN_RUNSTATE_UPDATE));
 diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index ad8c76144a3c..9736993f2ba1 100644
+index 5e88e7e33abe..f4ae360efdba 100644
 --- a/include/linux/compiler.h
 +++ b/include/linux/compiler.h
-@@ -279,7 +279,7 @@ void __write_once_size(volatile void *p, void *res, int size)
- 
- #define __READ_ONCE(x, check)						\
- ({									\
--	union { typeof(x) __val; char __c[1]; } __u;			\
-+	union { unqual_typeof(x) __val; char __c[1]; } __u;		\
- 	if (check)							\
- 		__read_once_size(&(x), __u.__c, sizeof(x));		\
- 	else								\
-@@ -302,12 +302,12 @@ unsigned long read_word_at_a_time(const void *addr)
- 	return *(unsigned long *)addr;
- }
- 
--#define WRITE_ONCE(x, val) \
--({							\
--	union { typeof(x) __val; char __c[1]; } __u =	\
--		{ .__val = (__force typeof(x)) (val) }; \
--	__write_once_size(&(x), __u.__c, sizeof(x));	\
--	__u.__val;					\
-+#define WRITE_ONCE(x, val)					\
-+({								\
-+	union { unqual_typeof(x) __val; char __c[1]; } __u =	\
-+		{ .__val = (__force unqual_typeof(x)) (val) };	\
-+	__write_once_size(&(x), __u.__c, sizeof(x));		\
-+	__u.__val;						\
- })
- 
- #include <linux/kcsan.h>
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 72393a8c1a6c..fe8012c54251 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -243,4 +243,11 @@ struct ftrace_likely_data {
- #define __diag_error(compiler, version, option, comment) \
- 	__diag_ ## compiler(version, error, option)
- 
-+#ifndef unqual_typeof
-+/*
-+ * GCC __typeof__() strips all qualifiers from _Atomic types.
-+ */
-+#define unqual_typeof(x)	typeof(({_Atomic typeof(x) ___x __maybe_unused; ___x; }))
-+#endif
+@@ -179,6 +179,8 @@ void ftrace_likely_update(struct
+ftrace_likely_data *f, int val,
+
+ #include <uapi/linux/types.h>
+
++extern void __broken_access_once(void *, const void *, unsigned long);
 +
- #endif /* __LINUX_COMPILER_TYPES_H */
+ #define __READ_ONCE_SIZE                                               \
+ ({                                                                     \
+        switch (size) {                                                 \
+@@ -187,9 +189,7 @@ void ftrace_likely_update(struct
+ftrace_likely_data *f, int val,
+        case 4: *(__u32 *)res = *(volatile __u32 *)p; break;            \
+        case 8: *(__u64 *)res = *(volatile __u64 *)p; break;            \
+        default:                                                        \
+-               barrier();                                              \
+-               __builtin_memcpy((void *)res, (const void *)p, size);   \
+-               barrier();                                              \
++               __broken_access_once((void *)res, (const void *)p,
+size);       \
+        }                                                               \
+ })
+
+@@ -225,9 +225,7 @@ static __always_inline void
+__write_once_size(volatile void *p, void *res, int s
+        case 4: *(volatile __u32 *)p = *(__u32 *)res; break;
+        case 8: *(volatile __u64 *)p = *(__u64 *)res; break;
+        default:
+-               barrier();
+-               __builtin_memcpy((void *)p, (const void *)res, size);
+-               barrier();
++               __broken_access_once((void *)p, (const void *)res, size);
+        }
+ }
