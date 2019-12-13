@@ -1,76 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3848D11E474
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 14:22:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZBCv4kRRzDr6v
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 00:22:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 316CA11E4D0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 14:42:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZBg45MmszDrJB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 00:42:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="hmi5MJB7"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZB6P6Ym9zDrCN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 00:17:31 +1100 (AEDT)
-Received: from mail-qv1-f44.google.com ([209.85.219.44]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1M5Qhx-1igZdL0Xtl-001P2P for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec
- 2019 14:17:26 +0100
-Received: by mail-qv1-f44.google.com with SMTP id p2so789298qvo.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:17:25 -0800 (PST)
-X-Gm-Message-State: APjAAAULEWx+zYXO+jHyG9nt+l4v0keHHegRx+nwIu30ck4vYU6zykrG
- CUv7dDPk9o/DaIahQmDDT7ywrVrAXtGwpPEf+Ww=
-X-Google-Smtp-Source: APXvYqzFwFcYikxJ28kBoN0UCn5sg1VzXwQF4a8L8BwcmPohvWspCPfGhWeuKWhSDV04mg28v6cq323o0FLTlhBpJL4=
-X-Received: by 2002:ad4:4021:: with SMTP id q1mr12702039qvp.211.1576243044500; 
- Fri, 13 Dec 2019 05:17:24 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZBck3HfKzDqM5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 00:40:20 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id d199so1485606pfd.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 05:40:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=/eZlIcE4bRaQxd77WQWCVd4CAZbU8bs/M4S7Zue3IL0=;
+ b=hmi5MJB7//OHKo5837yEOlibfIFDbAeAyzjogvIW/yoZXWya7liW884Pp8aTYUM2Ix
+ CCTUr4D8OwNZy9ZD28XnCQ24o3k29nkh6AK+PxNHmUm9cTR9rN97k0esbF6a81knRYV0
+ /H5Ochm9M6emXtAa5aQZRazKAcl6V7rhtq6IM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=/eZlIcE4bRaQxd77WQWCVd4CAZbU8bs/M4S7Zue3IL0=;
+ b=slV0xbEUW2no3VqRY570revGYRYN44qpnDlIQYv+D7ydkJmyJGnJ2occAapKcWA9MV
+ Zd0srJhPI1cECCdD99IAICB6sCKvRZh7mn8H6T6w+sBs031759Y2P2PxJTr5no9h+B+c
+ oFDhxbpC/8OTO0nAfvj6qnbntX1z+pq/jasnAcz2fvNWWpCdBe+wNyiu4vJ2/pV+V43C
+ zVZfVLkRIiqnHCywIOJGjtTn7gyx3IE2MSllAGoacegV0jSBNnTspfTXFcgeR7rqZkF8
+ 7sGLfE3S1b5yuy/C7DiykEu/WtSowhb7V0c9EelwpBvRieZJ9r8JZEximyqYejlbtv3j
+ 6B+Q==
+X-Gm-Message-State: APjAAAXjPn8D1tpCNcfnuz6lxh+EJ488gygF27goxRQiCFBsHp93umpN
+ vDzn5KjnEmzr+2xzIgPKX0Skpg==
+X-Google-Smtp-Source: APXvYqwy8PSjw8EEDkZW4PT0M9uPnhBRfPVSXSF/t1vCT9Ei+dnRB/Ar31P3ZfiyKfQxta3h5/BJfw==
+X-Received: by 2002:a63:770c:: with SMTP id s12mr17493474pgc.25.1576244417558; 
+ Fri, 13 Dec 2019 05:40:17 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-a426-f10f-bfc4-6b9c.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:a426:f10f:bfc4:6b9c])
+ by smtp.gmail.com with ESMTPSA id i4sm9547075pjd.19.2019.12.13.05.40.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Dec 2019 05:40:16 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, aneesh.kumar@linux.ibm.com,
+ bsingharora@gmail.com
+Subject: Re: [PATCH 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
+In-Reply-To: <464a8b50-0d4c-b1ea-485b-851f7cd7643b@c-s.fr>
+References: <20190806233827.16454-1-dja@axtens.net>
+ <20190806233827.16454-5-dja@axtens.net>
+ <372df444-27e7-12a7-0bdb-048f29983cf4@c-s.fr>
+ <878snkdauf.fsf@dja-thinkpad.axtens.net>
+ <464a8b50-0d4c-b1ea-485b-851f7cd7643b@c-s.fr>
+Date: Sat, 14 Dec 2019 00:40:13 +1100
+Message-ID: <87mubwbayq.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
- <875zimp0ay.fsf@mpe.ellerman.id.au>
- <20191212080105.GV2844@hirez.programming.kicks-ass.net>
- <20191212100756.GA11317@willie-the-truck>
- <20191212104610.GW2827@hirez.programming.kicks-ass.net>
- <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
- <20191212180634.GA19020@willie-the-truck>
- <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
- <20191212193401.GB19020@willie-the-truck>
- <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 13 Dec 2019 14:17:08 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
-Message-ID: <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:d0lF46rXOr8ET59Wh14KT5WJV6vq3eAKKwrkq/BB/TOcZLxIWPU
- K91d7y8SvULBlhxiT2PnB6ULcPan1dVFl+NUUeCTTTKgG2ngWGxllXkn+iCZnXOZVKWGNht
- DR5SRMdQPg4QbZaupuPyzFjer1VU/YA4Wjo+MnQzUQd4EpHWj1sxBSN6Px9VhsskhGadP2M
- TxI8BSqUAjrJCv+bzkNaw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:fPbOIvT4g5I=:E8TRONiKlUJopFNvX12juV
- u5ceSnO8X/X36DdrJsL6DfWNzaOK5v2hMoY2+Mqm85i34zakqLdJmI8aPzzcdgx0BvDt4UEzi
- AvvFWjQ2M3kTl4RB2ZIbdPYX97zWeKODwRNmpyVyWt8u3Xlptpn+TrLWUzzUJMeX4Q+7JoFO7
- Amb/Z94lrVagwpCFpzV88QhevRKmjoxBP5GXJcX4jvTxEuLw0B03tfDj+2Azpb5TV2CxmlXns
- j5gvPuxopWGzMhvLhR8CYgHtDqhgB7NaiqLzIjeLPBhPG27YHYpvk4lNW9HZ/XVVI2Cz+qKMu
- hcoowXttVSQD2+2P/XY1JnMMJdKtYv6QSgSjFJ/r55QWjYkh9vOwT2BX88Pt4eq9HQbJcVd86
- LYz+mU1huP0MA+paszIMZ44YWnd0oDKZz2nQlBbCPKsct3v+KrEVzqUp73LEEC6vwUdty/JwV
- 4uuTxqgrRoYOaKMtD4XDx+HTOSnXxfbpYmd8J1zdIi8mFkdujdOBlX3VpU0PXxsNQes9JgyTC
- 6NILotQ3uH2xdRWW9xttlupa4BFwGY3kv0QOvU9DW78sw+Sq9mGsbeUYmSnUYyrmZdID0r/Jo
- 0RIwmw0JUBNKgiQa/KrrAwc1f7Y/kgd2kwIRID4PYaw7QJJYEMBxgQ0aup7HA6i9kayPNdFyg
- MqkGhLzakNI+smLa7eoSgbAG9WMO0Y1Dg4/X2Le0vLr6veNQv76MhCUIwjxOtTIfKB8/svEKM
- 7ds23lNw/l3ThCusZEzPyh4syq1ElhCQTgePTqE2d/EmIyT0AOPRS0AHeEmi/7SB0hMH4SXOZ
- 6Mx5nG8n2ZSCL8NMDEpj0ICNcbO8uEoQPhMjOumD0r61kz0lJ7zwsplvk5gf431s3AKJfhHHE
- JNYuC3XYLfxckvAqtjPA==
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,98 +80,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 12, 2019 at 9:50 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-> On Thu, Dec 12, 2019 at 11:34 AM Will Deacon <will@kernel.org> wrote:
-> > The root of my concern in all of this, and what started me looking at it in
-> > the first place, is the interaction with 'typeof()'. Inheriting 'volatile'
-> > for a pointer means that local variables in macros declared using typeof()
-> > suddenly start generating *hideous* code, particularly when pointless stack
-> > spills get stackprotector all excited.
->
-> Yeah, removing volatile can be a bit annoying.
->
-> For the particular case of the bitops, though, it's not an issue.
-> Since you know the type there, you can just cast it.
->
-> And if we had the rule that READ_ONCE() was an arithmetic type, you could do
->
->     typeof(0+(*p)) __var;
->
-> since you might as well get the integer promotion anyway (on the
-> non-volatile result).
->
-> But that doesn't work with structures or unions, of course.
->
-> I'm not entirely sure we have READ_ONCE() with a struct. I do know we
-> have it with 64-bit entities on 32-bit machines, but that's ok with
-> the "0+" trick.
+Hi Christophe,
 
-I'll have my randconfig builder look for instances, so far I found one,
-see below. My feeling is that it would be better to enforce at least
-the size being a 1/2/4/8, to avoid cases where someone thinks
-the access is atomic, but it falls back on a memcpy.
+>>>>    - We run a lot of code at boot in real mode. This includes stuff like
+>>>>      printk(), so it's not feasible to just disable instrumentation
+>>>>      around it.
+>>>
+>>> Have you definitely given up the idea of doing a standard implementation
+>>> of KASAN like other 64 bits arches have done ?
+>>>
+>>> Isn't it possible to setup an early 1:1 mapping and go in virtual mode
+>>> earlier ? What is so different between book3s64 and book3e64 ?
+>>> On book3e64, we've been able to setup KASAN before printing anything
+>>> (except when using EARLY_DEBUG). Isn't it feasible on book3s64 too ?
+>> 
+>> So I got this pretty wrong when trying to explain it. The problem isn't
+>> that we run the code in boot as I said, it's that a bunch of the KVM
+>> code runs in real mode.
+>
+> Ok.
+>
+> Does it mean we would be able to implement it the standard way when 
+> CONFIG_KVM is not selected ?
 
-      Arnd
+I suppose, but KVM is pretty important to me!
 
-diff --git a/drivers/xen/time.c b/drivers/xen/time.c
-index 0968859c29d0..adb492c0aa34 100644
---- a/drivers/xen/time.c
-+++ b/drivers/xen/time.c
-@@ -64,7 +64,7 @@ static void xen_get_runstate_snapshot_cpu_delta(
-        do {
-                state_time = get64(&state->state_entry_time);
-                rmb();  /* Hypervisor might update data. */
--               *res = READ_ONCE(*state);
-+               memcpy(res, state, sizeof(*res));
-                rmb();  /* Hypervisor might update data. */
-        } while (get64(&state->state_entry_time) != state_time ||
-                 (state_time & XEN_RUNSTATE_UPDATE));
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 5e88e7e33abe..f4ae360efdba 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -179,6 +179,8 @@ void ftrace_likely_update(struct
-ftrace_likely_data *f, int val,
+>>>>    - disabled reporting when we're checking the stack for exception
+>>>>      frames. The behaviour isn't wrong, just incompatible with KASAN.
+>>>
+>>> Does this applies to / impacts PPC32 at all ?
+>> 
+>> It should. I found that when doing stack walks, the code would touch
+>> memory that KASAN hadn't unpoisioned. I'm a bit surprised you haven't
+>> seen it arise, tbh.
+>
+> How do you trigger that ?
+>
+> I've tried to provoke some faults with LKDTM that provoke BUG dumps, but 
+> it doesn't trip.
+> I also performed task state listing via sysrq, and I don't get anything 
+> wrong either.
 
- #include <uapi/linux/types.h>
+I'll try to disable this and see if I can trigger it again.
 
-+extern void __broken_access_once(void *, const void *, unsigned long);
-+
- #define __READ_ONCE_SIZE                                               \
- ({                                                                     \
-        switch (size) {                                                 \
-@@ -187,9 +189,7 @@ void ftrace_likely_update(struct
-ftrace_likely_data *f, int val,
-        case 4: *(__u32 *)res = *(volatile __u32 *)p; break;            \
-        case 8: *(__u64 *)res = *(volatile __u64 *)p; break;            \
-        default:                                                        \
--               barrier();                                              \
--               __builtin_memcpy((void *)res, (const void *)p, size);   \
--               barrier();                                              \
-+               __broken_access_once((void *)res, (const void *)p,
-size);       \
-        }                                                               \
- })
+>>>>    - Dropped old module stuff in favour of KASAN_VMALLOC.
+>>>
+>>> You said in the cover that this is done to avoid having to split modules
+>>> out of VMALLOC area. Would it be an issue to perform that split ?
+>>> I can understand it is not easy on 32 bits because vmalloc space is
+>>> rather small, but on 64 bits don't we have enough virtual space to
+>>> confortably split modules out of vmalloc ? The 64 bits already splits
+>>> ioremap away from vmalloc whereas 32 bits have them merged too.
+>> 
+>> I could have done this. Maybe I should have done this. But now I have
+>> done vmalloc space support.
+>
+> So you force the use of KASAN_VMALLOC ? Doesn't it have a performance 
+> impact ?
 
-@@ -225,9 +225,7 @@ static __always_inline void
-__write_once_size(volatile void *p, void *res, int s
-        case 4: *(volatile __u32 *)p = *(__u32 *)res; break;
-        case 8: *(volatile __u64 *)p = *(__u64 *)res; break;
-        default:
--               barrier();
--               __builtin_memcpy((void *)p, (const void *)res, size);
--               barrier();
-+               __broken_access_once((void *)p, (const void *)res, size);
-        }
- }
+It has a perfomance impact when allocating and freeing virtual address
+space in the vmalloc region, yes. There should be no discernable impact
+when using vmalloc space.
+
+My team is actively working on vmap-stack support for ppc64, with the
+end goal of running syzkaller with vmap-stack and kasan. vmap-stack plus
+kasan requires kasan-vmalloc, so for my purposes doing things in this
+order makes sense.
+
+I'd be happy to have a later series introduce the split and then make
+KASAN_VMALLOC optional. I would need to understand the implications of
+splitting the address space from a KASLR point of view: I don't want to
+accidentally overly restrict the available randomness.
+
+Regards,
+Daniel
+
+>
+> Christophe
