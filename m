@@ -1,82 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B313811E24A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 11:48:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Z6pt6C8VzDqpq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 21:48:54 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B5411E2FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 12:47:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Z86H15h5zDrF4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:47:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::343;
- helo=mail-wm1-x343.google.com; envelope-from=luc.vanoostenryck@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="k2toVqK3"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="m4cjFtGL"; 
  dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Z6mz3Js7zDrCT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 21:47:13 +1100 (AEDT)
-Received: by mail-wm1-x343.google.com with SMTP id q9so5814331wmj.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 02:47:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=aaItiTBk+e/R7wwZriBm1tDINaCLpM0u6e3njFKqqz8=;
- b=k2toVqK3xMpoQjPSunK5wQX2k/4FJdeWG6RMkZAOfcidd8oWAypdSfZVmj7VqJPARt
- D9jsVNfdnktzLM9kafptKzLf/MBDUHACylS71VvxJt7joO/PueWSlwl2tfrDfs/OB3A5
- 9nCBlOpxsQ7z9OaxavDF50HpmkILhzxJAg+/RavBVin1voVF96sfcYcSpKx9j8YSDsMK
- wtD9Q3zk7/sQHPjUfcqEUXsoym55yhSOs0arrNE7BUzb5IeSai+o9nINSC8MklBR2Xeo
- ArjWDcuB4XqhR8P1+e5GcvXGXXYJj2Xlvr5AGErgkBbdrVFbwWjMdHUGWWmahvHJnBx1
- 5wig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=aaItiTBk+e/R7wwZriBm1tDINaCLpM0u6e3njFKqqz8=;
- b=c4DSsGL+gSZgbz+n2h8edyY0JJSvwEEgzPnwBX95vBPy6Jo1EfzhmPkDEa8H9/MVzK
- t8HyaHp1WWknn4I/eRHkZDe04Zsq8YTFKXYAjHjJQQFjt6mGtu3pM88N66pPpeNjLEyi
- ywu66J9oDU1U6oJiE1LTOZqNUz2NWS+j5L+Kc/bWhAoufeD6kE0XJZrDmx19bszKnwrz
- jTzPXFwrURlXkzRUI8GFvZ6mIaN7gjH93Wyf6IUM+MMaob3Bb4BjcorbXm1rsY+3ncge
- l1fh3N80PoF7be3xgTxUPJE4G2WPUzxM8UqL08QeKWKsP6GCyZMnNKmTdoc36lDzT3vi
- SyQw==
-X-Gm-Message-State: APjAAAXLC2+BCAXguNVFAZHEvb6wOUaVC30UTapCy/4P2W4vCDOIuUz1
- eBKGKQtXbWmDiYtUP2aWUUs=
-X-Google-Smtp-Source: APXvYqyfTI8+XVU3RlrvIfXGdBG0oWSlgTPqBGikvSD/heK932h0ralSPKkMiJh26I6zh+Fs+wYfXg==
-X-Received: by 2002:a1c:e90e:: with SMTP id q14mr12593233wmc.108.1576234029069; 
- Fri, 13 Dec 2019 02:47:09 -0800 (PST)
-Received: from ltop.local ([2a02:a03f:40f6:4600:c498:c79c:5e:9634])
- by smtp.gmail.com with ESMTPSA id x17sm8764911wrt.74.2019.12.13.02.47.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2019 02:47:08 -0800 (PST)
-Date: Fri, 13 Dec 2019 11:47:06 +0100
-From: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-Message-ID: <20191213104706.xnpqaehmtean3mkd@ltop.local>
-References: <875zimp0ay.fsf@mpe.ellerman.id.au>
- <20191212080105.GV2844@hirez.programming.kicks-ass.net>
- <20191212100756.GA11317@willie-the-truck>
- <20191212104610.GW2827@hirez.programming.kicks-ass.net>
- <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
- <20191212180634.GA19020@willie-the-truck>
- <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
- <20191212193401.GB19020@willie-the-truck>
- <20191212202157.GD11457@worktop.programming.kicks-ass.net>
- <20191212205338.GB11802@worktop.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Z83h0RsSzDrCW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 22:45:01 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47Z83T0PBLz9vBJw;
+ Fri, 13 Dec 2019 12:44:53 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=m4cjFtGL; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 5SpWWOJ66fyK; Fri, 13 Dec 2019 12:44:52 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47Z83S6KYcz9vBJv;
+ Fri, 13 Dec 2019 12:44:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1576237492; bh=GXcNSiIRiKyDXyT92jW4k31tmkd7NQbvaQCCa3tyddM=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=m4cjFtGL8SkCpYJQPnCwHiliR5AgfcG6foyAqvIzxOuLBFFwNCSce0Ossokt85nR5
+ rX93sRfRc/CcwJ1XvylByHJRFSyfDbT3OrDLWC6BlQ4Y4f3YxOrcZnilJc2kndrVEX
+ vtb0MwixQoFPgUuBQomOOm+9Hd3sGWGlu8zb5sdc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 240FD8B8B1;
+ Fri, 13 Dec 2019 12:44:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id sa1BVUFoOkYZ; Fri, 13 Dec 2019 12:44:54 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B2A7C8B8AE;
+ Fri, 13 Dec 2019 12:44:53 +0100 (CET)
+Subject: Re: [PATCH 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
+To: Daniel Axtens <dja@axtens.net>, aneesh.kumar@linux.ibm.com,
+ bsingharora@gmail.com
+References: <20190806233827.16454-1-dja@axtens.net>
+ <20190806233827.16454-5-dja@axtens.net>
+ <372df444-27e7-12a7-0bdb-048f29983cf4@c-s.fr>
+ <878snkdauf.fsf@dja-thinkpad.axtens.net>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <464a8b50-0d4c-b1ea-485b-851f7cd7643b@c-s.fr>
+Date: Fri, 13 Dec 2019 12:44:53 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191212205338.GB11802@worktop.programming.kicks-ass.net>
+In-Reply-To: <878snkdauf.fsf@dja-thinkpad.axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,41 +81,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Will Deacon <will@kernel.org>,
- linuxppc-dev@lists.ozlabs.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Mark Rutland <mark.rutland@arm.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, dja@axtens.net
+Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 12, 2019 at 09:53:38PM +0100, Peter Zijlstra wrote:
-> Now, looking at the current GCC source:
-> 
->   https://github.com/gcc-mirror/gcc/blob/97d7270f894395e513667a031a0c309d1819d05e/gcc/c/c-parser.c#L3707
-> 
-> it seems that __typeof__() is supposed to strip all qualifiers from
-> _Atomic types. That lead me to try:
-> 
-> 	typeof(_Atomic typeof(p)) __p = (p);
-> 
-> But alas, I still get the same junk you got for ool_store_release() :/
 
-I was checking this to see if Sparse was ready to support this.
-I was a bit surprised because at first sigth GCC was doing as
-it claims (typeof striping const & volatile on _Atomic types)
-but your exampe wasn't working. But it's working if an
-intermediate var is used:
-	_Atomic typeof(p) tmp;
-	typeof(tmp) __p = (p);
-or, uglier but probably more practical:
-	typeof(({_Atomic typeof(p) tmp; })) __p = (p);
 
-Go figure!
+Le 10/12/2019 à 06:10, Daniel Axtens a écrit :
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> 
+>> Le 07/08/2019 à 01:38, Daniel Axtens a écrit :
+>>> KASAN support on powerpc64 is interesting:
+>>>
+>>>    - We want to be able to support inline instrumentation so as to be
+>>>      able to catch global and stack issues.
+>>>
+>>>    - We run a lot of code at boot in real mode. This includes stuff like
+>>>      printk(), so it's not feasible to just disable instrumentation
+>>>      around it.
+>>
+>> Have you definitely given up the idea of doing a standard implementation
+>> of KASAN like other 64 bits arches have done ?
+>>
+>> Isn't it possible to setup an early 1:1 mapping and go in virtual mode
+>> earlier ? What is so different between book3s64 and book3e64 ?
+>> On book3e64, we've been able to setup KASAN before printing anything
+>> (except when using EARLY_DEBUG). Isn't it feasible on book3s64 too ?
+> 
+> So I got this pretty wrong when trying to explain it. The problem isn't
+> that we run the code in boot as I said, it's that a bunch of the KVM
+> code runs in real mode.
 
-OTOH, at least on GCC 8.3, it seems to always do the same with
-volatiles than it does with consts.
+Ok.
 
--- Luc Van Oostenryck
+Does it mean we would be able to implement it the standard way when 
+CONFIG_KVM is not selected ?
+
+> 
+>>>    - disabled reporting when we're checking the stack for exception
+>>>      frames. The behaviour isn't wrong, just incompatible with KASAN.
+>>
+>> Does this applies to / impacts PPC32 at all ?
+> 
+> It should. I found that when doing stack walks, the code would touch
+> memory that KASAN hadn't unpoisioned. I'm a bit surprised you haven't
+> seen it arise, tbh.
+
+How do you trigger that ?
+
+I've tried to provoke some faults with LKDTM that provoke BUG dumps, but 
+it doesn't trip.
+I also performed task state listing via sysrq, and I don't get anything 
+wrong either.
+
+> 
+>>>    - Dropped old module stuff in favour of KASAN_VMALLOC.
+>>
+>> You said in the cover that this is done to avoid having to split modules
+>> out of VMALLOC area. Would it be an issue to perform that split ?
+>> I can understand it is not easy on 32 bits because vmalloc space is
+>> rather small, but on 64 bits don't we have enough virtual space to
+>> confortably split modules out of vmalloc ? The 64 bits already splits
+>> ioremap away from vmalloc whereas 32 bits have them merged too.
+> 
+> I could have done this. Maybe I should have done this. But now I have
+> done vmalloc space support.
+
+So you force the use of KASAN_VMALLOC ? Doesn't it have a performance 
+impact ?
+
+
+Christophe
