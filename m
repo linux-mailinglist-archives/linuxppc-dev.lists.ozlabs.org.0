@@ -2,81 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB2911ECFF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:39:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC43911ED60
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 23:03:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZPFH1thFzDrGt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 08:39:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZPnK4ntszDrKV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 09:03:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::244;
- helo=mail-lj1-x244.google.com; envelope-from=bsingharora@gmail.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::143;
+ helo=mail-lf1-x143.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="BkJUDoxm"; 
- dkim-atps=neutral
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="OMLOqShW"; dkim-atps=neutral
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZPCN68lbzDrFn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 08:37:34 +1100 (AEDT)
-Received: by mail-lj1-x244.google.com with SMTP id h23so221318ljc.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 13:37:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:references:from:message-id:date:user-agent:mime-version
- :in-reply-to:content-language:content-transfer-encoding;
- bh=6Cel1cpD0Jtu0AycJ47huuRD/DgMmGpodkanI6OR1bo=;
- b=BkJUDoxm4UTj76qbb34bMW8fVbz7oLUiI7HX3/57fDHmH3Uv+GHq3VcDR+vHKaAg5U
- MRvB2yJVN7+A61+KCixPlGkUzaVMQiuVTIlI172XVT5x+S7mtRuVBdgZMlZ52VvAd6w5
- 8DS69v4jrJn0jMy9a5+r0cCy2lYUVl4XLKLiepprazD+qKqkNHo0ECt0YCpdRVGTyHz4
- VjAzgEPu/D/m8aE66lLDO+FNBU7D7ZHpuDWXX8Fl352r0ij5bbjS4FbTOJxn+TYzVZO7
- Bj3w9oapQScyHyiAMtgvC+M5Mq1e2F52BG03GzWhSggUR+7xTx4IhJagsXPmx1ye6JJI
- O/PQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZPl33D1fzDqk7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 09:01:33 +1100 (AEDT)
+Received: by mail-lf1-x143.google.com with SMTP id f15so331792lfl.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 14:01:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=zfICJ6KhaPZeol1tl5aqhZNB4nOYiiQp60xAzoCt3JU=;
+ b=OMLOqShWneJ3fe3UbyHRP01hVO4iIEtu+rKtip4uFYuny7eKWa9RVguRhdDXyGlazr
+ Vu8irtlqDqkjSxlpxcEnR/mPZqGnWrv40jn+8NdgbI7DAtOpxmVjJ6hnmrSN7O80Gy2B
+ 6ZEjjOYm27LL3/V26Z0KJqLy5QPWKtyS57u7I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=6Cel1cpD0Jtu0AycJ47huuRD/DgMmGpodkanI6OR1bo=;
- b=NakVDvEGOJ9lb/zPZd9foQB2nTftRUCj0aKaA+gP1svnHJ/qWPEn1Zr2TFWm9rpRgo
- RrkfxgeMuea6t/cakmbFxhZbaLcvwvG5bDfTaYA/uSRDH/hwAsdm083TaskSLDwTbjIX
- ZR7+RKm1V8ab2mHeI488v29BwJrrTQUn07de0N1G8F5wwshEhBG43YHz6yhmUY9lWbyD
- YEwzJpMB8tkdOkxmmBjMb/2FhgO64Mq/uJFhEa9jR2q6xp+hN750g6tbAneCVgzTT7do
- +Gvvj44WhqBGgn1eshuvWDB0aBR4r6Gesq5yK93QnEbqvyJ09DfMMFsLhvnP/3ptM1yK
- awJA==
-X-Gm-Message-State: APjAAAWNICi+rsQpGkQpWsY5UJpsDlaVTCCdCgw+wu2w3zxkopCTrkKP
- R342GaeyE1Ld4cYl9eqoqt4=
-X-Google-Smtp-Source: APXvYqxsM40YoG7z6ZiJtPbz7asvMlxZ1g3vpJyflgNEYbZa2GiRD4WWokcH+Epr1Can0FbY1J66HQ==
-X-Received: by 2002:a2e:165c:: with SMTP id 28mr10631069ljw.247.1576273048447; 
- Fri, 13 Dec 2019 13:37:28 -0800 (PST)
-Received: from [192.168.68.108] (115-64-122-209.tpgi.com.au. [115.64.122.209])
- by smtp.gmail.com with ESMTPSA id
- z7sm5774631lfa.81.2019.12.13.13.37.24
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 13 Dec 2019 13:37:27 -0800 (PST)
-Subject: Re: [PATCH v3 1/3] kasan: define and use MAX_PTRS_PER_* for early
- shadow tables
-To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- kasan-dev@googlegroups.com, christophe.leroy@c-s.fr,
- aneesh.kumar@linux.ibm.com
-References: <20191212151656.26151-1-dja@axtens.net>
- <20191212151656.26151-2-dja@axtens.net>
-From: Balbir Singh <bsingharora@gmail.com>
-Message-ID: <37872cba-5cdf-2e28-df45-70df4e8ef5af@gmail.com>
-Date: Sat, 14 Dec 2019 08:37:20 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=zfICJ6KhaPZeol1tl5aqhZNB4nOYiiQp60xAzoCt3JU=;
+ b=o6GC4MbmYR9LHtokU/2p4kxRgl5trKl14CmeEwNnGqrzaJ4fZdMQIZTHvNJnR8Drr2
+ YIAUY/mn3dAbjPXIMjJp4Xtmi/ivV5QRBGl3JbJ/5j0rcTUpKzFnhqGsdjWGDzmsfP71
+ kHN26VTJPFyyZCTxQ5Ny8g6X+EhVwabUq852pX9b8KZxROu1g3SQqBUzcv86oUQc+yGh
+ W5iVlZy+Ul/uvBHIXEQ+El+Sv/nFdnfeQY++vYoqm+GgW90+Br4Pjb7pyFbzvqkvl9+m
+ jFbcsUDIkp/jxY7ORqtwl44loCd2Tzz/16bipx6WQ4wFNuclktjlITqfgMMlLBcCKTRA
+ V04g==
+X-Gm-Message-State: APjAAAWxA4XicdSw3wxLIJ6AxpSII3sG/Mc2qXwbsGb3jFPSFImhQOrF
+ tyQFu6RllWuzgIe7hoeA6T75xLkhfTg=
+X-Google-Smtp-Source: APXvYqwMwBnj3vkafAZO/NpOYzArZsFg0WK1AiSZgQHvCgY8iD5qgi6UGB+HV8TIBd36DbfGHUINcQ==
+X-Received: by 2002:ac2:4945:: with SMTP id o5mr9959752lfi.93.1576274489078;
+ Fri, 13 Dec 2019 14:01:29 -0800 (PST)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com.
+ [209.85.167.54])
+ by smtp.gmail.com with ESMTPSA id g27sm5151325lfj.49.2019.12.13.14.01.26
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2019 14:01:27 -0800 (PST)
+Received: by mail-lf1-f54.google.com with SMTP id m30so350803lfp.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 14:01:26 -0800 (PST)
+X-Received: by 2002:a05:6512:1dd:: with SMTP id
+ f29mr10402310lfp.106.1576274486558; 
+ Fri, 13 Dec 2019 14:01:26 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191212151656.26151-2-dja@axtens.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <87blslei5o.fsf@mpe.ellerman.id.au>
+ <20191206131650.GM2827@hirez.programming.kicks-ass.net>
+ <875zimp0ay.fsf@mpe.ellerman.id.au>
+ <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+ <20191212100756.GA11317@willie-the-truck>
+ <20191212104610.GW2827@hirez.programming.kicks-ass.net>
+ <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
+ <20191212180634.GA19020@willie-the-truck>
+ <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
+ <20191212193401.GB19020@willie-the-truck>
+ <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
+ <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+ <CAK8P3a014U76S+t3rKyPghepOT_fYHBExuMC27MoGMNffjczEw@mail.gmail.com>
+In-Reply-To: <CAK8P3a014U76S+t3rKyPghepOT_fYHBExuMC27MoGMNffjczEw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 13 Dec 2019 14:01:10 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgsN+0i8mF_1L8zDvY0XJEkZNumT1dH0NBiSbecZZ3+HA@mail.gmail.com>
+Message-ID: <CAHk-=wgsN+0i8mF_1L8zDvY0XJEkZNumT1dH0NBiSbecZZ3+HA@mail.gmail.com>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,28 +95,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Will Deacon <will@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Dec 13, 2019 at 1:33 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> A few hundred randconfig (x86, arm32 and arm64) builds later I
+> still only found one other instance:
 
+Just send me the pull request to READ_ONCE() and WRITE_ONCE() be
+arithmetic types, and your two trivial fixes, and let's get this over
+with.
 
-On 13/12/19 2:16 am, Daniel Axtens wrote:
-> powerpc has a variable number of PTRS_PER_*, set at runtime based
-> on the MMU that the kernel is booted under.
-> 
-> This means the PTRS_PER_* are no longer constants, and therefore
-> breaks the build.
-> 
-> Define default MAX_PTRS_PER_*s in the same style as MAX_PTRS_PER_P4D.
-> As KASAN is the only user at the moment, just define them in the kasan
-> header, and have them default to PTRS_PER_* unless overridden in arch
-> code.
-> 
-> Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Suggested-by: Balbir Singh <bsingharora@gmail.com>
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> ---
-Reviewed-by: Balbir Singh <bsingharora@gmail.com>
+With that, you can remove the 'volatile' with my simple
+'typeof(0+*(p))' trick, and we're all good, and we don't need to worry
+about compiler versions either.
 
-Balbir
+I'm willing to take that after the merge window as a "sanity fix".
+
+             Linus
