@@ -2,96 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E26311DD70
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 06:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E4A11DDEE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 06:50:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YzHm20BxzDrDl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 16:09:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Z0BM4B6nzDrBj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 16:50:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47YzFl1FB2zDqdX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 16:08:11 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47YzFk0BRLz8tSg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 16:08:10 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47YzFj6k0Sz9sPL; Fri, 13 Dec 2019 16:08:09 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="tJUDM91F"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47YzFj0Xnhz9sNH
- for <linuxppc-dev@ozlabs.org>; Fri, 13 Dec 2019 16:08:08 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBD5833I126465
- for <linuxppc-dev@ozlabs.org>; Fri, 13 Dec 2019 00:08:04 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2wusv0gakg-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 13 Dec 2019 00:08:04 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Fri, 13 Dec 2019 05:08:01 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 13 Dec 2019 05:07:58 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xBD57vMT34275596
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Dec 2019 05:07:57 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BD2DFAE055;
- Fri, 13 Dec 2019 05:07:57 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AE59AE045;
- Fri, 13 Dec 2019 05:07:56 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 13 Dec 2019 05:07:55 +0000 (GMT)
-Date: Fri, 13 Dec 2019 10:37:55 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 1/2] powerpc/vcpu: Assume dedicated processors as
- non-preempt
-References: <20191213035036.6913-1-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Z0852ZWGzDr6Z;
+ Fri, 13 Dec 2019 16:48:20 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47Z07x485Xz9vBmP;
+ Fri, 13 Dec 2019 06:48:13 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=tJUDM91F; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id oCzNs4uejCNs; Fri, 13 Dec 2019 06:48:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47Z07x2Rs1z9vBmM;
+ Fri, 13 Dec 2019 06:48:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1576216093; bh=BQ4d7QEkMTRg8NOsdUyvc3JEDM4PmMIcEcEHrzBdpQ0=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=tJUDM91FyihxCBUCfFONne7ugnZ8iFFeKeUQhj+N7T959PqG9XA7xm4Hfu7DJwAh+
+ hP58T8c8CUvb3JGkH19+z140v8xtKBh8ia6dxZOab4uPVWMB9dPLkdIpGghqUpSp4U
+ 9hKoG1jcwVd/ZPi639cOGIPW5ekef16kOiozYIvw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D4898B767;
+ Fri, 13 Dec 2019 06:48:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id g7Rfokag1FcC; Fri, 13 Dec 2019 06:48:13 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C95628B893;
+ Fri, 13 Dec 2019 06:47:58 +0100 (CET)
+Subject: Re: [PATCH 00/58] serial/sysrq: Cleanup ifdeffery
+To: Dmitry Safonov <dima@arista.com>, linux-kernel@vger.kernel.org
+References: <20191213000657.931618-1-dima@arista.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <524d9848-28a5-7e65-699b-600c49606487@c-s.fr>
+Date: Fri, 13 Dec 2019 06:47:58 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20191213035036.6913-1-mpe@ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19121305-0012-0000-0000-000003745420
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19121305-0013-0000-0000-000021B03268
-Message-Id: <20191213050755.GA23839@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-12_08:2019-12-12,2019-12-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=942 bulkscore=0
- adultscore=0 clxscore=1011 spamscore=0 malwarescore=0 phishscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912130042
+In-Reply-To: <20191213000657.931618-1-dima@arista.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,87 +77,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: juri.lelli@redhat.com, ego@linux.vnet.ibm.com, pauld@redhat.com,
- parth@linux.ibm.com, Ihor.Pasichnyk@ibm.com, linuxppc-dev@ozlabs.org,
- longman@redhat.com
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ linux-aspeed@lists.ozlabs.org, Dmitry Safonov <0x7f454c46@gmail.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Paul Mackerras <paulus@samba.org>, "Maciej W. Rozycki" <macro@linux-mips.org>,
+ sparclinux@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Alexandre Torgue <alexandre.torgue@st.com>,
+ Vasiliy Khoruzhick <vasilykh@arista.com>, Alexander Shiyan <shc_work@mail.ru>,
+ Kevin Hilman <khilman@baylibre.com>, Russell King <linux@armlinux.org.uk>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ Joel Stanley <joel@jms.id.au>, linux-serial@vger.kernel.org,
+ Jiri Slaby <jslaby@suse.com>, Orson Zhai <orsonzhai@gmail.com>,
+ Iurii Zaikin <yzaikin@google.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Michal Simek <michal.simek@xilinx.com>, Kees Cook <keescook@chromium.org>,
+ linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+ =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Johan Hovold <johan@kernel.org>, Baolin Wang <baolin.wang7@gmail.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, linux-amlogic@lists.infradead.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Timur Tabi <timur@kernel.org>,
+ Andrew Jeffery <andrew@aj.id.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Patrice Chotard <patrice.chotard@st.com>, Tony Prisk <linux@prisktech.co.nz>,
+ Richard Genoud <richard.genoud@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>, linux-fsdevel@vger.kernel.org,
+ Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michael Ellerman <mpe@ellerman.id.au> [2019-12-13 14:50:35]:
 
-> Waiman Long suggested using static_keys.
+
+Le 13/12/2019 à 01:05, Dmitry Safonov a écrit :
+> The original purpose of the patches set was to add a way to enable
+> sysrq on a uart where currently it can be constantly either on or off
+> (CONFIG_MAGIC_SYSRQ_SERIAL), see the last patch:
+>    "serial/sysrq: Add MAGIC_SYSRQ_SERIAL_SEQUENCE"
 > 
-> Fixes: 247f2f6f3c70 ("sched/core: Don't schedule threads on pre-empted vCPUs")
-> Cc: stable@vger.kernel.org # v4.18+
-> Reported-by: Parth Shah <parth@linux.ibm.com>
-> Reported-by: Ihor Pasichnyk <Ihor.Pasichnyk@ibm.com>
-> Tested-by: Juri Lelli <juri.lelli@redhat.com>
-> Acked-by: Waiman Long <longman@redhat.com>
-> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> Acked-by: Phil Auld <pauld@redhat.com>
-> Reviewed-by: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-> Tested-by: Parth Shah <parth@linux.ibm.com>
-> [mpe: Move the key and setting of the key to pseries/setup.c]
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/include/asm/spinlock.h    | 4 +++-
->  arch/powerpc/platforms/pseries/setup.c | 7 +++++++
->  2 files changed, 10 insertions(+), 1 deletion(-)
+> But to do that, I had to add uart_try_toggle_sysrq() and I didn't want
+> to bloat serial_core.h even more. So, I did cleanup by removing
+> SUPPORT_SYSRQ resulting in a nice diff-stat and lesser ifdeffery.
 > 
+> Most patches are one-liners, I decided to keep them separated per-driver
+> to let reviewers easier follow the purpose.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Jiri Slaby <jslaby@suse.com>
+> Cc: Vasiliy Khoruzhick <vasilykh@arista.com>
+> Cc: linux-serial@vger.kernel.org
+> 
+> Dmitry Safonov (58):
+>    sysrq: Remove sysrq_handler_registered
+>    serial: Move sysrq members above
+>    serial_core: Un-ifdef sysrq SUPPORT_SYSRQ
+>    tty/serial: Migrate aspeed_vuart to use has_sysrq
+>    tty/serial: Migrate 8250_fsl to use has_sysrq
+>    tty/serial: Migrate bcm63xx_uart to use has_sysrq
+>    tty/serial: Migrate 8250_omap to use has_sysrq
+>    tty/serial: Migrate 8250_port to use has_sysrq
+>    tty/serial: Migrate amba-pl01* to use has_sysrq
+>    tty/serial: Migrate apbuart to use has_sysrq
+>    tty/serial: Migrate arc_uart to use has_sysrq
+>    tty/serial: Migrate atmel_serial to use has_sysrq
+>    tty/serial: Migrate clps711x to use has_sysrq
+>    tty/serial: Migrate cpm_uart to use has_sysrq
+>    tty/serial: Migrate dz to use has_sysrq
+>    tty/serial: Migrate efm32-uart to use has_sysrq
+>    tty/serial: Migrate fsl_linflexuart to use has_sysrq
+>    tty/serial: Migrate fsl_lpuart to use has_sysrq
+>    tty/serial: Migrate imx to use has_sysrq
+>    tty/serial: Migrate ip22zilog to use has_sysrq
+>    tty/serial: Migrate meson_uart to use has_sysrq
+>    tty/serial: Migrate milbeaut_usio to use has_sysrq
+>    tty/serial: Migrate mpc52xx_uart to use has_sysrq
+>    tty/serial: Don't zero port->sysrq
+>    tty/serial: Migrate msm_serial to use has_sysrq
+>    tty/serial: Migrate mux to use has_sysrq
+>    tty/serial: Migrate mxs-auart to use has_sysrq
+>    tty/serial: Migrate omap-serial to use has_sysrq
+>    tty/serial: Migrate pch_uart to use has_sysrq
+>    tty/serial: Don't check port->sysrq
+>    tty/serial: Migrate pmac_zilog to use has_sysrq
+>    tty/serial: Migrate pnx8xxx_uart to use has_sysrq
+>    serial/f81534: Don't check port->sysrq
+>    tty/serial: Migrate pxa to use has_sysrq
+>    tty/serial: Migrate qcom_geni_serial to use has_sysrq
+>    tty/serial: Migrate sa1100 to use has_sysrq
+>    tty/serial: Migrate samsung_tty to use has_sysrq
+>    tty/serial: Migrate sb1250-duart to use has_sysrq
+>    tty/serial: Migrate sccnxp to use has_sysrq
+>    tty/serial: Migrate serial_txx9 to use has_sysrq
+>    tty/serial: Migrate sh-sci to use has_sysrq
+>    tty/serial: Migrate sprd_serial to use has_sysrq
+>    tty/serial: Migrate st-asc to use has_sysrq
+>    tty/serial: Migrate stm32-usart to use has_sysrq
+>    tty/serial: Migrate sunhv to use has_sysrq
+>    tty/serial: Migrate sunsab to use has_sysrq
+>    tty/serial: Migrate sunsu to use has_sysrq
+>    tty/serial: Migrate sunzilog to use has_sysrq
+>    serial/ucc_uart: Remove ifdef SUPPORT_SYSRQ
+>    tty/serial: Migrate vr41xx_siu to use has_sysrq
+>    tty/serial: Migrate vt8500_serial to use has_sysrq
+>    tty/serial: Migrate xilinx_uartps to use has_sysrq
+>    tty/serial: Migrate zs to use has_sysrq
+>    serial_core: Remove SUPPORT_SYSRQ ifdeffery
+>    usb/serial: Don't handle break when CONFIG_MAGIC_SYSRQ is disabled
+>    serial_core: Move sysrq functions from header file
+>    sysctl/sysrq: Remove __sysrq_enabled copy
+>    serial/sysrq: Add MAGIC_SYSRQ_SERIAL_SEQUENCE
 
-Tested with your version of the patch and its working as expected
+powerpc patchwork didn't get the full series, see 
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=148198
 
-Latency percentiles (usec)
-        50.0th: 45
-        75.0th: 63
-        90.0th: 74
-        95.0th: 78
-        *99.0th: 82
-        99.5th: 83
-        99.9th: 86
-        min=0, max=96
-Latency percentiles (usec)
-        50.0th: 46
-        75.0th: 64
-        90.0th: 75
-        95.0th: 79
-        *99.0th: 83
-        99.5th: 85
-        99.9th: 91
-        min=0, max=117
-Latency percentiles (usec)
-        50.0th: 46
-        75.0th: 64
-        90.0th: 75
-        95.0th: 79
-        *99.0th: 83
-        99.5th: 84
-        99.9th: 90
-        min=0, max=95
-Latency percentiles (usec)
-        50.0th: 47
-        75.0th: 65
-        90.0th: 75
-        95.0th: 79
-        *99.0th: 84
-        99.5th: 85
-        99.9th: 90
-        min=0, max=117
-Latency percentiles (usec)
-        50.0th: 45
-        75.0th: 64
-        90.0th: 75
-        95.0th: 79
-        *99.0th: 82
-        99.5th: 83
-        99.9th: 93
-        min=0, max=111
+Can't find them on linux-serial patchwork either 
+(https://patches.linaro.org/project/linux-serial/list/)
 
+It is impossible to review/test powerpc bits without the first patches 
+of the series, where can the entire series be found ?
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Christophe
 
+> 
+>   arch/powerpc/kernel/legacy_serial.c         |   4 +-
+>   drivers/tty/serial/8250/8250_aspeed_vuart.c |   5 +-
+>   drivers/tty/serial/8250/8250_fsl.c          |   4 -
+>   drivers/tty/serial/8250/8250_of.c           |   4 +-
+>   drivers/tty/serial/8250/8250_omap.c         |   5 +-
+>   drivers/tty/serial/8250/8250_port.c         |   5 +-
+>   drivers/tty/serial/amba-pl010.c             |   5 +-
+>   drivers/tty/serial/amba-pl011.c             |   6 +-
+>   drivers/tty/serial/apbuart.c                |   5 +-
+>   drivers/tty/serial/arc_uart.c               |   5 +-
+>   drivers/tty/serial/atmel_serial.c           |   9 +-
+>   drivers/tty/serial/bcm63xx_uart.c           |   5 +-
+>   drivers/tty/serial/clps711x.c               |   5 +-
+>   drivers/tty/serial/cpm_uart/cpm_uart_core.c |   9 +-
+>   drivers/tty/serial/dz.c                     |   5 +-
+>   drivers/tty/serial/efm32-uart.c             |   5 +-
+>   drivers/tty/serial/fsl_linflexuart.c        |   8 +-
+>   drivers/tty/serial/fsl_lpuart.c             |   9 +-
+>   drivers/tty/serial/imx.c                    |   7 +-
+>   drivers/tty/serial/ip22zilog.c              |   7 +-
+>   drivers/tty/serial/meson_uart.c             |   5 +-
+>   drivers/tty/serial/milbeaut_usio.c          |   5 +-
+>   drivers/tty/serial/mpc52xx_uart.c           |  11 +-
+>   drivers/tty/serial/msm_serial.c             |   5 +-
+>   drivers/tty/serial/mux.c                    |   5 +-
+>   drivers/tty/serial/mxs-auart.c              |   5 +-
+>   drivers/tty/serial/omap-serial.c            |   5 +-
+>   drivers/tty/serial/pch_uart.c               |  12 +-
+>   drivers/tty/serial/pmac_zilog.c             |   5 +-
+>   drivers/tty/serial/pnx8xxx_uart.c           |   7 +-
+>   drivers/tty/serial/pxa.c                    |   5 +-
+>   drivers/tty/serial/qcom_geni_serial.c       |   5 +-
+>   drivers/tty/serial/sa1100.c                 |   7 +-
+>   drivers/tty/serial/samsung_tty.c            |   5 +-
+>   drivers/tty/serial/sb1250-duart.c           |   5 +-
+>   drivers/tty/serial/sccnxp.c                 |   5 +-
+>   drivers/tty/serial/serial_core.c            | 123 ++++++++++++++++++++
+>   drivers/tty/serial/serial_txx9.c            |   5 +-
+>   drivers/tty/serial/sh-sci.c                 |  10 +-
+>   drivers/tty/serial/sprd_serial.c            |   5 +-
+>   drivers/tty/serial/st-asc.c                 |   5 +-
+>   drivers/tty/serial/stm32-usart.c            |   5 +-
+>   drivers/tty/serial/sunhv.c                  |   5 +-
+>   drivers/tty/serial/sunsab.c                 |   5 +-
+>   drivers/tty/serial/sunsu.c                  |   5 +-
+>   drivers/tty/serial/sunzilog.c               |   6 +-
+>   drivers/tty/serial/ucc_uart.c               |   2 -
+>   drivers/tty/serial/vr41xx_siu.c             |   5 +-
+>   drivers/tty/serial/vt8500_serial.c          |   5 +-
+>   drivers/tty/serial/xilinx_uartps.c          |   5 +-
+>   drivers/tty/serial/zs.c                     |   5 +-
+>   drivers/tty/sysrq.c                         |  16 +--
+>   drivers/usb/serial/f81534.c                 |   6 +-
+>   drivers/usb/serial/generic.c                |  10 +-
+>   include/linux/serial_core.h                 |  92 ++-------------
+>   include/linux/sysrq.h                       |   1 +
+>   kernel/sysctl.c                             |  41 ++++---
+>   lib/Kconfig.debug                           |   8 ++
+>   58 files changed, 238 insertions(+), 346 deletions(-)
+> 
