@@ -1,61 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB2911ECFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:39:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E97B11ECF9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:36:50 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZPBR69WtzDrKb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 08:36:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZPFH1thFzDrGt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 08:39:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::244;
+ helo=mail-lj1-x244.google.com; envelope-from=bsingharora@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="BkJUDoxm"; 
+ dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZP7h01trzDrJV
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 08:34:23 +1100 (AEDT)
-Received: by mail-ot1-f66.google.com with SMTP id 77so730418oty.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 13:34:23 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZPCN68lbzDrFn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 08:37:34 +1100 (AEDT)
+Received: by mail-lj1-x244.google.com with SMTP id h23so221318ljc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 13:37:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=6Cel1cpD0Jtu0AycJ47huuRD/DgMmGpodkanI6OR1bo=;
+ b=BkJUDoxm4UTj76qbb34bMW8fVbz7oLUiI7HX3/57fDHmH3Uv+GHq3VcDR+vHKaAg5U
+ MRvB2yJVN7+A61+KCixPlGkUzaVMQiuVTIlI172XVT5x+S7mtRuVBdgZMlZ52VvAd6w5
+ 8DS69v4jrJn0jMy9a5+r0cCy2lYUVl4XLKLiepprazD+qKqkNHo0ECt0YCpdRVGTyHz4
+ VjAzgEPu/D/m8aE66lLDO+FNBU7D7ZHpuDWXX8Fl352r0ij5bbjS4FbTOJxn+TYzVZO7
+ Bj3w9oapQScyHyiAMtgvC+M5Mq1e2F52BG03GzWhSggUR+7xTx4IhJagsXPmx1ye6JJI
+ O/PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=CnL0ppP0hu7PBsUqVprgfTmViSxAVBY2hM4t+lEup30=;
- b=kVLFo5cxaUGeCAEjWBvQg4m6s6hhzQfVAhLgvHyqXOrAyI12PkXMV7Mity49i/6Tdd
- JrCWuPTfA/UGn4Sk2gMh5NPEVGUKJBokwdAjex8GKLDMBQ2ilfB5N7y8Vea4mjRCeuLs
- dcxzHPQSBrDwyws9s88NQsPzdgafX175O0wKo/vIYm4cw3BTeUgnf4g03vvyW3qEjdph
- MyqPFNai9XKsqersFXd5qF8m4cIqPBNZihMKIdPWRKUAFAVuv4QJcdvAPY64Wk3+tZ57
- xzHRYncFmUpmZUX0GjP8RH1OV8i/+4MhU2WtyfbKQZwTFRCKRRY7yoFv5uJio3eQFN9o
- iRqw==
-X-Gm-Message-State: APjAAAUkE5hgSYTtzpV6tTZd4BkXXI28g0kXvlaCK6HVF61RhPs57N27
- 162nOhu+LljkMsZ935ql+A==
-X-Google-Smtp-Source: APXvYqxtLmwCSQzcGbNdN9x9BipFNkJ2YdICwPsaYd45wZnOrdGRLQWzOOV9fMbVNvAU4hoYVvYkLw==
-X-Received: by 2002:a9d:6181:: with SMTP id g1mr17366399otk.104.1576272860189; 
- Fri, 13 Dec 2019 13:34:20 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id a16sm3798678otd.64.2019.12.13.13.34.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2019 13:34:19 -0800 (PST)
-Date: Fri, 13 Dec 2019 15:34:18 -0600
-From: Rob Herring <robh@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/devicetrees: Change 'gpios' to 'cs-gpios' on
- fsl,spi nodes
-Message-ID: <20191213213418.GA17361@bogus>
-References: <7556683b57d8ce100855857f03d1cd3d2903d045.1574943062.git.christophe.leroy@c-s.fr>
+ h=x-gm-message-state:subject:to:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=6Cel1cpD0Jtu0AycJ47huuRD/DgMmGpodkanI6OR1bo=;
+ b=NakVDvEGOJ9lb/zPZd9foQB2nTftRUCj0aKaA+gP1svnHJ/qWPEn1Zr2TFWm9rpRgo
+ RrkfxgeMuea6t/cakmbFxhZbaLcvwvG5bDfTaYA/uSRDH/hwAsdm083TaskSLDwTbjIX
+ ZR7+RKm1V8ab2mHeI488v29BwJrrTQUn07de0N1G8F5wwshEhBG43YHz6yhmUY9lWbyD
+ YEwzJpMB8tkdOkxmmBjMb/2FhgO64Mq/uJFhEa9jR2q6xp+hN750g6tbAneCVgzTT7do
+ +Gvvj44WhqBGgn1eshuvWDB0aBR4r6Gesq5yK93QnEbqvyJ09DfMMFsLhvnP/3ptM1yK
+ awJA==
+X-Gm-Message-State: APjAAAWNICi+rsQpGkQpWsY5UJpsDlaVTCCdCgw+wu2w3zxkopCTrkKP
+ R342GaeyE1Ld4cYl9eqoqt4=
+X-Google-Smtp-Source: APXvYqxsM40YoG7z6ZiJtPbz7asvMlxZ1g3vpJyflgNEYbZa2GiRD4WWokcH+Epr1Can0FbY1J66HQ==
+X-Received: by 2002:a2e:165c:: with SMTP id 28mr10631069ljw.247.1576273048447; 
+ Fri, 13 Dec 2019 13:37:28 -0800 (PST)
+Received: from [192.168.68.108] (115-64-122-209.tpgi.com.au. [115.64.122.209])
+ by smtp.gmail.com with ESMTPSA id
+ z7sm5774631lfa.81.2019.12.13.13.37.24
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 13 Dec 2019 13:37:27 -0800 (PST)
+Subject: Re: [PATCH v3 1/3] kasan: define and use MAX_PTRS_PER_* for early
+ shadow tables
+To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ kasan-dev@googlegroups.com, christophe.leroy@c-s.fr,
+ aneesh.kumar@linux.ibm.com
+References: <20191212151656.26151-1-dja@axtens.net>
+ <20191212151656.26151-2-dja@axtens.net>
+From: Balbir Singh <bsingharora@gmail.com>
+Message-ID: <37872cba-5cdf-2e28-df45-70df4e8ef5af@gmail.com>
+Date: Sat, 14 Dec 2019 08:37:20 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7556683b57d8ce100855857f03d1cd3d2903d045.1574943062.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191212151656.26151-2-dja@axtens.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,29 +88,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Linus Walleij <linus.walleij@linaro.org>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 28, 2019 at 12:16:35PM +0000, Christophe Leroy wrote:
-> Since commit 0f0581b24bd0 ("spi: fsl: Convert to use CS GPIO
-> descriptors"), the prefered way to define chipselect GPIOs is using
-> 'cs-gpios' property instead of the legacy 'gpios' property.
 
-This will break using a new dtb on a kernel without the above commit. Or 
-with any OS that never made the change.
 
-I'm fine with the doc change, but you should keep 'gpios' as deprecated.
-
+On 13/12/19 2:16 am, Daniel Axtens wrote:
+> powerpc has a variable number of PTRS_PER_*, set at runtime based
+> on the MMU that the kernel is booted under.
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> This means the PTRS_PER_* are no longer constants, and therefore
+> breaks the build.
+> 
+> Define default MAX_PTRS_PER_*s in the same style as MAX_PTRS_PER_P4D.
+> As KASAN is the only user at the moment, just define them in the kasan
+> header, and have them default to PTRS_PER_* unless overridden in arch
+> code.
+> 
+> Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Suggested-by: Balbir Singh <bsingharora@gmail.com>
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
 > ---
->  Documentation/devicetree/bindings/spi/fsl-spi.txt | 8 ++++----
->  arch/powerpc/boot/dts/mgcoge.dts                  | 2 +-
->  arch/powerpc/boot/dts/mpc832x_rdb.dts             | 2 +-
->  arch/powerpc/boot/dts/mpc8610_hpcd.dts            | 2 +-
->  4 files changed, 7 insertions(+), 7 deletions(-)
+Reviewed-by: Balbir Singh <bsingharora@gmail.com>
+
+Balbir
