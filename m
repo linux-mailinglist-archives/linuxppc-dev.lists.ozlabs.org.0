@@ -1,67 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED18211DBFD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 03:09:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9AA11DB2C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 01:34:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47YsBS1bKYzDrBk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 11:34:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47YvHG2LdjzDqg4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 13:09:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=yadro.com (client-ip=89.207.88.252; helo=mta-01.yadro.com;
- envelope-from=r.bolshakov@yadro.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
+ helo=mail-pj1-x1032.google.com; envelope-from=itaru.kitayama@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=yadro.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="cY7PeKyR"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="nZ+MKqzq"; 
  dkim-atps=neutral
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Ys8Z0JTdzDr7Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 11:33:14 +1100 (AEDT)
-Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id C0FA341207;
- Fri, 13 Dec 2019 00:33:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
- in-reply-to:content-disposition:content-type:content-type
- :mime-version:references:message-id:subject:subject:from:from
- :date:date:received:received:received; s=mta-01; t=1576197187;
- x=1578011588; bh=Muef90s1yVPYLj6SS/ZYvhw2zH07wwsunekBFXoC0vs=; b=
- cY7PeKyRM0MCOghOFCKH4mP1kkIZM0xQZzUYAj62eVBEOv+jfp6B2/573Ackgxll
- gEMNQsSovkLoJM1O+l8iQaXK8qXBkSkfw9Tip+7YqQHZWuaSUUwpK0Q5aVEogVeY
- HCdFKohcqKn77R9+oCC45PNT3lsWckTgKlHrxF1SOko=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
- by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 1QWthcU-ow15; Fri, 13 Dec 2019 03:33:07 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
- [172.17.10.102])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 27AF841203;
- Fri, 13 Dec 2019 03:33:06 +0300 (MSK)
-Received: from localhost (172.17.128.60) by T-EXCH-02.corp.yadro.com
- (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 13
- Dec 2019 03:33:06 +0300
-Date: Fri, 13 Dec 2019 03:33:05 +0300
-From: Roman Bolshakov <r.bolshakov@yadro.com>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: HPT allocation failures on POWER8 KVM hosts
-Message-ID: <20191213003305.ipi4rnpuyojlk2r4@SPB-NB-133.local>
-References: <20191115152826.hvcu3borgx4hp275@SPB-NB-133.local>
- <874kz2gcx3.fsf@dja-thinkpad.axtens.net>
- <20191118114242.mgv2t6mwc3llepjj@SPB-NB-133.local>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47YtZ272BtzDr7G
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 12:36:58 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id l4so474919pjt.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2019 17:36:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:from:date:message-id:subject:to;
+ bh=hHaUgqgtybtvOjMDrlajJocitnGvmoGzX+mp68oSCDw=;
+ b=nZ+MKqzqbkfQaF4ZvNuUImTvVEHiuFUE4ISXoaQD4oFCu5qyk6UK8YJthCUCkprOzM
+ LWbE13xizoblSj27bs8OvgNeqPDaaoXB8f1hgHZWRbu4gKkduexb4fx3LhTKsKB1C9qQ
+ ZXStX6YmjbhVbThSYaDw/iBXfHw/8O0C0HwXDCr7Bg7FIwKyNHUgJ3VN2vcXp3xa2UDz
+ RYQrS8XMN5a+V85pAUZDKVz9shNqXUlcv2RujyuktxMJ1XGedUSsT9OYP8TcHT/k/k6C
+ baLXCI33AHMOJsitJCzf0QBReI9VMlTf2h1Ti25kTh4wVOqvQ8JR/FKH0uGkyvbadNHs
+ L3Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=hHaUgqgtybtvOjMDrlajJocitnGvmoGzX+mp68oSCDw=;
+ b=gLWhPrrh/325Dh/h74KnATam2vycJAD+eZ+Vc/yFLnVLECGnc8y6S1ky5FMHcM1teK
+ +8YdiBUvkdKBvN1ebt5THcgSfLVUwQQ6E45yMFqSWirg0IiaoAD5lE/UYsdZQNs/02mL
+ dJfjKVJE61bxttKAZKkc22z1e0u6J0nrkLo2qIB2sZQyPfgwISkKq6lArkmImZVT+okA
+ 0qbc2o/sRLjHC8p+wouEZQtUdxwkWYCnxtiqdkxT4i3k52agDgf5SFOFkcwOY+Qe6ZX/
+ 84tqjfcWeOIYvA8TJotuRbYTASyslWIqb8Or11ITrVTy322VKPY2TauF8lmqH8+NdcBu
+ RTtw==
+X-Gm-Message-State: APjAAAUmJoP6fAo0oOChlxmzUxMrUlZs546kqGOQmP7/RZkvZfo8n2aN
+ mo4Mp3V3E4lWht3EwqjMlux8xt+k6fhE6iaa1N8KzA==
+X-Google-Smtp-Source: APXvYqx+hlsQMIWXhuRLKsKO/MQguDvdspE6W+gDqIUvkV0y9gbbY/BjS4o6pzS0bpQQDDVpBNJm9AccNY+6S8bGv4k=
+X-Received: by 2002:a17:90a:9dc3:: with SMTP id
+ x3mr13469781pjv.45.1576200567594; 
+ Thu, 12 Dec 2019 17:29:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20191118114242.mgv2t6mwc3llepjj@SPB-NB-133.local>
-X-Originating-IP: [172.17.128.60]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-02.corp.yadro.com (172.17.10.102)
+From: Itaru Kitayama <itaru.kitayama@gmail.com>
+Date: Fri, 13 Dec 2019 10:29:16 +0900
+Message-ID: <CANW9uyvtfFyZFxeeVEUGqW8u9zSW17DYTbhedaDsOwg8tANb9w@mail.gmail.com>
+Subject: Isn't LD=ld.lld enough to get a kernel build started?
+To: linuxppc-dev@lists.ozlabs.org
+Content-Type: multipart/alternative; boundary="000000000000ed23f205998bcaf0"
+X-Mailman-Approved-At: Fri, 13 Dec 2019 13:07:40 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,66 +71,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, qemu-ppc@nongnu.org,
- linuxppc-dev@lists.ozlabs.org, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 18, 2019 at 02:42:42PM +0300, Roman Bolshakov wrote:
-> On Mon, Nov 18, 2019 at 01:02:00PM +1100, Daniel Axtens wrote:
-> > Hi Roman,
-> > 
-> > > We're running a lot of KVM virtual machines on POWER8 hosts and
-> > > sometimes new VMs can't be started because there are no contiguous
-> > > regions for HPT because of CMA region fragmentation.
-> > >
-> > > The issue is covered in the LWN article: https://lwn.net/Articles/684611/
-> > > The article points that you raised the problem on LSFMM 2016. However I
-> > > couldn't find a follow up article on the issue.
-> > >
-> > > Looking at the kernel commit log I've identified a few commits that
-> > > might reduce CMA fragmentaiton and overcome HPT allocation failure:
-> > >   - bd2e75633c801 ("dma-contiguous: use fallback alloc_pages for single pages")
-> > >   - 678e174c4c16a ("powerpc/mm/iommu: allow migration of cma allocated
-> > >     pages during mm_iommu_do_alloc")
-> > >   - 9a4e9f3b2d739 ("mm: update get_user_pages_longterm to migrate pages allocated from
-> > >     CMA region")
-> > >   - d7fefcc8de914 ("mm/cma: add PF flag to force non cma alloc")
-> > >
-> > > Are there any other commits that address the issue? What is the first
-> > > kernel version that shouldn't have the HPT allocation problem due to CMA
-> > > fragmentation?
-> > 
-> > I've had some success increasing the CMA allocation with the
-> > kvm_cma_resv_ratio boot parameter - see
-> > arch/powerpc/kvm/book3s_hv_builtin.c
-> > 
-> > The default is 5%. In a support case in a former job we had a customer
-> > who increased this to I think 7 or 8% and saw the symptoms subside
-> > dramatically.
-> > 
-> 
-> Hi Daniel,
-> 
-> Thank you, I'll try to increase kvm_cma_resv_ratio for now, but even 5%
-> CMA reserve should be more than enough, given the size of HPT as 1/128th
-> of VM max memory.
-> 
-> For a 16GB RAM VM without balloon device, only 128MB is going to be
-> reserved for HPT using CMA. So, 5% CMA reserve should allow to provision
-> VMs with over 1.5TB of RAM on 256GB RAM host. In other words the default
-> CMA reserve allows to overprovision 6 times more memory for VMs than
-> presented on a host.
-> 
-> We rarely add balloon device and sometimes don't add it at all. Therefore
-> I'm still looking for commits that would help to avoid the issue with
-> the default CMA reserve.
-> 
+--000000000000ed23f205998bcaf0
+Content-Type: text/plain; charset="UTF-8"
 
-FWIW, I have noticed the following. My host has 4 NUMA nodes with 4 CPUs
-per node, only one of the nodes have CMA pages and only two of the nodes
-have memory according to /proc/zoneinfo. The error can be reliably
-reproduced if I attempt to place vCPUs on the node with CMA pages.
+Hi,
+Or should I set the LD with the full path to the LLD linker?
 
-Roman
+--000000000000ed23f205998bcaf0
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">Hi,<div>Or should I set the LD with the full path to the LLD linker?</div></div>
+
+--000000000000ed23f205998bcaf0--
