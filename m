@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899ED11E1DA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 11:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE96811E1E1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 11:24:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Z6DF6j6RzDrFC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 21:22:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Z6H61VVKzDrFl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 21:24:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Z69m6t0YzDr5Y
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 21:20:12 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Z6BS2kk7zDrCP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 21:20:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Ldm6482B"; dkim-atps=neutral
+ header.b="PiEcT286"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47Z69l4rbPz9sPK;
- Fri, 13 Dec 2019 21:20:11 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47Z6BK1R6Hz9sPc;
+ Fri, 13 Dec 2019 21:20:40 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576232412;
- bh=REJuXt88eUWhnfsGMe4pLpIzeN5S9e3uhWZYEtXkwrI=;
+ s=201909; t=1576232441;
+ bh=Ypcl+ICBinTZEpBKKJzx2m7ZdyJ3T7k/hC8ux4i5AD0=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Ldm6482BTx3SHZWoAMGzF+5hb/9eCob/VDT3wAtV3rEi1036dEKo3gCcHkeOt1uCQ
- JJqDU9IG5oCsGMAZu8F+qkJ9mi61vxjM4jjxSq76cTvNyl8UJl0bcSsBfvl3+ekLFh
- 5VTcvCPWSW6jRg1P03A0GPiDBRKhPl98OccskLm5MH/Hmwvfvpl3oGTjghN7gx9tjn
- 2piUXudvRdaDXEfaA3WMkn7QVX2QZ7Vt5xeXTdkXu7HiSpeu0Dw4QzhM8+mMFan4ZW
- 5jzHMQk5k2W16RhTewO/ZWkpCMzNnl1/ws3gKkCOQ7mx5xjOdSZznR3S4WOv8c+xBD
- pwNbPcRf9jdOA==
+ b=PiEcT286n4Tq4Sqq3gPFKnuR36mkJco+IzdfvrIEe7RUB1frkF4PZNzvCPyJTUc9U
+ +2MUyWJJCUB8NX9GRp4ALlDphq7nWtn1L7zArxrq48W4qHOnf/X4oqymzEIAoyNxgT
+ uFJvHZncGnGUsM6Tm3XlSh+vIphhUIrIzD3/hyv5tN3n4KoJCOzre+vlx9AxMJclhv
+ RUkqTx/cWBG/uZWUJXvJrQdj3SLr9Sza2OGD2XnceEf4ZTGqYdX28of8o1lNZtO3Pm
+ 55D7VQtdl8kUprNLLtTuz1EYLAALAaMDEqv6uNha+Mh7st/YGqTeTWwiDV2/DplX3f
+ LLxhjjtxNqRWQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH kernel 3/3] powerpc/pseries/iommu: Do not use
- H_PUT_TCE_INDIRECT in secure VM
-In-Reply-To: <20191213084537.27306-4-aik@ozlabs.ru>
+Subject: Re: [PATCH kernel 1/3] powerpc/pseries/iommu: Use dma_iommu_ops for
+ Secure VM.
+In-Reply-To: <20191213084537.27306-2-aik@ozlabs.ru>
 References: <20191213084537.27306-1-aik@ozlabs.ru>
- <20191213084537.27306-4-aik@ozlabs.ru>
-Date: Fri, 13 Dec 2019 21:20:10 +1100
-Message-ID: <87v9qko7c5.fsf@mpe.ellerman.id.au>
+ <20191213084537.27306-2-aik@ozlabs.ru>
+Date: Fri, 13 Dec 2019 21:20:38 +1100
+Message-ID: <87sgloo7bd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,65 +67,54 @@ Sender: "Linuxppc-dev"
 
 Alexey Kardashevskiy <aik@ozlabs.ru> writes:
 
-> H_PUT_TCE_INDIRECT uses a 4K page with TCEs to allow handling up to 512
-> TCEs per hypercall. While it is a decent optimization, we rather share
-> less of secure VM memory so let's avoid sharing.
+> From: Ram Pai <linuxram@us.ibm.com>
 >
-> This only allows H_PUT_TCE_INDIRECT for normal (not secure) VMs.
+> Commit edea902c1c1e ("powerpc/pseries/iommu: Don't use dma_iommu_ops on
+> 		secure guests")
+> disabled dma_iommu_ops path, for secure VMs. Disabling dma_iommu_ops
+> path for secure VMs, helped enable dma_direct path.  This enabled
+> support for bounce-buffering through SWIOTLB.  However it fails to
+> operate when IOMMU is enabled, since I/O pages are not TCE mapped.
 >
-> This keeps using H_STUFF_TCE as it does not require sharing.
+> Reenable dma_iommu_ops path for pseries Secure VMs.  It handles all
+> cases including, TCE mapping I/O pages, in the presence of a
+> IOMMU.
 >
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
 > Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->
-> Possible alternatives are:
->
-> 1. define FW_FEATURE_STUFFTCE (to allow H_STUFF_TCE) in addition to
-> FW_FEATURE_MULTITCE (make it only enable H_PUT_TCE_INDIRECT) and enable
-> only FW_FEATURE_STUFFTCE for SVM; pro = no SVM mention in iommu.c,
-> con = a FW feature bit with very limited use
 
-Yes let's do that please.
-
-Actually let's rename FW_FEATURE_MULTITCE to FW_FEATURE_PUT_TCE_IND (?)
-to make it clear that's what it controls now.
-
-You should just be able to add two entries to hypertas_fw_features_table
-that both look for "hcall-multi-tce". And then the SVM code disables the
-PUT_TCE_IND feature at some point.
+This seems like it should have a Fixes tag?
 
 cheers
 
->
-> 2. disable FW_FEATURE_MULTITCE and loose H_STUFF_TCE which adds a delay
-> in booting process
-> ---
->  arch/powerpc/platforms/pseries/iommu.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
 > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index f6e9b87c82fc..2334a67c7614 100644
+> index 6ba081dd61c9..df7db33ca93b 100644
 > --- a/arch/powerpc/platforms/pseries/iommu.c
 > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -192,7 +192,8 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  	int ret = 0;
->  	unsigned long flags;
+> @@ -36,7 +36,6 @@
+>  #include <asm/udbg.h>
+>  #include <asm/mmzone.h>
+>  #include <asm/plpar_wrappers.h>
+> -#include <asm/svm.h>
 >  
-> -	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_MULTITCE)) {
-> +	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_MULTITCE) ||
-> +			is_secure_guest()) {
->  		return tce_build_pSeriesLP(tbl->it_index, tcenum,
->  					   tbl->it_page_shift, npages, uaddr,
->  		                           direction, attrs);
-> @@ -402,7 +403,8 @@ static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
->  	u64 rc = 0;
->  	long l, limit;
+>  #include "pseries.h"
 >  
-> -	if (!firmware_has_feature(FW_FEATURE_MULTITCE)) {
-> +	if (!firmware_has_feature(FW_FEATURE_MULTITCE) ||
-> +			is_secure_guest()) {
->  		unsigned long tceshift = be32_to_cpu(maprange->tce_shift);
->  		unsigned long dmastart = (start_pfn << PAGE_SHIFT) +
->  				be64_to_cpu(maprange->dma_base);
+> @@ -1320,15 +1319,7 @@ void iommu_init_early_pSeries(void)
+>  	of_reconfig_notifier_register(&iommu_reconfig_nb);
+>  	register_memory_notifier(&iommu_mem_nb);
+>  
+> -	/*
+> -	 * Secure guest memory is inacessible to devices so regular DMA isn't
+> -	 * possible.
+> -	 *
+> -	 * In that case keep devices' dma_map_ops as NULL so that the generic
+> -	 * DMA code path will use SWIOTLB to bounce buffers for DMA.
+> -	 */
+> -	if (!is_secure_guest())
+> -		set_pci_dma_ops(&dma_iommu_ops);
+> +	set_pci_dma_ops(&dma_iommu_ops);
+>  }
+>  
+>  static int __init disable_multitce(char *str)
 > -- 
 > 2.17.1
