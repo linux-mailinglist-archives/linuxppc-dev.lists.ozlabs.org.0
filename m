@@ -2,56 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D28711ECA2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F4B11ECC3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:21:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZNZ61D7gzDqwJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 08:08:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZNrq0bDwzDrHt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 08:21:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZNWx4XZJzDr6d
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 08:06:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZNph06HmzDqvt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 08:19:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="k23J/zLd"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47ZNWw2BJjz9sP6;
- Sat, 14 Dec 2019 08:06:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576271213;
- bh=MGInI7+F0s7HGbUV0Xqx0TPozxlo/Am/To6UDohXxq4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=k23J/zLdvtKqBunmy1ixSs+42bGbHDuGSQCB6Ke7L4Uq+z+ldveUzevFgLwdpKq0d
- mkr6DDnR7H0smvCQcN+BM6T37JbnmqHD4/L9a/NkSKrjRcYPT2yHYyhdPyiEXPyrMB
- Efjh7qR7zHjSZA5mgVn0XUYlFLdEhavQXa026DnFJi45/5Ez7taLlBYjyOaBMxyE/b
- 7GJ80E1SaCmTKU2aBFLDMNx1yGZX4v2RQz2d9xbDgYEA2gziROONKrvnz6W/pFOCgL
- jX4iWoccqf6+gYa3ICv0po4aLuXfa8qENKOix+W7EG9numuE+zbXEzjMmrCD9q6b2x
- GpuH9UJg8ssSA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-In-Reply-To: <20191213135353.GN3152@gate.crashing.org>
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
- <875zimp0ay.fsf@mpe.ellerman.id.au>
- <20191212080105.GV2844@hirez.programming.kicks-ass.net>
- <20191212100756.GA11317@willie-the-truck>
- <20191212104610.GW2827@hirez.programming.kicks-ass.net>
- <87pngso2ck.fsf@mpe.ellerman.id.au> <20191213135353.GN3152@gate.crashing.org>
-Date: Sat, 14 Dec 2019 08:06:49 +1100
-Message-ID: <87mubwndee.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 47ZNpf6p2kz9sPJ; Sat, 14 Dec 2019 08:19:38 +1100 (AEDT)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: a58d37bce0d21cf7fbd589384c619e465ef2f927
+In-Reply-To: <20190624144148.32022-1-fbarrat@linux.ibm.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com, groug@kaod.org,
+ alastair@au1.ibm.com
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+Subject: Re: [PATCH] ocxl: Fix concurrent AFU open and device removal
+Message-Id: <47ZNpf6p2kz9sPJ@ozlabs.org>
+Date: Sat, 14 Dec 2019 08:19:38 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +40,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> Hi!
->
-> On Fri, Dec 13, 2019 at 11:07:55PM +1100, Michael Ellerman wrote:
->> I tried this:
->> 
->> > @@ -295,6 +296,23 @@ void __write_once_size(volatile void *p, void *res, int size)
->> >   */
->> >  #define READ_ONCE_NOCHECK(x) __READ_ONCE(x, 0)
->> >  
->> > +#else /* GCC_VERSION < 40800 */
->> > +
->> > +#define READ_ONCE_NOCHECK(x)						\
->> > +({									\
->> > +	typeof(x) __x = *(volatile typeof(x))&(x);			\
->> 
->> Didn't compile, needed:
->> 
->> 	typeof(x) __x = *(volatile typeof(&x))&(x);			\
->> 
->> 
->> > +	smp_read_barrier_depends();					\
->> > +	__x;
->> > +})
->> 
->> 
->> And that works for me. No extra stack check stuff.
->> 
->> I guess the question is does that version of READ_ONCE() implement the
->> read once semantics. Do we have a good way to test that?
->> 
->> The only differences are because of the early return in the generic
->> test_and_set_bit_lock():
->
-> No, there is another difference:
->
->>   30         ld      r10,560(r9)
->>   31         std     r10,104(r1)
->>   32         ld      r10,104(r1)
->>   33         andi.   r10,r10,1
->>   34         bne     <ext4_resize_begin_generic+0xd0>       29         bne     <ext4_resize_begin_ppc+0xd0>
->
-> The stack var is volatile, so it is read back immediately after writing
-> it, here.  This is a bad idea for performance, in general.
+On Mon, 2019-06-24 at 14:41:48 UTC, Frederic Barrat wrote:
+> If an ocxl device is unbound through sysfs at the same time its AFU is
+> being opened by a user process, the open code may dereference freed
+> stuctures, which can lead to kernel oops messages. You'd have to hit a
+> tiny time window, but it's possible. It's fairly easy to test by
+> making the time window bigger artificially.
+> 
+> Fix it with a combination of 2 changes:
+> - when an AFU device is found in the IDR by looking for the device
+> minor number, we should hold a reference on the device until after the
+> context is allocated. A reference on the AFU structure is kept when
+> the context is allocated, so we can release the reference on the
+> device after the context allocation.
+> - with the fix above, there's still another even tinier window,
+> between the time the AFU device is found in the IDR and the reference
+> on the device is taken. We can fix this one by removing the IDR entry
+> earlier, when the device setup is removed, instead of waiting for the
+> 'release' device callback. With proper locking around the IDR.
+> 
+> Fixes: 75ca758adbaf ("ocxl: Create a clear delineation between ocxl backend & frontend")
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Argh, yuck. Thanks, I shouldn't try to read asm listings at 11pm.
+Applied to powerpc fixes, thanks.
 
-So that just confirms what Will was saying further up the thread about
-the volatile pointer, rather than READ_ONCE() per se.
+https://git.kernel.org/powerpc/c/a58d37bce0d21cf7fbd589384c619e465ef2f927
 
 cheers
