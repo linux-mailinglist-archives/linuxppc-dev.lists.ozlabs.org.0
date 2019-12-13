@@ -1,78 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847CB11EBDE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 21:34:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6349811E898
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 17:43:47 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZGhJ4LsHzDrLb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 03:43:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZMpq53hLzDrJl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 07:34:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=arista.com (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=dima@arista.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=arista.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=arista.com header.i=@arista.com header.b="RDZC2Ziu"; 
- dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZGfR11JjzDrGp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 03:42:06 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id c9so92215wrw.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 08:42:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=arista.com; s=googlenew;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=+Xy8RflunQ2h7lBPgvCLBQe6kC/5oXa7qNJM46i4OvE=;
- b=RDZC2ZiusGEyrtg6BPZpt/3zIXUDvTioxjK9hCuEm49HHbr3H/dAOfWKhTeLkK3Bp5
- mwslCzN5062kRXM1mLfDGyALHEWNTkHjICeOQc11+9KBDd7f19DKdFfeznFmkiP2iu/b
- X4xf0Xn0uq1+4PP0nKj0gPeSALXRk8hr+7z6OQI2nr4636450ZFHJs8VP3HyfFaJsTVP
- HzWknwSfbUCuDOtglpkghgYl1PzBXP2sQbaCvGZ+HwEkO2egA9fVrLSahpKuX/LZCycb
- kC6vC6YhGlL6xoAsu0f2oh+y3zZZpvkht74vL/pO8ENbamlFgdAMQPwCftTj41QI1w5d
- MyeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=+Xy8RflunQ2h7lBPgvCLBQe6kC/5oXa7qNJM46i4OvE=;
- b=om+Rb8KG/+4elNX6cT73N6yEJsA+DczzwlTTSWJGRRALgFeIX8pec2t8NFoiX9GXGN
- 08w5wPRKfrhbjN5GbEPGWge3MuLQD+0gb/xJgKM1B3kkXYiK7d91DX1JQYWOkvj/PhS5
- gRSnTzXfnhtLlSqU/ARQfe7zoGBDgb5KRsduriEkjg2PLsq3XiHM+U3VSU07MjjzFWT2
- NQGpSnxqJV4gIyL/WZP3xXfBoWwkp8h3Br+YYQztA0Fi7JalCKzAah/Q/wypKx7chPK0
- EzEjwSzMCifCE6mJHvc1lXHMPqJtPtRIFN3w76y1Mfk2VHHL/NLNsYOwicxpW5TOaetk
- 1OOA==
-X-Gm-Message-State: APjAAAXHK2vgKEz5XbM1DJ/eNsF4faM3eJKfUT6/CspYW8JdRe2a6uMk
- Dq/PhVixcyrN0g1+nmZD4X/DZQ==
-X-Google-Smtp-Source: APXvYqzIaw4yXEvzLQQBJqUcuUQde/4MOljSnSzj5+B7FHPM/cAqWL9ZIzlETdg8BqlmTOhn/Pq8vg==
-X-Received: by 2002:a5d:4fd0:: with SMTP id h16mr13243381wrw.255.1576255321811; 
- Fri, 13 Dec 2019 08:42:01 -0800 (PST)
-Received: from [10.83.36.153] ([217.173.96.166])
- by smtp.gmail.com with ESMTPSA id g69sm11707225wmg.13.2019.12.13.08.41.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2019 08:42:01 -0800 (PST)
-Subject: Re: [PATCH 00/58] serial/sysrq: Cleanup ifdeffery
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-kernel@vger.kernel.org
-References: <20191213000657.931618-1-dima@arista.com>
- <524d9848-28a5-7e65-699b-600c49606487@c-s.fr>
-From: Dmitry Safonov <dima@arista.com>
-Message-ID: <0e642e4e-7349-3d92-3e54-cbfd8d417fea@arista.com>
-Date: Fri, 13 Dec 2019 16:41:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZMn01RRpzDrG3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 07:33:07 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBDKWgfX046298
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 15:33:05 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wugd4196y-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 15:33:05 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Fri, 13 Dec 2019 20:33:02 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 13 Dec 2019 20:33:00 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xBDKWxtb40173952
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Dec 2019 20:33:00 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DDF0011C052;
+ Fri, 13 Dec 2019 20:32:59 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2728711C04A;
+ Fri, 13 Dec 2019 20:32:58 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.80.213.32])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 13 Dec 2019 20:32:57 +0000 (GMT)
+Date: Fri, 13 Dec 2019 12:32:55 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <20191213084537.27306-1-aik@ozlabs.ru>
+ <20191213084537.27306-3-aik@ozlabs.ru>
 MIME-Version: 1.0
-In-Reply-To: <524d9848-28a5-7e65-699b-600c49606487@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191213084537.27306-3-aik@ozlabs.ru>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19121320-0016-0000-0000-000002D4936B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121320-0017-0000-0000-00003336C08E
+Message-Id: <20191213203255.GE5702@oc0525413822.ibm.com>
+Subject: Re:  [PATCH kernel 2/3] powerpc/pseries: Allow not having
+ ibm,hypertas-functions::hcall-multi-tce for DDW
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-13_07:2019-12-13,2019-12-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=48
+ mlxlogscore=999 clxscore=1015 adultscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912130151
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,66 +90,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- linux-aspeed@lists.ozlabs.org, Dmitry Safonov <0x7f454c46@gmail.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Paul Mackerras <paulus@samba.org>, "Maciej W. Rozycki" <macro@linux-mips.org>,
- sparclinux@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- Alexandre Torgue <alexandre.torgue@st.com>,
- Vasiliy Khoruzhick <vasilykh@arista.com>, Alexander Shiyan <shc_work@mail.ru>,
- Kevin Hilman <khilman@baylibre.com>, Russell King <linux@armlinux.org.uk>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- Joel Stanley <joel@jms.id.au>, linux-serial@vger.kernel.org,
- Jiri Slaby <jslaby@suse.com>, Orson Zhai <orsonzhai@gmail.com>,
- Iurii Zaikin <yzaikin@google.com>, NXP Linux Team <linux-imx@nxp.com>,
- Michal Simek <michal.simek@xilinx.com>, Kees Cook <keescook@chromium.org>,
- linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
- =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
- Johan Hovold <johan@kernel.org>, Baolin Wang <baolin.wang7@gmail.com>,
- Florian Fainelli <f.fainelli@gmail.com>, linux-amlogic@lists.infradead.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, Timur Tabi <timur@kernel.org>,
- Andrew Jeffery <andrew@aj.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- Patrice Chotard <patrice.chotard@st.com>, Tony Prisk <linux@prisktech.co.nz>,
- Richard Genoud <richard.genoud@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, linux-fsdevel@vger.kernel.org,
- Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On Fri, Dec 13, 2019 at 07:45:36PM +1100, Alexey Kardashevskiy wrote:
+> By default a pseries guest supports a H_PUT_TCE hypercall which maps
+> a single IOMMU page in a DMA window. Additionally the hypervisor may
+> support H_PUT_TCE_INDIRECT/H_STUFF_TCE which update multiple TCEs at once;
+> this is advertised via the device tree /rtas/ibm,hypertas-functions
+> property which Linux converts to FW_FEATURE_MULTITCE.
 
-On 12/13/19 5:47 AM, Christophe Leroy wrote:
-> Le 13/12/2019 à 01:05, Dmitry Safonov a écrit :
-[..]
+Thanks Alexey for the patches!
+
 > 
-> powerpc patchwork didn't get the full series, see
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=148198
+> FW_FEATURE_MULTITCE is checked when dma_iommu_ops is used; however
+> the code managing the huge DMA window (DDW) ignores it and calls
+> H_PUT_TCE_INDIRECT even if it is explicitly disabled via
+> the "multitce=off" kernel command line parameter.
 
-Yes, I was under impression that architecture mail-lists want related
-patches. But now I see that from the patchwork point of view it's better
-to have the whole series in inbox.
+Also H_PUT_TCE_INDIRECT should not be called in secure VM, even when
+"multitce=on".  right? Or does it get disabled somehow in the 
+secure guest?
 
-> Can't find them on linux-serial patchwork either
-> (https://patches.linaro.org/project/linux-serial/list/)
 
-I'm not sure - maybe the frequency of checking is low?
-I see all patches in linux-serial ml:
-https://marc.info/?l=linux-serial&r=1&b=201912&w=2
+> 
+> This adds FW_FEATURE_MULTITCE checking to the DDW code path.
+> 
+> This changes tce_build_pSeriesLP to take liobn and page size as
+> the huge window does not have iommu_table descriptor which usually
+> the place to store these numbers.
+> 
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> ---
+> 
+> The idea is then set FW_FEATURE_MULTITCE in init_svm() and have the guest
 
-> It is impossible to review/test powerpc bits without the first patches
-> of the series, where can the entire series be found ?
+I think, you mean unset FW_FEATURE_MULTITCE.
 
-Sorry for the inconvenience.
-I can resend without Cc'ing all people just to ppc mail-list if that
-works for you. Or you can clone it directly from my github:
-https://github.com/0x7f454c46/linux/tree/sysrq-serial-seq-v1
+> use H_PUT_TCE without sharing a (temporary) page for H_PUT_TCE_INDIRECT.
+> ---
+>  arch/powerpc/platforms/pseries/iommu.c | 44 ++++++++++++++++++--------
+>  1 file changed, 30 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index df7db33ca93b..f6e9b87c82fc 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -132,10 +132,10 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
+>  	return be64_to_cpu(*tcep);
+>  }
+> 
+> -static void tce_free_pSeriesLP(struct iommu_table*, long, long);
+> +static void tce_free_pSeriesLP(unsigned long liobn, long, long);
+>  static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
+> 
+> -static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
+> +static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
+>  				long npages, unsigned long uaddr,
+>  				enum dma_data_direction direction,
+>  				unsigned long attrs)
+> @@ -146,25 +146,25 @@ static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>  	int ret = 0;
+>  	long tcenum_start = tcenum, npages_start = npages;
+> 
+> -	rpn = __pa(uaddr) >> TCE_SHIFT;
+> +	rpn = __pa(uaddr) >> tceshift;
+>  	proto_tce = TCE_PCI_READ;
+>  	if (direction != DMA_TO_DEVICE)
+>  		proto_tce |= TCE_PCI_WRITE;
+> 
+>  	while (npages--) {
+> -		tce = proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT;
+> -		rc = plpar_tce_put((u64)tbl->it_index, (u64)tcenum << 12, tce);
+> +		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
+> +		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
+> 
+>  		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
+>  			ret = (int)rc;
+> -			tce_free_pSeriesLP(tbl, tcenum_start,
+> +			tce_free_pSeriesLP(liobn, tcenum_start,
+>  			                   (npages_start - (npages + 1)));
+>  			break;
+>  		}
+> 
+>  		if (rc && printk_ratelimit()) {
+>  			printk("tce_build_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
+> -			printk("\tindex   = 0x%llx\n", (u64)tbl->it_index);
+> +			printk("\tindex   = 0x%llx\n", (u64)liobn);
+>  			printk("\ttcenum  = 0x%llx\n", (u64)tcenum);
+>  			printk("\ttce val = 0x%llx\n", tce );
+>  			dump_stack();
+> @@ -193,7 +193,8 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>  	unsigned long flags;
+> 
+>  	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_MULTITCE)) {
+> -		return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
+> +		return tce_build_pSeriesLP(tbl->it_index, tcenum,
+> +					   tbl->it_page_shift, npages, uaddr,
+>  		                           direction, attrs);
+>  	}
+> 
+> @@ -209,8 +210,9 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>  		/* If allocation fails, fall back to the loop implementation */
+>  		if (!tcep) {
+>  			local_irq_restore(flags);
+> -			return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
+> -					    direction, attrs);
+> +			return tce_build_pSeriesLP(tbl->it_index, tcenum,
+> +					tbl->it_page_shift,
+> +					npages, uaddr, direction, attrs);
+>  		}
+>  		__this_cpu_write(tce_page, tcep);
+>  	}
+> @@ -261,16 +263,16 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>  	return ret;
+>  }
+> 
+> -static void tce_free_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
+> +static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
+>  {
+>  	u64 rc;
+> 
+>  	while (npages--) {
+> -		rc = plpar_tce_put((u64)tbl->it_index, (u64)tcenum << 12, 0);
+> +		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
+> 
+>  		if (rc && printk_ratelimit()) {
+>  			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
+> -			printk("\tindex   = 0x%llx\n", (u64)tbl->it_index);
+> +			printk("\tindex   = 0x%llx\n", (u64)liobn);
+>  			printk("\ttcenum  = 0x%llx\n", (u64)tcenum);
+>  			dump_stack();
+>  		}
+> @@ -285,7 +287,7 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
+>  	u64 rc;
+> 
+>  	if (!firmware_has_feature(FW_FEATURE_MULTITCE))
+> -		return tce_free_pSeriesLP(tbl, tcenum, npages);
+> +		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
+> 
+>  	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
+> 
+> @@ -400,6 +402,20 @@ static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
+>  	u64 rc = 0;
+>  	long l, limit;
+> 
+> +	if (!firmware_has_feature(FW_FEATURE_MULTITCE)) {
 
-Thanks,
-          Dmitry
+this code should execute in  secure guest. Which means we need a
+	' || is_secure_guest() '   check.
+
+
+> +		unsigned long tceshift = be32_to_cpu(maprange->tce_shift);
+> +		unsigned long dmastart = (start_pfn << PAGE_SHIFT) +
+> +				be64_to_cpu(maprange->dma_base);
+> +		unsigned long tcenum = dmastart >> tceshift;
+> +		unsigned long npages = num_pfn << PAGE_SHIFT >>
+> +				be32_to_cpu(maprange->tce_shift);
+> +		void *uaddr = __va(start_pfn << PAGE_SHIFT);
+> +
+> +		return tce_build_pSeriesLP(be32_to_cpu(maprange->liobn),
+> +				tcenum, tceshift, npages, (unsigned long) uaddr,
+> +				DMA_BIDIRECTIONAL, 0);
+> +	}
+> +
+>  	local_irq_disable();	/* to protect tcep and the page behind it */
+>  	tcep = __this_cpu_read(tce_page);
+
+RP
+
