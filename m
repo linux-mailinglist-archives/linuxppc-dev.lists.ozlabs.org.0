@@ -2,74 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B5411E2FB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 12:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2451A11E360
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 13:11:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Z86H15h5zDrF4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 22:47:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Z8f425w4zDrFD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 23:11:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="m4cjFtGL"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Z83h0RsSzDrCW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 22:45:01 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47Z83T0PBLz9vBJw;
- Fri, 13 Dec 2019 12:44:53 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=m4cjFtGL; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 5SpWWOJ66fyK; Fri, 13 Dec 2019 12:44:52 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47Z83S6KYcz9vBJv;
- Fri, 13 Dec 2019 12:44:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1576237492; bh=GXcNSiIRiKyDXyT92jW4k31tmkd7NQbvaQCCa3tyddM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=m4cjFtGL8SkCpYJQPnCwHiliR5AgfcG6foyAqvIzxOuLBFFwNCSce0Ossokt85nR5
- rX93sRfRc/CcwJ1XvylByHJRFSyfDbT3OrDLWC6BlQ4Y4f3YxOrcZnilJc2kndrVEX
- vtb0MwixQoFPgUuBQomOOm+9Hd3sGWGlu8zb5sdc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 240FD8B8B1;
- Fri, 13 Dec 2019 12:44:54 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sa1BVUFoOkYZ; Fri, 13 Dec 2019 12:44:54 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B2A7C8B8AE;
- Fri, 13 Dec 2019 12:44:53 +0100 (CET)
-Subject: Re: [PATCH 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-To: Daniel Axtens <dja@axtens.net>, aneesh.kumar@linux.ibm.com,
- bsingharora@gmail.com
-References: <20190806233827.16454-1-dja@axtens.net>
- <20190806233827.16454-5-dja@axtens.net>
- <372df444-27e7-12a7-0bdb-048f29983cf4@c-s.fr>
- <878snkdauf.fsf@dja-thinkpad.axtens.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <464a8b50-0d4c-b1ea-485b-851f7cd7643b@c-s.fr>
-Date: Fri, 13 Dec 2019 12:44:53 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Z8ZB29lYzDqKV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 23:08:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="WXZ8TIT/"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47Z8Z75M69z9sNH;
+ Fri, 13 Dec 2019 23:07:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1576238880;
+ bh=T73UbJx6DhmwQ1N/iNMIavMt3Lbs62DgCQLGRpz+/FM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=WXZ8TIT/18VCusfv0/4GxMXeLZyG9e/dxQn9uQb2kX1dBzq4bQQLvVRkSqv62BI6A
+ nf6xFtNVGbDVzJg55Mx3ZN+XCZC54kP7PVy2cg0VJSy4UAVirl9uhRJIUPUJpTjHiN
+ yOmNGNyXzg0i/vEoHp21xNf+AI3vCnFO5xIGtk7Ad+ndOIhFeluKeH/27NOg3+/kxb
+ 7eiRc8TEh2W/q52qnAy4vz7t5QWgeFUNxAj9klDYnCPW4CsplJ9n6gZ0E1nTvhAcQ3
+ uv4xbOfhW0ZmA6C3Z8wDOrRZlJtjMuQfNXEdv2MzNXfL+Qr9T+DJvXS4fpvy2LZgGS
+ ccnL2ZE0DQeew==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+In-Reply-To: <20191212104610.GW2827@hirez.programming.kicks-ass.net>
+References: <87blslei5o.fsf@mpe.ellerman.id.au>
+ <20191206131650.GM2827@hirez.programming.kicks-ass.net>
+ <875zimp0ay.fsf@mpe.ellerman.id.au>
+ <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+ <20191212100756.GA11317@willie-the-truck>
+ <20191212104610.GW2827@hirez.programming.kicks-ass.net>
+Date: Fri, 13 Dec 2019 23:07:55 +1100
+Message-ID: <87pngso2ck.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <878snkdauf.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,75 +62,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Peter Zijlstra <peterz@infradead.org> writes:
+> On Thu, Dec 12, 2019 at 10:07:56AM +0000, Will Deacon wrote:
+>
+>> > So your proposed change _should_ be fine. Will, I'm assuming you never
+>> > saw this on your ARGH64 builds when you did this code ?
+>> 
+>> I did see it, but (a) looking at the code out-of-line makes it look a lot
+>> worse than it actually is (so the ext4 example is really helpful -- thanks
+>> Michael!) and (b) I chalked it up to a crappy compiler.
+>> 
+>> However, see this comment from Arnd on my READ_ONCE series from the other
+>> day:
+>> 
+>> https://lore.kernel.org/lkml/CAK8P3a0f=WvSQSBQ4t0FmEkcFE_mC3oARxaeTviTSkSa-D2qhg@mail.gmail.com
+>> 
+>> In which case, I'm thinking that we should be doing better in READ_ONCE()
+>> for non-buggy compilers which would also keep the KCSAN folks happy for this
+>> code (and would help with [1] too).
+>
+> So something like this then? Although I suppose that should be moved
+> into compiler-gcc.h and then guarded by #ifndef READ_ONCE or so.
+
+I tried this:
+
+> @@ -295,6 +296,23 @@ void __write_once_size(volatile void *p, void *res, int size)
+>   */
+>  #define READ_ONCE_NOCHECK(x) __READ_ONCE(x, 0)
+>  
+> +#else /* GCC_VERSION < 40800 */
+> +
+> +#define READ_ONCE_NOCHECK(x)						\
+> +({									\
+> +	typeof(x) __x = *(volatile typeof(x))&(x);			\
+
+Didn't compile, needed:
+
+	typeof(x) __x = *(volatile typeof(&x))&(x);			\
 
 
-Le 10/12/2019 à 06:10, Daniel Axtens a écrit :
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> 
->> Le 07/08/2019 à 01:38, Daniel Axtens a écrit :
->>> KASAN support on powerpc64 is interesting:
->>>
->>>    - We want to be able to support inline instrumentation so as to be
->>>      able to catch global and stack issues.
->>>
->>>    - We run a lot of code at boot in real mode. This includes stuff like
->>>      printk(), so it's not feasible to just disable instrumentation
->>>      around it.
->>
->> Have you definitely given up the idea of doing a standard implementation
->> of KASAN like other 64 bits arches have done ?
->>
->> Isn't it possible to setup an early 1:1 mapping and go in virtual mode
->> earlier ? What is so different between book3s64 and book3e64 ?
->> On book3e64, we've been able to setup KASAN before printing anything
->> (except when using EARLY_DEBUG). Isn't it feasible on book3s64 too ?
-> 
-> So I got this pretty wrong when trying to explain it. The problem isn't
-> that we run the code in boot as I said, it's that a bunch of the KVM
-> code runs in real mode.
-
-Ok.
-
-Does it mean we would be able to implement it the standard way when 
-CONFIG_KVM is not selected ?
-
-> 
->>>    - disabled reporting when we're checking the stack for exception
->>>      frames. The behaviour isn't wrong, just incompatible with KASAN.
->>
->> Does this applies to / impacts PPC32 at all ?
-> 
-> It should. I found that when doing stack walks, the code would touch
-> memory that KASAN hadn't unpoisioned. I'm a bit surprised you haven't
-> seen it arise, tbh.
-
-How do you trigger that ?
-
-I've tried to provoke some faults with LKDTM that provoke BUG dumps, but 
-it doesn't trip.
-I also performed task state listing via sysrq, and I don't get anything 
-wrong either.
-
-> 
->>>    - Dropped old module stuff in favour of KASAN_VMALLOC.
->>
->> You said in the cover that this is done to avoid having to split modules
->> out of VMALLOC area. Would it be an issue to perform that split ?
->> I can understand it is not easy on 32 bits because vmalloc space is
->> rather small, but on 64 bits don't we have enough virtual space to
->> confortably split modules out of vmalloc ? The 64 bits already splits
->> ioremap away from vmalloc whereas 32 bits have them merged too.
-> 
-> I could have done this. Maybe I should have done this. But now I have
-> done vmalloc space support.
-
-So you force the use of KASAN_VMALLOC ? Doesn't it have a performance 
-impact ?
+> +	smp_read_barrier_depends();					\
+> +	__x;
+> +})
 
 
-Christophe
+And that works for me. No extra stack check stuff.
+
+I guess the question is does that version of READ_ONCE() implement the
+read once semantics. Do we have a good way to test that?
+
+The only differences are because of the early return in the generic
+test_and_set_bit_lock():
+
+   1 <ext4_resize_begin_generic>:                            1 <ext4_resize_begin_ppc>:
+   2         addis   r2,r12,281                              2         addis   r2,r12,281
+   3         addi    r2,r2,-22368                            3         addi    r2,r2,-22064
+   4         mflr    r0                                      4         mflr    r0
+   5         bl      <_mcount>                               5         bl      <_mcount>
+   6         mflr    r0                                      6         mflr    r0
+   7         std     r31,-8(r1)                              7         std     r31,-8(r1)
+   8         std     r30,-16(r1)                             8         std     r30,-16(r1)
+   9         mr      r31,r3                                  9         mr      r31,r3
+  10         li      r3,24                                  10         li      r3,24
+  11         std     r0,16(r1)                              11         std     r0,16(r1)
+  12         stdu    r1,-128(r1)                            12         stdu    r1,-112(r1)
+  13         ld      r30,920(r31)                           13         ld      r30,920(r31)
+  14         bl      <capable+0x8>                          14         bl      <capable+0x8>
+  15         nop                                            15         nop
+  16         cmpdi   cr7,r3,0                               16         cmpdi   cr7,r3,0
+  17         beq     cr7,<ext4_resize_begin_generic+0xf0>   17         beq     cr7,<ext4_resize_begin_ppc+0xc0>
+  18         ld      r9,920(r31)                            18         ld      r9,920(r31)
+  19         ld      r10,96(r30)                            19         ld      r10,96(r30)
+  20         lwz     r7,84(r30)                             20         lwz     r7,84(r30)
+  21         ld      r8,104(r9)                             21         ld      r8,104(r9)
+  22         ld      r10,24(r10)                            22         ld      r10,24(r10)
+  23         lwz     r8,20(r8)                              23         lwz     r8,20(r8)
+  24         srd     r10,r10,r7                             24         srd     r10,r10,r7
+  25         cmpd    cr7,r10,r8                             25         cmpd    cr7,r10,r8
+  26         bne     cr7,<ext4_resize_begin_generic+0x128>  26         bne     cr7,<ext4_resize_begin_ppc+0xf8>
+  27         lhz     r10,160(r9)                            27         lhz     r10,160(r9)
+  28         andi.   r10,r10,2                              28         andi.   r10,r10,2
+  29         bne     <ext4_resize_begin_generic+0x100>
+  30         ld      r10,560(r9)
+  31         std     r10,104(r1)
+  32         ld      r10,104(r1)
+  33         andi.   r10,r10,1
+  34         bne     <ext4_resize_begin_generic+0xd0>       29         bne     <ext4_resize_begin_ppc+0xd0>
+  35         addi    r7,r9,560                              30         addi    r9,r9,560
+  36         li      r8,1                                   31         li      r10,1
+  37         ldarx   r10,0,r7                               32         ldarx   r3,0,r9,1
+  38         or      r6,r8,r10                              33         or      r8,r3,r10
+  39         stdcx.  r6,0,r7                                34         stdcx.  r8,0,r9
+  40         bne-    <ext4_resize_begin_generic+0x8c>       35         bne-    <ext4_resize_begin_ppc+0x78>
+  41         isync                                          36         isync
+                                                            37         clrldi  r3,r3,63
+  42         andi.   r9,r10,1                               38         addi    r3,r3,-1
+  43         li      r3,0                                   39         rlwinm  r3,r3,0,27,27
+  44         bne     <ext4_resize_begin_generic+0xd0>       40         addi    r3,r3,-16
+  45         addi    r1,r1,128                              41         addi    r1,r1,112
+  46         ld      r0,16(r1)                              42         ld      r0,16(r1)
+  47         ld      r30,-16(r1)                            43         ld      r30,-16(r1)
+  48         ld      r31,-8(r1)                             44         ld      r31,-8(r1)
+  49         mtlr    r0                                     45         mtlr    r0
+  50         blr                                            46         blr
+  51         nop                                            47         nop
+  52         nop                                            48         nop
+  53         nop                                            49         nop
+  54         addi    r1,r1,128
+  55         li      r3,-16
+  56         ld      r0,16(r1)
+  57         ld      r30,-16(r1)
+  58         ld      r31,-8(r1)
+  59         mtlr    r0
+  60         blr
+  61         nop
+  62         li      r3,-1                                  50         li      r3,-1
+  63         b       <ext4_resize_begin_generic+0xac>       51         b       <ext4_resize_begin_ppc+0x9c>
+  64         nop                                            52         nop
+  65         nop                                            53         nop
+  66         addis   r6,r2,-117                             54         addis   r6,r2,-117
+  67         addis   r4,r2,-140                             55         addis   r4,r2,-140
+  68         mr      r3,r31                                 56         mr      r3,r31
+  69         li      r5,146                                 57         li      r5,83
+  70         addi    r6,r6,-32736                           58         addi    r6,r6,-32736
+  71         addi    r4,r4,3088                             59         addi    r4,r4,3064
+  72         bl      <__ext4_warning+0x8>                   60         bl      <__ext4_warning+0x8>
+  73         nop                                            61         nop
+  74         li      r3,-1                                  62         li      r3,-1
+  75         b       <ext4_resize_begin_generic+0xac>       63         b       <ext4_resize_begin_ppc+0x9c>
+  76         ld      r9,96(r9)                              64         ld      r9,96(r9)
+  77         addis   r6,r2,-118                             65         addis   r6,r2,-118
+  78         addis   r4,r2,-140                             66         addis   r4,r2,-140
+  79         mr      r3,r31                                 67         mr      r3,r31
+  80         li      r5,136                                 68         li      r5,73
+  81         addi    r6,r6,32752                            69         addi    r6,r6,32752
+  82         addi    r4,r4,3088                             70         addi    r4,r4,3064
+  83         ld      r7,24(r9)                              71         ld      r7,24(r9)
+  84         bl      <__ext4_warning+0x8>                   72         bl      <__ext4_warning+0x8>
+  85         nop                                            73         nop
+  86         li      r3,-1                                  74         li      r3,-1
+  87         b       <ext4_resize_begin_generic+0xac>       75         b       <ext4_resize_begin_ppc+0x9c>
+
+
+cheers
