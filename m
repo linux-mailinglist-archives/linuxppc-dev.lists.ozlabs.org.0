@@ -1,89 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC43911ED60
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2019 23:03:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ZPnK4ntszDrKV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 09:03:33 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F47D11EF81
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 02:29:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ZVM54JYwzDqlX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 12:29:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::143;
- helo=mail-lf1-x143.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.b="OMLOqShW"; dkim-atps=neutral
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZPl33D1fzDqk7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 09:01:33 +1100 (AEDT)
-Received: by mail-lf1-x143.google.com with SMTP id f15so331792lfl.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 14:01:33 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZVKG6CG2zDqFZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 12:28:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=netronome.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=netronome-com.20150623.gappssmtp.com
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="urN4yCff"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47ZVKF3jXmz8t1l
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 12:28:01 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47ZVKF38S6z9sPh; Sat, 14 Dec 2019 12:28:01 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=netronome.com
+ (client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
+ envelope-from=jakub.kicinski@netronome.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=netronome.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=netronome-com.20150623.gappssmtp.com
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="urN4yCff"; 
+ dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47ZVKD1FHNz9sPW
+ for <linuxppc-dev@ozlabs.org>; Sat, 14 Dec 2019 12:27:58 +1100 (AEDT)
+Received: by mail-lf1-x142.google.com with SMTP id b15so594452lfc.4
+ for <linuxppc-dev@ozlabs.org>; Fri, 13 Dec 2019 17:27:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zfICJ6KhaPZeol1tl5aqhZNB4nOYiiQp60xAzoCt3JU=;
- b=OMLOqShWneJ3fe3UbyHRP01hVO4iIEtu+rKtip4uFYuny7eKWa9RVguRhdDXyGlazr
- Vu8irtlqDqkjSxlpxcEnR/mPZqGnWrv40jn+8NdgbI7DAtOpxmVjJ6hnmrSN7O80Gy2B
- 6ZEjjOYm27LL3/V26Z0KJqLy5QPWKtyS57u7I=
+ d=netronome-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :organization:mime-version:content-transfer-encoding;
+ bh=ScGB0uaG1N2MTFqjHS89TM7sGKsmj+KybyTlxQc+/kA=;
+ b=urN4yCffQ5LSBNl1Z4RFIiOkL8cXsodyn7ff1+7ETynmlW15+okWCxijdAyaukz+TO
+ gUdfs3pV9ISDCVljmx0R/i3DGQpeHwB6lMvRZGHcBkjjXGodeeGo991HuSzupHSswROS
+ sS3bmtwrvuY/yIQqIKi1nsTc2BTtcnTD9FUfuu6L87zy+XI5oLzdEPkSSTRUj2jRt5cK
+ sTRIVLwSZfAsTPyvAifl7PA80V+1eS0kgmmfaBZIzOHj5S4J6CLjaOaid6I8t8kX9US+
+ MDKiaJ9+9Q7Zpcb2gcyR++s9kvrSn0qyJwtaSpX29QzCX/skTVwfoDYDvveA6Dh+iTlk
+ +bRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zfICJ6KhaPZeol1tl5aqhZNB4nOYiiQp60xAzoCt3JU=;
- b=o6GC4MbmYR9LHtokU/2p4kxRgl5trKl14CmeEwNnGqrzaJ4fZdMQIZTHvNJnR8Drr2
- YIAUY/mn3dAbjPXIMjJp4Xtmi/ivV5QRBGl3JbJ/5j0rcTUpKzFnhqGsdjWGDzmsfP71
- kHN26VTJPFyyZCTxQ5Ny8g6X+EhVwabUq852pX9b8KZxROu1g3SQqBUzcv86oUQc+yGh
- W5iVlZy+Ul/uvBHIXEQ+El+Sv/nFdnfeQY++vYoqm+GgW90+Br4Pjb7pyFbzvqkvl9+m
- jFbcsUDIkp/jxY7ORqtwl44loCd2Tzz/16bipx6WQ4wFNuclktjlITqfgMMlLBcCKTRA
- V04g==
-X-Gm-Message-State: APjAAAWxA4XicdSw3wxLIJ6AxpSII3sG/Mc2qXwbsGb3jFPSFImhQOrF
- tyQFu6RllWuzgIe7hoeA6T75xLkhfTg=
-X-Google-Smtp-Source: APXvYqwMwBnj3vkafAZO/NpOYzArZsFg0WK1AiSZgQHvCgY8iD5qgi6UGB+HV8TIBd36DbfGHUINcQ==
-X-Received: by 2002:ac2:4945:: with SMTP id o5mr9959752lfi.93.1576274489078;
- Fri, 13 Dec 2019 14:01:29 -0800 (PST)
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com.
- [209.85.167.54])
- by smtp.gmail.com with ESMTPSA id g27sm5151325lfj.49.2019.12.13.14.01.26
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2019 14:01:27 -0800 (PST)
-Received: by mail-lf1-f54.google.com with SMTP id m30so350803lfp.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2019 14:01:26 -0800 (PST)
-X-Received: by 2002:a05:6512:1dd:: with SMTP id
- f29mr10402310lfp.106.1576274486558; 
- Fri, 13 Dec 2019 14:01:26 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:organization:mime-version:content-transfer-encoding;
+ bh=ScGB0uaG1N2MTFqjHS89TM7sGKsmj+KybyTlxQc+/kA=;
+ b=nA13EFEPUeNOw4x1s9QKhlr3EL5TA25TvLMT/jhhW7URkshngqW2t14sxkIBIfThEv
+ TC8ej1EuPi0cA3qy3vBhaQv5DR0mG38UFaHDkYpfeor1xBOh+FF2i8QiV3DUo5ReiLTO
+ 60n7HYRdgPVnxNWFbzw4BEUakwDBvwYdr0/aq1k4WLhhN1UjKDFazdwP9Lw2FkrmTbMU
+ lDGnRQEyo4ODQQHWGvtsfbrxkPBEuBzrzVyJeGrEe+tKkDZjiJAw8pP208SRVauWBWvj
+ QNBPzjnD9KYPKviOlUkQZZeDqd7nPvZq/hRLlZsWwPjtyA/7Z+dMxbu9IG4DNe1VupQd
+ 6bKw==
+X-Gm-Message-State: APjAAAWfmnwSd+z1IdYfAzwFZlFS82Ko6A+Qbp8I7u08W5ZjAYVF/v4E
+ gfxIDHiM07S0HRjgaEVgwww4Ig==
+X-Google-Smtp-Source: APXvYqw7i7YpZIaz4MAOWDRHBsmcdAJkes1rruFV67i8zLlUBMNNDl+QBJYn9uaGrpWJqtY7TYFyMg==
+X-Received: by 2002:a19:c648:: with SMTP id w69mr10408468lff.44.1576286874277; 
+ Fri, 13 Dec 2019 17:27:54 -0800 (PST)
+Received: from cakuba.netronome.com ([66.60.152.14])
+ by smtp.gmail.com with ESMTPSA id v2sm5669883ljv.70.2019.12.13.17.27.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Dec 2019 17:27:54 -0800 (PST)
+Date: Fri, 13 Dec 2019 17:27:47 -0800
+From: Jakub Kicinski <jakub.kicinski@netronome.com>
+To: Thomas Falcon <tlfalcon@linux.ibm.com>
+Subject: Re: [PATCH net v2] net/ibmvnic: Fix typo in retry check
+Message-ID: <20191213172747.5e5310c9@cakuba.netronome.com>
+In-Reply-To: <1576078719-9604-1-git-send-email-tlfalcon@linux.ibm.com>
+References: <1576078719-9604-1-git-send-email-tlfalcon@linux.ibm.com>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-References: <87blslei5o.fsf@mpe.ellerman.id.au>
- <20191206131650.GM2827@hirez.programming.kicks-ass.net>
- <875zimp0ay.fsf@mpe.ellerman.id.au>
- <20191212080105.GV2844@hirez.programming.kicks-ass.net>
- <20191212100756.GA11317@willie-the-truck>
- <20191212104610.GW2827@hirez.programming.kicks-ass.net>
- <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
- <20191212180634.GA19020@willie-the-truck>
- <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
- <20191212193401.GB19020@willie-the-truck>
- <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
- <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
- <CAK8P3a014U76S+t3rKyPghepOT_fYHBExuMC27MoGMNffjczEw@mail.gmail.com>
-In-Reply-To: <CAK8P3a014U76S+t3rKyPghepOT_fYHBExuMC27MoGMNffjczEw@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 13 Dec 2019 14:01:10 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgsN+0i8mF_1L8zDvY0XJEkZNumT1dH0NBiSbecZZ3+HA@mail.gmail.com>
-Message-ID: <CAHk-=wgsN+0i8mF_1L8zDvY0XJEkZNumT1dH0NBiSbecZZ3+HA@mail.gmail.com>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,29 +99,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
+Cc: julietk@linux.vnet.ibm.com, netdev@vger.kernel.org, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 13, 2019 at 1:33 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> A few hundred randconfig (x86, arm32 and arm64) builds later I
-> still only found one other instance:
+On Wed, 11 Dec 2019 09:38:39 -0600, Thomas Falcon wrote:
+> This conditional is missing a bang, with the intent
+> being to break when the retry count reaches zero.
+> 
+> Fixes: 476d96ca9c ("ibmvnic: Bound waits for device queries")
+> Suggested-by: Juliet Kim <julietk@linux.vnet.ibm.com>
+> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
 
-Just send me the pull request to READ_ONCE() and WRITE_ONCE() be
-arithmetic types, and your two trivial fixes, and let's get this over
-with.
+Ah damn, looks like this originates from my pseudo code.
 
-With that, you can remove the 'volatile' with my simple
-'typeof(0+*(p))' trick, and we're all good, and we don't need to worry
-about compiler versions either.
+I had to fix the fixes tag:
 
-I'm willing to take that after the merge window as a "sanity fix".
+Commit: 847496ccfa22 ("net/ibmvnic: Fix typo in retry check")
+	Fixes tag: Fixes: 476d96ca9c ("ibmvnic: Bound waits for device queries")
+	Has these problem(s):
+		- SHA1 should be at least 12 digits long
+		  Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+		  or later) just making sure it is not set (or set to "auto").
 
-             Linus
+Applied to net, thanks!
+
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+> index efb0f10..2d84523 100644
+> --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> @@ -184,7 +184,7 @@ static int ibmvnic_wait_for_completion(struct ibmvnic_adapter *adapter,
+>  			netdev_err(netdev, "Device down!\n");
+>  			return -ENODEV;
+>  		}
+> -		if (retry--)
+> +		if (!retry--)
+>  			break;
+>  		if (wait_for_completion_timeout(comp_done, div_timeout))
+>  			return 0;
+
