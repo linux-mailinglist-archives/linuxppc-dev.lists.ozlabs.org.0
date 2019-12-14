@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9382A11F378
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 19:16:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Zwhb60hqzDqyH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 05:16:15 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 626DF11F37D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 19:20:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Zwnn0ks5zDq5t
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 05:20:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=tiny.windzz@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=tiny.windzz@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Gv/VdsoR"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="jwbTlKjU"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ZwDK4W9JzDqxt
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 04:55:13 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id x184so3258304pfb.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 09:55:13 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ZwDN5YsJzDqyP
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 04:55:16 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id v93so1123004pjb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 09:55:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=nt2pN2PNTd9g1AzNbzq97oeN58SK9gcKW9K3SpO8TF4=;
- b=Gv/VdsoRgHpB/c2yhY2FchQl8GlLj2LlyDV4SziV3wj7136aNHsMcLqaDjKfQbUYQ5
- Ldl81jRSZL58cvErn85BIIYXKzfWUj5bfw5iobZJgqKqqmNhqRE1ByUn0dqGpOHr+Rnw
- wuD3z+aSoLOmJQIgJTqLwfsPq9y1aaDENwT5ZKsDlK9a6T6/kGECY9UfcDScfSdw6M7c
- U0z6d7KxleQpb4fK+hl28q/5ksU/irT2Sm/TwLTtz3ifQDnwg8gLJbGCbseQbmcblxt2
- BYYdY6ud2OupWCJBTlY96/jwPXSOxJkm5e3elKHdaVSnBwj+rxXpCv7ev/+hyx4Lko4b
- e+fQ==
+ bh=p464edzUa2iPp9uHgJjpc0nSudXprxPgj9c87WZ/a/8=;
+ b=jwbTlKjUlgdBEVsfFGJ0AFRM27IrT+5/nGVpeqjmCQY8Pvog9nLbJEGs3BoJShCWcc
+ HUCs/NcUJEbspXufkbpSOSgpcLjHI9uSC2uL8deL98KCPLdAycltVaMbDTSY7BfErs2r
+ 3jb+3au9m3HLLvo5IanTkhro0u+uMh+7QnL1Kmvn6n0zxgK8PqWxjbHB9UOlTP9lJERQ
+ fRA0q2rQ0Mg0I4cJZ6oR/WvAPyLLemDcLzfJOfJwdMDJDyZj6sbgdurkJ9mbvF3rvF94
+ qtAuTF6Xj2R2j2anoXaTjjEStkzmzXjXeUm9O3eCz5K6gXyVi95VvTd8QtE1eKhmZ/RZ
+ FutA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=nt2pN2PNTd9g1AzNbzq97oeN58SK9gcKW9K3SpO8TF4=;
- b=RN1DFtjCyot3nEQ5arGcN0X9WYcDzjp4YhgZbgmssxk90ZjDvngxWL98Go8rmz3Brd
- CHgZVy0WYiRBSv0Edta5HDhh56O6EH/05kPMdlEeV6ANS/drEn0Ow00zDNqvSkkeYM6l
- BOsFjx6BUOf77c9Tm7T6k0aCF9Vye9pmRwLeKrPo0vbj0vDRZy+pwikmuoKN3YydBkXV
- 1YxbxdSx9ezNEd1VWgImZd+VAHjjx8Phz6hp48pY9vBXp3OhA3yt2Gq7NiLnVQB8whdo
- JKgPPNpYM79z2mO05YH1xdv/0utMpASspFRPPBIjAmiY04a+nkeof0fSUMy7YnOcUpJO
- /5tg==
-X-Gm-Message-State: APjAAAXp8LEAIuNzOIMti6vhwj76kTlGkLvfkP4KRYJiRYy/F6OW4ILT
- YiBZAhNQ2wyVQh02iNLz+FQ=
-X-Google-Smtp-Source: APXvYqybjjn/TOWlA2h31OJeNnxlYt/SPwXnKosPeewYaqCCBb4gKJUgt8Nd9pDHs/jf79O1lcti/g==
-X-Received: by 2002:aa7:848c:: with SMTP id u12mr6216069pfn.12.1576346111060; 
- Sat, 14 Dec 2019 09:55:11 -0800 (PST)
+ bh=p464edzUa2iPp9uHgJjpc0nSudXprxPgj9c87WZ/a/8=;
+ b=XvmaTSTGXSVibZUz47aj0S5k/1bALvhzKv3NYOjNm0tTOLpfOM8lNOfdUGKbQr6pPo
+ Myy8tK3cyMffFE2LWqGlRTm187BLyR0jc/KHxfahKu/VPrPA1IBdOyaBUmKxUVM2yqrY
+ 783OGac6IuaiKcxKN8ypYShW2d96n9WY7Fny0uxscAA+Jl8jUkW7RGzdmpo+bhsZZ78L
+ M/BloP2cwzJM2TbJcoz4zePOG/PNakknCHeWKRwtBrOHt9zJruH83gx2vp0Qcde2hWk0
+ zOvGDyJZPWfeRNrElXeBxdMjM/2Y8neTLI71O4WB9ffVgdV7eN/WHyuVxkt+lis8bWod
+ PqMg==
+X-Gm-Message-State: APjAAAUqqDtv1AwAiABWJplafSsYD6njiOWtZc58nZR7VVOe6C0vCMtg
+ VsVqNn9JlqjCOmLjWXt4t/4=
+X-Google-Smtp-Source: APXvYqxG8GAI4f/vKneCzHJdyU3sDnTOcUKGttUJVG0Uipa0HZQ6CtNPSXlPYC7sJOX/nTAUj+QlEA==
+X-Received: by 2002:a17:90a:374b:: with SMTP id
+ u69mr6820565pjb.23.1576346114545; 
+ Sat, 14 Dec 2019 09:55:14 -0800 (PST)
 Received: from localhost ([2001:19f0:6001:12c8:5400:2ff:fe72:6403])
- by smtp.gmail.com with ESMTPSA id p5sm15841692pga.69.2019.12.14.09.55.10
+ by smtp.gmail.com with ESMTPSA id z23sm14868517pgj.43.2019.12.14.09.55.13
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sat, 14 Dec 2019 09:55:10 -0800 (PST)
+ Sat, 14 Dec 2019 09:55:13 -0800 (PST)
 From: Yangtao Li <tiny.windzz@gmail.com>
 To: khilman@baylibre.com, leoyang.li@nxp.com, khalasa@piap.pl,
  john@phrozen.org, matthias.bgg@gmail.com, agross@kernel.org,
  bjorn.andersson@linaro.org, kgene@kernel.org, krzk@kernel.org,
  mripard@kernel.org, wens@csie.org, ssantosh@kernel.org, jun.nie@linaro.org,
  shawnguo@kernel.org
-Subject: [PATCH 07/10] soc: ti: wkup_m3_ipc: convert to
- devm_platform_ioremap_resource
-Date: Sat, 14 Dec 2019 17:54:44 +0000
-Message-Id: <20191214175447.25482-7-tiny.windzz@gmail.com>
+Subject: [PATCH 08/10] soc: lantiq: convert to devm_platform_ioremap_resource
+Date: Sat, 14 Dec 2019 17:54:45 +0000
+Message-Id: <20191214175447.25482-8-tiny.windzz@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191214175447.25482-1-tiny.windzz@gmail.com>
 References: <20191214175447.25482-1-tiny.windzz@gmail.com>
@@ -93,31 +93,29 @@ Use devm_platform_ioremap_resource() to simplify code.
 
 Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 ---
- drivers/soc/ti/wkup_m3_ipc.c | 4 +---
+ drivers/soc/lantiq/fpi-bus.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
-index 378369d9364a..e058f67e6333 100644
---- a/drivers/soc/ti/wkup_m3_ipc.c
-+++ b/drivers/soc/ti/wkup_m3_ipc.c
-@@ -429,7 +429,6 @@ static int wkup_m3_ipc_probe(struct platform_device *pdev)
- 	int irq, ret;
- 	phandle rproc_phandle;
- 	struct rproc *m3_rproc;
--	struct resource *res;
- 	struct task_struct *task;
- 	struct wkup_m3_ipc *m3_ipc;
+diff --git a/drivers/soc/lantiq/fpi-bus.c b/drivers/soc/lantiq/fpi-bus.c
+index cb0303a0fe60..dff1375851cf 100644
+--- a/drivers/soc/lantiq/fpi-bus.c
++++ b/drivers/soc/lantiq/fpi-bus.c
+@@ -28,14 +28,12 @@ static int ltq_fpi_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np = dev->of_node;
+-	struct resource *res_xbar;
+ 	struct regmap *rcu_regmap;
+ 	void __iomem *xbar_membase;
+ 	u32 rcu_ahb_endianness_reg_offset;
+ 	int ret;
  
-@@ -437,8 +436,7 @@ static int wkup_m3_ipc_probe(struct platform_device *pdev)
- 	if (!m3_ipc)
- 		return -ENOMEM;
+-	res_xbar = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	xbar_membase = devm_ioremap_resource(dev, res_xbar);
++	xbar_membase = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xbar_membase))
+ 		return PTR_ERR(xbar_membase);
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	m3_ipc->ipc_mem_base = devm_ioremap_resource(dev, res);
-+	m3_ipc->ipc_mem_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(m3_ipc->ipc_mem_base)) {
- 		dev_err(dev, "could not ioremap ipc_mem\n");
- 		return PTR_ERR(m3_ipc->ipc_mem_base);
 -- 
 2.17.1
 
