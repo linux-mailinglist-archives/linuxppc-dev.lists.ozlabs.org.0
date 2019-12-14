@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42A411F1D7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 13:35:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A8B11F1CE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 13:32:27 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Zn3p5nBNzDqQW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 23:32:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Zn7g5zbQzDqQW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2019 23:35:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,39 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.b="chfeFSas"; 
+ unprotected) header.d=alien8.de header.i=@alien8.de header.b="TdT7jtcC"; 
  dkim-atps=neutral
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Zmyt54NCzDq6l
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 23:28:03 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Zn0D0tBVzDqTL
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2019 23:29:15 +1100 (AEDT)
 Received: from zn.tnic (p200300EC2F0A5A009CBB5BB8E6A81C1F.dip0.t-ipconnect.de
  [IPv6:2003:ec:2f0a:5a00:9cbb:5bb8:e6a8:1c1f])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 682DF1EC095C;
- Sat, 14 Dec 2019 13:27:40 +0100 (CET)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E3E281EC095C;
+ Sat, 14 Dec 2019 13:29:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1576326460;
+ t=1576326552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=KMOGp1DUcIN500Sf6UYZB3bgYUnXmeQfVRfnvzyLKHY=;
- b=chfeFSasyOvGnWur6zP4vjznxjIxTClbROkym4G+z0Jf+v1/F5zEEQxoTkld0mGQ3/uuKy
- tToyhG1ZCVWakFI2UFgtYTvuCB6F7DakzuI+cYbEVgsMl4UWGFpe0VnsQfw8qY1N6MDSvc
- c5dUrY9q0OXDBpPggRMfLryMpBiGwm8=
-Date: Sat, 14 Dec 2019 13:27:34 +0100
+ bh=8NCoc4fb2yRyFtctOcE7NM5N1P1G1fFp8+EyemH6LM8=;
+ b=TdT7jtcCxSBC/j3j6arokG0EX5msVb8eN5aWP4jJdYexOAWLvsWeWZBIvvXmkU0X9ArVuS
+ YwGvoKUlJJYh8ZU5WSbTyEDdtEZaZSYfT/PXnaXXQCE4JfA3hjcMEIhY8tJDVf8l7s5MbZ
+ NqxojWGpiWAs15TS2oWFCWsHAH08fLE=
+Date: Sat, 14 Dec 2019 13:29:10 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Bhupesh Sharma <bhsharma@redhat.com>
-Subject: Re: [PATCH v5 0/5] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
- for arm64 and MAX_PHYSMEM_BITS for all archs)
-Message-ID: <20191214122734.GC28635@zn.tnic>
-References: <1574972621-25750-1-git-send-email-bhsharma@redhat.com>
+Subject: Re: [PATCH v5 3/5] Documentation/arm64: Fix a simple typo in
+ memory.rst
+Message-ID: <20191214122910.GD28635@zn.tnic>
+References: <1574972716-25858-1-git-send-email-bhsharma@redhat.com>
+ <1574972716-25858-2-git-send-email-bhsharma@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1574972621-25750-1-git-send-email-bhsharma@redhat.com>
+In-Reply-To: <1574972716-25858-2-git-send-email-bhsharma@redhat.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,29 +62,50 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>,
- Dave Anderson <anderson@redhat.com>,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-doc@vger.kernel.org,
  Will Deacon <will@kernel.org>, x86@kernel.org, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
- James Morse <james.morse@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- bhupesh.linux@gmail.com, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, bhupesh.linux@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
  Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 29, 2019 at 01:53:36AM +0530, Bhupesh Sharma wrote:
-> Bhupesh Sharma (5):
->   crash_core, vmcoreinfo: Append 'MAX_PHYSMEM_BITS' to vmcoreinfo
->   arm64/crash_core: Export TCR_EL1.T1SZ in vmcoreinfo
->   Documentation/arm64: Fix a simple typo in memory.rst
->   Documentation/vmcoreinfo: Add documentation for 'MAX_PHYSMEM_BITS'
->   Documentation/vmcoreinfo: Add documentation for 'TCR_EL1.T1SZ'
+On Fri, Nov 29, 2019 at 01:55:14AM +0530, Bhupesh Sharma wrote:
+> Fix a simple typo in arm64/memory.rst
+> 
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: James Morse <james.morse@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Steve Capper <steve.capper@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Signed-off-by: Bhupesh Sharma <bhsharma@redhat.com>
+> ---
+>  Documentation/arm64/memory.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/arm64/memory.rst b/Documentation/arm64/memory.rst
+> index 02e02175e6f5..cf03b3290800 100644
+> --- a/Documentation/arm64/memory.rst
+> +++ b/Documentation/arm64/memory.rst
+> @@ -129,7 +129,7 @@ this logic.
+>  
+>  As a single binary will need to support both 48-bit and 52-bit VA
+>  spaces, the VMEMMAP must be sized large enough for 52-bit VAs and
+> -also must be sized large enought to accommodate a fixed PAGE_OFFSET.
+> +also must be sized large enough to accommodate a fixed PAGE_OFFSET.
+>  
+>  Most code in the kernel should not need to consider the VA_BITS, for
+>  code that does need to know the VA size the variables are
+> -- 
 
-why are those last two separate patches and not part of the patches
-which export the respective variable/define?
+Why is this a separate patch?
 
 -- 
 Regards/Gruss,
