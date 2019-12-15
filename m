@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6404C11F7CF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 13:57:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47bPYl2GQxzDqXb
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 23:56:59 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8CE11F7DD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 14:04:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47bPkp3vxXzDqZS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 00:04:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,53 +19,54 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47bPT25SQczDqXM
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 23:52:54 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47bPgN6lQpzDqNB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 00:01:52 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBFCqAlZ095443; Sun, 15 Dec 2019 07:52:32 -0500
+ xBFCusw0098093; Sun, 15 Dec 2019 08:01:41 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wwdpx38pv-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wvw59t1ry-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 15 Dec 2019 07:52:31 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBFCqVQ4096177;
- Sun, 15 Dec 2019 07:52:31 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wwdpx38pf-1
+ Sun, 15 Dec 2019 08:01:41 -0500
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBFCvdeY099672;
+ Sun, 15 Dec 2019 08:01:41 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wvw59t1re-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 15 Dec 2019 07:52:31 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBFCoXdE009159;
- Sun, 15 Dec 2019 12:52:30 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 2wvqc5x5y7-1
+ Sun, 15 Dec 2019 08:01:41 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBFCxs5K015156;
+ Sun, 15 Dec 2019 13:01:40 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma02dal.us.ibm.com with ESMTP id 2wvqc5x7e4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 15 Dec 2019 12:52:30 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBFCqTrd52560196
+ Sun, 15 Dec 2019 13:01:40 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBFD1cxr26476900
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 15 Dec 2019 12:52:29 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DBF52AC059;
- Sun, 15 Dec 2019 12:52:29 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1D90CAC062;
- Sun, 15 Dec 2019 12:52:29 +0000 (GMT)
+ Sun, 15 Dec 2019 13:01:38 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 972FEC605A;
+ Sun, 15 Dec 2019 13:01:38 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 345D8C6055;
+ Sun, 15 Dec 2019 13:01:38 +0000 (GMT)
 Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Sun, 15 Dec 2019 12:52:28 +0000 (GMT)
-Subject: [PATCH 00/10] crypto/nx: Enable GZIP engine and provide userpace API
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sun, 15 Dec 2019 13:01:37 +0000 (GMT)
+Subject: [PATCH 01/10] powerpc/vas: Define vas_win_paste_addr()
 From: Haren Myneni <haren@linux.ibm.com>
-To: herbert@gondor.apana.org.au, mpe@ellerman.id.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- hch@infradead.org, npiggin@gmail.com, mikey@neuling.org
+To: herbert@gondor.apana.org.au
+In-Reply-To: <1576414240.16318.4066.camel@hbabu-laptop>
+References: <1576414240.16318.4066.camel@hbabu-laptop>
 Content-Type: text/plain; charset="UTF-8"
-Date: Sun, 15 Dec 2019 04:50:39 -0800
-Message-ID: <1576414240.16318.4066.camel@hbabu-laptop>
+Date: Sun, 15 Dec 2019 04:59:48 -0800
+Message-ID: <1576414789.16318.4076.camel@hbabu-laptop>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
@@ -73,11 +74,11 @@ X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-15_03:2019-12-13,2019-12-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011
- impostorscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912150123
+ phishscore=0 suspectscore=1
+ mlxlogscore=981 mlxscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912150124
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,87 +90,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sukadev@linux.vnet.ibm.com
+Cc: mikey@neuling.org, npiggin@gmail.com, hch@infradead.org,
+ linux-crypto@vger.kernel.org, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Power9 processor supports Virtual Accelerator Switchboard (VAS) which
-allows kernel and userspace to send compression requests to Nest
-Accelerator (NX) directly. The NX unit comprises of 2 842 compression
-engines and 1 GZIP engine. Linux kernel already has 842 compression
-support on kernel. This patch series adds GZIP compression support
-from user space. The GZIP Compression engine implements the ZLIB and
-GZIP compression algorithms. No plans of adding NX-GZIP compression
-support in kernel right now.
+Define an interface that the NX drivers can use to find the physical
+paste address of a send window. This interface is expected to be used
+with the mmap() operation of the NX driver's device. i.e the user space
+process can use driver's mmap() operation to map the send window's paste
+address into their address space and then use copy and paste instructions
+to submit the CRBs to the NX engine.
 
-Applications can send requests to NX directly with COPY/PASTE
-instructions. But kernel has to establish channel / window on NX-GZIP
-device for the userspace. So userspace access to the GZIP engine is
-provided through /dev/crypto/nx-gzip device with several several
-operations.
+Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Signed-off-by: Haren Myneni <haren@us.ibm.com>
+---
+ arch/powerpc/include/asm/vas.h              |  5 +++++
+ arch/powerpc/platforms/powernv/vas-window.c | 10 ++++++++++
+ 2 files changed, 15 insertions(+)
 
-An application must open the this device to obtain a file descriptor (fd).
-Using the fd, application should issue the VAS_TX_WIN_OPEN ioctl to
-establish a connection to the engine. Once window is opened, should use
-mmap() system call to map the hardware address of engine's request queue
-into the application's virtual address space. Then user space forms the
-request as co-processor Request Block (CRB) and paste this CRB on the
-mapped HW address using COPY/PASTE instructions. Application can poll
-on status flags (part of CRB) with timeout for request completion.
-
-For VAS_TX_WIN_OPEN ioctl, if user space passes vas_id = -1 (struct
-vas_tx_win_open_attr), kernel determins the VAS instance on the
-corresponding chip based on the CPU on which the process is executing.
-Otherwise, the specified VAS instance is used if application passes the
-proper VAS instance (vas_id listed in /proc/device-tree/vas@*/ibm,vas_id).
-
-Process can open multiple windows with different FDs or can send several
-requests to NX on the same window at the same time.
-
-A userspace library libnxz is available:
-        https://github.com/abalib/power-gzip
-
-Applications that use inflate/deflate calls can link with libNXz and use
-NX GZIP compression without any modification.
-
-Tested the available 842 compression on power8 and power9 system to make
-sure no regression and tested GZIP compression on power9 with tests
-available in the above link.
-
-Thanks to Bulent Abali for nxz library and tests development.
-
-Haren Myneni (10):
-  powerpc/vas: Define vas_win_paste_addr()
-  powerpc/vas: Initialize window attributes for GZIP coprocessor type
-  powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API
-  crypto/nx: Initialize coproc entry with kzalloc
-  crypto/nx: Organize powernv 842 code to add new GZIP compression type
-  crypto/NX: Make code generic to add new GZIP compression type
-  crypto/nx: Enable and setup GZIP compresstion type
-  crypto/NX: Add NX GZIP user space API
-  powerpc/vas: Remove 'pid' in vas_tx_win_attr struct
-  Documentation/powerpc: VAS API
-
- Documentation/ioctl/ioctl-number.rst        |   1 +
- Documentation/powerpc/index.rst             |   1 +
- Documentation/powerpc/vas-api.rst           | 246 +++++++++++++++
- arch/powerpc/include/asm/vas.h              |   6 +-
- arch/powerpc/include/uapi/asm/vas-api.h     |  22 ++
- arch/powerpc/platforms/powernv/vas-window.c |  27 +-
- drivers/crypto/nx/Makefile                  |   2 +-
- drivers/crypto/nx/nx-842-powernv.c          | 412 +-----------------------
- drivers/crypto/nx/nx-842-powernv.h          |  31 ++
- drivers/crypto/nx/nx-commom-powernv.c       | 474 ++++++++++++++++++++++++++++
- drivers/crypto/nx/nx-gzip-powernv.c         | 282 +++++++++++++++++
- 11 files changed, 1094 insertions(+), 410 deletions(-)
- create mode 100644 Documentation/powerpc/vas-api.rst
- create mode 100644 arch/powerpc/include/uapi/asm/vas-api.h
- create mode 100644 drivers/crypto/nx/nx-842-powernv.h
- create mode 100644 drivers/crypto/nx/nx-commom-powernv.c
- create mode 100644 drivers/crypto/nx/nx-gzip-powernv.c
-
+diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+index f93e6b0..6d9e692 100644
+--- a/arch/powerpc/include/asm/vas.h
++++ b/arch/powerpc/include/asm/vas.h
+@@ -163,4 +163,9 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
+  */
+ int vas_paste_crb(struct vas_window *win, int offset, bool re);
+ 
++/*
++ * Return the power bus paste address associated with @win so the caller
++ * can map that address into their address space.
++ */
++extern u64 vas_win_paste_addr(struct vas_window *win);
+ #endif /* __ASM_POWERPC_VAS_H */
+diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+index 5322d1c..b51eac5 100644
+--- a/arch/powerpc/platforms/powernv/vas-window.c
++++ b/arch/powerpc/platforms/powernv/vas-window.c
+@@ -42,6 +42,16 @@ static void compute_paste_address(struct vas_window *window, u64 *addr, int *len
+ 	pr_debug("Txwin #%d: Paste addr 0x%llx\n", winid, *addr);
+ }
+ 
++u64 vas_win_paste_addr(struct vas_window *win)
++{
++	u64 addr;
++
++	compute_paste_address(win, &addr, NULL);
++
++	return addr;
++}
++EXPORT_SYMBOL(vas_win_paste_addr);
++
+ static inline void get_hvwc_mmio_bar(struct vas_window *window,
+ 			u64 *start, int *len)
+ {
 -- 
 1.8.3.1
 
