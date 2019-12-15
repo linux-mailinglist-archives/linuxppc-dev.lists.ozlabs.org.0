@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4D511F8A4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 16:56:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E446811F8B4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 17:03:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47bTXm5VH2zDqZn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 02:56:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47bThl0wd2zDqd7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 03:03:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,20 +18,20 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47bTVm5Z2RzDqX0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 02:54:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47bTfd6ylSzDqXB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 03:01:29 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 205283] BUG: KASAN: global-out-of-bounds in
- _copy_to_iter+0x3d4/0x5a8
-Date: Sun, 15 Dec 2019 15:54:38 +0000
+Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
+ data access at 0x00f0fd0d
+Date: Sun, 15 Dec 2019 16:01:27 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: CC platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: File System
-X-Bugzilla-Component: btrfs
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
@@ -39,12 +39,12 @@ X-Bugzilla-Who: erhard_f@mailbox.org
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: fs_btrfs@kernel-bugs.kernel.org
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-205283-206035-zQBEyuLhNs@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-205283-206035@https.bugzilla.kernel.org/>
-References: <bug-205283-206035@https.bugzilla.kernel.org/>
+Message-ID: <bug-205099-206035-kadYrjzlfY@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
+References: <bug-205099-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -65,23 +65,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D205283
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
---- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
-Steps to reproduce:
+--- Comment #8 from Erhard F. (erhard_f@mailbox.org) ---
+Found out this is probably a cause for bug #205283. For doing some btrfs te=
+sts
+with 5.5-rc1 kernel I needed to disable KASAN in lib/raid6/Makefile
+(KASAN_SANITIZE :=3D n) as btrfs pulls in raid6_pq.
 
-1.) Configure G4 kernel with KASAN enabled
-2.) Disable KASAN in lib/raid6/Makefile with KASAN_SANITIZE :=3D n (to allo=
-w the
-btrfs module to load)
-3.) # modprobe -v btrfs
-4.) # modprobe -r -v btrfs
-5.) # modprobe -v btrfs
+btrfs gets modprobed seemingly ok the 1st time, but removing and reloading =
+it
+provokes bug #205283.
 
-The 2nd time btrfs gets loaded I get this hit. But only once. Further attem=
-ps
-to remove/load btrfs don't provoke the KASAN hit.
+# modprobe -v btrfs
+# modprobe -r -v btrfs
+rmmod btrfs
+rmmod zlib_inflate
+rmmod libcrc32c
+rmmod raid6_pq
+rmmod zlib_deflate
+rmmod lzo_decompress
+rmmod lzo_compress
+rmmod zstd_compress
+rmmod zstd_decompress
+rmmod xor
+# modprobe -v btrfs
+insmod
+/lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/zlib_inflate/zlib_inflate.ko=
+=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/libcrc32c.ko=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/raid6/raid6_pq.ko=20
+insmod
+/lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/zlib_deflate/zlib_deflate.ko=
+=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/lzo/lzo_decompress.ko=
+=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/lzo/lzo_compress.ko=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/zstd/zstd_compress.ko=
+=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/lib/zstd/zstd_decompress.k=
+o=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/crypto/xor.ko=20
+insmod /lib/modules/5.5.0-rc1-PowerMacG4+/kernel/fs/btrfs/btrfs.ko
 
 --=20
 You are receiving this mail because:
-You are watching someone on the CC list of the bug.=
+You are watching the assignee of the bug.=
