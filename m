@@ -1,68 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6404C11F7CF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 13:57:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D81611F798
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 13:02:22 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47bNLf3KhQzDqYn
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 23:02:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47bPYl2GQxzDqXb
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 23:56:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
- helo=mail-io1-xd44.google.com; envelope-from=tiny.windzz@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="OSen5Gcv"; 
- dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47bNJK1ht9zDq5t
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 23:00:17 +1100 (AEDT)
-Received: by mail-io1-xd44.google.com with SMTP id x1so4080263iop.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 04:00:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=U32Ya4ZtyKRe0g31iyaOrg9bNIbVTfXKPEbGivDkS10=;
- b=OSen5Gcvcdj9lEzBZB15Tn6QiRTI9MWlO/rPN49bMq0K83mAgq18VHkzQ7zVlPrjML
- gszdUGt2eF1kyYhDFF+GP7FeP1RPEnPsfH7wY9I095RPAYClYjywGRCaSteDEqN+zK62
- IKehzG864B+NpPZLPI1yH3m0V9J02rnTKvgIZxkccK3VNzHuy++Doo+IV2cQKWeFpyGv
- sOw1S4YJdTl9C8RnFpAVjILHeJMichKHxPUSI98wDRt0UmqQkWCWFLtA7q2g+jukhVzx
- EloylsApJVNnAMvbYem3m+vszDWIyz4reg4yOYbOHfUjbut1/oBMn1uR67AGYca3deCP
- DSrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=U32Ya4ZtyKRe0g31iyaOrg9bNIbVTfXKPEbGivDkS10=;
- b=dRhd9nJQomz+L44+YeCGCqo3msDjGdy/nY661xv+HGCYj6fBiokpBkIrQB2p6reJrj
- 2ym1aYdz+ANP6SBxHLnIsjh7l62+lnbp9j8uCnbHZ8/VNzs2RqCf/gcPQTOO9qqt33lj
- jfYt5B3ibDr09a1C2lAGhx1CqDoozuucyNZcppzCcFyFk84XGwo6RWmHEowLWGTlShh9
- wQ8Zvq4I/BghwppPGZPPBH/EUyUoDY1UXj6FCadwdzTG4usMJ09Y/IMQrAoLE6VoqZAF
- xw1RlmlBoooOEpf12FZPVDH2nQmN7rEI9eDNoSpMiRQEmlJm588jULu3dl0rtfQUHrnI
- s9mg==
-X-Gm-Message-State: APjAAAUHFK8OCbO9Gp5fHifPXgxQcwzuyjecpxOF/xUU7dEGzFRn8H8K
- WEm/KFqHY293Uu8Auq1pI4Wl30piTnTcLG46qjc=
-X-Google-Smtp-Source: APXvYqytWwvnLfUD+171nhXHDbJqlTikV21tQNc2dQdQlOI6X6lJ/eLQFLTNTro7mQyhFx4wzdvzbYn6q+tytdyDIA8=
-X-Received: by 2002:a5d:9f05:: with SMTP id q5mr14678305iot.295.1576411213379; 
- Sun, 15 Dec 2019 04:00:13 -0800 (PST)
-MIME-Version: 1.0
-References: <20191214175447.25482-1-tiny.windzz@gmail.com>
- <20191214175447.25482-10-tiny.windzz@gmail.com>
- <20191215104824.658889d3@why>
-In-Reply-To: <20191215104824.658889d3@why>
-From: Frank Lee <tiny.windzz@gmail.com>
-Date: Sun, 15 Dec 2019 20:00:01 +0800
-Message-ID: <CAEExFWtgXt2pGM1fGfmxNdk_7S_53gnhN0-bProWA4-vOaNN3w@mail.gmail.com>
-Subject: Re: [PATCH 10/10] soc: qcom: convert to devm_platform_ioremap_resource
-To: Marc Zyngier <maz@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47bPT25SQczDqXM
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 23:52:54 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBFCqAlZ095443; Sun, 15 Dec 2019 07:52:32 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wwdpx38pv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 15 Dec 2019 07:52:31 -0500
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBFCqVQ4096177;
+ Sun, 15 Dec 2019 07:52:31 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wwdpx38pf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 15 Dec 2019 07:52:31 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBFCoXdE009159;
+ Sun, 15 Dec 2019 12:52:30 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 2wvqc5x5y7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 15 Dec 2019 12:52:30 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBFCqTrd52560196
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 15 Dec 2019 12:52:29 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DBF52AC059;
+ Sun, 15 Dec 2019 12:52:29 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1D90CAC062;
+ Sun, 15 Dec 2019 12:52:29 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sun, 15 Dec 2019 12:52:28 +0000 (GMT)
+Subject: [PATCH 00/10] crypto/nx: Enable GZIP engine and provide userpace API
+From: Haren Myneni <haren@linux.ibm.com>
+To: herbert@gondor.apana.org.au, mpe@ellerman.id.au,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ hch@infradead.org, npiggin@gmail.com, mikey@neuling.org
 Content-Type: text/plain; charset="UTF-8"
+Date: Sun, 15 Dec 2019 04:50:39 -0800
+Message-ID: <1576414240.16318.4066.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-15_03:2019-12-13,2019-12-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011
+ impostorscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912150123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,72 +89,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: john@phrozen.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-samsung-soc@vger.kernel.org, khilman@baylibre.com, krzk@kernel.org,
- Chen-Yu Tsai <wens@csie.org>, agross@kernel.org, linux-arm-msm@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>, khalasa@piap.pl, ssantosh@kernel.org,
- Matthias Brugger <matthias.bgg@gmail.com>, linux-amlogic@lists.infradead.org,
- bjorn.andersson@linaro.org, Linux ARM <linux-arm-kernel@lists.infradead.org>,
- shawnguo@kernel.org, linux-mips@vger.kernel.org, leoyang.li@nxp.com,
- kgene@kernel.org, linux-mediatek@lists.infradead.org, jun.nie@linaro.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: sukadev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Dec 15, 2019 at 6:48 PM Marc Zyngier <maz@kernel.org> wrote:
->
-> On Sat, 14 Dec 2019 17:54:47 +0000
-> Yangtao Li <tiny.windzz@gmail.com> wrote:
->
-> > Use devm_platform_ioremap_resource() to simplify code.
-> >
-> > Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
-> > ---
-> >  drivers/soc/qcom/llcc-qcom.c    | 7 +------
-> >  drivers/soc/qcom/qcom-geni-se.c | 4 +---
-> >  drivers/soc/qcom/qcom_aoss.c    | 4 +---
-> >  drivers/soc/qcom/qcom_gsbi.c    | 5 +----
-> >  drivers/soc/qcom/spm.c          | 4 +---
-> >  5 files changed, 5 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-> > index 429b5a60a1ba..99e19df76889 100644
-> > --- a/drivers/soc/qcom/llcc-qcom.c
-> > +++ b/drivers/soc/qcom/llcc-qcom.c
-> > @@ -387,7 +387,6 @@ static int qcom_llcc_remove(struct platform_device *pdev)
-> >  static struct regmap *qcom_llcc_init_mmio(struct platform_device *pdev,
-> >               const char *name)
-> >  {
-> > -     struct resource *res;
-> >       void __iomem *base;
-> >       struct regmap_config llcc_regmap_config = {
-> >               .reg_bits = 32,
-> > @@ -396,11 +395,7 @@ static struct regmap *qcom_llcc_init_mmio(struct platform_device *pdev,
-> >               .fast_io = true,
-> >       };
-> >
-> > -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM, name);
-> > -     if (!res)
-> > -             return ERR_PTR(-ENODEV);
-> > -
-> > -     base = devm_ioremap_resource(&pdev->dev, res);
-> > +     base = devm_platform_ioremap_resource(pdev, 0);
->
-> What guarantees do you have that entry 0 matches name?
 
-Yeah, this place is wrong. I intruduce another helper.
+Power9 processor supports Virtual Accelerator Switchboard (VAS) which
+allows kernel and userspace to send compression requests to Nest
+Accelerator (NX) directly. The NX unit comprises of 2 842 compression
+engines and 1 GZIP engine. Linux kernel already has 842 compression
+support on kernel. This patch series adds GZIP compression support
+from user space. The GZIP Compression engine implements the ZLIB and
+GZIP compression algorithms. No plans of adding NX-GZIP compression
+support in kernel right now.
 
-https://lore.kernel.org/patchwork/patch/1165186/
+Applications can send requests to NX directly with COPY/PASTE
+instructions. But kernel has to establish channel / window on NX-GZIP
+device for the userspace. So userspace access to the GZIP engine is
+provided through /dev/crypto/nx-gzip device with several several
+operations.
 
-Thx,
-Yangtao
+An application must open the this device to obtain a file descriptor (fd).
+Using the fd, application should issue the VAS_TX_WIN_OPEN ioctl to
+establish a connection to the engine. Once window is opened, should use
+mmap() system call to map the hardware address of engine's request queue
+into the application's virtual address space. Then user space forms the
+request as co-processor Request Block (CRB) and paste this CRB on the
+mapped HW address using COPY/PASTE instructions. Application can poll
+on status flags (part of CRB) with timeout for request completion.
+
+For VAS_TX_WIN_OPEN ioctl, if user space passes vas_id = -1 (struct
+vas_tx_win_open_attr), kernel determins the VAS instance on the
+corresponding chip based on the CPU on which the process is executing.
+Otherwise, the specified VAS instance is used if application passes the
+proper VAS instance (vas_id listed in /proc/device-tree/vas@*/ibm,vas_id).
+
+Process can open multiple windows with different FDs or can send several
+requests to NX on the same window at the same time.
+
+A userspace library libnxz is available:
+        https://github.com/abalib/power-gzip
+
+Applications that use inflate/deflate calls can link with libNXz and use
+NX GZIP compression without any modification.
+
+Tested the available 842 compression on power8 and power9 system to make
+sure no regression and tested GZIP compression on power9 with tests
+available in the above link.
+
+Thanks to Bulent Abali for nxz library and tests development.
+
+Haren Myneni (10):
+  powerpc/vas: Define vas_win_paste_addr()
+  powerpc/vas: Initialize window attributes for GZIP coprocessor type
+  powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API
+  crypto/nx: Initialize coproc entry with kzalloc
+  crypto/nx: Organize powernv 842 code to add new GZIP compression type
+  crypto/NX: Make code generic to add new GZIP compression type
+  crypto/nx: Enable and setup GZIP compresstion type
+  crypto/NX: Add NX GZIP user space API
+  powerpc/vas: Remove 'pid' in vas_tx_win_attr struct
+  Documentation/powerpc: VAS API
+
+ Documentation/ioctl/ioctl-number.rst        |   1 +
+ Documentation/powerpc/index.rst             |   1 +
+ Documentation/powerpc/vas-api.rst           | 246 +++++++++++++++
+ arch/powerpc/include/asm/vas.h              |   6 +-
+ arch/powerpc/include/uapi/asm/vas-api.h     |  22 ++
+ arch/powerpc/platforms/powernv/vas-window.c |  27 +-
+ drivers/crypto/nx/Makefile                  |   2 +-
+ drivers/crypto/nx/nx-842-powernv.c          | 412 +-----------------------
+ drivers/crypto/nx/nx-842-powernv.h          |  31 ++
+ drivers/crypto/nx/nx-commom-powernv.c       | 474 ++++++++++++++++++++++++++++
+ drivers/crypto/nx/nx-gzip-powernv.c         | 282 +++++++++++++++++
+ 11 files changed, 1094 insertions(+), 410 deletions(-)
+ create mode 100644 Documentation/powerpc/vas-api.rst
+ create mode 100644 arch/powerpc/include/uapi/asm/vas-api.h
+ create mode 100644 drivers/crypto/nx/nx-842-powernv.h
+ create mode 100644 drivers/crypto/nx/nx-commom-powernv.c
+ create mode 100644 drivers/crypto/nx/nx-gzip-powernv.c
+
+-- 
+1.8.3.1
 
 
->
-> I find these changes pointless: they don't add much to the readability
-> or maintainability of the code, and instead introduce creative bugs.
->
->         M.
-> --
-> Jazz is not dead. It just smells funny...
+
