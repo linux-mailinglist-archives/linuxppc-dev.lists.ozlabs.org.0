@@ -2,82 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3604C11F7FB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 14:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B5311F89C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Dec 2019 16:51:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47bQDQ43BTzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 00:27:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47bTQf5239zDqSJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 02:51:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=nwxd=2f=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47bPqC2hV5zDqNB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 00:08:39 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBFD7FtN117859; Sun, 15 Dec 2019 08:08:28 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wvw59t888-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 15 Dec 2019 08:08:28 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBFD8No8120394;
- Sun, 15 Dec 2019 08:08:28 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wvw59t87p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 15 Dec 2019 08:08:27 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBFD7LXj032169;
- Sun, 15 Dec 2019 13:08:26 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma05wdc.us.ibm.com with ESMTP id 2wvqc5kea1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 15 Dec 2019 13:08:26 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBFD8QnX52691260
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 15 Dec 2019 13:08:26 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52524B205F;
- Sun, 15 Dec 2019 13:08:26 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86ED7B2064;
- Sun, 15 Dec 2019 13:08:25 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Sun, 15 Dec 2019 13:08:25 +0000 (GMT)
-Subject: [PATCH 10/10] Documentation/powerpc: VAS API
-From: Haren Myneni <haren@linux.ibm.com>
-To: herbert@gondor.apana.org.au
-In-Reply-To: <1576414240.16318.4066.camel@hbabu-laptop>
-References: <1576414240.16318.4066.camel@hbabu-laptop>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47bTNV1vKpzDqQh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 02:49:13 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205283] BUG: KASAN: global-out-of-bounds in
+ _copy_to_iter+0x3d4/0x5a8
+Date: Sun, 15 Dec 2019 15:49:10 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: CC platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: File System
+X-Bugzilla-Component: btrfs
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: fs_btrfs@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cf_kernel_version see_also
+Message-ID: <bug-205283-206035-i0ZRTHjXFs@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205283-206035@https.bugzilla.kernel.org/>
+References: <bug-205283-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
-Date: Sun, 15 Dec 2019 05:06:36 -0800
-Message-ID: <1576415196.16318.4098.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-15_03:2019-12-13,2019-12-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912150125
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,313 +61,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com, hch@infradead.org,
- linux-crypto@vger.kernel.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205283
 
-Power9 introduced Virtual Accelerator Switchboard (VAS) which allows
-userspace to communicate with Nest Accelerator (NX) directly. But
-kernel has to establish channel to NX for userspace. This document
-describes user space API that application can use to establish
-communication channel.
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-Signed-off-by: Haren Myneni <haren@us.ibm.com>
----
- Documentation/powerpc/index.rst   |   1 +
- Documentation/powerpc/vas-api.rst | 246
-++++++++++++++++++++++++++++++++++++++
- 2 files changed, 247 insertions(+)
- create mode 100644 Documentation/powerpc/vas-api.rst
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+     Kernel Version|5.4-rc4                     |5.5-rc1
+           See Also|                            |https://bugzilla.kernel.org
+                   |                            |/show_bug.cgi?id=3D205099
 
-diff --git a/Documentation/powerpc/index.rst
-b/Documentation/powerpc/index.rst
-index db7b6a8..8b5b167 100644
---- a/Documentation/powerpc/index.rst
-+++ b/Documentation/powerpc/index.rst
-@@ -27,6 +27,7 @@ powerpc
-     syscall64-abi
-     transactional_memory
-     ultravisor
-+    vas-api
- 
- .. only::  subproject and html
- 
-diff --git a/Documentation/powerpc/vas-api.rst
-b/Documentation/powerpc/vas-api.rst
-new file mode 100644
-index 0000000..13ce4e7
---- /dev/null
-+++ b/Documentation/powerpc/vas-api.rst
-@@ -0,0 +1,246 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. _VAS-API:
-+
-+===================================================
-+Virtual Accelerator Switchboard (VAS) userspace API
-+===================================================
-+
-+Introduction
-+============
-+
-+Power9 processor introduced Virtual Accelerator Switchboard (VAS) which
-+allows both userspace and kernel communicate to co-processor
-+(hardware accelerator) referred to as the Nest Accelerator (NX). The NX
-+unit comprises of one or more hardware engines or co-processor types
-+such as 842 compression, GZIP compression and encryption. On power9,
-+userspace applications will have access to only GZIP Compression engine
-+which supports ZLIB and GZIP compression algorithms in the hardware.
-+
-+To communicate with NX, kernel has to establish a channel or window and
-+then requests can be submitted directly without kernel involvement.
-+Requests to the GZIP engine must be formatted as a co-processor Request
-+Block (CRB) and these CRBs must be submitted to the NX using COPY/PASTE
-+instructions to paste the CRB to hardware address that is associated
-with
-+the engine's request queue.
-+
-+The GZIP engine provides two priority levels of requests: Normal and
-+High. Only Normal requests are supported from userspace right now.
-+
-+This document explains userspace API that is used to interact with
-+kernel to setup channel / window which can be used to send compression
-+requests directly to NX accelerator.
-+
-+
-+Overview
-+========
-+
-+Application access to the GZIP engine is provided through
-+/dev/crypto/nx-gzip device node implemented by the VAS/NX device
-driver.
-+An application must open the /dev/crypto/nx-gzip device to obtain a
-file
-+descriptor (fd). Then should issue VAS_TX_WIN_OPEN ioctl with this fd
-to
-+establish connection to the engine. It means send window is opened on
-GZIP
-+engine for this process. Once a connection is established, the
-application
-+should use the mmap() system call to map the hardware address of
-engine's
-+request queue into the application's virtual address space.
-+
-+The application can then submit one or more requests to the the engine
-by
-+using copy/paste instructions and pasting the CRBs to the virtual
-address
-+(aka paste_address) returned by mmap(). User space can close the
-+established connection or send window by closing the file descriptior
-+(close(fd)) or upon the process exit.
-+
-+Note that applications can send several requests with the same window
-or
-+can establish multiple windows, but one window for each file
-descriptor.
-+
-+Following sections provide additional details and references about the
-+individual steps.
-+
-+NX-GZIP Device Node
-+===================
-+
-+There is one /dev/crypto/nx-gzip node in the system and it provides
-+access to all GZIP engines in the system. The only valid operations on
-+/dev/crypto/nx-gzip are:
-+
-+	* open() the device for read and write.
-+	* issue VAS_TX_WIN_OPEN ioctl
-+	* mmap() the engine's request queue into application's virtual
-+	  address space (i.e. get a paste_address for the co-processor
-+	  engine).
-+	* close the device node.
-+
-+Other file operations on this device node are undefined.
-+
-+Note that the copy and paste operations go directly to the hardware and
-+do not go through this device. Refer COPY/PASTE document for more
-+details.
-+
-+Although a system may have several instances of the NX co-processor
-+engines (typically, one per P9 chip) there is just one
-+/dev/crypto/nx-gzip device node in the system. When the nx-gzip device
-+node is opened, Kernel opens send window on a suitable instance of NX
-+accelerator. It finds CPU on which the user process is executing and
-+determine the NX instance for the corresponding chip on which this CPU
-+belongs.
-+
-+Applications may chose a specific instance of the NX co-processor using
-+the vas_id field in the VAS_TX_WIN_OPEN ioctl as detailed below.
-+
-+A userspace library libnxz is available here but still in development:
-+	 https://github.com/abalib/power-gzip
-+
-+Applications that use inflate / deflate calls can link with libnxz
-+instead of libz and use NX GZIP compression without any modification.
-+
-+Open /dev/crypto/nx-gzip
-+========================
-+
-+The nx-gzip device should be opened for read and write. No special
-+privileges are needed to open the device. Each window coreesponds to
-one
-+file descriptor. So if the userspace process needs multiple windows,
-+several open calls have to be issued.
-+
-+See open(2) system call man pages for other details such as return
-values,
-+error codes and restrictions.
-+codes and restrictions.
-+
-+VAS_TX_WIN_OPEN ioctl
-+=====================
-+
-+Applications should use the VAS_TX_WIN_OPEN ioctl as follows to
-establish
-+a connection with NX co-processor engine:
-+
-+	::
-+		struct vas_tx_win_open_attr {
-+			__u32   version;
-+			__s16   vas_id; /* specific instance of vas or -1
-+						for default */
-+			__u16   reserved1;
-+			__u64   flags;	/* For future use */
-+			__u64   reserved2[6];
-+		};
-+
-+	version: The version field must be currently set to 1.
-+	vas_id: If '-1' is passed, kernel will make a best-effort attempt
-+		to assign an optimal instance of NX for the process. To
-+		select the specific VAS instance, refer
-+		"Discovery of available VAS engines" section below.
-+
-+	flags, reserved1 and reserved2[6] fields are for future extension
-+	and must be set to 0.
-+
-+	The attributes attr for the VAS_TX_WIN_OPEN ioctl are defined as
-+	follows:
-+		#define VAS_MAGIC 'v'
-+		#define VAS_TX_WIN_OPEN _IOW(VAS_MAGIC, 1,
-+						struct vas_tx_win_open_attr)
-+
-+		struct vas_tx_win_open_attr attr;
-+		rc = ioctl(fd, VAS_TX_WIN_OPEN, &attr);
-+
-+	The VAS_TX_WIN_OPEN ioctl returns 0 on success. On errors, it
-+	returns -1 and sets the errno variable to indicate the error.
-+
-+	Error conditions:
-+		EINVAL	fd does not refer to a valid VAS device.
-+		EINVAL	Invalid vas ID
-+		EINVAL	version is not set with proper value
-+		EEXIST	Window is already opened for the given fd
-+		ENOMEM	Memory is not available to allocate window
-+		ENOSPC	System has too many active windows (connections)
-+			opened
-+		EINVAL	reserved fields are not set to 0.
-+
-+	See the ioctl(2) man page for more details, error codes and
-+	restrictions.
-+
-+mmap() NX-GZIP device
-+=====================
-+
-+The mmap() system call for a NX-GZIP device fd returns a paste_address
-+that the application can use to copy/paste its CRB to the hardware
-engines.
-+	::
-+
-+		paste_addr = mmap(addr, size, prot, flags, fd, offset);
-+
-+	Only restrictions on mmap for a NX-GZIP device fd are:
-+		* size should be 4K page size
-+		* offset parameter should be 0ULL
-+
-+	Refer to mmap(2) man page for additional details/restrictions.
-+	In addition to the error conditions listed on the mmap(2) man
-+	page, can also fail with one of the following error codes:
-+
-+		EINVAL	fd is not associated with an open window
-+			(i.e mmap() does not follow a successful call
-+			to the VAS_TX_WIN_OPEN ioctl).
-+		EINVAL	offset field is not 0ULL.
-+
-+Discovery of available VAS engines
-+==================================
-+
-+Each available VAS instance in the system will have a device tree node
-+like /proc/device-tree/vas@* or /proc/device-tree/xscom@*/vas@*.
-+Determine the chip or VAS instance and use the corresponding ibm,vas-id
-+property value in this node to select specific VAS instance.
-+
-+Copy/Paste operations
-+=====================
-+
-+Applications should use the copy and paste instructions defined in the
-RFC
-+to copy/paste the CRB.
-+
-+CRB Specification and use NX
-+============================
-+
-+Applications should format requests to the co-processor using the
-+co-processor Request Block (CRBs). Refer NX workbook for the format of
-+CRB and use NX from userspace such as sending requests and checking
-+request status.
-+
-+Simple example
-+==============
-+
-+	::
-+		int use_nx_gzip()
-+		{
-+			int rc, fd;
-+			void *addr;
-+			struct vas_setup_attr txattr;
-+
-+			fd = open("/dev/crypto/nx-gzip", O_RDWR);
-+			if (fd < 0) {
-+				fprintf(stderr, "open nx-gzip failed\n");
-+				return -1;
-+			}
-+			memset(&txattr, 0, sizeof(txattr));
-+			txattr.version = 1;
-+			txattr.vas_id = -1
-+			rc = ioctl(fd, VAS_TX_WIN_OPEN,
-+					(unsigned long)&txattr);
-+			if (rc < 0) {
-+				fprintf(stderr, "ioctl() n %d, error %d\n",
-+						rc, errno);
-+				return rc;
-+			}
-+			addr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
-+					MAP_SHARED, fd, 0ULL);
-+			if (addr == MAP_FAILED) {
-+				fprintf(stderr, "mmap() failed, errno %d\n",
-+						errno);
-+				return -errno;
-+			}
-+			do {
-+				//Format CRB request with compression or
-+				//uncompression
-+				// Refer tests for vas_copy/vas_paste
-+				vas_copy((&crb, 0, 1);
-+				vas_paste(addr, 0, 1);
-+				// Poll on csb.flags with timeout
-+				// csb address is listed in CRB
-+			} while (true)
-+			close(fd) or window can be closed upon process exit
-+		}
-+
-+	Refer https://github.com/abalib/power-gzip for tests or more
-+	use cases.
--- 
-1.8.3.1
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Re-tried with kernel 5.5-rc1. This is probably connected with bug #205099.
+
+[...]
+[   69.181890]
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[   69.182220] BUG: KASAN: global-out-of-bounds in _copy_to_iter+0x3c0/0x594
+[   69.182472] Write of size 4096 at addr f15ad000 by task modprobe/233
+
+[   69.182738] CPU: 0 PID: 233 Comm: modprobe Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.5.0-rc1-PowerMacG4+ #7
+[   69.183061] Call Trace:
+[   69.183147] [eb7138b8] [c0783b44] dump_stack+0xbc/0x118 (unreliable)
+[   69.183387] [eb7138e8] [c024454c]
+print_address_description.isra.0+0x3c/0x420
+[   69.183652] [eb713978] [c0244b0c] __kasan_report+0x138/0x180
+[   69.183858] [eb7139b8] [c024551c] check_memory_region+0x24/0x180
+[   69.184084] [eb7139c8] [c02435e8] memcpy+0x48/0x74
+[   69.184255] [eb7139e8] [c045b5cc] _copy_to_iter+0x3c0/0x594
+[   69.184458] [eb713ad8] [c045b984] copy_page_to_iter+0xac/0x564
+[   69.184675] [eb713b38] [c01c6d84] generic_file_read_iter+0x5c4/0x7c0
+[   69.184914] [eb713ba8] [c025b8dc] __vfs_read+0x1b0/0x1f8
+[   69.185106] [eb713cd8] [c025b9e0] vfs_read+0xbc/0x124
+[   69.185287] [eb713d08] [c025ba9c] kernel_read+0x54/0x70
+[   69.185480] [eb713d38] [c0266514] kernel_read_file+0x23c/0x34c
+[   69.185694] [eb713de8] [c0266710] kernel_read_file_from_fd+0x54/0x74
+[   69.185929] [eb713e18] [c0111b1c] sys_finit_module+0xd8/0x138
+[   69.186139] [eb713f38] [c001a274] ret_from_syscall+0x0/0x34
+[   69.186340] --- interrupt: c01 at 0x56af78
+                   LR =3D 0x6f8a14
 
 
+[   69.186597] Memory state around the buggy address:
+[   69.186766]  f15ad500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   69.187001]  f15ad580: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   69.187235] >f15ad600: 00 00 00 00 00 00 00 00 00 00 00 fa fa fa fa fa
+[   69.187466]                                             ^
+[   69.187656]  f15ad680: 00 00 00 03 fa fa fa fa 00 00 00 00 00 00 00 00
+[   69.187890]  f15ad700: 00 00 00 00 00 00 04 fa fa fa fa fa 00 00 00 00
+[   69.188121]
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[   69.272710] raid6: altivecx8 gen()  2354 MB/s
+[   69.329383] raid6: altivecx4 gen()  3200 MB/s
+[   69.386055] raid6: altivecx2 gen()  2178 MB/s
+[   69.442705] raid6: altivecx1 gen()  1975 MB/s
+[   69.499549] raid6: int32x8  gen()   336 MB/s
+[   69.556086] raid6: int32x8  xor()   200 MB/s
+[   69.612793] raid6: int32x4  gen()   342 MB/s
+[   69.669421] raid6: int32x4  xor()   224 MB/s
+[   69.732733] raid6: int32x2  gen()   534 MB/s
+[   69.796110] raid6: int32x2  xor()   414 MB/s
+[   69.859399] raid6: int32x1  gen()   401 MB/s
+[   69.922790] raid6: int32x1  xor()   310 MB/s
+[   69.930418] raid6: using algorithm altivecx4 gen() 3200 MB/s
+[   69.938166] raid6: using intx1 recovery algorithm
+[   70.027661] xor: measuring software checksum speed
+[   70.066059]    8regs     :   123.600 MB/sec
+[   70.106036]    8regs_prefetch:   122.400 MB/sec
+[   70.146029]    32regs    :   126.000 MB/sec
+[   70.186045]    32regs_prefetch:   122.400 MB/sec
+[   70.226030]    altivec   :   738.000 MB/sec
+[   70.233653] xor: using function: altivec (738.000 MB/sec)
+[   70.713528] Btrfs loaded, crc32c=3Dcrc32c-generic, debug=3Don
 
+--=20
+You are receiving this mail because:
+You are watching someone on the CC list of the bug.=
