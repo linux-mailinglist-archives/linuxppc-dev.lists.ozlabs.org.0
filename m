@@ -2,65 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB2212116E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 18:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEAA1219E2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 20:24:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47c7D96G5TzDqW2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 04:14:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cB5y4SMGzDqJM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 06:24:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=fweimer@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="VzfwudNG"; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47c79t17dXzDqSB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 04:12:16 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2019 09:12:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,322,1571727600"; d="scan'208";a="415144339"
-Received: from linux.intel.com ([10.54.29.200])
- by fmsmga005.fm.intel.com with ESMTP; 16 Dec 2019 09:12:12 -0800
-Received: from [10.251.95.214] (abudanko-mobl.ccr.corp.intel.com
- [10.251.95.214])
- by linux.intel.com (Postfix) with ESMTP id 30029580342;
- Mon, 16 Dec 2019 09:12:03 -0800 (PST)
-Subject: Re: [PATCH v2 2/7] perf/core: open access for CAP_SYS_PERFMON
- privileged process
-To: "Lubashev, Igor" <ilubashe@akamai.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
- "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
- "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
- Alexei Starovoitov <ast@kernel.org>,
- "james.bottomley@hansenpartnership.com"
- <james.bottomley@hansenpartnership.com>,
- "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
- Casey Schaufler <casey@schaufler-ca.com>, "serge@hallyn.com"
- <serge@hallyn.com>, James Morris <jmorris@namei.org>
-References: <26101427-c0a3-db9f-39e9-9e5f4ddd009c@linux.intel.com>
- <fd6ffb43-ed43-14cd-b286-6ab4b199155b@linux.intel.com>
- <9316a1ab21f6441eb2b421acb818a2a1@ustx2ex-dag1mb6.msg.corp.akamai.com>
-From: Alexey Budankov <alexey.budankov@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <c471a28b-6620-9b0a-4b6e-43f4956202cd@linux.intel.com>
-Date: Mon, 16 Dec 2019 20:12:02 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cB431465zDqGG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 06:22:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1576524134;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VtkF9pHGZsyliJKUJABIfCKJr6vj2FAkM023k13AsQQ=;
+ b=VzfwudNGXNhDjc3xietN1UYdtS/OFZdZBohA07Dy0gG5En9CFXkZKwrxNFv+iAZsfvOoEo
+ KZCF4Zr9nzA4/ylP8aNSvsMS8/OaAa7rdljWS3udMKhiyw17mDfpXI3zPlZomZDBr4CfZ3
+ 3j42+7P0lKVQjM+tGdvlFlEMu5Ch3RU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-350-8M_kp1MVMMiSfRvEFI4Tyw-1; Mon, 16 Dec 2019 14:22:11 -0500
+X-MC-Unique: 8M_kp1MVMMiSfRvEFI4Tyw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9666C10054E3;
+ Mon, 16 Dec 2019 19:22:05 +0000 (UTC)
+Received: from oldenburg2.str.redhat.com (ovpn-116-242.ams2.redhat.com
+ [10.36.116.242])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C537960BE0;
+ Mon, 16 Dec 2019 19:22:00 +0000 (UTC)
+Received: by oldenburg2.str.redhat.com (Postfix, from userid 1000)
+ id B9F19832924A; Mon, 16 Dec 2019 20:21:58 +0100 (CET)
+References: <20191206141338.23338-1-cyphar@cyphar.com>
+ <20191206141338.23338-12-cyphar@cyphar.com>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v18 11/13] open: introduce openat2(2) syscall
+From: Florian Weimer <fweimer@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <9316a1ab21f6441eb2b421acb818a2a1@ustx2ex-dag1mb6.msg.corp.akamai.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf8
+In-Reply-To: <20191206141338.23338-12-cyphar@cyphar.com> (Aleksa Sarai's
+ message of "Sat, 7 Dec 2019 01:13:36 +1100")
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+Date: Mon, 16 Dec 2019 20:20:17 +0100
+Message-Id: <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,87 +75,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- Song Liu <songliubraving@fb.com>, Andi Kleen <ak@linux.intel.com>,
- Kees Cook <keescook@chromium.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Jann Horn <jannh@google.com>,
+Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
+ Jonathan Corbet <corbet@lwn.net>, Jiri Olsa <jolsa@redhat.com>,
+ linux-sh@vger.kernel.org,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Stephane Eranian <eranian@google.com>,
- "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
- "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "bgregg@netflix.com" <bgregg@netflix.com>, Jiri Olsa <jolsa@redhat.com>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+ Ingo Molnar <mingo@redhat.com>, Yonghong Song <yhs@fb.com>,
+ Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linux-alpha@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
+ dev@opencontainers.org, linux-m68k@lists.linux-m68k.org,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, linux-arm-kernel@lists.infradead.org,
+ "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ Chanho Min <chanho.min@lge.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
+ Eric Biederman <ebiederm@xmission.com>, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Aleksa Sarai:
 
-On 16.12.2019 19:12, Lubashev, Igor wrote:
-> On Mon, Dec 16, 2019 at 2:15 AM, Alexey Budankov <alexey.budankov@linux.intel.com> wrote:
->>
->> Open access to perf_events monitoring for CAP_SYS_PERFMON privileged
->> processes.
->> For backward compatibility reasons access to perf_events subsystem remains
->> open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage
->> for secure perf_events monitoring is discouraged with respect to
->> CAP_SYS_PERFMON capability.
->>
->> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
->> ---
->>  include/linux/perf_event.h | 9 ++++++---
->>  1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h index
->> 34c7c6910026..52313d2cc343 100644
->> --- a/include/linux/perf_event.h
->> +++ b/include/linux/perf_event.h
->> @@ -1285,7 +1285,8 @@ static inline int perf_is_paranoid(void)
->>
->>  static inline int perf_allow_kernel(struct perf_event_attr *attr)  {
->> -	if (sysctl_perf_event_paranoid > 1 && !capable(CAP_SYS_ADMIN))
->> +	if (sysctl_perf_event_paranoid > 1 &&
->> +	   !(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)))
->>  		return -EACCES;
->>
->>  	return security_perf_event_open(attr, PERF_SECURITY_KERNEL); @@
->> -1293,7 +1294,8 @@ static inline int perf_allow_kernel(struct
->> perf_event_attr *attr)
->>
->>  static inline int perf_allow_cpu(struct perf_event_attr *attr)  {
->> -	if (sysctl_perf_event_paranoid > 0 && !capable(CAP_SYS_ADMIN))
->> +	if (sysctl_perf_event_paranoid > 0 &&
->> +	    !(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)))
->>  		return -EACCES;
->>
->>  	return security_perf_event_open(attr, PERF_SECURITY_CPU); @@ -
->> 1301,7 +1303,8 @@ static inline int perf_allow_cpu(struct perf_event_attr
->> *attr)
->>
->>  static inline int perf_allow_tracepoint(struct perf_event_attr *attr)  {
->> -	if (sysctl_perf_event_paranoid > -1 && !capable(CAP_SYS_ADMIN))
->> +	if (sysctl_perf_event_paranoid > -1 &&
->> +	    !(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)))
->>  		return -EPERM;
->>
->>  	return security_perf_event_open(attr, PERF_SECURITY_TRACEPOINT);
->> --
->> 2.20.1
-> 
-> Thanks.  I like the idea of CAP_SYS_PERFMON that does not require CAP_SYS_ADMIN.  It makes granting users ability to run perf a bit safer.
-> 
-> I see a lot of "(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)" constructs now.  Maybe wrapping it in an " inline bool perfmon_capable()" defined somewhere (like in /include/linux/capability.h)?
+> diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
+> index 1d338357df8a..58c3a0e543c6 100644
+> --- a/include/uapi/linux/fcntl.h
+> +++ b/include/uapi/linux/fcntl.h
+> @@ -93,5 +93,40 @@
+> =20
+>  #define AT_RECURSIVE		0x8000	/* Apply to the entire subtree */
+> =20
+> +/*
+> + * Arguments for how openat2(2) should open the target path. If @resol=
+ve is
+> + * zero, then openat2(2) operates very similarly to openat(2).
+> + *
+> + * However, unlike openat(2), unknown bits in @flags result in -EINVAL=
+ rather
+> + * than being silently ignored. @mode must be zero unless one of {O_CR=
+EAT,
+> + * O_TMPFILE} are set.
+> + *
+> + * @flags: O_* flags.
+> + * @mode: O_CREAT/O_TMPFILE file mode.
+> + * @resolve: RESOLVE_* flags.
+> + */
+> +struct open_how {
+> +	__aligned_u64 flags;
+> +	__u16 mode;
+> +	__u16 __padding[3]; /* must be zeroed */
+> +	__aligned_u64 resolve;
+> +};
+> +
+> +#define OPEN_HOW_SIZE_VER0	24 /* sizeof first published struct */
+> +#define OPEN_HOW_SIZE_LATEST	OPEN_HOW_SIZE_VER0
+> +
+> +/* how->resolve flags for openat2(2). */
+> +#define RESOLVE_NO_XDEV		0x01 /* Block mount-point crossings
+> +					(includes bind-mounts). */
+> +#define RESOLVE_NO_MAGICLINKS	0x02 /* Block traversal through procfs-s=
+tyle
+> +					"magic-links". */
+> +#define RESOLVE_NO_SYMLINKS	0x04 /* Block traversal through all symlin=
+ks
+> +					(implies OEXT_NO_MAGICLINKS) */
+> +#define RESOLVE_BENEATH		0x08 /* Block "lexical" trickery like
+> +					"..", symlinks, and absolute
+> +					paths which escape the dirfd. */
+> +#define RESOLVE_IN_ROOT		0x10 /* Make all jumps to "/" and ".."
+> +					be scoped inside the dirfd
+> +					(similar to chroot(2)). */
+> =20
+>  #endif /* _UAPI_LINUX_FCNTL_H */
 
-Sounds reasonable, thanks!
+Would it be possible to move these to a new UAPI header?
 
-~Alexey
+In glibc, we currently do not #include <linux/fcntl.h>.  We need some of
+the AT_* constants in POSIX mode, and the header is not necessarily
+namespace-clean.  If there was a separate header for openat2 support, we
+could use that easily, and we would only have to maintain the baseline
+definitions (which never change).
 
-> 
-> - Igor
-> 
+Thanks,
+Florian
+
