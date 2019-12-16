@@ -1,55 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB55120044
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 09:51:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47bw3k4xY3zDqTq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 19:51:14 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A054512028A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 11:30:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47byFt4k8tzDqSK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 21:30:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
- envelope-from=info@metux.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-X-Greylist: delayed 335 seconds by postgrey-1.36 at bilbo;
- Mon, 16 Dec 2019 19:49:16 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="PQl9UUy0"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47bw1S6rndzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 19:49:16 +1100 (AEDT)
-Received: from orion.localdomain ([77.2.44.177]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N2jO8-1hiOOQ3fYa-0137DZ; Mon, 16 Dec 2019 09:43:02 +0100
-From: "Enrico Weigelt, metux IT consult" <info@metux.net>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] drivers: char: tpm: remove unneeded MODULE_VERSION() usage
-Date: Mon, 16 Dec 2019 09:42:30 +0100
-Message-Id: <20191216084230.31412-1-info@metux.net>
-X-Mailer: git-send-email 2.11.0
-X-Provags-ID: V03:K1:ZRMRCvGtq21lbtgskvbS5prFUgst+5RwJZEQW66QiN+qjkuMlBc
- uGZLISeYLgQ9heOIGqmejXQW6EJ1Yj9dlSn4uQwVBS1GCATDsnRMdpuN2L0Y/QUQihyF0/5
- Py17FBwzilsZjijPn/vtG8iHe13gTG4QALNK+LcHtpbLNoRNZbWECYtzyjqi0Lcjg6loX+I
- NHKQcxcT7bFsh1zJN5JKA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FTjVl9iVLCM=:615AOCvORb17ezdjDykKOa
- O65kTBYdxeRpP2UcBRbdt/C8uo4vx87/d3Vb41S2dShrkVVh40iJ2bTaAJM2oHVeBvhfyuD6W
- QDBs0LzAGtBysIYE1UUfabwtcIt1rofZa7BYqrP5jD1MVsqc04SPPrrf1WEkWYt2eYZHSKhRn
- XASaNscbdfGfOkeAUdZzd3xLZsmmtVdGiFu90vr7Mg/lZ7d0/fyyRSh2cThnKSk9+h3VCBN1a
- iYN+ASXYxOyukOgL4O+wPGBHW3xdLJ8w5b/DqfWJjeTMwY+PFrYIzJFURWgdR6qNLJKSakyJV
- twypeKvJ4bjNb7V9RJUWk5H8pJgET0yx3SU78IgbU5QaPFd939py6poL1e5nCid3zo48j6EBh
- LXFnOuS2qX/NNtZuz69HxqZH8CUomiZB1967R9oIIaMRhLQb0+Ro/gNy6HSwnu5g6xRBLBABA
- 8I/QGC24CKiI61YOvsZaHo9+MfN2EplvzgpiiUd98axAgBHYU6j9YBlHsgZn6Pn0ICckaTJxe
- KiJsJ25Qve1EgRbPHT7zvqN9B4jNlHDd5PucAMPYOqrvUlPxDLwTxJb+JctYseJYZBMxiE0PQ
- Y1jb5msIbptX6EbveYpS5gw+fCVJgU4CiTgz21PvuAbOQx7Mz7UXTm8hqChTWJUJjg7kmO8Yq
- ojoquAHjlDxIewPs7/pJN5B1s83RtYo9liVp9tIcpSAQKsDPUAoVHrtDIYyUrNoskUt7YUoMj
- iqIUpW14qox/6MI0klQWG8PhLDDPz0UOL68YW4GUDVPj7E2H5FooiIhveKbcwtk5AgSBNLgsv
- nkfNgdX6X+wAm9HVcV92GWnPOQbNx9/p67KNJdGfHgP2gmm22xENihQUbiLkStumnISdAMkHi
- xWsOc63CvCwOwaE9jM4A==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47byCf45xBzDqNG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 21:28:14 +1100 (AEDT)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A7CFD206CB;
+ Mon, 16 Dec 2019 10:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1576492091;
+ bh=aJNODjNlV3v54INi4VXe5H6gmqwl3DaOFDNd3U6oYJs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=PQl9UUy06Hwnhc+WgyHD0YW0DQzVIQ3siJt9h2AJUf2ItnavgPY6wHx2lPr17QIQn
+ pWJIbXf9wTMoC3M3VQX7GFymirkp4wWHUq5YB2bZkO1uOlk9b2v98++N2Cjd8ShJBl
+ a4tkOdQpyWd0Yqop+KfyrtBhCC5RfjzevBWWVcHs=
+Date: Mon, 16 Dec 2019 10:28:06 +0000
+From: Will Deacon <will@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+Message-ID: <20191213144359.GA3826@willie-the-truck>
+References: <875zimp0ay.fsf@mpe.ellerman.id.au>
+ <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+ <20191212100756.GA11317@willie-the-truck>
+ <20191212104610.GW2827@hirez.programming.kicks-ass.net>
+ <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
+ <20191212180634.GA19020@willie-the-truck>
+ <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
+ <20191212193401.GB19020@willie-the-truck>
+ <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
+ <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,164 +66,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jgg@ziepe.ca, peterhuewe@gmx.de, linuxppc-dev@lists.ozlabs.org,
- linux-integrity@vger.kernel.org, jarkko.sakkinen@linux.intel.com
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove MODULE_VERSION(), as it isn't needed at all: the only version
-making sense is the kernel version.
+On Fri, Dec 13, 2019 at 02:17:08PM +0100, Arnd Bergmann wrote:
+> On Thu, Dec 12, 2019 at 9:50 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> > On Thu, Dec 12, 2019 at 11:34 AM Will Deacon <will@kernel.org> wrote:
+> > > The root of my concern in all of this, and what started me looking at it in
+> > > the first place, is the interaction with 'typeof()'. Inheriting 'volatile'
+> > > for a pointer means that local variables in macros declared using typeof()
+> > > suddenly start generating *hideous* code, particularly when pointless stack
+> > > spills get stackprotector all excited.
+> >
+> > Yeah, removing volatile can be a bit annoying.
+> >
+> > For the particular case of the bitops, though, it's not an issue.
+> > Since you know the type there, you can just cast it.
+> >
+> > And if we had the rule that READ_ONCE() was an arithmetic type, you could do
+> >
+> >     typeof(0+(*p)) __var;
+> >
+> > since you might as well get the integer promotion anyway (on the
+> > non-volatile result).
+> >
+> > But that doesn't work with structures or unions, of course.
+> >
+> > I'm not entirely sure we have READ_ONCE() with a struct. I do know we
+> > have it with 64-bit entities on 32-bit machines, but that's ok with
+> > the "0+" trick.
+> 
+> I'll have my randconfig builder look for instances, so far I found one,
+> see below. My feeling is that it would be better to enforce at least
+> the size being a 1/2/4/8, to avoid cases where someone thinks
+> the access is atomic, but it falls back on a memcpy.
 
-See also: https://lkml.org/lkml/2017/11/22/480
+I've been using something similar built on compiletime_assert_atomic_type()
+and I spotted another instance in the xdp code (xskq_validate_desc()) which
+tries to READ_ONCE() on a 128-bit descriptor, although a /very/ quick read
+of the code suggests that this probably can't be concurrently modified if
+the ring indexes are synchronised properly.
 
-Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
----
- drivers/char/tpm/st33zp24/i2c.c      | 1 -
- drivers/char/tpm/st33zp24/spi.c      | 1 -
- drivers/char/tpm/st33zp24/st33zp24.c | 1 -
- drivers/char/tpm/tpm-interface.c     | 1 -
- drivers/char/tpm/tpm_atmel.c         | 1 -
- drivers/char/tpm/tpm_crb.c           | 1 -
- drivers/char/tpm/tpm_i2c_infineon.c  | 1 -
- drivers/char/tpm/tpm_ibmvtpm.c       | 1 -
- drivers/char/tpm/tpm_infineon.c      | 1 -
- drivers/char/tpm/tpm_nsc.c           | 1 -
- drivers/char/tpm/tpm_tis.c           | 1 -
- drivers/char/tpm/tpm_tis_core.c      | 1 -
- drivers/char/tpm/tpm_vtpm_proxy.c    | 1 -
- 13 files changed, 13 deletions(-)
+However, enabling this for 32-bit ARM is total carnage; as Linus mentioned,
+a whole bunch of code appears to be relying on atomic 64-bit access of
+READ_ONCE(); the perf ring buffer, io_uring, the scheduler, pm_runtime,
+cpuidle, ... :(
 
-diff --git a/drivers/char/tpm/st33zp24/i2c.c b/drivers/char/tpm/st33zp24/i2c.c
-index 35333b65acd1..71df056f14c9 100644
---- a/drivers/char/tpm/st33zp24/i2c.c
-+++ b/drivers/char/tpm/st33zp24/i2c.c
-@@ -313,5 +313,4 @@ module_i2c_driver(st33zp24_i2c_driver);
- 
- MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
- MODULE_DESCRIPTION("STM TPM 1.2 I2C ST33 Driver");
--MODULE_VERSION("1.3.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/st33zp24/spi.c b/drivers/char/tpm/st33zp24/spi.c
-index 26e09de50f1e..94ceced4d57d 100644
---- a/drivers/char/tpm/st33zp24/spi.c
-+++ b/drivers/char/tpm/st33zp24/spi.c
-@@ -430,5 +430,4 @@ module_spi_driver(st33zp24_spi_driver);
- 
- MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
- MODULE_DESCRIPTION("STM TPM 1.2 SPI ST33 Driver");
--MODULE_VERSION("1.3.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/st33zp24/st33zp24.c b/drivers/char/tpm/st33zp24/st33zp24.c
-index 37bb13f516be..60269b6ac470 100644
---- a/drivers/char/tpm/st33zp24/st33zp24.c
-+++ b/drivers/char/tpm/st33zp24/st33zp24.c
-@@ -646,5 +646,4 @@ EXPORT_SYMBOL(st33zp24_pm_resume);
- 
- MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
- MODULE_DESCRIPTION("ST33ZP24 TPM 1.2 driver");
--MODULE_VERSION("1.3.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index a438b1206fcb..91d4584f399d 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -514,5 +514,4 @@ module_exit(tpm_exit);
- 
- MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
- MODULE_DESCRIPTION("TPM Driver");
--MODULE_VERSION("2.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_atmel.c b/drivers/char/tpm/tpm_atmel.c
-index 54a6750a6757..35bf249cc95a 100644
---- a/drivers/char/tpm/tpm_atmel.c
-+++ b/drivers/char/tpm/tpm_atmel.c
-@@ -231,5 +231,4 @@ module_exit(cleanup_atmel);
- 
- MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
- MODULE_DESCRIPTION("TPM Driver");
--MODULE_VERSION("2.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-index a9dcf31eadd2..3e72b7b99cce 100644
---- a/drivers/char/tpm/tpm_crb.c
-+++ b/drivers/char/tpm/tpm_crb.c
-@@ -748,5 +748,4 @@ static struct acpi_driver crb_acpi_driver = {
- module_acpi_driver(crb_acpi_driver);
- MODULE_AUTHOR("Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>");
- MODULE_DESCRIPTION("TPM2 Driver");
--MODULE_VERSION("0.1");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_i2c_infineon.c b/drivers/char/tpm/tpm_i2c_infineon.c
-index a19d32cb4e94..8920b7c19fcb 100644
---- a/drivers/char/tpm/tpm_i2c_infineon.c
-+++ b/drivers/char/tpm/tpm_i2c_infineon.c
-@@ -731,5 +731,4 @@ static struct i2c_driver tpm_tis_i2c_driver = {
- module_i2c_driver(tpm_tis_i2c_driver);
- MODULE_AUTHOR("Peter Huewe <peter.huewe@infineon.com>");
- MODULE_DESCRIPTION("TPM TIS I2C Infineon Driver");
--MODULE_VERSION("2.2.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
-index 78cc52690177..034d24758915 100644
---- a/drivers/char/tpm/tpm_ibmvtpm.c
-+++ b/drivers/char/tpm/tpm_ibmvtpm.c
-@@ -723,5 +723,4 @@ module_exit(ibmvtpm_module_exit);
- 
- MODULE_AUTHOR("adlai@us.ibm.com");
- MODULE_DESCRIPTION("IBM vTPM Driver");
--MODULE_VERSION("1.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_infineon.c b/drivers/char/tpm/tpm_infineon.c
-index 9c924a1440a9..8a58966c5c9b 100644
---- a/drivers/char/tpm/tpm_infineon.c
-+++ b/drivers/char/tpm/tpm_infineon.c
-@@ -621,5 +621,4 @@ module_pnp_driver(tpm_inf_pnp_driver);
- 
- MODULE_AUTHOR("Marcel Selhorst <tpmdd@sirrix.com>");
- MODULE_DESCRIPTION("Driver for Infineon TPM SLD 9630 TT 1.1 / SLB 9635 TT 1.2");
--MODULE_VERSION("1.9.2");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_nsc.c b/drivers/char/tpm/tpm_nsc.c
-index 038701d48351..6ab2fe7e8782 100644
---- a/drivers/char/tpm/tpm_nsc.c
-+++ b/drivers/char/tpm/tpm_nsc.c
-@@ -412,5 +412,4 @@ module_exit(cleanup_nsc);
- 
- MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
- MODULE_DESCRIPTION("TPM Driver");
--MODULE_VERSION("2.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-index e7df342a317d..713773ebff81 100644
---- a/drivers/char/tpm/tpm_tis.c
-+++ b/drivers/char/tpm/tpm_tis.c
-@@ -397,5 +397,4 @@ module_init(init_tis);
- module_exit(cleanup_tis);
- MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
- MODULE_DESCRIPTION("TPM Driver");
--MODULE_VERSION("2.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 8af2cee1a762..1aeb11e5fd5b 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -1150,5 +1150,4 @@ EXPORT_SYMBOL_GPL(tpm_tis_resume);
- 
- MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
- MODULE_DESCRIPTION("TPM Driver");
--MODULE_VERSION("2.0");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
-index 91c772e38bb5..18f14162d1c1 100644
---- a/drivers/char/tpm/tpm_vtpm_proxy.c
-+++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-@@ -729,5 +729,4 @@ module_exit(vtpm_module_exit);
- 
- MODULE_AUTHOR("Stefan Berger (stefanb@us.ibm.com)");
- MODULE_DESCRIPTION("vTPM Driver");
--MODULE_VERSION("0.1");
- MODULE_LICENSE("GPL");
--- 
-2.11.0
+Unfortunately, at least some of these *do* look like bugs, but I can't see
+how we can fix them, not least because the first two are user ABI afaict. It
+may also be that in practice we get 2x32-bit stores, and that works out fine
+when storing a 32-bit virtual address. I'm not sure what (if anything) the
+compiler guarantees in these cases.
 
+Will
