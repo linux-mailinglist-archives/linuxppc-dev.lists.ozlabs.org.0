@@ -1,43 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A411FDBD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 05:58:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47bpvT3TjQzDqS8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 15:58:45 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A5E11FE60
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 07:07:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47brQM6T91zDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 17:07:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47bpsQ1WWnzDqTG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 15:56:55 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67E561007;
- Sun, 15 Dec 2019 20:56:51 -0800 (PST)
-Received: from [10.163.1.75] (unknown [10.163.1.75])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 158D03F718;
- Sun, 15 Dec 2019 20:56:09 -0800 (PST)
-Subject: Re: [PATCH V11] mm/debug: Add tests validating architecture page
- table helpers
-To: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>
-References: <1575364731-18131-1-git-send-email-anshuman.khandual@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <d433f5a8-20a5-2862-8228-9ca72633b530@arm.com>
-Date: Mon, 16 Dec 2019 10:27:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47brNY47fNzDqT4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 17:05:31 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 28FAEBDBE;
+ Mon, 16 Dec 2019 06:05:27 +0000 (UTC)
+Date: Mon, 16 Dec 2019 07:05:20 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Add barrier_nospec to raw_copy_in_user()
+Message-ID: <20191216060520.GQ3986@kitsune.suse.cz>
+References: <20190306011038.16449-1-sjitindarsingh@gmail.com>
+ <20190821153656.57fabe9c@kitsune.suse.cz>
+ <87o8zhvgyc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <1575364731-18131-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87o8zhvgyc.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,63 +49,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Al Viro <viro@zeniv.linux.org.uk>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Sep 19, 2019 at 12:04:27AM +1000, Michael Ellerman wrote:
+> Michal Suchánek <msuchanek@suse.de> writes:
+> > On Wed,  6 Mar 2019 12:10:38 +1100
+> > Suraj Jitindar Singh <sjitindarsingh@gmail.com> wrote:
+> >
+> >> Commit ddf35cf3764b ("powerpc: Use barrier_nospec in copy_from_user()")
+> >> Added barrier_nospec before loading from user-controller pointers.
+> >> The intention was to order the load from the potentially user-controlled
+> >> pointer vs a previous branch based on an access_ok() check or similar.
+> >> 
+> >> In order to achieve the same result, add a barrier_nospec to the
+> >> raw_copy_in_user() function before loading from such a user-controlled
+> >> pointer.
+> >> 
+> >> Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+> >> ---
+> >>  arch/powerpc/include/asm/uaccess.h | 1 +
+> >>  1 file changed, 1 insertion(+)
+> >> 
+> >> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> >> index e3a731793ea2..bb615592d5bb 100644
+> >> --- a/arch/powerpc/include/asm/uaccess.h
+> >> +++ b/arch/powerpc/include/asm/uaccess.h
+> >> @@ -306,6 +306,7 @@ extern unsigned long __copy_tofrom_user(void __user *to,
+> >>  static inline unsigned long
+> >>  raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+> >>  {
+> >> +	barrier_nospec();
+> >>  	return __copy_tofrom_user(to, from, n);
+> >>  }
+> >>  #endif /* __powerpc64__ */
+> >
+> > Hello,
+> >
+> > AFAICT this is not needed. The data cannot be used in the kernel without
+> > subsequent copy_from_user which already has the nospec barrier.
+> 
+> Suraj did talk to me about this before sending the patch. My memory is
+> that he came up with a scenario where it was at least theoretically
+> useful, but he didn't mention that in the change log. He was working on
+> nested KVM at the time.
+> 
+> I've now forgotten, and he's moved on to other things so probably won't
+> remember either, if he's even checking his mail :/
 
+In absence of any argument for the code and absence of the same code on
+other architectures I would say you were just confused when merging
+this. The code is confusing after all.
 
-On 12/03/2019 02:48 PM, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
-> 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
-> 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
+Thanks
 
-Any updates on this ?
+Michal
