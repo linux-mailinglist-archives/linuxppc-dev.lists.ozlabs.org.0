@@ -2,42 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A5E11FE60
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 07:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F37811FE93
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 07:48:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47brQM6T91zDqV4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 17:07:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47bsKk64SGzDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 17:48:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhsharma@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="axvd/GuM"; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47brNY47fNzDqT4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 17:05:31 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 28FAEBDBE;
- Mon, 16 Dec 2019 06:05:27 +0000 (UTC)
-Date: Mon, 16 Dec 2019 07:05:20 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Add barrier_nospec to raw_copy_in_user()
-Message-ID: <20191216060520.GQ3986@kitsune.suse.cz>
-References: <20190306011038.16449-1-sjitindarsingh@gmail.com>
- <20190821153656.57fabe9c@kitsune.suse.cz>
- <87o8zhvgyc.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47bsHr5vJtzDqTZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 17:46:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1576478788;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uPUbX9Jz4xx+ZUII2dhvvUhvv4VHD3gib9TjJw4FvFo=;
+ b=axvd/GuMCMCsTs+CMigP/dZ5im6iSKbMZASuAT33LNq6UiMoLwqAXtc6WMgvVGlxe4ktns
+ 1no5hUBHbNV/FC9qBK4j/cyMrB+XvnUHoVfzqSZgdeZVyNf84Us07YSRNE4Y1/1ijxIfrA
+ ifQe2KwFh8pnpgyiv2vqa5Td0DuW/U4=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-333-5F8lQ5REMwKIN7kSv5gmTQ-1; Mon, 16 Dec 2019 01:46:26 -0500
+Received: by mail-lj1-f197.google.com with SMTP id r14so1770741ljc.18
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2019 22:46:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=uPUbX9Jz4xx+ZUII2dhvvUhvv4VHD3gib9TjJw4FvFo=;
+ b=TZUr+JgCH67PuqwuPvgvN05dMB6N5dnLp6z0QWWUMd3KiYvdBnoGmGJuZWpAmL43Lv
+ 3KNSDdPihCnaenMQBrFrTF+8Qv3PFSi9kJVDuUUnHVGRM6G7MdVt45nj7HRlD3xIgiaz
+ /5fbKEczRNqSUtpbysfEEvzkkxIplf7dYWzqZ/e/jCRu8wcgHXhIni3Pd5cqDv/Zl8hk
+ vRKVfgIPG05ySCS9uzpdUxm+UShyYFtZohq0BCb2eKE7Pgyc2GxVKCRJZljp+dXCOpDa
+ RQrmXVuF263KhFBfQRAg8XZof2gCBIRCCjlarGYQZvNUwb3lATgG+y8PqutnIJzs0/E/
+ NugA==
+X-Gm-Message-State: APjAAAV/z8NQww8yoqFcJNSFE8JtuDtfbJXkGYqZVgwkbdpsVllS0wnH
+ F5iPF3kMJnjXh10A73msXxdbusveG3nrK3uXLwbB/+Yn7jgzEpb0BWSNCl289PRyQe+OULb/PY5
+ GwIJnGYUd1n+mnpefw1+coTYZGa3mTWSRKtkihEsG1w==
+X-Received: by 2002:a19:f619:: with SMTP id x25mr15220135lfe.146.1576478784854; 
+ Sun, 15 Dec 2019 22:46:24 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxYIqap6RvvS/V3qRxs6d85Vgoutpx8l9xgfgCmVn0EpC3k91P2m6SYYYdmxGiRTrSSf+TXl7Fnv3bF7BQRunc=
+X-Received: by 2002:a19:f619:: with SMTP id x25mr15220124lfe.146.1576478784677; 
+ Sun, 15 Dec 2019 22:46:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87o8zhvgyc.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1574972621-25750-1-git-send-email-bhsharma@redhat.com>
+ <20191214122734.GC28635@zn.tnic>
+In-Reply-To: <20191214122734.GC28635@zn.tnic>
+From: Bhupesh Sharma <bhsharma@redhat.com>
+Date: Mon, 16 Dec 2019 12:16:12 +0530
+Message-ID: <CACi5LpP2PPcmaQw95V4MUzhvENq9+mB7UR7eib2HADCDHLz4oA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
+ for arm64 and MAX_PHYSMEM_BITS for all archs)
+To: Borislav Petkov <bp@alien8.de>
+X-MC-Unique: 5F8lQ5REMwKIN7kSv5gmTQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,61 +83,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Al Viro <viro@zeniv.linux.org.uk>,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>,
+ Dave Anderson <anderson@redhat.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Will Deacon <will@kernel.org>, x86@kernel.org,
+ kexec mailing list <kexec@lists.infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Kazuhito Hagio <k-hagio@ab.jp.nec.com>, James Morse <james.morse@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Bhupesh SHARMA <bhupesh.linux@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 19, 2019 at 12:04:27AM +1000, Michael Ellerman wrote:
-> Michal Suchánek <msuchanek@suse.de> writes:
-> > On Wed,  6 Mar 2019 12:10:38 +1100
-> > Suraj Jitindar Singh <sjitindarsingh@gmail.com> wrote:
-> >
-> >> Commit ddf35cf3764b ("powerpc: Use barrier_nospec in copy_from_user()")
-> >> Added barrier_nospec before loading from user-controller pointers.
-> >> The intention was to order the load from the potentially user-controlled
-> >> pointer vs a previous branch based on an access_ok() check or similar.
-> >> 
-> >> In order to achieve the same result, add a barrier_nospec to the
-> >> raw_copy_in_user() function before loading from such a user-controlled
-> >> pointer.
-> >> 
-> >> Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-> >> ---
-> >>  arch/powerpc/include/asm/uaccess.h | 1 +
-> >>  1 file changed, 1 insertion(+)
-> >> 
-> >> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> >> index e3a731793ea2..bb615592d5bb 100644
-> >> --- a/arch/powerpc/include/asm/uaccess.h
-> >> +++ b/arch/powerpc/include/asm/uaccess.h
-> >> @@ -306,6 +306,7 @@ extern unsigned long __copy_tofrom_user(void __user *to,
-> >>  static inline unsigned long
-> >>  raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
-> >>  {
-> >> +	barrier_nospec();
-> >>  	return __copy_tofrom_user(to, from, n);
-> >>  }
-> >>  #endif /* __powerpc64__ */
-> >
-> > Hello,
-> >
-> > AFAICT this is not needed. The data cannot be used in the kernel without
-> > subsequent copy_from_user which already has the nospec barrier.
-> 
-> Suraj did talk to me about this before sending the patch. My memory is
-> that he came up with a scenario where it was at least theoretically
-> useful, but he didn't mention that in the change log. He was working on
-> nested KVM at the time.
-> 
-> I've now forgotten, and he's moved on to other things so probably won't
-> remember either, if he's even checking his mail :/
+Hi Boris,
 
-In absence of any argument for the code and absence of the same code on
-other architectures I would say you were just confused when merging
-this. The code is confusing after all.
+On Sat, Dec 14, 2019 at 5:57 PM Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Fri, Nov 29, 2019 at 01:53:36AM +0530, Bhupesh Sharma wrote:
+> > Bhupesh Sharma (5):
+> >   crash_core, vmcoreinfo: Append 'MAX_PHYSMEM_BITS' to vmcoreinfo
+> >   arm64/crash_core: Export TCR_EL1.T1SZ in vmcoreinfo
+> >   Documentation/arm64: Fix a simple typo in memory.rst
+> >   Documentation/vmcoreinfo: Add documentation for 'MAX_PHYSMEM_BITS'
+> >   Documentation/vmcoreinfo: Add documentation for 'TCR_EL1.T1SZ'
+>
+> why are those last two separate patches and not part of the patches
+> which export the respective variable/define?
 
-Thanks
+I remember there was a suggestion during the review of an earlier
+version to keep them as a separate patch(es) so that the documentation
+text is easier to review, but I have no strong preference towards the
+same.
 
-Michal
+I can merge the documentation patches with the respective patches
+(which export the variables/defines to vmcoreinfo) in v6, unless other
+maintainers have an objections towards the same.
+
+Thanks,
+Bhupesh
+
