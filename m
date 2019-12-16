@@ -1,60 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538861202AE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 11:32:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A054512028A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 11:30:13 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47byFt4k8tzDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 21:30:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47byK13b8PzDqSH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 21:32:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="PQl9UUy0"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="NITuPJbL"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47byCf45xBzDqNG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 21:28:14 +1100 (AEDT)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A7CFD206CB;
- Mon, 16 Dec 2019 10:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1576492091;
- bh=aJNODjNlV3v54INi4VXe5H6gmqwl3DaOFDNd3U6oYJs=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=PQl9UUy06Hwnhc+WgyHD0YW0DQzVIQ3siJt9h2AJUf2ItnavgPY6wHx2lPr17QIQn
- pWJIbXf9wTMoC3M3VQX7GFymirkp4wWHUq5YB2bZkO1uOlk9b2v98++N2Cjd8ShJBl
- a4tkOdQpyWd0Yqop+KfyrtBhCC5RfjzevBWWVcHs=
-Date: Mon, 16 Dec 2019 10:28:06 +0000
-From: Will Deacon <will@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
- Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
-Message-ID: <20191213144359.GA3826@willie-the-truck>
-References: <875zimp0ay.fsf@mpe.ellerman.id.au>
- <20191212080105.GV2844@hirez.programming.kicks-ass.net>
- <20191212100756.GA11317@willie-the-truck>
- <20191212104610.GW2827@hirez.programming.kicks-ass.net>
- <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
- <20191212180634.GA19020@willie-the-truck>
- <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
- <20191212193401.GB19020@willie-the-truck>
- <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
- <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47byH51LKczDqNG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 21:31:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1576492269;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Eo005stHRd9C8m5vBASr94rer3WPzPVBtfLVLTsOZZo=;
+ b=NITuPJbLOcemBHHPJDB1gmUZxyFb/GvKypQeAm7uyCPyBatpxWiZUKAwLQFU6cEQJWYOB5
+ Jd6MyDyt5aLJejhL10Vl/Z2LZ/ieq4d1D2jjoFvOeiRPBwlIpu/DmlBtU2Nmejq0oeFuNm
+ E0nwUjfjf5UVOvrk1RYtvOlyQgBDBu8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-313-8fcKe7vtONSMgfiW6jjRQw-1; Mon, 16 Dec 2019 05:31:06 -0500
+X-MC-Unique: 8fcKe7vtONSMgfiW6jjRQw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5041CDC23;
+ Mon, 16 Dec 2019 10:31:04 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.36.118.132])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D75485C241;
+ Mon, 16 Dec 2019 10:30:58 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2] powerpc/pseries/cmm: fix managed page counts when
+ migrating pages between zones
+Date: Mon, 16 Dec 2019 11:30:58 +0100
+Message-Id: <20191216103058.4958-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,65 +66,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Richard Fontana <rfontana@redhat.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Arun KS <arunks@codeaurora.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 13, 2019 at 02:17:08PM +0100, Arnd Bergmann wrote:
-> On Thu, Dec 12, 2019 at 9:50 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> > On Thu, Dec 12, 2019 at 11:34 AM Will Deacon <will@kernel.org> wrote:
-> > > The root of my concern in all of this, and what started me looking at it in
-> > > the first place, is the interaction with 'typeof()'. Inheriting 'volatile'
-> > > for a pointer means that local variables in macros declared using typeof()
-> > > suddenly start generating *hideous* code, particularly when pointless stack
-> > > spills get stackprotector all excited.
-> >
-> > Yeah, removing volatile can be a bit annoying.
-> >
-> > For the particular case of the bitops, though, it's not an issue.
-> > Since you know the type there, you can just cast it.
-> >
-> > And if we had the rule that READ_ONCE() was an arithmetic type, you could do
-> >
-> >     typeof(0+(*p)) __var;
-> >
-> > since you might as well get the integer promotion anyway (on the
-> > non-volatile result).
-> >
-> > But that doesn't work with structures or unions, of course.
-> >
-> > I'm not entirely sure we have READ_ONCE() with a struct. I do know we
-> > have it with 64-bit entities on 32-bit machines, but that's ok with
-> > the "0+" trick.
-> 
-> I'll have my randconfig builder look for instances, so far I found one,
-> see below. My feeling is that it would be better to enforce at least
-> the size being a 1/2/4/8, to avoid cases where someone thinks
-> the access is atomic, but it falls back on a memcpy.
+Commit 63341ab03706 (virtio-balloon: fix managed page counts when migrati=
+ng
+pages between zones) fixed a long existing BUG in the virtio-balloon
+driver when pages would get migrated between zones.  I did not try to
+reproduce on powerpc, but looking at the code, the same should apply to
+powerpc/cmm ever since it started using the balloon compaction
+infrastructure (luckily just recently).
 
-I've been using something similar built on compiletime_assert_atomic_type()
-and I spotted another instance in the xdp code (xskq_validate_desc()) which
-tries to READ_ONCE() on a 128-bit descriptor, although a /very/ quick read
-of the code suggests that this probably can't be concurrently modified if
-the ring indexes are synchronised properly.
+In case we have to migrate a ballon page to a newpage of another zone, th=
+e
+managed page count of both zones is wrong. Paired with memory offlining
+(which will adjust the managed page count), we can trigger kernel crashes
+and all kinds of different symptoms.
 
-However, enabling this for 32-bit ARM is total carnage; as Linus mentioned,
-a whole bunch of code appears to be relying on atomic 64-bit access of
-READ_ONCE(); the perf ring buffer, io_uring, the scheduler, pm_runtime,
-cpuidle, ... :(
+Fix it by properly adjusting the managed page count when migrating if
+the zone changed.
 
-Unfortunately, at least some of these *do* look like bugs, but I can't see
-how we can fix them, not least because the first two are user ABI afaict. It
-may also be that in practice we get 2x32-bit stores, and that works out fine
-when storing a 32-bit virtual address. I'm not sure what (if anything) the
-compiler guarantees in these cases.
+We'll temporarily modify the totalram page count. If this ever becomes a
+problem, we can fine tune by providing helpers that don't touch
+the totalram pages (e.g., adjust_zone_managed_page_count()).
 
-Will
+Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Richard Fontana <rfontana@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arun KS <arunks@codeaurora.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+
+v1 -> v2:
+- Link virtio-balloon fix commit
+- Check if the zone changed
+- Move fixup further up, before enqueuing the new newpage (where we are
+  guaranteed to hold a reference to both pages)
+
+---
+ arch/powerpc/platforms/pseries/cmm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platform=
+s/pseries/cmm.c
+index 91571841df8a..9dba7e880885 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -539,6 +539,16 @@ static int cmm_migratepage(struct balloon_dev_info *=
+b_dev_info,
+ 	/* balloon page list reference */
+ 	get_page(newpage);
+=20
++	/*
++	 * When we migrate a page to a different zone, we have to fixup the
++	 * count of both involved zones as we adjusted the managed page count
++	 * when inflating.
++	 */
++	if (page_zone(page) !=3D page_zone(newpage)) {
++		adjust_managed_page_count(page, 1);
++		adjust_managed_page_count(newpage, -1);
++	}
++
+ 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+ 	balloon_page_insert(b_dev_info, newpage);
+ 	balloon_page_delete(page);
+--=20
+2.23.0
+
