@@ -2,37 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E706120F9C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 17:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB2212116E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 18:14:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47c6Mq1rMwzDqTj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 03:35:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47c7D96G5TzDqW2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 04:14:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.88; helo=mga01.intel.com;
+ (client-ip=134.134.136.20; helo=mga02.intel.com;
  envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47c6Kk1FGBzDqD2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 03:34:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47c79t17dXzDqSB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 04:12:16 +1100 (AEDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2019 08:33:58 -0800
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2019 09:12:13 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,322,1571727600"; d="scan'208";a="240090657"
+X-IronPort-AV: E=Sophos;i="5.69,322,1571727600"; d="scan'208";a="415144339"
 Received: from linux.intel.com ([10.54.29.200])
- by fmsmga004.fm.intel.com with ESMTP; 16 Dec 2019 08:33:57 -0800
+ by fmsmga005.fm.intel.com with ESMTP; 16 Dec 2019 09:12:12 -0800
 Received: from [10.251.95.214] (abudanko-mobl.ccr.corp.intel.com
  [10.251.95.214])
- by linux.intel.com (Postfix) with ESMTP id 52C38580458;
- Mon, 16 Dec 2019 08:33:49 -0800 (PST)
+ by linux.intel.com (Postfix) with ESMTP id 30029580342;
+ Mon, 16 Dec 2019 09:12:03 -0800 (PST)
 Subject: Re: [PATCH v2 2/7] perf/core: open access for CAP_SYS_PERFMON
  privileged process
 To: "Lubashev, Igor" <ilubashe@akamai.com>,
@@ -52,8 +52,8 @@ References: <26101427-c0a3-db9f-39e9-9e5f4ddd009c@linux.intel.com>
  <9316a1ab21f6441eb2b421acb818a2a1@ustx2ex-dag1mb6.msg.corp.akamai.com>
 From: Alexey Budankov <alexey.budankov@linux.intel.com>
 Organization: Intel Corp.
-Message-ID: <3f2ac76c-6108-7769-4b99-a7a2da31af3d@linux.intel.com>
-Date: Mon, 16 Dec 2019 19:33:48 +0300
+Message-ID: <c471a28b-6620-9b0a-4b6e-43f4956202cd@linux.intel.com>
+Date: Mon, 16 Dec 2019 20:12:02 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.1
 MIME-Version: 1.0
@@ -92,6 +92,7 @@ Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
 
 On 16.12.2019 19:12, Lubashev, Igor wrote:
 > On Mon, Dec 16, 2019 at 2:15 AM, Alexey Budankov <alexey.budankov@linux.intel.com> wrote:
@@ -148,10 +149,9 @@ On 16.12.2019 19:12, Lubashev, Igor wrote:
 > 
 > I see a lot of "(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)" constructs now.  Maybe wrapping it in an " inline bool perfmon_capable()" defined somewhere (like in /include/linux/capability.h)?
 
-Yes, it makes sense.
+Sounds reasonable, thanks!
 
-Thanks,
-Alexey
+~Alexey
 
 > 
 > - Igor
