@@ -1,48 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B48A1206B1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 14:11:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47c1qk2CQNzDq9S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 00:11:14 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BC712088B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 15:23:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47c3RZ0VDXzDqVl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 01:23:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47c1lN2LXdzDqV7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 00:07:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="npdh8pCo"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 47c1lM5TQ9z9sPK; Tue, 17 Dec 2019 00:07:27 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 47c1lM4sRHz9sPc; Tue, 17 Dec 2019 00:07:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576501647;
- bh=KQO50PKx1jwaxyI0/ceAg6wlA7VtacVtGpvplRJqWs4=;
- h=From:To:Cc:Subject:Date:From;
- b=npdh8pCoJaYvc5x8MnYa5ivdTHsJJVXQjLjvUnxHgQ11TV9HgTw6/Yia6/MoJPkq0
- K7pBmnavbHQpnIz9Qc0JAMUaAewHHhjlKZoOOHRGMtk80MfM3C/QYkzxVeRKV2lL/O
- GoxjR5EHT7NCIEvifBITD7Bq5VKY8eG/5jNnE/ikuHTb3uJKh6fHIHm//co1P4h3UF
- RnzNIX+47seQX5Ani4pHJ8lRFkuTfCq1ZZ105myiAq+G8JkK1wWEcomfexBzZNbbbU
- ZgnmQYracROndQ7tew9AM8w/almM+MHZHuEa516sDoyepx29c2x3PqG8NvWy5eqMby
- ncHWKvgsZHUOQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v3] powerpc: Fix __clear_user() with KUAP enabled
-Date: Tue, 17 Dec 2019 00:07:22 +1100
-Message-Id: <20191216130722.5545-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47c3P80ypnzDqVT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 01:21:47 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBGEIHIx142898
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 09:21:44 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wwe2pcs82-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 09:21:43 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Mon, 16 Dec 2019 14:21:42 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 16 Dec 2019 14:21:40 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBGELdtM33488976
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 16 Dec 2019 14:21:39 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A9FE42041;
+ Mon, 16 Dec 2019 14:21:39 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6EBB042045;
+ Mon, 16 Dec 2019 14:21:38 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.102.1.133])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 16 Dec 2019 14:21:38 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v3] powerpc/smp: Use nid as fallback for package_id
+Date: Mon, 16 Dec 2019 19:51:19 +0530
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+x-cbid: 19121614-4275-0000-0000-0000038F9098
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121614-4276-0000-0000-000038A3530D
+Message-Id: <20191216142119.5937-1-srikar@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-16_05:2019-12-16,2019-12-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-1912160128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,120 +83,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew.donnellan@au1.ibm.com
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Andrew Donnellan <ajd@linux.ibm.com>
+Package_id is to find out all cores that are part of the same chip. On
+PowerNV machines, package_id defaults to chip_id. However ibm,chip_id
+property is not present in device-tree of PowerVM Lpars. Hence lscpu
+output shows one core per socket and multiple cores.
 
-The KUAP implementation adds calls in clear_user() to enable and
-disable access to userspace memory. However, it doesn't add these to
-__clear_user(), which is used in the ptrace regset code.
+To overcome this, use nid as the package_id on PowerVM Lpars.
 
-As there's only one direct user of __clear_user() (the regset code),
-and the time taken to set the AMR for KUAP purposes is going to
-dominate the cost of a quick access_ok(), there's not much point
-having a separate path.
+Before the patch.
+---------------
+Architecture:        ppc64le
+Byte Order:          Little Endian
+CPU(s):              128
+On-line CPU(s) list: 0-127
+Thread(s) per core:  8
+Core(s) per socket:  1                           <----------------------
+Socket(s):           16                          <----------------------
+NUMA node(s):        2
+Model:               2.2 (pvr 004e 0202)
+Model name:          POWER9 (architected), altivec supported
+Hypervisor vendor:   pHyp
+Virtualization type: para
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            512K
+L3 cache:            10240K
+NUMA node0 CPU(s):   0-63
+NUMA node1 CPU(s):   64-127
+ #
+ # cat /sys/devices/system/cpu/cpu0/topology/physical_package_id
+ -1
+ #
 
-Rename __clear_user() to __arch_clear_user(), and make __clear_user()
-just call clear_user().
+After the patch
+---------------
+Architecture:        ppc64le
+Byte Order:          Little Endian
+CPU(s):              128
+On-line CPU(s) list: 0-127
+Thread(s) per core:  8			<------------------------------
+Core(s) per socket:  8			<------------------------------
+Socket(s):           2
+NUMA node(s):        2
+Model:               2.2 (pvr 004e 0202)
+Model name:          POWER9 (architected), altivec supported
+Hypervisor vendor:   pHyp
+Virtualization type: para
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            512K
+L3 cache:            10240K
+NUMA node0 CPU(s):   0-63
+NUMA node1 CPU(s):   64-127
+ #
+ # cat /sys/devices/system/cpu/cpu0/topology/physical_package_id
+ 0
+ #
+Now lscpu output is more in line with the system configuration.
 
-Reported-by: syzbot+f25ecf4b2982d8c7a640@syzkaller-ppc64.appspotmail.com
-Reported-by: Daniel Axtens <dja@axtens.net>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-[mpe: Use __arch_clear_user() for the asm version like arm64 & nds32]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191209132221.15328-1-ajd@linux.ibm.com
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
 ---
- arch/powerpc/include/asm/uaccess.h | 9 +++++++--
- arch/powerpc/lib/string_32.S       | 4 ++--
- arch/powerpc/lib/string_64.S       | 6 +++---
- 3 files changed, 12 insertions(+), 7 deletions(-)
+Changelog from v2: https://patchwork.ozlabs.org/patch/1151649
+- Rebased to v5.5-rc2
+- Renamed the new function to cpu_to_nid
+- Removed checks to fadump property. (Looked too excessive)
+- Moved pseries specific code to pseries/lpar.c
 
-v3: mpe: Use __arch_clear_user() for the asm version like arm64 & nds32
+Changelog from v1: https://patchwork.ozlabs.org/patch/1126145
+- In v1 cpu_to_chip_id was overloaded to fallback on nid.  Michael
+  Ellerman wasn't comfortable with nid being shown up as chip_id.
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 15002b51ff18..c92fe7fe9692 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -401,7 +401,7 @@ copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
- 	return n;
- }
+ arch/powerpc/include/asm/topology.h   |  7 ++++++-
+ arch/powerpc/kernel/smp.c             |  6 +++---
+ arch/powerpc/platforms/pseries/lpar.c | 22 ++++++++++++++++++++++
+ 3 files changed, 31 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index 2f7e1ea5089e..7422ef913c75 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -130,11 +130,16 @@ static inline void shared_proc_topology_init(void) {}
  
--extern unsigned long __clear_user(void __user *addr, unsigned long size);
-+unsigned long __arch_clear_user(void __user *addr, unsigned long size);
+ #ifdef CONFIG_SMP
+ #include <asm/cputable.h>
++#ifdef CONFIG_PPC_SPLPAR
++int cpu_to_nid(int);
++#else
++#define cpu_to_nid(cpu)		cpu_to_chip_id(cpu)
++#endif
  
- static inline unsigned long clear_user(void __user *addr, unsigned long size)
+ #ifdef CONFIG_PPC64
+ #include <asm/smp.h>
+ 
+-#define topology_physical_package_id(cpu)	(cpu_to_chip_id(cpu))
++#define topology_physical_package_id(cpu)	(cpu_to_nid(cpu))
+ #define topology_sibling_cpumask(cpu)	(per_cpu(cpu_sibling_map, cpu))
+ #define topology_core_cpumask(cpu)	(per_cpu(cpu_core_map, cpu))
+ #define topology_core_id(cpu)		(cpu_to_core_id(cpu))
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index ea6adbf6a221..b0c1438d8d9a 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1188,7 +1188,7 @@ static inline void add_cpu_to_smallcore_masks(int cpu)
+ static void add_cpu_to_masks(int cpu)
  {
-@@ -409,12 +409,17 @@ static inline unsigned long clear_user(void __user *addr, unsigned long size)
- 	might_fault();
- 	if (likely(access_ok(addr, size))) {
- 		allow_write_to_user(addr, size);
--		ret = __clear_user(addr, size);
-+		ret = __arch_clear_user(addr, size);
- 		prevent_write_to_user(addr, size);
- 	}
- 	return ret;
+ 	int first_thread = cpu_first_thread_sibling(cpu);
+-	int chipid = cpu_to_chip_id(cpu);
++	int nid = cpu_to_nid(cpu);
+ 	int i;
+ 
+ 	/*
+@@ -1217,11 +1217,11 @@ static void add_cpu_to_masks(int cpu)
+ 	for_each_cpu(i, cpu_l2_cache_mask(cpu))
+ 		set_cpus_related(cpu, i, cpu_core_mask);
+ 
+-	if (chipid == -1)
++	if (nid == -1)
+ 		return;
+ 
+ 	for_each_cpu(i, cpu_online_mask)
+-		if (cpu_to_chip_id(i) == chipid)
++		if (cpu_to_nid(i) == nid)
+ 			set_cpus_related(cpu, i, cpu_core_mask);
  }
  
-+static inline unsigned long __clear_user(void __user *addr, unsigned long size)
-+{
-+	return clear_user(addr, size);
-+}
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 60cb29ae4739..99583b9f00e4 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -650,6 +650,28 @@ static int __init vcpudispatch_stats_procfs_init(void)
+ }
+ 
+ machine_device_initcall(pseries, vcpudispatch_stats_procfs_init);
 +
- extern long strncpy_from_user(char *dst, const char __user *src, long count);
- extern __must_check long strnlen_user(const char __user *str, long n);
++int cpu_to_nid(cpu)
++{
++	int nid = cpu_to_chip_id(cpu);
++
++	/*
++	 * If the platform is PowerNV or Guest on KVM, ibm,chip-id is
++	 * defined. Hence we would return the chip-id as the
++	 * cpu_to_nid.
++	 */
++	if (nid == -1 && firmware_has_feature(FW_FEATURE_LPAR)) {
++		struct device_node *np = of_get_cpu_node(cpu, NULL);
++
++		if (np) {
++			nid = of_node_to_nid(np);
++			of_node_put(np);
++		}
++	}
++	return nid;
++}
++EXPORT_SYMBOL(cpu_to_nid);
++
+ #endif /* CONFIG_PPC_SPLPAR */
  
-diff --git a/arch/powerpc/lib/string_32.S b/arch/powerpc/lib/string_32.S
-index f69a6aab7bfb..1ddb26394e8a 100644
---- a/arch/powerpc/lib/string_32.S
-+++ b/arch/powerpc/lib/string_32.S
-@@ -17,7 +17,7 @@ CACHELINE_BYTES = L1_CACHE_BYTES
- LG_CACHELINE_BYTES = L1_CACHE_SHIFT
- CACHELINE_MASK = (L1_CACHE_BYTES-1)
- 
--_GLOBAL(__clear_user)
-+_GLOBAL(__arch_clear_user)
- /*
-  * Use dcbz on the complete cache lines in the destination
-  * to set them to zero.  This requires that the destination
-@@ -87,4 +87,4 @@ _GLOBAL(__clear_user)
- 	EX_TABLE(8b, 91b)
- 	EX_TABLE(9b, 91b)
- 
--EXPORT_SYMBOL(__clear_user)
-+EXPORT_SYMBOL(__arch_clear_user)
-diff --git a/arch/powerpc/lib/string_64.S b/arch/powerpc/lib/string_64.S
-index 507b18b1660e..169872bc0892 100644
---- a/arch/powerpc/lib/string_64.S
-+++ b/arch/powerpc/lib/string_64.S
-@@ -17,7 +17,7 @@
- 	.section	".text"
- 
- /**
-- * __clear_user: - Zero a block of memory in user space, with less checking.
-+ * __arch_clear_user: - Zero a block of memory in user space, with less checking.
-  * @to:   Destination address, in user space.
-  * @n:    Number of bytes to zero.
-  *
-@@ -58,7 +58,7 @@ err3;	stb	r0,0(r3)
- 	mr	r3,r4
- 	blr
- 
--_GLOBAL_TOC(__clear_user)
-+_GLOBAL_TOC(__arch_clear_user)
- 	cmpdi	r4,32
- 	neg	r6,r3
- 	li	r0,0
-@@ -181,4 +181,4 @@ err1;	dcbz	0,r3
- 	cmpdi	r4,32
- 	blt	.Lshort_clear
- 	b	.Lmedium_clear
--EXPORT_SYMBOL(__clear_user)
-+EXPORT_SYMBOL(__arch_clear_user)
+ void vpa_init(int cpu)
 -- 
-2.21.0
+2.18.1
 
