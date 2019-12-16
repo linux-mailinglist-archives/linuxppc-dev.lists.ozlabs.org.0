@@ -2,59 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538861202AE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 11:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DF4120461
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 12:51:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47byK13b8PzDqSH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 21:32:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47c03f2508zDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 22:51:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="NITuPJbL"; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47bzzg62P6zDq6q
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 22:47:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=LwcWvPUPdHgv2odYtZcSMNnsgALZyJIt29Wbmp4VgB8=; b=NIKIK/cZilp7O4WY5tTPGdJ71
+ 0bSlzirEsG8ICgflK8h81fjEYBOzirr95k2osGKphsDK4HWCEJok7EWXmBJyqpIcHKgyCKXS2WcSi
+ +X8yRLNm2YDi41R98ppiuSE8qrqlPRD/uOpsmzodOLqDFsZDqrrFYRVT/IKOO8GQb2lrrY7LKi1d+
+ Esy0g5T8tmr0jCUwWNXLRdaVxRedn/nRTNc7vfLYhetZeE+mPdLLm4axpNRPOSIcFVh4KID6EDquB
+ OxeWbfbldP7mSASAmxCSUP8gm7qmRhxNPtrypeCpUi/1bpzi2hcUu7jJ2MNrbVz3S+wCrTWLh9fYP
+ 0kj67N7cg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1igoqW-0005HZ-2d; Mon, 16 Dec 2019 11:47:28 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47byH51LKczDqNG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2019 21:31:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1576492269;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Eo005stHRd9C8m5vBASr94rer3WPzPVBtfLVLTsOZZo=;
- b=NITuPJbLOcemBHHPJDB1gmUZxyFb/GvKypQeAm7uyCPyBatpxWiZUKAwLQFU6cEQJWYOB5
- Jd6MyDyt5aLJejhL10Vl/Z2LZ/ieq4d1D2jjoFvOeiRPBwlIpu/DmlBtU2Nmejq0oeFuNm
- E0nwUjfjf5UVOvrk1RYtvOlyQgBDBu8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-313-8fcKe7vtONSMgfiW6jjRQw-1; Mon, 16 Dec 2019 05:31:06 -0500
-X-MC-Unique: 8fcKe7vtONSMgfiW6jjRQw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5041CDC23;
- Mon, 16 Dec 2019 10:31:04 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.36.118.132])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D75485C241;
- Mon, 16 Dec 2019 10:30:58 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] powerpc/pseries/cmm: fix managed page counts when
- migrating pages between zones
-Date: Mon, 16 Dec 2019 11:30:58 +0100
-Message-Id: <20191216103058.4958-1-david@redhat.com>
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 96FFC3035D4;
+ Mon, 16 Dec 2019 12:46:02 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 9D3422B1A6BF1; Mon, 16 Dec 2019 12:47:24 +0100 (CET)
+Date: Mon, 16 Dec 2019 12:47:24 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Will Deacon <will@kernel.org>
+Subject: Re: READ_ONCE() + STACKPROTECTOR_STRONG == :/ (was Re: [GIT PULL]
+ Please pull powerpc/linux.git powerpc-5.5-2 tag (topic/kasan-bitops))
+Message-ID: <20191216114724.GL2844@hirez.programming.kicks-ass.net>
+References: <20191212080105.GV2844@hirez.programming.kicks-ass.net>
+ <20191212100756.GA11317@willie-the-truck>
+ <20191212104610.GW2827@hirez.programming.kicks-ass.net>
+ <CAHk-=wjUBsH0BYDBv=q36482G-U7c=9bC89L_BViSciTfb8fhA@mail.gmail.com>
+ <20191212180634.GA19020@willie-the-truck>
+ <CAHk-=whRxB0adkz+V7SQC8Ac_rr_YfaPY8M2mFDfJP2FFBNz8A@mail.gmail.com>
+ <20191212193401.GB19020@willie-the-truck>
+ <CAHk-=wiMuHmWzQ7-CRQB6o+SHtA-u-Rp6VZwPcqDbjAaug80rQ@mail.gmail.com>
+ <CAK8P3a2QYpT_u3D7c_w+hoyeO-Stkj5MWyU_LgGOqnMtKLEudg@mail.gmail.com>
+ <20191213144359.GA3826@willie-the-truck>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191213144359.GA3826@willie-the-truck>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,83 +78,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Richard Fontana <rfontana@redhat.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Arun KS <arunks@codeaurora.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 63341ab03706 (virtio-balloon: fix managed page counts when migrati=
-ng
-pages between zones) fixed a long existing BUG in the virtio-balloon
-driver when pages would get migrated between zones.  I did not try to
-reproduce on powerpc, but looking at the code, the same should apply to
-powerpc/cmm ever since it started using the balloon compaction
-infrastructure (luckily just recently).
+On Mon, Dec 16, 2019 at 10:28:06AM +0000, Will Deacon wrote:
+> However, enabling this for 32-bit ARM is total carnage; as Linus mentioned,
+> a whole bunch of code appears to be relying on atomic 64-bit access of
+> READ_ONCE(); the perf ring buffer, io_uring, the scheduler, pm_runtime,
+> cpuidle, ... :(
+> 
+> Unfortunately, at least some of these *do* look like bugs, but I can't see
+> how we can fix them, not least because the first two are user ABI afaict. It
+> may also be that in practice we get 2x32-bit stores, and that works out fine
+> when storing a 32-bit virtual address. I'm not sure what (if anything) the
+> compiler guarantees in these cases.
 
-In case we have to migrate a ballon page to a newpage of another zone, th=
-e
-managed page count of both zones is wrong. Paired with memory offlining
-(which will adjust the managed page count), we can trigger kernel crashes
-and all kinds of different symptoms.
+Perf does indeed have a (known) problem here for the head/tail values.
+Last time we looked at that nobody could really come up with a sane
+solution that wouldn't break something.
 
-Fix it by properly adjusting the managed page count when migrating if
-the zone changed.
-
-We'll temporarily modify the totalram page count. If this ever becomes a
-problem, we can fine tune by providing helpers that don't touch
-the totalram pages (e.g., adjust_zone_managed_page_count()).
-
-Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Richard Fontana <rfontana@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arun KS <arunks@codeaurora.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
-
-v1 -> v2:
-- Link virtio-balloon fix commit
-- Check if the zone changed
-- Move fixup further up, before enqueuing the new newpage (where we are
-  guaranteed to hold a reference to both pages)
-
----
- arch/powerpc/platforms/pseries/cmm.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platform=
-s/pseries/cmm.c
-index 91571841df8a..9dba7e880885 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -539,6 +539,16 @@ static int cmm_migratepage(struct balloon_dev_info *=
-b_dev_info,
- 	/* balloon page list reference */
- 	get_page(newpage);
-=20
-+	/*
-+	 * When we migrate a page to a different zone, we have to fixup the
-+	 * count of both involved zones as we adjusted the managed page count
-+	 * when inflating.
-+	 */
-+	if (page_zone(page) !=3D page_zone(newpage)) {
-+		adjust_managed_page_count(page, 1);
-+		adjust_managed_page_count(newpage, -1);
-+	}
-+
- 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
- 	balloon_page_insert(b_dev_info, newpage);
- 	balloon_page_delete(page);
---=20
-2.23.0
-
+I'll try and dig out that thread. Perhaps casting the value to 'unsigned
+long' internally might work, I forgot the details.
