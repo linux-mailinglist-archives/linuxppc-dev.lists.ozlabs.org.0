@@ -2,92 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F72B120EAA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 17:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E706120F9C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 17:35:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47c5ZP2lBXzDqGk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 02:59:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47c6Mq1rMwzDqTj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 03:35:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47c5X84JvLzDq6N
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 02:58:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47c5X83PkTz8t7b
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 02:58:00 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47c5X82jfhz9sRM; Tue, 17 Dec 2019 02:58:00 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47c5X75z0qz9sR1
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Dec 2019 02:57:59 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBGFqH6j050223; Mon, 16 Dec 2019 10:57:56 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wwe609gjd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Dec 2019 10:57:56 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBGFsqLS003508;
- Mon, 16 Dec 2019 15:57:55 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma02wdc.us.ibm.com with ESMTP id 2wvqc64bsc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Dec 2019 15:57:55 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBGFvsFT42795392
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Dec 2019 15:57:54 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D174AC05F;
- Mon, 16 Dec 2019 15:57:54 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3223EAC05E;
- Mon, 16 Dec 2019 15:57:54 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.41.178.211])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 16 Dec 2019 15:57:54 +0000 (GMT)
-Subject: Re: [PATCH net v2] net/ibmvnic: Fix typo in retry check
-To: Jakub Kicinski <jakub.kicinski@netronome.com>
-References: <1576078719-9604-1-git-send-email-tlfalcon@linux.ibm.com>
- <20191213172747.5e5310c9@cakuba.netronome.com>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <1d4d0ef6-2115-84d6-fcca-e058dca18457@linux.ibm.com>
-Date: Mon, 16 Dec 2019 09:57:53 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47c6Kk1FGBzDqD2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 03:34:01 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2019 08:33:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,322,1571727600"; d="scan'208";a="240090657"
+Received: from linux.intel.com ([10.54.29.200])
+ by fmsmga004.fm.intel.com with ESMTP; 16 Dec 2019 08:33:57 -0800
+Received: from [10.251.95.214] (abudanko-mobl.ccr.corp.intel.com
+ [10.251.95.214])
+ by linux.intel.com (Postfix) with ESMTP id 52C38580458;
+ Mon, 16 Dec 2019 08:33:49 -0800 (PST)
+Subject: Re: [PATCH v2 2/7] perf/core: open access for CAP_SYS_PERFMON
+ privileged process
+To: "Lubashev, Igor" <ilubashe@akamai.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ "james.bottomley@hansenpartnership.com"
+ <james.bottomley@hansenpartnership.com>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ Casey Schaufler <casey@schaufler-ca.com>, "serge@hallyn.com"
+ <serge@hallyn.com>, James Morris <jmorris@namei.org>
+References: <26101427-c0a3-db9f-39e9-9e5f4ddd009c@linux.intel.com>
+ <fd6ffb43-ed43-14cd-b286-6ab4b199155b@linux.intel.com>
+ <9316a1ab21f6441eb2b421acb818a2a1@ustx2ex-dag1mb6.msg.corp.akamai.com>
+From: Alexey Budankov <alexey.budankov@linux.intel.com>
+Organization: Intel Corp.
+Message-ID: <3f2ac76c-6108-7769-4b99-a7a2da31af3d@linux.intel.com>
+Date: Mon, 16 Dec 2019 19:33:48 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <20191213172747.5e5310c9@cakuba.netronome.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <9316a1ab21f6441eb2b421acb818a2a1@ustx2ex-dag1mb6.msg.corp.akamai.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-16_06:2019-12-16,2019-12-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- clxscore=1015 priorityscore=1501 spamscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912160139
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,54 +72,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: julietk@linux.vnet.ibm.com, netdev@vger.kernel.org, linuxppc-dev@ozlabs.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ Song Liu <songliubraving@fb.com>, Andi Kleen <ak@linux.intel.com>,
+ Kees Cook <keescook@chromium.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "bgregg@netflix.com" <bgregg@netflix.com>, Jiri Olsa <jolsa@redhat.com>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 12/13/19 7:27 PM, Jakub Kicinski wrote:
-> On Wed, 11 Dec 2019 09:38:39 -0600, Thomas Falcon wrote:
->> This conditional is missing a bang, with the intent
->> being to break when the retry count reaches zero.
+On 16.12.2019 19:12, Lubashev, Igor wrote:
+> On Mon, Dec 16, 2019 at 2:15 AM, Alexey Budankov <alexey.budankov@linux.intel.com> wrote:
 >>
->> Fixes: 476d96ca9c ("ibmvnic: Bound waits for device queries")
->> Suggested-by: Juliet Kim <julietk@linux.vnet.ibm.com>
->> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> Ah damn, looks like this originates from my pseudo code.
->
-> I had to fix the fixes tag:
->
-> Commit: 847496ccfa22 ("net/ibmvnic: Fix typo in retry check")
-> 	Fixes tag: Fixes: 476d96ca9c ("ibmvnic: Bound waits for device queries")
-> 	Has these problem(s):
-> 		- SHA1 should be at least 12 digits long
-> 		  Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
-> 		  or later) just making sure it is not set (or set to "auto").
+>> Open access to perf_events monitoring for CAP_SYS_PERFMON privileged
+>> processes.
+>> For backward compatibility reasons access to perf_events subsystem remains
+>> open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage
+>> for secure perf_events monitoring is discouraged with respect to
+>> CAP_SYS_PERFMON capability.
+>>
+>> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+>> ---
+>>  include/linux/perf_event.h | 9 ++++++---
+>>  1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h index
+>> 34c7c6910026..52313d2cc343 100644
+>> --- a/include/linux/perf_event.h
+>> +++ b/include/linux/perf_event.h
+>> @@ -1285,7 +1285,8 @@ static inline int perf_is_paranoid(void)
+>>
+>>  static inline int perf_allow_kernel(struct perf_event_attr *attr)  {
+>> -	if (sysctl_perf_event_paranoid > 1 && !capable(CAP_SYS_ADMIN))
+>> +	if (sysctl_perf_event_paranoid > 1 &&
+>> +	   !(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)))
+>>  		return -EACCES;
+>>
+>>  	return security_perf_event_open(attr, PERF_SECURITY_KERNEL); @@
+>> -1293,7 +1294,8 @@ static inline int perf_allow_kernel(struct
+>> perf_event_attr *attr)
+>>
+>>  static inline int perf_allow_cpu(struct perf_event_attr *attr)  {
+>> -	if (sysctl_perf_event_paranoid > 0 && !capable(CAP_SYS_ADMIN))
+>> +	if (sysctl_perf_event_paranoid > 0 &&
+>> +	    !(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)))
+>>  		return -EACCES;
+>>
+>>  	return security_perf_event_open(attr, PERF_SECURITY_CPU); @@ -
+>> 1301,7 +1303,8 @@ static inline int perf_allow_cpu(struct perf_event_attr
+>> *attr)
+>>
+>>  static inline int perf_allow_tracepoint(struct perf_event_attr *attr)  {
+>> -	if (sysctl_perf_event_paranoid > -1 && !capable(CAP_SYS_ADMIN))
+>> +	if (sysctl_perf_event_paranoid > -1 &&
+>> +	    !(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)))
+>>  		return -EPERM;
+>>
+>>  	return security_perf_event_open(attr, PERF_SECURITY_TRACEPOINT);
+>> --
+>> 2.20.1
+> 
+> Thanks.  I like the idea of CAP_SYS_PERFMON that does not require CAP_SYS_ADMIN.  It makes granting users ability to run perf a bit safer.
+> 
+> I see a lot of "(capable(CAP_SYS_PERFMON) || capable(CAP_SYS_ADMIN)" constructs now.  Maybe wrapping it in an " inline bool perfmon_capable()" defined somewhere (like in /include/linux/capability.h)?
 
-Thanks, I'll keep that in mind next time.  IIRC I was making some last 
-minute cosmetic changes before sending, and it might have slipped in 
-that way.  In any case, I should have been more thorough in testing it.
+Yes, it makes sense.
 
 Thanks,
+Alexey
 
-Tom
-
-
-
->
-> Applied to net, thanks!
->
->> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
->> index efb0f10..2d84523 100644
->> --- a/drivers/net/ethernet/ibm/ibmvnic.c
->> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
->> @@ -184,7 +184,7 @@ static int ibmvnic_wait_for_completion(struct ibmvnic_adapter *adapter,
->>   			netdev_err(netdev, "Device down!\n");
->>   			return -ENODEV;
->>   		}
->> -		if (retry--)
->> +		if (!retry--)
->>   			break;
->>   		if (wait_for_completion_timeout(comp_done, div_timeout))
->>   			return 0;
+> 
+> - Igor
+> 
