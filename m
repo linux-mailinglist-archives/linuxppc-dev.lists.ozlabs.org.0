@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B1A121E8B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 23:49:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97171121E89
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2019 23:48:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cGd94VRpzDqCl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 09:47:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cGgD23qLzDqT3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 09:49:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
+ helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="jXJ1Y80I"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="I9dDhBzF"; 
  dkim-atps=neutral
-Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
- [216.228.121.143])
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
+ [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cG7h23cKzDqCR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 09:25:51 +1100 (AEDT)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5df8044a0004>; Mon, 16 Dec 2019 14:25:14 -0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cG7n6YDHzDqRR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 09:25:53 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5df8045d0000>; Mon, 16 Dec 2019 14:25:33 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
+ by hqpgpgate101.nvidia.com (PGP Universal service);
  Mon, 16 Dec 2019 14:25:41 -0800
 X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Mon, 16 Dec 2019 14:25:41 -0800
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 16 Dec
+ by hqpgpgate101.nvidia.com on Mon, 16 Dec 2019 14:25:41 -0800
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 16 Dec
  2019 22:25:41 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
  Transport; Mon, 16 Dec 2019 22:25:41 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
  hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5df804650000>; Mon, 16 Dec 2019 14:25:41 -0800
+ id <B5df804650001>; Mon, 16 Dec 2019 14:25:41 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v11 18/25] media/v4l2-core: pin_user_pages (FOLL_PIN) and
- put_user_page() conversion
-Date: Mon, 16 Dec 2019 14:25:30 -0800
-Message-ID: <20191216222537.491123-19-jhubbard@nvidia.com>
+Subject: [PATCH v11 19/25] vfio,
+ mm: pin_user_pages (FOLL_PIN) and put_user_page() conversion
+Date: Mon, 16 Dec 2019 14:25:31 -0800
+Message-ID: <20191216222537.491123-20-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20191216222537.491123-1-jhubbard@nvidia.com>
 References: <20191216222537.491123-1-jhubbard@nvidia.com>
@@ -55,16 +55,16 @@ X-NVConfidentiality: public
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576535115; bh=RlEO4FEZMW0mVL+FNrnW5vDBl79tU0SHRaC9kd/1svM=;
+ t=1576535133; bh=ENBSgRCtmfM034uozTO4hXHrimG7hXnL4nYIQJVrTfw=;
  h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
  In-Reply-To:References:MIME-Version:X-NVConfidentiality:
  Content-Transfer-Encoding:Content-Type;
- b=jXJ1Y80IBwg9JwiSZpDcYctF22XWbq8a57A9uJSQfagpbJ8nNT5fIfy/Y8o0Vcl4Z
- 0eSLqEFqN4AFklOiI68WLr30KS+Ds40eVGbHpdGmlOhsBqNudSZFz2grXjlBvyu6V1
- xkXgI869ZbLK8Eqd/P9eSDFA2/KePqUzsQF1HPc/dcv9jgSDvF4UNRh2laWdi6sGOf
- 7Wo6QsW0zCmsZHbv6KgjuqQV20TUNV7TPrJUo2Oe8yW7ZaPnb73U2jtukqGnZyAZ39
- IRl2HWJ5axsp17+7W4jZbNO/r6vu9VYuO/vRZVPTfCsthfL0SJn565U4iaGxivxX9g
- kdCEbtEVl0RVA==
+ b=I9dDhBzF/PguU+XE12Ggn+/FAYJsjhJc4450IdMgxxc584tUNJ4dAdiZ4jfLz87pC
+ dNXLPxqvBq7K5v+dBDEEsVkyN9OETUte0/TjuxZfFV1T0NfmqR4VQp26smQsgxdqgp
+ t67CXfVm+lYk9M2PmnWquK2wLZdd3+9MKJFJrKcGkI5UYxW+WJMhWZwLo3ASf/tIGa
+ D1BCp6xpz0TAlO7zLVhaTI3Dh3cliI8n9gH0hTHzOlss6uotBnEbM4O+iu56BT3Rh0
+ 5sE9C/+X270qbgvSnz6xXiSzjO4lsaC7tfPfYpIojTZRomZ+dClk1gYjfXVEL6Uhqx
+ PxKz6AZB2voFA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,7 +88,6 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
- Hans Verkuil <hverkuil-cisco@xs4all.nl>,
  =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
  Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
@@ -102,54 +101,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-1. Change v4l2 from get_user_pages() to pin_user_pages().
+1. Change vfio from get_user_pages_remote(), to
+pin_user_pages_remote().
 
 2. Because all FOLL_PIN-acquired pages must be released via
 put_user_page(), also convert the put_page() call over to
 put_user_pages_dirty_lock().
 
-Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc: Ira Weiny <ira.weiny@intel.com>
+Note that this effectively changes the code's behavior in
+vfio_iommu_type1.c: put_pfn(): it now ultimately calls
+set_page_dirty_lock(), instead of set_page_dirty(). This is
+probably more accurate.
+
+As Christoph Hellwig put it, "set_page_dirty() is only safe if we are
+dealing with a file backed page where we have reference on the inode it
+hangs off." [1]
+
+[1] https://lore.kernel.org/r/20190723153640.GB720@lst.de
+
+Tested-by: Alex Williamson <alex.williamson@redhat.com>
+Acked-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/media/v4l2-core/videobuf-dma-sg.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/videobuf-dma-sg.c b/drivers/media/v4l2=
--core/videobuf-dma-sg.c
-index 28262190c3ab..162a2633b1e3 100644
---- a/drivers/media/v4l2-core/videobuf-dma-sg.c
-+++ b/drivers/media/v4l2-core/videobuf-dma-sg.c
-@@ -183,12 +183,12 @@ static int videobuf_dma_init_user_locked(struct video=
-buf_dmabuf *dma,
- 	dprintk(1, "init user [0x%lx+0x%lx =3D> %d pages]\n",
- 		data, size, dma->nr_pages);
-=20
--	err =3D get_user_pages(data & PAGE_MASK, dma->nr_pages,
-+	err =3D pin_user_pages(data & PAGE_MASK, dma->nr_pages,
- 			     flags | FOLL_LONGTERM, dma->pages, NULL);
-=20
- 	if (err !=3D dma->nr_pages) {
- 		dma->nr_pages =3D (err >=3D 0) ? err : 0;
--		dprintk(1, "get_user_pages: err=3D%d [%d]\n", err,
-+		dprintk(1, "pin_user_pages: err=3D%d [%d]\n", err,
- 			dma->nr_pages);
- 		return err < 0 ? err : -EINVAL;
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type=
+1.c
+index b800fc9a0251..18bfc2fc8e6d 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -309,9 +309,8 @@ static int put_pfn(unsigned long pfn, int prot)
+ {
+ 	if (!is_invalid_reserved_pfn(pfn)) {
+ 		struct page *page =3D pfn_to_page(pfn);
+-		if (prot & IOMMU_WRITE)
+-			SetPageDirty(page);
+-		put_page(page);
++
++		put_user_pages_dirty_lock(&page, 1, prot & IOMMU_WRITE);
+ 		return 1;
  	}
-@@ -349,11 +349,8 @@ int videobuf_dma_free(struct videobuf_dmabuf *dma)
- 	BUG_ON(dma->sglen);
+ 	return 0;
+@@ -329,7 +328,7 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned=
+ long vaddr,
+ 		flags |=3D FOLL_WRITE;
 =20
- 	if (dma->pages) {
--		for (i =3D 0; i < dma->nr_pages; i++) {
--			if (dma->direction =3D=3D DMA_FROM_DEVICE)
--				set_page_dirty_lock(dma->pages[i]);
--			put_page(dma->pages[i]);
--		}
-+		put_user_pages_dirty_lock(dma->pages, dma->nr_pages,
-+					  dma->direction =3D=3D DMA_FROM_DEVICE);
- 		kfree(dma->pages);
- 		dma->pages =3D NULL;
- 	}
+ 	down_read(&mm->mmap_sem);
+-	ret =3D get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
++	ret =3D pin_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
+ 				    page, NULL, NULL);
+ 	if (ret =3D=3D 1) {
+ 		*pfn =3D page_to_pfn(page[0]);
 --=20
 2.24.1
 
