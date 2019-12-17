@@ -1,69 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02BE12386E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 22:09:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D667B1236D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 21:15:02 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cqBB49FbzDqZV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 07:14:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47crNz4MyBzDqPj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 08:09:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="Pq32bIRD"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cq792XTXzDqTb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 07:12:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=JrPNw1xqWhalZX2E4G40ImbRJBJbFB1eZ7m4nQw4xcs=; b=Pq32bIRDfVvgqHNTwuGZyEapY
- nVVq9FBbLHpryr/yI8F5sMrmHfHtMdS1i1yezfB7S7ZKuYJ3o2NBEvOcf8uK1wM/iReFrYd5qaCtV
- j2Q7TwOSDA0BigjmlWP7IO982wohwNUU5dIRGotFSUTzbyuq2fVs3uO7MNpsJxXGwTs34OdTg2gOm
- eUCJxvj652+cOrqzXSXrON9Jhqwb4DoXP3YiqDtBCb4XNujBt4VYkpPmViw5zMFmQ6OkVo5HeXJhg
- kJGBZxIEsb6Uf1QZ67lHvMfYrvwTFk+eJgM9b4Da3CMZ3OPdvNbxob87d3hILeGjSOwn3AQM502YW
- 1AKOdEWNg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1ihJCV-0003aT-Eo; Tue, 17 Dec 2019 20:12:11 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BCF453066B3;
- Tue, 17 Dec 2019 21:10:45 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 57B082B2B0509; Tue, 17 Dec 2019 21:12:08 +0100 (CET)
-Date: Tue, 17 Dec 2019 21:12:08 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: [PATCH] asm-generic/tlb: Avoid potential double flush
-Message-ID: <20191217201208.GQ2871@hirez.programming.kicks-ass.net>
-References: <20191217071713.93399-1-aneesh.kumar@linux.ibm.com>
- <20191217071713.93399-2-aneesh.kumar@linux.ibm.com>
- <20191217085854.GW2844@hirez.programming.kicks-ass.net>
- <32404765-ad4f-6612-d1a9-43f9acdc8a62@linux.ibm.com>
- <20191217123416.GH2827@hirez.programming.kicks-ass.net>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47crLp3t2TzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 08:07:30 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBHKw0Li045694; Tue, 17 Dec 2019 16:07:22 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wy46cvduj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2019 16:07:22 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBHL7CWf003720;
+ Tue, 17 Dec 2019 21:07:21 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 2wvqc6qgy6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2019 21:07:21 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBHL7KOV51511682
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Dec 2019 21:07:20 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6632EAE05F;
+ Tue, 17 Dec 2019 21:07:20 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 118F0AE063;
+ Tue, 17 Dec 2019 21:07:19 +0000 (GMT)
+Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.137])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Dec 2019 21:07:18 +0000 (GMT)
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Paul Mackerras <paulus@ozlabs.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 1/1] kvm/book3s_64: Fixes crash caused by not cleaning vhost
+ IOTLB
+Date: Tue, 17 Dec 2019 18:06:58 -0300
+Message-Id: <20191217210658.73144-1-leonardo@linux.ibm.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191217123416.GH2827@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-17_04:2019-12-17,2019-12-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0
+ suspectscore=2 mlxlogscore=999 spamscore=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912170168
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,70 +82,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+Cc: farosas@linux.ibm.com, aik@ozlabs.ru, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, Leonardo Bras <leonardo@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 17, 2019 at 01:34:16PM +0100, Peter Zijlstra wrote:
-> Perhaps if we replace !tlb->end with something like:
-> 
->   !tlb->freed_tables && !tlb->cleared_p*
-> 
-> (which GCC should be able to do with a single load and mask)
-> 
-> I've not really thought too hard about it yet, I need to run some
-> errands, but I'll look at it more closely when I get back.
+Fixes a bug that happens when a virtual machine is created without DDW,
+with vhost supporting a virtio-net device.
 
-AFAICT this should work.
+In this scenario, an IOMMU with 32-bit DMA window will possibly map
+IOVA's to different memory addresses.
 
+As the code works today, H_STUFF_TCE hypercall will be dealt only with
+kvm code, which does not invalidate the IOTLB entry in vhost, meaning
+that at some point, and old entry can cause an access to a previous
+memory address that IOVA pointed.
+
+Example:
+- virtio-net passes IOVA N to vhost, which point to M1
+- vhost tries IOTLB, but miss
+- vhost translates IOVA N and stores result to IOTLB
+- vhost writes to M1
+- (some IOMMU usage)
+- virtio-net passes IOVA N to vhost, which now points to M2
+- vhost tries IOTLB, and translates IOVA N to M1
+- vhost writes to M1 <error, should write to M2>
+
+The reason why this error was not so evident, is probably because the
+IOTLB was small enough to almost always miss at the point an IOVA was
+reused. Raising the IOTLB size to 32k (which is a module parameter that
+defaults to 2k) is enough to reproduce the bug in +90% of the runs.
+It usually takes less than 10 seconds of netperf to cause this bug
+to happen.
+
+A few minutes after reproducing this bug, the guest usually crash.
+
+Fixing this bug involves cleaning a IOVA entry from IOTLB.
+The guest kernel trigger this by doing a H_STUFF_TCE hypercall with
+tce_value == 0.
+
+This change fixes this bug by returning H_TOO_HARD on kvmppc_h_stuff_tce
+when tce_value == 0, which causes kvm to let qemu deal with this.
+In this case, qemu does free the vhost IOTLB entry, which fixes the bug.
+
+Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 ---
-Subject: asm-generic/tlb: Avoid potential double flush
+ arch/powerpc/kvm/book3s_64_vio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Aneesh reported that:
-
-	tlb_flush_mmu()
-	  tlb_flush_mmu_tlbonly()
-	    tlb_flush()			<-- #1
-	  tlb_flush_mmu_free()
-	    tlb_table_flush()
-	      tlb_table_invalidate()
-	        tlb_flush_mmu_tlbonly()
-		  tlb_flush()		<-- #2
-
-does two TLBIs when tlb->fullmm, because __tlb_reset_range() will not
-clear tlb->end in that case.
-
-Observe that any caller to __tlb_adjust_range() also sets at least one
-of the tlb->freed_tables || tlb->cleared_p* bits, and those are
-unconditionally cleared by __tlb_reset_range().
-
-Change the condition for actually issuing TLBI to having one of those
-bits set, as opposed to having tlb->end != 0.
-
-Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- include/asm-generic/tlb.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index fe0ea6ff3636..c9a25c5a83e8 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -402,7 +402,12 @@ tlb_update_vma_flags(struct mmu_gather *tlb, struct vm_area_struct *vma) { }
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 883a66e76638..841eff3f6392 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -710,6 +710,9 @@ long kvmppc_h_stuff_tce(struct kvm_vcpu *vcpu,
+ 	if (ret != H_SUCCESS)
+ 		return ret;
  
- static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
- {
--	if (!tlb->end)
-+	/*
-+	 * Anything calling __tlb_adjust_range() also sets at least one of
-+	 * these bits.
-+	 */
-+	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
-+	      tlb->cleared_puds || tlb->cleared_p4ds))
- 		return;
- 
- 	tlb_flush(tlb);
++	if (tce_value == 0)
++		return H_TOO_HARD;
++
+ 	/* Check permission bits only to allow userspace poison TCE for debug */
+ 	if (tce_value & (TCE_PCI_WRITE | TCE_PCI_READ))
+ 		return H_PARAMETER;
+-- 
+2.23.0
+
