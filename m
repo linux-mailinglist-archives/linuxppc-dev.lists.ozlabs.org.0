@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE68B122467
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 06:59:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0B9122461
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 06:57:50 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cS973jFgzDqNN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 16:57:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cSCR18vNzDqXR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 16:59:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,54 +19,53 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cS2K03BFzDqXv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 16:51:52 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cS7h2YynzDqXR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 16:56:32 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBH5l124033318; Tue, 17 Dec 2019 00:51:43 -0500
+ xBH5l1wu012686; Tue, 17 Dec 2019 00:56:19 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wwe610081-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wwdq08vqf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Dec 2019 00:51:42 -0500
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBH5mGXG036212;
- Tue, 17 Dec 2019 00:51:42 -0500
+ Tue, 17 Dec 2019 00:56:18 -0500
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBH5mkcC016723;
+ Tue, 17 Dec 2019 00:56:18 -0500
 Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
  [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wwe61007s-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wwdq08vq3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Dec 2019 00:51:42 -0500
+ Tue, 17 Dec 2019 00:56:18 -0500
 Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBH5nr99028635;
- Tue, 17 Dec 2019 05:51:41 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04dal.us.ibm.com with ESMTP id 2wvqc6g06u-1
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBH5takn002393;
+ Tue, 17 Dec 2019 05:56:17 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 2wvqc6g165-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Dec 2019 05:51:41 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBH5peF937093712
+ Tue, 17 Dec 2019 05:56:17 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBH5uGwo45941002
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Dec 2019 05:51:40 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3E5AAC059;
- Tue, 17 Dec 2019 05:51:40 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13E10AC060;
- Tue, 17 Dec 2019 05:51:40 +0000 (GMT)
+ Tue, 17 Dec 2019 05:56:16 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 863DF28059;
+ Tue, 17 Dec 2019 05:56:16 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CBDFC28058;
+ Tue, 17 Dec 2019 05:56:15 +0000 (GMT)
 Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 17 Dec 2019 05:51:39 +0000 (GMT)
-Subject: [PATCH V3 03/13] powerpc/vas: Read interrupts and vas-port device
- tree properties
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Dec 2019 05:56:15 +0000 (GMT)
+Subject: [PATCH V3 04/13] powerpc/vas: Setup fault window per VAS instance
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au
 In-Reply-To: <1576561080.16318.6531.camel@hbabu-laptop>
 References: <1576561080.16318.6531.camel@hbabu-laptop>
 Content-Type: text/plain; charset="UTF-8"
-Date: Mon, 16 Dec 2019 21:49:48 -0800
-Message-ID: <1576561788.16318.6534.camel@hbabu-laptop>
+Date: Mon, 16 Dec 2019 21:54:23 -0800
+Message-ID: <1576562063.16318.6538.camel@hbabu-laptop>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
@@ -74,11 +73,11 @@ X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-17_01:2019-12-16,2019-12-16 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- impostorscore=0 suspectscore=3 adultscore=0 bulkscore=0 mlxlogscore=999
- clxscore=1015 priorityscore=1501 spamscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912170052
+ mlxscore=0 priorityscore=1501
+ suspectscore=3 lowpriorityscore=0 spamscore=0 clxscore=1015
+ impostorscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912170052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,107 +97,192 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Read interrupts and vas-port device tree properties per each VAS
-instance. NX generates an interrupt when it sees page fault on the
-request buffer. Interrupts property is used to setup IRQ for handing
-the fault and set port value for each user space send window.
+Setup fault window for each VAS instance. When NX gets fault on request
+buffer, write fault CRBs in the corresponding fault FIFO and then sends
+an interrupt to the OS.
 
+Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 Signed-off-by: Haren Myneni <haren@us.ibm.com>
 ---
- arch/powerpc/platforms/powernv/vas.c | 40 ++++++++++++++++++++++++++++--------
- arch/powerpc/platforms/powernv/vas.h |  2 ++
- 2 files changed, 34 insertions(+), 8 deletions(-)
+ arch/powerpc/platforms/powernv/Makefile     |   2 +-
+ arch/powerpc/platforms/powernv/vas-fault.c  |  73 ++++++++++++++++++++++++++++
+ arch/powerpc/platforms/powernv/vas-window.c |   3 +-
+ arch/powerpc/platforms/powernv/vas.c        |  20 ++++++++
+ arch/powerpc/platforms/powernv/vas.h        |   5 ++
+ scripts/pnmtologo                           | Bin 0 -> 71976 bytes
+ 6 files changed, 101 insertions(+), 2 deletions(-)
+ create mode 100644 arch/powerpc/platforms/powernv/vas-fault.c
+ create mode 100755 scripts/pnmtologo
 
-diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
-index ed9cc6d..40d8213 100644
---- a/arch/powerpc/platforms/powernv/vas.c
-+++ b/arch/powerpc/platforms/powernv/vas.c
-@@ -25,10 +25,11 @@
- 
- static int init_vas_instance(struct platform_device *pdev)
- {
--	int rc, cpu, vasid;
--	struct resource *res;
--	struct vas_instance *vinst;
- 	struct device_node *dn = pdev->dev.of_node;
-+	int rc, cpu, vasid, nresources = 5;
-+	struct vas_instance *vinst;
-+	struct resource *res;
-+	uint64_t port;
- 
- 	rc = of_property_read_u32(dn, "ibm,vas-id", &vasid);
- 	if (rc) {
-@@ -36,7 +37,18 @@ static int init_vas_instance(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	if (pdev->num_resources != 4) {
-+	rc = of_property_read_u64(dn, "ibm,vas-port", &port);
-+	if (rc) {
-+		pr_err("No ibm,vas-port property for %s?\n", pdev->name);
-+		/* No interrupts property */
-+		nresources = 4;
+diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+index c0f8120..395789f 100644
+--- a/arch/powerpc/platforms/powernv/Makefile
++++ b/arch/powerpc/platforms/powernv/Makefile
+@@ -17,7 +17,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
+ obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
+ obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
+ obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
+-obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o
++obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
+ obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
+ obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
+ obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
+diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
+new file mode 100644
+index 0000000..b0258ed
+--- /dev/null
++++ b/arch/powerpc/platforms/powernv/vas-fault.c
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * VAS Fault handling.
++ * Copyright 2019, IBM Corporation
++ */
++
++#define pr_fmt(fmt) "vas: " fmt
++
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/slab.h>
++#include <linux/uaccess.h>
++#include <linux/kthread.h>
++#include <asm/icswx.h>
++
++#include "vas.h"
++
++/*
++ * The maximum FIFO size for fault window can be 8MB
++ * (VAS_RX_FIFO_SIZE_MAX). Using 4MB FIFO since each VAS
++ * instance will be having fault window.
++ * 8MB FIFO can be used if expects more faults for each VAS
++ * instance.
++ */
++#define VAS_FAULT_WIN_FIFO_SIZE	(4 << 20)
++
++/*
++ * Fault window is opened per VAS instance. NX pastes fault CRB in fault
++ * FIFO upon page faults.
++ */
++int vas_setup_fault_window(struct vas_instance *vinst)
++{
++	struct vas_rx_win_attr attr;
++
++	vinst->fault_fifo_size = VAS_FAULT_WIN_FIFO_SIZE;
++	vinst->fault_fifo = kzalloc(vinst->fault_fifo_size, GFP_KERNEL);
++	if (!vinst->fault_fifo) {
++		pr_err("Unable to alloc %d bytes for fault_fifo\n",
++				vinst->fault_fifo_size);
++		return -ENOMEM;
 +	}
++
++	vas_init_rx_win_attr(&attr, VAS_COP_TYPE_FAULT);
++
++	attr.rx_fifo_size = vinst->fault_fifo_size;
++	attr.rx_fifo = vinst->fault_fifo;
 +
 +	/*
-+	 * interrupts property is available with 'ibm,vas-port' property.
-+	 * 4 Resources and 1 IRQ if interrupts property is available.
++	 * Max creds is based on number of CRBs can fit in the FIFO.
++	 * (fault_fifo_size/CRB_SIZE). If 8MB FIFO is used, max creds
++	 * will be 0xffff since the receive creds field is 16bits wide.
 +	 */
-+	if (pdev->num_resources != nresources) {
- 		pr_err("Unexpected DT configuration for [%s, %d]\n",
- 				pdev->name, vasid);
- 		return -ENODEV;
-@@ -51,6 +63,7 @@ static int init_vas_instance(struct platform_device *pdev)
- 	mutex_init(&vinst->mutex);
- 	vinst->vas_id = vasid;
- 	vinst->pdev = pdev;
-+	vinst->irq_port = port;
- 
- 	res = &pdev->resource[0];
- 	vinst->hvwc_bar_start = res->start;
-@@ -66,12 +79,23 @@ static int init_vas_instance(struct platform_device *pdev)
- 		pr_err("Bad 'paste_win_id_shift' in DT, %llx\n", res->end);
- 		goto free_vinst;
- 	}
--
- 	vinst->paste_win_id_shift = 63 - res->end;
- 
--	pr_devel("Initialized instance [%s, %d], paste_base 0x%llx, "
--			"paste_win_id_shift 0x%llx\n", pdev->name, vasid,
--			vinst->paste_base_addr, vinst->paste_win_id_shift);
-+	/* interrupts property */
-+	if (pdev->num_resources == 5) {
-+		res = &pdev->resource[4];
-+		vinst->virq = res->start;
-+		if (vinst->virq <= 0) {
-+			pr_err("IRQ resource is not available for [%s, %d]\n",
-+				pdev->name, vasid);
-+			vinst->virq = 0;
-+		}
++	attr.wcreds_max = vinst->fault_fifo_size / CRB_SIZE;
++	attr.lnotify_lpid = 0;
++	attr.lnotify_pid = mfspr(SPRN_PID);
++	attr.lnotify_tid = mfspr(SPRN_PID);
++
++	vinst->fault_win = vas_rx_win_open(vinst->vas_id, VAS_COP_TYPE_FAULT,
++					&attr);
++
++	if (IS_ERR(vinst->fault_win)) {
++		pr_err("VAS: Error %ld opening FaultWin\n",
++			PTR_ERR(vinst->fault_win));
++		kfree(vinst->fault_fifo);
++		return PTR_ERR(vinst->fault_win);
 +	}
 +
-+	pr_devel("Initialized instance [%s, %d] paste_base 0x%llx paste_win_id_shift 0x%llx IRQ %d Port 0x%llx\n",
-+			pdev->name, vasid, vinst->paste_base_addr,
-+			vinst->paste_win_id_shift, vinst->virq,
-+			vinst->irq_port);
++	pr_devel("VAS: Created FaultWin %d, LPID/PID/TID [%d/%d/%d]\n",
++			vinst->fault_win->winid, attr.lnotify_lpid,
++			attr.lnotify_pid, attr.lnotify_tid);
++
++	return 0;
++}
+diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+index 0c0d27d..f07f49a 100644
+--- a/arch/powerpc/platforms/powernv/vas-window.c
++++ b/arch/powerpc/platforms/powernv/vas-window.c
+@@ -827,9 +827,10 @@ void vas_init_rx_win_attr(struct vas_rx_win_attr *rxattr, enum vas_cop_type cop)
+ 		rxattr->fault_win = true;
+ 		rxattr->notify_disable = true;
+ 		rxattr->rx_wcred_mode = true;
+-		rxattr->tx_wcred_mode = true;
+ 		rxattr->rx_win_ord_mode = true;
+ 		rxattr->tx_win_ord_mode = true;
++		rxattr->rej_no_credit = true;
++		rxattr->tc_mode = VAS_THRESH_DISABLED;
+ 	} else if (cop == VAS_COP_TYPE_FTW) {
+ 		rxattr->user_win = true;
+ 		rxattr->intr_disable = true;
+diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
+index 40d8213..850863c 100644
+--- a/arch/powerpc/platforms/powernv/vas.c
++++ b/arch/powerpc/platforms/powernv/vas.c
+@@ -23,6 +23,11 @@
  
- 	for_each_possible_cpu(cpu) {
- 		if (cpu_to_chip_id(cpu) == of_get_ibm_chip_id(dn))
+ static DEFINE_PER_CPU(int, cpu_vas_id);
+ 
++static int vas_irq_fault_window_setup(struct vas_instance *vinst)
++{
++	return vas_setup_fault_window(vinst);
++}
++
+ static int init_vas_instance(struct platform_device *pdev)
+ {
+ 	struct device_node *dn = pdev->dev.of_node;
+@@ -106,6 +111,21 @@ static int init_vas_instance(struct platform_device *pdev)
+ 	list_add(&vinst->node, &vas_instances);
+ 	mutex_unlock(&vas_mutex);
+ 
++	/*
++	 * IRQ and fault handling setup is needed only for user space
++	 * send windows.
++	 */
++	if (vinst->virq) {
++		rc = vas_irq_fault_window_setup(vinst);
++		/*
++		 * Fault window is used only for user space send windows.
++		 * So if vinst->virq is NULL, tx_win_open returns -ENODEV
++		 * for user space.
++		 */
++		if (rc)
++			vinst->virq = 0;
++	}
++
+ 	vas_instance_init_dbgdir(vinst);
+ 
+ 	dev_set_drvdata(&pdev->dev, vinst);
 diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-index 5574aec..598608b 100644
+index 598608b..9f08daa 100644
 --- a/arch/powerpc/platforms/powernv/vas.h
 +++ b/arch/powerpc/platforms/powernv/vas.h
-@@ -313,6 +313,8 @@ struct vas_instance {
- 	u64 paste_base_addr;
- 	u64 paste_win_id_shift;
+@@ -315,6 +315,10 @@ struct vas_instance {
  
-+	u64 irq_port;
-+	int virq;
+ 	u64 irq_port;
+ 	int virq;
++	int fault_fifo_size;
++	void *fault_fifo;
++	struct vas_window *fault_win; /* Fault window */
++
  	struct mutex mutex;
  	struct vas_window *rxwin[VAS_COP_TYPE_MAX];
  	struct vas_window *windows[VAS_WINDOWS_PER_CHIP];
--- 
-1.8.3.1
+@@ -408,6 +412,7 @@ struct vas_winctx {
+ extern void vas_instance_init_dbgdir(struct vas_instance *vinst);
+ extern void vas_window_init_dbgdir(struct vas_window *win);
+ extern void vas_window_free_dbgdir(struct vas_window *win);
++extern int vas_setup_fault_window(struct vas_instance *vinst);
+ 
+ static inline void vas_log_write(struct vas_window *win, char *name,
+ 			void *regptr, u64 val)
 
 
 
