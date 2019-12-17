@@ -1,47 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2890A1224E2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 07:42:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cT8f36NBzDqc4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 17:42:26 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BA212253C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 08:18:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cTyT2zZZzDqNF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 18:18:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=80.241.56.151; helo=mout-p-101.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cT6W5j4RzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 17:40:32 +1100 (AEDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mout-p-101.mailbox.org (Postfix) with ESMTPS id 47cT6M2DP7zKmbN;
- Tue, 17 Dec 2019 07:40:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
- by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
- [80.241.56.125]) (amavisd-new, port 10030)
- with ESMTP id AVgNK5XsT0lw; Tue, 17 Dec 2019 07:40:19 +0100 (CET)
-Date: Tue, 17 Dec 2019 17:39:50 +1100
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Florian Weimer <fweimer@redhat.com>
-Subject: Re: [PATCH v18 11/13] open: introduce openat2(2) syscall
-Message-ID: <20191217063950.5oqwwqz5p3bu7t2x@yavin.dot.cyphar.com>
-References: <20191206141338.23338-1-cyphar@cyphar.com>
- <20191206141338.23338-12-cyphar@cyphar.com>
- <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cTvz6BrbzDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 18:16:31 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBH77sh2019172; Tue, 17 Dec 2019 02:16:20 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wxpvwdvw8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2019 02:16:20 -0500
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBH78CB6020883;
+ Tue, 17 Dec 2019 02:16:19 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wxpvwdvvr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2019 02:16:19 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBH7FL57022144;
+ Tue, 17 Dec 2019 07:16:18 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma02wdc.us.ibm.com with ESMTP id 2wvqc6a6d8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2019 07:16:18 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBH7GHgc52953590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Dec 2019 07:16:17 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B246913605D;
+ Tue, 17 Dec 2019 07:16:17 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60DB0136055;
+ Tue, 17 Dec 2019 07:16:14 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.204.201.20])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Dec 2019 07:16:13 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: akpm@linux-foundation.org, npiggin@gmail.com, mpe@ellerman.id.au
+Subject: [RFC PATCH 1/2] mm/mmu_gather: Invalidate TLB correctly on batch
+ allocation failure and flush
+Date: Tue, 17 Dec 2019 12:46:00 +0530
+Message-Id: <20191217071601.93141-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="vzwczu2ztdefrrfu"
-Content-Disposition: inline
-In-Reply-To: <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-17_01:2019-12-16,2019-12-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ phishscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501
+ spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=2 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912170062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,121 +88,180 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>, linux-mips@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
- Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
- Jonathan Corbet <corbet@lwn.net>, Jiri Olsa <jolsa@redhat.com>,
- linux-sh@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linux-alpha@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
- dev@opencontainers.org, linux-m68k@lists.linux-m68k.org,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, linux-arm-kernel@lists.infradead.org,
- "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
- linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- Chanho Min <chanho.min@lge.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
- Eric Biederman <ebiederm@xmission.com>, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Architectures for which we have hardware walkers of Linux page table should
+flush TLB on mmu gather batch allocation failures and batch flush. Some
+architectures like POWER supports multiple translation modes (hash and radix)
+and in the case of POWER only radix translation mode needs the above TLBI.
+This is because for hash translation mode kernel wants to avoid this extra
+flush since there are no hardware walkers of linux page table. With radix
+translation, the hardware also walks linux page table and with that, kernel
+needs to make sure to TLB invalidate page walk cache before page table pages are
+freed.
 
---vzwczu2ztdefrrfu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+More details in
+commit: d86564a2f085 ("mm/tlb, x86/mm: Support invalidating TLB caches for RCU_TABLE_FREE")
 
-On 2019-12-16, Florian Weimer <fweimer@redhat.com> wrote:
-> > diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
-> > index 1d338357df8a..58c3a0e543c6 100644
-> > --- a/include/uapi/linux/fcntl.h
-> > +++ b/include/uapi/linux/fcntl.h
-> > @@ -93,5 +93,40 @@
-> > =20
-> >  #define AT_RECURSIVE		0x8000	/* Apply to the entire subtree */
-> > =20
-> > +/*
-> > + * Arguments for how openat2(2) should open the target path. If @resol=
-ve is
-> > + * zero, then openat2(2) operates very similarly to openat(2).
-> > + *
-> > + * However, unlike openat(2), unknown bits in @flags result in -EINVAL=
- rather
-> > + * than being silently ignored. @mode must be zero unless one of {O_CR=
-EAT,
-> > + * O_TMPFILE} are set.
-> > + *
-> > + * @flags: O_* flags.
-> > + * @mode: O_CREAT/O_TMPFILE file mode.
-> > + * @resolve: RESOLVE_* flags.
-> > + */
-> > +struct open_how {
-> > +	__aligned_u64 flags;
-> > +	__u16 mode;
-> > +	__u16 __padding[3]; /* must be zeroed */
-> > +	__aligned_u64 resolve;
-> > +};
-> > +
-> > +#define OPEN_HOW_SIZE_VER0	24 /* sizeof first published struct */
-> > +#define OPEN_HOW_SIZE_LATEST	OPEN_HOW_SIZE_VER0
-> > +
-> > +/* how->resolve flags for openat2(2). */
-> > +#define RESOLVE_NO_XDEV		0x01 /* Block mount-point crossings
-> > +					(includes bind-mounts). */
-> > +#define RESOLVE_NO_MAGICLINKS	0x02 /* Block traversal through procfs-s=
-tyle
-> > +					"magic-links". */
-> > +#define RESOLVE_NO_SYMLINKS	0x04 /* Block traversal through all symlin=
-ks
-> > +					(implies OEXT_NO_MAGICLINKS) */
-> > +#define RESOLVE_BENEATH		0x08 /* Block "lexical" trickery like
-> > +					"..", symlinks, and absolute
-> > +					paths which escape the dirfd. */
-> > +#define RESOLVE_IN_ROOT		0x10 /* Make all jumps to "/" and ".."
-> > +					be scoped inside the dirfd
-> > +					(similar to chroot(2)). */
-> > =20
-> >  #endif /* _UAPI_LINUX_FCNTL_H */
->=20
-> Would it be possible to move these to a new UAPI header?
->=20
-> In glibc, we currently do not #include <linux/fcntl.h>.  We need some of
-> the AT_* constants in POSIX mode, and the header is not necessarily
-> namespace-clean.  If there was a separate header for openat2 support, we
-> could use that easily, and we would only have to maintain the baseline
-> definitions (which never change).
+Based on changes from Peter Zijlstra <peterz@infradead.org>
 
-Sure, (assuming nobody objects) I can move it to "linux/openat2.h".
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/Kconfig                    |  3 ---
+ arch/powerpc/Kconfig            |  1 -
+ arch/powerpc/include/asm/tlb.h  |  4 ++++
+ arch/sparc/Kconfig              |  1 -
+ arch/sparc/include/asm/tlb_64.h |  9 +++++++++
+ include/asm-generic/tlb.h       | 22 +++++++++++++++-------
+ mm/mmu_gather.c                 | 16 ++++++++--------
+ 7 files changed, 36 insertions(+), 20 deletions(-)
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 48b5e103bdb0..208aad121630 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -396,9 +396,6 @@ config HAVE_ARCH_JUMP_LABEL_RELATIVE
+ config HAVE_RCU_TABLE_FREE
+ 	bool
+ 
+-config HAVE_RCU_TABLE_NO_INVALIDATE
+-	bool
+-
+ config HAVE_MMU_GATHER_PAGE_SIZE
+ 	bool
+ 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 1ec34e16ed65..a15f5584b0de 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -223,7 +223,6 @@ config PPC
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+ 	select HAVE_RCU_TABLE_FREE		if SMP
+-	select HAVE_RCU_TABLE_NO_INVALIDATE	if HAVE_RCU_TABLE_FREE
+ 	select HAVE_MMU_GATHER_PAGE_SIZE
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE		if PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
+diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
+index b2c0be93929d..feea1a09bbce 100644
+--- a/arch/powerpc/include/asm/tlb.h
++++ b/arch/powerpc/include/asm/tlb.h
+@@ -27,6 +27,10 @@
+ #define tlb_flush tlb_flush
+ extern void tlb_flush(struct mmu_gather *tlb);
+ 
++#ifdef CONFIG_HAVE_RCU_TABLE_FREE
++#define tlb_needs_table_invalidate()	radix_enabled()
++#endif
++
+ /* Get the generic bits... */
+ #include <asm-generic/tlb.h>
+ 
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index eb24cb1afc11..18e9fb6fcf1b 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -65,7 +65,6 @@ config SPARC64
+ 	select HAVE_KRETPROBES
+ 	select HAVE_KPROBES
+ 	select HAVE_RCU_TABLE_FREE if SMP
+-	select HAVE_RCU_TABLE_NO_INVALIDATE if HAVE_RCU_TABLE_FREE
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+ 	select HAVE_DYNAMIC_FTRACE
+diff --git a/arch/sparc/include/asm/tlb_64.h b/arch/sparc/include/asm/tlb_64.h
+index a2f3fa61ee36..8cb8f3833239 100644
+--- a/arch/sparc/include/asm/tlb_64.h
++++ b/arch/sparc/include/asm/tlb_64.h
+@@ -28,6 +28,15 @@ void flush_tlb_pending(void);
+ #define __tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
+ #define tlb_flush(tlb)	flush_tlb_pending()
+ 
++/*
++ * SPARC64's hardware TLB fill does not use the Linux page-tables
++ * and therefore we don't need a TLBI when freeing page-table pages.
++ */
++
++#ifdef CONFIG_HAVE_RCU_TABLE_FREE
++#define tlb_needs_table_invalidate()	(false)
++#endif
++
+ #include <asm-generic/tlb.h>
+ 
+ #endif /* _SPARC64_TLB_H */
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index 2b10036fefd0..dcdf13fc0a0b 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -137,13 +137,6 @@
+  *  When used, an architecture is expected to provide __tlb_remove_table()
+  *  which does the actual freeing of these pages.
+  *
+- *  HAVE_RCU_TABLE_NO_INVALIDATE
+- *
+- *  This makes HAVE_RCU_TABLE_FREE avoid calling tlb_flush_mmu_tlbonly() before
+- *  freeing the page-table pages. This can be avoided if you use
+- *  HAVE_RCU_TABLE_FREE and your architecture does _NOT_ use the Linux
+- *  page-tables natively.
+- *
+  *  MMU_GATHER_NO_RANGE
+  *
+  *  Use this if your architecture lacks an efficient flush_tlb_range().
+@@ -189,8 +182,23 @@ struct mmu_table_batch {
+ 
+ extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+ 
++/*
++ * This allows an architecture that does not use the linux page-tables for
++ * hardware to skip the TLBI when freeing page tables.
++ */
++#ifndef tlb_needs_table_invalidate
++#define tlb_needs_table_invalidate() (true)
++#endif
++
++#else
++
++#ifdef tlb_needs_table_invalidate
++#error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
+ #endif
+ 
++#endif /* CONFIG_HAVE_RCU_TABLE_FREE */
++
++
+ #ifndef CONFIG_HAVE_MMU_GATHER_NO_GATHER
+ /*
+  * If we can't allocate a page to make a big batch of page pointers
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 7d70e5c78f97..7c1b8f67af7b 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -102,14 +102,14 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_
+  */
+ static inline void tlb_table_invalidate(struct mmu_gather *tlb)
+ {
+-#ifndef CONFIG_HAVE_RCU_TABLE_NO_INVALIDATE
+-	/*
+-	 * Invalidate page-table caches used by hardware walkers. Then we still
+-	 * need to RCU-sched wait while freeing the pages because software
+-	 * walkers can still be in-flight.
+-	 */
+-	tlb_flush_mmu_tlbonly(tlb);
+-#endif
++	if (tlb_needs_table_invalidate()) {
++		/*
++		 * Invalidate page-table caches used by hardware walkers. Then
++		 * we still need to RCU-sched wait while freeing the pages
++		 * because software walkers can still be in-flight.
++		 */
++		tlb_flush_mmu_tlbonly(tlb);
++	}
+ }
+ 
+ static void tlb_remove_table_smp_sync(void *arg)
+-- 
+2.23.0
 
---vzwczu2ztdefrrfu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXfh4MQAKCRCdlLljIbnQ
-EvJ/AP9e+RbEhnKlfXeue8RftgpgyUu8To5+ZOcmuoKfUFVefgEAmch0tDU0glq6
-a0g2iw25N8tzxhAIzQpE/p2HRuzcPgo=
-=p/bo
------END PGP SIGNATURE-----
-
---vzwczu2ztdefrrfu--
