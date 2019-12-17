@@ -1,42 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64966122653
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 09:09:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E93A1225B6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 08:42:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cVTK0vl0zDqdl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 18:41:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cW4y5wBZzDqQR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 19:09:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cVR11rrJzDqc1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 18:39:56 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id CC5EBADB3;
- Tue, 17 Dec 2019 07:39:52 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 937DF1E0B35; Tue, 17 Dec 2019 08:39:51 +0100 (CET)
-Date: Tue, 17 Dec 2019 08:39:51 +0100
-From: Jan Kara <jack@suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cW0X3z9yzDqd0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 19:05:31 +1100 (AEDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2019 00:05:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,324,1571727600"; d="scan'208";a="247347300"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga002.fm.intel.com with ESMTP; 17 Dec 2019 00:05:21 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1ih7qn-0006kj-6U; Tue, 17 Dec 2019 16:05:01 +0800
+Date: Tue, 17 Dec 2019 16:03:56 +0800
+From: kbuild test robot <lkp@intel.com>
 To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v11 00/25] mm/gup: track dma-pinned pages: FOLL_PIN
-Message-ID: <20191217073951.GC16051@quack2.suse.cz>
-References: <20191216222537.491123-1-jhubbard@nvidia.com>
+Subject: Re: [PATCH v9 23/25] mm/gup: track FOLL_PIN pages
+Message-ID: <201912171520.rTYbJvYF%lkp@intel.com>
+References: <20191211025318.457113-24-jhubbard@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191216222537.491123-1-jhubbard@nvidia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191211025318.457113-24-jhubbard@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,37 +65,50 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  Vlastimil Babka <vbabka@suse.cz>,
  =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
  =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
  Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
  Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
+ kbuild-all@lists.01.org, netdev@vger.kernel.org,
+ Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+Hi John,
 
-On Mon 16-12-19 14:25:12, John Hubbard wrote:
-> Hi,
-> 
-> This implements an API naming change (put_user_page*() -->
-> unpin_user_page*()), and also implements tracking of FOLL_PIN pages. It
-> extends that tracking to a few select subsystems. More subsystems will
-> be added in follow up work.
+Thank you for the patch! Perhaps something to improve:
 
-Just a note for Andrew and others watching this series: At this point I'm fine
-with the series so if someone still has some review feedback or wants to
-check the series, now is the right time. Otherwise I think Andrew can push
-the series to MM tree so that it will get wider testing exposure and is
-prepared for the next merge window.
+[auto build test WARNING on rdma/for-next]
+[also build test WARNING on linus/master v5.5-rc2 next-20191216]
+[cannot apply to mmotm/master vfio/next]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+url:    https://github.com/0day-ci/linux/commits/John-Hubbard/mm-gup-track-dma-pinned-pages-FOLL_PIN/20191212-013238
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git for-next
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-104-gf934193-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+
+>> mm/gup.c:78:26: sparse: sparse: symbol 'try_pin_compound_head' was not declared. Should it be static?
+
+Please review and possibly fold the followup patch.
+
+---
+0-DAY kernel test infrastructure                 Open Source Technology Center
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
