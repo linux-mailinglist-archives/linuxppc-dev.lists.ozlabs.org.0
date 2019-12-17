@@ -2,83 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B073122543
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 08:22:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE5212257C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 08:31:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cV2s14QJzDqZS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 18:22:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cVFY07SrzDqdc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 18:31:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cTxN1hWdzDqZn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 18:17:44 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBH7HT88083014; Tue, 17 Dec 2019 02:17:32 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wxpvwdx17-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Dec 2019 02:17:31 -0500
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBH7HVkO083309;
- Tue, 17 Dec 2019 02:17:31 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wxpvwdx02-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Dec 2019 02:17:31 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBH7Ev8j003103;
- Tue, 17 Dec 2019 07:17:29 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 2wvqc6gnqf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Dec 2019 07:17:29 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBH7HSIX50266446
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Dec 2019 07:17:28 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D27B6E04C;
- Tue, 17 Dec 2019 07:17:28 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6CC7E6E050;
- Tue, 17 Dec 2019 07:17:25 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.204.201.20])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 17 Dec 2019 07:17:25 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: akpm@linux-foundation.org, npiggin@gmail.com, mpe@ellerman.id.au,
- peterz@infradead.org
-Subject: [RFC PATCH 2/2] mm/mmu_gather: Avoid multiple page walk cache flush
-Date: Tue, 17 Dec 2019 12:47:13 +0530
-Message-Id: <20191217071713.93399-2-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191217071713.93399-1-aneesh.kumar@linux.ibm.com>
-References: <20191217071713.93399-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cVCV3hqszDqbC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 18:29:57 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 8FDE2AD8E;
+ Tue, 17 Dec 2019 07:29:51 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id C60311E0B35; Tue, 17 Dec 2019 08:29:46 +0100 (CET)
+Date: Tue, 17 Dec 2019 08:29:46 +0100
+From: Jan Kara <jack@suse.cz>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v11 23/25] mm/gup: track FOLL_PIN pages
+Message-ID: <20191217072946.GB16051@quack2.suse.cz>
+References: <20191212101741.GD10065@quack2.suse.cz>
+ <20191214032617.1670759-1-jhubbard@nvidia.com>
+ <20191216125353.GF22157@quack2.suse.cz>
+ <86297621-0200-01db-923b-9f8d3ee87354@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-17_01:2019-12-16,2019-12-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- phishscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501
- spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=2 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912170063
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86297621-0200-01db-923b-9f8d3ee87354@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,60 +51,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On tlb_finish_mmu() kernel does a tlb flush before  mmu gather table invalidate.
-The mmu gather table invalidate depending on kernel config also does another
-TLBI. Avoid the later on tlb_finish_mmu().
+On Mon 16-12-19 14:18:59, John Hubbard wrote:
+> On 12/16/19 4:53 AM, Jan Kara wrote:
+> > With this fixed, the patch looks good to me so you can then add:
+> > 
+> > Reviewed-by: Jan Kara <jack@suse.cz>
+> > 
+> > 								Honza
+> > 
+> 
+> btw, thanks for the thorough review of this critical patch (and for your
+> patience with my mistakes). I really appreciate it, and this patchset would
+> not have made it this far without your detailed help and explanations.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- mm/mmu_gather.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+You're welcome! I'd also like to thank you for persistently driving this
+series :)
 
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 7c1b8f67af7b..7e2bd43b9084 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -143,17 +143,23 @@ static void tlb_remove_table_rcu(struct rcu_head *head)
- 	free_page((unsigned long)batch);
- }
- 
--static void tlb_table_flush(struct mmu_gather *tlb)
-+static void __tlb_table_flush(struct mmu_gather *tlb, bool table_inval)
- {
- 	struct mmu_table_batch **batch = &tlb->batch;
- 
- 	if (*batch) {
--		tlb_table_invalidate(tlb);
-+		if (table_inval)
-+			tlb_table_invalidate(tlb);
- 		call_rcu(&(*batch)->rcu, tlb_remove_table_rcu);
- 		*batch = NULL;
- 	}
- }
- 
-+static void tlb_table_flush(struct mmu_gather *tlb)
-+{
-+	__tlb_table_flush(tlb, true);
-+}
-+
- void tlb_remove_table(struct mmu_gather *tlb, void *table)
- {
- 	struct mmu_table_batch **batch = &tlb->batch;
-@@ -178,7 +184,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
- static void tlb_flush_mmu_free(struct mmu_gather *tlb)
- {
- #ifdef CONFIG_HAVE_RCU_TABLE_FREE
--	tlb_table_flush(tlb);
-+	__tlb_table_flush(tlb, false);
- #endif
- #ifndef CONFIG_HAVE_MMU_GATHER_NO_GATHER
- 	tlb_batch_pages_flush(tlb);
+								Honza
 -- 
-2.23.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
