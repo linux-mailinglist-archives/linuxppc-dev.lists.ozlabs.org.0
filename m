@@ -2,62 +2,110 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6B3122C74
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 14:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE21122C84
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 14:09:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cdbd3nNRzDqX1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 00:02:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cdkg1QF4zDqSM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 00:08:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="C+C4z2Ky"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="CxcQ5qCu"; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cd4N4JzfzDqWq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 23:39:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cd8K6sDWzDqCg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 23:42:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1576586353;
+ s=mimecast20190719; t=1576586557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nFyUkuPsqGsiw1cWJJlXr39io2FjbuA5eTJTxNYIdwY=;
- b=C+C4z2KyFdhyrDacbj9NkQZ03Ykot6DTe3vxYaOZDTIt1AOkpEIjEFJ9eZYuCUbpTva8KK
- pAsdAsnNOJaAJp1hCefwFG1fTWBTwNpDQCVCTmG10kKZNRd5p85Pk/2OXicValeYDWdARv
- nxy9B1nuDiaFwKE3n/uxBY2NgdZLISg=
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=cYsc8abtvoAdEbFL20lXUTVFO9ckTkSKKNEymF++oBU=;
+ b=CxcQ5qCu5x+m0/jshpCOitP1tt9t2cdF7KfmwpQKbYpmxFpIOx1dlTlkyUBCPFLxvls6RV
+ Pqbdwk0SxS+g4aOZp9vHRAH6aHuypD2GGIxoo7uL1fN14t8LSHIpcwilnqA/XZQ7K2KngC
+ t9euG78YN9p8sjwkpG1goSudrHyb7Yc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-378-b5utL5nIO3-6gvIu0j3fwA-1; Tue, 17 Dec 2019 07:39:09 -0500
-X-MC-Unique: b5utL5nIO3-6gvIu0j3fwA-1
+ us-mta-32-9wnUQNNHP9uaqdu-aKd06w-1; Tue, 17 Dec 2019 07:42:30 -0500
+X-MC-Unique: 9wnUQNNHP9uaqdu-aKd06w-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
  [10.5.11.22])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6121A8017DF;
- Tue, 17 Dec 2019 12:39:07 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.36.118.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 38AF51000325;
- Tue, 17 Dec 2019 12:39:04 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F37A4800D50;
+ Tue, 17 Dec 2019 12:42:27 +0000 (UTC)
+Received: from [10.36.118.8] (unknown [10.36.118.8])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1BFE31000325;
+ Tue, 17 Dec 2019 12:42:24 +0000 (UTC)
+Subject: Re: [PATCH RFC v1 0/3] powerpc/memtrace: Don't offline memory blocks
+ via offline_pages()
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 3/3] powerpc/memtrace: Don't offline memory blocks via
- offline_pages()
-Date: Tue, 17 Dec 2019 13:38:51 +0100
-Message-Id: <20191217123851.8854-4-david@redhat.com>
-In-Reply-To: <20191217123851.8854-1-david@redhat.com>
 References: <20191217123851.8854-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <840333d6-e848-8bbc-5861-47d5a497aca7@redhat.com>
+Date: Tue, 17 Dec 2019 13:42:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
+In-Reply-To: <20191217123851.8854-1-david@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,309 +117,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, Rashmica Gupta <rashmica.g@gmail.com>,
- David Hildenbrand <david@redhat.com>,
+Cc: Jens Axboe <axboe@kernel.dk>, Thomas Gleixner <tglx@linutronix.de>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
  Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
  Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>,
- Allison Randal <allison@lohutok.net>, Oscar Salvador <osalvador@suse.de>
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rashmica Gupta <rashmica.g@gmail.com>, Allison Randal <allison@lohutok.net>,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-offline_pages() should not be called outside of the MM core. Especially,
-having to manually fiddle with the memory block states is a sign that
-this is not a good idea. To offline memory block devices cleanly,
-device_offline() should be used. This is the only remaining caller of
-offline_pages(), except the official device_offline() way.
+On 17.12.19 13:38, David Hildenbrand wrote:
+> This RFC is based on linux-next and
+> - 2 patches from "PATCH RFC v4 00/13] virtio-mem: paravirtualized memory"
+>  -> "mm: Allow to offline unmovable PageOffline() pages via
+>      MEM_GOING_OFFLINE" [1]
+>  -> "mm/memory_hotplug: Introduce offline_and_remove_memory()" [2]
+> - "mm/memory_hotplug: Don't free usage map when removing a re-added early
+>    section" [3]
+> 
+> A branch with all patches (kept updated) is available at:
+> 	https://github.com/davidhildenbrand/linux.git memtrace
+> 
+> Stop using offline_pages() to offline memory blocks. Allocate the memory
+> blocks using alloc_contig_pages() first and offline+remove the allcoated
+> memory blocks using a clean MM interface. Offlining of allocated memory is
+> made possible by using PageOffline() in combination with a memory notifier
+> (similar to virto-mem).
+> 
+> Note: In the future, we might want to switch to only removing/readding the
+> page tables of the allocated memory (while still marking it PageOffline()).
+> However, that might have other implications, and requires work from PPC
+> people (IOW, I won't fiddle with that :) ).
+> 
+> [1] https://lkml.kernel.org/r/20191212171137.13872-8-david@redhat.com
+> [2] https://lkml.kernel.org/r/20191212171137.13872-10-david@redhat.com
+> [3] https://lkml.kernel.org/r/20191217104637.5509-1-david@redhat.com
+> 
+> 
+> David Hildenbrand (3):
+>   powerpc/memtrace: Enforce power of 2 for memory buffer size
+>   powerpc/memtrace: Factor out readding memory into memtrace_free_node()
+>   powerpc/memtrace: Don't offline memory blocks via offline_pages()
+> 
+>  arch/powerpc/platforms/powernv/Kconfig    |   1 +
+>  arch/powerpc/platforms/powernv/memtrace.c | 217 ++++++++++++++--------
+>  2 files changed, 136 insertions(+), 82 deletions(-)
+> 
 
-E.g., when trying to allocate right now we trigger messages like
-[   11.227817] page:c00c000000182000 refcount:1 mapcount:0 mapping:000000=
-0000000000 index:0x0
-[   11.228056] raw: 007ffff000000000 c000000001538860 c000000001538860 00=
-00000000000000
-[   11.228070] raw: 0000000000000000 0000000000000001 00000001ffffffff 00=
-00000000000000
-[   11.228097] page dumped because: unmovable page
+(CC linuxppc-dev on the cover letter, my fancy sendmail cc-cmd.sh script
+missed it, sorry)
 
-and theoretically we might end up looping quite a long time trying to
-offline memory, which would have to be canceled by the user manually
-(CTRL-C).
+-- 
+Thanks,
 
-Memtrace needs to identify+allocate multiple consecutive memory blocks.
-It also has to remove the memory blocks to remove all page tables
-(HW requirement).
-
-Let's use alloc_contig_pages() to allocate memory that spans multiple
-memory block devices. We can then set all pages PageOffline() to allow
-these pages to get isolated. A temporary memory notifier can then make
-offlining of these pages succeed by dropping its reference to the pages
-on MEM_GOING_OFFLINE events(as documented in include/linux/page-flags.h
-for PageOffline() pages). Error handling is a bit tricky.
-
-Note1: ZONE_MOVABLE memory blocks won't be considered. Not sure if that
-was ever really relevant. (unmovable data would end up on these memory
-blocks for a tiny little time frame)
-
-Note2: We don't have to care about online_page_callback_t, as we forbid
-re-onlining from our memory notifier.
-
-Note3: I was told this feature is never used along with DIMM-based memory
-hotunplug - otherwise bad things will happen when a DIMM would try to
-remove "alread-removed" memory (that is still in use).
-
-Tested under QEMU with powernv emulation (kernel + initramfs).
-
-$ mount -t debugfs none /sys/kernel/debug/
-$ cat /sys/devices/system/memory/block_size_bytes
-10000000
-$ echo 0x20000000 > /sys/kernel/debug/powerpc/memtrace/enable
-[   19.809790] Offlined Pages 4096
-[   19.835842] Offlined Pages 4096
-[   19.853136] memtrace: Allocated trace memory on node 0 at 0x0000000040=
-000000
-
-Unfortunately, QEMU does not support NUMA for powernv yet, so I cannot
-test that.
-
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Allison Randal <allison@lohutok.net>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Balbir Singh <bsingharora@gmail.com>
-Cc: Rashmica Gupta <rashmica.g@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/powerpc/platforms/powernv/Kconfig    |   1 +
- arch/powerpc/platforms/powernv/memtrace.c | 175 ++++++++++++++--------
- 2 files changed, 112 insertions(+), 64 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platfo=
-rms/powernv/Kconfig
-index 938803eab0ad..571a0fa9f055 100644
---- a/arch/powerpc/platforms/powernv/Kconfig
-+++ b/arch/powerpc/platforms/powernv/Kconfig
-@@ -29,6 +29,7 @@ config OPAL_PRD
- config PPC_MEMTRACE
- 	bool "Enable removal of RAM from kernel mappings for tracing"
- 	depends on PPC_POWERNV && MEMORY_HOTREMOVE
-+	select CONTIG_ALLOC
- 	help
- 	  Enabling this option allows for the removal of memory (RAM)
- 	  from the kernel mappings to be used for hardware tracing.
-diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/pla=
-tforms/powernv/memtrace.c
-index 2d2a0a2acd60..fe1e8f3926a1 100644
---- a/arch/powerpc/platforms/powernv/memtrace.c
-+++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -76,83 +76,130 @@ static int memtrace_free_node(int nid, unsigned long=
- start, unsigned long size)
- 	return ret;
- }
-=20
--static int check_memblock_online(struct memory_block *mem, void *arg)
--{
--	if (mem->state !=3D MEM_ONLINE)
--		return -1;
--
--	return 0;
--}
--
--static int change_memblock_state(struct memory_block *mem, void *arg)
--{
--	unsigned long state =3D (unsigned long)arg;
--
--	mem->state =3D state;
--
--	return 0;
--}
-+struct memtrace_alloc_info {
-+	struct notifier_block memory_notifier;
-+	unsigned long base_pfn;
-+	unsigned long nr_pages;
-+};
-=20
--/* called with device_hotplug_lock held */
--static bool memtrace_offline_pages(u32 nid, u64 start_pfn, u64 nr_pages)
-+static int memtrace_memory_notifier_cb(struct notifier_block *nb,
-+				       unsigned long action, void *arg)
- {
--	const unsigned long start =3D PFN_PHYS(start_pfn);
--	const unsigned long size =3D PFN_PHYS(nr_pages);
--
--	if (walk_memory_blocks(start, size, NULL, check_memblock_online))
--		return false;
--
--	walk_memory_blocks(start, size, (void *)MEM_GOING_OFFLINE,
--			   change_memblock_state);
--
--	if (offline_pages(start_pfn, nr_pages)) {
--		walk_memory_blocks(start, size, (void *)MEM_ONLINE,
--				   change_memblock_state);
--		return false;
-+	struct memtrace_alloc_info *info =3D container_of(nb,
-+						     struct memtrace_alloc_info,
-+						     memory_notifier);
-+	unsigned long pfn, start_pfn, end_pfn;
-+	const struct memory_notify *mhp =3D arg;
-+	static bool going_offline;
-+
-+	/* Ignore ranges that don't overlap. */
-+	if (mhp->start_pfn + mhp->nr_pages <=3D info->base_pfn ||
-+	    info->base_pfn + info->nr_pages <=3D mhp->start_pfn)
-+		return NOTIFY_OK;
-+
-+	start_pfn =3D max_t(unsigned long, info->base_pfn, mhp->start_pfn);
-+	end_pfn =3D min_t(unsigned long, info->base_pfn + info->nr_pages,
-+			mhp->start_pfn + mhp->nr_pages);
-+
-+	/*
-+	 * Drop our reference to the allocated (PageOffline()) pages, but
-+	 * reaquire them in case offlining fails. We might get called for
-+	 * MEM_CANCEL_OFFLINE but not for MEM_GOING_OFFLINE in case another
-+	 * notifier aborted offlining.
-+	 */
-+	switch (action) {
-+	case MEM_GOING_OFFLINE:
-+		for (pfn =3D start_pfn; pfn < end_pfn; pfn++)
-+			page_ref_dec(pfn_to_page(pfn));
-+		going_offline =3D true;
-+		break;
-+	case MEM_CANCEL_OFFLINE:
-+		if (going_offline)
-+			for (pfn =3D start_pfn; pfn < end_pfn; pfn++)
-+				page_ref_inc(pfn_to_page(pfn));
-+		going_offline =3D false;
-+		break;
-+	case MEM_GOING_ONLINE:
-+		/*
-+		 * While our notifier is active, user space could
-+		 * offline+re-online this memory. Disallow any such activity.
-+		 */
-+		return notifier_to_errno(-EBUSY);
- 	}
--
--	walk_memory_blocks(start, size, (void *)MEM_OFFLINE,
--			   change_memblock_state);
--
--
--	return true;
-+	return NOTIFY_OK;
- }
-=20
- static u64 memtrace_alloc_node(u32 nid, u64 size)
- {
--	u64 start_pfn, end_pfn, nr_pages, pfn;
--	u64 base_pfn;
--	u64 bytes =3D memory_block_size_bytes();
-+	const unsigned long memory_block_bytes =3D memory_block_size_bytes();
-+	const unsigned long nr_pages =3D size >> PAGE_SHIFT;
-+	struct memtrace_alloc_info info =3D {
-+		.memory_notifier =3D {
-+			.notifier_call =3D memtrace_memory_notifier_cb,
-+		},
-+	};
-+	unsigned long base_pfn, to_remove_pfn, pfn;
-+	struct page *page;
-+	int ret;
-=20
- 	if (!node_spanned_pages(nid))
- 		return 0;
-=20
--	start_pfn =3D node_start_pfn(nid);
--	end_pfn =3D node_end_pfn(nid);
--	nr_pages =3D size >> PAGE_SHIFT;
--
--	/* Trace memory needs to be aligned to the size */
--	end_pfn =3D round_down(end_pfn - nr_pages, nr_pages);
--
--	lock_device_hotplug();
--	for (base_pfn =3D end_pfn; base_pfn > start_pfn; base_pfn -=3D nr_pages=
-) {
--		if (memtrace_offline_pages(nid, base_pfn, nr_pages) =3D=3D true) {
--			/*
--			 * Remove memory in memory block size chunks so that
--			 * iomem resources are always split to the same size and
--			 * we never try to remove memory that spans two iomem
--			 * resources.
--			 */
--			end_pfn =3D base_pfn + nr_pages;
--			for (pfn =3D base_pfn; pfn < end_pfn; pfn +=3D bytes>> PAGE_SHIFT) {
--				__remove_memory(nid, pfn << PAGE_SHIFT, bytes);
--			}
--			unlock_device_hotplug();
--			return base_pfn << PAGE_SHIFT;
--		}
-+	/*
-+	 * Try to allocate memory (that might span multiple memory blocks)
-+	 * on the requested node. Trace memory needs to be aligned to the size,
-+	 * which is guaranteed by alloc_contig_pages().
-+	 */
-+	page =3D alloc_contig_pages(nr_pages, __GFP_THISNODE, nid, NULL);
-+	if (!page)
-+		return 0;
-+	to_remove_pfn =3D base_pfn =3D page_to_pfn(page);
-+	info.base_pfn =3D base_pfn;
-+	info.nr_pages =3D nr_pages;
-+
-+	/* PageOffline() allows to isolate the memory when offlining. */
-+	for (pfn =3D base_pfn; pfn < base_pfn + nr_pages; pfn++)
-+		__SetPageOffline(pfn_to_page(pfn));
-+
-+	/* A temporary memory notifier allows to offline the isolated memory. *=
-/
-+	ret =3D register_memory_notifier(&info.memory_notifier);
-+	if (ret)
-+		goto out_free_pages;
-+
-+	/*
-+	 * Try to offline and remove all involved memory blocks. This will
-+	 * only fail in the unlikely event that another memory notifier NACKs
-+	 * the offlining request - no memory has to be migrated.
-+	 *
-+	 * Remove memory in memory block size chunks so that iomem resources
-+	 * are always split to the same size and we never try to remove memory
-+	 * that spans two iomem resources.
-+	 */
-+	for (; to_remove_pfn < base_pfn + nr_pages;
-+	     to_remove_pfn +=3D PHYS_PFN(memory_block_bytes)) {
-+		ret =3D offline_and_remove_memory(nid, PFN_PHYS(to_remove_pfn),
-+						memory_block_bytes);
-+		if (ret)
-+			goto out_readd_memory;
- 	}
--	unlock_device_hotplug();
-=20
-+	unregister_memory_notifier(&info.memory_notifier);
-+	return PFN_PHYS(base_pfn);
-+out_readd_memory:
-+	/* Unregister before adding+onlining (notifer blocks onlining). */
-+	unregister_memory_notifier(&info.memory_notifier);
-+	if (to_remove_pfn !=3D base_pfn) {
-+		ret =3D memtrace_free_node(nid, PFN_PHYS(base_pfn),
-+					 PFN_PHYS(to_remove_pfn - base_pfn));
-+		if (ret)
-+			/* Even more unlikely, log and ignore. */
-+			pr_err("Failed to add trace memory to node %d\n", nid);
-+	}
-+out_free_pages:
-+	/* Only free memory that was not temporarily offlined+removed. */
-+	for (pfn =3D to_remove_pfn; pfn < base_pfn + nr_pages; pfn++)
-+		__ClearPageOffline(pfn_to_page(pfn));
-+	free_contig_range(to_remove_pfn, nr_pages - (to_remove_pfn - base_pfn))=
-;
- 	return 0;
- }
-=20
---=20
-2.23.0
+David / dhildenb
 
