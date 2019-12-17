@@ -1,63 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE43122CA8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 14:14:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D22122C5F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 13:57:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47cdSq60tSzDqGZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2019 23:56:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47cdsV58HxzDqTy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 00:14:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lionel.g.landwerlin@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="MY1qeILg"; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47cd4M2T9CzDqMl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 23:39:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1576586350;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rIiQFFDXfUcgIvM2Nb3KxFpLZCLOM7WNsSYtHUtaG8Q=;
- b=MY1qeILgNrAwCD55NHyv2STptPVYC78rByaRKXQwyN/RFtIWPRmTH4knI1efArD4lhMFG8
- a8MJKKx6A7H1cj4YbNYN0dPhDFsxsphjPxpG70v8uJIoRLQ5H8mWEIyiqDv7YxDfJStKM4
- JCgcEUlhGRWfSydtniWOm8NgsJmJVJM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-159-muAGo-jKPuemWvDF66R4fw-1; Tue, 17 Dec 2019 07:39:06 -0500
-X-MC-Unique: muAGo-jKPuemWvDF66R4fw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E3247800EBF;
- Tue, 17 Dec 2019 12:39:03 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.36.118.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 393FA10016DA;
- Tue, 17 Dec 2019 12:39:01 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 2/3] powerpc/memtrace: Factor out readding memory into
- memtrace_free_node()
-Date: Tue, 17 Dec 2019 13:38:50 +0100
-Message-Id: <20191217123851.8854-3-david@redhat.com>
-In-Reply-To: <20191217123851.8854-1-david@redhat.com>
-References: <20191217123851.8854-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47cYH66rmDzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 20:48:12 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2019 01:45:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,325,1571727600"; d="scan'208";a="217719255"
+Received: from gorris-mobl2.ger.corp.intel.com (HELO [10.249.34.224])
+ ([10.249.34.224])
+ by orsmga003.jf.intel.com with ESMTP; 17 Dec 2019 01:45:20 -0800
+Subject: Re: [Intel-gfx] [PATCH v3 4/7] drm/i915/perf: open access for
+ CAP_SYS_PERFMON privileged process
+To: Alexey Budankov <alexey.budankov@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Serge Hallyn <serge@hallyn.com>, James Morris <jmorris@namei.org>,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <b175f283-d256-e37e-f447-6ba4ab4f3d3a@linux.intel.com>
+ <bc5b2a0d-a185-91b6-5deb-a4b6e1dc3d3e@linux.intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
+ Swindon SN3 1RJ
+Message-ID: <503ad40c-d94e-df1d-1541-730c002ad3b7@intel.com>
+Date: Tue, 17 Dec 2019 11:45:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <bc5b2a0d-a185-91b6-5deb-a4b6e1dc3d3e@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Mailman-Approved-At: Wed, 18 Dec 2019 00:09:26 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,113 +68,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, Rashmica Gupta <rashmica.g@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>,
- Allison Randal <allison@lohutok.net>
+Cc: songliubraving@fb.com, Andi Kleen <ak@linux.intel.com>,
+ Kees Cook <keescook@chromium.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@redhat.com>, intel-gfx@lists.freedesktop.org,
+ Igor Lubashev <ilubashe@akamai.com>, linux-kernel@vger.kernel.org,
+ Stephane Eranian <eranian@google.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Brendan Gregg <bgregg@netflix.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While at it, move it, we want to reuse it soon.
+On 16/12/2019 22:03, Alexey Budankov wrote:
+> Open access to i915_perf monitoring for CAP_SYS_PERFMON privileged processes.
+> For backward compatibility reasons access to i915_perf subsystem remains open
+> for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
+> i915_perf monitoring is discouraged with respect to CAP_SYS_PERFMON capability.
+>
+> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Allison Randal <allison@lohutok.net>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Balbir Singh <bsingharora@gmail.com>
-Cc: Rashmica Gupta <rashmica.g@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/powerpc/platforms/powernv/memtrace.c | 44 ++++++++++++++---------
- 1 file changed, 27 insertions(+), 17 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/pla=
-tforms/powernv/memtrace.c
-index 0c4c54d2e3c4..2d2a0a2acd60 100644
---- a/arch/powerpc/platforms/powernv/memtrace.c
-+++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -50,6 +50,32 @@ static const struct file_operations memtrace_fops =3D =
-{
- 	.open	=3D simple_open,
- };
-=20
-+static int online_mem_block(struct memory_block *mem, void *arg)
-+{
-+	return device_online(&mem->dev);
-+}
-+
-+static int memtrace_free_node(int nid, unsigned long start, unsigned lon=
-g size)
-+{
-+	int ret;
-+
-+	ret =3D add_memory(nid, start, size);
-+	if (!ret) {
-+		/*
-+		 * If the kernel isn't compiled with the auto online option, we
-+		 * will try to online ourselves. We'll ignore any errors here -
-+		 * user space can try to online itself later (after all, the
-+		 * memory was added successfully).
-+		 */
-+		if (!memhp_auto_online) {
-+			lock_device_hotplug();
-+			walk_memory_blocks(start, size, NULL, online_mem_block);
-+			unlock_device_hotplug();
-+		}
-+	}
-+	return ret;
-+}
-+
- static int check_memblock_online(struct memory_block *mem, void *arg)
- {
- 	if (mem->state !=3D MEM_ONLINE)
-@@ -202,11 +228,6 @@ static int memtrace_init_debugfs(void)
- 	return ret;
- }
-=20
--static int online_mem_block(struct memory_block *mem, void *arg)
--{
--	return device_online(&mem->dev);
--}
--
- /*
-  * Iterate through the chunks of memory we have removed from the kernel
-  * and attempt to add them back to the kernel.
-@@ -229,24 +250,13 @@ static int memtrace_online(void)
- 			ent->mem =3D 0;
- 		}
-=20
--		if (add_memory(ent->nid, ent->start, ent->size)) {
-+		if (memtrace_free_node(ent->nid, ent->start, ent->size)) {
- 			pr_err("Failed to add trace memory to node %d\n",
- 				ent->nid);
- 			ret +=3D 1;
- 			continue;
- 		}
-=20
--		/*
--		 * If kernel isn't compiled with the auto online option
--		 * we need to online the memory ourselves.
--		 */
--		if (!memhp_auto_online) {
--			lock_device_hotplug();
--			walk_memory_blocks(ent->start, ent->size, NULL,
--					   online_mem_block);
--			unlock_device_hotplug();
--		}
--
- 		/*
- 		 * Memory was added successfully so clean up references to it
- 		 * so on reentry we can tell that this chunk was added.
---=20
-2.23.0
+Assuming people are fine with this new cap, I like this idea of a 
+lighter privilege for i915-perf.
+
+
+-Lionel
+
 
