@@ -1,39 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6D31243B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 10:50:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2634124398
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 10:47:49 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47d9D30Kw2zDqDK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 20:47:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47d9Gc590FzDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 20:50:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.93; helo=mga11.intel.com;
+ (client-ip=192.55.52.151; helo=mga17.intel.com;
  envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47d8rL0QXPzDqMh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 20:30:41 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47d8s34wVmzDqgV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 20:31:19 +1100 (AEDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2019 01:30:39 -0800
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2019 01:31:17 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,329,1571727600"; d="scan'208";a="240731625"
+X-IronPort-AV: E=Sophos;i="5.69,329,1571727600"; d="scan'208";a="218091630"
 Received: from linux.intel.com ([10.54.29.200])
- by fmsmga004.fm.intel.com with ESMTP; 18 Dec 2019 01:30:39 -0800
+ by orsmga003.jf.intel.com with ESMTP; 18 Dec 2019 01:31:17 -0800
 Received: from [10.125.252.219] (abudanko-mobl.ccr.corp.intel.com
  [10.125.252.219])
- by linux.intel.com (Postfix) with ESMTP id B1C1B5802C9;
- Wed, 18 Dec 2019 01:30:30 -0800 (PST)
-Subject: [PATCH v4 8/9] drivers/perf: open access for CAP_SYS_PERFMON
+ by linux.intel.com (Postfix) with ESMTP id 33127580458;
+ Wed, 18 Dec 2019 01:31:09 -0800 (PST)
+Subject: [PATCH v4 9/9] drivers/oprofile: open access for CAP_SYS_PERFMON
  privileged process
 From: Alexey Budankov <alexey.budankov@linux.intel.com>
 To: Peter Zijlstra <peterz@infradead.org>,
@@ -51,8 +51,8 @@ To: Peter Zijlstra <peterz@infradead.org>,
  <casey@schaufler-ca.com>, Robert Richter <rric@kernel.org>
 References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
 Organization: Intel Corp.
-Message-ID: <ce3086d8-9fce-84d6-8b4e-948996c2e0fc@linux.intel.com>
-Date: Wed, 18 Dec 2019 12:30:29 +0300
+Message-ID: <70eb48f8-34ae-8aa3-ca64-d433b75ea2ae@linux.intel.com>
+Date: Wed, 18 Dec 2019 12:31:08 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.1
 MIME-Version: 1.0
@@ -102,31 +102,22 @@ monitoring is discouraged with respect to CAP_SYS_PERFMON capability.
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 ---
- drivers/perf/arm_spe_pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/oprofile/event_buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index 4e4984a55cd1..5dff81bc3324 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -274,7 +274,7 @@ static u64 arm_spe_event_to_pmscr(struct perf_event *event)
- 	if (!attr->exclude_kernel)
- 		reg |= BIT(SYS_PMSCR_EL1_E1SPE_SHIFT);
+diff --git a/drivers/oprofile/event_buffer.c b/drivers/oprofile/event_buffer.c
+index 12ea4a4ad607..6c9edc8bbc95 100644
+--- a/drivers/oprofile/event_buffer.c
++++ b/drivers/oprofile/event_buffer.c
+@@ -113,7 +113,7 @@ static int event_buffer_open(struct inode *inode, struct file *file)
+ {
+ 	int err = -EPERM;
  
--	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && capable(CAP_SYS_ADMIN))
-+	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && perfmon_capable())
- 		reg |= BIT(SYS_PMSCR_EL1_CX_SHIFT);
+-	if (!capable(CAP_SYS_ADMIN))
++	if (!perfmon_capable())
+ 		return -EPERM;
  
- 	return reg;
-@@ -700,7 +700,7 @@ static int arm_spe_pmu_event_init(struct perf_event *event)
- 		return -EOPNOTSUPP;
- 
- 	reg = arm_spe_event_to_pmscr(event);
--	if (!capable(CAP_SYS_ADMIN) &&
-+	if (!perfmon_capable() &&
- 	    (reg & (BIT(SYS_PMSCR_EL1_PA_SHIFT) |
- 		    BIT(SYS_PMSCR_EL1_CX_SHIFT) |
- 		    BIT(SYS_PMSCR_EL1_PCT_SHIFT))))
+ 	if (test_and_set_bit_lock(0, &buffer_opened))
 -- 
 2.20.1
 
