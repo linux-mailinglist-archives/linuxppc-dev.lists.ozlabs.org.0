@@ -2,80 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4191912572C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 23:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AA412578F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 00:15:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dVWB2zG8zDql5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 09:47:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dW7f0TbYzDqlF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 10:15:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=shutemov.name
- (client-ip=2a00:1450:4864:20::141; helo=mail-lf1-x141.google.com;
- envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=shutemov-name.20150623.gappssmtp.com
- header.i=@shutemov-name.20150623.gappssmtp.com header.b="bdF7Zv0V"; 
- dkim-atps=neutral
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
- [IPv6:2a00:1450:4864:20::141])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dVT52xnLzDqjk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 09:45:11 +1100 (AEDT)
-Received: by mail-lf1-x141.google.com with SMTP id r14so2885181lfm.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 14:45:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=shutemov-name.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=YrrQW+o6yoR9HJnH1mwKSC9v5iWno6eigHp0EBk4LR0=;
- b=bdF7Zv0VTafIoorJswX48t2yxXJBYxcvjHgrT2SGIIMh8SxTaUWksloPDk4hj8pN+b
- 8Wy7ZGVYH0fWsHmH/IMJnBSfIeVts/sOmiy4I/nlOeq68AiZoaQ1Mqh2e43FlXq9gRLG
- KshnO+IUvlyZD7e2bgfiCpZOkUn91XMsyCwRx9hGVqlfs3W1si7CDXXM3vtqSXuMWY78
- Tae1sOhSYoNDJLrJgal+3cpj+/6xa05u+pWrMRgdVnIo9FZyRNB0aI0+sHon8/zGouR0
- pqwpw4LUVoV4NK9FktzSrs+SeQWsHdxx0QqmCUwextJEn9FOXazhfjjyb53FWNWWcUXk
- GNTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=YrrQW+o6yoR9HJnH1mwKSC9v5iWno6eigHp0EBk4LR0=;
- b=sbsX3FQYyN0/srmJV7mhWbN+9TSYm5fe1WxtNzEqXNpWlFt9x3FaM5325EZGDKbwIA
- Z3a1yoKPXVizELpA8Mfb0JQmogUcZbZo/zo0qoilKX9ZP2NTR+W9sv40LfoHZVmXsMdm
- Nq5dlU+8FYpwdx6MXClVKMA8BxKh3h8yH/vi6DVVrCWHGyKAhGPz7gCV06xkzC8JMDXh
- cAAStmbXX10bK7PDPpUAWx4U7520jqeWXRDS5sgJYjCQ0vuHK+vCrkbnjeuEvUH/ZetJ
- hli3q6BwXJ7bjoY6uzjQfVkgSiO9TI0rOhwF56ldjFgZM/OucUeXCIy5hEaC6fWpp3Lm
- cDDw==
-X-Gm-Message-State: APjAAAUhUcEqNllPSH9G09PVLa5Nt8CU4ntBm3pXQci344srdxdnIuXK
- LCOKIfhm8GPmkY6Q5y1yuoR7VQ==
-X-Google-Smtp-Source: APXvYqwPbC3mnICecXB2mktdTfANDFTtD1oSKWMGw8lhRk6/u/eXjGq156/mWoszLGq/OpGErs59TQ==
-X-Received: by 2002:a19:6a06:: with SMTP id u6mr3341913lfu.187.1576709107276; 
- Wed, 18 Dec 2019 14:45:07 -0800 (PST)
-Received: from box.localdomain ([86.57.175.117])
- by smtp.gmail.com with ESMTPSA id t6sm1792834ljj.62.2019.12.18.14.45.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2019 14:45:06 -0800 (PST)
-Received: by box.localdomain (Postfix, from userid 1000)
- id 380451012E3; Thu, 19 Dec 2019 01:45:07 +0300 (+03)
-Date: Thu, 19 Dec 2019 01:45:07 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v11 01/25] mm/gup: factor out duplicate code from four
- routines
-Message-ID: <20191218224507.nayxmx7vvsjvyzsc@box>
-References: <20191216222537.491123-1-jhubbard@nvidia.com>
- <20191216222537.491123-2-jhubbard@nvidia.com>
- <20191218155211.emcegdp5uqgorfwe@box>
- <5719efc4-e560-b3d9-8d1f-3ae289bed289@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5719efc4-e560-b3d9-8d1f-3ae289bed289@nvidia.com>
-User-Agent: NeoMutt/20180716
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dW5X0l5NzDqk5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 10:13:19 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBIMwhdm017280; Wed, 18 Dec 2019 18:13:08 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wy7ubjyrn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Dec 2019 18:13:07 -0500
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBIN8qCp069434;
+ Wed, 18 Dec 2019 18:13:07 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wy7ubjyr9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Dec 2019 18:13:07 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBINCOOG015411;
+ Wed, 18 Dec 2019 23:13:06 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04dal.us.ibm.com with ESMTP id 2wvqc73vdf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Dec 2019 23:13:06 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBIND50e39190880
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 18 Dec 2019 23:13:05 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 000DA6A04F;
+ Wed, 18 Dec 2019 23:13:04 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B76D6A04D;
+ Wed, 18 Dec 2019 23:13:04 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 18 Dec 2019 23:13:04 +0000 (GMT)
+Subject: Re: [PATCH 04/14] powerpc/vas: Setup IRQ mapping and register port
+ for each window
+From: Haren Myneni <haren@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+In-Reply-To: <CAOSf1CEvZ32xC71siuyfUQEcQ4yLoDtj2jGoc3jrmsHc0jD+Vw@mail.gmail.com>
+References: <1574816731.13250.9.camel@hbabu-laptop>
+ <CAOSf1CEvZ32xC71siuyfUQEcQ4yLoDtj2jGoc3jrmsHc0jD+Vw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 18 Dec 2019 15:13:01 -0800
+Message-ID: <1576710781.12797.10.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-18_08:2019-12-17,2019-12-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ clxscore=1015 bulkscore=0 adultscore=0 suspectscore=2 mlxlogscore=999
+ malwarescore=0 mlxscore=0 phishscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912180172
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,73 +92,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Device Tree <devicetree@vger.kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Haren Myneni <haren@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 18, 2019 at 02:15:53PM -0800, John Hubbard wrote:
-> On 12/18/19 7:52 AM, Kirill A. Shutemov wrote:
-> > On Mon, Dec 16, 2019 at 02:25:13PM -0800, John Hubbard wrote:
-> > > +static void put_compound_head(struct page *page, int refs)
-> > > +{
-> > > +	/* Do a get_page() first, in case refs == page->_refcount */
-> > > +	get_page(page);
-> > > +	page_ref_sub(page, refs);
-> > > +	put_page(page);
-> > > +}
-> > 
-> > It's not terribly efficient. Maybe something like:
-> > 
-> > 	VM_BUG_ON_PAGE(page_ref_count(page) < ref, page);
-> > 	if (refs > 2)
-> > 		page_ref_sub(page, refs - 1);
-> > 	put_page(page);
-> > 
-> > ?
+On Wed, 2019-12-18 at 18:18 +1100, Oliver O'Halloran wrote:
+> On Wed, Nov 27, 2019 at 12:07 PM Haren Myneni <haren@linux.vnet.ibm.com> wrote:
+> >
+> > *snip*
+> >
+> > @@ -36,7 +62,18 @@ static int init_vas_instance(struct platform_device *pdev)
+> >                 return -ENODEV;
+> >         }
+> >
+> > -       if (pdev->num_resources != 4) {
+> > +       rc = of_property_read_u64(dn, "ibm,vas-port", &port);
+> > +       if (rc) {
+> > +               pr_err("No ibm,vas-port property for %s?\n", pdev->name);
+> > +               /* No interrupts property */
+> > +               nresources = 4;
+> > +       }
+> > +
+> > +       /*
+> > +        * interrupts property is available with 'ibm,vas-port' property.
+> > +        * 4 Resources and 1 IRQ if interrupts property is available.
+> > +        */
+> > +       if (pdev->num_resources != nresources) {
+> >                 pr_err("Unexpected DT configuration for [%s, %d]\n",
+> >                                 pdev->name, vasid);
+> >                 return -ENODEV;
 > 
-> OK, but how about this instead? I don't see the need for a "2", as that
-> is a magic number that requires explanation. Whereas "1" is not a magic
-> number--here it means: either there are "many" (>1) refs, or not.
+> Right, so adding the IRQ in firmware will break the VAS driver in
+> existing kernels since it changes the resource count. This is IMO a
+> bug in the VAS driver that you should fix, but it does mean we need to
+> think twice about having firmware assign an interrupt at boot.
 
-Yeah, it's my thinko. Sure, it has to be '1' (or >= 2, which is less readable).
+Correct, Hence added vas-user-space nvram switch in skiboot.  
 
-> And the routine won't be called with refs less than about 32 (2MB huge
-> page, 64KB base page == 32 subpages) anyway.
+> 
+> I had a closer look at this series and I'm not convinced that any
+> firmware changes are actually required either. We already have OPAL
+> calls for allocating an hwirq for the kernel to use and for getting
+> the IRQ's XIVE trigger port (see pnv_ocxl_alloc_xive_irq() for an
+> example). Why not use those here too? Doing so would allow us to
+> assign interrupts to individual windows too which might be useful for
+> the windows used by the kernel.
 
-It's hard to make predictions about future :P
+Thanks for the pointer. like using pnv_ocxl_alloc_xive_irq(), we can
+disregard FW change. BTW, VAS fault handling is needed only for user
+space VAS windows. 
 
-> 	VM_BUG_ON_PAGE(page_ref_count(page) < refs, page);
-> 	/*
-> 	 * Calling put_page() for each ref is unnecessarily slow. Only the last
-> 	 * ref needs a put_page().
-> 	 */
-> 	if (refs > 1)
-> 		page_ref_sub(page, refs - 1);
-> 	put_page(page);
+ int vas_alloc_xive_irq(u32 chipid, u32 *irq, u64 *trigger_addr)
+{
+        __be64 flags, trigger_page;
+        u32 hwirq;
+        s64 rc;
 
-Looks good to me.
+        hwirq = opal_xive_allocate_irq_raw(chipid);
+        if (hwirq < 0)
+                return -ENOENT;
 
--- 
- Kirill A. Shutemov
+        rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page,
+NULL,
+                                NULL);
+        if (rc || !trigger_page) {
+                xive_native_free_irq(hwirq);
+                return -ENOENT;
+        }
+
+        *irq = hwirq;
+        *trigger_addr = be64_to_cpu(trigger_page);
+        return 0;
+}
+
+We can have common function for VAS and cxl except per chip IRQ
+allocation is needed for each VAS instance. I will post patch-set with
+this change.
+
+Thanks
+Haren
+
+
