@@ -2,66 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C264B12402E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 08:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 152231240CB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 08:56:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47d5xv4ZynzDqbF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 18:20:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47d6lC5KCTzDqbk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 18:56:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
- helo=mail-il1-x143.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="PPeL3sQb"; 
- dkim-atps=neutral
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
- [IPv6:2607:f8b0:4864:20::143])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47d5vk33kJzDqRZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 18:18:26 +1100 (AEDT)
-Received: by mail-il1-x143.google.com with SMTP id c4so823799ilo.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 23:18:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JCwa00IyQIOLZ6z5iyawbZaNF4jJ6Iczm0eXb9CjqUU=;
- b=PPeL3sQbNZHoirsJWfwatpisDOVGToI3CoGqFNY4/oya1AjdAGO+LOBjokNQcUMBI6
- S4XoTesMvsOSgqYl6Tsq/qcsAwmvwhHMkhekPtamed+iNGRY32cvFqChMHshvoE5Zgsf
- Q0qRp3RkmC1XoD1frrkmA6XzjCn6+gSGy8yYsZ+dHjpvGfJ9d1fp1D1BDqlFvvpijKI+
- akUP5gyNU3VRzuB2I/fHGacriS+MgeJCye0F3gsIxvdvbi7hNDdvjIok4Wzbfusehlmg
- tG6+jDPipxM5cBIfVuJ84lBDyx8G1wx3HVRf2RnWC6fpdMf+mywdxlecOnHFjM5YySx8
- 43Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JCwa00IyQIOLZ6z5iyawbZaNF4jJ6Iczm0eXb9CjqUU=;
- b=nKfvKQDszyaCuvbfRvRm6nhcYpJ8yIUiYqiGhiI2c2JELcx4TlJDo3wiFEL3qH0PeN
- S5yRed7H1B8d6/FRNvKM131likTde1MRfgeaNsEoow+P1FKMAXJVlsJBr71X/3M8FOTz
- k6a8yVk5lWlLpzhvEInw6J5J6U6SeeFwsaeL4PUr4rK67sjJx6bGr1A6x5mQEN1QInXM
- ykrwSHK3KabWjB1TUolKuBoMWUvfXwlcd80XcPBzcx9ADuNsh6+thYcqdFFUYyEOQnPC
- nm0RQjbQbP6AA9csBHANO9Is0YzMIA5ptsoonRVqOdxjmPD9iYs+f5F0Hi+tl/3o3Sb6
- Na+w==
-X-Gm-Message-State: APjAAAV9t4FP1YRSAMqE4S1llDV2Fs5dSFjzcrepgCiusVesypxjphcw
- I+dS4u3tW28EWrL1+9xZnXcX5qTOUSkOKyG0icc=
-X-Google-Smtp-Source: APXvYqz/6Gyoo0ZOsaHyTvMhPiJSUUCi7Es/5C4io0hOtE9kuWjmgJL7u5Gd4+rPxvw7QmHa2YK50fQKJsU8rRKXQeg=
-X-Received: by 2002:a92:4e:: with SMTP id 75mr555618ila.276.1576653500781;
- Tue, 17 Dec 2019 23:18:20 -0800 (PST)
-MIME-Version: 1.0
-References: <1574816731.13250.9.camel@hbabu-laptop>
-In-Reply-To: <1574816731.13250.9.camel@hbabu-laptop>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 18 Dec 2019 18:18:09 +1100
-Message-ID: <CAOSf1CEvZ32xC71siuyfUQEcQ4yLoDtj2jGoc3jrmsHc0jD+Vw@mail.gmail.com>
-Subject: Re: [PATCH 04/14] powerpc/vas: Setup IRQ mapping and register port
- for each window
-To: Haren Myneni <haren@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47d6g51Gt6zDqVk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 18:52:32 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBI7qS1F039229
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 02:52:31 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wye06434r-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 02:52:30 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
+ Wed, 18 Dec 2019 07:52:12 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 18 Dec 2019 07:52:08 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBI7q7p260227704
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 18 Dec 2019 07:52:07 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F1B88AE053;
+ Wed, 18 Dec 2019 07:52:06 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8682AE055;
+ Wed, 18 Dec 2019 07:52:04 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 18 Dec 2019 07:52:04 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: shuahkh@osg.samsung.com, linux-kselftest@vger.kernel.org
+Subject: [PATCH v15 03/23] selftests/vm/pkeys: Move generic definitions to
+ header file
+Date: Wed, 18 Dec 2019 13:21:36 +0530
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <cover.1576645161.git.sandipan@linux.ibm.com>
+References: <cover.1576645161.git.sandipan@linux.ibm.com>
+In-Reply-To: <cover.1576645161.git.sandipan@linux.ibm.com>
+References: <cover.1576645161.git.sandipan@linux.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 19121807-0020-0000-0000-000003996803
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121807-0021-0000-0000-000021F0889E
+Message-Id: <dc75a6c7e8440c8cf2fc3e7a56135ca2e85249ac.1576645161.git.sandipan@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-18_01:2019-12-17,2019-12-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 mlxscore=0
+ bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ mlxlogscore=972 phishscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1912180063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,49 +88,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Device Tree <devicetree@vger.kernel.org>,
- Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, linux-mm@kvack.org,
+ aneesh.kumar@linux.ibm.com, x86@kernel.org, linuxram@us.ibm.com,
+ mhocko@kernel.org, dave.hansen@intel.com, mingo@redhat.com, msuchanek@suse.de,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 27, 2019 at 12:07 PM Haren Myneni <haren@linux.vnet.ibm.com> wrote:
->
-> *snip*
->
-> @@ -36,7 +62,18 @@ static int init_vas_instance(struct platform_device *pdev)
->                 return -ENODEV;
->         }
->
-> -       if (pdev->num_resources != 4) {
-> +       rc = of_property_read_u64(dn, "ibm,vas-port", &port);
-> +       if (rc) {
-> +               pr_err("No ibm,vas-port property for %s?\n", pdev->name);
-> +               /* No interrupts property */
-> +               nresources = 4;
-> +       }
-> +
-> +       /*
-> +        * interrupts property is available with 'ibm,vas-port' property.
-> +        * 4 Resources and 1 IRQ if interrupts property is available.
-> +        */
-> +       if (pdev->num_resources != nresources) {
->                 pr_err("Unexpected DT configuration for [%s, %d]\n",
->                                 pdev->name, vasid);
->                 return -ENODEV;
+From: Ram Pai <linuxram@us.ibm.com>
 
-Right, so adding the IRQ in firmware will break the VAS driver in
-existing kernels since it changes the resource count. This is IMO a
-bug in the VAS driver that you should fix, but it does mean we need to
-think twice about having firmware assign an interrupt at boot.
+This moves all the generic definitions and helper functions
+to a header file.
 
-I had a closer look at this series and I'm not convinced that any
-firmware changes are actually required either. We already have OPAL
-calls for allocating an hwirq for the kernel to use and for getting
-the IRQ's XIVE trigger port (see pnv_ocxl_alloc_xive_irq() for an
-example). Why not use those here too? Doing so would allow us to
-assign interrupts to individual windows too which might be useful for
-the windows used by the kernel.
+cc: Dave Hansen <dave.hansen@intel.com>
+cc: Florian Weimer <fweimer@redhat.com>
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+---
+ tools/testing/selftests/vm/pkey-helpers.h    | 35 +++++++++++++++++---
+ tools/testing/selftests/vm/protection_keys.c | 27 ---------------
+ 2 files changed, 30 insertions(+), 32 deletions(-)
+
+diff --git a/tools/testing/selftests/vm/pkey-helpers.h b/tools/testing/selftests/vm/pkey-helpers.h
+index d5779be4793f..6ad1bd54ef94 100644
+--- a/tools/testing/selftests/vm/pkey-helpers.h
++++ b/tools/testing/selftests/vm/pkey-helpers.h
+@@ -13,6 +13,14 @@
+ #include <ucontext.h>
+ #include <sys/mman.h>
+ 
++/* Define some kernel-like types */
++#define  u8 uint8_t
++#define u16 uint16_t
++#define u32 uint32_t
++#define u64 uint64_t
++
++#define PTR_ERR_ENOTSUP ((void *)-ENOTSUP)
++
+ #define NR_PKEYS 16
+ #define PKEY_BITS_PER_PKEY 2
+ 
+@@ -53,6 +61,18 @@ static inline void sigsafe_printf(const char *format, ...)
+ #define dprintf3(args...) dprintf_level(3, args)
+ #define dprintf4(args...) dprintf_level(4, args)
+ 
++extern void abort_hooks(void);
++#define pkey_assert(condition) do {		\
++	if (!(condition)) {			\
++		dprintf0("assert() at %s::%d test_nr: %d iteration: %d\n", \
++				__FILE__, __LINE__,	\
++				test_nr, iteration_nr);	\
++		dprintf0("errno at assert: %d", errno);	\
++		abort_hooks();			\
++		exit(__LINE__);			\
++	}					\
++} while (0)
++
+ extern unsigned int shadow_pkey_reg;
+ static inline unsigned int __read_pkey_reg(void)
+ {
+@@ -137,11 +157,6 @@ static inline void __pkey_write_allow(int pkey, int do_allow_write)
+ 	dprintf4("pkey_reg now: %08x\n", read_pkey_reg());
+ }
+ 
+-#define PROT_PKEY0     0x10            /* protection key value (bit 0) */
+-#define PROT_PKEY1     0x20            /* protection key value (bit 1) */
+-#define PROT_PKEY2     0x40            /* protection key value (bit 2) */
+-#define PROT_PKEY3     0x80            /* protection key value (bit 3) */
+-
+ #define PAGE_SIZE 4096
+ #define MB	(1<<20)
+ 
+@@ -219,4 +234,14 @@ int pkey_reg_xstate_offset(void)
+ 	return xstate_offset;
+ }
+ 
++#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
++#define ALIGN_UP(x, align_to)	(((x) + ((align_to)-1)) & ~((align_to)-1))
++#define ALIGN_DOWN(x, align_to) ((x) & ~((align_to)-1))
++#define ALIGN_PTR_UP(p, ptr_align_to)	\
++	((typeof(p))ALIGN_UP((unsigned long)(p), ptr_align_to))
++#define ALIGN_PTR_DOWN(p, ptr_align_to)	\
++	((typeof(p))ALIGN_DOWN((unsigned long)(p), ptr_align_to))
++#define __stringify_1(x...)     #x
++#define __stringify(x...)       __stringify_1(x)
++
+ #endif /* _PKEYS_HELPER_H */
+diff --git a/tools/testing/selftests/vm/protection_keys.c b/tools/testing/selftests/vm/protection_keys.c
+index 2f4ab81c570d..42ffb58810f2 100644
+--- a/tools/testing/selftests/vm/protection_keys.c
++++ b/tools/testing/selftests/vm/protection_keys.c
+@@ -51,31 +51,10 @@ int test_nr;
+ unsigned int shadow_pkey_reg;
+ 
+ #define HPAGE_SIZE	(1UL<<21)
+-#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
+-#define ALIGN_UP(x, align_to)	(((x) + ((align_to)-1)) & ~((align_to)-1))
+-#define ALIGN_DOWN(x, align_to) ((x) & ~((align_to)-1))
+-#define ALIGN_PTR_UP(p, ptr_align_to)	((typeof(p))ALIGN_UP((unsigned long)(p),	ptr_align_to))
+-#define ALIGN_PTR_DOWN(p, ptr_align_to)	((typeof(p))ALIGN_DOWN((unsigned long)(p),	ptr_align_to))
+-#define __stringify_1(x...)     #x
+-#define __stringify(x...)       __stringify_1(x)
+-
+-#define PTR_ERR_ENOTSUP ((void *)-ENOTSUP)
+ 
+ int dprint_in_signal;
+ char dprint_in_signal_buffer[DPRINT_IN_SIGNAL_BUF_SIZE];
+ 
+-extern void abort_hooks(void);
+-#define pkey_assert(condition) do {		\
+-	if (!(condition)) {			\
+-		dprintf0("assert() at %s::%d test_nr: %d iteration: %d\n", \
+-				__FILE__, __LINE__,	\
+-				test_nr, iteration_nr);	\
+-		dprintf0("errno at assert: %d", errno);	\
+-		abort_hooks();			\
+-		exit(__LINE__);			\
+-	}					\
+-} while (0)
+-
+ void cat_into_file(char *str, char *file)
+ {
+ 	int fd = open(file, O_RDWR);
+@@ -186,12 +165,6 @@ void lots_o_noops_around_write(int *write_to_me)
+ 	dprintf3("%s() done\n", __func__);
+ }
+ 
+-/* Define some kernel-like types */
+-#define  u8 uint8_t
+-#define u16 uint16_t
+-#define u32 uint32_t
+-#define u64 uint64_t
+-
+ #ifdef __i386__
+ 
+ #ifndef SYS_mprotect_key
+-- 
+2.17.1
+
