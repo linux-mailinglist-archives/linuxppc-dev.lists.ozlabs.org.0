@@ -1,73 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C264B12402E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 08:20:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEBD123FFA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 08:03:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47d5ZS0MSjzDqf2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 18:03:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47d5xv4ZynzDqbF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2019 18:20:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
+ helo=mail-il1-x143.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="HJ57PQOL"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="PPeL3sQb"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
+ [IPv6:2607:f8b0:4864:20::143])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47d5XR2wlyzDqYq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 18:01:42 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id l24so759693pgk.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 23:01:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=BZCWkhOFV3yf2yR16aoRfXzQzGQ6DZmCFUiKpUKgtKg=;
- b=HJ57PQOLVeFDWs5pPEm8r4CDItVMeCu5KLeQ4NJI+/3RFeWqSohuCj05oj8iIksoji
- LBJWTgT0aPLaGtmuAEfWgKyhcfyHKTH7JdTgkG9ZP0bJVOaVHl4n81pUT/5kwswuxkI2
- cICePRCvQ2kUgGEW5NzFKPmykXeOTEAu3FNAg=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47d5vk33kJzDqRZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 18:18:26 +1100 (AEDT)
+Received: by mail-il1-x143.google.com with SMTP id c4so823799ilo.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2019 23:18:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=JCwa00IyQIOLZ6z5iyawbZaNF4jJ6Iczm0eXb9CjqUU=;
+ b=PPeL3sQbNZHoirsJWfwatpisDOVGToI3CoGqFNY4/oya1AjdAGO+LOBjokNQcUMBI6
+ S4XoTesMvsOSgqYl6Tsq/qcsAwmvwhHMkhekPtamed+iNGRY32cvFqChMHshvoE5Zgsf
+ Q0qRp3RkmC1XoD1frrkmA6XzjCn6+gSGy8yYsZ+dHjpvGfJ9d1fp1D1BDqlFvvpijKI+
+ akUP5gyNU3VRzuB2I/fHGacriS+MgeJCye0F3gsIxvdvbi7hNDdvjIok4Wzbfusehlmg
+ tG6+jDPipxM5cBIfVuJ84lBDyx8G1wx3HVRf2RnWC6fpdMf+mywdxlecOnHFjM5YySx8
+ 43Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=BZCWkhOFV3yf2yR16aoRfXzQzGQ6DZmCFUiKpUKgtKg=;
- b=AjnhOP9NQOeeiWryyXkEAIC6O6at1ZNSvluE0wyz7yruJd8dBAizEINxrQ3wnoZmC9
- hzXAP8j589IYd7qvqTI7uNlqzVPNM+qVjQTplECQ3sZLf2OVbtdiyGqPb3gZgKgkC2NT
- qtXWT8GXVPYbjQ16NTsnIh7nuudECZjdbXQAMQVXFPAIr/kirjowQJzDVOmuBHplrvDZ
- i/Q7pFKyTg3ggt8/0uoUgfsOjJ0fHWCLSbB0KP0VgLLb15AVlKEFDMCNm2/uEiMlMeud
- 4zanrL711VVfz/3XKj3wixDghLHH26T+Dmmp2FsXiXP8dxZAQm0SmsNW+hfcbJ6v8m9o
- RPkQ==
-X-Gm-Message-State: APjAAAVFmlGkL/ji77ArRIE/rYyGgbliSMbjGVPFggWBSDPtmHZYvZd9
- IJoEJYAi9JNoQt6iLqbzNpH06g==
-X-Google-Smtp-Source: APXvYqyGk7+DsmSnrPB6g5gp31sxI6sfx2J8mSWVUByqzssCbVtU40pAOxr5YrMiphHnf0wAgDdaSw==
-X-Received: by 2002:a63:3484:: with SMTP id b126mr1263334pga.17.1576652499643; 
- Tue, 17 Dec 2019 23:01:39 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-a084-b324-40b3-453d.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:a084:b324:40b3:453d])
- by smtp.gmail.com with ESMTPSA id i127sm1608577pfc.55.2019.12.17.23.01.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2019 23:01:38 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH v3 3/3] powerpc: Book3S 64-bit "heavyweight" KASAN support
-In-Reply-To: <CACzsE9q1iLgoMLzVy0AYeRvWbj=kY-Ry52y84PGtWw3YXXFipA@mail.gmail.com>
-References: <20191212151656.26151-1-dja@axtens.net>
- <20191212151656.26151-4-dja@axtens.net>
- <CACzsE9q1iLgoMLzVy0AYeRvWbj=kY-Ry52y84PGtWw3YXXFipA@mail.gmail.com>
-Date: Wed, 18 Dec 2019 18:01:34 +1100
-Message-ID: <87y2vat8vl.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=JCwa00IyQIOLZ6z5iyawbZaNF4jJ6Iczm0eXb9CjqUU=;
+ b=nKfvKQDszyaCuvbfRvRm6nhcYpJ8yIUiYqiGhiI2c2JELcx4TlJDo3wiFEL3qH0PeN
+ S5yRed7H1B8d6/FRNvKM131likTde1MRfgeaNsEoow+P1FKMAXJVlsJBr71X/3M8FOTz
+ k6a8yVk5lWlLpzhvEInw6J5J6U6SeeFwsaeL4PUr4rK67sjJx6bGr1A6x5mQEN1QInXM
+ ykrwSHK3KabWjB1TUolKuBoMWUvfXwlcd80XcPBzcx9ADuNsh6+thYcqdFFUYyEOQnPC
+ nm0RQjbQbP6AA9csBHANO9Is0YzMIA5ptsoonRVqOdxjmPD9iYs+f5F0Hi+tl/3o3Sb6
+ Na+w==
+X-Gm-Message-State: APjAAAV9t4FP1YRSAMqE4S1llDV2Fs5dSFjzcrepgCiusVesypxjphcw
+ I+dS4u3tW28EWrL1+9xZnXcX5qTOUSkOKyG0icc=
+X-Google-Smtp-Source: APXvYqz/6Gyoo0ZOsaHyTvMhPiJSUUCi7Es/5C4io0hOtE9kuWjmgJL7u5Gd4+rPxvw7QmHa2YK50fQKJsU8rRKXQeg=
+X-Received: by 2002:a92:4e:: with SMTP id 75mr555618ila.276.1576653500781;
+ Tue, 17 Dec 2019 23:18:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <1574816731.13250.9.camel@hbabu-laptop>
+In-Reply-To: <1574816731.13250.9.camel@hbabu-laptop>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 18 Dec 2019 18:18:09 +1100
+Message-ID: <CAOSf1CEvZ32xC71siuyfUQEcQ4yLoDtj2jGoc3jrmsHc0jD+Vw@mail.gmail.com>
+Subject: Re: [PATCH 04/14] powerpc/vas: Setup IRQ mapping and register port
+ for each window
+To: Haren Myneni <haren@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,82 +73,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Cc: Device Tree <devicetree@vger.kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
->>    [For those not immersed in ppc64, in real mode, the top nibble or 2 b=
-its
->>    (depending on radix/hash mmu) of the address is ignored. The linear
->>    mapping is placed at 0xc000000000000000. This means that a pointer to
->>    part of the linear mapping will work both in real mode, where it will=
- be
->>    interpreted as a physical address of the form 0x000..., and out of re=
-al
->>    mode, where it will go via the linear mapping.]
->>
+On Wed, Nov 27, 2019 at 12:07 PM Haren Myneni <haren@linux.vnet.ibm.com> wrote:
 >
-> How does hash or radix mmu mode effect how many bits are ignored in real =
-mode?
+> *snip*
+>
+> @@ -36,7 +62,18 @@ static int init_vas_instance(struct platform_device *pdev)
+>                 return -ENODEV;
+>         }
+>
+> -       if (pdev->num_resources != 4) {
+> +       rc = of_property_read_u64(dn, "ibm,vas-port", &port);
+> +       if (rc) {
+> +               pr_err("No ibm,vas-port property for %s?\n", pdev->name);
+> +               /* No interrupts property */
+> +               nresources = 4;
+> +       }
+> +
+> +       /*
+> +        * interrupts property is available with 'ibm,vas-port' property.
+> +        * 4 Resources and 1 IRQ if interrupts property is available.
+> +        */
+> +       if (pdev->num_resources != nresources) {
+>                 pr_err("Unexpected DT configuration for [%s, %d]\n",
+>                                 pdev->name, vasid);
+>                 return -ENODEV;
 
-Bah, you're picking on details that I picked up from random
-conversations in the office rather than from reading the spec! :P
+Right, so adding the IRQ in firmware will break the VAS driver in
+existing kernels since it changes the resource count. This is IMO a
+bug in the VAS driver that you should fix, but it does mean we need to
+think twice about having firmware assign an interrupt at boot.
 
-The ISA suggests that real addresses space is limited to at most 64
-bits. ISAv3, Book III s5.7:
-
-| * Host real address space size is 2^m bytes, m <=3D 60;
-|   see Note 1.
-| * Guest real address space size is 2 m bytes, m <=3D 60;
-|   see Notes 1 and 2.
-...
-| Notes:
-| 1. The value of m is implementation-dependent (sub-
-|    ject to the maximum given above). When used to
-|    address storage or to represent a guest real
-|    address, the high-order 60-m bits of the =E2=80=9C60-bit=E2=80=9D
-|    real address must be zeros.
-| 2. The hypervisor may assign a guest real address
-|    space size for each partition that uses Radix Tree
-|    translation. Accesses to guest real storage out-
-|    side this range but still mappable by the second
-|    level Radix Tree will cause an HISI or HDSI.
-|    Accesses to storage outside the mappable range
-|    will have boundedly undefined results.
-
-However, it doesn't follow from that passage that the top 4 bits are
-always ignored when translations are off ('real mode'): see for example
-the discussion of the HRMOR in s 5.7.3 and s 5.7.3.1.=20
-
-I think I got the 'top 2 bits on radix' thing from the discussion of
-'quadrants' in arch/powerpc/include/asm/book3s/64/radix.h, which in turn
-is discussed in s 5.7.5.1. Table 20 in particular is really helpful for
-understanding it. But it's not especially relevant to what I'm actually
-doing here.
-
-I think to fully understand all of what's going on I would need to spend
-some serious time with the entirety of s5.7, because there a lot of
-quirks about how storage works! But I think for our purposes it suffices
-to say:
-
-  The kernel installs a linear mapping at effective address
-  c000... onward. This is a one-to-one mapping with physical memory from
-  0000... onward. Because of how memory accesses work on powerpc 64-bit
-  Book3S, a kernel pointer in the linear map accesses the same memory
-  both with translations on (accessing as an 'effective address'), and
-  with translations off (accessing as a 'real address'). This works in
-  both guests and the hypervisor. For more details, see s5.7 of Book III
-  of version 3 of the ISA, in particular the Storage Control Overview,
-  s5.7.3, and s5.7.5 - noting that this KASAN implementation currently
-  only supports Radix.
-
-Thanks for your attention to detail!
-
-Regards,
-Daniel
-
-
-
+I had a closer look at this series and I'm not convinced that any
+firmware changes are actually required either. We already have OPAL
+calls for allocating an hwirq for the kernel to use and for getting
+the IRQ's XIVE trigger port (see pnv_ocxl_alloc_xive_irq() for an
+example). Why not use those here too? Doing so would allow us to
+assign interrupts to individual windows too which might be useful for
+the windows used by the kernel.
