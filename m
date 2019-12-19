@@ -2,77 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324F912621C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 13:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F57126291
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 13:48:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47drfJ1XZNzDqtS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 23:24:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dsB31JWVzDqs6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 23:48:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="Q2Nkm6fd"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47drbf6Dw9zDql5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 23:22:06 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id z3so2477006plk.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 04:22:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=KUZMCzJDajvAWgOwIGaMCQmEpud/sI+HWwVZ5z66PfA=;
- b=Q2Nkm6fdrRQpsyMzF0E8SO5CnpATIDAngezGXzkbVg5FM5gqp/USZdvjuLOyqxGhob
- vUVMUdsruXOTvNCGsO9w+cBW7pumbWreW9u7bHeP80rb+z1Nq3yZJJbt7fsXy8VTPJaX
- fqxmb822HcBIF6ENlq0AC91lSpDppRPi5JuRI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=KUZMCzJDajvAWgOwIGaMCQmEpud/sI+HWwVZ5z66PfA=;
- b=EkvsAiwFBe7PtWzfIrwnNGZm7PdQJ0m3aXSnUc3LkeWYTeKsHjbFuRYl8ZSjioHpU6
- SP7oiXFhufoXfw1a46xTDJWjYyP26FixGLnOUCx9perQB0anOtXH47hNOy/dzKvzkfCt
- 7QSeWzAvJjaDJgLuhLIbd1+pzflxEAsP5PvbCzdiFTfj+38R6s83KoJkFOSIibIhuKle
- Gd6o0vJ283fXDYhb4Z39j8fnKn06w478GdQ1TP7ztLgJzm9RMRGOii1wGnLDAv37UA5v
- 5u2lanHAOE3lfQ4SzCMInGJLUnZpyNJx3jr7XzmxdJvB/EYqfDqFaAZHWEt+49flwM0e
- Hqhg==
-X-Gm-Message-State: APjAAAV14Ew4C8pB2g4pkbJNXVEzkJTUrF1LvrqhsQyOefaL8lAT5cgm
- cs0dZwd+jyIYo1SnqGLEiUBO+g==
-X-Google-Smtp-Source: APXvYqysLbNRk7kADvF4EGeP94sXjr/+8KOzk3Rc0H00Sz8ZwQESSep5znZgXFDiN+AamxRSsQtyGg==
-X-Received: by 2002:a17:90a:1992:: with SMTP id
- 18mr9506461pji.46.1576758122786; 
- Thu, 19 Dec 2019 04:22:02 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-b05d-cbfe-b2ee-de17.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:b05d:cbfe:b2ee:de17])
- by smtp.gmail.com with ESMTPSA id x4sm8347303pfx.68.2019.12.19.04.22.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2019 04:22:01 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-Subject: Re: [PATCH v4 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-In-Reply-To: <4f2fffb3-5fb6-b5ea-a951-a7910f2439b8@c-s.fr>
-References: <20191219003630.31288-1-dja@axtens.net>
- <20191219003630.31288-5-dja@axtens.net>
- <c4d37067-829f-cd7d-7e94-0ec2223cce71@c-s.fr>
- <87bls4tzjn.fsf@dja-thinkpad.axtens.net>
- <4f2fffb3-5fb6-b5ea-a951-a7910f2439b8@c-s.fr>
-Date: Thu, 19 Dec 2019 23:21:59 +1100
-Message-ID: <877e2stsig.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ds6k3mY9zDqrZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 23:45:34 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="eTbQtcgw"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47ds6f6H0Yz9sPc;
+ Thu, 19 Dec 2019 23:45:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1576759533;
+ bh=jqSSNZ2x3Ae7SanGxA7yrVCJmusexd2AG8aWU/XIPV0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=eTbQtcgwPKDQEVhT4uxaN3HBQoaHb4cEklMvNiUm6jH1ARNC1K8wAz1RZt0gLO+Qu
+ 0KIqGMgD7O0IUxZLT952XO9ci2vye+ZkmL5wBLkvWSbg8MGxcH5CPSBcXU+/tmTKDo
+ qVKsyvC34jYdcZrH2RWEm7OR7E1S3fSEcFc13Ab3uKBVOIoxHKR2gG8gJyyFfU6Hty
+ +HngKO2OEg9Znmlfs8hIjlSl2FffwVUuklQ7VaHJ2lcYVoXa1qf5lmoswEcbxEsSFW
+ 0z9hlq+1lgn1RMHKq8Bex93DHL5QWPOIMFUmRIq9X2V7bRkRilrEmk9xzI3ERAPmfM
+ czBPmygP3POlw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, qemu-ppc@nongnu.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [Qemu-ppc] pseries on qemu-system-ppc64le crashes in
+ doorbell_core_ipi()
+In-Reply-To: <7a5b63a0-2bf5-60bb-8678-b7b36671a29c@zx2c4.com>
+References: <20190327123615.rwhk6h3ayfurvapf@linutronix.de>
+ <7d97f3c6-4614-ead7-179a-e7e223ea3997@kaod.org>
+ <2bbc1490-400d-585e-d74b-924c570b4236@kaod.org>
+ <1553836851.2264.2.camel@gmail.com> <1553850306.nyv11r9iej.astroid@bobo.none>
+ <20190329113109.3a9bd24e@gandalf.local.home>
+ <1553912871.ce5mzizoek.astroid@bobo.none>
+ <20190401083827.GE11158@hirez.programming.kicks-ass.net>
+ <20190406000611.GA27782@lenoir> <1554801792.ruzup3dxhe.astroid@bobo.none>
+ <7a5b63a0-2bf5-60bb-8678-b7b36671a29c@zx2c4.com>
+Date: Thu, 19 Dec 2019 23:45:26 +1100
+Message-ID: <871rt0mql5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,210 +67,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Frederic Weisbecker <fweisbec@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Paul Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>, tglx@linutronix.de,
+ David? Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-
-> Le 19/12/2019 =C3=A0 10:50, Daniel Axtens a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>=20
->>> On 12/19/2019 12:36 AM, Daniel Axtens wrote:
->>>> KASAN support on Book3S is a bit tricky to get right:
->>>>
->>>>    - It would be good to support inline instrumentation so as to be ab=
-le to
->>>>      catch stack issues that cannot be caught with outline mode.
->>>>
->>>>    - Inline instrumentation requires a fixed offset.
->>>>
->>>>    - Book3S runs code in real mode after booting. Most notably a lot o=
-f KVM
->>>>      runs in real mode, and it would be good to be able to instrument =
-it.
->>>>
->>>>    - Because code runs in real mode after boot, the offset has to poin=
-t to
->>>>      valid memory both in and out of real mode.
->>>>
->>>>       [ppc64 mm note: The kernel installs a linear mapping at effective
->>>>       address c000... onward. This is a one-to-one mapping with physic=
-al
->>>>       memory from 0000... onward. Because of how memory accesses work =
-on
->>>>       powerpc 64-bit Book3S, a kernel pointer in the linear map access=
-es the
->>>>       same memory both with translations on (accessing as an 'effective
->>>>       address'), and with translations off (accessing as a 'real
->>>>       address'). This works in both guests and the hypervisor. For more
->>>>       details, see s5.7 of Book III of version 3 of the ISA, in partic=
-ular
->>>>       the Storage Control Overview, s5.7.3, and s5.7.5 - noting that t=
-his
->>>>       KASAN implementation currently only supports Radix.]
->>>>
->>>> One approach is just to give up on inline instrumentation. This way all
->>>> checks can be delayed until after everything set is up correctly, and =
-the
->>>> address-to-shadow calculations can be overridden. However, the feature=
-s and
->>>> speed boost provided by inline instrumentation are worth trying to do
->>>> better.
->>>>
->>>> If _at compile time_ it is known how much contiguous physical memory a
->>>> system has, the top 1/8th of the first block of physical memory can be=
- set
->>>> aside for the shadow. This is a big hammer and comes with 3 big
->>>> consequences:
->>>>
->>>>    - there's no nice way to handle physically discontiguous memory, so=
- only
->>>>      the first physical memory block can be used.
->>>>
->>>>    - kernels will simply fail to boot on machines with less memory than
->>>>      specified when compiling.
->>>>
->>>>    - kernels running on machines with more memory than specified when
->>>>      compiling will simply ignore the extra memory.
->>>>
->>>> Implement and document KASAN this way. The current implementation is R=
-adix
->>>> only.
->>>>
->>>> Despite the limitations, it can still find bugs,
->>>> e.g. http://patchwork.ozlabs.org/patch/1103775/
->>>>
->>>> At the moment, this physical memory limit must be set _even for outline
->>>> mode_. This may be changed in a later series - a different implementat=
-ion
->>>> could be added for outline mode that dynamically allocates shadow at a
->>>> fixed offset. For example, see https://patchwork.ozlabs.org/patch/7952=
-11/
->>>>
->>>> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
->>>> Cc: Balbir Singh <bsingharora@gmail.com> # ppc64 out-of-line radix ver=
-sion
->>>> Cc: Christophe Leroy <christophe.leroy@c-s.fr> # ppc32 version
->>>> Signed-off-by: Daniel Axtens <dja@axtens.net>
->>>>
->>>> ---
->>>> Changes since v3:
->>>>    - Address further feedback from Christophe.
->>>>    - Drop changes to stack walking, it looks like the issue I observed=
- is
->>>>      related to that particular stack, not stack-walking generally.
->>>>
->>>> Changes since v2:
->>>>
->>>>    - Address feedback from Christophe around cleanups and docs.
->>>>    - Address feedback from Balbir: at this point I don't have a good s=
-olution
->>>>      for the issues you identify around the limitations of the inline =
-implementation
->>>>      but I think that it's worth trying to get the stack instrumentati=
-on support.
->>>>      I'm happy to have an alternative and more flexible outline mode -=
- I had
->>>>      envisoned this would be called 'lightweight' mode as it imposes f=
-ewer restrictions.
->>>>      I've linked to your implementation. I think it's best to add it i=
-n a follow-up series.
->>>>    - Made the default PHYS_MEM_SIZE_FOR_KASAN value 1024MB. I think mo=
-st people have
->>>>      guests with at least that much memory in the Radix 64s case so it=
-'s a much
->>>>      saner default - it means that if you just turn on KASAN without r=
-eading the
->>>>      docs you're much more likely to have a bootable kernel, which you=
- will never
->>>>      have if the value is set to zero! I'm happy to bikeshed the value=
- if we want.
->>>>
->>>> Changes since v1:
->>>>    - Landed kasan vmalloc support upstream
->>>>    - Lots of feedback from Christophe.
->>>>
->>>> Changes since the rfc:
->>>>
->>>>    - Boots real and virtual hardware, kvm works.
->>>>
->>>>    - disabled reporting when we're checking the stack for exception
->>>>      frames. The behaviour isn't wrong, just incompatible with KASAN.
->>>>
->>>>    - Documentation!
->>>>
->>>>    - Dropped old module stuff in favour of KASAN_VMALLOC.
->>>>
->>>> The bugs with ftrace and kuap were due to kernel bloat pushing
->>>> prom_init calls to be done via the plt. Because we did not have
->>>> a relocatable kernel, and they are done very early, this caused
->>>> everything to explode. Compile with CONFIG_RELOCATABLE!
->>>> ---
->>>>    Documentation/dev-tools/kasan.rst            |   8 +-
->>>>    Documentation/powerpc/kasan.txt              | 112 ++++++++++++++++=
-++-
->>>>    arch/powerpc/Kconfig                         |   2 +
->>>>    arch/powerpc/Kconfig.debug                   |  21 ++++
->>>>    arch/powerpc/Makefile                        |  11 ++
->>>>    arch/powerpc/include/asm/book3s/64/hash.h    |   4 +
->>>>    arch/powerpc/include/asm/book3s/64/pgtable.h |   7 ++
->>>>    arch/powerpc/include/asm/book3s/64/radix.h   |   5 +
->>>>    arch/powerpc/include/asm/kasan.h             |  21 +++-
->>>>    arch/powerpc/kernel/prom.c                   |  61 +++++++++-
->>>>    arch/powerpc/mm/kasan/Makefile               |   1 +
->>>>    arch/powerpc/mm/kasan/init_book3s_64.c       |  70 ++++++++++++
->>>>    arch/powerpc/platforms/Kconfig.cputype       |   1 +
->>>>    13 files changed, 316 insertions(+), 8 deletions(-)
->>>>    create mode 100644 arch/powerpc/mm/kasan/init_book3s_64.c
->>>>
->>>> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/a=
-sm/kasan.h
->>>> index 296e51c2f066..f18268cbdc33 100644
->>>> --- a/arch/powerpc/include/asm/kasan.h
->>>> +++ b/arch/powerpc/include/asm/kasan.h
->>>> @@ -2,6 +2,9 @@
->>>>    #ifndef __ASM_KASAN_H
->>>>    #define __ASM_KASAN_H
->>>>=20=20=20=20
->>>> +#include <asm/page.h>
->>>> +#include <asm/pgtable.h>
->>>
->>> What do you need asm/pgtable.h for ?
->>>
->>> Build failure due to circular inclusion of asm/pgtable.h:
->>=20
->> I see there's a lot of ppc32 stuff, I clearly need to bite the bullet
->> and get a ppc32 toolchain so I can squash these without chewing up any
->> more of your time. I'll sort that out and send a new spin.
->>=20
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+> Hi folks,
 >
-> I'm using a powerpc64 toolchain to build both ppc32 and ppc64 kernels=20
-> (from https://mirrors.edge.kernel.org/pub/tools/crosstool/ )
+> I'm actually still experiencing this sporadically in the WireGuard test 
+> suite, which you can see being run on https://build.wireguard.com/ . 
 
-I am now using the distro toolchain that Ubuntu provides, and I've
-reproduced and fixed the 32bit issues you identifed.
+Fancy dashboard you got there :)
 
-> Another thing, did you test PTDUMP stuff with KASAN ? It looks like=20
-> KASAN address markers don't depend on PPC32, but are only initialised by=
-=20
-> populate_markers() for PPC32.
-
-Hmm, OK. This is my last workday for the year, so I will look at this
-and the simplifications to kasan.h early next year.
-
-Thanks,
-Daniel
-
+> About 50% of the time the powerpc64 build will fail at a place like this:
 >
-> Regarding kasan.h, I think we should be able to end up with something=20
-> where the definition of KASAN_SHADOW_OFFSET should only depend on the=20
-> existence of CONFIG_KASAN_SHADOW_OFFSET, and where only=20
-> KASAN_SHADOW_SIZE should depend on the target (ie PPC32 or BOOK3S64)
-> Everything else should be common. KASAN_END should be START+SIZE.
+> [   65.147823] Oops: Exception in kernel mode, sig: 4 [#1]
+> [   65.149198] LE PAGE_SIZE=4K MMU=Hash PREEMPT SMP NR_CPUS=4 NUMA pSeries
+> [   65.149595] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.5.0-rc1+ #1
+> [   65.149745] NIP:  c000000000033330 LR: c00000000007eda0 CTR: c00000000007ed80
+> [   65.149934] REGS: c000000000a47970 TRAP: 0700   Not tainted  (5.5.0-rc1+)
+> [   65.150032] MSR:  800000000288b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> > CR: 48008288  XER: 00000000
+> [   65.150352] CFAR: c0000000000332bc IRQMASK: 1
+> [   65.150352] GPR00: c000000000036508 c000000000a47c00 c000000000a4c100 0000000000000001
+> [   65.150352] GPR04: c000000000a50998 0000000000000000 c000000000a50908 000000000f509000
+> [   65.150352] GPR08: 0000000028000000 0000000000000000 0000000000000000 c00000000ff24f00
+> [   65.150352] GPR12: c00000000007ed80 c000000000ad9000 0000000000000000 0000000000000000
+> [   65.150352] GPR16: 00000000008c9190 00000000008c94a8 00000000008c92f8 00000000008c98b0
+> [   65.150352] GPR20: 00000000008f2f88 fffffffffffffffd 0000000000000014 0000000000e6c100
+> [   65.150352] GPR24: 0000000000e6c100 0000000000000001 0000000000000000 c000000000a50998
+> [   65.150352] GPR28: c000000000a9e280 c000000000a50aa4 0000000000000002 0000000000000000
+> [   65.151591] NIP [c000000000033330] doorbell_try_core_ipi+0xd0/0xf0
+> [   65.151750] LR [c00000000007eda0] smp_pseries_cause_ipi+0x20/0x70
+> [   65.151913] Call Trace:
+> [   65.152109] [c000000000a47c00] [c0000000000c7c9c] _nohz_idle_balance+0xbc/0x300 (unreliable)
+> [   65.152370] [c000000000a47c30] [c000000000036508] smp_send_reschedule+0x98/0xb0
+> [   65.152711] [c000000000a47c50] [c0000000000c1634] kick_ilb+0x114/0x140
+> [   65.152962] [c000000000a47ca0] [c0000000000c86d8] newidle_balance+0x4e8/0x500
+> [   65.153213] [c000000000a47d20] [c0000000000c8788] pick_next_task_fair+0x48/0x3a0
+> [   65.153424] [c000000000a47d80] [c000000000466620] __schedule+0xf0/0x430
+> [   65.153612] [c000000000a47de0] [c000000000466b04] schedule_idle+0x34/0x70
+> [   65.153786] [c000000000a47e10] [c0000000000c0bc8] do_idle+0x1a8/0x220
+> [   65.154121] [c000000000a47e70] [c0000000000c0e94] cpu_startup_entry+0x34/0x40
+> [   65.154313] [c000000000a47ea0] [c00000000000ef1c] rest_init+0x10c/0x124
+> [   65.154414] [c000000000a47ee0] [c000000000500004] start_kernel+0x568/0x594
+> [   65.154585] [c000000000a47f90] [c00000000000a7cc] start_here_common+0x1c/0x330
+> [   65.154854] Instruction dump:
+> [   65.155191] 38210030 e8010010 7c0803a6 4e800020 3d220004 39295228 81290000 3929ffff
+> [   65.155498] 7d284038 7c0004ac 5508017e 65082800 <7c00411c> e94d0178 812a0000 3929ffff
+                                                      ^
+Again the faulting instruction there is "msgsndp r8"
+
+> [   65.156155] ---[ end trace 6180d12e268ffdaf ]---
+> [   65.185452]
+> [   66.187490] Kernel panic - not syncing: Fatal exception
 >
-> It looks like what you have called KASAN_SHADOW_SIZE is not similar to=20
-> what is called KASAN_SHADOW_SIZE for PPC32, as yours only covers the=20
-> SHADOW_SIZE for linear mem while PPC32 one covers the full space.
+> This is with "qemu-system-ppc64 -smp 4 -machine pseries" on QEMU 4.0.0.
 >
-> Christophe
+> I'm not totally sure what's going on here. I'm emulating a pseries, and 
+> using that with qemu's pseries model, and I see that selecting the 
+> pseries forces the selection of 'config PPC_DOORBELL' (twice in the same 
+> section, actually).
+
+Noted.
+
+> Then inside the kernel there appears to be some runtime CPU check for
+> doorbell support.
+
+Not really. The kernel looks at the CPU revision (PVR) and decides that
+it has doorbell support.
+
+> Is this a case in which QEMU is advertising doorbell support that TCG
+> doesn't have? Or is something else happening here?
+
+It's a gap in the emulation I guess. qemu doesn't emulate msgsndp, but
+it really should because that's a supported instruction since Power8.
+
+I suspect msgsndp wasn't implemented for TCG because TCG doesn't support
+more than one thread per core, and you can only send doorbells to other
+threads in the same core, and therefore there is no reason to ever use
+msgsndp.
+
+That's the message Suraj mentioned up thread, eg:
+
+  $ qemu-system-ppc64 -nographic -vga none -M pseries -smp 2,threads=2 -cpu POWER8 -kernel build~/vmlinux
+  qemu-system-ppc64: TCG cannot support more than 1 thread/core on a pseries machine
+
+
+But I guess we've hit another case of a CPU sending itself an IPI, and
+the way the sibling masks are done, CPUs are siblings of themselves, so
+the sibling test passes, eg:
+
+int doorbell_try_core_ipi(int cpu)
+{
+	int this_cpu = get_cpu();
+	int ret = 0;
+
+	if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
+		doorbell_core_ipi(cpu);
+
+
+
+In which case this patch should fix it.
+
+diff --git a/arch/powerpc/kernel/dbell.c b/arch/powerpc/kernel/dbell.c
+index f17ff1200eaa..e45cb9bba193 100644
+--- a/arch/powerpc/kernel/dbell.c
++++ b/arch/powerpc/kernel/dbell.c
+@@ -63,7 +63,7 @@ int doorbell_try_core_ipi(int cpu)
+ 	int this_cpu = get_cpu();
+ 	int ret = 0;
+ 
+-	if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
++	if (cpu != this_cpu && cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
+ 		doorbell_core_ipi(cpu);
+ 		ret = 1;
+ 	}
+
+
+The other option would be we disable CPU_FTR_DBELL if we detect we're
+running under TCG. But I'm not sure we have a particularly clean way to
+detect that.
+
+cheers
