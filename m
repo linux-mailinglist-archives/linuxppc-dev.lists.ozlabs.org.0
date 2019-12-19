@@ -1,72 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65B61258A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 01:37:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dXyd32xDzDqk7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 11:37:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215141258A2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 01:39:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dY0f00ZczDqnM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 11:39:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
- helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="cYi9HYXp"; 
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="Dka6E6Kx"; 
  dkim-atps=neutral
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
- [216.228.121.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dXwH4CyvzDqGN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 11:35:27 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dfac5be0002>; Wed, 18 Dec 2019 16:35:11 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Wed, 18 Dec 2019 16:35:20 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Wed, 18 Dec 2019 16:35:20 -0800
-Received: from [10.2.165.11] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Dec
- 2019 00:35:19 +0000
-Subject: Re: [PATCH v11 04/25] mm: devmap: refactor 1-based refcounting for
- ZONE_DEVICE pages
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-References: <20191216222537.491123-1-jhubbard@nvidia.com>
- <20191216222537.491123-5-jhubbard@nvidia.com>
- <20191218160420.gyt4c45e6zsnxqv6@box>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <ddd08105-f48a-dbe1-7de1-f2fa2c5772a9@nvidia.com>
-Date: Wed, 18 Dec 2019 16:32:28 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dXxh0Cq7zDqjM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 11:36:39 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id l24so2176085pgk.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 16:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5NTtETEykOhr2nCmuKVWtyUmiz45NkjCC1EiRzotiV0=;
+ b=Dka6E6KxQMKWIOq8r+b70xVQGVo4OdLoMXnwm6m0mMIhAJbUreti/BnUsZplcC3I5t
+ 6GAQjfkecTIR6/e4HR3gYnoHqRT2G92zcwNrRuEl+OBpwkq1wQoWTGNOlJhGkDhGvv+W
+ DmQ7nlRQ3ekghRHA1hXbbgQbWCNx+vBJP1blU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5NTtETEykOhr2nCmuKVWtyUmiz45NkjCC1EiRzotiV0=;
+ b=gL3gwq7ANRnvALA7qzDVGQmo/w4hOFJQUBOt4EIuWKK1Ry+PQEaAqwAlTuNeFX9h0O
+ CqZdFxd7+ZC9CmaOXIE8kSouD8dyVpTOlJLj58BnCZ23gRV1Ej9OKYXRy4CmmeRBAdsy
+ mrq8EtqLDZhUESeLvyCbOPDl3twSBcZV+Uek9AMSjqoAFgsewTuvO3ixmiYFOm3aT5LB
+ DID0Et2k68p4CEifuJFldbk3COVOHljPLs43TH0xnc6uHuqLyzNT6fUh/p18E5UxBJTn
+ oYp50aBbD0MwCDqRTwAPCc8v4BV0mJYd0hSaooskDCaRFnPFRL31lq2TrG7zJF/lomly
+ 5yog==
+X-Gm-Message-State: APjAAAWNnWOZ7yOzgIPAKLqthCNPbQKIxF1o+TUR6XcgmMD1OwCTkhsf
+ l4ZblWmmAgY+u95HW6ZfHmuWpg==
+X-Google-Smtp-Source: APXvYqzmq4U/2uhuZHM/lC5xUAdQDDtPlzppqNzyl6j6ILF9v1mdA5FmXeloldbfX3xoXhZz9lR/qg==
+X-Received: by 2002:aa7:93ce:: with SMTP id y14mr6301702pff.185.1576715796122; 
+ Wed, 18 Dec 2019 16:36:36 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-b05d-cbfe-b2ee-de17.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:b05d:cbfe:b2ee:de17])
+ by smtp.gmail.com with ESMTPSA id l1sm4610430pgs.47.2019.12.18.16.36.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Dec 2019 16:36:35 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+ christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
+Subject: [PATCH v4 0/4] KASAN for powerpc64 radix
+Date: Thu, 19 Dec 2019 11:36:26 +1100
+Message-Id: <20191219003630.31288-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191218160420.gyt4c45e6zsnxqv6@box>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576715711; bh=lLxcLcvWuEdaa9mbUu8pEb7NikbQGA+3x199V+Yf2Go=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=cYi9HYXpThVPsCQ2FAhPpBmvg9pzZEnocfVab3p1rbztjUsDI5b7umJJYuIEvZ0PR
- vx+h2sHA10T2/Q1X4aDK6z59gq6N+0cBNEv1SBLGL1VNlncyvmlNdNaO1iWAyTGswr
- udKbzxqm/wjq006CK108fXCeD0IesoZvzh/gx+LNePAFcn6r9jhacWQ3SpCYW8xspg
- AWQc+0t7+YICrLyj0yQoqsCoU6687MNUgeKhf8m6yAmv/OIxmxbjV85i5eQJrONL9B
- rit0zRnR4Y3ZhStASBSUCGicK22P7QWUhCF8hgj/JAlQLXg8wWjGsZLK//Xu0ERwbe
- cFLl9sQIYjnfg==
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,118 +77,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/18/19 8:04 AM, Kirill A. Shutemov wrote:
-> On Mon, Dec 16, 2019 at 02:25:16PM -0800, John Hubbard wrote:
->> An upcoming patch changes and complicates the refcounting and
->> especially the "put page" aspects of it. In order to keep
->> everything clean, refactor the devmap page release routines:
->>
->> * Rename put_devmap_managed_page() to page_is_devmap_managed(),
->>    and limit the functionality to "read only": return a bool,
->>    with no side effects.
->>
->> * Add a new routine, put_devmap_managed_page(), to handle checking
->>    what kind of page it is, and what kind of refcount handling it
->>    requires.
->>
->> * Rename __put_devmap_managed_page() to free_devmap_managed_page(),
->>    and limit the functionality to unconditionally freeing a devmap
->>    page.
-> 
-> What the reason to separate put_devmap_managed_page() from
-> free_devmap_managed_page() if free_devmap_managed_page() has exacly one
-> caller? Is it preparation for the next patches?
+Building on the work of Christophe, Aneesh and Balbir, I've ported
+KASAN to 64-bit Book3S kernels running on the Radix MMU.
 
+This provides full inline instrumentation on radix, but does require
+that you be able to specify the amount of physically contiguous memory
+on the system at compile time. More details in patch 4.
 
-Yes. A later patch, #23, adds another caller: __unpin_devmap_managed_user_page().
+v4: More cleanups, split renaming out, clarify bits and bobs.
+    Drop the stack walk disablement, that isn't needed. No other
+    functional change.
 
-...
->> @@ -971,7 +971,14 @@ static inline bool put_devmap_managed_page(struct page *page)
->>   	return false;
->>   }
->>   
->> +bool put_devmap_managed_page(struct page *page);
->> +
->>   #else /* CONFIG_DEV_PAGEMAP_OPS */
->> +static inline bool page_is_devmap_managed(struct page *page)
->> +{
->> +	return false;
->> +}
->> +
->>   static inline bool put_devmap_managed_page(struct page *page)
->>   {
->>   	return false;
->> @@ -1028,8 +1035,10 @@ static inline void put_page(struct page *page)
->>   	 * need to inform the device driver through callback. See
->>   	 * include/linux/memremap.h and HMM for details.
->>   	 */
->> -	if (put_devmap_managed_page(page))
->> +	if (page_is_devmap_managed(page)) {
->> +		put_devmap_managed_page(page);
-> 
-> put_devmap_managed_page() has yet another page_is_devmap_managed() check
-> inside. It looks strange.
-> 
+v3: Reduce the overly ambitious scope of the MAX_PTRS change.
+    Document more things, including around why some of the
+    restrictions apply.
+    Clean up the code more, thanks Christophe.
 
-Good point, it's an extra unnecessary check. So to clean it up, I'll note
-that the "if" check is required here in put_page(), in order to stay out of
-non-inlined function calls in the hot path (put_page()). So I'll do the
-following:
+v2: The big change is the introduction of tree-wide(ish)
+    MAX_PTRS_PER_{PTE,PMD,PUD} macros in preference to the previous
+    approach, which was for the arch to override the page table array
+    definitions with their own. (And I squashed the annoying
+    intermittent crash!)
 
-* Leave the above code as it is here
+    Apart from that there's just a lot of cleanup. Christophe, I've
+    addressed most of what you asked for and I will reply to your v1
+    emails to clarify what remains unchanged.
 
-* Simplify put_devmap_managed_page(), it was trying to do two separate things,
-   and those two things have different requirements. So change it to a void
-   function, with a WARN_ON_ONCE to assert that page_is_devmap_managed() is true,
+Daniel Axtens (4):
+  kasan: define and use MAX_PTRS_PER_* for early shadow tables
+  kasan: Document support on 32-bit powerpc
+  powerpc/mm/kasan: rename kasan_init_32.c to init_32.c
+  powerpc: Book3S 64-bit "heavyweight" KASAN support
 
-* And change the other caller (release_pages()) to do that check.
+ Documentation/dev-tools/kasan.rst             |   7 +-
+ Documentation/powerpc/kasan.txt               | 122 ++++++++++++++++++
+ arch/powerpc/Kconfig                          |   2 +
+ arch/powerpc/Kconfig.debug                    |  21 +++
+ arch/powerpc/Makefile                         |  11 ++
+ arch/powerpc/include/asm/book3s/64/hash.h     |   4 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |   7 +
+ arch/powerpc/include/asm/book3s/64/radix.h    |   5 +
+ arch/powerpc/include/asm/kasan.h              |  21 ++-
+ arch/powerpc/kernel/prom.c                    |  61 ++++++++-
+ arch/powerpc/mm/kasan/Makefile                |   3 +-
+ .../mm/kasan/{kasan_init_32.c => init_32.c}   |   0
+ arch/powerpc/mm/kasan/init_book3s_64.c        |  70 ++++++++++
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ include/linux/kasan.h                         |  18 ++-
+ mm/kasan/init.c                               |   6 +-
+ 16 files changed, 346 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/powerpc/kasan.txt
+ rename arch/powerpc/mm/kasan/{kasan_init_32.c => init_32.c} (100%)
+ create mode 100644 arch/powerpc/mm/kasan/init_book3s_64.c
 
-...
->> @@ -1102,3 +1102,27 @@ void __init swap_setup(void)
->>   	 * _really_ don't want to cluster much more
->>   	 */
->>   }
->> +
->> +#ifdef CONFIG_DEV_PAGEMAP_OPS
->> +bool put_devmap_managed_page(struct page *page)
->> +{
->> +	bool is_devmap = page_is_devmap_managed(page);
->> +
->> +	if (is_devmap) {
-> 
-> Reversing the condition would save you an indentation level.
-
-Yes. Done.
-
-I'll also git-reply with an updated patch so you can see what it looks like.
-
-
-thanks,
 -- 
-John Hubbard
-NVIDIA
+2.20.1
+
