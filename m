@@ -2,85 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699DA1270B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 23:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BD9127121
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 00:03:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47f68N5wPgzDqv6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 09:32:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47f6qs1rdHzDqlh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 10:03:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
+ helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="ax5pfVwR"; 
+ dkim-atps=neutral
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
+ [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47f66j1ZfKzDqsZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 09:31:24 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBJMRVQW020776; Thu, 19 Dec 2019 17:31:14 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x0g28v223-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 17:31:14 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBJMRerJ021356;
- Thu, 19 Dec 2019 17:31:13 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x0g28v21r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 17:31:13 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBJMV6BW007527;
- Thu, 19 Dec 2019 22:31:12 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma03dal.us.ibm.com with ESMTP id 2wvqc7ergj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 22:31:12 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBJMVCka49217852
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Dec 2019 22:31:12 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 256DBAC05F;
- Thu, 19 Dec 2019 22:31:12 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E20FAC060;
- Thu, 19 Dec 2019 22:31:11 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 19 Dec 2019 22:31:11 +0000 (GMT)
-Subject: Re: [PATCH 04/14] powerpc/vas: Setup IRQ mapping and register port
- for each window
-From: Haren Myneni <haren@linux.ibm.com>
-To: "Oliver O'Halloran" <oohall@gmail.com>
-In-Reply-To: <1576710781.12797.10.camel@hbabu-laptop>
-References: <1574816731.13250.9.camel@hbabu-laptop>
- <CAOSf1CEvZ32xC71siuyfUQEcQ4yLoDtj2jGoc3jrmsHc0jD+Vw@mail.gmail.com>
- <1576710781.12797.10.camel@hbabu-laptop>
-Content-Type: text/plain; charset="UTF-8"
-Date: Thu, 19 Dec 2019 14:31:06 -0800
-Message-ID: <1576794666.12797.50.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47f6nn0MVKzDqlh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 10:01:48 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dfc01460000>; Thu, 19 Dec 2019 15:01:26 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Thu, 19 Dec 2019 15:01:36 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Thu, 19 Dec 2019 15:01:36 -0800
+Received: from [10.2.165.11] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Dec
+ 2019 23:01:32 +0000
+Subject: Re: [PATCH v11 00/25] mm/gup: track dma-pinned pages: FOLL_PIN
+To: Jason Gunthorpe <jgg@ziepe.ca>
+References: <20191216222537.491123-1-jhubbard@nvidia.com>
+ <20191219132607.GA410823@unreal>
+ <a4849322-8e17-119e-a664-80d9f95d850b@nvidia.com>
+ <20191219210743.GN17227@ziepe.ca>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <f10b2a18-a109-d87d-f156-2e5941cbf4a0@nvidia.com>
+Date: Thu, 19 Dec 2019 14:58:43 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
+MIME-Version: 1.0
+In-Reply-To: <20191219210743.GN17227@ziepe.ca>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-19_07:2019-12-17,2019-12-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=2 impostorscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912190168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1576796486; bh=tiz2hjGylLUwQicEfM7bbVznNfOI7NYEds0c0vA1QMM=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=ax5pfVwRTOuRMGRTTENUug1V5pL/RA0R/ro68Ef6qbAC2dMIpaMVof5lAjrJh/YsQ
+ tzguzyOG/LzutEbtWDwyfHV9sKc8B+QE/oAsfQggRxnppIAZTNjdwjoShd1hqL3Scp
+ PwDEgdunQ5+3RZaDnDjRY1Ma0ZpDqQcVz1QAXQFHukq22+SRzGz1hOWdS1Kam2nyY2
+ CDT0AZ+Yyg+ZRHDTJHnr4JvmQTB2CGF09WlCJB69OrCNdaPzyZjzlP0CWvWnN5wMNt
+ lrxupzD+I8Xm9/TBpPiZ2SZw5etOEm+wZ4cFWC8o/KBZNRn3emLZ8rxxX3WRl4ZX7o
+ 4lpXlR7HRSRdg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,245 +78,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Device Tree <devicetree@vger.kernel.org>,
- Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Haren Myneni <haren@linux.vnet.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Maor Gottlieb <maorg@mellanox.com>, Leon Romanovsky <leon@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex
+ Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-12-18 at 15:13 -0800, Haren Myneni wrote:
-> On Wed, 2019-12-18 at 18:18 +1100, Oliver O'Halloran wrote:
-> > On Wed, Nov 27, 2019 at 12:07 PM Haren Myneni <haren@linux.vnet.ibm.com> wrote:
-> > >
-> > > *snip*
-> > >
-> > > @@ -36,7 +62,18 @@ static int init_vas_instance(struct platform_device *pdev)
-> > >                 return -ENODEV;
-> > >         }
-> > >
-> > > -       if (pdev->num_resources != 4) {
-> > > +       rc = of_property_read_u64(dn, "ibm,vas-port", &port);
-> > > +       if (rc) {
-> > > +               pr_err("No ibm,vas-port property for %s?\n", pdev->name);
-> > > +               /* No interrupts property */
-> > > +               nresources = 4;
-> > > +       }
-> > > +
-> > > +       /*
-> > > +        * interrupts property is available with 'ibm,vas-port' property.
-> > > +        * 4 Resources and 1 IRQ if interrupts property is available.
-> > > +        */
-> > > +       if (pdev->num_resources != nresources) {
-> > >                 pr_err("Unexpected DT configuration for [%s, %d]\n",
-> > >                                 pdev->name, vasid);
-> > >                 return -ENODEV;
-> > 
-> > Right, so adding the IRQ in firmware will break the VAS driver in
-> > existing kernels since it changes the resource count. This is IMO a
-> > bug in the VAS driver that you should fix, but it does mean we need to
-> > think twice about having firmware assign an interrupt at boot.
+On 12/19/19 1:07 PM, Jason Gunthorpe wrote:
+...
+>> 3. It would be nice if I could reproduce this. I have a two-node mlx5 Infiniband
+>> test setup, but I have done only the tiniest bit of user space IB coding, so
+>> if you have any test programs that aren't too hard to deal with that could
+>> possibly hit this, or be tweaked to hit it, I'd be grateful. Keeping in mind
+>> that I'm not an advanced IB programmer. At all. :)
 > 
-> Correct, Hence added vas-user-space nvram switch in skiboot.  
+> Clone this:
 > 
-> > 
-> > I had a closer look at this series and I'm not convinced that any
-> > firmware changes are actually required either. We already have OPAL
-> > calls for allocating an hwirq for the kernel to use and for getting
-> > the IRQ's XIVE trigger port (see pnv_ocxl_alloc_xive_irq() for an
-> > example). Why not use those here too? Doing so would allow us to
-> > assign interrupts to individual windows too which might be useful for
-> > the windows used by the kernel.
+> https://github.com/linux-rdma/rdma-core.git
 > 
-> Thanks for the pointer. like using pnv_ocxl_alloc_xive_irq(), we can
-> disregard FW change. BTW, VAS fault handling is needed only for user
-> space VAS windows. 
+> Install all the required deps to build it (notably cython), see the README.md
 > 
->  int vas_alloc_xive_irq(u32 chipid, u32 *irq, u64 *trigger_addr)
-> {
->         __be64 flags, trigger_page;
->         u32 hwirq;
->         s64 rc;
+> $ ./build.sh
+> $ build/bin/run_tests.py
 > 
->         hwirq = opal_xive_allocate_irq_raw(chipid);
->         if (hwirq < 0)
->                 return -ENOENT;
-> 
->         rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page,
-> NULL,
->                                 NULL);
->         if (rc || !trigger_page) {
->                 xive_native_free_irq(hwirq);
->                 return -ENOENT;
->         }
-> 
->         *irq = hwirq;
->         *trigger_addr = be64_to_cpu(trigger_page);
->         return 0;
-> }
-> 
-> We can have common function for VAS and cxl except per chip IRQ
-> allocation is needed for each VAS instance. I will post patch-set with
-> this change.
+> If you get things that far I think Leon can get a reproduction for you
 > 
 
-power9 will have only XIVE interrupt controller including on open-power
-systems. Correct?
+Cool, it's up and running (1 failure, 3 skipped, out of 67 tests).
 
-VAS need per chip IRQ allocation. The current interfaces (ex:
-xive_native_alloc_irq(void)) allocates IRQ on any chip
-(OPAL_XIVE_ANY_CHIP)
-So to use these interfaces for VAS, any concerns with the following
-patch:
-Changes: passing chip_id to xive_native_alloc_irq() and define
-xive_native_alloc_get_irq_info() in xive/native.c which can be used in
-ocxl and VAS.
+This is a great test suite to have running, I'll add it to my scripts. Here's the
+full output in case the failure or skip cases are a problem:
 
-diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
-index 24cdf97..b310062 100644
---- a/arch/powerpc/include/asm/xive.h
-+++ b/arch/powerpc/include/asm/xive.h
-@@ -108,7 +108,7 @@ struct xive_q {
- extern int xive_native_populate_irq_data(u32 hw_irq,
- 					 struct xive_irq_data *data);
- extern void xive_cleanup_irq_data(struct xive_irq_data *xd);
--extern u32 xive_native_alloc_irq(void);
-+extern u32 xive_native_alloc_irq(u32 chip_id);
- extern void xive_native_free_irq(u32 irq);
- extern int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
- 
-@@ -137,7 +137,8 @@ extern int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
- 				       u32 qindex);
- extern int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
- extern bool xive_native_has_queue_state_support(void);
--
-+extern int xive_native_alloc_get_irq_info(u32 chip_id, u32 *irq,
-+					u64 *trigger_addr);
- #else
- 
- static inline bool xive_enabled(void) { return false; }
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index 66858b7..59009e1 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -1299,7 +1299,7 @@ int kvmppc_xive_connect_vcpu(struct kvm_device *dev,
- 	vcpu->arch.xive_cam_word = cpu_to_be32(xc->vp_cam | TM_QW1W2_VO);
- 
- 	/* Allocate IPI */
--	xc->vp_ipi = xive_native_alloc_irq();
-+	xc->vp_ipi = xive_native_alloc_irq(OPAL_XIVE_ANY_CHIP);
- 	if (!xc->vp_ipi) {
- 		pr_err("Failed to allocate xive irq for VCPU IPI\n");
- 		r = -EIO;
-@@ -1711,7 +1711,7 @@ static int xive_set_source(struct kvmppc_xive *xive, long irq, u64 addr)
- 	 * one and get the corresponding data
- 	 */
- 	if (!state->ipi_number) {
--		state->ipi_number = xive_native_alloc_irq();
-+		state->ipi_number = xive_native_alloc_irq(OPAL_XIVE_ANY_CHIP);
- 		if (state->ipi_number == 0) {
- 			pr_devel("Failed to allocate IPI !\n");
- 			return -ENOMEM;
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-index d83adb1..0adb228 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -359,7 +359,7 @@ static int kvmppc_xive_native_set_source(struct kvmppc_xive *xive, long irq,
- 	 * one and get the corresponding data
- 	 */
- 	if (!state->ipi_number) {
--		state->ipi_number = xive_native_alloc_irq();
-+		state->ipi_number = xive_native_alloc_irq(OPAL_XIVE_ANY_CHIP);
- 		if (state->ipi_number == 0) {
- 			pr_err("Failed to allocate IRQ !\n");
- 			rc = -ENXIO;
-diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-index 8c65aac..fb8f99a 100644
---- a/arch/powerpc/platforms/powernv/ocxl.c
-+++ b/arch/powerpc/platforms/powernv/ocxl.c
-@@ -487,24 +487,8 @@ int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
- 
- int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr)
- {
--	__be64 flags, trigger_page;
--	s64 rc;
--	u32 hwirq;
--
--	hwirq = xive_native_alloc_irq();
--	if (!hwirq)
--		return -ENOENT;
--
--	rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page, NULL,
--				NULL);
--	if (rc || !trigger_page) {
--		xive_native_free_irq(hwirq);
--		return -ENOENT;
--	}
--	*irq = hwirq;
--	*trigger_addr = be64_to_cpu(trigger_page);
--	return 0;
--
-+	return xive_native_alloc_get_irq_info(OPAL_XIVE_ANY_CHIP, irq,
-+						trigger_addr);
- }
- EXPORT_SYMBOL_GPL(pnv_ocxl_alloc_xive_irq);
- 
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 0ff6b73..c450838 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -279,12 +279,12 @@ static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
- }
- #endif /* CONFIG_SMP */
- 
--u32 xive_native_alloc_irq(void)
-+u32 xive_native_alloc_irq(u32 chip_id)
- {
- 	s64 rc;
- 
- 	for (;;) {
--		rc = opal_xive_allocate_irq(OPAL_XIVE_ANY_CHIP);
-+		rc = opal_xive_allocate_irq(chip_id);
- 		if (rc != OPAL_BUSY)
- 			break;
- 		msleep(OPAL_BUSY_DELAY_MS);
-@@ -295,6 +295,29 @@ u32 xive_native_alloc_irq(void)
- }
- EXPORT_SYMBOL_GPL(xive_native_alloc_irq);
- 
-+int xive_native_alloc_get_irq_info(u32 chip_id, u32 *irq, u64 *trigger_addr)
-+{
-+	__be64 flags, trigger_page;
-+	u32 hwirq;
-+	s64 rc;
-+
-+	hwirq = xive_native_alloc_irq(chip_id);
-+	if (!hwirq)
-+		return -ENOENT;
-+
-+	rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page, NULL,
-+				NULL);
-+	if (rc || !trigger_page) {
-+		xive_native_free_irq(hwirq);
-+		return -ENOENT;
-+	}
-+	*irq = hwirq;
-+	*trigger_addr = be64_to_cpu(trigger_page);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(xive_native_alloc_get_irq_info);
-+
- void xive_native_free_irq(u32 irq)
- {
- 	for (;;) {
+$ sudo ./build/bin/run_tests.py --verbose
+
+test_create_ah (tests.test_addr.AHTest) ... ok
+test_create_ah_roce (tests.test_addr.AHTest) ... skipped "Can't run RoCE tests on IB link layer"
+test_destroy_ah (tests.test_addr.AHTest) ... ok
+test_create_comp_channel (tests.test_cq.CCTest) ... ok
+test_destroy_comp_channel (tests.test_cq.CCTest) ... ok
+test_create_cq_ex (tests.test_cq.CQEXTest) ... ok
+test_create_cq_ex_bad_flow (tests.test_cq.CQEXTest) ... ok
+test_destroy_cq_ex (tests.test_cq.CQEXTest) ... ok
+test_create_cq (tests.test_cq.CQTest) ... ok
+test_create_cq_bad_flow (tests.test_cq.CQTest) ... ok
+test_destroy_cq (tests.test_cq.CQTest) ... ok
+test_rc_traffic_cq_ex (tests.test_cqex.CqExTestCase) ... ok
+test_ud_traffic_cq_ex (tests.test_cqex.CqExTestCase) ... ok
+test_xrc_traffic_cq_ex (tests.test_cqex.CqExTestCase) ... ok
+test_create_dm (tests.test_device.DMTest) ... ok
+test_create_dm_bad_flow (tests.test_device.DMTest) ... ok
+test_destroy_dm (tests.test_device.DMTest) ... ok
+test_destroy_dm_bad_flow (tests.test_device.DMTest) ... ok
+test_dm_read (tests.test_device.DMTest) ... ok
+test_dm_write (tests.test_device.DMTest) ... ok
+test_dm_write_bad_flow (tests.test_device.DMTest) ... ok
+test_dev_list (tests.test_device.DeviceTest) ... ok
+test_open_dev (tests.test_device.DeviceTest) ... ok
+test_query_device (tests.test_device.DeviceTest) ... ok
+test_query_device_ex (tests.test_device.DeviceTest) ... ok
+test_query_gid (tests.test_device.DeviceTest) ... ok
+test_query_port (tests.test_device.DeviceTest) ... FAIL
+test_query_port_bad_flow (tests.test_device.DeviceTest) ... ok
+test_create_dm_mr (tests.test_mr.DMMRTest) ... ok
+test_destroy_dm_mr (tests.test_mr.DMMRTest) ... ok
+test_buffer (tests.test_mr.MRTest) ... ok
+test_dereg_mr (tests.test_mr.MRTest) ... ok
+test_dereg_mr_twice (tests.test_mr.MRTest) ... ok
+test_lkey (tests.test_mr.MRTest) ... ok
+test_read (tests.test_mr.MRTest) ... ok
+test_reg_mr (tests.test_mr.MRTest) ... ok
+test_reg_mr_bad_flags (tests.test_mr.MRTest) ... ok
+test_reg_mr_bad_flow (tests.test_mr.MRTest) ... ok
+test_rkey (tests.test_mr.MRTest) ... ok
+test_write (tests.test_mr.MRTest) ... ok
+test_dereg_mw_type1 (tests.test_mr.MWTest) ... ok
+test_dereg_mw_type2 (tests.test_mr.MWTest) ... ok
+test_reg_mw_type1 (tests.test_mr.MWTest) ... ok
+test_reg_mw_type2 (tests.test_mr.MWTest) ... ok
+test_reg_mw_wrong_type (tests.test_mr.MWTest) ... ok
+test_odp_rc_traffic (tests.test_odp.OdpTestCase) ... ok
+test_odp_ud_traffic (tests.test_odp.OdpTestCase) ... skipped 'ODP is not supported - ODP recv not supported'
+test_odp_xrc_traffic (tests.test_odp.OdpTestCase) ... ok
+test_default_allocators (tests.test_parent_domain.ParentDomainTestCase) ... ok
+test_mem_align_allocators (tests.test_parent_domain.ParentDomainTestCase) ... ok
+test_without_allocators (tests.test_parent_domain.ParentDomainTestCase) ... ok
+test_alloc_pd (tests.test_pd.PDTest) ... ok
+test_create_pd_none_ctx (tests.test_pd.PDTest) ... ok
+test_dealloc_pd (tests.test_pd.PDTest) ... ok
+test_destroy_pd_twice (tests.test_pd.PDTest) ... ok
+test_multiple_pd_creation (tests.test_pd.PDTest) ... ok
+test_create_qp_ex_no_attr (tests.test_qp.QPTest) ... ok
+test_create_qp_ex_no_attr_connected (tests.test_qp.QPTest) ... ok
+test_create_qp_ex_with_attr (tests.test_qp.QPTest) ... ok
+test_create_qp_ex_with_attr_connected (tests.test_qp.QPTest) ... ok
+test_create_qp_no_attr (tests.test_qp.QPTest) ... ok
+test_create_qp_no_attr_connected (tests.test_qp.QPTest) ... ok
+test_create_qp_with_attr (tests.test_qp.QPTest) ... ok
+test_create_qp_with_attr_connected (tests.test_qp.QPTest) ... ok
+test_modify_qp (tests.test_qp.QPTest) ... ok
+test_query_qp (tests.test_qp.QPTest) ... ok
+test_rdmacm_sync_traffic (tests.test_rdmacm.CMTestCase) ... skipped 'No devices with net interface'
+
+======================================================================
+FAIL: test_query_port (tests.test_device.DeviceTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+   File "/kernel_work/rdma-core/tests/test_device.py", line 129, in test_query_port
+     self.verify_port_attr(port_attr)
+   File "/kernel_work/rdma-core/tests/test_device.py", line 113, in verify_port_attr
+     assert 'Invalid' not in d.speed_to_str(attr.active_speed)
+AssertionError
+
+----------------------------------------------------------------------
+Ran 67 tests in 10.058s
+
+FAILED (failures=1, skipped=3)
 
 
-
-
-
-
-
+thanks,
+-- 
+John Hubbard
+NVIDIA
