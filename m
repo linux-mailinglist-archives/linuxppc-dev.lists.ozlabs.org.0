@@ -2,40 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA10125A55
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 05:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBD5125A7D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 06:19:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dfB21qTJzDqmd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 15:32:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dgDH3wJnzDqmF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 16:19:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=vz7s=2j=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=chenzhou10@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47df8F1BNHzDqkb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 15:31:08 +1100 (AEDT)
-Received: from rorschach.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8A11B2082E;
- Thu, 19 Dec 2019 04:31:04 +0000 (UTC)
-Date: Wed, 18 Dec 2019 23:31:01 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: "ftrace: Rework event_create_dir()" triggers boot error messages
-Message-ID: <20191218233101.73044ce3@rorschach.local.home>
-In-Reply-To: <0FA8C6E3-D9F5-416D-A1B0-5E4CD583A101@lca.pw>
-References: <0FA8C6E3-D9F5-416D-A1B0-5E4CD583A101@lca.pw>
-X-Mailer: Claws Mail 3.17.4git76 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dYwL45Y8zDqmF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 12:20:31 +1100 (AEDT)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 4843F5B79693D50AF8D0;
+ Thu, 19 Dec 2019 09:20:23 +0800 (CST)
+Received: from [127.0.0.1] (10.177.131.64) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Thu, 19 Dec 2019
+ 09:20:20 +0800
+Subject: Re: [PATCH] powerpc/setup_64: use DEFINE_DEBUGFS_ATTRIBUTE to define
+ fops_rfi_flush
+To: Michael Ellerman <mpe@ellerman.id.au>, <benh@kernel.crashing.org>,
+ <paulus@samba.org>
+References: <20191218020842.186446-1-chenzhou10@huawei.com>
+ <8736dhoq0j.fsf@mpe.ellerman.id.au>
+From: Chen Zhou <chenzhou10@huawei.com>
+Message-ID: <69722925-d0ab-ab7e-022f-c901ead3989a@huawei.com>
+Date: Thu, 19 Dec 2019 09:20:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <8736dhoq0j.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.131.64]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Thu, 19 Dec 2019 16:17:52 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,111 +54,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Alexei Starovoitov <ast@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux@googlegroups.com, Catalin Marinas <catalin.marinas@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Julia Lawall <Julia.Lawall@lip6.fr>, Nicolai
+ Stange <nicstange@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 18 Dec 2019 22:58:23 -0500
-Qian Cai <cai@lca.pw> wrote:
+Hi Michael,
 
-> The linux-next commit "ftrace: Rework event_create_dir()=E2=80=9D [1] tri=
-ggers boot warnings
-> for Clang-build (Clang version 8.0.1) kernels (reproduced on both arm64 a=
-nd powerpc).
-> Reverted it (with trivial conflict fixes) on the top of today=E2=80=99s l=
-inux-next fixed the issue.
->=20
-> configs:
-> https://raw.githubusercontent.com/cailca/linux-mm/master/arm64.config
-> https://raw.githubusercontent.com/cailca/linux-mm/master/powerpc.config
->=20
-> [1] https://lore.kernel.org/lkml/20191111132458.342979914@infradead.org/
->=20
-> [  115.799327][    T1] Registered efivars operations
-> [  115.849770][    T1] clocksource: Switched to clocksource arch_sys_coun=
-ter
-> [  115.901145][    T1] Could not initialize trace point events/sys_enter_=
-rt_sigreturn
-> [  115.908854][    T1] Could not create directory for event sys_enter_rt_=
-sigreturn
-> [  115.998949][    T1] Could not initialize trace point events/sys_enter_=
-restart_syscall
-> [  116.006802][    T1] Could not create directory for event sys_enter_res=
-tart_syscall
-> [  116.062702][    T1] Could not initialize trace point events/sys_enter_=
-getpid
-> [  116.069828][    T1] Could not create directory for event sys_enter_get=
-pid
-> [  116.078058][    T1] Could not initialize trace point events/sys_enter_=
-gettid
-> [  116.085181][    T1] Could not create directory for event sys_enter_get=
-tid
-> [  116.093405][    T1] Could not initialize trace point events/sys_enter_=
-getppid
-> [  116.100612][    T1] Could not create directory for event sys_enter_get=
-ppid
-> [  116.108989][    T1] Could not initialize trace point events/sys_enter_=
-getuid
-> [  116.116058][    T1] Could not create directory for event sys_enter_get=
-uid
-> [  116.124250][    T1] Could not initialize trace point events/sys_enter_=
-geteuid
-> [  116.131457][    T1] Could not create directory for event sys_enter_get=
-euid
-> [  116.139840][    T1] Could not initialize trace point events/sys_enter_=
-getgid
-> [  116.146908][    T1] Could not create directory for event sys_enter_get=
-gid
-> [  116.155163][    T1] Could not initialize trace point events/sys_enter_=
-getegid
-> [  116.162370][    T1] Could not create directory for event sys_enter_get=
-egid
-> [  116.178015][    T1] Could not initialize trace point events/sys_enter_=
-setsid
-> [  116.185138][    T1] Could not create directory for event sys_enter_set=
-sid
-> [  116.269307][    T1] Could not initialize trace point events/sys_enter_=
-sched_yield
-> [  116.276811][    T1] Could not create directory for event sys_enter_sch=
-ed_yield
-> [  116.527652][    T1] Could not initialize trace point events/sys_enter_=
-munlockall
-> [  116.535126][    T1] Could not create directory for event sys_enter_mun=
-lockall
-> [  116.622096][    T1] Could not initialize trace point events/sys_enter_=
-vhangup
-> [  116.629307][    T1] Could not create directory for event sys_enter_vha=
-ngup
-> [  116.783867][    T1] Could not initialize trace point events/sys_enter_=
-sync
-> [  116.790819][    T1] Could not create directory for event sys_enter_sync
-> [  117.723402][    T1] pnp: PnP ACPI init
+On 2019/12/18 19:02, Michael Ellerman wrote:
+> Chen Zhou <chenzhou10@huawei.com> writes:
+>> Use DEFINE_DEBUGFS_ATTRIBUTE rather than DEFINE_SIMPLE_ATTRIBUTE for
+>> debugfs files.
+>>
+>> Semantic patch information:
+>> Rationale: DEFINE_SIMPLE_ATTRIBUTE + debugfs_create_file()
+>> imposes some significant overhead as compared to
+>> DEFINE_DEBUGFS_ATTRIBUTE + debugfs_create_file_unsafe().
+> 
+> I know you didn't write this text, but these change logs are not great.
+> It doesn't really explain why you're doing it. And it is alarming that
+> you're converting *to* a function with "unsafe" in the name.
+> 
+> The commit that added the script:
+> 
+>   5103068eaca2 ("debugfs, coccinelle: check for obsolete DEFINE_SIMPLE_ATTRIBUTE() usage")
+> 
+> Has a bit more explanation.
+> 
+> Maybe something like this:
+> 
+>   In order to protect against file removal races, debugfs files created via
+>   debugfs_create_file() are wrapped by a struct file_operations at their
+>   opening.
+>   
+>   If the original struct file_operations is known to be safe against removal
+>   races already, the proxy creation may be bypassed by creating the files
+>   using DEFINE_DEBUGFS_ATTRIBUTE() and debugfs_create_file_unsafe().
+> 
+> 
+> The part that's not explained is why this file is "known to be safe
+> against removal races already"?
+> 
+> It also seems this conversion will make the file no longer seekable,
+> because DEFINE_SIMPLE_ATTRIBUTE() uses generic_file_llseek() whereas
+> DEFINE_DEBUGFS_ATTRIBUTE() uses no_llseek.
+> 
+> That is probably fine, but should be mentioned.
 
-I noticed that all of the above have zero parameters. Does the
-following patch fix it?
+Thanks for your explanation. This part indeed should be mentioned.
 
-(note, I prefer "ret" and "i" on different lines anyway)
+Chen Zhou
 
--- Steve
+> 
+> cheers
+> 
+>> Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+>> ---
+>>  arch/powerpc/kernel/setup_64.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+>> index 6104917..4b9fbb2 100644
+>> --- a/arch/powerpc/kernel/setup_64.c
+>> +++ b/arch/powerpc/kernel/setup_64.c
+>> @@ -956,11 +956,11 @@ static int rfi_flush_get(void *data, u64 *val)
+>>  	return 0;
+>>  }
+>>  
+>> -DEFINE_SIMPLE_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
+>> +DEFINE_DEBUGFS_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
+>>  
+>>  static __init int rfi_flush_debugfs_init(void)
+>>  {
+>> -	debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
+>> +	debugfs_create_file_unsafe("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
+>>  	return 0;
+>>  }
+>>  device_initcall(rfi_flush_debugfs_init);
+>> -- 
+>> 2.7.4
+> 
+> .
+> 
 
-diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
-index 53935259f701..abb70c71fe60 100644
---- a/kernel/trace/trace_syscalls.c
-+++ b/kernel/trace/trace_syscalls.c
-@@ -269,7 +269,8 @@ static int __init syscall_enter_define_fields(struct tr=
-ace_event_call *call)
- 	struct syscall_trace_enter trace;
- 	struct syscall_metadata *meta =3D call->data;
- 	int offset =3D offsetof(typeof(trace), args);
--	int ret, i;
-+	int ret =3D 0;
-+	int i;
-=20
- 	for (i =3D 0; i < meta->nb_args; i++) {
- 		ret =3D trace_define_field(call, meta->types[i],
