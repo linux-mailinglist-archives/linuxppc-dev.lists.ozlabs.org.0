@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927BC125BEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 08:13:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253AC125BC9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 07:59:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47djRp2YmlzDqTF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 17:59:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47djlz6hmMzDqpk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 18:13:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,67 +16,52 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="hJIh69rg"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="u4I7h1uR"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47djP73tbqzDqnG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 17:57:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47djjl3PX8zDqkW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 18:11:55 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47djP031Kbz9v02n;
- Thu, 19 Dec 2019 07:57:24 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47djjg3K1Sz9tyhW;
+ Thu, 19 Dec 2019 08:11:51 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=hJIh69rg; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=u4I7h1uR; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 4zsNDiTYkOWZ; Thu, 19 Dec 2019 07:57:24 +0100 (CET)
+ with ESMTP id 7VZjfWAPfeb4; Thu, 19 Dec 2019 08:11:51 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47djP01xGSz9v02k;
- Thu, 19 Dec 2019 07:57:24 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47djjg1p3wz9twth;
+ Thu, 19 Dec 2019 08:11:51 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1576738644; bh=MBZphaLvN7Y7xmwStybWkMj7P7KceZL2/izi15FLe2g=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=hJIh69rgLLxnthcBrxF/1T3c0JibNrCX6uPNuvFpD9JKNNTFiQ78GrSzXnDytU/K0
- /7Mg5YCcJule+LCPv+0KhJr3JKa9QA/Lg0A7glx6nveEy6UMuPgb99JBWJyfvyZxoI
- Ltss9EiGr/yr4PRRdkd7lg7xM3qM03AlU5gRdXlo=
+ t=1576739511; bh=XwXA80UQsPc0SJUtGP/zhGnRhIf3dcllhjsBg4hphSA=;
+ h=From:Subject:To:Cc:Date:From;
+ b=u4I7h1uRH81OuECUC1gwnuaBdxB/LCiAWuTO+T1QumbXk/wnmwbYed+w94V129boY
+ ET+FXPUKl1tvnkmPzXpf7/z/hpDntYvCfLmLYE03qOAyL8XpmQsZ1IMhSI+Wkkoczo
+ DqgkVeawIn6MFShVyWuaJtmq4e7M5qR0/uVTUzG0=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 24BAF8B784;
- Thu, 19 Dec 2019 07:57:25 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 281D88B784;
+ Thu, 19 Dec 2019 08:11:52 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1Y6LUm90Zee9; Thu, 19 Dec 2019 07:57:25 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B24F8B756;
- Thu, 19 Dec 2019 07:57:24 +0100 (CET)
-Subject: Re: [PATCH v4 2/2] powerpc/irq: inline call_do_irq() and
- call_do_softirq()
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Segher Boessenkool <segher@kernel.crashing.org>
-References: <20191121101552.GR16031@gate.crashing.org>
- <87y2w49rgo.fsf@mpe.ellerman.id.au> <20191125142556.GU9491@gate.crashing.org>
- <5fdb1c92-8bf4-01ca-f81c-214870c33be3@c-s.fr>
- <20191127145958.GG9491@gate.crashing.org>
- <2072e066-1ffb-867e-60ec-04a6bb9075c1@c-s.fr>
- <20191129184658.GR9491@gate.crashing.org>
- <ebc67964-e5a9-acd0-0011-61ba23692f7e@c-s.fr>
- <20191206205953.GQ3152@gate.crashing.org>
- <2a22feca-d6d6-6cb0-6c76-035234fa8742@c-s.fr>
- <20191207174057.GY3152@gate.crashing.org> <878snlrcrs.fsf@mpe.ellerman.id.au>
+ with ESMTP id S2CVWRUXIKtt; Thu, 19 Dec 2019 08:11:52 +0100 (CET)
+Received: from po16098vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D34258B756;
+ Thu, 19 Dec 2019 08:11:51 +0100 (CET)
+Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 86D29637A1; Thu, 19 Dec 2019 07:11:51 +0000 (UTC)
+Message-Id: <1fd4faf553b154d7e7b73bfe33b527e4f3cbaf5a.1576739492.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <4668c204-3064-0e9e-5216-e7853f732821@c-s.fr>
-Date: Thu, 19 Dec 2019 07:57:24 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
-MIME-Version: 1.0
-In-Reply-To: <878snlrcrs.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH v3] powerpc/32: add support of KASAN_VMALLOC
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ dja@axtens.net
+Date: Thu, 19 Dec 2019 07:11:51 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,78 +73,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Add support of KASAN_VMALLOC on PPC32.
 
+To allow this, the early shadow covering the VMALLOC space
+need to be removed once high_memory var is set and before
+freeing memblock.
 
-Le 09/12/2019 à 11:53, Michael Ellerman a écrit :
-> Segher Boessenkool <segher@kernel.crashing.org> writes:
->> On Sat, Dec 07, 2019 at 10:42:28AM +0100, Christophe Leroy wrote:
->>> Le 06/12/2019 à 21:59, Segher Boessenkool a écrit :
->>>> If the compiler can see the callee wants the same TOC as the caller has,
->>>> it does not arrange to set (and restore) it, no.  If it sees it may be
->>>> different, it does arrange for that (and the linker then will check if
->>>> it actually needs to do anything, and do that if needed).
->>>>
->>>> In this case, the compiler cannot know the callee wants the same TOC,
->>>> which complicates thing a lot -- but it all works out.
->>>
->>> Do we have a way to make sure which TOC the functions are using ? Is
->>> there several TOC at all in kernel code ?
->>
->> Kernel modules have their own TOC, I think?
-> 
-> Yes.
+And the VMALLOC area need to be aligned such that boundaries
+are covered by a full shadow page.
 
-Yes, this means that exported functions have to care about that, right ?
-And that's the reason why exported assembly functions like copy_page() 
-use _GLOBAL_TOC() and not _GLOBAL()
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-But main part of the kernel only has one TOC, so r2 can be assumed 
-constant for non exported functions, can't it ?
+---
+v3: added missing inclusion of asm/kasan.h needed when CONFIG_KASAN is not set.
 
-> 
->>>> I think things can still go wrong if any of this is inlined into a kernel
->>>> module?  Is there anything that prevents this / can this not happen for
->>>> some fundamental reason I don't see?
->>>
->>> This can't happen can it ?
->>> do_softirq_own_stack() is an outline function, defined in powerpc irq.c
->>> Its only caller is do_softirq() which is an outline function defined in
->>> kernel/softirq.c
->>>
->>> That prevents inlining, doesn't it ?
->>
->> Hopefully, sure.  Would be nice if it was clearer that this works...  It
->> is too much like working by chance, the way it is :-(
-> 
-> There's no way any of that code can end up in a module. Or at least if
-> there is, that's a bug.
+v2: rebased ; exclude specific module handling when CONFIG_KASAN_VMALLOC is set.
+---
+ arch/powerpc/Kconfig                         |  1 +
+ arch/powerpc/include/asm/book3s/32/pgtable.h |  5 +++++
+ arch/powerpc/include/asm/kasan.h             |  2 ++
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  5 +++++
+ arch/powerpc/mm/kasan/kasan_init_32.c        | 33 +++++++++++++++++++++++++++-
+ arch/powerpc/mm/mem.c                        |  4 ++++
+ 6 files changed, 49 insertions(+), 1 deletion(-)
 
-That's my conclusion as well. So I guess we can consider r2 as constant 
-over those functions.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 1ec34e16ed65..a247bbfb03d4 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -173,6 +173,7 @@ config PPC
+ 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select HAVE_ARCH_KASAN			if PPC32
++	select HAVE_ARCH_KASAN_VMALLOC		if PPC32
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+index 0796533d37dd..5b39c11e884a 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -193,7 +193,12 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
+ #else
+ #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
+ #endif
++
++#ifdef CONFIG_KASAN_VMALLOC
++#define VMALLOC_END	_ALIGN_DOWN(ioremap_bot, PAGE_SIZE << KASAN_SHADOW_SCALE_SHIFT)
++#else
+ #define VMALLOC_END	ioremap_bot
++#endif
+ 
+ #ifndef __ASSEMBLY__
+ #include <linux/sched.h>
+diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
+index 296e51c2f066..fbff9ff9032e 100644
+--- a/arch/powerpc/include/asm/kasan.h
++++ b/arch/powerpc/include/asm/kasan.h
+@@ -31,9 +31,11 @@
+ void kasan_early_init(void);
+ void kasan_mmu_init(void);
+ void kasan_init(void);
++void kasan_late_init(void);
+ #else
+ static inline void kasan_init(void) { }
+ static inline void kasan_mmu_init(void) { }
++static inline void kasan_late_init(void) { }
+ #endif
+ 
+ #endif /* __ASSEMBLY */
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
+index 552b96eef0c8..60c4d829152e 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -114,7 +114,12 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
+ #else
+ #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
+ #endif
++
++#ifdef CONFIG_KASAN_VMALLOC
++#define VMALLOC_END	_ALIGN_DOWN(ioremap_bot, PAGE_SIZE << KASAN_SHADOW_SCALE_SHIFT)
++#else
+ #define VMALLOC_END	ioremap_bot
++#endif
+ 
+ /*
+  * Bits in a linux-style PTE.  These match the bits in the
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+index 0e6ed4413eea..88036fb88350 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -129,6 +129,31 @@ static void __init kasan_remap_early_shadow_ro(void)
+ 	flush_tlb_kernel_range(KASAN_SHADOW_START, KASAN_SHADOW_END);
+ }
+ 
++static void __init kasan_unmap_early_shadow_vmalloc(void)
++{
++	unsigned long k_start = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START);
++	unsigned long k_end = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_END);
++	unsigned long k_cur;
++	phys_addr_t pa = __pa(kasan_early_shadow_page);
++
++	if (!early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
++		int ret = kasan_init_shadow_page_tables(k_start, k_end);
++
++		if (ret)
++			panic("kasan: kasan_init_shadow_page_tables() failed");
++	}
++	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
++		pmd_t *pmd = pmd_offset(pud_offset(pgd_offset_k(k_cur), k_cur), k_cur);
++		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
++
++		if ((pte_val(*ptep) & PTE_RPN_MASK) != pa)
++			continue;
++
++		__set_pte_at(&init_mm, k_cur, ptep, __pte(0), 0);
++	}
++	flush_tlb_kernel_range(k_start, k_end);
++}
++
+ void __init kasan_mmu_init(void)
+ {
+ 	int ret;
+@@ -165,7 +190,13 @@ void __init kasan_init(void)
+ 	pr_info("KASAN init done\n");
+ }
+ 
+-#ifdef CONFIG_MODULES
++void __init kasan_late_init(void)
++{
++	if (IS_ENABLED(CONFIG_KASAN_VMALLOC))
++		kasan_unmap_early_shadow_vmalloc();
++}
++
++#if defined(CONFIG_MODULES) && !defined(CONFIG_KASAN_VMALLOC)
+ void *module_alloc(unsigned long size)
+ {
+ 	void *base;
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 9488b63dfc87..4995da1ea07a 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -49,6 +49,7 @@
+ #include <asm/fixmap.h>
+ #include <asm/swiotlb.h>
+ #include <asm/rtas.h>
++#include <asm/kasan.h>
+ 
+ #include <mm/mmu_decl.h>
+ 
+@@ -294,6 +295,9 @@ void __init mem_init(void)
+ 
+ 	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
+ 	set_max_mapnr(max_pfn);
++
++	kasan_late_init();
++
+ 	memblock_free_all();
+ 
+ #ifdef CONFIG_HIGHMEM
+-- 
+2.13.3
 
-> 
->>> Anyway, until we clarify all this I'll limit my patch to PPC32 which is
->>> where the real benefit is I guess.
->>>
->>> At the end, maybe the solution should be to switch to IRQ stack
->>> immediately in the exception entry as x86_64 do ?
-> 
-> Yeah that might be cleaner.
-> 
-
-I prepared a patch for that on PPC32, but it doesn't get rid of the IRQ 
-stack switch completely because do_IRQ() is also called from other 
-places like the timer interrupt.
-
-And we will still have the switch for softirqs. We could move 
-do_softirq_own_stack() to assembly and merge it with call_do_softirq(), 
-but a find it cleaner to inline call_do_softirq() instead, now that we 
-have demonstrated that r2 can't change.
-
-Christophe
