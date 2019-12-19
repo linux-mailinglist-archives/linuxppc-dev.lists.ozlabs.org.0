@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (unknown [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BDC1260CE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 12:29:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BE1126117
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 12:42:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dqQY6JfnzDqRm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:29:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dqjW0mGlzDqsj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:42:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dqLS1l8lzDqp5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 22:25:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dqfr5rGzzDqrC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 22:39:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="P0pIMkw4"; dkim-atps=neutral
+ header.b="GuBNNihE"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47dqLP6ntkz9sPn;
- Thu, 19 Dec 2019 22:25:33 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47dqfp0phfz9sPK;
+ Thu, 19 Dec 2019 22:39:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576754734;
- bh=Zx5Yd53JL3kH4J/q4/1yt1DPvG/CjFpohvESNKMplWE=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=P0pIMkw4ErNb1nuX21DZj5B+bxMWXCI5nmpMnd5T6pbiUuAxWRe3O7aYGiY6JIHWI
- 6tKOYZBhSeKKirWC2ajlvKX8n1LklGqR3iEtRq/0czGjJPqibcwrb2HCaq/bJfHlQW
- joz438XnOFK6gVX3n/z5HJbu5x/xI6epfBhcV9zVSWTH6idQzG9F210BkUS6QdCYuI
- awM9SDsFVPT7frGLLHg40y4fFq+ze3zhybiXysOeieaka8bMOVc5xH7gaDcMVeatEI
- jH2+2xsu8mlfVjwjs/jy3HW60tJTnpLnEAELufqZjXp02xJHY8SFdXpJmz5rwaazsu
- wzDaeBRGKO6PQ==
+ s=201909; t=1576755588;
+ bh=rOd+nUIEAzAccp3PvRcR200yxlaugVwsQre4gumsVdc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=GuBNNihEtBtqIz8PqGhjM6g/zMOYVEL6mEUgziDE4XQ5A0lV69T+E/Z4FygDzUKYi
+ 1aB5r22ApjjAnp1a9bLKTD9Gculf/iN3v3eQvfR+mlLqBCS60Ja+CHq3Sa8xEfW/+I
+ G0Y643D0cLV2B2hR8Dz8aZiFiCuQkumA0c4z3JkETsq1/vVrrsa8HAOuUVyWt8iT4M
+ EO0q/UZCm+qtb6LF8+yC/e1e9hGQJaJDC/X4LPpXaFB3BLOzQEIjxCgmOJO7jmre7W
+ NINk2k5dK/lpnVKR9izw+rp0NRUsbiMWnkYJZFzIoxz7TucWhPhAKY3hSCmLFlidPK
+ q6UYMkUn/tGHA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Axtens <dja@axtens.net>, Christophe Leroy <christophe.leroy@c-s.fr>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-Subject: Re: [PATCH v4 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-In-Reply-To: <87bls4tzjn.fsf@dja-thinkpad.axtens.net>
-References: <20191219003630.31288-1-dja@axtens.net>
- <20191219003630.31288-5-dja@axtens.net>
- <c4d37067-829f-cd7d-7e94-0ec2223cce71@c-s.fr>
- <87bls4tzjn.fsf@dja-thinkpad.axtens.net>
-Date: Thu, 19 Dec 2019 22:25:32 +1100
-Message-ID: <87fthgmuab.fsf@mpe.ellerman.id.au>
+To: Dave Hansen <dave.hansen@intel.com>, Michal =?utf-8?Q?Such=C3=A1nek?=
+ <msuchanek@suse.de>
+Subject: Re: [PATCH v15 06/23] selftests/vm/pkeys: Typecast the pkey register
+In-Reply-To: <15c3b6cc-d8da-9a32-da6a-4c3990f48994@intel.com>
+References: <cover.1576645161.git.sandipan@linux.ibm.com>
+ <719ec65756a64cc03e8464a9c6da51c4519d2389.1576645161.git.sandipan@linux.ibm.com>
+ <5b6c3f8a-9d2f-2534-c072-89f130ce110f@intel.com>
+ <20191218205905.GG4113@kitsune.suse.cz>
+ <15c3b6cc-d8da-9a32-da6a-4c3990f48994@intel.com>
+Date: Thu, 19 Dec 2019 22:39:44 +1100
+Message-ID: <87d0ckmtmn.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,36 +62,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, linuxram@us.ibm.com, shuahkh@osg.samsung.com,
+ mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+ Sandipan Das <sandipan@linux.ibm.com>, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> On 12/19/2019 12:36 AM, Daniel Axtens wrote:
->>> KASAN support on Book3S is a bit tricky to get right:
-...
->>> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
->>> index 296e51c2f066..f18268cbdc33 100644
->>> --- a/arch/powerpc/include/asm/kasan.h
->>> +++ b/arch/powerpc/include/asm/kasan.h
->>> @@ -2,6 +2,9 @@
->>>   #ifndef __ASM_KASAN_H
->>>   #define __ASM_KASAN_H
->>>   
->>> +#include <asm/page.h>
->>> +#include <asm/pgtable.h>
->>
->> What do you need asm/pgtable.h for ?
->>
->> Build failure due to circular inclusion of asm/pgtable.h:
+Dave Hansen <dave.hansen@intel.com> writes:
+> On 12/18/19 12:59 PM, Michal Such=C3=A1nek wrote:
+>>> I'd really just rather do %016lx *everywhere* than sprinkle the
+>>> PKEY_REG_FMTs around.
+>> Does lx work with u32 without warnings?
 >
-> I see there's a lot of ppc32 stuff, I clearly need to bite the bullet
-> and get a ppc32 toolchain so I can squash these without chewing up any
-> more of your time. I'll sort that out and send a new spin.
+> Either way, I'd be happy to just make the x86 one u64 to make the whole
+> thing look more sane,
 
-I think you run Ubuntu, in which case it should just be:
+It's userspace so you don't get u64, you only get __u64.
 
-$ apt install gcc-powerpc-linux-gnu
+And then you'll hit the fact that by default __u64 is unsigned long on
+powerpc and unsigned long long on x86, meaning you still can't use the
+same printf specifier.
+
+To avoid that you should define __SANE_USERSPACE_TYPES__ before
+including any headers, and then you'll get unsigned long long for __u64
+everywhere and you can just use %llx.
 
 cheers
