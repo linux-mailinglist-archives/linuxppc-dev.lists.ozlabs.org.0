@@ -2,85 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3101125CFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 09:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB952125D59
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 10:12:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dlxV1jNSzDqqJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 19:52:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dmP46h4mzDqqJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 20:12:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lionel.g.landwerlin@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dlv23RXszDqmT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 19:50:06 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBJ8mC7l011583; Thu, 19 Dec 2019 03:49:51 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x04gybmnh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 03:49:51 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBJ8mJF3012484;
- Thu, 19 Dec 2019 03:49:50 -0500
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x04gybmna-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 03:49:50 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBJ8mNLl007367;
- Thu, 19 Dec 2019 08:49:50 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma03wdc.us.ibm.com with ESMTP id 2wvqc6vvvb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 08:49:50 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBJ8nn0734079220
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Dec 2019 08:49:49 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 08CC5136053;
- Thu, 19 Dec 2019 08:49:49 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7AD44136051;
- Thu, 19 Dec 2019 08:49:48 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Dec 2019 08:49:48 +0000 (GMT)
-Subject: Re: [PATCH 08/10] crypto/NX: Add NX GZIP user space API
-From: Haren Myneni <haren@linux.ibm.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-In-Reply-To: <20191217093334.ihvz3fzzfgjwse32@gondor.apana.org.au>
-References: <1576414240.16318.4066.camel@hbabu-laptop>
- <1576415119.16318.4094.camel@hbabu-laptop>
- <20191217093334.ihvz3fzzfgjwse32@gondor.apana.org.au>
-Content-Type: text/plain; charset="UTF-8"
-Date: Thu, 19 Dec 2019 00:49:44 -0800
-Message-ID: <1576745384.12797.37.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dmLq5hSRzDqrF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 20:10:42 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2019 01:10:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,331,1571727600"; d="scan'208";a="212954494"
+Received: from bbartede-mobl2.ger.corp.intel.com (HELO [10.252.33.233])
+ ([10.252.33.233])
+ by fmsmga007.fm.intel.com with ESMTP; 19 Dec 2019 01:10:30 -0800
+Subject: Re: [PATCH v4 4/9] drm/i915/perf: open access for CAP_SYS_PERFMON
+ privileged process
+To: Alexey Budankov <alexey.budankov@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ "james.bottomley@hansenpartnership.com"
+ <james.bottomley@hansenpartnership.com>, Serge Hallyn <serge@hallyn.com>,
+ James Morris <jmorris@namei.org>, Will Deacon <will.deacon@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Casey Schaufler
+ <casey@schaufler-ca.com>, Robert Richter <rric@kernel.org>
+References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
+ <ea050255-a125-8831-ce91-ee23bd6ad08b@linux.intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way,
+ Swindon SN3 1RJ
+Message-ID: <d5f908f3-b545-7953-8c72-ceb7177609d3@intel.com>
+Date: Thu, 19 Dec 2019 11:10:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
+MIME-Version: 1.0
+In-Reply-To: <ea050255-a125-8831-ce91-ee23bd6ad08b@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-18_08:2019-12-17,2019-12-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912190075
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,82 +70,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com, hch@infradead.org,
- linux-crypto@vger.kernel.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ Song Liu <songliubraving@fb.com>, Andi Kleen <ak@linux.intel.com>,
+ Kees Cook <keescook@chromium.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ Jann Horn <jannh@google.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ Igor Lubashev <ilubashe@akamai.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, oprofile-list@lists.sf.net,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Olsa <jolsa@redhat.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-12-17 at 17:33 +0800, Herbert Xu wrote:
-> On Sun, Dec 15, 2019 at 05:05:19AM -0800, Haren Myneni wrote:
-> > 
-> > On power9, userspace can send GZIP compression requests directly to NX
-> > once kernel establishes NX channel / window. This patch provides GZIP
-> > engine access to user space via /dev/crypto/nx-gzip device node with
-> > open, VAS_TX_WIN_OPEN ioctl, mmap and close operations.
-> > 
-> > Each window corresponds to file descriptor and application can open
-> > multiple windows. After the window is opened, mmap() system call to map
-> > the hardware address of engine's request queue into the application's
-> > virtual address space.
-> > 
-> > Then the application can then submit one or more requests to the the
-> > engine by using the copy/paste instructions and pasting the CRBs to
-> > the virtual address (aka paste_address) returned by mmap().
-> > 
-> > Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> > Signed-off-by: Haren Myneni <haren@us.ibm.com>
-> > ---
-> >  drivers/crypto/nx/Makefile            |   2 +-
-> >  drivers/crypto/nx/nx-842-powernv.h    |   2 +
-> >  drivers/crypto/nx/nx-commom-powernv.c |  21 ++-
-> >  drivers/crypto/nx/nx-gzip-powernv.c   | 282 ++++++++++++++++++++++++++++++++++
-> >  4 files changed, 304 insertions(+), 3 deletions(-)
-> >  create mode 100644 drivers/crypto/nx/nx-gzip-powernv.c
-> 
-> We already have a kernel compress API which could be exposed
-> to user-space through af_alg.  If every driver created their
-> own user-space API it would be unmanageable.
+On 18/12/2019 11:27, Alexey Budankov wrote:
+> Open access to i915_perf monitoring for CAP_SYS_PERFMON privileged
+> processes. For backward compatibility reasons access to i915_perf
+> subsystem remains open for CAP_SYS_ADMIN privileged processes but
+> CAP_SYS_ADMIN usage for secure i915_perf monitoring is discouraged
+> with respect to CAP_SYS_PERFMON capability.
+>
+> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 
-Thanks. 
+Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Virtual Accelerator Switchboard (VAS) can provide support different
-accelerators, Right now only NX is used, but possible to extend to
-others in future. Or different functionalities such as fast thread
-wakeup (VAS feature) with VAS windows. 
-
-So looking common VAS API for any its accelerators. Need open a window /
-channel - open() and ioctl()) calls, and setup the communications with
-mapping address to NX (mmap()) and close the window. Then user space
-communicates to accelerator directly without kernel involvement.
-Specific drivers should set window attributes such as how many requests
-can be send at same time and etc. All other interfaces should be same
-for any accelerator. 
-
-Also, since user space sends requests directly, should restrict
-malicious users to prevent overload NX (security issue). Allowing
-sysadmin to restrict /dev/crypto/nx-gzip usage. 
-
-
-As you suggested, SW crypto API (af_alg) can be used just for NX
-compression like using API based on the accelerator functionalities. It
-is socket based API with AF_ALG socket family. But is there a way for
-sysadmin to restrict usage from user space? Need just few functions in
-struct proto. 
-
-static struct proto_ops {
-	.family = PF_ALG,
-	.ioctl = nxgzip_ioctl,
-	.mmap = nxgzip_mmap,
-	.release = nxgzip_release,
-};
-
-Thanks
-Haren
-
-
-> 
-> Cheers,
+> ---
+>   drivers/gpu/drm/i915/i915_perf.c | 13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
+> index e42b86827d6b..e2697f8d04de 100644
+> --- a/drivers/gpu/drm/i915/i915_perf.c
+> +++ b/drivers/gpu/drm/i915/i915_perf.c
+> @@ -2748,10 +2748,10 @@ i915_perf_open_ioctl_locked(struct drm_i915_private *dev_priv,
+>   	/* Similar to perf's kernel.perf_paranoid_cpu sysctl option
+>   	 * we check a dev.i915.perf_stream_paranoid sysctl option
+>   	 * to determine if it's ok to access system wide OA counters
+> -	 * without CAP_SYS_ADMIN privileges.
+> +	 * without CAP_SYS_PERFMON or CAP_SYS_ADMIN privileges.
+>   	 */
+>   	if (privileged_op &&
+> -	    i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
+> +	    i915_perf_stream_paranoid && !perfmon_capable()) {
+>   		DRM_DEBUG("Insufficient privileges to open system-wide i915 perf stream\n");
+>   		ret = -EACCES;
+>   		goto err_ctx;
+> @@ -2939,9 +2939,8 @@ static int read_properties_unlocked(struct drm_i915_private *dev_priv,
+>   			} else
+>   				oa_freq_hz = 0;
+>   
+> -			if (oa_freq_hz > i915_oa_max_sample_rate &&
+> -			    !capable(CAP_SYS_ADMIN)) {
+> -				DRM_DEBUG("OA exponent would exceed the max sampling frequency (sysctl dev.i915.oa_max_sample_rate) %uHz without root privileges\n",
+> +			if (oa_freq_hz > i915_oa_max_sample_rate && !perfmon_capable()) {
+> +				DRM_DEBUG("OA exponent would exceed the max sampling frequency (sysctl dev.i915.oa_max_sample_rate) %uHz without CAP_SYS_PERFMON or CAP_SYS_ADMIN privileges\n",
+>   					  i915_oa_max_sample_rate);
+>   				return -EACCES;
+>   			}
+> @@ -3328,7 +3327,7 @@ int i915_perf_add_config_ioctl(struct drm_device *dev, void *data,
+>   		return -EINVAL;
+>   	}
+>   
+> -	if (i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
+> +	if (i915_perf_stream_paranoid && !perfmon_capable()) {
+>   		DRM_DEBUG("Insufficient privileges to add i915 OA config\n");
+>   		return -EACCES;
+>   	}
+> @@ -3474,7 +3473,7 @@ int i915_perf_remove_config_ioctl(struct drm_device *dev, void *data,
+>   		return -ENOTSUPP;
+>   	}
+>   
+> -	if (i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
+> +	if (i915_perf_stream_paranoid && !perfmon_capable()) {
+>   		DRM_DEBUG("Insufficient privileges to remove i915 OA config\n");
+>   		return -EACCES;
+>   	}
 
 
