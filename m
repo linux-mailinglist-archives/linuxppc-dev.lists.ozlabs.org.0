@@ -1,67 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927BC125BEA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 08:13:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47djlz6hmMzDqpk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 18:13:51 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E01125C1B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 08:38:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dkJF0ts2zDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 18:38:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
+ helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="u4I7h1uR"; 
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="rn2yGjgw"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
+ [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47djjl3PX8zDqkW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 18:11:55 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47djjg3K1Sz9tyhW;
- Thu, 19 Dec 2019 08:11:51 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=u4I7h1uR; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7VZjfWAPfeb4; Thu, 19 Dec 2019 08:11:51 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47djjg1p3wz9twth;
- Thu, 19 Dec 2019 08:11:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1576739511; bh=XwXA80UQsPc0SJUtGP/zhGnRhIf3dcllhjsBg4hphSA=;
- h=From:Subject:To:Cc:Date:From;
- b=u4I7h1uRH81OuECUC1gwnuaBdxB/LCiAWuTO+T1QumbXk/wnmwbYed+w94V129boY
- ET+FXPUKl1tvnkmPzXpf7/z/hpDntYvCfLmLYE03qOAyL8XpmQsZ1IMhSI+Wkkoczo
- DqgkVeawIn6MFShVyWuaJtmq4e7M5qR0/uVTUzG0=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 281D88B784;
- Thu, 19 Dec 2019 08:11:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id S2CVWRUXIKtt; Thu, 19 Dec 2019 08:11:52 +0100 (CET)
-Received: from po16098vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D34258B756;
- Thu, 19 Dec 2019 08:11:51 +0100 (CET)
-Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 86D29637A1; Thu, 19 Dec 2019 07:11:51 +0000 (UTC)
-Message-Id: <1fd4faf553b154d7e7b73bfe33b527e4f3cbaf5a.1576739492.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3] powerpc/32: add support of KASAN_VMALLOC
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- dja@axtens.net
-Date: Thu, 19 Dec 2019 07:11:51 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dkGB2KLqzDqlK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 18:36:33 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dfb28710000>; Wed, 18 Dec 2019 23:36:17 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Wed, 18 Dec 2019 23:36:27 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Wed, 18 Dec 2019 23:36:27 -0800
+Received: from [10.2.165.11] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Dec
+ 2019 07:36:25 +0000
+Subject: Re: [PATCH v11 04/25] mm: devmap: refactor 1-based refcounting for
+ ZONE_DEVICE pages
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20191216222537.491123-1-jhubbard@nvidia.com>
+ <20191216222537.491123-5-jhubbard@nvidia.com>
+ <CAPcyv4hQBMxYMurxG=Vwh0=FKWoT3z-Kf=dqES1-icRV5bLwKg@mail.gmail.com>
+ <d0a99e75-0175-0f31-f176-8c37c18a4108@nvidia.com>
+ <CAPcyv4j+Zgom17UZ-6Njkij1R0UQ=vUQdnaEZj9qDezEUJSZGg@mail.gmail.com>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <a9782048-0c6a-b906-2bd6-3800269f4b01@nvidia.com>
+Date: Wed, 18 Dec 2019 23:33:36 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4j+Zgom17UZ-6Njkij1R0UQ=vUQdnaEZj9qDezEUJSZGg@mail.gmail.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1576740978; bh=AwGIHszd33R/kLZlUt1Z4JwwlD2NSoQAiltNw2UIah0=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=rn2yGjgwQ9+/2v2mcxWjrZFxdrk3/eEgjxRU1LJiuOVyjVOa62J0tvoTcmLOK6fXS
+ xTiiEKdaSrRaYvKoHJFISdC+5xDr9wuGKGy6eL+p8mnXTv3WmxTBQ5uSD1vNUHW7Zv
+ FL1u5zml1dT0aGOGbVIB8FGZRe/vZmwx0E0SfZqPp5XPLjqF6k+D7FwuHs+yKnEljh
+ 6K2DgflrDdhvNm7j657NcorkWkt+15POYkE/QPPC6A7qk9vcVVLh/jftFFqBiaLSef
+ +CbFHF0Oi6KJR9YDOdsjceXX460BQcgisIE59hm4mMu6iV3pT5dz1gvUWjcugiRrZC
+ tT/WLbmWB9r/w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,171 +80,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ KVM list <kvm@vger.kernel.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Christoph Hellwig <hch@lst.de>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma <linux-rdma@vger.kernel.org>,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ Shuah Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ bpf@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>,
+ Jens Axboe <axboe@kernel.dk>, Netdev <netdev@vger.kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support of KASAN_VMALLOC on PPC32.
+On 12/18/19 10:52 PM, Dan Williams wrote:
+> On Wed, Dec 18, 2019 at 9:51 PM John Hubbard <jhubbard@nvidia.com> wrote:
+>>
+>> On 12/18/19 9:27 PM, Dan Williams wrote:
+>> ...
+>>>> @@ -461,5 +449,5 @@ void __put_devmap_managed_page(struct page *page)
+>>>>           page->mapping = NULL;
+>>>>           page->pgmap->ops->page_free(page);
+>>>>    }
+>>>> -EXPORT_SYMBOL(__put_devmap_managed_page);
+>>>> +EXPORT_SYMBOL(free_devmap_managed_page);
+>>>
+>>> This patch does not have a module consumer for
+>>> free_devmap_managed_page(), so the export should move to the patch
+>>> that needs the new export.
+>>
+>> Hi Dan,
+>>
+>> OK, I know that's a policy--although it seems quite pointless here given
+>> that this is definitely going to need an EXPORT.
+>>
+>> At the moment, the series doesn't use it in any module at all, so I'll just
+>> delete the EXPORT for now.
+>>
+>>>
+>>> Also the only reason that put_devmap_managed_page() is EXPORT_SYMBOL
+>>> instead of EXPORT_SYMBOL_GPL is that there was no practical way to
+>>> hide the devmap details from evey module in the kernel that did
+>>> put_page(). I would expect free_devmap_managed_page() to
+>>> EXPORT_SYMBOL_GPL if it is not inlined into an existing exported
+>>> static inline api.
+>>>
+>>
+>> Sure, I'll change it to EXPORT_SYMBOL_GPL when the time comes. We do have
+>> to be careful that we don't shut out normal put_page() types of callers,
+>> but...glancing through the current callers, that doesn't look to be a problem.
+>> Good. So it should be OK to do EXPORT_SYMBOL_GPL here.
+>>
+>> Are you *sure* you don't want to just pre-emptively EXPORT now, and save
+>> looking at it again?
+> 
+> I'm positive. There is enough history for "trust me the consumer is
+> coming" turning out not to be true to justify the hassle in my mind. I
+> do trust you, but things happen.
+> 
 
-To allow this, the early shadow covering the VMALLOC space
-need to be removed once high_memory var is set and before
-freeing memblock.
+OK, it's deleted locally. Thanks for looking at the patch. I'll post a v12 series
+that includes the change, once it looks like reviews are slowing down.
 
-And the VMALLOC area need to be aligned such that boundaries
-are covered by a full shadow page.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
----
-v3: added missing inclusion of asm/kasan.h needed when CONFIG_KASAN is not set.
-
-v2: rebased ; exclude specific module handling when CONFIG_KASAN_VMALLOC is set.
----
- arch/powerpc/Kconfig                         |  1 +
- arch/powerpc/include/asm/book3s/32/pgtable.h |  5 +++++
- arch/powerpc/include/asm/kasan.h             |  2 ++
- arch/powerpc/include/asm/nohash/32/pgtable.h |  5 +++++
- arch/powerpc/mm/kasan/kasan_init_32.c        | 33 +++++++++++++++++++++++++++-
- arch/powerpc/mm/mem.c                        |  4 ++++
- 6 files changed, 49 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1ec34e16ed65..a247bbfb03d4 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -173,6 +173,7 @@ config PPC
- 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KASAN			if PPC32
-+	select HAVE_ARCH_KASAN_VMALLOC		if PPC32
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index 0796533d37dd..5b39c11e884a 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -193,7 +193,12 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
- #else
- #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
- #endif
-+
-+#ifdef CONFIG_KASAN_VMALLOC
-+#define VMALLOC_END	_ALIGN_DOWN(ioremap_bot, PAGE_SIZE << KASAN_SHADOW_SCALE_SHIFT)
-+#else
- #define VMALLOC_END	ioremap_bot
-+#endif
- 
- #ifndef __ASSEMBLY__
- #include <linux/sched.h>
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index 296e51c2f066..fbff9ff9032e 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -31,9 +31,11 @@
- void kasan_early_init(void);
- void kasan_mmu_init(void);
- void kasan_init(void);
-+void kasan_late_init(void);
- #else
- static inline void kasan_init(void) { }
- static inline void kasan_mmu_init(void) { }
-+static inline void kasan_late_init(void) { }
- #endif
- 
- #endif /* __ASSEMBLY */
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index 552b96eef0c8..60c4d829152e 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -114,7 +114,12 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
- #else
- #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
- #endif
-+
-+#ifdef CONFIG_KASAN_VMALLOC
-+#define VMALLOC_END	_ALIGN_DOWN(ioremap_bot, PAGE_SIZE << KASAN_SHADOW_SCALE_SHIFT)
-+#else
- #define VMALLOC_END	ioremap_bot
-+#endif
- 
- /*
-  * Bits in a linux-style PTE.  These match the bits in the
-diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index 0e6ed4413eea..88036fb88350 100644
---- a/arch/powerpc/mm/kasan/kasan_init_32.c
-+++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -129,6 +129,31 @@ static void __init kasan_remap_early_shadow_ro(void)
- 	flush_tlb_kernel_range(KASAN_SHADOW_START, KASAN_SHADOW_END);
- }
- 
-+static void __init kasan_unmap_early_shadow_vmalloc(void)
-+{
-+	unsigned long k_start = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START);
-+	unsigned long k_end = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_END);
-+	unsigned long k_cur;
-+	phys_addr_t pa = __pa(kasan_early_shadow_page);
-+
-+	if (!early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
-+		int ret = kasan_init_shadow_page_tables(k_start, k_end);
-+
-+		if (ret)
-+			panic("kasan: kasan_init_shadow_page_tables() failed");
-+	}
-+	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
-+		pmd_t *pmd = pmd_offset(pud_offset(pgd_offset_k(k_cur), k_cur), k_cur);
-+		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
-+
-+		if ((pte_val(*ptep) & PTE_RPN_MASK) != pa)
-+			continue;
-+
-+		__set_pte_at(&init_mm, k_cur, ptep, __pte(0), 0);
-+	}
-+	flush_tlb_kernel_range(k_start, k_end);
-+}
-+
- void __init kasan_mmu_init(void)
- {
- 	int ret;
-@@ -165,7 +190,13 @@ void __init kasan_init(void)
- 	pr_info("KASAN init done\n");
- }
- 
--#ifdef CONFIG_MODULES
-+void __init kasan_late_init(void)
-+{
-+	if (IS_ENABLED(CONFIG_KASAN_VMALLOC))
-+		kasan_unmap_early_shadow_vmalloc();
-+}
-+
-+#if defined(CONFIG_MODULES) && !defined(CONFIG_KASAN_VMALLOC)
- void *module_alloc(unsigned long size)
- {
- 	void *base;
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 9488b63dfc87..4995da1ea07a 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -49,6 +49,7 @@
- #include <asm/fixmap.h>
- #include <asm/swiotlb.h>
- #include <asm/rtas.h>
-+#include <asm/kasan.h>
- 
- #include <mm/mmu_decl.h>
- 
-@@ -294,6 +295,9 @@ void __init mem_init(void)
- 
- 	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
- 	set_max_mapnr(max_pfn);
-+
-+	kasan_late_init();
-+
- 	memblock_free_all();
- 
- #ifdef CONFIG_HIGHMEM
+thanks,
 -- 
-2.13.3
-
+John Hubbard
+NVIDIA
