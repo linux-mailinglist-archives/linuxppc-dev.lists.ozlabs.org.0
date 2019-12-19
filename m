@@ -1,54 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC0512609F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 12:16:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3E1126065
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 12:03:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dprx2g7XzDqrm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:03:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dq7J5HMyzDqnr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:15:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dpmw6yMmzDqgG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 22:00:00 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="nz2yMamR"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 47dpmw3sM2z9sPK; Thu, 19 Dec 2019 22:00:00 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47dpmv6hY7z9sP6;
- Thu, 19 Dec 2019 21:59:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576753200;
- bh=9DgfDxZL5lACm7q7lGR4p4NUM1XFDLiTxKkghwiemps=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nz2yMamR5Xe2QWdPYkhMRyh1CLRDqCncJ11UYMCTNVa6Z1vwdydd0jwDzncIfjdNM
- uvcKQFa2ebttLB5XOxJBvwJvT3YgyPrftUyHKq0BkRd1Iiz8ptA+EhdwnNcrirA8ER
- pFM3s9AowbxXPc2MrfHr4Li/S0aaFCHO4tURaczvt8YNzfDeC5J89U7tovNhmau9Vj
- 7h/NdRE+O+7jvSTGY8RHQbthsZw+kURqLXwCrXfdEl1A4UCrUoFGrjkDsbo+LWvBwT
- 5k9tWXTMbDyGc3co/jU/rcLFdhoEMXqIVFnRkvx2QRsXtXi8Pp1X3QzUEqhSgJJVbL
- ++utJbTOL+kYQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] powerpc/pseries/svm: Don't access some SPRs
-In-Reply-To: <20191218235753.GA12285@us.ibm.com>
-References: <20191218043048.3400-1-sukadev@linux.ibm.com>
- <875zidoqok.fsf@mpe.ellerman.id.au> <20191218235753.GA12285@us.ibm.com>
-Date: Thu, 19 Dec 2019 21:59:57 +1100
-Message-ID: <87immcmvgy.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dq4X0wGkzDqmJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 22:13:30 +1100 (AEDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+ (envelope-from <bigeasy@linutronix.de>)
+ id 1ihtk7-00034v-G3; Thu, 19 Dec 2019 12:13:19 +0100
+Date: Thu, 19 Dec 2019 12:13:19 +0100
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [Qemu-ppc] pseries on qemu-system-ppc64le crashes in
+ doorbell_core_ipi()
+Message-ID: <20191219111319.hes3fhpqpvn7nklg@linutronix.de>
+References: <7d97f3c6-4614-ead7-179a-e7e223ea3997@kaod.org>
+ <2bbc1490-400d-585e-d74b-924c570b4236@kaod.org>
+ <1553836851.2264.2.camel@gmail.com>
+ <1553850306.nyv11r9iej.astroid@bobo.none>
+ <20190329113109.3a9bd24e@gandalf.local.home>
+ <1553912871.ce5mzizoek.astroid@bobo.none>
+ <20190401083827.GE11158@hirez.programming.kicks-ass.net>
+ <20190406000611.GA27782@lenoir>
+ <1554801792.ruzup3dxhe.astroid@bobo.none>
+ <7a5b63a0-2bf5-60bb-8678-b7b36671a29c@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <7a5b63a0-2bf5-60bb-8678-b7b36671a29c@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,61 +56,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@linux.ibm.com, linuxram@us.ibm.com, kvm-ppc@vger.kernel.org,
- linuxppc-dev@ozlabs.org, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
- bauerman@linux.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Frederic Weisbecker <fweisbec@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, tglx@linutronix.de,
+ David? Gibson <david@gibson.dropbear.id.au>, linuxppc-dev@lists.ozlabs.org,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com> writes:
-> Michael Ellerman [mpe@ellerman.id.au] wrote:
->> 
->> eg. here.
->> 
->> This is the fast path of context switch.
->> 
->> That expands to:
->> 
->> 	if (!(mfmsr() & MSR_S))
->> 		asm volatile("mfspr %0, SPRN_BESCR" : "=r" (rval));
->> 	if (!(mfmsr() & MSR_S))
->> 		asm volatile("mfspr %0, SPRN_EBBHR" : "=r" (rval));
->> 	if (!(mfmsr() & MSR_S))
->> 		asm volatile("mfspr %0, SPRN_EBBRR" : "=r" (rval));
->> 
->
-> Yes, should have optimized this at least :-)
->> 
->> If the Ultravisor is going to disable EBB and BHRB then we need new
->> CPU_FTR bits for those, and the code that accesses those registers
->> needs to be put behind cpu_has_feature(EBB) etc.
->
-> Will try the cpu_has_feature(). Would it be ok to use a single feature
-> bit, like UV or make it per-register group as that could need more
-> feature bits?
+On 2019-12-19 11:41:21 [+0100], Jason A. Donenfeld wrote:
+> Hi folks,
+Hi,
 
-We already have a number of places using is_secure_guest():
+so this should duct tape it:
 
-  arch/powerpc/include/asm/mem_encrypt.h: return is_secure_guest();
-  arch/powerpc/include/asm/mem_encrypt.h: return is_secure_guest();
-  arch/powerpc/include/asm/svm.h:#define get_dtl_cache_ctor()     (is_secure_guest() ? dtl_cache_ctor : NULL)
-  arch/powerpc/kernel/machine_kexec_64.c: if (is_secure_guest() && !(image->preserve_context ||
-  arch/powerpc/kernel/paca.c:     if (is_secure_guest())
-  arch/powerpc/kernel/sysfs.c:    return sprintf(buf, "%u\n", is_secure_guest());
-  arch/powerpc/platforms/pseries/iommu.c: if (!is_secure_guest())
-  arch/powerpc/platforms/pseries/smp.c:   if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
-  arch/powerpc/platforms/pseries/svm.c:   if (!is_secure_guest())
+diff --git a/arch/powerpc/kernel/dbell.c b/arch/powerpc/kernel/dbell.c
+index f17ff1200eaae..ec044bdf362a1 100644
+--- a/arch/powerpc/kernel/dbell.c
++++ b/arch/powerpc/kernel/dbell.c
+@@ -60,16 +60,8 @@ void doorbell_core_ipi(int cpu)
+  */
+ int doorbell_try_core_ipi(int cpu)
+ {
+-	int this_cpu =3D get_cpu();
+ 	int ret =3D 0;
+=20
+-	if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
+-		doorbell_core_ipi(cpu);
+-		ret =3D 1;
+-	}
+-
+-	put_cpu();
+-
+ 	return ret;
+ }
+=20
 
+> This is with "qemu-system-ppc64 -smp 4 -machine pseries" on QEMU 4.0.0.
 
-Which could all (or mostly) be converted to use a cpu_has_feature(CPU_FTR_SVM).
+Interesting. I didn't get v5.4 to boot a while ago and didn't have the
+time to look into it.
 
-So yeah I guess it makes sense to do that, create a CPU_FTR_SVM and set
-it early in boot based on MSR_S.
+> I'm not totally sure what's going on here. I'm emulating a pseries, and
+> using that with qemu's pseries model, and I see that selecting the pseries
+> forces the selection of 'config PPC_DOORBELL' (twice in the same section,
+> actually). Then inside the kernel there appears to be some runtime CPU ch=
+eck
+> for doorbell support. Is this a case in which QEMU is advertising doorbell
+> support that TCG doesn't have? Or is something else happening here?
 
-You could argue it's a firmware feature, so should be FW_FEATURE_SVM,
-but we don't use jump_labels for firmware features so they're not as
-nice for hot-path code like register switching. Also the distinction
-between CPU and firmware features is a bit arbitrary.
+Based on my understanding is that the doorbell feature is part of the
+architecture. It can be used to signal other siblings on the same CPU.
+qemu TCG doesn't support that and does not allow to announce multiple
+siblings on the same CPU. However, the kernel uses this interface if it
+tries to send an interrupt to itself (the same CPU) so everything
+matches.
+Last time I run into this, the interface was change so the kernel das
+not send an IPI to itself. This changed now for another function=E2=80=A6
 
-cheers
+> Thanks,
+> Jason
+
+Sebastian
