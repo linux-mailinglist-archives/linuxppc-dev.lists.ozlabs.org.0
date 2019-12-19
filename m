@@ -1,88 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699DA1270B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 23:32:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF9F127014
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:56:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47f5LP72dhzDqfY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 08:56:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47f68N5wPgzDqv6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 09:32:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47f5F84J0bzDqm6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 08:51:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47f5F74sLXz8t9C
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 08:51:55 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47f5F73rp9z9sRX; Fri, 20 Dec 2019 08:51:55 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47f5F66n8Nz9sRD;
- Fri, 20 Dec 2019 08:51:54 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47f66j1ZfKzDqsZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 09:31:24 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBJLlUBu113783; Thu, 19 Dec 2019 16:51:49 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x08cg9sjf-1
+ xBJMRVQW020776; Thu, 19 Dec 2019 17:31:14 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2x0g28v223-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 16:51:49 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBJLjm8p006582;
- Thu, 19 Dec 2019 21:51:48 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 2wvqc7ed5t-1
+ Thu, 19 Dec 2019 17:31:14 -0500
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBJMRerJ021356;
+ Thu, 19 Dec 2019 17:31:13 -0500
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2x0g28v21r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Dec 2019 21:51:48 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBJLpmYc38928882
+ Thu, 19 Dec 2019 17:31:13 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBJMV6BW007527;
+ Thu, 19 Dec 2019 22:31:12 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma03dal.us.ibm.com with ESMTP id 2wvqc7ergj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Dec 2019 22:31:12 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBJMVCka49217852
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Dec 2019 21:51:48 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A376112064;
- Thu, 19 Dec 2019 21:51:48 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 66C2B112061;
- Thu, 19 Dec 2019 21:51:47 +0000 (GMT)
-Received: from suka-w540.usor.ibm.com (unknown [9.70.94.45])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 19 Dec 2019 21:51:47 +0000 (GMT)
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@ozlabs.org>, 
- linuxram@us.ibm.com
-Subject: [PATCH v4 2/2] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-Date: Thu, 19 Dec 2019 13:51:46 -0800
-Message-Id: <20191219215146.27278-2-sukadev@linux.ibm.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20191219215146.27278-1-sukadev@linux.ibm.com>
-References: <20191219215146.27278-1-sukadev@linux.ibm.com>
+ Thu, 19 Dec 2019 22:31:12 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 256DBAC05F;
+ Thu, 19 Dec 2019 22:31:12 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E20FAC060;
+ Thu, 19 Dec 2019 22:31:11 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Dec 2019 22:31:11 +0000 (GMT)
+Subject: Re: [PATCH 04/14] powerpc/vas: Setup IRQ mapping and register port
+ for each window
+From: Haren Myneni <haren@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+In-Reply-To: <1576710781.12797.10.camel@hbabu-laptop>
+References: <1574816731.13250.9.camel@hbabu-laptop>
+ <CAOSf1CEvZ32xC71siuyfUQEcQ4yLoDtj2jGoc3jrmsHc0jD+Vw@mail.gmail.com>
+ <1576710781.12797.10.camel@hbabu-laptop>
+Content-Type: text/plain; charset="UTF-8"
+Date: Thu, 19 Dec 2019 14:31:06 -0800
+Message-ID: <1576794666.12797.50.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-19_07:2019-12-17,2019-12-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=2
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 adultscore=0
- clxscore=1015 bulkscore=0 mlxscore=0 priorityscore=1501 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912190162
+ priorityscore=1501
+ suspectscore=2 impostorscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
+ adultscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912190168
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,232 +92,245 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@ozlabs.org, kvm-ppc@vger.kernel.org,
- bharata@linux.ibm.com
+Cc: Device Tree <devicetree@vger.kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Haren Myneni <haren@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement the H_SVM_INIT_ABORT hcall which the Ultravisor can use to
-abort an SVM after it has issued the H_SVM_INIT_START and before the
-H_SVM_INIT_DONE hcalls. This hcall could be used when Ultravisor
-encounters security violations or other errors when starting an SVM.
+On Wed, 2019-12-18 at 15:13 -0800, Haren Myneni wrote:
+> On Wed, 2019-12-18 at 18:18 +1100, Oliver O'Halloran wrote:
+> > On Wed, Nov 27, 2019 at 12:07 PM Haren Myneni <haren@linux.vnet.ibm.com> wrote:
+> > >
+> > > *snip*
+> > >
+> > > @@ -36,7 +62,18 @@ static int init_vas_instance(struct platform_device *pdev)
+> > >                 return -ENODEV;
+> > >         }
+> > >
+> > > -       if (pdev->num_resources != 4) {
+> > > +       rc = of_property_read_u64(dn, "ibm,vas-port", &port);
+> > > +       if (rc) {
+> > > +               pr_err("No ibm,vas-port property for %s?\n", pdev->name);
+> > > +               /* No interrupts property */
+> > > +               nresources = 4;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * interrupts property is available with 'ibm,vas-port' property.
+> > > +        * 4 Resources and 1 IRQ if interrupts property is available.
+> > > +        */
+> > > +       if (pdev->num_resources != nresources) {
+> > >                 pr_err("Unexpected DT configuration for [%s, %d]\n",
+> > >                                 pdev->name, vasid);
+> > >                 return -ENODEV;
+> > 
+> > Right, so adding the IRQ in firmware will break the VAS driver in
+> > existing kernels since it changes the resource count. This is IMO a
+> > bug in the VAS driver that you should fix, but it does mean we need to
+> > think twice about having firmware assign an interrupt at boot.
+> 
+> Correct, Hence added vas-user-space nvram switch in skiboot.  
+> 
+> > 
+> > I had a closer look at this series and I'm not convinced that any
+> > firmware changes are actually required either. We already have OPAL
+> > calls for allocating an hwirq for the kernel to use and for getting
+> > the IRQ's XIVE trigger port (see pnv_ocxl_alloc_xive_irq() for an
+> > example). Why not use those here too? Doing so would allow us to
+> > assign interrupts to individual windows too which might be useful for
+> > the windows used by the kernel.
+> 
+> Thanks for the pointer. like using pnv_ocxl_alloc_xive_irq(), we can
+> disregard FW change. BTW, VAS fault handling is needed only for user
+> space VAS windows. 
+> 
+>  int vas_alloc_xive_irq(u32 chipid, u32 *irq, u64 *trigger_addr)
+> {
+>         __be64 flags, trigger_page;
+>         u32 hwirq;
+>         s64 rc;
+> 
+>         hwirq = opal_xive_allocate_irq_raw(chipid);
+>         if (hwirq < 0)
+>                 return -ENOENT;
+> 
+>         rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page,
+> NULL,
+>                                 NULL);
+>         if (rc || !trigger_page) {
+>                 xive_native_free_irq(hwirq);
+>                 return -ENOENT;
+>         }
+> 
+>         *irq = hwirq;
+>         *trigger_addr = be64_to_cpu(trigger_page);
+>         return 0;
+> }
+> 
+> We can have common function for VAS and cxl except per chip IRQ
+> allocation is needed for each VAS instance. I will post patch-set with
+> this change.
+> 
 
-Note that this hcall is different from UV_SVM_TERMINATE ucall which
-is used by HV to terminate/cleanup an VM that has becore secure.
+power9 will have only XIVE interrupt controller including on open-power
+systems. Correct?
 
-The H_SVM_INIT_ABORT should basically undo operations that were done
-since the H_SVM_INIT_START hcall - i.e page-out all the VM pages back
-to normal memory, and terminate the SVM.
+VAS need per chip IRQ allocation. The current interfaces (ex:
+xive_native_alloc_irq(void)) allocates IRQ on any chip
+(OPAL_XIVE_ANY_CHIP)
+So to use these interfaces for VAS, any concerns with the following
+patch:
+Changes: passing chip_id to xive_native_alloc_irq() and define
+xive_native_alloc_get_irq_info() in xive/native.c which can be used in
+ocxl and VAS.
 
-(If we do not bring the pages back to normal memory, the text/data
-of the VM would be stuck in secure memory and since the SVM did not
-go secure, its MSR_S bit will be clear and the VM wont be able to
-access its pages even to do a clean exit).
-
-Based on patches and discussion with Paul Mackerras, Ram Pai and
-Bharata Rao.
-
-Signed-off-by: Ram Pai <linuxram@linux.ibm.com>
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
----
-Changelog[v4]:
-	- [Bharata Rao] Add missing rcu locking
-	- [Paul Mackerras] simplify code that walks memslots
-	- Add a check to ensure that H_SVM_INIT_ABORT is called before
-	  H_SVM_INIT_DONE hcall (i.e the SVM is not already secure).
-
-Changelog[v3]:
-	- Rather than pass the NIP/MSR as parameters, load them into
-	  SRR0/SRR1 (like we do with other registers) and terminate
-	  the VM after paging out pages
-	- Move the code to add a skip_page_out parameter into a
-	  separate patch.
-
-Changelog[v2]:
-	[Paul Mackerras] avoid returning to UV "one last time" after
-	the state is cleaned up.  So, we now have H_SVM_INIT_ABORT:
-	- take the VM's NIP/MSR register states as parameters
-	- inherit the state of other registers as at UV_ESM call.
-	After cleaning up the partial state, HV uses these to return
-	directly to the VM with a failed UV_ESM call.
----
- Documentation/powerpc/ultravisor.rst        | 57 +++++++++++++++++++++
- arch/powerpc/include/asm/hvcall.h           |  1 +
- arch/powerpc/include/asm/kvm_book3s_uvmem.h |  6 +++
- arch/powerpc/include/asm/kvm_host.h         |  1 +
- arch/powerpc/kvm/book3s_hv.c                |  3 ++
- arch/powerpc/kvm/book3s_hv_uvmem.c          | 26 ++++++++++
- 6 files changed, 94 insertions(+)
-
-diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/powerpc/ultravisor.rst
-index 730854f73830..8c114c071bfa 100644
---- a/Documentation/powerpc/ultravisor.rst
-+++ b/Documentation/powerpc/ultravisor.rst
-@@ -948,6 +948,63 @@ Use cases
-     up its internal state for this virtual machine.
+diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
+index 24cdf97..b310062 100644
+--- a/arch/powerpc/include/asm/xive.h
++++ b/arch/powerpc/include/asm/xive.h
+@@ -108,7 +108,7 @@ struct xive_q {
+ extern int xive_native_populate_irq_data(u32 hw_irq,
+ 					 struct xive_irq_data *data);
+ extern void xive_cleanup_irq_data(struct xive_irq_data *xd);
+-extern u32 xive_native_alloc_irq(void);
++extern u32 xive_native_alloc_irq(u32 chip_id);
+ extern void xive_native_free_irq(u32 irq);
+ extern int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
  
- 
-+H_SVM_INIT_ABORT
-+----------------
-+
-+    Abort the process of securing an SVM.
-+
-+Syntax
-+~~~~~~
-+
-+.. code-block:: c
-+
-+	uint64_t hypercall(const uint64_t H_SVM_INIT_ABORT)
-+
-+Return values
-+~~~~~~~~~~~~~
-+
-+    One of the following values:
-+
-+	* H_PARAMETER 		on successfully cleaning up the state,
-+				Hypervisor will return this value to the
-+				**guest**, to indicate that the underlying
-+				UV_ESM ultracall failed.
-+
-+	* H_UNSUPPORTED		if called from the wrong context (e.g. from
-+				an SVM or before an H_SVM_INIT_START hypercall).
-+
-+Description
-+~~~~~~~~~~~
-+
-+    Abort the process of securing a virtual machine. This call must
-+    be made after a prior call to ``H_SVM_INIT_START`` hypercall and
-+    before a call to ``H_SVM_INIT_DONE``.
-+
-+    On entry into this hypercall the non-volatile GPRs and FPRs are
-+    expected to contain the values they had at the time the VM issued
-+    the UV_ESM ultracall. Further ``SRR0`` is expected to contain the
-+    address of the instruction after the ``UV_ESM`` ultracall and ``SRR1``
-+    the MSR value with which to return to the VM.
-+
-+    This hypercall will cleanup any partial state that was established for
-+    the VM since the prior ``H_SVM_INIT_START`` hypercall, including paging
-+    out pages that were paged-into secure memory, and issue the
-+    ``UV_SVM_TERMINATE`` ultracall to terminate the VM.
-+
-+    After the partial state is cleaned up, control returns to the VM
-+    (**not Ultravisor**), at the address specified in ``SRR0`` with the
-+    MSR values set to the value in ``SRR1``.
-+
-+Use cases
-+~~~~~~~~~
-+
-+    If after a successful call to ``H_SVM_INIT_START``, the Ultravisor
-+    encounters an error while securing a virtual machine, either due
-+    to lack of resources or because the VM's security information could
-+    not be validated, Ultravisor informs the Hypervisor about it.
-+    Hypervisor should use this call to clean up any internal state for
-+    this virtual machine and return to the VM.
-+
- H_SVM_PAGE_IN
- -------------
- 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 13bd870609c3..e90c073e437e 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -350,6 +350,7 @@
- #define H_SVM_PAGE_OUT		0xEF04
- #define H_SVM_INIT_START	0xEF08
- #define H_SVM_INIT_DONE		0xEF0C
-+#define H_SVM_INIT_ABORT	0xEF14
- 
- /* Values for 2nd argument to H_SET_MODE */
- #define H_SET_MODE_RESOURCE_SET_CIABR		1
-diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-index 3cf8425b9838..5a9834e0e2d1 100644
---- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-@@ -19,6 +19,7 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
- unsigned long kvmppc_h_svm_init_start(struct kvm *kvm);
- unsigned long kvmppc_h_svm_init_done(struct kvm *kvm);
- int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn);
-+unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm);
- void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 			     struct kvm *kvm, bool skip_page_out);
+@@ -137,7 +137,8 @@ extern int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
+ 				       u32 qindex);
+ extern int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
+ extern bool xive_native_has_queue_state_support(void);
+-
++extern int xive_native_alloc_get_irq_info(u32 chip_id, u32 *irq,
++					u64 *trigger_addr);
  #else
-@@ -62,6 +63,11 @@ static inline unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
- 	return H_UNSUPPORTED;
- }
  
-+static inline unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
-+{
-+	return H_UNSUPPORTED;
-+}
-+
- static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+ static inline bool xive_enabled(void) { return false; }
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index 66858b7..59009e1 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -1299,7 +1299,7 @@ int kvmppc_xive_connect_vcpu(struct kvm_device *dev,
+ 	vcpu->arch.xive_cam_word = cpu_to_be32(xc->vp_cam | TM_QW1W2_VO);
+ 
+ 	/* Allocate IPI */
+-	xc->vp_ipi = xive_native_alloc_irq();
++	xc->vp_ipi = xive_native_alloc_irq(OPAL_XIVE_ANY_CHIP);
+ 	if (!xc->vp_ipi) {
+ 		pr_err("Failed to allocate xive irq for VCPU IPI\n");
+ 		r = -EIO;
+@@ -1711,7 +1711,7 @@ static int xive_set_source(struct kvmppc_xive *xive, long irq, u64 addr)
+ 	 * one and get the corresponding data
+ 	 */
+ 	if (!state->ipi_number) {
+-		state->ipi_number = xive_native_alloc_irq();
++		state->ipi_number = xive_native_alloc_irq(OPAL_XIVE_ANY_CHIP);
+ 		if (state->ipi_number == 0) {
+ 			pr_devel("Failed to allocate IPI !\n");
+ 			return -ENOMEM;
+diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+index d83adb1..0adb228 100644
+--- a/arch/powerpc/kvm/book3s_xive_native.c
++++ b/arch/powerpc/kvm/book3s_xive_native.c
+@@ -359,7 +359,7 @@ static int kvmppc_xive_native_set_source(struct kvmppc_xive *xive, long irq,
+ 	 * one and get the corresponding data
+ 	 */
+ 	if (!state->ipi_number) {
+-		state->ipi_number = xive_native_alloc_irq();
++		state->ipi_number = xive_native_alloc_irq(OPAL_XIVE_ANY_CHIP);
+ 		if (state->ipi_number == 0) {
+ 			pr_err("Failed to allocate IRQ !\n");
+ 			rc = -ENXIO;
+diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
+index 8c65aac..fb8f99a 100644
+--- a/arch/powerpc/platforms/powernv/ocxl.c
++++ b/arch/powerpc/platforms/powernv/ocxl.c
+@@ -487,24 +487,8 @@ int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
+ 
+ int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr)
  {
- 	return -EFAULT;
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 577ca95fac7c..8310c0407383 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -278,6 +278,7 @@ struct kvm_resize_hpt;
- /* Flag values for kvm_arch.secure_guest */
- #define KVMPPC_SECURE_INIT_START 0x1 /* H_SVM_INIT_START has been called */
- #define KVMPPC_SECURE_INIT_DONE  0x2 /* H_SVM_INIT_DONE completed */
-+#define KVMPPC_SECURE_INIT_ABORT 0x4 /* H_SVM_INIT_ABORT issued */
- 
- struct kvm_arch {
- 	unsigned int lpid;
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 66d5312be16b..1b22f2c7ad1b 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1099,6 +1099,9 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 	case H_SVM_INIT_DONE:
- 		ret = kvmppc_h_svm_init_done(vcpu->kvm);
- 		break;
-+	case H_SVM_INIT_ABORT:
-+		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
-+		break;
- 
- 	default:
- 		return RESUME_HOST;
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 9a5bbad7d87e..31484a861117 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -287,6 +287,32 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 	}
+-	__be64 flags, trigger_page;
+-	s64 rc;
+-	u32 hwirq;
+-
+-	hwirq = xive_native_alloc_irq();
+-	if (!hwirq)
+-		return -ENOENT;
+-
+-	rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page, NULL,
+-				NULL);
+-	if (rc || !trigger_page) {
+-		xive_native_free_irq(hwirq);
+-		return -ENOENT;
+-	}
+-	*irq = hwirq;
+-	*trigger_addr = be64_to_cpu(trigger_page);
+-	return 0;
+-
++	return xive_native_alloc_get_irq_info(OPAL_XIVE_ANY_CHIP, irq,
++						trigger_addr);
  }
+ EXPORT_SYMBOL_GPL(pnv_ocxl_alloc_xive_irq);
  
-+unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
+index 0ff6b73..c450838 100644
+--- a/arch/powerpc/sysdev/xive/native.c
++++ b/arch/powerpc/sysdev/xive/native.c
+@@ -279,12 +279,12 @@ static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
+ }
+ #endif /* CONFIG_SMP */
+ 
+-u32 xive_native_alloc_irq(void)
++u32 xive_native_alloc_irq(u32 chip_id)
+ {
+ 	s64 rc;
+ 
+ 	for (;;) {
+-		rc = opal_xive_allocate_irq(OPAL_XIVE_ANY_CHIP);
++		rc = opal_xive_allocate_irq(chip_id);
+ 		if (rc != OPAL_BUSY)
+ 			break;
+ 		msleep(OPAL_BUSY_DELAY_MS);
+@@ -295,6 +295,29 @@ u32 xive_native_alloc_irq(void)
+ }
+ EXPORT_SYMBOL_GPL(xive_native_alloc_irq);
+ 
++int xive_native_alloc_get_irq_info(u32 chip_id, u32 *irq, u64 *trigger_addr)
 +{
-+	int srcu_idx;
-+	struct kvm_memory_slot *memslot;
++	__be64 flags, trigger_page;
++	u32 hwirq;
++	s64 rc;
 +
-+	/*
-+	 * Expect to be called only after INIT_START and before INIT_DONE.
-+	 * If INIT_DONE was completed, use normal VM termination sequence.
-+	 */
-+	if (!(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START) ||
-+			(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE))
-+		return H_UNSUPPORTED;
++	hwirq = xive_native_alloc_irq(chip_id);
++	if (!hwirq)
++		return -ENOENT;
 +
-+	srcu_idx = srcu_read_lock(&kvm->srcu);
++	rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page, NULL,
++				NULL);
++	if (rc || !trigger_page) {
++		xive_native_free_irq(hwirq);
++		return -ENOENT;
++	}
++	*irq = hwirq;
++	*trigger_addr = be64_to_cpu(trigger_page);
 +
-+	kvm_for_each_memslot(memslot, kvm_memslots(kvm))
-+		kvmppc_uvmem_drop_pages(memslot, kvm, false);
-+
-+	srcu_read_unlock(&kvm->srcu, srcu_idx);
-+
-+	kvm->arch.secure_guest = 0;
-+	uv_svm_terminate(kvm->arch.lpid);
-+
-+	return H_PARAMETER;
++	return 0;
 +}
++EXPORT_SYMBOL(xive_native_alloc_get_irq_info);
 +
- /*
-  * Get a free device PFN from the pool
-  *
--- 
-2.17.2
+ void xive_native_free_irq(u32 irq)
+ {
+ 	for (;;) {
+
+
+
+
+
+
 
