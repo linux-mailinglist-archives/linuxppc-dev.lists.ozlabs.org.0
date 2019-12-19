@@ -1,72 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C05127006
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:52:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A69126F9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:18:46 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47f4Vp60VyzDqqY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 08:18:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47f5GG2SKpzDqDr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 08:52:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
- helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="DpAgGRtL"; 
- dkim-atps=neutral
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
- [216.228.121.65])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47f4Sh5bxBzDqBm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 08:16:52 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dfbe8b30000>; Thu, 19 Dec 2019 13:16:35 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Thu, 19 Dec 2019 13:16:45 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Thu, 19 Dec 2019 13:16:45 -0800
-Received: from [10.2.165.11] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Dec
- 2019 21:16:42 +0000
-Subject: Re: [PATCH v11 00/25] mm/gup: track dma-pinned pages: FOLL_PIN
-To: Jason Gunthorpe <jgg@ziepe.ca>
-References: <20191216222537.491123-1-jhubbard@nvidia.com>
- <20191219132607.GA410823@unreal>
- <a4849322-8e17-119e-a664-80d9f95d850b@nvidia.com>
- <20191219210743.GN17227@ziepe.ca>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <42a3e5c1-6301-db0b-5d09-212edf5ecf2a@nvidia.com>
-Date: Thu, 19 Dec 2019 13:13:54 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47f5DB436szDqlj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 08:51:06 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBJLlVxe038958; Thu, 19 Dec 2019 16:50:55 -0500
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2x0h0n8yr4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Dec 2019 16:50:55 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBJLjn6e016456;
+ Thu, 19 Dec 2019 21:50:53 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03dal.us.ibm.com with ESMTP id 2wvqc7ee0y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Dec 2019 21:50:53 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBJLoqQh65274332
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Dec 2019 21:50:52 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 284396E050;
+ Thu, 19 Dec 2019 21:50:52 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 139AC6E052;
+ Thu, 19 Dec 2019 21:50:52 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.70.94.45])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Dec 2019 21:50:51 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id 77F9B2E0EC5; Thu, 19 Dec 2019 13:50:50 -0800 (PST)
+Date: Thu, 19 Dec 2019 13:50:50 -0800
+From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH V3 2/2] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
+Message-ID: <20191219215050.GA22629@us.ibm.com>
+References: <20191215021104.GA27378@us.ibm.com>
+ <20191215021208.GB27378@us.ibm.com>
+ <20191216032911.GA25495@in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20191219210743.GN17227@ziepe.ca>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576790195; bh=e+stzM4MKJvMbnHvF2MQtGYZPTDUXmhAC++H/dKblxU=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=DpAgGRtLU03goQ45lwT7ONh8PGmHo2uEl58mvIXxDE1nHXoSem5kfykU7etb/JcJL
- /yvdQuNedqWs+SUfVSLa4E60NrM+DSMnCAe2ItTu7yCQ5BHkbAsDg8Mpyow9MA1pYC
- 3jVYe0GuNI9xJv3hjbBlrnChECIJB3Q5siLf6V5xGWCqbhXjMLlDdPH405dRvVKPVH
- 0B/YfWOP+8DomZJl09OCXT8zLxeag4uByq64+u082UEQpj/kDFhFOsIPO4HgJs9I5d
- GI+vJAY5OMeBcbGVYpOeSe0O73rRuIYou0nCs6Mvptf4ghAI7UtlU7flZFGsoZAujM
- ZE4962uBaaz9A==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191216032911.GA25495@in.ibm.com>
+X-Operating-System: Linux 2.0.32 on an i486
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-19_07:2019-12-17,2019-12-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 mlxlogscore=667
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1912190162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,106 +88,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Maor Gottlieb <maorg@mellanox.com>, Leon Romanovsky <leon@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex
- Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxram@us.ibm.com, kvm-ppc@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/19/19 1:07 PM, Jason Gunthorpe wrote:
-> On Thu, Dec 19, 2019 at 12:30:31PM -0800, John Hubbard wrote:
->> On 12/19/19 5:26 AM, Leon Romanovsky wrote:
->>> On Mon, Dec 16, 2019 at 02:25:12PM -0800, John Hubbard wrote:
->>>> Hi,
->>>>
->>>> This implements an API naming change (put_user_page*() -->
->>>> unpin_user_page*()), and also implements tracking of FOLL_PIN pages. It
->>>> extends that tracking to a few select subsystems. More subsystems will
->>>> be added in follow up work.
->>>
->>> Hi John,
->>>
->>> The patchset generates kernel panics in our IB testing. In our tests, we
->>> allocated single memory block and registered multiple MRs using the single
->>> block.
->>>
->>> The possible bad flow is:
->>>    ib_umem_geti() ->
->>>     pin_user_pages_fast(FOLL_WRITE) ->
->>>      internal_get_user_pages_fast(FOLL_WRITE) ->
->>>       gup_pgd_range() ->
->>>        gup_huge_pd() ->
->>>         gup_hugepte() ->
->>>          try_grab_compound_head() ->
->>
->> Hi Leon,
->>
->> Thanks very much for the detailed report! So we're overflowing...
->>
->> At first look, this seems likely to be hitting a weak point in the
->> GUP_PIN_COUNTING_BIAS-based design, one that I believed could be deferred
->> (there's a writeup in Documentation/core-api/pin_user_page.rst, lines
->> 99-121). Basically it's pretty easy to overflow the page->_refcount
->> with huge pages if the pages have a *lot* of subpages.
->>
->> We can only do about 7 pins on 1GB huge pages that use 4KB subpages.
+Bharata B Rao [bharata@linux.ibm.com] wrote:
+> On Sat, Dec 14, 2019 at 06:12:08PM -0800, Sukadev Bhattiprolu wrote:
+> > +unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+> > +{
+> > +	int i;
+> > +
+> > +	if (!(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START))
+> > +		return H_UNSUPPORTED;
+> > +
+> > +	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
+> > +		struct kvm_memory_slot *memslot;
+> > +		struct kvm_memslots *slots = __kvm_memslots(kvm, i);
+> > +
+> > +		if (!slots)
+> > +			continue;
+> > +
+> > +		kvm_for_each_memslot(memslot, slots)
+> > +			kvmppc_uvmem_drop_pages(memslot, kvm, false);
+> > +	}
 > 
-> Considering that establishing these pins is entirely under user
-> control, we can't have a limit here.
+> You need to hold srcu_read_lock(&kvm->srcu) here.
 
-There's already a limit, it's just a much larger one. :) What does "no limit"
-really mean, numerically, to you in this case?
+Yes, thanks! Fixed in the next version.
 
-> 
-> If the number of allowed pins are exhausted then the
-> pin_user_pages_fast() must fail back to the user.
+Sukadev
 
-
-I'll poke around the IB call stack and see how much of that return path
-is in place, if any. Because it's the same situation for get_user_pages_fast().
-This code just added a warning on overflow so we could spot it early.
-
-> 
->> 3. It would be nice if I could reproduce this. I have a two-node mlx5 Infiniband
->> test setup, but I have done only the tiniest bit of user space IB coding, so
->> if you have any test programs that aren't too hard to deal with that could
->> possibly hit this, or be tweaked to hit it, I'd be grateful. Keeping in mind
->> that I'm not an advanced IB programmer. At all. :)
-> 
-> Clone this:
-> 
-> https://github.com/linux-rdma/rdma-core.git
-> 
-> Install all the required deps to build it (notably cython), see the README.md
-> 
-> $ ./build.sh
-> $ build/bin/run_tests.py
-> 
-> If you get things that far I think Leon can get a reproduction for you
-> 
-
-OK, here goes.
-
-thanks,
--- 
-John Hubbard
-NVIDIA
