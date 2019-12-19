@@ -2,72 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B193E1258CF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 01:47:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F18A1258D7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 01:49:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dY9c6gdKzDqn4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 11:47:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dYD40kfyzDqQP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 11:49:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="aBwSwjYN"; 
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="qjIOKqdC"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
+ [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dXy12bZ2zDqjy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 11:36:57 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id s64so2157933pgb.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2019 16:36:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=9yYw7uK/r4ls0zQR1ijXzMQLrhbTm/2efW8NRcfeI3g=;
- b=aBwSwjYNEdHoUYwkD29Hmu30mC9mAi+Ua9He9b+7Gp9xZbWoohReTm/ssm6oDjMl3J
- zbw9D1e7IG5tL9cRqDaCnz3H5n4tUEvVquewh6hE+jmoQg3iAHJgtCxkY2c/3cLOtqcz
- wbCJZmM53FNxtqaPPNrCCPqBAG/IKCNvCAczM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=9yYw7uK/r4ls0zQR1ijXzMQLrhbTm/2efW8NRcfeI3g=;
- b=TTa6bXfhSTh/LTF+6WXDUi9fTJ6dDP12gYwRNBHUbpnITqeJX9t+c6dWSOXTNznmGp
- wMZoAomGl4LbaO4hJG/7PiwwnMwfN2uXPj+9GcX2JRUQPVsWt/jxpfmoB+CIM/DeTQ6d
- fOUBGpUnOjucXzW6AlLEpOpwGQn0Ndo/NN/W7aOKrt0Z9A2YCLiv+h4SEeiQp4K3YQ1b
- YlTkL+PCgK+gzM5s/K8Axo9HW67OBxvh6V42CGT7obkfdI8Hu/ZyhkwgDIoZJcaiAXje
- lor9PNFVkUeVDkosX0Fha/aKZzIjTztR4fDAQuhSERZB0/en3jI2UcQjj6NJrqwA+fDo
- 5CqQ==
-X-Gm-Message-State: APjAAAWXolUoGKLQRfJQvcsk6B2XKv/xl4DNpji8/JMzfcwz49xtZ+Xn
- EsdNOq1RRE4Po6pe6frsEF5O2A==
-X-Google-Smtp-Source: APXvYqwyhVQiIzv/LuafoqEaWJn2SzyCX1wRFsJdBoNuMewhhXy2cfPYirqcsY8YPPxj4vyVqsGhvw==
-X-Received: by 2002:a62:7b54:: with SMTP id w81mr6297481pfc.127.1576715814125; 
- Wed, 18 Dec 2019 16:36:54 -0800 (PST)
-Received: from localhost
- (2001-44b8-111e-5c00-b05d-cbfe-b2ee-de17.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:b05d:cbfe:b2ee:de17])
- by smtp.gmail.com with ESMTPSA id q15sm4682070pgi.55.2019.12.18.16.36.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2019 16:36:53 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-Subject: [PATCH v4 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-Date: Thu, 19 Dec 2019 11:36:30 +1100
-Message-Id: <20191219003630.31288-5-dja@axtens.net>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191219003630.31288-1-dja@axtens.net>
-References: <20191219003630.31288-1-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dY2R1yXqzDqgp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 11:40:46 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dfac6eb0000>; Wed, 18 Dec 2019 16:40:11 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Wed, 18 Dec 2019 16:40:40 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Wed, 18 Dec 2019 16:40:40 -0800
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Dec
+ 2019 00:40:40 +0000
+Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
+ Frontend Transport; Thu, 19 Dec 2019 00:40:39 +0000
+Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
+ rnnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5dfac7070000>; Wed, 18 Dec 2019 16:40:39 -0800
+From: John Hubbard <jhubbard@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v12] mm: devmap: refactor 1-based refcounting for ZONE_DEVICE
+ pages
+Date: Wed, 18 Dec 2019 16:40:37 -0800
+Message-ID: <20191219004037.1198078-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20191218160420.gyt4c45e6zsnxqv6@box>
+References: <20191218160420.gyt4c45e6zsnxqv6@box>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1576716012; bh=meY7XSFZGFTm0ReBYolvDdqRBgCh/HSlArb5Zg3NFvk=;
+ h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+ In-Reply-To:References:MIME-Version:X-NVConfidentiality:
+ Content-Type:Content-Transfer-Encoding;
+ b=qjIOKqdCUd7FwtXps/EX5rcy2jzX7ECH7d3gscZlvPWK+USZzY1q0dAG+H1A1e4bW
+ xIdpfAI5t4vavi9qpNMvGtiweIkR1awxL4TYXPZwaeONkFcFN1zXQbpW/68snevPNj
+ 5QIP3HFe/KnwTQJ5t/CB3h4eLlluOox9FBIYdqA3HpeElohSY3KZjP+6dBkbINRhFa
+ ZYRgTzuq1d6+3U/JsKziS6j7uhAZMlje1/Nk/EI1s0RtNW9Xt5H7STM2pMGvX9z96O
+ 6weRpZ4IdcHq5gWYu+R05VYD+Ro8D3XakiiYQK6azXLHolwxZWIhC6GYnIMG6nSLyM
+ S6aDYq/kU5kxg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,647 +76,206 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Axtens <dja@axtens.net>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KASAN support on Book3S is a bit tricky to get right:
+An upcoming patch changes and complicates the refcounting and
+especially the "put page" aspects of it. In order to keep
+everything clean, refactor the devmap page release routines:
 
- - It would be good to support inline instrumentation so as to be able to
-   catch stack issues that cannot be caught with outline mode.
+* Rename put_devmap_managed_page() to page_is_devmap_managed(),
+  and limit the functionality to "read only": return a bool,
+  with no side effects.
 
- - Inline instrumentation requires a fixed offset.
+* Add a new routine, put_devmap_managed_page(), to handle
+  decrementing the refcount for ZONE_DEVICE pages.
 
- - Book3S runs code in real mode after booting. Most notably a lot of KVM
-   runs in real mode, and it would be good to be able to instrument it.
+* Change callers (just release_pages() and put_page()) to check
+  page_is_devmap_managed() before calling the new
+  put_devmap_managed_page() routine. This is a performance
+  point: put_page() is a hot path, so we need to avoid non-
+  inline function calls where possible.
 
- - Because code runs in real mode after boot, the offset has to point to
-   valid memory both in and out of real mode.
+* Rename __put_devmap_managed_page() to free_devmap_managed_page(),
+  and limit the functionality to unconditionally freeing a devmap
+  page.
 
-    [ppc64 mm note: The kernel installs a linear mapping at effective
-    address c000... onward. This is a one-to-one mapping with physical
-    memory from 0000... onward. Because of how memory accesses work on
-    powerpc 64-bit Book3S, a kernel pointer in the linear map accesses the
-    same memory both with translations on (accessing as an 'effective
-    address'), and with translations off (accessing as a 'real
-    address'). This works in both guests and the hypervisor. For more
-    details, see s5.7 of Book III of version 3 of the ISA, in particular
-    the Storage Control Overview, s5.7.3, and s5.7.5 - noting that this
-    KASAN implementation currently only supports Radix.]
+This is originally based on a separate patch by Ira Weiny, which
+applied to an early version of the put_user_page() experiments.
+Since then, J=C3=A9r=C3=B4me Glisse suggested the refactoring described abo=
+ve.
 
-One approach is just to give up on inline instrumentation. This way all
-checks can be delayed until after everything set is up correctly, and the
-address-to-shadow calculations can be overridden. However, the features and
-speed boost provided by inline instrumentation are worth trying to do
-better.
-
-If _at compile time_ it is known how much contiguous physical memory a
-system has, the top 1/8th of the first block of physical memory can be set
-aside for the shadow. This is a big hammer and comes with 3 big
-consequences:
-
- - there's no nice way to handle physically discontiguous memory, so only
-   the first physical memory block can be used.
-
- - kernels will simply fail to boot on machines with less memory than
-   specified when compiling.
-
- - kernels running on machines with more memory than specified when
-   compiling will simply ignore the extra memory.
-
-Implement and document KASAN this way. The current implementation is Radix
-only.
-
-Despite the limitations, it can still find bugs,
-e.g. http://patchwork.ozlabs.org/patch/1103775/
-
-At the moment, this physical memory limit must be set _even for outline
-mode_. This may be changed in a later series - a different implementation
-could be added for outline mode that dynamically allocates shadow at a
-fixed offset. For example, see https://patchwork.ozlabs.org/patch/795211/
-
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Balbir Singh <bsingharora@gmail.com> # ppc64 out-of-line radix version
-Cc: Christophe Leroy <christophe.leroy@c-s.fr> # ppc32 version
-Signed-off-by: Daniel Axtens <dja@axtens.net>
-
+Cc: Christoph Hellwig <hch@lst.de>
+Suggested-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
-Changes since v3:
- - Address further feedback from Christophe.
- - Drop changes to stack walking, it looks like the issue I observed is
-   related to that particular stack, not stack-walking generally.
+ include/linux/mm.h | 18 +++++++++++++-----
+ mm/memremap.c      | 16 ++--------------
+ mm/swap.c          | 27 ++++++++++++++++++++++++++-
+ 3 files changed, 41 insertions(+), 20 deletions(-)
 
-Changes since v2:
-
- - Address feedback from Christophe around cleanups and docs.
- - Address feedback from Balbir: at this point I don't have a good solution
-   for the issues you identify around the limitations of the inline implementation
-   but I think that it's worth trying to get the stack instrumentation support.
-   I'm happy to have an alternative and more flexible outline mode - I had
-   envisoned this would be called 'lightweight' mode as it imposes fewer restrictions.
-   I've linked to your implementation. I think it's best to add it in a follow-up series.
- - Made the default PHYS_MEM_SIZE_FOR_KASAN value 1024MB. I think most people have
-   guests with at least that much memory in the Radix 64s case so it's a much
-   saner default - it means that if you just turn on KASAN without reading the
-   docs you're much more likely to have a bootable kernel, which you will never
-   have if the value is set to zero! I'm happy to bikeshed the value if we want.
-
-Changes since v1:
- - Landed kasan vmalloc support upstream
- - Lots of feedback from Christophe.
-
-Changes since the rfc:
-
- - Boots real and virtual hardware, kvm works.
-
- - disabled reporting when we're checking the stack for exception
-   frames. The behaviour isn't wrong, just incompatible with KASAN.
-
- - Documentation!
-
- - Dropped old module stuff in favour of KASAN_VMALLOC.
-
-The bugs with ftrace and kuap were due to kernel bloat pushing
-prom_init calls to be done via the plt. Because we did not have
-a relocatable kernel, and they are done very early, this caused
-everything to explode. Compile with CONFIG_RELOCATABLE!
----
- Documentation/dev-tools/kasan.rst            |   8 +-
- Documentation/powerpc/kasan.txt              | 112 ++++++++++++++++++-
- arch/powerpc/Kconfig                         |   2 +
- arch/powerpc/Kconfig.debug                   |  21 ++++
- arch/powerpc/Makefile                        |  11 ++
- arch/powerpc/include/asm/book3s/64/hash.h    |   4 +
- arch/powerpc/include/asm/book3s/64/pgtable.h |   7 ++
- arch/powerpc/include/asm/book3s/64/radix.h   |   5 +
- arch/powerpc/include/asm/kasan.h             |  21 +++-
- arch/powerpc/kernel/prom.c                   |  61 +++++++++-
- arch/powerpc/mm/kasan/Makefile               |   1 +
- arch/powerpc/mm/kasan/init_book3s_64.c       |  70 ++++++++++++
- arch/powerpc/platforms/Kconfig.cputype       |   1 +
- 13 files changed, 316 insertions(+), 8 deletions(-)
- create mode 100644 arch/powerpc/mm/kasan/init_book3s_64.c
-
-diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/kasan.rst
-index 4af2b5d2c9b4..d99dc580bc11 100644
---- a/Documentation/dev-tools/kasan.rst
-+++ b/Documentation/dev-tools/kasan.rst
-@@ -22,8 +22,9 @@ global variables yet.
- Tag-based KASAN is only supported in Clang and requires version 7.0.0 or later.
- 
- Currently generic KASAN is supported for the x86_64, arm64, xtensa and s390
--architectures. It is also supported on 32-bit powerpc kernels. Tag-based KASAN
--is supported only on arm64.
-+architectures. It is also supported on powerpc, for 32-bit kernels, and for
-+64-bit kernels running under the Radix MMU. Tag-based KASAN is supported only
-+on arm64.
- 
- Usage
- -----
-@@ -256,7 +257,8 @@ CONFIG_KASAN_VMALLOC
- ~~~~~~~~~~~~~~~~~~~~
- 
- With ``CONFIG_KASAN_VMALLOC``, KASAN can cover vmalloc space at the
--cost of greater memory usage. Currently this is only supported on x86.
-+cost of greater memory usage. Currently this is optional on x86, and
-+required on 64-bit powerpc.
- 
- This works by hooking into vmalloc and vmap, and dynamically
- allocating real shadow memory to back the mappings.
-diff --git a/Documentation/powerpc/kasan.txt b/Documentation/powerpc/kasan.txt
-index a85ce2ff8244..f134a91600ad 100644
---- a/Documentation/powerpc/kasan.txt
-+++ b/Documentation/powerpc/kasan.txt
-@@ -1,4 +1,4 @@
--KASAN is supported on powerpc on 32-bit only.
-+KASAN is supported on powerpc on 32-bit and Radix 64-bit only.
- 
- 32 bit support
- ==============
-@@ -10,3 +10,113 @@ fixmap area and occupies one eighth of the total kernel virtual memory space.
- 
- Instrumentation of the vmalloc area is not currently supported, but modules
- are.
-+
-+64 bit support
-+==============
-+
-+Currently, only the radix MMU is supported. There have been versions for Book3E
-+processors floating around on the mailing list, but nothing has been merged.
-+
-+KASAN support on Book3S is a bit tricky to get right:
-+
-+ - It would be good to support inline instrumentation so as to be able to catch
-+   stack issues that cannot be caught with outline mode.
-+
-+ - Inline instrumentation requires a fixed offset.
-+
-+ - Book3S runs code in real mode after booting. Most notably a lot of KVM runs
-+   in real mode, and it would be good to be able to instrument it.
-+
-+ - Because code runs in real mode after boot, the offset has to point to
-+   valid memory both in and out of real mode.
-+
-+One approach is just to give up on inline instrumentation. This way all checks
-+can be delayed until after everything set is up correctly, and the
-+address-to-shadow calculations can be overridden. However, the features and
-+speed boost provided by inline instrumentation are worth trying to do better.
-+
-+If _at compile time_ it is known how much contiguous physical memory a system
-+has, the top 1/8th of the first block of physical memory can be set aside for
-+the shadow. This is a big hammer and comes with 3 big consequences:
-+
-+ - there's no nice way to handle physically discontiguous memory, so only the
-+   first physical memory block can be used.
-+
-+ - kernels will simply fail to boot on machines with less memory than specified
-+   when compiling.
-+
-+ - kernels running on machines with more memory than specified when compiling
-+   will simply ignore the extra memory.
-+
-+At the moment, this physical memory limit must be set _even for outline mode_.
-+This may be changed in a future version - a different implementation could be
-+added for outline mode that dynamically allocates shadow at a fixed offset.
-+For example, see https://patchwork.ozlabs.org/patch/795211/
-+
-+This value is configured in CONFIG_PHYS_MEM_SIZE_FOR_KASAN.
-+
-+Tips
-+----
-+
-+ - Compile with CONFIG_RELOCATABLE.
-+
-+   In development, boot hangs were observed when building with ftrace and KUAP
-+   on. These ended up being due to kernel bloat pushing prom_init calls to be
-+   done via the PLT. Because the kernel was not relocatable, and the calls are
-+   done very early, this caused execution to jump off into somewhere
-+   invalid. Enabling relocation fixes this.
-+
-+NUMA/discontiguous physical memory
-+----------------------------------
-+
-+Currently the code cannot really deal with discontiguous physical memory. Only
-+physical memory that is contiguous from physical address zero can be used. The
-+size of that memory, not total memory, must be specified when configuring the
-+kernel.
-+
-+Discontiguous memory can occur on machines with memory spread across multiple
-+nodes. For example, on a Talos II with 64GB of RAM:
-+
-+ - 32GB runs from 0x0 to 0x0000_0008_0000_0000,
-+ - then there's a gap,
-+ - then the final 32GB runs from 0x0000_2000_0000_0000 to 0x0000_2008_0000_0000
-+
-+This can create _significant_ issues:
-+
-+ - If the machine is treated as having 64GB of _contiguous_ RAM, the
-+   instrumentation would assume that it ran from 0x0 to
-+   0x0000_0010_0000_0000. The last 1/8th - 0x0000_000e_0000_0000 to
-+   0x0000_0010_0000_0000 would be reserved as the shadow region. But when the
-+   kernel tried to access any of that, it would be trying to access pages that
-+   are not physically present.
-+
-+ - If the shadow region size is based on the top address, then the shadow
-+   region would be 0x2008_0000_0000 / 8 = 0x0401_0000_0000 bytes = 4100 GB of
-+   memory, clearly more than the 64GB of RAM physically present.
-+
-+Therefore, the code currently is restricted to dealing with memory in the node
-+starting at 0x0. For this system, that's 32GB. If a contiguous physical memory
-+size greater than the size of the first contiguous region of memory is
-+specified, the system will be unable to boot or even print an error message.
-+
-+The layout of a system's memory can be observed in the messages that the Radix
-+MMU prints on boot. The Talos II discussed earlier has:
-+
-+radix-mmu: Mapped 0x0000000000000000-0x0000000040000000 with 1.00 GiB pages (exec)
-+radix-mmu: Mapped 0x0000000040000000-0x0000000800000000 with 1.00 GiB pages
-+radix-mmu: Mapped 0x0000200000000000-0x0000200800000000 with 1.00 GiB pages
-+
-+As discussed, this system would be configured for 32768 MB.
-+
-+Another system prints:
-+
-+radix-mmu: Mapped 0x0000000000000000-0x0000000040000000 with 1.00 GiB pages (exec)
-+radix-mmu: Mapped 0x0000000040000000-0x0000002000000000 with 1.00 GiB pages
-+radix-mmu: Mapped 0x0000200000000000-0x0000202000000000 with 1.00 GiB pages
-+
-+This machine has more memory: 0x0000_0040_0000_0000 total, but only
-+0x0000_0020_0000_0000 is physically contiguous from zero, so it would be
-+configured for 131072 MB of physically contiguous memory.
-+
-+This restriction currently also affects outline mode, but this could be
-+changed in future if an alternative outline implementation is added.
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 6987b0832e5f..b03060523179 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -173,6 +173,8 @@ config PPC
- 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KASAN			if PPC32
-+	select HAVE_ARCH_KASAN			if PPC_BOOK3S_64 && PPC_RADIX_MMU
-+	select HAVE_ARCH_KASAN_VMALLOC		if PPC_BOOK3S_64 && PPC_RADIX_MMU
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
-index 4e1d39847462..5c454f8fa24b 100644
---- a/arch/powerpc/Kconfig.debug
-+++ b/arch/powerpc/Kconfig.debug
-@@ -394,6 +394,27 @@ config PPC_FAST_ENDIAN_SWITCH
- 	help
- 	  If you're unsure what this is, say N.
- 
-+config PHYS_MEM_SIZE_FOR_KASAN
-+	int "Contiguous physical memory size for KASAN (MB)" if KASAN && PPC_BOOK3S_64
-+	default 1024
-+	help
-+
-+	  To get inline instrumentation support for KASAN on 64-bit Book3S
-+	  machines, you need to know how much contiguous physical memory your
-+	  system has. A shadow offset will be calculated based on this figure,
-+	  which will be compiled in to the kernel. KASAN will use this offset
-+	  to access its shadow region, which is used to verify memory accesses.
-+
-+	  If you attempt to boot on a system with less memory than you specify
-+	  here, your system will fail to boot very early in the process. If you
-+	  boot on a system with more memory than you specify, the extra memory
-+	  will wasted - it will be reserved and not used.
-+
-+	  For systems with discontiguous blocks of physical memory, specify the
-+	  size of the block starting at 0x0. You can determine this by looking
-+	  at the memory layout info printed to dmesg by the radix MMU code
-+	  early in boot. See Documentation/powerpc/kasan.txt.
-+
- config KASAN_SHADOW_OFFSET
- 	hex
- 	depends on KASAN
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index f35730548e42..eb47dc768c0a 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -230,6 +230,17 @@ ifdef CONFIG_476FPE_ERR46
- 		-T $(srctree)/arch/powerpc/platforms/44x/ppc476_modules.lds
- endif
- 
-+ifdef CONFIG_PPC_BOOK3S_64
-+# The KASAN shadow offset is such that linear map (0xc000...) is shadowed by
-+# the last 8th of linearly mapped physical memory. This way, if the code uses
-+# 0xc addresses throughout, accesses work both in in real mode (where the top
-+# bits are ignored) and outside of real mode.
-+#
-+# 0xc000000000000000 >> 3 = 0xa800000000000000 = 12105675798371893248
-+KASAN_SHADOW_OFFSET = $(shell echo 7 \* 1024 \* 1024 \* $(CONFIG_PHYS_MEM_SIZE_FOR_KASAN) / 8 + 12105675798371893248 | bc)
-+KBUILD_CFLAGS += -DKASAN_SHADOW_OFFSET=$(KASAN_SHADOW_OFFSET)UL
-+endif
-+
- # No AltiVec or VSX instructions when building kernel
- KBUILD_CFLAGS += $(call cc-option,-mno-altivec)
- KBUILD_CFLAGS += $(call cc-option,-mno-vsx)
-diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
-index 2781ebf6add4..fce329b8452e 100644
---- a/arch/powerpc/include/asm/book3s/64/hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash.h
-@@ -18,6 +18,10 @@
- #include <asm/book3s/64/hash-4k.h>
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index c97ea3b694e6..87b54126e46d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -952,9 +952,10 @@ static inline bool is_zone_device_page(const struct pa=
+ge *page)
  #endif
- 
-+#define H_PTRS_PER_PTE		(1 << H_PTE_INDEX_SIZE)
-+#define H_PTRS_PER_PMD		(1 << H_PMD_INDEX_SIZE)
-+#define H_PTRS_PER_PUD		(1 << H_PUD_INDEX_SIZE)
+=20
+ #ifdef CONFIG_DEV_PAGEMAP_OPS
+-void __put_devmap_managed_page(struct page *page);
++void free_devmap_managed_page(struct page *page);
+ DECLARE_STATIC_KEY_FALSE(devmap_managed_key);
+-static inline bool put_devmap_managed_page(struct page *page)
 +
- /* Bits to set in a PMD/PUD/PGD entry valid bit*/
- #define HASH_PMD_VAL_BITS		(0x8000000000000000UL)
- #define HASH_PUD_VAL_BITS		(0x8000000000000000UL)
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index b01624e5c467..209817235a44 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -231,6 +231,13 @@ extern unsigned long __pmd_frag_size_shift;
- #define PTRS_PER_PUD	(1 << PUD_INDEX_SIZE)
- #define PTRS_PER_PGD	(1 << PGD_INDEX_SIZE)
- 
-+#define MAX_PTRS_PER_PTE	((H_PTRS_PER_PTE > R_PTRS_PER_PTE) ? \
-+				  H_PTRS_PER_PTE : R_PTRS_PER_PTE)
-+#define MAX_PTRS_PER_PMD	((H_PTRS_PER_PMD > R_PTRS_PER_PMD) ? \
-+				  H_PTRS_PER_PMD : R_PTRS_PER_PMD)
-+#define MAX_PTRS_PER_PUD	((H_PTRS_PER_PUD > R_PTRS_PER_PUD) ? \
-+				  H_PTRS_PER_PUD : R_PTRS_PER_PUD)
-+
- /* PMD_SHIFT determines what a second-level page table entry can map */
- #define PMD_SHIFT	(PAGE_SHIFT + PTE_INDEX_SIZE)
- #define PMD_SIZE	(1UL << PMD_SHIFT)
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index d97db3ad9aae..4f826259de71 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -35,6 +35,11 @@
- #define RADIX_PMD_SHIFT		(PAGE_SHIFT + RADIX_PTE_INDEX_SIZE)
- #define RADIX_PUD_SHIFT		(RADIX_PMD_SHIFT + RADIX_PMD_INDEX_SIZE)
- #define RADIX_PGD_SHIFT		(RADIX_PUD_SHIFT + RADIX_PUD_INDEX_SIZE)
-+
-+#define R_PTRS_PER_PTE		(1 << RADIX_PTE_INDEX_SIZE)
-+#define R_PTRS_PER_PMD		(1 << RADIX_PMD_INDEX_SIZE)
-+#define R_PTRS_PER_PUD		(1 << RADIX_PUD_INDEX_SIZE)
-+
- /*
-  * Size of EA range mapped by our pagetables.
-  */
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index 296e51c2f066..f18268cbdc33 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -2,6 +2,9 @@
- #ifndef __ASM_KASAN_H
- #define __ASM_KASAN_H
- 
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+
- #ifdef CONFIG_KASAN
- #define _GLOBAL_KASAN(fn)	_GLOBAL(__##fn)
- #define _GLOBAL_TOC_KASAN(fn)	_GLOBAL_TOC(__##fn)
-@@ -14,13 +17,19 @@
- 
- #ifndef __ASSEMBLY__
- 
--#include <asm/page.h>
-+#ifdef CONFIG_KASAN
-+void kasan_init(void);
-+#else
-+static inline void kasan_init(void) { }
-+#endif
- 
- #define KASAN_SHADOW_SCALE_SHIFT	3
- 
- #define KASAN_SHADOW_START	(KASAN_SHADOW_OFFSET + \
- 				 (PAGE_OFFSET >> KASAN_SHADOW_SCALE_SHIFT))
- 
-+#ifdef CONFIG_PPC32
-+
- #define KASAN_SHADOW_OFFSET	ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
- 
- #define KASAN_SHADOW_END	0UL
-@@ -30,11 +39,17 @@
- #ifdef CONFIG_KASAN
- void kasan_early_init(void);
- void kasan_mmu_init(void);
--void kasan_init(void);
- #else
--static inline void kasan_init(void) { }
- static inline void kasan_mmu_init(void) { }
- #endif
-+#endif
-+
-+#ifdef CONFIG_PPC_BOOK3S_64
-+
-+#define KASAN_SHADOW_SIZE ((u64)CONFIG_PHYS_MEM_SIZE_FOR_KASAN * \
-+				1024 * 1024 * 1 / 8)
-+
-+#endif /* CONFIG_PPC_BOOK3S_64 */
- 
- #endif /* __ASSEMBLY */
- #endif
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6620f37abe73..f8ef0074b320 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -72,6 +72,7 @@ unsigned long tce_alloc_start, tce_alloc_end;
- u64 ppc64_rma_size;
- #endif
- static phys_addr_t first_memblock_size;
-+static phys_addr_t top_phys_addr;
- static int __initdata boot_cpu_count;
- 
- static int __init early_parse_mem(char *p)
-@@ -449,6 +450,26 @@ static bool validate_mem_limit(u64 base, u64 *size)
++static inline bool page_is_devmap_managed(struct page *page)
  {
- 	u64 max_mem = 1UL << (MAX_PHYSMEM_BITS);
- 
-+	/*
-+	 * To handle the NUMA/discontiguous memory case, don't allow a block
-+	 * to be added if it falls completely beyond the configured physical
-+	 * memory. Print an informational message.
-+	 *
-+	 * Frustratingly we also see this with qemu - it seems to split the
-+	 * specified memory into a number of smaller blocks. If this happens
-+	 * under qemu, it probably represents misconfiguration. So we want
-+	 * the message to be noticeable, but not shouty.
-+	 *
-+	 * See Documentation/powerpc/kasan.txt
-+	 */
-+	if (IS_ENABLED(CONFIG_KASAN) &&
-+	    (base >= ((u64)CONFIG_PHYS_MEM_SIZE_FOR_KASAN << 20))) {
-+		pr_warn("KASAN: not adding memory block at %llx (size %llx)\n"
-+			"This could be due to discontiguous memory or kernel misconfiguration.",
-+			base, *size);
-+		return false;
-+	}
-+
- 	if (base >= max_mem)
+ 	if (!static_branch_unlikely(&devmap_managed_key))
  		return false;
- 	if ((base + *size) > max_mem)
-@@ -572,8 +593,10 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
- 
- 	/* Add the chunk to the MEMBLOCK list */
- 	if (add_mem_to_memblock) {
--		if (validate_mem_limit(base, &size))
-+		if (validate_mem_limit(base, &size)) {
- 			memblock_add(base, size);
-+			top_phys_addr = max(top_phys_addr, base + size);
-+		}
- 	}
+@@ -963,7 +964,6 @@ static inline bool put_devmap_managed_page(struct page =
+*page)
+ 	switch (page->pgmap->type) {
+ 	case MEMORY_DEVICE_PRIVATE:
+ 	case MEMORY_DEVICE_FS_DAX:
+-		__put_devmap_managed_page(page);
+ 		return true;
+ 	default:
+ 		break;
+@@ -971,11 +971,17 @@ static inline bool put_devmap_managed_page(struct pag=
+e *page)
+ 	return false;
  }
- 
-@@ -613,6 +636,8 @@ static void __init early_reserve_mem_dt(void)
- static void __init early_reserve_mem(void)
+=20
++void put_devmap_managed_page(struct page *page);
++
+ #else /* CONFIG_DEV_PAGEMAP_OPS */
+-static inline bool put_devmap_managed_page(struct page *page)
++static inline bool page_is_devmap_managed(struct page *page)
  {
- 	__be64 *reserve_map;
-+	phys_addr_t kasan_shadow_start;
-+	phys_addr_t kasan_memory_size;
- 
- 	reserve_map = (__be64 *)(((unsigned long)initial_boot_params) +
- 			fdt_off_mem_rsvmap(initial_boot_params));
-@@ -651,6 +676,40 @@ static void __init early_reserve_mem(void)
- 		return;
- 	}
- #endif
-+
-+	if (IS_ENABLED(CONFIG_KASAN) && IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
-+		kasan_memory_size =
-+			((phys_addr_t)CONFIG_PHYS_MEM_SIZE_FOR_KASAN << 20);
-+
-+		if (top_phys_addr < kasan_memory_size) {
-+			/*
-+			 * We are doomed. We shouldn't even be able to get this
-+			 * far, but we do in qemu. If we continue and turn
-+			 * relocations on, we'll take fatal page faults for
-+			 * memory that's not physically present. Instead,
-+			 * panic() here: it will be saved to __log_buf even if
-+			 * it doesn't get printed to the console.
-+			 */
-+			panic("Tried to boot a KASAN kernel configured for %u MB with only %llu MB! Aborting.",
-+			      CONFIG_PHYS_MEM_SIZE_FOR_KASAN,
-+			      (u64)(top_phys_addr >> 20));
-+		} else if (top_phys_addr > kasan_memory_size) {
-+			/* print a biiiig warning in hopes people notice */
-+			pr_err("===========================================\n"
-+				"Physical memory exceeds compiled-in maximum!\n"
-+				"This kernel was compiled for KASAN with %u MB physical memory.\n"
-+				"The physical memory detected is at least %llu MB.\n"
-+				"Memory above the compiled limit will not be used!\n"
-+				"===========================================\n",
-+				CONFIG_PHYS_MEM_SIZE_FOR_KASAN,
-+				(u64)(top_phys_addr >> 20));
-+		}
-+
-+		kasan_shadow_start = _ALIGN_DOWN(kasan_memory_size * 7 / 8, PAGE_SIZE);
-+		DBG("reserving %llx -> %llx for KASAN",
-+		    kasan_shadow_start, top_phys_addr);
-+		memblock_reserve(kasan_shadow_start, top_phys_addr - kasan_shadow_start);
-+	}
+ 	return false;
  }
- 
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
-index 36a4e1b10b2d..f02b15c78e4d 100644
---- a/arch/powerpc/mm/kasan/Makefile
-+++ b/arch/powerpc/mm/kasan/Makefile
-@@ -3,3 +3,4 @@
- KASAN_SANITIZE := n
- 
- obj-$(CONFIG_PPC32)           += init_32.o
-+obj-$(CONFIG_PPC_BOOK3S_64)   += init_book3s_64.o
-diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/kasan/init_book3s_64.c
-new file mode 100644
-index 000000000000..df3b17823653
---- /dev/null
-+++ b/arch/powerpc/mm/kasan/init_book3s_64.c
-@@ -0,0 +1,70 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KASAN for 64-bit Book3S powerpc
-+ *
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Daniel Axtens <dja@axtens.net>
-+ */
 +
-+#define DISABLE_BRANCH_PROFILING
-+
-+#include <linux/kasan.h>
-+#include <linux/printk.h>
-+#include <linux/sched/task.h>
-+#include <asm/pgalloc.h>
-+
-+void __init kasan_init(void)
++static inline void put_devmap_managed_page(struct page *page)
 +{
-+	int i;
-+	void *k_start = kasan_mem_to_shadow((void *)RADIX_KERN_VIRT_START);
-+	void *k_end = kasan_mem_to_shadow((void *)RADIX_VMEMMAP_END);
++}
+ #endif /* CONFIG_DEV_PAGEMAP_OPS */
+=20
+ static inline bool is_device_private_page(const struct page *page)
+@@ -1028,8 +1034,10 @@ static inline void put_page(struct page *page)
+ 	 * need to inform the device driver through callback. See
+ 	 * include/linux/memremap.h and HMM for details.
+ 	 */
+-	if (put_devmap_managed_page(page))
++	if (page_is_devmap_managed(page)) {
++		put_devmap_managed_page(page);
+ 		return;
++	}
+=20
+ 	if (put_page_testzero(page))
+ 		__put_page(page);
+diff --git a/mm/memremap.c b/mm/memremap.c
+index e899fa876a62..2ba773859031 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -411,20 +411,8 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
+ EXPORT_SYMBOL_GPL(get_dev_pagemap);
+=20
+ #ifdef CONFIG_DEV_PAGEMAP_OPS
+-void __put_devmap_managed_page(struct page *page)
++void free_devmap_managed_page(struct page *page)
+ {
+-	int count =3D page_ref_dec_return(page);
+-
+-	/* still busy */
+-	if (count > 1)
+-		return;
+-
+-	/* only triggered by the dev_pagemap shutdown path */
+-	if (count =3D=3D 0) {
+-		__put_page(page);
+-		return;
+-	}
+-
+ 	/* notify page idle for dax */
+ 	if (!is_device_private_page(page)) {
+ 		wake_up_var(&page->_refcount);
+@@ -461,5 +449,5 @@ void __put_devmap_managed_page(struct page *page)
+ 	page->mapping =3D NULL;
+ 	page->pgmap->ops->page_free(page);
+ }
+-EXPORT_SYMBOL(__put_devmap_managed_page);
++EXPORT_SYMBOL(free_devmap_managed_page);
+ #endif /* CONFIG_DEV_PAGEMAP_OPS */
+diff --git a/mm/swap.c b/mm/swap.c
+index 5341ae93861f..cf39d24ada2a 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -813,8 +813,10 @@ void release_pages(struct page **pages, int nr)
+ 			 * processing, and instead, expect a call to
+ 			 * put_page_testzero().
+ 			 */
+-			if (put_devmap_managed_page(page))
++			if (page_is_devmap_managed(page)) {
++				put_devmap_managed_page(page);
+ 				continue;
++			}
+ 		}
+=20
+ 		page =3D compound_head(page);
+@@ -1102,3 +1104,26 @@ void __init swap_setup(void)
+ 	 * _really_ don't want to cluster much more
+ 	 */
+ }
 +
-+	pte_t pte =  pte_mkpte(pfn_pte(virt_to_pfn(kasan_early_shadow_page),
-+				       PAGE_KERNEL));
++#ifdef CONFIG_DEV_PAGEMAP_OPS
++void put_devmap_managed_page(struct page *page)
++{
++	int count;
 +
-+	if (!early_radix_enabled())
-+		panic("KASAN requires radix!");
++	if (WARN_ON_ONCE(!page_is_devmap_managed(page)))
++		return;
 +
-+	for (i = 0; i < PTRS_PER_PTE; i++)
-+		__set_pte_at(&init_mm, (unsigned long)kasan_early_shadow_page,
-+			     &kasan_early_shadow_pte[i], pte, 0);
-+
-+	for (i = 0; i < PTRS_PER_PMD; i++)
-+		pmd_populate_kernel(&init_mm, &kasan_early_shadow_pmd[i],
-+				    kasan_early_shadow_pte);
-+
-+	for (i = 0; i < PTRS_PER_PUD; i++)
-+		pud_populate(&init_mm, &kasan_early_shadow_pud[i],
-+			     kasan_early_shadow_pmd);
-+
-+	memset(kasan_mem_to_shadow((void *)PAGE_OFFSET), KASAN_SHADOW_INIT,
-+	       KASAN_SHADOW_SIZE);
-+
-+	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)RADIX_KERN_VIRT_START),
-+				    kasan_mem_to_shadow((void *)RADIX_VMALLOC_START));
-+
-+	/* leave a hole here for vmalloc */
-+
-+	kasan_populate_early_shadow(
-+		kasan_mem_to_shadow((void *)RADIX_VMALLOC_END),
-+		kasan_mem_to_shadow((void *)RADIX_VMEMMAP_END));
-+
-+	flush_tlb_kernel_range((unsigned long)k_start, (unsigned long)k_end);
-+
-+	/* mark early shadow region as RO and wipe */
-+	pte = pte_mkpte(pfn_pte(virt_to_pfn(kasan_early_shadow_page), PAGE_KERNEL_RO));
-+	for (i = 0; i < PTRS_PER_PTE; i++)
-+		__set_pte_at(&init_mm, (unsigned long)kasan_early_shadow_page,
-+			     &kasan_early_shadow_pte[i], pte, 0);
++	count =3D page_ref_dec_return(page);
 +
 +	/*
-+	 * clear_page relies on some cache info that hasn't been set up yet.
-+	 * It ends up looping ~forever and blows up other data.
-+	 * Use memset instead.
++	 * devmap page refcounts are 1-based, rather than 0-based: if
++	 * refcount is 1, then the page is free and the refcount is
++	 * stable because nobody holds a reference on the page.
 +	 */
-+	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
-+
-+	/* Enable error messages */
-+	init_task.kasan_depth = 0;
-+	pr_info("KASAN init done (64-bit Book3S heavyweight mode)\n");
++	if (count =3D=3D 1)
++		free_devmap_managed_page(page);
++	else if (!count)
++		__put_page(page);
 +}
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 8d7f9c3dc771..631fa2c66e3a 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -91,6 +91,7 @@ config PPC_BOOK3S_64
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select IRQ_WORK
- 	select PPC_MM_SLICES
-+	select KASAN_VMALLOC if KASAN
- 
- config PPC_BOOK3E_64
- 	bool "Embedded processors"
--- 
-2.20.1
++EXPORT_SYMBOL(put_devmap_managed_page);
++#endif
+--=20
+2.24.1
 
