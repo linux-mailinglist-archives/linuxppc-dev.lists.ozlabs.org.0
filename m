@@ -2,55 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BE1126117
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 12:42:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C97F2126135
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 12:51:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47dqjW0mGlzDqsj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:42:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47dqwL5YsCzDqsm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Dec 2019 22:51:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47dqfr5rGzzDqrC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 22:39:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47dqsq5WKhzDqdT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 22:49:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="GuBNNihE"; dkim-atps=neutral
+ header.b="iVZiuTv8"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47dqfp0phfz9sPK;
- Thu, 19 Dec 2019 22:39:45 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47dqsn6T0bz9sPh;
+ Thu, 19 Dec 2019 22:49:17 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1576755588;
- bh=rOd+nUIEAzAccp3PvRcR200yxlaugVwsQre4gumsVdc=;
+ s=201909; t=1576756159;
+ bh=m3hY81qHO7a2k47hLHQcsNjq4SjyZd/McTsEzivltVw=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=GuBNNihEtBtqIz8PqGhjM6g/zMOYVEL6mEUgziDE4XQ5A0lV69T+E/Z4FygDzUKYi
- 1aB5r22ApjjAnp1a9bLKTD9Gculf/iN3v3eQvfR+mlLqBCS60Ja+CHq3Sa8xEfW/+I
- G0Y643D0cLV2B2hR8Dz8aZiFiCuQkumA0c4z3JkETsq1/vVrrsa8HAOuUVyWt8iT4M
- EO0q/UZCm+qtb6LF8+yC/e1e9hGQJaJDC/X4LPpXaFB3BLOzQEIjxCgmOJO7jmre7W
- NINk2k5dK/lpnVKR9izw+rp0NRUsbiMWnkYJZFzIoxz7TucWhPhAKY3hSCmLFlidPK
- q6UYMkUn/tGHA==
+ b=iVZiuTv82Xx6PBD5+ZkMNAHxtQgm3Q8T7MvtNs5BQ/Le5rVoL5jtfTowsYTNg6zVk
+ TQZdB+LeRGDQrwAbrTTCxlT5yq8GuZA/I4SebmZX3Bg8hOSBhFEd9ESk5kE7CQG6Ef
+ e6EdNhWAzinbIMDQEnBy+i+JXbxM8SUzfIqLg7aN6HNm50Myep5JO24puwgEs1WWPZ
+ beWQBPCIBFxfuPhkxyvdgQxbgUTdVp/+dbBMhA0uJICJaCHly3aGbeXexWvcQcSJR2
+ iCQIGMzx3cHbUs952puh+OX3lMc8+K44Q5rTMLMhn8ZR61R4Ri2WUTdlL0Y1fzqZpg
+ g1ifRi2FGLkTA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dave Hansen <dave.hansen@intel.com>, Michal =?utf-8?Q?Such=C3=A1nek?=
- <msuchanek@suse.de>
-Subject: Re: [PATCH v15 06/23] selftests/vm/pkeys: Typecast the pkey register
-In-Reply-To: <15c3b6cc-d8da-9a32-da6a-4c3990f48994@intel.com>
-References: <cover.1576645161.git.sandipan@linux.ibm.com>
- <719ec65756a64cc03e8464a9c6da51c4519d2389.1576645161.git.sandipan@linux.ibm.com>
- <5b6c3f8a-9d2f-2534-c072-89f130ce110f@intel.com>
- <20191218205905.GG4113@kitsune.suse.cz>
- <15c3b6cc-d8da-9a32-da6a-4c3990f48994@intel.com>
-Date: Thu, 19 Dec 2019 22:39:44 +1100
-Message-ID: <87d0ckmtmn.fsf@mpe.ellerman.id.au>
+To: Steven Price <steven.price@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v17 06/23] powerpc: mm: Add p?d_leaf() definitions
+In-Reply-To: <20191218162402.45610-7-steven.price@arm.com>
+References: <20191218162402.45610-1-steven.price@arm.com>
+ <20191218162402.45610-7-steven.price@arm.com>
+Date: Thu, 19 Dec 2019 22:49:16 +1100
+Message-ID: <877e2smt6r.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,32 +58,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
- x86@kernel.org, linuxram@us.ibm.com, shuahkh@osg.samsung.com,
- mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
- Sandipan Das <sandipan@linux.ibm.com>, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: Mark Rutland <Mark.Rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, "Liang,
+ Kan" <kan.liang@linux.intel.com>, x86@kernel.org,
+ Steven Price <steven.price@arm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ kvm-ppc@vger.kernel.org, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dave Hansen <dave.hansen@intel.com> writes:
-> On 12/18/19 12:59 PM, Michal Such=C3=A1nek wrote:
->>> I'd really just rather do %016lx *everywhere* than sprinkle the
->>> PKEY_REG_FMTs around.
->> Does lx work with u32 without warnings?
+Steven Price <steven.price@arm.com> writes:
+> walk_page_range() is going to be allowed to walk page tables other than
+> those of user space. For this it needs to know when it has reached a
+> 'leaf' entry in the page tables. This information is provided by the
+> p?d_leaf() functions/macros.
 >
-> Either way, I'd be happy to just make the x86 one u64 to make the whole
-> thing look more sane,
+> For powerpc p?d_is_leaf() functions already exist. Export them using the
+> new p?d_leaf() name.
+>
+> CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> CC: Paul Mackerras <paulus@samba.org>
+> CC: Michael Ellerman <mpe@ellerman.id.au>
+> CC: linuxppc-dev@lists.ozlabs.org
+> CC: kvm-ppc@vger.kernel.org
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>  arch/powerpc/include/asm/book3s/64/pgtable.h | 3 +++
+>  1 file changed, 3 insertions(+)
 
-It's userspace so you don't get u64, you only get __u64.
+We have fallback versions of our pmd_is_leaf() etc. in
+arch/powerpc/include/asm/pgtable.h, eg:
 
-And then you'll hit the fact that by default __u64 is unsigned long on
-powerpc and unsigned long long on x86, meaning you still can't use the
-same printf specifier.
+#ifndef pmd_is_leaf
+#define pmd_is_leaf pmd_is_leaf
+static inline bool pmd_is_leaf(pmd_t pmd)
+{
+	return false;
+}
+#endif
 
-To avoid that you should define __SANE_USERSPACE_TYPES__ before
-including any headers, and then you'll get unsigned long long for __u64
-everywhere and you can just use %llx.
+Because we support several different MMUs and most of them don't need to
+do anything.
+
+So we could put the compatibility #defines to your names along with the
+fallback versions in asm/pgtable.h, rather than in
+asm/book3s/64/pgtable.h
+
+But I see you also have fallbacks for your versions, so it probably
+doesn't matter either way.
+
+So I'm OK with this version, unless you think there's a compelling
+reason to do the compatibility #defines in our asm/pgtable.h
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
 cheers
+
+
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index b01624e5c467..201a69e6a355 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -1355,18 +1355,21 @@ static inline bool is_pte_rw_upgrade(unsigned long old_val, unsigned long new_va
+>   * Like pmd_huge() and pmd_large(), but works regardless of config options
+>   */
+>  #define pmd_is_leaf pmd_is_leaf
+> +#define pmd_leaf pmd_is_leaf
+>  static inline bool pmd_is_leaf(pmd_t pmd)
+>  {
+>  	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+>  }
+>  
+>  #define pud_is_leaf pud_is_leaf
+> +#define pud_leaf pud_is_leaf
+>  static inline bool pud_is_leaf(pud_t pud)
+>  {
+>  	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
+>  }
+>  
+>  #define pgd_is_leaf pgd_is_leaf
+> +#define pgd_leaf pgd_is_leaf
+>  static inline bool pgd_is_leaf(pgd_t pgd)
+>  {
+>  	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
+> -- 
+> 2.20.1
