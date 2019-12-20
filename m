@@ -2,73 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF341127406
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 04:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D981274E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 06:08:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47fDvz1DQdzDqvV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 14:37:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47fGwv0X9nzDqv5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 16:08:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="JNHICVJW"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="RSdjwFd0"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47fDt443V9zDqtV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 14:35:55 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id c23so3499626plz.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 19:35:54 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47fGtH1XkCzDqtY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 16:06:13 +1100 (AEDT)
+Received: by mail-pj1-x1042.google.com with SMTP id n59so3592900pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 21:06:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=UmQnWafOdRpZ6qRbt/GsBhbNrsVsnOzntGu8doafqRE=;
- b=JNHICVJW4CcUNzuNkAWHrzQkEyZkAKrKN/AhbVR3AD0zZNAb5ZRAW5zGuAXdWsqTV/
- dU7RUN29AHrl8RQTgYZMS4cY9+xeRbT8fbuMtk8GUmiEzAILVEne5x8VhC53CjvkqRLE
- IZNGv5WDUZHaczCi2YTDzhaf4mzRWEDVPwSl/sdv5jmDKEw47qd2RPmwz6h82m1vFLOs
- hoVVm/CUxD1jcVYwqX7IzXQckmz27cEzvYN7Cz/C0UPuSJLj/XreoIEk3Y9dVW9gaCo/
- /y+uUc2yCCJ7v7aAtECIAhx8TtCC4irO8iEYrFnJN1sQipUC9r+3nh+HIvcnG05MWf4G
- lu7A==
+ bh=IrHo5tXpYu7YeIorGJI9H9g0sn32lUGucKpObEWfrZc=;
+ b=RSdjwFd06nkLQFab1sXEMpf2TFrUhPr0IHYKVivyhMS8BTspUblqEs811kOzMuNjTV
+ 8SAldX2Vxj4rDcvAG1tIYSJu7LJtun5L578gbQWQznytWQcyqVLUVtWwyJCsm5WoMmhn
+ 9kYT8QGMCh3Uc/SjygOIvf7ohGjYdxOZSvenc069LYpVx8y/11t1TgFaCHYjEfazkOo/
+ zOpLDDq8KOysMiUhkesEy7SYMyMCSfOS/eAKaQxRj2J5UVcmlQhOq0Bghv1WhYs1TW/F
+ nYys7r3ORkYmYSyLpcpEW7ZGth6PsFuqT8p4xDLSzcbglWZ3W/mdaXhR4hXPdTmOcN/c
+ /S+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=UmQnWafOdRpZ6qRbt/GsBhbNrsVsnOzntGu8doafqRE=;
- b=e7iQDShLwPxAt3zyFu3SwCgZoCPz+C2KZuKvXG8vKJNpf+VVVoZYdgyzLcZzQ73s5s
- 7fXIJ0L2fZeqRClFz/ofWW3IrklZv9ARcXvuGhGEp+rqwzQuZjtlaREom7pLFNqQxze3
- QnQq7I2dcJby8cvG4gLhnVfsksSdDHyfmfF4hZPAiBlAMM46V1Z0rres66K9zmQHGXWt
- nUWfG1NNC/Hpkuq020AaUisOUCfllWrz2+k2tgZ1sJOFiJWs5qoMzSVqQrdpSvt7CCwG
- pXszqqN4WBDsH1uwZjc56C3ZgDjnydtpg9Bvkn4KN5nX9s2bRlGMULsgUfjGP4+LsGvi
- B6hQ==
-X-Gm-Message-State: APjAAAXgX7RSF/WAQY6S0/x8tuKZfw0Un4vxygeCRtaHyXrvm7sIxSmq
- FZv87zeJKAuS1pnJKRfgOECjeQ==
-X-Google-Smtp-Source: APXvYqyKwTb5d2hmGkBRV/Olzs4TAb/PIxvDaeqrezActoskJlcYt23H7RQzXEvplVTPv+Q1ZG7rTQ==
-X-Received: by 2002:a17:902:bcc9:: with SMTP id
- o9mr3764161pls.127.1576812951909; 
- Thu, 19 Dec 2019 19:35:51 -0800 (PST)
+ bh=IrHo5tXpYu7YeIorGJI9H9g0sn32lUGucKpObEWfrZc=;
+ b=NPdtwN/ztr/95/uXkc4QGog9sfCOBc8QAB7AuBqP3zl7Ahz/4jqNlcop6uu3+cXdGB
+ wb6+Ct5GnpvXs8d6zfCBXGg8RBlPbzOfqbUvyxeAZVr3zVDfEwQGjG3VbGsSiQzYvh9c
+ 1Kts/BW9hckHR+CE0AhabtSIv5+mEy7XFO3YbSxPuqiIX3uc5ldL8Y7hrpDwBq9MFyPB
+ 0qX8M21v2GVUbZ9VTVAxfw5pN5wNa3N/WcuiWMUC8FkcAR36H6PTa4yQRaoAmABfsruZ
+ eFfVaUA9W6J1bWwJ66/T7PaVVz0agNSA9LhczHeZ9kiU4ouCsm7Z0pMIxgli3Bp99p7Q
+ fuTA==
+X-Gm-Message-State: APjAAAVVul6aO1oyUqIX3nJakW7Y1melUyzkOXceZSTCIZiYi9dXSQ8w
+ FXVML70VwZ3cgAIgJw4T06rnqA==
+X-Google-Smtp-Source: APXvYqxat7/tC1khBjjxj9Y4nHvlw1h4e4RqV+qvUbmXgIN+M5rZXaxVvC30amvZv6OHNzMSAFlNQQ==
+X-Received: by 2002:a17:90a:234f:: with SMTP id
+ f73mr13579371pje.109.1576818370279; 
+ Thu, 19 Dec 2019 21:06:10 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id i9sm10443231pfd.166.2019.12.19.19.35.48
+ by smtp.gmail.com with ESMTPSA id t1sm9481860pgq.23.2019.12.19.21.06.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Dec 2019 19:35:51 -0800 (PST)
-Subject: Re: [PATCH 1/1] kvm/book3s_64: Fixes crash caused by not cleaning
- vhost IOTLB
-To: Leonardo Bras <leonardo@linux.ibm.com>, Paul Mackerras
- <paulus@ozlabs.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20191217210658.73144-1-leonardo@linux.ibm.com>
- <be0c0f8f-3c8e-acd1-c6a2-479f6bd3c373@ozlabs.ru>
- <0c598160a866318e1fa672afdb07d3ee762c2ac1.camel@linux.ibm.com>
+ Thu, 19 Dec 2019 21:06:09 -0800 (PST)
+Subject: Re: [PATCH] powerpc/book3s64: Fix error handling in
+ mm_iommu_do_alloc()
+To: Jan Kara <jack@suse.cz>, linuxppc-dev@lists.ozlabs.org
+References: <20191211104226.20620-1-jack@suse.cz>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -143,12 +139,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <085aba63-b6c4-00f4-3a5f-bd158d91fd3e@ozlabs.ru>
-Date: Fri, 20 Dec 2019 14:35:46 +1100
+Message-ID: <b760209b-b09a-2049-e0dd-ec0b3ed9a46c@ozlabs.ru>
+Date: Fri, 20 Dec 2019 16:06:05 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <0c598160a866318e1fa672afdb07d3ee762c2ac1.camel@linux.ibm.com>
+In-Reply-To: <20191211104226.20620-1-jack@suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -163,76 +159,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 19/12/2019 10:28, Leonardo Bras wrote:
-> On Wed, 2019-12-18 at 15:53 +1100, Alexey Kardashevskiy wrote:
->> H_STUFF_TCE is always called with 0. Well, may be some AIX somewhere
->> calls it with a value other than zero, and I probably saw some other
->> value somewhere but in QEMU/KVM case it is 0 so you effectively disable
->> in-kernel acceleration of H_STUFF_TCE which is
->> undesirable.
->>
+On 11/12/2019 21:42, Jan Kara wrote:
+> The last jump to free_exit in mm_iommu_do_alloc() happens after page
+> pointers in struct mm_iommu_table_group_mem_t were already converted to
+> physical addresses. Thus calling put_page() on these physical addresses
+> will likely crash. Convert physical addresses back to page pointers
+> during the error cleanup.
 > 
-> Thanks for the feedback!
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  arch/powerpc/mm/book3s64/iommu_api.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
->> For now we should disable in-kernel H_STUFF_TCE/... handlers in QEMU
->> just like we do for VFIO for older host kernels:
->>
->> https://git.qemu.org/?p=qemu.git;a=blob;f=hw/ppc/spapr_iommu.c;h=3d3bcc86496a5277d62f7855fbb09c013c015f27;hb=HEAD#l208
+>  Beware, this is completely untested, spotted just by code audit.
+> 
+> diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
+> index 56cc84520577..06c403381c9c 100644
+> --- a/arch/powerpc/mm/book3s64/iommu_api.c
+> +++ b/arch/powerpc/mm/book3s64/iommu_api.c
+> @@ -154,7 +154,7 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
+>  				       (mem2->entries << PAGE_SHIFT)))) {
+>  			ret = -EINVAL;
+>  			mutex_unlock(&mem_list_mutex);
+> -			goto free_exit;
+> +			goto convert_exit;
+>  		}
+>  	}
 >  
-> I am still reading into this temporary solution, I could still not
-> understand how it works.
-> 
->> I am not sure what a proper solution would be, something like an eventfd
->> and KVM's kvmppc_h_stuff_tce() signaling vhost that the latter needs to
->> invalidate iotlbs. Or we can just say that we do not allow KVM
->> acceleration if there is vhost+iommu on the same liobn (== vPHB, pretty
->> much). Thanks,
-> 
-> I am not used to eventfd, but i agree it's a valid solution to talk to
-> QEMU and then use it to send a message via /dev/vhost.
-> KVM -> QEMU -> vhost
-> 
-> But I can't get my mind out of another solution: doing it in
-> kernelspace.  I am not sure how that would work, though.
-> 
-> If I could understand correctly, there is a vhost IOTLB per vhost_dev,
-> and H_STUFF_TCE is not called in 64-bit DMA case (for tce_value == 0
-> case, at least), which makes sense, given it doesn't need to invalidate
-> entries on IOTLB.
-> 
-> So, we would need to somehow replace `return H_TOO_HARD` in this patch
-> with code that could call vhost_process_iotlb_msg() with
-> VHOST_IOTLB_INVALIDATE.
-> 
-> For that, I would need to know what are the vhost_dev's of that
-> process, which I don't know if it's possible to do currently (or safe
-> at all).
-> 
-> I am thinking of linking all vhost_dev's with a list (list.h) that
-> could be searched, comparing `mm_struct *` of the calling task with all
-> vhost_dev's, and removing the entry of all IOTLB that hits.
-> 
-> Not sure if that's the best approach to find the related vhost_dev's.
-> 
-> What do you think?
+> @@ -166,6 +166,9 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
+>  
+>  	return 0;
+>  
+> +convert_exit:
+> +	for (i = 0; i < pinned; i++)
+> +		mem->hpages[i] = pfn_to_page(mem->hpas[i] >> PAGE_SHIFT);
 
 
-As discussed in slack, we need to do the same thing we do with physical
-devices when we invalidate hardware IOMMU translation caches via
-tbl->it_ops->tce_kill. The problem to solve now is how we tell KVM/PPC
-about vhost/iotlb (is there an fd?), something similar to the existing
-KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE. I guess x86 handles all the mappings
-in QEMU and therefore they do not have this problem. Thanks,
+Good find. Although doing it where you added "goto convert_exit" seems
+cleaner imho. Thanks,
 
+
+>  free_exit:
+>  	/* free the reference taken */
+>  	for (i = 0; i < pinned; i++)
+> 
 
 -- 
 Alexey
