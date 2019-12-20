@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8667F12751A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 06:20:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8806C1274FA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 06:14:24 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47fH3d55Z2zDqvY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 16:14:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47fHBW6N5zzDqhl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 16:20:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::344;
+ helo=mail-ot1-x344.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="hvU5+/Um"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="JBqoQLUk"; 
  dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47fH0l1dRMzDqv8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 16:11:51 +1100 (AEDT)
-Received: by mail-ot1-x342.google.com with SMTP id c22so10260128otj.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 21:11:51 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47fH7w58MszDq6l
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2019 16:18:04 +1100 (AEDT)
+Received: by mail-ot1-x344.google.com with SMTP id w21so2553260otj.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2019 21:18:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=XBTwS6fbBJ0SCeklWTUn8AGCAQhS9uS2rsZsEqr3GFI=;
- b=hvU5+/Uml8FxLmTnXWcYh8I6Cpsss261F3I4x9NesgLSUB67I/KlVjuWkYuGtVaGEf
- wRhaxB2FLYeLyxvXru4KDTFuR09yed6cRtHOPsaqOi/649Jm5/x3Iq00prT2t2XSzY9D
- wDTdQ+QSCkhm+BKDOlkxVMuWe3fId/lKjcEp8kNurNQn2CkXvQlYGPkrUgN0ek6fKOVz
- t9YmhFGfwDjeh5idVsHnEmTAx5atZki+wV5Hzkbc44JpGF+HamYx7vys5COCyr6p8n3M
- sbcTN84vhsLsQMggo4OskXhkcUXOZKpkO2BKgGPICfcJu1wn4ViUKWfFLWd8DTSFDbSz
- 6LlQ==
+ :cc; bh=fbbNHp4rK/7yzQWrMyl2c9JxKPe/tKq7/NUOVQwlh0A=;
+ b=JBqoQLUk+yJxHWoEzz1a3xLfyWcHv0fJATcOsci3HA43g+EOA/QWx59/GHd1EH+yfv
+ o7fc4YKp8MiH9o9HQoXPhEbexHF2Y08sconcrdH79vR3A/qBnT6rneeFjL75SEBiE4h3
+ 4eKrpzK16RBtwNoy4yWTEUSbgNW2gV9a1pMtz6NB0o1VNexGvTH4pxJGYq+VKmUc464F
+ eEephhfNysuvO6UQzyMzom8UUPIzwIuWmEbLscRLZnjad2V9unO69wyPfia7rogASRHU
+ Qu546tcEWuUmfmqU599SWHd9/vnXADShRjdyuqImZI0BhOd2nzqnRCXm+PdHau1FjLu1
+ i0iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=XBTwS6fbBJ0SCeklWTUn8AGCAQhS9uS2rsZsEqr3GFI=;
- b=RDpf8nzrdUFlBFKo2WEaLyZ4wg4EN9Tc3vKBGFX3Gx2znEkgNXaZ4TPJMFoWANOY3I
- BVg+fRsfEJOsI9GlBqvszsobxOZoab+5hcLkUigW4ihdy1sLRgPQGdZ0JsMUr40/BbRp
- 99LOwQRBiznZ78kVADyKUcRh184scaNLP7s3RWvetNn5WzYffTpdSe89kbgmq39DUhLV
- Eyb201Q3Qabq7SAF+cZ2ftbnG//5x2C36xUzCxRZu60RPvDmNZM2qojkwOZWyKzl2ZZa
- fL3JlzwVcVyKm9KsBWaVZttM9SceDKVSKigB+nC59Umd8ZpyboOT2mR1FF+agTfkReo1
- ThtA==
-X-Gm-Message-State: APjAAAVUR1ie7jHpWTPhvt42Fl6kWZZmfCXvrxIR1lnbbA/B1gF+H6GY
- LtR6sOdBneT3l/41cLj0RGuQFjcDOVm5TAwnO/c=
-X-Google-Smtp-Source: APXvYqzpgCN/5ZhDYP8nHBMMo1EcfKAJCj5nLDOK3TXh44pUE64B1JbhNuPjdarvK3AEfgnLmQbS/Sjt0PPLXWVimvo=
-X-Received: by 2002:a9d:3e16:: with SMTP id a22mr11250234otd.259.1576818706950; 
- Thu, 19 Dec 2019 21:11:46 -0800 (PST)
+ bh=fbbNHp4rK/7yzQWrMyl2c9JxKPe/tKq7/NUOVQwlh0A=;
+ b=pr0Xws1qClKi/HNCbDTdyVegIWmaaY0fJELdK1gxihlQaGj5qD6lTFnbXm8d0EJGrf
+ h3RFWlfojgQBcQpySFv6XEygpzVKPH6EteHq8pXnYrxLEJZanyPo0qTZ+teH+tQdsdku
+ iZ6fVVWEizZNF8bsVUkj8F2GezAp9FTfemgACPQvjHZNG72JuajZuOKcg173Zn9rR9KG
+ aZKAeysJzLUqbQqlR5LXI4xBRth4RnlwmrqboMF3yOtdZ7gkZTiu/7sQ9s6lNvJ1VWbq
+ bCJdStf2SXXChzw+8lT3l5fZDownHjOEQlroPVe/OIq1wQClBfZjk2RTlyD1l0vWgA/6
+ xotw==
+X-Gm-Message-State: APjAAAXl+qzGVwDYq33T7oo6WKJHMTH9ECnoYJQCp+Zy5W1o3v+zL9Rf
+ 8tonD+kFvHIKJFJB485jMjJjcKKq9WDJWiqU+d4=
+X-Google-Smtp-Source: APXvYqyvpVZGgGldGc0E2qs57s0WywJGu9SmzUa3Y7VO/UdUn5HpBW8OtLGDTJjdGzAwDH0NM2YZwZJr7QpGQ0/bd6Y=
+X-Received: by 2002:a9d:222f:: with SMTP id o44mr354378ota.51.1576819081951;
+ Thu, 19 Dec 2019 21:18:01 -0800 (PST)
 MIME-Version: 1.0
 References: <20191126052141.28009-1-jniethe5@gmail.com>
  <20191126052141.28009-6-jniethe5@gmail.com>
- <87sglit4ig.fsf@dja-thinkpad.axtens.net>
-In-Reply-To: <87sglit4ig.fsf@dja-thinkpad.axtens.net>
+ <87fthhu3cl.fsf@dja-thinkpad.axtens.net>
+In-Reply-To: <87fthhu3cl.fsf@dja-thinkpad.axtens.net>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 20 Dec 2019 16:11:35 +1100
-Message-ID: <CACzsE9qkjUPhFoV3tdVWdmVRPyXdGZUka3bu8DB6T51HH2opUw@mail.gmail.com>
+Date: Fri, 20 Dec 2019 16:17:50 +1100
+Message-ID: <CACzsE9qJDXeLmbFjJH7YsYAgREjHwVip_Vid88udkCyWSyTU4Q@mail.gmail.com>
 Subject: Re: [PATCH 05/18] powerpc sstep: Prepare to support prefixed
  instructions
 To: Daniel Axtens <dja@axtens.net>
@@ -80,7 +80,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 18, 2019 at 7:35 PM Daniel Axtens <dja@axtens.net> wrote:
+On Thu, Dec 19, 2019 at 1:15 AM Daniel Axtens <dja@axtens.net> wrote:
 >
 > Jordan Niethe <jniethe5@gmail.com> writes:
 >
@@ -162,6 +162,32 @@ On Wed, Dec 18, 2019 at 7:35 PM Daniel Axtens <dja@axtens.net> wrote:
 > > -                      unsigned int instr);
 > > +                      unsigned int instr, unsigned int sufx);
 > >
+>
+> I'm not saying this is necessarily better, but did you consider:
+>
+>  - making instr 64 bits and using masking and shifting macros to get the
+>    prefix and suffix?
+>
+>  - defining an instruction type/struct/union/whatever that contains both
+>    halves in one object?
+>
+> I'm happy to be told that it ends up being way, way uglier/worse/etc,
+> but I just thought I'd ask.
+>
+> Regards,
+> Daniel
+
+It is a good question and something I thought and am not completely confident
+that this approach is the best. Basically what I ended up thinking was that
+the prefixed instructions were a bit of a special case, and by doing
+it like this
+the normal word instructions would just carry on the same as before.
+
+I can see this is a pretty flimsy reason, so I am happy for suggestions as
+to what would end up being clearer.
+
+
+>
 > >  /*
 > >   * Emulate an instruction that can be executed just by updating
 > > @@ -149,7 +152,8 @@ void emulate_update_regs(struct pt_regs *reg, struct instruction_op *op);
@@ -323,14 +349,6 @@ On Wed, Dec 18, 2019 at 7:35 PM Daniel Axtens <dja@axtens.net> wrote:
 > >  int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
 > > -               unsigned int instr)
 > > +               unsigned int instr, unsigned int sufx)
->
-> I know we really like shortenings in arch/powerpc, but I think we can
-> afford the two extra characters to spell 'suffix' in full :)
->
-'suffix' was what I used initially but somewhere along the line
-I found it looked unbalanced to see the abbreviation inst{r,} in the same
-context as the unabbreviated 'suffix'. Happy to change it if it is clearer.
-
 > >  {
 > >       unsigned int opcode, ra, rb, rc, rd, spr, u;
 > >       unsigned long int imm;
@@ -341,12 +359,6 @@ context as the unabbreviated 'suffix'. Happy to change it if it is clearer.
 > > -     next_pc = truncate_if_32bit(regs->msr, regs->nip + 4);
 > > +     next_pc = truncate_if_32bit(regs->msr,
 > > +                                 regs->nip + ((op->type & PREFIXED) ? 8 : 4));
->
-> I know you only use it twice, but this is super ugly - could you add a
-> macro like IS_PREFIXED_TYPE? or even something like
-> #define OP_TYPE_LENGTH(x) (((op)->type & PREFIXED) ? 8 : 4)
-Yes that would be nicer.
->
 > >       switch (GETTYPE(op->type)) {
 > >       case COMPUTE:
 > >               if (op->type & SETREG)
@@ -387,12 +399,6 @@ Yes that would be nicer.
 > >       /* ld r5, 0(r3) */
 > > -     stepped = emulate_step(&regs, TEST_LD(5, 3, 0));
 > > +     stepped = emulate_step(&regs, TEST_LD(5, 3, 0), 0);
->
-> I wonder if it would be clearer if we had something like
-> #define NO_SUFFIX 0
-It probably would be.
-
->
 > >
 > >       if (stepped == 1 && regs.gpr[5] == a)
 > >               show_result("ld", "PASS");
