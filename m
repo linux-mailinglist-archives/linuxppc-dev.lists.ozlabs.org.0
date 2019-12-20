@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE63712835E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 21:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA35D128366
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2019 21:52:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47fgmm6XqJzDqfN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 07:47:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47fgt45DRNzDqwC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 07:52:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47fgjV3nKQzDqvT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 07:45:02 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47fgqp1DKBzDqtr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 07:50:29 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 205283] BUG: KASAN: global-out-of-bounds in
  _copy_to_iter+0x3d4/0x5a8
-Date: Fri, 20 Dec 2019 20:45:00 +0000
+Date: Fri, 20 Dec 2019 20:50:27 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: CC platform_ppc-32@kernel-bugs.osdl.org
@@ -41,8 +41,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: fs_btrfs@kernel-bugs.kernel.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-205283-206035-t7DjQdyfef@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205283-206035-lnlCGmQ2dA@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-205283-206035@https.bugzilla.kernel.org/>
 References: <bug-205283-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,10 +67,20 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D205283
 
---- Comment #6 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 286387
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286387&action=3Dedit
-5.5.0-rc2+ kernel .config (PowerMac G4 DP)
+--- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
+(In reply to Christophe Leroy from comment #4)
+> Can you apply https://patchwork.ozlabs.org/patch/1213028/ and select
+> CONFIG_KASAN_VMALLOC
+Re-tried with 5.5-rc2 your KASAN_VMALLOC patch and this patch
+(https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
+?id=3D7de7de7ca0ae0fc70515ee3154af33af75edae2c)
+to make -rc2 boot again.
+
+Result with KASAN is the same as before. If I enable CONFIG_KASAN_VMALLOC
+additionally the KASAN hit is gone. modprobing and removing btrfs shows no
+error then. Interesting!
+
+Double-checked it just to be sure.
 
 --=20
 You are receiving this mail because:
