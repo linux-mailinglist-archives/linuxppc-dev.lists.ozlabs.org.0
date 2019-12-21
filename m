@@ -2,98 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC86E1286DC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 05:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBB412883C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 09:38:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ft6G24RnzDqvZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 15:33:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47fzY52CX7zDq6B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 19:38:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="X/CC3zVj"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ft4Q234MzDqv3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 15:32:06 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBL4O6W9085444; Fri, 20 Dec 2019 23:31:24 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x0y9yvps0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Dec 2019 23:31:24 -0500
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBL4O55M085320;
- Fri, 20 Dec 2019 23:31:24 -0500
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x0y9yvprm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Dec 2019 23:31:23 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBL4UbXB025550;
- Sat, 21 Dec 2019 04:31:28 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 2x1b158fp5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Dec 2019 04:31:28 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBL4VM0g48497064
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 21 Dec 2019 04:31:22 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 39F0D112061;
- Sat, 21 Dec 2019 04:31:22 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95523112062;
- Sat, 21 Dec 2019 04:31:19 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.47.109])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Sat, 21 Dec 2019 04:31:19 +0000 (GMT)
-X-Mailer: emacs 26.3 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Romain Dolbeau <romain@dolbeau.org>, linuxppc-dev@lists.ozlabs.org,
- PowerPC List Debian <debian-powerpc@lists.debian.org>,
- Andreas Schwab <schwab@linux-m68k.org>,
- jjhdiederen <jjhdiederen@zonnet.nl>, mpe@ellerman.id.au
-Subject: Re: PPC64: G5 & 4k/64k page size (was: Re: Call for report -
- G5/PPC970 status)
-In-Reply-To: <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
- <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
- <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
- <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
- <87eexbk3gw.fsf@linux.ibm.com>
- <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
- <87mubxl82x.fsf@igel.home>
- <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
- <87immlkytp.fsf@igel.home>
- <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
-Date: Sat, 21 Dec 2019 10:01:16 +0530
-Message-ID: <87lfr62tbf.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-20_07:2019-12-17,2019-12-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 clxscore=1011 lowpriorityscore=0
- impostorscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912210035
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47fzPn4F6HzDqqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 19:32:27 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47fzPd2RhCz9v1Kt;
+ Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=X/CC3zVj; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 9CZTJWpIb3oz; Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47fzPd0n8yz9v1Ks;
+ Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1576917141; bh=E9RKebUP1SppGa2SP1hXCPrAmxC2lQWVebR4woXcBx4=;
+ h=From:Subject:To:Cc:Date:From;
+ b=X/CC3zVji3J7DK/g7Rrz/AyTo0Y5CoJMc25c7ql5rHqSRlTGaSqbTh4XA6EWt4SON
+ g8dx7mQjw0IIqrUJTPNqMqOKZEn1YAyfja8qRjAHISFddOuN4hWvU9bO+610hzQw4x
+ lGCJEXigJhDEI6ZgPMcq/MuxAcrBh5X+DBf1P/2c=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 02CFC8B77C;
+ Sat, 21 Dec 2019 09:32:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id jxdAh1n2NAhk; Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+Received: from localhost.localdomain (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ACFFE8B752;
+ Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id 4B883637B6; Sat, 21 Dec 2019 08:32:21 +0000 (UTC)
+Message-Id: <cover.1576916812.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v5 00/17] Enable CONFIG_VMAP_STACK on PPC32
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ dja@axtens.net
+Date: Sat, 21 Dec 2019 08:32:21 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,38 +73,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Romain Dolbeau <romain@dolbeau.org> writes:
+The purpose of this serie is to enable CONFIG_VMAP_STACK on PPC32.
 
-> Le jeu. 12 d=C3=A9c. 2019 =C3=A0 22:40, Andreas Schwab <schwab@linux-m68k=
-.org> a =C3=A9crit :
->> I'm using 4K pages, in case that matters
->
-> Yes it does matter, as it seems to be the difference between "working"
-> and "not working" :-)
-> Thank you for the config & pointing out the culprit!
->
-> With your config, my machine boots (though it's missing some features
-> as the config seems quite tuned).
->
-> Moving from 64k pages to 4k pages on 'my' config (essentially,
-> Debian's 5.3 with default values for changes since), my machine boots
-> as well & everything seems to work fine.
->
-> So question to Aneesh - did you try 64k pages on your G5, or only 4k?
-> In the second case, could you try with 64k to see if you can reproduce
-> the crash?
+rfc v1: initial support on 8xx
 
-I don't have direct access to this system, I have asked if we can get a run
-with 64K.=20
+rfc v2: added stack overflow detection.
 
-Meanwhile is there a way to find out what caused MachineCheck? more
-details on this? I was checking the manual and I don't see any
-restrictions w.r.t effective address. We now have very high EA with 64K
-page size.=20
+v3:
+- Stack overflow detection works, tested with LKDTM STACK_EXHAUST test
+- Support for book3s32 added
 
--aneesh
+v4:
+- Fixed build failure with CONFIG_KVM (patch 14)
+- Fixed boot failure with pmac32_defconfig+VMAP_STACK+KVM (new patch 15)
+- Fixed crash with altivec and fpu (patch 16)
+
+v5:
+- Reduced ifdefs around tophys/tovirt by using macros (patch 5)
+- Reorganised stack overflow handling, making it independent of the existing one which could go away in another series (patch 7)
+- Added vmapped stacks for interrupts (new patch 8)
+
+Christophe Leroy (17):
+  powerpc/32: replace MTMSRD() by mtmsr
+  powerpc/32: Add EXCEPTION_PROLOG_0 in head_32.h
+  powerpc/32: save DEAR/DAR before calling handle_page_fault
+  powerpc/32: move MSR_PR test into EXCEPTION_PROLOG_0
+  powerpc/32: add a macro to get and/or save DAR and DSISR on stack.
+  powerpc/32: prepare for CONFIG_VMAP_STACK
+  powerpc: align stack to 2 * THREAD_SIZE with VMAP_STACK
+  powerpc/32: Add early stack overflow detection with VMAP stack.
+  powerpc/32: Use vmapped stacks for interrupts
+  powerpc/8xx: Use alternative scratch registers in DTLB miss handler
+  powerpc/8xx: drop exception entries for non-existing exceptions
+  powerpc/8xx: move DataStoreTLBMiss perf handler
+  powerpc/8xx: split breakpoint exception
+  powerpc/8xx: Enable CONFIG_VMAP_STACK
+  powerpc/32s: reorganise DSI handler.
+  powerpc/32s: avoid crossing page boundary while changing SRR0/1.
+  powerpc/32s: Enable CONFIG_VMAP_STACK
+
+ arch/powerpc/include/asm/processor.h   |   6 ++
+ arch/powerpc/include/asm/thread_info.h |  18 ++++
+ arch/powerpc/kernel/asm-offsets.c      |   6 ++
+ arch/powerpc/kernel/entry_32.S         |  29 +++---
+ arch/powerpc/kernel/fpu.S              |   3 +
+ arch/powerpc/kernel/head_32.S          |  61 ++++++-----
+ arch/powerpc/kernel/head_32.h          | 178 +++++++++++++++++++++++++++----
+ arch/powerpc/kernel/head_40x.S         |   2 +
+ arch/powerpc/kernel/head_8xx.S         | 184 +++++++++++++++------------------
+ arch/powerpc/kernel/head_booke.h       |   2 +
+ arch/powerpc/kernel/head_fsl_booke.S   |   1 +
+ arch/powerpc/kernel/irq.c              |  22 ++++
+ arch/powerpc/kernel/setup.h            |   2 +-
+ arch/powerpc/kernel/setup_32.c         |  17 ++-
+ arch/powerpc/kernel/setup_64.c         |   2 +-
+ arch/powerpc/kernel/traps.c            |   9 ++
+ arch/powerpc/kernel/vector.S           |   3 +
+ arch/powerpc/kernel/vmlinux.lds.S      |   2 +-
+ arch/powerpc/mm/book3s32/hash_low.S    |  46 ++++++---
+ arch/powerpc/mm/book3s32/mmu.c         |   9 +-
+ arch/powerpc/perf/8xx-pmu.c            |  12 ++-
+ arch/powerpc/platforms/Kconfig.cputype |   3 +
+ 22 files changed, 435 insertions(+), 182 deletions(-)
+
+-- 
+2.13.3
+
