@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E8F12883E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 09:42:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBB412883C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 09:38:52 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47fzY52CX7zDq6B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 19:38:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47fzd96MCRzDqv4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 19:42:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,52 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="X/CC3zVj"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="eKZNwdsV"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47fzPn4F6HzDqqJ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47fzPn4xTGzDqr5
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 19:32:27 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47fzPd2RhCz9v1Kt;
- Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47fzPf20vmz9v1Kv;
+ Sat, 21 Dec 2019 09:32:22 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=X/CC3zVj; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=eKZNwdsV; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 9CZTJWpIb3oz; Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+ with ESMTP id YEkFCQOK3dn9; Sat, 21 Dec 2019 09:32:22 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47fzPd0n8yz9v1Ks;
- Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47fzPf03nJz9v1Ks;
+ Sat, 21 Dec 2019 09:32:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1576917141; bh=E9RKebUP1SppGa2SP1hXCPrAmxC2lQWVebR4woXcBx4=;
- h=From:Subject:To:Cc:Date:From;
- b=X/CC3zVji3J7DK/g7Rrz/AyTo0Y5CoJMc25c7ql5rHqSRlTGaSqbTh4XA6EWt4SON
- g8dx7mQjw0IIqrUJTPNqMqOKZEn1YAyfja8qRjAHISFddOuN4hWvU9bO+610hzQw4x
- lGCJEXigJhDEI6ZgPMcq/MuxAcrBh5X+DBf1P/2c=
+ t=1576917142; bh=kGon0ub1xJnz0O6Eae+CiFjeXTbJxumDVRZ8IyCl084=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=eKZNwdsV0nCrKWv/Jd4CzuDEHYbk/L1GKWul7KhSvI7i2RnA1c1LxauOTvgaJEjrj
+ Q9vpLvTsxCkII5JvGtFPr+uOuxsc6+UhkJ2rSHEREcjh6gTRI8542B8h8yttdv6IVt
+ hHpu+ifvsCjCyp+mMltKHC2sIGw2unhnwL310opM=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 02CFC8B77C;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DCB448B77C;
  Sat, 21 Dec 2019 09:32:22 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id jxdAh1n2NAhk; Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+ with ESMTP id Ea7zC5xXbefy; Sat, 21 Dec 2019 09:32:22 +0100 (CET)
 Received: from localhost.localdomain (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id ACFFE8B752;
- Sat, 21 Dec 2019 09:32:21 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F7788B752;
+ Sat, 21 Dec 2019 09:32:22 +0100 (CET)
 Received: by localhost.localdomain (Postfix, from userid 0)
- id 4B883637B6; Sat, 21 Dec 2019 08:32:21 +0000 (UTC)
-Message-Id: <cover.1576916812.git.christophe.leroy@c-s.fr>
+ id 57137637B6; Sat, 21 Dec 2019 08:32:22 +0000 (UTC)
+Message-Id: <22469e78230edea3dbd0c79a555d73124f6c6d93.1576916812.git.christophe.leroy@c-s.fr>
+In-Reply-To: <cover.1576916812.git.christophe.leroy@c-s.fr>
+References: <cover.1576916812.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v5 00/17] Enable CONFIG_VMAP_STACK on PPC32
+Subject: [PATCH v5 01/17] powerpc/32: replace MTMSRD() by mtmsr
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  dja@axtens.net
-Date: Sat, 21 Dec 2019 08:32:21 +0000 (UTC)
+Date: Sat, 21 Dec 2019 08:32:22 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,69 +81,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The purpose of this serie is to enable CONFIG_VMAP_STACK on PPC32.
+On PPC32, MTMSRD() is simply defined as mtmsr.
 
-rfc v1: initial support on 8xx
+Replace MTMSRD(reg) by mtmsr reg in files dedicated to PPC32,
+this makes the code less obscure.
 
-rfc v2: added stack overflow detection.
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/kernel/entry_32.S | 18 +++++++++---------
+ arch/powerpc/kernel/head_32.h  |  4 ++--
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-v3:
-- Stack overflow detection works, tested with LKDTM STACK_EXHAUST test
-- Support for book3s32 added
-
-v4:
-- Fixed build failure with CONFIG_KVM (patch 14)
-- Fixed boot failure with pmac32_defconfig+VMAP_STACK+KVM (new patch 15)
-- Fixed crash with altivec and fpu (patch 16)
-
-v5:
-- Reduced ifdefs around tophys/tovirt by using macros (patch 5)
-- Reorganised stack overflow handling, making it independent of the existing one which could go away in another series (patch 7)
-- Added vmapped stacks for interrupts (new patch 8)
-
-Christophe Leroy (17):
-  powerpc/32: replace MTMSRD() by mtmsr
-  powerpc/32: Add EXCEPTION_PROLOG_0 in head_32.h
-  powerpc/32: save DEAR/DAR before calling handle_page_fault
-  powerpc/32: move MSR_PR test into EXCEPTION_PROLOG_0
-  powerpc/32: add a macro to get and/or save DAR and DSISR on stack.
-  powerpc/32: prepare for CONFIG_VMAP_STACK
-  powerpc: align stack to 2 * THREAD_SIZE with VMAP_STACK
-  powerpc/32: Add early stack overflow detection with VMAP stack.
-  powerpc/32: Use vmapped stacks for interrupts
-  powerpc/8xx: Use alternative scratch registers in DTLB miss handler
-  powerpc/8xx: drop exception entries for non-existing exceptions
-  powerpc/8xx: move DataStoreTLBMiss perf handler
-  powerpc/8xx: split breakpoint exception
-  powerpc/8xx: Enable CONFIG_VMAP_STACK
-  powerpc/32s: reorganise DSI handler.
-  powerpc/32s: avoid crossing page boundary while changing SRR0/1.
-  powerpc/32s: Enable CONFIG_VMAP_STACK
-
- arch/powerpc/include/asm/processor.h   |   6 ++
- arch/powerpc/include/asm/thread_info.h |  18 ++++
- arch/powerpc/kernel/asm-offsets.c      |   6 ++
- arch/powerpc/kernel/entry_32.S         |  29 +++---
- arch/powerpc/kernel/fpu.S              |   3 +
- arch/powerpc/kernel/head_32.S          |  61 ++++++-----
- arch/powerpc/kernel/head_32.h          | 178 +++++++++++++++++++++++++++----
- arch/powerpc/kernel/head_40x.S         |   2 +
- arch/powerpc/kernel/head_8xx.S         | 184 +++++++++++++++------------------
- arch/powerpc/kernel/head_booke.h       |   2 +
- arch/powerpc/kernel/head_fsl_booke.S   |   1 +
- arch/powerpc/kernel/irq.c              |  22 ++++
- arch/powerpc/kernel/setup.h            |   2 +-
- arch/powerpc/kernel/setup_32.c         |  17 ++-
- arch/powerpc/kernel/setup_64.c         |   2 +-
- arch/powerpc/kernel/traps.c            |   9 ++
- arch/powerpc/kernel/vector.S           |   3 +
- arch/powerpc/kernel/vmlinux.lds.S      |   2 +-
- arch/powerpc/mm/book3s32/hash_low.S    |  46 ++++++---
- arch/powerpc/mm/book3s32/mmu.c         |   9 +-
- arch/powerpc/perf/8xx-pmu.c            |  12 ++-
- arch/powerpc/platforms/Kconfig.cputype |   3 +
- 22 files changed, 435 insertions(+), 182 deletions(-)
-
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index d60908ea37fb..6273b4862482 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -397,7 +397,7 @@ ret_from_syscall:
+ 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)	/* doesn't include MSR_EE */
+ 	/* Note: We don't bother telling lockdep about it */
+ 	SYNC
+-	MTMSRD(r10)
++	mtmsr	r10
+ 	lwz	r9,TI_FLAGS(r2)
+ 	li	r8,-MAX_ERRNO
+ 	andi.	r0,r9,(_TIF_SYSCALL_DOTRACE|_TIF_SINGLESTEP|_TIF_USER_WORK_MASK|_TIF_PERSYSCALL_MASK)
+@@ -554,7 +554,7 @@ syscall_exit_work:
+ 	 */
+ 	ori	r10,r10,MSR_EE
+ 	SYNC
+-	MTMSRD(r10)
++	mtmsr	r10
+ 
+ 	/* Save NVGPRS if they're not saved already */
+ 	lwz	r4,_TRAP(r1)
+@@ -697,7 +697,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_SPE)
+ 	and.	r0,r0,r11	/* FP or altivec or SPE enabled? */
+ 	beq+	1f
+ 	andc	r11,r11,r0
+-	MTMSRD(r11)
++	mtmsr	r11
+ 	isync
+ 1:	stw	r11,_MSR(r1)
+ 	mfcr	r10
+@@ -831,7 +831,7 @@ ret_from_except:
+ 	/* Note: We don't bother telling lockdep about it */
+ 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
+ 	SYNC			/* Some chip revs have problems here... */
+-	MTMSRD(r10)		/* disable interrupts */
++	mtmsr	r10		/* disable interrupts */
+ 
+ 	lwz	r3,_MSR(r1)	/* Returning to user mode? */
+ 	andi.	r0,r3,MSR_PR
+@@ -998,7 +998,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	 */
+ 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL & ~MSR_RI)
+ 	SYNC
+-	MTMSRD(r10)		/* clear the RI bit */
++	mtmsr	r10		/* clear the RI bit */
+ 	.globl exc_exit_restart
+ exc_exit_restart:
+ 	lwz	r12,_NIP(r1)
+@@ -1234,7 +1234,7 @@ do_resched:			/* r10 contains MSR_KERNEL here */
+ #endif
+ 	ori	r10,r10,MSR_EE
+ 	SYNC
+-	MTMSRD(r10)		/* hard-enable interrupts */
++	mtmsr	r10		/* hard-enable interrupts */
+ 	bl	schedule
+ recheck:
+ 	/* Note: And we don't tell it we are disabling them again
+@@ -1243,7 +1243,7 @@ recheck:
+ 	 */
+ 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
+ 	SYNC
+-	MTMSRD(r10)		/* disable interrupts */
++	mtmsr	r10		/* disable interrupts */
+ 	lwz	r9,TI_FLAGS(r2)
+ 	andi.	r0,r9,_TIF_NEED_RESCHED
+ 	bne-	do_resched
+@@ -1252,7 +1252,7 @@ recheck:
+ do_user_signal:			/* r10 contains MSR_KERNEL here */
+ 	ori	r10,r10,MSR_EE
+ 	SYNC
+-	MTMSRD(r10)		/* hard-enable interrupts */
++	mtmsr	r10		/* hard-enable interrupts */
+ 	/* save r13-r31 in the exception frame, if not already done */
+ 	lwz	r3,_TRAP(r1)
+ 	andi.	r0,r3,1
+@@ -1341,7 +1341,7 @@ _GLOBAL(enter_rtas)
+ 	stw	r9,8(r1)
+ 	LOAD_REG_IMMEDIATE(r0,MSR_KERNEL)
+ 	SYNC			/* disable interrupts so SRR0/1 */
+-	MTMSRD(r0)		/* don't get trashed */
++	mtmsr	r0		/* don't get trashed */
+ 	li	r9,MSR_KERNEL & ~(MSR_IR|MSR_DR)
+ 	mtlr	r6
+ 	stw	r7, THREAD + RTAS_SP(r2)
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 8abc7783dbe5..b2ca8c9ffd8b 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -50,7 +50,7 @@
+ 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
+ #else
+ 	li	r10,MSR_KERNEL & ~(MSR_IR|MSR_DR) /* can take exceptions */
+-	MTMSRD(r10)			/* (except for mach check in rtas) */
++	mtmsr	r10			/* (except for mach check in rtas) */
+ #endif
+ 	stw	r0,GPR0(r11)
+ 	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
+@@ -80,7 +80,7 @@
+ 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
+ #else
+ 	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL & ~(MSR_IR|MSR_DR)) /* can take exceptions */
+-	MTMSRD(r10)			/* (except for mach check in rtas) */
++	mtmsr	r10			/* (except for mach check in rtas) */
+ #endif
+ 	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
+ 	stw	r2,GPR2(r11)
 -- 
 2.13.3
 
