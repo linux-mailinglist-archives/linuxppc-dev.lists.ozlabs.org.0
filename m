@@ -1,75 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9225F12863D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 01:55:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47fnGk6wDszDqvW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 11:55:42 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC86E1286DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 05:33:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ft6G24RnzDqvZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2019 15:33:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="gT92UnAP"; 
- dkim-atps=neutral
-Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
- [216.228.121.143])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47fnDn13bSzDq9T
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 11:54:00 +1100 (AEDT)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dfd6d050000>; Fri, 20 Dec 2019 16:53:25 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Fri, 20 Dec 2019 16:53:56 -0800
-X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Fri, 20 Dec 2019 16:53:56 -0800
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 21 Dec
- 2019 00:53:51 +0000
-Subject: Re: [PATCH v11 00/25] mm/gup: track dma-pinned pages: FOLL_PIN
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20191216222537.491123-1-jhubbard@nvidia.com>
- <20191219132607.GA410823@unreal>
- <a4849322-8e17-119e-a664-80d9f95d850b@nvidia.com>
- <20191220092154.GA10068@quack2.suse.cz>
- <CAPcyv4gYnXE-y_aGehazzF-Kej5ibSfqvE2hTnjKJD68bm8ANg@mail.gmail.com>
- <437f2bff-13ba-0ae9-2f3c-bc8eb82d20f0@nvidia.com>
- <CAPcyv4hMvTmb5X8gNtXnapJFR1qej1bKto2fvv9zUtebHMhvVw@mail.gmail.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <12a28917-f8c9-5092-2f01-92bb74714cae@nvidia.com>
-Date: Fri, 20 Dec 2019 16:53:50 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ft4Q234MzDqv3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2019 15:32:06 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xBL4O6W9085444; Fri, 20 Dec 2019 23:31:24 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2x0y9yvps0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Dec 2019 23:31:24 -0500
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBL4O55M085320;
+ Fri, 20 Dec 2019 23:31:24 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2x0y9yvprm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Dec 2019 23:31:23 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBL4UbXB025550;
+ Sat, 21 Dec 2019 04:31:28 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 2x1b158fp5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 21 Dec 2019 04:31:28 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xBL4VM0g48497064
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 21 Dec 2019 04:31:22 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39F0D112061;
+ Sat, 21 Dec 2019 04:31:22 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95523112062;
+ Sat, 21 Dec 2019 04:31:19 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.47.109])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sat, 21 Dec 2019 04:31:19 +0000 (GMT)
+X-Mailer: emacs 26.3 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Romain Dolbeau <romain@dolbeau.org>, linuxppc-dev@lists.ozlabs.org,
+ PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ Andreas Schwab <schwab@linux-m68k.org>,
+ jjhdiederen <jjhdiederen@zonnet.nl>, mpe@ellerman.id.au
+Subject: Re: PPC64: G5 & 4k/64k page size (was: Re: Call for report -
+ G5/PPC970 status)
+In-Reply-To: <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+ <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+ <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
+ <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
+ <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
+ <87eexbk3gw.fsf@linux.ibm.com>
+ <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
+ <87mubxl82x.fsf@igel.home>
+ <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
+ <87immlkytp.fsf@igel.home>
+ <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
+Date: Sat, 21 Dec 2019 10:01:16 +0530
+Message-ID: <87lfr62tbf.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4hMvTmb5X8gNtXnapJFR1qej1bKto2fvv9zUtebHMhvVw@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1576889605; bh=tpI8g3cGtI3RbtQKzNDwLh+jY1UnQFhrLmQoaZFESA8=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=gT92UnAPvjWo9Dyarc3BsQj2Nl0ZSZOB5xO5S1hvSTkAn6HQKFYCbmGMns41Asul4
- eMkGBYUVekYb1GDqzt3tUGEwYX/qiLyAv9PBah19Qnk9kLrPhGqoza8LPYP20EKh8A
- rpksQuLIxtU3WgPWODyJ4Q9+O1Y8CfsR7+NeFhDEz5kdhRtxtRV/c4gCIoz4Xh2tr4
- dqYIG3iAXmQiFA+EerZ5Kzd0MzHGZsUPeYIr/zdgX84A5MWU+lGn2mDX6OuVhtBYkB
- sM9JvXEn3c8apvXt6FAkZHRg4c2qB8/6lfd0asa7z5htLXf1pi4lQc9aIPZeePVDOP
- YXljCFL0SkWSA==
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-20_07:2019-12-17,2019-12-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1011 lowpriorityscore=0
+ impostorscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912210035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,67 +105,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- KVM list <kvm@vger.kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Maor Gottlieb <maorg@mellanox.com>,
- Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma <linux-rdma@vger.kernel.org>, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Shuah
- Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- bpf@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>,
- Jens Axboe <axboe@kernel.dk>, Netdev <netdev@vger.kernel.org>, Alex
- Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>, Mike
- Kravetz <mike.kravetz@oracle.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/20/19 4:51 PM, Dan Williams wrote:
-> On Fri, Dec 20, 2019 at 4:41 PM John Hubbard <jhubbard@nvidia.com> wrote:
->>
->> On 12/20/19 4:33 PM, Dan Williams wrote:
->> ...
->>>> I believe there might be also a different solution for this: For
->>>> transparent huge pages, we could find a space in 'struct page' of the
->>>> second page in the huge page for proper pin counter and just account pins
->>>> there so we'd have full width of 32-bits for it.
->>>
->>> That would require THP accounting for dax pages. It is something that
->>> was probably going to be needed, but this would seem to force the
->>> issue.
->>>
->>
->> Thanks for mentioning that, it wasn't obvious to me yet.
->>
->> How easy is it for mere mortals outside of Intel, to set up a DAX (nvdimm?)
->> test setup? I'd hate to go into this without having that coverage up
->> and running. It's been sketchy enough as it is. :)
-> 
-> You too can have the power of the gods for the low low price of a
-> kernel command line parameter, or a qemu setup.
-> 
-> Details here:
-> 
-> https://nvdimm.wiki.kernel.org/how_to_choose_the_correct_memmap_kernel_parameter_for_pmem_on_your_system
-> https://nvdimm.wiki.kernel.org/pmem_in_qemu
-> 
+Romain Dolbeau <romain@dolbeau.org> writes:
 
-Sweeeet! Now I can really cause some damage. :)
+> Le jeu. 12 d=C3=A9c. 2019 =C3=A0 22:40, Andreas Schwab <schwab@linux-m68k=
+.org> a =C3=A9crit :
+>> I'm using 4K pages, in case that matters
+>
+> Yes it does matter, as it seems to be the difference between "working"
+> and "not working" :-)
+> Thank you for the config & pointing out the culprit!
+>
+> With your config, my machine boots (though it's missing some features
+> as the config seems quite tuned).
+>
+> Moving from 64k pages to 4k pages on 'my' config (essentially,
+> Debian's 5.3 with default values for changes since), my machine boots
+> as well & everything seems to work fine.
+>
+> So question to Aneesh - did you try 64k pages on your G5, or only 4k?
+> In the second case, could you try with 64k to see if you can reproduce
+> the crash?
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+I don't have direct access to this system, I have asked if we can get a run
+with 64K.=20
+
+Meanwhile is there a way to find out what caused MachineCheck? more
+details on this? I was checking the manual and I don't see any
+restrictions w.r.t effective address. We now have very high EA with 64K
+page size.=20
+
+-aneesh
