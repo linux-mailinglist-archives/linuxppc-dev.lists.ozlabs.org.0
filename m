@@ -2,66 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EF0129293
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2019 08:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8ACD1294EF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2019 12:21:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47hBW12VJyzDqJY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2019 18:56:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47hH432FHVzDqMV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2019 22:21:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="vB7eCzA7"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47hBT254vfzDqDs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2019 18:54:28 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47hBSp6LlPz9tyVy;
- Mon, 23 Dec 2019 08:54:18 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=vB7eCzA7; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yYpcIDcCzsSE; Mon, 23 Dec 2019 08:54:18 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47hBSp58wpz9tyVf;
- Mon, 23 Dec 2019 08:54:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1577087658; bh=hkKxahRiPSAEMe/USu//uOwiIXNh/xpJtVcNhRacSz4=;
- h=From:Subject:To:Cc:Date:From;
- b=vB7eCzA7rGplvY2F2ekFh/WjZgrGdfiyQUwmzn6VPp+zHfrTrENwh62td5tKITqea
- P82kgK0m3HOm56zXeiuQCNym3YmttLCru35zjuGurMcR0QC2/1Ora1qkWflqe1DsLk
- FRIh6ve/rg3bpkHHs3BYlzfCXqTgnAUR7s74921M=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 552018B798;
- Mon, 23 Dec 2019 08:54:23 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id XCcVzaFsk9zN; Mon, 23 Dec 2019 08:54:23 +0100 (CET)
-Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 38C3C8B752;
- Mon, 23 Dec 2019 08:54:23 +0100 (CET)
-Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0D547637C8; Mon, 23 Dec 2019 07:54:22 +0000 (UTC)
-Message-Id: <0728849e826ba16f1fbd6fa7f5c6cc87bd64e097.1577087627.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/mm: don't log user reads to 0xffffffff
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 23 Dec 2019 07:54:22 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47hH0m4390zDqLv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2019 22:18:48 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="Ny5yu/Dr"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47hH0k3YDBz9sNH;
+ Mon, 23 Dec 2019 22:18:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1577099927;
+ bh=coknfwz3CFC41+VHAcVx24BmlrzXEcpZ6K0FtHJFoFc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Ny5yu/Dr2YZr3GJmE9/0JZeuslUESnVf5NTmEDI6MwRmeX2CrMs+6koir9/QL4y52
+ rPaD0NWKIgSOGSWoRIwIwXtwWFLNwXFfkRLEpiywpTQOKbRwIUc+vbDiAKqeDS94CO
+ lIXcgxMztkvW2n85dRuIBqeJ/iZmHHVtW3laAcX+sCK2TksKt4iafqrVSonOYZoTO2
+ bZas7r9iA2Vw9JWQHflL1EDNgcjq2wL5TNNS8ppTHq5KWldSH/PeqfjNm8HuPLCcUi
+ uSsTh+mNKiZyTPHcAnpKuedBmLTrvgKpmx19jXYbrkfG0yS20R/nQl5z/U1pHbaESb
+ 8uTkCDPY5XAiQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH kernel v3] powerpc/book3s64: Fix error handling in
+ mm_iommu_do_alloc()
+In-Reply-To: <20191223060351.26359-1-aik@ozlabs.ru>
+References: <20191223060351.26359-1-aik@ozlabs.ru>
+Date: Mon, 23 Dec 2019 22:18:40 +1100
+Message-ID: <87mubjl27j.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,39 +57,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Jan Kara <jack@suse.cz>,
+ kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Running vdsotest leaves many times the following log:
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
 
-[   79.629901] vdsotest[396]: User access of kernel address (ffffffff) - exploit attempt? (uid: 0)
+> The last jump to free_exit in mm_iommu_do_alloc() happens after page
+> pointers in struct mm_iommu_table_group_mem_t were already converted to
+> physical addresses. Thus calling put_page() on these physical addresses
+> will likely crash.
+>
+> This moves the loop which calculates the pageshift and converts page
+> struct pointers to physical addresses later after the point when
+> we cannot fail; thus eliminating the need to convert pointers back.
+>
+> Fixes: eb9d7a62c386 ("powerpc/mm_iommu: Fix potential deadlock")
+> Reported-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> ---
+> Changes:
+> v3:
+> * move pointers conversion after the last possible failure point
+> ---
+>  arch/powerpc/mm/book3s64/iommu_api.c | 39 +++++++++++++++-------------
+>  1 file changed, 21 insertions(+), 18 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
+> index 56cc84520577..ef164851738b 100644
+> --- a/arch/powerpc/mm/book3s64/iommu_api.c
+> +++ b/arch/powerpc/mm/book3s64/iommu_api.c
+> @@ -121,24 +121,6 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
+>  		goto free_exit;
+>  	}
+>  
+> -	pageshift = PAGE_SHIFT;
+> -	for (i = 0; i < entries; ++i) {
+> -		struct page *page = mem->hpages[i];
+> -
+> -		/*
+> -		 * Allow to use larger than 64k IOMMU pages. Only do that
+> -		 * if we are backed by hugetlb.
+> -		 */
+> -		if ((mem->pageshift > PAGE_SHIFT) && PageHuge(page))
+> -			pageshift = page_shift(compound_head(page));
+> -		mem->pageshift = min(mem->pageshift, pageshift);
+> -		/*
+> -		 * We don't need struct page reference any more, switch
+> -		 * to physical address.
+> -		 */
+> -		mem->hpas[i] = page_to_pfn(page) << PAGE_SHIFT;
+> -	}
+> -
+>  good_exit:
+>  	atomic64_set(&mem->mapped, 1);
+>  	mem->used = 1;
+> @@ -158,6 +140,27 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
+>  		}
+>  	}
+>  
+> +	if (mem->dev_hpa == MM_IOMMU_TABLE_INVALID_HPA) {
 
-A pointer set to (-1) is likely a programming error similar to
-a NULL pointer and is not worth logging as an exploit attempt.
+Couldn't you avoid testing this again ...
 
-Don't log user accesses to 0xffffffff.
+> +		/*
+> +		 * Allow to use larger than 64k IOMMU pages. Only do that
+> +		 * if we are backed by hugetlb. Skip device memory as it is not
+> +		 * backed with page structs.
+> +		 */
+> +		pageshift = PAGE_SHIFT;
+> +		for (i = 0; i < entries; ++i) {
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/mm/fault.c | 3 +++
- 1 file changed, 3 insertions(+)
+... by making this loop up to `pinned`.
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index b5047f9b5dec..d3b4d444bf3c 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -354,6 +354,9 @@ static void sanity_check_fault(bool is_write, bool is_user,
- 	 * Userspace trying to access kernel address, we get PROTFAULT for that.
- 	 */
- 	if (is_user && address >= TASK_SIZE) {
-+		if ((long)address == -1)
-+			return;
-+
- 		pr_crit_ratelimited("%s[%d]: User access of kernel address (%lx) - exploit attempt? (uid: %d)\n",
- 				   current->comm, current->pid, address,
- 				   from_kuid(&init_user_ns, current_uid()));
--- 
-2.13.3
+`pinned` is only incremented in the loop that does the GUP, and there's
+a check that pinned == entries after that loop.
 
+So when we get here we know pinned == entries, and if pinned is zero
+it's because we took the (dev_hpa != MM_IOMMU_TABLE_INVALID_HPA) case at
+the start of the function to get here.
+
+Or do you think that's too subtle to rely on?
+
+cheers
+
+> +			struct page *page = mem->hpages[i];
+> +
+> +			if ((mem->pageshift > PAGE_SHIFT) && PageHuge(page))
+> +				pageshift = page_shift(compound_head(page));
+> +			mem->pageshift = min(mem->pageshift, pageshift);
+> +			/*
+> +			 * We don't need struct page reference any more, switch
+> +			 * to physical address.
+> +			 */
+> +			mem->hpas[i] = page_to_pfn(page) << PAGE_SHIFT;
+> +		}
+> +	}
+> +
+>  	list_add_rcu(&mem->next, &mm->context.iommu_group_mem_list);
+>  
+>  	mutex_unlock(&mem_list_mutex);
+> -- 
+> 2.17.1
