@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8811812984E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2019 16:34:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CB3129857
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2019 16:36:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47hNh13xdfzDqPc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 02:34:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47hNkS3fyyzDqGZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 02:36:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jMZ3BDZQ"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="sHXfRysl"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47hNVK2cqKzDqKJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 02:26:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47hNVL1NwFzDqKf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 02:26:18 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47hNV86wSzz9vJys;
- Mon, 23 Dec 2019 16:26:08 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47hNV96yzQz9vJyt;
+ Mon, 23 Dec 2019 16:26:09 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jMZ3BDZQ; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=sHXfRysl; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id DzIVaFvOzGtT; Mon, 23 Dec 2019 16:26:08 +0100 (CET)
+ with ESMTP id L8wKDvhVT9WF; Mon, 23 Dec 2019 16:26:09 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47hNV85lqhz9vJyn;
- Mon, 23 Dec 2019 16:26:08 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47hNV95tz6z9vJyn;
+ Mon, 23 Dec 2019 16:26:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1577114768; bh=Vs9zjyHpxKTdwXBLQb1H8vLAKdY1DAGFCl+K3eW5KCc=;
+ t=1577114769; bh=/A5nHGIX1n3gwM0sFa6XeCQneVLd9/XPssrSN7a7g8I=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=jMZ3BDZQ2POyf/DzvY1rkIh0tDIyl+lODJ+vYuM9UFIxWlz9sXrvI7kkoar7Xsbso
- eKw4xhkcT/r/NC6008pgZPU8D7RvS2Y1ozuEBx62DC6AHOCl6ycSJigNuJg3BtiqY0
- aU1XSElvyLz+1rkqPgR0J44v1i3hrM0S2nTbDJ48=
+ b=sHXfRysliIex+d9/Owu7dVjupZ7ryZ4/iam1CzsrVLiPJ3QWUWPNKNxH2tlzAx0T7
+ 2mJv4J994amOHthnEbpWAe6aPUuiJEyWrLCLMG9NGhtWSXZbPDkdCpaK7fb2+10M5I
+ KcCNi4EXt6+o4eROPWPD2kOCTHPAUZ0u1QNvWOH0=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F101C8B7AB;
- Mon, 23 Dec 2019 16:26:13 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0165D8B7AB;
+ Mon, 23 Dec 2019 16:26:15 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wVCD1s8Om32N; Mon, 23 Dec 2019 16:26:13 +0100 (CET)
+ with ESMTP id mfRKu-QhdIrE; Mon, 23 Dec 2019 16:26:14 +0100 (CET)
 Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CE0318B7A1;
- Mon, 23 Dec 2019 16:26:13 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D3EC28B7A1;
+ Mon, 23 Dec 2019 16:26:14 +0100 (CET)
 Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id D7252637D8; Mon, 23 Dec 2019 15:26:13 +0000 (UTC)
-Message-Id: <9bd99cf0e97fd62e63c4a14247dee060c8f743e1.1577114567.git.christophe.leroy@c-s.fr>
+ id DE545637D8; Mon, 23 Dec 2019 15:26:14 +0000 (UTC)
+Message-Id: <98430a9b57d4888610fd245337422434376e22fb.1577114567.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1577114567.git.christophe.leroy@c-s.fr>
 References: <cover.1577114567.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [RFC PATCH 3/8] powerpc/irq: don't use current_stack_pointer() in
- do_IRQ()
+Subject: [RFC PATCH 4/8] powerpc/irq: move set_irq_regs() closer to
+ irq_enter/exit()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 23 Dec 2019 15:26:13 +0000 (UTC)
+Date: Mon, 23 Dec 2019 15:26:14 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,57 +81,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before commit 7306e83ccf5c ("powerpc: Don't use CURRENT_THREAD_INFO to
-find the stack"), the current stack base address was obtained by
-calling current_thread_info(). That inline function was simply masking
-out the value of r1.
+set_irq_regs() is called by do_IRQ() while irq_enter() and irq_exit()
+are called by __do_irq().
 
-In that commit, it was changed to using current_stack_pointer(), which
-is an heavier function as it is an outline assembly function which
-cannot be inlined and which reads the content of the stack at 0(r1)
-
-Create stack_pointer() function which returns the value of r1 and use
-it instead.
+Move set_irq_regs() in __do_irq()
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Fixes: 7306e83ccf5c ("powerpc: Don't use CURRENT_THREAD_INFO to find the stack")
 ---
- arch/powerpc/include/asm/reg.h | 8 ++++++++
- arch/powerpc/kernel/irq.c      | 2 +-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/irq.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 1aa46dff0957..bc14fca9b13b 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1466,6 +1466,14 @@ static inline void update_power8_hid0(unsigned long hid0)
- 	 */
- 	asm volatile("sync; mtspr %0,%1; isync":: "i"(SPRN_HID0), "r"(hid0));
- }
-+
-+static __always_inline unsigned long stack_pointer(void)
-+{
-+	register unsigned long r1 asm("r1");
-+
-+	return r1;
-+}
-+
- #endif /* __ASSEMBLY__ */
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_REG_H */
 diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 4690e5270806..410accba865d 100644
+index 410accba865d..28414c6665cc 100644
 --- a/arch/powerpc/kernel/irq.c
 +++ b/arch/powerpc/kernel/irq.c
-@@ -680,7 +680,7 @@ void do_IRQ(struct pt_regs *regs)
+@@ -647,6 +647,7 @@ static inline void call_do_irq(struct pt_regs *regs, void *sp)
+ 
+ void __do_irq(struct pt_regs *regs)
+ {
++	struct pt_regs *old_regs = set_irq_regs(regs);
+ 	unsigned int irq;
+ 
+ 	irq_enter();
+@@ -672,11 +673,11 @@ void __do_irq(struct pt_regs *regs)
+ 	trace_irq_exit(regs);
+ 
+ 	irq_exit();
++	set_irq_regs(old_regs);
+ }
+ 
+ void do_IRQ(struct pt_regs *regs)
+ {
+-	struct pt_regs *old_regs = set_irq_regs(regs);
  	void *cursp, *irqsp, *sirqsp;
  
  	/* Switch to the irq stack to handle this */
--	cursp = (void *)(current_stack_pointer() & ~(THREAD_SIZE - 1));
-+	cursp = (void *)(stack_pointer() & ~(THREAD_SIZE - 1));
- 	irqsp = hardirq_ctx[raw_smp_processor_id()];
- 	sirqsp = softirq_ctx[raw_smp_processor_id()];
+@@ -686,16 +687,11 @@ void do_IRQ(struct pt_regs *regs)
  
+ 	check_stack_overflow();
+ 
+-	/* Already there ? */
+-	if (unlikely(cursp == irqsp || cursp == sirqsp)) {
++	/* Already there ? Otherwise switch stack and call */
++	if (unlikely(cursp == irqsp || cursp == sirqsp))
+ 		__do_irq(regs);
+-		set_irq_regs(old_regs);
+-		return;
+-	}
+-	/* Switch stack and call */
+-	call_do_irq(regs, irqsp);
+-
+-	set_irq_regs(old_regs);
++	else
++		call_do_irq(regs, irqsp);
+ }
+ 
+ void __init init_IRQ(void)
 -- 
 2.13.3
 
