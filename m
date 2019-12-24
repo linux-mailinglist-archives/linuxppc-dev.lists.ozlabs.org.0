@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE4A129CBA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 03:26:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47hg7Z70wczDqJc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 13:26:02 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA982129CBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 03:29:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47hgCV1nnFzDqNW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 13:29:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,43 +15,43 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="oPvK6VPz"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="e5/A2TMz"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47hg5g0Y2kzDqG9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 13:24:22 +1100 (AEDT)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
- [209.85.221.41])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47hg9n1WyCzDqH1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 13:27:56 +1100 (AEDT)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+ [209.85.221.42])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 31BFA20828
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 02:24:20 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 948C521927
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 02:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1577154260;
- bh=SPQ7Bj4a4eNp21OAcqYrY8SxuFJJaC2a6yGdIeeRS1o=;
+ s=default; t=1577154474;
+ bh=urdNwQ/OTeq2Z4hdgMEm4P258E+sy9JNDdnsxX/A+m0=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=oPvK6VPzi1k2yyEjQny+BqytBOGY+Pvm5TAIa+d74eS8hvsJFnqaOLMcPbR1MVHcg
- TJAbv69cwFBjDUU1LcTUwFGC1sdBHfjcRbhYXPuD/8fDpRJfQhxnnenWDdYNTNMhtK
- WQtdttyNyw+EIZ8phdY7Uk7eLt21kAD5fLV0wvro=
-Received: by mail-wr1-f41.google.com with SMTP id j42so18585943wrj.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2019 18:24:20 -0800 (PST)
-X-Gm-Message-State: APjAAAUQSrqE09u3H/I+GgdybNQ+H0+gWugePzUqnnxSiZggXsLH5t1C
- GUnLzINuOc+Bt+ELUZXiWN3G30e8xgn3EM0TRe8ZFA==
-X-Google-Smtp-Source: APXvYqxjzD58lmej1/f4cJSP7HhlmKnh8jXfi6lwDjHJL4b+9GZQPe+XjiFw3YmwCo3ewdHy4fkwT46pqN+EiY2Rfws=
-X-Received: by 2002:adf:f491:: with SMTP id l17mr32117348wro.149.1577154258620; 
- Mon, 23 Dec 2019 18:24:18 -0800 (PST)
+ b=e5/A2TMzWmvgBVcYJhSASriiw23lUwDkTKRRrtVzBPcnxYy86U7OFXx0HfahVlJoE
+ gR4r6zzD7UbCJZ6hzzKPUkP9RiRaHMYXHegUwL+YEO5JXAbwTkd+koSfO5sdzwK5Kg
+ cSsvwQzIEipkLbhYGIOw86xV4zgHkcuJxD1NzlXU=
+Received: by mail-wr1-f42.google.com with SMTP id d16so18602043wre.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2019 18:27:54 -0800 (PST)
+X-Gm-Message-State: APjAAAUzvDCpnNNf2CVNx9Hm+Q25NxFAvw4C1J4EuutfZUdA2Qt9FNum
+ eIKG6Y4my4KxOkh3l96k9oqZpqrNA4yDxRvKMNeQLQ==
+X-Google-Smtp-Source: APXvYqzX7Wx0WQQGQxSsSx/rylu702E8XhFQtmBzrPd/vN45dmJAZ0EePwEz406rgBkEgebEu04CDi9IHkjEhDWde+I=
+X-Received: by 2002:adf:f20b:: with SMTP id p11mr31631213wro.195.1577154472974; 
+ Mon, 23 Dec 2019 18:27:52 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1577111363.git.christophe.leroy@c-s.fr>
- <de073962c1a5911343e13c183fbbdef0fe95449e.1577111365.git.christophe.leroy@c-s.fr>
-In-Reply-To: <de073962c1a5911343e13c183fbbdef0fe95449e.1577111365.git.christophe.leroy@c-s.fr>
+ <02861d0a05c2d48db4e9ee9093e2e2598093c372.1577111366.git.christophe.leroy@c-s.fr>
+In-Reply-To: <02861d0a05c2d48db4e9ee9093e2e2598093c372.1577111366.git.christophe.leroy@c-s.fr>
 From: Andy Lutomirski <luto@kernel.org>
-Date: Mon, 23 Dec 2019 18:24:05 -0800
-X-Gmail-Original-Message-ID: <CALCETrXWHk9J-pYm+eopMuW3x7Jr_LnzRjr94gq8g66xOO6SBg@mail.gmail.com>
-Message-ID: <CALCETrXWHk9J-pYm+eopMuW3x7Jr_LnzRjr94gq8g66xOO6SBg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/10] lib: vdso: move call to fallback out of
- common code.
+Date: Mon, 23 Dec 2019 18:27:40 -0800
+X-Gmail-Original-Message-ID: <CALCETrW9hsrVVzudvRY22AqakcsrVzqp=SdwOTwW2zRBK+kEaA@mail.gmail.com>
+Message-ID: <CALCETrW9hsrVVzudvRY22AqakcsrVzqp=SdwOTwW2zRBK+kEaA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 04/10] lib: vdso: get pointer to vdso data from the
+ arch
 To: Christophe Leroy <christophe.leroy@c-s.fr>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,51 +80,19 @@ Sender: "Linuxppc-dev"
 On Mon, Dec 23, 2019 at 6:31 AM Christophe Leroy
 <christophe.leroy@c-s.fr> wrote:
 >
-> On powerpc, VDSO functions and syscalls cannot be implemented in C
-> because the Linux kernel ABI requires that CR[SO] bit is set in case
-> of error and cleared when no error.
+> On powerpc, __arch_get_vdso_data() clobbers the link register,
+> requiring the caller to set a stack frame in order to save it.
 >
-> As this cannot be done in C, C VDSO functions and syscall'based
-> fallback need a trampoline in ASM.
->
-> By moving the fallback calls out of the common code, arches like
-> powerpc can implement both the call to C VDSO and the fallback call
-> in a single trampoline function.
+> As the parent function already has to set a stack frame and save
+> the link register to call the C vdso function, retriving the
+> vdso data pointer there is lighter.
 
-Maybe the issue is that I'm not a powerpc person, but I don't
-understand this.  The common vDSO code is in C.  Presumably this means
-that you need an asm trampoline no matter what to call the C code.  Is
-the improvement that, with this change, you can have the asm
-trampoline do a single branch, so it's logically:
+I'm confused.  Can't you inline __arch_get_vdso_data()?  Or is the
+issue that you can't retrieve the program counter on power without
+clobbering the link register?
 
-ret = [call the C code];
-if (ret == 0) {
- set success bit;
-} else {
- ret = fallback;
- if (ret == 0)
-  set success bit;
-else
-  set failure bit;
-}
+I would imagine that this patch generates worse code on any
+architecture with PC-relative addressing modes (which includes at
+least x86_64, and I would guess includes most modern architectures).
 
-return ret;
-
-instead of:
-
-ret = [call the C code, which includes the fallback];
-if (ret == 0)
-  set success bit;
-else
-  set failure bit;
-
-It's not obvious to me that the former ought to be faster.
-
->
-> The two advantages are:
-> - No need play back and forth with CR[SO] and negative return value.
-> - No stack frame is required in VDSO C functions for the fallbacks.
-
-How is no stack frame required?  Do you mean that the presence of the
-fallback causes worse code generation?  Can you improve the fallback
-instead?
+--Andy
