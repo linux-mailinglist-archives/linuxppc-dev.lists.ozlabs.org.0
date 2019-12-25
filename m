@@ -2,41 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F61012A7CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 13:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F5C12A878
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 17:08:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47jX5W6Nz0zDqLP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 23:12:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47jdKn5HP6zDqMG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2019 03:08:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
- envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-X-Greylist: delayed 936 seconds by postgrey-1.36 at bilbo;
- Wed, 25 Dec 2019 23:10:10 AEDT
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="A7dgdOh8"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47jX361VYbzDqHd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 23:10:06 +1100 (AEDT)
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id DFCD07D8244006852EF5;
- Wed, 25 Dec 2019 19:54:23 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Wed, 25 Dec 2019
- 19:54:16 +0800
-From: YueHaibing <yuehaibing@huawei.com>
-To: <benh@kernel.crashing.org>, <paulus@samba.org>, <mpe@ellerman.id.au>
-Subject: [PATCH -next] powerpc/pmac/smp: Fix old-style declaration
-Date: Wed, 25 Dec 2019 19:49:43 +0800
-Message-ID: <20191225114943.17216-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47jdHv2N7bzDqKH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2019 03:06:32 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id x8so11746746pgk.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 08:06:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gSfzJ6ds8IXkEBlYekF/JAP35cE9VK7DVuScN5rtr4Q=;
+ b=A7dgdOh8g5N+5kh1Nip9xO4MOjiOO1NC9oH4BnLHzUEL2fsL79kLU1+F8zs4r4Esgc
+ vt9uqhl0x6oOcXLODLAdn806O93r9fUjdQ7eLoLnM0oRJnVd4oCZpJuVplmXE8kwwOzP
+ oOoZJ5yBr30pbzmZxmLzvIVp1gb3Bo774Tdp2gaW8BOpzFyVlDBuLwAknHlLXNN4jVSL
+ b3zSNzbSXu2zneY79KuJy2JT0qkV8ph/9XFXFFyxx69pZwnh73sk2unq5yYZqMb2cbC2
+ oDiGYKCmOQ4qX336e6ckeW1ZDDQTjAlWHi+8h5pwqGPHD62h1zPJe5Z4v+X9dVnznV01
+ NWZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=gSfzJ6ds8IXkEBlYekF/JAP35cE9VK7DVuScN5rtr4Q=;
+ b=iX/RAXIrB/cevtBjNpoW69ZkTXYlseOFbkQNRpVnPuL9vbsHrcybfb2C4zvPGWsGjw
+ HpLy+9yOtmbrfA5YqlX/GEHtBAdoU0KdkD9j/LbQ31GhhFXYLwCid1U5EuuvCrcRM1mn
+ VDzOpaJ7kYoS9Jde3Tp7n27hv5zklhuOWxILmwcmqS3yecMX/SxDh3tHgUVqDzp5rwum
+ CDZ0NkHh6saqySP9ZU9BWVbQcKX0UPBhHAUdPMcf+/TVl5DyuV5pEmyvEN/jHGxhyRfN
+ +DY3/fmSqitYWa/sWpQHHAXGc+z5R1DFuztTIrdjPYhyXVGZ7xbMw7g0npqKSyU9bY93
+ faVA==
+X-Gm-Message-State: APjAAAWy+srt9iFu8qlgza4SFscj/a+CWI2IoWAgvO+uOTLuLHvdrFj0
+ Pj8+B+xu+GA6Lj1VXcamACs=
+X-Google-Smtp-Source: APXvYqyxeBrcyEJVROE3Qu5C3iF+WCirFJ1Gck5i/SgcUM2Blnu+Sf/LotuqHbPg5QD1kJmrsYrN6Q==
+X-Received: by 2002:a63:2ad8:: with SMTP id q207mr43853722pgq.45.1577289989451; 
+ Wed, 25 Dec 2019 08:06:29 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id z30sm33510680pff.131.2019.12.25.08.06.28
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 25 Dec 2019 08:06:28 -0800 (PST)
+From: Guenter Roeck <linux@roeck-us.net>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/shared: Fix build problem
+Date: Wed, 25 Dec 2019 08:06:26 -0800
+Message-Id: <20191225160626.968-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,38 +77,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Phil Auld <pauld@redhat.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Waiman Long <longman@redhat.com>,
+ Will Deacon <will@kernel.org>, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There expect the 'static' keyword to come first in a declaration
+Since commit 656c21d6af5d ("powerpc/shared: Use static key to detect
+shared processor") and 14c73bd344da ("powerpc/vcpu: Assume dedicated
+processors as non-preempt"), powerpc test builds may fail with the
+following build errors.
 
-arch/powerpc/platforms/powermac/smp.c:664:1: warning: static is not at beginning of declaration [-Wold-style-declaration]
-arch/powerpc/platforms/powermac/smp.c:665:1: warning: static is not at beginning of declaration [-Wold-style-declaration]
+./arch/powerpc/include/asm/spinlock.h:39:1: error:
+	type defaults to ‘int’ in declaration of ‘DECLARE_STATIC_KEY_FALSE’
+./arch/powerpc/include/asm/spinlock.h: In function ‘vcpu_is_preempted’:
+./arch/powerpc/include/asm/spinlock.h:44:7: error:
+	implicit declaration of function ‘static_branch_unlikely’
+./arch/powerpc/include/asm/spinlock.h:44:31: error:
+	‘shared_processor’ undeclared
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+The offending commits use static_branch_unlikely and shared_processor
+without adding the include file declaring it.
+
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Phil Auld <pauld@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Fixes: 656c21d6af5d ("powerpc/shared: Use static key to detect shared processor")
+Fixes: 14c73bd344da ("powerpc/vcpu: Assume dedicated processors as non-preempt")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/powerpc/platforms/powermac/smp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/spinlock.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
-index f95fbde..7233b85 100644
---- a/arch/powerpc/platforms/powermac/smp.c
-+++ b/arch/powerpc/platforms/powermac/smp.c
-@@ -661,8 +661,8 @@ static void smp_core99_gpio_tb_freeze(int freeze)
- #endif /* !CONFIG_PPC64 */
- 
- /* L2 and L3 cache settings to pass from CPU0 to CPU1 on G4 cpus */
--volatile static long int core99_l2_cache;
--volatile static long int core99_l3_cache;
-+static volatile long int core99_l2_cache;
-+static volatile long int core99_l3_cache;
- 
- static void core99_init_caches(int cpu)
- {
+diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
+index 1b55fc08f853..5ddd48616b1c 100644
+--- a/arch/powerpc/include/asm/spinlock.h
++++ b/arch/powerpc/include/asm/spinlock.h
+@@ -16,6 +16,7 @@
+  * (the type definitions are in asm/spinlock_types.h)
+  */
+ #include <linux/irqflags.h>
++#include <linux/jump_label.h>
+ #ifdef CONFIG_PPC64
+ #include <asm/paca.h>
+ #include <asm/hvcall.h>
 -- 
-2.7.4
-
+2.17.1
 
