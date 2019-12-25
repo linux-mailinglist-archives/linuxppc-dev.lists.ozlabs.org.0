@@ -1,88 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E635F12A5F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 06:20:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47jLyx0kS4zDqMx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 16:20:57 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE8712A630
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 06:28:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47jM7L3s9rzDqNB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 16:28:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47jLt60hqrzDqLT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 16:16:46 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=leon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47jLt56fL6z8vSZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 16:16:45 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47jLt55hkcz9sPJ; Wed, 25 Dec 2019 16:16:45 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="bq/liqXf"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47jLt51bHwz9sP6;
- Wed, 25 Dec 2019 16:16:45 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBP5CPjj013635; Wed, 25 Dec 2019 00:16:38 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x21hn92nk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Dec 2019 00:16:38 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBP5GHlp029853;
- Wed, 25 Dec 2019 05:16:37 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma04wdc.us.ibm.com with ESMTP id 2x1b16qryk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Dec 2019 05:16:37 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBP5GaHn44761406
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Dec 2019 05:16:36 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8271C112065;
- Wed, 25 Dec 2019 05:16:36 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA7CC112063;
- Wed, 25 Dec 2019 05:16:35 +0000 (GMT)
-Received: from suka-w540.usor.ibm.com (unknown [9.70.94.45])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 25 Dec 2019 05:16:35 +0000 (GMT)
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@ozlabs.org>, 
- linuxram@us.ibm.com
-Subject: [PATCH 2/2] powerpc/pseries/svm: Disable BHRB/EBB/PMU access
-Date: Tue, 24 Dec 2019 21:16:34 -0800
-Message-Id: <20191225051634.3262-2-sukadev@linux.ibm.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20191225051634.3262-1-sukadev@linux.ibm.com>
-References: <20191225051634.3262-1-sukadev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-24_07:2019-12-24,2019-12-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- mlxscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- suspectscore=0 bulkscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912250039
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47jM563ph7zDqLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 16:26:18 +1100 (AEDT)
+Received: from localhost (unknown [5.29.147.182])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1B55D2071E;
+ Wed, 25 Dec 2019 05:26:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1577251576;
+ bh=XecFfsaVDZ9xwmzIy/JIRjF1C/8kAWJZBoR2IY+F2RA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=bq/liqXfuKDGJm/bGg4q9hFXMmE+Y/AuB7AQqgBxYhO1C6nmQsQelIzCX1v5I5WAy
+ wsBPrYaZwpLUi6WCN7S+YTK/tktc66fQ/jur1rAeqVmCtqwwKEWcnC46thxPwqkyMA
+ SXjSVJZNN56CsSF4ioskprUfCvid80SsCXRVwzPk=
+Date: Wed, 25 Dec 2019 07:26:12 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v11 00/25] mm/gup: track dma-pinned pages: FOLL_PIN
+Message-ID: <20191225052612.GA212002@unreal>
+References: <20191216222537.491123-1-jhubbard@nvidia.com>
+ <20191219132607.GA410823@unreal>
+ <a4849322-8e17-119e-a664-80d9f95d850b@nvidia.com>
+ <20191219210743.GN17227@ziepe.ca> <20191220182939.GA10944@unreal>
+ <1001a5fc-a71d-9c0f-1090-546c4913d8a2@nvidia.com>
+ <20191222132357.GF13335@unreal>
+ <49d57efe-85e1-6910-baf5-c18df1382206@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49d57efe-85e1-6910-baf5-c18df1382206@nvidia.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,325 +61,231 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@ozlabs.org, kvm-ppc@vger.kernel.org,
- bharata@linux.ibm.com
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Maor Gottlieb <maorg@mellanox.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Ran Rozenstein <ranro@mellanox.com>, linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ultravisor disables some CPU features like BHRB, EBB and PMU in
-secure virtual machines (SVMs). Skip accessing those registers
-in SVMs to avoid getting a Program Interrupt.
+On Tue, Dec 24, 2019 at 06:03:50PM -0800, John Hubbard wrote:
+> On 12/22/19 5:23 AM, Leon Romanovsky wrote:
+> > On Fri, Dec 20, 2019 at 03:54:55PM -0800, John Hubbard wrote:
+> > > On 12/20/19 10:29 AM, Leon Romanovsky wrote:
+> > > ...
+> > > > > $ ./build.sh
+> > > > > $ build/bin/run_tests.py
+> > > > >
+> > > > > If you get things that far I think Leon can get a reproduction for you
+> > > >
+> > > > I'm not so optimistic about that.
+> > > >
+> > >
+> > > OK, I'm going to proceed for now on the assumption that I've got an overflow
+> > > problem that happens when huge pages are pinned. If I can get more information,
+> > > great, otherwise it's probably enough.
+> > >
+> > > One thing: for your repro, if you know the huge page size, and the system
+> > > page size for that case, that would really help. Also the number of pins per
+> > > page, more or less, that you'd expect. Because Jason says that only 2M huge
+> > > pages are used...
+> > >
+> > > Because the other possibility is that the refcount really is going negative,
+> > > likely due to a mismatched pin/unpin somehow.
+> > >
+> > > If there's not an obvious repro case available, but you do have one (is it easy
+> > > to repro, though?), then *if* you have the time, I could point you to a github
+> > > branch that reduces GUP_PIN_COUNTING_BIAS by, say, 4x, by applying this:
+> > >
+> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > > index bb44c4d2ada7..8526fd03b978 100644
+> > > --- a/include/linux/mm.h
+> > > +++ b/include/linux/mm.h
+> > > @@ -1077,7 +1077,7 @@ static inline void put_page(struct page *page)
+> > >    * get_user_pages and page_mkclean and other calls that race to set up page
+> > >    * table entries.
+> > >    */
+> > > -#define GUP_PIN_COUNTING_BIAS (1U << 10)
+> > > +#define GUP_PIN_COUNTING_BIAS (1U << 8)
+> > >
+> > >   void unpin_user_page(struct page *page);
+> > >   void unpin_user_pages_dirty_lock(struct page **pages, unsigned long npages,
+> > >
+> > > If that fails to repro, then we would be zeroing in on the root cause.
+> > >
+> > > The branch is here (I just tested it and it seems healthy):
+> > >
+> > > git@github.com:johnhubbard/linux.git  pin_user_pages_tracking_v11_with_diags
+> >
+> > Hi,
+> >
+> > We tested the following branch and here comes results:
+>
+> Thanks for this testing run!
+>
+> > [root@server consume_mtts]# (master) $ grep foll_pin /proc/vmstat
+> > nr_foll_pin_requested 0
+> > nr_foll_pin_returned 0
+> >
+>
+> Zero pinned pages!
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
----
-Changelog[v2]
-	- [Michael Ellerman] Optimize the code using FW_FEATURE_SVM
-	- Merged EBB/BHRB and PMU patches into one and reorganized code.
----
- arch/powerpc/kernel/cpu_setup_power.S   | 21 ++++++++++++++++
- arch/powerpc/kernel/process.c           | 22 ++++++++++-------
- arch/powerpc/kvm/book3s_hv.c            | 32 +++++++++++++++----------
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 32 +++++++++++++++----------
- arch/powerpc/kvm/book3s_hv_tm_builtin.c | 21 +++++++++-------
- arch/powerpc/perf/core-book3s.c         |  5 ++++
- arch/powerpc/xmon/xmon.c                | 29 +++++++++++++---------
- 7 files changed, 110 insertions(+), 52 deletions(-)
+Maybe we are missing some CONFIG_* option?
+https://lore.kernel.org/linux-rdma/12a28917-f8c9-5092-2f01-92bb74714cae@nvidia.com/T/#mf900896f5dfc86cdee9246219990c632ed77115f
 
-diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
-index a460298c7ddb..9e895d8db468 100644
---- a/arch/powerpc/kernel/cpu_setup_power.S
-+++ b/arch/powerpc/kernel/cpu_setup_power.S
-@@ -206,14 +206,35 @@ __init_PMU_HV_ISA207:
- 	blr
- 
- __init_PMU:
-+#ifdef CONFIG_PPC_SVM
-+	/*
-+	 * SVM's are restricted from accessing PMU, so skip.
-+	 */
-+	mfmsr   r5
-+	rldicl  r5, r5, 64-MSR_S_LG, 62
-+	cmpwi   r5,1
-+	beq     skip1
-+#endif
- 	li	r5,0
- 	mtspr	SPRN_MMCRA,r5
- 	mtspr	SPRN_MMCR0,r5
- 	mtspr	SPRN_MMCR1,r5
- 	mtspr	SPRN_MMCR2,r5
-+skip1:
- 	blr
- 
- __init_PMU_ISA207:
-+
-+#ifdef CONFIG_PPC_SVM
-+	/*
-+	 * SVM's are restricted from accessing PMU, so skip.
-+	*/
-+	mfmsr   r5
-+	rldicl  r5, r5, 64-MSR_S_LG, 62
-+	cmpwi   r5,1
-+	beq     skip2
-+#endif
- 	li	r5,0
- 	mtspr	SPRN_MMCRS,r5
-+skip2:
- 	blr
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 639ceae7da9d..e24b9c740596 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1059,9 +1059,11 @@ static inline void save_sprs(struct thread_struct *t)
- 		t->dscr = mfspr(SPRN_DSCR);
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		t->bescr = mfspr(SPRN_BESCR);
--		t->ebbhr = mfspr(SPRN_EBBHR);
--		t->ebbrr = mfspr(SPRN_EBBRR);
-+		if (!is_secure_guest()) {
-+			t->bescr = mfspr(SPRN_BESCR);
-+			t->ebbhr = mfspr(SPRN_EBBHR);
-+			t->ebbrr = mfspr(SPRN_EBBRR);
-+		}
- 
- 		t->fscr = mfspr(SPRN_FSCR);
- 
-@@ -1097,12 +1099,14 @@ static inline void restore_sprs(struct thread_struct *old_thread,
- 	}
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		if (old_thread->bescr != new_thread->bescr)
--			mtspr(SPRN_BESCR, new_thread->bescr);
--		if (old_thread->ebbhr != new_thread->ebbhr)
--			mtspr(SPRN_EBBHR, new_thread->ebbhr);
--		if (old_thread->ebbrr != new_thread->ebbrr)
--			mtspr(SPRN_EBBRR, new_thread->ebbrr);
-+		if (!is_secure_guest()) {
-+			if (old_thread->bescr != new_thread->bescr)
-+				mtspr(SPRN_BESCR, new_thread->bescr);
-+			if (old_thread->ebbhr != new_thread->ebbhr)
-+				mtspr(SPRN_EBBHR, new_thread->ebbhr);
-+			if (old_thread->ebbrr != new_thread->ebbrr)
-+				mtspr(SPRN_EBBRR, new_thread->ebbrr);
-+		}
- 
- 		if (old_thread->fscr != new_thread->fscr)
- 			mtspr(SPRN_FSCR, new_thread->fscr);
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 709cf1fd4cf4..ced0460afafe 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3568,9 +3568,11 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	mtspr(SPRN_PSPB, vcpu->arch.pspb);
- 	mtspr(SPRN_FSCR, vcpu->arch.fscr);
- 	mtspr(SPRN_TAR, vcpu->arch.tar);
--	mtspr(SPRN_EBBHR, vcpu->arch.ebbhr);
--	mtspr(SPRN_EBBRR, vcpu->arch.ebbrr);
--	mtspr(SPRN_BESCR, vcpu->arch.bescr);
-+	if (!is_secure_guest()) {
-+		mtspr(SPRN_EBBHR, vcpu->arch.ebbhr);
-+		mtspr(SPRN_EBBRR, vcpu->arch.ebbrr);
-+		mtspr(SPRN_BESCR, vcpu->arch.bescr);
-+	}
- 	mtspr(SPRN_WORT, vcpu->arch.wort);
- 	mtspr(SPRN_TIDR, vcpu->arch.tid);
- 	mtspr(SPRN_DAR, vcpu->arch.shregs.dar);
-@@ -3641,9 +3643,11 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	vcpu->arch.pspb = mfspr(SPRN_PSPB);
- 	vcpu->arch.fscr = mfspr(SPRN_FSCR);
- 	vcpu->arch.tar = mfspr(SPRN_TAR);
--	vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
--	vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
--	vcpu->arch.bescr = mfspr(SPRN_BESCR);
-+	if (!is_secure_guest()) {
-+		vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
-+		vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
-+		vcpu->arch.bescr = mfspr(SPRN_BESCR);
-+	}
- 	vcpu->arch.wort = mfspr(SPRN_WORT);
- 	vcpu->arch.tid = mfspr(SPRN_TIDR);
- 	vcpu->arch.amr = mfspr(SPRN_AMR);
-@@ -4272,9 +4276,11 @@ static int kvmppc_vcpu_run_hv(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 
- 	/* Save userspace EBB and other register values */
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		ebb_regs[0] = mfspr(SPRN_EBBHR);
--		ebb_regs[1] = mfspr(SPRN_EBBRR);
--		ebb_regs[2] = mfspr(SPRN_BESCR);
-+		if (!is_secure_guest()) {
-+			ebb_regs[0] = mfspr(SPRN_EBBHR);
-+			ebb_regs[1] = mfspr(SPRN_EBBRR);
-+			ebb_regs[2] = mfspr(SPRN_BESCR);
-+		}
- 		user_tar = mfspr(SPRN_TAR);
- 	}
- 	user_vrsave = mfspr(SPRN_VRSAVE);
-@@ -4320,9 +4326,11 @@ static int kvmppc_vcpu_run_hv(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 
- 	/* Restore userspace EBB and other register values */
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		mtspr(SPRN_EBBHR, ebb_regs[0]);
--		mtspr(SPRN_EBBRR, ebb_regs[1]);
--		mtspr(SPRN_BESCR, ebb_regs[2]);
-+		if (!is_secure_guest()) {
-+			mtspr(SPRN_EBBHR, ebb_regs[0]);
-+			mtspr(SPRN_EBBRR, ebb_regs[1]);
-+			mtspr(SPRN_BESCR, ebb_regs[2]);
-+		}
- 		mtspr(SPRN_TAR, user_tar);
- 		mtspr(SPRN_FSCR, current->thread.fscr);
- 	}
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index faebcbb8c4db..7cc73c832482 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -810,15 +810,19 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
- 	mtspr	SPRN_CIABR, r7
- 	mtspr	SPRN_TAR, r8
- 	ld	r5, VCPU_IC(r4)
--	ld	r8, VCPU_EBBHR(r4)
- 	mtspr	SPRN_IC, r5
--	mtspr	SPRN_EBBHR, r8
--	ld	r5, VCPU_EBBRR(r4)
--	ld	r6, VCPU_BESCR(r4)
-+
-+BEGIN_FTR_SECTION
-+	ld	r5, VCPU_EBBHR(r4)
-+	ld	r6, VCPU_EBBRR(r4)
-+	ld	r7, VCPU_BESCR(r4)
-+	mtspr	SPRN_EBBHR, r5
-+	mtspr	SPRN_EBBRR, r6
-+	mtspr	SPRN_BESCR, r7
-+END_FW_FTR_SECTION_IFCLR(FW_FEATURE_SVM)
-+
- 	lwz	r7, VCPU_GUEST_PID(r4)
- 	ld	r8, VCPU_WORT(r4)
--	mtspr	SPRN_EBBRR, r5
--	mtspr	SPRN_BESCR, r6
- 	mtspr	SPRN_PID, r7
- 	mtspr	SPRN_WORT, r8
- BEGIN_FTR_SECTION
-@@ -1615,14 +1619,18 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
- 	mfspr	r7, SPRN_TAR
- 	std	r5, VCPU_IC(r9)
- 	std	r7, VCPU_TAR(r9)
--	mfspr	r8, SPRN_EBBHR
--	std	r8, VCPU_EBBHR(r9)
--	mfspr	r5, SPRN_EBBRR
--	mfspr	r6, SPRN_BESCR
-+
-+BEGIN_FTR_SECTION
-+	mfspr	r5, SPRN_EBBHR
-+	mfspr	r6, SPRN_EBBRR
-+	mfspr	r7, SPRN_BESCR
-+	std	r5, VCPU_EBBHR(r9)
-+	std	r6, VCPU_EBBRR(r9)
-+	std	r7, VCPU_BESCR(r9)
-+END_FW_FTR_SECTION_IFCLR(FW_FEATURE_SVM)
-+
- 	mfspr	r7, SPRN_PID
- 	mfspr	r8, SPRN_WORT
--	std	r5, VCPU_EBBRR(r9)
--	std	r6, VCPU_BESCR(r9)
- 	stw	r7, VCPU_GUEST_PID(r9)
- 	std	r8, VCPU_WORT(r9)
- BEGIN_FTR_SECTION
-diff --git a/arch/powerpc/kvm/book3s_hv_tm_builtin.c b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-index 217246279dfa..46257a464f99 100644
---- a/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-@@ -10,6 +10,7 @@
- #include <asm/kvm_book3s_64.h>
- #include <asm/reg.h>
- #include <asm/ppc-opcode.h>
-+#include <asm/svm.h>
- 
- /*
-  * This handles the cases where the guest is in real suspend mode
-@@ -45,14 +46,18 @@ int kvmhv_p9_tm_emulation_early(struct kvm_vcpu *vcpu)
- 		if (!(vcpu->arch.hfscr & HFSCR_EBB) ||
- 		    ((msr & MSR_PR) && !(mfspr(SPRN_FSCR) & FSCR_EBB)))
- 			return 0;
--		bescr = mfspr(SPRN_BESCR);
--		/* expect to see a S->T transition requested */
--		if (((bescr >> 30) & 3) != 2)
--			return 0;
--		bescr &= ~BESCR_GE;
--		if (instr & (1 << 11))
--			bescr |= BESCR_GE;
--		mtspr(SPRN_BESCR, bescr);
-+
-+		if (!is_secure_guest()) {
-+			bescr = mfspr(SPRN_BESCR);
-+			/* expect to see a S->T transition requested */
-+			if (((bescr >> 30) & 3) != 2)
-+				return 0;
-+			bescr &= ~BESCR_GE;
-+			if (instr & (1 << 11))
-+				bescr |= BESCR_GE;
-+			mtspr(SPRN_BESCR, bescr);
-+		}
-+
- 		msr = (msr & ~MSR_TS_MASK) | MSR_TS_T;
- 		vcpu->arch.shregs.msr = msr;
- 		vcpu->arch.cfar = vcpu->arch.regs.nip - 4;
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index ca92e01d0bd1..548339080413 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -813,6 +813,11 @@ void perf_event_print_debug(void)
- 		return;
- 	}
- 
-+	if (is_secure_guest()) {
-+		pr_info("Performance monitor access disabled in SVM.\n");
-+		return;
-+	}
-+
- 	if (!ppmu->n_counter)
- 		return;
- 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index d83364ebc5c5..eb2679741115 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1861,17 +1861,24 @@ static void dump_207_sprs(void)
- 			mfspr(SPRN_TEXASR));
- 	}
- 
--	printf("mmcr0  = %.16lx  mmcr1 = %.16lx mmcr2  = %.16lx\n",
--		mfspr(SPRN_MMCR0), mfspr(SPRN_MMCR1), mfspr(SPRN_MMCR2));
--	printf("pmc1   = %.8lx pmc2 = %.8lx  pmc3 = %.8lx  pmc4   = %.8lx\n",
--		mfspr(SPRN_PMC1), mfspr(SPRN_PMC2),
--		mfspr(SPRN_PMC3), mfspr(SPRN_PMC4));
--	printf("mmcra  = %.16lx   siar = %.16lx pmc5   = %.8lx\n",
--		mfspr(SPRN_MMCRA), mfspr(SPRN_SIAR), mfspr(SPRN_PMC5));
--	printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8lx\n",
--		mfspr(SPRN_SDAR), mfspr(SPRN_SIER), mfspr(SPRN_PMC6));
--	printf("ebbhr  = %.16lx  ebbrr = %.16lx bescr  = %.16lx\n",
--		mfspr(SPRN_EBBHR), mfspr(SPRN_EBBRR), mfspr(SPRN_BESCR));
-+	if (!is_secure_guest()) {
-+		printf("mmcr0  = %.16lx  mmcr1 = %.16lx mmcr2  = %.16lx\n",
-+			mfspr(SPRN_MMCR0), mfspr(SPRN_MMCR1),
-+			mfspr(SPRN_MMCR2));
-+		printf("pmc1   = %.8lx pmc2 = %.8lx  pmc3 = %.8lx  pmc4   = %.8lx\n",
-+			mfspr(SPRN_PMC1), mfspr(SPRN_PMC2),
-+			mfspr(SPRN_PMC3), mfspr(SPRN_PMC4));
-+		printf("mmcra  = %.16lx   siar = %.16lx pmc5   = %.8lx\n",
-+			mfspr(SPRN_MMCRA), mfspr(SPRN_SIAR), mfspr(SPRN_PMC5));
-+		printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8lx\n",
-+			mfspr(SPRN_SDAR), mfspr(SPRN_SIER), mfspr(SPRN_PMC6));
-+
-+		printf("ebbhr  = %.16lx  ebbrr = %.16lx bescr  = %.16lx\n",
-+			mfspr(SPRN_EBBHR), mfspr(SPRN_EBBRR),
-+			mfspr(SPRN_BESCR));
-+	}
-+
-+
- 	printf("iamr   = %.16lx\n", mfspr(SPRN_IAMR));
- 
- 	if (!(msr & MSR_HV))
--- 
-2.17.2
+>
+> ...now I'm confused. Somehow FOLL_PIN and pin_user_pages*() calls are
+> not happening. And although the backtraces below show some of my new
+> routines (like try_grab_page), they also confirm the above: there is no
+> pin_user_page*() call in the stack.
+>
+> In particular, it looks like ib_umem_get() is calling through to
+> get_user_pages*(), rather than pin_user_pages*(). I don't see how this
+> is possible, because the code on my screen shows ib_umem_get() calling
+> pin_user_pages_fast().
+>
+> Any thoughts or ideas are welcome here.
+>
+> However, glossing over all of that and assuming that the new
+> GUP_PIN_COUNTING_BIAS of 256 is applied, it's interesting that we still
+> see any overflow. I'm less confident now that this is a true refcount
+> overflow.
 
+Earlier in this email thread, I posted possible function call chain which
+doesn't involve refcount overflow, but for some reason the refcount
+overflow was chosen as a way to explore.
+
+>
+> Also, any information that would get me closer to being able to attempt
+> my own reproduction of the problem are *very* welcome. :)
+
+It is ancient verification test (~10y) which is not an easy task to
+make it understandable and standalone :).
+
+>
+> thanks,
+> --
+> John Hubbard
+> NVIDIA
+>
+> > [root@serer consume_mtts]# (master) $ dmesg
+> > [  425.221459] ------------[ cut here ]------------
+> > [  425.225894] WARNING: CPU: 1 PID: 6738 at mm/gup.c:61 try_grab_compound_head+0x90/0xa0
+> > [  425.228021] Modules linked in: mlx5_ib mlx5_core mlxfw mlx4_ib mlx4_en ptp pps_core mlx4_core bonding ip6_gre ip6_tunnel tunnel6 ip_gre gre ip_tunnel rdma_rxe ip6_udp_tunnel udp_tunnel rdma_ucm ib_uverbs ib_ipoib ib_umad ib_srp scsi_transport_srp rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core [last unloaded: mlxfw]
+> > [  425.235266] CPU: 1 PID: 6738 Comm: consume_mtts Tainted: G           O      5.5.0-rc2+ #1
+> > [  425.237480] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
+> > [  425.239738] RIP: 0010:try_grab_compound_head+0x90/0xa0
+> > [  425.241170] Code: 06 48 8d 4f 34 f0 0f b1 57 34 74 cd 85 c0 74 cf 8d 14 06 f0 0f b1 11 74 c0 eb f1 8d 14 06 f0 0f b1 11 74 b5 85 c0 75 f3 eb b5 <0f> 0b 31 c0 c3 90 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 41
+> > [  425.245739] RSP: 0018:ffffc900006878a8 EFLAGS: 00010082
+> > [  425.247124] RAX: 0000000080000001 RBX: 00007f780488a000 RCX: 0000000000000bb0
+> > [  425.248956] RDX: ffffea000e031087 RSI: 0000000000008a00 RDI: ffffea000dc58000
+> > [  425.250761] RBP: ffffea000e031080 R08: ffffc90000687974 R09: 000fffffffe00000
+> > [  425.252661] R10: 0000000000000000 R11: ffff888362560000 R12: 000000000000008a
+> > [  425.254487] R13: 80000003716000e7 R14: 00007f780488a000 R15: ffffc90000687974
+> > [  425.256309] FS:  00007f780d9d3740(0000) GS:ffff8883b1c80000(0000) knlGS:0000000000000000
+> > [  425.258401] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [  425.259949] CR2: 0000000002334048 CR3: 000000039c68c001 CR4: 00000000001606a0
+> > [  425.261884] Call Trace:
+> > [  425.262735]  gup_pgd_range+0x517/0x5a0
+> > [  425.263819]  internal_get_user_pages_fast+0x210/0x250
+> > [  425.265193]  ib_umem_get+0x298/0x550 [ib_uverbs]
+> > [  425.266476]  mr_umem_get+0xc9/0x260 [mlx5_ib]
+> > [  425.267699]  mlx5_ib_reg_user_mr+0xcc/0x7e0 [mlx5_ib]
+> > [  425.269134]  ? xas_load+0x8/0x80
+> > [  425.270074]  ? xa_load+0x48/0x90
+> > [  425.271038]  ? lookup_get_idr_uobject.part.10+0x12/0x70 [ib_uverbs]
+> > [  425.272757]  ib_uverbs_reg_mr+0x127/0x280 [ib_uverbs]
+> > [  425.274120]  ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0xc2/0xf0 [ib_uverbs]
+> > [  425.276058]  ib_uverbs_cmd_verbs.isra.6+0x5be/0xbe0 [ib_uverbs]
+> > [  425.277657]  ? uverbs_disassociate_api+0xd0/0xd0 [ib_uverbs]
+> > [  425.279155]  ? __alloc_pages_nodemask+0x148/0x2b0
+> > [  425.280445]  ib_uverbs_ioctl+0xc0/0x120 [ib_uverbs]
+> > [  425.281755]  do_vfs_ioctl+0x9d/0x650
+> > [  425.282766]  ksys_ioctl+0x70/0x80
+> > [  425.283745]  __x64_sys_ioctl+0x16/0x20
+> > [  425.284912]  do_syscall_64+0x42/0x130
+> > [  425.285973]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> > [  425.287377] RIP: 0033:0x7f780d2df267
+> > [  425.288449] Code: b3 66 90 48 8b 05 19 3c 2c 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 3b 2c 00 f7 d8 64 89 01 48
+> > [  425.293073] RSP: 002b:00007ffce49a88a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> > [  425.295034] RAX: ffffffffffffffda RBX: 00007ffce49a8938 RCX: 00007f780d2df267
+> > [  425.296895] RDX: 00007ffce49a8920 RSI: 00000000c0181b01 RDI: 0000000000000003
+> > [  425.298689] RBP: 00007ffce49a8900 R08: 0000000000000003 R09: 00007f780d9a1010
+> > [  425.300480] R10: 00000000ffffffff R11: 0000000000000246 R12: 00007f780d9a1150
+> > [  425.302290] R13: 00007ffce49a8900 R14: 00007ffce49a8ad8 R15: 00007f780468a000
+> > [  425.304113] ---[ end trace 1ecbefdb403190dd ]---
+> > [  425.305434] ------------[ cut here ]------------
+> > [  425.307147] WARNING: CPU: 1 PID: 6738 at mm/gup.c:150 try_grab_page+0x56/0x60
+> > [  425.309111] Modules linked in: mlx5_ib mlx5_core mlxfw mlx4_ib mlx4_en ptp pps_core mlx4_core bonding ip6_gre ip6_tunnel tunnel6 ip_gre gre ip_tunnel rdma_rxe ip6_udp_tunnel udp_tunnel rdma_ucm ib_uverbs ib_ipoib ib_umad ib_srp scsi_transport_srp rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core [last unloaded: mlxfw]
+> > [  425.316461] CPU: 1 PID: 6738 Comm: consume_mtts Tainted: G        W  O      5.5.0-rc2+ #1
+> > [  425.318582] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
+> > [  425.320958] RIP: 0010:try_grab_page+0x56/0x60
+> > [  425.322167] Code: 7e 28 f0 81 47 34 00 01 00 00 c3 48 8b 47 08 48 8d 50 ff a8 01 48 0f 45 fa 8b 47 34 85 c0 7e 0f f0 ff 47 34 b8 01 00 00 00 c3 <0f> 0b 31 c0 c3 0f 0b 31 c0 c3 0f 1f 44 00 00 41 57 41 56 41 55 41
+> > [  425.326814] RSP: 0018:ffffc90000687830 EFLAGS: 00010282
+> > [  425.328226] RAX: 0000000000000001 RBX: ffffea000dc58000 RCX: ffffea000e031087
+> > [  425.330104] RDX: 0000000080000001 RSI: 0000000000040000 RDI: ffffea000dc58000
+> > [  425.331980] RBP: 00007f7804800000 R08: 000ffffffffff000 R09: 80000003716000e7
+> > [  425.333898] R10: ffff88834af80120 R11: ffff8883ac16f000 R12: ffff88834af80120
+> > [  425.335704] R13: ffff88837c0915c0 R14: 0000000000050201 R15: 00007f7804800000
+> > [  425.337638] FS:  00007f780d9d3740(0000) GS:ffff8883b1c80000(0000) knlGS:0000000000000000
+> > [  425.339734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [  425.341369] CR2: 0000000002334048 CR3: 000000039c68c001 CR4: 00000000001606a0
+> > [  425.343160] Call Trace:
+> > [  425.343967]  follow_trans_huge_pmd+0x16f/0x2e0
+> > [  425.345263]  follow_p4d_mask+0x51c/0x630
+> > [  425.346344]  __get_user_pages+0x1a1/0x6c0
+> > [  425.347463]  internal_get_user_pages_fast+0x17b/0x250
+> > [  425.348918]  ib_umem_get+0x298/0x550 [ib_uverbs]
+> > [  425.350174]  mr_umem_get+0xc9/0x260 [mlx5_ib]
+> > [  425.351383]  mlx5_ib_reg_user_mr+0xcc/0x7e0 [mlx5_ib]
+> > [  425.352849]  ? xas_load+0x8/0x80
+> > [  425.353776]  ? xa_load+0x48/0x90
+> > [  425.354730]  ? lookup_get_idr_uobject.part.10+0x12/0x70 [ib_uverbs]
+> > [  425.356410]  ib_uverbs_reg_mr+0x127/0x280 [ib_uverbs]
+> > [  425.357843]  ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0xc2/0xf0 [ib_uverbs]
+> > [  425.359749]  ib_uverbs_cmd_verbs.isra.6+0x5be/0xbe0 [ib_uverbs]
+> > [  425.361405]  ? uverbs_disassociate_api+0xd0/0xd0 [ib_uverbs]
+> > [  425.362898]  ? __alloc_pages_nodemask+0x148/0x2b0
+> > [  425.364206]  ib_uverbs_ioctl+0xc0/0x120 [ib_uverbs]
+> > [  425.365564]  do_vfs_ioctl+0x9d/0x650
+> > [  425.366567]  ksys_ioctl+0x70/0x80
+> > [  425.367537]  __x64_sys_ioctl+0x16/0x20
+> > [  425.368698]  do_syscall_64+0x42/0x130
+> > [  425.369782]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> > [  425.371117] RIP: 0033:0x7f780d2df267
+> > [  425.372159] Code: b3 66 90 48 8b 05 19 3c 2c 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 3b 2c 00 f7 d8 64 89 01 48
+> > [  425.376774] RSP: 002b:00007ffce49a88a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> > [  425.378740] RAX: ffffffffffffffda RBX: 00007ffce49a8938 RCX: 00007f780d2df267
+> > [  425.380598] RDX: 00007ffce49a8920 RSI: 00000000c0181b01 RDI: 0000000000000003
+> > [  425.382411] RBP: 00007ffce49a8900 R08: 0000000000000003 R09: 00007f780d9a1010
+> > [  425.384312] R10: 00000000ffffffff R11: 0000000000000246 R12: 00007f780d9a1150
+> > [  425.386132] R13: 00007ffce49a8900 R14: 00007ffce49a8ad8 R15: 00007f780468a000
+> > [  425.387964] ---[ end trace 1ecbefdb403190de ]---
+> >
+> > Thanks
+> >
+> > >
+> > >
+> > >
+> > > thanks,
+> > > --
+> > > John Hubbard
+> > > NVIDIA
