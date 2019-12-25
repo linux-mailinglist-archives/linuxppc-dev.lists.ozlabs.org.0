@@ -2,81 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6470912A32A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2019 17:24:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6161812A566
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 02:29:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47j1lC69F1zDqCY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 03:24:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47jFqh6rd6zDqN3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2019 12:29:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47j1jK4xgdzDq7F
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 03:23:01 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBOGGvUH061246
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 11:22:58 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x21wcke7y-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2019 11:22:58 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Tue, 24 Dec 2019 16:22:56 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 24 Dec 2019 16:22:53 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xBOGMqP353805150
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Dec 2019 16:22:52 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4F6911C050;
- Tue, 24 Dec 2019 16:22:52 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7232111C058;
- Tue, 24 Dec 2019 16:22:51 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 24 Dec 2019 16:22:51 +0000 (GMT)
-Date: Tue, 24 Dec 2019 21:52:50 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH] powerpc/shared: include correct header for static key
-References: <xagsmtp2.20191223133223.8837@vmsdvm3.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <xagsmtp2.20191223133223.8837@vmsdvm3.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19122416-0016-0000-0000-000002D7DCCF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19122416-0017-0000-0000-0000333A328F
-Message-Id: <20191224162250.GA1781@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-24_04:2019-12-24,2019-12-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0
- clxscore=1015 malwarescore=0 mlxlogscore=999 impostorscore=0 adultscore=0
- mlxscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912240142
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47jFnz4G4FzDqJj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2019 12:27:51 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1ijvOK-00050x-Hj; Tue, 24 Dec 2019 19:23:12 -0600
+Message-ID: <9e680f3798f1a771cba4b41f7a5d7fda7f534522.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Yingjie Bai <byj.tea@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 24 Dec 2019 19:23:10 -0600
+In-Reply-To: <CAFAt38F-YQUVNXEnLut0tMivYUy_OTK7G4wAHfddcmncsEpREQ@mail.gmail.com>
+References: <1574694943-7883-1-git-send-email-yingjie_bai@126.com>
+ <87pngglmxg.fsf@mpe.ellerman.id.au>
+ <CAFAt38F-YQUVNXEnLut0tMivYUy_OTK7G4wAHfddcmncsEpREQ@mail.gmail.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: byj.tea@gmail.com, mpe@ellerman.id.au, yingjie_bai@126.com,
+ galak@kernel.crashing.org, benh@kernel.crashing.org, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+Subject: Re: [PATCH] powerpc/mpc85xx: also write addr_h to spin table for
+ 64bit boot entry
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,57 +64,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: longman@redhat.com, pauld@redhat.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: yingjie_bai@126.com, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Jason A. Donenfeld <Jason@zx2c4.com> [2019-12-23 14:31:47]:
-
-> Recently, the spinlock implementation grew a static key optimization,
-> but the jump_label.h header include was left out, leading to build
-> errors:
+On Tue, 2019-12-24 at 09:35 +0800, Yingjie Bai wrote:
+> Hi Michael,
+> Thanks for pointing out the issue. My mistake...
+> This patch should indeed make sense only when
+> CONFIG_PHYS_64BIT=y
 > 
-> linux/arch/powerpc/include/asm/spinlock.h:44:7: error: implicit declaration of function ???static_branch_unlikely??? [-Werror=implicit-function-declaration]
->    44 |  if (!static_branch_unlikely(&shared_processor))
-> 
-> This commit adds the missing header.
+> I could not find corenet32_smp_defconfig, but I guess in your config,
+> CONFIG_PHYS_64BIT=n ?
+> I will update the patch later today
 
-Right, This was in v4 version of the patchset
-(http://lkml.kernel.org/r/20191212085344.17357-1-srikar@linux.vnet.ibm.com)
-but we missed it in the final v5 version.
+corenet32_smp_defconfig is a makefile rule that pulls in multiple config
+fragments.  It has CONFIG_PHYS_64BIT=y, but __pa() returns an unsigned long
+regardless (which obviously needs to be fixed if DDR starting beyond 4G is to
+be supported).
 
-Thanks for noticing and fixing it.
+What 32-bit config are you using where this actually builds?
 
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+-Scott
 
-> 
-> Fixes: 656c21d6af5d ("powerpc/shared: Use static key to detect shared processor")
-> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
->  arch/powerpc/include/asm/spinlock.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-> index 1b55fc08f853..860228e917dc 100644
-> --- a/arch/powerpc/include/asm/spinlock.h
-> +++ b/arch/powerpc/include/asm/spinlock.h
-> @@ -15,6 +15,7 @@
->   *
->   * (the type definitions are in asm/spinlock_types.h)
->   */
-> +#include <linux/jump_label.h>
->  #include <linux/irqflags.h>
->  #ifdef CONFIG_PPC64
->  #include <asm/paca.h>
-> -- 
-> 2.24.1
-> 
-
--- 
-Thanks and Regards
-Srikar Dronamraju
 
