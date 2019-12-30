@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8814012CFF9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 13:31:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A58312CFE9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 13:10:18 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47mbpv0qDSzDqB9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 23:10:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47mcGx3MFpzDq9s
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 23:31:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,49 +18,50 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47mbmT1l0czDqB2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2019 23:08:07 +1100 (AEDT)
-Received: from mail-qv1-f53.google.com ([209.85.219.53]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Ml6i2-1jScVZ35JM-00lW1C for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec
- 2019 13:08:01 +0100
-Received: by mail-qv1-f53.google.com with SMTP id u1so11441039qvk.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2019 04:08:00 -0800 (PST)
-X-Gm-Message-State: APjAAAUtItJpEunNN7N+xjqr3H/hm3kSmznfMUuz4PDBU7zNAZwXTCp6
- TI2j2bPI9SF0LuduGGVgpQ6Z7RiwUdWSeSEkv40=
-X-Google-Smtp-Source: APXvYqwgYmUQwo+iL/k4m54VB6r1wV0E9Nq8yE/j4nb6YZD4J7kjH+UJKaDQYBMfOQwb9P/Z8xhYwMz7551bLxAPNPc=
-X-Received: by 2002:a0c:bd20:: with SMTP id m32mr50936334qvg.197.1577707679673; 
- Mon, 30 Dec 2019 04:07:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47mcCQ4VKlzDq9R
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2019 23:28:00 +1100 (AEDT)
+Received: from mail-qt1-f169.google.com ([209.85.160.169]) by
+ mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1McYP5-1jJZo11zRN-00cwWi for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec
+ 2019 13:27:56 +0100
+Received: by mail-qt1-f169.google.com with SMTP id t3so29508459qtr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2019 04:27:56 -0800 (PST)
+X-Gm-Message-State: APjAAAUCQGtvRxLBqRfP3d7EkcBlJ5F6v2QlOLJWQ1yDkMGOhuP+9d0D
+ yXVWsyC6x5F4uEUmP1noshHtFQeacgw0kBA5oc4=
+X-Google-Smtp-Source: APXvYqxPg18QcBCheXEg57bO676E88LDtMzW6UpknzYUThTzCz6Q+c1Pcfg/qqj52aosJr397+kYQUCE06+nF/bwaDM=
+X-Received: by 2002:ac8:47d3:: with SMTP id d19mr47462525qtr.142.1577708875107; 
+ Mon, 30 Dec 2019 04:27:55 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1577111363.git.christophe.leroy@c-s.fr>
- <d0f8dfb26c025d3e3eee1b5f610161ca19b942df.1577111367.git.christophe.leroy@c-s.fr>
-In-Reply-To: <d0f8dfb26c025d3e3eee1b5f610161ca19b942df.1577111367.git.christophe.leroy@c-s.fr>
+ <47701b5fb73cf536db074031db8e6e3fa3695168.1577111365.git.christophe.leroy@c-s.fr>
+In-Reply-To: <47701b5fb73cf536db074031db8e6e3fa3695168.1577111365.git.christophe.leroy@c-s.fr>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 30 Dec 2019 13:07:43 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a36OgFuY72b_i6+0xBNGnaxS1SsRid+HrgQHPZtUJp3LQ@mail.gmail.com>
-Message-ID: <CAK8P3a36OgFuY72b_i6+0xBNGnaxS1SsRid+HrgQHPZtUJp3LQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 05/10] lib: vdso: inline do_hres()
+Date: Mon, 30 Dec 2019 13:27:39 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0QGtjygLJUWX_1-s1vfCzE6UoOzrb+OZWwjaBdh=RpVQ@mail.gmail.com>
+Message-ID: <CAK8P3a0QGtjygLJUWX_1-s1vfCzE6UoOzrb+OZWwjaBdh=RpVQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 01/10] lib: vdso: ensure all arches have 32bit
+ fallback
 To: Christophe Leroy <christophe.leroy@c-s.fr>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:ZkcmCcfHZgs5iPF9ZB4TApfjH6KqqS1SG2tvC3ghWKy42hs1Nuw
- /Ga19XLpUTSba0Clc3zSHhCRnYt1xoE4vO242CjLFRrf/o8eyO6sVOXKtoAYUlDw6TlM6CF
- 5t23gEAHJLvINUu45dQMUT6aYEio+Emcjf5hwIK982o2c+TBHDkHWNLFh0f/Bt6tJnBAXw0
- H3Q1FW+WngMr23CXW9Xzw==
+X-Provags-ID: V03:K1:O/w8kigMHYK5xyDRJmLZIa6IvTDx2yhPyOTG0KoRISrdHTfwHnq
+ +Pg55/BH1AnrNCrldefEyyMyEWZwyjWaa/parwk40U/frO0qvo017LkAbh0ULYr3nxVsbvw
+ /XEiuHV44e0luvz6/74Ghvs5k3yeh/sY+XJ1CAp/ymu2QGGEvXK9uclrQtaV5hhlOnU6ssH
+ 9LEkxdAM98+YdrFa2qCkg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uGd6ayO5sa4=:wwXJ9EwSg9V5iYvwWpvvhE
- UsQuMcsH7GYAXi5kD+Rg+lRrJErqPl2YkvAJuy7Ov5uWJSTBPSO9WVKGDcpkZLVAe4xtJpoNQ
- uCcqqB9spX3OARoIu/hDwHbfp20zY3yrPBF6AVlDpzNucYSxpYtfe2x8VVAkjyjYzLg1yO1fo
- HgBp/6skm/tXol/V4JzX852I9PhkqvV6vfw01jgBTaCYlyCf55dG8qk49uWcStXC4dqz1pHGJ
- TReX9te0iugoFnefuB63veVI0SjuhrQoogTDpsgBqM5S6zhflLnDo7rCkWuWWU8g0KnCRQ+m2
- cyjC6FhLRdwiADzV3fxsHw9aDhsIGVncTPQWORnTdnZ2LYVhfX04TD4urT1oLCP7L80ApvLFx
- zDlo/ADF7XjzBQDEF+CjE04jR9GP/equ3KE2KZP7ch0/xz/9Rh2UZva1ODxRFWExqrcRPLu9t
- 9AT6w1UmG4Grf4hYscepCvCRIuX3HozxWeEbwZ7zccDSs6ETdhEPRqEtzc5ums0NqNO3yJMJg
- 0cwdKAm4ihlQMdabotsvFrQMm0PZ7cYUKzca5ZyReJAo+5+GebItYAyvJdwijZzkkG+Z2CsBx
- McdVweB/rpYW3KVrvhzZWFxnytA4f13l7p2tBkSEXnls3npIkNqiQVOZTr9qbG+bKbiV5CgVq
- y6i1dSu/1UG8hVc8Xi8nmi9bk/OpDvHMWrjIZAO2/zf/ERXEWLXFux84jCgJoDSFrW9d+ArhK
- Swpxq+qYqLQCb8M0R3+txVbL47nmb1PZpY6u6T+RBA8aChUVWEA+jx/qw5bLwlojexblw4v+J
- qwlvMpW4pTcre9sXdz0yePxG9tNNq6gj4LLXFZlQ6aBzO0r5RpRqfjp9JtSZpszSSTafDrH/c
- B/FUHZdkU8rFUdAZ5K8A==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JMWVg5/MiRs=:3GR6JAL04ZxsH/qJ2aMdxg
+ vtJCxVM23yqY09pgMbznsK+ZjOfPfAYsjFc4K6hcRXYKB9cGvIn96np8ea6o0DCfsrCvJf4tl
+ BWKbK4XociNC6wf0zYG9cymHjxHiROIpCxAwsQrefNq1tSGUDmNnSOyzWybReRSP6jR5S4W6Q
+ 9nOP06FNEVjR+ZZpUbBwAdufOljA470+xQ593oAhAOm/LqFKLV+ey1h1Rd/Hoi8PgTv/xb+4Y
+ 3FicG1uqvYucJTNRLsFM7zTy5xtSN4JCvwWQyRNprV1AecpXwmZw9nXlsyljHEliJwueKh5ss
+ vThALtCsWOaDLj3YPZwWRd5PMnHY0kRVAnHuhvFH/NNREtKFK31M09drZtyTGkfi1MQkKo5co
+ PJRecebYOWOt0k9LwFXmUsUoYc4ahAypHJ/NI6vJiLOhyVRqJ2xD64X+NGi/0KSX6Jw+G/afs
+ 7tCYOuNMKszcas40/4MhvYNNAkVLiuV6tfsBJzuBMGnuyP3A44pPl/s8jTUyUbSnGKoArEXg+
+ TyzFat7buAvTCG5XnYAKeP0XTdGYZNwDZ63Rr4J9M1tuXC+M87yRy07bUajFxASoVEKaloYNL
+ SDcKyo52+gT2rrhvE8DiaGfkXIxAR48pVtprPgetCSE2Di3aIajYhgoilCoWKNNvh6QmSPa38
+ uodFajexWSBoqGFX62uaHSSZRAoFbzhxlmTtzIzuhPXD+oT89udg6BNuZGbvDhputPgDbODWL
+ VAwhApaDW6phMvd94bY6JKv5dK6fhVQXKnSKo3HAnZZCLaCAPM93FJOZ5m2VwOnoaX552vT+D
+ 42LWMfmCRUXychsaLcUcHNA9Vn9qEQKJYU10rjUzs0HiOKGp05ymYtFEAq1fnuMt4g7LAz1/M
+ EwR8/8YlFiC+6LJpAvLw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,25 +88,153 @@ Sender: "Linuxppc-dev"
 On Mon, Dec 23, 2019 at 3:31 PM Christophe Leroy
 <christophe.leroy@c-s.fr> wrote:
 >
-> do_hres() is called from several places, so GCC doesn't inline
-> it at first.
->
-> do_hres() takes a struct __kernel_timespec * parameter for
-> passing the result. In the 32 bits case, this parameter corresponds
-> to a local var in the caller. In order to provide a pointer
-> to this structure, the caller has to put it in its stack and
-> do_hres() has to write the result in the stack. This is suboptimal,
-> especially on RISC processor like powerpc.
->
-> By making GCC inline the function, the struct __kernel_timespec
-> remains a local var using registers, avoiding the need to write and
-> read stack.
->
-> The improvement is significant on powerpc.
+> In order to simplify next step which moves fallback call at arch
+> level, ensure all arches have a 32bit fallback instead of handling
+> the lack of 32bit fallback in the common code based
+> on VDSO_HAS_32BIT_FALLBACK
 >
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Good idea, I can see how this ends up being an improvement
-for most of the callers.
+I like the idea of removing VDSO_HAS_32BIT_FALLBACK and ensuring
+that all 32-bit architectures implement them, but we really should *not*
+have any implementation calling the 64-bit syscalls.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+> +static __always_inline
+> +long clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+> +{
+> +       struct __kernel_timespec ts;
+> +       int ret = clock_gettime_fallback(clock, &ts);
+> +
+> +       if (likely(!ret)) {
+> +               _ts->tv_sec = ts.tv_sec;
+> +               _ts->tv_nsec = ts.tv_nsec;
+> +       }
+> +       return ret;
+> +}
+> +
+> +static __always_inline
+> +long clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+> +{
+> +       struct __kernel_timespec ts;
+> +       int ret = clock_getres_fallback(clock, &ts);
+> +
+> +       if (likely(!ret && _ts)) {
+> +               _ts->tv_sec = ts.tv_sec;
+> +               _ts->tv_nsec = ts.tv_nsec;
+> +       }
+> +       return ret;
+> +}
+
+Please change these to call __NR_clock_gettime and __NR_clock_getres_time
+instead of __NR_clock_gettime64/__NR_clock_getres_time64 for multiple reasons.
+
+- When doing migration between containers, the vdso may get copied into
+  an application running on a kernel that does not support the time64
+  variants, and then the fallback fails.
+
+- When CONFIG_COMPAT_32BIT_TIME is disabled, the time32 syscalls
+  return -ENOSYS, and the vdso version should have the exact same behavior
+  to avoid surprises. In particular an application that checks clock_gettime()
+  to see if the time32 are in part of the kernel would get an incorrect result
+  here.
+
+arch/arm64/include/asm/vdso/compat_gettimeofday.h already does this,
+I think you can just copy the implementation or find a way to share it.
+
+> diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/asm/vdso/gettimeofday.h
+> index b08f476b72b4..c41c86a07423 100644
+> --- a/arch/arm64/include/asm/vdso/gettimeofday.h
+> +++ b/arch/arm64/include/asm/vdso/gettimeofday.h
+> @@ -66,6 +66,32 @@ int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+>         return ret;
+>  }
+>
+> +static __always_inline
+> +long clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+> +{
+> +       struct __kernel_timespec ts;
+> +       int ret = clock_gettime_fallback(clock, &ts);
+> +
+> +       if (likely(!ret)) {
+> +               _ts->tv_sec = ts.tv_sec;
+> +               _ts->tv_nsec = ts.tv_nsec;
+> +       }
+> +       return ret;
+> +}
+
+As Andy said, this makes no sense at all, nothing should ever call this on a
+64-bit architecture.
+
+> diff --git a/arch/mips/include/asm/vdso/gettimeofday.h b/arch/mips/include/asm/vdso/gettimeofday.h
+> index b08825531e9f..60608e930a5c 100644
+> --- a/arch/mips/include/asm/vdso/gettimeofday.h
+> +++ b/arch/mips/include/asm/vdso/gettimeofday.h
+> @@ -109,8 +109,6 @@ static __always_inline int clock_getres_fallback(
+>
+>  #if _MIPS_SIM != _MIPS_SIM_ABI64
+>
+> -#define VDSO_HAS_32BIT_FALLBACK        1
+> -
+>  static __always_inline long clock_gettime32_fallback(
+>                                         clockid_t _clkid,
+>                                         struct old_timespec32 *_ts)
+> @@ -150,6 +148,32 @@ static __always_inline int clock_getres32_fallback(
+>
+>         return error ? -ret : ret;
+>  }
+> +#else
+> +static __always_inline
+> +long clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+> +{
+> +       struct __kernel_timespec ts;
+> +       int ret = clock_gettime_fallback(clock, &ts);
+> +
+> +       if (likely(!ret)) {
+> +               _ts->tv_sec = ts.tv_sec;
+> +               _ts->tv_nsec = ts.tv_nsec;
+> +       }
+> +       return ret;
+> +}
+> +
+
+Same here.
+
+> --- a/lib/vdso/gettimeofday.c
+> +++ b/lib/vdso/gettimeofday.c
+> @@ -125,13 +125,8 @@ __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
+>
+>         ret = __cvdso_clock_gettime_common(clock, &ts);
+>
+> -#ifdef VDSO_HAS_32BIT_FALLBACK
+>         if (unlikely(ret))
+>                 return clock_gettime32_fallback(clock, res);
+> -#else
+> -       if (unlikely(ret))
+> -               ret = clock_gettime_fallback(clock, &ts);
+> -#endif
+>
+>         if (likely(!ret)) {
+>                 res->tv_sec = ts.tv_sec;
+
+Removing the #ifdef and the fallback seems fine. I think this is actually
+required for correctness on arm32 as well. Maybe enclose the entire function in
+
+#ifdef VDSO_HAS_CLOCK_GETTIME32
+
+to only define it when it is called?
+
+> @@ -238,13 +233,8 @@ __cvdso_clock_getres_time32(clockid_t clock, struct old_timespec32 *res)
+>
+>         ret = __cvdso_clock_getres_common(clock, &ts);
+>
+> -#ifdef VDSO_HAS_32BIT_FALLBACK
+>         if (unlikely(ret))
+>                 return clock_getres32_fallback(clock, res);
+> -#else
+> -       if (unlikely(ret))
+> -               ret = clock_getres_fallback(clock, &ts);
+> -#endif
+
+The same applies to all the getres stuff of course.
+
+      Arnd
