@@ -1,91 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933A212CB31
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Dec 2019 23:40:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47mFrF4nt7zDqBW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 09:40:13 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 444C412CD6B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 08:43:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47mTvY2xMvzDq9B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2019 18:43:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d43;
+ helo=mail-io1-xd43.google.com; envelope-from=byj.tea@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="tq72Hmt7"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47mFpL6bKPzDqB2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2019 09:38:33 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xBTMbq2k107087
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2019 17:38:29 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2x6nd497s5-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2019 17:38:28 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Sun, 29 Dec 2019 22:38:26 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sun, 29 Dec 2019 22:38:23 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xBTMbbiI49676742
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 29 Dec 2019 22:37:37 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C72BA405B;
- Sun, 29 Dec 2019 22:38:22 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D1B7A4057;
- Sun, 29 Dec 2019 22:38:22 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sun, 29 Dec 2019 22:38:22 +0000 (GMT)
-Received: from [9.81.216.204] (unknown [9.81.216.204])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B990CA0204;
- Mon, 30 Dec 2019 09:38:18 +1100 (AEDT)
-Subject: Re: [PATCH 1/4] misc: cxl: use mmgrab
-To: Julia Lawall <Julia.Lawall@inria.fr>,
- Frederic Barrat <fbarrat@linux.ibm.com>
-References: <1577634178-22530-1-git-send-email-Julia.Lawall@inria.fr>
- <1577634178-22530-2-git-send-email-Julia.Lawall@inria.fr>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Mon, 30 Dec 2019 09:38:19 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47mTsd6mtwzDq69
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2019 18:42:11 +1100 (AEDT)
+Received: by mail-io1-xd43.google.com with SMTP id v3so30761471ioj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2019 23:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ANVFGaLAaJoO/Rj+UxPUWyrZLAhcTC/tDRV7tpl7ss8=;
+ b=tq72Hmt75sZ3kDa4nG5VGoFZ7vA03qPcuVzy5+JyGG8WMUshaN1dw7JDLkx3Nn1f0T
+ nVBTGLt/vz7FaHqEfMkh+p4pb3VtqoGt8AoVrqYZ5ypPxMLGFBU2P223+UMTOPuKFnyy
+ MCJWuYZsFIeX+sOo7zC093tchzXoJrEVfsUzBa1a5rfoRaX3XU/l59aud9UJtUDHa23F
+ JFXfAOv7GHIJY/P71mI/PcMQfzLl0U1Ym3ebE6dLsXRAQXGR6jPaxWTwuqwgnJgQgKUe
+ k97SYPqHGLcA+fYN8gjaDt/ea6MwRjmPw9KocduTukocsFY6qSBzSzWgZVBQGXvLCLKZ
+ Ti3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ANVFGaLAaJoO/Rj+UxPUWyrZLAhcTC/tDRV7tpl7ss8=;
+ b=IM0PBoeUIkNNBlVZRbklxMg+Kmi4nOTk/E/tbIo9nNtk3jI4m0Jmw/Jmci6lC1H+i4
+ 9eFj4+W3qKA/qjsDusjsM0KXFNXRek9txq/To/3gIfGsu6x09zzV1havF2qz/afWvTFe
+ 0TtD/Cp6zDTm2/PEwz3+qTU37FgE8eRZvDzM3ate5mEpGYql4Es4dZ/Z31ENou7e1mRU
+ QcdYrY9RRa5wvsjzjCVN0JpztNb4FAFjiIezCCPmJmju6LsQdKGUQlHwrLSvy7OSgXVa
+ hB6Ei3Y7zY7Z2kyHp4l6F5b2NyW/yPBu+xQQzzYFBlqiqxYOYx0NTj/TD/diObFHBJ0u
+ eSQg==
+X-Gm-Message-State: APjAAAUCDNxmgOb63hU8VMhcBckm1t21WGSRJ+D9VDFEJWK4KHYPqQp/
+ 2cpdv+AY9HoKeD469I82nCUDb9qwN1YsI47VCvk=
+X-Google-Smtp-Source: APXvYqw2BxFkZM5706prgEKWvAiw+qAPwbnpe87gJbOVEGckdmIkgthjmJviD8Fjv8rie3U4gVtz2AADmm/wMrEdB/k=
+X-Received: by 2002:a05:6638:723:: with SMTP id
+ j3mr53276068jad.131.1577691728600; 
+ Sun, 29 Dec 2019 23:42:08 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1577634178-22530-2-git-send-email-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19122922-0012-0000-0000-0000037905B0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19122922-0013-0000-0000-000021B50E18
-Message-Id: <1d992f7f-25df-7195-14f3-a13c2dccbc96@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-29_06:2019-12-27,2019-12-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=713 spamscore=0 mlxscore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912290214
+References: <1574694943-7883-1-git-send-email-yingjie_bai@126.com>
+ <87pngglmxg.fsf@mpe.ellerman.id.au>
+ <CAFAt38F-YQUVNXEnLut0tMivYUy_OTK7G4wAHfddcmncsEpREQ@mail.gmail.com>
+ <9e680f3798f1a771cba4b41f7a5d7fda7f534522.camel@buserror.net>
+ <CAFAt38FnH376ioDuvyNJW=iOxbcooRRsEeVEfDudRoV4gG98SQ@mail.gmail.com>
+ <a37338283db548c58e6c36e4996a9474b1fe2038.camel@buserror.net>
+ <CAFAt38HEUZ1tc-OGw2YF3-YcouG63h1uG8Quot=G5xj+u9pTtA@mail.gmail.com>
+In-Reply-To: <CAFAt38HEUZ1tc-OGw2YF3-YcouG63h1uG8Quot=G5xj+u9pTtA@mail.gmail.com>
+From: Yingjie Bai <byj.tea@gmail.com>
+Date: Mon, 30 Dec 2019 15:41:56 +0800
+Message-ID: <CAFAt38EFEh25Xv_K2GiO2CACW4v17fbtE0YnL0k3x61dERS2fw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/mpc85xx: also write addr_h to spin table for
+ 64bit boot entry
+To: Scott Wood <oss@buserror.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,34 +80,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org
+Cc: yingjie_bai@126.com, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 30/12/19 2:42 am, Julia Lawall wrote:
-> Mmgrab was introduced in commit f1f1007644ff ("mm: add new mmgrab()
-> helper") and most of the kernel was updated to use it. Update a
-> remaining file.
-> 
-> The semantic patch that makes this change is as follows:
-> (http://coccinelle.lip6.fr/)
-> 
-> <smpl>
-> @@ expression e; @@
-> - atomic_inc(&e->mm_count);
-> + mmgrab(e);
-> </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Hi Scott,
 
-Thanks!
+Thanks for your time to review this patch
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Based on your suggestion, I have verified below new patches that pass
+compilation with and without CONFIG_RELOCATABLE
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+https://lore.kernel.org/patchwork/patch/1173548
+https://lore.kernel.org/patchwork/patch/1173547
 
+On Wed, Dec 25, 2019 at 3:19 PM Yingjie Bai <byj.tea@gmail.com> wrote:
+>
+> Thanks Scott, I will test to see if returning phys_addr_t in __pa()
+> works for my setup.
+>
+> And another thin I will test is to compile without CONFIG_RELOCATABLE
+> before resubmitting the patch.
+>
+> On Wed, Dec 25, 2019 at 2:53 PM Scott Wood <oss@buserror.net> wrote:
+> >
+> > On Wed, 2019-12-25 at 11:24 +0800, Yingjie Bai wrote:
+> > > Hi Scott,
+> > >
+> > > __pa() returns 64bit in my setup.
+> > >
+> > > in arch/powerpc/include/asm/page.h
+> > >
+> > > #if defined(CONFIG_PPC32) && defined(CONFIG_BOOKE)
+> > > #define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) +
+> > > VIRT_PHYS_OFFSET))
+> > > #define __pa(x) ((unsigned long)(x) - VIRT_PHYS_OFFSET)
+> > > #else
+> > > #ifdef CONFIG_PPC64
+> > > ...
+> > >
+> > >
+> > >
+> > > /* See Description below for VIRT_PHYS_OFFSET */
+> > > #if defined(CONFIG_PPC32) && defined(CONFIG_BOOKE)
+> > > #ifdef CONFIG_RELOCATABLE
+> > > #define VIRT_PHYS_OFFSET virt_phys_offset
+> > > #else
+> > > #define VIRT_PHYS_OFFSET (KERNELBASE - PHYSICAL_START)
+> > > #endif
+> > > #endif
+> >
+> > OK, so it's the lack of CONFIG_RELOCATABLE causing the build to fail.  Ideally
+> > we'd make __pa() consistently return phys_addr_t, even if the upper bits are
+> > known to always be zero in a particular config.
+> >
+> > -Scott
+> >
+> >
