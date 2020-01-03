@@ -2,83 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6840A12ED4E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2020 23:27:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5712E12F20A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2020 01:15:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47pjN74yVdzDqB9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2020 09:27:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47plmd4P5NzDqCh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2020 11:15:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47pjJY1zTczDq7F
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2020 09:24:45 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 002MLVm7114725
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 Jan 2020 17:24:42 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2x9dr5ms14-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jan 2020 17:24:42 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Thu, 2 Jan 2020 22:24:40 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 2 Jan 2020 22:24:38 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 002MObAA49152064
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Jan 2020 22:24:37 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B7A6A4053;
- Thu,  2 Jan 2020 22:24:37 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5FBCCA4051;
- Thu,  2 Jan 2020 22:24:35 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.213.131])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu,  2 Jan 2020 22:24:35 +0000 (GMT)
-Date: Thu, 2 Jan 2020 14:24:32 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47plkh0bxhzDqC4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2020 11:14:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.b="h1uglhkd"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 47plkg43mvz9sRR; Fri,  3 Jan 2020 11:14:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1578010443;
+ bh=5ck4UGB8KqQpCo97JI7IveB9WYYOzESxhBwJFNwBvLY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=h1uglhkdA3kQxDBCjIZZFVVRqRyp9UHq459i2pkDPC3oScuYzazSFv/jDcD767BBd
+ /QDbPPFwROm292vz4/MN5k8k0bf/hsz9wLMcSzdKSH8i/0IG9mS7y+/StV/augc+Ec
+ xvFNyUp4X+mgAlMy1Z2jcIuE6X7brXDbzs+jmqhg=
+Date: Fri, 3 Jan 2020 11:08:49 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [PATCH kernel v2 4/4] powerpc/pseries/svm: Allow IOMMU to work
+ in SVM
+Message-ID: <20200103000849.GL2098@umbus>
 References: <20191216041924.42318-1-aik@ozlabs.ru>
- <20191216041924.42318-4-aik@ozlabs.ru>
+ <20191216041924.42318-5-aik@ozlabs.ru>
+ <20200102222106.GB5556@oc0525413822.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Xb8pJpF45Qg/t7GZ"
 Content-Disposition: inline
-In-Reply-To: <20191216041924.42318-4-aik@ozlabs.ru>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 20010222-4275-0000-0000-0000039433A2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010222-4276-0000-0000-000038A81745
-Message-Id: <20200102222432.GC5556@oc0525413822.ibm.com>
-Subject: Re:  [PATCH kernel v2 3/4] powerpc/pseries/iommu: Separate
- FW_FEATURE_MULTITCE to put/stuff features
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2020-01-02_07:2020-01-02,2020-01-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 adultscore=0 mlxscore=0 malwarescore=0 suspectscore=18
- spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001020181
+In-Reply-To: <20200102222106.GB5556@oc0525413822.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,40 +54,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: Michael Anderson <andmike@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Michael Anderson <andmike@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 16, 2019 at 03:19:23PM +1100, Alexey Kardashevskiy wrote:
-> H_PUT_TCE_INDIRECT allows packing up to 512 TCE updates into a single
-> hypercall; H_STUFF_TCE can clear lots in a single hypercall too.
-> 
-> However, unlike H_STUFF_TCE (which writes the same TCE to all entries),
-> H_PUT_TCE_INDIRECT uses a 4K page with new TCEs. In a secure VM
-> environment this means sharing a secure VM page with a hypervisor which
-> we would rather avoid.
-> 
-> This splits the FW_FEATURE_MULTITCE feature into FW_FEATURE_PUT_TCE_IND
 
-Can FW_FEATURE_PUT_TCE_IND be made FW_FEATURE_PUT_TCE_INDIRECT?
-It conveys the meaning a bit better than FW_FEATURE_PUT_TCE_IND.
+--Xb8pJpF45Qg/t7GZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch is a good optimization. 
+On Thu, Jan 02, 2020 at 02:21:06PM -0800, Ram Pai wrote:
+> On Mon, Dec 16, 2019 at 03:19:24PM +1100, Alexey Kardashevskiy wrote:
+> > H_PUT_TCE_INDIRECT uses a shared page to send up to 512 TCE to
+> > a hypervisor in a single hypercall.
+>=20
+> Actually H_PUT_TCE_INDIRECT never used shared page.  It would have
+> used shared pages if the 'shared-page' solution was accepted. :)
 
-Reviewed-by: Ram Pai <linuxram@us.ibm.com>
+Well, it depends what you mean by "shared".  In the non-PEF case we do
+use a shared page in the sense that it is accessed by both guest and
+hypervisor.  It's just not shared in the PEF sense.
 
-Thanks,
-RP
-> -- 
+> > This does not work for secure VMs
+> > as the page needs to be shared or the VM should use H_PUT_TCE instead.
+>=20
+> Maybe you should say something like this.. ?
+>=20
+> H_PUT_TCE_INDIRECT does not work for secure VMs, since the page
+> containing the TCE entries is not accessible to the hypervisor.
+>=20
+> >=20
+> > This disables H_PUT_TCE_INDIRECT by clearing the FW_FEATURE_PUT_TCE_IND
+> > feature bit so SVMs will map TCEs using H_PUT_TCE.
+> >=20
+> > This is not a part of init_svm() as it is called too late after FW
+> > patching is done and may result in a warning like this:
+> >=20
+> > [    3.727716] Firmware features changed after feature patching!
+> > [    3.727965] WARNING: CPU: 0 PID: 1 at (...)arch/powerpc/lib/feature-=
+fixups.c:466 check_features+0xa4/0xc0
+> >=20
+> > Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>=20
+>=20
+> Reviewed-by: Ram Pai <linuxram@us.ibm.com>
+>=20
+>=20
+> > ---
+> > Changes:
+> > v2
+> > * new in the patchset
+> > ---
+> >  arch/powerpc/platforms/pseries/firmware.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >=20
+> > diff --git a/arch/powerpc/platforms/pseries/firmware.c b/arch/powerpc/p=
+latforms/pseries/firmware.c
+> > index d3acff23f2e3..3e49cc23a97a 100644
+> > --- a/arch/powerpc/platforms/pseries/firmware.c
+> > +++ b/arch/powerpc/platforms/pseries/firmware.c
+> > @@ -22,6 +22,7 @@
+> >  #include <asm/firmware.h>
+> >  #include <asm/prom.h>
+> >  #include <asm/udbg.h>
+> > +#include <asm/svm.h>
+> >=20
+> >  #include "pseries.h"
+> >=20
+> > @@ -101,6 +102,12 @@ static void __init fw_hypertas_feature_init(const =
+char *hypertas,
+> >  		}
+> >  	}
+> >=20
+> > +	if (is_secure_guest() &&
+> > +	    (powerpc_firmware_features & FW_FEATURE_PUT_TCE_IND)) {
+> > +		powerpc_firmware_features &=3D ~FW_FEATURE_PUT_TCE_IND;
+> > +		pr_debug("SVM: disabling PUT_TCE_IND firmware feature\n");
+> > +	}
+> > +
+> >  	pr_debug(" <- fw_hypertas_feature_init()\n");
+> >  }
+> >=20
+>=20
 
-snip..
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-> 2.17.1
+--Xb8pJpF45Qg/t7GZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Ram Pai
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4Ohg8ACgkQbDjKyiDZ
+s5KZ4RAAzqervXpX+K7aujIQAYsyYPI1nL3KdfIiEWInO8pk8PWXp/zxUiqSq5ai
+HISi4AdrduTKLdNBHN1dEnq3OzwioA3dxLwiYC4XAq+Y84hr2wGMp0oXW687IsDg
+8kILH0yb9nWTBKFoAfm821paykZoODfXm4WBeLmf39SvmD6ssnqPelKY3m2xoNox
+1NqyBWnqYMD43r5f/lkRdEAZDjgc/MrIq2SvUqMpk/GeCBSoaokiukq8K9ZtYLiC
+cX4chgSpskdC7PQW53yMblBZWI3DuQNS8J6J2ulsmVCK6QAId/KH10nZ5IGljTgS
+J1agmUCkS0McwhvqVi98hA0gt9sCCOXuMLh9pHEaVzM+3JGqF3ivisSUCHAwKZBh
+ioGKcymRg/FYfWm5cvGh4FhB4NH25T89SPFoJQe6KzYzWNXMxFQK9aWgXydOe93O
+/MoMNEgzntFQUJQvuw6Quhq2ER26UF4peFbjS/llrXTr+oYr3TgpkH87LxSv/8/H
+0xH3JdO+nvioLDKJU5DPmY9yMH3R2w71UKkB+9lyCtURyUb9qtQu8V7/b+7OEf6w
+MEeS/nLtKw9bWafFKUcg0LM2s3Pzp2rOUViHbZqN9NL+6H6LwePSWf3yQsN70C3p
+7xEYxA79hQYoemaX62mHMbRN/+gaa/SQT/7BnRAUHEVrnSFhmFs=
+=z38/
+-----END PGP SIGNATURE-----
+
+--Xb8pJpF45Qg/t7GZ--
