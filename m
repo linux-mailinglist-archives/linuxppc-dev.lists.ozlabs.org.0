@@ -1,99 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7038B1315CF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 17:12:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDBC131358
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 15:08:54 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ry6W4SdpzDqFh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 01:08:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47s0s46KQbzDqGh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 03:12:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47s0qD0P0KzDqFZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 03:10:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47s0qC62tBz8t59
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 03:10:47 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47s0qC5VzNz9sR1; Tue,  7 Jan 2020 03:10:47 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ry4P1yy7zDqFH
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 01:07:00 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 006DphdP104384; Mon, 6 Jan 2020 09:06:48 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xar47qe1f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jan 2020 09:06:48 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 006Dplji104847;
- Mon, 6 Jan 2020 09:06:48 -0500
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xar47qe0t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jan 2020 09:06:48 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 006E6Ajl000969;
- Mon, 6 Jan 2020 14:06:53 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma01wdc.us.ibm.com with ESMTP id 2xajb62k1m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jan 2020 14:06:53 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 006E6kxF57934246
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jan 2020 14:06:46 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EF35CBE053;
- Mon,  6 Jan 2020 14:06:45 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E30A4BE059;
- Mon,  6 Jan 2020 14:06:42 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.74.223])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  6 Jan 2020 14:06:42 +0000 (GMT)
-X-Mailer: emacs 26.3 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Romain Dolbeau <romain@dolbeau.org>
-Subject: Re: PPC64: G5 & 4k/64k page size (was: Re: Call for report -
- G5/PPC970 status)
-In-Reply-To: <CADuzgbq3V0F=vob-tB=rroBaLwNR4viS2-=39TRBMyQwdj+xuw@mail.gmail.com>
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
- <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
- <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
- <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
- <87eexbk3gw.fsf@linux.ibm.com>
- <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
- <87mubxl82x.fsf@igel.home>
- <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
- <87immlkytp.fsf@igel.home>
- <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
- <87lfr62tbf.fsf@linux.ibm.com>
- <CADuzgbq3V0F=vob-tB=rroBaLwNR4viS2-=39TRBMyQwdj+xuw@mail.gmail.com>
-Date: Mon, 06 Jan 2020 19:36:38 +0530
-Message-ID: <874kx81xxt.fsf@linux.ibm.com>
+ by ozlabs.org (Postfix) with ESMTPS id 47s0qB6c9Xz9sQp
+ for <linuxppc-dev@ozlabs.org>; Tue,  7 Jan 2020 03:10:46 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 92B91AE8A;
+ Mon,  6 Jan 2020 16:10:42 +0000 (UTC)
+Date: Mon, 6 Jan 2020 17:10:41 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc: avoid adjusting memory_limit for capture
+ kernel memory reservation
+Message-ID: <20200106161041.GU4113@kitsune.suse.cz>
+References: <156166326909.13320.3330203549978146193.stgit@hbathini.in.ibm.com>
+ <156166327993.13320.10788410344711883330.stgit@hbathini.in.ibm.com>
+ <20190722194923.4be2a1be@naga.suse.cz>
+ <eea7ef41-9067-ceb4-1b57-13aee705ba91@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2020-01-06_04:2020-01-06,2020-01-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=999 impostorscore=0 mlxscore=0 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 clxscore=1015 bulkscore=0 phishscore=0
- adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001060126
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <eea7ef41-9067-ceb4-1b57-13aee705ba91@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,50 +65,208 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- PowerPC List Debian <debian-powerpc@lists.debian.org>,
- Andreas Schwab <schwab@linux-m68k.org>, jjhdiederen <jjhdiederen@zonnet.nl>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Romain Dolbeau <romain@dolbeau.org> writes:
+On Wed, Jul 24, 2019 at 11:26:59AM +0530, Mahesh Jagannath Salgaonkar wrote:
+> On 7/22/19 11:19 PM, Michal Suchánek wrote:
+> > On Fri, 28 Jun 2019 00:51:19 +0530
+> > Hari Bathini <hbathini@linux.ibm.com> wrote:
+> > 
+> >> Currently, if memory_limit is specified and it overlaps with memory to
+> >> be reserved for capture kernel, memory_limit is adjusted to accommodate
+> >> capture kernel. With memory reservation for capture kernel moved later
+> >> (after enforcing memory limit), this adjustment no longer holds water.
+> >> So, avoid adjusting memory_limit and error out instead.
+> > 
+> > Can you split out the memory limit adjustment out of memory reservation
+> > so it can still be adjusted?
+> 
+> Do you mean adjust the memory limit before we do the actual reservation ?
 
-> Le sam. 21 d=C3=A9c. 2019 =C3=A0 05:31, Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> a =C3=A9crit :
->> I don't have direct access to this system, I have asked if we can get a =
-run
->> with 64K.
->
-> OK, thanks! Do you know which model it is? It seems to be working on
-> some systems,
-> but we don't have enough samples to figure out why at this time, I think.
->
->> Meanwhile is there a way to find out what caused MachineCheck? more
->> details on this? I was checking the manual and I don't see any
->> restrictions w.r.t effective address. We now have very high EA with 64K
->> page size.
->
-> Sorry, no idea, completely out of my depth here. I can try some kernel
-> (build, runtime) options and/or patch, but someone will have to tell
-> me what to try,
-> as I have no ideas.
+Yes, without that you get a regression in ability to enable fadump with
+limited memory - something like the below patch should fix it. Then
+again, there is no code to un-move the memory_limit in case the allocation
+fails, and we now have cma allocation which is dubious to allocate
+beyond memory_limit. So maybe removing the memory_limit adjustment is a
+bugfix removing 'feature' that has bitrotten over time.
 
+Thanks
 
-Can you try this change.
+Michal
 
-modified   arch/powerpc/include/asm/book3s/64/mmu-hash.h
-@@ -580,7 +580,7 @@ extern void slb_set_size(u16 size);
- #if (MAX_PHYSMEM_BITS > MAX_EA_BITS_PER_CONTEXT)
- #define MAX_KERNEL_CTX_CNT	(1UL << (MAX_PHYSMEM_BITS - MAX_EA_BITS_PER_CON=
-TEXT))
- #else
--#define MAX_KERNEL_CTX_CNT	1
-+#define MAX_KERNEL_CTX_CNT	4
+From: Michal Suchanek <msuchanek@suse.de>
+Date: Mon, 6 Jan 2020 14:55:40 +0100
+Subject: [PATCH 2/2] powerpc/fadump: adjust memlimit before MMU early init
+
+Moving the farump memory reservation before early MMU init makes the
+memlimit adjustment to make room for fadump ineffective.
+
+Move the adjustment back before early MMU init.
+
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ arch/powerpc/include/asm/fadump.h |  3 +-
+ arch/powerpc/kernel/fadump.c      | 80 +++++++++++++++++++++++--------
+ arch/powerpc/kernel/prom.c        |  3 ++
+ 3 files changed, 66 insertions(+), 20 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm/fadump.h
+index 526a6a647312..76d3cbe1379c 100644
+--- a/arch/powerpc/include/asm/fadump.h
++++ b/arch/powerpc/include/asm/fadump.h
+@@ -30,6 +30,7 @@ static inline void fadump_cleanup(void) { }
+ #if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
+ extern int early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
+ 				      int depth, void *data);
+-extern int fadump_reserve_mem(void);
++int fadump_adjust_memlimit(void);
++int fadump_reserve_mem(void);
  #endif
-=20
- #define MAX_VMALLOC_CTX_CNT	1
+ #endif /* _ASM_POWERPC_FADUMP_H */
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 8ad6d8d1cdbe..4d76452dcb3d 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -431,19 +431,22 @@ static int __init fadump_get_boot_mem_regions(void)
+ 	return ret;
+ }
+ 
+-int __init fadump_reserve_mem(void)
++static inline u64 fadump_get_reserve_alignment(void)
+ {
+-	u64 base, size, mem_boundary, bootmem_min, align = PAGE_SIZE;
+-	bool is_memblock_bottom_up = memblock_bottom_up();
+-	int ret = 1;
++	u64 align = PAGE_SIZE;
+ 
+-	if (!fw_dump.fadump_enabled)
+-		return 0;
++#ifdef CONFIG_CMA
++	if (!fw_dump.nocma)
++		align = FADUMP_CMA_ALIGNMENT;
++#endif
+ 
+-	if (!fw_dump.fadump_supported) {
+-		pr_info("Firmware-Assisted Dump is not supported on this hardware\n");
+-		goto error_out;
+-	}
++	return align;
++}
++
++static inline u64 fadump_get_bootmem_min(void)
++{
++	u64 bootmem_min = 0;
++	u64 align = fadump_get_reserve_alignment();
+ 
+ 	/*
+ 	 * Initialize boot memory size
+@@ -455,7 +458,6 @@ int __init fadump_reserve_mem(void)
+ 			PAGE_ALIGN(fadump_calculate_reserve_size());
+ #ifdef CONFIG_CMA
+ 		if (!fw_dump.nocma) {
+-			align = FADUMP_CMA_ALIGNMENT;
+ 			fw_dump.boot_memory_size =
+ 				ALIGN(fw_dump.boot_memory_size, align);
+ 		}
+@@ -472,8 +474,43 @@ int __init fadump_reserve_mem(void)
+ 			pr_err("Too many holes in boot memory area to enable fadump\n");
+ 			goto error_out;
+ 		}
++
++	}
++
++	return bootmem_min;
++error_out:
++	fw_dump.fadump_enabled = 0;
++	return 0;
++}
++
++int __init fadump_adjust_memlimit(void)
++{
++	u64 size, bootmem_min;
++
++	if (!fw_dump.fadump_enabled)
++		return 0;
++
++	if (!fw_dump.fadump_supported) {
++		pr_info("Firmware-Assisted Dump is not supported on this hardware\n");
++		fw_dump.fadump_enabled = 0;
++		return 0;
+ 	}
+ 
++#ifdef CONFIG_HUGETLB_PAGE
++	if (fw_dump.dump_active) {
++		/*
++		 * FADump capture kernel doesn't care much about hugepages.
++		 * In fact, handling hugepages in capture kernel is asking for
++		 * trouble. So, disable HugeTLB support when fadump is active.
++		 */
++		hugetlb_disabled = true;
++	}
++#endif
++
++	bootmem_min = fadump_get_bootmem_min();
++	if (!bootmem_min)
++		return 0;
++
+ 	/*
+ 	 * Calculate the memory boundary.
+ 	 * If memory_limit is less than actual memory boundary then reserve
+@@ -490,6 +527,19 @@ int __init fadump_reserve_mem(void)
+ 		printk(KERN_INFO "Adjusted memory_limit for firmware-assisted"
+ 				" dump, now %#016llx\n", memory_limit);
+ 	}
++
++	return 0;
++}
++
++int __init fadump_reserve_mem(void)
++{
++	u64 base, size, mem_boundary, align = fadump_get_reserve_alignment();
++	bool is_memblock_bottom_up = memblock_bottom_up();
++	int ret = 1;
++
++	if (!fw_dump.fadump_enabled)
++		return 0;
++
+ 	if (memory_limit)
+ 		mem_boundary = memory_limit;
+ 	else
+@@ -501,14 +551,6 @@ int __init fadump_reserve_mem(void)
+ 	if (fw_dump.dump_active) {
+ 		pr_info("Firmware-assisted dump is active.\n");
+ 
+-#ifdef CONFIG_HUGETLB_PAGE
+-		/*
+-		 * FADump capture kernel doesn't care much about hugepages.
+-		 * In fact, handling hugepages in capture kernel is asking for
+-		 * trouble. So, disable HugeTLB support when fadump is active.
+-		 */
+-		hugetlb_disabled = true;
+-#endif
+ 		/*
+ 		 * If last boot has crashed then reserve all the memory
+ 		 * above boot memory size so that we don't touch it until
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 7b6cdd9bf78d..4fff8c2222b1 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -731,6 +731,9 @@ void __init early_init_devtree(void *params)
+ 	if (PHYSICAL_START > MEMORY_START)
+ 		memblock_reserve(MEMORY_START, 0x8000);
+ 	reserve_kdump_trampoline();
++#if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
++	fadump_adjust_memlimit();
++#endif
+ 	early_reserve_mem();
+ 
+ 	/* Ensure that total memory size is page-aligned. */
+-- 
+2.23.0
 
-
--aneesh
