@@ -2,61 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0B31317CC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 19:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7882131786
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 19:32:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47s4Sg5v8zzDq9l
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 05:54:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47s3yx1NRZzDqGZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 05:32:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zytor.com (client-ip=198.137.202.136; helo=mail.zytor.com;
- envelope-from=hpa@zytor.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.68; helo=mail-wm1-f68.google.com;
+ envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=zytor.com header.i=@zytor.com header.b="ZMVxUZ9J"; 
- dkim-atps=neutral
-X-Greylist: delayed 3192 seconds by postgrey-1.36 at bilbo;
- Tue, 07 Jan 2020 05:53:23 AEDT
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+ dmarc=none (p=none dis=none) header.from=dolbeau.org
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com
+ [209.85.128.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47s4Qq6fVPzDq9l
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 05:53:23 +1100 (AEDT)
-Received: from carbon-x1.hos.anvin.org
- ([IPv6:2601:646:8600:3280:1098:42a1:36db:233c])
- (authenticated bits=0)
- by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id 006HxLts2985803
- (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
- Mon, 6 Jan 2020 09:59:21 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 006HxLts2985803
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
- s=2019122001; t=1578333565;
- bh=uFGtgLW/eUGZosJDUZ4/JsFg07VyLBe7Sl07+mpDDgQ=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ZMVxUZ9JlU6up34Nb4pGcpMjDZpUuWN8ck9Y4jYgVb+4bZERRqJiFzIJhbIfziB1k
- ZNW7gtaTuWxOa78mC5Z+zWvyvNL35mkSsEZQpPBJS0ncqNieAs6YCfbCKRbkrwQtVp
- RcNn3KAZoKEYAi4ef6eQLTWSuxUbKuM7RXuWfbUO5ZflxcLL1hn2UBbGPOSqDE+xOY
- wijrfyuPLvBiBZoiKnCdjHJ9U/s6x0xqbbT7g3nNy9Gk9o9TiqnutL8djSuCUX49Qi
- Oy4XDW1jzUdxSDSG813dTCGe2xdRD1rCCDjOpb+PwCTaq1SfwtxgOn+n2Mp0OYFc4L
- +gnXlUsMkLtVw==
-Subject: Re: [PATCH v3 02/22] compat: provide compat_ptr() on all architectures
-To: Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <20200102145552.1853992-1-arnd@arndb.de>
- <20200102145552.1853992-3-arnd@arndb.de>
-From: "H. Peter Anvin" <hpa@zytor.com>
-Message-ID: <e2c7b4d7-587e-f71c-f0df-810e8d9869f2@zytor.com>
-Date: Mon, 6 Jan 2020 09:59:16 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47s3wK58Z0zDq6B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 05:30:24 +1100 (AEDT)
+Received: by mail-wm1-f68.google.com with SMTP id p17so16355217wma.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2020 10:30:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=g/RartWOl0059XZqhmJOiYt+dbyuAnAwhtlap3FKPto=;
+ b=QQZNeSUsSOT4PH69Gm+mYcLiXihnJP/3aIF4rP5GH38ZJeYosxwbO/aGYDQaoN7kTn
+ uCStEtFZmsgFhEaCxy+X4Xb2rWfTLtDphgD+x9p6+SS4wkVZz97riMt3y/8qwDcyI2YI
+ fVRLpeiRrHCq9v+RxqsOGQ/ntWvTJlgBXh31/zxtanLNbL3qqbdhAwYfGDGrgSgPf3s8
+ Ue1Z9VnJWz97qeCcRradWRYv5nEaCmde86EIhaFwVAYOqFTg7m1ZCRJH9ti/lxHdtCMU
+ I7fJNVYQ/AKxblWAqFEIuchHB1gVBclQdXZer0bQtNlEZzlIVi8xVRVVQTdJ9/TlusG6
+ 8vfQ==
+X-Gm-Message-State: APjAAAU7rVrdo4octYWgUoU4N7ODwGPROMw+vF4tFZH9AO8h9ijSfbW+
+ ymJjqIlBPDatWYKkdTOJhrsvNN8wguAnKOO4sU4=
+X-Google-Smtp-Source: APXvYqxY1V+lkPFFro+8jvQrah2cT1oFYclC9mt44LvPrSmfKh3qD0LeuXdbF6TJDO4CbwBFK77RQql5nkTc8uH/g5M=
+X-Received: by 2002:a7b:c775:: with SMTP id x21mr35974536wmk.59.1578335421857; 
+ Mon, 06 Jan 2020 10:30:21 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200102145552.1853992-3-arnd@arndb.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+ <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+ <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
+ <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
+ <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
+ <87eexbk3gw.fsf@linux.ibm.com>
+ <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
+ <87mubxl82x.fsf@igel.home>
+ <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
+ <87immlkytp.fsf@igel.home>
+ <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
+ <20191214103213.309bfbbb1f9c50fe47e733d9@zonnet.nl>
+ <B661D5F4-575C-4E64-BC68-537223FFB5B6@gmail.com>
+In-Reply-To: <B661D5F4-575C-4E64-BC68-537223FFB5B6@gmail.com>
+From: Romain Dolbeau <romain@dolbeau.org>
+Date: Mon, 6 Jan 2020 19:30:10 +0100
+Message-ID: <CADuzgbpiN-=VgmZCHOyXFDEuj2L+aVzJGfibkvgfnPD_atNZMw@mail.gmail.com>
+Subject: Re: PPC64: G5 & 4k/64k page size (was: Re: Call for report -
+ G5/PPC970 status)
+To: Bertrand Dekoninck <bertrand.dekoninck@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,54 +75,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Paul Burton <paulburton@kernel.org>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
- Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
- Robert Richter <rric@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Jeroen Diederen <jjhdiederen@zonnet.nl>,
+ PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ Andreas Schwab <schwab@linux-m68k.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-01-02 06:55, Arnd Bergmann wrote:
-> In order to avoid needless #ifdef CONFIG_COMPAT checks,
-> move the compat_ptr() definition to linux/compat.h
-> where it can be seen by any file regardless of the
-> architecture.
-> 
-> Only s390 needs a special definition, this can use the
-> self-#define trick we have elsewhere.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm64/include/asm/compat.h   | 17 -----------------
->  arch/mips/include/asm/compat.h    | 18 ------------------
->  arch/parisc/include/asm/compat.h  | 17 -----------------
->  arch/powerpc/include/asm/compat.h | 17 -----------------
->  arch/powerpc/oprofile/backtrace.c |  2 +-
->  arch/s390/include/asm/compat.h    |  6 +-----
->  arch/sparc/include/asm/compat.h   | 17 -----------------
->  arch/x86/include/asm/compat.h     | 17 -----------------
->  include/linux/compat.h            | 18 ++++++++++++++++++
->  9 files changed, 20 insertions(+), 109 deletions(-)
-> 
+Le dim. 5 janv. 2020 =C3=A0 16:06, Bertrand Dekoninck
+<bertrand.dekoninck@gmail.com> a =C3=A9crit :
+> I can now test on powermac 7,3 (with an ATI card)
+> How can I build a deb package of this kernel ? Or is there a package to d=
+ownload somewhere ?
 
-For x86:
+I usually cross-compile on x86-64 from upstream sources. On a Debian
+Buster with the powerpc tools installed,
+it's just:
 
-Reviewed-by: H. Peter Anvin <hpa@zytor.com>
+#####
+make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux-gnu- oldconfig && nice
+-19 make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux-gnu- -j56
+bindeb-pkg
+#####
 
-It still suffers from the zero-one-infinity rule failure of the compat
-architecture as a whole, but that is a very different problem. In this case
-"compat" is obviously meaning "a 32-on-64 ABI" and simply centralizes a common
-API, which is a Good Thing[TM].
+(alter the -j56 for your own build system). For the dependency, as far
+as I remember I only needed "gcc-powerpc64-linux-gnu" and
+dependencies. My '.config' is Debian's 5.3 plus default values for
+changes - with the exception of 4 KiB pages.
 
-	-hpa
+I've also uploaded the working kernel with 4 KiB pages DEB here:
+<http://dl.free.fr/otB1KMEMR>, as it might be easier for a quick test.
 
+Cordially,
+
+--=20
+Romain Dolbeau
