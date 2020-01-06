@@ -1,79 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD065130EFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 09:56:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47rqBR3t5qzDqDp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 19:56:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CAF130F25
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 10:03:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47rqLX0l6mzDqFD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 20:03:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47rq874fqjzDqDJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 19:54:43 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0068qwNT163717
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 6 Jan 2020 03:54:40 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xb8wwk9b9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2020 03:54:40 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Mon, 6 Jan 2020 08:54:38 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 6 Jan 2020 08:54:36 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0068sZr042729720
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jan 2020 08:54:35 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C28F42047;
- Mon,  6 Jan 2020 08:54:35 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4606B42049;
- Mon,  6 Jan 2020 08:54:34 +0000 (GMT)
-Received: from localhost.in.ibm.com (unknown [9.124.35.61])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  6 Jan 2020 08:54:34 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v3] powerpc/kernel/sysfs: Add new config option PMU_SYSFS to
- enable PMU SPRs sysfs file creation
-Date: Mon,  6 Jan 2020 14:24:23 +0530
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47rqJS40FfzDq9k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 20:01:59 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id B2328B027;
+ Mon,  6 Jan 2020 09:01:55 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id 821931E0B47; Mon,  6 Jan 2020 10:01:47 +0100 (CET)
+Date: Mon, 6 Jan 2020 10:01:47 +0100
+From: Jan Kara <jack@suse.cz>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v11 00/25] mm/gup: track dma-pinned pages: FOLL_PIN
+Message-ID: <20200106090147.GA9176@quack2.suse.cz>
+References: <20191219132607.GA410823@unreal>
+ <a4849322-8e17-119e-a664-80d9f95d850b@nvidia.com>
+ <20191219210743.GN17227@ziepe.ca> <20191220182939.GA10944@unreal>
+ <1001a5fc-a71d-9c0f-1090-546c4913d8a2@nvidia.com>
+ <20191222132357.GF13335@unreal>
+ <49d57efe-85e1-6910-baf5-c18df1382206@nvidia.com>
+ <20191225052612.GA212002@unreal>
+ <b879d191-a07c-e808-e48f-2b9bd8ba4fa3@nvidia.com>
+ <612aa292-ec45-295c-b56c-c622876620fa@nvidia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010608-4275-0000-0000-0000039501A4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010608-4276-0000-0000-000038A8E9D2
-Message-Id: <20200106085423.13928-1-kjain@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2020-01-06_02:2020-01-06,2020-01-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- phishscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 bulkscore=0 mlxscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001060081
+In-Reply-To: <612aa292-ec45-295c-b56c-c622876620fa@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,193 +57,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, anju@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Maor Gottlieb <maorg@mellanox.com>, Leon Romanovsky <leon@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Ran Rozenstein <ranro@mellanox.com>, linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Many of the performance moniroting unit (PMU) SPRs are
-exposed in the sysfs. This may not be a desirable since
-"perf" API is the primary interface to program PMU and
-collect counter data in the system. But that said, we
-cant remove these sysfs files since we dont whether
-anyone/anything is using them.
+On Sat 28-12-19 20:33:32, John Hubbard wrote:
+> On 12/27/19 1:56 PM, John Hubbard wrote:
+> ...
+> >> It is ancient verification test (~10y) which is not an easy task to
+> >> make it understandable and standalone :).
+> >>
+> > 
+> > Is this the only test that fails, btw? No other test failures or hints of
+> > problems?
+> > 
+> > (Also, maybe hopeless, but can *anyone* on the RDMA list provide some
+> > characterization of the test, such as how many pins per page, what page
+> > sizes are used? I'm still hoping to write a test to trigger something
+> > close to this...)
+> > 
+> > I do have a couple more ideas for test runs:
+> > 
+> > 1. Reduce GUP_PIN_COUNTING_BIAS to 1. That would turn the whole override of
+> > page->_refcount into a no-op, and so if all is well (it may not be!) with the
+> > rest of the patch, then we'd expect this problem to not reappear.
+> > 
+> > 2. Active /proc/vmstat *foll_pin* statistics unconditionally (just for these
+> > tests, of course), so we can see if there is a get/put mismatch. However, that
+> > will change the timing, and so it must be attempted independently of (1), in
+> > order to see if it ends up hiding the repro.
+> > 
+> > I've updated this branch to implement (1), but not (2), hoping you can give
+> > this one a spin?
+> > 
+> >     git@github.com:johnhubbard/linux.git  pin_user_pages_tracking_v11_with_diags
+> > 
+> > 
+> 
+> Also, looking ahead:
+> 
+> a) if the problem disappears with the latest above test, then we likely have
+>    a huge page refcount overflow, and there are a couple of different ways to
+>    fix it. 
+> 
+> b) if it still reproduces with the above, then it's some other random mistake,
+>    and in that case I'd be inclined to do a sort of guided (or classic, unguided)
+>    git bisect of the series. Because it could be any of several patches.
+> 
+>    If that's too much trouble, then I'd have to fall back to submitting a few
+>    patches at a time and working my way up to the tracking patch...
 
-So the patch adds a new CONFIG option 'CONFIG_PMU_SYSFS'
-(user selectable) to be used in sysfs file creation for
-PMU SPRs. New option by default is disabled, but can be
-enabled if user needs it.
+It could also be that an ordinary page reference is dropped with 'unpin'
+thus underflowing the page refcount...
 
-Tested this patch behaviour in powernv and pseries machines.
-Also did compilation testing for different architecture include:
-x86, mips, mips64, alpha, arm. Patch is also compile tested for
-pmac32_defconfig.
+								Honza
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/kernel/sysfs.c            | 22 +++++++++++++---------
- arch/powerpc/platforms/Kconfig.cputype |  6 ++++++
- 2 files changed, 19 insertions(+), 9 deletions(-)
-
----
-Changelog:
-v2 -> v3
-- Make 'PMU_SYSFS' config option a user selectable option
-  and remove its dependency on 'PERF_EVENTS' option.
-- Add PMU_SYSFS config check at time of register/unregister
-  PMU SPRs.
-- Replace #ifdefs with IS_ENABLE while registering/unregistering
-  PMU SPRs.
-
-Resend v2
-        Added 'Reviewed-by' and 'Tested-by' tag along with test scenarios.
-
-v1 -> v2
-- Added new config option 'PMU_SYSFS' for PMU SPR's creation
-  rather than using PERF_EVENTS config option directly and make
-  sure SPR's file creation only if 'CONFIG_PERF_EVENTS' disabled.
----
-diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-index 80a676da11cb..d4faa60f1d27 100644
---- a/arch/powerpc/kernel/sysfs.c
-+++ b/arch/powerpc/kernel/sysfs.c
-@@ -606,12 +606,14 @@ static void sysfs_create_dscr_default(void)
- #endif /* CONFIG_PPC64 */
- 
- #ifdef HAS_PPC_PMC_PA6T
-+#ifdef CONFIG_PMU_SYSFS
- SYSFS_PMCSETUP(pa6t_pmc0, SPRN_PA6T_PMC0);
- SYSFS_PMCSETUP(pa6t_pmc1, SPRN_PA6T_PMC1);
- SYSFS_PMCSETUP(pa6t_pmc2, SPRN_PA6T_PMC2);
- SYSFS_PMCSETUP(pa6t_pmc3, SPRN_PA6T_PMC3);
- SYSFS_PMCSETUP(pa6t_pmc4, SPRN_PA6T_PMC4);
- SYSFS_PMCSETUP(pa6t_pmc5, SPRN_PA6T_PMC5);
-+#endif /* CONFIG_PMU_SYSFS */
- #ifdef CONFIG_DEBUG_MISC
- SYSFS_SPRSETUP(hid0, SPRN_HID0);
- SYSFS_SPRSETUP(hid1, SPRN_HID1);
-@@ -645,21 +647,21 @@ SYSFS_SPRSETUP(tsr3, SPRN_PA6T_TSR3);
- #endif /* HAS_PPC_PMC_PA6T */
- 
- #ifdef HAS_PPC_PMC_IBM
--static struct device_attribute ibm_common_attrs[] = {
-+static  __maybe_unused struct device_attribute ibm_common_attrs[] = {
- 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
- 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
- };
- #endif /* HAS_PPC_PMC_G4 */
- 
- #ifdef HAS_PPC_PMC_G4
--static struct device_attribute g4_common_attrs[] = {
-+static  __maybe_unused struct device_attribute g4_common_attrs[] = {
- 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
- 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
- 	__ATTR(mmcr2, 0600, show_mmcr2, store_mmcr2),
- };
- #endif /* HAS_PPC_PMC_G4 */
- 
--static struct device_attribute classic_pmc_attrs[] = {
-+static  __maybe_unused struct device_attribute classic_pmc_attrs[] = {
- 	__ATTR(pmc1, 0600, show_pmc1, store_pmc1),
- 	__ATTR(pmc2, 0600, show_pmc2, store_pmc2),
- 	__ATTR(pmc3, 0600, show_pmc3, store_pmc3),
-@@ -674,6 +676,7 @@ static struct device_attribute classic_pmc_attrs[] = {
- 
- #ifdef HAS_PPC_PMC_PA6T
- static struct device_attribute pa6t_attrs[] = {
-+#ifdef CONFIG_PMU_SYSFS
- 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
- 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
- 	__ATTR(pmc0, 0600, show_pa6t_pmc0, store_pa6t_pmc0),
-@@ -682,6 +685,7 @@ static struct device_attribute pa6t_attrs[] = {
- 	__ATTR(pmc3, 0600, show_pa6t_pmc3, store_pa6t_pmc3),
- 	__ATTR(pmc4, 0600, show_pa6t_pmc4, store_pa6t_pmc4),
- 	__ATTR(pmc5, 0600, show_pa6t_pmc5, store_pa6t_pmc5),
-+#endif /* CONFIG_PMU_SYSFS */
- #ifdef CONFIG_DEBUG_MISC
- 	__ATTR(hid0, 0600, show_hid0, store_hid0),
- 	__ATTR(hid1, 0600, show_hid1, store_hid1),
-@@ -751,13 +755,12 @@ static int register_cpu_online(unsigned int cpu)
- 
- 	/* PMC stuff */
- 	switch (cur_cpu_spec->pmc_type) {
--#ifdef HAS_PPC_PMC_IBM
-+#ifdef CONFIG_PMU_SYSFS
- 	case PPC_PMC_IBM:
- 		attrs = ibm_common_attrs;
- 		nattrs = sizeof(ibm_common_attrs) / sizeof(struct device_attribute);
- 		pmc_attrs = classic_pmc_attrs;
- 		break;
--#endif /* HAS_PPC_PMC_IBM */
- #ifdef HAS_PPC_PMC_G4
- 	case PPC_PMC_G4:
- 		attrs = g4_common_attrs;
-@@ -765,6 +768,7 @@ static int register_cpu_online(unsigned int cpu)
- 		pmc_attrs = classic_pmc_attrs;
- 		break;
- #endif /* HAS_PPC_PMC_G4 */
-+#endif /* CONFIG_PMU_SYSFS */
- #ifdef HAS_PPC_PMC_PA6T
- 	case PPC_PMC_PA6T:
- 		/* PA Semi starts counting at PMC0 */
-@@ -787,7 +791,7 @@ static int register_cpu_online(unsigned int cpu)
- 			device_create_file(s, &pmc_attrs[i]);
- 
- #ifdef CONFIG_PPC64
--	if (cpu_has_feature(CPU_FTR_MMCRA))
-+	if (IS_ENABLED(CONFIG_PMU_SYSFS) && cpu_has_feature(CPU_FTR_MMCRA))
- 		device_create_file(s, &dev_attr_mmcra);
- 
- 	if (cpu_has_feature(CPU_FTR_PURR)) {
-@@ -840,13 +844,12 @@ static int unregister_cpu_online(unsigned int cpu)
- 
- 	/* PMC stuff */
- 	switch (cur_cpu_spec->pmc_type) {
--#ifdef HAS_PPC_PMC_IBM
-+#ifdef CONFIG_PMU_SYSFS
- 	case PPC_PMC_IBM:
- 		attrs = ibm_common_attrs;
- 		nattrs = sizeof(ibm_common_attrs) / sizeof(struct device_attribute);
- 		pmc_attrs = classic_pmc_attrs;
- 		break;
--#endif /* HAS_PPC_PMC_IBM */
- #ifdef HAS_PPC_PMC_G4
- 	case PPC_PMC_G4:
- 		attrs = g4_common_attrs;
-@@ -854,6 +857,7 @@ static int unregister_cpu_online(unsigned int cpu)
- 		pmc_attrs = classic_pmc_attrs;
- 		break;
- #endif /* HAS_PPC_PMC_G4 */
-+#endif /* CONFIG_PMU_SYSFS */
- #ifdef HAS_PPC_PMC_PA6T
- 	case PPC_PMC_PA6T:
- 		/* PA Semi starts counting at PMC0 */
-@@ -876,7 +880,7 @@ static int unregister_cpu_online(unsigned int cpu)
- 			device_remove_file(s, &pmc_attrs[i]);
- 
- #ifdef CONFIG_PPC64
--	if (cpu_has_feature(CPU_FTR_MMCRA))
-+	if (IS_ENABLED(CONFIG_PMU_SYSFS) && cpu_has_feature(CPU_FTR_MMCRA))
- 		device_remove_file(s, &dev_attr_mmcra);
- 
- 	if (cpu_has_feature(CPU_FTR_PURR))
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 12543e53fa96..58c72b9b8902 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -417,6 +417,12 @@ config PPC_MM_SLICES
- config PPC_HAVE_PMU_SUPPORT
-        bool
- 
-+config PMU_SYSFS
-+	bool
-+	default n
-+	help
-+	  This option enables sysfs file creation for PMU SPRs like MMCR* and PMC*.
-+
- config PPC_PERF_CTRS
-        def_bool y
-        depends on PERF_EVENTS && PPC_HAVE_PMU_SUPPORT
 -- 
-2.12.3
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
