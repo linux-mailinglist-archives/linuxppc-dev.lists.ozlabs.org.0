@@ -2,71 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8631C131019
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 11:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2276613113D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 12:14:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47rrsX2RBPzDqDt
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 21:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47rtF14kFZzDqGJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 22:14:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47rtBQ2pNvzDqFD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 22:11:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="lNEzVNzQ"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47rtBP1qPvz8tD8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 22:11:57 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47rtBN6XZGz9sRl; Mon,  6 Jan 2020 22:11:56 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47rrqT50vVzDqDQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 21:10:27 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47rrqD6b3Cz9txnQ;
- Mon,  6 Jan 2020 11:10:16 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=lNEzVNzQ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id P1ke8O4y4mJP; Mon,  6 Jan 2020 11:10:16 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47rrqD5Xqpz9txnN;
- Mon,  6 Jan 2020 11:10:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1578305416; bh=CGRt9b2OzOZhl6Oq1ZAN1USJP1xApxOo5RW0sZnRi44=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=lNEzVNzQy9QFCLecUcnxKDldWBmBmjAe31FoJYG/DJghPscxNFsOG9a41f0MqfJLg
- KPVOoOnxjAUjkpmh4dYs6OEk+NUDBgacH/GP8b3vUJ2I/ImjoMB5JRPIz5zCgdpdVr
- IYjIp59aQI27TiUBa/xovtKLMlXM3wyKrSucyl/U=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8EB6A8B796;
- Mon,  6 Jan 2020 11:10:21 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id OAP6OHQKc8iX; Mon,  6 Jan 2020 11:10:21 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FB908B752;
- Mon,  6 Jan 2020 11:10:21 +0100 (CET)
-Subject: Re: [PATCH v2 2/2] powerpc/mm: Warn if W+X pages found on boot
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-References: <20190502073947.6481-1-ruscur@russell.cc>
- <20190502073947.6481-2-ruscur@russell.cc>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <e3838ffb-0834-df81-0a47-857f505bb071@c-s.fr>
-Date: Mon, 6 Jan 2020 11:10:21 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by ozlabs.org (Postfix) with ESMTPS id 47rtBN0ZlDz9sR4
+ for <linuxppc-dev@ozlabs.org>; Mon,  6 Jan 2020 22:11:54 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 006B2FLL065690
+ for <linuxppc-dev@ozlabs.org>; Mon, 6 Jan 2020 06:11:50 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xb8nxy70m-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 06 Jan 2020 06:11:50 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
+ Mon, 6 Jan 2020 11:11:48 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 6 Jan 2020 11:11:46 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 006BBilR22347892
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 6 Jan 2020 11:11:44 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6084E5204E;
+ Mon,  6 Jan 2020 11:11:44 +0000 (GMT)
+Received: from pratiks-thinkpad.in.ibm.com (unknown [9.124.31.198])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C8CFA5204F;
+ Mon,  6 Jan 2020 11:11:42 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
+ svaidy@linux.ibm.com, ego@linux.vnet.ibm.com, linuxram@us.ibm.com,
+ psampat@linux.ibm.com, pratik.sampat@in.ibm.com, pratik.r.sampat@gmail.com
+Subject: [PATCH v2 0/3] Introduce Self-Save API for deep stop states
+Date: Mon,  6 Jan 2020 16:41:39 +0530
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <20190502073947.6481-2-ruscur@russell.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20010611-0008-0000-0000-00000346DEB9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20010611-0009-0000-0000-00004A671CFD
+Message-Id: <cover.1578307288.git.psampat@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2020-01-06_04:2020-01-06,2020-01-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 mlxscore=0 clxscore=1015 phishscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0 mlxlogscore=857
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001060102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,97 +98,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Julia.Lawall@lip6.fr, rashmica.g@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RFC v1 patches: https://lkml.org/lkml/2019/12/4/193
+Changelog
+RFC v1 --> v2
+1. Optimized preference bitmask
+2. Addressed comments from Ram Pai
 
+Currently the stop-API supports a mechanism called as self-restore
+which allows us to restore the values of certain SPRs on wakeup from a
+deep-stop state to a desired value. To use this, the Kernel makes an
+OPAL call passing the PIR of the CPU, the SPR number and the value to
+which the SPR should be restored when that CPU wakes up from a deep
+stop state.
 
-Le 02/05/2019 à 09:39, Russell Currey a écrit :
-> Implement code to walk all pages and warn if any are found to be both
-> writable and executable.  Depends on STRICT_KERNEL_RWX enabled, and is
-> behind the DEBUG_WX config option.
-> 
-> This only runs on boot and has no runtime performance implications.
-> 
-> Very heavily influenced (and in some cases copied verbatim) from the
-> ARM64 code written by Laura Abbott (thanks!), since our ptdump
-> infrastructure is similar.
-> 
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> ---
-> v2: A myriad of fixes and cleanups thanks to Christophe Leroy
-> 
->   arch/powerpc/Kconfig.debug         | 19 ++++++++++++++
->   arch/powerpc/include/asm/pgtable.h |  6 +++++
->   arch/powerpc/mm/pgtable_32.c       |  3 +++
->   arch/powerpc/mm/pgtable_64.c       |  3 +++
->   arch/powerpc/mm/ptdump/ptdump.c    | 41 +++++++++++++++++++++++++++++-
->   5 files changed, 71 insertions(+), 1 deletion(-)
-> 
+Recently, a new feature, named self-save has been enabled in the
+stop-api, which is an alternative mechanism to do the same, except
+that self-save will save the current content of the SPR before
+entering a deep stop state and also restore the content back on
+waking up from a deep stop state.
 
-[...]
+This patch series aims at introducing and leveraging the self-save feature in
+the kernel.
 
-> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> index a4a132f92810..e69b53a8a841 100644
-> --- a/arch/powerpc/mm/ptdump/ptdump.c
-> +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> @@ -31,7 +31,7 @@
->   #include "ptdump.h"
->   
->   #ifdef CONFIG_PPC32
-> -#define KERN_VIRT_START	0
-> +#define KERN_VIRT_START	PAGE_OFFSET
->   #endif
->   
->   /*
-> @@ -68,6 +68,8 @@ struct pg_state {
->   	unsigned long last_pa;
->   	unsigned int level;
->   	u64 current_flags;
-> +	bool check_wx;
-> +	unsigned long wx_pages;
->   };
->   
->   struct addr_marker {
-> @@ -177,6 +179,20 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
->   
->   }
->   
-> +static void note_prot_wx(struct pg_state *st, unsigned long addr)
-> +{
-> +	if (!st->check_wx)
-> +		return;
-> +
-> +	if (!((st->current_flags & pgprot_val(PAGE_KERNEL_X)) == pgprot_val(PAGE_KERNEL_X)))
-> +		return;
-> +
+Now, as the kernel has a choice to prefer one mode over the other and
+there can be registers in both the save/restore SPR list which are sent
+from the device tree, a new interface has been defined for the seamless
+handing of the modes for each SPR.
 
-I just realised that the above test is insuffisient, allthought it works 
-by chance.
+A list of preferred SPRs are maintained in the kernel which contains two
+properties:
+1. supported_mode: Helps in identifying if it strictly supports self
+                   save or restore or both.
+                   Initialized using the information from device tree.
+2. preferred_mode: Calls out what mode is preferred for each SPR. It
+                   could be strictly self save or restore, or it can also
+                   determine the preference of  mode over the other if both
+                   are present by encapsulating the other in bitmask from
+                   LSB to MSB.
+                   Initialized statically.
 
-If I understand correctly, you want to make sure that no page is set 
-with PAGE_KERNEL_X, ie that all X pages are PAGE_KERNEL_ROX
+Below is a table to show the Scenario::Consequence when the self save and
+self restore modes are available or disabled in different combinations as
+perceived from the device tree thus giving complete backwards compatibly
+regardless of an older firmware running a newer kernel or vise-versa.
+Support for self save or self-restore is embedded in the device tree,
+along with the set of registers it supports.
 
-If you take the exemple of the 8xx, we have:
+SR = Self restore; SS = Self save
 
-#define PAGE_KERNEL_X	__pgprot(_PAGE_BASE | _PAGE_KERNEL_RWX)
-#define PAGE_KERNEL_ROX	__pgprot(_PAGE_BASE | _PAGE_KERNEL_ROX)
+.-----------------------------------.----------------------------------------.
+|             Scenario              |                Consequence             |
+:-----------------------------------+----------------------------------------:
+| Legacy Firmware. No SS or SR node | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: !active           | Deep stop states disabled              |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: !active            | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: active             | Goes through the preferences for each  |
+|                                   | SPR and executes of the modes          |
+|                                   | accordingly. Currently, Self restore is|
+|                                   | called for all the SPRs except PSSCR   |
+|                                   | which is self saved                    |
+:-----------------------------------+----------------------------------------:
+| SR: active(only HID0) SS: active  | Self save called for all supported     |
+|                                   | registers expect HID0 (as HID0 cannot  |
+|                                   | be self saved currently)               |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: active            | currently will disable deep states as  |
+|                                   | HID0 is needed to be self restored and |
+|                                   | cannot be self saved                   |
+'-----------------------------------'----------------------------------------'
 
-#define _PAGE_KERNEL_RWX	(_PAGE_SH | _PAGE_DIRTY | _PAGE_EXEC)
-#define _PAGE_KERNEL_ROX	(_PAGE_SH | _PAGE_RO | _PAGE_EXEC)
+Pratik Rajesh Sampat (3):
+  powerpc/powernv: Interface to define support and preference for a SPR
+  powerpc/powernv: Introduce Self save support
+  powerpc/powernv: Parse device tree, population of SPR support
 
-Your test is checking which bits are set, but doesn't test which bits 
-are not set. So your test only relies on the fact that _PAGE_DIRTY is 
-set when the page is RW. It looks rather fragile as for some reason, a 
-page might be RW without being DIRTY yet.
+ arch/powerpc/include/asm/opal-api.h        |   3 +-
+ arch/powerpc/include/asm/opal.h            |   1 +
+ arch/powerpc/platforms/powernv/idle.c      | 433 ++++++++++++++++++---
+ arch/powerpc/platforms/powernv/opal-call.c |   1 +
+ 4 files changed, 381 insertions(+), 57 deletions(-)
 
-I think the test should be more robust, something like:
+-- 
+2.24.1
 
-	pte_t pte = __pte(st->current_flags);
-
-	if (!pte_exec(pte) || !pte_write(pte))
-		return;
-
-Christophe
