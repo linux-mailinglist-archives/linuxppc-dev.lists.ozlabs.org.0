@@ -1,43 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9F3131771
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 19:24:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E58A131720
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 18:56:43 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47s39N3qfdzDqHF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 04:56:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47s3nL4QD2zDqD1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 05:24:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=ipd8=23=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47s37L0z1CzDqDm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 04:54:53 +1100 (AEDT)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A93EC2146E;
- Mon,  6 Jan 2020 17:54:50 +0000 (UTC)
-Date: Mon, 6 Jan 2020 12:54:49 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: "ftrace: Rework event_create_dir()" triggers boot error messages
-Message-ID: <20200106125449.563a2047@gandalf.local.home>
-In-Reply-To: <3F343134-63CB-4D99-97AD-F512B8760C94@lca.pw>
-References: <0FA8C6E3-D9F5-416D-A1B0-5E4CD583A101@lca.pw>
- <20191218233101.73044ce3@rorschach.local.home>
- <3F343134-63CB-4D99-97AD-F512B8760C94@lca.pw>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47s3X66LPgzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 05:12:54 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1ioWlM-0008D1-Mb; Mon, 06 Jan 2020 12:06:01 -0600
+Message-ID: <d8cddd005901e64133e9ecbb14ec8fdf3269972d.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: yingjie_bai@126.com, Kumar Gala <galak@kernel.crashing.org>
+Date: Mon, 06 Jan 2020 12:05:59 -0600
+In-Reply-To: <20200106042957.26494-2-yingjie_bai@126.com>
+References: <20200106042957.26494-1-yingjie_bai@126.com>
+ <20200106042957.26494-2-yingjie_bai@126.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: yingjie_bai@126.com, galak@kernel.crashing.org,
+ byj.tea@gmail.com, benh@kernel.crashing.org, paulus@samba.org,
+ mpe@ellerman.id.au, christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com,
+ yanaijie@huawei.com, diana.craciun@nxp.com, nsaenzjulienne@suse.de,
+ npiggin@gmail.com, tglx@linutronix.de, gregkh@linuxfoundation.org,
+ allison@lohutok.net, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Re: [PATCH v3 2/2] powerpc/mpc85xx: also write addr_h to spin table
+ for 64bit boot entry
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,41 +69,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Alexei Starovoitov <ast@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux@googlegroups.com, Catalin Marinas <catalin.marinas@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Jason Yan <yanaijie@huawei.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Diana Craciun <diana.craciun@nxp.com>, Paul Mackerras <paulus@samba.org>,
+ Allison Randal <allison@lohutok.net>, Bai Yingjie <byj.tea@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 6 Jan 2020 12:05:58 -0500
-Qian Cai <cai@lca.pw> wrote:
+On Mon, 2020-01-06 at 12:29 +0800, yingjie_bai@126.com wrote:
+> From: Bai Yingjie <byj.tea@gmail.com>
+> 
+> CPU like P4080 has 36bit physical address, its DDR physical
+> start address can be configured above 4G by LAW registers.
+> 
+> For such systems in which their physical memory start address was
+> configured higher than 4G, we need also to write addr_h into the spin
+> table of the target secondary CPU, so that addr_h and addr_l together
+> represent a 64bit physical address.
+> Otherwise the secondary core can not get correct entry to start from.
+> 
+> Signed-off-by: Bai Yingjie <byj.tea@gmail.com>
+> ---
+>  arch/powerpc/platforms/85xx/smp.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 
-> > diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscall=
-s.c
-> > index 53935259f701..abb70c71fe60 100644
-> > --- a/kernel/trace/trace_syscalls.c
-> > +++ b/kernel/trace/trace_syscalls.c
-> > @@ -269,7 +269,8 @@ static int __init syscall_enter_define_fields(struc=
-t trace_event_call *call)
-> > 	struct syscall_trace_enter trace;
-> > 	struct syscall_metadata *meta =3D call->data;
-> > 	int offset =3D offsetof(typeof(trace), args);
-> > -	int ret, i;
-> > +	int ret =3D 0;
-> > +	int i;
-> >=20
-> > 	for (i =3D 0; i < meta->nb_args; i++) {
-> > 		ret =3D trace_define_field(call, meta->types[i], =20
->=20
-> Steve, those errors are still there in today=E2=80=99s linux-next. Is thi=
-s patch on the way to the linux-next?
+Acked-by: Scott Wood <oss@buserror.net>
 
-No, because this bug is not in my tree.
+-Scott
 
-I'll send a proper patch to the tip folks.
 
--- Steve
