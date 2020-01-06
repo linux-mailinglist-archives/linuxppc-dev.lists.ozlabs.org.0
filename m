@@ -1,51 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA27130CCC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 05:35:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6249130C92
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 04:33:54 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47rh1n61ZZzDqDb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 14:33:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47rjNM4lgvzDqDZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2020 15:34:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=126.com
+ (client-ip=220.181.15.114; helo=m15-114.126.com;
+ envelope-from=yingjie_bai@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=126.com header.i=@126.com header.b="Yf4wf6+a"; 
+ dkim-atps=neutral
+Received: from m15-114.126.com (m15-114.126.com [220.181.15.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47rgzQ03Q6zDq9W
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 14:31:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="PseaXQkA"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47rgzM5PMRz9sNH;
- Mon,  6 Jan 2020 14:31:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1578281504;
- bh=XeP8e7qXes4HkHyMRiVW9bZkBg9wHSfCUbqH7aV7fWI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=PseaXQkADJFYGx4SaZsY8sR8oWICr+mRYyYr5fMd+fnxepINCrjznL1PLsh6Nvlcn
- C1u/dXFf4MPhZL0D3/iqEg9lgO6lddEzi7k8X0HlcU7EhFoWF8V4KqQ1Ld2vrgfOmF
- 8xJRGQoZEGXrYoUV/poOaGavJ6HBQ2pGlgOVg5ya1DWljIM/GdntvZDnnQIq1d0vrn
- hTzu3/amT42926Hf0wiuK4vD84ztJ5fo4OrAw0rbPyiT9uWXu/81Da9MUXvFi6V7H1
- lLmTIKEcYguwgRIibijKxb9zOk2IpkUFVNbaOcqwzS7oP1rsO6pmo5ALTydI/FzVoh
- lt/4slorVh1DA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH] powerpc: add support for folded p4d page tables
-In-Reply-To: <20200102081059.GA12063@rapoport-lnx>
-References: <20191209150908.6207-1-rppt@kernel.org>
- <20200102081059.GA12063@rapoport-lnx>
-Date: Mon, 06 Jan 2020 14:31:41 +1100
-Message-ID: <87v9ppi7ky.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47rjJ25czKzDqC0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2020 15:31:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+ s=s110527; h=From:Subject:Date:Message-Id; bh=qdq1RXBhcHvJu8+kiJ
+ YoTY6cikTHn4SeTY2dHZs3ha4=; b=Yf4wf6+aaZCi5sW2Z6AuXYOt69+vhGw1lR
+ Gsrx3dh7q5BV3zEDviM3bZrHpJW5R76swlb8xDm7T0teST5ZkbV4OS/suN17a1ub
+ YKXw0LkUiyxLEwZ94736BCRS2etIM8Oz32C3jxD30558Lq6h3gX5cqlr6kemg09d
+ lZgSvHUZc=
+Received: from yingjieb-VirtualBox.int.nokia-sbell.com (unknown
+ [223.104.212.216])
+ by smtp7 (Coremail) with SMTP id DsmowADHfD_ItxJeAqb_BA--.16223S2;
+ Mon, 06 Jan 2020 12:30:13 +0800 (CST)
+From: yingjie_bai@126.com
+To: Scott Wood <oss@buserror.net>,
+	Kumar Gala <galak@kernel.crashing.org>
+Subject: [PATCH v3 1/2] powerpc32/booke: consistently return phys_addr_t in
+ __pa()
+Date: Mon,  6 Jan 2020 12:29:53 +0800
+Message-Id: <20200106042957.26494-1-yingjie_bai@126.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: DsmowADHfD_ItxJeAqb_BA--.16223S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr48uF43Kr1xZF4xAFWxXrb_yoWkKFcEya
+ ykCa1vgrs5Wr97u3ZFya4rXwnrAr95CFn0ga4fuw17AF4UCF1UCwn7tw1kAws8CrsrCrZx
+ uFW0q343Kas2kjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU86nQUUUUUU==
+X-Originating-IP: [223.104.212.216]
+X-CM-SenderInfo: p1lqwyxlhbutbl6rjloofrz/1tbimRWc91pD-oMzJQABsU
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,58 +59,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Jason Yan <yanaijie@huawei.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Allison Randal <allison@lohutok.net>,
+ Bai Yingjie <byj.tea@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mike Rapoport <rppt@kernel.org> writes:
-> Any updates on this?
+From: Bai Yingjie <byj.tea@gmail.com>
 
-It's very ... big, and kind of intrusive.
+When CONFIG_RELOCATABLE=y is set, VIRT_PHYS_OFFSET is a 64bit variable,
+thus __pa() returns as 64bit value.
+But when CONFIG_RELOCATABLE=n, __pa() returns 32bit value.
 
-It's not an improvement as far as the powerpc code's readability is
-concerned. I assume the plan is that the 5-level hack can eventually be
-removed and so this conversion is a prerequisite for that?
+When CONFIG_PHYS_64BIT is set, __pa() should consistently return as
+64bit value irrelevant to CONFIG_RELOCATABLE.
+So we'd make __pa() consistently return phys_addr_t, which is 64bit
+when CONFIG_PHYS_64BIT is set.
 
-cheers
+Signed-off-by: Bai Yingjie <byj.tea@gmail.com>
+---
+ arch/powerpc/include/asm/page.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On Mon, Dec 09, 2019 at 05:09:08PM +0200, Mike Rapoport wrote:
->> From: Mike Rapoport <rppt@linux.ibm.com>
->> 
->> Implement primitives necessary for the 4th level folding, add walks of p4d
->> level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
->> 
->> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
->> ---
->>  arch/powerpc/include/asm/book3s/32/pgtable.h  |  1 -
->>  arch/powerpc/include/asm/book3s/64/hash.h     |  4 +-
->>  arch/powerpc/include/asm/book3s/64/pgalloc.h  |  4 +-
->>  arch/powerpc/include/asm/book3s/64/pgtable.h  | 58 ++++++++++--------
->>  arch/powerpc/include/asm/book3s/64/radix.h    |  6 +-
->>  arch/powerpc/include/asm/nohash/32/pgtable.h  |  1 -
->>  arch/powerpc/include/asm/nohash/64/pgalloc.h  |  2 +-
->>  .../include/asm/nohash/64/pgtable-4k.h        | 32 +++++-----
->>  arch/powerpc/include/asm/nohash/64/pgtable.h  |  6 +-
->>  arch/powerpc/include/asm/pgtable.h            |  8 +++
->>  arch/powerpc/kvm/book3s_64_mmu_radix.c        | 59 ++++++++++++++++---
->>  arch/powerpc/lib/code-patching.c              |  7 ++-
->>  arch/powerpc/mm/book3s32/mmu.c                |  2 +-
->>  arch/powerpc/mm/book3s32/tlb.c                |  4 +-
->>  arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 +-
->>  arch/powerpc/mm/book3s64/radix_pgtable.c      | 19 ++++--
->>  arch/powerpc/mm/book3s64/subpage_prot.c       |  6 +-
->>  arch/powerpc/mm/hugetlbpage.c                 | 28 +++++----
->>  arch/powerpc/mm/kasan/kasan_init_32.c         |  8 +--
->>  arch/powerpc/mm/mem.c                         |  4 +-
->>  arch/powerpc/mm/nohash/40x.c                  |  4 +-
->>  arch/powerpc/mm/nohash/book3e_pgtable.c       | 15 +++--
->>  arch/powerpc/mm/pgtable.c                     | 25 +++++++-
->>  arch/powerpc/mm/pgtable_32.c                  | 28 +++++----
->>  arch/powerpc/mm/pgtable_64.c                  | 10 ++--
->>  arch/powerpc/mm/ptdump/hashpagetable.c        | 20 ++++++-
->>  arch/powerpc/mm/ptdump/ptdump.c               | 22 ++++++-
->>  arch/powerpc/xmon/xmon.c                      | 17 +++++-
->>  28 files changed, 284 insertions(+), 120 deletions(-)
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index 7f1fd41e3065..86332080399a 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -209,7 +209,7 @@ static inline bool pfn_valid(unsigned long pfn)
+  */
+ #if defined(CONFIG_PPC32) && defined(CONFIG_BOOKE)
+ #define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) + VIRT_PHYS_OFFSET))
+-#define __pa(x) ((unsigned long)(x) - VIRT_PHYS_OFFSET)
++#define __pa(x) ((phys_addr_t)(unsigned long)(x) - VIRT_PHYS_OFFSET)
+ #else
+ #ifdef CONFIG_PPC64
+ /*
+-- 
+2.17.1
+
