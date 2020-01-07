@@ -1,93 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C2B1336AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 23:49:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0951335DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 23:43:48 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47snV966LVzDqLn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 09:43:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sncJ6X9JzDqLr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 09:49:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::443;
- helo=mail-wr1-x443.google.com; envelope-from=bertrand.dekoninck@gmail.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64;
+ helo=hqnvemgate25.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="LElyP1nv"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="q07jqBkO"; 
  dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from hqnvemgate25.nvidia.com (hqnvemgate25.nvidia.com
+ [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47scPd31n9zDqJc
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 02:54:13 +1100 (AEDT)
-Received: by mail-wr1-x443.google.com with SMTP id q6so54430128wro.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2020 07:54:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:from:to:cc:references:message-id:date:user-agent
- :mime-version:in-reply-to:content-language;
- bh=bzU8O9/ZxucxTMExS10L9SkS6Rz7poU8CPmVnCi+FHE=;
- b=LElyP1nvrQqO1Qt2gBTWzN58AHSoavQzfDKKRO6gqcGt5tIsA7aD8SeDLir/vkDCpk
- gigpcaiTn32S9OCNQ4tCgXQSS3ebkAWDOaRqhN+rGkKSdrRlleXDf/8tP0J+K6cL61k4
- yt0ptTDqcCd2e4vbEIuaI10ZeVDTPFKO+Er3TCVyh1wCpp2ERglhWWKDR4SDgKcsjbYS
- BkUxshhbip3UgeleLtM6WqHayDh4ggV0+CQiV5NE7DMoicvT+HQ0wWZcKhK4/Aj7nvv+
- Aw+lu4A4+nPwohRMoXNSxm6zH6O1drxSrjvNcU7wNcFvY4gvT3QExHenI1C1+N8AanAY
- xhxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:cc:references:message-id:date
- :user-agent:mime-version:in-reply-to:content-language;
- bh=bzU8O9/ZxucxTMExS10L9SkS6Rz7poU8CPmVnCi+FHE=;
- b=fEoZKMglsLUi9pW5dLd6T8KRG1FDkSiF80aVamaO65KXjtRd1ORFvjLKQOkkVuAMkw
- mJjPZ6MoQ3qrmtv2aKBbxhEYaxUtHumXKJBSR4L2IJa/fsznpnky/gMvXoRwSgpgfZYu
- +jLhPDFbMdPeyo4XVM7ptxIUt56BkDLk6HWcKVOKJAWvk5K6+Jy1BjbaLPYsWR3YoDCr
- qrqRKIgZxs6RSHE0l91/4skazJq8440YiRRJi817G9YI5iidL3kqFn3xZrHKr3D2YVjQ
- Jw6YKQVTyTyt6RsuA4sYZgvJMHh9N6E81/ZBZZcY//ABLreQ/CkwFT54Q5gpoEgNLKaV
- h/DA==
-X-Gm-Message-State: APjAAAWPU5H9ZCn44uYGsRN/BWUgE30S1BESPnSVJPf9oD/157V0uqEG
- qNan4jfH5xKjBz6wJgQRfkPfLQ3Xck5d2iCs
-X-Google-Smtp-Source: APXvYqxxAYWJNLUFlz5yP/dbGaxuL0X7f9ycx3A6ld4YDsohvl8ii7P2TU8+dZJkzNOZcWDl3yr/nw==
-X-Received: by 2002:a5d:6ca1:: with SMTP id a1mr106116012wra.36.1578412449458; 
- Tue, 07 Jan 2020 07:54:09 -0800 (PST)
-Received: from ?IPv6:2a01:e35:2428:560:44f3:4b8f:b355:41c0?
- ([2a01:e35:2428:560:44f3:4b8f:b355:41c0])
- by smtp.gmail.com with ESMTPSA id y20sm37813wmi.25.2020.01.07.07.54.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Jan 2020 07:54:08 -0800 (PST)
-Subject: Re: PPC64: G5 & 4k/64k page size
-From: Bertrand <bertrand.dekoninck@gmail.com>
-To: Romain Dolbeau <romain@dolbeau.org>
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
- <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
- <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
- <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
- <87eexbk3gw.fsf@linux.ibm.com>
- <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
- <87mubxl82x.fsf@igel.home>
- <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
- <87immlkytp.fsf@igel.home>
- <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
- <20191214103213.309bfbbb1f9c50fe47e733d9@zonnet.nl>
- <B661D5F4-575C-4E64-BC68-537223FFB5B6@gmail.com>
- <CADuzgbpiN-=VgmZCHOyXFDEuj2L+aVzJGfibkvgfnPD_atNZMw@mail.gmail.com>
- <709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com>
-Message-ID: <e87bc830-176c-1bf0-fe1f-229dac343eb1@gmail.com>
-Date: Tue, 7 Jan 2020 16:54:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux ppc64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47snXr5XKnzDqJH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 09:46:04 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5e150a160001>; Tue, 07 Jan 2020 14:45:42 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 07 Jan 2020 14:46:00 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 07 Jan 2020 14:46:00 -0800
+Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 7 Jan
+ 2020 22:45:59 +0000
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Tue, 7 Jan 2020 22:45:59 +0000
+Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
+ hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5e150a270002>; Tue, 07 Jan 2020 14:45:59 -0800
+From: John Hubbard <jhubbard@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v12 00/22] mm/gup: prereqs to track dma-pinned pages: FOLL_PIN
+Date: Tue, 7 Jan 2020 14:45:36 -0800
+Message-ID: <20200107224558.2362728-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com>
-Content-Type: multipart/alternative;
- boundary="------------DD31F5C50A51D027045D9BF2"
-Content-Language: en-US
-X-Mailman-Approved-At: Wed, 08 Jan 2020 09:42:17 +1100
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1578437143; bh=e35VbuH+5Gvq6hzdX1wkd7Gwo0Ev1/RydrM5ojZBtqQ=;
+ h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+ MIME-Version:X-NVConfidentiality:Content-Type:
+ Content-Transfer-Encoding;
+ b=q07jqBkOQ+8W+FWIGxHzDq9+K2aqK0l1baYh9tHJ5YgbVqzpzGrCVUbh8IIOz9ivr
+ N8DeNKRxsksmaQmBj8DLUTfJNvVvliRP3A7UvdrQSBrUtqohAPvBbP6gW+d+uir7zj
+ N71u+jUUFG3a29ne3zY3zxuWMeCOBJOlbx0/C+htFPSQNDX+WeFBXBUo/FQBTcKPK+
+ fsKaVOXRA1UshywnsPhWCDuIhCymH6YPuMQwJ7/7x7UJimvasG4+G3pmoTyD3poYdy
+ 39n4NbY3ownCfiBLFE6x3ANsClgsjxgyIpUe1k8mz3p84SQo7eboSdCD6jky2z1c7L
+ WmXHM0fQFkghw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,57 +73,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Jeroen Diederen <jjhdiederen@zonnet.nl>,
- PowerPC List Debian <debian-powerpc@lists.debian.org>,
- Andreas Schwab <schwab@linux-m68k.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------DD31F5C50A51D027045D9BF2
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi,
 
-Oups. Edit :
+The "track FOLL_PIN pages" would have been the very next patch, but it is
+not included here because I'm still debugging a bug report from Leon.
+Let's get all of the prerequisite work (it's been reviewed) into the tree
+so that future reviews are easier. It's clear that any fixes that are
+required to the tracking patch, won't affect these patches here.
 
-swapon: /dev/sdb5 : pagesize doesn't fit with _swap_ space format
+This implements an API naming change (put_user_page*() -->
+unpin_user_page*()), and also adds FOLL_PIN page support, up to
+*but not including* actually tracking FOLL_PIN pages. It extends
+the FOLL_PIN support to a few select subsystems. More subsystems will
+be added in follow up work.
 
-On 07/01/2020 16:27, Bertrand wrote:
->
->
-> swapon: /dev/sdb5 : pagesize doesn't fit with space space format
->
->
+Christoph Hellwig, a point of interest:
 
---------------DD31F5C50A51D027045D9BF2
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+a) I've moved the bulk of the code out of the inline functions, as
+   requested, for the devmap changes (patch 4: "mm: devmap: refactor
+   1-based refcounting for ZONE_DEVICE pages").
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>Oups. Edit : <br>
-    </p>
-    <p>swapon: /dev/sdb5 : pagesize doesn't fit with <u>swap</u> space
-      format</p>
-    <div class="moz-cite-prefix">On 07/01/2020 16:27, Bertrand wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com">
-      <br>
-      <br>
-      swapon: /dev/sdb5 : pagesize doesn't fit with space space format
-      <br>
-      <br>
-      <br>
-    </blockquote>
-  </body>
-</html>
+Changes since v11: Fixes resulting from Kirill Shutemov's review, plus
+a fix for a kbuild robot-reported warning.
 
---------------DD31F5C50A51D027045D9BF2--
+* Only include the first 22 patches: up to, but not including, the "track
+  FOLL_PIN pages" patch.
+
+* Improved the efficiency of put_compound_head(), by avoiding get_page()
+  entirely, and instead doing the mass subtraction on one less than
+  refs, followed by a final put_page().
+
+* Got rid of the forward declaration of __gup_longterm_locked(), by
+  moving get_user_pages_remote() further down in gup.c
+
+* Got rid of a redundant page_is_devmap_managed() call, and simplified
+  put_devmap_managed_page() as part of that small cleanup.
+
+* Changed put_devmap_managed_page() to do an early out if the page is
+  not devmap managed. This saves an indentation level.
+
+* Applied the same type of change to __unpin_devmap_managed_user_page(),
+  which has the same checks.
+
+* Changed release_pages() to handle the changed put_devmap_managed_page()
+  API.
+
+* Removed EXPORT_SYMBOL(free_devmap_managed_page), as it is not required,
+  after the other refactoring.
+
+* Fixed a kbuild robot sparse warning: added "static" to
+  try_pin_compound_head()'s declaration.
+
+There is a git repo and branch, for convenience:
+
+    git@github.com:johnhubbard/linux.git pin_user_pages_tracking_v8
+
+For the remaining list of "changes since version N", those are all in
+v11, which is here:
+
+  https://lore.kernel.org/r/20191216222537.491123-1-jhubbard@nvidia.com
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Overview:
+
+This is a prerequisite to solving the problem of proper interactions
+between file-backed pages, and [R]DMA activities, as discussed in [1],
+[2], [3], and in a remarkable number of email threads since about
+2017. :)
+
+A new internal gup flag, FOLL_PIN is introduced, and thoroughly
+documented in the last patch's Documentation/vm/pin_user_pages.rst.
+
+I believe that this will provide a good starting point for doing the
+layout lease work that Ira Weiny has been working on. That's because
+these new wrapper functions provide a clean, constrained, systematically
+named set of functionality that, again, is required in order to even
+know if a page is "dma-pinned".
+
+In contrast to earlier approaches, the page tracking can be
+incrementally applied to the kernel call sites that, until now, have
+been simply calling get_user_pages() ("gup"). In other words, opt-in by
+changing from this:
+
+    get_user_pages() (sets FOLL_GET)
+    put_page()
+
+to this:
+    pin_user_pages() (sets FOLL_PIN)
+    unpin_user_page()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Testing:
+
+* I've done some overall kernel testing (LTP, and a few other goodies),
+  and some directed testing to exercise some of the changes. And as you
+  can see, gup_benchmark is enhanced to exercise this. Basically, I've
+  been able to runtime test the core get_user_pages() and
+  pin_user_pages() and related routines, but not so much on several of
+  the call sites--but those are generally just a couple of lines
+  changed, each.
+
+  Not much of the kernel is actually using this, which on one hand
+  reduces risk quite a lot. But on the other hand, testing coverage
+  is low. So I'd love it if, in particular, the Infiniband and PowerPC
+  folks could do a smoke test of this series for me.
+
+  Runtime testing for the call sites so far is pretty light:
+
+    * io_uring: Some directed tests from liburing exercise this, and
+                they pass.
+    * process_vm_access.c: A small directed test passes.
+    * gup_benchmark: the enhanced version hits the new gup.c code, and
+                     passes.
+    * infiniband: Ran rdma-core tests: rdma-core/build/bin/run_tests.py
+    * VFIO: compiles (I'm vowing to set up a run time test soon, but it's
+                      not ready just yet)
+    * powerpc: it compiles...
+    * drm/via: compiles...
+    * goldfish: compiles...
+    * net/xdp: compiles...
+    * media/v4l2: compiles...
+
+[1] Some slow progress on get_user_pages() (Apr 2, 2019): https://lwn.net/A=
+rticles/784574/
+[2] DMA and get_user_pages() (LPC: Dec 12, 2018): https://lwn.net/Articles/=
+774411/
+[3] The trouble with get_user_pages() (Apr 30, 2018): https://lwn.net/Artic=
+les/753027/
+
+
+Dan Williams (1):
+  mm: Cleanup __put_devmap_managed_page() vs ->page_free()
+
+John Hubbard (21):
+  mm/gup: factor out duplicate code from four routines
+  mm/gup: move try_get_compound_head() to top, fix minor issues
+  mm: devmap: refactor 1-based refcounting for ZONE_DEVICE pages
+  goldish_pipe: rename local pin_user_pages() routine
+  mm: fix get_user_pages_remote()'s handling of FOLL_LONGTERM
+  vfio: fix FOLL_LONGTERM use, simplify get_user_pages_remote() call
+  mm/gup: allow FOLL_FORCE for get_user_pages_fast()
+  IB/umem: use get_user_pages_fast() to pin DMA pages
+  media/v4l2-core: set pages dirty upon releasing DMA buffers
+  mm/gup: introduce pin_user_pages*() and FOLL_PIN
+  goldish_pipe: convert to pin_user_pages() and put_user_page()
+  IB/{core,hw,umem}: set FOLL_PIN via pin_user_pages*(), fix up ODP
+  mm/process_vm_access: set FOLL_PIN via pin_user_pages_remote()
+  drm/via: set FOLL_PIN via pin_user_pages_fast()
+  fs/io_uring: set FOLL_PIN via pin_user_pages()
+  net/xdp: set FOLL_PIN via pin_user_pages()
+  media/v4l2-core: pin_user_pages (FOLL_PIN) and put_user_page()
+    conversion
+  vfio, mm: pin_user_pages (FOLL_PIN) and put_user_page() conversion
+  powerpc: book3s64: convert to pin_user_pages() and put_user_page()
+  mm/gup_benchmark: use proper FOLL_WRITE flags instead of hard-coding
+    "1"
+  mm, tree-wide: rename put_user_page*() to unpin_user_page*()
+
+ Documentation/core-api/index.rst            |   1 +
+ Documentation/core-api/pin_user_pages.rst   | 232 +++++++++
+ arch/powerpc/mm/book3s64/iommu_api.c        |  10 +-
+ drivers/gpu/drm/via/via_dmablit.c           |   6 +-
+ drivers/infiniband/core/umem.c              |  19 +-
+ drivers/infiniband/core/umem_odp.c          |  13 +-
+ drivers/infiniband/hw/hfi1/user_pages.c     |   4 +-
+ drivers/infiniband/hw/mthca/mthca_memfree.c |   8 +-
+ drivers/infiniband/hw/qib/qib_user_pages.c  |   4 +-
+ drivers/infiniband/hw/qib/qib_user_sdma.c   |   8 +-
+ drivers/infiniband/hw/usnic/usnic_uiom.c    |   4 +-
+ drivers/infiniband/sw/siw/siw_mem.c         |   4 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c   |   8 +-
+ drivers/nvdimm/pmem.c                       |   6 -
+ drivers/platform/goldfish/goldfish_pipe.c   |  35 +-
+ drivers/vfio/vfio_iommu_type1.c             |  35 +-
+ fs/io_uring.c                               |   6 +-
+ include/linux/mm.h                          |  95 +++-
+ mm/gup.c                                    | 495 ++++++++++++--------
+ mm/gup_benchmark.c                          |   9 +-
+ mm/memremap.c                               |  75 ++-
+ mm/process_vm_access.c                      |  28 +-
+ mm/swap.c                                   |  27 +-
+ net/xdp/xdp_umem.c                          |   4 +-
+ tools/testing/selftests/vm/gup_benchmark.c  |   6 +-
+ 25 files changed, 762 insertions(+), 380 deletions(-)
+ create mode 100644 Documentation/core-api/pin_user_pages.rst
+
+--=20
+2.24.1
+
