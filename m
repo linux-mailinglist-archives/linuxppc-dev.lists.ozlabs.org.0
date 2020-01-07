@@ -1,65 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CF71334D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 22:31:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sltH3SCWzDqR7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 08:31:03 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0951335DB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 23:43:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47snV966LVzDqLn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 09:43:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=deltatee.com (client-ip=207.54.116.67; helo=ale.deltatee.com;
- envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::443;
+ helo=mail-wr1-x443.google.com; envelope-from=bertrand.dekoninck@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=deltatee.com
-Received: from ale.deltatee.com (ale.deltatee.com [207.54.116.67])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="LElyP1nv"; 
+ dkim-atps=neutral
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
+ [IPv6:2a00:1450:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47slBn443FzDqNH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 08:00:17 +1100 (AEDT)
-Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
- by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
- id 1iovxO-0007vp-Dz; Tue, 07 Jan 2020 14:00:08 -0700
-Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
- (envelope-from <gunthorp@deltatee.com>)
- id 1iovxI-0001z2-AY; Tue, 07 Jan 2020 14:00:00 -0700
-From: Logan Gunthorpe <logang@deltatee.com>
-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
- Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@kernel.org>,
- David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Date: Tue,  7 Jan 2020 13:59:51 -0700
-Message-Id: <20200107205959.7575-1-logang@deltatee.com>
-X-Mailer: git-send-email 2.20.1
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47scPd31n9zDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 02:54:13 +1100 (AEDT)
+Received: by mail-wr1-x443.google.com with SMTP id q6so54430128wro.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2020 07:54:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:from:to:cc:references:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language;
+ bh=bzU8O9/ZxucxTMExS10L9SkS6Rz7poU8CPmVnCi+FHE=;
+ b=LElyP1nvrQqO1Qt2gBTWzN58AHSoavQzfDKKRO6gqcGt5tIsA7aD8SeDLir/vkDCpk
+ gigpcaiTn32S9OCNQ4tCgXQSS3ebkAWDOaRqhN+rGkKSdrRlleXDf/8tP0J+K6cL61k4
+ yt0ptTDqcCd2e4vbEIuaI10ZeVDTPFKO+Er3TCVyh1wCpp2ERglhWWKDR4SDgKcsjbYS
+ BkUxshhbip3UgeleLtM6WqHayDh4ggV0+CQiV5NE7DMoicvT+HQ0wWZcKhK4/Aj7nvv+
+ Aw+lu4A4+nPwohRMoXNSxm6zH6O1drxSrjvNcU7wNcFvY4gvT3QExHenI1C1+N8AanAY
+ xhxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language;
+ bh=bzU8O9/ZxucxTMExS10L9SkS6Rz7poU8CPmVnCi+FHE=;
+ b=fEoZKMglsLUi9pW5dLd6T8KRG1FDkSiF80aVamaO65KXjtRd1ORFvjLKQOkkVuAMkw
+ mJjPZ6MoQ3qrmtv2aKBbxhEYaxUtHumXKJBSR4L2IJa/fsznpnky/gMvXoRwSgpgfZYu
+ +jLhPDFbMdPeyo4XVM7ptxIUt56BkDLk6HWcKVOKJAWvk5K6+Jy1BjbaLPYsWR3YoDCr
+ qrqRKIgZxs6RSHE0l91/4skazJq8440YiRRJi817G9YI5iidL3kqFn3xZrHKr3D2YVjQ
+ Jw6YKQVTyTyt6RsuA4sYZgvJMHh9N6E81/ZBZZcY//ABLreQ/CkwFT54Q5gpoEgNLKaV
+ h/DA==
+X-Gm-Message-State: APjAAAWPU5H9ZCn44uYGsRN/BWUgE30S1BESPnSVJPf9oD/157V0uqEG
+ qNan4jfH5xKjBz6wJgQRfkPfLQ3Xck5d2iCs
+X-Google-Smtp-Source: APXvYqxxAYWJNLUFlz5yP/dbGaxuL0X7f9ycx3A6ld4YDsohvl8ii7P2TU8+dZJkzNOZcWDl3yr/nw==
+X-Received: by 2002:a5d:6ca1:: with SMTP id a1mr106116012wra.36.1578412449458; 
+ Tue, 07 Jan 2020 07:54:09 -0800 (PST)
+Received: from ?IPv6:2a01:e35:2428:560:44f3:4b8f:b355:41c0?
+ ([2a01:e35:2428:560:44f3:4b8f:b355:41c0])
+ by smtp.gmail.com with ESMTPSA id y20sm37813wmi.25.2020.01.07.07.54.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Jan 2020 07:54:08 -0800 (PST)
+Subject: Re: PPC64: G5 & 4k/64k page size
+From: Bertrand <bertrand.dekoninck@gmail.com>
+To: Romain Dolbeau <romain@dolbeau.org>
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+ <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+ <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
+ <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
+ <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
+ <87eexbk3gw.fsf@linux.ibm.com>
+ <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
+ <87mubxl82x.fsf@igel.home>
+ <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
+ <87immlkytp.fsf@igel.home>
+ <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
+ <20191214103213.309bfbbb1f9c50fe47e733d9@zonnet.nl>
+ <B661D5F4-575C-4E64-BC68-537223FFB5B6@gmail.com>
+ <CADuzgbpiN-=VgmZCHOyXFDEuj2L+aVzJGfibkvgfnPD_atNZMw@mail.gmail.com>
+ <709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com>
+Message-ID: <e87bc830-176c-1bf0-fe1f-229dac343eb1@gmail.com>
+Date: Tue, 7 Jan 2020 16:54:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux ppc64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 172.16.1.31
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-mm@kvack.org, dan.j.williams@intel.com, akpm@linux-foundation.org,
- hch@lst.de, catalin.marinas@arm.com, benh@kernel.crashing.org,
- tglx@linutronix.de, david@redhat.com, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, mhocko@kernel.org, will@kernel.org,
- luto@kernel.org, peterz@infradead.org, ebadger@gigaio.com, logang@deltatee.com
-X-SA-Exim-Mail-From: gunthorp@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE,MYRULES_NO_TEXT autolearn=ham autolearn_force=no
- version=3.4.2
-Subject: [PATCH v2 0/8] Allow setting caching mode in arch_add_memory() for
- P2PDMA
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+In-Reply-To: <709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="------------DD31F5C50A51D027045D9BF2"
+Content-Language: en-US
+X-Mailman-Approved-At: Wed, 08 Jan 2020 09:42:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,105 +99,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Badger <ebadger@gigaio.com>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Logan Gunthorpe <logang@deltatee.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Jeroen Diederen <jjhdiederen@zonnet.nl>,
+ PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ Andreas Schwab <schwab@linux-m68k.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+This is a multi-part message in MIME format.
+--------------DD31F5C50A51D027045D9BF2
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The main feedback from v1 was around the interface for arch_add_memory().
-Per Dan's suggestions I've renamed the mhp_restrictions structure to
-mhp_modifiers and put a pgprot_t field in that structure. I've also
-included patch to drop the unused flags field.
+Oups. Edit :
 
-Thanks,
+swapon: /dev/sdb5 : pagesize doesn't fit with _swap_ space format
 
-Logan
+On 07/01/2020 16:27, Bertrand wrote:
+>
+>
+> swapon: /dev/sdb5 : pagesize doesn't fit with space space format
+>
+>
 
---
+--------------DD31F5C50A51D027045D9BF2
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Changes in v2:
- * Rebased onto v5.5-rc5
- * Renamed mhp_restrictions to mhp_modifiers and added the pgprot field
-   to that structure instead of using an argument for
-   arch_add_memory().
- * Add patch to drop the unused flags field in mhp_restrictions
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>Oups. Edit : <br>
+    </p>
+    <p>swapon: /dev/sdb5 : pagesize doesn't fit with <u>swap</u> space
+      format</p>
+    <div class="moz-cite-prefix">On 07/01/2020 16:27, Bertrand wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com">
+      <br>
+      <br>
+      swapon: /dev/sdb5 : pagesize doesn't fit with space space format
+      <br>
+      <br>
+      <br>
+    </blockquote>
+  </body>
+</html>
 
-A git branch is available here:
-
-https://github.com/sbates130272/linux-p2pmem remap_pages_cache_v2
-
---
-
-Currently, the page tables created using memremap_pages() are always
-created with the PAGE_KERNEL cacheing mode. However, the P2PDMA code
-is creating pages for PCI BAR memory which should never be accessed
-through the cache and instead use either WC or UC. This still works in
-most cases, on x86, because the MTRR registers typically override the
-caching settings in the page tables for all of the IO memory to be
-UC-. However, this tends not to work so well on other arches or
-some rare x86 machines that have firmware which does not setup the
-MTRR registers in this way.
-
-Instead of this, this series proposes a change to arch_add_memory()
-to take the pgprot required by the mapping which allows us to
-explicitly set pagetable entries for P2PDMA memory to WC.
-
-This changes is pretty routine for most of the arches: x86_64, s390, arm64
-and powerpc simply need to thread the pgprot through to where the page
-tables are setup. x86_32 unfortunately sets up the page tables at boot so
-must use _set_memory_prot() to change their caching mode. ia64 and sh
-don't appear to have an easy way to change the page tables so, for now
-at least, we just return -EINVAL on such mappings and thus they will
-not support P2PDMA memory until the work for this is done.
-
---
-
-Logan Gunthorpe (8):
-  mm/memory_hotplug: Drop the flags field from struct mhp_restrictions
-  mm/memory_hotplug: Rename mhp_restrictions to mhp_modifiers
-  x86/mm: Thread pgprot_t through init_memory_mapping()
-  x86/mm: Introduce _set_memory_prot()
-  powerpc/mm: Thread pgprot_t through create_section_mapping()
-  s390/mm: Thread pgprot_t through vmem_add_mapping()
-  mm/memory_hotplug: Add pgprot_t to mhp_modifiers
-  mm/memremap: Set caching mode for PCI P2PDMA memory to WC
-
- arch/arm64/mm/mmu.c                        |  7 ++--
- arch/ia64/mm/init.c                        |  6 +++-
- arch/powerpc/include/asm/book3s/64/hash.h  |  3 +-
- arch/powerpc/include/asm/book3s/64/radix.h |  3 +-
- arch/powerpc/include/asm/sparsemem.h       |  3 +-
- arch/powerpc/mm/book3s64/hash_utils.c      |  5 +--
- arch/powerpc/mm/book3s64/pgtable.c         |  7 ++--
- arch/powerpc/mm/book3s64/radix_pgtable.c   | 18 ++++++----
- arch/powerpc/mm/mem.c                      | 10 +++---
- arch/s390/include/asm/pgtable.h            |  3 +-
- arch/s390/mm/extmem.c                      |  3 +-
- arch/s390/mm/init.c                        |  8 ++---
- arch/s390/mm/vmem.c                        | 10 +++---
- arch/sh/mm/init.c                          |  7 ++--
- arch/x86/include/asm/page_types.h          |  3 --
- arch/x86/include/asm/pgtable.h             |  3 ++
- arch/x86/include/asm/set_memory.h          |  1 +
- arch/x86/kernel/amd_gart_64.c              |  3 +-
- arch/x86/mm/init.c                         |  9 ++---
- arch/x86/mm/init_32.c                      | 12 +++++--
- arch/x86/mm/init_64.c                      | 40 ++++++++++++----------
- arch/x86/mm/mm_internal.h                  |  3 +-
- arch/x86/mm/pageattr.c                     |  7 ++++
- arch/x86/platform/efi/efi_64.c             |  3 +-
- include/linux/memory_hotplug.h             | 16 ++++-----
- mm/memory_hotplug.c                        |  8 ++---
- mm/memremap.c                              | 17 +++++----
- 27 files changed, 132 insertions(+), 86 deletions(-)
-
---
-2.20.1
+--------------DD31F5C50A51D027045D9BF2--
