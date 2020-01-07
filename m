@@ -2,51 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA93E131D74
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 03:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F55131D8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 03:18:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sG3K6XrwzDqW9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 13:07:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sGJ41pG4zDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 13:18:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sG1P5j7qzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 13:05:29 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sGGK3Pj3zDqVd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 13:16:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Tfyl7hLY"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47sG1K0wb1z9sPK;
- Tue,  7 Jan 2020 13:05:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1578362729;
- bh=pY6TIy9SR4tEyAS0HbPqGRNPZ2UwwqiyR4Kh28zeFFI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Tfyl7hLYmcqDio6TzmoNX4eEpU/VH1XedfybafyjFJyg/jxoC61dMnx7t5GnDfrfJ
- Gr7//aHjlvnqj55C8bvTjCcqWFo+aSO1NPh7AsQPq5aFEIKTLm7yKV6qDAcnALHt8h
- A7VXpu10GywS0S7g2Qj47S6T+C/eV1wQThf24GFD1DUv7X4l/x0a3RumaFeZnoadMp
- qF7E7AAViYFuxl4ze6gkiOSgHcYuV3D520w4SgqTIh/zS3g1JU6Nt9kTdkUmsq7nrn
- jzPazOZziHv4zPXU98iZXPnck+e4y7P+Z84onVCXahK4jbpT70RvV1V6lSPbpikXa9
- V694qnRtkDCZA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH v3 02/22] compat: provide compat_ptr() on all architectures
-In-Reply-To: <20200102145552.1853992-3-arnd@arndb.de>
-References: <20200102145552.1853992-1-arnd@arndb.de>
- <20200102145552.1853992-3-arnd@arndb.de>
-Date: Tue, 07 Jan 2020 13:05:22 +1100
-Message-ID: <87woa410nx.fsf@mpe.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47sGGK02nsz8t70
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 13:16:41 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47sGGJ6SwXz9sR8; Tue,  7 Jan 2020 13:16:40 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47sGGJ2fDRz9sR0;
+ Tue,  7 Jan 2020 13:16:39 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0072CSkf097666; Mon, 6 Jan 2020 21:16:37 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xb8nypqve-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 06 Jan 2020 21:16:37 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0072GKKG002386;
+ Tue, 7 Jan 2020 02:16:36 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma05wdc.us.ibm.com with ESMTP id 2xajb5ybhh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jan 2020 02:16:36 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0072GZwP44499214
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Jan 2020 02:16:35 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FE9ABE051;
+ Tue,  7 Jan 2020 02:16:35 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25E37BE04F;
+ Tue,  7 Jan 2020 02:16:35 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.70.94.45])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Jan 2020 02:16:35 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id 83A6C2E0EE6; Mon,  6 Jan 2020 18:16:33 -0800 (PST)
+Date: Mon, 6 Jan 2020 18:16:33 -0800
+From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: powerpc/xmon: don't access ASDR in VMs
+Message-ID: <20200107021633.GB29843@us.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Operating-System: Linux 2.0.32 on an i486
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2020-01-06_08:2020-01-06,2020-01-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 mlxscore=0 clxscore=1015 phishscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0 mlxlogscore=820
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001070016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,73 +98,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>,
- linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Paul Burton <paulburton@kernel.org>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
- Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
- Robert Richter <rric@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@arndb.de> writes:
-> In order to avoid needless #ifdef CONFIG_COMPAT checks,
-> move the compat_ptr() definition to linux/compat.h
-> where it can be seen by any file regardless of the
-> architecture.
->
-> Only s390 needs a special definition, this can use the
-> self-#define trick we have elsewhere.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm64/include/asm/compat.h   | 17 -----------------
->  arch/mips/include/asm/compat.h    | 18 ------------------
->  arch/parisc/include/asm/compat.h  | 17 -----------------
->  arch/powerpc/include/asm/compat.h | 17 -----------------
->  arch/powerpc/oprofile/backtrace.c |  2 +-
+From 91a77dbea3c909ff15c66cded37f1334304a293d Mon Sep 17 00:00:00 2001
+From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Date: Mon, 6 Jan 2020 13:50:02 -0600
+Subject: [PATCH 1/1] powerpc/xmon: don't access ASDR in VMs
 
-LGTM.
+ASDR is HV-privileged and must only be accessed in HV-mode.
+Fixes a Program Check (0x700) when xmon in a VM dumps SPRs.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+---
+ arch/powerpc/xmon/xmon.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-One minor comment:
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 02fae453c2ec..b8d179b5cf4f 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -1949,15 +1949,14 @@ static void dump_300_sprs(void)
+ 
+ 	printf("pidr   = %.16lx  tidr  = %.16lx\n",
+ 		mfspr(SPRN_PID), mfspr(SPRN_TIDR));
+-	printf("asdr   = %.16lx  psscr = %.16lx\n",
+-		mfspr(SPRN_ASDR), hv ? mfspr(SPRN_PSSCR)
+-					: mfspr(SPRN_PSSCR_PR));
++	printf("psscr  = %.16lx\n",
++		hv ? mfspr(SPRN_PSSCR) : mfspr(SPRN_PSSCR_PR));
+ 
+ 	if (!hv)
+ 		return;
+ 
+-	printf("ptcr   = %.16lx\n",
+-		mfspr(SPRN_PTCR));
++	printf("ptcr   = %.16lx  asdr  = %.16lx\n",
++		mfspr(SPRN_PTCR), mfspr(SPRN_ASDR));
+ #endif
+ }
+ 
+-- 
+2.17.2
 
-> diff --git a/include/linux/compat.h b/include/linux/compat.h
-> index 68f79d855c3d..11083d84eb23 100644
-> --- a/include/linux/compat.h
-> +++ b/include/linux/compat.h
-> @@ -958,4 +958,22 @@ static inline bool in_compat_syscall(void) { return false; }
->  
->  #endif /* CONFIG_COMPAT */
->  
-> +/*
-> + * A pointer passed in from user mode. This should not
-> + * be used for syscall parameters, just declare them
-> + * as pointers because the syscall entry code will have
-> + * appropriately converted them already.
-> + */
-> +#ifndef compat_ptr
-> +static inline void __user *compat_ptr(compat_uptr_t uptr)
-> +{
-> +	return (void __user *)(unsigned long)uptr;
-> +}
-> +#endif
-> +
-> +static inline compat_uptr_t ptr_to_compat(void __user *uptr)
-> +{
-> +	return (u32)(unsigned long)uptr;
-> +}
-
-Is there a reason we cast to u32 directly instead of using compat_uptr_t?
-
-cheers
