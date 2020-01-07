@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CD2132CC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E984132CD4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:17:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sfCj3GWRzDqM2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:15:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sfG955HHzDqMh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:17:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,25 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="ktJ602nr"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="PcOSHuIz"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sdlc3G7lzDqKW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:54:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sdlm2hFxzDqKW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:55:00 +1100 (AEDT)
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 95E1224677;
- Tue,  7 Jan 2020 16:54:41 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DC2332073D;
+ Tue,  7 Jan 2020 16:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1578416090;
- bh=kYrH24ncGNFFYQLQ9wHiRAtooGLl8xeKtAWqiO+vhmI=;
+ s=default; t=1578416098;
+ bh=OxGpMROhFQfzTTYuwcffnfrxlv/oQuz0yC/lpIU6MVM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ktJ602nrKO22v0uNZz36NC/2TQ72yN6ijh2qShGKTyM6sP8S4sHzrYeq95duxemBM
- F0Hlx7sC2SFMxEUl0tafeD+qmflFDYmaI7aUvp442eXhKcmauRa4vF7iN/d/RiSgKl
- +G0tMhwntosCt0ljDnAplFNWUVM/SIIt7orUHcV0=
+ b=PcOSHuIz8JBQafaZPl+Y77y1zkCvkDs1VBTp8LO+zbVny8hx/J6wPKXXuNO7qZWEv
+ t6vz7ARhdkvNJkn9k0UR4+64ynQfKbLLkft81RKWt9DPPnm6RjSRwXpheXwqqvs7m6
+ FQodZWHFP1QQuRMVqE/1jSl8YKy77s4AYmuLiyXQ=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,10 +62,10 @@ To: Richard Henderson <rth@twiddle.net>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
  linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
  linux-arch@vger.kernel.org
-Subject: [RFT 07/13] drm/mgag200: Constify ioreadX() iomem argument (as in
+Subject: [RFT 08/13] drm/nouveau: Constify ioreadX() iomem argument (as in
  generic implementation)
-Date: Tue,  7 Jan 2020 17:53:06 +0100
-Message-Id: <1578415992-24054-10-git-send-email-krzk@kernel.org>
+Date: Tue,  7 Jan 2020 17:53:07 +0100
+Message-Id: <1578415992-24054-11-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
@@ -94,25 +94,22 @@ consistency among architectures.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_drv.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
-index aa32aad222c2..6512b3af4fb7 100644
---- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-+++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-@@ -34,9 +34,9 @@
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
+index f8015e0318d7..5120d062c2df 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -613,7 +613,7 @@ nouveau_bo_rd32(struct nouveau_bo *nvbo, unsigned index)
+ 	mem += index;
  
- #define MGAG200FB_CONN_LIMIT 1
- 
--#define RREG8(reg) ioread8(((void __iomem *)mdev->rmmio) + (reg))
-+#define RREG8(reg) ioread8(((const void __iomem *)mdev->rmmio) + (reg))
- #define WREG8(reg, v) iowrite8(v, ((void __iomem *)mdev->rmmio) + (reg))
--#define RREG32(reg) ioread32(((void __iomem *)mdev->rmmio) + (reg))
-+#define RREG32(reg) ioread32(((const void __iomem *)mdev->rmmio) + (reg))
- #define WREG32(reg, v) iowrite32(v, ((void __iomem *)mdev->rmmio) + (reg))
- 
- #define ATTR_INDEX 0x1fc0
+ 	if (is_iomem)
+-		return ioread32_native((void __force __iomem *)mem);
++		return ioread32_native((const void __force __iomem *)mem);
+ 	else
+ 		return *mem;
+ }
 -- 
 2.7.4
 
