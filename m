@@ -1,72 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E6B132E8E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 19:36:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sh0g6crkzDqN5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 05:36:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 330E8133051
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 21:08:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sk3S0wd9zDqLc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 07:08:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
- envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=dolbeau.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
- [209.85.221.66])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sgyk1KRBzDqJT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 05:34:37 +1100 (AEDT)
-Received: by mail-wr1-f66.google.com with SMTP id c9so543884wrw.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2020 10:34:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=8TA0V4Dca+gPuRlZOy6BfS0JhdBbxKB77ud06+vEv1g=;
- b=JhVqO6ZE+xDurfb75Ozv3FPZ/kvwTLE23UYzTRAdgx1Cb+4cYIBy8A8pMtJr9Qa8vJ
- pt0CJxGmrDdfKP4Dix1lq62u5cG5ajF7p1d8aClwCEmOrAZYhuXyNHjdvxuMlIBbDBMY
- eIqw5wl4DB7uatVS/46+rnyD77rzLjAxCnxosOMIFLDROftQGCqZ3dvdttk+3FU7cdJT
- PmId10UddtkFDx0bab8AXzMrSj0RFBezHbw6r2vCKsnLH7guKE2fjlGlwg9DcMd8c75z
- fVTBAu9E+Ifn2WWKAR3RW0ycl4BzNuTZx05Delpw/FY1My3Pud17+ZnoMNMj1JQVNu10
- NfRg==
-X-Gm-Message-State: APjAAAXbCOgTIpCPreuketFDJQBKqsrirh/KWxCcSWfIkB1rG/xH35XV
- P2BkFklkmOwBAhCyLpJ9LX68srttyejt+mIYjB4=
-X-Google-Smtp-Source: APXvYqwH0ZzYWIYtj7UrX9+lnsGIA+1X401Xc311caiVJjpyomhFN1bGygg9RgmkFqv2I61D/V7VrLCH8akkjez4API=
-X-Received: by 2002:a05:6000:1047:: with SMTP id
- c7mr405581wrx.341.1578422074120; 
- Tue, 07 Jan 2020 10:34:34 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sk1R3z2FzDqHn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 07:07:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47sk1R0CWhz8t0B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 07:07:07 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47sk1Q6S9gz9sR1; Wed,  8 Jan 2020 07:07:06 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47sk1Q2Mvlz9sPK
+ for <linuxppc-dev@ozlabs.org>; Wed,  8 Jan 2020 07:07:05 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 007K5VGm082712
+ for <linuxppc-dev@ozlabs.org>; Tue, 7 Jan 2020 15:07:04 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xb925vfb7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 07 Jan 2020 15:07:03 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Tue, 7 Jan 2020 20:07:01 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 7 Jan 2020 20:06:58 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 007K6v8G49348720
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Jan 2020 20:06:57 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DBBA5204E;
+ Tue,  7 Jan 2020 20:06:57 +0000 (GMT)
+Received: from [9.85.95.152] (unknown [9.85.95.152])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6847952054;
+ Tue,  7 Jan 2020 20:06:55 +0000 (GMT)
+Subject: Re: [PATCH v6 1/6] Documentation/ABI: add ABI documentation for
+ /sys/kernel/fadump_*
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20191211160910.21656-1-sourabhjain@linux.ibm.com>
+ <20191211160910.21656-2-sourabhjain@linux.ibm.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Date: Wed, 8 Jan 2020 01:36:54 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
- <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
- <CADuzgboYv69FQxQRvJ_Bd563OPO0e=USd+cTChfDK60D5x75hw@mail.gmail.com>
- <b2256437-efe1-909d-1488-174b6522f9e0@physik.fu-berlin.de>
- <87eexbk3gw.fsf@linux.ibm.com>
- <CADuzgbq-P8mgf9zLaxhdqUfQcqfRpSzjgRoofF84rp+-S064xg@mail.gmail.com>
- <87mubxl82x.fsf@igel.home>
- <CADuzgbqU-SVy5U_4Pkv2G8SJcT9JhyirhFGamnQusZBSRSgcPw@mail.gmail.com>
- <87immlkytp.fsf@igel.home>
- <CADuzgbo=Yr09hxrkbkwj7Crg0aUfx+RQZOt0sCSNOeYUfR0SmA@mail.gmail.com>
- <20191214103213.309bfbbb1f9c50fe47e733d9@zonnet.nl>
- <B661D5F4-575C-4E64-BC68-537223FFB5B6@gmail.com>
- <CADuzgbpiN-=VgmZCHOyXFDEuj2L+aVzJGfibkvgfnPD_atNZMw@mail.gmail.com>
- <709f10b0-6b7f-8de2-3fac-1f4f6350afaf@gmail.com>
- <CADuzgboKYD2CeXODpEH5Vboov4gr0fPG8ZmCTaqWw-3ve53MiQ@mail.gmail.com>
- <113ee36c-684f-9201-aea8-8cd437b6d009@gmail.com>
-In-Reply-To: <113ee36c-684f-9201-aea8-8cd437b6d009@gmail.com>
-From: Romain Dolbeau <romain@dolbeau.org>
-Date: Tue, 7 Jan 2020 19:34:22 +0100
-Message-ID: <CADuzgboztYeRbruGmQDuTScaLAZp2ozoy-KARtNq1ViyTm86jw@mail.gmail.com>
-Subject: Patch for '5.3.7 64-bits kernel doesn't boot on G5 Quad' found (was:
- Re: PPC64: G5 & 4k/64k page size)
-To: Bertrand <bertrand.dekoninck@gmail.com>
-Content-Type: multipart/mixed; boundary="00000000000008cbb2059b9107d4"
+In-Reply-To: <20191211160910.21656-2-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20010720-0008-0000-0000-000003474AD0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20010720-0009-0000-0000-00004A678D08
+Message-Id: <e1e2b967-2e21-cda4-eb0b-ca2b94da3020@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-07_07:2020-01-07,
+ 2020-01-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001070157
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,56 +104,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Jeroen Diederen <jjhdiederen@zonnet.nl>,
- PowerPC List Debian <debian-powerpc@lists.debian.org>,
- Andreas Schwab <schwab@linux-m68k.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- linuxppc-dev@lists.ozlabs.org
+Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
+ gregkh@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---00000000000008cbb2059b9107d4
-Content-Type: text/plain; charset="UTF-8"
 
-Hello all,
+On 11/12/19 9:39 PM, Sourabh Jain wrote:
+> Add missing ABI documentation for existing FADump sysfs files.
+> 
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-Great news: Aneesh sent me a patch that solves the problem on my G5 Quad :-)
+The patch series adds a new sysfs attribute that provides the amount of memory
+reserved for FADump. It also streamlines FADump specific sysfs interfaces.
+Thanks for looking into this.
 
-I don't know whether he considers it a 'workaround' or if it's the
-'proper' patch for upstream, so beware. It's a one-liner so I attach
-it to this message: those affected can test it as well to confirm if
-that indeed solves the problem for them as well.
+For the series...
 
-If it is the 'proper' patch, I expect it should get into upstream
-pretty quickly. Then Debian should be able to trivially backport it to
-their PPC64 kernel, and the G5 will still be a great machine in 2020!
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 
-Thanks everyone for your help in tracking down the bug & to Aneesh for
-finding a fix :-)
-
-Cordially,
+> ---
+>  Documentation/ABI/testing/sysfs-kernel-fadump_enabled     | 7 +++++++
+>  Documentation/ABI/testing/sysfs-kernel-fadump_registered  | 8 ++++++++
+>  Documentation/ABI/testing/sysfs-kernel-fadump_release_mem | 8 ++++++++
+>  .../ABI/testing/sysfs-kernel-fadump_release_opalcore      | 7 +++++++
+>  4 files changed, 30 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_enabled
+>  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_registered
+>  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
+>  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_enabled b/Documentation/ABI/testing/sysfs-kernel-fadump_enabled
+> new file mode 100644
+> index 000000000000..f73632b1c006
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_enabled
+> @@ -0,0 +1,7 @@
+> +What:		/sys/kernel/fadump_enabled
+> +Date:		Feb 2012
+> +Contact:	linuxppc-dev@lists.ozlabs.org
+> +Description:	read only
+> +		Primarily used to identify whether the FADump is enabled in
+> +		the kernel or not.
+> +User:		Kdump service
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_registered b/Documentation/ABI/testing/sysfs-kernel-fadump_registered
+> new file mode 100644
+> index 000000000000..dcf925e53f0f
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_registered
+> @@ -0,0 +1,8 @@
+> +What:		/sys/kernel/fadump_registered
+> +Date:		Feb 2012
+> +Contact:	linuxppc-dev@lists.ozlabs.org
+> +Description:	read/write
+> +		Helps to control the dump collect feature from userspace.
+> +		Setting 1 to this file enables the system to collect the
+> +		dump and 0 to disable it.
+> +User:		Kdump service
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem b/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
+> new file mode 100644
+> index 000000000000..9c20d64ab48d
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
+> @@ -0,0 +1,8 @@
+> +What:		/sys/kernel/fadump_release_mem
+> +Date:		Feb 2012
+> +Contact:	linuxppc-dev@lists.ozlabs.org
+> +Description:	write only
+> +		This is a special sysfs file and only available when
+> +		the system is booted to capture the vmcore using FADump.
+> +		It is used to release the memory reserved by FADump to
+> +		save the crash dump.
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore b/Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore
+> new file mode 100644
+> index 000000000000..53313c1d4e7a
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore
+> @@ -0,0 +1,7 @@
+> +What:		/sys/kernel/fadump_release_opalcore
+> +Date:		Sep 2019
+> +Contact:	linuxppc-dev@lists.ozlabs.org
+> +Description:	write only
+> +		The sysfs file is available when the system is booted to
+> +		collect the dump on OPAL based machine. It used to release
+> +		the memory used to collect the opalcore.
+> 
 
 -- 
-Romain Dolbeau
+- Hari
 
---00000000000008cbb2059b9107d4
-Content-Type: text/x-patch; charset="US-ASCII"; name="g5.patch"
-Content-Disposition: attachment; filename="g5.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_k547ltic0>
-X-Attachment-Id: f_k547ltic0
-
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9ib29rM3MvNjQvbW11LWhhc2gu
-aCBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9ib29rM3MvNjQvbW11LWhhc2guaAppbmRleCAx
-NWI3NTAwNWJjMzQuLjUxNmRiOGEyZTZjYSAxMDA2NDQKLS0tIGEvYXJjaC9wb3dlcnBjL2luY2x1
-ZGUvYXNtL2Jvb2szcy82NC9tbXUtaGFzaC5oCisrKyBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2Fz
-bS9ib29rM3MvNjQvbW11LWhhc2guaApAQCAtNjAxLDcgKzYwMSw3IEBAIGV4dGVybiB2b2lkIHNs
-Yl9zZXRfc2l6ZSh1MTYgc2l6ZSk7CiAgKi8KICNkZWZpbmUgTUFYX1VTRVJfQ09OVEVYVAkoKEFT
-TV9DT05TVCgxKSA8PCBDT05URVhUX0JJVFMpIC0gMikKICNkZWZpbmUgTUlOX1VTRVJfQ09OVEVY
-VAkoTUFYX0tFUk5FTF9DVFhfQ05UICsgTUFYX1ZNQUxMT0NfQ1RYX0NOVCArIFwKLQkJCQkgTUFY
-X0lPX0NUWF9DTlQgKyBNQVhfVk1FTU1BUF9DVFhfQ05UKQorCQkJCSBNQVhfSU9fQ1RYX0NOVCAr
-IE1BWF9WTUVNTUFQX0NUWF9DTlQgKyAxKQogLyoKICAqIEZvciBwbGF0Zm9ybXMgdGhhdCBzdXBw
-b3J0IG9uIDY1Yml0IFZBIHdlIGxpbWl0IHRoZSBjb250ZXh0IGJpdHMKICAqLwo=
---00000000000008cbb2059b9107d4--
