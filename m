@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A86132C99
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:09:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEA5132C89
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:07:38 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sf2H6QHjzDqMC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:07:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sf4d0Y5hzDqHJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:09:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,25 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="odHfTW+8"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="IMHrx9nA"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sdkx5D0MzDqLK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:54:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sdl63sXGzDqLN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:54:26 +1100 (AEDT)
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9EA3D2073D;
- Tue,  7 Jan 2020 16:54:06 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2CEF024672;
+ Tue,  7 Jan 2020 16:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1578416055;
- bh=mMrPdoW2NnN8sMcsihZhEQMDfMhuUP76fLnSnvAwL0c=;
+ s=default; t=1578416064;
+ bh=2zmjQSgD8TUd+U/JXCAsWNwzIF8jkVNNKEAA8l1Dcpg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=odHfTW+8cECxrYMq2Vzsa1+MKLAZiRwwPcHqMedegEH2ouS5fNOOsZosd+u7hLcZ4
- QNKLbLmuuOjhzd/v960g/wOhOG2WSBDznaoWxDMCOcpWJ/yDVkCRCTto4GhoN7BX6h
- 5kN4DEtsp6J8/QPmZeuorAYXPtPAgJBp4d4jOups=
+ b=IMHrx9nAEiFarSqvtu2/vk+IbnQLQCCvZubru+ApR0+a1II5IMJsKPCvn4CRa7l14
+ yGAtxp91v83yR8uq1xCCHKuOxZ3MFe7Ijp0KXA6vwhVdSaK7uN94czACe0FLa1GEHR
+ nT8Ol1jedN5+vrv5XQ0Zncq/XEMOIzrFbxYUU5Es=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,10 +62,10 @@ To: Richard Henderson <rth@twiddle.net>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
  linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
  linux-arch@vger.kernel.org
-Subject: [RFT 03/13] sh: Constify ioreadX() iomem argument (as in generic
+Subject: [RFT 04/13] parisc: Constify ioreadX() iomem argument (as in generic
  implementation)
-Date: Tue,  7 Jan 2020 17:53:02 +0100
-Message-Id: <1578415992-24054-6-git-send-email-krzk@kernel.org>
+Date: Tue,  7 Jan 2020 17:53:03 +0100
+Message-Id: <1578415992-24054-7-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
@@ -94,50 +94,173 @@ consistency among architectures.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/sh/kernel/iomap.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/parisc/include/asm/io.h |  4 ++--
+ arch/parisc/lib/iomap.c      | 48 ++++++++++++++++++++++----------------------
+ 2 files changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/arch/sh/kernel/iomap.c b/arch/sh/kernel/iomap.c
-index ef9e2c97cbb7..bd5e212c6ea6 100644
---- a/arch/sh/kernel/iomap.c
-+++ b/arch/sh/kernel/iomap.c
-@@ -8,31 +8,31 @@
- #include <linux/module.h>
- #include <linux/io.h>
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index cab8f64ca4a2..f48fb8d76e15 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -303,8 +303,8 @@ extern void outsl (unsigned long port, const void *src, unsigned long count);
+ #define ioread64be ioread64be
+ #define iowrite64 iowrite64
+ #define iowrite64be iowrite64be
+-extern u64 ioread64(void __iomem *addr);
+-extern u64 ioread64be(void __iomem *addr);
++extern u64 ioread64(const void __iomem *addr);
++extern u64 ioread64be(const void __iomem *addr);
+ extern void iowrite64(u64 val, void __iomem *addr);
+ extern void iowrite64be(u64 val, void __iomem *addr);
+ 
+diff --git a/arch/parisc/lib/iomap.c b/arch/parisc/lib/iomap.c
+index 0195aec657e2..e01345d2a7d9 100644
+--- a/arch/parisc/lib/iomap.c
++++ b/arch/parisc/lib/iomap.c
+@@ -43,13 +43,13 @@
+ #endif
+ 
+ struct iomap_ops {
+-	unsigned int (*read8)(void __iomem *);
+-	unsigned int (*read16)(void __iomem *);
+-	unsigned int (*read16be)(void __iomem *);
+-	unsigned int (*read32)(void __iomem *);
+-	unsigned int (*read32be)(void __iomem *);
+-	u64 (*read64)(void __iomem *);
+-	u64 (*read64be)(void __iomem *);
++	unsigned int (*read8)(const void __iomem *);
++	unsigned int (*read16)(const void __iomem *);
++	unsigned int (*read16be)(const void __iomem *);
++	unsigned int (*read32)(const void __iomem *);
++	unsigned int (*read32be)(const void __iomem *);
++	u64 (*read64)(const void __iomem *);
++	u64 (*read64be)(const void __iomem *);
+ 	void (*write8)(u8, void __iomem *);
+ 	void (*write16)(u16, void __iomem *);
+ 	void (*write16be)(u16, void __iomem *);
+@@ -69,17 +69,17 @@ struct iomap_ops {
+ 
+ #define ADDR2PORT(addr) ((unsigned long __force)(addr) & 0xffffff)
+ 
+-static unsigned int ioport_read8(void __iomem *addr)
++static unsigned int ioport_read8(const void __iomem *addr)
+ {
+ 	return inb(ADDR2PORT(addr));
+ }
+ 
+-static unsigned int ioport_read16(void __iomem *addr)
++static unsigned int ioport_read16(const void __iomem *addr)
+ {
+ 	return inw(ADDR2PORT(addr));
+ }
+ 
+-static unsigned int ioport_read32(void __iomem *addr)
++static unsigned int ioport_read32(const void __iomem *addr)
+ {
+ 	return inl(ADDR2PORT(addr));
+ }
+@@ -150,37 +150,37 @@ static const struct iomap_ops ioport_ops = {
+ 
+ /* Legacy I/O memory ops */
+ 
+-static unsigned int iomem_read8(void __iomem *addr)
++static unsigned int iomem_read8(const void __iomem *addr)
+ {
+ 	return readb(addr);
+ }
+ 
+-static unsigned int iomem_read16(void __iomem *addr)
++static unsigned int iomem_read16(const void __iomem *addr)
+ {
+ 	return readw(addr);
+ }
+ 
+-static unsigned int iomem_read16be(void __iomem *addr)
++static unsigned int iomem_read16be(const void __iomem *addr)
+ {
+ 	return __raw_readw(addr);
+ }
+ 
+-static unsigned int iomem_read32(void __iomem *addr)
++static unsigned int iomem_read32(const void __iomem *addr)
+ {
+ 	return readl(addr);
+ }
+ 
+-static unsigned int iomem_read32be(void __iomem *addr)
++static unsigned int iomem_read32be(const void __iomem *addr)
+ {
+ 	return __raw_readl(addr);
+ }
+ 
+-static u64 iomem_read64(void __iomem *addr)
++static u64 iomem_read64(const void __iomem *addr)
+ {
+ 	return readq(addr);
+ }
+ 
+-static u64 iomem_read64be(void __iomem *addr)
++static u64 iomem_read64be(const void __iomem *addr)
+ {
+ 	return __raw_readq(addr);
+ }
+@@ -297,49 +297,49 @@ static const struct iomap_ops *iomap_ops[8] = {
+ };
+ 
  
 -unsigned int ioread8(void __iomem *addr)
 +unsigned int ioread8(const void __iomem *addr)
  {
- 	return readb(addr);
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read8(addr);
+ 	return *((u8 *)addr);
  }
- EXPORT_SYMBOL(ioread8);
  
 -unsigned int ioread16(void __iomem *addr)
 +unsigned int ioread16(const void __iomem *addr)
  {
- 	return readw(addr);
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read16(addr);
+ 	return le16_to_cpup((u16 *)addr);
  }
- EXPORT_SYMBOL(ioread16);
  
 -unsigned int ioread16be(void __iomem *addr)
 +unsigned int ioread16be(const void __iomem *addr)
  {
- 	return be16_to_cpu(__raw_readw(addr));
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read16be(addr);
+ 	return *((u16 *)addr);
  }
- EXPORT_SYMBOL(ioread16be);
  
 -unsigned int ioread32(void __iomem *addr)
 +unsigned int ioread32(const void __iomem *addr)
  {
- 	return readl(addr);
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read32(addr);
+ 	return le32_to_cpup((u32 *)addr);
  }
- EXPORT_SYMBOL(ioread32);
  
 -unsigned int ioread32be(void __iomem *addr)
 +unsigned int ioread32be(const void __iomem *addr)
  {
- 	return be32_to_cpu(__raw_readl(addr));
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read32be(addr);
+ 	return *((u32 *)addr);
  }
+ 
+-u64 ioread64(void __iomem *addr)
++u64 ioread64(const void __iomem *addr)
+ {
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read64(addr);
+ 	return le64_to_cpup((u64 *)addr);
+ }
+ 
+-u64 ioread64be(void __iomem *addr)
++u64 ioread64be(const void __iomem *addr)
+ {
+ 	if (unlikely(INDIRECT_ADDR(addr)))
+ 		return iomap_ops[ADDR_TO_REGION(addr)]->read64be(addr);
 -- 
 2.7.4
 
