@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E39132CE1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CAF132CE9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:23:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sfLl6TL5zDqQ5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:21:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sfNs4MTKzDqQP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:23:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,25 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="qNYZQFlB"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="FdNtYmqf"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sdm72nhyzDqLG
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:55:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sdmH29h5zDqLX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:55:27 +1100 (AEDT)
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2D18324672;
- Tue,  7 Jan 2020 16:55:09 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C24FD2467C;
+ Tue,  7 Jan 2020 16:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1578416117;
- bh=oXTZ8M1BBmTHLjjcFVmN9zcXDQy9s5Bq9l8BtwLstpc=;
+ s=default; t=1578416125;
+ bh=yZ1alr9A2nUZ2Hv+vTN9H+etC5HSYvMyPLdn1mrb4CQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qNYZQFlBu+SoU3ZIF8lpxeWmalSoh46HkqgMC/ZofikhUtazAC1EIawH/lJcnkWf4
- WnToP3+0ja2JEKlI39yDsGBzuaCzhvg3Nga02GX4gM4dlTsXonHYjTtZ9zaHWF2rxn
- /UxwKagBv0pG9j4wvtUzG0LSzVLfKhGLWanGLoz8=
+ b=FdNtYmqfn+ySYXxZ76v0NIWq0zhHwvOM8yur5NsMwL9rYxXUQqdTfG2PKQgr9eiCm
+ rnS6aCKPmbyo4SkOUcjWvVrhQO2ADV8gPXWHOKs+SB96U4jGlc/Wlzx/YljEz2Jxiz
+ 1Y1+Nx/AbkFdwy5Y7GzCUfFm5PLKFNq3NfsB+LJo=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,10 +62,10 @@ To: Richard Henderson <rth@twiddle.net>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
  linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
  linux-arch@vger.kernel.org
-Subject: [RFT 10/13] net: wireless: ath5k: Constify ioreadX() iomem argument
+Subject: [RFT 11/13] net: wireless: rtl818x: Constify ioreadX() iomem argument
  (as in generic implementation)
-Date: Tue,  7 Jan 2020 17:53:09 +0100
-Message-Id: <1578415992-24054-13-git-send-email-krzk@kernel.org>
+Date: Tue,  7 Jan 2020 17:53:10 +0100
+Message-Id: <1578415992-24054-14-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
@@ -94,50 +94,34 @@ consistency among architectures.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8180.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index 2c9cec8b53d9..8bd01df369fb 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -138,18 +138,18 @@ static int ath_ahb_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8180.h b/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8180.h
+index 7948a2da195a..2ff00800d45b 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8180.h
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8180.h
+@@ -150,17 +150,17 @@ void rtl8180_write_phy(struct ieee80211_hw *dev, u8 addr, u32 data);
+ void rtl8180_set_anaparam(struct rtl8180_priv *priv, u32 anaparam);
+ void rtl8180_set_anaparam2(struct rtl8180_priv *priv, u32 anaparam2);
  
- 	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
- 		/* Enable WMAC AHB arbitration */
--		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 		reg |= AR5K_AR2315_AHB_ARB_CTL_WLAN;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
+-static inline u8 rtl818x_ioread8(struct rtl8180_priv *priv, u8 __iomem *addr)
++static inline u8 rtl818x_ioread8(struct rtl8180_priv *priv, const u8 __iomem *addr)
+ {
+ 	return ioread8(addr);
+ }
  
- 		/* Enable global WMAC swapping */
--		reg = ioread32((void __iomem *) AR5K_AR2315_BYTESWAP);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_BYTESWAP);
- 		reg |= AR5K_AR2315_BYTESWAP_WMAC;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_BYTESWAP);
- 	} else {
- 		/* Enable WMAC DMA access (assuming 5312 or 231x*/
- 		/* TODO: check other platforms */
--		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		reg = ioread32((const void __iomem *) AR5K_AR5312_ENABLE);
- 		if (to_platform_device(ah->dev)->id == 0)
- 			reg |= AR5K_AR5312_ENABLE_WLAN0;
- 		else
-@@ -202,12 +202,12 @@ static int ath_ahb_remove(struct platform_device *pdev)
+-static inline u16 rtl818x_ioread16(struct rtl8180_priv *priv, __le16 __iomem *addr)
++static inline u16 rtl818x_ioread16(struct rtl8180_priv *priv, const __le16 __iomem *addr)
+ {
+ 	return ioread16(addr);
+ }
  
- 	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
- 		/* Disable WMAC AHB arbitration */
--		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 		reg &= ~AR5K_AR2315_AHB_ARB_CTL_WLAN;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 	} else {
- 		/*Stop DMA access */
--		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		reg = ioread32((const void __iomem *) AR5K_AR5312_ENABLE);
- 		if (to_platform_device(ah->dev)->id == 0)
- 			reg &= ~AR5K_AR5312_ENABLE_WLAN0;
- 		else
+-static inline u32 rtl818x_ioread32(struct rtl8180_priv *priv, __le32 __iomem *addr)
++static inline u32 rtl818x_ioread32(struct rtl8180_priv *priv, const __le32 __iomem *addr)
+ {
+ 	return ioread32(addr);
+ }
 -- 
 2.7.4
 
