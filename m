@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A407132CC0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:13:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sf9Q3rVSzDqHw
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:13:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CD2132CC8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:15:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sfCj3GWRzDqM2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:15:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,25 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="MyjPtgAp"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ktJ602nr"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sdlR212KzDqLN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:54:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sdlc3G7lzDqKW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:54:52 +1100 (AEDT)
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4E4BC24676;
- Tue,  7 Jan 2020 16:54:32 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 95E1224677;
+ Tue,  7 Jan 2020 16:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1578416081;
- bh=pyS3wZ02TYoQQFrhCaT28XntjPpq/hHYDQKnecGVi1c=;
+ s=default; t=1578416090;
+ bh=kYrH24ncGNFFYQLQ9wHiRAtooGLl8xeKtAWqiO+vhmI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MyjPtgApzAeWBBxzp9EQBWQXZ+iwA999spRine79c7OM4lsnSPBUGIGrBr9MZxl+K
- qVZbWWFCLhelBQoFuIPPOarD6WgO7KDyfRquNgQ3rTLR4Z1FvS7QTS1zTSCX5JmiYr
- znxaQdgOb6csvJ/r8Qjz1jvr9IFWhhb4LsApylCQ=
+ b=ktJ602nrKO22v0uNZz36NC/2TQ72yN6ijh2qShGKTyM6sP8S4sHzrYeq95duxemBM
+ F0Hlx7sC2SFMxEUl0tafeD+qmflFDYmaI7aUvp442eXhKcmauRa4vF7iN/d/RiSgKl
+ +G0tMhwntosCt0ljDnAplFNWUVM/SIIt7orUHcV0=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,10 +62,10 @@ To: Richard Henderson <rth@twiddle.net>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
  linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
  linux-arch@vger.kernel.org
-Subject: [RFT 06/13] arc: Constify ioreadX() iomem argument (as in generic
- implementation)
-Date: Tue,  7 Jan 2020 17:53:05 +0100
-Message-Id: <1578415992-24054-9-git-send-email-krzk@kernel.org>
+Subject: [RFT 07/13] drm/mgag200: Constify ioreadX() iomem argument (as in
+ generic implementation)
+Date: Tue,  7 Jan 2020 17:53:06 +0100
+Message-Id: <1578415992-24054-10-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
@@ -88,37 +88,31 @@ Sender: "Linuxppc-dev"
 The ioreadX() helpers have inconsistent interface.  On some architectures
 void *__iomem address argument is a pointer to const, on some not.
 
-Implementations of ioreadX() do not modify the memory under the
-address so they can be converted to a "const" version for const-safety
-and consistency among architectures.
+Implementations of ioreadX() do not modify the memory under the address
+so they can be converted to a "const" version for const-safety and
+consistency among architectures.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arc/plat-axs10x/axs10x.c | 4 ++--
+ drivers/gpu/drm/mgag200/mgag200_drv.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arc/plat-axs10x/axs10x.c b/arch/arc/plat-axs10x/axs10x.c
-index 63ea5a606ecd..180c260a8221 100644
---- a/arch/arc/plat-axs10x/axs10x.c
-+++ b/arch/arc/plat-axs10x/axs10x.c
-@@ -84,7 +84,7 @@ static void __init axs10x_print_board_ver(unsigned int creg, const char *str)
- 		unsigned int val;
- 	} board;
+diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
+index aa32aad222c2..6512b3af4fb7 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_drv.h
++++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
+@@ -34,9 +34,9 @@
  
--	board.val = ioread32((void __iomem *)creg);
-+	board.val = ioread32((const void __iomem *)creg);
- 	pr_info("AXS: %s FPGA Date: %u-%u-%u\n", str, board.d, board.m,
- 		board.y);
- }
-@@ -95,7 +95,7 @@ static void __init axs10x_early_init(void)
- 	char mb[32];
+ #define MGAG200FB_CONN_LIMIT 1
  
- 	/* Determine motherboard version */
--	if (ioread32((void __iomem *) CREG_MB_CONFIG) & (1 << 28))
-+	if (ioread32((const void __iomem *) CREG_MB_CONFIG) & (1 << 28))
- 		mb_rev = 3;	/* HT-3 (rev3.0) */
- 	else
- 		mb_rev = 2;	/* HT-2 (rev2.0) */
+-#define RREG8(reg) ioread8(((void __iomem *)mdev->rmmio) + (reg))
++#define RREG8(reg) ioread8(((const void __iomem *)mdev->rmmio) + (reg))
+ #define WREG8(reg, v) iowrite8(v, ((void __iomem *)mdev->rmmio) + (reg))
+-#define RREG32(reg) ioread32(((void __iomem *)mdev->rmmio) + (reg))
++#define RREG32(reg) ioread32(((const void __iomem *)mdev->rmmio) + (reg))
+ #define WREG32(reg, v) iowrite32(v, ((void __iomem *)mdev->rmmio) + (reg))
+ 
+ #define ATTR_INDEX 0x1fc0
 -- 
 2.7.4
 
