@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DBE132CF1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44340132CF4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 18:28:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sfRq0mcZzDqRH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:26:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sfTy3CbzzDqDF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 04:28:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,25 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="ICZY6Npg"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="B9XX5z37"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sdmR6kzYzDqLc
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:55:35 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sdmc0YyQzDqLH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 03:55:44 +1100 (AEDT)
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A58CC24683;
- Tue,  7 Jan 2020 16:55:25 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4236B2467F;
+ Tue,  7 Jan 2020 16:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1578416133;
- bh=SKElI/qU0szvVwXxdSSdNcpAtTnuFpcsNCmvah0x66E=;
+ s=default; t=1578416142;
+ bh=zdByYEGMS3ESVQ5qOHN1kIYsWdU38BLlIlo+0ZPdrE4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ICZY6NpgTR+BNtLudTIkEs1KULVPT+4ew+12QlnGbZSOjB5RgZ5me6i3Y9Kw4ozDy
- BRZpaRIA+vgiXZdWeyJw87F0OFMVl67R6DcyNgL8FZZaOhwNKN1EXPz/I++GVPoGae
- k2V6DgLuRImkZHWvFjIdZLp+urcKlQG5sN+mla+o=
+ b=B9XX5z37aO9kO6TkoMZBWRljecz6mxaLsnUJweo1Opz89I73sTah4aguq2M+qbAtk
+ jJqm5ERlXNfIDH66LmWHTiUD9ISWyzlIjrcT5hLgLk+5mFBneKkY4HBIjWPl8jboDN
+ drdv6nwNwT+gPU/NfUpzBRq4v5bgiFQUyIlD1qE4=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,10 +62,10 @@ To: Richard Henderson <rth@twiddle.net>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
  linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
  linux-arch@vger.kernel.org
-Subject: [RFT 12/13] ntb: intel: Constify ioreadX() iomem argument (as in
+Subject: [RFT 13/13] virtio: pci: Constify ioreadX() iomem argument (as in
  generic implementation)
-Date: Tue,  7 Jan 2020 17:53:11 +0100
-Message-Id: <1578415992-24054-15-git-send-email-krzk@kernel.org>
+Date: Tue,  7 Jan 2020 17:53:12 +0100
+Message-Id: <1578415992-24054-16-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
@@ -94,50 +94,33 @@ consistency among architectures.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen1.c  | 2 +-
- drivers/ntb/hw/intel/ntb_hw_gen3.h  | 2 +-
- drivers/ntb/hw/intel/ntb_hw_intel.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/virtio/virtio_pci_modern.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-index bb57ec239029..9202502a9787 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-@@ -1202,7 +1202,7 @@ int intel_ntb_peer_spad_write(struct ntb_dev *ntb, int pidx, int sidx,
- 			       ndev->peer_reg->spad);
+diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+index 7abcc50838b8..fc58db4ab6c3 100644
+--- a/drivers/virtio/virtio_pci_modern.c
++++ b/drivers/virtio/virtio_pci_modern.c
+@@ -26,16 +26,16 @@
+  * method, i.e. 32-bit accesses for 32-bit fields, 16-bit accesses
+  * for 16-bit fields and 8-bit accesses for 8-bit fields.
+  */
+-static inline u8 vp_ioread8(u8 __iomem *addr)
++static inline u8 vp_ioread8(const u8 __iomem *addr)
+ {
+ 	return ioread8(addr);
+ }
+-static inline u16 vp_ioread16 (__le16 __iomem *addr)
++static inline u16 vp_ioread16 (const __le16 __iomem *addr)
+ {
+ 	return ioread16(addr);
  }
  
--static u64 xeon_db_ioread(void __iomem *mmio)
-+static u64 xeon_db_ioread(const void __iomem *mmio)
+-static inline u32 vp_ioread32(__le32 __iomem *addr)
++static inline u32 vp_ioread32(const __le32 __iomem *addr)
  {
- 	return (u64)ioread16(mmio);
+ 	return ioread32(addr);
  }
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.h b/drivers/ntb/hw/intel/ntb_hw_gen3.h
-index 75fb86ca27bb..d1455f24ec99 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen3.h
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen3.h
-@@ -91,7 +91,7 @@
- #define GEN3_DB_TOTAL_SHIFT		33
- #define GEN3_SPAD_COUNT			16
- 
--static inline u64 gen3_db_ioread(void __iomem *mmio)
-+static inline u64 gen3_db_ioread(const void __iomem *mmio)
- {
- 	return ioread64(mmio);
- }
-diff --git a/drivers/ntb/hw/intel/ntb_hw_intel.h b/drivers/ntb/hw/intel/ntb_hw_intel.h
-index e071e28bca3f..3c0a5a2da241 100644
---- a/drivers/ntb/hw/intel/ntb_hw_intel.h
-+++ b/drivers/ntb/hw/intel/ntb_hw_intel.h
-@@ -102,7 +102,7 @@ struct intel_ntb_dev;
- struct intel_ntb_reg {
- 	int (*poll_link)(struct intel_ntb_dev *ndev);
- 	int (*link_is_up)(struct intel_ntb_dev *ndev);
--	u64 (*db_ioread)(void __iomem *mmio);
-+	u64 (*db_ioread)(const void __iomem *mmio);
- 	void (*db_iowrite)(u64 db_bits, void __iomem *mmio);
- 	unsigned long			ntb_ctl;
- 	resource_size_t			db_size;
 -- 
 2.7.4
 
