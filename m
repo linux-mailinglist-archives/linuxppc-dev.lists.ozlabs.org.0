@@ -1,98 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C36F133337
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 22:17:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330E8133051
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 21:08:55 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sk3S0wd9zDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 07:08:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47slZb2BYTzDq62
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 08:17:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sk1R3z2FzDqHn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 07:07:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=deltatee.com (client-ip=207.54.116.67; helo=ale.deltatee.com;
+ envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47sk1R0CWhz8t0B
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 07:07:07 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47sk1Q6S9gz9sR1; Wed,  8 Jan 2020 07:07:06 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47sk1Q2Mvlz9sPK
- for <linuxppc-dev@ozlabs.org>; Wed,  8 Jan 2020 07:07:05 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 007K5VGm082712
- for <linuxppc-dev@ozlabs.org>; Tue, 7 Jan 2020 15:07:04 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xb925vfb7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 07 Jan 2020 15:07:03 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Tue, 7 Jan 2020 20:07:01 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 7 Jan 2020 20:06:58 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 007K6v8G49348720
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Jan 2020 20:06:57 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DBBA5204E;
- Tue,  7 Jan 2020 20:06:57 +0000 (GMT)
-Received: from [9.85.95.152] (unknown [9.85.95.152])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6847952054;
- Tue,  7 Jan 2020 20:06:55 +0000 (GMT)
-Subject: Re: [PATCH v6 1/6] Documentation/ABI: add ABI documentation for
- /sys/kernel/fadump_*
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20191211160910.21656-1-sourabhjain@linux.ibm.com>
- <20191211160910.21656-2-sourabhjain@linux.ibm.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Date: Wed, 8 Jan 2020 01:36:54 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ dmarc=none (p=none dis=none) header.from=deltatee.com
+Received: from ale.deltatee.com (ale.deltatee.com [207.54.116.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47slBl6KwQzDqNb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 08:00:15 +1100 (AEDT)
+Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
+ by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
+ id 1iovxO-0007vq-Dz; Tue, 07 Jan 2020 14:00:07 -0700
+Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
+ (envelope-from <gunthorp@deltatee.com>)
+ id 1iovxI-0001z4-Ek; Tue, 07 Jan 2020 14:00:00 -0700
+From: Logan Gunthorpe <logang@deltatee.com>
+To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+ Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@kernel.org>,
+ David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Date: Tue,  7 Jan 2020 13:59:52 -0700
+Message-Id: <20200107205959.7575-2-logang@deltatee.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200107205959.7575-1-logang@deltatee.com>
+References: <20200107205959.7575-1-logang@deltatee.com>
 MIME-Version: 1.0
-In-Reply-To: <20191211160910.21656-2-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010720-0008-0000-0000-000003474AD0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010720-0009-0000-0000-00004A678D08
-Message-Id: <e1e2b967-2e21-cda4-eb0b-ca2b94da3020@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-07_07:2020-01-07,
- 2020-01-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- malwarescore=0 bulkscore=0 adultscore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001070157
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 172.16.1.31
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-mm@kvack.org, dan.j.williams@intel.com, akpm@linux-foundation.org,
+ hch@lst.de, catalin.marinas@arm.com, benh@kernel.crashing.org,
+ tglx@linutronix.de, david@redhat.com, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, mhocko@kernel.org, will@kernel.org,
+ luto@kernel.org, peterz@infradead.org, ebadger@gigaio.com, logang@deltatee.com
+X-SA-Exim-Mail-From: gunthorp@deltatee.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-8.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE,MYRULES_NO_TEXT autolearn=ham autolearn_force=no
+ version=3.4.2
+Subject: [PATCH v2 1/8] mm/memory_hotplug: Drop the flags field from struct
+ mhp_restrictions
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,94 +73,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
- gregkh@linuxfoundation.org
+Cc: Eric Badger <ebadger@gigaio.com>, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This variable is not used anywhere and should therefore be removed
+from the structure.
 
-On 11/12/19 9:39 PM, Sourabh Jain wrote:
-> Add missing ABI documentation for existing FADump sysfs files.
-> 
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+---
+ include/linux/memory_hotplug.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-The patch series adds a new sysfs attribute that provides the amount of memory
-reserved for FADump. It also streamlines FADump specific sysfs interfaces.
-Thanks for looking into this.
-
-For the series...
-
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-
-> ---
->  Documentation/ABI/testing/sysfs-kernel-fadump_enabled     | 7 +++++++
->  Documentation/ABI/testing/sysfs-kernel-fadump_registered  | 8 ++++++++
->  Documentation/ABI/testing/sysfs-kernel-fadump_release_mem | 8 ++++++++
->  .../ABI/testing/sysfs-kernel-fadump_release_opalcore      | 7 +++++++
->  4 files changed, 30 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_enabled
->  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_registered
->  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
->  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_enabled b/Documentation/ABI/testing/sysfs-kernel-fadump_enabled
-> new file mode 100644
-> index 000000000000..f73632b1c006
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_enabled
-> @@ -0,0 +1,7 @@
-> +What:		/sys/kernel/fadump_enabled
-> +Date:		Feb 2012
-> +Contact:	linuxppc-dev@lists.ozlabs.org
-> +Description:	read only
-> +		Primarily used to identify whether the FADump is enabled in
-> +		the kernel or not.
-> +User:		Kdump service
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_registered b/Documentation/ABI/testing/sysfs-kernel-fadump_registered
-> new file mode 100644
-> index 000000000000..dcf925e53f0f
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_registered
-> @@ -0,0 +1,8 @@
-> +What:		/sys/kernel/fadump_registered
-> +Date:		Feb 2012
-> +Contact:	linuxppc-dev@lists.ozlabs.org
-> +Description:	read/write
-> +		Helps to control the dump collect feature from userspace.
-> +		Setting 1 to this file enables the system to collect the
-> +		dump and 0 to disable it.
-> +User:		Kdump service
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem b/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
-> new file mode 100644
-> index 000000000000..9c20d64ab48d
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_release_mem
-> @@ -0,0 +1,8 @@
-> +What:		/sys/kernel/fadump_release_mem
-> +Date:		Feb 2012
-> +Contact:	linuxppc-dev@lists.ozlabs.org
-> +Description:	write only
-> +		This is a special sysfs file and only available when
-> +		the system is booted to capture the vmcore using FADump.
-> +		It is used to release the memory reserved by FADump to
-> +		save the crash dump.
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore b/Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore
-> new file mode 100644
-> index 000000000000..53313c1d4e7a
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump_release_opalcore
-> @@ -0,0 +1,7 @@
-> +What:		/sys/kernel/fadump_release_opalcore
-> +Date:		Sep 2019
-> +Contact:	linuxppc-dev@lists.ozlabs.org
-> +Description:	write only
-> +		The sysfs file is available when the system is booted to
-> +		collect the dump on OPAL based machine. It used to release
-> +		the memory used to collect the opalcore.
-> 
-
+diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+index ba0dca6aac6e..e47a29761088 100644
+--- a/include/linux/memory_hotplug.h
++++ b/include/linux/memory_hotplug.h
+@@ -55,11 +55,9 @@ enum {
+ 
+ /*
+  * Restrictions for the memory hotplug:
+- * flags:  MHP_ flags
+  * altmap: alternative allocator for memmap array
+  */
+ struct mhp_restrictions {
+-	unsigned long flags;
+ 	struct vmem_altmap *altmap;
+ };
+ 
 -- 
-- Hari
+2.20.1
 
