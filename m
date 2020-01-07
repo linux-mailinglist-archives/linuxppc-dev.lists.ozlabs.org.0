@@ -1,55 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A789132475
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 12:05:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5452132427
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 11:50:24 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47sTg14DcpzDqKN
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 21:50:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47sV0H6S0qzDqKW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2020 22:05:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47sTd415lRzDqDm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 21:48:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=wb8/=24=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="LQx8PCda"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47sTd214Tzz9s29;
- Tue,  7 Jan 2020 21:48:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1578394119;
- bh=+8UDms2QJlcRJ69nfRe2grUy1TZCnrnuHpkqQ4GXUeI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=LQx8PCdar/2SnlfPjvPBj095sQXT+zPZaQ5fWbEwiIrY6+cZJ+nPTbGVpEjBODwko
- h2AFwlYH9XCIR1E82ClgU+L58/c4i2lV4JkmhVVukt3wJeMCKAVY3aotQieKXyyvUa
- 2sbgijeF9a83WtBUCYiZutgr7IBi57zHZt1vTwVeKNc2/riUq077CdM/A9BFb0a8fO
- yQZoRKo7z/7mh55QK8aKhEGxyFd54yOnqmaTCRgdj7gZOpTnoobk87N/rEm8BeeqnX
- aeFIiFqoHgazkxS3fc5kWOPo4Z/tQWhNI0ryp9Ax8dSQhEdsj/g9YiG0ctYYWAVUXS
- EbrBet0A+o4JA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Russell Currey <ruscur@russell.cc>
-Subject: Re: [PATCH v6 3/5] powerpc/mm/ptdump: debugfs handler for W+X checks
- at runtime
-In-Reply-To: <20191231181413.Horde.DSSo7dOhVEixKzJ75Uu9ZA1@messagerie.si.c-s.fr>
-References: <20191224055545.178462-1-ruscur@russell.cc>
- <20191224055545.178462-4-ruscur@russell.cc>
- <20191231181413.Horde.DSSo7dOhVEixKzJ75Uu9ZA1@messagerie.si.c-s.fr>
-Date: Tue, 07 Jan 2020 21:48:33 +1100
-Message-ID: <87r20b1r0e.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47sTyC5sXqzDqHq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2020 22:03:31 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206049] alg: skcipher: p8_aes_xts encryption unexpectedly
+ succeeded on test vector "random: len=0 klen=64"; expected_error=-22,
+ cfg="random: inplace may_sleep use_finup src_divs=[<flush>66.99%@+10,
+ 33.1%@alignmask+1155]
+Date: Tue, 07 Jan 2020 11:03:28 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Status: ASSIGNED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status cc
+Message-ID: <bug-206049-206035-1WEih6NsHn@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206049-206035@https.bugzilla.kernel.org/>
+References: <bug-206049-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,94 +63,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
- joel@jms.id.au, linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Russell Currey <ruscur@russell.cc> a =C3=A9crit=C2=A0:
->
->> Very rudimentary, just
->>
->> 	echo 1 > [debugfs]/check_wx_pages
->>
->> and check the kernel log.  Useful for testing strict module RWX.
->
-> For testing strict module RWX you could instead implement=20=20
-> module_arch_freeing_init() and call  ptdump_check_wx() from there.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206049
 
-That could get expensive on large systems, not sure if we want it
-enabled by default?
+Michael Ellerman (michael@ellerman.id.au) changed:
 
-cheers
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |ASSIGNED
+                 CC|                            |michael@ellerman.id.au
 
+--- Comment #3 from Michael Ellerman (michael@ellerman.id.au) ---
+Looks like other implementations check the size, can you try this:
 
->> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
->> index 4e1d39847462..7c14c9728bc0 100644
->> --- a/arch/powerpc/Kconfig.debug
->> +++ b/arch/powerpc/Kconfig.debug
->> @@ -370,7 +370,7 @@ config PPC_PTDUMP
->>  	  If you are unsure, say N.
->>
->>  config PPC_DEBUG_WX
->> -	bool "Warn on W+X mappings at boot"
->> +	bool "Warn on W+X mappings at boot & enable manual checks at runtime"
->>  	depends on PPC_PTDUMP
->>  	help
->>  	  Generate a warning if any W+X mappings are found at boot.
->> @@ -384,7 +384,9 @@ config PPC_DEBUG_WX
->>  	  of other unfixed kernel bugs easier.
->>
->>  	  There is no runtime or memory usage effect of this option
->> -	  once the kernel has booted up - it's a one time check.
->> +	  once the kernel has booted up, it only automatically checks once.
->> +
->> +	  Enables the "check_wx_pages" debugfs entry for checking at runtime.
->>
->>  	  If in doubt, say "Y".
->>
->> diff --git a/arch/powerpc/mm/ptdump/ptdump.c=20=20
->> b/arch/powerpc/mm/ptdump/ptdump.c
->> index 2f9ddc29c535..b6cba29ae4a0 100644
->> --- a/arch/powerpc/mm/ptdump/ptdump.c
->> +++ b/arch/powerpc/mm/ptdump/ptdump.c
->> @@ -4,7 +4,7 @@
->>   *
->>   * This traverses the kernel pagetables and dumps the
->>   * information about the used sections of memory to
->> - * /sys/kernel/debug/kernel_pagetables.
->> + * /sys/kernel/debug/kernel_page_tables.
->>   *
->>   * Derived from the arm64 implementation:
->>   * Copyright (c) 2014, The Linux Foundation, Laura Abbott.
->> @@ -409,6 +409,25 @@ void ptdump_check_wx(void)
->>  	else
->>  		pr_info("Checked W+X mappings: passed, no W+X pages found\n");
->>  }
->> +
->> +static int check_wx_debugfs_set(void *data, u64 val)
->> +{
->> +	if (val !=3D 1ULL)
->> +		return -EINVAL;
->> +
->> +	ptdump_check_wx();
->> +
->> +	return 0;
->> +}
->> +
->> +DEFINE_SIMPLE_ATTRIBUTE(check_wx_fops, NULL, check_wx_debugfs_set,=20=20
->> "%llu\n");
->> +
->> +static int ptdump_check_wx_init(void)
->> +{
->> +	return debugfs_create_file("check_wx_pages", 0200, NULL,
->> +				   NULL, &check_wx_fops) ? 0 : -ENOMEM;
->> +}
->> +device_initcall(ptdump_check_wx_init);
->>  #endif
->>
->>  static int ptdump_init(void)
->> --
->> 2.24.1
+diff --git a/drivers/crypto/vmx/aes_xts.c b/drivers/crypto/vmx/aes_xts.c
+index d59e736882f6..9fee1b1532a4 100644
+--- a/drivers/crypto/vmx/aes_xts.c
++++ b/drivers/crypto/vmx/aes_xts.c
+@@ -84,6 +84,9 @@ static int p8_aes_xts_crypt(struct skcipher_request *req,=
+ int
+enc)
+        u8 tweak[AES_BLOCK_SIZE];
+        int ret;
+
++       if (req->cryptlen < AES_BLOCK_SIZE)
++               return -EINVAL;
++
+        if (!crypto_simd_usable() || (req->cryptlen % XTS_BLOCK_SIZE) !=3D =
+0) {
+                struct skcipher_request *subreq =3D skcipher_request_ctx(re=
+q);
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
