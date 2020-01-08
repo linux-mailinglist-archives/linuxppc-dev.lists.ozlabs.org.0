@@ -2,60 +2,115 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD14E134221
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 13:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9EA134235
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 13:51:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47t8Cx4PjVzDqTF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 23:47:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47t8J84D1tzDqLr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 23:51:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
- [209.85.128.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="a0UcdJzk"; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47t86D0Q0gzDqT8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 23:42:43 +1100 (AEDT)
-Received: by mail-wm1-f66.google.com with SMTP id q9so2305361wmj.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 04:42:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=oL7AiyezFSaPUSQINsQX9lIy1KtBrah03q1c+vdGl70=;
- b=Lw8i1++ivhIhmiq/qb/LpteiSu13gD80e25BZyag7qDX+T+kkdVSCfFgnN01+7RgLc
- ifDx/NT8UWaR7B3YqYzwn3MsTrE8Y2pNQWZB62zgqihHIwDu9h6oLGLvrktrpNDYA9gj
- jaYt4h+RMBl9HX+TJi22/W9OzFZUFLubpeakvI/h5lxauzwC9xga/b6wh+tmsBX4ZG7S
- GVeNYxHgYz70S0RyEudrzbZrE1PG9S82f4HdLK++08Rihybra1zBeLtO1+URrx2hqAiH
- sN2O4ooKER7n5Sffz3Z3M4HqL62ZqEegq9z7yGjPgti/oo2cHgsmpHsoTDb3XgVHWgb1
- ApJg==
-X-Gm-Message-State: APjAAAUFSn4WnwaTWaq9ULAQyVX2ea+JjfUXhhJQbY2W6WHSnUqjsvs/
- m2a0axNGMa0aVlGZNDjkKJQ=
-X-Google-Smtp-Source: APXvYqwKFA4+cgBJREYNaAxy2zZsIKi5z4WvcBbaIX9+DBXR03grpLlZ4iuekK3XvVeBMtqSIy9dvg==
-X-Received: by 2002:a05:600c:290f:: with SMTP id
- i15mr3768023wmd.115.1578487359562; 
- Wed, 08 Jan 2020 04:42:39 -0800 (PST)
-Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
- by smtp.gmail.com with ESMTPSA id o7sm3546994wmh.11.2020.01.08.04.42.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2020 04:42:38 -0800 (PST)
-Date: Wed, 8 Jan 2020 13:42:38 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: Logan Gunthorpe <logang@deltatee.com>
-Subject: Re: [PATCH v2 7/8] mm/memory_hotplug: Add pgprot_t to mhp_modifiers
-Message-ID: <20200108124238.GS32178@dhcp22.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47t87q2cZ0zDqNx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 23:44:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1578487444;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=FlLAwZ5fqwHBJXyRiPabuWKe15jbJzHg7LgdOAui+VE=;
+ b=a0UcdJzk4+sNtoc2j/Sfo6Yfpvqa8nhRQnsnLyC67Jw9OAdyTNlTl25C6FNLB136PrVJ76
+ tMDtalPb1NYkDFfZJPtgDp8MHsTvM1nsHQ6OWxBbo4yKyiFDBccfLkhvSzorPUzwEWbuHL
+ R0FbPvWz8zmGVbtNrBM59iSOPWUHh70=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-332-HFFavnQeNnqQGws89fqgVg-1; Wed, 08 Jan 2020 07:44:00 -0500
+X-MC-Unique: HFFavnQeNnqQGws89fqgVg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 167CD800D41;
+ Wed,  8 Jan 2020 12:43:57 +0000 (UTC)
+Received: from [10.36.117.90] (ovpn-117-90.ams2.redhat.com [10.36.117.90])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 435D660E1C;
+ Wed,  8 Jan 2020 12:43:52 +0000 (UTC)
+Subject: Re: [PATCH v2 6/8] s390/mm: Thread pgprot_t through vmem_add_mapping()
+To: Logan Gunthorpe <logang@deltatee.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-mm@kvack.org, Dan Williams <dan.j.williams@intel.com>,
+ Michal Hocko <mhocko@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 References: <20200107205959.7575-1-logang@deltatee.com>
- <20200107205959.7575-8-logang@deltatee.com>
+ <20200107205959.7575-7-logang@deltatee.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <a5501f2a-ff8d-cea2-1540-1a70ea6bc2d2@redhat.com>
+Date: Wed, 8 Jan 2020 13:43:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200107205959.7575-8-logang@deltatee.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20200107205959.7575-7-logang@deltatee.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,226 +122,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+Cc: Eric Badger <ebadger@gigaio.com>, Vasily Gorbik <gor@linux.ibm.com>,
  Peter Zijlstra <peterz@infradead.org>,
  Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
- David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Dan Williams <dan.j.williams@intel.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Eric Badger <ebadger@gigaio.com>,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 07-01-20 13:59:58, Logan Gunthorpe wrote:
-> devm_memremap_pages() is currently used by the PCI P2PDMA code to create
-> struct page mappings for IO memory. At present, these mappings are created
-> with PAGE_KERNEL which implies setting the PAT bits to be WB. However, on
-> x86, an mtrr register will typically override this and force the cache
-> type to be UC-. In the case firmware doesn't set this register it is
-> effectively WB and will typically result in a machine check exception
-> when it's accessed.
+On 07.01.20 21:59, Logan Gunthorpe wrote:
+> In prepartion to support a pgprot_t argument for arch_add_memory().
 > 
-> Other arches are not currently likely to function correctly seeing they
-> don't have any MTRR registers to fall back on.
-> 
-> To solve this, add an argument to arch_add_memory() to explicitly
-> set the pgprot value to a specific value.
-> 
-> Of the arches that support MEMORY_HOTPLUG: x86_64, s390 and arm64 is a
-> simple change to pass the pgprot_t down to their respective functions
-> which set up the page tables. For x86_32, set the page tables explicitly
-> using _set_memory_prot() (seeing they are already mapped). For sh, reject
-> anything but PAGE_KERNEL settings -- this should be fine, for now, seeing
-> sh doesn't support ZONE_DEVICE anyway.
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
 > Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-
-OK, this is less code churn than I expected. Having pgprot as an implcit
-parameter de-facto is a bit fragile though. Should we add a WARN_ON_ONCE
-(e.g. into the add_pages to catch all arches) for value 0?
-
-Other than that
-Acked-by: Michal Hocko <mhocko@suse.com>
-
 > ---
->  arch/arm64/mm/mmu.c            | 3 ++-
->  arch/ia64/mm/init.c            | 4 ++++
->  arch/powerpc/mm/mem.c          | 3 ++-
->  arch/s390/mm/init.c            | 2 +-
->  arch/sh/mm/init.c              | 3 +++
->  arch/x86/mm/init_32.c          | 5 +++++
->  arch/x86/mm/init_64.c          | 2 +-
->  include/linux/memory_hotplug.h | 2 ++
->  mm/memory_hotplug.c            | 2 +-
->  mm/memremap.c                  | 6 +++---
->  10 files changed, 24 insertions(+), 8 deletions(-)
+>  arch/s390/include/asm/pgtable.h |  3 ++-
+>  arch/s390/mm/extmem.c           |  3 ++-
+>  arch/s390/mm/init.c             |  2 +-
+>  arch/s390/mm/vmem.c             | 10 +++++-----
+>  4 files changed, 10 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 3320406579c3..9b214b0d268f 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1058,7 +1058,8 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+> index 7b03037a8475..e667a1a96879 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -1640,7 +1640,8 @@ static inline swp_entry_t __swp_entry(unsigned long type, unsigned long offset)
 >  
->  	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
-> -			     size, PAGE_KERNEL, __pgd_pgtable_alloc, flags);
-> +			     size, modifiers->pgprot, __pgd_pgtable_alloc,
-> +			     flags);
+>  #define kern_addr_valid(addr)   (1)
 >  
->  	memblock_clear_nomap(start, size);
+> -extern int vmem_add_mapping(unsigned long start, unsigned long size);
+> +extern int vmem_add_mapping(unsigned long start, unsigned long size,
+> +			    pgprot_t prot);
+>  extern int vmem_remove_mapping(unsigned long start, unsigned long size);
+>  extern int s390_enable_sie(void);
+>  extern int s390_enable_skey(void);
+> diff --git a/arch/s390/mm/extmem.c b/arch/s390/mm/extmem.c
+> index fd0dae9d10f4..6cf7029a7b35 100644
+> --- a/arch/s390/mm/extmem.c
+> +++ b/arch/s390/mm/extmem.c
+> @@ -313,7 +313,8 @@ __segment_load (char *name, int do_nonshared, unsigned long *addr, unsigned long
+>  		goto out_free;
+>  	}
 >  
-> diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-> index daf438e08b96..5fd6ae4929c9 100644
-> --- a/arch/ia64/mm/init.c
-> +++ b/arch/ia64/mm/init.c
-> @@ -677,6 +677,10 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  	int ret;
+> -	rc = vmem_add_mapping(seg->start_addr, seg->end - seg->start_addr + 1);
+> +	rc = vmem_add_mapping(seg->start_addr, seg->end - seg->start_addr + 1,
+> +			      PAGE_KERNEL);
 >  
->  	ret = __add_pages(nid, start_pfn, nr_pages, modifiers);
-> +	if (modifiers->pgprot != PAGE_KERNEL)
-> +		return -EINVAL;
-> +
-> +	ret = __add_pages(nid, start_pfn, nr_pages, restrictions);
->  	if (ret)
->  		printk("%s: Problem encountered in __add_pages() as ret=%d\n",
->  		       __func__,  ret);
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 631ee684721f..fddeaee53198 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -137,7 +137,8 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
->  	resize_hpt_for_hotplug(memblock_phys_mem_size());
->  
->  	start = (unsigned long)__va(start);
-> -	rc = create_section_mapping(start, start + size, nid, PAGE_KERNEL);
-> +	rc = create_section_mapping(start, start + size, nid,
-> +				    modifiers->pgprot);
->  	if (rc) {
->  		pr_warn("Unable to create mapping for hot added memory 0x%llx..0x%llx: %d\n",
->  			start, start + size, rc);
+>  	if (rc)
+>  		goto out_free;
 > diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-> index ef19522ddad2..c65fb33f6a89 100644
+> index a0c88c1c9ad0..ef19522ddad2 100644
 > --- a/arch/s390/mm/init.c
 > +++ b/arch/s390/mm/init.c
 > @@ -277,7 +277,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
 >  	if (WARN_ON_ONCE(modifiers->altmap))
 >  		return -EINVAL;
 >  
-> -	rc = vmem_add_mapping(start, size, PAGE_KERNEL);
-> +	rc = vmem_add_mapping(start, size, modifiers->pgprot);
+> -	rc = vmem_add_mapping(start, size);
+> +	rc = vmem_add_mapping(start, size, PAGE_KERNEL);
 >  	if (rc)
 >  		return rc;
 >  
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 7e64f42fb570..7071dc5bd2e4 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -412,6 +412,9 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  	unsigned long nr_pages = size >> PAGE_SHIFT;
->  	int ret;
->  
-> +	if (modifiers->pgprot != PAGE_KERNEL)
-> +		return -EINVAL;
-> +
->  	/* We only have ZONE_NORMAL, so this is easy.. */
->  	ret = __add_pages(nid, start_pfn, nr_pages, modifiers);
->  	if (unlikely(ret))
-> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-> index 630d8a36fcd7..737da0dbc0d5 100644
-> --- a/arch/x86/mm/init_32.c
-> +++ b/arch/x86/mm/init_32.c
-> @@ -857,6 +857,11 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  {
->  	unsigned long start_pfn = start >> PAGE_SHIFT;
->  	unsigned long nr_pages = size >> PAGE_SHIFT;
-> +	int ret;
-> +
-> +	ret = _set_memory_prot(start, nr_pages, modifiers->pgprot);
-> +	if (ret)
-> +		return ret;
->  
->  	return __add_pages(nid, start_pfn, nr_pages, modifiers);
->  }
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index 17ea0bfc0b83..cc9eb45ad120 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -868,7 +868,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  	unsigned long start_pfn = start >> PAGE_SHIFT;
->  	unsigned long nr_pages = size >> PAGE_SHIFT;
->  
-> -	init_memory_mapping(start, start + size, PAGE_KERNEL);
-> +	init_memory_mapping(start, start + size, modifiers->pgprot);
->  
->  	return add_pages(nid, start_pfn, nr_pages, modifiers);
->  }
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 2152efae2f4b..00dfb2016737 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -56,9 +56,11 @@ enum {
+> diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+> index b403fa14847d..8a5e95f184a2 100644
+> --- a/arch/s390/mm/vmem.c
+> +++ b/arch/s390/mm/vmem.c
+> @@ -66,7 +66,7 @@ pte_t __ref *vmem_pte_alloc(void)
 >  /*
->   * Restrictions for the memory hotplug:
->   * altmap: alternative allocator for memmap array
-> + * pgprot: page protection flags to apply to newly added page tables
+>   * Add a physical memory range to the 1:1 mapping.
 >   */
->  struct mhp_modifiers {
->  	struct vmem_altmap *altmap;
-> +	pgprot_t pgprot;
->  };
->  
->  /*
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 1bb3f92e087d..0888f821af06 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1027,7 +1027,7 @@ static int online_memory_block(struct memory_block *mem, void *arg)
->   */
->  int __ref add_memory_resource(int nid, struct resource *res)
+> -static int vmem_add_mem(unsigned long start, unsigned long size)
+> +static int vmem_add_mem(unsigned long start, unsigned long size, pgprot_t prot)
 >  {
-> -	struct mhp_modifiers modifiers = {};
-> +	struct mhp_modifiers modifiers = {.pgprot = PAGE_KERNEL};
->  	u64 start, size;
->  	bool new_node = false;
->  	int ret;
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index e30be8ba706b..45ab4ef0643d 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -163,8 +163,8 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
->  		 * We do not want any optional features only our own memmap
->  		 */
->  		.altmap = pgmap_altmap(pgmap),
-> +		.pgprot = PAGE_KERNEL,
->  	};
-> -	pgprot_t pgprot = PAGE_KERNEL;
->  	int error, is_ram;
->  	bool need_devmap_managed = true;
+>  	unsigned long pgt_prot, sgt_prot, r3_prot;
+>  	unsigned long pages4k, pages1m, pages2g;
+> @@ -79,7 +79,7 @@ static int vmem_add_mem(unsigned long start, unsigned long size)
+>  	pte_t *pt_dir;
+>  	int ret = -ENOMEM;
 >  
-> @@ -252,8 +252,8 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
->  	if (nid < 0)
->  		nid = numa_mem_id();
->  
-> -	error = track_pfn_remap(NULL, &pgprot, PHYS_PFN(res->start), 0,
-> -			resource_size(res));
-> +	error = track_pfn_remap(NULL, &modifiers.pgprot, PHYS_PFN(res->start),
-> +				0, resource_size(res));
->  	if (error)
->  		goto err_pfn_remap;
->  
-> -- 
-> 2.20.1
-> 
+> -	pgt_prot = pgprot_val(PAGE_KERNEL);
+> +	pgt_prot = pgprot_val(prot);
+>  	sgt_prot = pgprot_val(SEGMENT_KERNEL);
+>  	r3_prot = pgprot_val(REGION3_KERNEL);
+
+So, if we map as huge/gigantic pages, the protection would be discarded?
+That looks wrong.
+
+s390x does not support ZONE_DEVICE yet. Maybe simply bail out for s390x
+as you do for sh to make your life easier?
+
+[...]
 
 -- 
-Michal Hocko
-SUSE Labs
+Thanks,
+
+David / dhildenb
+
