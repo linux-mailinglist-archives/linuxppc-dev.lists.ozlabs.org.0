@@ -1,94 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07362134DB2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 21:33:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED16D134DA0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 21:31:41 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47tLWG624jzDqWw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 07:31:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47tLYb3gsJzDqQd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 07:33:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=dave.jiang@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47tLFk1l44zDqNv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2020 07:19:53 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 008K7gVf119101
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 Jan 2020 15:19:50 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xapd7x12f-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 15:19:50 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 8 Jan 2020 20:19:48 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 8 Jan 2020 20:19:46 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 008KJjS448234584
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Jan 2020 20:19:45 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC8DA42047;
- Wed,  8 Jan 2020 20:19:45 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 689F94203F;
- Wed,  8 Jan 2020 20:19:45 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  8 Jan 2020 20:19:45 +0000 (GMT)
-Received: from [9.102.33.86] (unknown [9.102.33.86])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 35D7AA007B;
- Thu,  9 Jan 2020 07:19:40 +1100 (AEDT)
-Subject: Re: [PATCH v2 01/11] powerpc/powernv/ioda: Fix ref count for devices
- with their own PE
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- clombard@linux.ibm.com
-References: <20191121134918.7155-1-fbarrat@linux.ibm.com>
- <20191121134918.7155-2-fbarrat@linux.ibm.com>
- <f69d65f5-0692-f950-f226-c7925d8ff3cf@linux.ibm.com>
- <449279e4-9c04-7933-41af-95d7a4928c45@linux.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Thu, 9 Jan 2020 07:19:40 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47tLSX6Z57zDqNv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2020 07:29:16 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2020 12:29:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,411,1571727600"; d="scan'208";a="223034363"
+Received: from djiang5-desk3.ch.intel.com ([143.182.136.137])
+ by orsmga006.jf.intel.com with ESMTP; 08 Jan 2020 12:29:09 -0800
+Subject: Re: [PATCH v2 3/9] ntb: intel: Constify ioreadX() iomem argument (as
+ in generic implementation)
+To: Krzysztof Kozlowski <krzk@kernel.org>, Richard Henderson
+ <rth@twiddle.net>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Matt Turner <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+ Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri Slaby
+ <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
+ "David S. Miller" <davem@davemloft.net>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
+ linux-arch@vger.kernel.org
+References: <20200108200528.4614-1-krzk@kernel.org>
+ <20200108200528.4614-4-krzk@kernel.org>
+From: Dave Jiang <dave.jiang@intel.com>
+Message-ID: <64659f77-f807-7c8e-7595-731056c73bf4@intel.com>
+Date: Wed, 8 Jan 2020 13:29:08 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <449279e4-9c04-7933-41af-95d7a4928c45@linux.ibm.com>
+In-Reply-To: <20200108200528.4614-4-krzk@kernel.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010820-0012-0000-0000-0000037BB090
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010820-0013-0000-0000-000021B7D023
-Message-Id: <2fc70bbd-8e0e-4662-e143-d5a688a359d8@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-08_06:2020-01-08,
- 2020-01-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 clxscore=1015 suspectscore=0 adultscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=717 mlxscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001080158
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,30 +79,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, oohall@gmail.com, groug@kaod.org, alastair@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/1/20 1:11 am, Frederic Barrat wrote:
->> It took me a while to parse exactly what you're doing here.
->>
->> - In pnv_ioda_setup_dev_PE(), we take a reference on the pci_dev, this 
->> is to protect a pointer in the pci_dn structure, but not to protect 
->> the pointer in the pci_dev structure (which doesn't need to be 
->> protected by taking a reference, because the lifetime of the 
->> pnv_ioda_pe is the same as the pci_dev).
->>
->> - The pointer in the pci_dn structure has now been removed, so we 
->> should remove the pci_dev_get() accordingly.
+
+
+On 1/8/20 1:05 PM, Krzysztof Kozlowski wrote:
+> The ioreadX() helpers have inconsistent interface.  On some architectures
+> void *__iomem address argument is a pointer to const, on some not.
 > 
+> Implementations of ioreadX() do not modify the memory under the address
+> so they can be converted to a "const" version for const-safety and
+> consistency among architectures.
 > 
-> Correct. Did I do such a bad job explaining it in the commit message 
-> that I need to rephrase?
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I might just be a bit slow :)
+Acked-by: Dave Jiang <dave.jiang@intel.com>
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+> 
+> ---
+> 
+> Changes since v1:
+> 1. Add Geert's review.
+> ---
+>   drivers/ntb/hw/intel/ntb_hw_gen1.c  | 2 +-
+>   drivers/ntb/hw/intel/ntb_hw_gen3.h  | 2 +-
+>   drivers/ntb/hw/intel/ntb_hw_intel.h | 2 +-
+>   3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> index bb57ec239029..9202502a9787 100644
+> --- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> +++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> @@ -1202,7 +1202,7 @@ int intel_ntb_peer_spad_write(struct ntb_dev *ntb, int pidx, int sidx,
+>   			       ndev->peer_reg->spad);
+>   }
+>   
+> -static u64 xeon_db_ioread(void __iomem *mmio)
+> +static u64 xeon_db_ioread(const void __iomem *mmio)
+>   {
+>   	return (u64)ioread16(mmio);
+>   }
+> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.h b/drivers/ntb/hw/intel/ntb_hw_gen3.h
+> index 75fb86ca27bb..d1455f24ec99 100644
+> --- a/drivers/ntb/hw/intel/ntb_hw_gen3.h
+> +++ b/drivers/ntb/hw/intel/ntb_hw_gen3.h
+> @@ -91,7 +91,7 @@
+>   #define GEN3_DB_TOTAL_SHIFT		33
+>   #define GEN3_SPAD_COUNT			16
+>   
+> -static inline u64 gen3_db_ioread(void __iomem *mmio)
+> +static inline u64 gen3_db_ioread(const void __iomem *mmio)
+>   {
+>   	return ioread64(mmio);
+>   }
+> diff --git a/drivers/ntb/hw/intel/ntb_hw_intel.h b/drivers/ntb/hw/intel/ntb_hw_intel.h
+> index e071e28bca3f..3c0a5a2da241 100644
+> --- a/drivers/ntb/hw/intel/ntb_hw_intel.h
+> +++ b/drivers/ntb/hw/intel/ntb_hw_intel.h
+> @@ -102,7 +102,7 @@ struct intel_ntb_dev;
+>   struct intel_ntb_reg {
+>   	int (*poll_link)(struct intel_ntb_dev *ndev);
+>   	int (*link_is_up)(struct intel_ntb_dev *ndev);
+> -	u64 (*db_ioread)(void __iomem *mmio);
+> +	u64 (*db_ioread)(const void __iomem *mmio);
+>   	void (*db_iowrite)(u64 db_bits, void __iomem *mmio);
+>   	unsigned long			ntb_ctl;
+>   	resource_size_t			db_size;
+> 
