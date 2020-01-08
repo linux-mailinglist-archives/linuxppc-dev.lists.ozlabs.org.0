@@ -1,65 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D25134F56
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 23:25:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92926134F41
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 23:04:24 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47tNZF102wzDqV3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 09:04:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47tP266nlyzDqSm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 09:25:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47tNXM5vZnzDqDs
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2020 09:02:39 +1100 (AEDT)
-Received: by mail-ot1-f68.google.com with SMTP id r27so5140037otc.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 14:02:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=O9YsXaP1lcVI3YB10D/1yLJh0lm8KzUFBjhvxrtn8yA=;
- b=jxOfeqtJSb9ma1f/VnNkY1n+zrA5mFet4hn2XXtSfaW865rxCKqfAbl34EXl0qyYO0
- W/rQIePc+Bq0hq4JRqenbWmiBdEt9yupLdxVa1eSskISkHyr9sT24X0jVy1eJe1IinDF
- JSJB32UEWVp+viaGKylslZBTOWCvCujpyvGzi7lM2sQbNHgPR+U4ALkJ1ddMz+0xTJmH
- ch51v7aDuEXvI2GkuxzMBUz6JWFAhMPjdW2fssz0Ndds5uFQ+gwDX+NQueItR4r5ucMt
- 7JtzBzq8VMbF0etj6mvFoHteIRPozfJ23fYOgR+NdmiDb6K9ujpop8h2YZW//n7Wryr3
- zDew==
-X-Gm-Message-State: APjAAAX2FlirpcCHTrS0EviPYZTpEYirTcN4zjo/nuL5T51wYV+vCk5L
- wtC7iWlKBNepXuqOBc42LxN5sy17
-X-Google-Smtp-Source: APXvYqxTDLEFxE9yTW/L6zWjpUne0cHoVTvts363U7blEIfnVbfccJNT0WvamXTjCng2oRHUzVLgFg==
-X-Received: by 2002:a9d:65cf:: with SMTP id z15mr6159694oth.238.1578520956933; 
- Wed, 08 Jan 2020 14:02:36 -0800 (PST)
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com.
- [209.85.167.178])
- by smtp.gmail.com with ESMTPSA id e21sm1513207oib.16.2020.01.08.14.02.36
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Jan 2020 14:02:36 -0800 (PST)
-Received: by mail-oi1-f178.google.com with SMTP id z64so4115494oia.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 14:02:36 -0800 (PST)
-X-Received: by 2002:aca:d887:: with SMTP id p129mr615231oig.51.1578520956285; 
- Wed, 08 Jan 2020 14:02:36 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47tP066gZXzDqWn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2020 09:23:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="ABPbwr8D"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 47tP0659qxz9sRG; Thu,  9 Jan 2020 09:23:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1578522198; bh=3AnSngOOwlWYyi6Ck1EZfS60KlEZPykD72bnQpFUsWg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ABPbwr8DY1PBZRIq4LnwwOet9rX3aXrewqCVNF00X3CO684+KJUg2XDC93mEjIeDH
+ rq+7lj/nIDevp+wJfmQn19LyIBLNHBOc20EdpqRFhhVZKt5s0AUl+JXrwOFPVjy53C
+ dfer2IK3XLnPB3yaP0/Gi1lRmdn3WwA85E8IhE4ukIn7bCZQK+Z0SpxJvIL1JGks6J
+ bmFovBrPOqyqchOa8XPSYj64Zg/fdMws40sy4t2cJcruAubKQnjdG3EIwFE6FqNPER
+ HfwSUKywSFQDSEUGy65u062DLcGxNsZvhGpVlUK4ZfB/LEgop0CEzCrQbAtG4YbU6U
+ VUzFb4UXWtQJQ==
+Date: Thu, 9 Jan 2020 09:23:14 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Balamuruhan S <bala24@linux.ibm.com>
+Subject: Re: [PATCH 2/3] powerpc sstep: add support for divde[.] and
+ divdeu[.] instructions
+Message-ID: <20200108222314.GA11821@blackberry>
+References: <20191210071904.31013-1-bala24@linux.ibm.com>
+ <20191210071904.31013-3-bala24@linux.ibm.com>
 MIME-Version: 1.0
-References: <20200108130926.45808-1-yuehaibing@huawei.com>
-In-Reply-To: <20200108130926.45808-1-yuehaibing@huawei.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Wed, 8 Jan 2020 16:02:25 -0600
-X-Gmail-Original-Message-ID: <CADRPPNQp7KxENbr+nZ8AAZkuBW-=6sjeXd8LU2LJJZqjCvY==g@mail.gmail.com>
-Message-ID: <CADRPPNQp7KxENbr+nZ8AAZkuBW-=6sjeXd8LU2LJJZqjCvY==g@mail.gmail.com>
-Subject: Re: [PATCH -next] soc: fsl: qe: remove set but not used variable
- 'mm_gc'
-To: YueHaibing <yuehaibing@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191210071904.31013-3-bala24@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,58 +55,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- lkml <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>, Zhao Qiang <qiang.zhao@nxp.com>
+Cc: naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ sandipan@linux.ibm.com, ravi.bangoria@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 8, 2020 at 7:12 AM YueHaibing <yuehaibing@huawei.com> wrote:
->
-> drivers/soc/fsl/qe/gpio.c: In function qe_pin_request:
-> drivers/soc/fsl/qe/gpio.c:163:26: warning: variable mm_gc set but not used [-Wunused-but-set-variable]
->
-> commit 1e714e54b5ca ("powerpc: qe_lib-gpio: use gpiochip data pointer")
-> left behind this unused variable.
->
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-
-Applied for next.  Thanks.
-
-Btw, I find another patch from Chen Zhou fixing the same problem sent
-earlier.  I will add his signed-off-by to the commit for credit too.
-
-Regards,
-Leo
-
+On Tue, Dec 10, 2019 at 12:49:03PM +0530, Balamuruhan S wrote:
+> This patch adds emulation support for divde, divdeu instructions,
+> 	* Divide Doubleword Extended (divde[.])
+> 	* Divide Doubleword Extended Unsigned (divdeu[.])
+> 
+> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
 > ---
->  drivers/soc/fsl/qe/gpio.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
-> index 12bdfd9..ed75198 100644
-> --- a/drivers/soc/fsl/qe/gpio.c
-> +++ b/drivers/soc/fsl/qe/gpio.c
-> @@ -160,7 +160,6 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
->  {
->         struct qe_pin *qe_pin;
->         struct gpio_chip *gc;
-> -       struct of_mm_gpio_chip *mm_gc;
->         struct qe_gpio_chip *qe_gc;
->         int err;
->         unsigned long flags;
-> @@ -186,7 +185,6 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
->                 goto err0;
->         }
->
-> -       mm_gc = to_of_mm_gpio_chip(gc);
->         qe_gc = gpiochip_get_data(gc);
->
->         spin_lock_irqsave(&qe_gc->lock, flags);
-> --
-> 2.7.4
->
->
+>  arch/powerpc/lib/sstep.c | 27 ++++++++++++++++++++++++++-
+>  1 file changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index c077acb983a1..4b4119729e59 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1736,7 +1736,32 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>  			op->val = (int) regs->gpr[ra] /
+>  				(int) regs->gpr[rb];
+>  			goto arith_done;
+> -
+> +#ifdef __powerpc64__
+> +		case 425:	/* divde[.] */
+> +			if (instr & 1) {
+> +				asm volatile(PPC_DIVDE_DOT(%0, %1, %2) :
+> +					"=r" (op->val) : "r" (regs->gpr[ra]),
+> +					"r" (regs->gpr[rb]));
+> +				set_cr0(regs, op);
+
+This seems unneccesarily complicated.  You take the trouble to do a
+"divde." instruction rather than a "divde" instruction but then don't
+use the CR0 setting that the instruction did, but instead go and work
+out what happens to CR0 manually in set_cr0().  Also you don't tell
+the compiler that CR0 has been modified, which could lead to problems.
+
+This case could be done much more simply like this:
+
+
+
+		case 425:	/* divde[.] */
+			asm volatile(PPC_DIVDE(%0, %1, %2) :
+				"=r" (op->val) : "r" (regs->gpr[ra]),
+				"r" (regs->gpr[rb]));
+			goto arith_done;
+
+(note, goto arith_done rather than compute_done) and similarly for the
+divdeu case.
+
+Paul.
