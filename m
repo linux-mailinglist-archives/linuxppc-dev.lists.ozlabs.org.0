@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC681341BA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 13:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF9B1341CA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 13:33:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47t7rY2xHzzDqMd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 23:30:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47t7w51rktzDqT2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 23:33:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="XnX4lTaM"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="Xdeu1eRl"; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47t7mh0xvjzDqST
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 23:27:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47t7pl1Pm2zDqMd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 23:29:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1578486448;
+ s=mimecast20190719; t=1578486554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=YcX/h1ODx2t0WC6vtgv1THC5OeL0byNIZX5cdZODUBE=;
- b=XnX4lTaMJqmAiX/cvCtQxX35V16BWdl+cJECa/0sJ2PVNf1hjZJ3hiPCLPqrqoyH3O+w+u
- pD4+Akh/1hpZkefaXyl5YEKpLuiIDCSwctg0UbLwxhYHeH0plQccjUXWgnpiX05y1vs6qe
- UztBauY63vaoEJ6dzPW17PZ7W5gFqWc=
+ bh=Zzh8C5n/Y78S4sfQYt8stUbbwXaAXVpTXCioKFsbbKo=;
+ b=Xdeu1eRlJKUkSOyKfbwCMyRMsH68aFnIJEFq8uonSWmCVcUmzIfwFnHUkHU/um0Q+1e/vR
+ r//k9w9nlxsrt7zDqplFs6qLYOUBh5nX0gRYLBCsFKl/FalRZAvhFkyevH/+aPrB8Fq+9N
+ 8Y08keFYoG72eoFkHKxpDGhOD4WCC0I=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-71-gQTG7dlrPFaZcQHmyglyFA-1; Wed, 08 Jan 2020 07:27:24 -0500
-X-MC-Unique: gQTG7dlrPFaZcQHmyglyFA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
+ us-mta-209-nHM-ZjxvNtqh74pyY1jG8Q-1; Wed, 08 Jan 2020 07:29:07 -0500
+X-MC-Unique: nHM-ZjxvNtqh74pyY1jG8Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E4FDD800D53;
- Wed,  8 Jan 2020 12:27:19 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 65FFF107ACC4;
+ Wed,  8 Jan 2020 12:29:04 +0000 (UTC)
 Received: from [10.36.117.90] (ovpn-117-90.ams2.redhat.com [10.36.117.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 38C3C19C58;
- Wed,  8 Jan 2020 12:27:15 +0000 (UTC)
-Subject: Re: [PATCH v2 1/8] mm/memory_hotplug: Drop the flags field from
- struct mhp_restrictions
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E0F6A7C37B;
+ Wed,  8 Jan 2020 12:28:55 +0000 (UTC)
+Subject: Re: [PATCH v2 2/8] mm/memory_hotplug: Rename mhp_restrictions to
+ mhp_modifiers
 To: Logan Gunthorpe <logang@deltatee.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
@@ -56,7 +56,7 @@ To: Logan Gunthorpe <logang@deltatee.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, Dan Williams <dan.j.williams@intel.com>,
  Michal Hocko <mhocko@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 References: <20200107205959.7575-1-logang@deltatee.com>
- <20200107205959.7575-2-logang@deltatee.com>
+ <20200107205959.7575-3-logang@deltatee.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -102,16 +102,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
  FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
 Organization: Red Hat GmbH
-Message-ID: <c3c3c475-f828-13f7-b5c9-f691ef0fe1ff@redhat.com>
-Date: Wed, 8 Jan 2020 13:27:14 +0100
+Message-ID: <3e432695-e3a9-2aae-e9f5-1b6454886c06@redhat.com>
+Date: Wed, 8 Jan 2020 13:28:55 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.1
 MIME-Version: 1.0
-In-Reply-To: <20200107205959.7575-2-logang@deltatee.com>
+In-Reply-To: <20200107205959.7575-3-logang@deltatee.com>
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,35 +134,13 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 07.01.20 21:59, Logan Gunthorpe wrote:
-> This variable is not used anywhere and should therefore be removed
-> from the structure.
-> 
-> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-> ---
->  include/linux/memory_hotplug.h | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index ba0dca6aac6e..e47a29761088 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -55,11 +55,9 @@ enum {
->  
->  /*
->   * Restrictions for the memory hotplug:
-> - * flags:  MHP_ flags
->   * altmap: alternative allocator for memmap array
->   */
->  struct mhp_restrictions {
-> -	unsigned long flags;
->  	struct vmem_altmap *altmap;
->  };
+> The mhp_restrictions struct really doesn't specify anything resembling
+> a restriction anymore so rename it to be mhp_modifiers.
 
-We wanted to use that for the "vmemmap on added memory" config knob. But
-that might still take some time and we might actually realize it using
-the altmap instead (hopefully :) ).
+I wonder if something like "mhp_params" would be even better. It's
+essentially just a way to avoid changing call chains rough-out all archs
+whenever we want to add a new parameter.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Thanks,
