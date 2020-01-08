@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B824133DE3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 10:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 102C5133E20
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 10:17:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47t3N35c9pzDqPl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 20:09:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47t3Yc5GRXzDqPy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 20:17:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,44 +19,47 @@ Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47t3L43ZxFzDqNs
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 20:07:39 +1100 (AEDT)
-Received: by mail-ed1-f67.google.com with SMTP id cy15so1957210edb.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 01:07:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47t3Wd21TlzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 20:15:56 +1100 (AEDT)
+Received: by mail-ed1-f67.google.com with SMTP id e10so1945701edv.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 01:15:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=0jRYcccy+K8+wcIcmevpt3CSwH1FRXDhvGLKKsO8/R8=;
- b=gBQkbGxfR0LmYNI/fs8mPbMXiJ3r9SSBMUBdKwiBOasStrAEIYIAB+7o1M6qItEwut
- JmQN0Ee0YW3d2YDAutf1MjP+V5VDuDVyAZJaXtrJbYSu+w5ewFk6grF8JZwAFRDBohCL
- GXtOd2FyOzN3uvijIVbD23E8tdZvXQf1ND2C9/ITqm4PAwKPdPyzf7o5sIJFFwFvpOGR
- NGozXGxOZBEXdrEkd9HeXmVdFACVCk/z4MABKlpMKZSQOcJlaW/nYbxgJOnrir7XEbt6
- yYscSHG3MIiWGrQeU1osSCLp3pm2K/Z0tFKrB57UZ7a9v7j+PM3hf6Vt7VZCNHMjfl0W
- bSmQ==
-X-Gm-Message-State: APjAAAV/DQn3GsmsvCUyawhY61/KYac8JUZlHQncWMWeH/YxkndWzX8q
- pRQrMYkCix5TYgtZg9OLIOY=
-X-Google-Smtp-Source: APXvYqx7lojzs5eJ7tjc2OaNpqjg4Ds4/tRmp0l0ATPp14XCcF7ovHyFxsvNMuPIHycIcD1wSckgnw==
-X-Received: by 2002:a17:906:404:: with SMTP id
- d4mr3768395eja.326.1578474456276; 
- Wed, 08 Jan 2020 01:07:36 -0800 (PST)
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=vfyps/IUL6/PJnjolCWEAdH26MAmNPDn2opwbDbnepg=;
+ b=NDz6gdS1gyucTtkJEblQz/gZzUrXThFmwXKhpY9FY4qeeG+xpO2U9Si9t2sVH33wLB
+ p6BOCwyNhXoaFgiE0G4gZvyOQvNfmGeH5wb66VaRRBQfSyh+Obq80X0CO6GrNTyFF92y
+ KgAKdzAbd29fiyAbsXZI4xyABQnIwjbReyMhL6Lq3H/D1lF7qXzmYOrrV8AibgmC8R54
+ +D4QzPKn+p5WxJOo0+BeszDd1vlHzDSEYi5u8SwqhQ4czPI7HHQ489NmuAdOyFDDOpub
+ AjPQowe40Sa25sjDhY7xS5p0UQuIy/GAuZ0o4PjsRhIgqFhYpYCj8CPX5uwVgjQEubwM
+ X04g==
+X-Gm-Message-State: APjAAAVGAkHO0fSmuxu6a2A20o3OZ3+APt2rPM1PeNyXlPY/8Q51wwbl
+ GpPkotHjuK1LQGV63U4vaHE=
+X-Google-Smtp-Source: APXvYqwWgb4dfQDzLCQ3ihOQo6HGElfX4FRxgQVj5VsuPKdEU0cfakNWGRh627mzzt3wCzM621IKeg==
+X-Received: by 2002:aa7:c4c8:: with SMTP id p8mr4353856edr.72.1578474953961;
+ Wed, 08 Jan 2020 01:15:53 -0800 (PST)
 Received: from pi3 ([194.230.155.149])
- by smtp.googlemail.com with ESMTPSA id j3sm53121edb.50.2020.01.08.01.07.33
+ by smtp.googlemail.com with ESMTPSA id y4sm54018edl.11.2020.01.08.01.15.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2020 01:07:35 -0800 (PST)
-Date: Wed, 8 Jan 2020 10:07:32 +0100
+ Wed, 08 Jan 2020 01:15:53 -0800 (PST)
+Date: Wed, 8 Jan 2020 10:15:49 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [RFT 02/13] alpha: Constify ioreadX() iomem argument (as in
- generic implementation)
-Message-ID: <20200108090732.GA10145@pi3>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [RFT 00/13] iomap: Constify ioreadX() iomem argument
+Message-ID: <20200108091549.GB10145@pi3>
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
- <1578415992-24054-3-git-send-email-krzk@kernel.org>
- <CAMuHMdXHhF6GhS1W8qS4j7Jv5YnxXjcRopT5QSA=+trc8qwFng@mail.gmail.com>
+ <CAMuHMdW4ek0OYQDrrbcpZjNUTTP04nSbwkmiZvBmKcU=PQM9qA@mail.gmail.com>
+ <CAMuHMdUBmYtJKtSYzS_5u67hVZOqcKSgFY1rDGme6gLNRBJ_gA@mail.gmail.com>
+ <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
+ <2355489c-a207-1927-54cf-85c04b62f18f@c-s.fr>
+ <CAK8P3a21yPrmp4ik3Ei1BZfeqZNf0wL5NZNF3uXqb4FLRDyUPw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdXHhF6GhS1W8qS4j7Jv5YnxXjcRopT5QSA=+trc8qwFng@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAK8P3a21yPrmp4ik3Ei1BZfeqZNf0wL5NZNF3uXqb4FLRDyUPw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,29 +73,28 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, David Airlie <airlied@linux.ie>,
- Jason Wang <jasowang@redhat.com>,
+ ML nouveau <nouveau@lists.freedesktop.org>, Jason Wang <jasowang@redhat.com>,
  DRI Development <dri-devel@lists.freedesktop.org>,
  virtualization@lists.linux-foundation.org,
  "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- netdev <netdev@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- Linux-Arch <linux-arch@vger.kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Alexey Brodkin <abrodkin@synopsys.com>, Ben Skeggs <bskeggs@redhat.com>,
- nouveau@lists.freedesktop.org, Dave Airlie <airlied@redhat.com>,
- Matt Turner <mattst88@gmail.com>, arcml <linux-snps-arc@lists.infradead.org>,
+ Paul Mackerras <paulus@samba.org>, Linux-Arch <linux-arch@vger.kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, Linux-sh list <linux-sh@vger.kernel.org>,
+ Alexey Brodkin <abrodkin@synopsys.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Ben Skeggs <bskeggs@redhat.com>,
+ Dave Airlie <airlied@redhat.com>, Matt Turner <mattst88@gmail.com>,
+ arcml <linux-snps-arc@lists.infradead.org>,
  Nick Kossifidis <mickflemm@gmail.com>, Allen Hubbe <allenbh@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, alpha <linux-alpha@vger.kernel.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Jon Mason <jdmason@kudzu.us>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
  Thomas Gleixner <tglx@linutronix.de>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
  Richard Henderson <rth@twiddle.net>,
- Parisc List <linux-parisc@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
  linux-wireless <linux-wireless@vger.kernel.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Jon Mason <jdmason@kudzu.us>, linux-ntb@googlegroups.com,
- Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
+ Daniel Vetter <daniel@ffwll.ch>, alpha <linux-alpha@vger.kernel.org>,
+ linux-ntb@googlegroups.com, Andrew Morton <akpm@linux-foundation.org>,
  Linux Media Mailing List <linux-media@vger.kernel.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  "David S. Miller" <davem@davemloft.net>
@@ -100,42 +102,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 08, 2020 at 09:10:06AM +0100, Geert Uytterhoeven wrote:
-> Hi Krzysztof,
-> 
-> On Tue, Jan 7, 2020 at 5:53 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > The ioreadX() helpers have inconsistent interface.  On some architectures
-> > void *__iomem address argument is a pointer to const, on some not.
+On Wed, Jan 08, 2020 at 09:44:36AM +0100, Arnd Bergmann wrote:
+> On Wed, Jan 8, 2020 at 9:36 AM Christophe Leroy <christophe.leroy@c-s.fr>=
+ wrote:
+> > Le 08/01/2020 =C3=A0 09:18, Krzysztof Kozlowski a =C3=A9crit :
+> > > On Wed, 8 Jan 2020 at 09:13, Geert Uytterhoeven <geert@linux-m68k.org=
+> wrote:
+> > > I'll add to this one also changes to ioreadX_rep() and add another
+> > > patch for volatile for reads and writes. I guess your review will be
+> > > appreciated once more because of ioreadX_rep()
+> > >
 > >
-> > Implementations of ioreadX() do not modify the memory under the address
-> > so they can be converted to a "const" version for const-safety and
-> > consistency among architectures.
+> > volatile should really only be used where deemed necessary:
 > >
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
-> > --- a/arch/alpha/include/asm/io.h
-> > +++ b/arch/alpha/include/asm/io.h
-> > @@ -151,9 +151,9 @@ static inline void generic_##NAME(TYPE b, QUAL void __iomem *addr)  \
-> >         alpha_mv.mv_##NAME(b, addr);                                    \
-> >  }
+> > https://www.kernel.org/doc/html/latest/process/volatile-considered-harm=
+ful.html
 > >
-> > -REMAP1(unsigned int, ioread8, /**/)
-> > -REMAP1(unsigned int, ioread16, /**/)
-> > -REMAP1(unsigned int, ioread32, /**/)
-> > +REMAP1(unsigned int, ioread8, const)
-> > +REMAP1(unsigned int, ioread16, const)
-> > +REMAP1(unsigned int, ioread32, const)
-> 
-> If these would become "const volatile", there would no longer be a need
-> for the last parameter of the REMAP1() macro.
-> 
-> >  REMAP1(u8, readb, const volatile)
-> >  REMAP1(u16, readw, const volatile)
-> >  REMAP1(u32, readl, const volatile)
-> 
-> Same for REMAP2() macro below, for iowrite*().
+> > It is said: " ...  accessor functions might use volatile on
+> > architectures where direct I/O memory access does work. Essentially,
+> > each accessor call becomes a little critical section on its own and
+> > ensures that the access happens as expected by the programmer."
+>=20
+> The I/O accessors are one of the few places in which 'volatile' generally
+> makes sense, at least for the implementations that do a plain pointer
+> dereference (probably none of the ones in question here).
+>=20
+> In case of readl/writel, this is what we do in asm-generic:
+>=20
+> static inline u32 __raw_readl(const volatile void __iomem *addr)
+> {
+>         return *(const volatile u32 __force *)addr;
+> }
 
-Good point, thanks!
+SuperH is another example:
+1. ioread8_rep(void __iomem *addr, void *dst, unsigned long count)
+   calls mmio_insb()
+
+2. static inline void mmio_insb(void __iomem *addr, u8 *dst, int count)
+   calls __raw_readb()
+
+3. #define __raw_readb(a)          (__chk_io_ptr(a), *(volatile u8  __force=
+ *)(a))
+
+Even if interface was not marked as volatile, in fact its implementation
+was casting to volatile.
+
+> The __force-cast that removes the __iomem here also means that
+> the 'volatile' keyword could be dropped from the argument list,
+> as it has no real effect any more, but then there are a few drivers
+> that mark their iomem pointers as either 'volatile void __iomem*' or
+> (worse) 'volatile void *', so we keep it in the argument list to not
+> add warnings for those drivers.
+>=20
+> It may be time to change these drivers to not use volatile for __iomem
+> pointers, but that seems out of scope for what Krzysztof is trying
+> to do. Ideally we would be consistent here though, either using volatile
+> all the time or never.
+
+Indeed. I guess there are no objections around const so let me send v2
+for const only.
 
 Best regards,
 Krzysztof
