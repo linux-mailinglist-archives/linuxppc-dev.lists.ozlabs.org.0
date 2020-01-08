@@ -2,43 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5AF133D75
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 09:44:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1BC133D89
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 09:47:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47t2qp5pbyzDqQj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 19:44:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47t2tB1tPWzDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 19:46:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.17.10; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47t2nz6Dj3zDq8B
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 19:43:17 +1100 (AEDT)
-Received: by mail-ot1-f68.google.com with SMTP id k14so2841428otn.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 00:43:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=7cWBGOss6IZmXIImkX09JkN+lqirutcjNONiaHMIXk4=;
- b=asYl2TELkz7vL3MfQ2PY9fOhl7zPPdDWTR1xQVEIJMWfxHC8vlv5STnIL/t3XpfPZl
- LcosLqVYGkcWODX4YbK2rVG4u2zw6OhSytz2oJUqLHAlo/gFT3jKh0YeTNiK43CC7zzn
- TzotXH0wEHb1KZqtE6UH72eFvLTdhBGCS41XN9rWbx+P+RBwevYXmVK8KJPHO3zT4eDi
- 6IkHIN5w+7yTeqBtP/TVMPt0jUoYfSAmy0DKFMVio1FYbhXOXqr9YvKiqcbAZ5Q1/4Uo
- 7yHdDArrxtW5MIegXDP2cyWEbwhW5TZaYkKMORIVMhc2c/cq11NUNjZVG22S2S5pEB9I
- wSpg==
-X-Gm-Message-State: APjAAAXhnqLRFJiFkN+/l6Mz/mqPYIOnpTlasmB1+tHyK/WdxQxKENP/
- gvcgi610rq63oK7yaWbz/sKdmMvB7cHtMx8xfeM=
-X-Google-Smtp-Source: APXvYqyLwchytFfBRcGzmYLq5q4p5hvwH1AjnwV9nNk5cX7+q/Njb59ahRoMRaX1Y0RAyipVtDWx7V8ZzLixl6z6dho=
-X-Received: by 2002:a9d:6a84:: with SMTP id l4mr3302303otq.145.1578472995351; 
- Wed, 08 Jan 2020 00:43:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47t2qy4BsbzDqBH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 19:45:01 +1100 (AEDT)
+Received: from mail-qk1-f173.google.com ([209.85.222.173]) by
+ mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MD9Ox-1ixfgH2Sun-0098G3 for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan
+ 2020 09:44:56 +0100
+Received: by mail-qk1-f173.google.com with SMTP id t129so1914545qke.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 00:44:55 -0800 (PST)
+X-Gm-Message-State: APjAAAWjrX5rKmXcadroYf2TyEkX4Qdvr0WfBauWAOZ8dRkvMGBI1Yej
+ Zd6vClxLS7qA1Gp7b7NgItvBWcY8UKip3acffrA=
+X-Google-Smtp-Source: APXvYqwBkJ8QmnIL+nEzdyW4cVb2dCgT1+bxTVHrv/QXRUdjO9mWLnIecKxCrEVE9XkgL278ZPmA2bqFRRwBDXNH4F8=
+X-Received: by 2002:a05:620a:a5b:: with SMTP id
+ j27mr3333439qka.286.1578473093254; 
+ Wed, 08 Jan 2020 00:44:53 -0800 (PST)
 MIME-Version: 1.0
 References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
  <CAMuHMdW4ek0OYQDrrbcpZjNUTTP04nSbwkmiZvBmKcU=PQM9qA@mail.gmail.com>
@@ -46,13 +39,33 @@ References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
  <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
  <2355489c-a207-1927-54cf-85c04b62f18f@c-s.fr>
 In-Reply-To: <2355489c-a207-1927-54cf-85c04b62f18f@c-s.fr>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 8 Jan 2020 09:43:04 +0100
-Message-ID: <CAMuHMdV=-m-eN4rOa=XQhk2oBDZZwgXXMU6RMVQRVsc6ALyeoA@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 8 Jan 2020 09:44:36 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a21yPrmp4ik3Ei1BZfeqZNf0wL5NZNF3uXqb4FLRDyUPw@mail.gmail.com>
+Message-ID: <CAK8P3a21yPrmp4ik3Ei1BZfeqZNf0wL5NZNF3uXqb4FLRDyUPw@mail.gmail.com>
 Subject: Re: [RFT 00/13] iomap: Constify ioreadX() iomem argument
 To: Christophe Leroy <christophe.leroy@c-s.fr>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:81Na4M35yO740ZhhUErPDsc2LM+R2NYfxOj6rxf+sU4HGYVoYv3
+ EJQFoROlZFh8DU7mEFUABANG/MMx8xMJkEnXqBzIrMDBtA1ECjB/L27nkAILbCClBeg5sQ6
+ zKKG7sQZhVFyi6rkOKmIcg/IMpLgM3onB94vL71pcOwnlm1djOW+NOnURzq8i+HGbn27pj1
+ Zsrld21YvILLe9PKX1xRw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lViDLeAou0c=:PyBhAhWsffCBntzyZug736
+ AXqx/pciMszto/rzYG91FotNTSbaaj9d+owmOI7SjpSHPVEsyzXpNq1pgV36ni3ZsAoFX83kU
+ KzGdVwN0eTmTLzj0iloaW/sHTAgEvAnqNnWxLzgiaT6cAlOy9jDDi771N8neFWR2jdm4YFW1K
+ sFz/UZ/K2z2MtJ1QrlxwRyoOgE0fQeDkWx7GboO8j4CvRg5ICU7fwqNmlV12W5qlafHHeAwf3
+ znGmjdr23w1smHbcdfUMo9/tm41oeYVjIBwtYxZcwj1i1yNXkboDYN3j5IE7SlmXVLKcSDG7v
+ q5lboipzPDuvqDl1nOYimIO2qvD0jSJn9IfCIh8yaAzW/MEbX41cCf2Y5xASeJqP7ElhqwA0+
+ 9CcgCGpbygQNfzQLwTfH+UJPhsu0jWuLJqhE8u3XjXIwfeDhyA/aTf5j+OWvQluw1f1H17Cgc
+ fsfUCyJdRYJxEQBC/2QI2OiaULbkQpTTTNyEdido0TFZ4VdQRDFVpGH/7VS3DxIfOS8iD07FA
+ t6BGRmOxhpbl2T8oS9N6BlSqMaubgH9GSUmdudlz7JmjgIgRM9yiKjf+u1thDY12/fUbR2Fqa
+ ST4eJDzJT6ttQwRm3QPwakgaTZcxibWDzFPy9evw2wf3Ay6vEKyCCy8zd79uHtopDuAdZBItA
+ wOsuJCsiRgXgoRldPLEBNStmPPZYksXVQ7MPzRHNQiEbiCDUrrLrxGXszpzZJkaIa1aLTanGX
+ dRkepCd4zaFcAsICb892v+x2MqCriaNCP/2F8LEdyEy+9YyrYIR8yL2sTNXKt/AOjOutv0Jpy
+ HUqYR1W0RdMhgdEY6FWk6fw3POHeFF98y3GWHrHnbQiMT4ds4nstKr+DdLczE5TJZFFWzvDey
+ r5Xlub6hhKFjFLGo8FQA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,7 +79,7 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, David Airlie <airlied@linux.ie>,
- nouveau@lists.freedesktop.org, Jason Wang <jasowang@redhat.com>,
+ ML nouveau <nouveau@lists.freedesktop.org>, Jason Wang <jasowang@redhat.com>,
  DRI Development <dri-devel@lists.freedesktop.org>,
  virtualization@lists.linux-foundation.org,
  "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
@@ -74,11 +87,11 @@ Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
  Dave Jiang <dave.jiang@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
  Helge Deller <deller@gmx.de>, Linux-sh list <linux-sh@vger.kernel.org>,
  Alexey Brodkin <abrodkin@synopsys.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Ben Skeggs <bskeggs@redhat.com>, Dave Airlie <airlied@redhat.com>,
- Matt Turner <mattst88@gmail.com>, arcml <linux-snps-arc@lists.infradead.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Ben Skeggs <bskeggs@redhat.com>,
+ Dave Airlie <airlied@redhat.com>, Matt Turner <mattst88@gmail.com>,
+ arcml <linux-snps-arc@lists.infradead.org>,
  Nick Kossifidis <mickflemm@gmail.com>, Allen Hubbe <allenbh@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, Jon Mason <jdmason@kudzu.us>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Jon Mason <jdmason@kudzu.us>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
  Thomas Gleixner <tglx@linutronix.de>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
  Richard Henderson <rth@twiddle.net>,
@@ -95,38 +108,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
-
-On Wed, Jan 8, 2020 at 9:35 AM Christophe Leroy <christophe.leroy@c-s.fr> w=
+On Wed, Jan 8, 2020 at 9:36 AM Christophe Leroy <christophe.leroy@c-s.fr> w=
 rote:
 > Le 08/01/2020 =C3=A0 09:18, Krzysztof Kozlowski a =C3=A9crit :
 > > On Wed, 8 Jan 2020 at 09:13, Geert Uytterhoeven <geert@linux-m68k.org> =
 wrote:
-> >> On Wed, Jan 8, 2020 at 9:07 AM Geert Uytterhoeven <geert@linux-m68k.or=
-g> wrote:
-> >>> On Tue, Jan 7, 2020 at 5:53 PM Krzysztof Kozlowski <krzk@kernel.org> =
-wrote:
-> >>>> The ioread8/16/32() and others have inconsistent interface among the
-> >>>> architectures: some taking address as const, some not.
-> >>>>
-> >>>> It seems there is nothing really stopping all of them to take
-> >>>> pointer to const.
-> >>>
-> >>> Shouldn't all of them take const volatile __iomem pointers?
-> >>> It seems the "volatile" is missing from all but the implementations i=
-n
-> >>> include/asm-generic/io.h.
-> >>
-> >> As my "volatile" comment applies to iowrite*(), too, probably that sho=
-uld be
-> >> done in a separate patch.
-> >>
-> >> Hence with patches 1-5 squashed, and for patches 11-13:
-> >> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
 > > I'll add to this one also changes to ioreadX_rep() and add another
 > > patch for volatile for reads and writes. I guess your review will be
 > > appreciated once more because of ioreadX_rep()
+> >
 >
 > volatile should really only be used where deemed necessary:
 >
@@ -138,20 +128,27 @@ l.html
 > each accessor call becomes a little critical section on its own and
 > ensures that the access happens as expected by the programmer."
 
-That is exactly the use case here: all above are accessor functions.
+The I/O accessors are one of the few places in which 'volatile' generally
+makes sense, at least for the implementations that do a plain pointer
+dereference (probably none of the ones in question here).
 
-Why would ioreadX() not need volatile, while readY() does?
+In case of readl/writel, this is what we do in asm-generic:
 
-Gr{oetje,eeting}s,
+static inline u32 __raw_readl(const volatile void __iomem *addr)
+{
+        return *(const volatile u32 __force *)addr;
+}
 
-                        Geert
+The __force-cast that removes the __iomem here also means that
+the 'volatile' keyword could be dropped from the argument list,
+as it has no real effect any more, but then there are a few drivers
+that mark their iomem pointers as either 'volatile void __iomem*' or
+(worse) 'volatile void *', so we keep it in the argument list to not
+add warnings for those drivers.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+It may be time to change these drivers to not use volatile for __iomem
+pointers, but that seems out of scope for what Krzysztof is trying
+to do. Ideally we would be consistent here though, either using volatile
+all the time or never.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+        Arnd
