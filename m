@@ -1,86 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60650134007
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 12:14:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175A7133F9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 11:48:16 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47t5Z416gDzDqST
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 21:48:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47t67w4sZFzDqST
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2020 22:14:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47t65f6HfTzDqSQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 22:12:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47t65d74X3z8t70
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 22:12:05 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47t65d5x1Pz9sRp; Wed,  8 Jan 2020 22:12:05 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47t5X831svzDqSP
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2020 21:46:31 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 008Aja54061041
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 Jan 2020 05:46:29 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xdd600ysp-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2020 05:46:28 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
- Wed, 8 Jan 2020 10:46:27 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 8 Jan 2020 10:46:24 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 008AjYAS42729752
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Jan 2020 10:45:35 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00FB24204B;
- Wed,  8 Jan 2020 10:46:22 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 56CB842049;
- Wed,  8 Jan 2020 10:46:20 +0000 (GMT)
-Received: from [9.109.249.141] (unknown [9.109.249.141])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  8 Jan 2020 10:46:20 +0000 (GMT)
-Subject: Re: [PATCH 0/3] Add support for divde[.] and divdeu[.] instruction
- emulation
-To: Balamuruhan S <bala24@linux.ibm.com>
-References: <20191210071904.31013-1-bala24@linux.ibm.com>
-From: Sandipan Das <sandipan@linux.ibm.com>
-Date: Wed, 8 Jan 2020 16:16:19 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ by ozlabs.org (Postfix) with ESMTPS id 47t65d26KCz9sRl
+ for <linuxppc-dev@ozlabs.org>; Wed,  8 Jan 2020 22:12:04 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 2E56EAC9A;
+ Wed,  8 Jan 2020 11:12:00 +0000 (UTC)
+Date: Wed, 8 Jan 2020 12:11:58 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: Re: [PATCH v6 3/6] powerpc/fadump: reorganize /sys/kernel/fadump_*
+ sysfs files
+Message-ID: <20200108111158.GY4113@kitsune.suse.cz>
+References: <20191211160910.21656-1-sourabhjain@linux.ibm.com>
+ <20191211160910.21656-4-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20191210071904.31013-1-bala24@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010810-0016-0000-0000-000002DB8668
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010810-0017-0000-0000-0000333E00E2
-Message-Id: <528e7dda-11cf-dbf1-788d-b8ab8318a094@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-08_03:2020-01-08,
- 2020-01-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 impostorscore=0 phishscore=0
- mlxlogscore=820 priorityscore=1501 suspectscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001080092
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191211160910.21656-4-sourabhjain@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,21 +62,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- paulus@samba.org, ravi.bangoria@linux.ibm.com
+Cc: linux-doc@vger.kernel.org, mahesh@linux.vnet.ibm.com, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
+ gregkh@linuxfoundation.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Dec 11, 2019 at 09:39:07PM +0530, Sourabh Jain wrote:
+> As the number of FADump sysfs files increases it is hard to manage all of
+> them inside /sys/kernel directory. It's better to have all the FADump
+> related sysfs files in a dedicated directory /sys/kernel/fadump. But in
+> order to maintain backward compatibility a symlink has been added for every
+> sysfs that has moved to new location.
 
-On 10/12/19 12:49 pm, Balamuruhan S wrote:
-> Hi All,
-> 
-> This patchset adds support to emulate divde, divde., divdeu and divdeu.
-> instructions and testcases for it.
-> 
+Patched this series into my test kernel and the sysfs sfiles look OK.
 
-LGTM.
+Tested-by: Michal Suchanek <msuchanek@suse.de>
 
-Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
+Thanks
 
+Michal
