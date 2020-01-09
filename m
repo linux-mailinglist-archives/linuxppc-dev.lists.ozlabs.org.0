@@ -2,85 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6347135BB5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 15:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06764135BDF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 15:56:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47tpxQ0l6zzDqYS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 01:52:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47tq261Hd1zDqVk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 01:56:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47tpt34PlKzDq62
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 01:49:31 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47tq0C6JhHzDqJC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 01:54:50 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 009EgITW041320
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jan 2020 09:49:26 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xe2h0sh97-1
+ 009Eq0uj091498
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jan 2020 09:54:48 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xdx6k1wbh-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 09:49:26 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 09:54:48 -0500
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Thu, 9 Jan 2020 14:49:23 -0000
+ Thu, 9 Jan 2020 14:54:45 -0000
 Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 9 Jan 2020 14:49:16 -0000
+ Thu, 9 Jan 2020 14:54:38 -0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
  by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 009EnEKT24117396
+ 009EsaDt56557640
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Jan 2020 14:49:14 GMT
+ Thu, 9 Jan 2020 14:54:36 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B7DCEA4055;
- Thu,  9 Jan 2020 14:49:14 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B693BA4055;
+ Thu,  9 Jan 2020 14:54:36 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9CDA6A404D;
- Thu,  9 Jan 2020 14:49:13 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 99DAAA404D;
+ Thu,  9 Jan 2020 14:54:35 +0000 (GMT)
 Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  9 Jan 2020 14:49:13 +0000 (GMT)
-Subject: Re: [PATCH v2 07/27] ocxl: Add functions to map/unmap LPC memory
+ Thu,  9 Jan 2020 14:54:35 +0000 (GMT)
+Subject: Re: [PATCH v2 09/27] ocxl: Free detached contexts in
+ ocxl_context_detach_all()
 To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
 References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203034655.51561-8-alastair@au1.ibm.com>
+ <20191203034655.51561-10-alastair@au1.ibm.com>
 From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 9 Jan 2020 15:49:13 +0100
+Date: Thu, 9 Jan 2020 15:54:35 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191203034655.51561-8-alastair@au1.ibm.com>
+In-Reply-To: <20191203034655.51561-10-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20010914-0028-0000-0000-000003CFAF34
+x-cbid: 20010914-0012-0000-0000-0000037BF30D
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010914-0029-0000-0000-00002493C514
-Message-Id: <a3a366f7-f2fd-6203-4b80-c7e4f5de24c0@linux.ibm.com>
+x-cbparentid: 20010914-0013-0000-0000-000021B814C0
+Message-Id: <4c9da9a0-55f4-6cf4-53b8-e8a69744bf98@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-01-09_02:2020-01-09,
  2020-01-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 malwarescore=0 impostorscore=0 phishscore=0
- mlxscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001090129
+ adultscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=2 spamscore=0 mlxscore=0 malwarescore=0 impostorscore=0
+ mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-2001090130
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,148 +120,69 @@ Sender: "Linuxppc-dev"
 Le 03/12/2019 à 04:46, Alastair D'Silva a écrit :
 > From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> Add functions to map/unmap LPC memory
+> ocxl_context_detach_all() is called from ocxl_function_close(), so
+> there is no reason to leave the contexts allocated, as the caller
+> can do nothing useful with them at that point.
+> 
+> This also has the side-effect of freeing any allocated IRQs
+> within the context.
 > 
 > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 > ---
->   drivers/misc/ocxl/config.c        |  4 +++
->   drivers/misc/ocxl/core.c          | 50 +++++++++++++++++++++++++++++++
->   drivers/misc/ocxl/ocxl_internal.h |  3 ++
->   include/misc/ocxl.h               | 18 +++++++++++
->   4 files changed, 75 insertions(+)
-> 
-> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-> index c8e19bfb5ef9..fb0c3b6f8312 100644
-> --- a/drivers/misc/ocxl/config.c
-> +++ b/drivers/misc/ocxl/config.c
-> @@ -568,6 +568,10 @@ static int read_afu_lpc_memory_info(struct pci_dev *dev,
->   		afu->special_purpose_mem_size =
->   			total_mem_size - lpc_mem_size;
->   	}
-> +
-> +	dev_info(&dev->dev, "Probed LPC memory of %#llx bytes and special purpose memory of %#llx bytes\n",
-> +		afu->lpc_mem_size, afu->special_purpose_mem_size);
-> +
->   	return 0;
->   }
->   
-> diff --git a/drivers/misc/ocxl/core.c b/drivers/misc/ocxl/core.c
-> index 2531c6cf19a0..98611faea219 100644
-> --- a/drivers/misc/ocxl/core.c
-> +++ b/drivers/misc/ocxl/core.c
-> @@ -210,6 +210,55 @@ static void unmap_mmio_areas(struct ocxl_afu *afu)
->   	release_fn_bar(afu->fn, afu->config.global_mmio_bar);
->   }
->   
-> +int ocxl_afu_map_lpc_mem(struct ocxl_afu *afu)
-> +{
-> +	struct pci_dev *dev = to_pci_dev(afu->fn->dev.parent);
-> +
-> +	if ((afu->config.lpc_mem_size + afu->config.special_purpose_mem_size) == 0)
-> +		return 0;
-> +
-> +	afu->lpc_base_addr = ocxl_link_lpc_map(afu->fn->link, dev);
-> +	if (afu->lpc_base_addr == 0)
-> +		return -EINVAL;
-> +
-> +	if (afu->config.lpc_mem_size) {
-> +		afu->lpc_res.start = afu->lpc_base_addr + afu->config.lpc_mem_offset;
-> +		afu->lpc_res.end = afu->lpc_res.start + afu->config.lpc_mem_size - 1;
-> +	}
-> +
-> +	if (afu->config.special_purpose_mem_size) {
-> +		afu->special_purpose_res.start = afu->lpc_base_addr +
-> +						 afu->config.special_purpose_mem_offset;
-> +		afu->special_purpose_res.end = afu->special_purpose_res.start +
-> +					       afu->config.special_purpose_mem_size - 1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(ocxl_afu_map_lpc_mem);
-> +
-> +struct resource *ocxl_afu_lpc_mem(struct ocxl_afu *afu)
-> +{
-> +	return &afu->lpc_res;
-> +}
-> +EXPORT_SYMBOL_GPL(ocxl_afu_lpc_mem);
-> +
-> +static void unmap_lpc_mem(struct ocxl_afu *afu)
-> +{
-> +	struct pci_dev *dev = to_pci_dev(afu->fn->dev.parent);
-> +
-> +	if (afu->lpc_res.start || afu->special_purpose_res.start) {
-> +		void *link = afu->fn->link;
-> +
-> +		ocxl_link_lpc_release(link, dev);
-> +
-> +		afu->lpc_res.start = 0;
-> +		afu->lpc_res.end = 0;
-> +		afu->special_purpose_res.start = 0;
-> +		afu->special_purpose_res.end = 0;
-> +	}
-> +}
-> +
->   static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct pci_dev *dev)
->   {
->   	int rc;
-> @@ -251,6 +300,7 @@ static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct pci_dev *dev)
->   
->   static void deconfigure_afu(struct ocxl_afu *afu)
->   {
-> +	unmap_lpc_mem(afu);
->   	unmap_mmio_areas(afu);
->   	reclaim_afu_pasid(afu);
->   	reclaim_afu_actag(afu);
-> diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
-> index 20b417e00949..9f4b47900e62 100644
-> --- a/drivers/misc/ocxl/ocxl_internal.h
-> +++ b/drivers/misc/ocxl/ocxl_internal.h
-> @@ -52,6 +52,9 @@ struct ocxl_afu {
->   	void __iomem *global_mmio_ptr;
->   	u64 pp_mmio_start;
->   	void *private;
-> +	u64 lpc_base_addr; /* Covers both LPC & special purpose memory */
-> +	struct resource lpc_res;
-> +	struct resource special_purpose_res;
->   };
->   
->   enum ocxl_context_status {
-> diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
-> index 06dd5839e438..6f7c02f0d5e3 100644
-> --- a/include/misc/ocxl.h
-> +++ b/include/misc/ocxl.h
-> @@ -212,6 +212,24 @@ int ocxl_irq_set_handler(struct ocxl_context *ctx, int irq_id,
->   
->   // AFU Metadata
->   
-> +/**
-> + * Map the LPC system & special purpose memory for an AFU
-> + *
-> + * Do not call this during device discovery, as there may me multiple
-> + * devices on a link, and the memory is mapped for the whole link, not
-> + * just one device. It should only be called after all devices have
-> + * registered their memory on the link.
-> + *
-> + * afu: The AFU that has the LPC memory to map
-> + */
-> +extern int ocxl_afu_map_lpc_mem(struct ocxl_afu *afu);
-> +
-> +/**
-> + * Get the physical address range of LPC memory for an AFU
-> + * afu: The AFU associated with the LPC memory
-> + */
-> +extern struct resource *ocxl_afu_lpc_mem(struct ocxl_afu *afu);
-> +
 
 
-You can drop the useless 'extern'.
+I think this is wrong and probably unneeded. In ocxl (and I would assume 
+most drivers), we separate pretty clearly what is setup by the driver 
+framework when a device is probed, and what is allocated by the users 
+(userland or scm). Contexts are allocated by the users. So they should 
+be freed by them only. That separation is also why we have some 
+reference counting on the afu and function structs, to make sure the 
+core data remains valid for as long as required.
+Though it's a bit asking for troubles, it can be seen when unbinding a 
+function from the driver through sysfs. That will end up calling 
+ocxl_function_close() and therefore ocxl_context_detach_all(). However 
+it's possible for a user process to still have a file descriptor opened. 
+The context is detached and marked as CLOSED, so any interaction with it 
+from the user will fail, but it should still be allocated so that it is 
+valid if the user process makes a system call to the driver. The context 
+will be freed when the file descriptor is closed.
+I don't think this is needed for scm either, since you've now added the 
+context detach and free call in free_scm()
+I would just drop this patch.
 
    Fred
 
 
->   /**
->    * Get a pointer to the config for an AFU
->    *
+
+>   drivers/misc/ocxl/context.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+> index 994563a078eb..6cb36ef96e09 100644
+> --- a/drivers/misc/ocxl/context.c
+> +++ b/drivers/misc/ocxl/context.c
+> @@ -259,10 +259,11 @@ void ocxl_context_detach_all(struct ocxl_afu *afu)
+>   {
+>   	struct ocxl_context *ctx;
+>   	int tmp;
+> +	int rc;
+>   
+>   	mutex_lock(&afu->contexts_lock);
+>   	idr_for_each_entry(&afu->contexts_idr, ctx, tmp) {
+> -		ocxl_context_detach(ctx);
+> +		rc = ocxl_context_detach(ctx);
+>   		/*
+>   		 * We are force detaching - remove any active mmio
+>   		 * mappings so userspace cannot interfere with the
+> @@ -274,6 +275,9 @@ void ocxl_context_detach_all(struct ocxl_afu *afu)
+>   		if (ctx->mapping)
+>   			unmap_mapping_range(ctx->mapping, 0, 0, 1);
+>   		mutex_unlock(&ctx->mapping_lock);
+> +
+> +		if (rc != -EBUSY)
+> +			ocxl_context_free(ctx);
+>   	}
+>   	mutex_unlock(&afu->contexts_lock);
+>   }
 > 
 
