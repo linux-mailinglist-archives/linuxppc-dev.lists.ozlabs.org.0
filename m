@@ -2,86 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06764135BDF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 15:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A367135C95
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 16:23:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47tq261Hd1zDqVk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 01:56:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47tqcl6NHTzDqbG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 02:23:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=LsSiqN4T; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47tq0C6JhHzDqJC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 01:54:50 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 009Eq0uj091498
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jan 2020 09:54:48 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xdx6k1wbh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 09:54:48 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Thu, 9 Jan 2020 14:54:45 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 9 Jan 2020 14:54:38 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 009EsaDt56557640
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Jan 2020 14:54:36 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B693BA4055;
- Thu,  9 Jan 2020 14:54:36 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99DAAA404D;
- Thu,  9 Jan 2020 14:54:35 +0000 (GMT)
-Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  9 Jan 2020 14:54:35 +0000 (GMT)
-Subject: Re: [PATCH v2 09/27] ocxl: Free detached contexts in
- ocxl_context_detach_all()
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203034655.51561-10-alastair@au1.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 9 Jan 2020 15:54:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47tqZl6VG4zDqWl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:21:18 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 47tqZc4Px8z9tyTJ;
+ Thu,  9 Jan 2020 16:21:12 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=LsSiqN4T; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 4R6vrxeQFeFN; Thu,  9 Jan 2020 16:21:12 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47tqZc3MhMz9ttwm;
+ Thu,  9 Jan 2020 16:21:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1578583272; bh=rlFk2/nVn6L86YvAEvyKd40+sLRN0EVlSLwY9Encz7o=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=LsSiqN4T6C+PabHJPB72/f2z78T+X0zDsDYVByArCv0kne1cpvCd7CLjXiwhn7Zaq
+ JjLD8oOKEgmQlO7SNjrn3PcqPu0B5nafQulmD2CwNR73CGxgx85w4yPx3GR/FtnTFJ
+ YxM3dwNKUxJyMEQp0xwxOom7OOsDUK4O0pXQ++m0=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F2F3E8B82B;
+ Thu,  9 Jan 2020 16:21:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id jRRx2cg7etrd; Thu,  9 Jan 2020 16:21:13 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2E6B88B828;
+ Thu,  9 Jan 2020 16:21:13 +0100 (CET)
+Subject: Re: [RFC PATCH] powerpc/32: Switch VDSO to C implementation.
+To: Thomas Gleixner <tglx@linutronix.de>
+References: <8ce3582f7f7da9ff0286ced857e5aa2e5ae6746e.1571662378.git.christophe.leroy@c-s.fr>
+ <alpine.DEB.2.21.1910212312520.2078@nanos.tec.linutronix.de>
+ <f4486e86-3c0c-0eec-1639-0e5956cdb8f1@c-s.fr>
+ <95bd2367-8edc-29db-faa3-7729661e05f2@c-s.fr>
+ <alpine.DEB.2.21.1910261751140.10190@nanos.tec.linutronix.de>
+ <439bce37-9c2c-2afe-9c9e-2f500472f9f8@c-s.fr>
+ <alpine.DEB.2.21.1910262026340.10190@nanos.tec.linutronix.de>
+ <207cef10-3da8-6a52-139c-0620b21b64af@c-s.fr>
+ <87d0bslo7b.fsf@nanos.tec.linutronix.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <09d07ad3-47a2-db2f-2f14-e002b22d8d9e@c-s.fr>
+Date: Thu, 9 Jan 2020 15:21:12 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-In-Reply-To: <20191203034655.51561-10-alastair@au1.ibm.com>
+In-Reply-To: <87d0bslo7b.fsf@nanos.tec.linutronix.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20010914-0012-0000-0000-0000037BF30D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20010914-0013-0000-0000-000021B814C0
-Message-Id: <4c9da9a0-55f4-6cf4-53b8-e8a69744bf98@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-09_02:2020-01-09,
- 2020-01-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- suspectscore=2 spamscore=0 mlxscore=0 malwarescore=0 impostorscore=0
- mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-2001090130
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,96 +85,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Keith Busch <keith.busch@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ luto@kernel.org, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Thomas,
 
-
-Le 03/12/2019 à 04:46, Alastair D'Silva a écrit :
-> From: Alastair D'Silva <alastair@d-silva.org>
+On 01/09/2020 02:05 PM, Thomas Gleixner wrote:
+> Christophe!
 > 
-> ocxl_context_detach_all() is called from ocxl_function_close(), so
-> there is no reason to leave the contexts allocated, as the caller
-> can do nothing useful with them at that point.
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> In do_hres(), I see:
+>>
+>> 		cycles = __arch_get_hw_counter(vd->clock_mode);
+>> 		ns = vdso_ts->nsec;
+>> 		last = vd->cycle_last;
+>> 		if (unlikely((s64)cycles < 0))
+>> 			return -1;
+>>
+>> __arch_get_hw_counter() returns a u64 values. On the PPC, this is read
+>> from the timebase which is a 64 bits counter.
+>>
+>> Why returning -1 if (s64)cycles < 0 ? Does it means we have to mask out
+>> the most significant bit when reading the HW counter ?
 > 
-> This also has the side-effect of freeing any allocated IRQs
-> within the context.
+> Only if you expect the HW counter to reach a value which has bit 63
+> set. That'd require:
 > 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
-
-
-I think this is wrong and probably unneeded. In ocxl (and I would assume 
-most drivers), we separate pretty clearly what is setup by the driver 
-framework when a device is probed, and what is allocated by the users 
-(userland or scm). Contexts are allocated by the users. So they should 
-be freed by them only. That separation is also why we have some 
-reference counting on the afu and function structs, to make sure the 
-core data remains valid for as long as required.
-Though it's a bit asking for troubles, it can be seen when unbinding a 
-function from the driver through sysfs. That will end up calling 
-ocxl_function_close() and therefore ocxl_context_detach_all(). However 
-it's possible for a user process to still have a file descriptor opened. 
-The context is detached and marked as CLOSED, so any interaction with it 
-from the user will fail, but it should still be allocated so that it is 
-valid if the user process makes a system call to the driver. The context 
-will be freed when the file descriptor is closed.
-I don't think this is needed for scm either, since you've now added the 
-context detach and free call in free_scm()
-I would just drop this patch.
-
-   Fred
-
-
-
->   drivers/misc/ocxl/context.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+> uptime		counter frequency
 > 
-> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
-> index 994563a078eb..6cb36ef96e09 100644
-> --- a/drivers/misc/ocxl/context.c
-> +++ b/drivers/misc/ocxl/context.c
-> @@ -259,10 +259,11 @@ void ocxl_context_detach_all(struct ocxl_afu *afu)
->   {
->   	struct ocxl_context *ctx;
->   	int tmp;
-> +	int rc;
->   
->   	mutex_lock(&afu->contexts_lock);
->   	idr_for_each_entry(&afu->contexts_idr, ctx, tmp) {
-> -		ocxl_context_detach(ctx);
-> +		rc = ocxl_context_detach(ctx);
->   		/*
->   		 * We are force detaching - remove any active mmio
->   		 * mappings so userspace cannot interfere with the
-> @@ -274,6 +275,9 @@ void ocxl_context_detach_all(struct ocxl_afu *afu)
->   		if (ctx->mapping)
->   			unmap_mapping_range(ctx->mapping, 0, 0, 1);
->   		mutex_unlock(&ctx->mapping_lock);
-> +
-> +		if (rc != -EBUSY)
-> +			ocxl_context_free(ctx);
->   	}
->   	mutex_unlock(&afu->contexts_lock);
->   }
+> ~292 years      1GHz
+> ~ 58 years      5GHz
+> 
+> assumed that the HW counter starts at 0 when the box is powered on.
+> 
+> The reason why this is implemented in this way is that
+> __arch_get_hw_counter() needs a way to express that the clocksource of
+> the moment is not suitable for VDSO so that the syscall fallback gets
+> invoked.
+> 
+> Sure we could have used a pointer for the value and a return value
+> indicating the validity, but given the required uptime the resulting
+> code overhead seemed to be not worth it. At least not for me as I'm not
+> planning to be around 58 years from now :)
 > 
 
+I managed to get better code and better performance by splitting out the 
+validity check as follows. Would it be suitable for all arches ?
+
+
+diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h 
+b/arch/powerpc/include/asm/vdso/gettimeofday.h
+index 689f51b0d8c9..11cdd6faa4ad 100644
+--- a/arch/powerpc/include/asm/vdso/gettimeofday.h
++++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+@@ -114,15 +114,17 @@ int clock_getres32_fallback(clockid_t _clkid, 
+struct old_timespec32 *_ts)
+  	return ret;
+  }
+
+-static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
++static __always_inline bool __arch_is_hw_counter_valid(s32 clock_mode)
+  {
+  	/*
+  	 * clock_mode == 0 implies that vDSO are enabled otherwise
+  	 * fallback on syscall.
+  	 */
+-	if (clock_mode)
+-		return ULLONG_MAX;
++	return clock_mode ? false : true;
++}
+
++static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
++{
+  	return get_tb();
+  }
+
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index ee9da52a3e02..90bb5dfd0db0 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -46,11 +46,12 @@ static inline int do_hres(const struct vdso_data 
+*vd, clockid_t clk,
+
+  	do {
+  		seq = vdso_read_begin(vd);
++		if (!__arch_is_hw_counter_valid(vd->clock_mode))
++			return -1;
++
+  		cycles = __arch_get_hw_counter(vd->clock_mode);
+  		ns = vdso_ts->nsec;
+  		last = vd->cycle_last;
+-		if (unlikely((s64)cycles < 0))
+-			return -1;
+
+  		ns += vdso_calc_delta(cycles, last, vd->mask, vd->mult);
+  		ns >>= vd->shift;
+
+
+Thanks
+Christophe
