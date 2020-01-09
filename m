@@ -2,47 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68292135B8E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 15:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FA6135B97
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2020 15:43:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47tpfb6vZwzDqZ2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 01:39:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47tplX3QtYzDqWM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 01:43:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47tpcn1qqjzDqXr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 01:38:01 +1100 (AEDT)
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1ipYRV-0003WO-4H; Thu, 09 Jan 2020 15:05:45 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
- id A3E5F1060CF; Thu,  9 Jan 2020 15:05:44 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [RFC PATCH] powerpc/32: Switch VDSO to C implementation.
-In-Reply-To: <207cef10-3da8-6a52-139c-0620b21b64af@c-s.fr>
-References: <8ce3582f7f7da9ff0286ced857e5aa2e5ae6746e.1571662378.git.christophe.leroy@c-s.fr>
- <alpine.DEB.2.21.1910212312520.2078@nanos.tec.linutronix.de>
- <f4486e86-3c0c-0eec-1639-0e5956cdb8f1@c-s.fr>
- <95bd2367-8edc-29db-faa3-7729661e05f2@c-s.fr>
- <alpine.DEB.2.21.1910261751140.10190@nanos.tec.linutronix.de>
- <439bce37-9c2c-2afe-9c9e-2f500472f9f8@c-s.fr>
- <alpine.DEB.2.21.1910262026340.10190@nanos.tec.linutronix.de>
- <207cef10-3da8-6a52-139c-0620b21b64af@c-s.fr>
-Date: Thu, 09 Jan 2020 15:05:44 +0100
-Message-ID: <87d0bslo7b.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47tpjt281ZzDqXs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 01:42:25 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 009EgHsJ034444
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jan 2020 09:42:22 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xe0hunyje-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 09:42:21 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Thu, 9 Jan 2020 14:41:50 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 9 Jan 2020 14:41:44 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 009Eesn145482480
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Jan 2020 14:40:54 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4FDB6A405B;
+ Thu,  9 Jan 2020 14:41:42 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3ED23A4051;
+ Thu,  9 Jan 2020 14:41:41 +0000 (GMT)
+Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Jan 2020 14:41:41 +0000 (GMT)
+Subject: Re: [PATCH v2 05/27] powerpc: Map & release OpenCAPI LPC memory
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20191203034655.51561-1-alastair@au1.ibm.com>
+ <20191203034655.51561-6-alastair@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Thu, 9 Jan 2020 15:41:41 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191203034655.51561-6-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20010914-0028-0000-0000-000003CFAE9E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20010914-0029-0000-0000-00002493C478
+Message-Id: <d7b9741e-ddf5-024a-6f63-0e957e240c6d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-09_02:2020-01-09,
+ 2020-01-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0
+ mlxscore=0 priorityscore=1501 suspectscore=2 clxscore=1015 phishscore=0
+ bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=820 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001090129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,49 +92,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- luto@kernel.org, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Keith Busch <keith.busch@intel.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe!
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> In do_hres(), I see:
->
-> 		cycles = __arch_get_hw_counter(vd->clock_mode);
-> 		ns = vdso_ts->nsec;
-> 		last = vd->cycle_last;
-> 		if (unlikely((s64)cycles < 0))
-> 			return -1;
->
-> __arch_get_hw_counter() returns a u64 values. On the PPC, this is read 
-> from the timebase which is a 64 bits counter.
->
-> Why returning -1 if (s64)cycles < 0 ? Does it means we have to mask out 
-> the most significant bit when reading the HW counter ?
 
-Only if you expect the HW counter to reach a value which has bit 63
-set. That'd require:
+Le 03/12/2019 à 04:46, Alastair D'Silva a écrit :
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> This patch adds platform support to map & release LPC memory.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
 
-uptime		counter frequency
 
-~292 years      1GHz
-~ 58 years      5GHz
+It looks ok now, thanks
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-assumed that the HW counter starts at 0 when the box is powered on.
 
-The reason why this is implemented in this way is that
-__arch_get_hw_counter() needs a way to express that the clocksource of
-the moment is not suitable for VDSO so that the syscall fallback gets
-invoked.
+>   arch/powerpc/include/asm/pnv-ocxl.h   |  2 ++
+>   arch/powerpc/platforms/powernv/ocxl.c | 42 +++++++++++++++++++++++++++
+>   2 files changed, 44 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
+> index 7de82647e761..f8f8ffb48aa8 100644
+> --- a/arch/powerpc/include/asm/pnv-ocxl.h
+> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
+> @@ -32,5 +32,7 @@ extern int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
+>   
+>   extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
+>   extern void pnv_ocxl_free_xive_irq(u32 irq);
+> +extern u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size);
+> +extern void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev);
+>   
+>   #endif /* _ASM_PNV_OCXL_H */
+> diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
+> index 8c65aacda9c8..b56a48daf48c 100644
+> --- a/arch/powerpc/platforms/powernv/ocxl.c
+> +++ b/arch/powerpc/platforms/powernv/ocxl.c
+> @@ -475,6 +475,48 @@ void pnv_ocxl_spa_release(void *platform_data)
+>   }
+>   EXPORT_SYMBOL_GPL(pnv_ocxl_spa_release);
+>   
+> +u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size)
+> +{
+> +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> +	struct pnv_phb *phb = hose->private_data;
+> +	u32 bdfn = pci_dev_id(pdev);
+> +	__be64 base_addr_be64;
+> +	u64 base_addr;
+> +	int rc;
+> +
+> +	rc = opal_npu_mem_alloc(phb->opal_id, bdfn, size, &base_addr_be64);
+> +	if (rc) {
+> +		dev_warn(&pdev->dev,
+> +			 "OPAL could not allocate LPC memory, rc=%d\n", rc);
+> +		return 0;
+> +	}
+> +
+> +	base_addr = be64_to_cpu(base_addr_be64);
+> +
+> +	rc = check_hotplug_memory_addressable(base_addr >> PAGE_SHIFT,
+> +					      size >> PAGE_SHIFT);
+> +	if (rc)
+> +		return 0;
+> +
+> +	return base_addr;
+> +}
+> +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_setup);
+> +
+> +void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev)
+> +{
+> +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> +	struct pnv_phb *phb = hose->private_data;
+> +	u32 bdfn = pci_dev_id(pdev);
+> +	int rc;
+> +
+> +	rc = opal_npu_mem_release(phb->opal_id, bdfn);
+> +	if (rc)
+> +		dev_warn(&pdev->dev,
+> +			 "OPAL reported rc=%d when releasing LPC memory\n", rc);
+> +}
+> +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_release);
+> +
+> +
+>   int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
+>   {
+>   	struct spa_data *data = (struct spa_data *) platform_data;
+> 
 
-Sure we could have used a pointer for the value and a return value
-indicating the validity, but given the required uptime the resulting
-code overhead seemed to be not worth it. At least not for me as I'm not
-planning to be around 58 years from now :)
-
-Thanks,
-
-        tglx
