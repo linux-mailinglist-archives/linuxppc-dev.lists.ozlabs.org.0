@@ -2,65 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082DA1377AF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 21:07:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83880137835
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 21:58:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vYt9066rzDqhk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 07:07:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vb0v4lDVzDqjG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 07:58:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=alex.williamson@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=CS+f/8bF; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vYr34tXXzDqh3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 07:05:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1578686719;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OPSR2mIQIOiig6JFjS6VbfWRplkUrgJKyJfU2ImkazE=;
- b=CS+f/8bFqFxdIFc4KssGeAFoY2VCAvbCADzh9OZzPtXz8wReLbVc00r4lIJkPJ0evZ7Vnm
- 0fWRnHjMP3er0BMFVYhp1xvBDQQ1s8d9CUGk7eejSSX0ZftmcZb34p+DgYxkT75UD8xy63
- NhZE3TP/GRtwKlqxsByQyPgyp7stIMM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-12-4Ow0hfPtPAC5kkXJwz8rsQ-1; Fri, 10 Jan 2020 11:03:13 -0500
-X-MC-Unique: 4Ow0hfPtPAC5kkXJwz8rsQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5EB75107ACC5;
- Fri, 10 Jan 2020 16:03:11 +0000 (UTC)
-Received: from x1.home (ovpn-116-128.phx2.redhat.com [10.3.116.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 70B1280680;
- Fri, 10 Jan 2020 16:03:10 +0000 (UTC)
-Date: Fri, 10 Jan 2020 09:03:06 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] vfio/spapr/nvlink2: Skip unpinning pages on
- error exit
-Message-ID: <20200110090306.04683f3c@x1.home>
-In-Reply-To: <20191223010927.79843-1-aik@ozlabs.ru>
-References: <20191223010927.79843-1-aik@ozlabs.ru>
-Organization: Red Hat
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vZyy4hsvzDqhK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 07:56:26 +1100 (AEDT)
+Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34]
+ helo=nanos.tec.linutronix.de)
+ by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+ (Exim 4.80) (envelope-from <tglx@linutronix.de>)
+ id 1iq1KD-0004bR-TU; Fri, 10 Jan 2020 21:56:10 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+ id 400F9105BDB; Fri, 10 Jan 2020 21:56:09 +0100 (CET)
+From: Thomas Gleixner <tglx@linutronix.de>
+To: Andy Lutomirski <luto@kernel.org>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [RFC PATCH v2 01/10] lib: vdso: ensure all arches have 32bit
+ fallback
+In-Reply-To: <CALCETrULuV5iAU3kSjMdcpV6DFGEw1z2so0DfDca6hoLB4X4cA@mail.gmail.com>
+References: <cover.1577111363.git.christophe.leroy@c-s.fr>
+ <47701b5fb73cf536db074031db8e6e3fa3695168.1577111365.git.christophe.leroy@c-s.fr>
+ <CALCETrULuV5iAU3kSjMdcpV6DFGEw1z2so0DfDca6hoLB4X4cA@mail.gmail.com>
+Date: Fri, 10 Jan 2020 21:56:09 +0100
+Message-ID: <87sgknrpxy.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
+ SHORTCIRCUIT=-0.0001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,52 +56,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Arnd Bergmann <arnd@arndb.de>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 23 Dec 2019 12:09:27 +1100
-Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+Andy Lutomirski <luto@kernel.org> writes:
 
-> The nvlink2 subdriver for IBM Witherspoon machines preregisters
-> GPU memory in the IOMMI API so KVM TCE code can map this memory
-> for DMA as well. This is done by mm_iommu_newdev() called from
-> vfio_pci_nvgpu_regops::mmap.
-> 
-> In an unlikely event of failure the data->mem remains NULL and
-> since mm_iommu_put() (which unregisters the region and unpins memory
-> if that was regular memory) does not expect mem==NULL, it should not be
-> called.
-> 
-> This adds a check to only call mm_iommu_put() for a valid data->mem.
-> 
-> Fixes: 7f92891778df ("vfio_pci: Add NVIDIA GV100GL [Tesla V100 SXM2] subdriver")
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->  drivers/vfio/pci/vfio_pci_nvlink2.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_nvlink2.c b/drivers/vfio/pci/vfio_pci_nvlink2.c
-> index f2983f0f84be..3f5f8198a6bb 100644
-> --- a/drivers/vfio/pci/vfio_pci_nvlink2.c
-> +++ b/drivers/vfio/pci/vfio_pci_nvlink2.c
-> @@ -97,8 +97,10 @@ static void vfio_pci_nvgpu_release(struct vfio_pci_device *vdev,
->  
->  	/* If there were any mappings at all... */
->  	if (data->mm) {
-> -		ret = mm_iommu_put(data->mm, data->mem);
-> -		WARN_ON(ret);
-> +		if (data->mem) {
-> +			ret = mm_iommu_put(data->mm, data->mem);
-> +			WARN_ON(ret);
-> +		}
->  
->  		mmdrop(data->mm);
->  	}
+> On Mon, Dec 23, 2019 at 6:31 AM Christophe Leroy
+> <christophe.leroy@c-s.fr> wrote:
+>>
+>> In order to simplify next step which moves fallback call at arch
+>> level, ensure all arches have a 32bit fallback instead of handling
+>> the lack of 32bit fallback in the common code based
+>> on VDSO_HAS_32BIT_FALLBACK
+>
+> I don't like this.  You've implemented what appear to be nonsensical
+> fallbacks (the 32-bit fallback for a 64-bit vDSO build?  There's no
+> such thing).
+>
+> How exactly does this simplify patch 2?
 
-Applied to vfio next branch for v5.6.  Thanks,
+There is a patchset from Vincenzo which fell through the cracks which
+addresses the VDS_HAS_32BIT_FALLBACK issue properly. I'm about to pick
+it up. See:
 
-Alex
+ https://lore.kernel.org/lkml/20190830135902.20861-1-vincenzo.frascino@arm.com/
 
+Thanks,
+
+        tglx
