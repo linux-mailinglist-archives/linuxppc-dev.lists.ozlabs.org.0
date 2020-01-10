@@ -1,84 +1,153 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6189D136612
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 05:20:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AA4136539
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 03:06:39 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47v5vJ3Dv3zDqW1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 13:06:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47v8sz108KzDqc1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 15:20:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=lDiHn01W; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47v5s30cCSzDqRg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 13:04:37 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00A22XP7022851
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jan 2020 21:04:35 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xe7m2yn99-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 21:04:34 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00A20ZdE026221
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:04:33 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma05wdc.us.ibm.com with ESMTP id 2xajb6tuss-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:04:33 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00A24XCZ13435698
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:04:33 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 04ACCAE05F
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:04:33 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE3D3AE05C
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:04:32 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.70.94.45])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 02:04:32 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id 566922E0F44; Thu,  9 Jan 2020 18:04:31 -0800 (PST)
-Date: Thu, 9 Jan 2020 18:04:31 -0800
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-To: maddy <maddy@linux.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/pseries/svm: Disable BHRB/EBB/PMU access
-Message-ID: <20200110020431.GA29470@us.ibm.com>
-References: <20191225051634.3262-1-sukadev@linux.ibm.com>
- <20191225051634.3262-2-sukadev@linux.ibm.com>
- <20191227052932.GA20946@us.ibm.com>
- <10bfdea4-3237-b6d1-2ac0-034404a94dfc@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47v8r22DYJzDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 15:18:56 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id g6so346562plt.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 20:18:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Q6jVZnvPRYGBYGhE7TDM/MbfGG+eK0n6Cx4oFyCefbc=;
+ b=lDiHn01WaerE8wfZwdCmfGtwA04/CGAW9iQMa5EOvSFBLmtZfgmyJuxrIOO+nuYFH5
+ PP8cZJqfpQ3K8b/4InK6rI0YTAegx7SjUrQ1vSCOub+Xxop5D2hclXxA+BLm1z3T/QaD
+ nfWRSBzHpxvXFh32NRGSOB3z/tSUPGCvpVXX3P3lXC6lFnyAdjgRKZOzU2bgnSLOLltC
+ YBT1wLv6CWTn3VdPjgxppHp7IXCw2DsiumOfS9x0rRLuicaeISEu0pFcYFm9o7TMRuXA
+ qEEQKSWIu16nTNtsJTltU5JiMbyGj3Bu55nEiT+jza0yrwnFWtdco0z+YJEgIfn8BoJo
+ 4Sfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=Q6jVZnvPRYGBYGhE7TDM/MbfGG+eK0n6Cx4oFyCefbc=;
+ b=KuMp8yHWV/URNJfGUtykUpJvuq/zw3oFEY1NuyNJlSRCokgAgWtwpTJjKUAdFAnOeN
+ cfcy5y5emil3gTENn0XMhM71HO0piOPWz+40g58bvTG59xUMmQ7rR62mKE2YqWxS7d5B
+ QkMF2bDU8BvArOCFH5JnP05W8ecfnLgekVLUeNP1iY6BVVppX7bxCVQcQ5gScAkuoCsz
+ vyLJVHTBwKXaMXXm3YKVWX3GbURMuuG8SfbcPgUpzbfwfLGLqWM2S8EdS7ZovLFqsHfi
+ YxvIGxj0KkaoqusjbeKhK5lQtCcxBC04WMfFRcva2WrwwscrKxDsqI/oyultwZGnifjB
+ tQTQ==
+X-Gm-Message-State: APjAAAWV0hw9nxrkbgStOK7+JrLFl5UL3/iwpOWjQUzDydRjThf92dQC
+ BaF5XN/PQzuwoXUGhCLj+SZ1xQ==
+X-Google-Smtp-Source: APXvYqw9Ku7Hgb0SH2milCSum4sMjScfB1kw0USp18n3yMluUsx5wF+73tMY7KiES1+zzc9gFiumGw==
+X-Received: by 2002:a17:902:6b83:: with SMTP id
+ p3mr1833383plk.284.1578629933019; 
+ Thu, 09 Jan 2020 20:18:53 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id 65sm656852pfu.140.2020.01.09.20.18.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Jan 2020 20:18:52 -0800 (PST)
+Subject: Re: [PATCH kernel RFC 0/4] powerpc/powenv/ioda: Allow huge DMA window
+ at 4GB
+To: linuxppc-dev@lists.ozlabs.org
+References: <20191202015953.127902-1-aik@ozlabs.ru>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <002b30d2-a9e4-da11-2423-b003288ce8f3@ozlabs.ru>
+Date: Fri, 10 Jan 2020 15:18:48 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10bfdea4-3237-b6d1-2ac0-034404a94dfc@linux.ibm.com>
-X-Operating-System: Linux 2.0.32 on an i486
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-09_06:2020-01-09,
- 2020-01-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 mlxscore=0 clxscore=1015 phishscore=0 mlxlogscore=735
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 adultscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001100017
+In-Reply-To: <20191202015953.127902-1-aik@ozlabs.ru>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,35 +159,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Oliver O'Halloran <oohall@gmail.com>, kvm@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-maddy [maddy@linux.ibm.com] wrote:
-> 
-> >   __init_PMU:
-> > +#ifdef CONFIG_PPC_SVM
-> > +	/*
-> > +	 * SVM's are restricted from accessing PMU, so skip.
-> > +	 */
-> > +	mfmsr   r5
-> > +	rldicl  r5, r5, 64-MSR_S_LG, 62
-> > +	cmpwi   r5,1
-> > +	beq     skip1
-> 
-> I know all MMCR* are loaded with 0. But
-> it is better if PEF code load the MMCR0
-> with freeze bits on. I will send a separate
-> patch to handle in the non-svm case.
 
-Quick question: 
-By PEF code you mean the Ultravisor and not here in
-the SVM right? - bc SVMs cannot access PMU registers.
+
+On 02/12/2019 12:59, Alexey Kardashevskiy wrote:
+> Here is an attempt to support bigger DMA space for devices
+> supporting DMA masks less than 59 bits (GPUs come into mind
+> first). POWER9 PHBs have an option to map 2 windows at 0
+> and select a windows based on DMA address being below or above
+> 4GB.
 > 
-> Rest looks good.
-> Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> This adds the "iommu=iommu_bypass" kernel parameter and
+> supports VFIO+pseries machine - current this requires telling
+> upstream+unmodified QEMU about this via
+> -global spapr-pci-host-bridge.dma64_win_addr=0x100000000
+> or per-phb property. 4/4 advertises the new option but
+> there is no automation around it in QEMU (should it be?).
+> 
+> For now it is either 1<<59 or 4GB mode; dynamic switching is
+> not supported (could be via sysfs).
+> 
+> This is based on sha1
+> a6ed68d6468b Linus Torvalds "Merge tag 'drm-next-2019-11-27' of git://anongit.freedesktop.org/drm/drm".
+> 
+> Please comment. Thanks.
 
-Cool, Thanks,
 
-Sukadev
+David, Alistair, ping? Thanks,
+
+
+> 
+> 
+> 
+> Alexey Kardashevskiy (4):
+>   powerpc/powernv/ioda: Rework for huge DMA window at 4GB
+>   powerpc/powernv/ioda: Allow smaller TCE table levels
+>   powerpc/powernv/phb4: Add 4GB IOMMU bypass mode
+>   vfio/spapr_tce: Advertise and allow a huge DMA windows at 4GB
+> 
+>  arch/powerpc/include/asm/iommu.h              |   1 +
+>  arch/powerpc/include/asm/opal-api.h           |  11 +-
+>  arch/powerpc/include/asm/opal.h               |   2 +
+>  arch/powerpc/platforms/powernv/pci.h          |   1 +
+>  include/uapi/linux/vfio.h                     |   2 +
+>  arch/powerpc/platforms/powernv/opal-call.c    |   2 +
+>  arch/powerpc/platforms/powernv/pci-ioda-tce.c |   4 +-
+>  arch/powerpc/platforms/powernv/pci-ioda.c     | 219 ++++++++++++++----
+>  drivers/vfio/vfio_iommu_spapr_tce.c           |  10 +-
+>  9 files changed, 202 insertions(+), 50 deletions(-)
+> 
+
+-- 
+Alexey
