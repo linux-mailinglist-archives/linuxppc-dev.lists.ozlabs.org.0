@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B12136E57
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 14:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1FD136E76
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 14:47:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vPKW1vpdzDqbX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 00:41:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vPRV2CbRzDqXr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 00:47:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,33 +18,31 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=codeaurora.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org
- header.a=rsa-sha256 header.s=smtp header.b=kDCpIyfM; 
+ header.a=rsa-sha256 header.s=smtp header.b=MGHpWg83; 
  dkim-atps=neutral
-X-Greylist: delayed 307 seconds by postgrey-1.36 at bilbo;
- Sat, 11 Jan 2020 00:37:44 AEDT
 Received: from mail25.static.mailgun.info (mail25.static.mailgun.info
  [104.130.122.25])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 47vPDm1HPCzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 00:37:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with UTF8SMTPS id 47vPFk0xc0zDqdl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 00:38:33 +1100 (AEDT)
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org;
  q=dns/txt; 
- s=smtp; t=1578663463; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1578663513; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=KvNC+ZtmcyAhVZ56ZMn6CaYYHAi0RWpQoUQ7isluNMU=;
- b=kDCpIyfMwIgPk2yWDIdbZt4pvX85utcEPAGNRwNyopiJmV2fU2aJDZvAD7nXhHQa677QQGo3
- Wl5a48b6EKZ3ebVm2k6ehXGL0494ii72HFrl1UnFnhynNcEmBv/D6Zvwp4qisLJcwXlk4/ij
- 3gJJDrM8xnwiNaCAOoNfc7TxTLA=
+ bh=R0YUROCJJ/dav0PwJDeXKOS0FaitFefZwp9Lb2TmZvI=;
+ b=MGHpWg830iuM8GhZiRmr9ec3uWlRhdail0fdJf8BKKYRbH+s/dgJ10xJ6xCQVGrh8Voj601C
+ B89eNzzgnMEqokd7S5HvhplL3/SoJoGYHH0HNaW50CE6/gDTtHvR7+ZGBuNERfmaeT35sNen
+ rnRwBaxtDId/SIdlIFJHV8rAVoM=
 X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI5ZmEyMiIsICJsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyIsICJiZTllNGEiXQ==
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e187cee.7f0eb6fae8f0-smtp-out-n02;
- Fri, 10 Jan 2020 13:32:30 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e187d27.7ff833b82c70-smtp-out-n01;
+ Fri, 10 Jan 2020 13:33:27 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
- id B4BB8C447AE; Fri, 10 Jan 2020 13:32:28 +0000 (UTC)
+ id 791F7C447B0; Fri, 10 Jan 2020 13:33:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
  aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -53,23 +51,23 @@ X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
 Received: from x230.qca.qualcomm.com (unknown [83.145.195.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested) (Authenticated sender: kvalo)
- by smtp.codeaurora.org (Postfix) with ESMTPSA id 1C016C43383;
- Fri, 10 Jan 2020 13:32:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1C016C43383
+ by smtp.codeaurora.org (Postfix) with ESMTPSA id 80C82C43383;
+ Fri, 10 Jan 2020 13:33:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 80C82C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
  dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
  spf=none smtp.mailfrom=kvalo@codeaurora.org
 From: Kalle Valo <kvalo@codeaurora.org>
 To: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v2 2/9] net: wireless: rtl818x: Constify ioreadX() iomem
+Subject: Re: [PATCH v2 9/9] net: wireless: ath5k: Constify ioreadX() iomem
  argument (as in generic implementation)
 References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-3-krzk@kernel.org>
-Date: Fri, 10 Jan 2020 15:32:13 +0200
-In-Reply-To: <20200108200528.4614-3-krzk@kernel.org> (Krzysztof Kozlowski's
- message of "Wed, 8 Jan 2020 21:05:21 +0100")
-Message-ID: <87imljsahu.fsf@codeaurora.org>
+ <20200108200528.4614-10-krzk@kernel.org>
+Date: Fri, 10 Jan 2020 15:33:11 +0200
+In-Reply-To: <20200108200528.4614-10-krzk@kernel.org> (Krzysztof Kozlowski's
+ message of "Wed, 8 Jan 2020 21:05:28 +0100")
+Message-ID: <87eew7sag8.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -121,21 +119,11 @@ Krzysztof Kozlowski <krzk@kernel.org> writes:
 > consistency among architectures.
 >
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
 > ---
->
-> Changes since v1:
-> 1. Add Geert's review.
-> ---
->  drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8180.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 
-No need to have "net: wireless: " in the title, this is enough.
-
-rtl818x: Constify ioreadX() iomem argument (as in generic implementation)
-
-I assume someone else will take this so here's my ack:
+No need to have "net: wireless: " in the title, otherwise looks good.
 
 Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
