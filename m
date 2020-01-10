@@ -2,67 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA123136921
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 09:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68928136A2A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 10:47:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vGnQ4NrlzDqdt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 19:47:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vJ6f1zggzDqdj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 20:47:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=ODEtV2P7; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vGl44rDwzDqcn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 19:45:02 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47vGkv6r8mz9v3lj;
- Fri, 10 Jan 2020 09:44:55 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ODEtV2P7; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id PTbvLHgRYo7m; Fri, 10 Jan 2020 09:44:55 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47vGkv5VdMz9v3lg;
- Fri, 10 Jan 2020 09:44:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1578645895; bh=X4bhvXuqtswvV10n057izmhqNVRm8lbtqjvUU8z28JI=;
- h=From:Subject:To:Cc:Date:From;
- b=ODEtV2P7aOXi6VbY2+nbMaTviixfpCJAbAkRSdMoBNFPzskw3hDJHUWmfIr/hnH0Q
- 1pUnVcOYnvgG+AcZiV5ocD6nQ4poII4hUhkIvgTj7uufYnZaKkapVbfopwhqwTxthk
- HC3TQPmPyXieW2HjqnJ1vAKAXfleZLuFcCl6f50g=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C65B28B781;
- Fri, 10 Jan 2020 09:44:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 6LX6hgl553vk; Fri, 10 Jan 2020 09:44:56 +0100 (CET)
-Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D75C8B755;
- Fri, 10 Jan 2020 09:44:56 +0100 (CET)
-Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 6040563B90; Fri, 10 Jan 2020 08:44:56 +0000 (UTC)
-Message-Id: <176774c19b0398634e004835b9515c93030d326f.1578645835.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/ptdump: don't entirely rebuild kernel when selecting
- CONFIG_PPC_DEBUG_WX
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 10 Jan 2020 08:44:56 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vJ4G0hLzzDqcw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 20:44:58 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00A9g5iX070489
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 04:44:55 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xe9uywfdp-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 04:44:55 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
+ Fri, 10 Jan 2020 09:44:53 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 10 Jan 2020 09:44:51 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00A9inGt60096578
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Jan 2020 09:44:49 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 96A7A42047;
+ Fri, 10 Jan 2020 09:44:49 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ED9594204C;
+ Fri, 10 Jan 2020 09:44:47 +0000 (GMT)
+Received: from dhcp-9-109-246-161.in.ibm.com (unknown [9.109.246.161])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 10 Jan 2020 09:44:47 +0000 (GMT)
+Date: Fri, 10 Jan 2020 15:14:44 +0530
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH 2/3] powerpc sstep: add support for divde[.] and
+ divdeu[.] instructions
+References: <20191210071904.31013-1-bala24@linux.ibm.com>
+ <20191210071904.31013-3-bala24@linux.ibm.com>
+ <20200108222314.GA11821@blackberry>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200108222314.GA11821@blackberry>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-TM-AS-GCONF: 00
+x-cbid: 20011009-0012-0000-0000-0000037C3077
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20011009-0013-0000-0000-000021B8543E
+Message-Id: <20200110094444.GA16324@dhcp-9-109-246-161.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-10_01:2020-01-10,
+ 2020-01-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ impostorscore=0 adultscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
+ mlxlogscore=999 suspectscore=3 lowpriorityscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001100083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,101 +91,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ sandipan@linux.ibm.com, ravi.bangoria@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Selecting CONFIG_PPC_DEBUG_WX only impacts ptdump and pgtable_32/64
-init calls. Declaring related functions in asm/pgtable.h implies
-rebuilding almost everything.
+On Thu, Jan 09, 2020 at 09:23:14AM +1100, Paul Mackerras wrote:
+> On Tue, Dec 10, 2019 at 12:49:03PM +0530, Balamuruhan S wrote:
+> > This patch adds emulation support for divde, divdeu instructions,
+> > 	* Divide Doubleword Extended (divde[.])
+> > 	* Divide Doubleword Extended Unsigned (divdeu[.])
+> > 
+> > Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+> > ---
+> >  arch/powerpc/lib/sstep.c | 27 ++++++++++++++++++++++++++-
+> >  1 file changed, 26 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> > index c077acb983a1..4b4119729e59 100644
+> > --- a/arch/powerpc/lib/sstep.c
+> > +++ b/arch/powerpc/lib/sstep.c
+> > @@ -1736,7 +1736,32 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+> >  			op->val = (int) regs->gpr[ra] /
+> >  				(int) regs->gpr[rb];
+> >  			goto arith_done;
+> > -
+> > +#ifdef __powerpc64__
+> > +		case 425:	/* divde[.] */
+> > +			if (instr & 1) {
+> > +				asm volatile(PPC_DIVDE_DOT(%0, %1, %2) :
+> > +					"=r" (op->val) : "r" (regs->gpr[ra]),
+> > +					"r" (regs->gpr[rb]));
+> > +				set_cr0(regs, op);
+> 
+> This seems unneccesarily complicated.  You take the trouble to do a
+> "divde." instruction rather than a "divde" instruction but then don't
+> use the CR0 setting that the instruction did, but instead go and work
+> out what happens to CR0 manually in set_cr0().  Also you don't tell
+> the compiler that CR0 has been modified, which could lead to problems.
+> 
+> This case could be done much more simply like this:
+> 
+> 
+> 
+> 		case 425:	/* divde[.] */
+> 			asm volatile(PPC_DIVDE(%0, %1, %2) :
+> 				"=r" (op->val) : "r" (regs->gpr[ra]),
+> 				"r" (regs->gpr[rb]));
+> 			goto arith_done;
+> 
+> (note, goto arith_done rather than compute_done) and similarly for the
+> divdeu case.
 
-Move ptdump_check_wx() declaration in a new dedicated header file.
+Thanks Paul for review, I will fix it as suggested and post the v2 version.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/pgtable.h |  6 ------
- arch/powerpc/include/asm/ptdump.h  | 15 +++++++++++++++
- arch/powerpc/mm/pgtable_32.c       |  1 +
- arch/powerpc/mm/pgtable_64.c       |  1 +
- arch/powerpc/mm/ptdump/ptdump.c    |  1 +
- 5 files changed, 18 insertions(+), 6 deletions(-)
- create mode 100644 arch/powerpc/include/asm/ptdump.h
-
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 0e4ec8cc37b7..8cc543ed114c 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -94,12 +94,6 @@ void mark_initmem_nx(void);
- static inline void mark_initmem_nx(void) { }
- #endif
- 
--#ifdef CONFIG_PPC_DEBUG_WX
--void ptdump_check_wx(void);
--#else
--static inline void ptdump_check_wx(void) { }
--#endif
--
- /*
-  * When used, PTE_FRAG_NR is defined in subarch pgtable.h
-  * so we are sure it is included when arriving here.
-diff --git a/arch/powerpc/include/asm/ptdump.h b/arch/powerpc/include/asm/ptdump.h
-new file mode 100644
-index 000000000000..246b92c21729
---- /dev/null
-+++ b/arch/powerpc/include/asm/ptdump.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_PTDUMP_H
-+#define _ASM_POWERPC_PTDUMP_H
-+
-+#ifndef __ASSEMBLY__
-+
-+#ifdef CONFIG_PPC_DEBUG_WX
-+void ptdump_check_wx(void);
-+#else
-+static inline void ptdump_check_wx(void) { }
-+#endif
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* _ASM_POWERPC_PTDUMP_H */
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 73b84166d06a..6c866f1b1eeb 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -29,6 +29,7 @@
- #include <asm/fixmap.h>
- #include <asm/setup.h>
- #include <asm/sections.h>
-+#include <asm/ptdump.h>
- 
- #include <mm/mmu_decl.h>
- 
-diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-index e78832dce7bb..3686cd887c2f 100644
---- a/arch/powerpc/mm/pgtable_64.c
-+++ b/arch/powerpc/mm/pgtable_64.c
-@@ -45,6 +45,7 @@
- #include <asm/sections.h>
- #include <asm/firmware.h>
- #include <asm/dma.h>
-+#include <asm/ptdump.h>
- 
- #include <mm/mmu_decl.h>
- 
-diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-index 2f9ddc29c535..d7b02bcd0691 100644
---- a/arch/powerpc/mm/ptdump/ptdump.c
-+++ b/arch/powerpc/mm/ptdump/ptdump.c
-@@ -23,6 +23,7 @@
- #include <linux/const.h>
- #include <asm/page.h>
- #include <asm/pgalloc.h>
-+#include <asm/ptdump.h>
- 
- #include "ptdump.h"
- 
--- 
-2.13.3
+-- Bala
+> 
+> Paul.
 
