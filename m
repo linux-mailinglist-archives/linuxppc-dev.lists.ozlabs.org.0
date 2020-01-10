@@ -1,71 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00692136675
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 06:14:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vB4G0Vw2zDqVs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 16:14:38 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD2913668C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 06:23:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vBGN2NTGzDqYS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 16:23:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=dqJTwC9n; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vB2V5PNDzDq6y
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 16:13:03 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id ay11so395625plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 21:13:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=Tmf+Kxucvb62NiCjSTWMZBNjJ8UNF1K5QBIAcifMgQI=;
- b=dqJTwC9nF+cQfR6H5U3TZiI9pnBoPZjL1vGQJveXhqrGGKv+0e0PiUtmGFRLEVIi9H
- PSrgKfip+Q8V76oK2lCMuGJnruqiAcJBDkHaKQgBPMN7yNGnReo2sKZldcep+jgXgpm4
- 1X4p7ZaUv18Ed3P6kabJ4llMEdx8+fvGPmLjQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Tmf+Kxucvb62NiCjSTWMZBNjJ8UNF1K5QBIAcifMgQI=;
- b=jljB6MdcdxTr86MA2xEnX3HuqRm4IaGHiZkj1/zepD31+XTukHEWh8IXwYtCeHNz0k
- RAi/L4DLuTAn1pnlEVZgfbV6oXUe/18SX2c1eqctyDlSzZxR77lJv+4iBc57VEUhDn3w
- C4qVpx7NyhMYJGWgdLcgfZlp53v6W6vuEXCaWcpznWFF9H1HDPlfV2zvxztmUsBhm8rX
- KwIADGLKN0O4Ru0QU5S3X7bXyoVqUrdVXaftbr9ubn+8NSzDjPARJakff16ElQAgi85Q
- iPBPHguKsdz1rs3XpNu/kMcJ3aPyYtnQJkNYNAzuivmhD2RJiwCOpYs96ma7ODFtq6+f
- zL1A==
-X-Gm-Message-State: APjAAAXaFaPPXzxT+EjeRHA1kvsGfNFItTfCglXyNQrOKaVV+NSCS30m
- 0beS9QsuxCmfI6ljhSxLo2GxVA==
-X-Google-Smtp-Source: APXvYqya22I94aB51t/b5586U5xsAVsE1JwObmcgOBjtPfTa0YzbMamXcKH1ztnT77pUjbQTqlTx0Q==
-X-Received: by 2002:a17:90b:8b:: with SMTP id
- bb11mr2367447pjb.27.1578633181385; 
- Thu, 09 Jan 2020 21:13:01 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id g19sm847886pfh.134.2020.01.09.21.13.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Jan 2020 21:13:00 -0800 (PST)
-Date: Thu, 9 Jan 2020 21:12:59 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] init: fix misleading "This architecture does not have
- kernel memory protection" message
-Message-ID: <202001092112.14F20C4DCE@keescook>
-References: <62477e446d9685459d4f27d193af6ff1bd69d55f.1578557581.git.christophe.leroy@c-s.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <62477e446d9685459d4f27d193af6ff1bd69d55f.1578557581.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vBBX3TGgzDqWL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 16:20:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47vBBX1PzLz9B3f
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 16:20:04 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47vBBX0n7vz9sRl; Fri, 10 Jan 2020 16:20:04 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47vBBW1zj9z9sR1;
+ Fri, 10 Jan 2020 16:20:02 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00A5Cq0M087575; Fri, 10 Jan 2020 00:19:59 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xea2k5tc8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jan 2020 00:19:59 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00A5ICPP027645;
+ Fri, 10 Jan 2020 05:20:05 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01wdc.us.ibm.com with ESMTP id 2xajb73w5e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jan 2020 05:20:05 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00A5Jw6C40108330
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Jan 2020 05:19:58 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F572124054;
+ Fri, 10 Jan 2020 05:19:58 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6542124053;
+ Fri, 10 Jan 2020 05:19:57 +0000 (GMT)
+Received: from suka-w540.usor.ibm.com (unknown [9.70.94.45])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 10 Jan 2020 05:19:57 +0000 (GMT)
+From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@ozlabs.org>, 
+ linuxram@us.ibm.com
+Subject: [PATCH v3 1/2] powerpc/pseries/svm: Use FW_FEATURE to detect SVM
+Date: Thu,  9 Jan 2020 21:19:56 -0800
+Message-Id: <20200110051957.31714-1-sukadev@linux.ibm.com>
+X-Mailer: git-send-email 2.17.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-10_01:2020-01-10,
+ 2020-01-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001100045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,57 +93,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 09, 2020 at 08:15:01AM +0000, Christophe Leroy wrote:
-> This message leads to think that memory protection is not implemented
-> for the said architecture, whereas absence of CONFIG_STRICT_KERNEL_RWX
-> only means that memory protection has not been selected at
-> compile time.
-> 
-> Don't print this message when CONFIG_ARCH_HAS_STRICT_KERNEL_RWX is
-> selected by the architecture. Instead, print "Kernel memory protection
-> not selected by kernel config."
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Use FW_FEATURE_SVM to detect a secure guest (SVM). This would be
+more efficient than calling mfmsr() frequently.
 
-Oh, yes, I like this. Should the message include a hint to the config
-name?
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+---
+ arch/powerpc/include/asm/firmware.h       | 3 ++-
+ arch/powerpc/include/asm/svm.h            | 6 +++++-
+ arch/powerpc/kernel/paca.c                | 6 +++++-
+ arch/powerpc/platforms/pseries/firmware.c | 3 +++
+ 4 files changed, 15 insertions(+), 3 deletions(-)
 
-Regardless:
-
-Acked-by: Kees Cook <keescook@chromium.org>
-
--Kees
-
-> ---
->  init/main.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/init/main.c b/init/main.c
-> index 2cd736059416..fd31b15cc910 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -1090,6 +1090,11 @@ static void mark_readonly(void)
->  	} else
->  		pr_info("Kernel memory protection disabled.\n");
->  }
-> +#elif defined(CONFIG_ARCH_HAS_STRICT_KERNEL_RWX)
-> +static inline void mark_readonly(void)
-> +{
-> +	pr_warn("Kernel memory protection not selected by kernel config.\n");
-> +}
->  #else
->  static inline void mark_readonly(void)
->  {
-> -- 
-> 2.13.3
-> 
-
+diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+index b3e214a97f3a..23cffcec8a55 100644
+--- a/arch/powerpc/include/asm/firmware.h
++++ b/arch/powerpc/include/asm/firmware.h
+@@ -51,6 +51,7 @@
+ #define FW_FEATURE_BLOCK_REMOVE ASM_CONST(0x0000001000000000)
+ #define FW_FEATURE_PAPR_SCM 	ASM_CONST(0x0000002000000000)
+ #define FW_FEATURE_ULTRAVISOR	ASM_CONST(0x0000004000000000)
++#define FW_FEATURE_SVM		ASM_CONST(0x0000008000000000)
+ 
+ #ifndef __ASSEMBLY__
+ 
+@@ -69,7 +70,7 @@ enum {
+ 		FW_FEATURE_TYPE1_AFFINITY | FW_FEATURE_PRRN |
+ 		FW_FEATURE_HPT_RESIZE | FW_FEATURE_DRMEM_V2 |
+ 		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
+-		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR,
++		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR | FW_FEATURE_SVM,
+ 	FW_FEATURE_PSERIES_ALWAYS = 0,
+ 	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL | FW_FEATURE_ULTRAVISOR,
+ 	FW_FEATURE_POWERNV_ALWAYS = 0,
+diff --git a/arch/powerpc/include/asm/svm.h b/arch/powerpc/include/asm/svm.h
+index 85580b30aba4..1d056c70fa87 100644
+--- a/arch/powerpc/include/asm/svm.h
++++ b/arch/powerpc/include/asm/svm.h
+@@ -10,9 +10,13 @@
+ 
+ #ifdef CONFIG_PPC_SVM
+ 
++/*
++ * Note that this is not usable in early boot - before FW
++ * features were probed
++ */
+ static inline bool is_secure_guest(void)
+ {
+-	return mfmsr() & MSR_S;
++	return firmware_has_feature(FW_FEATURE_SVM);
+ }
+ 
+ void dtl_cache_ctor(void *addr);
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index 949eceb254d8..3cba33a99549 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -120,7 +120,11 @@ static struct lppaca * __init new_lppaca(int cpu, unsigned long limit)
+ 	if (early_cpu_has_feature(CPU_FTR_HVMODE))
+ 		return NULL;
+ 
+-	if (is_secure_guest())
++	/*
++	 * Firmware features may not have been probed yet, so check
++	 * MSR rather than FW_FEATURE_SVM in is_secure_guest().
++	 */
++	if (mfmsr() & MSR_S)
+ 		lp = alloc_shared_lppaca(LPPACA_SIZE, 0x400, limit, cpu);
+ 	else
+ 		lp = alloc_paca_data(LPPACA_SIZE, 0x400, limit, cpu);
+diff --git a/arch/powerpc/platforms/pseries/firmware.c b/arch/powerpc/platforms/pseries/firmware.c
+index d4a8f1702417..c98527fb4937 100644
+--- a/arch/powerpc/platforms/pseries/firmware.c
++++ b/arch/powerpc/platforms/pseries/firmware.c
+@@ -175,4 +175,7 @@ static int __init probe_fw_features(unsigned long node, const char *uname, int
+ void __init pseries_probe_fw_features(void)
+ {
+ 	of_scan_flat_dt(probe_fw_features, NULL);
++
++	if (mfmsr() & MSR_S)
++		powerpc_firmware_features |= FW_FEATURE_SVM;
+ }
 -- 
-Kees Cook
+2.17.2
+
