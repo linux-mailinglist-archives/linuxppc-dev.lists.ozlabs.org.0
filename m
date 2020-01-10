@@ -2,92 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED331375AA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 19:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 190DE137639
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 19:41:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vW3H3gL0zDqg7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 04:59:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vWyf2QpYzDqjZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 05:40:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vW0y3ZzFzDqfb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 04:57:47 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2020 09:57:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,417,1571727600"; d="scan'208";a="223851475"
-Received: from ray.jf.intel.com (HELO [10.24.8.199]) ([10.24.8.199])
- by orsmga006.jf.intel.com with ESMTP; 10 Jan 2020 09:57:43 -0800
-Subject: Re: [PATCH v15 00/24] selftests, powerpc, x86: Memory Protection Keys
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Sandipan Das <sandipan@linux.ibm.com>, shuahkh@osg.samsung.com,
- linux-kselftest@vger.kernel.org
-References: <cover.1576645161.git.sandipan@linux.ibm.com>
- <87y2ufxlci.fsf@linux.ibm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-Message-ID: <4a35bf48-d191-4e42-ea47-f419895ed876@intel.com>
-Date: Fri, 10 Jan 2020 09:57:43 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=james.morse@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47vWwd6DtvzDqgl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 05:39:11 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED92330E;
+ Fri, 10 Jan 2020 10:39:09 -0800 (PST)
+Received: from [10.1.196.105] (eglon.cambridge.arm.com [10.1.196.105])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2C323F6C4;
+ Fri, 10 Jan 2020 10:39:06 -0800 (PST)
+Subject: Re: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ in
+ vmcoreinfo
+To: Bhupesh Sharma <bhsharma@redhat.com>
+References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
+ <1575057559-25496-3-git-send-email-bhsharma@redhat.com>
+ <63d6e63c-7218-d2dd-8767-4464be83603f@arm.com>
+ <af0fd2b0-99db-9d58-bc8d-0dd9d640b1eb@redhat.com>
+From: James Morse <james.morse@arm.com>
+Message-ID: <f791e777-781c-86ce-7619-1de3fe3e7b90@arm.com>
+Date: Fri, 10 Jan 2020 18:39:05 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <87y2ufxlci.fsf@linux.ibm.com>
+In-Reply-To: <af0fd2b0-99db-9d58-bc8d-0dd9d640b1eb@redhat.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,28 +52,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, x86@kernel.org,
- linuxram@us.ibm.com, mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
- msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-doc@vger.kernel.org,
+ Will Deacon <will@kernel.org>, x86@kernel.org, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
+ Dave Anderson <anderson@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ bhupesh.linux@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/10/20 9:38 AM, Aneesh Kumar K.V wrote:
->> v15:
->> 	(1) Rebased on top of latest master.
->> 	(2) Addressed review comments from Dave Hansen.
->> 	(3) Moved code for getting or setting pkey bits to new
->> 	    helpers. These changes replace patch 7 of v14.
->> 	(4) Added a fix which ensures that the correct count of
->> 	    reserved keys is used across different platforms.
->> 	(5) Added a fix which ensures that the correct page size
->> 	    is used as powerpc supports both 4K and 64K pages.
->>
-> Any update on merging this series? Can Intel help with testing this
-> series on Skylake server? Possibly merging to -next will result in
-> automated 01.org tests?
+Hi Bhupesh,
 
-Could you dump these in a git tree, please?  It will make it a wee bit
-easier for me to ship the resulting tree around to a couple different
-systems.
+On 25/12/2019 19:01, Bhupesh Sharma wrote:
+> On 12/12/2019 04:02 PM, James Morse wrote:
+>> On 29/11/2019 19:59, Bhupesh Sharma wrote:
+>>> vabits_actual variable on arm64 indicates the actual VA space size,
+>>> and allows a single binary to support both 48-bit and 52-bit VA
+>>> spaces.
+>>>
+>>> If the ARMv8.2-LVA optional feature is present, and we are running
+>>> with a 64KB page size; then it is possible to use 52-bits of address
+>>> space for both userspace and kernel addresses. However, any kernel
+>>> binary that supports 52-bit must also be able to fall back to 48-bit
+>>> at early boot time if the hardware feature is not present.
+>>>
+>>> Since TCR_EL1.T1SZ indicates the size offset of the memory region
+>>> addressed by TTBR1_EL1 (and hence can be used for determining the
+>>> vabits_actual value) it makes more sense to export the same in
+>>> vmcoreinfo rather than vabits_actual variable, as the name of the
+>>> variable can change in future kernel versions, but the architectural
+>>> constructs like TCR_EL1.T1SZ can be used better to indicate intended
+>>> specific fields to user-space.
+>>>
+>>> User-space utilities like makedumpfile and crash-utility, need to
+>>> read/write this value from/to vmcoreinfo
+>>
+>> (write?)
+> 
+> Yes, also write so that the vmcoreinfo from an (crashing) arm64 system can be used for
+> analysis of the root-cause of panic/crash on say an x86_64 host using utilities like
+> crash-utility/gdb.
+
+I read this as as "User-space [...] needs to write to vmcoreinfo".
+
+
+>>> for determining if a virtual address lies in the linear map range.
+>>
+>> I think this is a fragile example. The debugger shouldn't need to know this.
+> 
+> Well that the current user-space utility design, so I am not sure we can tweak that too much.
+> 
+>>> The user-space computation for determining whether an address lies in
+>>> the linear map range is the same as we have in kernel-space:
+>>>
+>>>    #define __is_lm_address(addr)    (!(((u64)addr) & BIT(vabits_actual - 1)))
+>>
+>> This was changed with 14c127c957c1 ("arm64: mm: Flip kernel VA space"). If user-space
+>> tools rely on 'knowing' the kernel memory layout, they must have to constantly be fixed
+>> and updated. This is a poor argument for adding this to something that ends up as ABI.
+> 
+> See above. The user-space has to rely on some ABI/guaranteed hardware-symbols which can be
+> used for 'determining' the kernel memory layout.
+
+I disagree. Everything and anything in the kernel will change. The ABI rules apply to
+stuff exposed via syscalls and kernel filesystems. It does not apply to kernel internals,
+like the memory layout we used yesterday. 14c127c957c1 is a case in point.
+
+A debugger trying to rely on this sort of thing would have to play catchup whenever it
+changes.
+
+I'm looking for a justification that isn't paper-thin. Putting 'for guessing the memory
+map' in the commit message gives the impression we can support that.
+
+
+>> I think a better argument is walking the kernel page tables from the core dump.
+>> Core code's vmcoreinfo exports the location of the kernel page tables, but in the example
+>> above you can't walk them without knowing how T1SZ was configured.
+> 
+> Sure, both makedumpfile and crash-utility (which walks the kernel page tables from the
+> core dump) use this (and similar) information currently in the user-space.
+
+[...]
+
+>> (From-memory: one of vmcore/kcore is virtually addressed, the other physically. Does this
+>> fix your poblem in both cases?)
+>>
+>>
+>>> diff --git a/arch/arm64/kernel/crash_core.c b/arch/arm64/kernel/crash_core.c
+>>> index ca4c3e12d8c5..f78310ba65ea 100644
+>>> --- a/arch/arm64/kernel/crash_core.c
+>>> +++ b/arch/arm64/kernel/crash_core.c
+>>> @@ -7,6 +7,13 @@
+>>>   #include <linux/crash_core.h>
+>>>   #include <asm/memory.h>
+>>
+>> You need to include asm/sysreg.h for read_sysreg(), and asm/pgtable-hwdef.h for the macros
+>> you added.
+> 
+> Ok. Will check as I did not get any compilation errors without the same and build-bot also
+> did not raise a flag for the missing include files.
+
+Don't trust the header jungle!
+
+
+>>> +static inline u64 get_tcr_el1_t1sz(void);
+> 
+>> Why do you need to do this?
+> 
+> Without this I was getting a missing declaration error, while compiling the code.
+
+Missing declaration?
+
+>>> +static inline u64 get_tcr_el1_t1sz(void)
+>>> +{
+>>> +    return (read_sysreg(tcr_el1) & TCR_T1SZ_MASK) >> TCR_T1SZ_OFFSET;
+>>> +}
+
+Here it is! (I must be going mad...)
+
+
+Thanks,
+
+James
