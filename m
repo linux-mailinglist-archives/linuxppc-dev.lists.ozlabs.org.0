@@ -1,76 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F72A136EF3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 15:05:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1FD136E76
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 14:47:05 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vPRV2CbRzDqXr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 00:47:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vPrd2R2YzDqdw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 01:05:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mg.codeaurora.org (client-ip=104.130.122.25;
- helo=mail25.static.mailgun.info;
- envelope-from=bounce+ee6c0f.be9e4a-linuxppc-dev=lists.ozlabs.org@mg.codeaurora.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=codeaurora.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org
- header.a=rsa-sha256 header.s=smtp header.b=MGHpWg83; 
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=hUd/+pKH; 
  dkim-atps=neutral
-Received: from mail25.static.mailgun.info (mail25.static.mailgun.info
- [104.130.122.25])
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 47vPFk0xc0zDqdl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 00:38:33 +1100 (AEDT)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org;
- q=dns/txt; 
- s=smtp; t=1578663513; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=R0YUROCJJ/dav0PwJDeXKOS0FaitFefZwp9Lb2TmZvI=;
- b=MGHpWg830iuM8GhZiRmr9ec3uWlRhdail0fdJf8BKKYRbH+s/dgJ10xJ6xCQVGrh8Voj601C
- B89eNzzgnMEqokd7S5HvhplL3/SoJoGYHH0HNaW50CE6/gDTtHvR7+ZGBuNERfmaeT35sNen
- rnRwBaxtDId/SIdlIFJHV8rAVoM=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI5ZmEyMiIsICJsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e187d27.7ff833b82c70-smtp-out-n01;
- Fri, 10 Jan 2020 13:33:27 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
- id 791F7C447B0; Fri, 10 Jan 2020 13:33:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
- aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
- autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (unknown [83.145.195.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: kvalo)
- by smtp.codeaurora.org (Postfix) with ESMTPSA id 80C82C43383;
- Fri, 10 Jan 2020 13:33:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 80C82C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
- dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
- spf=none smtp.mailfrom=kvalo@codeaurora.org
-From: Kalle Valo <kvalo@codeaurora.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v2 9/9] net: wireless: ath5k: Constify ioreadX() iomem
- argument (as in generic implementation)
-References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-10-krzk@kernel.org>
-Date: Fri, 10 Jan 2020 15:33:11 +0200
-In-Reply-To: <20200108200528.4614-10-krzk@kernel.org> (Krzysztof Kozlowski's
- message of "Wed, 8 Jan 2020 21:05:28 +0100")
-Message-ID: <87eew7sag8.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vPpT5zYHzDqc3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 01:03:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=YfX4Wn1/pqccM1olKxdBD79TA9u9Lbt27vICyToE+ls=; b=hUd/+pKHQBBDMpuaTCGYlb6oP
+ tHjI1NofTkszYxvkTnNNqmYmw6EzgYCrcSu2vsBjWQUO0IgTKKkb11WzaDx4LmzdHtz9LW/Hm0RgC
+ ZdIv+jcU1kRIITHLD0QOfmJzN7/LA/mfZPgCHq6NIEoLWkJujRv4Sla98UT6cKhPOKLcPGcxN+HMy
+ AUc5AvlNE3kz0tVvky+aV9FX0vpYZfR/A3TN2D0GIH29lrbxj3mFkAp1ukIqg0k68ObHXAUR8NbZi
+ RCwiUEVFD1oEMiNUTjmJ1fIFGQS7nm2/X6ijHCr37Eyn+JkfXY5mT7EQ0um89vJiV6zkfuXOSIYS0
+ +ziuTrUqw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1ipus5-0003rT-5A; Fri, 10 Jan 2020 14:02:41 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7AC7C30018B;
+ Fri, 10 Jan 2020 15:01:00 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 61C442B612603; Fri, 10 Jan 2020 15:02:34 +0100 (CET)
+Date: Fri, 10 Jan 2020 15:02:34 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alexey Budankov <alexey.budankov@linux.intel.com>
+Subject: Re: [PATCH v4 2/9] perf/core: open access for CAP_SYS_PERFMON
+ privileged process
+Message-ID: <20200110140234.GO2844@hirez.programming.kicks-ass.net>
+References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
+ <c93309dc-b920-f5fa-f997-e8b2faf47b88@linux.intel.com>
+ <20200108160713.GI2844@hirez.programming.kicks-ass.net>
+ <cc239899-5c52-2fd0-286d-4bff18877937@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc239899-5c52-2fd0-286d-4bff18877937@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,50 +76,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "Michael S. Tsirkin" <mst@redhat.com>, David Airlie <airlied@linux.ie>,
- Jason Wang <jasowang@redhat.com>, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-arch@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- linux-sh@vger.kernel.org, Alexey Brodkin <abrodkin@synopsys.com>,
- Ben Skeggs <bskeggs@redhat.com>, nouveau@lists.freedesktop.org,
- Dave Airlie <airlied@redhat.com>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, Nick Kossifidis <mickflemm@gmail.com>,
- Allen Hubbe <allenbh@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-alpha@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Thomas Gleixner <tglx@linutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, Jon Mason <jdmason@kudzu.us>,
- linux-ntb@googlegroups.com, linux-media@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Mark Rutland <mark.rutland@arm.com>, Song Liu <songliubraving@fb.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ Will Deacon <will.deacon@arm.com>, Alexei Starovoitov <ast@kernel.org>,
+ Stephane Eranian <eranian@google.com>,
+ "james.bottomley@hansenpartnership.com"
+ <james.bottomley@hansenpartnership.com>, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
+ Igor Lubashev <ilubashe@akamai.com>, James Morris <jmorris@namei.org>,
+ Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
+ Serge Hallyn <serge@hallyn.com>, Robert Richter <rric@kernel.org>,
+ Kees Cook <keescook@chromium.org>, Jann Horn <jannh@google.com>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org,
+ Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, mhiramat@kernel.org,
+ Casey Schaufler <casey@schaufler-ca.com>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Krzysztof Kozlowski <krzk@kernel.org> writes:
+On Thu, Jan 09, 2020 at 02:36:50PM +0300, Alexey Budankov wrote:
+> On 08.01.2020 19:07, Peter Zijlstra wrote:
+> > On Wed, Dec 18, 2019 at 12:25:35PM +0300, Alexey Budankov wrote:
 
-> The ioreadX() helpers have inconsistent interface.  On some architectures
-> void *__iomem address argument is a pointer to const, on some not.
->
-> Implementations of ioreadX() do not modify the memory under the address
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> >> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> >> index 059ee7116008..d9db414f2197 100644
+> >> --- a/kernel/events/core.c
+> >> +++ b/kernel/events/core.c
+> >> @@ -9056,7 +9056,7 @@ static int perf_kprobe_event_init(struct perf_event *event)
+> >>  	if (event->attr.type != perf_kprobe.type)
+> >>  		return -ENOENT;
+> >>  
+> >> -	if (!capable(CAP_SYS_ADMIN))
+> >> +	if (!perfmon_capable())
+> >>  		return -EACCES;
+> >>  
+> >>  	/*
+> > 
+> > This one only allows attaching to already extant kprobes, right? It does
+> > not allow creation of kprobes.
+> 
+> This unblocks creation of local trace kprobes and uprobes by CAP_SYS_PERFMON 
+> privileged process, exactly the same as for CAP_SYS_ADMIN privileged process.
 
-No need to have "net: wireless: " in the title, otherwise looks good.
+I've no idea what you just said; it's just words.
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+Again, this only allows attaching to previously created kprobes, it does
+not allow creating kprobes, right?
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+That is; I don't think CAP_SYS_PERFMON should be allowed to create
+kprobes.
+
+As might be clear; I don't actually know what the user-ABI is for
+creating kprobes.
