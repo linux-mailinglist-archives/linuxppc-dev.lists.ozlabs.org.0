@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563A61367A9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 07:47:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vD7T5157zDqcv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 17:47:33 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5C21367CF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 08:04:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vDVY4fKXzDqBj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 18:04:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=ueN7Vpxn; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=nfQJVT7F; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vD5d0RZczDqc7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 17:45:54 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47vD5S13wRz9v3tv;
- Fri, 10 Jan 2020 07:45:48 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ueN7Vpxn; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Av3l7EVHXBCa; Fri, 10 Jan 2020 07:45:48 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47vD5R6Z0Hz9v3tj;
- Fri, 10 Jan 2020 07:45:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1578638747; bh=5TApiD5N/34vXaM+pQ7UUlq0/+wq9o7jjNc+pK8cRCg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ueN7VpxnzBcnWuZoF/iIk0abFzI/Og6E2TcMJ9xPs+8bq1JLbuwjMI10oN+xH1GW4
- DzTR5wk+czh2b56nyJo+0UKVXRL7LBJYds2dWPvb77f70oXNepmKK0hmzElSjKYQPC
- 5TkwvFKiglrjZkvvPDDUdnzAbqHeggFMFpJlVGmE=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C0BAF8B77D;
- Fri, 10 Jan 2020 07:45:48 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7nJRtiLkHgXr; Fri, 10 Jan 2020 07:45:48 +0100 (CET)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C2CD8B755;
- Fri, 10 Jan 2020 07:45:45 +0100 (CET)
-Subject: Re: Surprising code generated for vdso_read_begin()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <cover.1577111363.git.christophe.leroy@c-s.fr>
- <bd4557a7-9715-59aa-5d8e-488c5e516a98@c-s.fr>
- <20200109200733.GS3191@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <77a8bf25-6615-6c0a-56d4-eae7aa8a8f09@c-s.fr>
-Date: Fri, 10 Jan 2020 07:45:44 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vDSd18DtzDqcD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 18:02:24 +1100 (AEDT)
+Received: by mail-pj1-x1029.google.com with SMTP id a6so572157pjh.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 23:02:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=SHkgbVNsdo3hBPtecgNQ05n7zGNFc4kTy0jm5iRygcY=;
+ b=nfQJVT7FxjOoC1Q+bqmx799KMFDid3ui3x5aEG6ROUErK8/nMeJGxlUrQa0zqLH0W2
+ IVOG0XxtSiWhZFygKOqsVrdD4n0n7FHXr8TAtHAxAJj6eQnk5pbs6kQXe2SRKL+tF87G
+ IQ+1lvUq6M2VwEAp2UhSaVkdp6o5tx+uWnG/0pQoN+i9y1jFOx00eKGKYbphUHczPBk2
+ eDDHsjT8bTrwtIsMmnc+TFRaSetQC0VgHIwSlBtZQG0uG1Un1DrrQ87lB7ewUpApuGhv
+ sIj5mXMd8PtJgpu/H4jJ/5kheLjF06ip4YLUjGdvlxLJYUTwoLKa8LAquNRVX+8C35F5
+ 5H3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=SHkgbVNsdo3hBPtecgNQ05n7zGNFc4kTy0jm5iRygcY=;
+ b=FfHsXHYFStmkbruk+Lbnr2kMChGm7ETc9yOP9tjsUVYBk+h/r/FnLdSoIhYv/MhBWj
+ L+tZxpKhQkxgXXIPtffgKDg+SVG53GSetqBzk+1WFaG7/EfajUjYNjpLGeeT4kAMA8/2
+ bbFOdfxqtWbJ18IJ3UhpYHbeiP7hNJXykRylGa3qgdXjcsmti6fo+OzZZOA6Gt10Iv1d
+ hysNrgeX9CPxE+HC2BDC6dn4BIIJDjp5gSLOUN6K52ea1+P+ZLLPIbuk/H7UvHHGe1sk
+ VowwF+uX6waVF2C4phaA4mxCC/XWE/0mhXrP1taAwUC9WziieFhYHd0T7OdqJaclGcGN
+ K7/A==
+X-Gm-Message-State: APjAAAXS5I2VVOSTDTT4ZGFkyLikl0dj3mde2nMwHyhuQP0TS4TOgdz+
+ jRP63emiK/m+ooPpm66McPWQxXholEY=
+X-Google-Smtp-Source: APXvYqxmA0tsa+SyAAgZRI5OP2UpdRalaHmPrLHsbb41moz7eITYaXs2SFrx0E9aStY+grD/pSlE6Q==
+X-Received: by 2002:a17:90a:2203:: with SMTP id
+ c3mr2799920pje.68.1578639741087; 
+ Thu, 09 Jan 2020 23:02:21 -0800 (PST)
+Received: from localhost.localdomain (ohallo2.lnk.telstra.net.
+ [110.142.13.149])
+ by smtp.gmail.com with ESMTPSA id n26sm1309791pgd.46.2020.01.09.23.02.19
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Jan 2020 23:02:20 -0800 (PST)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Minor PCI & DMA init cleanups
+Date: Fri, 10 Jan 2020 18:02:02 +1100
+Message-Id: <20200110070207.439-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20200109200733.GS3191@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,56 +79,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>, luto@kernel.org,
- tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Pulled out of my big series since these are fairly standalone changes
+
+The series folds some single-use functions together and shovels around
+some code so it lives in a more sensible location. No functional
+changes.
 
 
-Le 09/01/2020 à 21:07, Segher Boessenkool a écrit :
-> On Thu, Jan 09, 2020 at 05:52:34PM +0000, Christophe Leroy wrote:
->> Wondering why we get something so complicated/redundant for
->> vdso_read_begin() <include/vdso/helpers.h>
->>
->> static __always_inline u32 vdso_read_begin(const struct vdso_data *vd)
->> {
->> 	u32 seq;
->>
->> 	while ((seq = READ_ONCE(vd->seq)) & 1)
->> 		cpu_relax();
->>
->> 	smp_rmb();
->> 	return seq;
->> }
->>
->>
->>   6e0:   81 05 00 f0     lwz     r8,240(r5)
->>   6e4:   71 09 00 01     andi.   r9,r8,1
->>   6e8:   41 82 00 10     beq     6f8 <__c_kernel_clock_gettime+0x158>
->>   6ec:   81 05 00 f0     lwz     r8,240(r5)
->>   6f0:   71 0a 00 01     andi.   r10,r8,1
->>   6f4:   40 82 ff f8     bne     6ec <__c_kernel_clock_gettime+0x14c>
->>   6f8:
->>
->> r5 being vd pointer
->>
->> Why the first triplet, not only the second triplet ? Something wrong
->> with using READ_ONCE() for that ?
-> 
-> It looks like the compiler did loop peeling.  What GCC version is this?
-> Please try current trunk (to become GCC 10), or at least GCC 9?
-> 
 
-It is with GCC 5.5
-
-https://mirrors.edge.kernel.org/pub/tools/crosstool/ doesn't have more 
-recent than 8.1
-
-With 8.1, the problem doesn't show up.
-
-Thanks
-Christophe
