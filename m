@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FD11379D1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 23:43:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E111313785A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 22:14:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vbM94TcFzDq9F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 08:13:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vdLh3XWDzDq9p
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 09:43:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,27 +19,31 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vbKB2TgszDqDG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 08:12:14 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vdK22c4SzDqhm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 09:42:14 +1100 (AEDT)
 Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1iq1Zf-0004pl-7v; Fri, 10 Jan 2020 22:12:07 +0100
+ id 1iq2yj-0006Fk-RI; Fri, 10 Jan 2020 23:42:05 +0100
 Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
- id BAA67105BDB; Fri, 10 Jan 2020 22:12:06 +0100 (CET)
+ id 3A41A105BDB; Fri, 10 Jan 2020 23:42:05 +0100 (CET)
 From: Thomas Gleixner <tglx@linutronix.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- arnd@arndb.de, vincenzo.frascino@arm.com, luto@kernel.org
-Subject: Re: [RFC PATCH v2 07/10] lib: vdso: don't use READ_ONCE() in
- __c_kernel_time()
-In-Reply-To: <fc1ff722c7cbe63a63ae02ade3a714d2049d54a5.1577111367.git.christophe.leroy@c-s.fr>
-References: <cover.1577111363.git.christophe.leroy@c-s.fr>
- <fc1ff722c7cbe63a63ae02ade3a714d2049d54a5.1577111367.git.christophe.leroy@c-s.fr>
-Date: Fri, 10 Jan 2020 22:12:06 +0100
-Message-ID: <87lfqfrp7d.fsf@nanos.tec.linutronix.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [RFC PATCH] powerpc/32: Switch VDSO to C implementation.
+In-Reply-To: <09d07ad3-47a2-db2f-2f14-e002b22d8d9e@c-s.fr>
+References: <8ce3582f7f7da9ff0286ced857e5aa2e5ae6746e.1571662378.git.christophe.leroy@c-s.fr>
+ <alpine.DEB.2.21.1910212312520.2078@nanos.tec.linutronix.de>
+ <f4486e86-3c0c-0eec-1639-0e5956cdb8f1@c-s.fr>
+ <95bd2367-8edc-29db-faa3-7729661e05f2@c-s.fr>
+ <alpine.DEB.2.21.1910261751140.10190@nanos.tec.linutronix.de>
+ <439bce37-9c2c-2afe-9c9e-2f500472f9f8@c-s.fr>
+ <alpine.DEB.2.21.1910262026340.10190@nanos.tec.linutronix.de>
+ <207cef10-3da8-6a52-139c-0620b21b64af@c-s.fr>
+ <87d0bslo7b.fsf@nanos.tec.linutronix.de>
+ <09d07ad3-47a2-db2f-2f14-e002b22d8d9e@c-s.fr>
+Date: Fri, 10 Jan 2020 23:42:05 +0100
+Message-ID: <87h813rl1e.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Linutronix-Spam-Score: -1.0
@@ -57,30 +61,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ luto@kernel.org, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
->
-> diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-> index 17b4cff6e5f0..5a17a9d2e6cd 100644
-> --- a/lib/vdso/gettimeofday.c
-> +++ b/lib/vdso/gettimeofday.c
-> @@ -144,7 +144,7 @@ __cvdso_gettimeofday(const struct vdso_data *vd, struct __kernel_old_timeval *tv
->  static __maybe_unused __kernel_old_time_t
->  __cvdso_time(const struct vdso_data *vd, __kernel_old_time_t *time)
->  {
-> -	__kernel_old_time_t t = READ_ONCE(vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec);
-> +	__kernel_old_time_t t = vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec;
->  
->  	if (time)
->  		*time = t;
+Christophe,
 
-Allows the compiler to load twice, i.e. the returned value might be different from the
-stored value. So no.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> On 01/09/2020 02:05 PM, Thomas Gleixner wrote:
+>> The reason why this is implemented in this way is that
+>> __arch_get_hw_counter() needs a way to express that the clocksource of
+>> the moment is not suitable for VDSO so that the syscall fallback gets
+>> invoked.
+>> 
+>> Sure we could have used a pointer for the value and a return value
+>> indicating the validity, but given the required uptime the resulting
+>> code overhead seemed to be not worth it. At least not for me as I'm not
+>> planning to be around 58 years from now :)
+>> 
+>
+> I managed to get better code and better performance by splitting out the 
+> validity check as follows. Would it be suitable for all arches ?
+
+A quick test on x86 shows only a minimal impact, but it's in the
+noise. So from my side that's fine, but I can't talk for ARM[64]/MIPS
+
+> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h 
+> b/arch/powerpc/include/asm/vdso/gettimeofday.h
+> index 689f51b0d8c9..11cdd6faa4ad 100644
+> --- a/arch/powerpc/include/asm/vdso/gettimeofday.h
+> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+> @@ -114,15 +114,17 @@ int clock_getres32_fallback(clockid_t _clkid, 
+> struct old_timespec32 *_ts)
+>   	return ret;
+>   }
+>
+> -static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
+> +static __always_inline bool __arch_is_hw_counter_valid(s32 clock_mode)
+>   {
+>   	/*
+>   	 * clock_mode == 0 implies that vDSO are enabled otherwise
+>   	 * fallback on syscall.
+>   	 */
+> -	if (clock_mode)
+> -		return ULLONG_MAX;
+> +	return clock_mode ? false : true;
+
+I don't think we need an arch specific function here. I rather convert
+the boolean of ARM[64] to the x86/MIPS way of VCLOCK_* modes and let the
+generic code check for clock_mode == VCLOCK_NONE.
+
+There is some magic in ARM and MIPS which wants to be able to disable
+the whole thing at compile time, but that can be handled in the generic
+code with just an extra config switch.
+
+I'll have a stab at that tomorrow.
 
 Thanks,
 
