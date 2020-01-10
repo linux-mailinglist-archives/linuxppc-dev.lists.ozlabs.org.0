@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90BE136800
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 08:12:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9761367FB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 08:10:10 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47vDdW5rsLzDqcw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 18:10:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47vDgw1ph8zDq9H
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2020 18:12:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Xt7jfWUV; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20161025 header.b=r8poHMoD; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47vDSk2Km4zDqcT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 18:02:30 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id q127so554230pga.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 23:02:29 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47vDSm2r6yzDqcn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2020 18:02:32 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id x185so672899pfc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2020 23:02:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=zlqZXUq/uHE/EROxU99B6tgbd71bp3wJ2CDh02FIeZk=;
- b=Xt7jfWUV5onAJwNY6tpH8I3p6xEatVv4De4T0O7mVkH9spI3cJ0BG5lXXiHxr9/ZST
- eGY0DOQI0jcu5wwXodrHERA7fEx3cAdaT6hPFN0hNPxs5FkUpVhJ37nQHE3oNwkQypYL
- PN7R+M4AlsVa0LZ3WWKLpyr4cohhy7mo6zSnU0r1KSuIWse5ouXlG2HCbqLZqgI/jMkZ
- ZkudO9if8SL1B3n4bHNPxNaXRZFIfXgB6/F7rwTvx23Pmvf+3+tE1NbbSicvfCf2isEq
- WjNeHmnbUeVS1cgEuZJEYO4SvNbdbAbC0HmAEDj/+d10iTxmvwwE5o4CecM1OLGUYev5
- Ixpw==
+ bh=45vF0P65MfxFIvdSNjBo7RP7akNxs0weK17UELHPqUY=;
+ b=r8poHMoD3qKM8mNB28MvzVNXNb04jseuMC4mUx9YhM59NzgX9qgOPQI7uG9qay4I1q
+ N/O+KaL/3W6x9mHf9cLAdvKfvZaV7cpnUtxb2bpPYAyOCdnAgkgtuSXgNgdTcAZQbqZA
+ sY8m524BOr0sep9JJnyJXAvYWCK8XEsbB/kMC17Hnn0+HIdUJy0XM1uxFNjMzaMA2cTi
+ GocYe1wbepschDBXHfs/WzCl94JqdngeWOizlndef5wvBQM1Ex/MVfF1qi7Yk+qJtPIG
+ e04YoeCe5nI9DoqznYUSWouETutT8IDwf9ba2++BQNlJdZH9+4ETNJO3vaRaFsdXpc7T
+ 9l6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=zlqZXUq/uHE/EROxU99B6tgbd71bp3wJ2CDh02FIeZk=;
- b=j+5IXrNo1i3SCnUEZEJG6GEaR3xLT5Teo6joUJRsa3wGss0KbyeABi6vdKzMsFYy5q
- RZpPPm04f97f8ZACzznsXsoUi9BZazoEOqYoHDJpoOJHdJppTZRLQ3Jth40fjANVeEI2
- qvV2gdFGFV/gRLKxOCS0qeoNahqVNwjJGgnOwaOJuAIWkh6SCL7vO1H5I4A5glAlTVWc
- QQv695QA8c24A/yEMNEBfawW24hEc1SCiLnboIphcgN0ZgFy5d1hA8fvenjL/qp7OfeX
- /ZPPyBaHazjgLaJ9hN+yiVFJ8E9lpr3EgIDityYi4f9kVVt5Uwb5z/zR1SZlXGx5Zi3C
- f2bw==
-X-Gm-Message-State: APjAAAXSZrNzDNer5oW8G1LTJ3BmN6If5PpOEdTDWJ3XLq8G4lQQDMFh
- 3OzIxxSrq06qoc7B4ytqIRDs5dnczGA=
-X-Google-Smtp-Source: APXvYqxDepE2mLF2e+atzFwBIryussLOwn+F4PuGW04Dj5EJGSW1FaJy85rYnWvzUk8NAgZr2MptbQ==
-X-Received: by 2002:a62:258:: with SMTP id 85mr2457221pfc.254.1578639748101;
- Thu, 09 Jan 2020 23:02:28 -0800 (PST)
+ bh=45vF0P65MfxFIvdSNjBo7RP7akNxs0weK17UELHPqUY=;
+ b=m3JXEPRhVc3lM9QTeFSZ3qRFkaNGJbsT1aczCTMBmDAKkQn1BjYRJTvW53rDWxuRL8
+ AlPyemkWaVkmSdTCavrrNdFZfS4sWyJyGwLn8FIcE/NryVYWNZvVTxe4tXQaSl4iz2Pd
+ WSWuji9d4FI8ikqAlDdi5rXXBrp1/Zctv4TiOaTu7G3tmAr2f5ECxpah3Uz3JhZdxdJ1
+ ij6uIKwJHXc21Dy7KUDs7SwyphAdERONVZV3z+tGStJzpiuJRwoePc5iliGIat++sJbZ
+ 5zY1ooTJ8Si8k6NPv5lFE+0WN1KTzSxIywRvnOgUeB7AdpwJvovzG3oK2KsJMNL8Bh1H
+ sAog==
+X-Gm-Message-State: APjAAAU9zZG76ewTuJ9ZLkKPor5MwLIJz8dcV4ae+Wo2uofyZZmEhZA+
+ hwHDrSfDs04Z7gSnGQglQFbIS4qVBs0=
+X-Google-Smtp-Source: APXvYqxeiBNRLtqz+uDIyg+0MqvxSYSFB/Isb5wfTO4I5MNZgL9uJ2JoBbM8UBr19MtXLI0NCtpzzQ==
+X-Received: by 2002:aa7:864f:: with SMTP id a15mr2379932pfo.136.1578639750565; 
+ Thu, 09 Jan 2020 23:02:30 -0800 (PST)
 Received: from localhost.localdomain (ohallo2.lnk.telstra.net.
  [110.142.13.149])
- by smtp.gmail.com with ESMTPSA id n26sm1309791pgd.46.2020.01.09.23.02.26
+ by smtp.gmail.com with ESMTPSA id n26sm1309791pgd.46.2020.01.09.23.02.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Jan 2020 23:02:27 -0800 (PST)
+ Thu, 09 Jan 2020 23:02:30 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/5] powerpc/iov: Move VF pdev fixup into pcibios_fixup_iov()
-Date: Fri, 10 Jan 2020 18:02:05 +1100
-Message-Id: <20200110070207.439-4-oohall@gmail.com>
+Subject: [PATCH 4/5] powernv/pci: Fold pnv_pci_dma_dev_setup() into the
+ pci-ioda.c version
+Date: Fri, 10 Jan 2020 18:02:06 +1100
+Message-Id: <20200110070207.439-5-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20200110070207.439-1-oohall@gmail.com>
 References: <20200110070207.439-1-oohall@gmail.com>
@@ -84,113 +85,91 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-An ioda_pe for each VF is allocated in pnv_pci_sriov_enable() before the
-pci_dev for the VF is created. We need to set the pe->pdev pointer at
-some point after the pci_dev is created. Currently we do that in:
-
-pcibios_bus_add_device()
-	pnv_pci_dma_dev_setup() (via phb->ops.dma_dev_setup)
-		/* fixup is done here */
-		pnv_pci_ioda_dma_dev_setup() (via pnv_phb->dma_dev_setup)
-
-The fixup needs to be done before setting up DMA for for the VF's PE, but
-there's no real reason to delay it until this point. Move the fixup into
-pnv_pci_ioda_fixup_iov() so the ordering is:
-
-	pcibios_add_device()
-		pnv_pci_ioda_fixup_iov() (via ppc_md.pcibios_fixup_sriov)
-
-	pcibios_bus_add_device()
-		...
-
-This isn't strictly required, but it's slightly a slightly more logical
-place to do the fixup and it simplifies pnv_pci_dma_dev_setup().
+pnv_pci_dma_dev_setup() does nothing but call the phb->dma_dev_setup()
+callback, if one exists. That callback is only set for normal PCIe PHBs so
+we can remove the layer of indirection and use the ioda version in
+the pci_controller_ops.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 29 +++++++++++++++++++++++++----
- arch/powerpc/platforms/powernv/pci.c      | 14 --------------
- 2 files changed, 25 insertions(+), 18 deletions(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 7 ++++---
+ arch/powerpc/platforms/powernv/pci.c      | 9 ---------
+ arch/powerpc/platforms/powernv/pci.h      | 2 --
+ 3 files changed, 4 insertions(+), 14 deletions(-)
 
 diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 33d4039..ae177ee 100644
+index ae177ee..e2a9440 100644
 --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2900,9 +2900,6 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
- 	struct pci_dn *pdn;
- 	int mul, total_vfs;
- 
--	if (!pdev->is_physfn || pci_dev_is_added(pdev))
--		return;
--
- 	pdn = pci_get_pdn(pdev);
- 	pdn->vfs_expanded = 0;
- 	pdn->m64_single_mode = false;
-@@ -2977,6 +2974,30 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
- 		res->end = res->start - 1;
- 	}
+@@ -1743,8 +1743,10 @@ int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
  }
-+
-+static void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
-+{
-+	if (WARN_ON(pci_dev_is_added(pdev)))
-+		return;
-+
-+	if (pdev->is_virtfn) {
-+		struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
-+
-+		/*
-+		 * VF PEs are single-device PEs so their pdev pointer needs to
-+		 * be set. The pdev doesn't exist when the PE is allocated (in
-+		 * (pcibios_sriov_enable()) so we fix it up here.
-+		 */
-+		pe->pdev = pdev;
-+		WARN_ON(!(pe->flags & PNV_IODA_PE_VF));
-+	} else if (pdev->is_physfn) {
-+		/*
-+		 * For PFs adjust their allocated IOV resources to match what
-+		 * the PHB can support using it's M64 BAR table.
-+		 */
-+		pnv_pci_ioda_fixup_iov_resources(pdev);
-+	}
-+}
  #endif /* CONFIG_PCI_IOV */
  
- static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
-@@ -3872,7 +3893,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
- 	ppc_md.pcibios_default_alignment = pnv_pci_default_alignment;
+-static void pnv_pci_ioda_dma_dev_setup(struct pnv_phb *phb, struct pci_dev *pdev)
++static void pnv_pci_ioda_dma_dev_setup(struct pci_dev *pdev)
+ {
++	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
++	struct pnv_phb *phb = hose->private_data;
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 	struct pnv_ioda_pe *pe;
  
- #ifdef CONFIG_PCI_IOV
--	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov_resources;
-+	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov;
- 	ppc_md.pcibios_iov_resource_alignment = pnv_pci_iov_resource_alignment;
- 	ppc_md.pcibios_sriov_enable = pnv_pcibios_sriov_enable;
- 	ppc_md.pcibios_sriov_disable = pnv_pcibios_sriov_disable;
+@@ -3627,7 +3629,7 @@ static void pnv_pci_ioda_shutdown(struct pci_controller *hose)
+ }
+ 
+ static const struct pci_controller_ops pnv_pci_ioda_controller_ops = {
+-	.dma_dev_setup		= pnv_pci_dma_dev_setup,
++	.dma_dev_setup		= pnv_pci_ioda_dma_dev_setup,
+ 	.dma_bus_setup		= pnv_pci_dma_bus_setup,
+ 	.iommu_bypass_supported	= pnv_pci_ioda_iommu_bypass_supported,
+ 	.setup_msi_irqs		= pnv_setup_msi_irqs,
+@@ -3886,7 +3888,6 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+ 		hose->controller_ops = pnv_npu_ocapi_ioda_controller_ops;
+ 		break;
+ 	default:
+-		phb->dma_dev_setup = pnv_pci_ioda_dma_dev_setup;
+ 		hose->controller_ops = pnv_pci_ioda_controller_ops;
+ 	}
+ 
 diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index e8e58a2c..8307e1f 100644
+index 8307e1f..31f1949 100644
 --- a/arch/powerpc/platforms/powernv/pci.c
 +++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -814,20 +814,6 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
- {
- 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
- 	struct pnv_phb *phb = hose->private_data;
--#ifdef CONFIG_PCI_IOV
--	struct pnv_ioda_pe *pe;
--
--	/* Fix the VF pdn PE number */
--	if (pdev->is_virtfn) {
--		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
--			if (pe->rid == ((pdev->bus->number << 8) |
--			    (pdev->devfn & 0xff))) {
--				pe->pdev = pdev;
--				break;
--			}
--		}
--	}
--#endif /* CONFIG_PCI_IOV */
+@@ -810,15 +810,6 @@ struct iommu_table *pnv_pci_table_alloc(int nid)
+ 	return tbl;
+ }
  
- 	if (phb && phb->dma_dev_setup)
- 		phb->dma_dev_setup(phb, pdev);
+-void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
+-{
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
+-
+-	if (phb && phb->dma_dev_setup)
+-		phb->dma_dev_setup(phb, pdev);
+-}
+-
+ void pnv_pci_dma_bus_setup(struct pci_bus *bus)
+ {
+ 	struct pci_controller *hose = bus->sysdata;
+diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+index f914f0b..0cdc9ba 100644
+--- a/arch/powerpc/platforms/powernv/pci.h
++++ b/arch/powerpc/platforms/powernv/pci.h
+@@ -108,7 +108,6 @@ struct pnv_phb {
+ 	int (*msi_setup)(struct pnv_phb *phb, struct pci_dev *dev,
+ 			 unsigned int hwirq, unsigned int virq,
+ 			 unsigned int is_64, struct msi_msg *msg);
+-	void (*dma_dev_setup)(struct pnv_phb *phb, struct pci_dev *pdev);
+ 	int (*init_m64)(struct pnv_phb *phb);
+ 	int (*get_pe_state)(struct pnv_phb *phb, int pe_no);
+ 	void (*freeze_pe)(struct pnv_phb *phb, int pe_no);
+@@ -189,7 +188,6 @@ extern void pnv_npu2_map_lpar(struct pnv_ioda_pe *gpe, unsigned long msr);
+ extern void pnv_pci_reset_secondary_bus(struct pci_dev *dev);
+ extern int pnv_eeh_phb_reset(struct pci_controller *hose, int option);
+ 
+-extern void pnv_pci_dma_dev_setup(struct pci_dev *pdev);
+ extern void pnv_pci_dma_bus_setup(struct pci_bus *bus);
+ extern int pnv_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type);
+ extern void pnv_teardown_msi_irqs(struct pci_dev *pdev);
 -- 
 2.9.5
 
