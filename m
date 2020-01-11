@@ -1,87 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C8313828D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 17:52:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47w5Vv2JplzDqgV
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jan 2020 03:52:23 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB921382BC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2020 18:49:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47w6nG6x4QzDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jan 2020 04:49:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=Ndqg+k0Q; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47w5T56JCBzDqG8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2020 03:50:49 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00BGntPX098067
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 11:50:46 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xfbr8rfxa-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2020 11:50:46 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
- Sat, 11 Jan 2020 16:50:44 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 11 Jan 2020 16:50:40 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00BGochb1048904
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 11 Jan 2020 16:50:38 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B33EDAE045;
- Sat, 11 Jan 2020 16:50:38 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4257CAE051;
- Sat, 11 Jan 2020 16:50:35 +0000 (GMT)
-Received: from [9.199.42.197] (unknown [9.199.42.197])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat, 11 Jan 2020 16:50:34 +0000 (GMT)
-Subject: Re: [PATCH v15 00/24] selftests, powerpc, x86: Memory Protection Keys
-To: Dave Hansen <dave.hansen@intel.com>
-References: <cover.1576645161.git.sandipan@linux.ibm.com>
- <87y2ufxlci.fsf@linux.ibm.com>
- <4a35bf48-d191-4e42-ea47-f419895ed876@intel.com>
-From: Sandipan Das <sandipan@linux.ibm.com>
-Date: Sat, 11 Jan 2020 22:20:34 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
-MIME-Version: 1.0
-In-Reply-To: <4a35bf48-d191-4e42-ea47-f419895ed876@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20011116-0028-0000-0000-000003D0407E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011116-0029-0000-0000-000024945B25
-Message-Id: <3a6280fe-6b0f-7e3c-08a9-8186a9c3ea46@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-11_05:2020-01-10,
- 2020-01-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- mlxlogscore=878 lowpriorityscore=0 bulkscore=0 phishscore=0 mlxscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001110147
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47w6lW51MmzDqXs
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2020 04:48:22 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 47w6lL6K8cz9tyVC;
+ Sat, 11 Jan 2020 18:48:14 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Ndqg+k0Q; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kGPBY1kr8M4S; Sat, 11 Jan 2020 18:48:14 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47w6lL4t6kz9tyVB;
+ Sat, 11 Jan 2020 18:48:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1578764894; bh=rWzye87XejSTOoMHiw7Qf2ytvLtb8fImWFNoum8VhkY=;
+ h=From:Subject:To:Cc:Date:From;
+ b=Ndqg+k0Q+U706ClKg/A77m9CAJWL+dmX83zxMFCi51x4RXQvVbMRWXypUNrag2Xkw
+ w673desfBUJ0oDhueeWvnNkiNtOU8McOEpwTZxrlULnTUURmT3pssRfdnR8TOrQN/N
+ n9JZ9z1RZz3v0siXxWmqPLn1k/xAxa6yiIwv1AzM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 589B28B791;
+ Sat, 11 Jan 2020 18:48:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id V5T1u6D6LVz7; Sat, 11 Jan 2020 18:48:16 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 201C28B752;
+ Sat, 11 Jan 2020 18:48:16 +0100 (CET)
+Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id BA9BC63BCA; Sat, 11 Jan 2020 17:48:15 +0000 (UTC)
+Message-Id: <e7becc50bee355e3872b84d91cc68ae8d7776bb9.1578764712.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] lib: vdso: mark __cvdso_clock_getres() as static
+To: arnd@arndb.de, tglx@linutronix.de, vincenzo.frascino@arm.com,
+ luto@kernel.org
+Date: Sat, 11 Jan 2020 17:48:15 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,29 +72,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, fweimer@redhat.com,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org,
- linuxram@us.ibm.com, shuahkh@osg.samsung.com, mhocko@kernel.org,
- linux-mm@kvack.org, mingo@redhat.com, linux-kselftest@vger.kernel.org,
- msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Dave,
+When __cvdso_clock_getres() became __cvdso_clock_getres_common()
+and a new __cvdso_clock_getres() was added, static qualifier was
+forgotten.
 
-On 10/01/20 11:27 pm, Dave Hansen wrote:
-> 
-> Could you dump these in a git tree, please?  It will make it a wee bit
-> easier for me to ship the resulting tree around to a couple different
-> systems.
-> 
+Fixes: 502a590a170b ("lib/vdso: Move fallback invocation to the callers")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ lib/vdso/gettimeofday.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I have pushed a version of this series that uses u64 for all references
-to the pkey register irrespective of architecture. This is available at:
-
-https://github.com/sandip4n/linux/tree/pkey-selftests
-
-
-- Sandipan
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index 9ecfd3b547ba..42bd8ab955fa 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -221,6 +221,7 @@ int __cvdso_clock_getres_common(clockid_t clock, struct __kernel_timespec *res)
+ 	return 0;
+ }
+ 
++static __maybe_unused
+ int __cvdso_clock_getres(clockid_t clock, struct __kernel_timespec *res)
+ {
+ 	int ret = __cvdso_clock_getres_common(clock, res);
+-- 
+2.13.3
 
