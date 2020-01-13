@@ -1,85 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED12D13902A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 12:33:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xBKp1W7FzDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 22:33:18 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8B2139038
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 12:37:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xBQ10YdjzDqLX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 22:36:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xBL747KTzDqJM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 22:33:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47xBL52vdWz9B6n
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 22:33:33 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47xBL52L7Sz9sR4; Mon, 13 Jan 2020 22:33:33 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xBGX6mxkzDqKw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 22:30:28 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 47xBL45xd9z9s29
+ for <linuxppc-dev@ozlabs.org>; Mon, 13 Jan 2020 22:33:32 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00DBN9VW139123
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 06:30:24 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xfvpns3x2-1
+ 00DBWQsj099254
+ for <linuxppc-dev@ozlabs.org>; Mon, 13 Jan 2020 06:33:30 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xfvqm11gm-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 06:30:23 -0500
+ for <linuxppc-dev@ozlabs.org>; Mon, 13 Jan 2020 06:33:30 -0500
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
- Mon, 13 Jan 2020 11:30:22 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
+ Mon, 13 Jan 2020 11:33:27 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 13 Jan 2020 11:30:19 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00DBUIio36504044
+ Mon, 13 Jan 2020 11:33:24 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00DBXNHF50855982
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jan 2020 11:30:18 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F100AE051;
- Mon, 13 Jan 2020 11:30:18 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD9C3AE04D;
- Mon, 13 Jan 2020 11:30:17 +0000 (GMT)
-Received: from dhcp-9-109-246-161.in.ibm.com (unknown [9.124.35.118])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 13 Jan 2020 11:30:17 +0000 (GMT)
-Date: Mon, 13 Jan 2020 17:00:15 +0530
-From: Balamuruhan S <bala24@linux.ibm.com>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH 15/18] powerpc/uprobes: Add support for prefixed
- instructions
-References: <20191126052141.28009-1-jniethe5@gmail.com>
- <20191126052141.28009-16-jniethe5@gmail.com>
+ Mon, 13 Jan 2020 11:33:23 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B2A45204F;
+ Mon, 13 Jan 2020 11:33:23 +0000 (GMT)
+Received: from pratiks-thinkpad.in.ibm.com (unknown [9.124.31.88])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 72F355204E;
+ Mon, 13 Jan 2020 11:33:21 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
+ svaidy@linux.ibm.com, ego@linux.vnet.ibm.com, linuxram@us.ibm.com,
+ psampat@linux.ibm.com, pratik.sampat@in.ibm.com, pratik.r.sampat@gmail.com
+Subject: [PATCH v3 0/3] Introduce Self-Save API for deep stop states
+Date: Mon, 13 Jan 2020 17:03:17 +0530
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191126052141.28009-16-jniethe5@gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20011311-4275-0000-0000-000003971AE4
+x-cbid: 20011311-0028-0000-0000-000003D0A08C
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011311-4276-0000-0000-000038AB1091
-Message-Id: <20200113113015.GA5532@dhcp-9-109-246-161.in.ibm.com>
+x-cbparentid: 20011311-0029-0000-0000-00002494BE3A
+Message-Id: <cover.1578914462.git.psampat@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-01-13_03:2020-01-13,
  2020-01-13 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 phishscore=0
- mlxscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- spamscore=0 clxscore=1015 suspectscore=3 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001130096
+ bulkscore=0 phishscore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 mlxlogscore=775
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001130097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,89 +99,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 26, 2019 at 04:21:38PM +1100, Jordan Niethe wrote:
-> Uprobes can execute instructions out of line. Increase the size of the
-> buffer used  for this so that this works for prefixed instructions. Take
-> into account the length of prefixed instructions when fixing up the nip.
-> 
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
->  arch/powerpc/include/asm/uprobes.h | 18 ++++++++++++++----
->  arch/powerpc/kernel/uprobes.c      |  4 ++--
->  2 files changed, 16 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/uprobes.h b/arch/powerpc/include/asm/uprobes.h
-> index 2bbdf27d09b5..5b5e8a3d2f55 100644
-> --- a/arch/powerpc/include/asm/uprobes.h
-> +++ b/arch/powerpc/include/asm/uprobes.h
-> @@ -14,18 +14,28 @@
->  
->  typedef ppc_opcode_t uprobe_opcode_t;
->  
-> +/*
-> + * We have to ensure we have enought space for prefixed instructions, which
+Skiboot patches: https://patchwork.ozlabs.org/patch/1221011/
+v2 patches: https://lkml.org/lkml/2020/1/12/253
+Changelog
+Patch v2 --> v3
+1. Addressed minor comments from Ram Pai
 
-minor typo of `enought` and we can have something like below,
+Currently the stop-API supports a mechanism called as self-restore
+which allows us to restore the values of certain SPRs on wakeup from a
+deep-stop state to a desired value. To use this, the Kernel makes an
+OPAL call passing the PIR of the CPU, the SPR number and the value to
+which the SPR should be restored when that CPU wakes up from a deep
+stop state.
 
-s/We have to ensure we have enought/Ensure we have enough
+Recently, a new feature, named self-save has been enabled in the
+stop-api, which is an alternative mechanism to do the same, except
+that self-save will save the current content of the SPR before
+entering a deep stop state and also restore the content back on
+waking up from a deep stop state.
 
--- Bala
+This patch series aims at introducing and leveraging the self-save feature in
+the kernel.
 
-> + * are double the size of a word instruction, i.e. 8 bytes. However,
-> + * sometimes it is simpler to treat a prefixed instruction like 2 word
-> + * instructions.
-> + */
->  #define MAX_UINSN_BYTES		4
-> -#define UPROBE_XOL_SLOT_BYTES	(MAX_UINSN_BYTES)
-> +#define UPROBE_XOL_SLOT_BYTES	(2 * MAX_UINSN_BYTES)
->  
->  /* The following alias is needed for reference from arch-agnostic code */
->  #define UPROBE_SWBP_INSN	BREAKPOINT_INSTRUCTION
->  #define UPROBE_SWBP_INSN_SIZE	4 /* swbp insn size in bytes */
->  
->  struct arch_uprobe {
-> +	 /*
-> +	  * Ensure there is enough space for prefixed instructions. Prefixed
-> +	  * instructions must not cross 64-byte boundaries.
-> +	  */
->  	union {
-> -		u32	insn;
-> -		u32	ixol;
-> -	};
-> +		uprobe_opcode_t	insn[2];
-> +		uprobe_opcode_t	ixol[2];
-> +	} __aligned(64);
->  };
->  
->  struct arch_uprobe_task {
-> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
-> index ab1077dc6148..cfcea6946f8b 100644
-> --- a/arch/powerpc/kernel/uprobes.c
-> +++ b/arch/powerpc/kernel/uprobes.c
-> @@ -111,7 +111,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
->  	 * support doesn't exist and have to fix-up the next instruction
->  	 * to be executed.
->  	 */
-> -	regs->nip = utask->vaddr + MAX_UINSN_BYTES;
-> +	regs->nip = utask->vaddr + ((IS_PREFIX(auprobe->insn[0])) ? 8 : 4);
->  
->  	user_disable_single_step(current);
->  	return 0;
-> @@ -173,7 +173,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
->  	 * emulate_step() returns 1 if the insn was successfully emulated.
->  	 * For all other cases, we need to single-step in hardware.
->  	 */
-> -	ret = emulate_step(regs, auprobe->insn, 0);
-> +	ret = emulate_step(regs, auprobe->insn[0], auprobe->insn[1]);
->  	if (ret > 0)
->  		return true;
->  
-> -- 
-> 2.20.1
-> 
+Now, as the kernel has a choice to prefer one mode over the other and
+there can be registers in both the save/restore SPR list which are sent
+from the device tree, a new interface has been defined for the seamless
+handing of the modes for each SPR.
+
+A list of preferred SPRs are maintained in the kernel which contains two
+properties:
+1. supported_mode: Helps in identifying if it strictly supports self
+                   save or restore or both.
+                   Initialized using the information from device tree.
+2. preferred_mode: Calls out what mode is preferred for each SPR. It
+                   could be strictly self save or restore, or it can also
+                   determine the preference of  mode over the other if both
+                   are present by encapsulating the other in bitmask from
+                   LSB to MSB.
+                   Initialized statically.
+
+Below is a table to show the Scenario::Consequence when the self save and
+self restore modes are available or disabled in different combinations as
+perceived from the device tree thus giving complete backwards compatibly
+regardless of an older firmware running a newer kernel or vise-versa.
+Support for self save or self-restore is embedded in the device tree,
+along with the set of registers it supports.
+
+SR = Self restore; SS = Self save
+
+.-----------------------------------.----------------------------------------.
+|             Scenario              |                Consequence             |
+:-----------------------------------+----------------------------------------:
+| Legacy Firmware. No SS or SR node | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: !active           | Deep stop states disabled              |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: !active            | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: active             | Goes through the preferences for each  |
+|                                   | SPR and executes of the modes          |
+|                                   | accordingly. Currently, Self restore is|
+|                                   | called for all the SPRs except PSSCR   |
+|                                   | which is self saved                    |
+:-----------------------------------+----------------------------------------:
+| SR: active(only HID0) SS: active  | Self save called for all supported     |
+|                                   | registers expect HID0 (as HID0 cannot  |
+|                                   | be self saved currently)               |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: active            | currently will disable deep states as  |
+|                                   | HID0 is needed to be self restored and |
+|                                   | cannot be self saved                   |
+'-----------------------------------'----------------------------------------'
+
+Pratik Rajesh Sampat (3):
+  powerpc/powernv: Interface to define support and preference for a SPR
+  powerpc/powernv: Introduce Self save support
+  powerpc/powernv: Parse device tree, population of SPR support
+
+ arch/powerpc/include/asm/opal-api.h        |   3 +-
+ arch/powerpc/include/asm/opal.h            |   1 +
+ arch/powerpc/platforms/powernv/idle.c      | 442 ++++++++++++++++++---
+ arch/powerpc/platforms/powernv/opal-call.c |   1 +
+ 4 files changed, 389 insertions(+), 58 deletions(-)
+
+-- 
+2.24.1
 
