@@ -2,50 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E511138926
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 02:11:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ADC1389E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 04:47:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47wwWv4gFyzDqLn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 12:11:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47x0086BZ4zDqM7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 14:47:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47wwTt638nzDqC9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 12:09:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47wzxt6wfhzDqLM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 14:45:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=BzVxd3D4; dkim-atps=neutral
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47wzxs0l1cz99vw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 14:45:21 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 47wwTt37Jgz9s4Y; Mon, 13 Jan 2020 12:09:22 +1100 (AEDT)
+ id 47wzxs027Xz9sR1; Mon, 13 Jan 2020 14:45:21 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 47wwTt1qsQz9sP3; Mon, 13 Jan 2020 12:09:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1578877762; bh=leii6v6Dj/RGlbG1OQ5MHtdg57WwGh/HerboWbNo31w=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=BzVxd3D47/6AlSFNN18mP1fF7j3C2FvNmqK++vMCc11szGYsp9hUzPoieaE4nV8YS
- wdAuWkO4ieSjY7J+H5XwsITPyk9QGZou5x6G2p/SddUCiVZyHsGeNTiA9VX3bC6/kp
- 7/tv2YdHkRdjaj5e6v0fHqcKMeog/sEE0AHImJgCxMuOBOgsgwt7Vm4qMQ6H3KR/f9
- ZmxBF5bINAuh+Kn1JRNJBI4EOwbBqBRrrbI7BdeDNX9wfl0Dg3R7ZugvR/BW5UbygK
- dDwxSTMEx6DCl/fwNGzzR+PlUiLzV3am0wSvZZftmFsM29BSx8ppy0V/dDAwphu+u7
- CyScF/c54n0sg==
-Date: Mon, 13 Jan 2020 08:48:22 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-Subject: Re: [PATCH v3 2/2] powerpc/pseries/svm: Disable BHRB/EBB/PMU access
-Message-ID: <20200112214822.GA3536@blackberry>
-References: <20200110051957.31714-1-sukadev@linux.ibm.com>
- <20200110051957.31714-2-sukadev@linux.ibm.com>
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47wzxr2hP7z9s4Y
+ for <linuxppc-dev@ozlabs.org>; Mon, 13 Jan 2020 14:45:19 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00D3ghYu041769
+ for <linuxppc-dev@ozlabs.org>; Sun, 12 Jan 2020 22:45:18 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xfvaxp1g9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Sun, 12 Jan 2020 22:45:17 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
+ Mon, 13 Jan 2020 03:45:15 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 13 Jan 2020 03:45:13 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00D3jCaL53280818
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Jan 2020 03:45:12 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1A0D042041;
+ Mon, 13 Jan 2020 03:45:12 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 75FE14203F;
+ Mon, 13 Jan 2020 03:45:10 +0000 (GMT)
+Received: from pratiks-thinkpad.in.ibm.com (unknown [9.124.31.88])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Jan 2020 03:45:10 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
+ svaidy@linux.ibm.com, ego@linux.vnet.ibm.com, linuxram@us.ibm.com,
+ psampat@linux.ibm.com, pratik.sampat@in.ibm.com, pratik.r.sampat@gmail.com
+Subject: [RESEND PATCH v2 0/3] Introduce Self-Save API for deep stop states
+Date: Mon, 13 Jan 2020 09:15:06 +0530
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200110051957.31714-2-sukadev@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20011303-0008-0000-0000-00000348CE40
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20011303-0009-0000-0000-00004A691C00
+Message-Id: <cover.1578886602.git.psampat@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-12_11:2020-01-10,
+ 2020-01-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxlogscore=910
+ phishscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxscore=0 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001130028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,33 +101,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, kvm-ppc@vger.kernel.org, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 09, 2020 at 09:19:57PM -0800, Sukadev Bhattiprolu wrote:
-> Ultravisor disables some CPU features like BHRB, EBB and PMU in
-> secure virtual machines (SVMs). Skip accessing those registers
-> in SVMs to avoid getting a Program Interrupt.
+RESEND Changes:
+1. Updated OPAL API numbering for consistency
 
-It would be useful to have more explanation of the rationale for the
-ultravisor disabling access to those features, and indicate whether
-this is a temporary restriction or a permanent one.  If SVMs are never
-going to be able to use the PMU then that is a bad thing in my
-opinion.  In other words, the commit message should tell us whether
-the restriction is just because the ultravisor doesn't yet have code
-for managing and context-switching the PMU, or if there is there some
-reason why using the PMU in a SVM will always be prohibited for some
-security-related reason.
+Skiboot patches: https://patchwork.ozlabs.org/patch/1221011/
+RFC v1 patches: https://lkml.org/lkml/2019/12/4/193
+Changelog
+RFC v1 --> v2
+1. Optimized preference bitmask
+2. Addressed comments from Ram Pai
 
-Also, the only way that a SVM would be getting into the KVM code that
-you are patching is if it is trying to do nested virtualization.
-However, the SVM should already know that it is not able to do nested
-virtualization because the ultravisor should be intercepting and
-failing the H_SET_PARTITION_TABLE hypercall.  So I think there is no
-good reason for patching the KVM code like you are doing unless the
-PMU restriction is permanent and we are intending someday to enable
-SVMs to have nested guests.
+Currently the stop-API supports a mechanism called as self-restore
+which allows us to restore the values of certain SPRs on wakeup from a
+deep-stop state to a desired value. To use this, the Kernel makes an
+OPAL call passing the PIR of the CPU, the SPR number and the value to
+which the SPR should be restored when that CPU wakes up from a deep
+stop state.
 
-Paul.
+Recently, a new feature, named self-save has been enabled in the
+stop-api, which is an alternative mechanism to do the same, except
+that self-save will save the current content of the SPR before
+entering a deep stop state and also restore the content back on
+waking up from a deep stop state.
+
+This patch series aims at introducing and leveraging the self-save feature in
+the kernel.
+
+Now, as the kernel has a choice to prefer one mode over the other and
+there can be registers in both the save/restore SPR list which are sent
+from the device tree, a new interface has been defined for the seamless
+handing of the modes for each SPR.
+
+A list of preferred SPRs are maintained in the kernel which contains two
+properties:
+1. supported_mode: Helps in identifying if it strictly supports self
+                   save or restore or both.
+                   Initialized using the information from device tree.
+2. preferred_mode: Calls out what mode is preferred for each SPR. It
+                   could be strictly self save or restore, or it can also
+                   determine the preference of  mode over the other if both
+                   are present by encapsulating the other in bitmask from
+                   LSB to MSB.
+                   Initialized statically.
+
+Below is a table to show the Scenario::Consequence when the self save and
+self restore modes are available or disabled in different combinations as
+perceived from the device tree thus giving complete backwards compatibly
+regardless of an older firmware running a newer kernel or vise-versa.
+Support for self save or self-restore is embedded in the device tree,
+along with the set of registers it supports.
+
+SR = Self restore; SS = Self save
+
+.-----------------------------------.----------------------------------------.
+|             Scenario              |                Consequence             |
+:-----------------------------------+----------------------------------------:
+| Legacy Firmware. No SS or SR node | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: !active           | Deep stop states disabled              |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: !active            | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: active             | Goes through the preferences for each  |
+|                                   | SPR and executes of the modes          |
+|                                   | accordingly. Currently, Self restore is|
+|                                   | called for all the SPRs except PSSCR   |
+|                                   | which is self saved                    |
+:-----------------------------------+----------------------------------------:
+| SR: active(only HID0) SS: active  | Self save called for all supported     |
+|                                   | registers expect HID0 (as HID0 cannot  |
+|                                   | be self saved currently)               |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: active            | currently will disable deep states as  |
+|                                   | HID0 is needed to be self restored and |
+|                                   | cannot be self saved                   |
+'-----------------------------------'----------------------------------------'
+
+Pratik Rajesh Sampat (3):
+  powerpc/powernv: Interface to define support and preference for a SPR
+  powerpc/powernv: Introduce Self save support
+  powerpc/powernv: Parse device tree, population of SPR support
+
+ arch/powerpc/include/asm/opal-api.h        |   3 +-
+ arch/powerpc/include/asm/opal.h            |   1 +
+ arch/powerpc/platforms/powernv/idle.c      | 433 ++++++++++++++++++---
+ arch/powerpc/platforms/powernv/opal-call.c |   1 +
+ 4 files changed, 381 insertions(+), 57 deletions(-)
+
+-- 
+2.24.1
+
