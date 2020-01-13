@@ -2,58 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C769139A7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 21:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA26139AB5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 21:27:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xPkT4Q56zDqPR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 07:06:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xQ9w2zQ4zDqPn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 07:27:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.195;
- helo=mail-pg1-f195.google.com; envelope-from=paulburton89@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com
- [209.85.215.195])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xNTs6B4rzDqLG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 06:10:51 +1100 (AEDT)
-Received: by mail-pg1-f195.google.com with SMTP id s64so5143977pgb.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 11:10:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
- :references:in-reply-to;
- bh=TKkoejQV2c6zTi0Lk84zRP/sLh+dHPb6nJ3LQs91rO0=;
- b=JXMuLyE32WreI9q0CqePVwQGzgIYhW9YD5e3yd7Hj4wrix+JqiqCz4sUlMzUUECwTH
- /U+rKKKaCkuBjNSZJfF3u8Ij1nChoDzqTIKRfBIAfGSG1On96xXgh/uYrHnm55ZOO91F
- dl3Oh9ZxNr4cx2W42WqgeW/h6IhuMLU0v5by2Pt3aOF5moHmI1DoHnfScEzt67JfzHVU
- Ekh3xpIpGoy4dql+hwU5TI9G3DehfjOlwTOua4alrRDN9hG29LWzVwBVuDD8XptCO9JP
- Yfu3JDn3OjDf7zKhE1NtpYT57Dekv42mmT0FXhcWoM0ggxdNtD4QOaVdOgn+mDHmHUdy
- e6AA==
-X-Gm-Message-State: APjAAAXqPE7MdG1FcBE2YYRSyZX4D//3oR4Sd5KYRjd9IngBxPpXxPZG
- yK4WV9VD4DhGSs8D83bCj1s=
-X-Google-Smtp-Source: APXvYqxpcMDnuAK6LNWLusoFsllAJWymSw/KyOmcfqBZ+FKSDh+VYiY8UaD3R5kny7v3CzIXMzUf6w==
-X-Received: by 2002:a63:6b07:: with SMTP id g7mr21929891pgc.243.1578942648698; 
- Mon, 13 Jan 2020 11:10:48 -0800 (PST)
-Received: from localhost (MIPS-TECHNO.ear1.SanJose1.Level3.net. [4.15.122.74])
- by smtp.gmail.com with ESMTPSA id
- y6sm14563154pgc.10.2020.01.13.11.10.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jan 2020 11:10:47 -0800 (PST)
-Message-ID: <5e1cc0b7.1c69fb81.c151b.187c@mx.google.com>
-Date: Mon, 13 Jan 2020 11:10:47 -0800
-From: Paul Burton <paulburton@kernel.org>
-To: Yangtao Li <tiny.windzz@gmail.com>
-Subject: Re: [PATCH 08/10] soc: lantiq: convert to
- devm_platform_ioremap_resource
-References: <20191214175447.25482-8-tiny.windzz@gmail.com>
-In-Reply-To: <20191214175447.25482-8-tiny.windzz@gmail.com>
-X-Mailman-Approved-At: Tue, 14 Jan 2020 07:05:12 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xQ7q4vQLzDqKw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 07:25:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=Kld2iNtf; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47xQ7p406Gz9sP3;
+ Tue, 14 Jan 2020 07:25:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1578947127;
+ bh=nLApqXKvpxFLIqB6m180eMqYhL0XvZt7//S7vdCLXCE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Kld2iNtfH81jj1J7QN3TX9k3KiBIXXHgRI7q5OXHVJao4ZcNgpg7zgpt93bHNsxgy
+ OeJjqBD0qSULyKAprZxQ9r3dCJjQFAN74aeyPQ7Et3ygrXQNCP7NBJZInobDoxum0t
+ SxsX4S5cjdQLzrLxQuaL/jI2H/nOE698ZdbJzvY4OjMVGx21ON1KK8erU3gJqKue5O
+ Kq4lgt2PMewr/OJGmoDD/Onkrq68Us0Z7WpBFWkJz4AllL5tLOh1Rx4jsQBCCeC4an
+ 443naodCbVRP8QifR5dqsyDBEYovQ3e1Biqs+J8gLPaWsrQxjRtEYyMwL/Yfw3+J3p
+ hNYMrW9BTLt1g==
+Date: Tue, 14 Jan 2020 07:25:22 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Timur Tabi <timur@kernel.org>
+Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
+Message-ID: <20200114072522.3cd57195@canb.auug.org.au>
+In-Reply-To: <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+References: <20200109183912.5fcb52aa@canb.auug.org.au>
+ <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/m.Xv=dzyfmtgXLS8PuqzcmW";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,35 +59,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yangtao Li <tiny.windzz@gmail.com>, john@phrozen.org,
- linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- khilman@baylibre.com, krzk@kernel.org, wens@csie.org, agross@kernel.org,
- linux-arm-msm@vger.kernel.org, mripard@kernel.org,
- linux-mediatek@lists.infradead.org, ssantosh@kernel.org,
- matthias.bgg@gmail.com, linux-amlogic@lists.infradead.org,
- bjorn.andersson@linaro.org, linux-arm-kernel@lists.infradead.org,
- shawnguo@kernel.org, linux-mips@vger.kernel.org, leoyang.li@nxp.com,
- kgene@kernel.org, khalasa@piap.pl, jun.nie@linaro.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: b08248@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jslaby@suse.com>, york sun <york.sun@nxp.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, swood@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+--Sig_/m.Xv=dzyfmtgXLS8PuqzcmW
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Yangtao Li wrote:
-> Use devm_platform_ioremap_resource() to simplify code.
+Hi Timur,
 
-Applied to mips-next.
+On Mon, 13 Jan 2020 10:03:18 -0600 Timur Tabi <timur@kernel.org> wrote:
+>
+> Why not simply correct the parameters of ev_byte_channel_send?
+>=20
+> static inline unsigned int ev_byte_channel_send(unsigned int handle,
+> -unsigned int *count, const char buffer[EV_BYTE_CHANNEL_MAX_BYTES])
+> +unsigned int *count, const char *buffer)
+>=20
+> Back then, I probably thought I was just being clever with this code,
+> but I realize now that it doesn't make sense to do the way I did.
 
-> commit 23c25c732530
-> https://git.kernel.org/mips/c/23c25c732530
-> 
-> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
-> Signed-off-by: Paul Burton <paulburton@kernel.org>
+The problem is not really the declaration, the problem is that
+ev_byte_channel_send always accesses 16 bytes from the buffer and it is
+not always passed a buffer that long (in one case it is passed a
+pointer to a single byte).  So the alternative to the memcpy approach I
+have take is to complicate ev_byte_channel_send so that only accesses
+count bytes from the buffer.
 
-Thanks,
-    Paul
+--=20
+Cheers,
+Stephen Rothwell
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paulburton@kernel.org to report it. ]
+--Sig_/m.Xv=dzyfmtgXLS8PuqzcmW
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4c0jIACgkQAVBC80lX
+0Gzs/wgAiMuLzS+N+nnqiZYy1lcteHXcr04SuJFVz2ya6Y4GGGwHfjyWz5FCUjWF
+xfZJ2toDo7yB2o8gVSPSaEIvAePfem6JIXJzuN93FLsyBoSgEDwjQ6XcaHqmwkNf
+Ab7OKydvbMay9vSXGu6ObM/Z5giODhxScqqPwrxd5i7NEsQ2bVWnDAYzSFMAKnem
+7E9gaVcmaShSVlkEwNlWvxTe07hyWJLgGiqmr2P8JezKAdq+pDlW6sRvkvY4cBwv
+pcIDeuLYOzPsXdI/x0dW4oKzoo2Ax22XGBLB4ENldUnfr9gGdA5m8Pl/VnZvTIC3
+nb6Cc272qlLjakqKMPuZthR2E9GqBA==
+=h8uo
+-----END PGP SIGNATURE-----
+
+--Sig_/m.Xv=dzyfmtgXLS8PuqzcmW--
