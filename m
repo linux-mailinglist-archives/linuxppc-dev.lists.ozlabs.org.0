@@ -1,99 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C2D138AED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 06:32:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDCB1389F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 04:53:21 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47x0720TWmzDqLg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 14:53:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47x2Jw74m1zDqM6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 16:32:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47wzxz4rK5zDqLV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 14:45:27 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47wzxz3WQMz9B6r
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 14:45:27 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47wzxz27p3z9sRG; Mon, 13 Jan 2020 14:45:27 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=zong.li@sifive.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=sifive.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256
+ header.s=google header.b=OxFJ5+uP; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47wzxy4vJyz9sP3
- for <linuxppc-dev@ozlabs.org>; Mon, 13 Jan 2020 14:45:26 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00D3gjqW084498
- for <linuxppc-dev@ozlabs.org>; Sun, 12 Jan 2020 22:45:24 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xfvva56fw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sun, 12 Jan 2020 22:45:24 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
- Mon, 13 Jan 2020 03:45:22 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 13 Jan 2020 03:45:19 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00D3iTXw40960326
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jan 2020 03:44:29 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF12F4204C;
- Mon, 13 Jan 2020 03:45:17 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A91742047;
- Mon, 13 Jan 2020 03:45:16 +0000 (GMT)
-Received: from pratiks-thinkpad.in.ibm.com (unknown [9.124.31.88])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 13 Jan 2020 03:45:15 +0000 (GMT)
-From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
- svaidy@linux.ibm.com, ego@linux.vnet.ibm.com, linuxram@us.ibm.com,
- psampat@linux.ibm.com, pratik.sampat@in.ibm.com, pratik.r.sampat@gmail.com
-Subject: [RESEND PATCH v2 3/3] powerpc/powernv: Parse device tree,
- population of SPR support
-Date: Mon, 13 Jan 2020 09:15:09 +0530
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <cover.1578886602.git.psampat@linux.ibm.com>
-References: <cover.1578886602.git.psampat@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47x11z0JgkzDqKb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 15:33:55 +1100 (AEDT)
+Received: by mail-ot1-x341.google.com with SMTP id p8so7755923oth.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2020 20:33:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sifive.com; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=0SADaU9gu70a2Bm0Kanw0/QkZVrOHiIb+3LRKLBcUWk=;
+ b=OxFJ5+uPpMQkwvT9Qje5xmITqR1pEl3memtQG8Of66iLLXIir/M+praEuySJUPpWqx
+ B7k8EbjZfdkqQtjY7IOgRq/+bLOoJw0+Spj1+UCP9x0BoGO+r6hPIyQ9fl/tDsd1miBa
+ RD7OyyUJkbYPcTYY11AR32jO97qb5LBnOc6cysWfFY761YIxTiErD/jyiKNnNneKy8Ek
+ VJ8n3eNNluAdNyiiQrPSN050ayi1RvZbWNM07Dwfo+GwlQrh4LBz2p+loFt7Ezh9PzS5
+ hRO1OvgiH8Xrlt5JLkPpxi2yPu9JEOjmeygncihU08HnpWE6Bz4mej+gZFrOGt7W+9CS
+ eUqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=0SADaU9gu70a2Bm0Kanw0/QkZVrOHiIb+3LRKLBcUWk=;
+ b=uPuRXPEJ3NjEKv6nruu+VjlNxuD9htxXKv7wPWZCeHuFnZZtRjzb2hF5RugchHn3q1
+ oSaonpZL4XvXENgVKbg/EpBIwoBmdHU3+6AKRfSj5OB67DGnxgZMov+NXhe0vT+UoF5N
+ j9xyNIib1qV9Cou3rLsBr0M7p9e+q7pNkawnW6bN9dvskWjSeRdlOkSCBaBNoGQVV9gS
+ ViwA4tSmNAvMkbxRSCSccutsqtpIOGFzXQBBsY0QQAAlshANEepRNeOhNtVPDaotuGmA
+ 20AIoCsa/KDc43PEKzNnc9furqLbVdDe3RO+kXWj9Yre5Q8ejHnw5OBaVeARa3k/KFPV
+ wlxg==
+X-Gm-Message-State: APjAAAXRqTjd2kb8dKghpR13Iqrqr/Ht2GjdbQWmncX7L/yC9j1xT6RU
+ SaiF0Tb78bTsF8HwUZbjhUrM5EJzRG+rO2Fg1F7mcQ==
+X-Google-Smtp-Source: APXvYqzKKJLKVTUSZcp0sj2AT+aiCvmTg5KUl6YAuMPe9/ClQhmL25Wu+pX1UtlR8rzIUjHdZZAxcUMMWVH9uWU1+Sw=
+X-Received: by 2002:a9d:2c68:: with SMTP id f95mr12075160otb.33.1578890030841; 
+ Sun, 12 Jan 2020 20:33:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20011303-0012-0000-0000-0000037CC820
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011303-0013-0000-0000-000021B8F07C
-Message-Id: <26adc23c6e82d981c6a28470ec84f74443ee3221.1578886602.git.psampat@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-12_11:2020-01-10,
- 2020-01-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001130028
+References: <a367af4d-7267-2e94-74dc-2a2aac204080@ghiti.fr>
+ <20191018105657.4584ec67@canb.auug.org.au>
+ <20191028110257.6d6dba6e@canb.auug.org.au>
+ <mhng-0daa1a90-2bed-4b2e-833e-02cd9c0aa73f@palmerdabbelt-glaptop>
+ <d5d59f54-e391-3659-d4c0-eada50f88187@ghiti.fr>
+In-Reply-To: <d5d59f54-e391-3659-d4c0-eada50f88187@ghiti.fr>
+From: Zong Li <zong.li@sifive.com>
+Date: Mon, 13 Jan 2020 12:33:40 +0800
+Message-ID: <CANXhq0pn+Nq6T5dNyJiB6xvmqTnPSzo8sVfqHhGyWUURY+1ydg@mail.gmail.com>
+Subject: Re: linux-next: build warning after merge of the bpf-next tree
+To: Alexandre Ghiti <alexandre@ghiti.fr>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Mon, 13 Jan 2020 16:30:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,141 +77,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, daniel@iogearbox.net,
+ netdev@vger.kernel.org, Palmer Dabbelt <palmerdabbelt@google.com>,
+ ast@kernel.org,
+ "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+ linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Parse the device tree for nodes self-save, self-restore and populate
-support for the preferred SPRs based what was advertised by the device
-tree.
+On Sat, Jan 11, 2020 at 10:31 PM Alexandre Ghiti <alexandre@ghiti.fr> wrote:
+>
+>
+> On 1/10/20 7:20 PM, Palmer Dabbelt wrote:
+> > On Fri, 10 Jan 2020 14:28:17 PST (-0800), alexandre@ghiti.fr wrote:
+> >> Hi guys,
+> >>
+> >> On 10/27/19 8:02 PM, Stephen Rothwell wrote:
+> >>> Hi all,
+> >>>
+> >>> On Fri, 18 Oct 2019 10:56:57 +1100 Stephen Rothwell
+> >>> <sfr@canb.auug.org.au> wrote:
+> >>>> Hi all,
+> >>>>
+> >>>> After merging the bpf-next tree, today's linux-next build (powerpc
+> >>>> ppc64_defconfig) produced this warning:
+> >>>>
+> >>>> WARNING: 2 bad relocations
+> >>>> c000000001998a48 R_PPC64_ADDR64 _binary__btf_vmlinux_bin_start
+> >>>> c000000001998a50 R_PPC64_ADDR64 _binary__btf_vmlinux_bin_end
+> >>>>
+> >>>> Introduced by commit
+> >>>>
+> >>>>    8580ac9404f6 ("bpf: Process in-kernel BTF")
+> >>> This warning now appears in the net-next tree build.
+> >>>
+> >>>
+> >> I bump that thread up because Zong also noticed that 2 new
+> >> relocations for
+> >> those symbols appeared in my riscv relocatable kernel branch following
+> >> that commit.
+> >>
+> >> I also noticed 2 new relocations R_AARCH64_ABS64 appearing in arm64
+> >> kernel.
+> >>
+> >> Those 2 weak undefined symbols have existed since commit
+> >> 341dfcf8d78e ("btf: expose BTF info through sysfs") but this is the fact
+> >> to declare those symbols into btf.c that produced those relocations.
+> >>
+> >> I'm not sure what this all means, but this is not something I expected
+> >> for riscv for
+> >> a kernel linked with -shared/-fpie. Maybe should we just leave them to
+> >> zero ?
+> >>
+> >> I think that deserves a deeper look if someone understands all this
+> >> better than I do.
+> >
+> > Can you give me a pointer to your tree and how to build a relocatable
+> > kernel?
+> > Weak undefined symbols have the absolute value 0,
+>
+>
+> So according to you the 2 new relocations R_RISCV_64 are normal and
+> should not
+> be modified at runtime right ?
+>
+>
+> > but the kernel is linked at
+> > an address such that 0 can't be reached by normal means.  When I added
+> > support
+> > to binutils for this I did it in a way that required almost no code --
+> > essetially I just stopped dissallowing x0 as a possible base register
+> > for PCREL
+> > relocations, which results in 0 always being accessible.  I just
+> > wanted to get
+> > the kernel to build again, so I didn't worry about chasing around all the
+> > addressing modes.  The PIC/PIE support generates different relocations
+> > and I
+> > wouldn't be surprised if I just missed one (or more likely all) of them.
+> >
+> > It's probably a simple fix, though I feel like every time I say that
+> > about the
+> > linker I end up spending a month in there...
+>
+> You can find it here:
+>
+> https://github.com/AlexGhiti/riscv-linux/tree/int/alex/riscv_relocatable_v1
+>
+> Zong fixed the bug introduced by those 2 new relocations and everything
+> works
+> like a charm, so I'm not sure you have to dig in the linker :)
+>
 
-Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
----
- arch/powerpc/platforms/powernv/idle.c | 104 ++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
+I'm not quite familiar with btf, so I have no idea why there are two
+weak symbols be added in 8580ac9404f6 ("bpf: Process in-kernel BTF")
+as well, According on relocation mechanism, maybe it is unnecessary to
+handle weak undefined symbol at this time, because there is no
+substantive help to relocate the absolute value 0. I just simply
+ignore the non-relative relocation types to make processing can go
+forward, and it works for me based on v5.5-rc5.
 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index d67d4d0b169b..e910ff40b7e6 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -1429,6 +1429,107 @@ static void __init pnv_probe_idle_states(void)
- 		supported_cpuidle_states |= pnv_idle_states[i].flags;
- }
- 
-+/*
-+ * Extracts and populates the self save or restore capabilities
-+ * passed from the device tree node
-+ */
-+static int extract_save_restore_state_dt(struct device_node *np, int type)
-+{
-+	int nr_sprns = 0, i, bitmask_index;
-+	int rc = 0;
-+	u64 *temp_u64;
-+	const char *state_prop;
-+	u64 bit_pos;
-+
-+	state_prop = of_get_property(np, "status", NULL);
-+	if (!state_prop) {
-+		pr_warn("opal: failed to find the active value for self save/restore node");
-+		return -EINVAL;
-+	}
-+	if (strncmp(state_prop, "disabled", 8) == 0) {
-+		/*
-+		 * if the feature is not active, strip the preferred_sprs from
-+		 * that capability.
-+		 */
-+		if (type == SELF_RESTORE_TYPE) {
-+			for (i = 0; i < nr_preferred_sprs; i++) {
-+				preferred_sprs[i].supported_mode &=
-+					~SELF_RESTORE_STRICT;
-+			}
-+		} else {
-+			for (i = 0; i < nr_preferred_sprs; i++) {
-+				preferred_sprs[i].supported_mode &=
-+					~SELF_SAVE_STRICT;
-+			}
-+		}
-+		return 0;
-+	}
-+	nr_sprns = of_property_count_u64_elems(np, "sprn-bitmask");
-+	if (nr_sprns <= 0)
-+		return rc;
-+	temp_u64 = kcalloc(nr_sprns, sizeof(u64), GFP_KERNEL);
-+	if (of_property_read_u64_array(np, "sprn-bitmask",
-+				       temp_u64, nr_sprns)) {
-+		pr_warn("cpuidle-powernv: failed to find registers in DT\n");
-+		kfree(temp_u64);
-+		return -EINVAL;
-+	}
-+	/*
-+	 * Populate acknowledgment of support for the sprs in the global vector
-+	 * gotten by the registers supplied by the firmware.
-+	 * The registers are in a bitmask, bit index within
-+	 * that specifies the SPR
-+	 */
-+	for (i = 0; i < nr_preferred_sprs; i++) {
-+		bitmask_index = preferred_sprs[i].spr / 64;
-+		bit_pos = preferred_sprs[i].spr % 64;
-+		if ((temp_u64[bitmask_index] & (1UL << bit_pos)) == 0) {
-+			if (type == SELF_RESTORE_TYPE)
-+				preferred_sprs[i].supported_mode &=
-+					~SELF_RESTORE_STRICT;
-+			else
-+				preferred_sprs[i].supported_mode &=
-+					~SELF_SAVE_STRICT;
-+			continue;
-+		}
-+		if (type == SELF_RESTORE_TYPE) {
-+			preferred_sprs[i].supported_mode |=
-+				SELF_RESTORE_STRICT;
-+		} else {
-+			preferred_sprs[i].supported_mode |=
-+				SELF_SAVE_STRICT;
-+		}
-+	}
-+
-+	kfree(temp_u64);
-+	return rc;
-+}
-+
-+static int pnv_parse_deepstate_dt(void)
-+{
-+	struct device_node *np, *np1;
-+	int rc = 0;
-+
-+	/* Self restore register population */
-+	np = of_find_node_by_path("/ibm,opal/power-mgt/self-restore");
-+	if (!np) {
-+		pr_warn("opal: self restore Node not found");
-+	} else {
-+		rc = extract_save_restore_state_dt(np, SELF_RESTORE_TYPE);
-+		if (rc != 0)
-+			return rc;
-+	}
-+	/* Self save register population */
-+	np1 = of_find_node_by_path("/ibm,opal/power-mgt/self-save");
-+	if (!np1) {
-+		pr_warn("opal: self save Node not found");
-+		pr_warn("Legacy firmware. Assuming default self-restore support");
-+	} else {
-+		rc = extract_save_restore_state_dt(np1, SELF_SAVE_TYPE);
-+	}
-+	return rc;
-+}
-+
- /*
-  * This function parses device-tree and populates all the information
-  * into pnv_idle_states structure. It also sets up nr_pnv_idle_states
-@@ -1577,6 +1678,9 @@ static int __init pnv_init_idle_states(void)
- 		return rc;
- 	pnv_probe_idle_states();
- 
-+	rc = pnv_parse_deepstate_dt();
-+	if (rc)
-+		return rc;
- 	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
- 		if (!(supported_cpuidle_states & OPAL_PM_SLEEP_ENABLED_ER1)) {
- 			power7_fastsleep_workaround_entry = false;
--- 
-2.24.1
-
+> Alex
+>
