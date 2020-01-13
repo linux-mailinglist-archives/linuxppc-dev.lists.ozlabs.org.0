@@ -1,71 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C2D138AED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 06:32:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47x2Jw74m1zDqM6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 16:32:00 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA81138B1E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 06:43:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47x2ZZ4rxzzDqM4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2020 16:43:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=zong.li@sifive.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sifive.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256
- header.s=google header.b=OxFJ5+uP; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47x11z0JgkzDqKb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 15:33:55 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id p8so7755923oth.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2020 20:33:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sifive.com; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0SADaU9gu70a2Bm0Kanw0/QkZVrOHiIb+3LRKLBcUWk=;
- b=OxFJ5+uPpMQkwvT9Qje5xmITqR1pEl3memtQG8Of66iLLXIir/M+praEuySJUPpWqx
- B7k8EbjZfdkqQtjY7IOgRq/+bLOoJw0+Spj1+UCP9x0BoGO+r6hPIyQ9fl/tDsd1miBa
- RD7OyyUJkbYPcTYY11AR32jO97qb5LBnOc6cysWfFY761YIxTiErD/jyiKNnNneKy8Ek
- VJ8n3eNNluAdNyiiQrPSN050ayi1RvZbWNM07Dwfo+GwlQrh4LBz2p+loFt7Ezh9PzS5
- hRO1OvgiH8Xrlt5JLkPpxi2yPu9JEOjmeygncihU08HnpWE6Bz4mej+gZFrOGt7W+9CS
- eUqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=0SADaU9gu70a2Bm0Kanw0/QkZVrOHiIb+3LRKLBcUWk=;
- b=uPuRXPEJ3NjEKv6nruu+VjlNxuD9htxXKv7wPWZCeHuFnZZtRjzb2hF5RugchHn3q1
- oSaonpZL4XvXENgVKbg/EpBIwoBmdHU3+6AKRfSj5OB67DGnxgZMov+NXhe0vT+UoF5N
- j9xyNIib1qV9Cou3rLsBr0M7p9e+q7pNkawnW6bN9dvskWjSeRdlOkSCBaBNoGQVV9gS
- ViwA4tSmNAvMkbxRSCSccutsqtpIOGFzXQBBsY0QQAAlshANEepRNeOhNtVPDaotuGmA
- 20AIoCsa/KDc43PEKzNnc9furqLbVdDe3RO+kXWj9Yre5Q8ejHnw5OBaVeARa3k/KFPV
- wlxg==
-X-Gm-Message-State: APjAAAXRqTjd2kb8dKghpR13Iqrqr/Ht2GjdbQWmncX7L/yC9j1xT6RU
- SaiF0Tb78bTsF8HwUZbjhUrM5EJzRG+rO2Fg1F7mcQ==
-X-Google-Smtp-Source: APXvYqzKKJLKVTUSZcp0sj2AT+aiCvmTg5KUl6YAuMPe9/ClQhmL25Wu+pX1UtlR8rzIUjHdZZAxcUMMWVH9uWU1+Sw=
-X-Received: by 2002:a9d:2c68:: with SMTP id f95mr12075160otb.33.1578890030841; 
- Sun, 12 Jan 2020 20:33:50 -0800 (PST)
-MIME-Version: 1.0
-References: <a367af4d-7267-2e94-74dc-2a2aac204080@ghiti.fr>
- <20191018105657.4584ec67@canb.auug.org.au>
- <20191028110257.6d6dba6e@canb.auug.org.au>
- <mhng-0daa1a90-2bed-4b2e-833e-02cd9c0aa73f@palmerdabbelt-glaptop>
- <d5d59f54-e391-3659-d4c0-eada50f88187@ghiti.fr>
-In-Reply-To: <d5d59f54-e391-3659-d4c0-eada50f88187@ghiti.fr>
-From: Zong Li <zong.li@sifive.com>
-Date: Mon, 13 Jan 2020 12:33:40 +0800
-Message-ID: <CANXhq0pn+Nq6T5dNyJiB6xvmqTnPSzo8sVfqHhGyWUURY+1ydg@mail.gmail.com>
-Subject: Re: linux-next: build warning after merge of the bpf-next tree
-To: Alexandre Ghiti <alexandre@ghiti.fr>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Mon, 13 Jan 2020 16:30:29 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47x2Xf6cXGzDqKX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 16:42:09 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00D5Y3Kg175597
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 00:42:06 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xfvjwyq4h-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 00:42:06 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
+ Mon, 13 Jan 2020 05:42:05 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 13 Jan 2020 05:42:01 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00D5g0s161866018
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Jan 2020 05:42:00 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 10480AE051;
+ Mon, 13 Jan 2020 05:42:00 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A6370AE053;
+ Mon, 13 Jan 2020 05:41:58 +0000 (GMT)
+Received: from dhcp-9-109-246-161.in.ibm.com (unknown [9.124.35.118])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Jan 2020 05:41:58 +0000 (GMT)
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2 0/3] Add support for divde[.] and divdeu[.] instruction
+ emulation
+Date: Mon, 13 Jan 2020 11:11:43 +0530
+X-Mailer: git-send-email 2.14.5
+X-TM-AS-GCONF: 00
+x-cbid: 20011305-0016-0000-0000-000002DCCA61
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20011305-0017-0000-0000-0000333F52AA
+Message-Id: <20200113054146.10249-1-bala24@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-13_01:2020-01-13,
+ 2020-01-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=691
+ lowpriorityscore=0 bulkscore=0 suspectscore=5 adultscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001130044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,106 +85,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, daniel@iogearbox.net,
- netdev@vger.kernel.org, Palmer Dabbelt <palmerdabbelt@google.com>,
- ast@kernel.org,
- "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
- linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: ravi.bangoria@linux.ibm.com, Balamuruhan S <bala24@linux.ibm.com>,
+ paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 11, 2020 at 10:31 PM Alexandre Ghiti <alexandre@ghiti.fr> wrote:
->
->
-> On 1/10/20 7:20 PM, Palmer Dabbelt wrote:
-> > On Fri, 10 Jan 2020 14:28:17 PST (-0800), alexandre@ghiti.fr wrote:
-> >> Hi guys,
-> >>
-> >> On 10/27/19 8:02 PM, Stephen Rothwell wrote:
-> >>> Hi all,
-> >>>
-> >>> On Fri, 18 Oct 2019 10:56:57 +1100 Stephen Rothwell
-> >>> <sfr@canb.auug.org.au> wrote:
-> >>>> Hi all,
-> >>>>
-> >>>> After merging the bpf-next tree, today's linux-next build (powerpc
-> >>>> ppc64_defconfig) produced this warning:
-> >>>>
-> >>>> WARNING: 2 bad relocations
-> >>>> c000000001998a48 R_PPC64_ADDR64 _binary__btf_vmlinux_bin_start
-> >>>> c000000001998a50 R_PPC64_ADDR64 _binary__btf_vmlinux_bin_end
-> >>>>
-> >>>> Introduced by commit
-> >>>>
-> >>>>    8580ac9404f6 ("bpf: Process in-kernel BTF")
-> >>> This warning now appears in the net-next tree build.
-> >>>
-> >>>
-> >> I bump that thread up because Zong also noticed that 2 new
-> >> relocations for
-> >> those symbols appeared in my riscv relocatable kernel branch following
-> >> that commit.
-> >>
-> >> I also noticed 2 new relocations R_AARCH64_ABS64 appearing in arm64
-> >> kernel.
-> >>
-> >> Those 2 weak undefined symbols have existed since commit
-> >> 341dfcf8d78e ("btf: expose BTF info through sysfs") but this is the fact
-> >> to declare those symbols into btf.c that produced those relocations.
-> >>
-> >> I'm not sure what this all means, but this is not something I expected
-> >> for riscv for
-> >> a kernel linked with -shared/-fpie. Maybe should we just leave them to
-> >> zero ?
-> >>
-> >> I think that deserves a deeper look if someone understands all this
-> >> better than I do.
-> >
-> > Can you give me a pointer to your tree and how to build a relocatable
-> > kernel?
-> > Weak undefined symbols have the absolute value 0,
->
->
-> So according to you the 2 new relocations R_RISCV_64 are normal and
-> should not
-> be modified at runtime right ?
->
->
-> > but the kernel is linked at
-> > an address such that 0 can't be reached by normal means.  When I added
-> > support
-> > to binutils for this I did it in a way that required almost no code --
-> > essetially I just stopped dissallowing x0 as a possible base register
-> > for PCREL
-> > relocations, which results in 0 always being accessible.  I just
-> > wanted to get
-> > the kernel to build again, so I didn't worry about chasing around all the
-> > addressing modes.  The PIC/PIE support generates different relocations
-> > and I
-> > wouldn't be surprised if I just missed one (or more likely all) of them.
-> >
-> > It's probably a simple fix, though I feel like every time I say that
-> > about the
-> > linker I end up spending a month in there...
->
-> You can find it here:
->
-> https://github.com/AlexGhiti/riscv-linux/tree/int/alex/riscv_relocatable_v1
->
-> Zong fixed the bug introduced by those 2 new relocations and everything
-> works
-> like a charm, so I'm not sure you have to dig in the linker :)
->
+Hi All,
 
-I'm not quite familiar with btf, so I have no idea why there are two
-weak symbols be added in 8580ac9404f6 ("bpf: Process in-kernel BTF")
-as well, According on relocation mechanism, maybe it is unnecessary to
-handle weak undefined symbol at this time, because there is no
-substantive help to relocate the absolute value 0. I just simply
-ignore the non-relative relocation types to make processing can go
-forward, and it works for me based on v5.5-rc5.
+This patchset adds support to emulate divde, divde., divdeu and divdeu.
+instructions and testcases for it.
 
-> Alex
->
+Changes in v2:
+-------------
+* Fix review comments from Paul to make divde_dot and divdeu_dot simple
+  by using divde and divdeu, then goto `arith_done` instead of
+  `compute_done`.
+* Include `Reviewed-by` tag from Sandipan Das.
+* Rebase with recent mpe's merge tree.
+
+I would request for your review and suggestions for making it better.
+
+Boot Log:
+--------
+
+:: ::
+:: ::
+[    2.777518] emulate_step_test: divde          : RA = LONG_MIN, RB = LONG_MIN                         PASS
+[    2.777882] emulate_step_test: divde          : RA = 1L, RB = 0					PASS
+[    2.778432] emulate_step_test: divde          : RA = LONG_MIN, RB = LONG_MAX                         PASS
+[    2.778880] emulate_step_test: divde.         : RA = LONG_MIN, RB = LONG_MIN                         PASS
+[    2.780172] emulate_step_test: divde.         : RA = 1L, RB = 0					PASS
+[    2.780582] emulate_step_test: divde.         : RA = LONG_MIN, RB = LONG_MAX                         PASS
+[    2.780983] emulate_step_test: divdeu         : RA = LONG_MIN, RB = LONG_MIN                         PASS
+[    2.781276] emulate_step_test: divdeu         : RA = 1L, RB = 0					PASS
+[    2.781579] emulate_step_test: divdeu         : RA = LONG_MIN, RB = LONG_MAX                         PASS
+[    2.781820] emulate_step_test: divdeu         : RA = LONG_MAX - 1, RB = LONG_MAX                     PASS
+[    2.782056] emulate_step_test: divdeu         : RA = LONG_MIN + 1, RB = LONG_MIN                     PASS
+[    2.782296] emulate_step_test: divdeu.        : RA = LONG_MIN, RB = LONG_MIN                         PASS
+[    2.782556] emulate_step_test: divdeu.        : RA = 1L, RB = 0					PASS
+[    2.783502] emulate_step_test: divdeu.        : RA = LONG_MIN, RB = LONG_MAX                         PASS
+[    2.783748] emulate_step_test: divdeu.        : RA = LONG_MAX - 1, RB = LONG_MAX                     PASS
+[    2.783973] emulate_step_test: divdeu.        : RA = LONG_MIN + 1, RB = LONG_MIN                     PASS
+[    2.789617] registered taskstats version 1
+[    2.794779] printk: console [netcon0] enabled
+[    2.794931] netconsole: network logging started
+[    2.795327] hctosys: unable to open rtc device (rtc0)
+[    2.953449] Freeing unused kernel memory: 5120K
+[    2.953639] This architecture does not have kernel memory protection.
+[    2.953918] Run /init as init process
+[    3.173573] mount (54) used greatest stack depth: 12576 bytes left
+[    3.252465] mount (55) used greatest stack depth: 12544 bytes left
+
+Welcome to Buildroot
+buildroot login:
+
+Balamuruhan S (3):
+  powerpc ppc-opcode: add divde, divde_dot, divdeu and divdeu_dot
+    opcodes
+  powerpc sstep: add support for divde[.] and divdeu[.] instructions
+  powerpc test_emulate_step: add testcases for divde[.] and divdeu[.]
+    instructions
+
+ arch/powerpc/include/asm/ppc-opcode.h |  10 +++
+ arch/powerpc/lib/sstep.c              |  13 ++-
+ arch/powerpc/lib/test_emulate_step.c  | 164 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 186 insertions(+), 1 deletion(-)
+
+
+base-commit: 20862247a368dbb75d6e97d82345999adaacf3cc
+-- 
+2.14.5
+
