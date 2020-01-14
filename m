@@ -1,72 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20F113A083
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 06:23:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xf4B5cFQzDqNV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 16:23:06 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E9013A0B2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 06:25:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xf7406G2zDqNf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 16:25:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=swood@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::244;
+ helo=mail-lj1-x244.google.com; envelope-from=alexei.starovoitov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=SRil7agZ; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LOtEzdzO; dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xf2W16qlzDqJj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 16:21:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1578979293;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CP3JmddbXvQv1k+0a5E//Tv08qc4ZbZCNB805rOsr3Y=;
- b=SRil7agZaZWI+xpT75UXNa36YYPPGvPLAycGchIHlHK7+enzC74dDZqMfuzmARO2lB+brb
- RZ5IvyFnCwx0UIsCvHkj/6cC3gDUPstBot96KhEMxxMDA/7o2CkCBWSEVFOhcD9aS6yR/F
- 4WInA1Oe/0BxuxKv358X0M53AE0VLKw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-169-qjvvrBKvOuCVr3Cimjtgug-1; Mon, 13 Jan 2020 20:17:54 -0500
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9DCE2107ACC5;
- Tue, 14 Jan 2020 01:17:52 +0000 (UTC)
-Received: from ovpn-120-231.rdu2.redhat.com (ovpn-120-231.rdu2.redhat.com
- [10.10.120.231])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BED925DA7B;
- Tue, 14 Jan 2020 01:17:50 +0000 (UTC)
-Message-ID: <e5b585dffdaf0608e6d5d1cfac288d02e09d384d.camel@redhat.com>
-Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-From: Scott Wood <swood@redhat.com>
-To: Timur Tabi <timur@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Mon, 13 Jan 2020 19:17:49 -0600
-In-Reply-To: <726a71ce-b9e6-cec4-a4d0-ec6a8c604989@kernel.org>
-References: <20200109183912.5fcb52aa@canb.auug.org.au>
- <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
- <20200114072522.3cd57195@canb.auug.org.au>
- <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
- <726a71ce-b9e6-cec4-a4d0-ec6a8c604989@kernel.org>
-Organization: Red Hat
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xf5K0F0kzDqMM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 16:24:04 +1100 (AEDT)
+Received: by mail-lj1-x244.google.com with SMTP id a13so12786351ljm.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 21:24:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=xOe8cEwY/+ggWSrDf4teIOpCv6NdYHvbvkF1XKTEocs=;
+ b=LOtEzdzO4P0gGkSt2/IoHR9VPfhIc06dybg249hC4fdFHKqGeaO8YxYjcto8GZcco6
+ HX2osGkURrzyuWIDMmPjKH6D5ziJteWrS8nP6g8cIpsmxO3g6xKeyta0lNcLNXqImGgD
+ C61+M2tHogtE/Tl8QJKImmlO9aOGwRqlrM74DKpVkzILRUlW2Xd3NWS6eUv1BHk1+oxv
+ 6Nz/uoqwbBG4FLBT0+T4Qdp3BXsK2hZReGH8l838Wpi3S4hKpZI+O6PN3yd+BgnhdqGt
+ 70U3ZQqzxQXRssZfvaI+neH8/KYxh+qMbdUQS85U95UhbJwfqdQbTlh4qpLZ9gE8FNO/
+ Mnog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=xOe8cEwY/+ggWSrDf4teIOpCv6NdYHvbvkF1XKTEocs=;
+ b=K8AB/+WTLeKVcLOskGZJBwS6J2wqaiTGKNCF0Gl7sX1+tSzGBJOGqK9vNpGttx3yQo
+ L4Ou4f/TJfz/fdYBmE1l7QYzU6qDp/DFyjStb9fkIu2AhshD9sUA7a3CHE3Za7miXZhw
+ sbfV9Gj49lOMJ1J2u5N3GVwC++IG9sci27oOdxsltqo9NmQd7nQfUftn+43hdKXKR9Xx
+ VMRhubRieMx+B34Ti5T4+1xElrjI/ZXSQsYUFOll4giFJYgvN14renELMPoK/g0JEl8q
+ Hv5R8iNNCjUloXmeCImHSdFiAsMET5EOJzIAEuKn+JCnOxWYVlHogWKNDmfktWHkKFK3
+ 41bA==
+X-Gm-Message-State: APjAAAXaUKaHqnLAcd05imaUMWqZnpXCco6Nfkqt1TH6WmbemsM8WON3
+ Hlof8rg1k3xaIQYBJYpdKN/45/0EvHguwfeK7XQ=
+X-Google-Smtp-Source: APXvYqwLRjvJGcaSQN7MdhbIG50V/jBBlGzk43plCv5NgKLK461rA5mo+qyywlltVwtQwDPfSOV1dXQ6+y5OCmX7tEU=
+X-Received: by 2002:a2e:884d:: with SMTP id z13mr13271564ljj.116.1578979441504; 
+ Mon, 13 Jan 2020 21:24:01 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: qjvvrBKvOuCVr3Cimjtgug-1
-X-Mimecast-Spam-Score: 0
+References: <a367af4d-7267-2e94-74dc-2a2aac204080@ghiti.fr>
+ <20191018105657.4584ec67@canb.auug.org.au>
+ <20191028110257.6d6dba6e@canb.auug.org.au>
+ <mhng-0daa1a90-2bed-4b2e-833e-02cd9c0aa73f@palmerdabbelt-glaptop>
+ <d5d59f54-e391-3659-d4c0-eada50f88187@ghiti.fr>
+ <CANXhq0pn+Nq6T5dNyJiB6xvmqTnPSzo8sVfqHhGyWUURY+1ydg@mail.gmail.com>
+In-Reply-To: <CANXhq0pn+Nq6T5dNyJiB6xvmqTnPSzo8sVfqHhGyWUURY+1ydg@mail.gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 13 Jan 2020 21:23:50 -0800
+Message-ID: <CAADnVQ+kbxpw7fxRZodTtE7AmEmRDgO9fcmMD8kKRssS8WJizA@mail.gmail.com>
+Subject: Re: linux-next: build warning after merge of the bpf-next tree
+To: Zong Li <zong.li@sifive.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,25 +77,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- york sun <york.sun@nxp.com>, Jiri Slaby <jslaby@suse.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, b08248@gmail.com
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexandre Ghiti <alexandre@ghiti.fr>, Daniel Borkmann <daniel@iogearbox.net>,
+ Network Development <netdev@vger.kernel.org>,
+ Palmer Dabbelt <palmerdabbelt@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-01-13 at 19:13 -0600, Timur Tabi wrote:
-> On 1/13/20 7:10 PM, Timur Tabi wrote:
-> > I would prefer that ev_byte_channel_send() is updated to access only 
-> > 'count' bytes.  If that means adding a memcpy to the 
-> > ev_byte_channel_send() itself, then so be it.  Trying to figure out how 
-> > to stuff n bytes into 4 32-
-> > bit registers is probably not worth the effort.
-> 
-> Looks like ev_byte_channel_receive() has the same bug, but in reverse.
+On Sun, Jan 12, 2020 at 8:33 PM Zong Li <zong.li@sifive.com> wrote:
+>
+> I'm not quite familiar with btf, so I have no idea why there are two
+> weak symbols be added in 8580ac9404f6 ("bpf: Process in-kernel BTF")
 
-It only has one user, which always passes in a 16-byte buffer.
-
--Scott
-
-
+I can explain what these weak symbols are for, but that won't change
+the fact that compiler or linker are buggy. The weak symbols should work
+in all cases and compiler should pick correct relocation.
+In this case it sounds that compiler picked relative relocation and failed
+to reach zero from that address.
