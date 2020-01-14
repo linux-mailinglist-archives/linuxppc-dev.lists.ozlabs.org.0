@@ -1,61 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C9813AF2F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 17:23:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xwjh3zNbzDqH5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 03:23:04 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDB713AE63
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 17:07:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xwM95SmxzDqDY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 03:07:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=sirena.org.uk
- (client-ip=172.104.155.198; helo=heliosphere.sirena.org.uk;
- envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.a=rsa-sha256 header.s=20170815-heliosphere header.b=OfpfFDbw; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=S+UxuITg; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xwGF0VsQzDqQk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 03:02:44 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 47xwG81WBfz9txb0;
+ Tue, 14 Jan 2020 17:02:40 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=S+UxuITg; dkim-adsp=pass;
  dkim-atps=neutral
-Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
- [172.104.155.198])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xwYq2TlvzDqQn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 03:16:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=TnevzhVUZF4pyGCopDfMXcwhuhw/gLXqKk9L1QZKo8Y=; b=OfpfFDbwC+s7nxwz+wOkEdDGR
- pRZxN38c9nl2FWne4V8pximq6dGeG1L3rFOGWY3bz8QR3EpC7b55OK/qApDpSmeRwglL5ACd/Xjxp
- DY1Qz6Dbr5/ywscSBhqCrLy7KHZbvbEwBeAoNNiAhQvhUWNXTjzQORNayiNpx+u7N3aWc=;
-Received: from fw-tnat-cam7.arm.com ([217.140.106.55]
- helo=fitzroy.sirena.org.uk) by heliosphere.sirena.org.uk with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <broonie@sirena.org.uk>)
- id 1irODk-0000DR-LB; Tue, 14 Jan 2020 15:35:08 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
- id 48FC8D04DF5; Tue, 14 Jan 2020 15:35:08 +0000 (GMT)
-Date: Tue, 14 Jan 2020 15:35:08 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v2 2/2] spi: fsl: simplify error path in of_fsl_spi_probe()
-Message-ID: <20200114153508.GY3897@sirena.org.uk>
-References: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
- <539a3b82463f64e8055f166c915f0e90f752c7b0.1575990944.git.christophe.leroy@c-s.fr>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="mlvFMpb4NrD3AMcD"
-Content-Disposition: inline
-In-Reply-To: <539a3b82463f64e8055f166c915f0e90f752c7b0.1575990944.git.christophe.leroy@c-s.fr>
-X-Cookie: Programming is an unnatural act.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HgM0nnBSpLFA; Tue, 14 Jan 2020 17:02:40 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47xwG80TLSz9txZy;
+ Tue, 14 Jan 2020 17:02:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579017760; bh=xN6Ppzc+LMdYKzWDRSnBwvud8ZwuGgv8OWrBjgrESDM=;
+ h=From:Subject:To:Cc:Date:From;
+ b=S+UxuITgoSpswC3s5breEl/xE6gr4caOs/HbwtLch+p5VEZn8GzhzsaBErtCt1hX3
+ qUXPik8yymwHIWSN4FxUjdVGUoP1K+AsYCo7/u95BIdeCQLIZIqLal4B1IMU18hGt9
+ LbuL4FPLuiL/eYmNtFXvpt48S6PCnqDM4OzpCwBg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E11D8B7EC;
+ Tue, 14 Jan 2020 17:02:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id zw9swoOyGvDa; Tue, 14 Jan 2020 17:02:41 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FE008B7E8;
+ Tue, 14 Jan 2020 17:02:41 +0100 (CET)
+Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id F152C6381B; Tue, 14 Jan 2020 16:02:40 +0000 (UTC)
+Message-Id: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v3] spi: fsl: simplify error path in of_fsl_spi_probe()
+To: Mark Brown <broonie@kernel.org>
+Date: Tue, 14 Jan 2020 16:02:40 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,30 +78,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+No need to 'goto err;' for just doing a return.
+return directly from where the error happens.
 
---mlvFMpb4NrD3AMcD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+v3: rebase on today's spi/for-next and using PTR_ERR_OR_ZERO() in one place.
+---
+ drivers/spi/spi-fsl-spi.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-On Tue, Dec 10, 2019 at 03:17:16PM +0000, Christophe Leroy wrote:
-> No need to 'goto err;' for just doing a return.
-> return directly from where the error happens.
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index fb4159ad6bf6..3b81772fea0d 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -706,8 +706,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct spi_master *master;
+ 	struct resource mem;
+-	int irq = 0, type;
+-	int ret = -ENOMEM;
++	int irq, type;
++	int ret;
+ 
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+ 	if (ret)
+@@ -722,10 +722,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 
+ 		if (spisel_boot) {
+ 			pinfo->immr_spi_cs = ioremap(get_immrbase() + IMMR_SPI_CS_OFFSET, 4);
+-			if (!pinfo->immr_spi_cs) {
+-				ret = -ENOMEM;
+-				goto err;
+-			}
++			if (!pinfo->immr_spi_cs)
++				return -ENOMEM;
+ 		}
+ #endif
+ 		/*
+@@ -744,24 +742,15 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 
+ 	ret = of_address_to_resource(np, 0, &mem);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	irq = platform_get_irq(ofdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto err;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	master = fsl_spi_probe(dev, &mem, irq);
+-	if (IS_ERR(master)) {
+-		ret = PTR_ERR(master);
+-		goto err;
+-	}
+-
+-	return 0;
+ 
+-err:
+-	return ret;
++	return PTR_ERR_OR_ZERO(master);
+ }
+ 
+ static int of_fsl_spi_remove(struct platform_device *ofdev)
+-- 
+2.13.3
 
-This doesn't apply against current code, please check and resend.
-
---mlvFMpb4NrD3AMcD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4d36sACgkQJNaLcl1U
-h9C3zQf/cMvkTc+QF3yMKYXxlmxQDKATcaQNF7uNysSG2s4+eOCqDd8drWV92HRz
-AM7/spEm4cUKbeKJNtl5fXAnxI89PdE/e0bDH316EkA5L7NOJAI2dGjHDVJcgKMu
-azrTo4dbu1+bt2JXOtHrTO9nIU8IRbQL9QcuLG/52cqD0wB3xWb4LE6ToQftfMoC
-+96ALK3iJyYK8dhJI4Ip+oXBQGE2Fu2YU/C1lTvHnsrgqwnolt2u9z+HEXGu8rkE
-DGmxnns+uSmLrCbSETb5ooxW3GVnis5IlROQKGBXZ+LDdTA41owEQLdqXIaeaIDu
-Fiz2D//oT5xGwJgH7rM8LpEcSnodNA==
-=EOzq
------END PGP SIGNATURE-----
-
---mlvFMpb4NrD3AMcD--
