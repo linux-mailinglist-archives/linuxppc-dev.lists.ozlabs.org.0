@@ -1,54 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6795613A2C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 09:17:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BF213A278
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 09:05:40 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xjgh5Ts8zDqP8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 19:05:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xjxD46WtzDqJm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 19:17:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.61.98; helo=8.mo177.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 602 seconds by postgrey-1.36 at bilbo;
- Tue, 14 Jan 2020 19:03:36 AEDT
-Received: from 8.mo177.mail-out.ovh.net (8.mo177.mail-out.ovh.net
- [46.105.61.98])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=qVJjeOJt; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xjdN4vqPzDqHm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 19:03:33 +1100 (AEDT)
-Received: from player793.ha.ovh.net (unknown [10.108.16.135])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id 0CEB911E213
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 08:45:03 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player793.ha.ovh.net (Postfix) with ESMTPSA id B018AE3A23F2;
- Tue, 14 Jan 2020 07:44:58 +0000 (UTC)
-Subject: Re: [PATCH] powerpc/xive: discard ESB load value when interrupt is
- invalid
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200113130118.27969-1-clg@kaod.org>
- <76f76082-81ee-4957-c45b-151f0cd6e6b6@kaod.org>
- <87r202alge.fsf@mpe.ellerman.id.au>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <5918d64a-8cac-c475-1bda-c0b37d49b47c@kaod.org>
-Date: Tue, 14 Jan 2020 08:44:54 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-MIME-Version: 1.0
-In-Reply-To: <87r202alge.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 8178255452192017339
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrvdejuddguddutdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejleefrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xjrT6hWRzDqJH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 19:13:13 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 47xjrN48tlz9txps;
+ Tue, 14 Jan 2020 09:13:08 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=qVJjeOJt; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Ax4DlAU-LFRw; Tue, 14 Jan 2020 09:13:08 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47xjrN2hdfz9txpr;
+ Tue, 14 Jan 2020 09:13:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1578989588; bh=nYNmObGRX5QXwkyrQ/z88cc0DXGjurU82OHj/0TKFB0=;
+ h=From:Subject:To:Cc:Date:From;
+ b=qVJjeOJtqePHi46tx2HmBZQ5Y0NPD/PYS74kgHj3x+gDrsQy6IDqCpp2mTtp1gFHI
+ DVgqicSNmXARCu2Sf/ml1wiDXDIOebbTuwOOBcg4IsGfiTy1dV6XW9dGfAO5oCrri6
+ 5YCoYtiBrBe97N8ND8Vt1bj3Ipj8acVpg64HCikc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 53F6F8B7D1;
+ Tue, 14 Jan 2020 09:13:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id PW_4TgoO8Lwi; Tue, 14 Jan 2020 09:13:09 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 14D548B769;
+ Tue, 14 Jan 2020 09:13:09 +0100 (CET)
+Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id AC38064A20; Tue, 14 Jan 2020 08:13:08 +0000 (UTC)
+Message-Id: <37517da8310f4457f28921a4edb88fb21d27b62a.1578989531.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/ptdump: fix W+X verification call in mark_rodata_ro()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 14 Jan 2020 08:13:08 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,37 +72,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Greg Kurz <groug@kaod.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/14/20 2:14 AM, Michael Ellerman wrote:
-> Cédric Le Goater <clg@kaod.org> writes:
->> On 1/13/20 2:01 PM, Cédric Le Goater wrote:
->>> From: Frederic Barrat <fbarrat@linux.ibm.com>
->>>
->>> A load on an ESB page returning all 1's means that the underlying
->>> device has invalidated the access to the PQ state of the interrupt
->>> through mmio. It may happen, for example when querying a PHB interrupt
->>> while the PHB is in an error state.
->>>
->>> In that case, we should consider the interrupt to be invalid when
->>> checking its state in the irq_get_irqchip_state() handler.
->>
->>
->> and we need also these tags :
->>
->> Fixes: da15c03b047d ("powerpc/xive: Implement get_irqchip_state method for XIVE to fix shutdown race")
->> Cc: stable@vger.kernel.org # v5.3+
-> 
-> I added those, although it's v5.4+, as the offending commit was first
-> included in v5.4-rc1.
+ptdump_check_wx() also have to be called when pages are mapped
+by blocks.
 
-Ah yes. I mistook the merge tag of the branch used for the PR (v5.3-rc2)
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Fixes: 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
+---
+ arch/powerpc/mm/pgtable_32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-
-C. 
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index 73b84166d06a..5fb90edd865e 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -218,6 +218,7 @@ void mark_rodata_ro(void)
+ 
+ 	if (v_block_mapped((unsigned long)_sinittext)) {
+ 		mmu_mark_rodata_ro();
++		ptdump_check_wx();
+ 		return;
+ 	}
+ 
+-- 
+2.13.3
 
