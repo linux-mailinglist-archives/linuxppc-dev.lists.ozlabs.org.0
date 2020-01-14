@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D7B13AE32
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 16:59:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74ECE13AE20
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 16:57:41 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xw8L3DXVzDqR1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 02:57:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xwBT1jsJzDqJf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 02:59:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xw5J1PfQzDqPK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 02:54:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xw6G1J7VzDqQt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 02:55:50 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
-Date: Tue, 14 Jan 2020 15:54:56 +0000
+Date: Tue, 14 Jan 2020 15:55:45 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -41,7 +41,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-206203-206035-8NFu86gSsC@https.bugzilla.kernel.org/>
+Message-ID: <bug-206203-206035-yNObSR83Q5@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
 References: <bug-206203-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -66,10 +66,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D206203
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 286803
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286803&action=3Dedit
-dmesg (kernel 5.4.11, Talos II)
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 286805
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286805&action=3Dedit
+kernel .config (kernel 5.4.11, Talos II)
 
 --=20
 You are receiving this mail because:
