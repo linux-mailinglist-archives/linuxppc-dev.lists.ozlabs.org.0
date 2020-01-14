@@ -2,55 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA53C139ED2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 02:16:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7798A139ED9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 02:18:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xXbc0Bq2zDqMV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 12:16:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xXdd22fdzDqPK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 12:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=xjQfoiih; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xXWv0zrjzDqNG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 12:13:15 +1100 (AEDT)
-Received: from [192.168.1.20] (cpe-24-28-70-126.austin.res.rr.com
- [24.28.70.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C7143207FF;
- Tue, 14 Jan 2020 01:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1578964392;
- bh=0gpl/fZLuDcM6R2f88rRQhFEHgQPzojGamoAcz0JAow=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=xjQfoiihel1d1unJsEk43pkau7rk+TfPg80uNoSkr/zwFGN9pBWyGB4AsRfz+zR4o
- xlhYWpnWc49QiHgpWj7zDCvbJaVzR/qlB8fXR5X48NAHcgX7mv6lujb6d5pdXh7Yu8
- Sqpm1pJs28C298U+aQwAlLGph8h7xjwB68TqlgnI=
-Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-From: Timur Tabi <timur@kernel.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-References: <20200109183912.5fcb52aa@canb.auug.org.au>
- <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
- <20200114072522.3cd57195@canb.auug.org.au>
- <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
-Message-ID: <726a71ce-b9e6-cec4-a4d0-ec6a8c604989@kernel.org>
-Date: Mon, 13 Jan 2020 19:13:10 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xXXs2XYTzDqNP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 12:14:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=iiEg66QF; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47xXXs0VLLz9s29;
+ Tue, 14 Jan 2020 12:14:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1578964445;
+ bh=5WG/hTgko72eJb6ASFMHgV3Z1SBkyLvrrVTGzmn5hO0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=iiEg66QFo8Hf2feigqNc0bYtnRksK0+jNNzpr/xvPsYEOmOdXLH6FheBvl68A8AOj
+ aOzYmanBp5glgJwHJIHhs0bUlwpWnqj8yk82bJGAVUrxu7NKfQR6ODqX0tAYD2cq00
+ UDd8uh34XRVF4FVDqx260iXpVph8rYZ7/cZO17onoO3LOkSJwuy/tqAy2UgTrg41a8
+ SY8wBO+SIeTbNxxEyDDBbxulb5XiC+Bjs+A8cxH2LJMCa4gjdlL+XrG073q+r4Jqes
+ pbKB2TWd8h7/e3KNWK/3htCBun+3dAJLK4MNc/Lnjc6BAnWOweWCUJbiCi33xgW8Nl
+ tQcIw4QN6vgsw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH] powerpc/xive: discard ESB load value when interrupt is
+ invalid
+In-Reply-To: <76f76082-81ee-4957-c45b-151f0cd6e6b6@kaod.org>
+References: <20200113130118.27969-1-clg@kaod.org>
+ <76f76082-81ee-4957-c45b-151f0cd6e6b6@kaod.org>
+Date: Tue, 14 Jan 2020 11:14:09 +1000
+Message-ID: <87r202alge.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,18 +60,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: b08248@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jslaby@suse.com>, york sun <york.sun@nxp.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, swood@redhat.com
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Greg Kurz <groug@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/13/20 7:10 PM, Timur Tabi wrote:
-> 
-> I would prefer that ev_byte_channel_send() is updated to access only 
-> 'count' bytes.  If that means adding a memcpy to the 
-> ev_byte_channel_send() itself, then so be it.  Trying to figure out how 
-> to stuff n bytes into 4 32-bit registers is probably not worth the effort.
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
+> On 1/13/20 2:01 PM, C=C3=A9dric Le Goater wrote:
+>> From: Frederic Barrat <fbarrat@linux.ibm.com>
+>>=20
+>> A load on an ESB page returning all 1's means that the underlying
+>> device has invalidated the access to the PQ state of the interrupt
+>> through mmio. It may happen, for example when querying a PHB interrupt
+>> while the PHB is in an error state.
+>>=20
+>> In that case, we should consider the interrupt to be invalid when
+>> checking its state in the irq_get_irqchip_state() handler.
+>
+>
+> and we need also these tags :
+>
+> Fixes: da15c03b047d ("powerpc/xive: Implement get_irqchip_state method fo=
+r XIVE to fix shutdown race")
+> Cc: stable@vger.kernel.org # v5.3+
 
-Looks like ev_byte_channel_receive() has the same bug, but in reverse.
+I added those, although it's v5.4+, as the offending commit was first
+included in v5.4-rc1.
+
+cheers
