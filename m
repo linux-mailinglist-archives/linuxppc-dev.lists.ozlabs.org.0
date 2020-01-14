@@ -2,58 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4788139ECD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 02:14:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA53C139ED2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 02:16:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xXYV46mDzDqNn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 12:14:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xXbc0Bq2zDqMV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 12:16:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=xjQfoiih; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xXSd1jjlzDqM0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 12:10:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ZhrKMjJn; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47xXSc0btNz9sPW;
- Tue, 14 Jan 2020 12:10:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1578964224;
- bh=BhsPSXqX0XelWkb1vOTTgISH6svHQ5Taunl4ab8Dxmw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ZhrKMjJnHvebLEftKJED3WHL/kGFATu3ZfR1EBQtoa2qYPIki4vfTQW4aJT7fu0Cr
- GYR2kV8Xw1u16cP+IuQXzFJcMHI8XyZt7STMlY8zCaFbMKpC6GNafQGrFEw6gmd3Z/
- 6pbRD07H66ivOZbIoZDB1XfPUwPr6ORpTFsHFSszZOAGFmTyIj4kqH54W2sdj6QCGu
- vZmasly1pMxNg/QPGPzXfXBXXvDIbtH0g3bhdC8KTq/qEQKWkJR/nDYWBT7sPIp/Zq
- QqesChS83JmxiDU3vC6tjGFAYTc9aLjOkZ1P0mBi+4fmHtZ8xMU4vBGv5BUZnxT8J0
- Qzsus8IQwWzQA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Laurentiu Tudor <laurentiu.tudor@nxp.com>, Timur Tabi <timur@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.com>,
- Scott Wood <swood@redhat.com>, York Sun <york.sun@nxp.com>,
- "b08248\@gmail.com" <b08248@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xXWv0zrjzDqNG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 12:13:15 +1100 (AEDT)
+Received: from [192.168.1.20] (cpe-24-28-70-126.austin.res.rr.com
+ [24.28.70.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C7143207FF;
+ Tue, 14 Jan 2020 01:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1578964392;
+ bh=0gpl/fZLuDcM6R2f88rRQhFEHgQPzojGamoAcz0JAow=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=xjQfoiihel1d1unJsEk43pkau7rk+TfPg80uNoSkr/zwFGN9pBWyGB4AsRfz+zR4o
+ xlhYWpnWc49QiHgpWj7zDCvbJaVzR/qlB8fXR5X48NAHcgX7mv6lujb6d5pdXh7Yu8
+ Sqpm1pJs28C298U+aQwAlLGph8h7xjwB68TqlgnI=
 Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-In-Reply-To: <47d31d84-78ed-fd90-f3d9-8ce968126497@nxp.com>
+From: Timur Tabi <timur@kernel.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
 References: <20200109183912.5fcb52aa@canb.auug.org.au>
- <8736cj8rvr.fsf@mpe.ellerman.id.au>
- <5f17b997-8a6c-841e-8868-c0877750e598@kernel.org>
- <47d31d84-78ed-fd90-f3d9-8ce968126497@nxp.com>
-Date: Tue, 14 Jan 2020 11:10:25 +1000
-Message-ID: <87tv4yalmm.fsf@mpe.ellerman.id.au>
+ <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+ <20200114072522.3cd57195@canb.auug.org.au>
+ <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+Message-ID: <726a71ce-b9e6-cec4-a4d0-ec6a8c604989@kernel.org>
+Date: Mon, 13 Jan 2020 19:13:10 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:68.0)
+ Gecko/20100101 Thunderbird/68.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,49 +62,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Diana Madalina Craciun <diana.craciun@nxp.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>
+Cc: b08248@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jslaby@suse.com>, york sun <york.sun@nxp.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, swood@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Laurentiu Tudor <laurentiu.tudor@nxp.com> writes:
-> Hello,
->
-> On 13.01.2020 15:48, Timur Tabi wrote:
->> On 1/13/20 6:26 AM, Michael Ellerman wrote:
->>> I've never heard of it, and I have no idea how to test it.
->>>
->>> It's not used by qemu, I guess there is/was a Freescale hypervisor that
->>> used it.
->>=20
->> Yes, there is/was a Freescale hypervisor that I and a few others worked=
-=20
->> on.=C2=A0 I've added a couple people on CC that might be able to tell th=
-e=20
->> current disposition of it.
->
-> More info on this: it's opensource and it's published here [1]. We still=
-=20
-> claim to maintain it but there wasn't much activity past years, as one=20
-> might notice.
->
->>> But maybe it's time to remove it if it's not being maintained/used by
->>> anyone?
->>=20
->> I wouldn't be completely opposed to that if there really are no more=20
->> users.=C2=A0 There really weren't any users even when I wrote the driver.
->
-> There are a few users that I know of, but I can't tell if that's enough=20
-> to justify keeping the driver.
+On 1/13/20 7:10 PM, Timur Tabi wrote:
+> 
+> I would prefer that ev_byte_channel_send() is updated to access only 
+> 'count' bytes.  If that means adding a memcpy to the 
+> ev_byte_channel_send() itself, then so be it.  Trying to figure out how 
+> to stuff n bytes into 4 32-bit registers is probably not worth the effort.
 
-It is, I don't want to remove code that people are actually using,
-unless it's causing unsustainable maintenance burden.
-
-But this should be easy enough to get fixed.
-
-Could you or someone else at NXP volunteer to maintain this driver? That
-shouldn't involve much work, other than fixing small things like this
-warning.
-
-cheers
+Looks like ev_byte_channel_receive() has the same bug, but in reverse.
