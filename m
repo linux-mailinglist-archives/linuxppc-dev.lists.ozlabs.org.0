@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE9913AEE9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 17:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9D813AF14
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 17:19:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xwW90SNxzDqQL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 03:13:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xwdc07bWzDqG0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 03:19:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,42 +17,40 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.a=rsa-sha256 header.s=20170815-heliosphere header.b=Gp4KU0jk; 
+ header.a=rsa-sha256 header.s=20170815-heliosphere header.b=AjgZBkR4; 
  dkim-atps=neutral
-X-Greylist: delayed 2034 seconds by postgrey-1.36 at bilbo;
- Wed, 15 Jan 2020 03:09:14 AEDT
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [172.104.155.198])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xwPk24XgzDqQf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 03:09:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xwQ618HYzDqKs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 03:09:33 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
  Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
  List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=QL8elIV7/kWFIzb2dMQMFGR8MhrEPyJ7y+Tb6idzyfQ=; b=Gp4KU0jkeTzU
- BM7rnbKTHdvzjqC36hYeLaNGvvSXV6G5fdhgsYSSlfIA1XbHLxgS72wUIP8Y+gj7ApLwK9dF/j5G6
- 0P/AjQg1xF8VpdGCTJlOUZVf+pLWS/oFlwgbfGEK/TIqFn8V7mSl1vERdZjbr5zEh66PzB4wl+Ojb
- Ul9Cg=;
+ List-Archive; bh=KnzzFRQVAj4uXpCR1TI5559XQTFDEbE+udZJZl8tRkY=; b=AjgZBkR4/z+z
+ z9IwW85L2iFBz4XQgi88yrN8+2uSRMke8qAS0fKmlyr6fgo39TSJGcxaMKfbgs3uOpv4STGJqGpWr
+ n3XmYbqbm0UOuw/Ae6LMTNLUvFwjP0SfJyhFd1hCa2Li3xfgI/ldJ+pXhKS/2051zCPM0j/YZYUkf
+ 0vlss=;
 Received: from fw-tnat-cam7.arm.com ([217.140.106.55]
  helo=fitzroy.sirena.org.uk) by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <broonie@sirena.org.uk>)
- id 1irOkb-0001Uk-Tv; Tue, 14 Jan 2020 16:09:05 +0000
+ id 1irOkv-0001ZG-7m; Tue, 14 Jan 2020 16:09:25 +0000
 Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
- id 1A265D02C77; Tue, 14 Jan 2020 16:09:05 +0000 (GMT)
+ id EB622D02C77; Tue, 14 Jan 2020 16:09:24 +0000 (GMT)
 From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Applied "ASoC: fsl_asrc: Add support for imx8qm & imx8qxp" to the
- asoc tree
-In-Reply-To: <f33dfe3157b5ab200e09ccbf9ab73d31fac6664b.1575452454.git.shengjiu.wang@nxp.com>
-Message-Id: <applied-f33dfe3157b5ab200e09ccbf9ab73d31fac6664b.1575452454.git.shengjiu.wang@nxp.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Applied "spi: fsl: simplify error path in of_fsl_spi_probe()" to the
+ spi tree
+In-Reply-To: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
+Message-Id: <applied-2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
 X-Patchwork-Hint: ignore
-Date: Tue, 14 Jan 2020 16:09:05 +0000 (GMT)
+Date: Tue, 14 Jan 2020 16:09:24 +0000 (GMT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,23 +62,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- robh+dt@kernel.org, linux-kernel@vger.kernel.org,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- perex@perex.cz, festevam@gmail.com
+Cc: devicetree@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 The patch
 
-   ASoC: fsl_asrc: Add support for imx8qm & imx8qxp
+   spi: fsl: simplify error path in of_fsl_spi_probe()
 
-has been applied to the asoc tree at
+has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.6
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -101,391 +97,78 @@ to this mail.
 Thanks,
 Mark
 
-From c05f10f28ef697aae8f1d82012d660af3cfc8cf9 Mon Sep 17 00:00:00 2001
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-Date: Wed, 4 Dec 2019 20:00:19 +0800
-Subject: [PATCH] ASoC: fsl_asrc: Add support for imx8qm & imx8qxp
+From 2f3d8035b0f7a8e781b60e0884551dd8a1173a75 Mon Sep 17 00:00:00 2001
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Date: Tue, 14 Jan 2020 16:02:40 +0000
+Subject: [PATCH] spi: fsl: simplify error path in of_fsl_spi_probe()
 
-There are two asrc module in imx8qm & imx8qxp, each module has
-different clock configuration, and the DMA type is EDMA.
+No need to 'goto err;' for just doing a return.
+return directly from where the error happens.
 
-So in this patch, we define the new clocks, refine the clock map,
-and include struct fsl_asrc_soc_data for different soc usage.
-
-The EDMA channel is fixed with each dma request, one dma request
-corresponding to one dma channel. So we need to request dma
-channel with dma request of asrc module.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Link: https://lore.kernel.org/r/f33dfe3157b5ab200e09ccbf9ab73d31fac6664b.1575452454.git.shengjiu.wang@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Link: https://lore.kernel.org/r/2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/fsl/fsl_asrc.c     | 125 +++++++++++++++++++++++++++++------
- sound/soc/fsl/fsl_asrc.h     |  64 +++++++++++++++++-
- sound/soc/fsl/fsl_asrc_dma.c |  41 ++++++++----
- 3 files changed, 194 insertions(+), 36 deletions(-)
+ drivers/spi/spi-fsl-spi.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index a3cfceea7d2f..0dcebc24c312 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -41,26 +41,65 @@ static struct snd_pcm_hw_constraint_list fsl_asrc_rate_constraints = {
-  * The following tables map the relationship between asrc_inclk/asrc_outclk in
-  * fsl_asrc.h and the registers of ASRCSR
-  */
--static unsigned char input_clk_map_imx35[] = {
-+static unsigned char input_clk_map_imx35[ASRC_CLK_MAP_LEN] = {
- 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
- };
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index fb4159ad6bf6..3b81772fea0d 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -706,8 +706,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct spi_master *master;
+ 	struct resource mem;
+-	int irq = 0, type;
+-	int ret = -ENOMEM;
++	int irq, type;
++	int ret;
  
--static unsigned char output_clk_map_imx35[] = {
-+static unsigned char output_clk_map_imx35[ASRC_CLK_MAP_LEN] = {
- 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
- };
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+ 	if (ret)
+@@ -722,10 +722,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
  
- /* i.MX53 uses the same map for input and output */
--static unsigned char input_clk_map_imx53[] = {
-+static unsigned char input_clk_map_imx53[ASRC_CLK_MAP_LEN] = {
- /*	0x0  0x1  0x2  0x3  0x4  0x5  0x6  0x7  0x8  0x9  0xa  0xb  0xc  0xd  0xe  0xf */
- 	0x0, 0x1, 0x2, 0x7, 0x4, 0x5, 0x6, 0x3, 0x8, 0x9, 0xa, 0xb, 0xc, 0xf, 0xe, 0xd,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
- };
- 
--static unsigned char output_clk_map_imx53[] = {
-+static unsigned char output_clk_map_imx53[ASRC_CLK_MAP_LEN] = {
- /*	0x0  0x1  0x2  0x3  0x4  0x5  0x6  0x7  0x8  0x9  0xa  0xb  0xc  0xd  0xe  0xf */
- 	0x8, 0x9, 0xa, 0x7, 0xc, 0x5, 0x6, 0xb, 0x0, 0x1, 0x2, 0x3, 0x4, 0xf, 0xe, 0xd,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
-+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7,
- };
- 
--static unsigned char *clk_map[2];
-+/**
-+ * i.MX8QM/i.MX8QXP uses the same map for input and output.
-+ * clk_map_imx8qm[0] is for i.MX8QM asrc0
-+ * clk_map_imx8qm[1] is for i.MX8QM asrc1
-+ * clk_map_imx8qxp[0] is for i.MX8QXP asrc0
-+ * clk_map_imx8qxp[1] is for i.MX8QXP asrc1
-+ */
-+static unsigned char clk_map_imx8qm[2][ASRC_CLK_MAP_LEN] = {
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf,
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0x7, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0xb, 0xc, 0xf, 0xf, 0xd, 0xe, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	0x4, 0x5, 0x6, 0xf, 0x8, 0x9, 0xa, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+};
-+
-+static unsigned char clk_map_imx8qxp[2][ASRC_CLK_MAP_LEN] = {
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0xf, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xf, 0xf,
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+	{
-+	0xf, 0xf, 0xf, 0xf, 0xf, 0x7, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0x0,
-+	0x0, 0x1, 0x2, 0x3, 0x7, 0x8, 0xf, 0xf, 0x9, 0xa, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	0xf, 0xf, 0x6, 0xf, 0xf, 0xf, 0xa, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf, 0xf,
-+	},
-+};
- 
- /**
-  * Select the pre-processing and post-processing options
-@@ -353,8 +392,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
- 	}
- 
- 	/* Validate input and output clock sources */
--	clk_index[IN] = clk_map[IN][config->inclk];
--	clk_index[OUT] = clk_map[OUT][config->outclk];
-+	clk_index[IN] = asrc_priv->clk_map[IN][config->inclk];
-+	clk_index[OUT] = asrc_priv->clk_map[OUT][config->outclk];
- 
- 	/* We only have output clock for ideal ratio mode */
- 	clk = asrc_priv->asrck_clk[clk_index[ideal ? OUT : IN]];
-@@ -398,13 +437,13 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair, bool use_ideal_rate)
- 	/* Set the channel number */
- 	channels = config->channel_num;
- 
--	if (asrc_priv->channel_bits < 4)
-+	if (asrc_priv->soc->channel_bits < 4)
- 		channels /= 2;
- 
- 	/* Update channels for current pair */
- 	regmap_update_bits(asrc_priv->regmap, REG_ASRCNCR,
--			   ASRCNCR_ANCi_MASK(index, asrc_priv->channel_bits),
--			   ASRCNCR_ANCi(index, channels, asrc_priv->channel_bits));
-+			   ASRCNCR_ANCi_MASK(index, asrc_priv->soc->channel_bits),
-+			   ASRCNCR_ANCi(index, channels, asrc_priv->soc->channel_bits));
- 
- 	/* Default setting: Automatic selection for processing mode */
- 	regmap_update_bits(asrc_priv->regmap, REG_ASRCTR,
-@@ -531,7 +570,7 @@ static int fsl_asrc_dai_startup(struct snd_pcm_substream *substream,
- 	struct fsl_asrc *asrc_priv = snd_soc_dai_get_drvdata(dai);
- 
- 	/* Odd channel number is not valid for older ASRC (channel_bits==3) */
--	if (asrc_priv->channel_bits == 3)
-+	if (asrc_priv->soc->channel_bits == 3)
- 		snd_pcm_hw_constraint_step(substream->runtime, 0,
- 					   SNDRV_PCM_HW_PARAM_CHANNELS, 2);
- 
-@@ -905,6 +944,7 @@ static int fsl_asrc_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	void __iomem *regs;
- 	int irq, ret, i;
-+	u32 map_idx;
- 	char tmp[16];
- 
- 	asrc_priv = devm_kzalloc(&pdev->dev, sizeof(*asrc_priv), GFP_KERNEL);
-@@ -964,14 +1004,37 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+ 		if (spisel_boot) {
+ 			pinfo->immr_spi_cs = ioremap(get_immrbase() + IMMR_SPI_CS_OFFSET, 4);
+-			if (!pinfo->immr_spi_cs) {
+-				ret = -ENOMEM;
+-				goto err;
+-			}
++			if (!pinfo->immr_spi_cs)
++				return -ENOMEM;
  		}
- 	}
+ #endif
+ 		/*
+@@ -744,24 +742,15 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
  
-+	asrc_priv->soc = of_device_get_match_data(&pdev->dev);
-+	if (!asrc_priv->soc) {
-+		dev_err(&pdev->dev, "failed to get soc data\n");
-+		return -ENODEV;
-+	}
-+
- 	if (of_device_is_compatible(np, "fsl,imx35-asrc")) {
--		asrc_priv->channel_bits = 3;
--		clk_map[IN] = input_clk_map_imx35;
--		clk_map[OUT] = output_clk_map_imx35;
--	} else {
--		asrc_priv->channel_bits = 4;
--		clk_map[IN] = input_clk_map_imx53;
--		clk_map[OUT] = output_clk_map_imx53;
-+		asrc_priv->clk_map[IN] = input_clk_map_imx35;
-+		asrc_priv->clk_map[OUT] = output_clk_map_imx35;
-+	} else if (of_device_is_compatible(np, "fsl,imx53-asrc")) {
-+		asrc_priv->clk_map[IN] = input_clk_map_imx53;
-+		asrc_priv->clk_map[OUT] = output_clk_map_imx53;
-+	} else if (of_device_is_compatible(np, "fsl,imx8qm-asrc") ||
-+		   of_device_is_compatible(np, "fsl,imx8qxp-asrc")) {
-+		ret = of_property_read_u32(np, "fsl,asrc-clk-map", &map_idx);
-+		if (ret) {
-+			dev_err(&pdev->dev, "failed to get clk map index\n");
-+			return ret;
-+		}
-+
-+		if (map_idx > 1) {
-+			dev_err(&pdev->dev, "unsupported clk map index\n");
-+			return -EINVAL;
-+		}
-+		if (of_device_is_compatible(np, "fsl,imx8qm-asrc")) {
-+			asrc_priv->clk_map[IN] = clk_map_imx8qm[map_idx];
-+			asrc_priv->clk_map[OUT] = clk_map_imx8qm[map_idx];
-+		} else {
-+			asrc_priv->clk_map[IN] = clk_map_imx8qxp[map_idx];
-+			asrc_priv->clk_map[OUT] = clk_map_imx8qxp[map_idx];
-+		}
- 	}
+ 	ret = of_address_to_resource(np, 0, &mem);
+ 	if (ret)
+-		goto err;
++		return ret;
  
- 	ret = fsl_asrc_init(asrc_priv);
-@@ -1113,9 +1176,31 @@ static const struct dev_pm_ops fsl_asrc_pm = {
- 	SET_SYSTEM_SLEEP_PM_OPS(fsl_asrc_suspend, fsl_asrc_resume)
- };
+ 	irq = platform_get_irq(ofdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto err;
+-	}
++	if (irq < 0)
++		return irq;
  
-+static const struct fsl_asrc_soc_data fsl_asrc_imx35_data = {
-+	.use_edma = false,
-+	.channel_bits = 3,
-+};
-+
-+static const struct fsl_asrc_soc_data fsl_asrc_imx53_data = {
-+	.use_edma = false,
-+	.channel_bits = 4,
-+};
-+
-+static const struct fsl_asrc_soc_data fsl_asrc_imx8qm_data = {
-+	.use_edma = true,
-+	.channel_bits = 4,
-+};
-+
-+static const struct fsl_asrc_soc_data fsl_asrc_imx8qxp_data = {
-+	.use_edma = true,
-+	.channel_bits = 4,
-+};
-+
- static const struct of_device_id fsl_asrc_ids[] = {
--	{ .compatible = "fsl,imx35-asrc", },
--	{ .compatible = "fsl,imx53-asrc", },
-+	{ .compatible = "fsl,imx35-asrc", .data = &fsl_asrc_imx35_data },
-+	{ .compatible = "fsl,imx53-asrc", .data = &fsl_asrc_imx53_data },
-+	{ .compatible = "fsl,imx8qm-asrc", .data = &fsl_asrc_imx8qm_data },
-+	{ .compatible = "fsl,imx8qxp-asrc", .data = &fsl_asrc_imx8qxp_data },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, fsl_asrc_ids);
-diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
-index 2b57e8c53728..8a821132d9d0 100644
---- a/sound/soc/fsl/fsl_asrc.h
-+++ b/sound/soc/fsl/fsl_asrc.h
-@@ -308,6 +308,29 @@ enum asrc_inclk {
- 	INCLK_SSI3_TX = 0x0b,
- 	INCLK_SPDIF_TX = 0x0c,
- 	INCLK_ASRCK1_CLK = 0x0f,
-+
-+	/* clocks for imx8 */
-+	INCLK_AUD_PLL_DIV_CLK0 = 0x10,
-+	INCLK_AUD_PLL_DIV_CLK1 = 0x11,
-+	INCLK_AUD_CLK0         = 0x12,
-+	INCLK_AUD_CLK1         = 0x13,
-+	INCLK_ESAI0_RX_CLK     = 0x14,
-+	INCLK_ESAI0_TX_CLK     = 0x15,
-+	INCLK_SPDIF0_RX        = 0x16,
-+	INCLK_SPDIF1_RX        = 0x17,
-+	INCLK_SAI0_RX_BCLK     = 0x18,
-+	INCLK_SAI0_TX_BCLK     = 0x19,
-+	INCLK_SAI1_RX_BCLK     = 0x1a,
-+	INCLK_SAI1_TX_BCLK     = 0x1b,
-+	INCLK_SAI2_RX_BCLK     = 0x1c,
-+	INCLK_SAI3_RX_BCLK     = 0x1d,
-+	INCLK_ASRC0_MUX_CLK    = 0x1e,
-+
-+	INCLK_ESAI1_RX_CLK     = 0x20,
-+	INCLK_ESAI1_TX_CLK     = 0x21,
-+	INCLK_SAI6_TX_BCLK     = 0x22,
-+	INCLK_HDMI_RX_SAI0_RX_BCLK     = 0x24,
-+	INCLK_HDMI_TX_SAI0_TX_BCLK     = 0x25,
- };
- 
- enum asrc_outclk {
-@@ -325,9 +348,33 @@ enum asrc_outclk {
- 	OUTCLK_SSI3_RX = 0x0b,
- 	OUTCLK_SPDIF_RX = 0x0c,
- 	OUTCLK_ASRCK1_CLK = 0x0f,
-+
-+	/* clocks for imx8 */
-+	OUTCLK_AUD_PLL_DIV_CLK0 = 0x10,
-+	OUTCLK_AUD_PLL_DIV_CLK1 = 0x11,
-+	OUTCLK_AUD_CLK0         = 0x12,
-+	OUTCLK_AUD_CLK1         = 0x13,
-+	OUTCLK_ESAI0_RX_CLK     = 0x14,
-+	OUTCLK_ESAI0_TX_CLK     = 0x15,
-+	OUTCLK_SPDIF0_RX        = 0x16,
-+	OUTCLK_SPDIF1_RX        = 0x17,
-+	OUTCLK_SAI0_RX_BCLK     = 0x18,
-+	OUTCLK_SAI0_TX_BCLK     = 0x19,
-+	OUTCLK_SAI1_RX_BCLK     = 0x1a,
-+	OUTCLK_SAI1_TX_BCLK     = 0x1b,
-+	OUTCLK_SAI2_RX_BCLK     = 0x1c,
-+	OUTCLK_SAI3_RX_BCLK     = 0x1d,
-+	OUTCLK_ASRCO_MUX_CLK    = 0x1e,
-+
-+	OUTCLK_ESAI1_RX_CLK     = 0x20,
-+	OUTCLK_ESAI1_TX_CLK     = 0x21,
-+	OUTCLK_SAI6_TX_BCLK     = 0x22,
-+	OUTCLK_HDMI_RX_SAI0_RX_BCLK     = 0x24,
-+	OUTCLK_HDMI_TX_SAI0_TX_BCLK     = 0x25,
- };
- 
- #define ASRC_CLK_MAX_NUM	16
-+#define ASRC_CLK_MAP_LEN	0x30
- 
- enum asrc_word_width {
- 	ASRC_WIDTH_24_BIT = 0,
-@@ -387,6 +434,17 @@ struct dma_block {
- 	unsigned int length;
- };
- 
-+/**
-+ * fsl_asrc_soc_data: soc specific data
-+ *
-+ * @use_edma: using edma as dma device or not
-+ * @channel_bits: width of ASRCNCR register for each pair
-+ */
-+struct fsl_asrc_soc_data {
-+	bool use_edma;
-+	unsigned int channel_bits;
-+};
-+
- /**
-  * fsl_asrc_pair: ASRC Pair private data
-  *
-@@ -431,8 +489,9 @@ struct fsl_asrc_pair {
-  * @asrck_clk: clock sources to driver ASRC internal logic
-  * @lock: spin lock for resource protection
-  * @pair: pair pointers
-- * @channel_bits: width of ASRCNCR register for each pair
-+ * @soc: soc specific data
-  * @channel_avail: non-occupied channel numbers
-+ * @clk_map: clock map for input/output clock
-  * @asrc_rate: default sample rate for ASoC Back-Ends
-  * @asrc_width: default sample width for ASoC Back-Ends
-  * @regcache_cfg: store register value of REG_ASRCFG
-@@ -450,8 +509,9 @@ struct fsl_asrc {
- 	spinlock_t lock;
- 
- 	struct fsl_asrc_pair *pair[ASRC_PAIR_MAX_NUM];
--	unsigned int channel_bits;
-+	const struct fsl_asrc_soc_data *soc;
- 	unsigned int channel_avail;
-+	unsigned char *clk_map[2];
- 
- 	int asrc_rate;
- 	int asrc_width;
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index 79d66224c0a8..ece130f59d15 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -197,21 +197,34 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	dma_cap_set(DMA_SLAVE, mask);
- 	dma_cap_set(DMA_CYCLIC, mask);
- 
--	/* Get DMA request of Back-End */
--	tmp_chan = dma_request_slave_channel(dev_be, tx ? "tx" : "rx");
--	tmp_data = tmp_chan->private;
--	pair->dma_data.dma_request = tmp_data->dma_request;
--	dma_release_channel(tmp_chan);
+ 	master = fsl_spi_probe(dev, &mem, irq);
+-	if (IS_ERR(master)) {
+-		ret = PTR_ERR(master);
+-		goto err;
+-	}
 -
--	/* Get DMA request of Front-End */
--	tmp_chan = fsl_asrc_get_dma_channel(pair, dir);
--	tmp_data = tmp_chan->private;
--	pair->dma_data.dma_request2 = tmp_data->dma_request;
--	pair->dma_data.peripheral_type = tmp_data->peripheral_type;
--	pair->dma_data.priority = tmp_data->priority;
--	dma_release_channel(tmp_chan);
-+	/*
-+	 * An EDMA DEV_TO_DEV channel is fixed and bound with DMA event of each
-+	 * peripheral, unlike SDMA channel that is allocated dynamically. So no
-+	 * need to configure dma_request and dma_request2, but get dma_chan via
-+	 * dma_request_slave_channel directly with dma name of Front-End device
-+	 */
-+	if (!asrc_priv->soc->use_edma) {
-+		/* Get DMA request of Back-End */
-+		tmp_chan = dma_request_slave_channel(dev_be, tx ? "tx" : "rx");
-+		tmp_data = tmp_chan->private;
-+		pair->dma_data.dma_request = tmp_data->dma_request;
-+		dma_release_channel(tmp_chan);
-+
-+		/* Get DMA request of Front-End */
-+		tmp_chan = fsl_asrc_get_dma_channel(pair, dir);
-+		tmp_data = tmp_chan->private;
-+		pair->dma_data.dma_request2 = tmp_data->dma_request;
-+		pair->dma_data.peripheral_type = tmp_data->peripheral_type;
-+		pair->dma_data.priority = tmp_data->priority;
-+		dma_release_channel(tmp_chan);
-+
-+		pair->dma_chan[dir] =
-+			dma_request_channel(mask, filter, &pair->dma_data);
-+	} else {
-+		pair->dma_chan[dir] =
-+			fsl_asrc_get_dma_channel(pair, dir);
-+	}
+-	return 0;
  
--	pair->dma_chan[dir] = dma_request_channel(mask, filter, &pair->dma_data);
- 	if (!pair->dma_chan[dir]) {
- 		dev_err(dev, "failed to request DMA channel for Back-End\n");
- 		return -EINVAL;
+-err:
+-	return ret;
++	return PTR_ERR_OR_ZERO(master);
+ }
+ 
+ static int of_fsl_spi_remove(struct platform_device *ofdev)
 -- 
 2.20.1
 
