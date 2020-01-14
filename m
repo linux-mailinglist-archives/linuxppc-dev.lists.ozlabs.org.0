@@ -2,56 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D4613A8D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 12:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A960E13A938
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 13:28:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xpq91GcxzDqQf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 22:57:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xqVk664wzDqCH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 23:28:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=0rW/oqkr; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xpkz0fGYzDqNt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 22:53:46 +1100 (AEDT)
-Received: from [192.168.1.20] (cpe-24-28-70-126.austin.res.rr.com
- [24.28.70.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 537A824672;
- Tue, 14 Jan 2020 11:53:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579002824;
- bh=yVAS37RJYW+CEzrJ0YSm7vQIHhHWQbOrq8CyapS+sPM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=0rW/oqkrMnxuoLGvjUeKQZd+aqsLXppT/jRZTtZsYnu06RkCGaA/FrX+aqwg0xqRH
- rN/F0UGCxswHpyiZXZAZv8Caw3xizd7HRkO+7hXrb+L1kEwjrtG+iC4KkVGj7dUB/c
- +4UBFmd4kAwnzMNy14yYLRy7d+zeaWM1Xp6fWz+U=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xqQZ27jdzDqGQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 23:24:37 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00ECOL8v021974;
+ Tue, 14 Jan 2020 06:24:21 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 00ECOJJa021973;
+ Tue, 14 Jan 2020 06:24:19 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 14 Jan 2020 06:24:19 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Timur Tabi <timur@kernel.org>
 Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-To: Segher Boessenkool <segher@kernel.crashing.org>
+Message-ID: <20200114122419.GH3191@gate.crashing.org>
 References: <20200109183912.5fcb52aa@canb.auug.org.au>
  <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
  <20200114072522.3cd57195@canb.auug.org.au>
  <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
  <20200114082906.GG3191@gate.crashing.org>
-From: Timur Tabi <timur@kernel.org>
-Message-ID: <df65d9d1-630c-05ae-94d1-bb51737384f4@kernel.org>
-Date: Tue, 14 Jan 2020 05:53:41 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.1
-MIME-Version: 1.0
-In-Reply-To: <20200114082906.GG3191@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ <df65d9d1-630c-05ae-94d1-bb51737384f4@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <df65d9d1-630c-05ae-94d1-bb51737384f4@kernel.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,8 +64,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/14/20 2:29 AM, Segher Boessenkool wrote:
-> You have no working lswx I suppose?:-)
+On Tue, Jan 14, 2020 at 05:53:41AM -0600, Timur Tabi wrote:
+> On 1/14/20 2:29 AM, Segher Boessenkool wrote:
+> >You have no working lswx I suppose?:-)
+> 
+> I don't know if the P4080 supports lswx, but it does, than that would be 
+> an elegant way to fix this bug.
 
-I don't know if the P4080 supports lswx, but it does, than that would be 
-an elegant way to fix this bug.
+No e500 version supports it.  Many other CPUs do not allow it in little-
+endian mode, or not in real mode, etc.
+
+
+Segher
