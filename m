@@ -2,54 +2,152 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140D513A101
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 07:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C89D13A10C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 07:36:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47xgdd3KYzzDqNS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 17:33:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47xghH24KTzDqN1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2020 17:35:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47xgbL6FYKzDqM0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 17:31:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=GAZYQ3pg; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=S8Z9qYrv; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47xgbK6LyTz9sP6;
- Tue, 14 Jan 2020 17:31:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1578983502;
- bh=iSHSSp1W1tl9xL4TF8w66KgCiV1RMJ0sHjys58fUdbw=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=GAZYQ3pggx/lILYvbwPwEFfrlXeob910UesRSoLyBUlDwkH5fN6f8rHHjjpabal2B
- s7VUarLDRgF1s7vKGYy8fNshS6I8z7PIH7aAyfn6Wg/hiyeuDd00dp+1eh2eA4j9FK
- XEUIKkwRCUbcVn553/fJF9NYY6qe+c7hwPzUEHdjeqmj9B719T+DxqPkjyBSoUdlLI
- k4uIY5d5yL/1v+o/j/gYkT4XJFNYsoo9KTla50u1M5T5dIt22k1xyoAtloDs+7wP7A
- CKgBS5VkO2Vl58302UVx8ivc7T/XeU8/NpX4PTUEjTMag1XALhBirl7th8UDfr3ItX
- PkplkTpq0K9Nw==
-Date: Tue, 14 Jan 2020 17:31:41 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Timur Tabi <timur@kernel.org>
-Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-Message-ID: <20200114173141.29564b25@canb.auug.org.au>
-In-Reply-To: <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
-References: <20200109183912.5fcb52aa@canb.auug.org.au>
- <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
- <20200114072522.3cd57195@canb.auug.org.au>
- <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47xgd76rj7zDqN9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2020 17:33:14 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id k25so5911249pgt.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2020 22:33:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=o0OPjH8JYKHPOwbY/ufaiaL4Vb60JjmzbvyyojKNNPQ=;
+ b=S8Z9qYrvuMbuPkO2Nd2AO2YJsJ3ruyj0j0rn9IwHhAjqfj0z3DyRnkONX63OBeQjUT
+ JMXbePR42E5YUzjx1oJ+Zyw0f7zFyr4A92sb3WuvLVIKl/6jti7jeLwYgiFYhsvTSjal
+ FIuQURh7nbspvzVn7kBsqV8/JpHLtjDHCIrRQvQSd0XjUOB8oID5RnqqUHGfGj6AVM7w
+ ViKVPF8jkeVZKCQ464hAn/G4gbATYLcAkbmeC/giWgizKxzQYrsZ+Cyc+leO5NTXCDcs
+ qU1Sqx9rccbB6V8305PrEtP3nd0XyQ49PK8wKiwfe1fqSnaxf8ZTQe6yNS28UXQO3I4C
+ RsQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=o0OPjH8JYKHPOwbY/ufaiaL4Vb60JjmzbvyyojKNNPQ=;
+ b=Y4b9WDGgnQyMFsTJe/9CwQvKUUXhsLRj3IzabScW5HDXr9HKxp3oUU0pJKq5hqpCVb
+ gWTVEECF3EXnEDEAkLMLvZHGJCnP9bazCcgcdQiKxlmb/QKz+Gjs7mOVG7HSbUGmnFK8
+ yqpLuxOXG13aosO5eqWxIo9T3NG8r54lB2XMUdWDFwL/MapF8OJ572wM1c9rTIX0/kRS
+ YiMVy/rNy10bnm0BofR2n+hE/YMtfhicipMwwr9jrQeN+3nqCPnl8luTpCcMAvr+1qQQ
+ AX4ioxlR15I1BWTubdLYOyZpHWgzAPhqwRzhhMsvczfiDI+eJTr2VVPkZ6UhN3EmxRf7
+ aU9g==
+X-Gm-Message-State: APjAAAV1zFcU8UX0mr6uUNo7hoMTYvxRoWuVqmpJbnUC4pEXXieBscRV
+ pWWQBHwazTkz8Skz4hnIQTvahXga9Lw=
+X-Google-Smtp-Source: APXvYqxahw4sRFjGcZ/fR0PjGUSgvmFWfObT7E/vR75BtfovkagTGG5evaS1N8lmK7pmclAFwxnylg==
+X-Received: by 2002:a63:a84a:: with SMTP id i10mr24840068pgp.6.1578983591105; 
+ Mon, 13 Jan 2020 22:33:11 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id o16sm15696132pgl.58.2020.01.13.22.33.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Jan 2020 22:33:10 -0800 (PST)
+Subject: Re: [PATCH 1/5] powerpc/pci: Fold pcibios_setup_device() into
+ pcibios_bus_add_device()
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200110070207.439-1-oohall@gmail.com>
+ <20200110070207.439-2-oohall@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <5287aecf-5a30-fff1-1dd9-1b56ede02dac@ozlabs.ru>
+Date: Tue, 14 Jan 2020 17:33:06 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/UV1aQUgnPYyDpw0s2uSEumD";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <20200110070207.439-2-oohall@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,366 +159,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: b08248@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jslaby@suse.com>, york sun <york.sun@nxp.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, swood@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/UV1aQUgnPYyDpw0s2uSEumD
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-Hi Timur,
 
-On Mon, 13 Jan 2020 19:10:11 -0600 Timur Tabi <timur@kernel.org> wrote:
->
-> On 1/13/20 2:25 PM, Stephen Rothwell wrote:
-> > The problem is not really the declaration, the problem is that
-> > ev_byte_channel_send always accesses 16 bytes from the buffer and it is
-> > not always passed a buffer that long (in one case it is passed a
-> > pointer to a single byte).  So the alternative to the memcpy approach I
-> > have take is to complicate ev_byte_channel_send so that only accesses
-> > count bytes from the buffer. =20
->=20
-> Ah, I see now.  This is all coming back to me.
->=20
-> I would prefer that ev_byte_channel_send() is updated to access only=20
-> 'count' bytes.  If that means adding a memcpy to the=20
-> ev_byte_channel_send() itself, then so be it.  Trying to figure out how=20
-> to stuff n bytes into 4 32-bit registers is probably not worth the effort.
+On 10/01/2020 18:02, Oliver O'Halloran wrote:
+> pcibios_bus_add_device() is the only caller of pcibios_setup_device().
+> Fold them together since there's no real reason to keep them separate.
+> 
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
-Like this (I have compile tested this):
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Thu, 9 Jan 2020 18:23:48 +1100
-Subject: [PATCH v2] evh_bytechan: fix out of bounds accesses
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-ev_byte_channel_send() assumes that its third argument is a 16 byte array.
-Some places where it is called it may not be (or we can't easily tell
-if it is).  Newer compilers have started producing warnings about this,
-so copy the bytes to send into a local array if the passed length is
-to short.
 
-Since all the calls of ev_byte_channel_send() are in one file, lets move
-it there from the header file and let the compiler decide if it wants
-to inline it.
+> ---
+>  arch/powerpc/kernel/pci-common.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+> index f8a59d7..c6c0341 100644
+> --- a/arch/powerpc/kernel/pci-common.c
+> +++ b/arch/powerpc/kernel/pci-common.c
+> @@ -958,7 +958,7 @@ void pcibios_setup_bus_self(struct pci_bus *bus)
+>  		phb->controller_ops.dma_bus_setup(bus);
+>  }
+>  
+> -static void pcibios_setup_device(struct pci_dev *dev)
+> +void pcibios_bus_add_device(struct pci_dev *dev)
+>  {
+>  	struct pci_controller *phb;
+>  	/* Fixup NUMA node as it may not be setup yet by the generic
+> @@ -979,15 +979,9 @@ static void pcibios_setup_device(struct pci_dev *dev)
+>  	pci_read_irq_line(dev);
+>  	if (ppc_md.pci_irq_fixup)
+>  		ppc_md.pci_irq_fixup(dev);
+> -}
+> -
+> -void pcibios_bus_add_device(struct pci_dev *pdev)
+> -{
+> -	/* Perform platform-specific device setup */
+> -	pcibios_setup_device(pdev);
+>  
+>  	if (ppc_md.pcibios_bus_add_device)
+> -		ppc_md.pcibios_bus_add_device(pdev);
+> +		ppc_md.pcibios_bus_add_device(dev);
+>  }
+>  
+>  int pcibios_add_device(struct pci_dev *dev)
+> 
 
-The warnings are:
-
-In file included from include/linux/byteorder/big_endian.h:5,
-                 from arch/powerpc/include/uapi/asm/byteorder.h:14,
-                 from include/asm-generic/bitops/le.h:6,
-                 from arch/powerpc/include/asm/bitops.h:250,
-                 from include/linux/bitops.h:29,
-                 from include/linux/kernel.h:12,
-                 from include/asm-generic/bug.h:19,
-                 from arch/powerpc/include/asm/bug.h:109,
-                 from include/linux/bug.h:5,
-                 from include/linux/mmdebug.h:5,
-                 from include/linux/gfp.h:5,
-                 from include/linux/slab.h:15,
-                 from drivers/tty/ehv_bytechan.c:24:
-drivers/tty/ehv_bytechan.c: In function =E2=80=98ehv_bc_udbg_putc=E2=80=99:
-arch/powerpc/include/asm/epapr_hcalls.h:298:20: warning: array subscript 1 =
-is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
-  298 |  r6 =3D be32_to_cpu(p[1]);
-include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
-ro =E2=80=98__be32_to_cpu=E2=80=99
-   40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
-      |                                                   ^
-arch/powerpc/include/asm/epapr_hcalls.h:298:7: note: in expansion of macro =
-=E2=80=98be32_to_cpu=E2=80=99
-  298 |  r6 =3D be32_to_cpu(p[1]);
-      |       ^~~~~~~~~~~
-drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
-=80=99
-  166 | static void ehv_bc_udbg_putc(char c)
-      |             ^~~~~~~~~~~~~~~~
-In file included from include/linux/byteorder/big_endian.h:5,
-                 from arch/powerpc/include/uapi/asm/byteorder.h:14,
-                 from include/asm-generic/bitops/le.h:6,
-                 from arch/powerpc/include/asm/bitops.h:250,
-                 from include/linux/bitops.h:29,
-                 from include/linux/kernel.h:12,
-                 from include/asm-generic/bug.h:19,
-                 from arch/powerpc/include/asm/bug.h:109,
-                 from include/linux/bug.h:5,
-                 from include/linux/mmdebug.h:5,
-                 from include/linux/gfp.h:5,
-                 from include/linux/slab.h:15,
-                 from drivers/tty/ehv_bytechan.c:24:
-arch/powerpc/include/asm/epapr_hcalls.h:299:20: warning: array subscript 2 =
-is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
-  299 |  r7 =3D be32_to_cpu(p[2]);
-include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
-ro =E2=80=98__be32_to_cpu=E2=80=99
-   40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
-      |                                                   ^
-arch/powerpc/include/asm/epapr_hcalls.h:299:7: note: in expansion of macro =
-=E2=80=98be32_to_cpu=E2=80=99
-  299 |  r7 =3D be32_to_cpu(p[2]);
-      |       ^~~~~~~~~~~
-drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
-=80=99
-  166 | static void ehv_bc_udbg_putc(char c)
-      |             ^~~~~~~~~~~~~~~~
-In file included from include/linux/byteorder/big_endian.h:5,
-                 from arch/powerpc/include/uapi/asm/byteorder.h:14,
-                 from include/asm-generic/bitops/le.h:6,
-                 from arch/powerpc/include/asm/bitops.h:250,
-                 from include/linux/bitops.h:29,
-                 from include/linux/kernel.h:12,
-                 from include/asm-generic/bug.h:19,
-                 from arch/powerpc/include/asm/bug.h:109,
-                 from include/linux/bug.h:5,
-                 from include/linux/mmdebug.h:5,
-                 from include/linux/gfp.h:5,
-                 from include/linux/slab.h:15,
-                 from drivers/tty/ehv_bytechan.c:24:
-arch/powerpc/include/asm/epapr_hcalls.h:300:20: warning: array subscript 3 =
-is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
-  300 |  r8 =3D be32_to_cpu(p[3]);
-include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
-ro =E2=80=98__be32_to_cpu=E2=80=99
-   40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
-      |                                                   ^
-arch/powerpc/include/asm/epapr_hcalls.h:300:7: note: in expansion of macro =
-=E2=80=98be32_to_cpu=E2=80=99
-  300 |  r8 =3D be32_to_cpu(p[3]);
-      |       ^~~~~~~~~~~
-drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
-=80=99
-  166 | static void ehv_bc_udbg_putc(char c)
-      |             ^~~~~~~~~~~~~~~~
-In file included from include/linux/byteorder/big_endian.h:5,
-                 from arch/powerpc/include/uapi/asm/byteorder.h:14,
-                 from include/asm-generic/bitops/le.h:6,
-                 from arch/powerpc/include/asm/bitops.h:250,
-                 from include/linux/bitops.h:29,
-                 from include/linux/kernel.h:12,
-                 from include/asm-generic/bug.h:19,
-                 from arch/powerpc/include/asm/bug.h:109,
-                 from include/linux/bug.h:5,
-                 from include/linux/mmdebug.h:5,
-                 from include/linux/gfp.h:5,
-                 from include/linux/slab.h:15,
-                 from drivers/tty/ehv_bytechan.c:24:
-arch/powerpc/include/asm/epapr_hcalls.h:298:20: warning: array subscript 1 =
-is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
-  298 |  r6 =3D be32_to_cpu(p[1]);
-include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
-ro =E2=80=98__be32_to_cpu=E2=80=99
-   40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
-      |                                                   ^
-arch/powerpc/include/asm/epapr_hcalls.h:298:7: note: in expansion of macro =
-=E2=80=98be32_to_cpu=E2=80=99
-  298 |  r6 =3D be32_to_cpu(p[1]);
-      |       ^~~~~~~~~~~
-drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
-=80=99
-  166 | static void ehv_bc_udbg_putc(char c)
-      |             ^~~~~~~~~~~~~~~~
-In file included from include/linux/byteorder/big_endian.h:5,
-                 from arch/powerpc/include/uapi/asm/byteorder.h:14,
-                 from include/asm-generic/bitops/le.h:6,
-                 from arch/powerpc/include/asm/bitops.h:250,
-                 from include/linux/bitops.h:29,
-                 from include/linux/kernel.h:12,
-                 from include/asm-generic/bug.h:19,
-                 from arch/powerpc/include/asm/bug.h:109,
-                 from include/linux/bug.h:5,
-                 from include/linux/mmdebug.h:5,
-                 from include/linux/gfp.h:5,
-                 from include/linux/slab.h:15,
-                 from drivers/tty/ehv_bytechan.c:24:
-arch/powerpc/include/asm/epapr_hcalls.h:299:20: warning: array subscript 2 =
-is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
-  299 |  r7 =3D be32_to_cpu(p[2]);
-include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
-ro =E2=80=98__be32_to_cpu=E2=80=99
-   40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
-      |                                                   ^
-arch/powerpc/include/asm/epapr_hcalls.h:299:7: note: in expansion of macro =
-=E2=80=98be32_to_cpu=E2=80=99
-  299 |  r7 =3D be32_to_cpu(p[2]);
-      |       ^~~~~~~~~~~
-drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
-=80=99
-  166 | static void ehv_bc_udbg_putc(char c)
-      |             ^~~~~~~~~~~~~~~~
-In file included from include/linux/byteorder/big_endian.h:5,
-                 from arch/powerpc/include/uapi/asm/byteorder.h:14,
-                 from include/asm-generic/bitops/le.h:6,
-                 from arch/powerpc/include/asm/bitops.h:250,
-                 from include/linux/bitops.h:29,
-                 from include/linux/kernel.h:12,
-                 from include/asm-generic/bug.h:19,
-                 from arch/powerpc/include/asm/bug.h:109,
-                 from include/linux/bug.h:5,
-                 from include/linux/mmdebug.h:5,
-                 from include/linux/gfp.h:5,
-                 from include/linux/slab.h:15,
-                 from drivers/tty/ehv_bytechan.c:24:
-arch/powerpc/include/asm/epapr_hcalls.h:300:20: warning: array subscript 3 =
-is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
-  300 |  r8 =3D be32_to_cpu(p[3]);
-include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
-ro =E2=80=98__be32_to_cpu=E2=80=99
-   40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
-      |                                                   ^
-arch/powerpc/include/asm/epapr_hcalls.h:300:7: note: in expansion of macro =
-=E2=80=98be32_to_cpu=E2=80=99
-  300 |  r8 =3D be32_to_cpu(p[3]);
-      |       ^~~~~~~~~~~
-drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
-=80=99
-  166 | static void ehv_bc_udbg_putc(char c)
-      |             ^~~~~~~~~~~~~~~~
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
----
- arch/powerpc/include/asm/epapr_hcalls.h | 42 ----------------------
- drivers/tty/ehv_bytechan.c              | 48 +++++++++++++++++++++++++
- 2 files changed, 48 insertions(+), 42 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/epapr_hcalls.h b/arch/powerpc/include=
-/asm/epapr_hcalls.h
-index d3a7e36f1402..75c5943c9f85 100644
---- a/arch/powerpc/include/asm/epapr_hcalls.h
-+++ b/arch/powerpc/include/asm/epapr_hcalls.h
-@@ -268,48 +268,6 @@ static inline unsigned int ev_int_eoi(unsigned int int=
-errupt)
- 	return r3;
- }
-=20
--/**
-- * ev_byte_channel_send - send characters to a byte stream
-- * @handle: byte stream handle
-- * @count: (input) num of chars to send, (output) num chars sent
-- * @buffer: pointer to a 16-byte buffer
-- *
-- * @buffer must be at least 16 bytes long, because all 16 bytes will be
-- * read from memory into registers, even if count < 16.
-- *
-- * Returns 0 for success, or an error code.
-- */
--static inline unsigned int ev_byte_channel_send(unsigned int handle,
--	unsigned int *count, const char buffer[EV_BYTE_CHANNEL_MAX_BYTES])
--{
--	register uintptr_t r11 __asm__("r11");
--	register uintptr_t r3 __asm__("r3");
--	register uintptr_t r4 __asm__("r4");
--	register uintptr_t r5 __asm__("r5");
--	register uintptr_t r6 __asm__("r6");
--	register uintptr_t r7 __asm__("r7");
--	register uintptr_t r8 __asm__("r8");
--	const uint32_t *p =3D (const uint32_t *) buffer;
--
--	r11 =3D EV_HCALL_TOKEN(EV_BYTE_CHANNEL_SEND);
--	r3 =3D handle;
--	r4 =3D *count;
--	r5 =3D be32_to_cpu(p[0]);
--	r6 =3D be32_to_cpu(p[1]);
--	r7 =3D be32_to_cpu(p[2]);
--	r8 =3D be32_to_cpu(p[3]);
--
--	asm volatile("bl	epapr_hypercall_start"
--		: "+r" (r11), "+r" (r3),
--		  "+r" (r4), "+r" (r5), "+r" (r6), "+r" (r7), "+r" (r8)
--		: : EV_HCALL_CLOBBERS6
--	);
--
--	*count =3D r4;
--
--	return r3;
--}
--
- /**
-  * ev_byte_channel_receive - fetch characters from a byte channel
-  * @handle: byte channel handle
-diff --git a/drivers/tty/ehv_bytechan.c b/drivers/tty/ehv_bytechan.c
-index 769e0a5d1dfc..a5512745d0f9 100644
---- a/drivers/tty/ehv_bytechan.c
-+++ b/drivers/tty/ehv_bytechan.c
-@@ -136,6 +136,54 @@ static int find_console_handle(void)
- 	return 1;
- }
-=20
-+/**
-+ * ev_byte_channel_send - send characters to a byte stream
-+ * @handle: byte stream handle
-+ * @count: (input) num of chars to send, (output) num chars sent
-+ * @bp: pointer to chars to send
-+ *
-+ * Returns 0 for success, or an error code.
-+ */
-+static unsigned int ev_byte_channel_send(unsigned int handle,
-+	unsigned int *count, const char *bp)
-+{
-+	register uintptr_t r11 __asm__("r11");
-+	register uintptr_t r3 __asm__("r3");
-+	register uintptr_t r4 __asm__("r4");
-+	register uintptr_t r5 __asm__("r5");
-+	register uintptr_t r6 __asm__("r6");
-+	register uintptr_t r7 __asm__("r7");
-+	register uintptr_t r8 __asm__("r8");
-+	const uint32_t *p;
-+	char buffer[EV_BYTE_CHANNEL_MAX_BYTES];
-+	unsigned int c =3D *count;
-+
-+	if (c < sizeof(buffer)) {
-+		memcpy(buffer, bp, c);
-+		memset(&buffer[c], 0, sizeof(buffer) - c);
-+		p =3D (const uint32_t *)buffer;
-+	} else {
-+		p =3D (const uint32_t *)bp;
-+	}
-+	r11 =3D EV_HCALL_TOKEN(EV_BYTE_CHANNEL_SEND);
-+	r3 =3D handle;
-+	r4 =3D *count;
-+	r5 =3D be32_to_cpu(p[0]);
-+	r6 =3D be32_to_cpu(p[1]);
-+	r7 =3D be32_to_cpu(p[2]);
-+	r8 =3D be32_to_cpu(p[3]);
-+
-+	asm volatile("bl	epapr_hypercall_start"
-+		: "+r" (r11), "+r" (r3),
-+		  "+r" (r4), "+r" (r5), "+r" (r6), "+r" (r7), "+r" (r8)
-+		: : EV_HCALL_CLOBBERS6
-+	);
-+
-+	*count =3D r4;
-+
-+	return r3;
-+}
-+
- /*************************** EARLY CONSOLE DRIVER ************************=
-***/
-=20
- #ifdef CONFIG_PPC_EARLY_DEBUG_EHV_BC
---=20
-2.25.0.rc2
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/UV1aQUgnPYyDpw0s2uSEumD
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4dYE0ACgkQAVBC80lX
-0Gw5Vwf+LZ/bXdm3lKLH4g7lqkmzw4yqyEl2j0xTTme/xhXCntsKJ77vydzko6MQ
-10/qp92M7vKtVAgJI0MutthbBN3nTq8YvafPq9FrRx5UKJOISqM0QHHda+p0T3J/
-+wkcmnXu85eURpJoh0pemkNNzTljYoJW4h9K1Ff1yJ9Qlt0Nv1z3ELVj4jHuS/g3
-3HB6Zyy8lQ7k5g2W6uizh6ajkuI+IwqSz2piWuhfPaTRcnDMofKuhMUd9xXV0ZN4
-Lh8h1SfcTMVcp/r/OEjUjGR+Cf7TpZYoDidEgLyZn9QLYhfEkFrCVYSoov9NSNSq
-s6kY1eTlhh2tnKJVKukjFlAfhSIQGA==
-=frXf
------END PGP SIGNATURE-----
-
---Sig_/UV1aQUgnPYyDpw0s2uSEumD--
+-- 
+Alexey
