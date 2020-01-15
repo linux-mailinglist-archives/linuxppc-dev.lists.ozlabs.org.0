@@ -2,73 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B6613CDA9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 21:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2881A13CE6B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 21:59:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ydZr6933zDqQq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 07:04:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yfnf6NqDzDqJs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 07:59:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=swood@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=dt5/plw3; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ydWc2J4XzDqSL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 07:01:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1579118502;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ULVcAFsDzQbnAOV/nYIJG5zkQI1S5pwiGA0O6Cbzs8g=;
- b=dt5/plw32RyzXrn2Q2WInOVEcDHIpKqTX1wI97z6kV+c4PPm9lym/ya6jAU5GwlN6ANjEy
- g+9aDoX4WVLS2JqJ3dv6AOg7PMKs1bpo7ZotT+g+D5HzY3LtCoM5Ov8u1lnRCdF05nE7MC
- q2Rh6P9wF9HvKIk8TbelHsSZzKtAe6c=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-234-bfw37kzCOy2nsPZxAgHQLg-1; Wed, 15 Jan 2020 15:01:38 -0500
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8199210054E3;
- Wed, 15 Jan 2020 20:01:37 +0000 (UTC)
-Received: from ovpn-120-231.rdu2.redhat.com (ovpn-120-231.rdu2.redhat.com
- [10.10.120.231])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5BE2A5DA70;
- Wed, 15 Jan 2020 20:01:36 +0000 (UTC)
-Message-ID: <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
-Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-From: Scott Wood <swood@redhat.com>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Timur Tabi <timur@kernel.org>
-Date: Wed, 15 Jan 2020 14:01:35 -0600
-In-Reply-To: <20200116064234.7a139623@canb.auug.org.au>
-References: <20200109183912.5fcb52aa@canb.auug.org.au>
- <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
- <20200114072522.3cd57195@canb.auug.org.au>
- <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
- <20200114173141.29564b25@canb.auug.org.au>
- <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
- <20200116064234.7a139623@canb.auug.org.au>
-Organization: Red Hat
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29)
+ spf=none (no SPF record) smtp.mailfrom=ghiti.fr
+ (client-ip=217.70.178.242; helo=mslow2.mail.gandi.net;
+ envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ghiti.fr
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yflC2dHhzDqQG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 07:56:52 +1100 (AEDT)
+Received: from relay4-d.mail.gandi.net (unknown [217.70.183.196])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id 530EF3A8C4C
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 20:47:30 +0000 (UTC)
+X-Originating-IP: 79.86.19.127
+Received: from debian.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
+ (Authenticated sender: alex@ghiti.fr)
+ by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id BA33EE0002;
+ Wed, 15 Jan 2020 20:46:52 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexei Starovoitov <ast@kernel.org>, linux-next@vger.kernel.org,
+ Zong Li <zong.li@sifive.com>, Palmer Dabbelt <palmerdabbelt@google.com>
+Subject: [PATCH] powerpc: Do not consider weak unresolved symbol relocations
+ as bad
+Date: Wed, 15 Jan 2020 15:46:48 -0500
+Message-Id: <20200115204648.7179-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: bfw37kzCOy2nsPZxAgHQLg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,41 +54,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- york sun <york.sun@nxp.com>, Jiri Slaby <jslaby@suse.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, b08248@gmail.com
+Cc: Alexandre Ghiti <alex@ghiti.fr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-01-16 at 06:42 +1100, Stephen Rothwell wrote:
-> Hi Timur,
-> 
-> On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrote:
-> > On 1/14/20 12:31 AM, Stephen Rothwell wrote:
-> > > +/**
-> > > + * ev_byte_channel_send - send characters to a byte stream
-> > > + * @handle: byte stream handle
-> > > + * @count: (input) num of chars to send, (output) num chars sent
-> > > + * @bp: pointer to chars to send
-> > > + *
-> > > + * Returns 0 for success, or an error code.
-> > > + */
-> > > +static unsigned int ev_byte_channel_send(unsigned int handle,
-> > > +	unsigned int *count, const char *bp)  
-> > 
-> > Well, now you've moved this into the .c file and it is no longer 
-> > available to other callers.  Anything wrong with keeping it in the .h
-> > file?
-> 
-> There are currently no other callers - are there likely to be in the
-> future?  Even if there are, is it time critical enough that it needs to
-> be inlined everywhere?
+Commit 8580ac9404f6 ("bpf: Process in-kernel BTF") introduced two weak
+symbols that may be unresolved at link time which result in an absolute
+relocation to 0. relocs_check.sh emits the following warning:
 
-It's not performance critical and there aren't likely to be other users --
-just a matter of what's cleaner.  FWIW I'd rather see the original patch,
-that keeps the raw asm hcall stuff as simple wrappers in one place.
+"WARNING: 2 bad relocations
+c000000001a41478 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
+c000000001a41480 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end"
 
--Scott
+whereas those relocations are legitimate even for a relocatable kernel
+compiled with -pie option.
 
+relocs_check.sh already excluded some weak unresolved symbols explicitly:
+remove those hardcoded symbols and add some logic that parses the symbols
+using nm, retrieves all the weak unresolved symbols and excludes those from
+the list of the potential bad relocations.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+---
+ arch/powerpc/Makefile.postlink     |  4 ++--
+ arch/powerpc/tools/relocs_check.sh | 27 +++++++++++++++++++--------
+ 2 files changed, 21 insertions(+), 10 deletions(-)
+
+diff --git a/arch/powerpc/Makefile.postlink b/arch/powerpc/Makefile.postlink
+index 134f12f89b92..2268396ff4bb 100644
+--- a/arch/powerpc/Makefile.postlink
++++ b/arch/powerpc/Makefile.postlink
+@@ -17,11 +17,11 @@ quiet_cmd_head_check = CHKHEAD $@
+ quiet_cmd_relocs_check = CHKREL  $@
+ ifdef CONFIG_PPC_BOOK3S_64
+       cmd_relocs_check =						\
+-	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$@" ; \
++	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@" ; \
+ 	$(BASH) $(srctree)/arch/powerpc/tools/unrel_branch_check.sh "$(OBJDUMP)" "$@"
+ else
+       cmd_relocs_check =						\
+-	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$@"
++	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
+ endif
+ 
+ # `@true` prevents complaint when there is nothing to be done
+diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
+index 7b9fe0a567cf..783281b75d9d 100755
+--- a/arch/powerpc/tools/relocs_check.sh
++++ b/arch/powerpc/tools/relocs_check.sh
+@@ -10,14 +10,15 @@
+ # based on relocs_check.pl
+ # Copyright © 2009 IBM Corporation
+ 
+-if [ $# -lt 2 ]; then
+-	echo "$0 [path to objdump] [path to vmlinux]" 1>&2
++if [ $# -lt 3 ]; then
++	echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
+ 	exit 1
+ fi
+ 
+ # Have Kbuild supply the path to objdump so we handle cross compilation.
+ objdump="$1"
+-vmlinux="$2"
++nm="$2"
++vmlinux="$3"
+ 
+ bad_relocs=$(
+ $objdump -R "$vmlinux" |
+@@ -26,8 +27,6 @@ $objdump -R "$vmlinux" |
+ 	# These relocations are okay
+ 	# On PPC64:
+ 	#	R_PPC64_RELATIVE, R_PPC64_NONE
+-	#	R_PPC64_ADDR64 mach_<name>
+-	#	R_PPC64_ADDR64 __crc_<name>
+ 	# On PPC:
+ 	#	R_PPC_RELATIVE, R_PPC_ADDR16_HI,
+ 	#	R_PPC_ADDR16_HA,R_PPC_ADDR16_LO,
+@@ -38,15 +37,27 @@ R_PPC_ADDR16_LO
+ R_PPC_ADDR16_HI
+ R_PPC_ADDR16_HA
+ R_PPC_RELATIVE
+-R_PPC_NONE' |
+-	grep -E -v '\<R_PPC64_ADDR64[[:space:]]+mach_' |
+-	grep -E -v '\<R_PPC64_ADDR64[[:space:]]+__crc_'
++R_PPC_NONE'
+ )
+ 
+ if [ -z "$bad_relocs" ]; then
+ 	exit 0
+ fi
+ 
++# Remove from the bad relocations those that match an undefined weak symbol
++# which will result in an absolute relocation to 0.
++# Weak unresolved symbols are of that form in nm output:
++# "                  w _binary__btf_vmlinux_bin_end"
++undef_weak_symbols=$($nm "$vmlinux" | awk -e '$1 ~ /w/ { print $2 }')
++
++while IFS= read -r weak_symbol; do
++	bad_relocs="$(echo -n "$bad_relocs" | sed "/$weak_symbol/d")"
++done <<< "$undef_weak_symbols"
++
++if [ -z "$bad_relocs" ]; then
++	exit 0
++fi
++
+ num_bad=$(echo "$bad_relocs" | wc -l)
+ echo "WARNING: $num_bad bad relocations"
+ echo "$bad_relocs"
+-- 
+2.20.1
 
