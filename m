@@ -2,102 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91D213CB0B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 18:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D1013CD56
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 20:44:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yZBD0zP6zDqDc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 04:31:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yd803JSxzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 06:44:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=infinera.com (client-ip=40.107.68.41;
- helo=nam04-bn3-obe.outbound.protection.outlook.com;
- envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=ClfO5+Kv; 
- dkim-atps=neutral
-Received: from NAM04-BN3-obe.outbound.protection.outlook.com
- (mail-eopbgr680041.outbound.protection.outlook.com [40.107.68.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yZ7T3Xm8zDqBr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 04:29:07 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dU46RyNWjt8jfxCqyCO/Nm+96T9vTgUmWhHVbbTPrznFfetT2SgpnlekwB5OJAi9fatR2rdQu4YMwryQvZ8bsABDX7ZjFmM0vLOa7CVxk6B91xQm7p1JoOxjM2eX4XrEvG6LFRJdP6y/iZzj8BcjJEWM0XfFkhsfpDjQrT2Is83GaX37ylh3s7Xay8k6lDwHrPetyBZIRPtFW2JzJOljOo7jWvBFUZT0ruecKeMxs+GazGhfUhW2CzaWzNYHia/GU3B+L/UDkmYB0dcJJDEUZcl/XHdqZf+s0BbNX2sPUSdRRkyJ5wFWk8iKQI0y2Zw/NLfJu5K+z1v4gqmEdIsTPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FTMn5GmK8iGbDlrzMGenSJgu5IdIBtIm9N/vKVIp+YU=;
- b=C0u0zSY84E6KIYIAzQXD4Cb1j6MBgcmZVidcgAvs9tWyR/pvqPi0g/milBcDJek/ePCTAkHo1qmaCCD8XgPWsIIKXQh2y7f1Qa+lmo9MZw2xD2QBpf/SilTKeXgahJrMc4ejdIIvmHF26X7OOlt+TSacyKoR738+VSKSHTo09GighXenZMdjNarCSzZZJ8z/ZSQQ2sCmkpOsC9JIoVGsVzLorm6ONxQso+klGubMY8t0WnpCiXOyhh+wwoulMV1gSr51ZFUYG6Gp3gn+to32DxvPbqHsJcMoGblaGzao7uUjHhOaB0FhplaDW/UtqVDiCjA6ArGspfG1S72LldlM4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FTMn5GmK8iGbDlrzMGenSJgu5IdIBtIm9N/vKVIp+YU=;
- b=ClfO5+Kv+o0QSrHC1oOVXCCHqJWxOQYiI6s8mfJjoETjZlKqnbHFz1ETDY71uRpKn3fDcNDni0tS+JVCdViXbGoRooy7yzAPgcvvRXERbjTMFd+Sdp1rx273L6CK/J5YG3+KQ+kct4NaDk0Ygq8NKgoZqQBigCo5i9rZBgyPM+8=
-Received: from BN8PR10MB3540.namprd10.prod.outlook.com (20.179.77.152) by
- BN8PR10MB3107.namprd10.prod.outlook.com (20.179.136.146) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2623.9; Wed, 15 Jan 2020 17:29:03 +0000
-Received: from BN8PR10MB3540.namprd10.prod.outlook.com
- ([fe80::6922:a072:d75e:74ef]) by BN8PR10MB3540.namprd10.prod.outlook.com
- ([fe80::6922:a072:d75e:74ef%7]) with mapi id 15.20.2623.017; Wed, 15 Jan 2020
- 17:29:02 +0000
-From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "colin.king@canonical.com"
- <colin.king@canonical.com>, "qiang.zhao@nxp.com" <qiang.zhao@nxp.com>,
- "davem@davemloft.net" <davem@davemloft.net>
-Subject: Re: [PATCH] net/wan/fsl_ucc_hdlc: fix out of bounds write on array
- utdm_info
-Thread-Topic: [PATCH] net/wan/fsl_ucc_hdlc: fix out of bounds write on array
- utdm_info
-Thread-Index: AQHVyur09HukpX03t0SJoKItzNiieqfr/LeA
-Date: Wed, 15 Jan 2020 17:29:02 +0000
-Message-ID: <335a44aa9bfbec197385c1e0a9cc35cc29fb307d.camel@infinera.com>
-References: <20200114145448.361888-1-colin.king@canonical.com>
-In-Reply-To: <20200114145448.361888-1-colin.king@canonical.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Joakim.Tjernlund@infinera.com; 
-x-originating-ip: [88.131.87.201]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 3ea309fc-cecf-4e29-ddaf-08d799e06a37
-x-ms-traffictypediagnostic: BN8PR10MB3107:
-x-microsoft-antispam-prvs: <BN8PR10MB3107EE434F0598FE87DCFE28F4370@BN8PR10MB3107.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-forefront-prvs: 02830F0362
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(346002)(136003)(39860400002)(366004)(376002)(396003)(199004)(189003)(478600001)(2616005)(76116006)(66946007)(66476007)(66446008)(64756008)(66556008)(6506007)(71200400001)(91956017)(6512007)(5660300002)(8676002)(81166006)(36756003)(8936002)(110136005)(81156014)(54906003)(4326008)(6486002)(26005)(186003)(86362001)(316002)(2906002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:BN8PR10MB3107;
- H:BN8PR10MB3540.namprd10.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: infinera.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Rd7YS82zsbHAVNYWqWNxGZX4HjJZIicVHIrlMTY/YKWl20qOUY6NZ7om5At3m1WmWIgsqEpyU4g0JCQEHyboUTzPeqP7kwAil4oiujCpmkzAX0aH6xGl10FcqFMj3+irotzfPDebwGE5/lRMSPAW4O9V4y/8ll11z341HFiy8eyJBlJl+WgvywxqFFSbV8qoH4dsEXc6f8mSAht5eJKO5/Iipgv46qrXD4rh79X4RWg49jWS2Tt84aB9Aq+8nMQw3n3hdMndnZlgjkKGEn9szHggaKMy1MF82YFeG7Kz/vIT1GlAROO/zR1nntCDujc9VVfVPcvhcs2WWVUcW4aw1GexsQz8w76+WgKHGJLduf4QpE0oRpU1nP8YR1rtODmIpM4oeKj72BP9Rv4cg3BaHpC5DMSsJu0MER6Qt1wRVCwge1Pbr+f4ej06JfEZyXmQ
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F4248A3C9FF1CF4B9C46F7E935C6075E@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yd5l18BMzDqM0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 06:42:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=u77Uk0DS; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47yd5j6ljMz9sR4;
+ Thu, 16 Jan 2020 06:42:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1579117370;
+ bh=8Gx4/YIMzIE3Xfy6xCjvTA+74BEPwCjkRJGdRUP69tQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=u77Uk0DSBsTcK/o/zsZ5otRLkQ2Xmz20Ezav5Xd4fW41MwUM4v+5Rps5UZ1y2QvCF
+ R9avvvBZPeMMl4zC2iakVGP8BQ8ocjaAIcgDdGGS5ncSXbp5CKOaGpmHzNdFBv6aVd
+ XQSVZlctAJMgevjrXSTgCVhhYIgUViCbx0DkK8uJkL88yy0xFpSim2yJNAHDPp74qh
+ YstraOcXJ3kaSlmGWQ74OUylDde2cUQIy+j4QFus1e7F5O20ZByvG3avszIpCc94Mi
+ 9R2He+Wd99s9UQloDkkGIJlq3ma9s8SV35LByyONfiyrl8NIemhZGthl0j3/AT4BGE
+ u5hg3zk89HhYA==
+Date: Thu, 16 Jan 2020 06:42:34 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Timur Tabi <timur@kernel.org>
+Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
+Message-ID: <20200116064234.7a139623@canb.auug.org.au>
+In-Reply-To: <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
+References: <20200109183912.5fcb52aa@canb.auug.org.au>
+ <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+ <20200114072522.3cd57195@canb.auug.org.au>
+ <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+ <20200114173141.29564b25@canb.auug.org.au>
+ <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ea309fc-cecf-4e29-ddaf-08d799e06a37
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jan 2020 17:29:02.8935 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gLfNMAaj0cyAiZnJx5M3+qiS5UYDCDxG0FT4wFz4Su6K7OeLm4CyjXyaobV1ZyVhdmsjQ9HTSwymmVIdMc7A4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR10MB3107
+Content-Type: multipart/signed; boundary="Sig_/fEu+R81zMT.aoFY1B7ytDKr";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,32 +63,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: b08248@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jslaby@suse.com>, york sun <york.sun@nxp.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, swood@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDIwLTAxLTE0IGF0IDE0OjU0ICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiAN
-Cj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gDQo+
-IEFycmF5IHV0ZG1faW5mbyBpcyBkZWNsYXJlZCBhcyBhbiBhcnJheSBvZiBNQVhfSERMQ19OVU0g
-KDQpIGVsZW1lbnRzDQo+IGhvd2V2ZXIgdXAgdG8gVUNDX01BWF9OVU0gKDgpIGVsZW1lbnRzIGFy
-ZSBwb3RlbnRpYWxseSBiZWluZyB3cml0dGVuDQo+IHRvIGl0LiAgQ3VycmVudGx5IHdlIGhhdmUg
-YW4gYXJyYXkgb3V0LW9mLWJvdW5kcyB3cml0ZSBlcnJvciBvbiB0aGUNCj4gbGFzdCA0IGVsZW1l
-bnRzLiBGaXggdGhpcyBieSBtYWtpbmcgdXRkbV9pbmZvIFVDQ19NQVhfTlVNIGVsZW1lbnRzIGlu
-DQo+IHNpemUuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiT3V0LW9mLWJvdW5kcyB3cml0
-ZSIpDQo+IEZpeGVzOiBjMTliNmQyNDZhMzUgKCJkcml2ZXJzL25ldDogc3VwcG9ydCBoZGxjIGZ1
-bmN0aW9uIGZvciBRRS1VQ0MiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2luZyA8Y29s
-aW4ua2luZ0BjYW5vbmljYWwuY29tPg0KDQpUaGlzIHNob3VsZCBiZSBzZW50IHRvIHN0YWJsZSBh
-cyB3ZWxsDQpDYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+ICMgNC4xOS54Kw0KDQo+IC0tLQ0K
-PiAgZHJpdmVycy9uZXQvd2FuL2ZzbF91Y2NfaGRsYy5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5n
-ZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9uZXQvd2FuL2ZzbF91Y2NfaGRsYy5jIGIvZHJpdmVycy9uZXQvd2FuL2ZzbF91Y2NfaGRs
-Yy5jDQo+IGluZGV4IDk0ZTg3MGY0OGUyMS4uOWVkZDk0Njc5MjgzIDEwMDY0NA0KPiAtLS0gYS9k
-cml2ZXJzL25ldC93YW4vZnNsX3VjY19oZGxjLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2FuL2Zz
-bF91Y2NfaGRsYy5jDQo+IEBAIC03Myw3ICs3Myw3IEBAIHN0YXRpYyBzdHJ1Y3QgdWNjX3RkbV9p
-bmZvIHV0ZG1fcHJpbWFyeV9pbmZvID0gew0KPiAgICAgICAgIH0sDQo+ICB9Ow0KPiANCj4gLXN0
-YXRpYyBzdHJ1Y3QgdWNjX3RkbV9pbmZvIHV0ZG1faW5mb1tNQVhfSERMQ19OVU1dOw0KPiArc3Rh
-dGljIHN0cnVjdCB1Y2NfdGRtX2luZm8gdXRkbV9pbmZvW1VDQ19NQVhfTlVNXTsNCj4gDQo+ICBz
-dGF0aWMgaW50IHVoZGxjX2luaXQoc3RydWN0IHVjY19oZGxjX3ByaXZhdGUgKnByaXYpDQo+ICB7
-DQo+IC0tDQo+IDIuMjQuMA0KPiANCg0K
+--Sig_/fEu+R81zMT.aoFY1B7ytDKr
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi Timur,
+
+On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrote:
+>
+> On 1/14/20 12:31 AM, Stephen Rothwell wrote:
+> > +/**
+> > + * ev_byte_channel_send - send characters to a byte stream
+> > + * @handle: byte stream handle
+> > + * @count: (input) num of chars to send, (output) num chars sent
+> > + * @bp: pointer to chars to send
+> > + *
+> > + * Returns 0 for success, or an error code.
+> > + */
+> > +static unsigned int ev_byte_channel_send(unsigned int handle,
+> > +	unsigned int *count, const char *bp) =20
+>=20
+> Well, now you've moved this into the .c file and it is no longer=20
+> available to other callers.  Anything wrong with keeping it in the .h fil=
+e?
+
+There are currently no other callers - are there likely to be in the
+future?  Even if there are, is it time critical enough that it needs to
+be inlined everywhere?
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/fEu+R81zMT.aoFY1B7ytDKr
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4fayoACgkQAVBC80lX
+0GxhZAf+L34+ire+x19TOcW6lI7tewG/xsALu6gv2v8vHLefNL+V2Ftje/4Rek+K
+yTVlkuS+BOHE695Wr8wSMABD6IKnee6wTKofkffj3HZFA0CeT2kg+FwnVEZ/RAqw
+bLwAZg6+g6CjC70WpgWKT7k/OM/q1acKWOmplfve93siNHIeIFcTaBpwERdM8SnF
+swO0u7AvK3kKI5VD4wUCo37KtALh1IneWKFNONk60dAAAeLpmNjB7tfeMBabJRhT
++aTkGb9cjqhGWCQvhLsVJRw7DD/GBkfu4xQCxjQV4NzkNMi2wZM+2SvR3x91PDrb
+dm5aoERjXi8qCyVUupzgAnAN4q1AjQ==
+=ujEB
+-----END PGP SIGNATURE-----
+
+--Sig_/fEu+R81zMT.aoFY1B7ytDKr--
