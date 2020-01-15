@@ -1,57 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D1013CD56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 20:44:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yd803JSxzDqNd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 06:44:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B6613CDA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 21:04:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ydZr6933zDqQq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 07:04:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yd5l18BMzDqM0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 06:42:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=u77Uk0DS; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=swood@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=dt5/plw3; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47yd5j6ljMz9sR4;
- Thu, 16 Jan 2020 06:42:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1579117370;
- bh=8Gx4/YIMzIE3Xfy6xCjvTA+74BEPwCjkRJGdRUP69tQ=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=u77Uk0DSBsTcK/o/zsZ5otRLkQ2Xmz20Ezav5Xd4fW41MwUM4v+5Rps5UZ1y2QvCF
- R9avvvBZPeMMl4zC2iakVGP8BQ8ocjaAIcgDdGGS5ncSXbp5CKOaGpmHzNdFBv6aVd
- XQSVZlctAJMgevjrXSTgCVhhYIgUViCbx0DkK8uJkL88yy0xFpSim2yJNAHDPp74qh
- YstraOcXJ3kaSlmGWQ74OUylDde2cUQIy+j4QFus1e7F5O20ZByvG3avszIpCc94Mi
- 9R2He+Wd99s9UQloDkkGIJlq3ma9s8SV35LByyONfiyrl8NIemhZGthl0j3/AT4BGE
- u5hg3zk89HhYA==
-Date: Thu, 16 Jan 2020 06:42:34 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Timur Tabi <timur@kernel.org>
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ydWc2J4XzDqSL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 07:01:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1579118502;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ULVcAFsDzQbnAOV/nYIJG5zkQI1S5pwiGA0O6Cbzs8g=;
+ b=dt5/plw32RyzXrn2Q2WInOVEcDHIpKqTX1wI97z6kV+c4PPm9lym/ya6jAU5GwlN6ANjEy
+ g+9aDoX4WVLS2JqJ3dv6AOg7PMKs1bpo7ZotT+g+D5HzY3LtCoM5Ov8u1lnRCdF05nE7MC
+ q2Rh6P9wF9HvKIk8TbelHsSZzKtAe6c=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-234-bfw37kzCOy2nsPZxAgHQLg-1; Wed, 15 Jan 2020 15:01:38 -0500
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8199210054E3;
+ Wed, 15 Jan 2020 20:01:37 +0000 (UTC)
+Received: from ovpn-120-231.rdu2.redhat.com (ovpn-120-231.rdu2.redhat.com
+ [10.10.120.231])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5BE2A5DA70;
+ Wed, 15 Jan 2020 20:01:36 +0000 (UTC)
+Message-ID: <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
 Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-Message-ID: <20200116064234.7a139623@canb.auug.org.au>
-In-Reply-To: <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
+From: Scott Wood <swood@redhat.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, Timur Tabi <timur@kernel.org>
+Date: Wed, 15 Jan 2020 14:01:35 -0600
+In-Reply-To: <20200116064234.7a139623@canb.auug.org.au>
 References: <20200109183912.5fcb52aa@canb.auug.org.au>
  <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
  <20200114072522.3cd57195@canb.auug.org.au>
  <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
  <20200114173141.29564b25@canb.auug.org.au>
  <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
+ <20200116064234.7a139623@canb.auug.org.au>
+Organization: Red Hat
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/fEu+R81zMT.aoFY1B7ytDKr";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-MC-Unique: bfw37kzCOy2nsPZxAgHQLg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,59 +80,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: b08248@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jslaby@suse.com>, york sun <york.sun@nxp.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, swood@redhat.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ york sun <york.sun@nxp.com>, Jiri Slaby <jslaby@suse.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, b08248@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/fEu+R81zMT.aoFY1B7ytDKr
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Thu, 2020-01-16 at 06:42 +1100, Stephen Rothwell wrote:
+> Hi Timur,
+> 
+> On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrote:
+> > On 1/14/20 12:31 AM, Stephen Rothwell wrote:
+> > > +/**
+> > > + * ev_byte_channel_send - send characters to a byte stream
+> > > + * @handle: byte stream handle
+> > > + * @count: (input) num of chars to send, (output) num chars sent
+> > > + * @bp: pointer to chars to send
+> > > + *
+> > > + * Returns 0 for success, or an error code.
+> > > + */
+> > > +static unsigned int ev_byte_channel_send(unsigned int handle,
+> > > +	unsigned int *count, const char *bp)  
+> > 
+> > Well, now you've moved this into the .c file and it is no longer 
+> > available to other callers.  Anything wrong with keeping it in the .h
+> > file?
+> 
+> There are currently no other callers - are there likely to be in the
+> future?  Even if there are, is it time critical enough that it needs to
+> be inlined everywhere?
 
-Hi Timur,
+It's not performance critical and there aren't likely to be other users --
+just a matter of what's cleaner.  FWIW I'd rather see the original patch,
+that keeps the raw asm hcall stuff as simple wrappers in one place.
 
-On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrote:
->
-> On 1/14/20 12:31 AM, Stephen Rothwell wrote:
-> > +/**
-> > + * ev_byte_channel_send - send characters to a byte stream
-> > + * @handle: byte stream handle
-> > + * @count: (input) num of chars to send, (output) num chars sent
-> > + * @bp: pointer to chars to send
-> > + *
-> > + * Returns 0 for success, or an error code.
-> > + */
-> > +static unsigned int ev_byte_channel_send(unsigned int handle,
-> > +	unsigned int *count, const char *bp) =20
->=20
-> Well, now you've moved this into the .c file and it is no longer=20
-> available to other callers.  Anything wrong with keeping it in the .h fil=
-e?
+-Scott
 
-There are currently no other callers - are there likely to be in the
-future?  Even if there are, is it time critical enough that it needs to
-be inlined everywhere?
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/fEu+R81zMT.aoFY1B7ytDKr
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4fayoACgkQAVBC80lX
-0GxhZAf+L34+ire+x19TOcW6lI7tewG/xsALu6gv2v8vHLefNL+V2Ftje/4Rek+K
-yTVlkuS+BOHE695Wr8wSMABD6IKnee6wTKofkffj3HZFA0CeT2kg+FwnVEZ/RAqw
-bLwAZg6+g6CjC70WpgWKT7k/OM/q1acKWOmplfve93siNHIeIFcTaBpwERdM8SnF
-swO0u7AvK3kKI5VD4wUCo37KtALh1IneWKFNONk60dAAAeLpmNjB7tfeMBabJRhT
-+aTkGb9cjqhGWCQvhLsVJRw7DD/GBkfu4xQCxjQV4NzkNMi2wZM+2SvR3x91PDrb
-dm5aoERjXi8qCyVUupzgAnAN4q1AjQ==
-=ujEB
------END PGP SIGNATURE-----
-
---Sig_/fEu+R81zMT.aoFY1B7ytDKr--
