@@ -1,84 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807ED13C664
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 15:45:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4854D13C613
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 15:32:50 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yVCw5ZCzzDqPy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:32:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yVVy3yVHzDqSc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:45:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mwb@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=dvyukov@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=HAmEbppX; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yV9D050KzDqP2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 01:30:23 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00FER4Sx110917; Wed, 15 Jan 2020 09:30:05 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xhgs6npvt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2020 09:30:05 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00FESoBW014686;
- Wed, 15 Jan 2020 14:30:05 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma04wdc.us.ibm.com with ESMTP id 2xf751x35c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2020 14:30:05 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00FEU4uB43647418
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2020 14:30:04 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECC0B7805F;
- Wed, 15 Jan 2020 14:30:03 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3620378060;
- Wed, 15 Jan 2020 14:30:03 +0000 (GMT)
-Received: from oc8380061452.ibm.com (unknown [9.80.230.130])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 15 Jan 2020 14:30:02 +0000 (GMT)
-Subject: Re: [PATCH] Fix display of Maximum Memory
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org
-References: <55f25626-20ca-0acb-3571-ff636ca4632c@linux.ibm.com>
- <41380afd-05f5-f36f-c857-041243c73ee3@c-s.fr>
-From: Michael Bringmann <mwb@linux.ibm.com>
-Openpgp: preference=signencrypt
-Organization: IBM Linux Technology Center
-Message-ID: <eb6c4171-09b3-b8f0-6219-38757da6fc3b@linux.ibm.com>
-Date: Wed, 15 Jan 2020 08:30:02 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yVST2Ht9zDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 01:43:28 +1100 (AEDT)
+Received: by mail-qk1-x744.google.com with SMTP id t129so15805238qke.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 06:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=Dsov92auA7/G12RJ9hsAhzPgLmMj5NcPBeP6nNJDSO0=;
+ b=HAmEbppXjeEjGFlyjzVhaLxJPK6Qu2TL7zFYWoJ+6xa7AMU7f8xGwf2Pzg99BRj++8
+ RvmJHwFmUUh4S5athIHqzOwqDZLEUhNxjEiQK9XVd4nrV+B01TTnZczJQE2bcpTekpw2
+ n6L4wFGMG6zO9x9aZT8ci6v9mM1zpqges4LhDd2kBEXpAdu0q+goONUh4uissEOW2n+j
+ lQV7502daTXdwVDVOYsLIP6os+IibkP+OYMirLgI8gSuMWPKe5QQEzEWvHUksVAROFZT
+ 1LXCscvvcXbfvLyI4Nyo67cA34Y4T379odeXBQ7uz+eoJnT6eXfPRTE9U0o/5NY+5b3d
+ EYlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=Dsov92auA7/G12RJ9hsAhzPgLmMj5NcPBeP6nNJDSO0=;
+ b=FxZCATPn25e3V2OGRuH/eJ2gLeAy+AX5MBwqiJehAeEfmlJACNXYB8Q7vVxLUfcCty
+ FDX2JcLJtZ07rzXmSnw6X1y4aKJTa+f+Qn3xmewaoafDeRPgX0eYzCl9rZT4+mc7tRgZ
+ cO5bsZKpFLyhGWB85kSuk9PvQ2y9BshkZaqfAC3xHvMkEzBscLehZDrGO3gOjJEE/par
+ Rx0lFjLdaY0kleFrl92DtbaEVpYZM5G43KILyk2JY6TKbxBEyVHuIgkEbdlOZKAjp3ru
+ D5Gs6cBKTkD1Fs2HY0Aa7xNK7NJMP/gMxEcJqWEANZN6trXvW/wMzUiELUsxBT5ssBOT
+ pH/A==
+X-Gm-Message-State: APjAAAUOhBmEQPCi2NlhthKKgVf7mQcqv8zJqQn6F3rXsjXuScmK7bhw
+ UG+sHEbyspEZAdcEVn7jPRuAVDIHehoVb5rFQ6x6Fw==
+X-Google-Smtp-Source: APXvYqyUwMjABHutPLZrK97jNVFWLT7TfwkGKBtOm4Z15o33FBoKxwGilBQv+LujNRvkTq3H/64pu/pRwGwVkNNWReE=
+X-Received: by 2002:a05:620a:1136:: with SMTP id
+ p22mr28110133qkk.8.1579099404892; 
+ Wed, 15 Jan 2020 06:43:24 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <41380afd-05f5-f36f-c857-041243c73ee3@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-15_02:2020-01-15,
- 2020-01-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001150117
+References: <20200115063710.15796-1-dja@axtens.net>
+ <20200115063710.15796-2-dja@axtens.net>
+In-Reply-To: <20200115063710.15796-2-dja@axtens.net>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Wed, 15 Jan 2020 15:43:12 +0100
+Message-ID: <CACT4Y+bAuaeHOcTHqp-=ckOb58fRajpGYk4khNzpS7_OyBDQYQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kasan: stop tests being eliminated as dead code with
+ FORTIFY_SOURCE
+To: Daniel Axtens <dja@axtens.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,68 +77,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gustavo Walbon <gwalbon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
+Cc: linux-s390 <linux-s390@vger.kernel.org>, linux-xtensa@linux-xtensa.org,
+ the arch/x86 maintainers <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>, Linux-MM <linux-mm@kvack.org>,
+ Daniel Micay <danielmicay@gmail.com>, Alexander Potapenko <glider@google.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/14/20 11:41 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 14/01/2020 à 22:07, Michael Bringmann a écrit :
->> Correct overflow problem in calculation+display of Maximum Memory
->> value to syscfg where 32bits is insufficient.
->>
->> Signed-off-by: Michael Bringmann <mwb@linux.ibm.com>
->> ---
->>   arch/powerpc/platforms/pseries/lparcfg.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
->> index 4ee2594..183aeb7 100644
->> --- a/arch/powerpc/platforms/pseries/lparcfg.c
->> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
->> @@ -435,12 +435,12 @@ static void parse_em_data(struct seq_file *m)
->>
->>   static void maxmem_data(struct seq_file *m)
->>   {
->> -       unsigned long maxmem = 0;
->> +       unsigned long long maxmem = 0;
-> 
-> What about using u64 instead, for readability ?
+On Wed, Jan 15, 2020 at 7:37 AM Daniel Axtens <dja@axtens.net> wrote:
+>
+> 3 KASAN self-tests fail on a kernel with both KASAN and FORTIFY_SOURCE:
+> memchr, memcmp and strlen.
+>
+> When FORTIFY_SOURCE is on, a number of functions are replaced with
+> fortified versions, which attempt to check the sizes of the operands.
+> However, these functions often directly invoke __builtin_foo() once they
+> have performed the fortify check. The compiler can detect that the result=
+s
+> of these functions are not used, and knows that they have no other side
+> effects, and so can eliminate them as dead code.
+>
+> Why are only memchr, memcmp and strlen affected?
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Of string and string-like functions, kasan_test tests:
+>
+>  * strchr  ->  not affected, no fortified version
+>  * strrchr ->  likewise
+>  * strcmp  ->  likewise
+>  * strncmp ->  likewise
+>
+>  * strnlen ->  not affected, the fortify source implementation calls the
+>                underlying strnlen implementation which is instrumented, n=
+ot
+>                a builtin
+>
+>  * strlen  ->  affected, the fortify souce implementation calls a __built=
+in
+>                version which the compiler can determine is dead.
+>
+>  * memchr  ->  likewise
+>  * memcmp  ->  likewise
+>
+>  * memset ->   not affected, the compiler knows that memset writes to its
+>                first argument and therefore is not dead.
+>
+> Why does this not affect the functions normally?
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> In string.h, these functions are not marked as __pure, so the compiler
+> cannot know that they do not have side effects. If relevant functions are
+> marked as __pure in string.h, we see the following warnings and the
+> functions are elided:
+>
+> lib/test_kasan.c: In function =E2=80=98kasan_memchr=E2=80=99:
+> lib/test_kasan.c:606:2: warning: statement with no effect [-Wunused-value=
+]
+>   memchr(ptr, '1', size + 1);
+>   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> lib/test_kasan.c: In function =E2=80=98kasan_memcmp=E2=80=99:
+> lib/test_kasan.c:622:2: warning: statement with no effect [-Wunused-value=
+]
+>   memcmp(ptr, arr, size+1);
+>   ^~~~~~~~~~~~~~~~~~~~~~~~
+> lib/test_kasan.c: In function =E2=80=98kasan_strings=E2=80=99:
+> lib/test_kasan.c:645:2: warning: statement with no effect [-Wunused-value=
+]
+>   strchr(ptr, '1');
+>   ^~~~~~~~~~~~~~~~
+> ...
+>
+> This annotation would make sense to add and could be added at any point, =
+so
+> the behaviour of test_kasan.c should change.
+>
+> The fix
+> =3D=3D=3D=3D=3D=3D=3D
+>
+> Make all the functions that are pure write their results to a global,
+> which makes them live. The strlen and memchr tests now pass.
+>
+> The memcmp test still fails to trigger, which is addressed in the next
+> patch.
+>
+> Cc: Daniel Micay <danielmicay@gmail.com>
+> Cc: Andrey Ryabinin <aryabinin@virtuozzo.com>
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Dmitry Vyukov <dvyukov@google.com>
+> Fixes: 0c96350a2d2f ("lib/test_kasan.c: add tests for several string/memo=
+ry API functions")
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> ---
+>  lib/test_kasan.c | 30 +++++++++++++++++++-----------
+>  1 file changed, 19 insertions(+), 11 deletions(-)
+>
+> diff --git a/lib/test_kasan.c b/lib/test_kasan.c
+> index 328d33beae36..58a8cef0d7a2 100644
+> --- a/lib/test_kasan.c
+> +++ b/lib/test_kasan.c
+> @@ -23,6 +23,14 @@
+>
+>  #include <asm/page.h>
+>
+> +/*
+> + * We assign some test results to these globals to make sure the tests
+> + * are not eliminated as dead code.
+> + */
+> +
+> +int int_result;
+> +void *ptr_result;
 
-Okay.
-> 
->>
->> -       maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
->> -       maxmem += hugetlb_total_pages() * PAGE_SIZE;
->> +       maxmem += (unsigned long long)drmem_info->n_lmbs * (unsigned long long)drmem_info->lmb_size;
-> 
-> This line is likely too long. You only need to cast one of the two operants to force a 64 bits multiply. And using u64 would shorten the line.
-> 
-> Can both multiplications overflow ?
+These are globals, but are not static and don't have kasan_ prefix.
+But I guess this does not matter for modules?
+Otherwise:
 
-Yes.
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 
-> 
-> Christophe
-> 
->> +       maxmem += (unsigned long long)hugetlb_total_pages() * (unsigned long long)PAGE_SIZE;
->>
->> -       seq_printf(m, "MaxMem=%ld\n", maxmem);
->> +       seq_printf(m, "MaxMem=%llu\n", maxmem);
->>   }
->>
->>   static int pseries_lparcfg_data(struct seq_file *m, void *v)
->>
-> 
-
-Thanks.
--- 
-Michael W. Bringmann
-Linux Technology Center
-IBM Corporation
-Tie-Line  363-5196
-External: (512) 286-5196
-Cell:       (512) 466-0650
-mwb@linux.ibm.com
+> +
+>  /*
+>   * Note: test functions are marked noinline so that their names appear i=
+n
+>   * reports.
+> @@ -603,7 +611,7 @@ static noinline void __init kasan_memchr(void)
+>         if (!ptr)
+>                 return;
+>
+> -       memchr(ptr, '1', size + 1);
+> +       ptr_result =3D memchr(ptr, '1', size + 1);
+>         kfree(ptr);
+>  }
+>
+> @@ -618,8 +626,7 @@ static noinline void __init kasan_memcmp(void)
+>         if (!ptr)
+>                 return;
+>
+> -       memset(arr, 0, sizeof(arr));
+> -       memcmp(ptr, arr, size+1);
+> +       int_result =3D memcmp(ptr, arr, size + 1);
+>         kfree(ptr);
+>  }
+>
+> @@ -642,22 +649,22 @@ static noinline void __init kasan_strings(void)
+>          * will likely point to zeroed byte.
+>          */
+>         ptr +=3D 16;
+> -       strchr(ptr, '1');
+> +       ptr_result =3D strchr(ptr, '1');
+>
+>         pr_info("use-after-free in strrchr\n");
+> -       strrchr(ptr, '1');
+> +       ptr_result =3D strrchr(ptr, '1');
+>
+>         pr_info("use-after-free in strcmp\n");
+> -       strcmp(ptr, "2");
+> +       int_result =3D strcmp(ptr, "2");
+>
+>         pr_info("use-after-free in strncmp\n");
+> -       strncmp(ptr, "2", 1);
+> +       int_result =3D strncmp(ptr, "2", 1);
+>
+>         pr_info("use-after-free in strlen\n");
+> -       strlen(ptr);
+> +       int_result =3D strlen(ptr);
+>
+>         pr_info("use-after-free in strnlen\n");
+> -       strnlen(ptr, 1);
+> +       int_result =3D strnlen(ptr, 1);
+>  }
+>
+>  static noinline void __init kasan_bitops(void)
+> @@ -724,11 +731,12 @@ static noinline void __init kasan_bitops(void)
+>         __test_and_change_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
+>
+>         pr_info("out-of-bounds in test_bit\n");
+> -       (void)test_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
+> +       int_result =3D test_bit(BITS_PER_LONG + BITS_PER_BYTE, bits);
+>
+>  #if defined(clear_bit_unlock_is_negative_byte)
+>         pr_info("out-of-bounds in clear_bit_unlock_is_negative_byte\n");
+> -       clear_bit_unlock_is_negative_byte(BITS_PER_LONG + BITS_PER_BYTE, =
+bits);
+> +       int_result =3D clear_bit_unlock_is_negative_byte(BITS_PER_LONG +
+> +               BITS_PER_BYTE, bits);
+>  #endif
+>         kfree(bits);
+>  }
+> --
+> 2.20.1
+>
