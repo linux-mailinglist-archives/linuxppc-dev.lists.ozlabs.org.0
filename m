@@ -1,82 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B2613C6C2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 15:58:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8629F13C6B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 15:56:10 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yVkt1pyZzDqSg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:56:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yVnY6rjgzDqSn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:58:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mwb@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=WBcizLfB; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yVhd6rwMzDqJQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 01:54:09 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00FEbr5c093089; Wed, 15 Jan 2020 09:54:03 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xhbpsksaa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2020 09:54:03 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00FEe4dM032635;
- Wed, 15 Jan 2020 14:54:02 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 2xf74yqa43-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2020 14:54:02 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00FEs0cK28836190
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2020 14:54:00 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF3AC78068;
- Wed, 15 Jan 2020 14:54:00 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C3207805F;
- Wed, 15 Jan 2020 14:53:59 +0000 (GMT)
-Received: from oc8380061452.ibm.com (unknown [9.80.230.130])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 15 Jan 2020 14:53:59 +0000 (GMT)
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>, Gustavo Walbon
- <gwalbon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
-From: Michael Bringmann <mwb@linux.ibm.com>
-Subject: [PATCH v2] Fix display of Maximum Memory
-Openpgp: preference=signencrypt
-Organization: IBM Linux Technology Center
-Message-ID: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
-Date: Wed, 15 Jan 2020 08:53:59 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yVkj72cCzDqJQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 01:55:57 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 47yVkd1L6Qz9tylV;
+ Wed, 15 Jan 2020 15:55:53 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=WBcizLfB; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id yej87JrYwKck; Wed, 15 Jan 2020 15:55:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47yVkd0G7Zz9tylT;
+ Wed, 15 Jan 2020 15:55:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579100153; bh=drzSvcOTpHXGDw4v5FPxHbIJiwf/PfYcxldvnk1kSwk=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=WBcizLfBm8MCg5j0/7mTLx79/XdaaeLBVsccrdfLkd25w0FQKLPdjjv2cEs65IzaG
+ n7kbUMCh+PZxCzwPJMNrVX+L9UuptNN6BSkmJe/H8+LBkp0v3k/wUYLdqKncLAGHca
+ 1HF86g2D7YcBKJ5kr3I0fUYximDPIOfMNE5i8k8k=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 82FF08B805;
+ Wed, 15 Jan 2020 15:55:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4a6NedTi81Jj; Wed, 15 Jan 2020 15:55:54 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 60D828B774;
+ Wed, 15 Jan 2020 15:55:54 +0100 (CET)
+Subject: Re: [PATCH v2] Fix display of Maximum Memory
+To: Michael Bringmann <mwb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Gustavo Walbon <gwalbon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
+References: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <9a3b1c39-8c4f-6376-ff00-2e06190d0c67@c-s.fr>
+Date: Wed, 15 Jan 2020 15:55:54 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-15_02:2020-01-15,
- 2020-01-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- mlxscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001150119
+In-Reply-To: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,35 +83,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Correct overflow problem in calculation+display of Maximum Memory
-value to syscfg where 32bits is insufficient.
 
-Signed-off-by: Michael Bringmann <mwb@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/lparcfg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index e33e8bc..f00411c 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -433,12 +433,12 @@ static void parse_em_data(struct seq_file *m)
- 
- static void maxmem_data(struct seq_file *m)
- {
--	unsigned long maxmem = 0;
-+	u64 maxmem = 0;
- 
--	maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
--	maxmem += hugetlb_total_pages() * PAGE_SIZE;
-+	maxmem += (u64)drmem_info->n_lmbs * drmem_info->lmb_size;
-+	maxmem += (u64)hugetlb_total_pages() * PAGE_SIZE;
- 
--	seq_printf(m, "MaxMem=%ld\n", maxmem);
-+	seq_printf(m, "MaxMem=%llu\n", maxmem);
- }
- 
- static int pseries_lparcfg_data(struct seq_file *m, void *v)
--- 
-1.8.3.1
+Le 15/01/2020 à 15:53, Michael Bringmann a écrit :
+> Correct overflow problem in calculation+display of Maximum Memory
+> value to syscfg where 32bits is insufficient.
+> 
+> Signed-off-by: Michael Bringmann <mwb@linux.ibm.com>
 
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+> ---
+>   arch/powerpc/platforms/pseries/lparcfg.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+> index e33e8bc..f00411c 100644
+> --- a/arch/powerpc/platforms/pseries/lparcfg.c
+> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
+> @@ -433,12 +433,12 @@ static void parse_em_data(struct seq_file *m)
+>   
+>   static void maxmem_data(struct seq_file *m)
+>   {
+> -	unsigned long maxmem = 0;
+> +	u64 maxmem = 0;
+>   
+> -	maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
+> -	maxmem += hugetlb_total_pages() * PAGE_SIZE;
+> +	maxmem += (u64)drmem_info->n_lmbs * drmem_info->lmb_size;
+> +	maxmem += (u64)hugetlb_total_pages() * PAGE_SIZE;
+>   
+> -	seq_printf(m, "MaxMem=%ld\n", maxmem);
+> +	seq_printf(m, "MaxMem=%llu\n", maxmem);
+>   }
+>   
+>   static int pseries_lparcfg_data(struct seq_file *m, void *v)
+> 
