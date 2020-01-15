@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4954313B926
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 06:42:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yGST1qQKzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 16:42:49 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D55013B969
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 07:17:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yHDW1KzfzDqSd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 17:17:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,53 +17,58 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=sfBhmYet; dkim-atps=neutral
+ header.s=mail header.b=UntR+ovd; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yGQk4c1pzDqDp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 16:41:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yHBZ0Rq3zDqRN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 17:15:49 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47yGQX1mqXz9vJ9w;
- Wed, 15 Jan 2020 06:41:08 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47yHBT0bNKz9v9Dm;
+ Wed, 15 Jan 2020 07:15:45 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=sfBhmYet; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=UntR+ovd; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Rdx1R27WK1OZ; Wed, 15 Jan 2020 06:41:08 +0100 (CET)
+ with ESMTP id uRhu0hEJc6dc; Wed, 15 Jan 2020 07:15:45 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47yGQX0hprz9vJ9v;
- Wed, 15 Jan 2020 06:41:08 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47yHBS5m1Pz9v9Dk;
+ Wed, 15 Jan 2020 07:15:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579066868; bh=bRfKh/Cnz206aPF3lzBprN9c8zs4SrTAq3h16N+7SHw=;
+ t=1579068944; bh=dLb+n74DT6jZUD4ec0gfhmKuZ7wdMUymXTZD+f3ESjs=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=sfBhmYetSsi3Ss5SJ7e9KTZnHFjPXC9u/9eu80eR3zJl3thbTW15nJ05CUMBW0uVk
- pIRVniOt4PsZXoKE66DQwekei9xTv9g5nPtQzUZ/+rKGbFbOWZ5En6M3LW7E8ukZE1
- 5Qf6V6TbteuqusiEM6OBNedAG9HkllYRJ9h6BETA=
+ b=UntR+ovdUgNuiOCdaG492qpGkB1inQlUzwXmUjovM/oqM/Vp3a/K3ppEYvczfO2ls
+ w8S4Mabi06ZQ75T5HTmKpob6aRUwzfUY5vsQRUL7Zw5MJvFZAX1RNry5Mv2FWFVr5b
+ rxL2XadbeDGNcEyFm+pdcDnM/FQoG26VHqpC1L64=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D655D8B77B;
- Wed, 15 Jan 2020 06:41:08 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9A0E88B77E;
+ Wed, 15 Jan 2020 07:15:45 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Ph2qjykawEAp; Wed, 15 Jan 2020 06:41:08 +0100 (CET)
+ with ESMTP id 3sLM6Sb2GP2Q; Wed, 15 Jan 2020 07:15:45 +0100 (CET)
 Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A9E618B774;
- Wed, 15 Jan 2020 06:41:08 +0100 (CET)
-Subject: Re: [PATCH] Fix display of Maximum Memory
-To: Michael Bringmann <mwb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <55f25626-20ca-0acb-3571-ff636ca4632c@linux.ibm.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6976D8B774;
+ Wed, 15 Jan 2020 07:15:45 +0100 (CET)
+Subject: Re: [RFC PATCH v3 08/12] lib: vdso: allow arches to provide vdso data
+ pointer
+To: Thomas Gleixner <tglx@linutronix.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ arnd@arndb.de, vincenzo.frascino@arm.com, luto@kernel.org
+References: <cover.1578934751.git.christophe.leroy@c-s.fr>
+ <381e547dbb3c48fd39d6cf208033bba38ad048fb.1578934751.git.christophe.leroy@c-s.fr>
+ <87ftghbpuu.fsf@nanos.tec.linutronix.de>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <41380afd-05f5-f36f-c857-041243c73ee3@c-s.fr>
-Date: Wed, 15 Jan 2020 06:41:08 +0100
+Message-ID: <d2de3211-9d7c-513e-fe0f-8bdce623fb65@c-s.fr>
+Date: Wed, 15 Jan 2020 07:15:44 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <55f25626-20ca-0acb-3571-ff636ca4632c@linux.ibm.com>
+In-Reply-To: <87ftghbpuu.fsf@nanos.tec.linutronix.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -78,52 +83,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gustavo Walbon <gwalbon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
+Cc: x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 14/01/2020 à 22:07, Michael Bringmann a écrit :
-> Correct overflow problem in calculation+display of Maximum Memory
-> value to syscfg where 32bits is insufficient.
+Le 15/01/2020 à 00:06, Thomas Gleixner a écrit :
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>   
+>>   static __maybe_unused int
+>> +#ifdef VDSO_GETS_VD_PTR_FROM_ARCH
+>> +__cvdso_clock_gettime_common(const struct vdso_data *vd, clockid_t clock,
+>> +		      struct __kernel_timespec *ts)
+>> +{
+>> +#else
+>>   __cvdso_clock_gettime_common(clockid_t clock, struct __kernel_timespec *ts)
+>>   {
+>>   	const struct vdso_data *vd = __arch_get_vdso_data();
+>> +#endif
+>>   	u32 msk;
 > 
-> Signed-off-by: Michael Bringmann <mwb@linux.ibm.com>
-> ---
->   arch/powerpc/platforms/pseries/lparcfg.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-> index 4ee2594..183aeb7 100644
-> --- a/arch/powerpc/platforms/pseries/lparcfg.c
-> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
-> @@ -435,12 +435,12 @@ static void parse_em_data(struct seq_file *m)
-> 
->   static void maxmem_data(struct seq_file *m)
->   {
-> -       unsigned long maxmem = 0;
-> +       unsigned long long maxmem = 0;
+> If we do that, then there is no point in propagating this to the inner
+> functions. It's perfectly fine to have this distinction at the outermost
+> level.
 
-What about using u64 instead, for readability ?
+In v2, I did it at the arch level (see 
+https://patchwork.ozlabs.org/patch/1214983/). Andy was concerned about 
+it being suboptimal for arches which (unlike powerpc) have PC related 
+data addressing mode.
+
+Wouldn't it be the same issue if doing it at the outermost level of 
+generic VDSO ?
 
 > 
-> -       maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
-> -       maxmem += hugetlb_total_pages() * PAGE_SIZE;
-> +       maxmem += (unsigned long long)drmem_info->n_lmbs * (unsigned long long)drmem_info->lmb_size;
+> As a related question, I noticed that you keep all that ASM voodoo in
+> the PPC specific code which provides the actual entry points. Is that
+> ASM code really still necessary? All current users of the generic VDSO
+> just do something like:
+> 
+> int __vdso_clock_gettime(clockid_t clock, struct __kernel_timespec *ts)
+> {
+>          return __cvdso_clock_gettime(clock, ts);
+> }
+> 
+> in the architecture code. Is there a reason why this can't work on PPC?
 
-This line is likely too long. You only need to cast one of the two 
-operants to force a 64 bits multiply. And using u64 would shorten the line.
+The problem with powerpc is that VDSO functions have to (just like 
+system calls) set the SO bit in CR register in case of error, or clear 
+it if no error. There is no way to do that from the C function, because 
+there is no way to tell GCC to not play up with CR register on function 
+return.
 
-Can both multiplications overflow ?
+Refer discussion at https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92769
 
 Christophe
-
-> +       maxmem += (unsigned long long)hugetlb_total_pages() * (unsigned long long)PAGE_SIZE;
-> 
-> -       seq_printf(m, "MaxMem=%ld\n", maxmem);
-> +       seq_printf(m, "MaxMem=%llu\n", maxmem);
->   }
-> 
->   static int pseries_lparcfg_data(struct seq_file *m, void *v)
-> 
