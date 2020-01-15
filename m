@@ -2,46 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6801A13CFC8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2020 23:08:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5221D13D0B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 00:41:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yhL86FN5zDqT3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 09:08:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ykPL2Lm9zDqRw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 10:41:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=davemloft.net
- (client-ip=2620:137:e000::1:9; helo=shards.monkeyblade.net;
- envelope-from=davem@davemloft.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=davemloft.net
-Received: from shards.monkeyblade.net (shards.monkeyblade.net
- [IPv6:2620:137:e000::1:9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yhJ30swDzDqRj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 09:06:50 +1100 (AEDT)
-Received: from localhost (unknown [62.21.130.100])
- (using TLSv1 with cipher AES256-SHA (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: davem-davemloft)
- by shards.monkeyblade.net (Postfix) with ESMTPSA id 7093815A0EE0A;
- Wed, 15 Jan 2020 14:06:41 -0800 (PST)
-Date: Wed, 15 Jan 2020 14:06:40 -0800 (PST)
-Message-Id: <20200115.140640.367212385869999160.davem@davemloft.net>
-To: colin.king@canonical.com
-Subject: Re: [PATCH] net/wan/fsl_ucc_hdlc: fix out of bounds write on array
- utdm_info
-From: David Miller <davem@davemloft.net>
-In-Reply-To: <20200114145448.361888-1-colin.king@canonical.com>
-References: <20200114145448.361888-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12
- (shards.monkeyblade.net [149.20.54.216]);
- Wed, 15 Jan 2020 14:06:42 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ykLw6MMqzDq9B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 10:39:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=B5o0Q+Qb; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47ykLs4sxMz9sR1;
+ Thu, 16 Jan 2020 10:39:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1579131575;
+ bh=bM+tz2kFdbTfR+m35IrApP9n+YHuTQq0hXIrBD1g6p0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=B5o0Q+Qbz+Fh9nE6jGV8mxlgxUvMrP7QnMN7U8rJQtga5PK4LN11cKBT/wLOLs4YP
+ XuuAQ+Bsk3h7dQ/zO7fab/eJr7Cxr4uhtJBmsVRPA+PgjEJ/yxN53hXroCdOuOKYOI
+ G7bcHeM5X2XLDhiLYdnIe0Axc0SBLxrU0i7U4WOHBcmlZY0kXD0cH0eJ+Lv/Y2HtlN
+ qnJ8Vu/9spGH3FAwSo+F+6zs/eA2zf+UOzdgE8mt36GSlxCcpJs1KMdLt98Flz6JRN
+ soQ0lm8kiGof8G9XlKjoX8QxuJzgqqnC47fhhJTpIaLHyzovjA8fUUdGyoLkFITU1E
+ nE9c9dUXrF6Hw==
+Date: Thu, 16 Jan 2020 10:39:32 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Subject: Re: [PATCH] powerpc: Do not consider weak unresolved symbol
+ relocations as bad
+Message-ID: <20200116103932.2e603cf9@canb.auug.org.au>
+In-Reply-To: <20200115204648.7179-1-alex@ghiti.fr>
+References: <20200115204648.7179-1-alex@ghiti.fr>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/X0ES/Pzabz50rIWcgod6J4G";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,26 +59,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- qiang.zhao@nxp.com
+Cc: Palmer Dabbelt <palmerdabbelt@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-next@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Zong Li <zong.li@sifive.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Colin King <colin.king@canonical.com>
-Date: Tue, 14 Jan 2020 14:54:48 +0000
+--Sig_/X0ES/Pzabz50rIWcgod6J4G
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Array utdm_info is declared as an array of MAX_HDLC_NUM (4) elements
-> however up to UCC_MAX_NUM (8) elements are potentially being written
-> to it.  Currently we have an array out-of-bounds write error on the
-> last 4 elements. Fix this by making utdm_info UCC_MAX_NUM elements in
-> size.
-> 
-> Addresses-Coverity: ("Out-of-bounds write")
-> Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Hi Alexandre,
 
-Applied and queued up for -stable.
+Thanks for sorting this out.  Just a few comments below.
+
+On Wed, 15 Jan 2020 15:46:48 -0500 Alexandre Ghiti <alex@ghiti.fr> wrote:
+>
+
+> =20
+>  # Have Kbuild supply the path to objdump so we handle cross compilation.
+                                            ^
+"and nm"
+
+> +# Remove from the bad relocations those that match an undefined weak sym=
+bol
+> +# which will result in an absolute relocation to 0.
+> +# Weak unresolved symbols are of that form in nm output:
+> +# "                  w _binary__btf_vmlinux_bin_end"
+> +undef_weak_symbols=3D$($nm "$vmlinux" | awk -e '$1 ~ /w/ { print $2 }')
+> +
+> +while IFS=3D read -r weak_symbol; do
+> +	bad_relocs=3D"$(echo -n "$bad_relocs" | sed "/$weak_symbol/d")"
+> +done <<< "$undef_weak_symbols"
+
+This is not a bash script, and the above is a bashism :-(
+Also, my version of awk (mawk) doesn't have a -e option.
+
+How about something like :
+
+undef_weak_symbols=3D$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
+if [ "$undef_weak_symbols" ]; then
+	bad_relocs=3D"$(echo "$bad_relocs" | grep -F -w -v "$undef_weak_symbols")"
+fi
+
+Or do this near the top and add the grep to the others.
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/X0ES/Pzabz50rIWcgod6J4G
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4forQACgkQAVBC80lX
+0GyunwgAkZoBTpQAhgoODm6QrksXXQEyfUW4a4mYnW8Q62gQraQoNVv0H9M1Irnu
+1W7s/FfgvSNAom/ST78bdY0mPdADH0TZmyyRJbv2EIYvnwUdXva5UwAboMLCacnW
+PZKeC8ox9F57/Td+tDK7okuk/uO17KKp+Uo70DeDeS2i8KUZyUJxD+mO7y173pUj
+hNt25ESQEqrC4Lvu9I16kyLjxvjzMRv4unaQIy3htYQCbxF7/X1Lu33FEhvAJ9vx
+4BY7VWCaE2KNUMEaupSvJiXKfKWWGw6uMNZysIM17C5CfdHZvhaeMNYjNq03A6tX
+jalLi/Ycc9raelW8W8CmcuHx5CzvDA==
+=q+Te
+-----END PGP SIGNATURE-----
+
+--Sig_/X0ES/Pzabz50rIWcgod6J4G--
