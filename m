@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEA213FA3E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 21:12:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0200813FA6F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 21:17:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zFjb0XdfzDqgn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 07:12:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zFq951cgzDqlV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 07:17:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=d619qNjJ; dkim-atps=neutral
+ header.s=default header.b=CkA6S0aF; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zBRy5T0GzDqDM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:45:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zBTd2F2fzDqf9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:47:01 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 80D4824765;
- Thu, 16 Jan 2020 17:45:30 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A5F38246DF;
+ Thu, 16 Jan 2020 17:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579196731;
- bh=vF+m8hLWBYBYcX86G22Uo9puk7KaPTDLePvT7xAYpJk=;
+ s=default; t=1579196819;
+ bh=fQJtNVaV4DsQ61t6sF1IyLdmwc8TWrk8/h8SZp53dwE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=d619qNjJ5OaVKQCyvu+A0Rygcq7T3Arzsq9mqPqylv2j04cltO03vQthv2BKDvqJc
- Ev//pKBn/LkYM7dN5fo+RCwWo9akXlK6n/ZmpoSg8NgdS0rZIne5NzotbndwBG5Nl2
- qJwrm+IW3r9YGe8gI79yZ44r1Ws3bWtS4nRsqP4w=
+ b=CkA6S0aFhgEm91X13Oe0VtuG66eziVuNL8GN9GmvAq213JL4mmejQYsBeC9OPWHE/
+ ZIjtRFb/4GGhebfa/IOuwnNFqwN4Kn6Ti+mcR468pzHqdSFAsjxsXS8gwsXFHkaodh
+ 6SfG/Sj4cJtEVjWESc18ukgWRFyFFY8dyzNAspXk=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 115/174] ALSA: aoa: onyx: always initialize
- register read value
-Date: Thu, 16 Jan 2020 12:41:52 -0500
-Message-Id: <20200116174251.24326-115-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 174/174] powerpc/archrandom: fix
+ arch_get_random_seed_int()
+Date: Thu, 16 Jan 2020 12:42:51 -0500
+Message-Id: <20200116174251.24326-174-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
 References: <20200116174251.24326-1-sashal@kernel.org>
@@ -60,48 +60,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
- alsa-devel@alsa-project.org, Takashi Iwai <tiwai@suse.de>,
- Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Johannes Berg <johannes@sipsolutions.net>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit f474808acb3c4b30552d9c59b181244e0300d218 ]
+[ Upstream commit b6afd1234cf93aa0d71b4be4788c47534905f0be ]
 
-A lot of places in the driver use onyx_read_register() without
-checking the return value, and it's been working OK for ~10 years
-or so, so probably never fails ... Rather than trying to check the
-return value everywhere, which would be relatively intrusive, at
-least make sure we don't use an uninitialized value.
+Commit 01c9348c7620ec65
 
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*
+
+updated arch_get_random_[int|long]() to be NOPs, and moved the hardware
+RNG backing to arch_get_random_seed_[int|long]() instead. However, it
+failed to take into account that arch_get_random_int() was implemented
+in terms of arch_get_random_long(), and so we ended up with a version
+of the former that is essentially a NOP as well.
+
+Fix this by calling arch_get_random_seed_long() from
+arch_get_random_seed_int() instead.
+
+Fixes: 01c9348c7620ec65 ("powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191204115015.18015-1-ardb@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/aoa/codecs/onyx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/archrandom.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/aoa/codecs/onyx.c b/sound/aoa/codecs/onyx.c
-index a04edff8b729..ae50d59fb810 100644
---- a/sound/aoa/codecs/onyx.c
-+++ b/sound/aoa/codecs/onyx.c
-@@ -74,8 +74,10 @@ static int onyx_read_register(struct onyx *onyx, u8 reg, u8 *value)
- 		return 0;
- 	}
- 	v = i2c_smbus_read_byte_data(onyx->i2c, reg);
--	if (v < 0)
-+	if (v < 0) {
-+		*value = 0;
- 		return -1;
-+	}
- 	*value = (u8)v;
- 	onyx->cache[ONYX_REG_CONTROL-FIRSTREGISTER] = *value;
- 	return 0;
+diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
+index 85e88f7a59c0..9ff848e3c4a6 100644
+--- a/arch/powerpc/include/asm/archrandom.h
++++ b/arch/powerpc/include/asm/archrandom.h
+@@ -27,7 +27,7 @@ static inline int arch_get_random_seed_int(unsigned int *v)
+ 	unsigned long val;
+ 	int rc;
+ 
+-	rc = arch_get_random_long(&val);
++	rc = arch_get_random_seed_long(&val);
+ 	if (rc)
+ 		*v = val;
+ 
 -- 
 2.20.1
 
