@@ -1,46 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E3913DFF8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 17:23:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47z8dQ18rrzDqZp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 03:23:38 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91D913E1B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 17:51:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47z9Ff5RsfzDqZw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 03:51:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=CCjhhJoc; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z8bf5p9fzDqXJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:22:05 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00GGLpkC019886;
- Thu, 16 Jan 2020 10:21:51 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 00GGLpYe019885;
- Thu, 16 Jan 2020 10:21:51 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 16 Jan 2020 10:21:51 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: David Laight <David.Laight@aculab.com>
-Subject: Re: z constraint in powerpc inline assembly ?
-Message-ID: <20200116162151.GR3191@gate.crashing.org>
-References: <d72263a1-fe17-3192-6930-35ec8394c699@c-s.fr>
- <e9af1690e51a4d89a8a5c0927eb8430a@AcuMS.aculab.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9af1690e51a4d89a8a5c0927eb8430a@AcuMS.aculab.com>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9BB3wd5zDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:48:34 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1F579217F4;
+ Thu, 16 Jan 2020 16:48:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579193312;
+ bh=Eb4Vx2wML0CMCDuQwZW50JnG/4Jh8yN2N0fN2PjlhQE=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=CCjhhJoco2webzQpPlRQGrX/KPBcVI5f9M1cXZSQLRKWX1rcQ2Mic/FceHLa0M533
+ ZXVU2Hw9Cb06silmEQ96m/pP7DwLVIyjEd3oT/+bsi1x6rJR1HvM9fkplG7UBTGDyz
+ BOF4sOkVUjKOdMdy35nuISTRoKZoovhzveCYViBY=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 072/205] ASoC: fsl_esai: Add spin lock to protect
+ reset, stop and start
+Date: Thu, 16 Jan 2020 11:40:47 -0500
+Message-Id: <20200116164300.6705-72-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
+References: <20200116164300.6705-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,63 +60,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-On Thu, Jan 16, 2020 at 03:54:58PM +0000, David Laight wrote:
-> if you are trying to 'loop carry' the 'carry flag' with 'add with carry'
-> instructions you'll almost certainly need to write the loop in asm.
-> Since the loop itself is simple, this probably doesn't matter.
+[ Upstream commit 35dac627471938eda89fa39ee4ead1f7667e0f57 ]
 
-Agreed.
+xrun may happen at the end of stream, the
+trigger->fsl_esai_trigger_stop maybe called in the middle of
+fsl_esai_hw_reset, this may cause esai in wrong state
+after stop, and there may be endless xrun interrupt.
 
-> However a loop of 'add with carry' instructions may not be the
-> fastest code by any means.
-> Because the carry flag is needed for every 'adc' you can't do more
-> that one adc per clock.
-> This limits you to 8 bytes/clock on a 64bit system - even one
-> that can schedule multiple memory reads and lots of instructions
-> every clock.
-> 
-> I don't know ppc, but on x86 you don't even get 1 adc per clock
-> until very recent (Haswell I think) cpus.
-> Sandy/Ivy bridge will do so if you add to alternate registers.
+This issue may also happen with trigger->fsl_esai_trigger_start.
 
-The carry bit is renamed just fine on all modern Power cpus.  On Power9
-there is an extra carry bit, precisely so you can do two interleaved
-chains.  And you can run lots of these insns at once, every cycle.
+So Add spin lock to lock those functions.
 
-On older cpus there were other limitations as well, but those have been
-solved essentially.
+Fixes: 7ccafa2b3879 ("ASoC: fsl_esai: recover the channel swap after xrun")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Link: https://lore.kernel.org/r/52e92c4221a83e39a84a6cd92fc3d5479b44894c.1572252321.git.shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/soc/fsl/fsl_esai.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> For earlier cpu it is actually difficult to beat the 4 bytes/clock
-> you get by adding 32bit values to a 64bit register in C code.
+diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
+index a78e4ab478df..c7a49d03463a 100644
+--- a/sound/soc/fsl/fsl_esai.c
++++ b/sound/soc/fsl/fsl_esai.c
+@@ -33,6 +33,7 @@
+  * @fsysclk: system clock source to derive HCK, SCK and FS
+  * @spbaclk: SPBA clock (optional, depending on SoC design)
+  * @task: tasklet to handle the reset operation
++ * @lock: spin lock between hw_reset() and trigger()
+  * @fifo_depth: depth of tx/rx FIFO
+  * @slot_width: width of each DAI slot
+  * @slots: number of slots
+@@ -56,6 +57,7 @@ struct fsl_esai {
+ 	struct clk *fsysclk;
+ 	struct clk *spbaclk;
+ 	struct tasklet_struct task;
++	spinlock_t lock; /* Protect hw_reset and trigger */
+ 	u32 fifo_depth;
+ 	u32 slot_width;
+ 	u32 slots;
+@@ -676,8 +678,10 @@ static void fsl_esai_hw_reset(unsigned long arg)
+ {
+ 	struct fsl_esai *esai_priv = (struct fsl_esai *)arg;
+ 	bool tx = true, rx = false, enabled[2];
++	unsigned long lock_flags;
+ 	u32 tfcr, rfcr;
+ 
++	spin_lock_irqsave(&esai_priv->lock, lock_flags);
+ 	/* Save the registers */
+ 	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
+ 	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
+@@ -715,6 +719,8 @@ static void fsl_esai_hw_reset(unsigned long arg)
+ 		fsl_esai_trigger_start(esai_priv, tx);
+ 	if (enabled[rx])
+ 		fsl_esai_trigger_start(esai_priv, rx);
++
++	spin_unlock_irqrestore(&esai_priv->lock, lock_flags);
+ }
+ 
+ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -722,6 +728,7 @@ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
+ {
+ 	struct fsl_esai *esai_priv = snd_soc_dai_get_drvdata(dai);
+ 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
++	unsigned long lock_flags;
+ 
+ 	esai_priv->channels[tx] = substream->runtime->channels;
+ 
+@@ -729,12 +736,16 @@ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 	case SNDRV_PCM_TRIGGER_START:
+ 	case SNDRV_PCM_TRIGGER_RESUME:
+ 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		spin_lock_irqsave(&esai_priv->lock, lock_flags);
+ 		fsl_esai_trigger_start(esai_priv, tx);
++		spin_unlock_irqrestore(&esai_priv->lock, lock_flags);
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_SUSPEND:
+ 	case SNDRV_PCM_TRIGGER_STOP:
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++		spin_lock_irqsave(&esai_priv->lock, lock_flags);
+ 		fsl_esai_trigger_stop(esai_priv, tx);
++		spin_unlock_irqrestore(&esai_priv->lock, lock_flags);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+@@ -1002,6 +1013,7 @@ static int fsl_esai_probe(struct platform_device *pdev)
+ 
+ 	dev_set_drvdata(&pdev->dev, esai_priv);
+ 
++	spin_lock_init(&esai_priv->lock);
+ 	ret = fsl_esai_hw_init(esai_priv);
+ 	if (ret)
+ 		return ret;
+-- 
+2.20.1
 
-Christophe uses a very primitive 32-bit cpu, not even superscalar.  A
-loop doing adde is pretty much optimal, probably wants some unrolling
-though.
-
-> One possibility is to do a normal add then shift the carry
-> into a separate register.
-> After 64 words use 'popcnt' to sum the carry bits.
-> With 2 accumulators (and carry shifts) you'd need to
-> break the loop every 1024 bytes.
-> This should beat 8 bytes/clock if you can exeute more than
-> 1 memory read, one add and one shift each clock.
-
-Do normal 64-bit adds, and in parallel also accumulate the values shifted
-right by 32 bits.  You can add 4G of them this way, and restore the 96-bit
-actual sum from these two accumulators, so that you can fold it to a proper
-ones' complement sum after the loop.
-
-But you can easily beat 8B/clock using vectors, or doing multiple addition
-chains (interleaved) in parallel.  Not that it helps, your limiting factor
-is the memory bandwidth anyway, if anything in the memory pipeline stalls
-all your optimisations are for nothing.
-
-
-Segher
