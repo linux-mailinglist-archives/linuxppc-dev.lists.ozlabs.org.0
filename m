@@ -1,82 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29F413D231
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 03:31:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44C113D222
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 03:24:01 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yp0Y2C6xzDqLx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 13:23:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yp9L2nPdzDqRC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 13:31:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ynN03ZPmzDqTK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 12:55:44 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=Hw6/QtEa; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47ynN02FDsz8tnl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 12:55:44 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47ynN00yxZz9sR0; Thu, 16 Jan 2020 12:55:44 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::841;
- helo=mail-qt1-x841.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=Hw6/QtEa; dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=f/mwWmJ7; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47ynMz6FZ0z9sPW
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Jan 2020 12:55:43 +1100 (AEDT)
-Received: by mail-qt1-x841.google.com with SMTP id w47so17614501qtk.4
- for <linuxppc-dev@ozlabs.org>; Wed, 15 Jan 2020 17:55:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7nv34PHrN5VOk4Wy41EUm0tFWCKxqvmzV5aGh+yvC3A=;
- b=Hw6/QtEahY43J7NbU/nhrk/NB3vzEOxQr+DgHRXHPyhKFO88xxK20xrBoERlmL8Afi
- duz9612WR0DqhTY0YFP5WiH0jKWwnTUxqbjXL+MqIDSCBBepfGr/m3f3wyd8OB4rkmhh
- vSKlvz6TB100UjY4yJLG0R/OtF3+UmRwaOQrU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7nv34PHrN5VOk4Wy41EUm0tFWCKxqvmzV5aGh+yvC3A=;
- b=XVM8smnlaJ3LURi4Xse+j5/9JDX1phK9EOmx6RRt5JTNJlUv4e48blSreCmn4i3QeS
- cH4ydNeBc8I+qReIOj/ZOnPG+Ko3EgR/K10gaLLYk5HKNhtaPnMs+wYWD4K9r1k6znIC
- uMDmFpmlACD03YnTLESkV+l7sb/t+z07KlhPUP8Lsa12rDKRcrcR4/zardw6Mum+jVkj
- 9qpa7wOBzBURy+L8hq6AnsKJXq6YtxKfOzcJnDPJA2GnCQaKLMSYETOYDqoyNM2tmth1
- PJxIdJVNKMqD3fVyplnvnsv1q6jBhnZBmh9+BHK4ivMlxruvHBKRcul6rGrpLCzvBFiO
- sOJQ==
-X-Gm-Message-State: APjAAAWh+FTvZrTI3VyL+5M/BydGHGXhU0vXR8fDkIh3TTzNsEXLPpM/
- aKpdymJC5iq6B68IoVvUXyUIpduiASEdkqWb4/fhMIcE
-X-Google-Smtp-Source: APXvYqxJVoHYJxW0wq6uB1YYcXejjW7pH9TLwSM38stFIqEK3W6A5A71vlIOuMWs0JuZFvPRNiF6SL5Znk3Af317CLE=
-X-Received: by 2002:ac8:4244:: with SMTP id r4mr205827qtm.169.1579139741759;
- Wed, 15 Jan 2020 17:55:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yp795PjCzDqH2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 13:29:40 +1100 (AEDT)
+Received: from [192.168.1.20] (cpe-24-28-70-126.austin.res.rr.com
+ [24.28.70.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9868C222C3;
+ Thu, 16 Jan 2020 02:29:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579141778;
+ bh=alIOUYVHdATcAf6GTLL9eHbvKsMvNUDDLbL0hXLRV5w=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=f/mwWmJ7Jjuw3huV4w4I+C3qjNOo4j0IUikg3B3hn/RG23NLdouX0Wn4MuEgzmZfj
+ l16cxDP3iWl4awwRGNjSksi97fXw9028c0gbYK2wyuxuvotYIkPkowr+AWm6D7WksP
+ 0byvYgAWEbijbsScnjDgtpGvSkvnhfYwia1kpnBU=
+Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
+To: Scott Wood <swood@redhat.com>, Stephen Rothwell <sfr@canb.auug.org.au>
+References: <20200109183912.5fcb52aa@canb.auug.org.au>
+ <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+ <20200114072522.3cd57195@canb.auug.org.au>
+ <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+ <20200114173141.29564b25@canb.auug.org.au>
+ <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
+ <20200116064234.7a139623@canb.auug.org.au>
+ <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
+From: Timur Tabi <timur@kernel.org>
+Message-ID: <68944006-eb89-fa6d-7373-dcf0abdbda84@kernel.org>
+Date: Wed, 15 Jan 2020 20:29:36 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:68.0)
+ Gecko/20100101 Thunderbird/68.3.1
 MIME-Version: 1.0
-References: <20200116014808.15756-1-mpe@ellerman.id.au>
- <20200116014808.15756-5-mpe@ellerman.id.au>
-In-Reply-To: <20200116014808.15756-5-mpe@ellerman.id.au>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 16 Jan 2020 01:55:29 +0000
-Message-ID: <CACPK8XekfmGakjz-n-StWucokiEvS98D9fpjDRhbRzjP2bC78Q@mail.gmail.com>
-Subject: Re: [PATCH 5/9] powerpc/configs/skiroot: Drop default n
- CONFIG_CRYPTO_ECHAINIV
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,15 +66,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ york sun <york.sun@nxp.com>, Jiri Slaby <jslaby@suse.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, b08248@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 Jan 2020 at 01:48, Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> It's default n so we don't need to disable it.
->
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+On 1/15/20 2:01 PM, Scott Wood wrote:
+> FWIW I'd rather see the original patch,
+> that keeps the raw asm hcall stuff as simple wrappers in one place.
 
-Acked-by: Joel Stanley <joel@jms.id.au>
+I can live with that.
