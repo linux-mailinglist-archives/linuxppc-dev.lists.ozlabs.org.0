@@ -2,86 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6033B13D4D5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 08:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDC613D4D9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 08:13:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ywKx4yhhzDqYp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:09:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ywQ22zMLzDqYC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:12:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yvvm3x3GzDqKZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 17:50:12 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00G6mXC7081284
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 01:50:08 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xhbpswjxd-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 01:50:08 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Thu, 16 Jan 2020 06:50:06 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 16 Jan 2020 06:50:03 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00G6o2tq45940990
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jan 2020 06:50:02 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 666374C040;
- Thu, 16 Jan 2020 06:50:02 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7192A4C04A;
- Thu, 16 Jan 2020 06:50:00 +0000 (GMT)
-Received: from [9.199.45.56] (unknown [9.199.45.56])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 16 Jan 2020 06:50:00 +0000 (GMT)
-Subject: Re: [PATCH v4 3/9] asm-generic/tlb: Avoid potential double flush
-To: akpm@linux-foundation.org, peterz@infradead.org, will@kernel.org,
- mpe@ellerman.id.au
-References: <20200116064531.483522-1-aneesh.kumar@linux.ibm.com>
- <20200116064531.483522-4-aneesh.kumar@linux.ibm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Thu, 16 Jan 2020 12:19:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ywMh1hvrzDq5n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 18:10:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=sqrRxq8y; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47ywMg6t83z8tDZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 18:10:55 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47ywMg6SjZz9sRR; Thu, 16 Jan 2020 18:10:55 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d42;
+ helo=mail-io1-xd42.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=sqrRxq8y; dkim-atps=neutral
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47ywMg2wRpz9sNx
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Jan 2020 18:10:54 +1100 (AEDT)
+Received: by mail-io1-xd42.google.com with SMTP id t26so20644574ioi.13
+ for <linuxppc-dev@ozlabs.org>; Wed, 15 Jan 2020 23:10:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=y4WPM7oPAIhxp0xp0soXNk9qMDGvHyhQqiJ5YsYVn20=;
+ b=sqrRxq8yqk3e1VLm8m4cmK4+hWKAmhTVZZelJG5Er9PstlXqlI0PCoVqHNU8NC2cLE
+ dSocDAjT07HXzqCKp0hJ4IWa4ImjKUq0oq1WL0syaE2UbVBnpdUPVZ97XklSFdvuhDuS
+ WnRm45WsF1VgR+Uu3szcO7p0N0lrpf9LFsfec/cJSPi3VP6WZU2buxfpZTa8e8GtXotp
+ Rz/p+pJdZAvcF6s51N3U6w7vr5uPrWlnZXfmDpWcDqy9AGuWwRra2xityEdeUamcapNt
+ G4WTrWHras1aWZOVKL6ZIls6yqJJPX4ELrDYdsh9GkrwuW80MJbn3QBTjtId/kJHpub2
+ QYYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=y4WPM7oPAIhxp0xp0soXNk9qMDGvHyhQqiJ5YsYVn20=;
+ b=r8ngLpX+EHKO3gtpf8yByDR2Ud8e/ufgEY80XyVHl0SRsTpTKW1maYRZTCvj0RzJnZ
+ wFG+amKD8Y2J4TI/3rV3/3cFDxDLH/2JtaI/50pbdiAoNigEvuT1d1QV0vhEVaK5zRCE
+ l3LlY335aX6CLYfsCwzZRW3RbefChIeCRcwX03rlB0pnqY8OUFvWlcfY90OiALB7mSdE
+ pidn5RWc1ekKJK/zUrmddrxCtoAvPNocRkE77UrleF41MKlRbgHNqm93qqTm/5P4VsPj
+ HuxLcmLazFRhTXJSn6rShSuEZpvvWfWeELeVCVtCHV+je3k2DeJshDFDGW6zCSboO8YI
+ pbAg==
+X-Gm-Message-State: APjAAAU9THDP1MDZHoQVmeOf6k6V+x+gMSbDBsNLJNxJj1lhlxtatZ8Q
+ 6BDKaPBrpyoW6kP7UC6OLHm3hwioIZpzvnzLi8Q4DNIAe1c=
+X-Google-Smtp-Source: APXvYqxU5weeP2xr4J//OwvNAkMKUQ/mHPhFBo5SF5+HQWed337nZulfGMrsE9Iw7g+N5cC3KCAvM+4oFEH2u6YAPpk=
+X-Received: by 2002:a5e:970a:: with SMTP id w10mr25119092ioj.195.1579158651525; 
+ Wed, 15 Jan 2020 23:10:51 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200116064531.483522-4-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20011606-0012-0000-0000-0000037DC2F5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011606-0013-0000-0000-000021B9F5CD
-Message-Id: <c12bb139-9eda-74a9-b4de-b147a88ed1b0@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-16_02:2020-01-16,
- 2020-01-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- impostorscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- suspectscore=2 malwarescore=0 priorityscore=1501 adultscore=0 spamscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001160056
+References: <20200116014808.15756-1-mpe@ellerman.id.au>
+ <20200116014808.15756-7-mpe@ellerman.id.au>
+ <871rs0knbj.fsf@dja-thinkpad.axtens.net>
+In-Reply-To: <871rs0knbj.fsf@dja-thinkpad.axtens.net>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 16 Jan 2020 18:10:40 +1100
+Message-ID: <CAOSf1CGnYqa7-QA-hK2OxymOQM8RS55xXq4cOvtou9nGfSWHgA@mail.gmail.com>
+Subject: Re: [PATCH 7/9] powerpc/configs/skiroot: Enable security features
+To: Daniel Axtens <dja@axtens.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,67 +91,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nayna Jain <nayna@linux.ibm.com>, Joel Stanley <joel@jms.id.au>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/16/20 12:15 PM, Aneesh Kumar K.V wrote:
-> From: Peter Zijlstra <peterz@infradead.org>
-> 
-> Aneesh reported that:
-> 
-> 	tlb_flush_mmu()
-> 	  tlb_flush_mmu_tlbonly()
-> 	    tlb_flush()			<-- #1
-> 	  tlb_flush_mmu_free()
-> 	    tlb_table_flush()
-> 	      tlb_table_invalidate()
-> 		tlb_flush_mmu_tlbonly()
-> 		  tlb_flush()		<-- #2
-> 
-> does two TLBIs when tlb->fullmm, because __tlb_reset_range() will not
-> clear tlb->end in that case.
-> 
-> Observe that any caller to __tlb_adjust_range() also sets at least one
-> of the tlb->freed_tables || tlb->cleared_p* bits, and those are
-> unconditionally cleared by __tlb_reset_range().
-> 
-> Change the condition for actually issuing TLBI to having one of those
-> bits set, as opposed to having tlb->end != 0.
-> 
+On Thu, Jan 16, 2020 at 4:00 PM Daniel Axtens <dja@axtens.net> wrote:
+>
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>
+> > From: Joel Stanley <joel@jms.id.au>
+> >
+> > This turns on HARDENED_USERCOPY with HARDENED_USERCOPY_PAGESPAN, and
+> > FORTIFY_SOURCE.
+> >
+> > It also enables SECURITY_LOCKDOWN_LSM with _EARLY and
+> > LOCK_DOWN_KERNEL_FORCE_CONFIDENTIALITY options enabled.
+> >
+>
+> As I said before, this will disable xmon entirely. If we want to set
+> this, we should compile out xmon. But if we want xmon in read-only mode
+> to be an option, we should pick integrity mode.
+>
+> I don't really mind, because I don't work with skiroot very
+> much. Oliver, Joel, Nayna, you all do stuff around this sort of level -
+> is this a problem for any of you?
 
+Keep it enabled and force INTEGRITY mode. There are some cases where
+xmon is the only method for debugging a crashing skiroot (hello SMC
+BMCs) so I'd rather it remained available. If there's some actual
+security benefit to disabling it entirely then someone should
+articulate that.
 
-We should possibly get this to stable too along with the first two 
-patches. I am not quiet sure if this will qualify for a stable backport. 
-Hence avoided adding Cc:stable@kernel.org
-
-
-> Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   include/asm-generic/tlb.h | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> index 9e22ac369d1d..b36b3bef5661 100644
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -402,7 +402,12 @@ tlb_update_vma_flags(struct mmu_gather *tlb, struct vm_area_struct *vma) { }
->   
->   static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
->   {
-> -	if (!tlb->end)
-> +	/*
-> +	 * Anything calling __tlb_adjust_range() also sets at least one of
-> +	 * these bits.
-> +	 */
-> +	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
-> +	      tlb->cleared_puds || tlb->cleared_p4ds))
->   		return;
->   
->   	tlb_flush(tlb);
-> 
-
+Oliver
