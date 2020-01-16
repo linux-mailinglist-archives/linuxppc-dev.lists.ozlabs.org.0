@@ -2,67 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F7513D428
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 07:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C5213D455
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 07:28:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yv5z1MwkzDqVp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 17:13:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yvQw1wn6zDqWv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 17:28:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=QK7HarN0; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=oNmexNcV; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yv3P2D7xzDqVp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 17:11:44 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47yv3F2lWzz9tyxn;
- Thu, 16 Jan 2020 07:11:37 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=QK7HarN0; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Di-bkWe_9lWV; Thu, 16 Jan 2020 07:11:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47yv3F1PY3z9tyxm;
- Thu, 16 Jan 2020 07:11:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579155097; bh=xRqzpqYgklhUuAL7jp3bXp5dZ0Y/iYZXSREAFSZsbP4=;
- h=From:Subject:To:Cc:Date:From;
- b=QK7HarN033G72DnS7TdeAf+tS4p1tby30waWF/TzlAh2obL4xFIJc7yK0LCqw9Jqu
- kpvzhm4dsgWSQFXg0JRENsH32Ds2N38A8fSJ7CEV4YTIe1LDIHSUddh5YgE8pR6Ris
- hLzvxBKH5F0s+GlWWCnm/il9+fEJwzcx+6acGUfs=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 09AD48B78F;
- Thu, 16 Jan 2020 07:11:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id cBDJ981SBkaD; Thu, 16 Jan 2020 07:11:37 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C14B88B776;
- Thu, 16 Jan 2020 07:11:37 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: z constraint in powerpc inline assembly ?
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Message-ID: <d72263a1-fe17-3192-6930-35ec8394c699@c-s.fr>
-Date: Thu, 16 Jan 2020 07:11:36 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yvNT62ZszDqVn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 17:26:33 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id g6so7901126plp.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 22:26:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=jgsZ87j9zhFzITBOLkD7Zx7YPDB2pB7wEvRvkLTLK58=;
+ b=oNmexNcVAh+3e35uSrHwMbT1gEdNtfFt+AsrrtqPXQmSRoQ2+dPRtMo5LTrIw10hkD
+ u+AKJkLOQ7ejO/lyaa6mLr7Bws1hotDPmNsiYytrmcuCElg5p/2U1uo544G1s8tNj3oi
+ 67cF7zBrygv/ffmERc13Rw9w/bQ1CKyQ31T20=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=jgsZ87j9zhFzITBOLkD7Zx7YPDB2pB7wEvRvkLTLK58=;
+ b=Pr5Zc7HNuUFOGQk3OCNmIAyzDz4AMZfqHQaB4812XxEge9ty0ggKyP+zR3Sblg/WZj
+ yeK9kd1Qkj1dz6cm+1MppAZaZyA2/ow4O72a8vcCHamfyJ3jr58b9Gmb0D1symHl5DUz
+ Lg+fTaKGPUb5L6J5fWqIr2emqZo1dQNCuukTqn1E2PWQcP+mOBs07gERBxKmG7QBjVMA
+ ozFgYFvERiFHZ0YWcJZ0i0rm0VHz+yOHcadMijVOeH5RvrHdrUsVxIdPGxHug86Yk71A
+ rAer0LwtxCW3pe7rceZXxMvAtHiM0Mgxukq3bA+yVwy++Un1AktnMNtHMLIE4ultRnX8
+ D68g==
+X-Gm-Message-State: APjAAAXEhHjwC2So+mO9WLNOly4MUdCfZRJqSAfce70Xs1Zx7xAyDeGk
+ 0mKUFYkwdcVOlCnY+hdONYK16A==
+X-Google-Smtp-Source: APXvYqxr6t7CheZI96TYjHdF4c+2lQSa9v9KFUkO88U4heoEGDZYaqbW2enLJb4tzmBEKZ7QkJrRRA==
+X-Received: by 2002:a17:902:9307:: with SMTP id
+ bc7mr29877693plb.338.1579155990819; 
+ Wed, 15 Jan 2020 22:26:30 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-097c-7eed-afd4-cd15.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:97c:7eed:afd4:cd15])
+ by smtp.gmail.com with ESMTPSA id c68sm24184007pfc.156.2020.01.15.22.26.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Jan 2020 22:26:30 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com
+Subject: [PATCH v2 0/3] Fix some incompatibilites between KASAN and
+ FORTIFY_SOURCE
+Date: Thu, 16 Jan 2020 17:26:22 +1100
+Message-Id: <20200116062625.32692-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,47 +79,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-s390@vger.kernel.org, linux-xtensa@linux-xtensa.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ dvyukov@google.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Segher,
+3 KASAN self-tests fail on a kernel with both KASAN and FORTIFY_SOURCE:
+memchr, memcmp and strlen. I have observed this on x86 and powerpc.
 
-I'm trying to see if we could enhance TCP checksum calculations by 
-splitting inline assembly blocks to give GCC the opportunity to mix it 
-with other stuff, but I'm getting difficulties with the carry.
+When FORTIFY_SOURCE is on, a number of functions are replaced with
+fortified versions, which attempt to check the sizes of the
+operands. However, these functions often directly invoke __builtin_foo()
+once they have performed the fortify check.
 
-As far as I can read in the documentation, the z constraint represents 
-'‘XER[CA]’ carry bit (part of the XER register)'
+This breaks things in 2 ways:
 
-I've tried the following, but I get errors. Can you help ?
+ - the three function calls are technically dead code, and can be
+   eliminated. When __builtin_ versions are used, the compiler can detect
+   this.
 
-unsigned long cksum(unsigned long a, unsigned long b, unsigned long c)
-{
-	unsigned long sum;
-	unsigned long carry;
+ - Using __builtins may bypass KASAN checks if the compiler decides to
+   inline it's own implementation as sequence of instructions, rather than
+   emit a function call that goes out to a KASAN-instrumented
+   implementation.
 
-	asm("addc %0, %2, %3" : "=r"(sum), "=z"(carry) : "r"(a), "r"(b));
-	asm("adde %0, %0, %2" : "+r"(sum), "+z"(carry) : "r"(c));
-	asm("addze %0, %0" : "+r"(sum) : "z"(carry));
+The patches address each reason in turn. Finally, test_memcmp used a
+stack array without explicit initialisation, which can sometimes break
+too, so fix that up.
 
-	return sum;
-}
+v2: - some cleanups, don't mess with arch code as I missed some wrinkles.
+    - add stack array init (patch 3)
 
+Daniel Axtens (3):
+  kasan: stop tests being eliminated as dead code with FORTIFY_SOURCE
+  string.h: fix incompatibility between FORTIFY_SOURCE and KASAN
+  kasan: initialise array in kasan_memcmp test
 
+ include/linux/string.h | 60 +++++++++++++++++++++++++++++++++---------
+ lib/test_kasan.c       | 32 +++++++++++++---------
+ 2 files changed, 68 insertions(+), 24 deletions(-)
 
-csum.c: In function 'cksum':
-csum.c:6:2: error: inconsistent operand constraints in an 'asm'
-   asm("addc %0, %2, %3" : "=r"(sum), "=z"(carry) : "r"(a), "r"(b));
-   ^
-csum.c:7:2: error: inconsistent operand constraints in an 'asm'
-   asm("adde %0, %0, %2" : "+r"(sum), "+z"(carry) : "r"(c));
-   ^
-csum.c:8:2: error: inconsistent operand constraints in an 'asm'
-   asm("addze %0, %0" : "+r"(sum) : "z"(carry));
-   ^
-
-Thanks
-Christophe
+-- 
+2.20.1
 
