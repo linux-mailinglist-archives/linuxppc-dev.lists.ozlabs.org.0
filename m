@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91D913E1B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 17:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FB413E249
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 17:55:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47z9Ff5RsfzDqZw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 03:51:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47z9Kw37jfzDqNH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 03:55:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=CCjhhJoc; dkim-atps=neutral
+ header.s=default header.b=i0cttr4V; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z9BB3wd5zDqWH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:48:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9GZ3zbgzDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:52:22 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1F579217F4;
- Thu, 16 Jan 2020 16:48:28 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5DD8B2073A;
+ Thu, 16 Jan 2020 16:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579193312;
- bh=Eb4Vx2wML0CMCDuQwZW50JnG/4Jh8yN2N0fN2PjlhQE=;
+ s=default; t=1579193540;
+ bh=ZiZ6TkumCmKhw6ZAr6uKRo1tFs4kdys3f6UhWm76PA0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=CCjhhJoco2webzQpPlRQGrX/KPBcVI5f9M1cXZSQLRKWX1rcQ2Mic/FceHLa0M533
- ZXVU2Hw9Cb06silmEQ96m/pP7DwLVIyjEd3oT/+bsi1x6rJR1HvM9fkplG7UBTGDyz
- BOF4sOkVUjKOdMdy35nuISTRoKZoovhzveCYViBY=
+ b=i0cttr4VSnItIHMZ85QwbkvMTIDoiALQYU2jHlndCgDzYBdj/NLaL8Z3aDVpsI+70
+ A49m78/g06U2Hv+KkpZUiNwiHvy+5piPHg9kdSudMWlVjfLwDRDRvq0zaV1nKufaPJ
+ 49CyKUQb/ayDPYVGl3XQTvB6DCUicrhaD3Sj9bO4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 072/205] ASoC: fsl_esai: Add spin lock to protect
- reset, stop and start
-Date: Thu, 16 Jan 2020 11:40:47 -0500
-Message-Id: <20200116164300.6705-72-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 099/205] powerpc/security: Fix debugfs data leak
+ on 32-bit
+Date: Thu, 16 Jan 2020 11:41:14 -0500
+Message-Id: <20200116164300.6705-99-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
 References: <20200116164300.6705-1-sashal@kernel.org>
@@ -60,109 +60,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Geert Uytterhoeven <geert+renesas@glider.be>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 35dac627471938eda89fa39ee4ead1f7667e0f57 ]
+[ Upstream commit 3b05a1e517e1a8cfda4866ec31d28b2bc4fee4c4 ]
 
-xrun may happen at the end of stream, the
-trigger->fsl_esai_trigger_stop maybe called in the middle of
-fsl_esai_hw_reset, this may cause esai in wrong state
-after stop, and there may be endless xrun interrupt.
+"powerpc_security_features" is "unsigned long", i.e. 32-bit or 64-bit,
+depending on the platform (PPC_FSL_BOOK3E or PPC_BOOK3S_64).  Hence
+casting its address to "u64 *", and calling debugfs_create_x64() is
+wrong, and leaks 32-bit of nearby data to userspace on 32-bit platforms.
 
-This issue may also happen with trigger->fsl_esai_trigger_start.
+While all currently defined SEC_FTR_* security feature flags fit in
+32-bit, they all have "ULL" suffixes to make them 64-bit constants.
+Hence fix the leak by changing the type of "powerpc_security_features"
+(and the parameter types of its accessors) to "u64".  This also allows
+to drop the cast.
 
-So Add spin lock to lock those functions.
-
-Fixes: 7ccafa2b3879 ("ASoC: fsl_esai: recover the channel swap after xrun")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Link: https://lore.kernel.org/r/52e92c4221a83e39a84a6cd92fc3d5479b44894c.1572252321.git.shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 398af571128fe75f ("powerpc/security: Show powerpc_security_features in debugfs")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191021142309.28105-1-geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_esai.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/powerpc/include/asm/security_features.h | 8 ++++----
+ arch/powerpc/kernel/security.c               | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-index a78e4ab478df..c7a49d03463a 100644
---- a/sound/soc/fsl/fsl_esai.c
-+++ b/sound/soc/fsl/fsl_esai.c
-@@ -33,6 +33,7 @@
-  * @fsysclk: system clock source to derive HCK, SCK and FS
-  * @spbaclk: SPBA clock (optional, depending on SoC design)
-  * @task: tasklet to handle the reset operation
-+ * @lock: spin lock between hw_reset() and trigger()
-  * @fifo_depth: depth of tx/rx FIFO
-  * @slot_width: width of each DAI slot
-  * @slots: number of slots
-@@ -56,6 +57,7 @@ struct fsl_esai {
- 	struct clk *fsysclk;
- 	struct clk *spbaclk;
- 	struct tasklet_struct task;
-+	spinlock_t lock; /* Protect hw_reset and trigger */
- 	u32 fifo_depth;
- 	u32 slot_width;
- 	u32 slots;
-@@ -676,8 +678,10 @@ static void fsl_esai_hw_reset(unsigned long arg)
- {
- 	struct fsl_esai *esai_priv = (struct fsl_esai *)arg;
- 	bool tx = true, rx = false, enabled[2];
-+	unsigned long lock_flags;
- 	u32 tfcr, rfcr;
+diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
+index ccf44c135389..7c05e95a5c44 100644
+--- a/arch/powerpc/include/asm/security_features.h
++++ b/arch/powerpc/include/asm/security_features.h
+@@ -9,7 +9,7 @@
+ #define _ASM_POWERPC_SECURITY_FEATURES_H
  
-+	spin_lock_irqsave(&esai_priv->lock, lock_flags);
- 	/* Save the registers */
- 	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
- 	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
-@@ -715,6 +719,8 @@ static void fsl_esai_hw_reset(unsigned long arg)
- 		fsl_esai_trigger_start(esai_priv, tx);
- 	if (enabled[rx])
- 		fsl_esai_trigger_start(esai_priv, rx);
-+
-+	spin_unlock_irqrestore(&esai_priv->lock, lock_flags);
+ 
+-extern unsigned long powerpc_security_features;
++extern u64 powerpc_security_features;
+ extern bool rfi_flush;
+ 
+ /* These are bit flags */
+@@ -24,17 +24,17 @@ void setup_stf_barrier(void);
+ void do_stf_barrier_fixups(enum stf_barrier_type types);
+ void setup_count_cache_flush(void);
+ 
+-static inline void security_ftr_set(unsigned long feature)
++static inline void security_ftr_set(u64 feature)
+ {
+ 	powerpc_security_features |= feature;
  }
  
- static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
-@@ -722,6 +728,7 @@ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
+-static inline void security_ftr_clear(unsigned long feature)
++static inline void security_ftr_clear(u64 feature)
  {
- 	struct fsl_esai *esai_priv = snd_soc_dai_get_drvdata(dai);
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-+	unsigned long lock_flags;
+ 	powerpc_security_features &= ~feature;
+ }
  
- 	esai_priv->channels[tx] = substream->runtime->channels;
+-static inline bool security_ftr_enabled(unsigned long feature)
++static inline bool security_ftr_enabled(u64 feature)
+ {
+ 	return !!(powerpc_security_features & feature);
+ }
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index d341b464f23c..1740a66cea84 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -16,7 +16,7 @@
+ #include <asm/setup.h>
  
-@@ -729,12 +736,16 @@ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
- 	case SNDRV_PCM_TRIGGER_START:
- 	case SNDRV_PCM_TRIGGER_RESUME:
- 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
-+		spin_lock_irqsave(&esai_priv->lock, lock_flags);
- 		fsl_esai_trigger_start(esai_priv, tx);
-+		spin_unlock_irqrestore(&esai_priv->lock, lock_flags);
- 		break;
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-+		spin_lock_irqsave(&esai_priv->lock, lock_flags);
- 		fsl_esai_trigger_stop(esai_priv, tx);
-+		spin_unlock_irqrestore(&esai_priv->lock, lock_flags);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -1002,6 +1013,7 @@ static int fsl_esai_probe(struct platform_device *pdev)
  
- 	dev_set_drvdata(&pdev->dev, esai_priv);
+-unsigned long powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
++u64 powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
  
-+	spin_lock_init(&esai_priv->lock);
- 	ret = fsl_esai_hw_init(esai_priv);
- 	if (ret)
- 		return ret;
+ enum count_cache_flush_type {
+ 	COUNT_CACHE_FLUSH_NONE	= 0x1,
+@@ -109,7 +109,7 @@ device_initcall(barrier_nospec_debugfs_init);
+ static __init int security_feature_debugfs_init(void)
+ {
+ 	debugfs_create_x64("security_features", 0400, powerpc_debugfs_root,
+-			   (u64 *)&powerpc_security_features);
++			   &powerpc_security_features);
+ 	return 0;
+ }
+ device_initcall(security_feature_debugfs_init);
 -- 
 2.20.1
 
