@@ -1,73 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F0913D6EF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 10:36:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yzbH1f9wzDqZb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 20:36:11 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A07F13D715
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 10:40:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yzgq3pbxzDqZW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 20:40:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+e120a4276ddc5f5fb55f+5989+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=bdDCDEzJ; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yzXx6y2SzDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 20:34:09 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47yzXs45Nbz9tyQL;
- Thu, 16 Jan 2020 10:34:05 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=bdDCDEzJ; dkim-adsp=pass;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=DExRcwvR; 
  dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id U8nIyqefG5v1; Thu, 16 Jan 2020 10:34:05 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47yzXs32ysz9tyQK;
- Thu, 16 Jan 2020 10:34:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579167245; bh=IEAXhb+SjJPqUD1Zb1vn+3GKKBJH4VCJ7C1isv48Ggo=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=bdDCDEzJBDKpMZIDPaRWu1S7MBHDg8dEK/pOSodR7nkO7rmvqqSCxIv61NAvEMhly
- tjKfoP0FRRzhZS1bpnBkPx0HorlJWRmdde8ZBqSQydFJDMA3Pi0ZBFQ1VyF30EViUU
- NycCRX/C3sPS8WXWWvuHzglQQvP8REiOzojyMsSs=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E9CC8B812;
- Thu, 16 Jan 2020 10:34:06 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CZ-uRnBuwtrT; Thu, 16 Jan 2020 10:34:06 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E40738B810;
- Thu, 16 Jan 2020 10:34:05 +0100 (CET)
-Subject: Re: [PATCH v5 0/4] KASAN for powerpc64 radix
-To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- kasan-dev@googlegroups.com, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-References: <20200109070811.31169-1-dja@axtens.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <8a1b7f4b-de14-90fe-2efa-789882d28702@c-s.fr>
-Date: Thu, 16 Jan 2020 10:34:05 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yzdl4mYszDqS5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 20:38:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=/fZtSw8YSFU2Bly7v5Q7x01aJLXfW/w2Sao1/9HMkcI=; b=DExRcwvRtFXUvspwe2EK1pvbk
+ toOxyW/Rr7rvJL9Uo35exr8Cq2wCUokVKVlfAtn576Uwh6C0dDY+T/FqZ4x+sYv+8BDucArp3y1Zx
+ NC96wmTc5QNReYms4V9DkpZ9WP5G7mGeRlC5SUBjQZBvlUl97PM9jLHyv9Mn7tevIOXaJa4Q5iXde
+ bXS+39JbBJRccdS9LFTo+FwnQG+xGELB+IzFC6BcqMnYvzn4K0YbBX5iL1zc87io0r9xxv4FP2Te6
+ 65YEWF3mg8LdQoUzSr2qBy1recVwExQ2okF4Q/NYnSTv1qsmEBA+XVmZNwmYaFEgRtYH8E7r4VJTs
+ MW9dAK1TQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1is1aS-00035V-O1; Thu, 16 Jan 2020 09:37:12 +0000
+Date: Thu, 16 Jan 2020 01:37:12 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v12 04/22] mm: devmap: refactor 1-based refcounting for
+ ZONE_DEVICE pages
+Message-ID: <20200116093712.GA11011@infradead.org>
+References: <20200107224558.2362728-1-jhubbard@nvidia.com>
+ <20200107224558.2362728-5-jhubbard@nvidia.com>
+ <20200115152306.GA19546@infradead.org>
+ <4707f191-86f8-db4a-c3de-0a84b415b658@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <20200109070811.31169-1-dja@axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4707f191-86f8-db4a-c3de-0a84b415b658@nvidia.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,25 +68,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 09/01/2020 à 08:08, Daniel Axtens a écrit :
-> Building on the work of Christophe, Aneesh and Balbir, I've ported
-> KASAN to 64-bit Book3S kernels running on the Radix MMU.
+On Wed, Jan 15, 2020 at 01:19:41PM -0800, John Hubbard wrote:
+> On 1/15/20 7:23 AM, Christoph Hellwig wrote:
+> ...
+> > 
+> > I'm really not sold on this scheme.  Note that I think it is
+> > particularly bad, but it also doesn't seem any better than what
+> > we had before, and it introduced quite a bit more code.
+> > 
 > 
-> This provides full inline instrumentation on radix, but does require
-> that you be able to specify the amount of physically contiguous memory
-> on the system at compile time. More details in patch 4.
+> Hi Christoph,
+> 
+> All by itself, yes. But the very next patch (which needs a little 
+> rework for other reasons, so not included here) needs to reuse some of 
+> these functions within __unpin_devmap_managed_user_page():
 
-This might be a stupid idea as I don't know ppc64 much. IIUC, PPC64 
-kernel can be relocated, there is no requirement to have it at address 
-0. Therefore, would it be possible to put the KASAN shadow mem at the 
-begining of the physical memory, instead of putting it at the end ?
-That way, you wouldn't need to know the amount of memory at compile time 
-because KASAN shadow mem would always be at address 0.
+Well, then combine it with the series that actually does the change.
 
-Christophe
+Also my vaguely recollection is that we had some idea on how to get rid
+of the off by one refcounting for the zone device pages, which would be
+a much better outcome.
