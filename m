@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D4013D1DA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 03:05:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1347D13D1D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 03:03:48 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ynYD1qhyzDqVB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 13:03:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ynbb512mzDqTQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 13:05:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ynCG0l5qzDqGM
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ynCG32b2zDqNG
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 12:48:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=dc3eEn9B; 
+ header.a=rsa-sha256 header.s=201909 header.b=OeABgFqS; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 47ynCF4rwmz9sRX; Thu, 16 Jan 2020 12:48:09 +1100 (AEDT)
+ id 47ynCG1Nz6z9sR4; Thu, 16 Jan 2020 12:48:10 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 47ynCF2hQYz9sRY; Thu, 16 Jan 2020 12:48:09 +1100 (AEDT)
+ id 47ynCF6rxYz9sRW; Thu, 16 Jan 2020 12:48:09 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
  s=201909; t=1579139289;
- bh=cepm8rI7GxHcik1XRKwbC6NfQVITr02FRjy8Ahsf5As=;
+ bh=P0wNkA1RPcDiRu9JMlwXkQJa5eGaK3bgNZtxpPWbapM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=dc3eEn9B+P0scOdsqHFzFEBzgZYsiYPnmzSfdX6a3d0XbEde90sjsN8VxaYBQBJ4a
- 9WwJ5isbEh2JJHx8ZvgjhmvsmXwb4V8WcVF2S1KiXtD0rv6TQTfbGqRHjWHa5K5gLa
- DSM2s3V5CBRL53pgLkHsqQxYq4dYgqvhOahSL45I6R9YX6eMIdhR0rYJmcl5GX19qu
- qnz1DNkqQSpBq/59h/K92fxYOWsuXVslpknn1nf99TMC8fS5ei/jCxb94W+mfDOWto
- cEZMchEpDh9qLblRd1GEQRaZNyA9syuvvd5n9rVrO+lNc85YRhLbVzIRgaYAd/lO0F
- 9wOn3VWT2+9KQ==
+ b=OeABgFqSkMpkZ9AlC3engtQ7Uwpy2EqEEYYOKReAMKyzQ09HwASsqA0UJLyVMgAXY
+ WZ12/1F8d2bvShprvwMl8f7vMw8kJWGxK83Hq8+P6SgHuYhtmqrCEbx1/uuDLW7UPj
+ o2z1zHlyLp6ceBADsN0qjNel0qE8QUKyQRhRkpv+QzZHP8G070Z0OlQ4aLc5et9znR
+ lQ5jznOVxBL4pUDU+OMPlDaptZqvhEeOrO7W/gPnqw2l8TUPFTjIfTa+yCOmhr5cWo
+ VXMZ0IL55JVFPPlDD7C6AFRJazijBx/H/rveoEYOEaDF74AZYdChfkBZixOMJfS1tO
+ pPIMBRQNTnt5w==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [RFC PATCH 8/9] powerpc/configs/skiroot: Disable xmon default &
- enable reboot on panic
-Date: Thu, 16 Jan 2020 11:48:07 +1000
-Message-Id: <20200116014808.15756-8-mpe@ellerman.id.au>
+Subject: [RFC PATCH 9/9] powerpc/configs/skiroot: Enable some more hardening
+ options
+Date: Thu, 16 Jan 2020 11:48:08 +1000
+Message-Id: <20200116014808.15756-9-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200116014808.15756-1-mpe@ellerman.id.au>
 References: <20200116014808.15756-1-mpe@ellerman.id.au>
@@ -63,44 +63,59 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the skiroot kernel crashes we don't want it sitting at an xmon
-prompt forever. Instead it's more helpful to reboot and bring the
-boot loader back up, and if the crash was transient we can then boot
-successfully.
+Enable more hardening options.
 
-Similarly if we panic we should reboot, with a short timeout in case
-someone is watching the console.
+Note BUG_ON_DATA_CORRUPTION selects DEBUG_LIST and is essentially just
+a synonym for it.
+
+DEBUG_SG, DEBUG_NOTIFIERS, DEBUG_LIST, DEBUG_CREDENTIALS and
+SCHED_STACK_END_CHECK should all be low overhead and just add a few
+extra checks.
+
+Unselecting SLAB_MERGE_DEFAULT causes the SLAB to use more memory, but
+the skiroot kernel shouldn't be memory constrained on any of our
+systems, all it does is run a small bootloader.
+
+SLAB_FREELIST_RANDOM, and SLUB_DEBUG_ON will add some overhead to the
+SLAB allocator, but nothing that should be meaningful for skiroot.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/configs/skiroot_defconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/configs/skiroot_defconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
-index bd661a9a9410..12c96c8b0c1d 100644
+index 12c96c8b0c1d..59c2de904fda 100644
 --- a/arch/powerpc/configs/skiroot_defconfig
 +++ b/arch/powerpc/configs/skiroot_defconfig
-@@ -29,6 +29,7 @@ CONFIG_ALTIVEC=y
- CONFIG_VSX=y
- CONFIG_NR_CPUS=2048
- CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_PANIC_TIMEOUT=30
- # CONFIG_PPC_VAS is not set
- # CONFIG_PPC_PSERIES is not set
- # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
-@@ -293,6 +294,7 @@ CONFIG_LIBCRC32C=y
+@@ -23,6 +23,8 @@ CONFIG_EXPERT=y
+ # CONFIG_AIO is not set
+ CONFIG_PERF_EVENTS=y
+ # CONFIG_COMPAT_BRK is not set
++# CONFIG_SLAB_MERGE_DEFAULT is not set
++CONFIG_SLAB_FREELIST_RANDOM=y
+ CONFIG_SLAB_FREELIST_HARDENED=y
+ CONFIG_PPC64=y
+ CONFIG_ALTIVEC=y
+@@ -293,6 +295,8 @@ CONFIG_LIBCRC32C=y
+ # CONFIG_XZ_DEC_SPARC is not set
  CONFIG_PRINTK_TIME=y
  CONFIG_MAGIC_SYSRQ=y
++CONFIG_SLUB_DEBUG_ON=y
++CONFIG_SCHED_STACK_END_CHECK=y
  CONFIG_DEBUG_STACKOVERFLOW=y
-+CONFIG_PANIC_ON_OOPS=y
+ CONFIG_PANIC_ON_OOPS=y
  CONFIG_SOFTLOCKUP_DETECTOR=y
- CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
- CONFIG_HARDLOCKUP_DETECTOR=y
-@@ -301,5 +303,4 @@ CONFIG_WQ_WATCHDOG=y
+@@ -301,6 +305,10 @@ CONFIG_HARDLOCKUP_DETECTOR=y
+ CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=y
+ CONFIG_WQ_WATCHDOG=y
  # CONFIG_SCHED_DEBUG is not set
++CONFIG_DEBUG_SG=y
++CONFIG_DEBUG_NOTIFIERS=y
++CONFIG_BUG_ON_DATA_CORRUPTION=y
++CONFIG_DEBUG_CREDENTIALS=y
  # CONFIG_FTRACE is not set
  CONFIG_XMON=y
--CONFIG_XMON_DEFAULT=y
  # CONFIG_RUNTIME_TESTING_MENU is not set
 -- 
 2.21.1
