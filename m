@@ -2,73 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A519213FB71
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 22:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D236613FB9C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 22:34:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zHRy4Wk6zDr8m
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 08:30:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zHXH2ZfWzDrBJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 08:34:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
- header.s=n1 header.b=B3a+nJMY; dkim-atps=neutral
-Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
- [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zG9g0F0pzDqgl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 07:33:26 +1100 (AEDT)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5e20c8570000>; Thu, 16 Jan 2020 12:32:23 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Thu, 16 Jan 2020 12:33:20 -0800
-X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Thu, 16 Jan 2020 12:33:20 -0800
-Received: from [10.2.160.8] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 16 Jan
- 2020 20:33:19 +0000
-Subject: Re: [PATCH v12 04/22] mm: devmap: refactor 1-based refcounting for
- ZONE_DEVICE pages
-To: Christoph Hellwig <hch@infradead.org>
-References: <20200107224558.2362728-1-jhubbard@nvidia.com>
- <20200107224558.2362728-5-jhubbard@nvidia.com>
- <20200115152306.GA19546@infradead.org>
- <4707f191-86f8-db4a-c3de-0a84b415b658@nvidia.com>
- <20200116093712.GA11011@infradead.org>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <ccf2723a-dcce-57d3-f63d-ee96dbf6653a@nvidia.com>
-Date: Thu, 16 Jan 2020 12:30:26 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zGxb4pXGzDqjv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 08:08:03 +1100 (AEDT)
+Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34]
+ helo=nanos.tec.linutronix.de)
+ by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+ (Exim 4.80) (envelope-from <tglx@linutronix.de>)
+ id 1isCMp-0001BF-Vb; Thu, 16 Jan 2020 22:07:52 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+ id 0F3B5101226; Thu, 16 Jan 2020 22:07:51 +0100 (CET)
+From: Thomas Gleixner <tglx@linutronix.de>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [RFC PATCH v4 08/11] lib: vdso: allow fixed clock mode
+In-Reply-To: <CALCETrX9+PZ1h6xex2WZcSqNT7W-6R-E95jv9hLhSdAzhMCrTA@mail.gmail.com>
+References: <cover.1579196675.git.christophe.leroy@c-s.fr>
+ <1b278bc1f6859d4df734fb2cde61cf298e6e07fd.1579196675.git.christophe.leroy@c-s.fr>
+ <874kwvf9by.fsf@nanos.tec.linutronix.de>
+ <CALCETrX9+PZ1h6xex2WZcSqNT7W-6R-E95jv9hLhSdAzhMCrTA@mail.gmail.com>
+Date: Thu, 16 Jan 2020 22:07:51 +0100
+Message-ID: <871rrzf6u0.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200116093712.GA11011@infradead.org>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1579206743; bh=EQpRDmAadXrYPrWI0G8MSYR7uqZas3jC8zZTGB2Hfnk=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=B3a+nJMY1e/PvYKAT7LBGlwa/kugx+AfoqbMvj/EyT3hxrpeJ7sQMsWMdJQlxzKho
- jy2YJ47pzKLca9QqrMI2qpXvMA46wU1dfzb3yzBY8NTIGraOJl+bg0Pq/59xdUBLNS
- /bnG7fSxkcGgsGNzlzCgQWOOUXWSDOgkuZxsp+8IlbnfinKUcliv6MqWXSulEsNyXv
- EIh2GmNEud9hkIp72ZuHMkWrhgwhMDnw4xjgxdJ2+W90cT6UoDxxzOl8PDPrjhQ9p0
- IklTRq4Mlrg+UVduRNOxi7jCeWI/98S5JYFUwVk8qaaNzULyUj0q2zlHy86g76FXcR
- ZxTytDejWJDcw==
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
+ SHORTCIRCUIT=-0.0001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,70 +55,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: nathanl@linux.ibm.com, Arnd Bergmann <arnd@arndb.de>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/16/20 1:37 AM, Christoph Hellwig wrote:
-> On Wed, Jan 15, 2020 at 01:19:41PM -0800, John Hubbard wrote:
->> On 1/15/20 7:23 AM, Christoph Hellwig wrote:
->> ...
->>>
->>> I'm really not sold on this scheme.  Note that I think it is
->>> particularly bad, but it also doesn't seem any better than what
->>> we had before, and it introduced quite a bit more code.
->>>
+Andy Lutomirski <luto@kernel.org> writes:
+> On Thu, Jan 16, 2020 at 12:14 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+>> Some architectures have a fixed clocksource which is known at compile
+>> time and cannot be replaced or disabled at runtime, e.g. timebase on
+>> PowerPC. For such cases the clock mode check in the VDSO code is
+>> pointless.
 >>
->> Hi Christoph,
->>
->> All by itself, yes. But the very next patch (which needs a little
->> rework for other reasons, so not included here) needs to reuse some of
->> these functions within __unpin_devmap_managed_user_page():
-> 
-> Well, then combine it with the series that actually does the change.
+> I wonder if we should use this on x86 bare-metal if we have
+> sufficiently invariant TSC.  (Via static_cpu_has(), not compiled in.)
+>
+> Maybe there is no such x86 machine.
 
+There might be some, but every time I started to trust the TSC a bit
+more someone reported the next variant of brokenness.
 
-OK, that makes sense. I just double-checked with a quick test run, that it
-doesn't have dependencies with the rest of this series, and it came out clean,
-so:
+Admittedly it has become better at least up to two sockets.
 
-Andrew, could you please remove just this one patch from mmotm and linux-next?
+For a start we could do that when the TSC is considered reliable, which
+is the case when:
 
+  - The TSC is the only available clocksource
 
-> 
-> Also my vaguely recollection is that we had some idea on how to get rid
-> of the off by one refcounting for the zone device pages, which would be
-> a much better outcome.
-> 
+  - tsc=reliable is on the kernel command line
 
-Yes, I recall that Dan Williams mentioned it, but I don't think he provided
-any details yet.
+> I really really want Intel or AMD to introduce machines where the TSC
+> pinky-swears to count in actual nanoseconds.
 
+and is guaranteed to be synchronized across any number of sockets/cpus
+and has an enforcable protection against BIOS writers.
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+Ideally it'd have a writeable MSR attached which allows us to tweak the
+frequency in the PPM range via NTP/PTP.
+
+Guess how long quite some people including Linus and myself are asking
+for this?
+
+I know that Linus started bitching about the TSC before me, but it's
+already a bit over 20 years on my side when I first talked to Intel and
+AMD about the requirements for a reliable clocksource.
+
+Just to set the time lines straight.
+
+Constant frequency TSC surfaced on Intel in 2006 with the Core brand and
+on AMD in 2007 with Barcelona (Fam 10h).
+
+In 2008 the first TSC surfaced which was not affected by C-States and 5
+years later in 2013 some Atoms came out where TSC even worked accross
+S3.
+
+The > 2 socket issue is still not resolved AFAICT, but we got at least
+the TSC ADJUST MSR around 2012 which allowed us for the first time to
+reliably detect and mitigate BIOS wreckage.
+
+All the years I was envy on architectures which had simple designed and
+just reliably working timers forever.
+
+So now you can extrapolate how long it will take until you get your
+pinky-swearing pony :)
+
+Thanks,
+
+        tglx
