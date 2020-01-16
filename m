@@ -1,46 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC09D13D12B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:33:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ylXf19DNzDqTC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 11:33:06 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB1513D132
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:39:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ylgN5wW8zDqRB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 11:38:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ylVD4vVZzDqPn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 11:30:59 +1100 (AEDT)
-Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34]
- helo=nanos.tec.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1irt3S-0004QP-Qv; Thu, 16 Jan 2020 01:30:35 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
- id B7BBB10121C; Thu, 16 Jan 2020 01:30:33 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Hsin-Yi Wang <hsinyi@chromium.org>
-Subject: Re: [PATCH v5] reboot: support offline CPUs before reboot
-In-Reply-To: <20200115063410.131692-1-hsinyi@chromium.org>
-References: <20200115063410.131692-1-hsinyi@chromium.org>
-Date: Thu, 16 Jan 2020 01:30:33 +0100
-Message-ID: <8736cgxmxi.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yldS1B2XzDqQq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 11:37:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=gVyzXiiS; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47yldR3PDkz9sR0;
+ Thu, 16 Jan 2020 11:37:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1579135035;
+ bh=/PSr5fwjbaX6pPos+/ialmrGoq3c1awveX8DXx+W3Sc=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=gVyzXiiSvDGGTcocHpo8hHXU7Hy297yRpKs624viyWScR1+Ikkylku2dZiOiSpaFn
+ pO3DeHysdZ/Flgk7sgw0lGbhrm+Uug4gEjM8Kym/uv5TRaabgYuITFnuXGCFwDhh2I
+ 8xjvXLL1xwwl5xD4daMvrYqPqGYKcZHhpfbKvbyCSNWqDYf2hQEoBaIa7jRM/oTVOF
+ SzIt5Foau4ShCpAgDqINQeuEJayrODBT20uFYBqPBRuk5WTJ4ZAshhvXIxv8wzBmJ9
+ vH3A0XuUpRyzSs9gWkipylXpAGdDhgSZU6rRLSzPZlyhKYl4Emn+1WTwGFE+kvEgEh
+ 69VuUoW785yXA==
+Date: Thu, 16 Jan 2020 11:37:14 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Scott Wood <swood@redhat.com>
+Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
+Message-ID: <20200116113714.06208a73@canb.auug.org.au>
+In-Reply-To: <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
+References: <20200109183912.5fcb52aa@canb.auug.org.au>
+ <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+ <20200114072522.3cd57195@canb.auug.org.au>
+ <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+ <20200114173141.29564b25@canb.auug.org.au>
+ <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
+ <20200116064234.7a139623@canb.auug.org.au>
+ <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
- SHORTCIRCUIT=-0.0001
+Content-Type: multipart/signed; boundary="Sig_/n3LGNYm8QFXZ.7Qy3gSABtq";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,80 +65,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>,
- Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- linux-s390@vger.kernel.org, linux-csky@vger.kernel.org,
- Aaro Koskinen <aaro.koskinen@nokia.com>, Fenghua Yu <fenghua.yu@intel.com>,
- linux-pm@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Stephen Boyd <swboyd@chromium.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Pavankumar Kondeti <pkondeti@codeaurora.org>,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- James Morse <james.morse@arm.com>, Jiri Kosina <jkosina@suse.cz>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Timur Tabi <timur@kernel.org>, b08248@gmail.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.com>,
+ york sun <york.sun@nxp.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hsin-Yi Wang <hsinyi@chromium.org> writes:
+--Sig_/n3LGNYm8QFXZ.7Qy3gSABtq
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> Currently system reboots uses architecture specific codes (smp_send_stop)
-> to offline non reboot CPUs. Most architecture's implementation is looping
-> through all non reboot online CPUs and call ipi function to each of them. Some
-> architecture like arm64, arm, and x86... would set offline masks to cpu without
-> really offline them. This causes some race condition and kernel warning comes
-> out sometimes when system reboots.
+Hi Scott,
 
-'some race condition and kernel warning' is pretty useless information.
-Please describe exactly which kind of issues are caused by the current
-mechanism. Especially the race conditions are the interesting part (the
-warnings are just a consequence).
+On Wed, 15 Jan 2020 14:01:35 -0600 Scott Wood <swood@redhat.com> wrote:
+>
+> On Thu, 2020-01-16 at 06:42 +1100, Stephen Rothwell wrote:
+> > Hi Timur,
+> >=20
+> > On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrote:=
+ =20
+> > > On 1/14/20 12:31 AM, Stephen Rothwell wrote: =20
+> > > > +/**
+> > > > + * ev_byte_channel_send - send characters to a byte stream
+> > > > + * @handle: byte stream handle
+> > > > + * @count: (input) num of chars to send, (output) num chars sent
+> > > > + * @bp: pointer to chars to send
+> > > > + *
+> > > > + * Returns 0 for success, or an error code.
+> > > > + */
+> > > > +static unsigned int ev_byte_channel_send(unsigned int handle,
+> > > > +	unsigned int *count, const char *bp)   =20
+> > >=20
+> > > Well, now you've moved this into the .c file and it is no longer=20
+> > > available to other callers.  Anything wrong with keeping it in the .h
+> > > file? =20
+> >=20
+> > There are currently no other callers - are there likely to be in the
+> > future?  Even if there are, is it time critical enough that it needs to
+> > be inlined everywhere? =20
+>=20
+> It's not performance critical and there aren't likely to be other users --
+> just a matter of what's cleaner.  FWIW I'd rather see the original patch,
+> that keeps the raw asm hcall stuff as simple wrappers in one place.
 
-> This patch adds a config ARCH_OFFLINE_CPUS_ON_REBOOT, which would
-> offline cpus in
+And I don't mind either way :-)
 
-Please read Documentation/process/submitting-patches.rst and search for
-'This patch'.
+I just want to get rid of the warnings.
 
-> migrate_to_reboot_cpu(). If non reboot cpus are all offlined here, the loop for
-> checking online cpus would be an empty loop.
+--=20
+Cheers,
+Stephen Rothwell
 
-This does not make any sense. The issues which you are trying to solve
-are going to be still there when CONFIG_HOTPLUG_CPU is disabled.
+--Sig_/n3LGNYm8QFXZ.7Qy3gSABtq
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-> If architecture don't enable this config, or some cpus somehow fails
-> to offline, it would fallback to ipi function.
+-----BEGIN PGP SIGNATURE-----
 
-This is really a half baken solution which keeps the various pointlessly
-different pseudo reboot/kexec offlining implementations around. So with
-this we have yet more code which only works depending on kernel
-configuration and has the issue of potentially not being able to offline
-a CPU. IOW this is going to fail completely in cases where a system is
-in a state which prevents regular hotplug.
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4fsDoACgkQAVBC80lX
+0Gzg5ggAof1MfAMgXZ1CAykwmqb6yLD4Oc5/eVJV0O3eViU/Uo5iXHULLe+S4vkI
+ICuZYZq868FNlmv3AUr38uTAL+hTXYJ3nkinGyWge68f1D9Wox5IoDVT4r7GeisF
+Q0HMwbhRTbY/JdNjOSbcr9SlGA3VLTYrJ0Os3qWIhC3KxniQOxhQojkIhcpkJMhM
+Bx0gHnqiJGI8sXNZnpGabBoIiEAibaR6ybCf+xUK4L3AL66ecFZBgKQHYm4lute6
+M4wYfNgNWF89prVNENLaXbVCVbFUxz4KzPnGn6rqpg+rk13PKzzHAGNMaZ7Jy0Wb
+KBbYdM04AG+7N4324ZbaKQR+MG9EzQ==
+=IJS0
+-----END PGP SIGNATURE-----
 
-The existing pseudo-offline functions have timeouts and eventually a
-fallback, e.g. the NMI fallback on x86. With this proposed regular
-offline solution this will just get stuck w/o a chance to force
-recovery.
-
-While I like the idea and surely agree that the ideal solution is to
-properly shutdown the CPUs on reboot, we need to take a step back and
-look at the minimum requirements for a regular shutdown/reboot and at
-the same time have a look at the requirements for emergency shutdown and
-kexec/kcrash. Having proper information about the race conditions and
-warnings you mentioned would be a good starting point.
-
-> Opt in this config for architectures that support CONFIG_HOTPLUG_CPU.
-
-This is not opt-in. You force that on all architectures which support
-CONFIG_HOTPLUG_CPU. The way we do this normally is to provide the
-infrastructure first and then have separate patches (one per
-architecture) enabling this, which allows the architecture maintainers
-to decide individually.
-
-Thanks,
-
-        tglx
+--Sig_/n3LGNYm8QFXZ.7Qy3gSABtq--
