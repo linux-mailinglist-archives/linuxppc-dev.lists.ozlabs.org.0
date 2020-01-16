@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1C613E5A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB24D13E62E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:19:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47z9nr4BQjzDqBs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:16:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47z9sv1XK5zDqV8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:19:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=VkU1xwcM; dkim-atps=neutral
+ header.s=default header.b=Yo1evpO9; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z9LD5d4SzDqc9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:55:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9LT5TsFzDqNH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:55:45 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B60F8205F4;
- Thu, 16 Jan 2020 16:55:29 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D1FFF21D56;
+ Thu, 16 Jan 2020 16:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579193730;
- bh=CPUXuMoDmhnFOgZ4znC7tc/B/yEHUKZmdZha3fSv4BM=;
+ s=default; t=1579193743;
+ bh=DZkziBpfqckwNkeg7jDD1qzOPOfp/MLw+qLK75gTTdc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=VkU1xwcM+/ambJ9JBaAm2k3zBJf1JThXxYV6qKhVzFCyFSHxFn8Kb/rzReeCFOzAB
- PG0AwzEGgjbF9nZhSgEz6xearV8ex+WZZ843waLa79E9gDNJMaYoc39IsTjI5N0P7J
- Mt2zv/3vWigOV/7MkZ/j4wd0jqxXh586D9wdrRK4=
+ b=Yo1evpO9gbTWjj++VsyQPLPlRzWWUivmxMNKEuV6aOhuvBUnFRY884JYwrgZobw1j
+ v7q4QrqWb6yPI8l21zX8OmatSkA/bXEIs34R3uTJhqEBOCboi+4wVg6yn3znciKuZx
+ QNzJ7xiLEsfMwY8icM2q4KEq6BF6YsC4b+LSJTD8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 023/671] usb: gadget: fsl_udc_core: check
- allocation return value and cleanup on failure
-Date: Thu, 16 Jan 2020 11:44:14 -0500
-Message-Id: <20200116165502.8838-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 034/671] powerpc/pseries/memory-hotplug: Fix
+ return value type of find_aa_index
+Date: Thu, 16 Jan 2020 11:44:25 -0500
+Message-Id: <20200116165502.8838-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116165502.8838-1-sashal@kernel.org>
 References: <20200116165502.8838-1-sashal@kernel.org>
@@ -60,99 +60,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Felipe Balbi <felipe.balbi@linux.intel.com>,
- Nicholas Mc Guire <hofrat@osadl.org>
+Cc: Sasha Levin <sashal@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Mc Guire <hofrat@osadl.org>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 4ab2b48c98f2ec9712452d520a381917f91ac3d2 ]
+[ Upstream commit b45e9d761ba2d60044b610297e3ef9f947ac157f ]
 
-The allocation with fsl_alloc_request() and kmalloc() were unchecked
-fixed this up with a NULL check and appropriate cleanup.
+The variable 'aa_index' is defined as an unsigned value in
+update_lmb_associativity_index(), but find_aa_index() may return -1
+when dlpar_clone_property() fails. So change find_aa_index() to return
+a bool, which indicates whether 'aa_index' was found or not.
 
-Additionally udc->ep_qh_size was reset to 0 on failure of allocation.
-Similar udc->phy_mode is initially 0 (as udc_controller was
-allocated with kzalloc in fsl_udc_probe()) so reset it to 0 as well
-so that this function is side-effect free on failure. Not clear if
-this is necessary or sensible as fsl_udc_release() probably can not
-be called if fsl_udc_probe() failed - but it should not hurt.
-
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
-Fixes: b504882da5 ("USB: add Freescale high-speed USB SOC device controller driver")
-Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+Fixes: c05a5a40969e ("powerpc/pseries: Dynamic add entires to associativity lookup array")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Nathan Fontenot nfont@linux.vnet.ibm.com>
+[mpe: Tweak changelog, rename is_found to just found]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/fsl_udc_core.c | 30 +++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ .../platforms/pseries/hotplug-memory.c        | 61 +++++++++----------
+ 1 file changed, 28 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
-index d44b26d5b2a2..367697144cda 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -2247,8 +2247,10 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	udc->phy_mode = pdata->phy_mode;
- 
- 	udc->eps = kcalloc(udc->max_ep, sizeof(struct fsl_ep), GFP_KERNEL);
--	if (!udc->eps)
--		return -1;
-+	if (!udc->eps) {
-+		ERR("kmalloc udc endpoint status failed\n");
-+		goto eps_alloc_failed;
-+	}
- 
- 	/* initialized QHs, take care of alignment */
- 	size = udc->max_ep * sizeof(struct ep_queue_head);
-@@ -2262,8 +2264,7 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 					&udc->ep_qh_dma, GFP_KERNEL);
- 	if (!udc->ep_qh) {
- 		ERR("malloc QHs for udc failed\n");
--		kfree(udc->eps);
--		return -1;
-+		goto ep_queue_alloc_failed;
- 	}
- 
- 	udc->ep_qh_size = size;
-@@ -2272,8 +2273,17 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	/* FIXME: fsl_alloc_request() ignores ep argument */
- 	udc->status_req = container_of(fsl_alloc_request(NULL, GFP_KERNEL),
- 			struct fsl_req, req);
-+	if (!udc->status_req) {
-+		ERR("kzalloc for udc status request failed\n");
-+		goto udc_status_alloc_failed;
-+	}
-+
- 	/* allocate a small amount of memory to get valid address */
- 	udc->status_req->req.buf = kmalloc(8, GFP_KERNEL);
-+	if (!udc->status_req->req.buf) {
-+		ERR("kzalloc for udc request buffer failed\n");
-+		goto udc_req_buf_alloc_failed;
-+	}
- 
- 	udc->resume_state = USB_STATE_NOTATTACHED;
- 	udc->usb_state = USB_STATE_POWERED;
-@@ -2281,6 +2291,18 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	udc->remote_wakeup = 0;	/* default to 0 on reset */
- 
- 	return 0;
-+
-+udc_req_buf_alloc_failed:
-+	kfree(udc->status_req);
-+udc_status_alloc_failed:
-+	kfree(udc->ep_qh);
-+	udc->ep_qh_size = 0;
-+ep_queue_alloc_failed:
-+	kfree(udc->eps);
-+eps_alloc_failed:
-+	udc->phy_mode = 0;
-+	return -1;
-+
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 7f86bc3eaade..62d3c72cd931 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -101,11 +101,12 @@ static struct property *dlpar_clone_property(struct property *prop,
+ 	return new_prop;
  }
  
- /*----------------------------------------------------------------
+-static u32 find_aa_index(struct device_node *dr_node,
+-			 struct property *ala_prop, const u32 *lmb_assoc)
++static bool find_aa_index(struct device_node *dr_node,
++			 struct property *ala_prop,
++			 const u32 *lmb_assoc, u32 *aa_index)
+ {
+-	u32 *assoc_arrays;
+-	u32 aa_index;
++	u32 *assoc_arrays, new_prop_size;
++	struct property *new_prop;
+ 	int aa_arrays, aa_array_entries, aa_array_sz;
+ 	int i, index;
+ 
+@@ -121,46 +122,39 @@ static u32 find_aa_index(struct device_node *dr_node,
+ 	aa_array_entries = be32_to_cpu(assoc_arrays[1]);
+ 	aa_array_sz = aa_array_entries * sizeof(u32);
+ 
+-	aa_index = -1;
+ 	for (i = 0; i < aa_arrays; i++) {
+ 		index = (i * aa_array_entries) + 2;
+ 
+ 		if (memcmp(&assoc_arrays[index], &lmb_assoc[1], aa_array_sz))
+ 			continue;
+ 
+-		aa_index = i;
+-		break;
++		*aa_index = i;
++		return true;
+ 	}
+ 
+-	if (aa_index == -1) {
+-		struct property *new_prop;
+-		u32 new_prop_size;
+-
+-		new_prop_size = ala_prop->length + aa_array_sz;
+-		new_prop = dlpar_clone_property(ala_prop, new_prop_size);
+-		if (!new_prop)
+-			return -1;
+-
+-		assoc_arrays = new_prop->value;
++	new_prop_size = ala_prop->length + aa_array_sz;
++	new_prop = dlpar_clone_property(ala_prop, new_prop_size);
++	if (!new_prop)
++		return false;
+ 
+-		/* increment the number of entries in the lookup array */
+-		assoc_arrays[0] = cpu_to_be32(aa_arrays + 1);
++	assoc_arrays = new_prop->value;
+ 
+-		/* copy the new associativity into the lookup array */
+-		index = aa_arrays * aa_array_entries + 2;
+-		memcpy(&assoc_arrays[index], &lmb_assoc[1], aa_array_sz);
++	/* increment the number of entries in the lookup array */
++	assoc_arrays[0] = cpu_to_be32(aa_arrays + 1);
+ 
+-		of_update_property(dr_node, new_prop);
++	/* copy the new associativity into the lookup array */
++	index = aa_arrays * aa_array_entries + 2;
++	memcpy(&assoc_arrays[index], &lmb_assoc[1], aa_array_sz);
+ 
+-		/*
+-		 * The associativity lookup array index for this lmb is
+-		 * number of entries - 1 since we added its associativity
+-		 * to the end of the lookup array.
+-		 */
+-		aa_index = be32_to_cpu(assoc_arrays[0]) - 1;
+-	}
++	of_update_property(dr_node, new_prop);
+ 
+-	return aa_index;
++	/*
++	 * The associativity lookup array index for this lmb is
++	 * number of entries - 1 since we added its associativity
++	 * to the end of the lookup array.
++	 */
++	*aa_index = be32_to_cpu(assoc_arrays[0]) - 1;
++	return true;
+ }
+ 
+ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+@@ -169,6 +163,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+ 	struct property *ala_prop;
+ 	const u32 *lmb_assoc;
+ 	u32 aa_index;
++	bool found;
+ 
+ 	parent = of_find_node_by_path("/");
+ 	if (!parent)
+@@ -200,12 +195,12 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+ 		return -ENODEV;
+ 	}
+ 
+-	aa_index = find_aa_index(dr_node, ala_prop, lmb_assoc);
++	found = find_aa_index(dr_node, ala_prop, lmb_assoc, &aa_index);
+ 
+ 	of_node_put(dr_node);
+ 	dlpar_free_cc_nodes(lmb_node);
+ 
+-	if (aa_index < 0) {
++	if (!found) {
+ 		pr_err("Could not find LMB associativity\n");
+ 		return -1;
+ 	}
 -- 
 2.20.1
 
