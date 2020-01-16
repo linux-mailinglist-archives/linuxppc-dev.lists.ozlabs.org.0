@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0939F13F3F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:46:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B33B13F35C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:44:07 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zClS3X8NzDqf2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 05:44:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zCpZ4sFyzDqgB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 05:46:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,37 +16,36 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=t5GB6zd5; dkim-atps=neutral
+ header.s=default header.b=LGs4ybOO; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zB0c2zn6zDqdv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:25:20 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zB0w4FVxzDqdZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:25:36 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A0110246CA;
- Thu, 16 Jan 2020 17:25:17 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E8430246DD;
+ Thu, 16 Jan 2020 17:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579195518;
- bh=q1PD+9BrGNCyY77bHX9F2/vlz59WAA3Rrgfxbt/G5iU=;
+ s=default; t=1579195534;
+ bh=GaTkK/4xvNL6sxMd2wpZajtDaii9IKBLHXAmviFcU1w=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=t5GB6zd57yhLkK/8ltUCpGOglxz6xjCH11cNprSCGXW5WlUphoHAVJBjGbcxrDgcf
- e/l58Jc10fI/xFiCQV8XGqDnDvME6Qcmum3VjCZu1lJBeYShmH3ZWSufK0kOD5EilK
- PhiCPhEVdssevd4SqrYTE7kGqrM2u6t0t7G2gDaI=
+ b=LGs4ybOOwm54+5yEoZAATDDWTSqBnxPs7bnxVX9lJO2cC5r7lnwOdimPhIeeayjrJ
+ bc/VgaODW8TLyqfw0M00Gf00RVETUA8Kd5mxxytce26s3o7DWUZovwz+22yEOh/VBY
+ FUhQnvdICKviONtVwNJRKA8PTZjP4JOAEcKF5MWM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 116/371] powerpc/64s: Fix logic when handling
- unknown CPU features
-Date: Thu, 16 Jan 2020 12:19:48 -0500
-Message-Id: <20200116172403.18149-59-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 129/371] powerpc/mm: Check secondary hash page
+ table
+Date: Thu, 16 Jan 2020 12:20:01 -0500
+Message-Id: <20200116172403.18149-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
 References: <20200116172403.18149-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -61,84 +60,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, Rashmica Gupta <rashmica.g@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Rashmica Gupta <rashmica.g@gmail.com>
 
-[ Upstream commit 8cfaf106918a8c13abb24c641556172afbb9545c ]
+[ Upstream commit 790845e2f12709d273d08ea7a2af7c2593689519 ]
 
-In cpufeatures_process_feature(), if a provided CPU feature is unknown and
-enable_unknown is false, we erroneously print that the feature is being
-enabled and return true, even though no feature has been enabled, and
-may also set feature bits based on the last entry in the match table.
+We were always calling base_hpte_find() with primary = true,
+even when we wanted to check the secondary table.
 
-Fix this so that we only set feature bits from the match table if we have
-actually enabled a feature from that table, and when failing to enable an
-unknown feature, always print the "not enabling" message and return false.
+mpe: I broke this when refactoring Rashmica's original patch.
 
-Coincidentally, some older gccs (<GCC 7), when invoked with
--fsanitize-coverage=trace-pc, cause a spurious uninitialised variable
-warning in this function:
-
-  arch/powerpc/kernel/dt_cpu_ftrs.c: In function ‘cpufeatures_process_feature’:
-  arch/powerpc/kernel/dt_cpu_ftrs.c:686:7: warning: ‘m’ may be used uninitialized in this function [-Wmaybe-uninitialized]
-    if (m->cpu_ftr_bit_mask)
-
-An upcoming patch will enable support for kcov, which requires this option.
-This patch avoids the warning.
-
-Fixes: 5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
-Reported-by: Segher Boessenkool <segher@kernel.crashing.org>
+Fixes: 1515ab932156 ("powerpc/mm: Dump hash table")
+Signed-off-by: Rashmica Gupta <rashmica.g@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[ajd: add commit message]
-Signed-off-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/dt_cpu_ftrs.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ arch/powerpc/mm/dump_hashpagetable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 2357df60de95..7ed2b1b6643c 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -705,8 +705,10 @@ static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
- 		m = &dt_cpu_feature_match_table[i];
- 		if (!strcmp(f->name, m->name)) {
- 			known = true;
--			if (m->enable(f))
-+			if (m->enable(f)) {
-+				cur_cpu_spec->cpu_features |= m->cpu_ftr_bit_mask;
- 				break;
-+			}
+diff --git a/arch/powerpc/mm/dump_hashpagetable.c b/arch/powerpc/mm/dump_hashpagetable.c
+index 5c4c93dcff19..f666d74f05f5 100644
+--- a/arch/powerpc/mm/dump_hashpagetable.c
++++ b/arch/powerpc/mm/dump_hashpagetable.c
+@@ -343,7 +343,7 @@ static unsigned long hpte_find(struct pg_state *st, unsigned long ea, int psize)
  
- 			pr_info("not enabling: %s (disabled or unsupported by kernel)\n",
- 				f->name);
-@@ -714,17 +716,12 @@ static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
- 		}
- 	}
+ 	/* Look in secondary table */
+ 	if (slot == -1)
+-		slot = base_hpte_find(ea, psize, true, &v, &r);
++		slot = base_hpte_find(ea, psize, false, &v, &r);
  
--	if (!known && enable_unknown) {
--		if (!feat_try_enable_unknown(f)) {
--			pr_info("not enabling: %s (unknown and unsupported by kernel)\n",
--				f->name);
--			return false;
--		}
-+	if (!known && (!enable_unknown || !feat_try_enable_unknown(f))) {
-+		pr_info("not enabling: %s (unknown and unsupported by kernel)\n",
-+			f->name);
-+		return false;
- 	}
- 
--	if (m->cpu_ftr_bit_mask)
--		cur_cpu_spec->cpu_features |= m->cpu_ftr_bit_mask;
--
- 	if (known)
- 		pr_debug("enabling: %s\n", f->name);
- 	else
+ 	/* No entry found */
+ 	if (slot == -1)
 -- 
 2.20.1
 
