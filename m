@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B30D13E4FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1C613E5A0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:16:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47z9jD2cgDzDqYh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:12:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47z9nr4BQjzDqBs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:16:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=U+SHBsBQ; dkim-atps=neutral
+ header.s=default header.b=VkU1xwcM; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z9Jy6h9wzDqb1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:54:25 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9LD5d4SzDqc9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:55:32 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 781182464B;
- Thu, 16 Jan 2020 16:54:22 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id B60F8205F4;
+ Thu, 16 Jan 2020 16:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579193663;
- bh=d5Dp4/iefDU1JBWw7HWrWettcgUtKFnOxwNMP9rNjHM=;
+ s=default; t=1579193730;
+ bh=CPUXuMoDmhnFOgZ4znC7tc/B/yEHUKZmdZha3fSv4BM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=U+SHBsBQ8ayS7r99yqTYX+tEqoo1o7Az/PZJ+fRM5r2s/OXCG9kLvlEvUxWhoJh0C
- 8ESJxUj5bikoaJxH9pURFBR5ZxGtN5GMcxavONGGJy2bKDUX4XNMhuEMZROT8YgSea
- KgV4/Icsq801ZA49cr1EvPL5uDsph8wk02EG0zAc=
+ b=VkU1xwcM+/ambJ9JBaAm2k3zBJf1JThXxYV6qKhVzFCyFSHxFn8Kb/rzReeCFOzAB
+ PG0AwzEGgjbF9nZhSgEz6xearV8ex+WZZ843waLa79E9gDNJMaYoc39IsTjI5N0P7J
+ Mt2zv/3vWigOV/7MkZ/j4wd0jqxXh586D9wdrRK4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 190/205] powerpc/archrandom: fix
- arch_get_random_seed_int()
-Date: Thu, 16 Jan 2020 11:42:45 -0500
-Message-Id: <20200116164300.6705-190-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 023/671] usb: gadget: fsl_udc_core: check
+ allocation return value and cleanup on failure
+Date: Thu, 16 Jan 2020 11:44:14 -0500
+Message-Id: <20200116165502.8838-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
-References: <20200116164300.6705-1-sashal@kernel.org>
+In-Reply-To: <20200116165502.8838-1-sashal@kernel.org>
+References: <20200116165502.8838-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,51 +60,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Ard Biesheuvel <ardb@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Felipe Balbi <felipe.balbi@linux.intel.com>,
+ Nicholas Mc Guire <hofrat@osadl.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nicholas Mc Guire <hofrat@osadl.org>
 
-[ Upstream commit b6afd1234cf93aa0d71b4be4788c47534905f0be ]
+[ Upstream commit 4ab2b48c98f2ec9712452d520a381917f91ac3d2 ]
 
-Commit 01c9348c7620ec65
+The allocation with fsl_alloc_request() and kmalloc() were unchecked
+fixed this up with a NULL check and appropriate cleanup.
 
-  powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*
+Additionally udc->ep_qh_size was reset to 0 on failure of allocation.
+Similar udc->phy_mode is initially 0 (as udc_controller was
+allocated with kzalloc in fsl_udc_probe()) so reset it to 0 as well
+so that this function is side-effect free on failure. Not clear if
+this is necessary or sensible as fsl_udc_release() probably can not
+be called if fsl_udc_probe() failed - but it should not hurt.
 
-updated arch_get_random_[int|long]() to be NOPs, and moved the hardware
-RNG backing to arch_get_random_seed_[int|long]() instead. However, it
-failed to take into account that arch_get_random_int() was implemented
-in terms of arch_get_random_long(), and so we ended up with a version
-of the former that is essentially a NOP as well.
-
-Fix this by calling arch_get_random_seed_long() from
-arch_get_random_seed_int() instead.
-
-Fixes: 01c9348c7620ec65 ("powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191204115015.18015-1-ardb@kernel.org
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+Fixes: b504882da5 ("USB: add Freescale high-speed USB SOC device controller driver")
+Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/archrandom.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/fsl_udc_core.c | 30 +++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
-index 9c63b596e6ce..a09595f00cab 100644
---- a/arch/powerpc/include/asm/archrandom.h
-+++ b/arch/powerpc/include/asm/archrandom.h
-@@ -28,7 +28,7 @@ static inline int arch_get_random_seed_int(unsigned int *v)
- 	unsigned long val;
- 	int rc;
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
+index d44b26d5b2a2..367697144cda 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -2247,8 +2247,10 @@ static int struct_udc_setup(struct fsl_udc *udc,
+ 	udc->phy_mode = pdata->phy_mode;
  
--	rc = arch_get_random_long(&val);
-+	rc = arch_get_random_seed_long(&val);
- 	if (rc)
- 		*v = val;
+ 	udc->eps = kcalloc(udc->max_ep, sizeof(struct fsl_ep), GFP_KERNEL);
+-	if (!udc->eps)
+-		return -1;
++	if (!udc->eps) {
++		ERR("kmalloc udc endpoint status failed\n");
++		goto eps_alloc_failed;
++	}
  
+ 	/* initialized QHs, take care of alignment */
+ 	size = udc->max_ep * sizeof(struct ep_queue_head);
+@@ -2262,8 +2264,7 @@ static int struct_udc_setup(struct fsl_udc *udc,
+ 					&udc->ep_qh_dma, GFP_KERNEL);
+ 	if (!udc->ep_qh) {
+ 		ERR("malloc QHs for udc failed\n");
+-		kfree(udc->eps);
+-		return -1;
++		goto ep_queue_alloc_failed;
+ 	}
+ 
+ 	udc->ep_qh_size = size;
+@@ -2272,8 +2273,17 @@ static int struct_udc_setup(struct fsl_udc *udc,
+ 	/* FIXME: fsl_alloc_request() ignores ep argument */
+ 	udc->status_req = container_of(fsl_alloc_request(NULL, GFP_KERNEL),
+ 			struct fsl_req, req);
++	if (!udc->status_req) {
++		ERR("kzalloc for udc status request failed\n");
++		goto udc_status_alloc_failed;
++	}
++
+ 	/* allocate a small amount of memory to get valid address */
+ 	udc->status_req->req.buf = kmalloc(8, GFP_KERNEL);
++	if (!udc->status_req->req.buf) {
++		ERR("kzalloc for udc request buffer failed\n");
++		goto udc_req_buf_alloc_failed;
++	}
+ 
+ 	udc->resume_state = USB_STATE_NOTATTACHED;
+ 	udc->usb_state = USB_STATE_POWERED;
+@@ -2281,6 +2291,18 @@ static int struct_udc_setup(struct fsl_udc *udc,
+ 	udc->remote_wakeup = 0;	/* default to 0 on reset */
+ 
+ 	return 0;
++
++udc_req_buf_alloc_failed:
++	kfree(udc->status_req);
++udc_status_alloc_failed:
++	kfree(udc->ep_qh);
++	udc->ep_qh_size = 0;
++ep_queue_alloc_failed:
++	kfree(udc->eps);
++eps_alloc_failed:
++	udc->phy_mode = 0;
++	return -1;
++
+ }
+ 
+ /*----------------------------------------------------------------
 -- 
 2.20.1
 
