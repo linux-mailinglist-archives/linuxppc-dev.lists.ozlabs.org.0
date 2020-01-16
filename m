@@ -1,89 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B02E13D600
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 09:35:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47yyFb2ZzyzDqYS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:35:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C9E13D694
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 10:18:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yzC93WHFzDqYS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 20:18:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=kHJ/FujL; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47yyCV1ThKzDqWr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 19:33:57 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00G8WKMT021068
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 03:33:54 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xhgs7mfcd-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 03:33:54 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
- Thu, 16 Jan 2020 08:33:52 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 16 Jan 2020 08:33:47 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00G8XkE138404580
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jan 2020 08:33:46 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F830AE051;
- Thu, 16 Jan 2020 08:33:46 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CA152AE056;
- Thu, 16 Jan 2020 08:33:43 +0000 (GMT)
-Received: from [9.124.35.38] (unknown [9.124.35.38])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 16 Jan 2020 08:33:43 +0000 (GMT)
-Subject: Re: [PATCH v15 23/23] selftests: vm: pkeys: Use the correct page size
- on powerpc
-To: Michael Ellerman <mpe@ellerman.id.au>, shuahkh@osg.samsung.com,
- linux-kselftest@vger.kernel.org
-References: <cover.1576645161.git.sandipan@linux.ibm.com>
- <ff7c288e2a88ccfb3b79be30967646fe5b869683.1576645161.git.sandipan@linux.ibm.com>
- <87h80x9ozr.fsf@mpe.ellerman.id.au>
-From: Sandipan Das <sandipan@linux.ibm.com>
-Date: Thu, 16 Jan 2020 14:03:43 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47yz8T1Yy6zDqXX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 20:16:24 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 47yz8L74yxz9tyQR;
+ Thu, 16 Jan 2020 10:16:18 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=kHJ/FujL; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id lt8jAOtwQ37r; Thu, 16 Jan 2020 10:16:18 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47yz8L5yqZz9tyQP;
+ Thu, 16 Jan 2020 10:16:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579166178; bh=zhSNNoA19/DJtyqK00k6NS1e1aITemDpv4Uo0GCOeHg=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=kHJ/FujLNVI5NHn588r9Xp2wHJbaCU+ZBkfGxNVcWiwtRBmZW0lfLLuD4NqyCZjiq
+ +rTgIsm7pFN1rx7YTTWhuMQluEkHnAwg5Mf/G4PgNahbW9tMt03xitw118O2by2nT9
+ rGG+pJM5Wh/XK2tpcgdQ3yLjIqpixSaM9eK0L1tQ=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DA4C58B811;
+ Thu, 16 Jan 2020 10:16:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id FPW2Cv_UNA79; Thu, 16 Jan 2020 10:16:19 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 212448B810;
+ Thu, 16 Jan 2020 10:16:19 +0100 (CET)
+Subject: Re: [RFC PATCH v3 08/12] lib: vdso: allow arches to provide vdso data
+ pointer
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+To: Thomas Gleixner <tglx@linutronix.de>, luto@kernel.org
+References: <cover.1578934751.git.christophe.leroy@c-s.fr>
+ <381e547dbb3c48fd39d6cf208033bba38ad048fb.1578934751.git.christophe.leroy@c-s.fr>
+ <87ftghbpuu.fsf@nanos.tec.linutronix.de>
+ <d2de3211-9d7c-513e-fe0f-8bdce623fb65@c-s.fr>
+Message-ID: <b5fddcf8-99ff-fc0d-40c0-0eb81ad4e94a@c-s.fr>
+Date: Thu, 16 Jan 2020 10:16:18 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <87h80x9ozr.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20011608-0016-0000-0000-000002DDC834
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011608-0017-0000-0000-000033405ED1
-Message-Id: <375ed2cc-22ea-ddbf-33d3-febed65eefc6@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-16_02:2020-01-16,
- 2020-01-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001160072
+In-Reply-To: <d2de3211-9d7c-513e-fe0f-8bdce623fb65@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,40 +81,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, dave.hansen@intel.com,
- aneesh.kumar@linux.ibm.com, x86@kernel.org, linuxram@us.ibm.com,
- mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com, msuchanek@suse.de,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: arnd@arndb.de, x86@kernel.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+Thomas, Andy,
 
-On 15/01/20 12:37 pm, Michael Ellerman wrote:
-> Sandipan Das <sandipan@linux.ibm.com> writes:
->> Both 4K and 64K pages are supported on powerpc. Parts of
->> the selftest code perform alignment computations based on
->> the PAGE_SIZE macro which is currently hardcoded to 64K
->> for powerpc. This causes some test failures on kernels
->> configured with 4K page size.
+Le 15/01/2020 à 07:15, Christophe Leroy a écrit :
+> 
+> 
+> Le 15/01/2020 à 00:06, Thomas Gleixner a écrit :
+>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>>   static __maybe_unused int
+>>> +#ifdef VDSO_GETS_VD_PTR_FROM_ARCH
+>>> +__cvdso_clock_gettime_common(const struct vdso_data *vd, clockid_t 
+>>> clock,
+>>> +              struct __kernel_timespec *ts)
+>>> +{
+>>> +#else
+>>>   __cvdso_clock_gettime_common(clockid_t clock, struct 
+>>> __kernel_timespec *ts)
+>>>   {
+>>>       const struct vdso_data *vd = __arch_get_vdso_data();
+>>> +#endif
+>>>       u32 msk;
 >>
->> This problem is solved by determining the correct page
->> size during the build process rather than hardcoding it
->> in the header file.
+>> If we do that, then there is no point in propagating this to the inner
+>> functions. It's perfectly fine to have this distinction at the outermost
+>> level.
 > 
-> Doing it at build time is wrong, the test could be built on a 4K system
-> and then run on a 64K system, or vice versa.
+> In v2, I did it at the arch level (see 
+> https://patchwork.ozlabs.org/patch/1214983/). Andy was concerned about 
+> it being suboptimal for arches which (unlike powerpc) have PC related 
+> data addressing mode.
 > 
-> You should just use getpagesize() at runtime.
-> 
-> cheers
-> 
+> Wouldn't it be the same issue if doing it at the outermost level of 
+> generic VDSO ?
 
-The reason I chose to do it this way was because PAGE_SIZE also determines
-the alignment for the function "lots_o_noops_around_write" (which is used
-by some of the test cases). Since __attribute__((__aligned__(X))) requires
-X to be a constant, I am not sure if there a way around this.
+Any opinion on this ?
 
-- Sandipan
+ From your point of view, what should I do:
+A/ __arch_get_vdso_data() handled entirely at arch level and arches 
+handing over the vdso data pointer to generic C VDSO functions all the 
+time (as in my v2 series) ?
+B/ Data pointer being handed over all the way up for arches wanting to 
+do so, no changes at all for others (as in my v3 series) ?
+C/ __arch_get_vdso_data() being called at the outermost generic level 
+for arches not interested in handling data pointer from the caller (as 
+suggested by Thomas) ?
 
+Andy, with A/ you were concerned about arches being able to do PC 
+related accesses. Would it be an issue for C/ as well ? If not, I guess 
+C/ would be cleaner than B/ allthought not as clean as A which doesn't 
+add any #ifdefery at all.
+
+Thanks
+Christophe
