@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BCA13F46F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:49:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zCt46ckWzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 05:49:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE29D13F49D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:52:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zCxd07fGzDqhS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 05:52:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Fs7Ph4/L; dkim-atps=neutral
+ header.s=default header.b=PUmcfrWV; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zB1d1npnzDqX7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:26:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zB1w4H21zDqLY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:26:28 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 53CBC246BC;
- Thu, 16 Jan 2020 17:26:10 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 703B0246CA;
+ Thu, 16 Jan 2020 17:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579195571;
- bh=U0GllvyW/qZsgF/6DHdzP2hLFDdGfz0JdUTJSWqaqSY=;
+ s=default; t=1579195586;
+ bh=IQeDTDep0s6HDwdvNtRn12GS86m6ofyc5QpeLNQV6Vc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Fs7Ph4/L1KtnOT0ns9c0DZ76dPKTrJc45BdHBR9q7z0C626Y2udrTJtDi8fgDz4vA
- 3PbNM6Twvyd5pz7qLvDjd/XbezdXaZv+mIjzbwDjRzkqhhwEpgBAl9cYT0rtfjDhSI
- iq9rNo9uQq/0LOPw7QXP/UX8rAI2YPU2g4LoBmwY=
+ b=PUmcfrWVOqWPZ6zCJ71z4bF5hYsjtKZGXWPbBoLOpkvpfa5ys+qvjz70F8+2IUqnX
+ XYVyFYV6yI6ErhP2ivHvKM5/2efmDVL56tuKueazdnWlpSMiOVzTmPhCEUFf/XUaNs
+ jiGJUZcZG+blZhAF4AJE+sjaNlzQImuMDkfpYYVo=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 155/371] soc/fsl/qe: Fix an error code in
- qe_pin_request()
-Date: Thu, 16 Jan 2020 12:20:27 -0500
-Message-Id: <20200116172403.18149-98-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 166/371] powerpc: vdso: Make vdso32 installation
+ conditional in vdso_install
+Date: Thu, 16 Jan 2020 12:20:38 -0500
+Message-Id: <20200116172403.18149-109-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
 References: <20200116172403.18149-1-sashal@kernel.org>
@@ -60,43 +60,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, Dan Carpenter <dan.carpenter@oracle.com>,
- Li Yang <leoyang.li@nxp.com>
+Cc: Sasha Levin <sashal@kernel.org>, Ben Hutchings <ben@decadent.org.uk>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-[ Upstream commit 5674a92ca4b7e5a6a19231edd10298d30324cd27 ]
+[ Upstream commit ff6d27823f619892ab96f7461764840e0d786b15 ]
 
-We forgot to set "err" on this error path.
+The 32-bit vDSO is not needed and not normally built for 64-bit
+little-endian configurations.  However, the vdso_install target still
+builds and installs it.  Add the same config condition as is normally
+used for the build.
 
-Fixes: 1a2d397a6eb5 ("gpio/powerpc: Eliminate duplication of of_get_named_gpio_flags()")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Fixes: e0d005916994 ("powerpc/vdso: Disable building the 32-bit VDSO ...")
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/gpio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
-index 3b27075c21a7..5cbc5ce5ac15 100644
---- a/drivers/soc/fsl/qe/gpio.c
-+++ b/drivers/soc/fsl/qe/gpio.c
-@@ -152,8 +152,10 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
- 	if (err < 0)
- 		goto err0;
- 	gc = gpio_to_chip(err);
--	if (WARN_ON(!gc))
-+	if (WARN_ON(!gc)) {
-+		err = -ENODEV;
- 		goto err0;
-+	}
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 0f04c878113e..9c78ef298257 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -385,7 +385,9 @@ vdso_install:
+ ifeq ($(CONFIG_PPC64),y)
+ 	$(Q)$(MAKE) $(build)=arch/$(ARCH)/kernel/vdso64 $@
+ endif
++ifdef CONFIG_VDSO32
+ 	$(Q)$(MAKE) $(build)=arch/$(ARCH)/kernel/vdso32 $@
++endif
  
- 	if (!of_device_is_compatible(gc->of_node, "fsl,mpc8323-qe-pario-bank")) {
- 		pr_debug("%s: tried to get a non-qe pin\n", __func__);
+ archclean:
+ 	$(Q)$(MAKE) $(clean)=$(boot)
 -- 
 2.20.1
 
