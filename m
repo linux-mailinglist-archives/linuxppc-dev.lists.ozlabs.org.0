@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A544713E81A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB45913E8BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:34:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zB6T5LRWzDqdg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:30:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zBBj4Cx8zDqZR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:34:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ICh4YzJW; dkim-atps=neutral
+ header.s=default header.b=nT0wDggk; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z9RH2m9szDqNH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:59:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9T72NZNzDqbv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:01:31 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CDBB420730;
- Thu, 16 Jan 2020 16:59:50 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 25BEF2077B;
+ Thu, 16 Jan 2020 17:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579193992;
- bh=M25l5xEyU2CXWnx++Hc+OTNJB8R2zrnDtnpkuUnr77I=;
+ s=default; t=1579194088;
+ bh=q6V7gbEyGtHNDb/LxwtSrTQJHi8OJzfFfB5CY+lL4uo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ICh4YzJWe1O71r7IAPNziGrizVDNT+FpvDi9cTs8UwZA6mnkbYVHmss6Ia0LMA+qC
- nK0hUeZLojX5wFZPHPM09i9MAHkmvS29kaWA856k5R8CjPVAi7yXj7Za3mkBGUY1ZE
- ybJvN7aljzaNlNwIXFdezRslTuSwaW3u75P8n+f8=
+ b=nT0wDggkThsIC5PB19XM3q4SyJfBqiUbVroWVpVaGRFhuez8SiS46aavbJoPM0ciS
+ AtNPE1/j6bwaYfTP7uluuRSgnRLt5iyWrnbrrxtW1vyloH7onxZeDnjsOYQK2p0PDb
+ UrUVFOMonXuhd/z28oNWiaSV6dN1155IQb6erkd8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 122/671] ASoC: imx-sgtl5000: put of nodes if
- finding codec fails
-Date: Thu, 16 Jan 2020 11:50:31 -0500
-Message-Id: <20200116165940.10720-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 192/671] KVM: PPC: Release all hardware TCE
+ tables attached to a group
+Date: Thu, 16 Jan 2020 11:51:41 -0500
+Message-Id: <20200116165940.10720-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116165940.10720-1-sashal@kernel.org>
 References: <20200116165940.10720-1-sashal@kernel.org>
@@ -60,47 +60,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
- Daniel Baluta <daniel.baluta@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- Stefan Agner <stefan@agner.ch>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Stefan Agner <stefan@agner.ch>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-[ Upstream commit d9866572486802bc598a3e8576a5231378d190de ]
+[ Upstream commit a67614cc05a5052b265ea48196dab2fce11f5f2e ]
 
-Make sure to properly put the of node in case finding the codec
-fails.
+The SPAPR TCE KVM device references all hardware IOMMU tables assigned to
+some IOMMU group to ensure that in-kernel KVM acceleration of H_PUT_TCE
+can work. The tables are references when an IOMMU group gets registered
+with the VFIO KVM device by the KVM_DEV_VFIO_GROUP_ADD ioctl;
+KVM_DEV_VFIO_GROUP_DEL calls into the dereferencing code
+in kvm_spapr_tce_release_iommu_group() which walks through the list of
+LIOBNs, finds a matching IOMMU table and calls kref_put() when found.
 
-Fixes: 81e8e4926167 ("ASoC: fsl: add sgtl5000 clock support for imx-sgtl5000")
-Signed-off-by: Stefan Agner <stefan@agner.ch>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+However that code stops after the very first successful derefencing
+leaving other tables referenced till the SPAPR TCE KVM device is destroyed
+which normally happens on guest reboot or termination so if we do hotplug
+and unplug in a loop, we are leaking IOMMU tables here.
+
+This removes a premature return to let kvm_spapr_tce_release_iommu_group()
+find and dereference all attached tables.
+
+Fixes: 121f80ba68f ("KVM: PPC: VFIO: Add in-kernel acceleration for VFIO")
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-sgtl5000.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_64_vio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-sgtl5000.c b/sound/soc/fsl/imx-sgtl5000.c
-index 9b9a7ec52905..4bd8da3a5f5b 100644
---- a/sound/soc/fsl/imx-sgtl5000.c
-+++ b/sound/soc/fsl/imx-sgtl5000.c
-@@ -112,7 +112,8 @@ static int imx_sgtl5000_probe(struct platform_device *pdev)
- 	codec_dev = of_find_i2c_device_by_node(codec_np);
- 	if (!codec_dev) {
- 		dev_err(&pdev->dev, "failed to find codec platform device\n");
--		return -EPROBE_DEFER;
-+		ret = -EPROBE_DEFER;
-+		goto fail;
- 	}
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 65486c3d029b..26b03af71abd 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -133,7 +133,6 @@ extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
+ 					continue;
  
- 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+ 				kref_put(&stit->kref, kvm_spapr_tce_liobn_put);
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.20.1
 
