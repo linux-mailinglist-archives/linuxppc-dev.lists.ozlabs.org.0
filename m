@@ -1,72 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B5113FB0E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 22:07:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05E813FAE9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 22:00:35 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zGmt2gtGzDqxc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 08:00:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zGwp6tQgzDr0m
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 08:07:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=SD6U3h6U; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=ZBNmytBW; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zBmT405zzDqVZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:59:53 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47zBmN5N54z9v4gc;
- Thu, 16 Jan 2020 18:59:48 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=SD6U3h6U; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id EJWppnBr9WvY; Thu, 16 Jan 2020 18:59:48 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47zBmN44pnz9v4gT;
- Thu, 16 Jan 2020 18:59:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579197588; bh=IindQu42iENkFluTxFQueQVsDRT1L9tio2zY26H9ooU=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=SD6U3h6UXcUuVSAFLlW6xTpgLah4GnfwkGmyYPfYMJEZ80vWz5QKjLUAJrqbLUTPG
- FHu5B9HP7RgOIk7EhNh31YeJb4FEx+y8aJnktskyHe7iF3+iFf5JvawY+g5g9uqjxF
- PgKwNxeR1X6+lUsmGgkzOI/BXQUo3iKSj9by4vDk=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 43AEF8B82C;
- Thu, 16 Jan 2020 18:59:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id x7-gj-n_L5z9; Thu, 16 Jan 2020 18:59:50 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BFD998B82A;
- Thu, 16 Jan 2020 18:59:49 +0100 (CET)
-Subject: Re: [PATCH vdsotest] Use vdso wrapper for gettimeofday()
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <0eddeeb64c97b8b5ce0abd74e88d2cc0303e49c6.1579090596.git.christophe.leroy@c-s.fr>
- <871rrzjq5j.fsf@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <01e576b8-fe93-1026-5b39-f878297d6835@c-s.fr>
-Date: Thu, 16 Jan 2020 18:59:49 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zF944n6xzDqZW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 06:47:52 +1100 (AEDT)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+ [209.85.221.52])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 098B12077C
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 19:47:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579204070;
+ bh=iWPOEPrLhN/0dUzUlwpw4/5CopjoSgUDgsorKgvcJmw=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=ZBNmytBWuC0U8dtoZhF+ykaCrw12X24OzwI/4jlMPsTBRD4Skon1q/5BmRHCR7j36
+ U0SG46PBe9dZfmajYfQMP3/t6SsA/c/cTCxLI/yJ5fRxBdrzdYEx5a5LO34zOO6yIp
+ MHsX6faaZ9XilvurLWm/Gziak4DDpI+m16cZOi68=
+Received: by mail-wr1-f52.google.com with SMTP id z7so20368258wrl.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 11:47:49 -0800 (PST)
+X-Gm-Message-State: APjAAAXlFwub5XVdv3M7+DQfJte5Lkv7lU9yMKEixSM6Pk4PZjE01lH9
+ oY475MgkLdrh2NbOnjbPYZhEIeVqSogFH4A0v15ywg==
+X-Google-Smtp-Source: APXvYqz0S0n0mRf01AI9EVOJj9fh0guO9GsXoYIoeeHWqI3bcsdwUWPoJm22gBkYEqJCyt4y4xlERS5rQnr9jvHcuRE=
+X-Received: by 2002:adf:ebc6:: with SMTP id v6mr4976488wrn.75.1579204068445;
+ Thu, 16 Jan 2020 11:47:48 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <871rrzjq5j.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <cover.1579196675.git.christophe.leroy@c-s.fr>
+ <c8ce9baaef0dc7273e4bcc31f353b17b655113d1.1579196675.git.christophe.leroy@c-s.fr>
+In-Reply-To: <c8ce9baaef0dc7273e4bcc31f353b17b655113d1.1579196675.git.christophe.leroy@c-s.fr>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Thu, 16 Jan 2020 11:47:36 -0800
+X-Gmail-Original-Message-ID: <CALCETrWJcB9=MuSw5yx6arcb_np=E=awTyLRSi=r8BJySf_aXw@mail.gmail.com>
+Message-ID: <CALCETrWJcB9=MuSw5yx6arcb_np=E=awTyLRSi=r8BJySf_aXw@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 10/11] lib: vdso: Allow arches to override the ns
+ shift operation
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,36 +65,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: nathanl@linux.ibm.com, Arnd Bergmann <arnd@arndb.de>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jan 16, 2020 at 9:58 AM Christophe Leroy
+<christophe.leroy@c-s.fr> wrote:
+>
+> On powerpc/32, GCC (8.1) generates pretty bad code for the
+> ns >>= vd->shift operation taking into account that the
+> shift is always < 32 and the upper part of the result is
+> likely to be nul. GCC makes reversed assumptions considering
+> the shift to be likely >= 32 and the upper part to be like not nul.
+>
+> unsigned long long shift(unsigned long long x, unsigned char s)
+> {
+>         return x >> s;
+> }
+>
+> results in:
+>
+> 00000018 <shift>:
+>   18:   35 25 ff e0     addic.  r9,r5,-32
+>   1c:   41 80 00 10     blt     2c <shift+0x14>
+>   20:   7c 64 4c 30     srw     r4,r3,r9
+>   24:   38 60 00 00     li      r3,0
+>   28:   4e 80 00 20     blr
+>   2c:   54 69 08 3c     rlwinm  r9,r3,1,0,30
+>   30:   21 45 00 1f     subfic  r10,r5,31
+>   34:   7c 84 2c 30     srw     r4,r4,r5
+>   38:   7d 29 50 30     slw     r9,r9,r10
+>   3c:   7c 63 2c 30     srw     r3,r3,r5
+>   40:   7d 24 23 78     or      r4,r9,r4
+>   44:   4e 80 00 20     blr
+>
+> Even when forcing the shift with an &= 31, it still considers
+> the shift as likely >= 32.
+>
+> Define a vdso_shift_ns() macro that can be overriden by
+> arches.
 
+Would mul_u64_u64_shr() be a good alternative?  Could we adjust it to
+assume the shift is less than 32?  That function exists to benefit
+32-bit arches.
 
-Le 16/01/2020 à 17:56, Nathan Lynch a écrit :
-> Hi Christophe,
-> 
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> To properly handle errors returned by gettimeofday(), the
->> DO_VDSO_CALL() macro has to be used, otherwise vdsotest
->> misinterpret VDSO function return on error.
->>
->> This has gone unnoticed until now because the powerpc VDSO
->> gettimeofday() always succeed, but while porting powerpc to
->> generic C VDSO, the following has been encountered:
-> 
-> Thanks for this, I'll review it soon.
-> 
-> Can you point me to patches for the powerpc generic vdso work?
-> 
-
-Sure.
-
-v3 is at 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=152867
-
-I added you in v4 destinees.
-
-Christophe
+--Andy
