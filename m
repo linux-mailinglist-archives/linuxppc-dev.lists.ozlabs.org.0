@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB3A13F9AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 20:40:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2AB13F9A1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 20:37:18 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zDwq2vgbzDqhk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 06:37:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zF121tZWzDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 06:40:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=R01jFIGb; dkim-atps=neutral
+ header.s=default header.b=H333YmT/; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zBKV4MyYzDqMb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:39:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zBMc3VLNzDqW8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:41:48 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5A24524710;
- Thu, 16 Jan 2020 17:39:54 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0819624718;
+ Thu, 16 Jan 2020 17:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579196395;
- bh=vF+m8hLWBYBYcX86G22Uo9puk7KaPTDLePvT7xAYpJk=;
+ s=default; t=1579196506;
+ bh=vDh1zh2NXIVh0tH7uGbKC5ZjFd32+DbtXkYJo7HcdK8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=R01jFIGb0WxH+xGSZ+9xQy2HmiACQS+SpxIQ2I73//4w2fViwozpy9dkKIl7TtjW8
- EWfQf0CWvYFmCoMD6HwR4zQpEXKdxYOfLzPR1DMkUhK4nBv51gkXTh8faM0msoZnR0
- KCtdZ++nnjojnztLKqWUFOag6xF4XxPm6FbhD0hw=
+ b=H333YmT/XW5BFMByVvMfCgUpCqrnFsBWfeUrsrdvW86XmA/FOjxyrrbAhjru1D+rL
+ oouaBhP0uSJIQd3epXnogaIaVHLjS8j5a/0Q9rzfBm8/J5Mje84AxEBOMzx42lyzSb
+ Jzmp3rS23Xq/4QQxDBrmBIWbRq4rhcrDUCy46hPs=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 174/251] ALSA: aoa: onyx: always initialize
- register read value
-Date: Thu, 16 Jan 2020 12:35:23 -0500
-Message-Id: <20200116173641.22137-134-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 246/251] powerpc/powernv: Disable native PCIe port
+ management
+Date: Thu, 16 Jan 2020 12:36:35 -0500
+Message-Id: <20200116173641.22137-206-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
 References: <20200116173641.22137-1-sashal@kernel.org>
@@ -60,48 +60,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
- alsa-devel@alsa-project.org, Takashi Iwai <tiwai@suse.de>,
- Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Johannes Berg <johannes@sipsolutions.net>
+From: Oliver O'Halloran <oohall@gmail.com>
 
-[ Upstream commit f474808acb3c4b30552d9c59b181244e0300d218 ]
+[ Upstream commit 9d72dcef891030545f39ad386a30cf91df517fb2 ]
 
-A lot of places in the driver use onyx_read_register() without
-checking the return value, and it's been working OK for ~10 years
-or so, so probably never fails ... Rather than trying to check the
-return value everywhere, which would be relatively intrusive, at
-least make sure we don't use an uninitialized value.
+On PowerNV the PCIe topology is (currently) managed by the powernv platform
+code in Linux in cooperation with the platform firmware. Linux's native
+PCIe port service drivers operate independently of both and this can cause
+problems.
 
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The main issue is that the portbus driver will conflict with the platform
+specific hotplug driver (pnv_php) over ownership of the MSI used to notify
+the host when a hotplug event occurs. The portbus driver claims this MSI on
+behalf of the individual port services because the same interrupt is used
+for hotplug events, PMEs (on root ports), and link bandwidth change
+notifications. The portbus driver will always claim the interrupt even if
+the individual port service drivers, such as pciehp, are compiled out.
+
+The second, bigger, problem is that the hotplug port service driver
+fundamentally does not work on PowerNV. The platform assumes that all
+PCI devices have a corresponding arch-specific handle derived from the DT
+node for the device (pci_dn) and without one the platform will not allow
+a PCI device to be enabled. This problem is largely due to historical
+baggage, but it can't be resolved without significant re-factoring of the
+platform PCI support.
+
+We can fix these problems in the interim by setting the
+"pcie_ports_disabled" flag during platform initialisation. The flag
+indicates the platform owns the PCIe ports which stops the portbus driver
+from being registered.
+
+This does have the side effect of disabling all port services drivers
+that is: AER, PME, BW notifications, hotplug, and DPC. However, this is
+not a huge disadvantage on PowerNV since these services are either unused
+or handled through other means.
+
+Fixes: 66725152fb9f ("PCI/hotplug: PowerPC PowerNV PCI hotplug driver")
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191118065553.30362-1-oohall@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/aoa/codecs/onyx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/pci.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/sound/aoa/codecs/onyx.c b/sound/aoa/codecs/onyx.c
-index a04edff8b729..ae50d59fb810 100644
---- a/sound/aoa/codecs/onyx.c
-+++ b/sound/aoa/codecs/onyx.c
-@@ -74,8 +74,10 @@ static int onyx_read_register(struct onyx *onyx, u8 reg, u8 *value)
- 		return 0;
- 	}
- 	v = i2c_smbus_read_byte_data(onyx->i2c, reg);
--	if (v < 0)
-+	if (v < 0) {
-+		*value = 0;
- 		return -1;
-+	}
- 	*value = (u8)v;
- 	onyx->cache[ONYX_REG_CONTROL-FIRSTREGISTER] = *value;
- 	return 0;
+diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+index 98cc8ba07c23..00dbf1e895a9 100644
+--- a/arch/powerpc/platforms/powernv/pci.c
++++ b/arch/powerpc/platforms/powernv/pci.c
+@@ -923,6 +923,23 @@ void __init pnv_pci_init(void)
+ 	if (!firmware_has_feature(FW_FEATURE_OPAL))
+ 		return;
+ 
++#ifdef CONFIG_PCIEPORTBUS
++	/*
++	 * On PowerNV PCIe devices are (currently) managed in cooperation
++	 * with firmware. This isn't *strictly* required, but there's enough
++	 * assumptions baked into both firmware and the platform code that
++	 * it's unwise to allow the portbus services to be used.
++	 *
++	 * We need to fix this eventually, but for now set this flag to disable
++	 * the portbus driver. The AER service isn't required since that AER
++	 * events are handled via EEH. The pciehp hotplug driver can't work
++	 * without kernel changes (and portbus binding breaks pnv_php). The
++	 * other services also require some thinking about how we're going
++	 * to integrate them.
++	 */
++	pcie_ports_disabled = true;
++#endif
++
+ 	/* Look for IODA IO-Hubs. */
+ 	for_each_compatible_node(np, NULL, "ibm,ioda-hub") {
+ 		pnv_pci_init_ioda_hub(np);
 -- 
 2.20.1
 
