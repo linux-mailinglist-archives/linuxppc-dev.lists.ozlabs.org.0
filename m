@@ -1,43 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A1013D8C6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 12:14:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47z1my1FhwzDqN9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 22:14:42 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED04A13DCC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 14:59:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47z5RT2trKzDqcK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 00:59:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z1j03wPqzDqb9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 22:11:16 +1100 (AEDT)
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1is33A-00050C-K7; Thu, 16 Jan 2020 12:10:56 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
- id 3D46D101B66; Thu, 16 Jan 2020 12:10:56 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Hsin-Yi Wang <hsinyi@chromium.org>
-Subject: Re: [PATCH v5] reboot: support offline CPUs before reboot
-In-Reply-To: <CAJMQK-jDi+AACE1Cv_hKSMq8VhGTBeh+kyHO2U4sx9w=9bO2mA@mail.gmail.com>
-References: <20200115063410.131692-1-hsinyi@chromium.org>
- <8736cgxmxi.fsf@nanos.tec.linutronix.de>
- <CAJMQK-jDi+AACE1Cv_hKSMq8VhGTBeh+kyHO2U4sx9w=9bO2mA@mail.gmail.com>
-Date: Thu, 16 Jan 2020 12:10:56 +0100
-Message-ID: <87h80vwta7.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z5P66rjjzDqb9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 00:57:44 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00GDvUTL011806;
+ Thu, 16 Jan 2020 07:57:30 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 00GDvTmR011805;
+ Thu, 16 Jan 2020 07:57:29 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 16 Jan 2020 07:57:29 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Gabriel Paubert <paubert@iram.es>
+Subject: Re: z constraint in powerpc inline assembly ?
+Message-ID: <20200116135729.GP3191@gate.crashing.org>
+References: <d72263a1-fe17-3192-6930-35ec8394c699@c-s.fr>
+ <20200116080608.GA29711@lt-gp.iram.es>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200116080608.GA29711@lt-gp.iram.es>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,61 +53,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, sparclinux@vger.kernel.org,
- Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
- linux-csky@vger.kernel.org, Aaro Koskinen <aaro.koskinen@nokia.com>,
- Fenghua Yu <fenghua.yu@intel.com>, Linux PM <linux-pm@vger.kernel.org>,
- linux-xtensa@linux-xtensa.org, Stephen Boyd <swboyd@chromium.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>,
- Pavankumar Kondeti <pkondeti@codeaurora.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>, linux-parisc@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- James Morse <james.morse@arm.com>, Jiri Kosina <jkosina@suse.cz>,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hsin-Yi Wang <hsinyi@chromium.org> writes:
-> On Thu, Jan 16, 2020 at 8:30 AM Thomas Gleixner <tglx@linutronix.de> wrote:
-> We saw this issue on regular reboot (not panic) on arm64: If tick
-> broadcast and smp_send_stop() happen together and the first broadcast
-> arrives to some idled CPU that hasn't already executed reboot ipi to
-> run in spinloop, it would try to broadcast to another CPU, but that
-> target CPU is already marked as offline by set_cpu_online() in reboot
-> ipi, and a warning comes out since tick_handle_oneshot_broadcast()
-> would check if it tries to broadcast to offline cpus. Most of the time
-> the CPU getting the broadcast interrupt is already in the spinloop and
-> thus isn't going to receive interrupts from the broadcast timer.
+On Thu, Jan 16, 2020 at 09:06:08AM +0100, Gabriel Paubert wrote:
+> On Thu, Jan 16, 2020 at 07:11:36AM +0100, Christophe Leroy wrote:
+> > Hi Segher,
+> > 
+> > I'm trying to see if we could enhance TCP checksum calculations by splitting
+> > inline assembly blocks to give GCC the opportunity to mix it with other
+> > stuff, but I'm getting difficulties with the carry.
+> > 
+> > As far as I can read in the documentation, the z constraint represents
+> > '‘XER[CA]’ carry bit (part of the XER register)'
+> 
+> Well, the documentation is very optimisitic. From the GCC source code
+> (thanks for switching to git last week-end ;-)), it is clear that the
+> carry is not, for the time being, properly modeled. 
 
-The timer broadcasting is obviously broken by the existing reboot unplug
-mechanism as the outgoing CPU should remove itself from the broadcast.
+What?  It certainly *is*, I spent ages on that back in 2014 and before.
+See gcc.gnu.org/PR64180 etc.
 
-Just addressing the broadcast issue is not sufficient as there are tons
-of other places which rely on consistency of the various cpu masks.
+You can not put the carry as input or output to an asm, of course: no C
+variable can be assigned to it.
 
-> If system supports hotplug, _cpu_down() would properly handle tasks
-> termination such as remove CPU from timer broadcasting by
-> tick_offline_cpu()...etc, as well as some interrupt handling.
+We don't do the "flag outputs" thing, either, as it is largely useless
+for Power (and using it would often make *worse* code).
 
-Well, emphasis on 'if system supports hotplug'. If not, then you are
-back to square one. On ARM64 hotplug is selectable by a config option.
+If you want to access a carry, write C code that does that operation.
+The compiler knows how to optimise it well.
 
-So either we mandate HOTPLUG_CPU for SMP and get rid of all the
-ifdeffery or we need to have a mechanism which works on !HOTPLUG_CPU as
-well.
+> Right now, in the machine description, all setters and users of the carry
+> are in the same block of generated instructions.
 
-That whole reboot/shutdown stuff is an unpenetrable mess of notifiers
-and architecture hackery, so something generic and understandable is
-really required.
+No, they are not.  For over five years now.  (Since GCC 5).
 
-Thanks,
+> For a start, all single instructions patterns that set the carry (and
+> do not use it) as a side effect should mention the they clobber the 
+> carry, otherwise inserting one between a setter and a user of the carry 
+> would break.
 
-        tglx
+And they do.
+
+All asms that change the carry should mention that, too, but this is
+automatically done for all inline asms, because there was a lot of code
+in the wild that does not clobber it.
+
+> This includes all arithmetic right shift (sra[wd]{,i}, 
+> subfic, addic{,\.} and I may have forgotten some.
+
+{add,subf}{ic,c,e,ze,me} and sra[wd][i] and their dots.  Sure.  And
+mcrxr and mcrxrx and mfxer and mtxer.  That's about it.
+
+We don't model the second carry at all yet btw, in GCC.  Not too many
+people know it exists even, so no big loss there.
+
+(One nasty was that addi. does not exist, so we used addic. where it was
+wanted before, so that had to change.)
+
+
+Segher
