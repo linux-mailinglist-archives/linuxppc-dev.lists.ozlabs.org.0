@@ -2,84 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3C913D360
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 06:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAD013D3CD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 06:36:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ysYy03P0zDqXP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 16:04:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ytGb4632zDqVs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 16:36:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ysTS5tSjzDqVZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 16:00:44 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=dYNTOeCe; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47ysTR74dLz8vNH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 16:00:43 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47ysTR4wWtz9sRQ; Thu, 16 Jan 2020 16:00:43 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=dYNTOeCe; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=google header.b=ZgcbuRsf; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47ysTN1Gmnz9sPW
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Jan 2020 16:00:39 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id q10so9612137pfs.6
- for <linuxppc-dev@ozlabs.org>; Wed, 15 Jan 2020 21:00:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ytDS6Yb0zDqTF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 16:34:32 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id x8so9309719pgk.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 21:34:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=lbMVnnfOh0rxSpd7nM1WMZj2bbfSD2O1czUhxijz+ik=;
- b=dYNTOeCekTqaTcojSIdZuhUZgkSC+ZhXSzKFX/UJwUCBWuIkp/4vvAA1QaXxTWR9wy
- 132Hmm8S/kO+qXdLu0cuadXX6wUVBGzzJltVM5b3FcCJoRVaTWfkWRbgAkP/fEM4IXVi
- LTT8LGz0Oxpv0eXeYHD7vSMP+9OkiousSrHTM=
+ :mime-version; bh=OjhLrwSUixWKfHPYVjag4pJ4Twky6Gk6dHImQohRolQ=;
+ b=ZgcbuRsf2JHWAKem4b8L9QCIstpEILQ+LtgpSvVyEIFmuJkHkq4wV3UhW+NB3I/p7L
+ g8PhhD9MkXc8GNcgMLwPiGkXbVvTxOXXqfpvUxWGjbrkeerRAqqt7CgHVi3clSMsX94r
+ 2eu6s/C0/gJJDbr9MjhIhO6KsPExdslbKPn1s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=lbMVnnfOh0rxSpd7nM1WMZj2bbfSD2O1czUhxijz+ik=;
- b=YGZfsvcKhhhplgHg0b4RcY8E1h7cKYwZcMFof5H8w8aH3aABWVwgOWTNu7KSxpKTRx
- cYcEB2Z+Zp5uuGpFyM59K2LfPplIGAgogxz/xm6wxWtOPMs+OFs7xcWtjRrSj1H9ilcv
- zvuO04IRQypIQWwaw7AOK/La4c61R7a6cZWBWf03URJTrMNwF6U3+TtyscvRSgfXATqG
- ASv5S3G9NRtKSu0iKRljSDakJ9CPgmn4chYJExpDXO2PhyUwny1YOIUWy7vWmdwETTDL
- as/8SeX0+3dxglNLsd9NES4jqC155Xg6vcDuCIxWFild+Z4fydTf8+gLfRZOGDM1tG+2
- XhpQ==
-X-Gm-Message-State: APjAAAXsP9F+7RYRlyZo+lvsCjRbTaXwv/Z0Zvry0oirpijTj7EMfv59
- Os0Cwi/2tJPxasM2iVBP7KynIQ==
-X-Google-Smtp-Source: APXvYqzAWm7yVpRibzv06ashzmpqDtv1DgyHNVab76a+suUGI344fSVYj1YvxE/EaPa1I4tjGO5ggA==
-X-Received: by 2002:a63:5962:: with SMTP id j34mr38039900pgm.421.1579150836506; 
- Wed, 15 Jan 2020 21:00:36 -0800 (PST)
+ bh=OjhLrwSUixWKfHPYVjag4pJ4Twky6Gk6dHImQohRolQ=;
+ b=o3Tz3ieRT4LumV76yia5Wnt/Q7gnWGzfVsRaP59hvSAEAMZiWirqtd1EBCzyPvbhgH
+ boDfoSOPP48ASe25rAwdV1XcvezKrnByFZ8l3jcV3qwU6rZBlzeRuRWn+wdaDWywMEp6
+ KYUPLVADhbV4w3ptclkR0QOgVBDC0UKQUn18TEmoBxiRzmedPX8VAuexR4Jved52sQz0
+ lbsN6ttjKV86vfd51y6tSBTLp0pbX7YZHRCz7fyctF/AWbJaDtty+FuIfg9Q/3m+eKA5
+ gPoTtEMkkNhuvn36BHfpqRgKxL+4HUbDmLSvSVt3g0uc8Pr8ZB46ScJmffH8/EYPnVaZ
+ PqoA==
+X-Gm-Message-State: APjAAAX+YNwRwSQVzu+fzYwWWKLCcJRmZ6W/ROOIKlwa1ms5rIwVyyfz
+ lhQIs+zdgOHNbcUAF8ZPJxQhNw==
+X-Google-Smtp-Source: APXvYqxrN0+qBEVUpua94Qb8xZteFhv2nkLn9S7EhrqzK/2c5Vhq+y51pzR4+MJYtOWvoNtguucHYw==
+X-Received: by 2002:aa7:98d0:: with SMTP id e16mr34318946pfm.77.1579152866617; 
+ Wed, 15 Jan 2020 21:34:26 -0800 (PST)
 Received: from localhost
  (2001-44b8-1113-6700-097c-7eed-afd4-cd15.static.ipv6.internode.on.net.
  [2001:44b8:1113:6700:97c:7eed:afd4:cd15])
- by smtp.gmail.com with ESMTPSA id n2sm22452384pgn.71.2020.01.15.21.00.35
+ by smtp.gmail.com with ESMTPSA id p16sm24333466pfq.184.2020.01.15.21.34.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2020 21:00:35 -0800 (PST)
+ Wed, 15 Jan 2020 21:34:25 -0800 (PST)
 From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 7/9] powerpc/configs/skiroot: Enable security features
-In-Reply-To: <20200116014808.15756-7-mpe@ellerman.id.au>
-References: <20200116014808.15756-1-mpe@ellerman.id.au>
- <20200116014808.15756-7-mpe@ellerman.id.au>
-Date: Thu, 16 Jan 2020 16:00:32 +1100
-Message-ID: <871rs0knbj.fsf@dja-thinkpad.axtens.net>
+To: Dmitry Vyukov <dvyukov@google.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH 1/2] kasan: stop tests being eliminated as dead code with
+ FORTIFY_SOURCE
+In-Reply-To: <CACT4Y+Y-qPLzn2sur5QnS2h4=Qb2B_5rFxwMKuzhe-hwsReGqg@mail.gmail.com>
+References: <20200115063710.15796-1-dja@axtens.net>
+ <20200115063710.15796-2-dja@axtens.net>
+ <CACT4Y+bAuaeHOcTHqp-=ckOb58fRajpGYk4khNzpS7_OyBDQYQ@mail.gmail.com>
+ <917cc571-a25c-3d3e-547c-c537149834d6@c-s.fr>
+ <CACT4Y+Y-qPLzn2sur5QnS2h4=Qb2B_5rFxwMKuzhe-hwsReGqg@mail.gmail.com>
+Date: Thu, 16 Jan 2020 16:34:23 +1100
+Message-ID: <87zheoj76o.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -93,69 +81,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, oohall@gmail.com, joel@jms.id.au
+Cc: linux-s390 <linux-s390@vger.kernel.org>, linux-xtensa@linux-xtensa.org,
+ the arch/x86 maintainers <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>, Linux-MM <linux-mm@kvack.org>,
+ Daniel Micay <danielmicay@gmail.com>, Alexander Potapenko <glider@google.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-
-> From: Joel Stanley <joel@jms.id.au>
+>> >> +/*
+>> >> + * We assign some test results to these globals to make sure the tests
+>> >> + * are not eliminated as dead code.
+>> >> + */
+>> >> +
+>> >> +int int_result;
+>> >> +void *ptr_result;
+>> >
+>> > These are globals, but are not static and don't have kasan_ prefix.
+>> > But I guess this does not matter for modules?
+>> > Otherwise:
+>> >
+>> > Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+>> >
+>>
+>> I think if you make them static, GCC will see they aren't used and will
+>> eliminate everything still ?
 >
-> This turns on HARDENED_USERCOPY with HARDENED_USERCOPY_PAGESPAN, and
-> FORTIFY_SOURCE.
->
-> It also enables SECURITY_LOCKDOWN_LSM with _EARLY and
-> LOCK_DOWN_KERNEL_FORCE_CONFIDENTIALITY options enabled.
->
+> static volatile? :)
 
-As I said before, this will disable xmon entirely. If we want to set
-this, we should compile out xmon. But if we want xmon in read-only mode
-to be an option, we should pick integrity mode.
+Yeah so these are module globals. They'd be accessible from any other
+files you linked into the module (currently there are no such
+files). They're not visible outside the module because they're not
+EXPORTed.
 
-I don't really mind, because I don't work with skiroot very
-much. Oliver, Joel, Nayna, you all do stuff around this sort of level -
-is this a problem for any of you?
+Making them static does lead to them getting eliminated, and 'static
+volatile' seems both gross and like something checkpatch would complain
+about. I'll leave them as they are but stick a kasan_ prefix on them
+just for the additional tidiness.
 
 Regards,
 Daniel
-
-> MODULE_SIG is selected by lockdown, so it is still enabled.
->
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/configs/skiroot_defconfig | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
-> index 24a210fe0049..bd661a9a9410 100644
-> --- a/arch/powerpc/configs/skiroot_defconfig
-> +++ b/arch/powerpc/configs/skiroot_defconfig
-> @@ -49,7 +49,6 @@ CONFIG_JUMP_LABEL=y
->  CONFIG_STRICT_KERNEL_RWX=y
->  CONFIG_MODULES=y
->  CONFIG_MODULE_UNLOAD=y
-> -CONFIG_MODULE_SIG=y
->  CONFIG_MODULE_SIG_FORCE=y
->  CONFIG_MODULE_SIG_SHA512=y
->  CONFIG_PARTITION_ADVANCED=y
-> @@ -272,6 +271,16 @@ CONFIG_NLS_ASCII=y
->  CONFIG_NLS_ISO8859_1=y
->  CONFIG_NLS_UTF8=y
->  CONFIG_ENCRYPTED_KEYS=y
-> +CONFIG_SECURITY=y
-> +CONFIG_HARDENED_USERCOPY=y
-> +# CONFIG_HARDENED_USERCOPY_FALLBACK is not set
-> +CONFIG_HARDENED_USERCOPY_PAGESPAN=y
-> +CONFIG_FORTIFY_SOURCE=y
-> +CONFIG_SECURITY_LOCKDOWN_LSM=y
-> +CONFIG_SECURITY_LOCKDOWN_LSM_EARLY=y
-> +CONFIG_LOCK_DOWN_KERNEL_FORCE_CONFIDENTIALITY=y
-> +# CONFIG_INTEGRITY is not set
-> +CONFIG_LSM="yama,loadpin,safesetid,integrity"
->  # CONFIG_CRYPTO_HW is not set
->  CONFIG_CRC16=y
->  CONFIG_CRC_ITU_T=y
-> -- 
-> 2.21.1
