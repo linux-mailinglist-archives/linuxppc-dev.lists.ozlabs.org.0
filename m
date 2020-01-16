@@ -1,53 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255F213D404
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 06:57:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F8413D400
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 06:55:39 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ythk1ZX5zDqVx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 16:55:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ytlG5Gk4zDqWj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 16:57:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=johnstul.lkml@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=FAPgEX95; dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ytfm6hrLzDqVH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 16:53:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=FqKdsNN0; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47ytfm1x2Mz9sPW;
- Thu, 16 Jan 2020 16:53:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1579154032;
- bh=9RJsA4ixbU88RCAM8/QGkNN4hFo2PgW5OQD3mizTqI4=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=FqKdsNN0+BMLA/sv1/RKIUVNjSC86xzmMHFRbQrb//m3wbAbN4rnKXI9uln9OlG6o
- 5TlVgSy7N/4wJS42CWV1b2DqgfuWNNOAg9D2IDvHcioJiIYuaPbZHGMmTC+DYbj/Np
- ZX+/S7m/WmXN6ka4CEjNIYF0dVvZSEv5yMp2ooTpKtAqGPuvrTrjX6R97FYnJC/7d8
- VHmD+JvS8o4D3g53Yb43H+3lA9R9U3fs+1+LVBrXTSiwkybYxVlDSinm6F7k5dVk+K
- JhXymh3j23dlNfXiEgcOfZQQnzvRDrXm8n9KZP5rPlvnfTz9ts+pKinLnyHlt5MbhP
- yj73JrISh1PRA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Bringmann <mwb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Gustavo Walbon <gwalbon@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v2] Fix display of Maximum Memory
-In-Reply-To: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
-References: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
-Date: Thu, 16 Jan 2020 15:53:57 +1000
-Message-ID: <8736cg9cay.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ythF49hlzDqWx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 16:55:08 +1100 (AEDT)
+Received: by mail-wr1-x441.google.com with SMTP id y11so17843075wrt.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2020 21:55:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=NGGRCbRsjloWfYF2cHg3taqwmJTEu8ejz3Fhy/MiNIg=;
+ b=FAPgEX95Okm1PYWx+lYdAYkeQZFYdkQpx4INTn3yuTeEPggTIkb+SSmpiN1DrTzTMR
+ F8YAzV3LpIE8v/+DzLESZGFiolINqohluQXIo5pP4qfGoAv4WuvIl09MTLyH/FgA1uED
+ xrvzH0NNnXsLoP7bi/MMapp889FaW2xsFrvqd9tgZSywMra+//L2O3Mv0Qxb5MadOSHP
+ jz223DZjqzt/Nu4ZBN1vXyCUZyN/lHZMeD3lyK1qC5WaiY3J1zUCz+M5X+Kbrc/ZBLL7
+ l6i3rSH3TITt2pQsDv9MJNDyHG9uJQQzOv14/uixxkDS9KoFz7btgVg7iRx2X6f/H1vU
+ VCaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=NGGRCbRsjloWfYF2cHg3taqwmJTEu8ejz3Fhy/MiNIg=;
+ b=acXbuIAGzkCO0dNA9Us7CAUte5s+QM+z7yQbzR21RdeQ9Qx48Bcl9Avtnuu2It/5Sh
+ hYcJmXymCh2O6yCLdx8grwb8H24mIHawR8ldKFK7+7748znD5nVCWhBbFC+SRPxafX99
+ kzkRJ2rG0lkl/GXWLlJ6BdR8pTMNSRKmcrhtml8QpwozccABmPkuQgERwDuGzvdN4dvD
+ WfoHXaI3/u1wj0vOBAKaez/hbcwskDVQq0nkSRvq0alE9rJAtBfxd2y6JW7ulXiggA99
+ OGIg6ncA2HzNFEfi+yWQJ/YxXUKa1RjIlgYZoyaqOP2c4MejkwIErovmChfEUU4/EsKh
+ BRtA==
+X-Gm-Message-State: APjAAAVCzoflYpQXmkynzJaG6t4F3R9YTcV6CE2COnHXxE+2plUge/iA
+ w7kfMKH/nQbxvmxbaDvLkqrtcTShaChluqp7FrU=
+X-Google-Smtp-Source: APXvYqygaiL9IxcZBDeOlGW0IjTYd9QUt9aNCyzyH/CPff3tMmmEB2RiYIW6FqMd9/9j6NWJe0bNxet3KikGqZP6xRw=
+X-Received: by 2002:adf:d850:: with SMTP id k16mr1193679wrl.96.1579154104574; 
+ Wed, 15 Jan 2020 21:55:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <cover.1569493933.git.shengjiu.wang@nxp.com>
+ <d728f65194e9978cbec4132b522d4fed420d704a.1569493933.git.shengjiu.wang@nxp.com>
+ <CANcMJZBy=yH+4YgZWwphiE-PO6d4hzhFK3XFtpN677ZAv_N4WQ@mail.gmail.com>
+In-Reply-To: <CANcMJZBy=yH+4YgZWwphiE-PO6d4hzhFK3XFtpN677ZAv_N4WQ@mail.gmail.com>
+From: John Stultz <john.stultz@linaro.org>
+Date: Wed, 15 Jan 2020 21:54:54 -0800
+Message-ID: <CANcMJZCuU_-Xii=YT5Rp5DAyxboptJCrpp51jForuYUpeMuhmQ@mail.gmail.com>
+Subject: Re: [PATCH V6 3/4] ASoC: pcm_dmaengine: Extract
+ snd_dmaengine_pcm_refine_runtime_hwparams
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,66 +75,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
+ Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com,
+ lgirdwood@gmail.com, Rob Herring <robh+dt@kernel.org>, perex@perex.cz,
+ nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Bringmann <mwb@linux.ibm.com> writes:
-> Correct overflow problem in calculation+display of Maximum Memory
-> value to syscfg where 32bits is insufficient.
+On Wed, Jan 8, 2020 at 8:58 PM John Stultz <john.stultz@linaro.org> wrote:
+> On Thu, Sep 26, 2019 at 6:50 PM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> >
+> > When set the runtime hardware parameters, we may need to query
+> > the capability of DMA to complete the parameters.
+> >
+> > This patch is to Extract this operation from
+> > dmaengine_pcm_set_runtime_hwparams function to a separate function
+> > snd_dmaengine_pcm_refine_runtime_hwparams, that other components
+> > which need this feature can call this function.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
 >
-> Signed-off-by: Michael Bringmann <mwb@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/lparcfg.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> As a heads up, this patch seems to be causing a regression on the HiKey board.
 >
-> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-> index e33e8bc..f00411c 100644
-> --- a/arch/powerpc/platforms/pseries/lparcfg.c
-> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
-> @@ -433,12 +433,12 @@ static void parse_em_data(struct seq_file *m)
->  
->  static void maxmem_data(struct seq_file *m)
->  {
-> -	unsigned long maxmem = 0;
-> +	u64 maxmem = 0;
+> On boot up I'm seeing:
+> [   17.721424] hi6210_i2s f7118000.i2s: ASoC: can't open component
+> f7118000.i2s: -6
+>
+> And HDMI audio isn't working. With this patch reverted, audio works again.
+>
+>
+> > diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+> > index 89a05926ac73..5749a8a49784 100644
+> > --- a/sound/core/pcm_dmaengine.c
+> > +++ b/sound/core/pcm_dmaengine.c
+> > @@ -369,4 +369,87 @@ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+> ...
+> > +       ret = dma_get_slave_caps(chan, &dma_caps);
+> > +       if (ret == 0) {
+> > +               if (dma_caps.cmd_pause && dma_caps.cmd_resume)
+> > +                       hw->info |= SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME;
+> > +               if (dma_caps.residue_granularity <= DMA_RESIDUE_GRANULARITY_SEGMENT)
+> > +                       hw->info |= SNDRV_PCM_INFO_BATCH;
+> > +
+> > +               if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+> > +                       addr_widths = dma_caps.dst_addr_widths;
+> > +               else
+> > +                       addr_widths = dma_caps.src_addr_widths;
+> > +       }
+>
+> It seems a failing ret from dma_get_slave_caps() here is being returned...
+>
+> > +
+> > +       /*
+> > +        * If SND_DMAENGINE_PCM_DAI_FLAG_PACK is set keep
+> > +        * hw.formats set to 0, meaning no restrictions are in place.
+> > +        * In this case it's the responsibility of the DAI driver to
+> > +        * provide the supported format information.
+> > +        */
+> > +       if (!(dma_data->flags & SND_DMAENGINE_PCM_DAI_FLAG_PACK))
+> > +               /*
+> > +                * Prepare formats mask for valid/allowed sample types. If the
+> > +                * dma does not have support for the given physical word size,
+> > +                * it needs to be masked out so user space can not use the
+> > +                * format which produces corrupted audio.
+> > +                * In case the dma driver does not implement the slave_caps the
+> > +                * default assumption is that it supports 1, 2 and 4 bytes
+> > +                * widths.
+> > +                */
+> > +               for (i = SNDRV_PCM_FORMAT_FIRST; i <= SNDRV_PCM_FORMAT_LAST; i++) {
+> > +                       int bits = snd_pcm_format_physical_width(i);
+> > +
+> > +                       /*
+> > +                        * Enable only samples with DMA supported physical
+> > +                        * widths
+> > +                        */
+> > +                       switch (bits) {
+> > +                       case 8:
+> > +                       case 16:
+> > +                       case 24:
+> > +                       case 32:
+> > +                       case 64:
+> > +                               if (addr_widths & (1 << (bits / 8)))
+> > +                                       hw->formats |= pcm_format_to_bits(i);
+> > +                               break;
+> > +                       default:
+> > +                               /* Unsupported types */
+> > +                               break;
+> > +                       }
+> > +               }
+> > +
+> > +       return ret;
+>
+> ... down here.
+>
+> Where as in the old code...
+>
+> > diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
+> > index 748f5f641002..b9f147eaf7c4 100644
+> > --- a/sound/soc/soc-generic-dmaengine-pcm.c
+> > +++ b/sound/soc/soc-generic-dmaengine-pcm.c
+>
+> > @@ -145,56 +140,12 @@ static int dmaengine_pcm_set_runtime_hwparams(struct snd_pcm_substream *substrea
+> >         if (pcm->flags & SND_DMAENGINE_PCM_FLAG_NO_RESIDUE)
+> >                 hw.info |= SNDRV_PCM_INFO_BATCH;
+> >
+> > -       ret = dma_get_slave_caps(chan, &dma_caps);
+> > -       if (ret == 0) {
+> > -               if (dma_caps.cmd_pause && dma_caps.cmd_resume)
+> > -                       hw.info |= SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME;
+> > -               if (dma_caps.residue_granularity <= DMA_RESIDUE_GRANULARITY_SEGMENT)
+> > -                       hw.info |= SNDRV_PCM_INFO_BATCH;
+> > -
+> > -               if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+> > -                       addr_widths = dma_caps.dst_addr_widths;
+> > -               else
+> > -                       addr_widths = dma_caps.src_addr_widths;
+> > -       }
+>
+> ...the ret from dma_get_slave_caps()  checked above, but is not
+> actually returned.
+>
+> Suggestions on how to sort this out?
 
-This is 64-bit only code, so u64 == unsigned long.
+Just wanted to check in on this, as I'm still seeing this regression with -rc6.
 
-> -	maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
-> -	maxmem += hugetlb_total_pages() * PAGE_SIZE;
-> +	maxmem += (u64)drmem_info->n_lmbs * drmem_info->lmb_size;
-
-The only problem AFAICS is n_lmbs is int and lmb_size is u32, so this
-multiplication will overflow.
-
-> +	maxmem += (u64)hugetlb_total_pages() * PAGE_SIZE;
-
-hugetlb_total_pages() already returns unsigned long.
-
-> -	seq_printf(m, "MaxMem=%ld\n", maxmem);
-> +	seq_printf(m, "MaxMem=%llu\n", maxmem);
->  }
-
-This should be sufficient?
-
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index e33e8bc4b69b..38c306551f76 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -435,10 +435,10 @@ static void maxmem_data(struct seq_file *m)
- {
-        unsigned long maxmem = 0;
- 
--       maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
-+       maxmem += (unsigned long)drmem_info->n_lmbs * drmem_info->lmb_size;
-        maxmem += hugetlb_total_pages() * PAGE_SIZE;
- 
--       seq_printf(m, "MaxMem=%ld\n", maxmem);
-+       seq_printf(m, "MaxMem=%lu\n", maxmem);
- }
- 
- static int pseries_lparcfg_data(struct seq_file *m, void *v)
-
-
-cheers
+thanks
+-john
