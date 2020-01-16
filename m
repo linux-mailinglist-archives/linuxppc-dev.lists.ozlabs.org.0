@@ -2,72 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA7C13F007
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D50E13F187
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 19:30:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zCC63Z8bzDqY7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 05:19:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zCRz5YWHzDqfX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 05:30:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=an21Zn8e; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=MXAe6Aat; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z9hC3bqYzDqcD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:11:05 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47z9h201DnzB09bM;
- Thu, 16 Jan 2020 18:10:58 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=an21Zn8e; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fxXYyxiPaNf4; Thu, 16 Jan 2020 18:10:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47z9h13T7rzB09bJ;
- Thu, 16 Jan 2020 18:10:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579194657; bh=5dtLXCtNKGhJUQyd/wyCEmRm5b3WNzV1TRxotmvC19s=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=an21Zn8ekLwlkmLLwGUJ15DgXxS8YZPshkBR8zCZ5jZ0ByHP6o/trkyfznQDPYJnx
- uJWVkrERxG3Kw8oPV65QW6TmRkOsR0PiHDheousGkkAynKSx7vuTVhsbwSxO3kx320
- ak0whw8aBoaPy3GBBA9Xi5OnSMboeIpHVspGPsi0=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B2BCC8B82A;
- Thu, 16 Jan 2020 18:10:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HIp8mPxk5uIM; Thu, 16 Jan 2020 18:10:58 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A39238B82C;
- Thu, 16 Jan 2020 18:10:57 +0100 (CET)
-Subject: Re: z constraint in powerpc inline assembly ?
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- David Laight <David.Laight@aculab.com>
-References: <d72263a1-fe17-3192-6930-35ec8394c699@c-s.fr>
- <e9af1690e51a4d89a8a5c0927eb8430a@AcuMS.aculab.com>
- <20200116162151.GR3191@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <0c217c4c-51cb-d5f3-237e-4fb4e2f6532c@c-s.fr>
-Date: Thu, 16 Jan 2020 18:10:56 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9mG0rXBzDqW6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 04:14:38 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id ECCD62469E;
+ Thu, 16 Jan 2020 17:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579194874;
+ bh=d5Dp4/iefDU1JBWw7HWrWettcgUtKFnOxwNMP9rNjHM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=MXAe6AatTXthx/xCkM+CZKCvplCWom6eL1J91/qKJ3Qm37ICbHTfNsEzL9DMKQ6+E
+ J71jrJLdt7fP3F6R0RVsPQv6aYMwwsh34991euEGgBZGvG9EVopKmEjt8BU9/zu1uC
+ C2WK/txN9aKVcM5a2LFuoReA8RZvIkozeXsYWTHg=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 665/671] powerpc/archrandom: fix
+ arch_get_random_seed_int()
+Date: Thu, 16 Jan 2020 12:05:03 -0500
+Message-Id: <20200116170509.12787-402-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
+References: <20200116170509.12787-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200116162151.GR3191@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,20 +60,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Ard Biesheuvel <ardb@kernel.org>
 
+[ Upstream commit b6afd1234cf93aa0d71b4be4788c47534905f0be ]
 
-Le 16/01/2020 à 17:21, Segher Boessenkool a écrit :
-> Christophe uses a very primitive 32-bit cpu, not even superscalar.  A
-> loop doing adde is pretty much optimal, probably wants some unrolling
-> though.
+Commit 01c9348c7620ec65
 
-You mean the mpc8xx , but I'm also using the mpc832x which has a e300c2 
-core and is capable of executing 2 insns in parallel if not in the same 
-Unit.
+  powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*
 
-Christophe
+updated arch_get_random_[int|long]() to be NOPs, and moved the hardware
+RNG backing to arch_get_random_seed_[int|long]() instead. However, it
+failed to take into account that arch_get_random_int() was implemented
+in terms of arch_get_random_long(), and so we ended up with a version
+of the former that is essentially a NOP as well.
+
+Fix this by calling arch_get_random_seed_long() from
+arch_get_random_seed_int() instead.
+
+Fixes: 01c9348c7620ec65 ("powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191204115015.18015-1-ardb@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/include/asm/archrandom.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
+index 9c63b596e6ce..a09595f00cab 100644
+--- a/arch/powerpc/include/asm/archrandom.h
++++ b/arch/powerpc/include/asm/archrandom.h
+@@ -28,7 +28,7 @@ static inline int arch_get_random_seed_int(unsigned int *v)
+ 	unsigned long val;
+ 	int rc;
+ 
+-	rc = arch_get_random_long(&val);
++	rc = arch_get_random_seed_long(&val);
+ 	if (rc)
+ 		*v = val;
+ 
+-- 
+2.20.1
+
