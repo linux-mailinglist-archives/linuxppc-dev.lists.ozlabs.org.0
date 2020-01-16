@@ -2,52 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5221D13D0B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 00:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E9E13D0E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 01:10:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ykPL2Lm9zDqRw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 10:41:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47yl2y5nmJzDqQF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 11:10:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ykLw6MMqzDq9B
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 10:39:36 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=B5o0Q+Qb; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47ykLs4sxMz9sR1;
- Thu, 16 Jan 2020 10:39:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1579131575;
- bh=bM+tz2kFdbTfR+m35IrApP9n+YHuTQq0hXIrBD1g6p0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=B5o0Q+Qbz+Fh9nE6jGV8mxlgxUvMrP7QnMN7U8rJQtga5PK4LN11cKBT/wLOLs4YP
- XuuAQ+Bsk3h7dQ/zO7fab/eJr7Cxr4uhtJBmsVRPA+PgjEJ/yxN53hXroCdOuOKYOI
- G7bcHeM5X2XLDhiLYdnIe0Axc0SBLxrU0i7U4WOHBcmlZY0kXD0cH0eJ+Lv/Y2HtlN
- qnJ8Vu/9spGH3FAwSo+F+6zs/eA2zf+UOzdgE8mt36GSlxCcpJs1KMdLt98Flz6JRN
- soQ0lm8kiGof8G9XlKjoX8QxuJzgqqnC47fhhJTpIaLHyzovjA8fUUdGyoLkFITU1E
- nE9c9dUXrF6Hw==
-Date: Thu, 16 Jan 2020 10:39:32 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Subject: Re: [PATCH] powerpc: Do not consider weak unresolved symbol
- relocations as bad
-Message-ID: <20200116103932.2e603cf9@canb.auug.org.au>
-In-Reply-To: <20200115204648.7179-1-alex@ghiti.fr>
-References: <20200115204648.7179-1-alex@ghiti.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ykzn2zxJzDqBS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2020 11:08:01 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00G07JSI023046; Wed, 15 Jan 2020 19:07:54 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xhbptb5h3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Jan 2020 19:07:53 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00G05geX001963;
+ Thu, 16 Jan 2020 00:07:52 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02wdc.us.ibm.com with ESMTP id 2xj8nhst1f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jan 2020 00:07:52 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00G07pKQ55116190
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Jan 2020 00:07:51 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5533D6E04E;
+ Thu, 16 Jan 2020 00:07:51 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2515A6E050;
+ Thu, 16 Jan 2020 00:07:50 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.45.110])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 16 Jan 2020 00:07:49 +0000 (GMT)
+Subject: Re: [PATCH v2] Fix display of Maximum Memory
+To: Michael Bringmann <mwb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Gustavo Walbon <gwalbon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
+References: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <7f8f6e88-8187-d690-13cb-dae0e47c313b@linux.ibm.com>
+Date: Wed, 15 Jan 2020 16:07:49 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/X0ES/Pzabz50rIWcgod6J4G";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <5577aef8-1d5a-ca95-ff0a-9c7b5977e5bf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-15_03:2020-01-15,
+ 2020-01-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1011
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001150183
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,70 +88,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Palmer Dabbelt <palmerdabbelt@google.com>,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- linux-next@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Zong Li <zong.li@sifive.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/X0ES/Pzabz50rIWcgod6J4G
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 1/15/20 6:53 AM, Michael Bringmann wrote:
+> Correct overflow problem in calculation+display of Maximum Memory
+> value to syscfg where 32bits is insufficient.
+> 
 
-Hi Alexandre,
+Probably needs the following Fixes tag:
 
-Thanks for sorting this out.  Just a few comments below.
+Fixes: 772b039fd9a7 ("powerpc/pseries: Export maximum memory value")
 
-On Wed, 15 Jan 2020 15:46:48 -0500 Alexandre Ghiti <alex@ghiti.fr> wrote:
->
+otherwise,
 
-> =20
->  # Have Kbuild supply the path to objdump so we handle cross compilation.
-                                            ^
-"and nm"
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 
-> +# Remove from the bad relocations those that match an undefined weak sym=
-bol
-> +# which will result in an absolute relocation to 0.
-> +# Weak unresolved symbols are of that form in nm output:
-> +# "                  w _binary__btf_vmlinux_bin_end"
-> +undef_weak_symbols=3D$($nm "$vmlinux" | awk -e '$1 ~ /w/ { print $2 }')
-> +
-> +while IFS=3D read -r weak_symbol; do
-> +	bad_relocs=3D"$(echo -n "$bad_relocs" | sed "/$weak_symbol/d")"
-> +done <<< "$undef_weak_symbols"
+> Signed-off-by: Michael Bringmann <mwb@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/lparcfg.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+> index e33e8bc..f00411c 100644
+> --- a/arch/powerpc/platforms/pseries/lparcfg.c
+> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
+> @@ -433,12 +433,12 @@ static void parse_em_data(struct seq_file *m)
+> 
+>  static void maxmem_data(struct seq_file *m)
+>  {
+> -	unsigned long maxmem = 0;
+> +	u64 maxmem = 0;
+> 
+> -	maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
+> -	maxmem += hugetlb_total_pages() * PAGE_SIZE;
+> +	maxmem += (u64)drmem_info->n_lmbs * drmem_info->lmb_size;
+> +	maxmem += (u64)hugetlb_total_pages() * PAGE_SIZE;
+> 
+> -	seq_printf(m, "MaxMem=%ld\n", maxmem);
+> +	seq_printf(m, "MaxMem=%llu\n", maxmem);
+>  }
+> 
+>  static int pseries_lparcfg_data(struct seq_file *m, void *v)
+> 
 
-This is not a bash script, and the above is a bashism :-(
-Also, my version of awk (mawk) doesn't have a -e option.
-
-How about something like :
-
-undef_weak_symbols=3D$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
-if [ "$undef_weak_symbols" ]; then
-	bad_relocs=3D"$(echo "$bad_relocs" | grep -F -w -v "$undef_weak_symbols")"
-fi
-
-Or do this near the top and add the grep to the others.
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/X0ES/Pzabz50rIWcgod6J4G
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4forQACgkQAVBC80lX
-0GyunwgAkZoBTpQAhgoODm6QrksXXQEyfUW4a4mYnW8Q62gQraQoNVv0H9M1Irnu
-1W7s/FfgvSNAom/ST78bdY0mPdADH0TZmyyRJbv2EIYvnwUdXva5UwAboMLCacnW
-PZKeC8ox9F57/Td+tDK7okuk/uO17KKp+Uo70DeDeS2i8KUZyUJxD+mO7y173pUj
-hNt25ESQEqrC4Lvu9I16kyLjxvjzMRv4unaQIy3htYQCbxF7/X1Lu33FEhvAJ9vx
-4BY7VWCaE2KNUMEaupSvJiXKfKWWGw6uMNZysIM17C5CfdHZvhaeMNYjNq03A6tX
-jalLi/Ycc9raelW8W8CmcuHx5CzvDA==
-=q+Te
------END PGP SIGNATURE-----
-
---Sig_/X0ES/Pzabz50rIWcgod6J4G--
