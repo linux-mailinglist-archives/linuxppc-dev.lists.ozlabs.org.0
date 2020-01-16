@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B30D13E4FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:12:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD4A13E45B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2020 18:08:01 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47z9cY4FRbzDqXs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:07:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47z9jD2cgDzDqYh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:12:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=BGDPjtpQ; dkim-atps=neutral
+ header.s=default header.b=U+SHBsBQ; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47z9Jw0GFDzDqbh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:54:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47z9Jy6h9wzDqb1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 03:54:25 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5658D22525;
- Thu, 16 Jan 2020 16:54:21 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 781182464B;
+ Thu, 16 Jan 2020 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579193662;
- bh=1Y83ZRy4JQGM0BUTA/qOSFth1ukzvcOryxz+QvYzsxE=;
+ s=default; t=1579193663;
+ bh=d5Dp4/iefDU1JBWw7HWrWettcgUtKFnOxwNMP9rNjHM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BGDPjtpQlr5FysV9vC0FzVLcxEwxmczDi9JeRBt6N69hq/Qiq5aXn8AiU+EBMNSvd
- 6Z9sNTuPjB+funRi5cpppEnQCQ1i/Ai4wHxejfH/CF3BXQn0Fc59qdKQRie/pXUvJJ
- Db9LxnkqRKvsYCvu+Q5F/Pg37SBvPvLsMIMIhgQo=
+ b=U+SHBsBQ8ayS7r99yqTYX+tEqoo1o7Az/PZJ+fRM5r2s/OXCG9kLvlEvUxWhoJh0C
+ 8ESJxUj5bikoaJxH9pURFBR5ZxGtN5GMcxavONGGJy2bKDUX4XNMhuEMZROT8YgSea
+ KgV4/Icsq801ZA49cr1EvPL5uDsph8wk02EG0zAc=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 189/205] powerpc/kasan: Fix boot failure with
- RELOCATABLE && FSL_BOOKE
-Date: Thu, 16 Jan 2020 11:42:44 -0500
-Message-Id: <20200116164300.6705-189-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 190/205] powerpc/archrandom: fix
+ arch_get_random_seed_int()
+Date: Thu, 16 Jan 2020 11:42:45 -0500
+Message-Id: <20200116164300.6705-190-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
 References: <20200116164300.6705-1-sashal@kernel.org>
@@ -60,58 +60,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Lexi Shao <shaolexi@huawei.com>,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 71eb40fc53371bc247c8066ae76ad9e22ae1e18d ]
+[ Upstream commit b6afd1234cf93aa0d71b4be4788c47534905f0be ]
 
-When enabling CONFIG_RELOCATABLE and CONFIG_KASAN on FSL_BOOKE,
-the kernel doesn't boot.
+Commit 01c9348c7620ec65
 
-relocate_init() requires KASAN early shadow area to be set up because
-it needs access to the device tree through generic functions.
+  powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*
 
-Call kasan_early_init() before calling relocate_init()
+updated arch_get_random_[int|long]() to be NOPs, and moved the hardware
+RNG backing to arch_get_random_seed_[int|long]() instead. However, it
+failed to take into account that arch_get_random_int() was implemented
+in terms of arch_get_random_long(), and so we ended up with a version
+of the former that is essentially a NOP as well.
 
-Reported-by: Lexi Shao <shaolexi@huawei.com>
-Fixes: 2edb16efc899 ("powerpc/32: Add KASAN support")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Fix this by calling arch_get_random_seed_long() from
+arch_get_random_seed_int() instead.
+
+Fixes: 01c9348c7620ec65 ("powerpc: Use hardware RNG for arch_get_random_seed_* not arch_get_random_*")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/b58426f1664a4b344ff696d18cacf3b3e8962111.1575036985.git.christophe.leroy@c-s.fr
+Link: https://lore.kernel.org/r/20191204115015.18015-1-ardb@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_fsl_booke.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/archrandom.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index adf0505dbe02..519d49547e2f 100644
---- a/arch/powerpc/kernel/head_fsl_booke.S
-+++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -238,6 +238,9 @@ set_ivor:
+diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
+index 9c63b596e6ce..a09595f00cab 100644
+--- a/arch/powerpc/include/asm/archrandom.h
++++ b/arch/powerpc/include/asm/archrandom.h
+@@ -28,7 +28,7 @@ static inline int arch_get_random_seed_int(unsigned int *v)
+ 	unsigned long val;
+ 	int rc;
  
- 	bl	early_init
+-	rc = arch_get_random_long(&val);
++	rc = arch_get_random_seed_long(&val);
+ 	if (rc)
+ 		*v = val;
  
-+#ifdef CONFIG_KASAN
-+	bl	kasan_early_init
-+#endif
- #ifdef CONFIG_RELOCATABLE
- 	mr	r3,r30
- 	mr	r4,r31
-@@ -264,9 +267,6 @@ set_ivor:
- /*
-  * Decide what sort of machine this is and initialize the MMU.
-  */
--#ifdef CONFIG_KASAN
--	bl	kasan_early_init
--#endif
- 	mr	r3,r30
- 	mr	r4,r31
- 	bl	machine_init
 -- 
 2.20.1
 
