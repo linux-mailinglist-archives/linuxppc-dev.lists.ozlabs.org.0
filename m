@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C8E1412B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 22:18:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zv775TxFzDqkq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 08:18:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33141412C1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 22:21:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zvC26H4dzDqxs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 08:21:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zv5D5DZDzDqxg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 08:16:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zv8T6cpXzDqxh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 08:19:37 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
  data access at 0x00f0fd0d
-Date: Fri, 17 Jan 2020 21:16:45 +0000
+Date: Fri, 17 Jan 2020 21:19:35 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -41,8 +41,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-205099-206035-CrtUG6DWuL@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-205099-206035-5dvRujQMa4@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
 References: <bug-205099-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,12 +67,19 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
---- Comment #11 from Erhard F. (erhard_f@mailbox.org) ---
-Applied your patch series on top of 5.5-rc6. CONFIG_KASAN_VMALLOC is not
-non-selectable but forced on by default.
+--- Comment #12 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 286869
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286869&action=3Dedit
+dmesg (kernel 5.5-rc6+, INLINE KASAN, PowerMac G4 DP)
 
-Current situation is that the hit does not show up with INLINE KASAN in
-raid6_pq.
+However I might have gotten a hint where the stack is clobbered. The IRQ st=
+ack
+overflows sooner or later (CONFIG_DEBUG_SHIRQ=3Dy might have brought that u=
+p?),
+which causes all sorts of problems.
+
+I'll attach the dmesg here but I can open a new bug if this is more suitabl=
+e.
 
 --=20
 You are receiving this mail because:
