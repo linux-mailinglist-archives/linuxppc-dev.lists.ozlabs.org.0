@@ -1,91 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7555F141221
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 21:12:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179C3141065
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 19:08:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zpvq6lt9zDqxV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 05:08:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zsfq3pjMzDqyq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 07:12:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=idof=3g=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zpqT0QKkzDqx1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 05:04:30 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 17 Jan 2020 10:02:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,331,1574150400"; d="scan'208";a="227286652"
-Received: from ray.jf.intel.com (HELO [10.7.201.139]) ([10.7.201.139])
- by orsmga006.jf.intel.com with ESMTP; 17 Jan 2020 10:02:35 -0800
-Subject: Re: [PATCH v16 00/23] selftests, powerpc, x86: Memory Protection Keys
-To: Sandipan Das <sandipan@linux.ibm.com>, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
-References: <cover.1579265066.git.sandipan@linux.ibm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-Message-ID: <3a14815c-b9cb-f5a5-630a-0bfb25356429@intel.com>
-Date: Fri, 17 Jan 2020 10:02:35 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zsd22DHrzDqrC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 07:10:45 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205283] BUG: KASAN: global-out-of-bounds in
+ _copy_to_iter+0x3d4/0x5a8
+Date: Fri, 17 Jan 2020 20:01:41 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: CC platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: File System
+X-Bugzilla-Component: btrfs
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: fs_btrfs@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205283-206035-LsxJn3gAPG@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205283-206035@https.bugzilla.kernel.org/>
+References: <bug-205283-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <cover.1579265066.git.sandipan@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,33 +61,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
- x86@kernel.org, linuxram@us.ibm.com, mhocko@kernel.org, linux-mm@kvack.org,
- mingo@redhat.com, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/17/20 4:49 AM, Sandipan Das wrote:
-> Memory protection keys enables an application to protect its address
-> space from inadvertent access by its own code.
-> 
-> This feature is now enabled on powerpc and has been available since
-> 4.16-rc1. The patches move the selftests to arch neutral directory
-> and enhance their test coverage.
-> 
-> Tested on powerpc64 and x86_64 (Skylake-SP).
-I also tested the series.  The 64-bit binary works fine.  But,
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205283
 
-This is failing to build the x86 selftests:
+--- Comment #12 from Erhard F. (erhard_f@mailbox.org) ---
+Applied your patch series on top of 5.5-rc6. CONFIG_KASAN_VMALLOC is not
+non-selectable but forced on by default.
 
-make: *** No rule to make target 'protection_keys.c', needed by
-'/home/daveh/linux/tools/testing/selftests/x86/protection_keys_32'.  Stop.
+Current situation is that the hit does not show up with KASAN and btrs modu=
+le
+unloading/re-loading.
 
-I think you just forgot to remove the binary from the x86 Makefile.
+ # grep -i kasan .config
+CONFIG_HAVE_ARCH_KASAN=3Dy
+CONFIG_HAVE_ARCH_KASAN_VMALLOC=3Dy
+CONFIG_CC_HAS_KASAN_GENERIC=3Dy
+CONFIG_KASAN=3Dy
+CONFIG_KASAN_GENERIC=3Dy
+CONFIG_KASAN_OUTLINE=3Dy
+# CONFIG_KASAN_INLINE is not set
+CONFIG_KASAN_STACK=3D1
+CONFIG_KASAN_VMALLOC=3Dy
+# CONFIG_TEST_KASAN is not set
+CONFIG_KASAN_SHADOW_OFFSET=3D0xe0000000
 
-Which reminds me: This removes the 32-bit binary.  x86 32-bit binaries
-exercise different paths than the 64-bit ones, so we like to have both.
- Although it isn't *essential* it would really be nice to keep the
-32-bit binary.
+ # modprobe -r -v btrfs
+rmmod btrfs
+rmmod zlib_inflate
+rmmod raid6_pq
+rmmod zlib_deflate
+rmmod lzo_decompress
+rmmod lzo_compress
+rmmod zstd_compress
+rmmod zstd_decompress
+rmmod xor
+rmmod blake2b_generic
+ # modprobe -v btrfs
+insmod
+/lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/zlib_inflate/zlib_inflate.ko=
+=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/raid6/raid6_pq.ko=20
+insmod
+/lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/zlib_deflate/zlib_deflate.ko=
+=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/lzo/lzo_decompress.ko=
+=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/lzo/lzo_compress.ko=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/zstd/zstd_compress.ko=
+=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/lib/zstd/zstd_decompress.k=
+o=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/crypto/xor.ko=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/crypto/blake2b_generic.ko=
+=20
+insmod /lib/modules/5.5.0-rc6-PowerMacG4+/kernel/fs/btrfs/btrfs.ko
+
+--=20
+You are receiving this mail because:
+You are watching someone on the CC list of the bug.=
