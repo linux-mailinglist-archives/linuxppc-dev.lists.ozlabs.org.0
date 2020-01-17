@@ -2,71 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988FC140603
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 10:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB46E140866
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 11:53:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zbN12p95zDqpg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 20:28:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zdGQ0mFDzDqsG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 21:53:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=i9BMvz3E; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=DpbJccVe; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zbLN4h7dzDqlm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 20:27:06 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 47zbL80nqyzB09b7;
- Fri, 17 Jan 2020 10:26:56 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=i9BMvz3E; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id SBcmuNiYkyF6; Fri, 17 Jan 2020 10:26:56 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47zbL76pYtzB09b5;
- Fri, 17 Jan 2020 10:26:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579253216; bh=9zDNZlzTkeycpSWCb0TYhvoG++VQ0gIX3RE4mUEvdOg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=i9BMvz3Et5VUQDFvPy+FmGSkBzSFXqfiloNAGK6ETWirQC9BSIX++qp5CDw2aZert
- 7ZvsFo1ljH6SQeneQhVz/i5r8XjA4pPDw6RSVCjw8z88fAGEB5eOFuEaHhNOp6Saa6
- njr+TNa2sSfV/s65M9dLdazSTLW/6PBL5xvi/9Nc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F18298B83E;
- Fri, 17 Jan 2020 10:26:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QrD_JOibNVgE; Fri, 17 Jan 2020 10:26:56 +0100 (CET)
-Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C07418B83B;
- Fri, 17 Jan 2020 10:26:56 +0100 (CET)
-Subject: Re: [RFC PATCH v4 00/11] powerpc: switch VDSO to C implementation.
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <cover.1579196675.git.christophe.leroy@c-s.fr>
- <20200117085851.GS3191@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <345e2772-cde9-7d86-874e-347db1453c80@c-s.fr>
-Date: Fri, 17 Jan 2020 10:26:56 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zdDR2DcPzDqhn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 21:52:06 +1100 (AEDT)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 721152072B;
+ Fri, 17 Jan 2020 10:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579258323;
+ bh=wqYL+3CAN6StLGVXFL0NElBOuM/XDqClD5Vd37mJACw=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=DpbJccVe1MfTBbPFmG44vbN7nZIE9wFXJF1eYsvMK5u+iHUr9FB2Y5YJuuiQnF310
+ oZTfzNV1ZyqPfJAdjcUOZHI+Sd22iXo5wgVZeD5+ahNkmeMHXSl1SkIpDEp40Hr4+H
+ mANLCazuTEkfauOxA++ovr0SeHzQTv1Hl47yBmYI=
+Date: Fri, 17 Jan 2020 10:51:54 +0000
+From: Will Deacon <will@kernel.org>
+To: Alexey Budankov <alexey.budankov@linux.intel.com>
+Subject: Re: [PATCH v4 8/9] drivers/perf: open access for CAP_SYS_PERFMON
+ privileged process
+Message-ID: <20200117105153.GB6144@willie-the-truck>
+References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
+ <ce3086d8-9fce-84d6-8b4e-948996c2e0fc@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200117085851.GS3191@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ce3086d8-9fce-84d6-8b4e-948996c2e0fc@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,58 +58,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, arnd@arndb.de, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, luto@kernel.org, tglx@linutronix.de,
- vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Song Liu <songliubraving@fb.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ Will Deacon <will.deacon@arm.com>, Alexei Starovoitov <ast@kernel.org>,
+ Stephane Eranian <eranian@google.com>,
+ "james.bottomley@hansenpartnership.com"
+ <james.bottomley@hansenpartnership.com>, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
+ Igor Lubashev <ilubashe@akamai.com>, James Morris <jmorris@namei.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
+ Serge Hallyn <serge@hallyn.com>, Robert Richter <rric@kernel.org>,
+ Kees Cook <keescook@chromium.org>, Jann Horn <jannh@google.com>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org,
+ Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ Casey Schaufler <casey@schaufler-ca.com>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 17/01/2020 à 09:58, Segher Boessenkool a écrit :
-> Hi!
+On Wed, Dec 18, 2019 at 12:30:29PM +0300, Alexey Budankov wrote:
 > 
-> On Thu, Jan 16, 2020 at 05:58:24PM +0000, Christophe Leroy wrote:
->> On a powerpc8xx, with current powerpc/32 ASM VDSO:
->>
->> gettimeofday:    vdso: 907 nsec/call
->> clock-getres-realtime:    vdso: 484 nsec/call
->> clock-gettime-realtime:    vdso: 899 nsec/call
->>
->> The first patch adds VDSO generic C support without any changes to common code.
->> Performance is as follows:
->>
->> gettimeofday:    vdso: 1211 nsec/call
->> clock-getres-realtime:    vdso: 722 nsec/call
->> clock-gettime-realtime:    vdso: 1216 nsec/call
->>
->> Then a few changes in the common code have allowed performance improvement. At
->> the end of the series we have:
->>
->> gettimeofday:    vdso: 974 nsec/call
->> clock-getres-realtime:    vdso: 545 nsec/call
->> clock-gettime-realtime:    vdso: 941 nsec/call
->>
->> The final result is rather close to pure ASM VDSO:
->> * 7% more on gettimeofday (9 cycles)
->> * 5% more on clock-gettime-realtime (6 cycles)
->> * 12% more on clock-getres-realtime (8 cycles)
+> Open access to monitoring for CAP_SYS_PERFMON privileged processes.
+> For backward compatibility reasons access to the monitoring remains open
+> for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
+> monitoring is discouraged with respect to CAP_SYS_PERFMON capability.
 > 
-> Nice!  Much better.
+> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+> ---
+>  drivers/perf/arm_spe_pmu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> It should be tested on more representative hardware, too, but this looks
-> promising alright :-)
-> 
+> diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+> index 4e4984a55cd1..5dff81bc3324 100644
+> --- a/drivers/perf/arm_spe_pmu.c
+> +++ b/drivers/perf/arm_spe_pmu.c
+> @@ -274,7 +274,7 @@ static u64 arm_spe_event_to_pmscr(struct perf_event *event)
+>  	if (!attr->exclude_kernel)
+>  		reg |= BIT(SYS_PMSCR_EL1_E1SPE_SHIFT);
+>  
+> -	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && capable(CAP_SYS_ADMIN))
+> +	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && perfmon_capable())
+>  		reg |= BIT(SYS_PMSCR_EL1_CX_SHIFT);
+>  
+>  	return reg;
+> @@ -700,7 +700,7 @@ static int arm_spe_pmu_event_init(struct perf_event *event)
+>  		return -EOPNOTSUPP;
+>  
+>  	reg = arm_spe_event_to_pmscr(event);
+> -	if (!capable(CAP_SYS_ADMIN) &&
+> +	if (!perfmon_capable() &&
+>  	    (reg & (BIT(SYS_PMSCR_EL1_PA_SHIFT) |
+>  		    BIT(SYS_PMSCR_EL1_CX_SHIFT) |
+>  		    BIT(SYS_PMSCR_EL1_PCT_SHIFT))))
 
-Yes.
+Acked-by: Will Deacon <will@kernel.org>
 
-Now the challenge is to get VDSO32 buildable on PPC64. The big issue is 
-that in most powerpc/include/asm/*.h , CONFIG_PPC64 is used to know if 
-the build is a 64 bits build or a 32 bits build, so VDSO32 build fails.
+Worth noting that this allows profiling of *physical* addresses used by
+memory access instructions and so probably has some security implications
+beyond the usual "but perf is buggy" line of reasoning.
 
-I don't know how this could be easily fixed.
-
-Christophe
+Will
