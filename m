@@ -1,53 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5108D140278
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 04:46:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD4914018E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 02:48:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zP972hC0zDrK2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 12:48:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zRnD1F83zDqmj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 14:46:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=YLuQ4iN8; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zP6t4MvyzDr6l
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 12:46:29 +1100 (AEDT)
-Received: from X1 (nat-ab2241.sltdut.senawave.net [162.218.216.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 38BFA2075B;
- Fri, 17 Jan 2020 01:46:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579225587;
- bh=kF0McEzzIna+OlNxDDvv0BFj+tanfJPabCZ9hgpDZTw=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=YLuQ4iN8bF+tZrRX09LQTvkHEz92ULIHS5nIyWSwrfb4VbMtXxH/Oe5XZvuePIEYo
- sF47+mV/+zMy6nfyYfcd5nDd1MXB36Ni+9+XvwIfqY6iK0mnRcIs4F6WqZkN0XwLIK
- SBIuF6vqcLWRDG/ZIbepRDIL+/bqD5sHlh96ZRAA=
-Date: Thu, 16 Jan 2020 17:46:26 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v4 3/9] asm-generic/tlb: Avoid potential double flush
-Message-Id: <20200116174626.0244f71bbff64eee6c7faa1d@linux-foundation.org>
-In-Reply-To: <c12bb139-9eda-74a9-b4de-b147a88ed1b0@linux.ibm.com>
-References: <20200116064531.483522-1-aneesh.kumar@linux.ibm.com>
- <20200116064531.483522-4-aneesh.kumar@linux.ibm.com>
- <c12bb139-9eda-74a9-b4de-b147a88ed1b0@linux.ibm.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zRkp3FYBzDqlY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 14:44:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=MRpG3pi7; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 47zRkn4PZZz9sRd; Fri, 17 Jan 2020 14:44:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1579232657; bh=ltSUYl1RDYBIGn9bPmKjAqMNA4aASu38qTLJ2lZkEmE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=MRpG3pi7GFi82Qba6Pzm7uB4nfP9Nr3XKcwo53umfhcl1ylDaP8aSeCiGvQLvrRNH
+ 9UgQTp523GqjiRHNU3+3yCMjIWcfLD1WiZLF07pUHNnLn/tsgz61WJ5TWluBb48Iev
+ Hs7nl4B06xm282BE7/4zRUzj+CuQH4oAIHMKH6Q+zNRlghHbP3dYkMibYMIS54/r/P
+ qhOUwkUNS3cIL2DohqyqXf47gYURRje8UIo5txvYuite4BHSqq38N+HBxswvrZVT9P
+ WF8rlCMO6t1soIhmpiYHWdE/uEJL7VWuccRAMzb4Ta8Yl1vJyaRV/wBqK+lOR8lqfm
+ I9gcUrjyuB5Pg==
+Date: Fri, 17 Jan 2020 14:43:54 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: Re: [PATCH v3] powerpc/mm: Remove kvm radix prefetch workaround for
+ Power9 DD2.2
+Message-ID: <20200117034354.GA31793@blackberry>
+References: <20191206031722.25781-1-jniethe5@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191206031722.25781-1-jniethe5@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,50 +54,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, peterz@infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, will@kernel.org
+Cc: oohall@gmail.com, linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 Jan 2020 12:19:59 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
-
-> On 1/16/20 12:15 PM, Aneesh Kumar K.V wrote:
-> > From: Peter Zijlstra <peterz@infradead.org>
-> > 
-> > Aneesh reported that:
-> > 
-> > 	tlb_flush_mmu()
-> > 	  tlb_flush_mmu_tlbonly()
-> > 	    tlb_flush()			<-- #1
-> > 	  tlb_flush_mmu_free()
-> > 	    tlb_table_flush()
-> > 	      tlb_table_invalidate()
-> > 		tlb_flush_mmu_tlbonly()
-> > 		  tlb_flush()		<-- #2
-> > 
-> > does two TLBIs when tlb->fullmm, because __tlb_reset_range() will not
-> > clear tlb->end in that case.
-> > 
-> > Observe that any caller to __tlb_adjust_range() also sets at least one
-> > of the tlb->freed_tables || tlb->cleared_p* bits, and those are
-> > unconditionally cleared by __tlb_reset_range().
-> > 
-> > Change the condition for actually issuing TLBI to having one of those
-> > bits set, as opposed to having tlb->end != 0.
-> > 
+On Fri, Dec 06, 2019 at 02:17:22PM +1100, Jordan Niethe wrote:
+> Commit a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with
+> KVM") introduced a number of workarounds as coming out of a guest with
+> the mmu enabled would make the cpu would start running in hypervisor
+> state with the PID value from the guest. The cpu will then start
+> prefetching for the hypervisor with that PID value.
 > 
+> In Power9 DD2.2 the cpu behaviour was modified to fix this. When
+> accessing Quadrant 0 in hypervisor mode with LPID != 0 prefetching will
+> not be performed. This means that we can get rid of the workarounds for
+> Power9 DD2.2 and later revisions. Add a new cpu feature
+> CPU_FTR_P9_RADIX_PREFETCH_BUG to indicate if the workarounds are needed.
 > 
-> We should possibly get this to stable too along with the first two 
-> patches. I am not quiet sure if this will qualify for a stable backport. 
-> Hence avoided adding Cc:stable@kernel.org
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
-I'm not seeing any description of the user-visible runtime effects. 
-Always needed, especially for -stable, please.
-
-It appears to be a small performance benefit?  If that benefit was
-"large" and measurements were presented then that would be something
-we might wish to backport.
-
-
+Acked-by: Paul Mackerras <paulus@ozlabs.org>
