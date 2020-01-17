@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B497141211
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 21:04:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20F314121C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 21:07:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zsV910q7zDqmX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 07:04:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zsXp2F67zDqlS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 07:07:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zsRj0vFWzDqxf
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 07:02:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zsSR1w0FzDqtt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 07:03:19 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 205283] BUG: KASAN: global-out-of-bounds in
  _copy_to_iter+0x3d4/0x5a8
-Date: Fri, 17 Jan 2020 20:02:38 +0000
+Date: Fri, 17 Jan 2020 20:03:16 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: CC platform_ppc-32@kernel-bugs.osdl.org
@@ -42,7 +42,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: fs_btrfs@kernel-bugs.kernel.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-205283-206035-p08VV5Xn5t@https.bugzilla.kernel.org/>
+Message-ID: <bug-205283-206035-eS7i8O6g2S@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-205283-206035@https.bugzilla.kernel.org/>
 References: <bug-205283-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -71,13 +71,13 @@ Erhard F. (erhard_f@mailbox.org) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
- Attachment #286387|0                           |1
+ Attachment #286385|0                           |1
         is obsolete|                            |
 
---- Comment #13 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 286865
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286865&action=3Dedit
-5.5.0-rc6+ kernel .config (PowerMac G4 DP)
+--- Comment #14 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 286867
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286867&action=3Dedit
+dmesg (kernel 5.5.0-rc6+, PowerMac G4 DP)
 
 --=20
 You are receiving this mail because:
