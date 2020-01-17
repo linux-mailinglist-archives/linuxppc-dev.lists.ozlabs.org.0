@@ -1,82 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D97140A92
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 14:19:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zhVC38ylzDqlg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 00:19:15 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3A3140AA6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 14:23:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47zhb94y9xzDqBx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 00:23:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zgnR45CJzDqpf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 23:47:23 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00HClE9k024326
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 07:47:17 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xk0qu3v9n-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47zgnT0fdkzDqr6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 23:47:24 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00HClIJZ136102
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 07:47:19 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xk0qsuwfm-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 07:47:16 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 07:47:18 -0500
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Fri, 17 Jan 2020 12:47:03 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Fri, 17 Jan 2020 12:47:08 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 17 Jan 2020 12:46:57 -0000
+ Fri, 17 Jan 2020 12:47:02 -0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00HCk6L942205536
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 00HCl18v38338914
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jan 2020 12:46:06 GMT
+ Fri, 17 Jan 2020 12:47:01 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E6D8AE053;
- Fri, 17 Jan 2020 12:46:55 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 12C17AE057;
+ Fri, 17 Jan 2020 12:47:01 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2A2BAE051;
- Fri, 17 Jan 2020 12:46:50 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0D3F9AE051;
+ Fri, 17 Jan 2020 12:46:56 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.44.232])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 17 Jan 2020 12:46:50 +0000 (GMT)
+ Fri, 17 Jan 2020 12:46:55 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: acme@kernel.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC 4/6] powerpc/hv-24x7: Handle migration case of lpar for proper
- system information in sysfs
-Date: Fri, 17 Jan 2020 18:16:18 +0530
+Subject: [RFC 5/6] perf/tools: Enhance JSON/metric infrastructure to handle "?"
+Date: Fri, 17 Jan 2020 18:16:19 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20200117124620.26094-1-kjain@linux.ibm.com>
 References: <20200117124620.26094-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20011712-4275-0000-0000-000003987CB0
+x-cbid: 20011712-0012-0000-0000-0000037E43CB
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011712-4276-0000-0000-000038AC7E0E
-Message-Id: <20200117124620.26094-5-kjain@linux.ibm.com>
+x-cbparentid: 20011712-0013-0000-0000-000021BA7AA6
+Message-Id: <20200117124620.26094-6-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-01-17_03:2020-01-16,
  2020-01-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- lowpriorityscore=0 mlxlogscore=807 adultscore=0 malwarescore=0
- phishscore=0 clxscore=1015 priorityscore=1501 impostorscore=0 spamscore=0
- mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ mlxlogscore=999 impostorscore=0 spamscore=0 phishscore=0 suspectscore=2
+ priorityscore=1501 clxscore=1015 adultscore=0 mlxscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1910280000 definitions=main-2001170102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,46 +98,318 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Function 'read_sys_info_pseries()' is added to get system parameter
-values like number of sockets and chips per socket.
-and it gets these details via rtas_call with token
-"PROCESSOR_MODULE_INFO".
+Patch enhances current metric infrastructure to handle "?" in the metric
+expression. The "?" can be use for parameters whose value not known while
+creating metric events and which can be replace later at runtime to
+the proper value. It also add flexibility to create multiple events out
+of single metric event added in json file.
 
-Incase lpar migrate from one system to another, system
-parameter details like chips per sockets or number of sockets might
-change. So, it needs to be re-initialized otherwise, these values
-corresponds to previous system values.
-This patch adds a call to 'read_sys_info_pseries()' from
-'post-mobility_fixup()' to re-init the physsockets and physchips values.
+Patch adds function 'arch_get_runtimeparam' which is a arch specific
+function, returns the count of metric events need to be created.
+By default it return 1.
+
+One loop is added in function 'metricgroup__add_metric', which create
+multiple events at run time depend on return value of
+'arch_get_runtimeparam' and merge that event in 'group_list'.
+
+This infrastructure needed for hv_24x7 socket/chip level events.
+"hv_24x7" chip level events needs specific chip-id to which the
+data is requested. Function 'arch_get_runtimeparam' implemented
+in header.c which extract number of sockets from sysfs file
+"sockets" under "/sys/devices/hv_24x7/interface/".
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/mobility.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/perf/arch/powerpc/util/header.c |  40 +++++++++
+ tools/perf/util/expr.h                |   1 +
+ tools/perf/util/expr.y                |  17 +++-
+ tools/perf/util/metricgroup.c         | 117 +++++++++++++++++---------
+ tools/perf/util/metricgroup.h         |   1 +
+ tools/perf/util/stat-shadow.c         |   5 ++
+ 6 files changed, 138 insertions(+), 43 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index b571285f6c14..226accd6218b 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -371,6 +371,18 @@ void post_mobility_fixup(void)
- 	/* Possibly switch to a new RFI flush type */
- 	pseries_setup_rfi_flush();
+diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
+index 3b4cdfc5efd6..28425edb901c 100644
+--- a/tools/perf/arch/powerpc/util/header.c
++++ b/tools/perf/arch/powerpc/util/header.c
+@@ -7,6 +7,11 @@
+ #include <string.h>
+ #include <linux/stringify.h>
+ #include "header.h"
++#include "metricgroup.h"
++#include "evlist.h"
++#include <dirent.h>
++#include "pmu.h"
++#include <api/fs/fs.h>
  
-+	/*
-+	 * Incase lpar migrate from one system to another, system
-+	 * parameter details like chips per sockets and number of sockets
-+	 * might change. So, it needs to be re-initialized otherwise these
-+	 * values corresponds to previous system.
-+	 * Here, adding a call to read_sys_info_pseries() declared in
-+	 * platforms/pseries/pseries.h to re-init the physsockets and
-+	 * physchips value.
-+	 */
-+	if (IS_ENABLED(CONFIG_HV_PERF_CTRS) && IS_ENABLED(CONFIG_PPC_RTAS))
-+		read_sys_info_pseries();
+ #define mfspr(rn)       ({unsigned long rval; \
+ 			 asm volatile("mfspr %0," __stringify(rn) \
+@@ -16,6 +21,8 @@
+ #define PVR_VER(pvr)    (((pvr) >>  16) & 0xFFFF) /* Version field */
+ #define PVR_REV(pvr)    (((pvr) >>   0) & 0xFFFF) /* Revison field */
+ 
++#define SOCKETS_INFO_FILE_PATH "/devices/hv_24x7/interface/"
 +
- 	return;
+ int
+ get_cpuid(char *buffer, size_t sz)
+ {
+@@ -44,3 +51,36 @@ get_cpuid_str(struct perf_pmu *pmu __maybe_unused)
+ 
+ 	return bufp;
+ }
++
++int arch_get_runtimeparam(void)
++{
++	int count = 0;
++	DIR *dir;
++	char path[PATH_MAX];
++	const char *sysfs = sysfs__mountpoint();
++	char filename[] = "sockets";
++	FILE *file;
++	char buf[16], *num;
++	int data;
++
++	if (!sysfs)
++		goto out;
++	snprintf(path, PATH_MAX,
++		 "%s" SOCKETS_INFO_FILE_PATH, sysfs);
++	dir = opendir(path);
++	if (!dir)
++		goto out;
++	strcat(path, filename);
++	file = fopen(path, "r");
++	if (!file)
++		goto out;
++
++	data = fread(buf, 1, sizeof(buf), file);
++	if (data == 0)
++		goto out;
++	count = strtol(buf, &num, 10);
++out:
++	if (!count)
++		count = 1;
++	return count;
++}
+diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
+index 046160831f90..85ebea68b0c5 100644
+--- a/tools/perf/util/expr.h
++++ b/tools/perf/util/expr.h
+@@ -15,6 +15,7 @@ struct parse_ctx {
+ 	struct parse_id ids[MAX_PARSE_ID];
+ };
+ 
++extern int expr__runtimeparam;
+ void expr__ctx_init(struct parse_ctx *ctx);
+ void expr__add_id(struct parse_ctx *ctx, const char *id, double val);
+ #ifndef IN_EXPR_Y
+diff --git a/tools/perf/util/expr.y b/tools/perf/util/expr.y
+index f9a20a39b64a..26c62b631525 100644
+--- a/tools/perf/util/expr.y
++++ b/tools/perf/util/expr.y
+@@ -36,6 +36,8 @@
+ %type <num> expr if_expr
+ 
+ %{
++int expr__runtimeparam;
++
+ static int expr__lex(YYSTYPE *res, const char **pp);
+ 
+ static void expr__error(double *final_val __maybe_unused,
+@@ -101,7 +103,7 @@ static int expr__symbol(YYSTYPE *res, const char *p, const char **pp)
+ 	if (*p == '#')
+ 		*dst++ = *p++;
+ 
+-	while (isalnum(*p) || *p == '_' || *p == '.' || *p == ':' || *p == '@' || *p == '\\') {
++	while (isalnum(*p) || *p == '_' || *p == '.' || *p == ':' || *p == '@' || *p == '\\' || *p == '?') {
+ 		if (p - s >= MAXIDLEN)
+ 			return -1;
+ 		/*
+@@ -112,6 +114,19 @@ static int expr__symbol(YYSTYPE *res, const char *p, const char **pp)
+ 			*dst++ = '/';
+ 		else if (*p == '\\')
+ 			*dst++ = *++p;
++		else if (*p == '?') {
++			int size = snprintf(NULL, 0, "%d", expr__runtimeparam);
++			char * paramval = (char *)malloc(size);
++			int i = 0;
++			if(!paramval)
++				*dst++ = '0';
++			else {
++				sprintf(paramval, "%d", expr__runtimeparam);
++				while(i < size)
++					*dst++ = paramval[i++];
++				free(paramval);
++			}
++		}
+ 		else
+ 			*dst++ = *p;
+ 		p++;
+diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+index 02aee946b6c1..ec87a120cd7e 100644
+--- a/tools/perf/util/metricgroup.c
++++ b/tools/perf/util/metricgroup.c
+@@ -399,6 +399,11 @@ void metricgroup__print(bool metrics, bool metricgroups, char *filter,
+ 	strlist__delete(metriclist);
  }
  
++int __weak arch_get_runtimeparam(void)
++{
++	return 1;
++}
++
+ static int metricgroup__add_metric(const char *metric, struct strbuf *events,
+ 				   struct list_head *group_list)
+ {
+@@ -419,52 +424,80 @@ static int metricgroup__add_metric(const char *metric, struct strbuf *events,
+ 			continue;
+ 		if (match_metric(pe->metric_group, metric) ||
+ 		    match_metric(pe->metric_name, metric)) {
+-			const char **ids;
+-			int idnum;
+-			struct egroup *eg;
+-			bool no_group = false;
+-
+-			pr_debug("metric expr %s for %s\n", pe->metric_expr, pe->metric_name);
+-
+-			if (expr__find_other(pe->metric_expr,
+-					     NULL, &ids, &idnum) < 0)
+-				continue;
+-			if (events->len > 0)
+-				strbuf_addf(events, ",");
+-			for (j = 0; j < idnum; j++) {
+-				pr_debug("found event %s\n", ids[j]);
+-				/*
+-				 * Duration time maps to a software event and can make
+-				 * groups not count. Always use it outside a
+-				 * group.
+-				 */
+-				if (!strcmp(ids[j], "duration_time")) {
+-					if (j > 0)
+-						strbuf_addf(events, "}:W,");
+-					strbuf_addf(events, "duration_time");
+-					no_group = true;
++			int k, count;
++
++			count = arch_get_runtimeparam();
++
++			/* This loop is added to create multiple
++			 * events depend on count value and add
++			 * those events to group_list.
++			 */
++			for (k = 0; k < count; k++) {
++				const char **ids;
++				int idnum;
++				struct egroup *eg;
++				bool no_group = false;
++				char value[PATH_MAX];
++
++				pr_debug("metric expr %s for %s\n",
++					 pe->metric_expr, pe->metric_name);
++				expr__runtimeparam = k;
++				if (expr__find_other(pe->metric_expr, NULL,
++						     &ids, &idnum) < 0)
+ 					continue;
++				if (events->len > 0)
++					strbuf_addf(events, ",");
++				for (j = 0; j < idnum; j++) {
++					pr_debug("found event %s\n", ids[j]);
++					/*
++					 * Duration time maps to a software
++					 * event and can make groups not count.
++					 * Always use it outside a group.
++					 */
++					if (!strcmp(ids[j], "duration_time")) {
++						if (j > 0)
++							strbuf_addf(events,
++								    "}:W,");
++						strbuf_addf(events,
++							    "duration_time");
++						no_group = true;
++						continue;
++					}
++					strbuf_addf(events, "%s%s",
++						    j == 0 || no_group ? "{" :
++						    ",", ids[j]);
++					no_group = false;
+ 				}
+-				strbuf_addf(events, "%s%s",
+-					j == 0 || no_group ? "{" : ",",
+-					ids[j]);
+-				no_group = false;
+-			}
+-			if (!no_group)
+-				strbuf_addf(events, "}:W");
++				if (!no_group)
++					strbuf_addf(events, "}:W");
+ 
+-			eg = malloc(sizeof(struct egroup));
+-			if (!eg) {
+-				ret = -ENOMEM;
+-				break;
++				eg = malloc(sizeof(struct egroup));
++				if (!eg) {
++					ret = -ENOMEM;
++					break;
++				}
++				eg->ids = ids;
++				eg->idnum = idnum;
++				strcpy(value, pe->metric_name);
++				if (strstr(pe->metric_name, "?")) {
++					int size = snprintf(NULL, 0, "%d", k);
++					char *param = (char *)malloc(size + 1);
++
++					if (!param) {
++						strcat(value, "_0");
++					} else {
++						sprintf(param, "%c%d", '_', k);
++						value[strlen(value) - 1] = '\0';
++						strcat(value, param);
++						free(param);
++					}
++				}
++				eg->metric_name = strdup(value);
++				eg->metric_expr = pe->metric_expr;
++				eg->metric_unit = pe->unit;
++				list_add_tail(&eg->nd, group_list);
++				ret = 0;
+ 			}
+-			eg->ids = ids;
+-			eg->idnum = idnum;
+-			eg->metric_name = pe->metric_name;
+-			eg->metric_expr = pe->metric_expr;
+-			eg->metric_unit = pe->unit;
+-			list_add_tail(&eg->nd, group_list);
+-			ret = 0;
+ 		}
+ 	}
+ 	return ret;
+diff --git a/tools/perf/util/metricgroup.h b/tools/perf/util/metricgroup.h
+index 475c7f912864..81224ba1270d 100644
+--- a/tools/perf/util/metricgroup.h
++++ b/tools/perf/util/metricgroup.h
+@@ -34,4 +34,5 @@ int metricgroup__parse_groups(const struct option *opt,
+ void metricgroup__print(bool metrics, bool groups, char *filter,
+ 			bool raw, bool details);
+ bool metricgroup__has_metric(const char *metric);
++int arch_get_runtimeparam(void);
+ #endif
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 2c41d47f6f83..147a39b1ff5b 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -780,7 +780,12 @@ static void generic_metric(struct perf_stat_config *config,
+ 
+ 	if (!metric_events[i]) {
+ 		const char *p = metric_expr;
++		if (strstr(p, "?")) {
++			char *tmp = strrchr(metric_name, '_');
+ 
++			tmp++;
++			expr__runtimeparam = strtol(tmp, &tmp, 10);
++		}
+ 		if (expr__parse(&ratio, &pctx, &p) == 0) {
+ 			char *unit;
+ 			char metric_bf[64];
 -- 
 2.18.1
 
