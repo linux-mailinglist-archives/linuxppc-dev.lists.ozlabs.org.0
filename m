@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC3F14178C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 13:49:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2893D141740
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 12:32:43 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 480G4l5ZgjzDqDf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 22:32:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 480Hnt4ZLfzDqwy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 23:49:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=d2lb=3h=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 480G2H57DXzDqx5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 22:30:30 +1100 (AEDT)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 205283] BUG: KASAN: global-out-of-bounds in
- _copy_to_iter+0x3d4/0x5a8
-Date: Sat, 18 Jan 2020 11:30:28 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: CC platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: File System
-X-Bugzilla-Component: btrfs
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: fs_btrfs@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-205283-206035-SI3dRnj26d@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-205283-206035@https.bugzilla.kernel.org/>
-References: <bug-205283-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 480HjY3BfGzDqwN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 23:46:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=NyPxHY1G; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 480HjW0nc3z9s1x;
+ Sat, 18 Jan 2020 23:46:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1579351568;
+ bh=gqPYNeS2exoxqfo0y6nSLXdl3WItA/rkMscwL22uFjk=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=NyPxHY1GrZe6EuxL1v7qz8SPgZc7Pibfz+2hurvb+daChsK+3EtjyKLlXUIzCSEj3
+ 5ctHnFxgvTMJ78ujZoVBJizUpBTRscNkDIA9kw7Vsvr19fg5SmWW5ZjMtBy6zvOCH3
+ ESDJLBlE/T1xbP+S3kTmPZUMFoZM5OGo9Nurm5dUBZF/YOWxNGqwMjIscynRnM4qLo
+ 4ZfcwtUysuagKsHQ+nutZMnYb3+3zAlLlauybF+PWGfDCEzH73TIPja7es70iMC5ky
+ WjzApNDUlVcnqmST86U7mmBddd6Hc2mCkBqmH2/Ck5phY23y9bxYyDRiIST4MHH6DK
+ DeZvMOOeLmZUA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, dja@axtens.net
+Subject: Re: [PATCH v5 17/17] powerpc/32s: Enable CONFIG_VMAP_STACK
+In-Reply-To: <2e2509a242fd5f3e23df4a06530c18060c4d321e.1576916812.git.christophe.leroy@c-s.fr>
+References: <cover.1576916812.git.christophe.leroy@c-s.fr>
+ <2e2509a242fd5f3e23df4a06530c18060c4d321e.1576916812.git.christophe.leroy@c-s.fr>
+Date: Sat, 18 Jan 2020 22:46:13 +1000
+Message-ID: <87zhel6iga.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,31 +60,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D205283
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
+> index 90ef355e958b..3be041166db4 100644
+> --- a/arch/powerpc/kernel/head_32.S
+> +++ b/arch/powerpc/kernel/head_32.S
+> @@ -272,14 +272,20 @@ __secondary_hold_acknowledge:
+>   */
+>  	. = 0x200
+>  	DO_KVM  0x200
+> +MachineCheck:
+>  	EXCEPTION_PROLOG_0
+> +#ifdef CONFIG_VMAP_STACK
+> +	li	r11, MSR_KERNEL & ~(MSR_IR | MSR_RI) /* can take DTLB miss */
+> +	mtmsr	r11
+> +#endif
+>  #ifdef CONFIG_PPC_CHRP
+>  	mfspr	r11, SPRN_SPRG_THREAD
+> +	tovirt_vmstack(r11, r11)
 
---- Comment #16 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Christophe Leroy from comment #15)
-> (In reply to Erhard F. from comment #12)
-> > Applied your patch series on top of 5.5-rc6. CONFIG_KASAN_VMALLOC is not
-> > non-selectable but forced on by default.
-> >=20
-> I can't understand.
->=20
-> When I'm using 'make menuconfig', as far as 'module support' is selected,
-> CONFIG_KASAN_VMALLOC is selected and cannot be unselected.
->=20
-> How do you manage to select something else than 'on' ?
-Apologies for my fiddly wording. I see now that I wrote it's now 'not
-non-selectable' which should have been 'not selectable' due to the patch
-series.
+This didn't build:
 
-Anyway, of course it's forced on by default as you said. This can be seen in
-the short grep -i kasan .config I posted above.
+    arch/powerpc/kernel/head_32.S:283: Error: syntax error; found `r', expected `,'
+    arch/powerpc/kernel/head_32.S:283: Error: found 'r', expected: ')'
+    arch/powerpc/kernel/head_32.S:283: Error: bad expression
+    arch/powerpc/kernel/head_32.S:283: Error: junk at end of line: `r11,%r11),0xc0000000@h'
 
---=20
-You are receiving this mail because:
-You are watching someone on the CC list of the bug.=
+
+I fixed it by dropping the brackets.
+
+cheers
