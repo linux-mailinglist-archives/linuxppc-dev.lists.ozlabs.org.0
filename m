@@ -2,53 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E3A141344
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2020 22:42:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 312141415C1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 05:03:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47zvg12MThzDqwl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 08:42:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48046l3MGhzDr0y
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2020 15:03:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=john.stultz@linaro.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=oJRPpWc8; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47zvdB26ZZzDqwb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 08:41:01 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 17 Jan 2020 13:33:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,331,1574150400"; d="scan'208";a="249381111"
-Received: from linux.intel.com ([10.54.29.200])
- by fmsmga004.fm.intel.com with ESMTP; 17 Jan 2020 13:33:49 -0800
-Received: from [10.252.10.77] (abudanko-mobl.ccr.corp.intel.com [10.252.10.77])
- by linux.intel.com (Postfix) with ESMTP id 7E2515803DA;
- Fri, 17 Jan 2020 13:33:38 -0800 (PST)
-Subject: Re: [PATCH v4 8/9] drivers/perf: open access for CAP_SYS_PERFMON
- privileged process
-To: Will Deacon <will@kernel.org>
-References: <c0460c78-b1a6-b5f7-7119-d97e5998f308@linux.intel.com>
- <ce3086d8-9fce-84d6-8b4e-948996c2e0fc@linux.intel.com>
- <20200117105153.GB6144@willie-the-truck>
-From: Alexey Budankov <alexey.budankov@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <dc14cf55-d63e-3565-b366-3a93d54cd588@linux.intel.com>
-Date: Sat, 18 Jan 2020 00:33:37 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48045B3nZFzDqWn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2020 15:02:19 +1100 (AEDT)
+Received: by mail-ot1-x342.google.com with SMTP id z9so22216647oth.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2020 20:02:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Vb5cyWLJV5ZR0F5iDmlf/8PvEYOZeZfUNSdNGtLvZJI=;
+ b=oJRPpWc86aW8ElClMpbeSmGps0a3/zd+opvvpOkEBC8hVNCtjdLp5PzynS4G4c56BU
+ 3VSWjMLxP2DgfZAY4Ynqq28PxgwynoAx/Ega1iY5vHADe1nx28Ss+oVjWt9i17loT/Tn
+ /hJnGFOj25AP5GZ9CftweA9mgLEHxvhOGHMWu4SjXw7OsNretKxT+LYInNxlwjS8R8tX
+ Kvx6LsE4imBsm/FB7RCiHcxLA7Gd4WNxHPzi9y/zW+G3PDYWzBmvAJI8YG+Bi4dU8j07
+ 3cRGWMsJ6Qcd04JnH4bRW0YK5AQHQQcVmjuz3NgVrXoa9eJdOhYIIChJqAExfXq0gD00
+ gpLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Vb5cyWLJV5ZR0F5iDmlf/8PvEYOZeZfUNSdNGtLvZJI=;
+ b=to9TEM8Ts9hlVnkxzpWwuBAoKeKkLpRbww2i6F8ZjtqaSaYsrmNJfTThj7Q14N/4J1
+ c7IayqihpiVbWNp3yPVrbJE2NU6KIQjO9Y7oWl5+eLzPTwiLqWJJk/CyTHNRsAUuRYVW
+ LQQbRmdkdD5FTewwpohRg/o8+4U58c+1dQJcUDxR0Q1seCZHitbERE2UBzzalzqgVtRu
+ HaxRBHTLrwAkllbJbwnXeGhwMe5034XP5CwlsUybbPsO99p1QBWu75OSrY6x+hMa8sRU
+ kGg44BHncl9kygE6GAMmD0quQE8l/raLgb4W8HRuxCKTPW6bC+eiS8Za2LPUxVFoUvsp
+ Z28Q==
+X-Gm-Message-State: APjAAAU6PEkZy22SkOh87gzJ07LxCvr8n2XGymV4fsSIsdeSSzTkHOPT
+ MeC373VScrKLqHhke2MWArMSXB5tphOuJJOC2+Ywfg==
+X-Google-Smtp-Source: APXvYqxzZjCff57xw2STewj8hvzXGMNapCy6Befwm57vvCLoE09f+Ii81TVHsJjBeSvPmeIU9AkG5ERsKsyGqT2FA8Q=
+X-Received: by 2002:a9d:66ca:: with SMTP id t10mr8495244otm.352.1579320135542; 
+ Fri, 17 Jan 2020 20:02:15 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200117105153.GB6144@willie-the-truck>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <cover.1569493933.git.shengjiu.wang@nxp.com>
+ <d728f65194e9978cbec4132b522d4fed420d704a.1569493933.git.shengjiu.wang@nxp.com>
+ <CANcMJZBy=yH+4YgZWwphiE-PO6d4hzhFK3XFtpN677ZAv_N4WQ@mail.gmail.com>
+ <CANcMJZCuU_-Xii=YT5Rp5DAyxboptJCrpp51jForuYUpeMuhmQ@mail.gmail.com>
+ <CAA+D8AP39bo6EsHvWhVXvAYAho_xMnWmePPAK6dBsOh5wsz48Q@mail.gmail.com>
+In-Reply-To: <CAA+D8AP39bo6EsHvWhVXvAYAho_xMnWmePPAK6dBsOh5wsz48Q@mail.gmail.com>
+From: John Stultz <john.stultz@linaro.org>
+Date: Fri, 17 Jan 2020 20:02:04 -0800
+Message-ID: <CALAqxLVapiMC-qPX4fza9cPCKFqvoi2KWhZkJa42DiHwOqGe8Q@mail.gmail.com>
+Subject: Re: [alsa-devel] [PATCH V6 3/4] ASoC: pcm_dmaengine: Extract
+ snd_dmaengine_pcm_refine_runtime_hwparams
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,94 +77,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Song Liu <songliubraving@fb.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
- Will Deacon <will.deacon@arm.com>, Alexei Starovoitov <ast@kernel.org>,
- Stephane Eranian <eranian@google.com>,
- "james.bottomley@hansenpartnership.com"
- <james.bottomley@hansenpartnership.com>, Paul Mackerras <paulus@samba.org>,
- Jiri Olsa <jolsa@redhat.com>, Andi Kleen <ak@linux.intel.com>,
- Igor Lubashev <ilubashe@akamai.com>, James Morris <jmorris@namei.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
- Serge Hallyn <serge@hallyn.com>, Robert Richter <rric@kernel.org>,
- Kees Cook <keescook@chromium.org>, Jann Horn <jannh@google.com>,
- "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org,
- Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
- "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- Casey Schaufler <casey@schaufler-ca.com>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jan 16, 2020 at 11:11 PM Shengjiu Wang <shengjiu.wang@gmail.com> wrote:
+>
+> Hi
+>
+> On Thu, Jan 16, 2020 at 1:56 PM John Stultz <john.stultz@linaro.org> wrote:
+> >
+> > On Wed, Jan 8, 2020 at 8:58 PM John Stultz <john.stultz@linaro.org> wrote:
+> > > On Thu, Sep 26, 2019 at 6:50 PM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> > > >
+> > > > When set the runtime hardware parameters, we may need to query
+> > > > the capability of DMA to complete the parameters.
+> > > >
+> > > > This patch is to Extract this operation from
+> > > > dmaengine_pcm_set_runtime_hwparams function to a separate function
+> > > > snd_dmaengine_pcm_refine_runtime_hwparams, that other components
+> > > > which need this feature can call this function.
+> > > >
+> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > > Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
+> > >
+> > > As a heads up, this patch seems to be causing a regression on the HiKey board.
+> > >
+> > > On boot up I'm seeing:
+> > > [   17.721424] hi6210_i2s f7118000.i2s: ASoC: can't open component
+> > > f7118000.i2s: -6
+> > >
+> > > And HDMI audio isn't working. With this patch reverted, audio works again.
+> > >
+> > >
+> > > > diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+> > > > index 89a05926ac73..5749a8a49784 100644
+> > > > --- a/sound/core/pcm_dmaengine.c
+> > > > +++ b/sound/core/pcm_dmaengine.c
+> > > > @@ -369,4 +369,87 @@ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+> > > ...
+> > > > +       ret = dma_get_slave_caps(chan, &dma_caps);
+> > > > +       if (ret == 0) {
+> > > > +               if (dma_caps.cmd_pause && dma_caps.cmd_resume)
+> > > > +                       hw->info |= SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME;
+> > > > +               if (dma_caps.residue_granularity <= DMA_RESIDUE_GRANULARITY_SEGMENT)
+> > > > +                       hw->info |= SNDRV_PCM_INFO_BATCH;
+> > > > +
+> > > > +               if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+> > > > +                       addr_widths = dma_caps.dst_addr_widths;
+> > > > +               else
+> > > > +                       addr_widths = dma_caps.src_addr_widths;
+> > > > +       }
+> > >
+> > > It seems a failing ret from dma_get_slave_caps() here is being returned...
+> > >
+> > > > +
+> > > > +       /*
+> > > > +        * If SND_DMAENGINE_PCM_DAI_FLAG_PACK is set keep
+> > > > +        * hw.formats set to 0, meaning no restrictions are in place.
+> > > > +        * In this case it's the responsibility of the DAI driver to
+> > > > +        * provide the supported format information.
+> > > > +        */
+> > > > +       if (!(dma_data->flags & SND_DMAENGINE_PCM_DAI_FLAG_PACK))
+> > > > +               /*
+> > > > +                * Prepare formats mask for valid/allowed sample types. If the
+> > > > +                * dma does not have support for the given physical word size,
+> > > > +                * it needs to be masked out so user space can not use the
+> > > > +                * format which produces corrupted audio.
+> > > > +                * In case the dma driver does not implement the slave_caps the
+> > > > +                * default assumption is that it supports 1, 2 and 4 bytes
+> > > > +                * widths.
+> > > > +                */
+> > > > +               for (i = SNDRV_PCM_FORMAT_FIRST; i <= SNDRV_PCM_FORMAT_LAST; i++) {
+> > > > +                       int bits = snd_pcm_format_physical_width(i);
+> > > > +
+> > > > +                       /*
+> > > > +                        * Enable only samples with DMA supported physical
+> > > > +                        * widths
+> > > > +                        */
+> > > > +                       switch (bits) {
+> > > > +                       case 8:
+> > > > +                       case 16:
+> > > > +                       case 24:
+> > > > +                       case 32:
+> > > > +                       case 64:
+> > > > +                               if (addr_widths & (1 << (bits / 8)))
+> > > > +                                       hw->formats |= pcm_format_to_bits(i);
+> > > > +                               break;
+> > > > +                       default:
+> > > > +                               /* Unsupported types */
+> > > > +                               break;
+> > > > +                       }
+> > > > +               }
+> > > > +
+> > > > +       return ret;
+> > >
+> > > ... down here.
+> > >
+> > > Where as in the old code...
+> > >
+> > > > diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
+> > > > index 748f5f641002..b9f147eaf7c4 100644
+> > > > --- a/sound/soc/soc-generic-dmaengine-pcm.c
+> > > > +++ b/sound/soc/soc-generic-dmaengine-pcm.c
+> > >
+> > > > @@ -145,56 +140,12 @@ static int dmaengine_pcm_set_runtime_hwparams(struct snd_pcm_substream *substrea
+> > > >         if (pcm->flags & SND_DMAENGINE_PCM_FLAG_NO_RESIDUE)
+> > > >                 hw.info |= SNDRV_PCM_INFO_BATCH;
+> > > >
+> > > > -       ret = dma_get_slave_caps(chan, &dma_caps);
+> > > > -       if (ret == 0) {
+> > > > -               if (dma_caps.cmd_pause && dma_caps.cmd_resume)
+> > > > -                       hw.info |= SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME;
+> > > > -               if (dma_caps.residue_granularity <= DMA_RESIDUE_GRANULARITY_SEGMENT)
+> > > > -                       hw.info |= SNDRV_PCM_INFO_BATCH;
+> > > > -
+> > > > -               if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+> > > > -                       addr_widths = dma_caps.dst_addr_widths;
+> > > > -               else
+> > > > -                       addr_widths = dma_caps.src_addr_widths;
+> > > > -       }
+> > >
+> > > ...the ret from dma_get_slave_caps()  checked above, but is not
+> > > actually returned.
+> > >
+> > > Suggestions on how to sort this out?
+> >
+> > Just wanted to check in on this, as I'm still seeing this regression with -rc6.
+> >
+> Compare with the old code. it seems that we shouldn't check the return value.
+>
+> Could you help to test below changes?
+>
+> --- a/sound/soc/soc-generic-dmaengine-pcm.c
+> +++ b/sound/soc/soc-generic-dmaengine-pcm.c
+> @@ -138,12 +138,10 @@ dmaengine_pcm_set_runtime_hwparams(struct
+> snd_soc_component *component,
+>         if (pcm->flags & SND_DMAENGINE_PCM_FLAG_NO_RESIDUE)
+>                 hw.info |= SNDRV_PCM_INFO_BATCH;
+>
+> -       ret = snd_dmaengine_pcm_refine_runtime_hwparams(substream,
+> +       snd_dmaengine_pcm_refine_runtime_hwparams(substream,
+>                                                         dma_data,
+>                                                         &hw,
+>                                                         chan);
+> -       if (ret)
+> -               return ret;
+>
+>         return snd_soc_set_runtime_hwparams(substream, &hw);
+>  }
 
-On 17.01.2020 13:51, Will Deacon wrote:
-> On Wed, Dec 18, 2019 at 12:30:29PM +0300, Alexey Budankov wrote:
->>
->> Open access to monitoring for CAP_SYS_PERFMON privileged processes.
->> For backward compatibility reasons access to the monitoring remains open
->> for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
->> monitoring is discouraged with respect to CAP_SYS_PERFMON capability.
->>
->> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
->> ---
->>  drivers/perf/arm_spe_pmu.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
->> index 4e4984a55cd1..5dff81bc3324 100644
->> --- a/drivers/perf/arm_spe_pmu.c
->> +++ b/drivers/perf/arm_spe_pmu.c
->> @@ -274,7 +274,7 @@ static u64 arm_spe_event_to_pmscr(struct perf_event *event)
->>  	if (!attr->exclude_kernel)
->>  		reg |= BIT(SYS_PMSCR_EL1_E1SPE_SHIFT);
->>  
->> -	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && capable(CAP_SYS_ADMIN))
->> +	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && perfmon_capable())
->>  		reg |= BIT(SYS_PMSCR_EL1_CX_SHIFT);
->>  
->>  	return reg;
->> @@ -700,7 +700,7 @@ static int arm_spe_pmu_event_init(struct perf_event *event)
->>  		return -EOPNOTSUPP;
->>  
->>  	reg = arm_spe_event_to_pmscr(event);
->> -	if (!capable(CAP_SYS_ADMIN) &&
->> +	if (!perfmon_capable() &&
->>  	    (reg & (BIT(SYS_PMSCR_EL1_PA_SHIFT) |
->>  		    BIT(SYS_PMSCR_EL1_CX_SHIFT) |
->>  		    BIT(SYS_PMSCR_EL1_PCT_SHIFT))))
-> 
-> Acked-by: Will Deacon <will@kernel.org>
-> 
-> Worth noting that this allows profiling of *physical* addresses used by
-> memory access instructions and so probably has some security implications
-> beyond the usual "but perf is buggy" line of reasoning.
+Yes, thanks for taking a look at this! Your patch does appear to avoid
+the regression.
+(Though you'll want to drop the ret declaration to avoid "warning:
+unused variable 'ret'" compiler warnings.)
 
-Good to know. Thank you!
-The data on physical addresses used by memory access instructions can already be
-provided under CAP_SYS_ADMIN privileges [1] thus, I suppose, any implications you
-have mentioned are already in place. I believe providing the data under CAP_PERFMON
-alone without the rest of CAP_SYS_ADMIN credentials decreases chances to misuse the
-data for harm and makes the monitoring more secure.
-
-~Alexey
-
-[1] https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html
-
-> 
-> Will
-> 
+thanks
+-john
