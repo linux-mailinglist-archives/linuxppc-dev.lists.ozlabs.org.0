@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B290B142627
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 09:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C3314266A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 09:59:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481QT760T2zDqGJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 19:54:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481QbB5Y1XzDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 19:59:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,55 +19,56 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481Q5M06vmzDqcM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 19:37:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481Q5c11tvzDqXB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 19:37:23 +1100 (AEDT)
 Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00K8b2Os068739
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:37:08 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xkye9nr27-1
+ 00K8b2u1068766
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:37:22 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xkye9nrhh-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:37:08 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:37:21 -0500
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
- Mon, 20 Jan 2020 08:37:03 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Mon, 20 Jan 2020 08:37:19 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 Jan 2020 08:36:59 -0000
+ Mon, 20 Jan 2020 08:37:15 -0000
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00K8av6n52953102
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00K8bEva62390522
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Jan 2020 08:36:57 GMT
+ Mon, 20 Jan 2020 08:37:14 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89A0311C04C;
- Mon, 20 Jan 2020 08:36:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E61EB11C04C;
+ Mon, 20 Jan 2020 08:37:13 +0000 (GMT)
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2599111C04A;
- Mon, 20 Jan 2020 08:36:55 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8322F11C04A;
+ Mon, 20 Jan 2020 08:37:11 +0000 (GMT)
 Received: from fir03.in.ibm.com (unknown [9.121.59.65])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 20 Jan 2020 08:36:54 +0000 (GMT)
+ Mon, 20 Jan 2020 08:37:11 +0000 (GMT)
 From: Sandipan Das <sandipan@linux.ibm.com>
 To: shuah@kernel.org, linux-kselftest@vger.kernel.org
-Subject: [PATCH v17 12/24] selftests: vm: pkeys: Use the correct huge page size
-Date: Mon, 20 Jan 2020 14:06:09 +0530
+Subject: [PATCH v17 18/24] selftests/vm/pkeys: Associate key on a mapped page
+ and detect access violation
+Date: Mon, 20 Jan 2020 14:06:15 +0530
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1579507768.git.sandipan@linux.ibm.com>
 References: <cover.1579507768.git.sandipan@linux.ibm.com>
 In-Reply-To: <cover.1579507768.git.sandipan@linux.ibm.com>
 References: <cover.1579507768.git.sandipan@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 20012008-0008-0000-0000-0000034AFE66
+x-cbid: 20012008-0028-0000-0000-000003D2B24E
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012008-0009-0000-0000-00004A6B6045
-Message-Id: <e24b5ce670a4731b703ca71b9c4d949145ee06d0.1579507768.git.sandipan@linux.ibm.com>
+x-cbparentid: 20012008-0029-0000-0000-00002496E32A
+Message-Id: <37c1ece37540218aaae4b3ee9f92e2368260c983.1579507768.git.sandipan@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-01-19_08:2020-01-16,
  2020-01-19 signatures=0
@@ -96,76 +97,57 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The huge page size can vary across architectures. This will
-ensure that the correct huge page size is used when accessing
-the hugetlb controls under sysfs. Instead of using a hardcoded
-page size (i.e. 2MB), this now uses the HPAGE_SIZE macro which
-is arch-specific.
+From: Ram Pai <linuxram@us.ibm.com>
 
-Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+Detect access-violation on a page to which access-disabled
+key is associated much after the page is mapped.
+
+cc: Dave Hansen <dave.hansen@intel.com>
+cc: Florian Weimer <fweimer@redhat.com>
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off: Sandipan Das <sandipan@linux.ibm.com>
 ---
- tools/testing/selftests/vm/protection_keys.c | 23 ++++++++++++++------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ tools/testing/selftests/vm/protection_keys.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/tools/testing/selftests/vm/protection_keys.c b/tools/testing/selftests/vm/protection_keys.c
-index 9cc82b65f828..535e464e27e9 100644
+index 95f173049f43..f65d384ef6a0 100644
 --- a/tools/testing/selftests/vm/protection_keys.c
 +++ b/tools/testing/selftests/vm/protection_keys.c
-@@ -739,12 +739,15 @@ void *malloc_pkey_anon_huge(long size, int prot, u16 pkey)
+@@ -984,6 +984,24 @@ void test_read_of_access_disabled_region(int *ptr, u16 pkey)
+ 	dprintf1("*ptr: %d\n", ptr_contents);
+ 	expected_pkey_fault(pkey);
  }
- 
- int hugetlb_setup_ok;
-+#define SYSFS_FMT_NR_HUGE_PAGES "/sys/kernel/mm/hugepages/hugepages-%ldkB/nr_hugepages"
- #define GET_NR_HUGE_PAGES 10
- void setup_hugetlbfs(void)
++
++void test_read_of_access_disabled_region_with_page_already_mapped(int *ptr,
++		u16 pkey)
++{
++	int ptr_contents;
++
++	dprintf1("disabling access to PKEY[%02d], doing read @ %p\n",
++				pkey, ptr);
++	ptr_contents = read_ptr(ptr);
++	dprintf1("reading ptr before disabling the read : %d\n",
++			ptr_contents);
++	read_pkey_reg();
++	pkey_access_deny(pkey);
++	ptr_contents = read_ptr(ptr);
++	dprintf1("*ptr: %d\n", ptr_contents);
++	expected_pkey_fault(pkey);
++}
++
+ void test_write_of_write_disabled_region(int *ptr, u16 pkey)
  {
- 	int err;
- 	int fd;
--	char buf[] = "123";
-+	char buf[256];
-+	long hpagesz_kb;
-+	long hpagesz_mb;
- 
- 	if (geteuid() != 0) {
- 		fprintf(stderr, "WARNING: not run as root, can not do hugetlb test\n");
-@@ -755,11 +758,16 @@ void setup_hugetlbfs(void)
- 
- 	/*
- 	 * Now go make sure that we got the pages and that they
--	 * are 2M pages.  Someone might have made 1G the default.
-+	 * are PMD-level pages. Someone might have made PUD-level
-+	 * pages the default.
- 	 */
--	fd = open("/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages", O_RDONLY);
-+	hpagesz_kb = HPAGE_SIZE / 1024;
-+	hpagesz_mb = hpagesz_kb / 1024;
-+	sprintf(buf, SYSFS_FMT_NR_HUGE_PAGES, hpagesz_kb);
-+	fd = open(buf, O_RDONLY);
- 	if (fd < 0) {
--		perror("opening sysfs 2M hugetlb config");
-+		fprintf(stderr, "opening sysfs %ldM hugetlb config: %s\n",
-+			hpagesz_mb, strerror(errno));
- 		return;
- 	}
- 
-@@ -767,13 +775,14 @@ void setup_hugetlbfs(void)
- 	err = read(fd, buf, sizeof(buf)-1);
- 	close(fd);
- 	if (err <= 0) {
--		perror("reading sysfs 2M hugetlb config");
-+		fprintf(stderr, "reading sysfs %ldM hugetlb config: %s\n",
-+			hpagesz_mb, strerror(errno));
- 		return;
- 	}
- 
- 	if (atoi(buf) != GET_NR_HUGE_PAGES) {
--		fprintf(stderr, "could not confirm 2M pages, got: '%s' expected %d\n",
--			buf, GET_NR_HUGE_PAGES);
-+		fprintf(stderr, "could not confirm %ldM pages, got: '%s' expected %d\n",
-+			hpagesz_mb, buf, GET_NR_HUGE_PAGES);
- 		return;
- 	}
- 
+ 	dprintf1("disabling write access to PKEY[%02d], doing write\n", pkey);
+@@ -1390,6 +1408,7 @@ void test_mprotect_pkey_on_unsupported_cpu(int *ptr, u16 pkey)
+ void (*pkey_tests[])(int *ptr, u16 pkey) = {
+ 	test_read_of_write_disabled_region,
+ 	test_read_of_access_disabled_region,
++	test_read_of_access_disabled_region_with_page_already_mapped,
+ 	test_write_of_write_disabled_region,
+ 	test_write_of_access_disabled_region,
+ 	test_kernel_write_of_access_disabled_region,
 -- 
 2.17.1
 
