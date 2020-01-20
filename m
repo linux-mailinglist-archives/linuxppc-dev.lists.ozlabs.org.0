@@ -2,82 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D683014268E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 10:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CA814273E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 10:28:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481Qhb4062zDqZS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 20:04:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481RDf4n84zDqBy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 20:28:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481Q686bFPzDqcM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 19:37:52 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00K8biMj126828
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:37:50 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xmg5ryvgb-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481Q7W668gzDqKK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 19:39:03 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00K8crug121034
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:38:59 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xmg39fyqb-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:37:48 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:38:57 -0500
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
- Mon, 20 Jan 2020 08:36:57 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Mon, 20 Jan 2020 08:37:01 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 Jan 2020 08:36:53 -0000
+ Mon, 20 Jan 2020 08:36:56 -0000
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00K8a2Z650135352
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00K8aswA60424280
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Jan 2020 08:36:02 GMT
+ Mon, 20 Jan 2020 08:36:54 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 295E111C04A;
+ by IMSVA (Postfix) with ESMTP id D3D1111C04A;
+ Mon, 20 Jan 2020 08:36:54 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 700C511C04C;
  Mon, 20 Jan 2020 08:36:52 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BACF011C050;
- Mon, 20 Jan 2020 08:36:49 +0000 (GMT)
 Received: from fir03.in.ibm.com (unknown [9.121.59.65])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 20 Jan 2020 08:36:49 +0000 (GMT)
+ Mon, 20 Jan 2020 08:36:52 +0000 (GMT)
 From: Sandipan Das <sandipan@linux.ibm.com>
 To: shuah@kernel.org, linux-kselftest@vger.kernel.org
-Subject: [PATCH v17 10/24] selftests/vm/pkeys: Fix assertion in
- pkey_disable_set/clear()
-Date: Mon, 20 Jan 2020 14:06:07 +0530
+Subject: [PATCH v17 11/24] selftests/vm/pkeys: Fix alloc_random_pkey() to make
+ it really random
+Date: Mon, 20 Jan 2020 14:06:08 +0530
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1579507768.git.sandipan@linux.ibm.com>
 References: <cover.1579507768.git.sandipan@linux.ibm.com>
 In-Reply-To: <cover.1579507768.git.sandipan@linux.ibm.com>
 References: <cover.1579507768.git.sandipan@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 20012008-0020-0000-0000-000003A24824
+x-cbid: 20012008-0016-0000-0000-000002DEF93E
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012008-0021-0000-0000-000021F9D232
-Message-Id: <ff7a72aa0bc849e8edc79f5e6e5f21bf7e4aff61.1579507768.git.sandipan@linux.ibm.com>
+x-cbparentid: 20012008-0017-0000-0000-000033419BC5
+Message-Id: <a3823b18d8097f2f977e2bbf54d190eadfb4dd59.1579507768.git.sandipan@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-01-19_08:2020-01-16,
  2020-01-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 suspectscore=0 bulkscore=0 phishscore=0 impostorscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 mlxlogscore=570 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001200077
+ clxscore=1015 spamscore=0
+ impostorscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 mlxscore=0 priorityscore=1501
+ mlxlogscore=893 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-2001200077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,50 +99,42 @@ Sender: "Linuxppc-dev"
 
 From: Ram Pai <linuxram@us.ibm.com>
 
-In some cases, a pkey's bits need not necessarily change
-in a way that the value of the pkey register increases
-when performing a pkey_disable_set() or decreases when
-performing a pkey_disable_clear().
-
-For example, on powerpc, if a pkey's current state is
-PKEY_DISABLE_ACCESS and we perform a pkey_write_disable()
-on it, the bits still remain the same. We will observe
-something similar when the pkey's current state is 0 and
-a pkey_access_enable() is performed on it.
-
-Either case would cause some assertions to fail. This
-fixes the problem.
+alloc_random_pkey() was allocating the same pkey every
+time. Not all pkeys were geting tested. This fixes it.
 
 cc: Dave Hansen <dave.hansen@intel.com>
 cc: Florian Weimer <fweimer@redhat.com>
 Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
 Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
 ---
- tools/testing/selftests/vm/protection_keys.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vm/protection_keys.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/vm/protection_keys.c b/tools/testing/selftests/vm/protection_keys.c
-index 4b1ddb526228..7fd52d5c4bfd 100644
+index 7fd52d5c4bfd..9cc82b65f828 100644
 --- a/tools/testing/selftests/vm/protection_keys.c
 +++ b/tools/testing/selftests/vm/protection_keys.c
-@@ -400,7 +400,7 @@ void pkey_disable_set(int pkey, int flags)
- 	dprintf1("%s(%d) pkey_reg: 0x%016llx\n",
- 		__func__, pkey, read_pkey_reg());
- 	if (flags)
--		pkey_assert(read_pkey_reg() > orig_pkey_reg);
-+		pkey_assert(read_pkey_reg() >= orig_pkey_reg);
- 	dprintf1("END<---%s(%d, 0x%x)\n", __func__,
- 		pkey, flags);
- }
-@@ -431,7 +431,7 @@ void pkey_disable_clear(int pkey, int flags)
- 	dprintf1("%s(%d) pkey_reg: 0x%016llx\n", __func__,
- 			pkey, read_pkey_reg());
- 	if (flags)
--		assert(read_pkey_reg() < orig_pkey_reg);
-+		assert(read_pkey_reg() <= orig_pkey_reg);
- }
+@@ -25,6 +25,7 @@
+ #define __SANE_USERSPACE_TYPES__
+ #include <errno.h>
+ #include <linux/futex.h>
++#include <time.h>
+ #include <sys/time.h>
+ #include <sys/syscall.h>
+ #include <string.h>
+@@ -546,10 +547,10 @@ int alloc_random_pkey(void)
+ 	int nr_alloced = 0;
+ 	int random_index;
+ 	memset(alloced_pkeys, 0, sizeof(alloced_pkeys));
++	srand((unsigned int)time(NULL));
  
- void pkey_write_allow(int pkey)
+ 	/* allocate every possible key and make a note of which ones we got */
+ 	max_nr_pkey_allocs = NR_PKEYS;
+-	max_nr_pkey_allocs = 1;
+ 	for (i = 0; i < max_nr_pkey_allocs; i++) {
+ 		int new_pkey = alloc_pkey();
+ 		if (new_pkey < 0)
 -- 
 2.17.1
 
