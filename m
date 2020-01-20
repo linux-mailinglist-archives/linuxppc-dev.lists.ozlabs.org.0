@@ -1,80 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80A4142473
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 08:50:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAA0142402
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 08:02:14 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481Mzl48yqzDqZk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 18:02:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481P2w06H3zDqc5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 18:50:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
+ [209.85.221.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481MqV4B2MzDqWt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 17:55:02 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00K6qZUp100176
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 01:55:00 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xkye9jv24-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 01:55:00 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
- Mon, 20 Jan 2020 06:54:58 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 Jan 2020 06:54:55 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00K6sr9i49414272
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Jan 2020 06:54:53 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF0BB42045;
- Mon, 20 Jan 2020 06:54:53 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7FA634203F;
- Mon, 20 Jan 2020 06:54:52 +0000 (GMT)
-Received: from dhcp-9-109-246-161.in.ibm.com (unknown [9.124.35.118])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 20 Jan 2020 06:54:52 +0000 (GMT)
-From: Balamuruhan S <bala24@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v3 3/3] powerpc test_emulate_step: add testcases for divde[.]
- and divdeu[.] instructions
-Date: Mon, 20 Jan 2020 12:24:26 +0530
-X-Mailer: git-send-email 2.14.5
-In-Reply-To: <20200120065426.3259-1-bala24@linux.ibm.com>
-References: <20200120065426.3259-1-bala24@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 20012006-0028-0000-0000-000003D2A81D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012006-0029-0000-0000-00002496D891
-Message-Id: <20200120065426.3259-4-bala24@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-19_08:2020-01-16,
- 2020-01-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- mlxlogscore=295 spamscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 malwarescore=0 suspectscore=5 bulkscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001200060
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481P1172RmzDqDP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 18:48:21 +1100 (AEDT)
+Received: by mail-wr1-f67.google.com with SMTP id b6so28416668wrq.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jan 2020 23:48:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=zqYxlN8e9d1Xz81Z1GDVgte6q0CcV1j9cxyhLBRYIzc=;
+ b=HOmBkv+A2CqPfCoV8n7edfKF4E6yimmrEx+0B7Gtjh4iXJtSP/yan+4oFLY5KUjIzQ
+ yPt8YV3OBCykOPzd18ZeKkc+VPvdOZpT84aLnaJcd3ApkT5aNJqgU6ddwbDV8eYUne2N
+ AhrZygxbNGGopaJVMNCeQUfMhAW9p/5n5OARzHtuWnmLRJZDknpxd/ZdsDopQ4rBZ9bt
+ 2LpVV5+7TYVdpEs+houBGoEUUT2yLSezUd+ncBRx6Q4VJVQiRpQeSaMltq2OsJwBAm7d
+ uj8IEYTPjo1uBvTD8PT9nRnBOpyd4XQnwFIFpoNlaiOq6fSN4EwQlB3z4ccmY9biIN+3
+ giIw==
+X-Gm-Message-State: APjAAAVNGAgoDc006Za8coqjvP8J0RCagUZqOwDU8ERgD5LKn4VtmFHf
+ oGf/j4fZwm7FWVwQmmDZjnU=
+X-Google-Smtp-Source: APXvYqz1nmDNYIQNXhicabxXmw6QCSsn8nPgAPz6zQN+UoT7JCsFPNK6ech+vI4kj8faRntichl/eA==
+X-Received: by 2002:adf:fe8c:: with SMTP id l12mr16459256wrr.215.1579506498444; 
+ Sun, 19 Jan 2020 23:48:18 -0800 (PST)
+Received: from localhost (ip-37-188-138-155.eurotel.cz. [37.188.138.155])
+ by smtp.gmail.com with ESMTPSA id u16sm3099104wmj.41.2020.01.19.23.48.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 19 Jan 2020 23:48:17 -0800 (PST)
+Date: Mon, 20 Jan 2020 08:48:16 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH RFC v1] mm: is_mem_section_removable() overhaul
+Message-ID: <20200120074816.GG18451@dhcp22.suse.cz>
+References: <20200117105759.27905-1-david@redhat.com>
+ <20200117113353.GT19428@dhcp22.suse.cz>
+ <c82a0dd7-a99b-6def-83d4-a19fbdd405d9@redhat.com>
+ <20200117145233.GB19428@dhcp22.suse.cz>
+ <65606e2e-1cf7-de3b-10b1-33653cb41a52@redhat.com>
+ <20200117152947.GK19428@dhcp22.suse.cz>
+ <CAPcyv4hHHzdPp4SQ0sePzx7XEvD7U_B+vZDT00O6VbFY8kJqjw@mail.gmail.com>
+ <25a94f61-46a1-59a6-6b54-8cc6b35790d2@redhat.com>
+ <CAPcyv4jvmYRbX9i+1_LvHoTDGABadHbYH3NVkqczKsQ4fsf74g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jvmYRbX9i+1_LvHoTDGABadHbYH3NVkqczKsQ4fsf74g@mail.gmail.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,212 +73,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Balamuruhan S <bala24@linux.ibm.com>,
- paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ David Hildenbrand <david@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leonardo@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Allison Randal <allison@lohutok.net>, lantianyu1986@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-add testcases for divde, divde., divdeu, divdeu. emulated
-instructions to cover few scenarios,
-        * with same dividend and divisor to have undefine RT
-          for divdeu[.]
-        * with divide by zero to have undefine RT for both
-          divde[.] and divdeu[.]
-        * with negative dividend to cover -|divisor| < r <= 0 if
-          the dividend is negative for divde[.]
-        * normal case with proper dividend and divisor for both
-          divde[.] and divdeu[.]
+On Fri 17-01-20 08:57:51, Dan Williams wrote:
+[...]
+> Unless the user is willing to hold the device_hotplug_lock over the
+> evaluation then the result is unreliable.
 
-Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
-Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
----
- arch/powerpc/lib/test_emulate_step.c | 164 +++++++++++++++++++++++++++++++++++
- 1 file changed, 164 insertions(+)
+Do we want to hold the device_hotplug_lock from this user readable file
+in the first place? My book says that this just waits to become a
+problem.
 
-diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-index 42347067739c..ffeb9b68a31d 100644
---- a/arch/powerpc/lib/test_emulate_step.c
-+++ b/arch/powerpc/lib/test_emulate_step.c
-@@ -53,6 +53,14 @@
- 					___PPC_RA(a) | ___PPC_RB(b))
- #define TEST_ADDC_DOT(t, a, b)	(PPC_INST_ADDC | ___PPC_RT(t) |		\
- 					___PPC_RA(a) | ___PPC_RB(b) | 0x1)
-+#define TEST_DIVDE(t, a, b)	(PPC_INST_DIVDE | ___PPC_RT(t) |	\
-+					___PPC_RA(a) | ___PPC_RB(b))
-+#define TEST_DIVDE_DOT(t, a, b)	(PPC_INST_DIVDE | ___PPC_RT(t) |	\
-+					___PPC_RA(a) | ___PPC_RB(b) | 0x1)
-+#define TEST_DIVDEU(t, a, b)	(PPC_INST_DIVDEU | ___PPC_RT(t) |	\
-+					___PPC_RA(a) | ___PPC_RB(b))
-+#define TEST_DIVDEU_DOT(t, a, b)(PPC_INST_DIVDEU | ___PPC_RT(t) |	\
-+					___PPC_RA(a) | ___PPC_RB(b) | 0x1)
- 
- #define MAX_SUBTESTS	16
- 
-@@ -837,6 +845,162 @@ static struct compute_test compute_tests[] = {
- 				}
- 			}
- 		}
-+	},
-+	{
-+		.mnemonic = "divde",
-+		.subtests = {
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MIN",
-+				.instr = TEST_DIVDE(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MIN,
-+				}
-+			},
-+			{
-+				.descr = "RA = 1L, RB = 0",
-+				.instr = TEST_DIVDE(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = 1L,
-+					.gpr[22] = 0,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MAX",
-+				.instr = TEST_DIVDE(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MAX,
-+				}
-+			}
-+		}
-+	},
-+	{
-+		.mnemonic = "divde.",
-+		.subtests = {
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MIN",
-+				.instr = TEST_DIVDE_DOT(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MIN,
-+				}
-+			},
-+			{
-+				.descr = "RA = 1L, RB = 0",
-+				.instr = TEST_DIVDE_DOT(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = 1L,
-+					.gpr[22] = 0,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MAX",
-+				.instr = TEST_DIVDE_DOT(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MAX,
-+				}
-+			}
-+		}
-+	},
-+	{
-+		.mnemonic = "divdeu",
-+		.subtests = {
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MIN",
-+				.instr = TEST_DIVDEU(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MIN,
-+				}
-+			},
-+			{
-+				.descr = "RA = 1L, RB = 0",
-+				.instr = TEST_DIVDEU(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = 1L,
-+					.gpr[22] = 0,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MAX",
-+				.instr = TEST_DIVDEU(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MAX,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MAX - 1, RB = LONG_MAX",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MAX - 1,
-+					.gpr[22] = LONG_MAX,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MIN + 1, RB = LONG_MIN",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = LONG_MIN + 1,
-+					.gpr[22] = LONG_MIN,
-+				}
-+			}
-+		}
-+	},
-+	{
-+		.mnemonic = "divdeu.",
-+		.subtests = {
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MIN",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MIN,
-+				}
-+			},
-+			{
-+				.descr = "RA = 1L, RB = 0",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = 1L,
-+					.gpr[22] = 0,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MIN, RB = LONG_MAX",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MIN,
-+					.gpr[22] = LONG_MAX,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MAX - 1, RB = LONG_MAX",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.regs = {
-+					.gpr[21] = LONG_MAX - 1,
-+					.gpr[22] = LONG_MAX,
-+				}
-+			},
-+			{
-+				.descr = "RA = LONG_MIN + 1, RB = LONG_MIN",
-+				.instr = TEST_DIVDEU_DOT(20, 21, 22),
-+				.flags = IGNORE_GPR(20),
-+				.regs = {
-+					.gpr[21] = LONG_MIN + 1,
-+					.gpr[22] = LONG_MIN,
-+				}
-+			}
-+		}
- 	}
- };
- 
+Really, the interface is flawed and should have never been merged in the
+first place. We cannot simply remove it altogether I am afraid so let's
+at least remove the bogus code and pretend that the world is a better
+place where everything is removable except the reality sucks...
 -- 
-2.14.5
-
+Michal Hocko
+SUSE Labs
