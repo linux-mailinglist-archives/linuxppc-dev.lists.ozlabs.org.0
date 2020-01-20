@@ -1,72 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E32B1425EE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 09:40:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13811425B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 09:37:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481Q5d0Zx7zDqWw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 19:37:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481Q996ZKKzDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 19:40:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=pi9f6TM/; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481Q350jNQzDqWt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 19:35:10 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 481Q2s1fGhz9v116;
- Mon, 20 Jan 2020 09:35:01 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=pi9f6TM/; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id giQLqLLTcw8K; Mon, 20 Jan 2020 09:35:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 481Q2s0ZHTz9vBmq;
- Mon, 20 Jan 2020 09:35:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579509301; bh=byyZcxzdL9PR+hJEiI7kNW/TwgItiNGIa6x9MA2z3EQ=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=pi9f6TM/+rrGO39HuJdx14sJBDKQAJSMaiYHf7ubahWYdAGN7sJ3a3J/kqqQI3oIY
- OAUMmk0upmj9M4yO+CfZatU0+Rdp6kWjg1YO0vysCy85NW/XoPTqi6EWJf1RkTKCXg
- EFsZ6BnAjjku3PRAAwP9AopWKQ5Z653E3/j72H+Q=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9586C8B782;
- Mon, 20 Jan 2020 09:35:05 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id j-6E-PTjA8J5; Mon, 20 Jan 2020 09:35:05 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A21C8B752;
- Mon, 20 Jan 2020 09:35:05 +0100 (CET)
-Subject: Re: [PATCH v6 1/5] powerpc/mm: Implement set_memory() routines
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-References: <20191224055545.178462-1-ruscur@russell.cc>
- <20191224055545.178462-2-ruscur@russell.cc>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b72d7a3b-5ef1-9628-5091-9c3e390c2c28@c-s.fr>
-Date: Mon, 20 Jan 2020 09:35:04 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
-MIME-Version: 1.0
-In-Reply-To: <20191224055545.178462-2-ruscur@russell.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481Q466JSbzDqXD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 19:36:06 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00K8WCDH012621
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:36:03 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xmg7gy68b-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:36:02 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
+ Mon, 20 Jan 2020 08:36:01 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 20 Jan 2020 08:35:56 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00K8ZtqW66257120
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Jan 2020 08:35:55 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4E465AE05F;
+ Mon, 20 Jan 2020 08:35:55 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD08AAE056;
+ Mon, 20 Jan 2020 08:35:52 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Jan 2020 08:35:52 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: shuah@kernel.org, linux-kselftest@vger.kernel.org
+Subject: [PATCH v16 00/23] selftests, powerpc, x86: Memory Protection Keys
+Date: Mon, 20 Jan 2020 14:05:28 +0530
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+x-cbid: 20012008-0028-0000-0000-000003D2B226
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20012008-0029-0000-0000-00002496E303
+Message-Id: <cover.1579507768.git.sandipan@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-19_08:2020-01-16,
+ 2020-01-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 spamscore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 phishscore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001200076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,77 +84,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
- joel@jms.id.au, dja@axtens.net
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, linux-mm@kvack.org,
+ aneesh.kumar@linux.ibm.com, x86@kernel.org, linuxram@us.ibm.com,
+ mhocko@kernel.org, dave.hansen@intel.com, mingo@redhat.com, msuchanek@suse.de,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Memory protection keys enables an application to protect its address
+space from inadvertent access by its own code.
 
+This feature is now enabled on powerpc and has been available since
+4.16-rc1. The patches move the selftests to arch neutral directory
+and enhance their test coverage.
 
-Le 24/12/2019 à 06:55, Russell Currey a écrit :
-> The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
-> and are generally useful primitives to have.  This implementation is
-> designed to be completely generic across powerpc's many MMUs.
-> 
-> It's possible that this could be optimised to be faster for specific
-> MMUs, but the focus is on having a generic and safe implementation for
-> now.
-> 
-> This implementation does not handle cases where the caller is attempting
-> to change the mapping of the page it is executing from, or if another
-> CPU is concurrently using the page being altered.  These cases likely
-> shouldn't happen, but a more complex implementation with MMU-specific code
-> could safely handle them, so that is left as a TODO for now.
-> 
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> ---
->   arch/powerpc/Kconfig                  |  1 +
->   arch/powerpc/include/asm/set_memory.h | 32 +++++++++++
->   arch/powerpc/mm/Makefile              |  1 +
->   arch/powerpc/mm/pageattr.c            | 83 +++++++++++++++++++++++++++
->   4 files changed, 117 insertions(+)
->   create mode 100644 arch/powerpc/include/asm/set_memory.h
->   create mode 100644 arch/powerpc/mm/pageattr.c
-> 
-> +static int __change_page_attr(pte_t *ptep, unsigned long addr, void *data)
-> +{
-> +	int action = *((int *)data);
-> +	pte_t pte_val;
+Tested on powerpc64 and x86_64 (Skylake-SP).
 
-pte_val is really not a good naming, because pte_val() is already a 
-function which returns the value of a pte_t var.
+Link to development branch:
+https://github.com/sandip4n/linux/tree/pkey-selftests
 
-Here you should name it 'pte' as usual.
+Changelog
+---------
+Link to previous version (v16):
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=153824
 
-Christophe
+v17:
+	(1) Fixed issues with i386 builds when running on x86_64
+	    based on feedback from Dave.
+	(2) Replaced patch 6 from previous version with patch 7.
+	    This addresses u64 format specifier related concerns
+	    that Michael had raised in v15.
 
-> +
-> +	// invalidate the PTE so it's safe to modify
-> +	pte_val = ptep_get_and_clear(&init_mm, addr, ptep);
-> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> +
-> +	// modify the PTE bits as desired, then apply
-> +	switch (action) {
-> +	case SET_MEMORY_RO:
-> +		pte_val = pte_wrprotect(pte_val);
-> +		break;
-> +	case SET_MEMORY_RW:
-> +		pte_val = pte_mkwrite(pte_val);
-> +		break;
-> +	case SET_MEMORY_NX:
-> +		pte_val = pte_exprotect(pte_val);
-> +		break;
-> +	case SET_MEMORY_X:
-> +		pte_val = pte_mkexec(pte_val);
-> +		break;
-> +	default:
-> +		WARN_ON(true);
-> +		return -EINVAL;
-> +	}
-> +
-> +	set_pte_at(&init_mm, addr, ptep, pte_val);
-> +
-> +	return 0;
-> +}
-> +
+v16:
+	(1) Rebased on top of latest master.
+	(2) Switched to u64 instead of using an arch-dependent
+	    pkey_reg_t type for references to the pkey register
+	    based on suggestions from Dave, Michal and Michael.
+	(3) Removed build time determination of page size based
+	    on suggestion from Michael.
+	(4) Fixed comment before the definition of __page_o_noops()
+	    from patch 13 ("selftests/vm/pkeys: Introduce powerpc
+	    support").
+
+v15:
+	(1) Rebased on top of latest master.
+	(2) Addressed review comments from Dave Hansen.
+	(3) Moved code for getting or setting pkey bits to new
+	    helpers. These changes replace patch 7 of v14.
+	(4) Added a fix which ensures that the correct count of
+	    reserved keys is used across different platforms.
+	(5) Added a fix which ensures that the correct page size
+	    is used as powerpc supports both 4K and 64K pages.
+
+v14:
+	(1) Incorporated another round of comments from Dave Hansen.
+
+v13:
+	(1) Incorporated comments for Dave Hansen.
+	(2) Added one more test for correct pkey-0 behavior.
+
+v12:
+	(1) Fixed the offset of pkey field in the siginfo structure for
+	    x86_64 and powerpc. And tries to use the actual field
+	    if the headers have it defined.
+
+v11:
+	(1) Fixed a deadlock in the ptrace testcase.
+
+v10 and prior:
+	(1) Moved the testcase to arch neutral directory.
+	(2) Split the changes into incremental patches.
+
+Desnes A. Nunes do Rosario (1):
+  selftests/vm/pkeys: Fix number of reserved powerpc pkeys
+
+Ram Pai (16):
+  selftests/x86/pkeys: Move selftests to arch-neutral directory
+  selftests/vm/pkeys: Rename all references to pkru to a generic name
+  selftests/vm/pkeys: Move generic definitions to header file
+  selftests/vm/pkeys: Fix pkey_disable_clear()
+  selftests/vm/pkeys: Fix assertion in pkey_disable_set/clear()
+  selftests/vm/pkeys: Fix alloc_random_pkey() to make it really random
+  selftests/vm/pkeys: Introduce generic pkey abstractions
+  selftests/vm/pkeys: Introduce powerpc support
+  selftests/vm/pkeys: Fix assertion in test_pkey_alloc_exhaust()
+  selftests/vm/pkeys: Improve checks to determine pkey support
+  selftests/vm/pkeys: Associate key on a mapped page and detect access
+    violation
+  selftests/vm/pkeys: Associate key on a mapped page and detect write
+    violation
+  selftests/vm/pkeys: Detect write violation on a mapped
+    access-denied-key page
+  selftests/vm/pkeys: Introduce a sub-page allocator
+  selftests/vm/pkeys: Test correct behaviour of pkey-0
+  selftests/vm/pkeys: Override access right definitions on powerpc
+
+Sandipan Das (5):
+  selftests: vm: pkeys: Fix multilib builds for x86
+  selftests: vm: pkeys: Use sane types for pkey register
+  selftests: vm: pkeys: Add helpers for pkey bits
+  selftests: vm: pkeys: Use the correct huge page size
+  selftests: vm: pkeys: Use the correct page size on powerpc
+
+Thiago Jung Bauermann (2):
+  selftests/vm/pkeys: Move some definitions to arch-specific header
+  selftests/vm/pkeys: Make gcc check arguments of sigsafe_printf()
+
+ tools/testing/selftests/vm/.gitignore         |   1 +
+ tools/testing/selftests/vm/Makefile           |  50 ++
+ tools/testing/selftests/vm/pkey-helpers.h     | 225 ++++++
+ tools/testing/selftests/vm/pkey-powerpc.h     | 136 ++++
+ tools/testing/selftests/vm/pkey-x86.h         | 181 +++++
+ .../selftests/{x86 => vm}/protection_keys.c   | 696 ++++++++++--------
+ tools/testing/selftests/x86/.gitignore        |   1 -
+ tools/testing/selftests/x86/Makefile          |   2 +-
+ tools/testing/selftests/x86/pkey-helpers.h    | 219 ------
+ 9 files changed, 979 insertions(+), 532 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/pkey-helpers.h
+ create mode 100644 tools/testing/selftests/vm/pkey-powerpc.h
+ create mode 100644 tools/testing/selftests/vm/pkey-x86.h
+ rename tools/testing/selftests/{x86 => vm}/protection_keys.c (74%)
+ delete mode 100644 tools/testing/selftests/x86/pkey-helpers.h
+
+-- 
+2.17.1
+
