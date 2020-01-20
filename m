@@ -1,39 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5EE1429B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 12:42:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481VC1209mzDq8J
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 22:42:21 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EE21429C5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 12:44:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 481VFs2HSZzDqM7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 22:44:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.115; helo=mga14.intel.com;
+ (client-ip=134.134.136.20; helo=mga02.intel.com;
  envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481Tv94tCmzDqjv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 22:28:37 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481Twl2ZNVzDqfL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 22:29:59 +1100 (AEDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2020 03:28:35 -0800
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2020 03:29:57 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,341,1574150400"; d="scan'208";a="425168570"
+X-IronPort-AV: E=Sophos;i="5.70,341,1574150400"; d="scan'208";a="426701472"
 Received: from linux.intel.com ([10.54.29.200])
- by fmsmga005.fm.intel.com with ESMTP; 20 Jan 2020 03:28:34 -0800
+ by fmsmga006.fm.intel.com with ESMTP; 20 Jan 2020 03:29:54 -0800
 Received: from [10.125.252.193] (abudanko-mobl.ccr.corp.intel.com
  [10.125.252.193])
- by linux.intel.com (Postfix) with ESMTP id 20D515803C5;
- Mon, 20 Jan 2020 03:28:25 -0800 (PST)
-Subject: [PATCH v5 05/10] drm/i915/perf: open access for CAP_PERFMON
+ by linux.intel.com (Postfix) with ESMTP id 74B705802C1;
+ Mon, 20 Jan 2020 03:29:46 -0800 (PST)
+Subject: [PATCH v5 06/10] trace/bpf_trace: open access for CAP_PERFMON
  privileged process
 From: Alexey Budankov <alexey.budankov@linux.intel.com>
 To: Peter Zijlstra <peterz@infradead.org>,
@@ -50,8 +50,8 @@ To: Peter Zijlstra <peterz@infradead.org>,
  Alexei Starovoitov <ast@kernel.org>
 References: <0548c832-7f4b-dc4c-8883-3f2b6d351a08@linux.intel.com>
 Organization: Intel Corp.
-Message-ID: <e5691e6c-84cf-a977-8c7a-8e124ac37f46@linux.intel.com>
-Date: Mon, 20 Jan 2020 14:28:24 +0300
+Message-ID: <4c91a53f-0124-0816-917d-a8cb232dc6a1@linux.intel.com>
+Date: Mon, 20 Jan 2020 14:29:45 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
@@ -90,66 +90,32 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Open access to i915_perf monitoring for CAP_PERFMON privileged processes.
-For backward compatibility reasons access to i915_perf subsystem remains
+Open access to bpf_trace monitoring for CAP_PERFMON privileged processes.
+For backward compatibility reasons access to bpf_trace monitoring remains
 open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for
-secure i915_perf monitoring is discouraged with respect to CAP_PERFMON
+secure bpf_trace monitoring is discouraged with respect to CAP_PERFMON
 capability. Providing the access under CAP_PERFMON capability singly,
 without the rest of CAP_SYS_ADMIN credentials, excludes chances to misuse
 the credentials and makes operations more secure.
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_perf.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ kernel/trace/bpf_trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
-index 2ae14bc14931..d89347861b7d 100644
---- a/drivers/gpu/drm/i915/i915_perf.c
-+++ b/drivers/gpu/drm/i915/i915_perf.c
-@@ -3375,10 +3375,10 @@ i915_perf_open_ioctl_locked(struct i915_perf *perf,
- 	/* Similar to perf's kernel.perf_paranoid_cpu sysctl option
- 	 * we check a dev.i915.perf_stream_paranoid sysctl option
- 	 * to determine if it's ok to access system wide OA counters
--	 * without CAP_SYS_ADMIN privileges.
-+	 * without CAP_PERFMON or CAP_SYS_ADMIN privileges.
- 	 */
- 	if (privileged_op &&
--	    i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
-+	    i915_perf_stream_paranoid && !perfmon_capable()) {
- 		DRM_DEBUG("Insufficient privileges to open i915 perf stream\n");
- 		ret = -EACCES;
- 		goto err_ctx;
-@@ -3571,9 +3571,8 @@ static int read_properties_unlocked(struct i915_perf *perf,
- 			} else
- 				oa_freq_hz = 0;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index e5ef4ae9edb5..334f1d71ebb1 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -1395,7 +1395,7 @@ int perf_event_query_prog_array(struct perf_event *event, void __user *info)
+ 	u32 *ids, prog_cnt, ids_len;
+ 	int ret;
  
--			if (oa_freq_hz > i915_oa_max_sample_rate &&
--			    !capable(CAP_SYS_ADMIN)) {
--				DRM_DEBUG("OA exponent would exceed the max sampling frequency (sysctl dev.i915.oa_max_sample_rate) %uHz without root privileges\n",
-+			if (oa_freq_hz > i915_oa_max_sample_rate && !perfmon_capable()) {
-+				DRM_DEBUG("OA exponent would exceed the max sampling frequency (sysctl dev.i915.oa_max_sample_rate) %uHz without CAP_PERFMON or CAP_SYS_ADMIN privileges\n",
- 					  i915_oa_max_sample_rate);
- 				return -EACCES;
- 			}
-@@ -3994,7 +3993,7 @@ int i915_perf_add_config_ioctl(struct drm_device *dev, void *data,
+-	if (!capable(CAP_SYS_ADMIN))
++	if (!perfmon_capable())
+ 		return -EPERM;
+ 	if (event->attr.type != PERF_TYPE_TRACEPOINT)
  		return -EINVAL;
- 	}
- 
--	if (i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
-+	if (i915_perf_stream_paranoid && !perfmon_capable()) {
- 		DRM_DEBUG("Insufficient privileges to add i915 OA config\n");
- 		return -EACCES;
- 	}
-@@ -4141,7 +4140,7 @@ int i915_perf_remove_config_ioctl(struct drm_device *dev, void *data,
- 		return -ENOTSUPP;
- 	}
- 
--	if (i915_perf_stream_paranoid && !capable(CAP_SYS_ADMIN)) {
-+	if (i915_perf_stream_paranoid && !perfmon_capable()) {
- 		DRM_DEBUG("Insufficient privileges to remove i915 OA config\n");
- 		return -EACCES;
- 	}
 -- 
 2.20.1
 
