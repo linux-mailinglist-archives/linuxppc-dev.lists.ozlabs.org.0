@@ -2,76 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D6714293D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 12:26:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D93C14291D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 12:22:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481Trt3mCdzDqSG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 22:26:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481Tlv1jQ2zDqch
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2020 22:22:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::e35;
- helo=mail-vs1-xe35.google.com; envelope-from=ulf.hansson@linaro.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=dO4kN0c5; dkim-atps=neutral
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com
- [IPv6:2607:f8b0:4864:20::e35])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481ThL5KBQzDqcc
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 22:19:13 +1100 (AEDT)
-Received: by mail-vs1-xe35.google.com with SMTP id t12so18684240vso.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 03:19:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=gxSL5xhOZst+pCmxYqXG3YKuQuTkwZHSeWZWlmDk2HQ=;
- b=dO4kN0c5Z35cMUG2zQrTTvrk7RGA1amnG3n9P90IImjqOjjDZjhvuNsBSQhiMMXNLE
- CDMzF/9s8uqA4Df+Ru+q/8o6Ouxz8CivtgQKiNcmW5hnOdZ8mnY280zn88iNKXHA4HHx
- v5zrMudqkmHMQsgJ+ZK6LDx/ugBBzSbxVlKmqeIoYtmGlsZNG3E1/Jp9qS/Vh+/O5REk
- e1cfWSdt0nlct528AyTTlNPiUtRbL7oq0VMka5yYnWJqaw9p9UgOFniXL16lo6h50H4c
- y7Ehogowgx0mQP8OD9KRCYSTcly0Uhmhx6kZVObbXxBKYt+GzA3udIsIzRADe0patW2A
- Dy1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=gxSL5xhOZst+pCmxYqXG3YKuQuTkwZHSeWZWlmDk2HQ=;
- b=AYZltM+eySkzONQUgF2J1E1j1FEpzrMLf0bVbCGpNlj1sd9k+0sVQ8dBU1CcZEulto
- mM/1lBP6jXZTWFM0K587sCnuQtkg+C95dMMx7ZUfQT4NhlbO54DWeYsxtiJa4FDIfugN
- xyxwu2ZHwSIuGAMEjQwQUuIRCjednNn6/OZmJ9PB/XsJs36C9HDLjjQg+chOl8ppYuGV
- UAtPSrJWPob8ObO6WoJObVO4zh8sbFftYWd1MTmxabxV42YncEYpOh34V/038vbImCl+
- AgCrSAM3GUw0CwElR0Dut/OzroJHdE9qOsVM7T1hZE25RSRQFs0ae93fF5K3usc6YKyd
- V5Vw==
-X-Gm-Message-State: APjAAAWVlaoc8PQfujx80KXO2j9ysJwDWnC2ZFjDl9Tlm3NwqFi61cIs
- fm8UcOpc0QgbCsvo3WRRz5It/MCkCp5YWEiB8qkfsg==
-X-Google-Smtp-Source: APXvYqwEK7V8CGTKtpdB2cbeBf8HgalOPvhYLB27hK6pTw6dPNJlNxuuxk0NzlvlQGtXVEkoS9slrLYLBvgzGRuZTI8=
-X-Received: by 2002:a67:6282:: with SMTP id
- w124mr11959722vsb.191.1579519149014; 
- Mon, 20 Jan 2020 03:19:09 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481ThC61XmzDqcc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 22:19:06 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2020 03:19:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,341,1574150400"; d="scan'208";a="275015353"
+Received: from linux.intel.com ([10.54.29.200])
+ by FMSMGA003.fm.intel.com with ESMTP; 20 Jan 2020 03:19:01 -0800
+Received: from [10.125.252.193] (abudanko-mobl.ccr.corp.intel.com
+ [10.125.252.193])
+ by linux.intel.com (Postfix) with ESMTP id 168DE5802C1;
+ Mon, 20 Jan 2020 03:18:52 -0800 (PST)
+From: Alexey Budankov <alexey.budankov@linux.intel.com>
+Subject: [PATCH v5 0/10] Introduce CAP_PERFMON to secure system performance
+ monitoring and observability
+To: Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ "james.bottomley@hansenpartnership.com"
+ <james.bottomley@hansenpartnership.com>, Serge Hallyn <serge@hallyn.com>,
+ James Morris <jmorris@namei.org>, Will Deacon <will.deacon@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Robert Richter <rric@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>
+Organization: Intel Corp.
+Message-ID: <0548c832-7f4b-dc4c-8883-3f2b6d351a08@linux.intel.com>
+Date: Mon, 20 Jan 2020 14:18:51 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <20200108093903.57620-1-hdegoede@redhat.com>
- <20200108093903.57620-2-hdegoede@redhat.com>
- <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com>
- <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com>
- <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com>
- <93446e09-5f12-800a-62fa-bf3ecea7273d@redhat.com>
- <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com>
- <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de>
- <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com>
- <fda179eb-df5f-ba87-aaf0-524fffca745b@xenosoft.de>
-In-Reply-To: <fda179eb-df5f-ba87-aaf0-524fffca745b@xenosoft.de>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 20 Jan 2020 12:18:32 +0100
-Message-ID: <CAPDyKFoTuvrq8PYoXVaZoJN+zBUGVkQkYAhwber7rez32y3Sxg@mail.gmail.com>
-Subject: Re: [FSL P5020 P5040 PPC] Onboard SD card doesn't work anymore after
- the 'mmc-v5.4-2' updates
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +68,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- Julian Margetson <runaway@candw.ms>, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Song Liu <songliubraving@fb.com>, Andi Kleen <ak@linux.intel.com>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ Igor Lubashev <ilubashe@akamai.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, oprofile-list@lists.sf.net,
+ Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Olsa <jolsa@redhat.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 20 Jan 2020 at 10:17, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->
-> Am 16.01.20 um 16:46 schrieb Ulf Hansson:
-> > On Thu, 16 Jan 2020 at 12:18, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
-> >> Hi All,
-> >>
-> >> We still need the attached patch for our onboard SD card interface
-> >> [1,2]. Could you please add this patch to the tree?
-> > No, because according to previous discussion that isn't the correct
-> > solution and more importantly it will break other archs (if I recall
-> > correctly).
-> >
-> > Looks like someone from the ppc community needs to pick up the ball.
-> I am not sure if the ppc community have to fix this issue because your
-> updates (mmc-v5.4-2) are responsible for this issue. If nobody wants to
-> fix this issue then we will lost the onboard SD card support in the
-> future. PLEASE check the 'mmc-v5.4-2' updates again.
 
-Applying your suggested fix breaks other archs/boards. It's really not
-a good situation, but I will not take a step back when it's quite easy
-to take a step forward instead.
+Currently access to perf_events, i915_perf and other performance monitoring and
+observability subsystems of the kernel is open for a privileged process [1] with
+CAP_SYS_ADMIN capability enabled in the process effective set [2].
 
-Someone just need to care and send a patch, it doesn't look that hard
-to me, but maybe I am wrong.
+This patch set introduces CAP_PERFMON capability designed to secure system
+performance monitoring and observability operations so that CAP_PERFMON would
+assist CAP_SYS_ADMIN capability in its governing role for perf_events, i915_perf
+and other performance monitoring and observability subsystems of the kernel.
 
-Apologies if this isn't the answer you wanted, but that's all I can do
-for now, sorry.
+CAP_PERFMON intends to take over CAP_SYS_ADMIN credentials related to system
+performance monitoring and observability operations and balance amount of
+CAP_SYS_ADMIN credentials following the recommendations in the capabilities man
+page [2] for CAP_SYS_ADMIN: "Note: this capability is overloaded; see Notes to
+kernel developers, below."
 
-Kind regards
-Uffe
+CAP_PERFMON intends to harden system security and integrity during system
+performance monitoring and observability operations by decreasing attack surface
+that is available to a CAP_SYS_ADMIN privileged process [2]. Providing the access
+to system performance monitoring and observability operations under CAP_PERFMON
+capability singly, without the rest of CAP_SYS_ADMIN credentials, excludes chances
+to misuse the credentials and makes the operation more secure.
+
+For backward compatibility reasons access to system performance monitoring and
+observability subsystems of the kernel remains open for CAP_SYS_ADMIN privileged
+processes but CAP_SYS_ADMIN capability usage for secure system performance
+monitoring and observability operations is discouraged with respect to the
+designed CAP_PERFMON capability.
+
+CAP_PERFMON intends to meet the demand to secure system performance monitoring
+and observability operations in security sensitive, restricted, multiuser production
+environments (e.g. HPC clusters, cloud and virtual compute environments) where
+root or CAP_SYS_ADMIN credentials are not available to mass users of a system
+because of security considerations.
+
+Possible alternative solution to this capabilities balancing, system security
+hardening task could be to use the existing CAP_SYS_PTRACE capability to govern
+system performance monitoring and observability operations. However CAP_SYS_PTRACE
+capability still provides users with more credentials than are required for
+secure performance monitoring and observability operations and this excess is
+avoided by the designed CAP_PERFMON capability.
+
+Although the software running under CAP_PERFMON can not ensure avoidance of
+related hardware issues, the software can still mitigate those issues following
+the official embargoed hardware issues mitigation procedure [3]. The bugs in
+the software itself could be fixed following the standard kernel development
+process [4] to maintain and harden security of system performance monitoring
+and observability operations. After all, the patch set is shaped in the way
+that simplifies procedure for backtracking of possible issues and bugs [5] as
+much as possible.
+
+The patch set is for tip perf/core repository:
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip perf/core
+sha1: 5738891229a25e9e678122a843cbf0466a456d0c
+
+---
+Changes in v5:
+- renamed CAP_SYS_PERFMON to CAP_PERFMON
+- extended perfmon_capable() with noaudit checks
+Changes in v4:
+- converted perfmon_capable() into an inline function
+- made perf_events kprobes, uprobes, hw breakpoints and namespaces data available
+  to CAP_SYS_PERFMON privileged processes
+- applied perfmon_capable() to drivers/perf and drivers/oprofile
+- extended __cmd_ftrace() with support of CAP_SYS_PERFMON
+Changes in v3:
+- implemented perfmon_capable() macros aggregating required capabilities checks
+Changes in v2:
+- made perf_events trace points available to CAP_SYS_PERFMON privileged processes
+- made perf_event_paranoid_check() treat CAP_SYS_PERFMON equally to CAP_SYS_ADMIN
+- applied CAP_SYS_PERFMON to i915_perf, bpf_trace, powerpc and parisc system
+  performance monitoring and observability related subsystems
+
+---
+Alexey Budankov (10):
+  capabilities: introduce CAP_PERFMON to kernel and user space
+  perf/core: open access to the core for CAP_PERFMON privileged process
+  perf/core: open access to anon probes for CAP_PERFMON privileged process
+  perf tool: extend Perf tool with CAP_PERFMON capability support
+  drm/i915/perf: open access for CAP_PERFMON privileged process
+  trace/bpf_trace: open access for CAP_PERFMON privileged process
+  powerpc/perf: open access for CAP_PERFMON privileged process
+  parisc/perf: open access for CAP_PERFMON privileged process
+  drivers/perf: open access for CAP_PERFMON privileged process
+  drivers/oprofile: open access for CAP_PERFMON privileged process
+
+ arch/parisc/kernel/perf.c           |  2 +-
+ arch/powerpc/perf/imc-pmu.c         |  4 ++--
+ drivers/gpu/drm/i915/i915_perf.c    | 13 ++++++-------
+ drivers/oprofile/event_buffer.c     |  2 +-
+ drivers/perf/arm_spe_pmu.c          |  4 ++--
+ include/linux/capability.h          | 12 ++++++++++++
+ include/linux/perf_event.h          |  6 +++---
+ include/uapi/linux/capability.h     |  8 +++++++-
+ kernel/events/core.c                |  6 +++---
+ kernel/trace/bpf_trace.c            |  2 +-
+ security/selinux/include/classmap.h |  4 ++--
+ tools/perf/builtin-ftrace.c         |  5 +++--
+ tools/perf/design.txt               |  3 ++-
+ tools/perf/util/cap.h               |  4 ++++
+ tools/perf/util/evsel.c             | 10 +++++-----
+ tools/perf/util/util.c              |  1 +
+ 16 files changed, 55 insertions(+), 31 deletions(-)
+
+---
+Testing and validation (Intel Skylake, 8 cores, Fedora 29, 5.5.0-rc3+, x86_64):
+
+libcap library [4], [5], [6] and Perf tool can be used to apply CAP_PERFMON 
+capability for secure system performance monitoring and observability beyond the
+scope permitted by the system wide perf_event_paranoid kernel setting [7] and
+below are the steps for evaluation:
+
+  - patch, build and boot the kernel
+  - patch, build Perf tool e.g. to /home/user/perf
+  ...
+  # git clone git://git.kernel.org/pub/scm/libs/libcap/libcap.git libcap
+  # pushd libcap
+  # patch libcap/include/uapi/linux/capabilities.h with [PATCH 1]
+  # make
+  # pushd progs
+  # ./setcap "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
+  # ./setcap -v "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
+  /home/user/perf: OK
+  # ./getcap /home/user/perf
+  /home/user/perf = cap_sys_ptrace,cap_syslog,cap_perfmon+ep
+  # echo 2 > /proc/sys/kernel/perf_event_paranoid
+  # cat /proc/sys/kernel/perf_event_paranoid 
+  2
+  ...
+  $ /home/user/perf top
+    ... works as expected ...
+  $ cat /proc/`pidof perf`/status
+  Name:	perf
+  Umask:	0002
+  State:	S (sleeping)
+  Tgid:	2958
+  Ngid:	0
+  Pid:	2958
+  PPid:	9847
+  TracerPid:	0
+  Uid:	500	500	500	500
+  Gid:	500	500	500	500
+  FDSize:	256
+  ...
+  CapInh:	0000000000000000
+  CapPrm:	0000004400080000
+  CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
+                                     cap_perfmon,cap_sys_ptrace,cap_syslog
+  CapBnd:	0000007fffffffff
+  CapAmb:	0000000000000000
+  NoNewPrivs:	0
+  Seccomp:	0
+  Speculation_Store_Bypass:	thread vulnerable
+  Cpus_allowed:	ff
+  Cpus_allowed_list:	0-7
+  ...
+
+Usage of cap_perfmon effectively avoids unused credentials excess:
+
+- with cap_sys_admin:
+  CapEff:	0000007fffffffff => 01111111 11111111 11111111 11111111 11111111
+
+- with cap_perfmon:
+  CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
+                                    38   34               19
+                               perfmon   syslog           sys_ptrace
+
+---
+[1] https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html
+[2] http://man7.org/linux/man-pages/man7/capabilities.7.html
+[3] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
+[4] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
+[5] https://www.kernel.org/doc/html/latest/process/management-style.html#decisions
+[6] http://man7.org/linux/man-pages/man8/setcap.8.html
+[7] https://git.kernel.org/pub/scm/libs/libcap/libcap.git
+[8] https://sites.google.com/site/fullycapable/, posix_1003.1e-990310.pdf
+[9] http://man7.org/linux/man-pages/man2/perf_event_open.2.html
+
+-- 
+2.20.1
