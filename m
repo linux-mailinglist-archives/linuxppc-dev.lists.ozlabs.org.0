@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AED8A143DBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 14:13:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45008143D9F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 14:05:20 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48280D17yMzDqNj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 00:05:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48289j1QfPzDq6Q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 00:13:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4827tR4LZMzDqV7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 00:00:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4827vD6Pw0zDqVB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 00:00:56 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
  data access at 0x00f0fd0d
-Date: Tue, 21 Jan 2020 13:00:12 +0000
+Date: Tue, 21 Jan 2020 13:00:54 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -41,8 +41,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-205099-206035-HogvAi6Kh2@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-205099-206035-SIBCmXWae6@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
 References: <bug-205099-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,23 +67,12 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
---- Comment #22 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Christophe Leroy from comment #19)
-> Can you tell exactly where it stops during the boot ? Or take a photo of =
-the
-> screen ?
-I'll attach a photo shortly.
-
-> In parallele, could you try (without VMAP_STACK) increasing
-> CONFIG_THREAD_SHIFT to 14 ? It will double the size of the stacks.
-I can confirm that with CONFIG_THREAD_SHIFT=3D14 the G4 runs good again with
-INLINE KASAN + KASAN_VMALLOC enabled (as seen in attached dmesg). No KASAN =
-hit
-at raid6_pq, no poblem with btrfs.
-
-Though with CONFIG_THREAD_SHIFT=3D14 + OUTLINE KASAN + KASAN_VMALLOC I stil=
-l get
-this KASAN hit at raid6_pq.
+--- Comment #23 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 286929
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D286929&action=3Dedit
+dmesg (kernel 5.5-rc6+, KASAN_VMALLOC + CONFIG_THREAD_SHIFT=3D14 + OUTLINE =
+KASAN,
+PowerMac G4 DP)
 
 --=20
 You are receiving this mail because:
