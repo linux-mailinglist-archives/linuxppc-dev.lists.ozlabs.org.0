@@ -1,51 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1428C14454E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 20:44:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482Jrb33KCzDqKg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 06:44:15 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A848F14457D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 20:56:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 482K746xS3zDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 06:56:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=ak@linux.intel.com; receiver=<UNKNOWN>)
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482JpR3Kg0zDqN1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 06:42:22 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2020 11:42:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,347,1574150400"; d="scan'208";a="215650255"
-Received: from tassilo.jf.intel.com (HELO tassilo.localdomain) ([10.7.201.21])
- by orsmga007.jf.intel.com with ESMTP; 21 Jan 2020 11:42:18 -0800
-Received: by tassilo.localdomain (Postfix, from userid 1000)
- id 8A9AC3003A3; Tue, 21 Jan 2020 11:42:18 -0800 (PST)
-Date: Tue, 21 Jan 2020 11:42:18 -0800
-From: Andi Kleen <ak@linux.intel.com>
-To: kajoljain <kjain@linux.ibm.com>
-Subject: Re: [RFC 5/6] perf/tools: Enhance JSON/metric infrastructure to
- handle "?"
-Message-ID: <20200121194218.GT302770@tassilo.jf.intel.com>
-References: <20200117124620.26094-1-kjain@linux.ibm.com>
- <20200117124620.26094-6-kjain@linux.ibm.com>
- <20200117162807.GL302770@tassilo.jf.intel.com>
- <b6e3ae17-ce41-2709-1a87-dcd9bd1f365a@linux.ibm.com>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482K5L0BrJzDqMt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 06:55:17 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00LJt2oG006385;
+ Tue, 21 Jan 2020 13:55:02 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 00LJt16T006382;
+ Tue, 21 Jan 2020 13:55:01 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 21 Jan 2020 13:55:01 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: GCC bug ? Re: [PATCH v2 10/10] powerpc/32s: Implement Kernel
+ Userspace Access Protection
+Message-ID: <20200121195501.GJ3191@gate.crashing.org>
+References: <cover.1552292207.git.christophe.leroy@c-s.fr>
+ <a2847248a92cb1641b1740fa121c5a30593ae662.1552292207.git.christophe.leroy@c-s.fr>
+ <87ftqfu7j1.fsf@concordia.ellerman.id.au>
+ <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b6e3ae17-ce41-2709-1a87-dcd9bd1f365a@linux.ibm.com>
+In-Reply-To: <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,22 +55,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com, jmario@redhat.com,
- mpetlan@redhat.com, peterz@infradead.org, linux-kernel@vger.kernel.org,
- acme@kernel.org, linux-perf-users@vger.kernel.org,
- alexander.shishkin@linux.intel.com, yao.jin@linux.intel.com,
- anju@linux.vnet.ibm.com, jolsa@kernel.org, gregkh@linuxfoundation.org,
- namhyung@kernel.org, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org,
- kan.liang@linux.intel.com
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Here, '?' will be replaced with a runtime value and metric expression will
-> be replicated.
+On Tue, Jan 21, 2020 at 05:22:32PM +0000, Christophe Leroy wrote:
+> g1() should return 3, not 5.
 
-Okay seems reasonable to me.
+What makes you say that?
 
-Thanks,
+"A return of 0 does not indicate that the
+ value is _not_ a constant, but merely that GCC cannot prove it is a
+ constant with the specified value of the '-O' option."
 
--Andi
+(And the rules it uses for this are *not* the same as C "constant
+expressions" or C "integer constant expression" or C "arithmetic
+constant expression" or anything like that -- which should be already
+obvious from that it changes with different -Ox).
+
+You can use builtin_constant_p to have the compiler do something better
+if the compiler feels like it, but not anything more.  Often people
+want stronger guarantees, but when they see how much less often it then
+returns "true", they do not want that either.
+
+
+Segher
