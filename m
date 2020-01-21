@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4E3143AFB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 11:27:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4824VR678QzDqf3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 21:27:43 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6C6143ADC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 11:24:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4824QJ6JmxzDqR0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 21:24:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,65 +19,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4824HN4W8mzDqWP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 21:18:08 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00LAHxHn032219
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 05:18:06 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xmg804anv-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4824H10ZFyzDqKD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 21:17:48 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00LAHZPr124480
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 05:17:46 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xmgbq3p1k-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 05:18:05 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 05:17:45 -0500
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <anju@linux.vnet.ibm.com>;
- Tue, 21 Jan 2020 10:17:41 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Tue, 21 Jan 2020 10:17:44 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 21 Jan 2020 10:17:38 -0000
+ Tue, 21 Jan 2020 10:17:41 -0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00LAHbKU45154458
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00LAHefl37224614
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Jan 2020 10:17:37 GMT
+ Tue, 21 Jan 2020 10:17:40 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A76CA405B;
- Tue, 21 Jan 2020 10:17:37 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8DD9EA4067;
+ Tue, 21 Jan 2020 10:17:40 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1519A4054;
- Tue, 21 Jan 2020 10:17:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4B16EA4064;
+ Tue, 21 Jan 2020 10:17:39 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.62.176])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Jan 2020 10:17:35 +0000 (GMT)
+ Tue, 21 Jan 2020 10:17:39 +0000 (GMT)
 From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v2 2/5] powerpc/perf: Implement a global lock to avoid races
- between trace, core and thread imc events.
-Date: Tue, 21 Jan 2020 15:47:25 +0530
+Subject: [PATCH v2 4/5] selftest/powerpc/pmc: Support to include interface
+ test for Memory Counter PMUs
+Date: Tue, 21 Jan 2020 15:47:27 +0530
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200121101728.14858-1-anju@linux.vnet.ibm.com>
 References: <20200121101728.14858-1-anju@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20012110-0016-0000-0000-000002DF5294
+x-cbid: 20012110-0012-0000-0000-0000037F508F
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012110-0017-0000-0000-00003341F995
-Message-Id: <20200121101728.14858-3-anju@linux.vnet.ibm.com>
+x-cbparentid: 20012110-0013-0000-0000-000021BB901B
+Message-Id: <20200121101728.14858-5-anju@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-01-21_02:2020-01-21,
  2020-01-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=1
- bulkscore=0 spamscore=0 adultscore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001210088
+ suspectscore=1 phishscore=0
+ mlxlogscore=999 spamscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
+ mlxscore=0 bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-2001210088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,336 +95,259 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-IMC(In-memory Collection Counters) does performance monitoring in
-two different modes, i.e accumulation mode(core-imc and thread-imc events),
-and trace mode(trace-imc events). A cpu thread can either be in
-accumulation-mode or trace-mode at a time and this is done via the LDBAR
-register in POWER architecture. The current design does not address the
-races between thread-imc and trace-imc events.
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-Patch implements a global id and lock to avoid the races between
-core, trace and thread imc events. With this global id-lock
-implementation, the system can either run core, thread or trace imc
-events at a time. i.e. to run any core-imc events, thread/trace imc events
-should not be enabled/monitored.
+Patch to add support to include interface tests for
+memory counter PMUs as part of selftest.
+These PMUs are primarily used to understand socket/chip/core
+resourage usage. In PowerNV envirnoment, the perf interface
+registered to access these counters are called "In Memory Collection"
+(IMC) and in PowerVM, the perf interface registered to access
+these counters are called "hv_24x7".
 
-Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+New folder "mem_counters" added under selftest/powerpc/pmu.
+This will include interface tests for both "imc" and "hv_24x7"
+pmus. Patch adds base/common functioned needed.
+To make blame easier, a place-holder test function added to
+this patch. Subsequent patch will fill in the actual test
+content.
+
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 ---
- arch/powerpc/perf/imc-pmu.c | 177 +++++++++++++++++++++++++++++++-----
- 1 file changed, 153 insertions(+), 24 deletions(-)
+ tools/testing/selftests/powerpc/pmu/Makefile  |  7 +-
+ .../powerpc/pmu/mem_counters/Makefile         | 21 ++++
+ .../pmu/mem_counters/imc_global_lock_test.c   | 21 ++++
+ .../powerpc/pmu/mem_counters/mem_counters.c   | 99 +++++++++++++++++++
+ .../powerpc/pmu/mem_counters/mem_counters.h   | 36 +++++++
+ 5 files changed, 182 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/mem_counters/Makefile
+ create mode 100644 tools/testing/selftests/powerpc/pmu/mem_counters/imc_global_lock_test.c
+ create mode 100644 tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.c
+ create mode 100644 tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.h
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index cb50a9e1fd2d..2e220f199530 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -44,6 +44,16 @@ static DEFINE_PER_CPU(u64 *, trace_imc_mem);
- static struct imc_pmu_ref *trace_imc_refc;
- static int trace_imc_mem_size;
+diff --git a/tools/testing/selftests/powerpc/pmu/Makefile b/tools/testing/selftests/powerpc/pmu/Makefile
+index 19046db995fe..e352eceac0a9 100644
+--- a/tools/testing/selftests/powerpc/pmu/Makefile
++++ b/tools/testing/selftests/powerpc/pmu/Makefile
+@@ -8,7 +8,7 @@ EXTRA_SOURCES := ../harness.c event.c lib.c ../utils.c
+ top_srcdir = ../../../../..
+ include ../../lib.mk
  
+-all: $(TEST_GEN_PROGS) ebb
++all: $(TEST_GEN_PROGS) ebb mem_counters
+ 
+ $(TEST_GEN_PROGS): $(EXTRA_SOURCES)
+ 
+@@ -43,4 +43,7 @@ clean:
+ ebb:
+ 	TARGET=$@; BUILD_TARGET=$$OUTPUT/$$TARGET; mkdir -p $$BUILD_TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -k -C $$TARGET all
+ 
+-.PHONY: all run_tests clean ebb
++mem_counters:
++	TARGET=$@; BUILD_TARGET=$$OUTPUT/$$TARGET; mkdir -p $$BUILD_TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -k -C $$TARGET all
++
++.PHONY: all run_tests clean ebb mem_counters
+diff --git a/tools/testing/selftests/powerpc/pmu/mem_counters/Makefile b/tools/testing/selftests/powerpc/pmu/mem_counters/Makefile
+new file mode 100644
+index 000000000000..f39ebe30ab70
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/pmu/mem_counters/Makefile
+@@ -0,0 +1,21 @@
++# SPDX-License-Identifier: GPL-2.0
++include ../../../../../../scripts/Kbuild.include
++
++noarg:
++	$(MAKE) -C ../../
++
++CFLAGS += -m64
++
++# Toolchains may build PIE by default which breaks the assembly
++no-pie-option := $(call try-run, echo 'int main() { return 0; }' | \
++        $(CC) -Werror $(KBUILD_CPPFLAGS) $(CC_OPTION_CFLAGS) -no-pie -x c - -o "$$TMP", -no-pie)
++
++LDFLAGS += $(no-pie-option)
++
++TEST_GEN_PROGS := imc_global_lock_test
++
++top_srcdir = ../../../../../..
++include ../../../lib.mk
++
++$(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c ./mem_counters.c \
++			imc_global_lock_test.c
+diff --git a/tools/testing/selftests/powerpc/pmu/mem_counters/imc_global_lock_test.c b/tools/testing/selftests/powerpc/pmu/mem_counters/imc_global_lock_test.c
+new file mode 100644
+index 000000000000..ea687ffc1990
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/pmu/mem_counters/imc_global_lock_test.c
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Global data structure used to avoid races between thread,
-+ * core and trace-imc
++ * Copyright 2020, Madhavan Srinivasan, IBM Corp.
 + */
-+static struct imc_pmu_ref imc_global_refc = {
-+	.lock = __MUTEX_INITIALIZER(imc_global_refc.lock),
-+	.id = 0,
-+	.refc = 0,
++
++#include "mem_counters.h"
++
++static int testcase(void)
++{
++	return 0;
++}
++
++static int imc_global_lock_test(void)
++{
++	return eat_cpu(testcase);
++}
++
++int main(void)
++{
++	return test_harness(imc_global_lock_test, "imc_global_lock_test");
++}
+diff --git a/tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.c b/tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.c
+new file mode 100644
+index 000000000000..b0ee1319f018
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2020, Madhavan Srinivasan, IBM Corp.
++ */
++
++#include "mem_counters.h"
++
++/*
++ * mem_counters.c will contain common/basic functions
++ * to support testcases for both In Memory Collection (IMC)
++ * and hv_24x7 counters.
++ */
++
++
++/*
++ * Since device type enum starts with 1,
++ * have the first entry in the array as a placeholder.
++ */
++const char mem_counters_dev_path[][30] = {
++	"",
++	"/sys/devices/thread_imc",
++	"/sys/devices/trace_imc",
++	"/sys/devices/core_imc",
++	"/sys/devices/hv_24x7",
++	"",
 +};
 +
- static struct imc_pmu *imc_event_to_pmu(struct perf_event *event)
- {
- 	return container_of(event->pmu, struct imc_pmu, pmu);
-@@ -759,6 +769,20 @@ static void core_imc_counters_release(struct perf_event *event)
- 		ref->refc = 0;
- 	}
- 	mutex_unlock(&ref->lock);
++const char mem_counters_dev_type_path[][35] = {
++	"",
++	"/sys/devices/thread_imc/type",
++	"/sys/devices/trace_imc/type",
++	"/sys/devices/core_imc/type",
++	"/sys/devices/hv_24x7/type",
++	"",
++};
 +
-+	mutex_lock(&imc_global_refc.lock);
-+	if (imc_global_refc.id == IMC_DOMAIN_CORE) {
-+		imc_global_refc.refc--;
-+		/*
-+		 * If no other thread is running any core-imc
-+		 * event, set the global id to zero.
-+		 */
-+		if (imc_global_refc.refc <= 0) {
-+			imc_global_refc.refc = 0;
-+			imc_global_refc.id = 0;
-+		}
-+	}
-+	mutex_unlock(&imc_global_refc.lock);
- }
- 
- static int core_imc_event_init(struct perf_event *event)
-@@ -779,6 +803,22 @@ static int core_imc_event_init(struct perf_event *event)
- 	if (event->cpu < 0)
- 		return -EINVAL;
- 
-+	/*
-+	 * Take the global lock, and make sure
-+	 * no other thread is running any trace OR thread imc event
-+	 */
-+	mutex_lock(&imc_global_refc.lock);
-+	if (imc_global_refc.id == 0) {
-+		imc_global_refc.id = IMC_DOMAIN_CORE;
-+		imc_global_refc.refc++;
-+	} else if (imc_global_refc.id == IMC_DOMAIN_CORE) {
-+		imc_global_refc.refc++;
-+	} else {
-+		mutex_unlock(&imc_global_refc.lock);
-+		return -EBUSY;
-+	}
-+	mutex_unlock(&imc_global_refc.lock);
 +
- 	event->hw.idx = -1;
- 	pmu = imc_event_to_pmu(event);
- 
-@@ -877,7 +917,16 @@ static int ppc_thread_imc_cpu_online(unsigned int cpu)
- 
- static int ppc_thread_imc_cpu_offline(unsigned int cpu)
- {
--	mtspr(SPRN_LDBAR, 0);
-+	/*
-+	 * Toggle the bit 0 of LDBAR.
-+	 *
-+	 * If bit 0 of LDBAR is unset, it will stop posting
-+	 * the counetr data to memory.
-+	 * For thread-imc, bit 0 of LDBAR will be set to 1 in the
-+	 * event_add function. So toggle this bit here, to stop the updates
-+	 * to memory in the cpu_offline path.
-+	 */
-+	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
- 	return 0;
- }
- 
-@@ -889,6 +938,24 @@ static int thread_imc_cpu_init(void)
- 			  ppc_thread_imc_cpu_offline);
- }
- 
-+static void thread_imc_counters_release(struct perf_event *event)
++static bool is_mem_counters_dev_registered(int dtype)
 +{
++	if (!access(mem_counters_dev_path[dtype], F_OK))
++		return true;
 +
-+	mutex_lock(&imc_global_refc.lock);
-+	if (imc_global_refc.id == IMC_DOMAIN_THREAD) {
-+		imc_global_refc.refc--;
-+		/*
-+		 * If no other thread is running any thread-imc
-+		 * event, set the global id to zero.
-+		 */
-+		if (imc_global_refc.refc <= 0) {
-+			imc_global_refc.refc = 0;
-+			imc_global_refc.id = 0;
-+		}
-+	}
-+	mutex_unlock(&imc_global_refc.lock);
++	return false;
 +}
 +
- static int thread_imc_event_init(struct perf_event *event)
- {
- 	u32 config = event->attr.config;
-@@ -905,6 +972,27 @@ static int thread_imc_event_init(struct perf_event *event)
- 	if (event->hw.sample_period)
- 		return -EINVAL;
- 
-+	mutex_lock(&imc_global_refc.lock);
-+	/*
-+	 * Check if any other thread is running
-+	 * core-engine, if not set the global id to
-+	 * thread-imc.
-+	 */
-+	if (imc_global_refc.id == 0) {
-+		imc_global_refc.id = IMC_DOMAIN_THREAD;
-+		imc_global_refc.refc++;
-+	} else if (imc_global_refc.id == IMC_DOMAIN_THREAD) {
-+		/*
-+		 * Increase the ref count if the global id is
-+		 * set to thread-imc.
-+		 */
-+		imc_global_refc.refc++;
-+	} else {
-+		mutex_unlock(&imc_global_refc.lock);
-+		return -EBUSY;
-+	}
-+	mutex_unlock(&imc_global_refc.lock);
-+
- 	event->hw.idx = -1;
- 	pmu = imc_event_to_pmu(event);
- 
-@@ -917,6 +1005,7 @@ static int thread_imc_event_init(struct perf_event *event)
- 		return -EINVAL;
- 
- 	event->pmu->task_ctx_nr = perf_sw_context;
-+	event->destroy = thread_imc_counters_release;
- 	return 0;
- }
- 
-@@ -1063,10 +1152,12 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
- 	int core_id;
- 	struct imc_pmu_ref *ref;
- 
--	mtspr(SPRN_LDBAR, 0);
--
- 	core_id = smp_processor_id() / threads_per_core;
- 	ref = &core_imc_refc[core_id];
-+	if (!ref) {
-+		pr_debug("imc: Failed to get event reference count\n");
-+		return;
-+	}
- 
- 	mutex_lock(&ref->lock);
- 	ref->refc--;
-@@ -1082,6 +1173,10 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
- 		ref->refc = 0;
- 	}
- 	mutex_unlock(&ref->lock);
-+
-+	/* Toggle bit 0 of LDBAR */
-+	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
-+
- 	/*
- 	 * Take a snapshot and calculate the delta and update
- 	 * the event counter values.
-@@ -1133,7 +1228,8 @@ static int ppc_trace_imc_cpu_online(unsigned int cpu)
- 
- static int ppc_trace_imc_cpu_offline(unsigned int cpu)
- {
--	mtspr(SPRN_LDBAR, 0);
-+	/* Toggle bit 0 of LDBAR. */
-+	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
- 	return 0;
- }
- 
-@@ -1226,15 +1322,14 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
- 	local_mem = get_trace_imc_event_base_addr();
- 	ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) | TRACE_IMC_ENABLE;
- 
--	if (core_imc_refc)
--		ref = &core_imc_refc[core_id];
-+	/* trace-imc reference count */
-+	if (trace_imc_refc)
-+		ref = &trace_imc_refc[core_id];
- 	if (!ref) {
--		/* If core-imc is not enabled, use trace-imc reference count */
--		if (trace_imc_refc)
--			ref = &trace_imc_refc[core_id];
--		if (!ref)
--			return -EINVAL;
-+		pr_debug("imc: Failed to get the event reference count\n");
-+		return -EINVAL;
- 	}
-+
- 	mtspr(SPRN_LDBAR, ldbar_value);
- 	mutex_lock(&ref->lock);
- 	if (ref->refc == 0) {
-@@ -1242,13 +1337,11 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
- 				get_hard_smp_processor_id(smp_processor_id()))) {
- 			mutex_unlock(&ref->lock);
- 			pr_err("trace-imc: Unable to start the counters for core %d\n", core_id);
--			mtspr(SPRN_LDBAR, 0);
- 			return -EINVAL;
- 		}
- 	}
- 	++ref->refc;
- 	mutex_unlock(&ref->lock);
--
- 	return 0;
- }
- 
-@@ -1274,16 +1367,13 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
- 	int core_id = smp_processor_id() / threads_per_core;
- 	struct imc_pmu_ref *ref = NULL;
- 
--	if (core_imc_refc)
--		ref = &core_imc_refc[core_id];
-+	if (trace_imc_refc)
-+		ref = &trace_imc_refc[core_id];
- 	if (!ref) {
--		/* If core-imc is not enabled, use trace-imc reference count */
--		if (trace_imc_refc)
--			ref = &trace_imc_refc[core_id];
--		if (!ref)
--			return;
-+		pr_debug("imc: Failed to get event reference count\n");
-+		return;
- 	}
--	mtspr(SPRN_LDBAR, 0);
-+
- 	mutex_lock(&ref->lock);
- 	ref->refc--;
- 	if (ref->refc == 0) {
-@@ -1297,9 +1387,30 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
- 		ref->refc = 0;
- 	}
- 	mutex_unlock(&ref->lock);
-+
-+	/* Toggle bit 0 of LDBAR */
-+	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
-+
- 	trace_imc_event_stop(event, flags);
- }
- 
-+static void trace_imc_counters_release(struct perf_event *event)
++bool is_mem_counters_device_enabled(int dtype)
 +{
-+	mutex_lock(&imc_global_refc.lock);
-+	if (imc_global_refc.id == IMC_DOMAIN_TRACE) {
-+		imc_global_refc.refc--;
-+		/*
-+		 * If no other thread is running any trace-imc
-+		 * event, set the global id to zero.
-+		 */
-+		if (imc_global_refc.refc <= 0) {
-+			imc_global_refc.refc = 0;
-+			imc_global_refc.id = 0;
-+		}
-+	}
-+	mutex_unlock(&imc_global_refc.lock);
++	switch (dtype) {
++	case THREAD:
++		if (is_mem_counters_dev_registered(THREAD))
++			return true;
++	case TRACE:
++		if (is_mem_counters_dev_registered(TRACE))
++			return true;
++		break;
++	case CORE:
++		if (is_mem_counters_dev_registered(CORE))
++			return true;
++	case HV_24X7:
++		if (is_mem_counters_dev_registered(HV_24X7))
++			return true;
++	};
++
++	return false;
 +}
 +
- static int trace_imc_event_init(struct perf_event *event)
- {
- 	struct task_struct *target;
-@@ -1314,10 +1425,28 @@ static int trace_imc_event_init(struct perf_event *event)
- 	if (event->attr.sample_period == 0)
- 		return -ENOENT;
- 
-+	/*
-+	 * Take the global lock, and make sure
-+	 * no other thread is running any core/thread imc
-+	 * event
-+	 */
-+	mutex_lock(&imc_global_refc.lock);
-+	if (imc_global_refc.id == 0) {
-+		imc_global_refc.id = IMC_DOMAIN_TRACE;
-+		imc_global_refc.refc++;
-+	} else if (imc_global_refc.id == IMC_DOMAIN_TRACE) {
-+		imc_global_refc.refc++;
-+	} else {
-+		mutex_unlock(&imc_global_refc.lock);
-+		return -EBUSY;
-+	}
-+	mutex_unlock(&imc_global_refc.lock);
++int get_mem_counters_pmu_type_val(int dtype)
++{
++	FILE *fp = NULL;
++	char buf[10];
++	int val;
 +
- 	event->hw.idx = -1;
- 	target = event->hw.target;
- 
- 	event->pmu->task_ctx_nr = perf_hw_context;
-+	event->destroy = trace_imc_counters_release;
- 	return 0;
- }
- 
-@@ -1429,10 +1558,10 @@ static void cleanup_all_core_imc_memory(void)
- static void thread_imc_ldbar_disable(void *dummy)
- {
- 	/*
--	 * By Zeroing LDBAR, we disable thread-imc
--	 * updates.
-+	 * By toggling 0th bit of LDBAR, we disable thread-imc
-+	 * updates to memory.
- 	 */
--	mtspr(SPRN_LDBAR, 0);
-+	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
- }
- 
- void thread_imc_disable(void)
++	fp = fopen(mem_counters_dev_type_path[dtype], "r");
++	if (!fp) {
++		perror("Failed to open\n");
++		return -1;
++	}
++
++	if (!fgets(buf, 10, fp)) {
++		perror("Failed to read\n");
++		return -1;
++	}
++
++	fclose(fp);
++	val = atoi(buf);
++	return val;
++}
++
++int setup_mem_counters_event(int dtype, struct event *e, u64 config, char *name)
++{
++	int val = get_mem_counters_pmu_type_val(dtype);
++
++	if (val > 0) {
++		event_init_opts(e, config, val, name);
++		return 0;
++	}
++
++	return -1;
++}
+diff --git a/tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.h b/tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.h
+new file mode 100644
+index 000000000000..16456e5fc9de
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/pmu/mem_counters/mem_counters.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright 2020, Madhavan Srinivasan, IBM Corp.
++ */
++
++#ifndef _SELFTESTS_POWERPC_PMU_IMC_IMC_H
++#define _SELFTESTS_POWERPC_PMU_IMC_IMC_H
++
++#define _GNU_SOURCE
++#include <unistd.h>
++#include <sys/syscall.h>
++#include <string.h>
++#include <stdio.h>
++#include <stdbool.h>
++#include <error.h>
++#include <errno.h>
++#include <stdlib.h>
++#include <sys/ioctl.h>
++#include <sys/prctl.h>
++
++#include "../event.h"
++#include "../lib.h"
++
++
++enum MEM_COUNTERS_DEV_TYPE{
++	THREAD = 0x1,
++	TRACE,
++	CORE,
++	HV_24X7,
++};
++
++extern bool is_mem_counters_device_enabled(int dtype);
++extern int get_mem_counters_pmu_type_val(int dtype);
++extern int setup_mem_counters_event(int dtype, struct event *e, u64 config, char *name);
++
++#endif /* _SELFTESTS_POWERPC_PMU_IMC_IMC_H */
 -- 
 2.20.1
 
