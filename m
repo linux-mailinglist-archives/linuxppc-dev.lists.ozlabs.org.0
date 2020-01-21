@@ -1,76 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BC0143BEB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 12:18:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56243143BC0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 12:11:19 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4825Sg37WLzDqRw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 22:11:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4825dT5yvHzDqPC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 22:18:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fQaeudZN; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=perches.com
+ (client-ip=216.40.44.36; helo=smtprelay.hostedemail.com;
+ envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=perches.com
+Received: from smtprelay.hostedemail.com (smtprelay0036.hostedemail.com
+ [216.40.44.36])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4825PL0rdTzDqLV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 22:08:19 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id m13so1345594pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 03:08:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=q9+d07yNlL7y2pMZrvszriwhmvSDwpSLEXm3PxmeYTE=;
- b=fQaeudZN+QMV1F3SRaOstbh2HT3NA2RiuiT2HN5Q6zsovUYOZBhDa04WC3qbYZd/8k
- AHY7UAshUPeVTLVD75tle7m6sBUS9iiKsoLiCndXP3VpGILT5/V6kDPZyBeL9CiIMJ88
- DKgaqE8s3DK/voqFz+h9X62AYIeP9sIcUC3JNMdOwEIgFr/HukwPKq1RVJhlEiMBP1HX
- ZMyVc+hq/UBoIvLZ02v191u+Z5WAoSD8HOwbjHCYV1bc5KDcWcQOWkoU4XWnT85ENAvB
- vu8OUh5g0HzkrUN+Q5d1fvsGqgaUcoow2tz8y1pQkWewrZ+EqDaTMw8P5LRZpnMH0O5j
- BwXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=q9+d07yNlL7y2pMZrvszriwhmvSDwpSLEXm3PxmeYTE=;
- b=Ool9Ci+cXAFQyIMVydaANfqDKl3MelP5oo/HRuVAAIg6WQC2vI0vt+lDJ5St53mRNn
- jiW11ZfN0SivLL2TXweF0RmbHarZdYLU4ybAW+eA7+HNazx89UdP5pMXt5idJbr1Yr0G
- PX13DsPenmuSJXK03nnW5wsO9KP6r4ol3pWzp2c5HSRuHHO32y7czcDKi0vkioMSCMQ7
- EgaomHZfdEh9ETI8UrzV2nuOLQiVzrDf2VlYANnbtjyGufx4gppwSJq3Oup7B/kWszJf
- /GKQ3IKnonZcwJP9ZEFJcvKMSf2tjtzQImcUI4K0IqzQ5U6WMV+LlS+8TLafbQAE2EVU
- F7hg==
-X-Gm-Message-State: APjAAAW0ip0vWNLUd2yAKsek2MkoDaergK2kp3fTPBFhj2oWQjhLg71t
- tWIsV0PtmMKG4E5Cn5zv37Q=
-X-Google-Smtp-Source: APXvYqxZcU33OKBN70qgkmnyLULSS0Qcpq/z+2bI4UZ0cCYm/GJKOy8sTmQK/D3pzIif0b60TO+i8A==
-X-Received: by 2002:a17:902:8bc9:: with SMTP id
- r9mr4794664plo.48.1579604895793; 
- Tue, 21 Jan 2020 03:08:15 -0800 (PST)
-Received: from localhost (193-116-65-251.tpgi.com.au. [193.116.65.251])
- by smtp.gmail.com with ESMTPSA id a22sm45514122pfk.108.2020.01.21.03.08.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jan 2020 03:08:15 -0800 (PST)
-Date: Tue, 21 Jan 2020 21:05:06 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/mm/hash: Fix the min context value used by
- userspace.
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
- paulus@samba.org
-References: <20200108054422.161384-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20200108054422.161384-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4825bG4J60zDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 22:16:56 +1100 (AEDT)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay06.hostedemail.com (Postfix) with ESMTP id 791E718224D9C;
+ Tue, 21 Jan 2020 11:16:52 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50, 0, 0, , d41d8cd98f00b204, joe@perches.com,
+ :::::::::::::::::::::,
+ RULES_HIT:41:355:379:599:901:960:967:973:982:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2194:2198:2199:2200:2393:2525:2553:2561:2564:2682:2685:2828:2859:2892:2895:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3608:3622:3657:3770:3865:3867:3868:3871:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:4659:5007:6997:7974:9025:9388:10004:10049:10400:11026:11232:11473:11658:11852:11855:11914:12043:12296:12297:12555:12740:12760:12895:13019:13069:13311:13357:13439:14094:14096:14181:14659:14721:14764:14775:14777:14849:21080:21627:21691:21939:30054:30075:30090:30091,
+ 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
+ DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
+ LFtime:1, LUA_SUMMARY:none
+X-HE-Tag: toys51_3bc2dfa430738
+X-Filterd-Recvd-Size: 2336
+Received: from XPS-9350.home (unknown [47.151.135.224])
+ (Authenticated sender: joe@perches.com)
+ by omf03.hostedemail.com (Postfix) with ESMTPA;
+ Tue, 21 Jan 2020 11:16:50 +0000 (UTC)
+Message-ID: <24012ba289823e9e38c2f89116a5f61581ef3909.camel@perches.com>
+Subject: Re: [PATCH -next] powerpc/maple: fix comparing pointer to 0
+From: Joe Perches <joe@perches.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Date: Tue, 21 Jan 2020 03:15:49 -0800
+In-Reply-To: <20200121074723.GF3191@gate.crashing.org>
+References: <20200121013153.9937-1-chenzhou10@huawei.com>
+ <618f58cd46f0e4fd619cb2ee3c76665a28e30f4e.camel@perches.com>
+ <20200121074723.GF3191@gate.crashing.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1579593605.idinjkyxla.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,79 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Romain Dolbeau <romain@dolbeau.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Chen Zhou <chenzhou10@huawei.com>, linux-kernel@vger.kernel.org,
+ nivedita@alum.mit.edu, paulus@samba.org, gregkh@linuxfoundation.org,
+ tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, allison@lohutok.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Aneesh Kumar K.V's on January 8, 2020 3:44 pm:
-> Without this kernel can endup with SLB entries as below
->=20
-> 04 c00c000008000000 00066bde000a7510 256M ESID=3Dc00c00000  VSID=3D   66b=
-de000a7 LLP:110
-> 12 0000000008000000 00066bde000a7d90 256M ESID=3D        0  VSID=3D   66b=
-de000a7 LLP:110
->=20
-> Such SLB entries can result in machine check.
->=20
-> We noticed this with 256MB segments because that resulted in the duplicat=
-e VSID
-> with first vmemmap segment and first user segement. With 1TB segments we =
-observe
-> duplication with EAs like
->=20
-> 0x100e64b vsid for EA 0xc00db50000000000 context 7
-> 0x100e64b vsid for user EA 0x1b50000000000 context 7
->=20
-> and those high addresses are not common and the kernel mapping in the abo=
-ve case
-> is I/O remap range.
->=20
-> [    0.000000] vmalloc start     =3D 0xc008000000000000
-> [    0.000000] IO start          =3D 0xc00a000000000000
-> [    0.000000] vmemmap start     =3D 0xc00c000000000000
->=20
-> Fixes: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in th=
-e same 0xc range")
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/book3s/64/mmu-hash.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc=
-/include/asm/book3s/64/mmu-hash.h
-> index 15b75005bc34..516db8a2e6ca 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> @@ -601,7 +601,7 @@ extern void slb_set_size(u16 size);
->   */
->  #define MAX_USER_CONTEXT	((ASM_CONST(1) << CONTEXT_BITS) - 2)
->  #define MIN_USER_CONTEXT	(MAX_KERNEL_CTX_CNT + MAX_VMALLOC_CTX_CNT + \
-> -				 MAX_IO_CTX_CNT + MAX_VMEMMAP_CTX_CNT)
-> +				 MAX_IO_CTX_CNT + MAX_VMEMMAP_CTX_CNT + 1)
+On Tue, 2020-01-21 at 01:47 -0600, Segher Boessenkool wrote:
+> On Mon, Jan 20, 2020 at 05:52:15PM -0800, Joe Perches wrote:
+> > On Tue, 2020-01-21 at 09:31 +0800, Chen Zhou wrote:
+> > > Fixes coccicheck warning:
+> > > ./arch/powerpc/platforms/maple/setup.c:232:15-16:
+> > > 	WARNING comparing pointer to 0
+> > 
+> > Does anyone have or use these powerpc maple boards anymore?
+> > 
+> > Maybe the whole codebase should just be deleted instead.
+> 
+> This is used for *all* non-Apple 970 systems (not running virtualized),
+> not just actual Maple.
 
-Good find and fix, but the changelog is a bit difficult to read.
+OK, then likely this Kconfig description should be updated
+(and the http://www.970eval.com link is no longer about powerpc)
 
-The bug is an off-by-one error which means the first user context ID
-allocated is the vmemmap ID, right? I would lead with that.
+$ cat arch/powerpc/platforms/maple/Kconfig
+# SPDX-License-Identifier: GPL-2.0
+config PPC_MAPLE
+	depends on PPC64 && PPC_BOOK3S && CPU_BIG_ENDIAN
+	bool "Maple 970FX Evaluation Board"
+	select FORCE_PCI
+	select MPIC
+	select U3_DART
+	select MPIC_U3_HT_IRQS
+	select GENERIC_TBSYNC
+	select PPC_UDBG_16550
+	select PPC_970_NAP
+	select PPC_NATIVE
+	select PPC_RTAS
+	select MMIO_NVRAM
+	select ATA_NONSTANDARD if ATA
+	help
+	  This option enables support for the Maple 970FX Evaluation Board.
+	  For more information, refer to <http://www.970eval.com>
 
-I'm not sure that machine checks are a primary symptom, different ESID
-mapping the same VSID is allowed. My guess is the machine check happens
-a little later, after the vmemmap gets corrupted via its new mapping.
 
-Guessing this hasn't immediately resulted in wholesale mayhem because
-- Init is pretty small, doesn't use many segments or pages.
-- Low 1TB is mapped with 256MB segments which get a different VA hash
-  than the 1TB vmemmap segment.
-- init tends to load itself at 256MB, so even with disable_1tb_segments,
-  it's clashing with the second vmmemap segment, which is for like the
-  second 256GB of memory on the first node, so not going to hit many
-  systems.
 
-Anyway good find.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-Thanks,
-Nick
-=
