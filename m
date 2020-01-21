@@ -2,76 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6CB144322
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 18:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D7B14434C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 18:32:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482Flq3tC9zDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 04:24:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482Fww5LNdzDqWS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 04:32:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=gFTk7nIS; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482Fjm1gQLzDqPn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 04:23:05 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 482FjS293hz9v1S7;
- Tue, 21 Jan 2020 18:22:52 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=gFTk7nIS; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1oAV2srf0Lba; Tue, 21 Jan 2020 18:22:52 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 482FjS108jz9v1S6;
- Tue, 21 Jan 2020 18:22:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579627372; bh=sMXDwBt01Cd62ThXPHiPled8Rp8cKUezeik7kezRUaM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=gFTk7nISCQ6YwsCKDldBxyRo17VC7Hwqw3vyPk4sgmpHuazFD4jPGwVeCNwEOB0d5
- Yx9uk840B7OHaR+LWAKROZLvdNjI5p+YMY1m72edZxhkBhjzjXAoF5WGg6tYJ0bGZD
- 4LDwC4Pm55Z4zK4eLh3yHS28M9G8E7TWNFdKao+I=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CE1B28B7E6;
- Tue, 21 Jan 2020 18:22:53 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lslBuyCx9qG5; Tue, 21 Jan 2020 18:22:53 +0100 (CET)
-Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EB55A8B776;
- Tue, 21 Jan 2020 18:22:52 +0100 (CET)
-Subject: GCC bug ? Re: [PATCH v2 10/10] powerpc/32s: Implement Kernel
- Userspace Access Protection
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, ruscur@russell.cc,
- Segher Boessenkool <segher@kernel.crashing.org>
-References: <cover.1552292207.git.christophe.leroy@c-s.fr>
- <a2847248a92cb1641b1740fa121c5a30593ae662.1552292207.git.christophe.leroy@c-s.fr>
- <87ftqfu7j1.fsf@concordia.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
-Date: Tue, 21 Jan 2020 17:22:32 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482Fv647CzzDq9C
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 04:31:13 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2020 09:31:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,346,1574150400"; d="scan'208";a="221768046"
+Received: from linux.intel.com ([10.54.29.200])
+ by fmsmga008.fm.intel.com with ESMTP; 21 Jan 2020 09:31:04 -0800
+Received: from [10.252.13.111] (iganakov-mobl1.ger.corp.intel.com
+ [10.252.13.111])
+ by linux.intel.com (Postfix) with ESMTP id 874B25803C5;
+ Tue, 21 Jan 2020 09:30:55 -0800 (PST)
+Subject: Re: [PATCH v5 01/10] capabilities: introduce CAP_PERFMON to kernel
+ and user space
+To: Stephen Smalley <sds@tycho.nsa.gov>, Peter Zijlstra
+ <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ "james.bottomley@hansenpartnership.com"
+ <james.bottomley@hansenpartnership.com>, Serge Hallyn <serge@hallyn.com>,
+ James Morris <jmorris@namei.org>, Will Deacon <will.deacon@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Robert Richter <rric@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>
+References: <0548c832-7f4b-dc4c-8883-3f2b6d351a08@linux.intel.com>
+ <9b77124b-675d-5ac7-3741-edec575bd425@linux.intel.com>
+ <64cab472-806e-38c4-fb26-0ffbee485367@tycho.nsa.gov>
+From: Alexey Budankov <alexey.budankov@linux.intel.com>
+Organization: Intel Corp.
+Message-ID: <05297eff-8e14-ccdf-55a4-870c64516de8@linux.intel.com>
+Date: Tue, 21 Jan 2020 20:30:54 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <87ftqfu7j1.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <64cab472-806e-38c4-fb26-0ffbee485367@tycho.nsa.gov>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,90 +73,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, Andi Kleen <ak@linux.intel.com>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ Igor Lubashev <ilubashe@akamai.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>,
+ "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, oprofile-list@lists.sf.net,
+ Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Olsa <jolsa@redhat.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-
-On 04/18/2019 06:55 AM, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
->> index 5f97c742ca71..b3560b2de435 100644
->> --- a/arch/powerpc/include/asm/book3s/32/kup.h
->> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
->> @@ -37,6 +37,113 @@
-> ...
->> +
->> +static inline void allow_user_access(void __user *to, const void __user *from, u32 size)
+On 21.01.2020 17:43, Stephen Smalley wrote:
+> On 1/20/20 6:23 AM, Alexey Budankov wrote:
+>>
+>> Introduce CAP_PERFMON capability designed to secure system performance
+>> monitoring and observability operations so that CAP_PERFMON would assist
+>> CAP_SYS_ADMIN capability in its governing role for perf_events, i915_perf
+>> and other performance monitoring and observability subsystems.
+>>
+>> CAP_PERFMON intends to harden system security and integrity during system
+>> performance monitoring and observability operations by decreasing attack
+>> surface that is available to a CAP_SYS_ADMIN privileged process [1].
+>> Providing access to system performance monitoring and observability
+>> operations under CAP_PERFMON capability singly, without the rest of
+>> CAP_SYS_ADMIN credentials, excludes chances to misuse the credentials and
+>> makes operation more secure.
+>>
+>> CAP_PERFMON intends to take over CAP_SYS_ADMIN credentials related to
+>> system performance monitoring and observability operations and balance
+>> amount of CAP_SYS_ADMIN credentials following the recommendations in the
+>> capabilities man page [1] for CAP_SYS_ADMIN: "Note: this capability is
+>> overloaded; see Notes to kernel developers, below."
+>>
+>> Although the software running under CAP_PERFMON can not ensure avoidance
+>> of related hardware issues, the software can still mitigate these issues
+>> following the official embargoed hardware issues mitigation procedure [2].
+>> The bugs in the software itself could be fixed following the standard
+>> kernel development process [3] to maintain and harden security of system
+>> performance monitoring and observability operations.
+>>
+>> [1] http://man7.org/linux/man-pages/man7/capabilities.7.html
+>> [2] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
+>> [3] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
+>>
+>> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+>> ---
+>>   include/linux/capability.h          | 12 ++++++++++++
+>>   include/uapi/linux/capability.h     |  8 +++++++-
+>>   security/selinux/include/classmap.h |  4 ++--
+>>   3 files changed, 21 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/capability.h b/include/linux/capability.h
+>> index ecce0f43c73a..8784969d91e1 100644
+>> --- a/include/linux/capability.h
+>> +++ b/include/linux/capability.h
+>> @@ -251,6 +251,18 @@ extern bool privileged_wrt_inode_uidgid(struct user_namespace *ns, const struct
+>>   extern bool capable_wrt_inode_uidgid(const struct inode *inode, int cap);
+>>   extern bool file_ns_capable(const struct file *file, struct user_namespace *ns, int cap);
+>>   extern bool ptracer_capable(struct task_struct *tsk, struct user_namespace *ns);
+>> +static inline bool perfmon_capable(void)
 >> +{
->> +	u32 addr = (__force u32)to;
->> +	u32 end = min(addr + size, TASK_SIZE);
+>> +    struct user_namespace *ns = &init_user_ns;
 >> +
->> +	if (!addr || addr >= TASK_SIZE || !size)
->> +		return;
+>> +    if (ns_capable_noaudit(ns, CAP_PERFMON))
+>> +        return ns_capable(ns, CAP_PERFMON);
 >> +
->> +	current->thread.kuap = (addr & 0xf0000000) | ((((end - 1) >> 28) + 1) & 0xf);
->> +	kuap_update_sr(mfsrin(addr) & ~SR_KS, addr, end);	/* Clear Ks */
+>> +    if (ns_capable_noaudit(ns, CAP_SYS_ADMIN))
+>> +        return ns_capable(ns, CAP_SYS_ADMIN);
+>> +
+>> +    return false;
 >> +}
 > 
-> When rebasing on my v6 I changed the above to:
-> 
-> static inline void allow_user_access(void __user *to, const void __user *from, u32 size)
-> {
-> 	u32 addr, end;
-> 
-> 	if (__builtin_constant_p(to) && to == NULL)
-> 		return;
+> Why _noaudit()?  Normally only used when a permission failure is non-fatal to the operation.  Otherwise, we want the audit message.
 
-Look like the above doesn't work: gcc bug ?
+Some of ideas from v4 review.
+Well, on the second sight, it defenitly should be logged for CAP_SYS_ADMIN.
+Probably it is not so fatal for CAP_PERFMON, but personally 
+I would unconditionally log it for CAP_PERFMON as well.
+Good catch, thank you.
 
-#define NULL (void*)0
-
-static inline int f1(void *to)
-{
-	if (__builtin_constant_p(to) && to == NULL)
-		return 3;
-	return 5;
-}
-
-int g1(void)
-{
-	return f1(NULL);
-}
-
-static inline int f2(int x)
-{
-	if (__builtin_constant_p(x) && x == 0)
-		return 7;
-	return 9;
-}
-
-int g2(void)
-{
-	return f2(0);
-}
-
-
-
-toto.o:     file format elf32-powerpc
-
-
-Disassembly of section .text:
-
-00000000 <g1>:
-    0:	38 60 00 05 	li      r3,5
-    4:	4e 80 00 20 	blr
-
-00000008 <g2>:
-    8:	38 60 00 07 	li      r3,7
-    c:	4e 80 00 20 	blr
-
-
-
-It works for the int const, but not for the pointer const:
-
-g1() should return 3, not 5. GCC bug ?
-
-Christophe
+~Alexey
