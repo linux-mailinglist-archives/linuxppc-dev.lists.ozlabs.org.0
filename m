@@ -1,91 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF9014373F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 07:48:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481zdD0W6TzDqD7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 17:48:16 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261D6143766
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 08:01:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 481zwB0ts4zDqXV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 18:01:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=vivo.com (client-ip=59.111.176.151;
+ helo=m176151.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m176151.mail.qiye.163.com (m176151.mail.qiye.163.com
+ [59.111.176.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481zbV6zKnzDqTb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 17:46:46 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00L6gHKG128099
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 01:46:43 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xkwq7h7d3-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 01:46:43 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 21 Jan 2020 06:46:25 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 21 Jan 2020 06:46:17 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00L6kGXl47579348
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Jan 2020 06:46:16 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A80FA4062;
- Tue, 21 Jan 2020 06:46:16 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C42EEA405F;
- Tue, 21 Jan 2020 06:46:15 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Jan 2020 06:46:15 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 03AB4A024B;
- Tue, 21 Jan 2020 17:46:12 +1100 (AEDT)
-Subject: Re: [PATCH v2 05/27] powerpc: Map & release OpenCAPI LPC memory
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203034655.51561-6-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 21 Jan 2020 17:46:12 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481zsx6slGzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 17:59:15 +1100 (AEDT)
+Received: from vivo.com (wm-11.qy.internal [127.0.0.1])
+ by m176151.mail.qiye.163.com (Hmail) with ESMTP id AFC054823A1;
+ Tue, 21 Jan 2020 14:59:09 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <ANcAOwAACK7otVnG7VF8E4rQ.3.1579589949706.Hmail.wenhu.wang@vivo.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSF0gcG93ZXJwYy9zeXNkZXY6IGZpeCBjb21waWxlIGVycm9ycw==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.226
+In-Reply-To: <c5256f34-176c-2e72-b0d4-4d615b96d73a@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20191203034655.51561-6-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20012106-0020-0000-0000-000003A29215
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012106-0021-0000-0000-000021FA200A
-Message-Id: <f33979a2-a083-dd0e-3273-7ebff66d6385@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-21_01:2020-01-20,
- 2020-01-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- suspectscore=2 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 mlxlogscore=680 impostorscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001210058
+Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
+ [127.0.0.1] ) ; Tue, 21 Jan 2020 14:59:09 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Tue, 21 Jan 2020 14:59:09 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VIT0pCQkJOSEtMQklJT1lXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhNSktCQ0tDS05KN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6NRg6NAw6OjgwTBQPLRU8TC09Qz5PCSpVSFVKTkxCTkNCQk5KTEJLVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQU1PSEg3Bg++
+X-HM-Tid: 0a6fc6e5d91d93b5kuwsafc054823a1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,61 +55,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Keith Busch <keith.busch@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Richard Fontana <rfontana@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ wangwenhu <wenhu.pku@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ trivial@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, lonehugo@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/12/19 2:46 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> This patch adds platform support to map & release LPC memory.
-
-Might want to explain what LPC is.
-
-Otherwise:
-
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->   arch/powerpc/include/asm/pnv-ocxl.h   |  2 ++
->   arch/powerpc/platforms/powernv/ocxl.c | 42 +++++++++++++++++++++++++++
->   2 files changed, 44 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
-> index 7de82647e761..f8f8ffb48aa8 100644
-> --- a/arch/powerpc/include/asm/pnv-ocxl.h
-> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
-> @@ -32,5 +32,7 @@ extern int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
->   
->   extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
->   extern void pnv_ocxl_free_xive_irq(u32 irq);
-> +extern u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size);
-> +extern void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev);
-
-nit: I don't think these need to be extern?
-
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+5Y+R5Lu25Lq677yaQW5kcmV3IERvbm5lbGxhbiA8YWpkQGxpbnV4LmlibS5jb20+CuWPkemAgeaX
+peacn++8mjIwMjAtMDEtMjEgMTQ6MTM6MDcK5pS25Lu25Lq677yad2FuZ3dlbmh1IDx3ZW5odS5w
+a3VAZ21haWwuY29tPixCZW5qYW1pbiBIZXJyZW5zY2htaWR0IDxiZW5oQGtlcm5lbC5jcmFzaGlu
+Zy5vcmc+LFBhdWwgTWFja2VycmFzIDxwYXVsdXNAc2FtYmEub3JnPixNaWNoYWVsIEVsbGVybWFu
+IDxtcGVAZWxsZXJtYW4uaWQuYXU+LEthdGUgU3Rld2FydCA8a3N0ZXdhcnRAbGludXhmb3VuZGF0
+aW9uLm9yZz4sR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4s
+UmljaGFyZCBGb250YW5hIDxyZm9udGFuYUByZWRoYXQuY29tPixUaG9tYXMgR2xlaXhuZXIgPHRn
+bHhAbGludXRyb25peC5kZT4sbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcsbGludXgta2Vy
+bmVsQHZnZXIua2VybmVsLm9yZwrmioTpgIHkurrvvJp0cml2aWFsQGtlcm5lbC5vcmcsbG9uZWh1
+Z29AaG90bWFpbC5jb20sd2VuaHUud2FuZ0B2aXZvLmNvbQrkuLvpopjvvJpSZTogW1BBVENIXSBw
+b3dlcnBjL3N5c2RldjogZml4IGNvbXBpbGUgZXJyb3JzPk9uIDIxLzEvMjAgNDozMSBwbSwgd2Fu
+Z3dlbmh1IHdyb3RlOgo+PiBGcm9tOiB3YW5nd2VuaHUgPHdlbmh1LndhbmdAdml2by5jb20+Cj4+
+IAo+PiBJbmNsdWRlIGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9pby5oIGludG8gZnNsXzg1eHhf
+Y2FjaGVfc3JhbS5jIHRvCj4+IGZpeCB0aGUgaW1wbGljaXQgZGVjbGFyYXRpb24gY29tcGlsZSBl
+cnJvcnMgd2hlbiBidWlsZGluZyBDYWNoZS1TcmFtLgo+PiAKPj4gYXJjaC9wb3dlcnBjL3N5c2Rl
+di9mc2xfODV4eF9jYWNoZV9zcmFtLmM6IEluIGZ1bmN0aW9uIOKAmGluc3RhbnRpYXRlX2NhY2hl
+X3NyYW3igJk6Cj4+IGFyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1eHhfY2FjaGVfc3JhbS5jOjk3
+OjI2OiBlcnJvcjogaW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g4oCYaW9yZW1hcF9j
+b2hlcmVudOKAmTsgZGlkIHlvdSBtZWFuIOKAmGJpdG1hcF9jb21wbGVtZW504oCZPyBbLVdlcnJv
+cj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJhdGlvbl0KPj4gICAgY2FjaGVfc3JhbS0+YmFzZV92
+aXJ0ID0gaW9yZW1hcF9jb2hlcmVudChjYWNoZV9zcmFtLT5iYXNlX3BoeXMsCj4+ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn4KPj4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgYml0bWFwX2NvbXBsZW1lbnQKPj4gYXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4
+eF9jYWNoZV9zcmFtLmM6OTc6MjQ6IGVycm9yOiBhc3NpZ25tZW50IG1ha2VzIHBvaW50ZXIgZnJv
+bSBpbnRlZ2VyIHdpdGhvdXQgYSBjYXN0IFstV2Vycm9yPWludC1jb252ZXJzaW9uXQo+PiAgICBj
+YWNoZV9zcmFtLT5iYXNlX3ZpcnQgPSBpb3JlbWFwX2NvaGVyZW50KGNhY2hlX3NyYW0tPmJhc2Vf
+cGh5cywKPj4gICAgICAgICAgICAgICAgICAgICAgICAgIF4KPj4gYXJjaC9wb3dlcnBjL3N5c2Rl
+di9mc2xfODV4eF9jYWNoZV9zcmFtLmM6MTIzOjI6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlv
+biBvZiBmdW5jdGlvbiDigJhpb3VubWFw4oCZOyBkaWQgeW91IG1lYW4g4oCYcm91bmR1cOKAmT8g
+Wy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25dCj4+ICAgIGlvdW5tYXAoY2Fj
+aGVfc3JhbS0+YmFzZV92aXJ0KTsKPj4gICAgXn5+fn5+fgo+PiAgICByb3VuZHVwCj4+IGNjMTog
+YWxsIHdhcm5pbmdzIGJlaW5nIHRyZWF0ZWQgYXMgZXJyb3JzCj4+IAo+PiBTaWduZWQtb2ZmLWJ5
+OiB3YW5nd2VuaHUgPHdlbmh1LndhbmdAdml2by5jb20+Cj4KPkhvdyBsb25nIGhhcyB0aGlzIGNv
+ZGUgYmVlbiBicm9rZW4gZm9yPwoKSXQncyBiZWVuIGJyb2tlbiBhbG1vc3QgMTUgbW9udGhzIHNp
+bmNlIHRoZSBjb21taXQgYmVsb3c6CiJjb21taXQgYWE5MTc5NmVjNDYzMzlmMmVkNTNkYTMxMWJk
+M2VhNzdhM2U0ZGZlMQpBdXRob3I6IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lA
+Yy1zLmZyPgpEYXRlOiAgIFR1ZSBPY3QgOSAxMzo1MTo0MSAyMDE4ICswMDAwCgogICAgcG93ZXJw
+YzogZG9uJ3QgdXNlIGlvcmVtYXBfcHJvdCgpIG5vciBfX2lvcmVtYXAoKSB1bmxlc3MgcmVhbGx5
+IG5lZWRlZC4iCgpBbmQgd2UgYXJlIHdvcmtpbmcgb24gaXQgbm93IGZvciBmdXJ0aGVyIGRldmVs
+b3BtZW50LgoKPgo+PiAtLS0KPj4gICBhcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84NXh4X2NhY2hl
+X3NyYW0uYyB8IDEgKwo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQo+PiAKPj4g
+ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1eHhfY2FjaGVfc3JhbS5jIGIv
+YXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4eF9jYWNoZV9zcmFtLmMKPj4gaW5kZXggZjZjNjY1
+ZGFjNzI1Li4yOWI2ODY4ZWZmN2QgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvcG93ZXJwYy9zeXNkZXYv
+ZnNsXzg1eHhfY2FjaGVfc3JhbS5jCj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1
+eHhfY2FjaGVfc3JhbS5jCj4+IEBAIC0xNyw2ICsxNyw3IEBACj4+ICAgI2luY2x1ZGUgPGxpbnV4
+L29mX3BsYXRmb3JtLmg+Cj4+ICAgI2luY2x1ZGUgPGFzbS9wZ3RhYmxlLmg+Cj4+ICAgI2luY2x1
+ZGUgPGFzbS9mc2xfODV4eF9jYWNoZV9zcmFtLmg+Cj4+ICsjaW5jbHVkZSA8YXNtL2lvLmg+Cj4+
+IAo+PiAgICNpbmNsdWRlICJmc2xfODV4eF9jYWNoZV9jdGxyLmgiCj4+IAo+Cj4tLSAKPkFuZHJl
+dyBEb25uZWxsYW4gICAgICAgICAgICAgIE96TGFicywgQURMIENhbmJlcnJhCj5hamRAbGludXgu
+aWJtLmNvbSAgICAgICAgICAgICBJQk0gQXVzdHJhbGlhIExpbWl0ZWQKPgoKV2VuaHUNCg0K
