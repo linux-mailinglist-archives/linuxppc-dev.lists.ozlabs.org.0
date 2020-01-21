@@ -2,60 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398DA143586
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 03:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5781435EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 04:33:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481sHG1P1rzDqfs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 13:02:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481vJV5pRpzDqKN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 14:33:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.31; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-X-Greylist: delayed 449 seconds by postgrey-1.36 at bilbo;
- Tue, 21 Jan 2020 13:00:52 AEDT
-Received: from smtprelay.hostedemail.com (smtprelay0031.hostedemail.com
- [216.40.44.31])
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481sFc5k14zDqW4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 13:00:50 +1100 (AEDT)
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com
- [10.5.19.251])
- by smtpgrave02.hostedemail.com (Postfix) with ESMTP id 10B091800864F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 01:53:30 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay04.hostedemail.com (Postfix) with ESMTP id 68169180A68AC;
- Tue, 21 Jan 2020 01:53:17 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com,
- :::::::::::::::::::,
- RULES_HIT:41:355:379:599:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3351:3622:3865:3867:3874:4250:4321:5007:6119:6997:9592:10004:10400:10848:11026:11232:11657:11658:11914:12043:12048:12296:12297:12438:12555:12740:12760:12895:13069:13311:13357:13439:14096:14097:14659:14721:21080:21451:21627:30054:30091,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:1, LUA_SUMMARY:none
-X-HE-Tag: shake46_56b5e3c028834
-X-Filterd-Recvd-Size: 1824
-Received: from XPS-9350.home (unknown [47.151.135.224])
- (Authenticated sender: joe@perches.com)
- by omf19.hostedemail.com (Postfix) with ESMTPA;
- Tue, 21 Jan 2020 01:53:15 +0000 (UTC)
-Message-ID: <618f58cd46f0e4fd619cb2ee3c76665a28e30f4e.camel@perches.com>
-Subject: Re: [PATCH -next] powerpc/maple: fix comparing pointer to 0
-From: Joe Perches <joe@perches.com>
-To: Chen Zhou <chenzhou10@huawei.com>, benh@kernel.crashing.org, 
- paulus@samba.org, mpe@ellerman.id.au
-Date: Mon, 20 Jan 2020 17:52:15 -0800
-In-Reply-To: <20200121013153.9937-1-chenzhou10@huawei.com>
-References: <20200121013153.9937-1-chenzhou10@huawei.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481vH13y5KzDqVN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 14:32:13 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1itkAR-0005jP-1X; Mon, 20 Jan 2020 21:25:27 -0600
+Message-ID: <bd0fa23b900fe967a8c3c11abd1ba9a47cec474f.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: wangwenhu <wenhu.pku@gmail.com>, Kumar Gala <galak@kernel.crashing.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Date: Mon, 20 Jan 2020 21:25:25 -0600
+In-Reply-To: <20200120144327.20800-1-wenhu.pku@gmail.com>
+References: <20200120144327.20800-1-wenhu.pku@gmail.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: wenhu.pku@gmail.com, galak@kernel.crashing.org,
+ benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ trivial@kernel.org, wenhu.wang@vivo.com, harninder.rai@nxp.com
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+Subject: Re: [PATCH] powerpc/Kconfig: Make FSL_85XX_CACHE_SRAM configurable
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,43 +65,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- nivedita@alum.mit.edu, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org,
- allison@lohutok.net
+Cc: Rai Harninder <harninder.rai@nxp.com>, wenhu.wang@vivo.com,
+ trivial@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-01-21 at 09:31 +0800, Chen Zhou wrote:
-> Fixes coccicheck warning:
-> ./arch/powerpc/platforms/maple/setup.c:232:15-16:
-> 	WARNING comparing pointer to 0
+On Mon, 2020-01-20 at 06:43 -0800, wangwenhu wrote:
+> From: wangwenhu <wenhu.wang@vivo.com>
+> 
+> When generating .config file with menuconfig on Freescale BOOKE
+> SOC, FSL_85XX_CACHE_SRAM is not configurable for the lack of
+> description in the Kconfig field, which makes it impossible
+> to support L2Cache-Sram driver. Add a description to make it
+> configurable.
+> 
+> Signed-off-by: wangwenhu <wenhu.wang@vivo.com>
 
-Does anyone have or use these powerpc maple boards anymore?
+The intent was that drivers using the SRAM API would select the symbol.  What
+is the use case for selecting it manually?
 
-Maybe the whole codebase should just be deleted instead.
+Since this code was added almost ten years ago and there are still no (in-
+tree?) users of the API, we should just remove the sram code (unless this
+prods someone to submit such a user very soon).
 
-If not, setup.c has an unused DBG macro that could be removed too.
----
- arch/powerpc/platforms/maple/setup.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/arch/powerpc/platforms/maple/setup.c b/arch/powerpc/platforms/maple/setup.c
-index 47f7310..d6a083c 100644
---- a/arch/powerpc/platforms/maple/setup.c
-+++ b/arch/powerpc/platforms/maple/setup.c
-@@ -57,12 +57,6 @@
- 
- #include "maple.h"
- 
--#ifdef DEBUG
--#define DBG(fmt...) udbg_printf(fmt)
--#else
--#define DBG(fmt...)
--#endif
--
- static unsigned long maple_find_nvram_base(void)
- {
- 	struct device_node *rtcs;
+-Scott
 
 
