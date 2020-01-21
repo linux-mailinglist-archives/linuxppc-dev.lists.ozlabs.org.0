@@ -1,65 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EED8144643
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 22:11:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6E114463D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 22:07:38 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482Lhk6n8hzDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 08:07:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482Ln1520SzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 08:11:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=hkallweit1@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::443;
+ helo=mail-wr1-x443.google.com; envelope-from=hkallweit1@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sOgWoNfN; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
+ header.s=20161025 header.b=qIWjEZ/P; dkim-atps=neutral
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
+ [IPv6:2a00:1450:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482Lfc41nTzDqMv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 08:05:43 +1100 (AEDT)
-Received: by mail-wr1-x442.google.com with SMTP id t2so4972329wrr.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 13:05:43 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482LlH6S5pzDqM5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 08:09:47 +1100 (AEDT)
+Received: by mail-wr1-x443.google.com with SMTP id j42so4906643wrj.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 13:09:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:subject:to:cc:message-id:date:user-agent:mime-version
  :content-language:content-transfer-encoding;
- bh=fLJ5ZQgTlsKG5vGdwN0EigFoKbOob/9gwm906d2IrXc=;
- b=sOgWoNfNBON8FuaB7b1Oo9EYw+zNkpDWG2zMm4JFuwjeNOTFw+5sss3XanXNhfoMd+
- IHCDd+iuUvLSAO+ws9CC/OnJeZQ/p2wpSpRCVydgFWMup/W9aaSSu7vyquCgqcn5Wgh7
- Kn4G65VS7CKweXqGXuLi/9AhwUTydtooahMP+l7H0ervJ5Ub8FetLSzOdJuthXdy2KSX
- I5W8UnFpUGaZQ+8wsKb4OMQKZJZvVJRIelTa9XTa8HXROa/ZSLRAP+u8QzFTWsFSVOyR
- 37b82N8d+gB+UvaZgc99hvL+szDMHr7lOPRTa/MS+BLrAXGwL+qjclUJ0dCRr/unYGQ+
- T56w==
+ bh=USC5WNDE/HAboW02J0L9+U4XCEXb7DagbFu0m+UZCqY=;
+ b=qIWjEZ/PY0mWS/WID2OXjq6XaThaCmq3qD8xY04LzWj0/+2wgnzLHyg5PRTEswz3jo
+ filg8S5mLxmFio4nznI765fVDS1dGbu2tcCyhOvy69WaW0KeCxqCn+82dFprCqJGaxQl
+ cpoiVK2MNgTGlzEHI/rRwtO0/qrXXjnifyqGQhfe6UmHXFncLEIWeQ7lWRDyXowEl0Pp
+ 2t82vnjDxuaY23p1iP+O10FvIQjj4qtHrz7wlnBExpcug5egvLHxhgnIzxXBL3Vtx+dc
+ 4XtKvkcXyppPm1a/WL0WS814w6nJOSazZ8ruXVdwe/B/+IKPUl/lGWdGZ2qd9IcR3hec
+ Xtww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
  :mime-version:content-language:content-transfer-encoding;
- bh=fLJ5ZQgTlsKG5vGdwN0EigFoKbOob/9gwm906d2IrXc=;
- b=Gabtrg1GhMtx1U0dtgZ9pOOg0VfzkuG2mvRLnOcvRop8WWCcdgaTGXW98EzLBPTgN4
- ovgvQZ9ptAt/KMZk07oFrip0Lq/Hm2hhfHfGQ0GmXh61fHc5wxH0gHk2Gkv3dVQA9xTf
- fue1GBA/G7n8MCLXPSpscLbzArMRtLMOqByfK0+700/ewHVIhpjgPzeHODmYUiOqRynu
- dZkxTnDvFX40/UcmEG3Xl7/OYvpKgpvHJa85KYqLJxEVTFpxtVJTGokl2MyUei19TIJn
- PsckK4BhaCg4kXALpdAVYt1qcjmqE/cIPDUqvE9PJn6v2N9kv+Vgtypf1+RjJdPkvP2K
- 7cyA==
-X-Gm-Message-State: APjAAAV5d3fWBwKtiW5H07dbyfGoBXoDgUluhKV3pA/HX4q9EoCIOpjG
- ljWIL7p/fNtdl4fcFSIHzyQ=
-X-Google-Smtp-Source: APXvYqwb/r1qB/GY/FnfuBqYtz/j0N0cBu0b4yYDFkLnQvrAat8Y+56bge4YpW//FjOqjNhbdMuuWg==
-X-Received: by 2002:a5d:5273:: with SMTP id l19mr7435844wrc.175.1579640737379; 
- Tue, 21 Jan 2020 13:05:37 -0800 (PST)
+ bh=USC5WNDE/HAboW02J0L9+U4XCEXb7DagbFu0m+UZCqY=;
+ b=S6ujFt3MzvMVLsRuWdDUKrTYZZvVJN+0WYkpI1vwyKOGwwNmU5fG9RIWNiBW4UdMhU
+ r4xcguF0ykDjVyC0YbhjUtQoqBDFeZPwiDtE9iombZr2pPN44M4UbmS5Jpu08czPCG+R
+ 02zPTQXcLaWAng8cnoGZb56IPHUOxBLj3kS6ydbnbF+8rcd+TL98SPcdQ7mV67aw35M7
+ xGP7JblZ6gTzOadScz7ePCba4xjGIesqFVP0UNwcruuvvq9V5p9XErS+y/RRcORqSvxH
+ olZ/v+7bKqTeCMm0TfPMFplVkcG8xQKNYcrXp0fRR/WrgVhEli268Nq63mkjW5de2QL5
+ 3LNg==
+X-Gm-Message-State: APjAAAUGGTCIypemf7aUO1WA4hCopA2SYqquE8RbnlebxFpsKrlNeT8w
+ axjeZqAp0N360HDpRPUYjak=
+X-Google-Smtp-Source: APXvYqzy1aNdd6Z6+LVkRLndzQGjv5U2HpRGo1umY/F/247Z4YunAPOd3XmtUP/HILVHd1edjG724A==
+X-Received: by 2002:a05:6000:1187:: with SMTP id
+ g7mr7109966wrx.109.1579640983148; 
+ Tue, 21 Jan 2020 13:09:43 -0800 (PST)
 Received: from [192.168.178.85] (pD9F901D9.dip0.t-ipconnect.de.
  [217.249.1.217])
- by smtp.googlemail.com with ESMTPSA id r5sm53177292wrt.43.2020.01.21.13.05.36
+ by smtp.googlemail.com with ESMTPSA id c9sm19876wme.41.2020.01.21.13.09.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Jan 2020 13:05:36 -0800 (PST)
+ Tue, 21 Jan 2020 13:09:42 -0800 (PST)
 From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH net-next] net: convert suitable drivers to use
+Subject: [PATCH v2 net-next] net: convert suitable drivers to use
  phy_do_ioctl_running
 To: Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>,
  David Miller <davem@davemloft.net>, Maxime Ripard <mripard@kernel.org>,
@@ -73,8 +74,8 @@ To: Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>,
  Michal Simek <michal.simek@xilinx.com>,
  Woojung Huh <woojung.huh@microchip.com>,
  Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
-Message-ID: <771a3ebc-0656-b91c-4973-b0f03e4945f7@gmail.com>
-Date: Tue, 21 Jan 2020 22:01:27 +0100
+Message-ID: <2db5d899-a550-456d-a725-f7cf009f53a3@gmail.com>
+Date: Tue, 21 Jan 2020 22:09:33 +0100
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
@@ -92,10 +93,10 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-renesas-soc@vger.kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
  Linux USB Mailing List <linux-usb@vger.kernel.org>,
- bcm-kernel-feedback-list@broadcom.com,
+ linux-renesas-soc@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -104,6 +105,8 @@ Sender: "Linuxppc-dev"
 Convert suitable drivers to use new helper phy_do_ioctl_running.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+v2: I forgot the netdev mailing list
 ---
  drivers/net/ethernet/allwinner/sun4i-emac.c    | 15 +--------------
  drivers/net/ethernet/amd/au1000_eth.c          | 13 +------------
