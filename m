@@ -2,56 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAD814362D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 05:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15511143633
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 05:33:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481wQM2TVVzDqQL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 15:23:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481wdT6pPZzDqQK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 15:33:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481wNT75HDzDqWt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 15:22:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481wYq2k7MzDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 15:30:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=R5/TPcQ4; 
+ header.a=rsa-sha256 header.s=201909 header.b=KL851bmz; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 481wNT5KPQz9sNx; Tue, 21 Jan 2020 15:22:01 +1100 (AEDT)
+ id 481wYq0F5Dz9sNF; Tue, 21 Jan 2020 15:30:07 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 481wNT0xcpz9sNF;
- Tue, 21 Jan 2020 15:22:01 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 481wYp62Ssz9sNx; Tue, 21 Jan 2020 15:30:06 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1579580521;
- bh=pvfq9znufitCPnK5AoQJmCyQcVAQIpGzNjSX9H1iM4Q=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=R5/TPcQ4g8CFMvAFyDMmIeVCSJQs49JXsmiQ7gbIcIxeA3+7OO/Gn1Hu2AukQGcW0
- Di5VUAJ8zhkPLE4BsxJ8VYbuqoWtIEBj5JzqaB14J0TpCPhBTsF97YJhZ18d3NBVbq
- CUt7XMd9LxE/GzYHqg/PR/bgJfasKGUPlRYfyNdaueEVLVx/BVDmVnHqfPiduCxkhU
- D5bNe02eZWuvfoMx8kMNqQiD5MUSUJBYOXh/EjDJ+qLAMUdNXCJaQ1m8qrrQb2YAlS
- eNjPYbdiHl1GfIq/o6GSG9TQ00noQlEZ8gJpqDWxJhpc3cdHVUDICeC7bUf1VbXBiL
- 3ErPi+zV/7Lzg==
+ s=201909; t=1579581006;
+ bh=ENnj4bvc0MeAr9h+R8Qmo+PwjRP9iUnkwftG1t9ZBNM=;
+ h=From:To:Cc:Subject:Date:From;
+ b=KL851bmzsRUo6nBqzwNIU93O50fAaDOLAPzYRfdkMYOpOsphT+sxNeDC4r1TR1sAH
+ w6rmEItz5K4xjXE2eXSDSbRRU/wktSWcsW7BWHHycEKSYHG6RqbCneJrspSZAbwF3J
+ zPMUoPzD/2OsXRSh0MbWNtM8SXVPjDXOREHEqDijbvk4z8FMS+SffvW/vA3v/Uq5Kx
+ 8t7omkC5q4pjBWQGSA7B+DynZZSJ+oUGfYSrEXiQI6q83M+hUEQyPMxsVvPwwCTfky
+ iGSJaCdvrtk6Mn+6Wzp4v4ncaKpqPpnXyIlYBImncZP1vpBPr+JmSRZ7TbwIySbr5P
+ ap4Wjy8+Yn38w==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joel Stanley <joel@jms.id.au>
-Subject: Re: [RFC PATCH 9/9] powerpc/configs/skiroot: Enable some more
- hardening options
-In-Reply-To: <CACPK8XfyVmhiBTj9JnYv_H5zNsg4pA4=LW73nRFHW8=ejtw=-g@mail.gmail.com>
-References: <20200116014808.15756-1-mpe@ellerman.id.au>
- <20200116014808.15756-9-mpe@ellerman.id.au>
- <CACPK8XfyVmhiBTj9JnYv_H5zNsg4pA4=LW73nRFHW8=ejtw=-g@mail.gmail.com>
-Date: Tue, 21 Jan 2020 15:21:58 +1100
-Message-ID: <87wo9ligm1.fsf@mpe.ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2 01/10] powerpc/configs: Drop CONFIG_QLGE which moved to
+ staging
+Date: Tue, 21 Jan 2020 15:29:51 +1100
+Message-Id: <20200121043000.16212-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,51 +56,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: oohall@gmail.com, joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Joel Stanley <joel@jms.id.au> writes:
-> On Thu, 16 Jan 2020 at 01:48, Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Enable more hardening options.
->>
->> Note BUG_ON_DATA_CORRUPTION selects DEBUG_LIST and is essentially just
->> a synonym for it.
->>
->> DEBUG_SG, DEBUG_NOTIFIERS, DEBUG_LIST, DEBUG_CREDENTIALS and
->> SCHED_STACK_END_CHECK should all be low overhead and just add a few
->> extra checks.
->>
->> Unselecting SLAB_MERGE_DEFAULT causes the SLAB to use more memory, but
->> the skiroot kernel shouldn't be memory constrained on any of our
->> systems, all it does is run a small bootloader.
->
-> Why do we unselect it?
+The QLGE driver moved to staging in commit 955315b0dc8c ("qlge: Move
+drivers/net/ethernet/qlogic/qlge/ to drivers/staging/qlge/"), meaning
+our defconfigs that enable it have no effect as we don't enable
+CONFIG_STAGING.
 
-The help text pretty much explains it:
+It sounds like the device is obsolete, so drop the driver.
 
-config SLAB_MERGE_DEFAULT
-	bool "Allow slab caches to be merged"
-	default y
-	help
-	  For reduced kernel memory fragmentation, slab caches can be
-	  merged when they share the same size and other characteristics.
-	  This carries a risk of kernel heap overflows being able to
-	  overwrite objects from merged caches (and more easily control
-	  cache layout), which makes such heap attacks easier to exploit
-	  by attackers. By keeping caches unmerged, these kinds of exploits
-	  can usually only damage objects in the same cache. To disable
-	  merging at runtime, "slab_nomerge" can be passed on the kernel
-	  command line.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/configs/powernv_defconfig | 1 -
+ arch/powerpc/configs/ppc64_defconfig   | 1 -
+ arch/powerpc/configs/ppc6xx_defconfig  | 1 -
+ arch/powerpc/configs/pseries_defconfig | 1 -
+ arch/powerpc/configs/skiroot_defconfig | 1 -
+ 5 files changed, 5 deletions(-)
 
+v2: No change.
 
-So unselecting it uses a bit more memory but has some
-security/robustness benefit.
+diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
+index 32841456a573..71749377d164 100644
+--- a/arch/powerpc/configs/powernv_defconfig
++++ b/arch/powerpc/configs/powernv_defconfig
+@@ -181,7 +181,6 @@ CONFIG_MLX5_FPGA=y
+ CONFIG_MLX5_CORE_EN=y
+ CONFIG_MLX5_CORE_IPOIB=y
+ CONFIG_MYRI10GE=m
+-CONFIG_QLGE=m
+ CONFIG_NETXEN_NIC=m
+ CONFIG_USB_NET_DRIVERS=m
+ # CONFIG_WLAN is not set
+diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
+index b250e6f5a7ca..7e68cb222c7b 100644
+--- a/arch/powerpc/configs/ppc64_defconfig
++++ b/arch/powerpc/configs/ppc64_defconfig
+@@ -189,7 +189,6 @@ CONFIG_MLX4_EN=m
+ CONFIG_MYRI10GE=m
+ CONFIG_S2IO=m
+ CONFIG_PASEMI_MAC=y
+-CONFIG_QLGE=m
+ CONFIG_NETXEN_NIC=m
+ CONFIG_SUNGEM=y
+ CONFIG_GELIC_NET=m
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index 7e28919041cf..3e2f44f38ac5 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -507,7 +507,6 @@ CONFIG_FORCEDETH=m
+ CONFIG_HAMACHI=m
+ CONFIG_YELLOWFIN=m
+ CONFIG_QLA3XXX=m
+-CONFIG_QLGE=m
+ CONFIG_NETXEN_NIC=m
+ CONFIG_8139CP=m
+ CONFIG_8139TOO=m
+diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
+index 26126b4d4de3..6b68109e248f 100644
+--- a/arch/powerpc/configs/pseries_defconfig
++++ b/arch/powerpc/configs/pseries_defconfig
+@@ -169,7 +169,6 @@ CONFIG_IXGBE=m
+ CONFIG_I40E=m
+ CONFIG_MLX4_EN=m
+ CONFIG_MYRI10GE=m
+-CONFIG_QLGE=m
+ CONFIG_NETXEN_NIC=m
+ CONFIG_PPP=m
+ CONFIG_PPP_BSDCOMP=m
+diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
+index 069f67f12731..7ff1ff1ddc28 100644
+--- a/arch/powerpc/configs/skiroot_defconfig
++++ b/arch/powerpc/configs/skiroot_defconfig
+@@ -171,7 +171,6 @@ CONFIG_MYRI10GE=m
+ # CONFIG_NET_VENDOR_NVIDIA is not set
+ # CONFIG_NET_VENDOR_OKI is not set
+ # CONFIG_NET_VENDOR_PACKET_ENGINES is not set
+-CONFIG_QLGE=m
+ CONFIG_NETXEN_NIC=m
+ CONFIG_QED=m
+ CONFIG_QEDE=m
+-- 
+2.21.1
 
-I should probably also mention that it essentially has no effect because
-we're also enabling SLUB_DEBUG_ON, and that causes some of the flags in
-SLAB_NEVER_MERGE to be set, which also disables merging.
-
-cheers
