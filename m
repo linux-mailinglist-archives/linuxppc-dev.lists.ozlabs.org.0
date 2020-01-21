@@ -1,52 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9230F1436C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 06:34:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659191436DF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 06:56:39 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 481yTc3tQXzDqdl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 16:56:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 481y0L5mmRzDqPk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2020 16:34:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.148;
- helo=m176148.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=wenhu.pku@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-X-Greylist: delayed 512 seconds by postgrey-1.36 at bilbo;
- Tue, 21 Jan 2020 16:29:02 AEDT
-Received: from m176148.mail.qiye.163.com (m176148.mail.qiye.163.com
- [59.111.176.148])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=iVnEndIv; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 481xsp0bzwzDqV4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 16:29:01 +1100 (AEDT)
-Received: from vivo.com (wm-8.qy.internal [127.0.0.1])
- by m176148.mail.qiye.163.com (Hmail) with ESMTP id A650F1A37B5;
- Tue, 21 Jan 2020 13:20:19 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AFAA8AA0CH7o6kMJF-XfXKq9.3.1579584019640.Hmail.wenhu.wang@vivo.com>
-To: Scott Wood <oss@buserror.net>
-Subject: =?UTF-8?B?UmU6W1BBVENIXSBwb3dlcnBjL0tjb25maWc6IE1ha2UgRlNMXzg1WFhfQ0FDSEVfU1JBTSBjb25maWd1cmFibGU=?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.227
-In-Reply-To: <bd0fa23b900fe967a8c3c11abd1ba9a47cec474f.camel@buserror.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 481xyT2x85zDqV4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 16:33:05 +1100 (AEDT)
+Received: by mail-pj1-x1042.google.com with SMTP id n96so800247pjc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2020 21:33:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=TBmFapcCP51v12ZDGyzoq6lMJzVpI9tiiDOrivNq+Hg=;
+ b=iVnEndIvNGIyZOZ9RqjwdHY9uDVvwBw4JJKU2ax6fZjyC66osU5fz8+e3ZQYYU0NEE
+ /sXWEs4x7EMZoOBdyeh4115F08CiB9HGKEa92/u2jNiSy2gSuSsDe6ydMLLcvpNeMBgb
+ SaLnIsJJEGr1HmOxSviZU00da9gwohbe0woK8muvcOZwwHAdd2XEC8HgHYNxZZOCnO6g
+ dKINdFN6JesG5erfBKiQXSXrTHYkyTfgPoJtILG6h2ITvJQT+hUhKP27578b+kXrBnY2
+ 8EwwPwfPI/gvoue/1h8csWrXhKnDy0hd/49wXWZ6JPcjmRCyRhuA41Fj7t9X8s8+XAUU
+ /o9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=TBmFapcCP51v12ZDGyzoq6lMJzVpI9tiiDOrivNq+Hg=;
+ b=IAFLKZhkXFD2ZW9VGqGgmE8yG+4XZyNdxBt4u9ePE3YCcVqE8Hp4DHytnNCtunz4eS
+ 9BFiO/BCBnz9F5tK7nLFCuwDbVUfa7b81amxqpxz/Jn20j6xcibjdqLQU6j6/2JPUeKh
+ YMdYrZPtBc53lwkRmLa1RgGgxuo72huBrwMbvAwmRvSPbG2Avu1sOvearuHqBcYH2JMB
+ L1fqtaphAurCivMxTgpZ7r/yNxHwws7XXHus2U2TWaA3BTGRGWpbQcr67Qxjont+m80q
+ p1rZsLkTL2g1bwrKLg4g4ooeNU3dE3178ciI9COvRgjYonTFGaX9AU7+uBLHBVuHB4IC
+ GzkQ==
+X-Gm-Message-State: APjAAAXM6FB21gNSWICnTrYkdkCKUJdMTIBN3C1U5u70slXujcfEzW/3
+ BBZPvh1lTROfZwFz7Iu7os8=
+X-Google-Smtp-Source: APXvYqwKroEhv0VaxPVuiMrNnT6axI9f0V6DunSlymxW6i94xrEU3F5J8TuYo3jxshWCQYteKZDAKQ==
+X-Received: by 2002:a17:90a:c301:: with SMTP id
+ g1mr3290728pjt.88.1579584782048; 
+ Mon, 20 Jan 2020 21:33:02 -0800 (PST)
+Received: from ubuntu.localdomain ([218.189.25.99])
+ by smtp.gmail.com with ESMTPSA id b1sm31501216pfp.44.2020.01.20.21.32.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 20 Jan 2020 21:33:01 -0800 (PST)
+From: wangwenhu <wenhu.pku@gmail.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Kate Stewart <kstewart@linuxfoundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Richard Fontana <rfontana@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, wangwenhu <wenhu.pku@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/sysdev: fix compile errors
+Date: Mon, 20 Jan 2020 21:31:13 -0800
+Message-Id: <20200121053114.89676-1-wenhu.pku@gmail.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.227) ] by ajax-webmail (
- [127.0.0.1] ) ; Tue, 21 Jan 2020 13:20:19 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Tue, 21 Jan 2020 13:20:19 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSFVCSktCQkJMTE9CSElDTVlXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhNSktMQkpPSEhPN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6PTo6Qzo6SzgzTBRNEDYxPVYjHSMwCkJVSFVKTkxCTkNPS0lKQkJDVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlMWVdZCAFZQU9MQ0I3Bg++
-X-HM-Tid: 0a6fc68b5ce59394kuwsa650f1a37b5
-X-Mailman-Approved-At: Tue, 21 Jan 2020 16:55:13 +1100
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,43 +84,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rai Harninder <harninder.rai@nxp.com>, trivial@kernel.org,
- linux-kernel@vger.kernel.org, wangwenhu <wenhu.pku@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: lonehugo@hotmail.com, trivial@kernel.org, wenhu.wang@vivo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogU2NvdHQgV29vZCA8b3NzQGJ1c2Vycm9yLm5ldD4KRGF0ZTogMjAyMC0wMS0yMSAxMToy
-NToyNQpUbzogIHdhbmd3ZW5odSA8d2VuaHUucGt1QGdtYWlsLmNvbT4sS3VtYXIgR2FsYSA8Z2Fs
-YWtAa2VybmVsLmNyYXNoaW5nLm9yZz4sQmVuamFtaW4gSGVycmVuc2NobWlkdCA8YmVuaEBrZXJu
-ZWwuY3Jhc2hpbmcub3JnPixQYXVsIE1hY2tlcnJhcyA8cGF1bHVzQHNhbWJhLm9yZz4sTWljaGFl
-bCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PixsaW51eHBwYy1kZXZAbGlzdHMub3psYWJz
-Lm9yZyxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnCkNjOiAgdHJpdmlhbEBrZXJuZWwub3Jn
-LHdlbmh1LndhbmdAdml2by5jb20sUmFpIEhhcm5pbmRlciA8aGFybmluZGVyLnJhaUBueHAuY29t
-PgpTdWJqZWN0OiBSZTogW1BBVENIXSBwb3dlcnBjL0tjb25maWc6IE1ha2UgRlNMXzg1WFhfQ0FD
-SEVfU1JBTSBjb25maWd1cmFibGU+T24gTW9uLCAyMDIwLTAxLTIwIGF0IDA2OjQzIC0wODAwLCB3
-YW5nd2VuaHUgd3JvdGU6Cj4+IEZyb206IHdhbmd3ZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4K
-Pj4gCj4+IFdoZW4gZ2VuZXJhdGluZyAuY29uZmlnIGZpbGUgd2l0aCBtZW51Y29uZmlnIG9uIEZy
-ZWVzY2FsZSBCT09LRQo+PiBTT0MsIEZTTF84NVhYX0NBQ0hFX1NSQU0gaXMgbm90IGNvbmZpZ3Vy
-YWJsZSBmb3IgdGhlIGxhY2sgb2YKPj4gZGVzY3JpcHRpb24gaW4gdGhlIEtjb25maWcgZmllbGQs
-IHdoaWNoIG1ha2VzIGl0IGltcG9zc2libGUKPj4gdG8gc3VwcG9ydCBMMkNhY2hlLVNyYW0gZHJp
-dmVyLiBBZGQgYSBkZXNjcmlwdGlvbiB0byBtYWtlIGl0Cj4+IGNvbmZpZ3VyYWJsZS4KPj4gCj4+
-IFNpZ25lZC1vZmYtYnk6IHdhbmd3ZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KPgo+VGhlIGlu
-dGVudCB3YXMgdGhhdCBkcml2ZXJzIHVzaW5nIHRoZSBTUkFNIEFQSSB3b3VsZCBzZWxlY3QgdGhl
-IHN5bWJvbC4gIFdoYXQKPmlzIHRoZSB1c2UgY2FzZSBmb3Igc2VsZWN0aW5nIGl0IG1hbnVhbGx5
-Pwo+CgpXaXRoIGEgcmVwb3NpdG9yeSBvZiBtdWx0aXBsZSBwcm9kdWN0cyhtZWFuaW5nIGRpZmZl
-cmVudCBkZWZjb25maWdzKSBhbmQgbXVsdGlwbGUKZGV2ZWxvcGVycywgdGhlIEtjb25maWdzIG9m
-IHRoZSBLZXJuZWwgU291cmNlIFRyZWUgY2hhbmdlIGZyZXF1ZW50bHkuIFNvIHRoZSAibWFrZSBt
-ZW51Y29uZmlnIgpwcm9jZXNzIGlzIG5lZWRlZCBmb3IgZGVmY29uZmlncycgcmUtZ2VuZXJhdGlu
-ZyBvciB1cGRhdGluZyBmb3IgdGhlIGNvbXBsZXhpdHkgb2YgZGVwZW5kZW5jaWVzCmJldHdlZW4g
-ZGlmZmVyZW50IGZlYXR1cmVzIGRlZmluZWQgaW4gdGhlIEtjb25maWdzLgoKPlNpbmNlIHRoaXMg
-Y29kZSB3YXMgYWRkZWQgYWxtb3N0IHRlbiB5ZWFycyBhZ28gYW5kIHRoZXJlIGFyZSBzdGlsbCBu
-byAoaW4tCj50cmVlPykgdXNlcnMgb2YgdGhlIEFQSSwgd2Ugc2hvdWxkIGp1c3QgcmVtb3ZlIHRo
-ZSBzcmFtIGNvZGUgKHVubGVzcyB0aGlzCj5wcm9kcyBzb21lb25lIHRvIHN1Ym1pdCBzdWNoIGEg
-dXNlciB2ZXJ5IHNvb24pLgo+CgpZZXMsIHByZXR0eSBsb25nIGEgdGltZS4gQnV0IHdlIERPIHJl
-YWxseSB1c2UgdGhlIEFQSSBub3cgZm9yIFBQQ0U1MDAvRnJlZXNjYWxlIFNvQy4KTGlrZSBzb21l
-dGltZXMgd2UgbmVlZCB0byByZXNldCB0aGUgd2hvbGUgUkFNLCB0aGVuIHRoZSBMMi1DYWNoZSB3
-b3VsZCBiZSB1c2VkIGFzClNSQU0gZm9yIGJhY2t1cCB1c2luZy4gU2luY2UgaXQgaXMgdXNlZnVs
-IGZvciB1cyBub3csIGEgcmUtY29uc2lkZXJhdGlvbiBpcyByZWNvbW1hbmRlZC4KCj4tU2NvdHQK
-Pgo+CgotLQpXZW5odQp2aXZvDQoNCg==
+From: wangwenhu <wenhu.wang@vivo.com>
+
+Include arch/powerpc/include/asm/io.h into fsl_85xx_cache_sram.c to
+fix the implicit declaration compile errors when building Cache-Sram.
+
+arch/powerpc/sysdev/fsl_85xx_cache_sram.c: In function ‘instantiate_cache_sram’:
+arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:26: error: implicit declaration of function ‘ioremap_coherent’; did you mean ‘bitmap_complement’? [-Werror=implicit-function-declaration]
+  cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
+                          ^~~~~~~~~~~~~~~~
+                          bitmap_complement
+arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:24: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
+  cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
+                        ^
+arch/powerpc/sysdev/fsl_85xx_cache_sram.c:123:2: error: implicit declaration of function ‘iounmap’; did you mean ‘roundup’? [-Werror=implicit-function-declaration]
+  iounmap(cache_sram->base_virt);
+  ^~~~~~~
+  roundup
+cc1: all warnings being treated as errors
+
+Signed-off-by: wangwenhu <wenhu.wang@vivo.com>
+---
+ arch/powerpc/sysdev/fsl_85xx_cache_sram.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
+index f6c665dac725..29b6868eff7d 100644
+--- a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
++++ b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
+@@ -17,6 +17,7 @@
+ #include <linux/of_platform.h>
+ #include <asm/pgtable.h>
+ #include <asm/fsl_85xx_cache_sram.h>
++#include <asm/io.h>
+ 
+ #include "fsl_85xx_cache_ctlr.h"
+ 
+-- 
+2.17.1
+
