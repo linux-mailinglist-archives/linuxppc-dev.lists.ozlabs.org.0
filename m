@@ -2,86 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA670144C18
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 07:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3F8144C2F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 07:59:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482bm71QPNzDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:56:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482bq915Y3zDqKh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:59:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kamalesh@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=EHsTER7Z; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482bkN19B4zDq6M
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 17:54:51 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00M6lZU1055209
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 01:54:49 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xp944m2tm-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 01:54:49 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kamalesh@linux.vnet.ibm.com>;
- Wed, 22 Jan 2020 06:54:43 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 Jan 2020 06:54:40 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00M6scVq42991928
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jan 2020 06:54:38 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2BB2A4051;
- Wed, 22 Jan 2020 06:54:38 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18F56A4059;
- Wed, 22 Jan 2020 06:54:38 +0000 (GMT)
-Received: from JAVRIS.in.ibm.com (unknown [9.124.31.197])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 22 Jan 2020 06:54:37 +0000 (GMT)
-Subject: Re: [PATCH FIX] KVM: PPC: Book3S HV: Release lock on page-out failure
- path
-To: Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org
-References: <20200122045542.3527-1-bharata@linux.ibm.com>
-From: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-Date: Wed, 22 Jan 2020 12:24:36 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482bnC2dHXzDqL8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 17:57:19 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 482bn71Kscz9v1G1;
+ Wed, 22 Jan 2020 07:57:15 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=EHsTER7Z; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id OVFmCX_L5Lgn; Wed, 22 Jan 2020 07:57:15 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 482bn707RTz9v1G0;
+ Wed, 22 Jan 2020 07:57:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579676235; bh=CBx7iS06BSIP6qNB7l3ahv3OsouitLiZYefJlZ5dcu8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=EHsTER7Z4Oqsp2+hty+bZTYAq8pwQujk5eElZEjELZauCDitzjjH1brzpv/wO7gNp
+ zjVa610e+LoXEkBmEtVGNxrUCBuQ81/RVZwXAv0nB3xNteJHEf/0PK2i2dpoUNGNsd
+ dZTnPsMHvWIQAB0dbbrapwoR0Q2lLT0ClO+/dDpY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C4D468B7EC;
+ Wed, 22 Jan 2020 07:57:15 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id qVDc0MUIikwf; Wed, 22 Jan 2020 07:57:15 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9AD258B776;
+ Wed, 22 Jan 2020 07:57:15 +0100 (CET)
+Subject: Re: GCC bug ? Re: [PATCH v2 10/10] powerpc/32s: Implement Kernel
+ Userspace Access Protection
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <cover.1552292207.git.christophe.leroy@c-s.fr>
+ <a2847248a92cb1641b1740fa121c5a30593ae662.1552292207.git.christophe.leroy@c-s.fr>
+ <87ftqfu7j1.fsf@concordia.ellerman.id.au>
+ <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
+ <20200121195501.GJ3191@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <8501a33e-6c76-b6bd-9d8e-985313f94579@c-s.fr>
+Date: Wed, 22 Jan 2020 07:57:15 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <20200122045542.3527-1-bharata@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20012206-0016-0000-0000-000002DF9519
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012206-0017-0000-0000-000033423F23
-Message-Id: <8211e2c3-7e40-a4df-0b67-cb45ca3f108b@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-17_05:2020-01-16,
- 2020-01-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0
- impostorscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 mlxlogscore=502 suspectscore=0 clxscore=1015
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001220061
+In-Reply-To: <20200121195501.GJ3191@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,20 +82,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@au1.ibm.com
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/22/20 10:25 AM, Bharata B Rao wrote:
-> When migrate_vma_setup() fails in kvmppc_svm_page_out(),
-> release kvm->arch.uvmem_lock before returning.
+
+
+Le 21/01/2020 à 20:55, Segher Boessenkool a écrit :
+> On Tue, Jan 21, 2020 at 05:22:32PM +0000, Christophe Leroy wrote:
+>> g1() should return 3, not 5.
 > 
-> Fixes: ca9f4942670 ("KVM: PPC: Book3S HV: Support for running secure guests")
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> What makes you say that?
+> 
+> "A return of 0 does not indicate that the
+>   value is _not_ a constant, but merely that GCC cannot prove it is a
+>   constant with the specified value of the '-O' option."
+> 
 
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+GCC doc also says:
 
--- 
-Kamalesh
+"if you use it in an inlined function and pass an argument of the 
+function as the argument to the built-in, GCC never returns 1 when you 
+call the inline function with a string constant"
 
+Does GCC considers (void*)0 as a string constant ?
+
+Christophe
