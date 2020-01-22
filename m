@@ -1,89 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0DB144C03
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 07:53:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AF2144B7A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 06:52:47 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482ZLg6XFvzDqQv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 16:52:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482bjD2PWSzDqLn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:53:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482ZJk4GQYzDqQH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 16:51:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 482ZJk1vc4z8vl3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 16:51:02 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 482ZJk1f2kz9sRk; Wed, 22 Jan 2020 16:51:02 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=Zey8fdjO; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 482ZJj4hLHz9sRX;
- Wed, 22 Jan 2020 16:51:01 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00M5lTLi017630; Wed, 22 Jan 2020 00:50:58 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xnnn7c0fb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jan 2020 00:50:58 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00M5kQXC005679;
- Wed, 22 Jan 2020 05:50:57 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 2xksn72wv5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jan 2020 05:50:57 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00M5ouQu52298146
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jan 2020 05:50:56 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83C17AE063;
- Wed, 22 Jan 2020 05:50:56 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E8FD0AE05C;
- Wed, 22 Jan 2020 05:50:55 +0000 (GMT)
-Received: from suka-w540.usor.ibm.com (unknown [9.70.94.45])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 22 Jan 2020 05:50:55 +0000 (GMT)
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@ozlabs.org>, 
- linuxram@us.ibm.com, maddy@linux.ibm.com
-Subject: [PATCH v4 2/2] powerpc/pseries/svm: Disable BHRB/EBB/PMU access
-Date: Tue, 21 Jan 2020 21:50:54 -0800
-Message-Id: <20200122055054.6482-2-sukadev@linux.ibm.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20200122055054.6482-1-sukadev@linux.ibm.com>
-References: <20200122055054.6482-1-sukadev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-17_05:2020-01-16,
- 2020-01-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999
- spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001220051
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482bgH07tBzDqQP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 17:52:08 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 482bg62dYRz9v1G1;
+ Wed, 22 Jan 2020 07:52:02 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Zey8fdjO; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id oG7b4NC5O0Sq; Wed, 22 Jan 2020 07:52:02 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 482bg619Vtz9v1G0;
+ Wed, 22 Jan 2020 07:52:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579675922; bh=AYb/CdJwlLdwhR85yWkNEPcYAl+1WHLldoMOxAkLGpM=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Zey8fdjOenKuqzua5w7ccePCzStkQRBuJaWxnsJVniBNEICcjqz/Qq/mZfkoDcKWj
+ m7jTcAVVcCwoLKA8mePd5gFGZTjv/4HtUxHQIysp9aTF3f5X20ObtxEcM/gKav5zr+
+ TtH/cAfLoGS2ZgGfk8V5vjYRKFaDLsXnVLmJ2Heg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E56D58B7EC;
+ Wed, 22 Jan 2020 07:52:02 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id T8XazIT7FdGs; Wed, 22 Jan 2020 07:52:02 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BF7998B776;
+ Wed, 22 Jan 2020 07:52:02 +0100 (CET)
+Subject: Re: GCC bug ? Re: [PATCH v2 10/10] powerpc/32s: Implement Kernel
+ Userspace Access Protection
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1552292207.git.christophe.leroy@c-s.fr>
+ <a2847248a92cb1641b1740fa121c5a30593ae662.1552292207.git.christophe.leroy@c-s.fr>
+ <87ftqfu7j1.fsf@concordia.ellerman.id.au>
+ <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
+ <20200121195501.GJ3191@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <af9ad296-401c-cb5c-868a-7a6f91d1e8bc@c-s.fr>
+Date: Wed, 22 Jan 2020 07:52:02 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
+MIME-Version: 1.0
+In-Reply-To: <20200121195501.GJ3191@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,203 +83,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ultravisor disables some CPU features like BHRB, EBB and PMU in secure
-virtual machines (SVMs) for now. Skip accessing those registers in
-SVMs to avoid getting a Program Interrupt.
 
-Basic performance monitoring in SVMs is likely to be enabled in the future
-after adding the necessary security mechanisms in Ultravisor. Some features,
-like BHRB or monitoring event counts in HV-mode (e.g: perf stat -e cycles:h)
-may still be restricted for the longer term.
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Changelog[v4]
-	- [Paul Mackerras] Drop is_secure_guest() checks in HV-only code
-	  and indicate if the disabling of PMU is temporary.
-	- For consistency, also skip registering PMUs in secure guests.
+Le 21/01/2020 à 20:55, Segher Boessenkool a écrit :
+> On Tue, Jan 21, 2020 at 05:22:32PM +0000, Christophe Leroy wrote:
+>> g1() should return 3, not 5.
+> 
+> What makes you say that?
 
-Changelog[v2]
-	- [Michael Ellerman] Optimize the code using FW_FEATURE_SVM
-	- Merged EBB/BHRB and PMU patches into one and reorganized code.
-	- Fix some build errors reported by <lkp@intel.org>
----
- arch/powerpc/kernel/cpu_setup_power.S | 21 +++++++++++++++++++
- arch/powerpc/kernel/process.c         | 23 ++++++++++++--------
- arch/powerpc/perf/power9-pmu.c        | 10 +++++++++
- arch/powerpc/xmon/xmon.c              | 30 +++++++++++++++++----------
- 4 files changed, 64 insertions(+), 20 deletions(-)
+What makes me say that is that NULL is obviously a constant pointer and 
+I think we are all expecting gcc to see it as a constant during kernel 
+build, ie at -O2
 
-diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
-index a460298c7ddb..9e895d8db468 100644
---- a/arch/powerpc/kernel/cpu_setup_power.S
-+++ b/arch/powerpc/kernel/cpu_setup_power.S
-@@ -206,14 +206,35 @@ __init_PMU_HV_ISA207:
- 	blr
- 
- __init_PMU:
-+#ifdef CONFIG_PPC_SVM
-+	/*
-+	 * SVM's are restricted from accessing PMU, so skip.
-+	 */
-+	mfmsr   r5
-+	rldicl  r5, r5, 64-MSR_S_LG, 62
-+	cmpwi   r5,1
-+	beq     skip1
-+#endif
- 	li	r5,0
- 	mtspr	SPRN_MMCRA,r5
- 	mtspr	SPRN_MMCR0,r5
- 	mtspr	SPRN_MMCR1,r5
- 	mtspr	SPRN_MMCR2,r5
-+skip1:
- 	blr
- 
- __init_PMU_ISA207:
-+
-+#ifdef CONFIG_PPC_SVM
-+	/*
-+	 * SVM's are restricted from accessing PMU, so skip.
-+	*/
-+	mfmsr   r5
-+	rldicl  r5, r5, 64-MSR_S_LG, 62
-+	cmpwi   r5,1
-+	beq     skip2
-+#endif
- 	li	r5,0
- 	mtspr	SPRN_MMCRS,r5
-+skip2:
- 	blr
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 639ceae7da9d..83c7c4119305 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -64,6 +64,7 @@
- #include <asm/asm-prototypes.h>
- #include <asm/stacktrace.h>
- #include <asm/hw_breakpoint.h>
-+#include <asm/svm.h>
- 
- #include <linux/kprobes.h>
- #include <linux/kdebug.h>
-@@ -1059,9 +1060,11 @@ static inline void save_sprs(struct thread_struct *t)
- 		t->dscr = mfspr(SPRN_DSCR);
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		t->bescr = mfspr(SPRN_BESCR);
--		t->ebbhr = mfspr(SPRN_EBBHR);
--		t->ebbrr = mfspr(SPRN_EBBRR);
-+		if (!is_secure_guest()) {
-+			t->bescr = mfspr(SPRN_BESCR);
-+			t->ebbhr = mfspr(SPRN_EBBHR);
-+			t->ebbrr = mfspr(SPRN_EBBRR);
-+		}
- 
- 		t->fscr = mfspr(SPRN_FSCR);
- 
-@@ -1097,12 +1100,14 @@ static inline void restore_sprs(struct thread_struct *old_thread,
- 	}
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		if (old_thread->bescr != new_thread->bescr)
--			mtspr(SPRN_BESCR, new_thread->bescr);
--		if (old_thread->ebbhr != new_thread->ebbhr)
--			mtspr(SPRN_EBBHR, new_thread->ebbhr);
--		if (old_thread->ebbrr != new_thread->ebbrr)
--			mtspr(SPRN_EBBRR, new_thread->ebbrr);
-+		if (!is_secure_guest()) {
-+			if (old_thread->bescr != new_thread->bescr)
-+				mtspr(SPRN_BESCR, new_thread->bescr);
-+			if (old_thread->ebbhr != new_thread->ebbhr)
-+				mtspr(SPRN_EBBHR, new_thread->ebbhr);
-+			if (old_thread->ebbrr != new_thread->ebbrr)
-+				mtspr(SPRN_EBBRR, new_thread->ebbrr);
-+		}
- 
- 		if (old_thread->fscr != new_thread->fscr)
- 			mtspr(SPRN_FSCR, new_thread->fscr);
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index 08c3ef796198..c6eca682180d 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -10,6 +10,7 @@
- #define pr_fmt(fmt)	"power9-pmu: " fmt
- 
- #include "isa207-common.h"
-+#include <asm/svm.h>
- 
- /*
-  * Raw event encoding for Power9:
-@@ -446,6 +447,15 @@ int init_power9_pmu(void)
- 	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power9"))
- 		return -ENODEV;
- 
-+	/*
-+	 * Disable PMUs in secure guests until we evaluate security
-+	 * exposure and add relevant functionality in Ultravisor.
-+	 */
-+	if (is_secure_guest()) {
-+		printk("Not registering Performance Monitor in secure guest\n");
-+		return 0;
-+	}
-+
- 	/* Blacklist events */
- 	if (!(pvr & PVR_POWER9_CUMULUS)) {
- 		if ((PVR_CFG(pvr) == 2) && (PVR_MIN(pvr) == 1)) {
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 8057aafd5f5e..2d6c4963ec3c 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -53,6 +53,7 @@
- #include <asm/firmware.h>
- #include <asm/code-patching.h>
- #include <asm/sections.h>
-+#include <asm/svm.h>
- 
- #ifdef CONFIG_PPC64
- #include <asm/hvcall.h>
-@@ -1861,17 +1862,24 @@ static void dump_207_sprs(void)
- 			mfspr(SPRN_TEXASR));
- 	}
- 
--	printf("mmcr0  = %.16lx  mmcr1 = %.16lx mmcr2  = %.16lx\n",
--		mfspr(SPRN_MMCR0), mfspr(SPRN_MMCR1), mfspr(SPRN_MMCR2));
--	printf("pmc1   = %.8lx pmc2 = %.8lx  pmc3 = %.8lx  pmc4   = %.8lx\n",
--		mfspr(SPRN_PMC1), mfspr(SPRN_PMC2),
--		mfspr(SPRN_PMC3), mfspr(SPRN_PMC4));
--	printf("mmcra  = %.16lx   siar = %.16lx pmc5   = %.8lx\n",
--		mfspr(SPRN_MMCRA), mfspr(SPRN_SIAR), mfspr(SPRN_PMC5));
--	printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8lx\n",
--		mfspr(SPRN_SDAR), mfspr(SPRN_SIER), mfspr(SPRN_PMC6));
--	printf("ebbhr  = %.16lx  ebbrr = %.16lx bescr  = %.16lx\n",
--		mfspr(SPRN_EBBHR), mfspr(SPRN_EBBRR), mfspr(SPRN_BESCR));
-+	if (!is_secure_guest()) {
-+		printf("mmcr0  = %.16lx  mmcr1 = %.16lx mmcr2  = %.16lx\n",
-+			mfspr(SPRN_MMCR0), mfspr(SPRN_MMCR1),
-+			mfspr(SPRN_MMCR2));
-+		printf("pmc1   = %.8lx pmc2 = %.8lx  pmc3 = %.8lx  pmc4   = %.8lx\n",
-+			mfspr(SPRN_PMC1), mfspr(SPRN_PMC2),
-+			mfspr(SPRN_PMC3), mfspr(SPRN_PMC4));
-+		printf("mmcra  = %.16lx   siar = %.16lx pmc5   = %.8lx\n",
-+			mfspr(SPRN_MMCRA), mfspr(SPRN_SIAR), mfspr(SPRN_PMC5));
-+		printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8lx\n",
-+			mfspr(SPRN_SDAR), mfspr(SPRN_SIER), mfspr(SPRN_PMC6));
-+
-+		printf("ebbhr  = %.16lx  ebbrr = %.16lx bescr  = %.16lx\n",
-+			mfspr(SPRN_EBBHR), mfspr(SPRN_EBBRR),
-+			mfspr(SPRN_BESCR));
-+	}
-+
-+
- 	printf("iamr   = %.16lx\n", mfspr(SPRN_IAMR));
- 
- 	if (!(msr & MSR_HV))
--- 
-2.17.2
+> 
+> "A return of 0 does not indicate that the
+>   value is _not_ a constant, but merely that GCC cannot prove it is a
+>   constant with the specified value of the '-O' option."
+> 
+> (And the rules it uses for this are *not* the same as C "constant
+> expressions" or C "integer constant expression" or C "arithmetic
+> constant expression" or anything like that -- which should be already
+> obvious from that it changes with different -Ox).
+> 
+> You can use builtin_constant_p to have the compiler do something better
+> if the compiler feels like it, but not anything more.  Often people
+> want stronger guarantees, but when they see how much less often it then
+> returns "true", they do not want that either.
+> 
 
+in asm/book3s/64/kup-radix.h we have:
+
+static inline void allow_user_access(void __user *to, const void __user 
+*from,
+				     unsigned long size)
+{
+	// This is written so we can resolve to a single case at build time
+	if (__builtin_constant_p(to) && to == NULL)
+		set_kuap(AMR_KUAP_BLOCK_WRITE);
+	else if (__builtin_constant_p(from) && from == NULL)
+		set_kuap(AMR_KUAP_BLOCK_READ);
+	else
+		set_kuap(0);
+}
+
+and in asm/kup.h we have:
+
+static inline void allow_read_from_user(const void __user *from, 
+unsigned long size)
+{
+	allow_user_access(NULL, from, size);
+}
+
+static inline void allow_write_to_user(void __user *to, unsigned long size)
+{
+	allow_user_access(to, NULL, size);
+}
+
+
+If GCC doesn't see NULL as a constant, then the above doesn't work as 
+expected.
+
+What's surprising and frustrating is that if you remove the 
+__builtin_constant_p() and only leave the NULL check, then GCC sees it 
+as a constant and drops the other leg.
+
+So if we remove the __builtin_constant_p(to) and leave only the (to == 
+NULL), it will work as expected for allow_read_from_user(). But for the 
+others where (to) is not a constant, the NULL test will remain together 
+with the associated leg.
+
+Christophe
