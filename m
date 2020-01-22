@@ -2,74 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A08F144AC5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 05:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4DD144AF8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 05:57:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482XSB2rYQzDqQn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 15:27:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482Y730rnwzDqQV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 15:57:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=B5xvv8pu; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482XQK4qjvzDqPw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 15:25:45 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id d5so2499938pjz.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 20:25:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:subject:in-reply-to:references:date:message-id:mime-version
- :content-transfer-encoding;
- bh=p46K/p7jyUoEmoJcNjNXBHco0qcUxklws/5FMtIPmj4=;
- b=B5xvv8puH6bKb5FnJqYIuZj2YH76W1Qv5xBhn+QqL0Mpye8LTbYUpvMp7erkb9Fqrh
- C06ZdxbYE2N2TIUm7vug4Tq7Mjzu8unyuDtDZzHCgjh5/MMCMcqK5B413/PDc8DoEeSK
- RuW68Mt8V7aVC9CAGFxRRzYrxiLmdM02HTK8E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=p46K/p7jyUoEmoJcNjNXBHco0qcUxklws/5FMtIPmj4=;
- b=ldbNIKR3CasMPUbonXWj/ZWTGnPRa+P7fn6YnEdZfdvQkatx+/xQmn355aeLn+Wznu
- 3JCS5d9hgBrELREPtqvMxjvf9TFxyJ5fzQIsFga75GVITGhgmlKjBH5eSw2ysjwOSJUE
- Hq2ALFbbfvhgCGKwYdKkK4aNlsb2yiMny3Eg3OegkZeiptvH/Cv0Styc3XcvWPLmQFBx
- NqQzzpy1Sa1oOFK5198YCRB/Hqs8Ng5e0SVH5kze+VpTXQtxorg+UByiH/Br+GBLmTDT
- kDXlMYRPc2ijaRBjYHU/bVIOS5eWqkoNhUpQleydEOvmeCH2zzdIkpFZTXIOdjAxhKmf
- XWnA==
-X-Gm-Message-State: APjAAAVaoKZtGmmIHVkWRcUZln4mFFKZPxxZpiF0zniln8pgemOj+dbg
- TajDejzIMLr5AbpgOcjIPEgXgw==
-X-Google-Smtp-Source: APXvYqwSAhz6EmTD4AjqpgZAR1Z7cqCItOlpDxGIvjZDC0pBDNWWXj5pVrAKXL1pHjqPtwPDRvnYrQ==
-X-Received: by 2002:a17:902:8484:: with SMTP id
- c4mr9022713plo.43.1579667141754; 
- Tue, 21 Jan 2020 20:25:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482Y5K1kbYzDqP5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 15:56:04 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00M4r2cC088288
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 23:56:01 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xp46eusp3-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 23:56:01 -0500
 Received: from localhost
- (2001-44b8-111e-5c00-cc3a-f29a-38f6-dc23.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:cc3a:f29a:38f6:dc23])
- by smtp.gmail.com with ESMTPSA id d24sm45845707pfq.75.2020.01.21.20.25.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jan 2020 20:25:40 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-Subject: Re: [PATCH v5 0/4] KASAN for powerpc64 radix
-In-Reply-To: <8a1b7f4b-de14-90fe-2efa-789882d28702@c-s.fr>
-References: <20200109070811.31169-1-dja@axtens.net>
- <8a1b7f4b-de14-90fe-2efa-789882d28702@c-s.fr>
-Date: Wed, 22 Jan 2020 15:25:37 +1100
-Message-ID: <87muagjewu.fsf@dja-thinkpad.axtens.net>
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Wed, 22 Jan 2020 04:55:59 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 22 Jan 2020 04:55:57 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00M4ttlO2032040
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Jan 2020 04:55:55 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 75D1252051;
+ Wed, 22 Jan 2020 04:55:55 +0000 (GMT)
+Received: from bharata.in.ibm.com (unknown [9.124.35.196])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 820E85204E;
+ Wed, 22 Jan 2020 04:55:54 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Subject: [PATCH FIX] KVM: PPC: Book3S HV: Release lock on page-out failure path
+Date: Wed, 22 Jan 2020 10:25:42 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20012204-0012-0000-0000-0000037F8B44
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20012204-0013-0000-0000-000021BBCD3B
+Message-Id: <20200122045542.3527-1-bharata@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-17_05:2020-01-16,
+ 2020-01-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 mlxscore=0 adultscore=0 mlxlogscore=463 suspectscore=0
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-2001220042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,54 +83,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: paulus@au1.ibm.com, Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+When migrate_vma_setup() fails in kvmppc_svm_page_out(),
+release kvm->arch.uvmem_lock before returning.
 
-> Le 09/01/2020 =C3=A0 08:08, Daniel Axtens a =C3=A9crit=C2=A0:
->> Building on the work of Christophe, Aneesh and Balbir, I've ported
->> KASAN to 64-bit Book3S kernels running on the Radix MMU.
->>=20
->> This provides full inline instrumentation on radix, but does require
->> that you be able to specify the amount of physically contiguous memory
->> on the system at compile time. More details in patch 4.
->
-> This might be a stupid idea as I don't know ppc64 much. IIUC, PPC64=20
-> kernel can be relocated, there is no requirement to have it at address=20
-> 0. Therefore, would it be possible to put the KASAN shadow mem at the=20
-> begining of the physical memory, instead of putting it at the end ?
-> That way, you wouldn't need to know the amount of memory at compile time=
-=20
-> because KASAN shadow mem would always be at address 0.
+Fixes: ca9f4942670 ("KVM: PPC: Book3S HV: Support for running secure guests")
+Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+---
+Applies on paulus/kvm-ppc-next branch
 
-Good question! I've had a look. Bearing in mind that I'm not an expert
-in ppc64 early load, I think it would be possible, but a large chunk of
-work.
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-One challenge is that - as I understand it - the early relocation code
-in head_64.S currently allows the kernel to either:
- - run at the address it's loaded at by kexec/the bootloader, or
- - relocate the kernel to 0
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index 4d1f25a3959a..79b1202b1c62 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -571,7 +571,7 @@ kvmppc_svm_page_out(struct vm_area_struct *vma, unsigned long start,
+ 
+ 	ret = migrate_vma_setup(&mig);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	spage = migrate_pfn_to_page(*mig.src);
+ 	if (!spage || !(*mig.src & MIGRATE_PFN_MIGRATE))
+-- 
+2.21.0
 
-As far as I can tell book3s 64bit doesn't have code to arbitrarily
-relocate the kernel.
-
-It's possible I'm wrong about this, in which case I'm happy to reasses!
-
-If I'm right, I think we'd want to implement KASLR for book3s first,
-along the lines of how book3e does it. That would allow the kernel to be
-put at an arbitrary location at runtime. We could then leverage that.
-
-Another challenge is that some of the interrupt vectors are not easy to
-relocate, so we'd have to work around that. That's probably not too big
-an issue and we'd pick that up in KASLR implementation.
-
-So I think this is something we could come back to once we have KASLR.
-
-Regards,
-Daniel
-
->
-> Christophe
