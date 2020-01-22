@@ -2,80 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4D3145914
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 16:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1C2145996
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:15:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482qjt57R0zDqRB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 02:55:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482r963vVfzDqP3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 03:15:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::142;
+ helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=WVzg/4mZ; 
+ dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482qgr5XrxzDqSM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 02:53:28 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00MFocYj081317
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 10:53:26 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xp4gjq0tv-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 10:53:25 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Wed, 22 Jan 2020 15:53:23 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 Jan 2020 15:53:20 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00MFrI2C40894872
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jan 2020 15:53:18 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D98D4C040;
- Wed, 22 Jan 2020 15:53:18 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC44C4C044;
- Wed, 22 Jan 2020 15:53:16 +0000 (GMT)
-Received: from vajain21.in.ibm.com.com (unknown [9.199.33.50])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 22 Jan 2020 15:53:16 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH] libnvdimm/bus: return the outvar 'cmd_rc' error code in
- __nd_ioctl()
-Date: Wed, 22 Jan 2020 21:23:04 +0530
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482r784fLmzDqDF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 03:13:36 +1100 (AEDT)
+Received: by mail-lf1-x142.google.com with SMTP id y1so41139lfb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 08:13:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=PxCSo2JcEGlTJhdmVOOHLpuyjFAWieC3FhzbX6ms3Bk=;
+ b=WVzg/4mZaQ3ubctvikpmoB2+8YZnmRK2+VSYiWGQ33nJZL1OeIGMyFE3sBcuqoQVbi
+ rwpNneTfpLB3RAwTWttAZsxz4mdwPNf2Y8+kgY4tYIeLbjPU7jrBtLrLWh4mnN0ddI2k
+ Y06yr95wD8GFqmmXgcgeinrku41v7nODIWRxw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=PxCSo2JcEGlTJhdmVOOHLpuyjFAWieC3FhzbX6ms3Bk=;
+ b=CDRjGnc4TXXaFvBlfhoVrXJgl2YodsLiL+1EkeP5OFZDX0RZTv0jv28cMPYE8HiWdt
+ Kbc73t5p4Bp9IsVsF4J7r1r8Tj2tkC8iXjkniaUOP4rEHRgD+WV5Qjs070hNkQoP6ymG
+ n/lL0B72t3KHBFlANr6wOM5eCg5SauBUqDemJBYuL2SeSkhej8NbI2XeraRd1X3M/rID
+ GMP4oSVK34GutmUeHYK1OmofRC0691JhULmDqG27Jsv0gsonnxuwvP7xQZw7Pk5TXu74
+ OO9uGKUykw0wcGubrsX4EtzujdQxjswOoA8WY0rGF4IB6dsk+Zxtw5Wd2zntFA+DBTn0
+ cjdg==
+X-Gm-Message-State: APjAAAWk1B6fIVjp1aFdfMIEDyRT/GLAPQsvNd9AXFVTinpviWWTDSxo
+ qtNRaDQGV+yWNu0AFj9U7s1XO2RnAEE=
+X-Google-Smtp-Source: APXvYqyKp+UzSGOSc526vyx6aa8hvQQmU03tINJSDUppgGuZYgDKhhCuWOxQZWgV+nxoW+rKGuXOUA==
+X-Received: by 2002:ac2:599c:: with SMTP id w28mr2227168lfn.78.1579709610003; 
+ Wed, 22 Jan 2020 08:13:30 -0800 (PST)
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com.
+ [209.85.208.179])
+ by smtp.gmail.com with ESMTPSA id 4sm2885208lfh.73.2020.01.22.08.13.28
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Jan 2020 08:13:29 -0800 (PST)
+Received: by mail-lj1-f179.google.com with SMTP id o11so7154371ljc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 08:13:28 -0800 (PST)
+X-Received: by 2002:a2e:9510:: with SMTP id f16mr19943444ljh.249.1579709608444; 
+ Wed, 22 Jan 2020 08:13:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20012215-0016-0000-0000-000002DFBDC5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012215-0017-0000-0000-000033426A16
-Message-Id: <20200122155304.120733-1-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-17_05:2020-01-16,
- 2020-01-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=638
- clxscore=1015 impostorscore=0 phishscore=0 mlxscore=0 suspectscore=1
- spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001220141
+References: <a02d3426f93f7eb04960a4d9140902d278cab0bb.1579697910.git.christophe.leroy@c-s.fr>
+In-Reply-To: <a02d3426f93f7eb04960a4d9140902d278cab0bb.1579697910.git.christophe.leroy@c-s.fr>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 22 Jan 2020 08:13:12 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whTzEu5=sMEVLzuf7uOnoCyUs8wbfw87njes9FyE=mj1w@mail.gmail.com>
+Message-ID: <CAHk-=whTzEu5=sMEVLzuf7uOnoCyUs8wbfw87njes9FyE=mj1w@mail.gmail.com>
+Subject: Re: [PATCH v1 1/6] fs/readdir: Fix filldir() and filldir64() use of
+ user_access_begin()
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,42 +83,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, dan.j.williams@intel.com,
- linuxppc-dev@lists.ozlabs.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal Verma <vishal.l.verma@intel.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Presently the error code returned via out variable 'cmd_rc' from the
-nvdimm-bus controller function is ignored when called from
-__nd_ioctl() and never communicated back to user-space code that called
-an ioctl on dimm/bus.
+On Wed, Jan 22, 2020 at 5:00 AM Christophe Leroy
+<christophe.leroy@c-s.fr> wrote:
+>
+> Modify filldir() and filldir64() to request the real area they need
+> to get access to.
 
-This minor patch updates __nd_ioctl() to propagate the value of out
-variable 'cmd_rc' back to user-space in case it reports an error.
+Not like this.
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- drivers/nvdimm/bus.c | 5 +++++
- 1 file changed, 5 insertions(+)
+This makes the situation for architectures like x86 much worse, since
+you now use "put_user()" for the previous dirent filling. Which does
+that expensive user access setup/teardown twice again.
 
-diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index a8b515968569..5b687a27fdf2 100644
---- a/drivers/nvdimm/bus.c
-+++ b/drivers/nvdimm/bus.c
-@@ -1153,6 +1153,11 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
- 	if (rc < 0)
- 		goto out_unlock;
- 
-+	if (cmd_rc < 0) {
-+		rc = cmd_rc;
-+		goto out_unlock;
-+	}
-+
- 	if (!nvdimm && cmd == ND_CMD_CLEAR_ERROR && cmd_rc >= 0) {
- 		struct nd_cmd_clear_error *clear_err = buf;
- 
--- 
-2.24.1
+So either you need to cover both the dirent's with one call, or you
+just need to cover the whole (original) user buffer passed in. But not
+this unholy mixing of both unsafe_put_user() and regular put_user().
 
+              Linus
