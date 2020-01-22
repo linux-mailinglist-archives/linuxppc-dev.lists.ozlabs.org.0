@@ -1,86 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE95D145A61
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:57:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482s5S4wTfzDqNj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 03:57:16 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5086145B01
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 18:43:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 482t6Z2dx7zDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 04:43:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=195.92.253.2;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482s3J608CzDqLy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 03:55:23 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00MGjo9q111158
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 11:55:20 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xnnn7utg8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 11:55:20 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 22 Jan 2020 16:55:19 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 Jan 2020 16:55:17 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 00MGtGQM41943456
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jan 2020 16:55:16 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6D88642047;
- Wed, 22 Jan 2020 16:55:16 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C15842056;
- Wed, 22 Jan 2020 16:55:15 +0000 (GMT)
-Received: from [9.85.118.59] (unknown [9.85.118.59])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 22 Jan 2020 16:55:15 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/papr_scm: Fix leaking 'bus_desc.provider_name' in
- some paths
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200122155140.120429-1-vaibhav@linux.ibm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Wed, 22 Jan 2020 22:25:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482t4p2yQlzDqQq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 04:41:46 +1100 (AEDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1iuK0P-000izi-Q7; Wed, 22 Jan 2020 17:41:29 +0000
+Date: Wed, 22 Jan 2020 17:41:29 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v1 1/6] fs/readdir: Fix filldir() and filldir64() use of
+ user_access_begin()
+Message-ID: <20200122174129.GH23230@ZenIV.linux.org.uk>
+References: <a02d3426f93f7eb04960a4d9140902d278cab0bb.1579697910.git.christophe.leroy@c-s.fr>
+ <CAHk-=whTzEu5=sMEVLzuf7uOnoCyUs8wbfw87njes9FyE=mj1w@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200122155140.120429-1-vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20012216-0012-0000-0000-0000037FBFE0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012216-0013-0000-0000-000021BC03E5
-Message-Id: <b1d1505d-f432-a626-018b-ce8e4e1b6bce@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-22_07:2020-01-22,
- 2020-01-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999
- spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001220144
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whTzEu5=sMEVLzuf7uOnoCyUs8wbfw87njes9FyE=mj1w@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,47 +46,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/22/20 9:21 PM, Vaibhav Jain wrote:
-> String 'bus_desc.provider_name' allocated inside
-> papr_scm_nvdimm_init() will leaks in case call to
-> nvdimm_bus_register() fails or when papr_scm_remove() is called.
+On Wed, Jan 22, 2020 at 08:13:12AM -0800, Linus Torvalds wrote:
+> On Wed, Jan 22, 2020 at 5:00 AM Christophe Leroy
+> <christophe.leroy@c-s.fr> wrote:
+> >
+> > Modify filldir() and filldir64() to request the real area they need
+> > to get access to.
 > 
-> This minor patch ensures that 'bus_desc.provider_name' is freed in
-> error path for nvdimm_bus_register() as well as in papr_scm_remove().
+> Not like this.
 > 
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
->   arch/powerpc/platforms/pseries/papr_scm.c | 2 ++
->   1 file changed, 2 insertions(+)
+> This makes the situation for architectures like x86 much worse, since
+> you now use "put_user()" for the previous dirent filling. Which does
+> that expensive user access setup/teardown twice again.
 > 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index c2ef320ba1bf..eb420655ed0b 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -322,6 +322,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->   	p->bus = nvdimm_bus_register(NULL, &p->bus_desc);
->   	if (!p->bus) {
->   		dev_err(dev, "Error creating nvdimm bus %pOF\n", p->dn);
-> +		kfree(p->bus_desc.provider_name);
->   		return -ENXIO;
->   	}
->   
-> @@ -477,6 +478,7 @@ static int papr_scm_remove(struct platform_device *pdev)
->   
->   	nvdimm_bus_unregister(p->bus);
->   	drc_pmem_unbind(p);
-> +	kfree(p->bus_desc.provider_name);
->   	kfree(p);
->   
->   	return 0;
-> 
+> So either you need to cover both the dirent's with one call, or you
+> just need to cover the whole (original) user buffer passed in. But not
+> this unholy mixing of both unsafe_put_user() and regular put_user().
 
-Add similar error handling to of-pmem driver too?
-
--aneesh
-
+I would suggest simply covering the range from dirent->d_off to
+buf->current_dir->d_name[namelen]; they are going to be close to
+each other and we need those addresses anyway...
