@@ -1,67 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE95D145A61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:57:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C39145A34
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:48:49 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482rvf0vrbzDqS6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 03:48:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482s5S4wTfzDqNj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 03:57:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
- [209.85.128.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482rrw64dLzDqQ1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 03:46:24 +1100 (AEDT)
-Received: by mail-wm1-f66.google.com with SMTP id p17so7926278wmb.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 08:46:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=0SuDAJ7sMXWaJqUYgQXoq4Dj1CRTTQuLtA+Icf+077s=;
- b=CHI6REgDRxjRmNAX6ltyyOgIbkHMxeQHCVUfdd2kZZ3vZYSR5ByxRMTOgy1YjkRqKB
- KKqWrduanfR9drFykWZtmv1xvUL120mWfPnLccEzwKzbxcEobTbgEAd1y7YydXU3UvpX
- Eqa1wJl9Ku+hVKkhRGjKvlC+/9afBOeS6PaKQW3O8QaxhvJgBZnAGAV1KqSZZtH+6DiZ
- Kpv9Mo/TtBMIfm2HcvBdmHz/LB4Zv8UZjzYHgDSW1TYBCItpUZkIzEF/ZQySwqWzPIkg
- KXmIvAxMXyGR1giwAUPsnmQU2WVITXYOZ0hTjMKNYewEFun1n5Qa2kEdgYb5X3wU3xsk
- qyZg==
-X-Gm-Message-State: APjAAAU9uu4laP8PjjBheF8AICAEJ95F9zg7B/v4/RV4KEEIH3J7EyH1
- Y3PoqNB6p1At1HZyqg9MxHk=
-X-Google-Smtp-Source: APXvYqwqyZqfBJeXG6FqO0yWFZepKQMabGkNIIhVitsf3Ywq4fg3+sGpKA2WeU1Q+571Z2TyhyqRWA==
-X-Received: by 2002:a1c:770e:: with SMTP id t14mr3825500wmi.101.1579711581018; 
- Wed, 22 Jan 2020 08:46:21 -0800 (PST)
-Received: from localhost (ip-37-188-245-167.eurotel.cz. [37.188.245.167])
- by smtp.gmail.com with ESMTPSA id b17sm57400161wrp.49.2020.01.22.08.46.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Jan 2020 08:46:19 -0800 (PST)
-Date: Wed, 22 Jan 2020 17:46:18 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH RFC v1] mm: is_mem_section_removable() overhaul
-Message-ID: <20200122164618.GY29276@dhcp22.suse.cz>
-References: <CAPcyv4hHHzdPp4SQ0sePzx7XEvD7U_B+vZDT00O6VbFY8kJqjw@mail.gmail.com>
- <25a94f61-46a1-59a6-6b54-8cc6b35790d2@redhat.com>
- <CAPcyv4jvmYRbX9i+1_LvHoTDGABadHbYH3NVkqczKsQ4fsf74g@mail.gmail.com>
- <20200120074816.GG18451@dhcp22.suse.cz>
- <a5f0bd8d-de5e-9f27-5c94-7746a3d20a95@redhat.com>
- <20200121120714.GJ29276@dhcp22.suse.cz>
- <a29b49b9-28ad-44fa-6c0b-90cd43902f29@redhat.com>
- <20200122104230.GU29276@dhcp22.suse.cz>
- <98b6c208-b4dd-9052-43f6-543068c649cc@redhat.com>
- <816ddd66-c90b-76f1-f4a0-72fe41263edd@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482s3J608CzDqLy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 03:55:23 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00MGjo9q111158
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 11:55:20 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xnnn7utg8-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 11:55:20 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Wed, 22 Jan 2020 16:55:19 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 22 Jan 2020 16:55:17 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 00MGtGQM41943456
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Jan 2020 16:55:16 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D88642047;
+ Wed, 22 Jan 2020 16:55:16 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C15842056;
+ Wed, 22 Jan 2020 16:55:15 +0000 (GMT)
+Received: from [9.85.118.59] (unknown [9.85.118.59])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 22 Jan 2020 16:55:15 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/papr_scm: Fix leaking 'bus_desc.provider_name' in
+ some paths
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200122155140.120429-1-vaibhav@linux.ibm.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Date: Wed, 22 Jan 2020 22:25:14 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <816ddd66-c90b-76f1-f4a0-72fe41263edd@redhat.com>
+In-Reply-To: <20200122155140.120429-1-vaibhav@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20012216-0012-0000-0000-0000037FBFE0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20012216-0013-0000-0000-000021BC03E5
+Message-Id: <b1d1505d-f432-a626-018b-ce8e4e1b6bce@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-22_07:2020-01-22,
+ 2020-01-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-2001220144
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,103 +92,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Leonardo Bras <leonardo@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>, lantianyu1986@gmail.com
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 22-01-20 12:58:16, David Hildenbrand wrote:
-> On 22.01.20 11:54, David Hildenbrand wrote:
-> > On 22.01.20 11:42, Michal Hocko wrote:
-> >> On Wed 22-01-20 11:39:08, David Hildenbrand wrote:
-> >>>>>> Really, the interface is flawed and should have never been merged in the
-> >>>>>> first place. We cannot simply remove it altogether I am afraid so let's
-> >>>>>> at least remove the bogus code and pretend that the world is a better
-> >>>>>> place where everything is removable except the reality sucks...
-> >>>>>
-> >>>>> As I expressed already, the interface works as designed/documented and
-> >>>>> has been used like that for years.
-> >>>>
-> >>>> It seems we do differ in the usefulness though. Using a crappy interface
-> >>>> for years doesn't make it less crappy. I do realize we cannot remove the
-> >>>> interface but we can remove issues with the implementation and I dare to
-> >>>> say that most existing users wouldn't really notice.
-> >>>
-> >>> Well, at least powerpc-utils (why this interface was introduced) will
-> >>> notice a) performance wise and b) because more logging output will be
-> >>> generated (obviously non-offlineable blocks will be tried to offline).
-> >>
-> >> I would really appreciate some specific example for a real usecase. I am
-> >> not familiar with powerpc-utils worklflows myself.
-> >>
-> > 
-> > Not an expert myself:
-> > 
-> > https://github.com/ibm-power-utilities/powerpc-utils
-> > 
-> > -> src/drmgr/drslot_chrp_mem.c
-> > 
-> > On request to remove some memory it will
-> > 
-> > a) Read "->removable" of all memory blocks ("lmb")
-> > b) Check if the request can be fulfilled using the removable blocks
-> > c) Try to offline the memory blocks by trying to offline it. If that
-> > succeeded, trigger removeal of it using some hypervisor hooks.
-> > 
-> > Interestingly, with "AMS ballooning", it will already consider the
-> > "removable" information useless (most probably, because of
-> > non-migratable balloon pages that can be offlined - I assume the powerpc
-> > code that I converted to proper balloon compaction just recently). a)
-> > and b) is skipped.
-> > 
-> > Returning "yes" on all blocks will make them handle it just like if "AMS
-> > ballooning" is active. So any memory block will be tried. Should work
-> > but will be slower if no ballooning is active.
-> > 
+On 1/22/20 9:21 PM, Vaibhav Jain wrote:
+> String 'bus_desc.provider_name' allocated inside
+> papr_scm_nvdimm_init() will leaks in case call to
+> nvdimm_bus_register() fails or when papr_scm_remove() is called.
 > 
-> On lsmem:
+> This minor patch ensures that 'bus_desc.provider_name' is freed in
+> error path for nvdimm_bus_register() as well as in papr_scm_remove().
 > 
-> https://www.ibm.com/support/knowledgecenter/linuxonibm/com.ibm.linux.z.lgdd/lgdd_r_lsmem_cmd.html
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+>   arch/powerpc/platforms/pseries/papr_scm.c | 2 ++
+>   1 file changed, 2 insertions(+)
 > 
-> "
-> Removable
->     yes if the memory range can be set offline, no if it cannot be set
-> offline. A dash (-) means that the range is already offline. The kernel
-> method that identifies removable memory ranges is heuristic and not
-> exact. Occasionally, memory ranges are falsely reported as removable or
-> falsely reported as not removable.
-> "
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index c2ef320ba1bf..eb420655ed0b 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -322,6 +322,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+>   	p->bus = nvdimm_bus_register(NULL, &p->bus_desc);
+>   	if (!p->bus) {
+>   		dev_err(dev, "Error creating nvdimm bus %pOF\n", p->dn);
+> +		kfree(p->bus_desc.provider_name);
+>   		return -ENXIO;
+>   	}
+>   
+> @@ -477,6 +478,7 @@ static int papr_scm_remove(struct platform_device *pdev)
+>   
+>   	nvdimm_bus_unregister(p->bus);
+>   	drc_pmem_unbind(p);
+> +	kfree(p->bus_desc.provider_name);
+>   	kfree(p);
+>   
+>   	return 0;
 > 
-> Usage of lsmem paird with chmem:
-> 
-> https://access.redhat.com/solutions/3937181
-> 
-> 
-> Especially interesting for IBM z Systems, whereby memory
-> onlining/offlining will trigger the actual population of memory in the
-> hypervisor. So if an admin wants to offline some memory (to give it back
-> to the hypervisor), it would use lsmem to identify such blocks first,
-> instead of trying random blocks until one offlining request succeeds.
 
-I am sorry for being dense here but I still do not understand why s390
-and the way how it does the hotremove matters here. Afterall there are
-no arch specific operations done until the memory is offlined. Also
-randomly checking memory blocks and then hoping that the offline will
-succeed is not way much different from just trying the offline the
-block. Both have to crawl through the pfn range and bail out on the
-unmovable memory.
--- 
-Michal Hocko
-SUSE Labs
+Add similar error handling to of-pmem driver too?
+
+-aneesh
+
