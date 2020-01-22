@@ -2,68 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9ED61454E4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 14:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA78014553F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 14:23:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482m886DgrzDqSk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 00:14:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482mMB3KlKzDqP5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 00:23:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=o9cOnFWn; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482lrd0T5CzDqSK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 00:00:49 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 482lrS0DFgz9v4T8;
- Wed, 22 Jan 2020 14:00:40 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=o9cOnFWn; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id l9lUUoeq3LIb; Wed, 22 Jan 2020 14:00:39 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 482lrR6HWFz9v4T4;
- Wed, 22 Jan 2020 14:00:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579698039; bh=hKGhpEY/x7wBpxih4NYfDSLkqEe5Ff+wX5RSYhSgSVk=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=o9cOnFWnAqB4L16AUF6H2qiIduMP60GsCai6G6umaXoGH29mIiBYnpts6GXxd+ZLn
- qBAh7Zw9paYWGRVSsaBmE53dVBBu7I55rQ2toxAF2h2cvmKHl/Qm99GuoqfbaZ31Q7
- TBFyub2p0GKCAA390AbUix6DOhU5DsXK6nIaLZIQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 333DC8B801;
- Wed, 22 Jan 2020 14:00:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CTXiePye0Yze; Wed, 22 Jan 2020 14:00:41 +0100 (CET)
-Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CCCE28B800;
- Wed, 22 Jan 2020 14:00:40 +0100 (CET)
-Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C5305651E0; Wed, 22 Jan 2020 13:00:40 +0000 (UTC)
-Message-Id: <35afa6bd5d0d645294afa4078e52f16765e494e9.1579697910.git.christophe.leroy@c-s.fr>
-In-Reply-To: <a02d3426f93f7eb04960a4d9140902d278cab0bb.1579697910.git.christophe.leroy@c-s.fr>
-References: <a02d3426f93f7eb04960a4d9140902d278cab0bb.1579697910.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v1 6/6] powerpc: Implement user_access_begin and friends
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 22 Jan 2020 13:00:40 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482mFq01qLzDqSd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 00:19:10 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00MDIsXk010897;
+ Wed, 22 Jan 2020 07:18:54 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 00MDIsPK010895;
+ Wed, 22 Jan 2020 07:18:54 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 22 Jan 2020 07:18:54 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: GCC bug ? Re: [PATCH v2 10/10] powerpc/32s: Implement Kernel
+ Userspace Access Protection
+Message-ID: <20200122131854.GK3191@gate.crashing.org>
+References: <cover.1552292207.git.christophe.leroy@c-s.fr>
+ <a2847248a92cb1641b1740fa121c5a30593ae662.1552292207.git.christophe.leroy@c-s.fr>
+ <87ftqfu7j1.fsf@concordia.ellerman.id.au>
+ <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
+ <20200121195501.GJ3191@gate.crashing.org>
+ <8501a33e-6c76-b6bd-9d8e-985313f94579@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8501a33e-6c76-b6bd-9d8e-985313f94579@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,205 +57,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today, when a function like strncpy_from_user() is called,
-the userspace access protection is de-activated and re-activated
-for every word read.
+Hi!
 
-By implementing user_access_begin and friends, the protection
-is de-activated at the beginning of the copy and re-activated at the
-end.
+On Wed, Jan 22, 2020 at 07:57:15AM +0100, Christophe Leroy wrote:
+> GCC doc also says:
+> 
+> "if you use it in an inlined function and pass an argument of the 
+> function as the argument to the built-in, GCC never returns 1 when you 
+> call the inline function with a string constant"
+> 
+> Does GCC considers (void*)0 as a string constant ?
 
-Implement user_access_begin(), user_access_end() and
-unsafe_get_user(), unsafe_put_user() and unsafe_copy_to_user()
+No, because it isn't (it's a pointer, not an array of characters).
 
-For the time being, we keep user_access_save() and
-user_access_restore() as nops.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/uaccess.h | 92 ++++++++++++++++++++++++++----
- 1 file changed, 82 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index cafad1960e76..ea67bbd56bd4 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -91,9 +91,14 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
- 	__put_user_check((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
- 
- #define __get_user(x, ptr) \
--	__get_user_nocheck((x), (ptr), sizeof(*(ptr)))
-+	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), true)
- #define __put_user(x, ptr) \
--	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
-+	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), true)
-+
-+#define __get_user_allowed(x, ptr) \
-+	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
-+#define __put_user_allowed(x, ptr) \
-+	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), false)
- 
- #define __get_user_inatomic(x, ptr) \
- 	__get_user_nosleep((x), (ptr), sizeof(*(ptr)))
-@@ -138,10 +143,9 @@ extern long __put_user_bad(void);
- 		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
- #endif /* __powerpc64__ */
- 
--#define __put_user_size(x, ptr, size, retval)			\
-+#define __put_user_size_allowed(x, ptr, size, retval)		\
- do {								\
- 	retval = 0;						\
--	allow_write_to_user(ptr, size);				\
- 	switch (size) {						\
- 	  case 1: __put_user_asm(x, ptr, retval, "stb"); break;	\
- 	  case 2: __put_user_asm(x, ptr, retval, "sth"); break;	\
-@@ -149,17 +153,26 @@ do {								\
- 	  case 8: __put_user_asm2(x, ptr, retval); break;	\
- 	  default: __put_user_bad();				\
- 	}							\
-+} while (0)
-+
-+#define __put_user_size(x, ptr, size, retval)			\
-+do {								\
-+	allow_write_to_user(ptr, size);				\
-+	__put_user_size_allowed(x, ptr, size, retval);		\
- 	prevent_write_to_user(ptr, size);			\
- } while (0)
- 
--#define __put_user_nocheck(x, ptr, size)			\
-+#define __put_user_nocheck(x, ptr, size, allow)			\
- ({								\
- 	long __pu_err;						\
- 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
- 	if (!is_kernel_addr((unsigned long)__pu_addr))		\
- 		might_fault();					\
- 	__chk_user_ptr(ptr);					\
--	__put_user_size((x), __pu_addr, (size), __pu_err);	\
-+	if (allow)								\
-+		__put_user_size((x), __pu_addr, (size), __pu_err);		\
-+	else									\
-+		__put_user_size_allowed((x), __pu_addr, (size), __pu_err);	\
- 	__pu_err;						\
- })
- 
-@@ -236,13 +249,12 @@ extern long __get_user_bad(void);
- 		: "b" (addr), "i" (-EFAULT), "0" (err))
- #endif /* __powerpc64__ */
- 
--#define __get_user_size(x, ptr, size, retval)			\
-+#define __get_user_size_allowed(x, ptr, size, retval)		\
- do {								\
- 	retval = 0;						\
- 	__chk_user_ptr(ptr);					\
- 	if (size > sizeof(x))					\
- 		(x) = __get_user_bad();				\
--	allow_read_from_user(ptr, size);			\
- 	switch (size) {						\
- 	case 1: __get_user_asm(x, ptr, retval, "lbz"); break;	\
- 	case 2: __get_user_asm(x, ptr, retval, "lhz"); break;	\
-@@ -250,6 +262,12 @@ do {								\
- 	case 8: __get_user_asm2(x, ptr, retval);  break;	\
- 	default: (x) = __get_user_bad();			\
- 	}							\
-+} while (0)
-+
-+#define __get_user_size(x, ptr, size, retval)			\
-+do {								\
-+	allow_read_from_user(ptr, size);			\
-+	__get_user_size_allowed(x, ptr, size, retval);		\
- 	prevent_read_from_user(ptr, size);			\
- } while (0)
- 
-@@ -260,7 +278,7 @@ do {								\
- #define __long_type(x) \
- 	__typeof__(__builtin_choose_expr(sizeof(x) > sizeof(0UL), 0ULL, 0UL))
- 
--#define __get_user_nocheck(x, ptr, size)			\
-+#define __get_user_nocheck(x, ptr, size, allow)			\
- ({								\
- 	long __gu_err;						\
- 	__long_type(*(ptr)) __gu_val;				\
-@@ -269,7 +287,10 @@ do {								\
- 	if (!is_kernel_addr((unsigned long)__gu_addr))		\
- 		might_fault();					\
- 	barrier_nospec();					\
--	__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
-+	if (allow)								\
-+		__get_user_size(__gu_val, __gu_addr, (size), __gu_err);		\
-+	else									\
-+		__get_user_size_allowed(__gu_val, __gu_addr, (size), __gu_err);	\
- 	(x) = (__typeof__(*(ptr)))__gu_val;			\
- 	__gu_err;						\
- })
-@@ -387,6 +408,34 @@ static inline unsigned long raw_copy_to_user(void __user *to,
- 	return ret;
- }
- 
-+static inline unsigned long
-+raw_copy_to_user_allowed(void __user *to, const void *from, unsigned long n)
-+{
-+	unsigned long ret;
-+	if (__builtin_constant_p(n) && (n) <= 8) {
-+		ret = 1;
-+
-+		switch (n) {
-+		case 1:
-+			__put_user_size_allowed(*(u8 *)from, (u8 __user *)to, 1, ret);
-+			break;
-+		case 2:
-+			__put_user_size_allowed(*(u16 *)from, (u16 __user *)to, 2, ret);
-+			break;
-+		case 4:
-+			__put_user_size_allowed(*(u32 *)from, (u32 __user *)to, 4, ret);
-+			break;
-+		case 8:
-+			__put_user_size_allowed(*(u64 *)from, (u64 __user *)to, 8, ret);
-+			break;
-+		}
-+		if (ret == 0)
-+			return 0;
-+	}
-+
-+	return __copy_tofrom_user(to, (__force const void __user *)from, n);
-+}
-+
- static __always_inline unsigned long __must_check
- copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
- {
-@@ -428,4 +477,27 @@ extern long __copy_from_user_flushcache(void *dst, const void __user *src,
- extern void memcpy_page_flushcache(char *to, struct page *page, size_t offset,
- 			   size_t len);
- 
-+static __must_check inline bool user_access_begin(const void __user *ptr, size_t len)
-+{
-+	if (unlikely(!access_ok(ptr, len)))
-+		return false;
-+	allow_read_write_user((void __user *)ptr, ptr, len);
-+	return true;
-+}
-+#define user_access_begin	user_access_begin
-+
-+static inline void user_access_end(void)
-+{
-+	prevent_user_access(NULL, NULL, ~0UL, KUAP_SELF);
-+}
-+#define user_access_end		user_access_end
-+
-+static inline unsigned long user_access_save(void) { return 0UL; }
-+static inline void user_access_restore(unsigned long flags) { }
-+
-+#define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
-+#define unsafe_get_user(x,p,e) unsafe_op_wrap(__get_user_allowed(x,p),e)
-+#define unsafe_put_user(x,p,e) unsafe_op_wrap(__put_user_allowed(x,p),e)
-+#define unsafe_copy_to_user(d,s,l,e) unsafe_op_wrap(raw_copy_to_user_allowed(d,s,l),e)
-+
- #endif	/* _ARCH_POWERPC_UACCESS_H */
--- 
-2.25.0
-
+Segher
