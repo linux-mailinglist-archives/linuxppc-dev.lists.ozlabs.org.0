@@ -2,75 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3F8144C2F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 07:59:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76255144C82
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 08:34:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482bq915Y3zDqKh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 17:59:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482cbd3KPtzDqPS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 18:34:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=hkallweit1@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=EHsTER7Z; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VDzeQxeE; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482bnC2dHXzDqL8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 17:57:19 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 482bn71Kscz9v1G1;
- Wed, 22 Jan 2020 07:57:15 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=EHsTER7Z; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id OVFmCX_L5Lgn; Wed, 22 Jan 2020 07:57:15 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 482bn707RTz9v1G0;
- Wed, 22 Jan 2020 07:57:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579676235; bh=CBx7iS06BSIP6qNB7l3ahv3OsouitLiZYefJlZ5dcu8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=EHsTER7Z4Oqsp2+hty+bZTYAq8pwQujk5eElZEjELZauCDitzjjH1brzpv/wO7gNp
- zjVa610e+LoXEkBmEtVGNxrUCBuQ81/RVZwXAv0nB3xNteJHEf/0PK2i2dpoUNGNsd
- dZTnPsMHvWIQAB0dbbrapwoR0Q2lLT0ClO+/dDpY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C4D468B7EC;
- Wed, 22 Jan 2020 07:57:15 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qVDc0MUIikwf; Wed, 22 Jan 2020 07:57:15 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9AD258B776;
- Wed, 22 Jan 2020 07:57:15 +0100 (CET)
-Subject: Re: GCC bug ? Re: [PATCH v2 10/10] powerpc/32s: Implement Kernel
- Userspace Access Protection
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <cover.1552292207.git.christophe.leroy@c-s.fr>
- <a2847248a92cb1641b1740fa121c5a30593ae662.1552292207.git.christophe.leroy@c-s.fr>
- <87ftqfu7j1.fsf@concordia.ellerman.id.au>
- <a008a182-f1db-073c-7d38-27bfd1fd8676@c-s.fr>
- <20200121195501.GJ3191@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <8501a33e-6c76-b6bd-9d8e-985313f94579@c-s.fr>
-Date: Wed, 22 Jan 2020 07:57:15 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482cZ05xJjzDqPS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 18:32:38 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id a5so5713520wmb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2020 23:32:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=fm/bzorqFXGRjSleITF9pD+r1ENd6CB0azL8igPUALM=;
+ b=VDzeQxeEhDd8ZKku1Vsa6Rm+0dEX0MsSrnfFkdfeGLwJy/mHgwEerx7eS8/YGXEbxr
+ fyEL+uolSK2w7xtim5NpnRib0fMpIpzzD4fTzsPKUkHpTmHE2AJMShtmpCJAYDJkeJfi
+ V9M2aHfVdu8ai4eNZ8fDRxLyX+uaMPI3rK/B5Dv5n6RV0aIWB2x6tFbIRGtF93S+yJD7
+ P4Km/plRniTRmu24NArSI3NaiO9WS4KR483rANpvgUlGIQ/eFZh9G5TaKcRj/x4m86MZ
+ yWIy330NA0EvuDPtSQ2KQbJIFWWKPn32Q6b3HiCm6rvGSriyBRD4L3WquLLdMYnW+ei2
+ hV3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=fm/bzorqFXGRjSleITF9pD+r1ENd6CB0azL8igPUALM=;
+ b=MLYigwNfn9EG/9jlHCVvrYCQM5L5g7PRtfLAlZ9cktibELPKhnFzmv7pU+ecIyFdPa
+ MYNskHBjUQe+nLGZWY+/qi8y0xk7YmGZMQvbLK5gIQeT1MG+xPCylI0Gx47jw1lnRerM
+ OdZ/B8/L1nqmltI6jprnZkGS/+kug0ge3jOs5E2CsKRe3XZ3on5aOeKmYThaCejeX4mi
+ WTzsuclLOpLTGBm3wOJhS7XmHjEKG+uL4OXy9QcrQqtvLk0W2qWzlufgqKmsfZLedPUk
+ l0K2kd4/QHxoLrZLWUAsFrgJ8En3pICFpCp6WFQksiYNwreO+zLMiBrIMgWmQmeS6mVi
+ Pj9g==
+X-Gm-Message-State: APjAAAUpo5/MIkoOfsReF3BzCFtv/FfVaylWe1nnRM2zI2PwHyIWY3KI
+ 4qxtwHjr2r+yLPhfgNu4f54=
+X-Google-Smtp-Source: APXvYqxsj7I9WlzOG+WOoPFUiCwN4qWOvJotIYRZmaWyfy5/ihC4mSOyzoLZoK6R3hu9TVPC7u6gzA==
+X-Received: by 2002:a7b:cf0d:: with SMTP id l13mr1458811wmg.13.1579678354144; 
+ Tue, 21 Jan 2020 23:32:34 -0800 (PST)
+Received: from ?IPv6:2003:ea:8f36:6800:9425:8dfb:676f:4467?
+ (p200300EA8F36680094258DFB676F4467.dip0.t-ipconnect.de.
+ [2003:ea:8f36:6800:9425:8dfb:676f:4467])
+ by smtp.googlemail.com with ESMTPSA id a132sm2495983wme.3.2020.01.21.23.32.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Jan 2020 23:32:33 -0800 (PST)
+Subject: Re: [PATCH v2 net-next] net: convert suitable drivers to use
+ phy_do_ioctl_running
+To: Florian Fainelli <f.fainelli@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ David Miller <davem@davemloft.net>, Maxime Ripard <mripard@kernel.org>,
+ Chen-Yu Tsai <wens@csie.org>, Doug Berger <opendmb@gmail.com>,
+ Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Salil Mehta
+ <salil.mehta@huawei.com>, Vladimir Zapolskiy <vz@mleia.com>,
+ Sylvain Lemieux <slemieux.tyco@gmail.com>, Timur Tabi <timur@kernel.org>,
+ Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+ Steve Glendinning <steve.glendinning@shawell.net>,
+ Michal Simek <michal.simek@xilinx.com>,
+ Woojung Huh <woojung.huh@microchip.com>,
+ Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
+References: <2db5d899-a550-456d-a725-f7cf009f53a3@gmail.com>
+ <9d2dbcc0-7e22-601a-35f6-135f2a9e6f99@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <ec2a401d-e504-da38-8bc7-1826f5de7941@gmail.com>
+Date: Wed, 22 Jan 2020 08:28:06 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200121195501.GJ3191@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <9d2dbcc0-7e22-601a-35f6-135f2a9e6f99@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,31 +97,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Linux USB Mailing List <linux-usb@vger.kernel.org>,
+ linux-renesas-soc@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 21/01/2020 à 20:55, Segher Boessenkool a écrit :
-> On Tue, Jan 21, 2020 at 05:22:32PM +0000, Christophe Leroy wrote:
->> g1() should return 3, not 5.
+On 22.01.2020 05:04, Florian Fainelli wrote:
 > 
-> What makes you say that?
 > 
-> "A return of 0 does not indicate that the
->   value is _not_ a constant, but merely that GCC cannot prove it is a
->   constant with the specified value of the '-O' option."
+> On 1/21/2020 1:09 PM, Heiner Kallweit wrote:
+>> Convert suitable drivers to use new helper phy_do_ioctl_running.
+>>
+>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> The vast majority of drivers that you are converting use the following
+> convention:
 > 
+> - !netif_running -> return -EINVAL
+> - !dev->phydev -> return -ENODEV
+> 
+> so it may make sense to change the helper to accommodate the majority
+> here, not that I believe this is going to make much practical
+> difference, but if there were test cases that were specifically looking
+> for such an error code, they could be failing after this changeset.
+> 
+Right, I also stumbled across the different error codes, mainly as you
+say -EINVAL. However there is no "wrong value", if netdev isn't running,
+then typically the PHY is not attached, and from a netdev point of view
+it's not there. So ENODEV seems to be best suited.
+In kernel code the changed return code doesn't make a difference,
+but yes, in theory there could be userspace programs checking for
+-EINVAL. However such userspace programs should check for ENODEV too
+anyway to cover the second check that already returns -ENODEV.
 
-GCC doc also says:
-
-"if you use it in an inlined function and pass an argument of the 
-function as the argument to the built-in, GCC never returns 1 when you 
-call the inline function with a string constant"
-
-Does GCC considers (void*)0 as a string constant ?
-
-Christophe
+> For bgmac.c, bcmgenet.c and cpmac.c:
+> 
+> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+> 
+> Whether you decide to spin another version or not.
+> 
+Heiner
