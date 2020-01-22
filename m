@@ -2,71 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32EF145B30
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 18:54:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D009E145B36
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 18:56:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482tMV3py0zDqPv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 04:54:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 482tQ36XM3zDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 04:56:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::22a;
- helo=mail-lj1-x22a.google.com; envelope-from=linux@rasmusvillemoes.dk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.a=rsa-sha256 header.s=google header.b=YqqjYCS4; 
- dkim-atps=neutral
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
- [IPv6:2a00:1450:4864:20::22a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=EgAXh2JV; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482tKD3fyzzDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 04:52:27 +1100 (AEDT)
-Received: by mail-lj1-x22a.google.com with SMTP id r19so10383ljg.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 09:52:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=to:cc:from:subject:message-id:date:user-agent:mime-version
- :content-language:content-transfer-encoding;
- bh=Kwfb980H2zFKYYbHaFvisTOICKVRfP4l7wqRW0yzW7k=;
- b=YqqjYCS469tBGefnBZCHaLOnvCEU6RwmU1Ym07beUKu4bL09uWTNZ1nt968GsPQoOq
- hbv2BR2GZt2/EJClXZnd1ehzVW5dPVI+a/fu8bRIymQ4uovVqAAAT6xartThfhLh7E7X
- 6S9Zvq6eJl2OlyLkBfi1N/AcYSjc/JsxYa8N4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
- :mime-version:content-language:content-transfer-encoding;
- bh=Kwfb980H2zFKYYbHaFvisTOICKVRfP4l7wqRW0yzW7k=;
- b=OjCKkstfFJ3rqJrDJNyaKqftQU9BumX01SEthww4I+Rpc22YrPKeVDMJzmfWoi4Ckz
- 6YtXo2G2oJqtiXO7Vk9EaPGzoG9KF2YrGQLxy3CMvIh5fpOSiQfkxlMGz6ZsRZPlfnYI
- Am4N5ra+LC4ZXZK8TD8T5PdYEskFfiVTtSnaM3uIW20IiltC5hHnJHD6DA2H+1q486tK
- YpsJeyEYn4yC1I2CME80fDKIc5yx6h+1OWeK0ZRNKX1SkV7zi9ZAIjR7EfX7pXXi1gsy
- 8tkgE5FZIq0QvkTPEbN1YXS4Onjm2FdSYABh9ovTHFVIdrTDnc6XEXPq8enbZ5vYUv4l
- Uczg==
-X-Gm-Message-State: APjAAAU2loI0m08XyWszyrGQeILGWJ1BkBXB3tfpy17kb5BlYOQxQ2Vf
- QuDsN4xN8xDQp4/9iwhQsoj1tGkMWQq0Ru9L
-X-Google-Smtp-Source: APXvYqzjSckBf1b85YfqGd+aDBBQkbREIKg8UrhShurtzZaYsPKOvuFLad0ZOZ/cNOpPlfEgL2IiHg==
-X-Received: by 2002:a2e:8595:: with SMTP id b21mr18485013lji.219.1579715542683; 
- Wed, 22 Jan 2020 09:52:22 -0800 (PST)
-Received: from [172.16.11.50] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id f16sm20549672ljn.17.2020.01.22.09.52.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Jan 2020 09:52:22 -0800 (PST)
-To: LKML <linux-kernel@vger.kernel.org>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: vmlinux ELF header sometimes corrupt
-Message-ID: <71aa76d0-a3b8-b4f3-a7c3-766cfb75412f@rasmusvillemoes.dk>
-Date: Wed, 22 Jan 2020 18:52:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482tKg4QyWzDqS2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 04:52:53 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 482tKV6dfNz9vBdk;
+ Wed, 22 Jan 2020 18:52:46 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=EgAXh2JV; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id NrSstf2601YN; Wed, 22 Jan 2020 18:52:46 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 482tKV5Fq7z9vBf2;
+ Wed, 22 Jan 2020 18:52:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579715566; bh=BFcMmG1gr6ZHjF96WJjeRbfRazxCfc8BsdIu1Gb0FaQ=;
+ h=From:Subject:To:Cc:Date:From;
+ b=EgAXh2JVdH1m4rMSYMLWOuTFsFapRVRquT4G0KSmacXFMtvAiZSQhAKhlLoOMGcKQ
+ OeUjFyYJdl/Bgobmxh/54lBo9S1Tl0oWUzvVH06axb1PXj3fnyvujIFHX86AFEgaVX
+ Qd+FLSTJKxRGI3RLTRHG+WlUUDXRQM6tzKBihnhE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A3478B811;
+ Wed, 22 Jan 2020 18:52:48 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id gSUFGUjIatac; Wed, 22 Jan 2020 18:52:48 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E8EE78B812;
+ Wed, 22 Jan 2020 18:52:47 +0100 (CET)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id A4622651E0; Wed, 22 Jan 2020 17:52:47 +0000 (UTC)
+Message-Id: <12a4be679e43de1eca6e5e2173163f27e2f25236.1579715466.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 1/6] fs/readdir: Fix filldir() and filldir64() use of
+ user_access_begin()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>
+Date: Wed, 22 Jan 2020 17:52:47 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,54 +76,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I'm building for a ppc32 (mpc8309) target using Yocto, and I'm hitting a
-very hard to debug problem that maybe someone else has encountered. This
-doesn't happen always, perhaps 1 in 8 times or something like that.
+Some architectures grand full access to userspace regardless of the
+address/len passed to user_access_begin(), but other architectures
+only grand access to the requested area.
 
-The issue is that when the build gets to do "${CROSS}objcopy -O binary
-... vmlinux", vmlinux is not (no longer) a proper ELF file, so naturally
-that fails with
+For exemple, on 32 bits powerpc (book3s/32), access is granted by
+segments of 256 Mbytes.
 
-  powerpc-oe-linux-objcopy:vmlinux: file format not recognized
+Modify filldir() and filldir64() to request the real area they need
+to get access to, i.e. the area covering the parent dirent (if any)
+and the contiguous current dirent.
 
-So I hacked link-vmlinux.sh to stash copies of vmlinux before and after
-sortextable vmlinux. Both of those are proper ELF files, and comparing
-the corrupted vmlinux to vmlinux.after_sort they are identical after the
-first 52 bytes; in vmlinux, those first 52 bytes are all 0.
+Fixes: 9f79b78ef744 ("Convert filldir[64]() from __put_user() to unsafe_put_user()")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+v2: have user_access_begin() cover both parent dirent (if any) and current dirent
+---
+ fs/readdir.c | 50 ++++++++++++++++++++++++++++----------------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
-I also saved stat(1) info to see if vmlinux is being replaced or
-modified in-place.
+diff --git a/fs/readdir.c b/fs/readdir.c
+index d26d5ea4de7b..3f9b4488d9b7 100644
+--- a/fs/readdir.c
++++ b/fs/readdir.c
+@@ -214,7 +214,7 @@ struct getdents_callback {
+ static int filldir(struct dir_context *ctx, const char *name, int namlen,
+ 		   loff_t offset, u64 ino, unsigned int d_type)
+ {
+-	struct linux_dirent __user * dirent;
++	struct linux_dirent __user * dirent, *dirent0;
+ 	struct getdents_callback *buf =
+ 		container_of(ctx, struct getdents_callback, ctx);
+ 	unsigned long d_ino;
+@@ -232,19 +232,22 @@ static int filldir(struct dir_context *ctx, const char *name, int namlen,
+ 		buf->error = -EOVERFLOW;
+ 		return -EOVERFLOW;
+ 	}
+-	dirent = buf->previous;
+-	if (dirent && signal_pending(current))
++	dirent0 = buf->previous;
++	if (dirent0 && signal_pending(current))
+ 		return -EINTR;
+ 
+-	/*
+-	 * Note! This range-checks 'previous' (which may be NULL).
+-	 * The real range was checked in getdents
+-	 */
+-	if (!user_access_begin(dirent, sizeof(*dirent)))
+-		goto efault;
+-	if (dirent)
+-		unsafe_put_user(offset, &dirent->d_off, efault_end);
+ 	dirent = buf->current_dir;
++	if (dirent0) {
++		int sz = (void __user *)dirent + reclen -
++			 (void __user *)dirent0;
++
++		if (!user_access_begin(dirent0, sz))
++			goto efault;
++		unsafe_put_user(offset, &dirent0->d_off, efault_end);
++	} else {
++		if (!user_access_begin(dirent, reclen))
++			goto efault;
++	}
+ 	unsafe_put_user(d_ino, &dirent->d_ino, efault_end);
+ 	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+ 	unsafe_put_user(d_type, (char __user *) dirent + reclen - 1, efault_end);
+@@ -307,7 +310,7 @@ struct getdents_callback64 {
+ static int filldir64(struct dir_context *ctx, const char *name, int namlen,
+ 		     loff_t offset, u64 ino, unsigned int d_type)
+ {
+-	struct linux_dirent64 __user *dirent;
++	struct linux_dirent64 __user *dirent, *dirent0;
+ 	struct getdents_callback64 *buf =
+ 		container_of(ctx, struct getdents_callback64, ctx);
+ 	int reclen = ALIGN(offsetof(struct linux_dirent64, d_name) + namlen + 1,
+@@ -319,19 +322,22 @@ static int filldir64(struct dir_context *ctx, const char *name, int namlen,
+ 	buf->error = -EINVAL;	/* only used if we fail.. */
+ 	if (reclen > buf->count)
+ 		return -EINVAL;
+-	dirent = buf->previous;
+-	if (dirent && signal_pending(current))
++	dirent0 = buf->previous;
++	if (dirent0 && signal_pending(current))
+ 		return -EINTR;
+ 
+-	/*
+-	 * Note! This range-checks 'previous' (which may be NULL).
+-	 * The real range was checked in getdents
+-	 */
+-	if (!user_access_begin(dirent, sizeof(*dirent)))
+-		goto efault;
+-	if (dirent)
+-		unsafe_put_user(offset, &dirent->d_off, efault_end);
+ 	dirent = buf->current_dir;
++	if (dirent0) {
++		int sz = (void __user *)dirent + reclen -
++			 (void __user *)dirent0;
++
++		if (!user_access_begin(dirent0, sz))
++			goto efault;
++		unsafe_put_user(offset, &dirent0->d_off, efault_end);
++	} else {
++		if (!user_access_begin(dirent, reclen))
++			goto efault;
++	}
+ 	unsafe_put_user(ino, &dirent->d_ino, efault_end);
+ 	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+ 	unsafe_put_user(d_type, &dirent->d_type, efault_end);
+-- 
+2.25.0
 
-$ cat vmlinux.stat.after_sort
-  File: 'vmlinux'
-  Size: 8608456     Blocks: 16696      IO Block: 4096   regular file
-Device: 811h/2065d  Inode: 21919132    Links: 1
-Access: (0755/-rwxr-xr-x)  Uid: ( 1000/    user)   Gid: ( 1001/    user)
-Access: 2020-01-22 10:52:38.946703081 +0000
-Modify: 2020-01-22 10:52:38.954703105 +0000
-Change: 2020-01-22 10:52:38.954703105 +0000
-
-$ stat vmlinux
-  File: 'vmlinux'
-  Size: 8608456         Blocks: 16688      IO Block: 4096   regular file
-Device: 811h/2065d      Inode: 21919132    Links: 1
-Access: (0755/-rwxr-xr-x)  Uid: ( 1000/    user)   Gid: ( 1001/    user)
-Access: 2020-01-22 17:20:00.650379057 +0000
-Modify: 2020-01-22 10:52:38.954703105 +0000
-Change: 2020-01-22 10:52:38.954703105 +0000
-
-So the inode number and mtime/ctime are exactly the same, but for some
-reason Blocks: has changed? This is on an ext4 filesystem, but I don't
-suspect the filesystem to be broken, because it's always just vmlinux
-that ends up corrupt, and always in exactly this way with the first 52
-bytes having been wiped.
-
-Any ideas?
-
-Rasmus
