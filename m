@@ -1,68 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8055F145BA3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 19:39:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482vMw24lFzDqWs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 05:39:56 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FCC145BB4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 19:47:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 482vXb5QwvzDqVq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 05:47:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
- [209.85.128.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482vL31LXMzDqJX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 05:38:17 +1100 (AEDT)
-Received: by mail-wm1-f65.google.com with SMTP id t23so152035wmi.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 10:38:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=966BgYgZRUlLppOTZ8GZw5dVZmBTcRyeqAhJa9bwYzU=;
- b=tWeTMCxM4dQZuOCKgKUWMuWN1QFLvHewSgRnVsx0uRLTsrFe9NIlS6jffgdqurUyXZ
- j36hTQX/eKS9jASS0LzpXsxkWXHIHIcZKc11TPaxci79A2t1aJU2QpiKHka6dyrKuPlV
- LXQW2PdcWln/TIHgjPxGsIkHqGjO8YMzOx/pQClJeoxvSSrNj1QuzxTIrrH3JfldjnS7
- dOZjMInZfiV/OeXUTXBJsSXQRUw7QLhVoOzri5/uje0JBdgJihTEE/MOvF431qAnLIOH
- 5hdK1rthBEN0aj9YOesJwLcFY8e7JqhhN8ZhhLp4MPRL7N2CvI88gtHz++7Zop9aMl/q
- gC6g==
-X-Gm-Message-State: APjAAAVULNXsQttesbL0nV4aIjauebdeid+C8sojanKpJ9oMeXkPxV2c
- mlECr0EpvGM3qUOtoEGczjs=
-X-Google-Smtp-Source: APXvYqytlJusKX0Kz3YLI2vL5MLf0VI1Z1xBBIdMBORZVE6octNROw4k0V6HC2FB29J3ObqpMFnQGw==
-X-Received: by 2002:a05:600c:2c06:: with SMTP id
- q6mr4482299wmg.154.1579718294349; 
- Wed, 22 Jan 2020 10:38:14 -0800 (PST)
-Received: from localhost (ip-37-188-245-167.eurotel.cz. [37.188.245.167])
- by smtp.gmail.com with ESMTPSA id j12sm63168372wrw.54.2020.01.22.10.38.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Jan 2020 10:38:13 -0800 (PST)
-Date: Wed, 22 Jan 2020 19:38:09 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH RFC v1] mm: is_mem_section_removable() overhaul
-Message-ID: <20200122183809.GB29276@dhcp22.suse.cz>
-References: <CAPcyv4jvmYRbX9i+1_LvHoTDGABadHbYH3NVkqczKsQ4fsf74g@mail.gmail.com>
- <20200120074816.GG18451@dhcp22.suse.cz>
- <a5f0bd8d-de5e-9f27-5c94-7746a3d20a95@redhat.com>
- <20200121120714.GJ29276@dhcp22.suse.cz>
- <a29b49b9-28ad-44fa-6c0b-90cd43902f29@redhat.com>
- <20200122104230.GU29276@dhcp22.suse.cz>
- <98b6c208-b4dd-9052-43f6-543068c649cc@redhat.com>
- <816ddd66-c90b-76f1-f4a0-72fe41263edd@redhat.com>
- <20200122164618.GY29276@dhcp22.suse.cz>
- <626d344e-8243-c161-cd07-ed1276eba73d@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 482vVZ5670zDqMd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 05:45:40 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2020 10:45:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,350,1574150400"; d="scan'208";a="229454588"
+Received: from ray.jf.intel.com (HELO [10.7.201.139]) ([10.7.201.139])
+ by orsmga006.jf.intel.com with ESMTP; 22 Jan 2020 10:45:27 -0800
+Subject: Re: [PATCH v16 00/23] selftests, powerpc, x86: Memory Protection Keys
+To: Sandipan Das <sandipan@linux.ibm.com>, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <cover.1579507768.git.sandipan@linux.ibm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Message-ID: <3ceb2814-f8b0-ec6b-3c24-ec72297a99f5@intel.com>
+Date: Wed, 22 Jan 2020 10:45:27 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <626d344e-8243-c161-cd07-ed1276eba73d@redhat.com>
+In-Reply-To: <cover.1579507768.git.sandipan@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,73 +97,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Leonardo Bras <leonardo@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>, lantianyu1986@gmail.com
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, linuxram@us.ibm.com, mhocko@kernel.org, linux-mm@kvack.org,
+ mingo@redhat.com, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 22-01-20 19:15:47, David Hildenbrand wrote:
-> On 22.01.20 17:46, Michal Hocko wrote:
-> > On Wed 22-01-20 12:58:16, David Hildenbrand wrote:
-[...]
-> >> Especially interesting for IBM z Systems, whereby memory
-> >> onlining/offlining will trigger the actual population of memory in the
-> >> hypervisor. So if an admin wants to offline some memory (to give it back
-> >> to the hypervisor), it would use lsmem to identify such blocks first,
-> >> instead of trying random blocks until one offlining request succeeds.
-> > 
-> > I am sorry for being dense here but I still do not understand why s390
-> 
-> It's good that we talk about it :) It's hard to reconstruct actual use
-> cases from tools and some documentation only ...
-> 
-> Side note (just FYI): One difference on s390x compared to other
-> architectures (AFAIKS) is that once memory is offline, you might not be
-> allowed (by the hypervisor) to online it again - because it was
-> effectively unplugged. Such memory is not removed via remove_memory(),
-> it's simply kept offline.
+Still doesn't build for me:
 
-I have a very vague understanding of s390 specialities but this is not
-really relevant to the discussion AFAICS because this happens _after_
-offlining.
- 
-> > and the way how it does the hotremove matters here. Afterall there are
-> > no arch specific operations done until the memory is offlined. Also
-> > randomly checking memory blocks and then hoping that the offline will
-> > succeed is not way much different from just trying the offline the
-> > block. Both have to crawl through the pfn range and bail out on the
-> > unmovable memory.
-> 
-> I think in general we have to approaches to memory unplugging.
-> 
-> 1. Know explicitly what you want to unplug (e.g., a DIMM spanning
-> multiple memory blocks).
-> 
-> 2. Find random memory blocks you can offline/unplug.
-> 
-> 
-> For 1, I think we both agree that we don't need this. Just try to
-> offline and you know if it worked.
-> 
-> Now of course, for 2 you can try random blocks until you succeeded. From
-> a sysadmin point of view that's very inefficient. From a powerpc-utils
-> point of view, that's inefficient.
+> # make
+> make --no-builtin-rules ARCH=x86_64 -C ../../../.. headers_install
+> make[1]: Entering directory '/home/dave/linux.git'
+>   INSTALL ./usr/include
+> make[1]: Leaving directory '/home/dave/linux.git'
+> make: *** No rule to make target '/home/dave/linux.git/tools/testing/selftests/vm/protection_keys_32', needed by 'all'.  Stop.
 
-How exactly is check + offline more optimal then offline which makes
-check as its first step? I will get to your later points after this is
-clarified.
--- 
-Michal Hocko
-SUSE Labs
+
