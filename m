@@ -1,55 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE43146641
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 12:01:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483K832MXzzDqVZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 22:01:07 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7344A1466AD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 12:25:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 483Kgp1ws3zDqSB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 22:25:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483K5t1Y9DzDqV3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 21:59:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=HSStN14F; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.20.41; helo=eur05-db8-obe.outbound.protection.outlook.com;
+ envelope-from=laurentiu.tudor@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=V34+SC6n; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 483K5r5snRz9sSQ;
- Thu, 23 Jan 2020 21:59:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1579777154;
- bh=HLfndF9RAt4g+AGkbC5qXfhi2W5ru43lrY+OrFwE77c=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=HSStN14FpEBPLwZGlx8oA+ZZNFfWdzHQErga4zK0XJhZfzP21D9wVvy2nuua2Mcro
- coc6kYH0eO3TodIQoXW3uHMTv0a3Qpku4sXMmh6C1rqkRglSS/MAUic6YqP0/byH0G
- ZJ7pawYuL1pjqPlF2vm4ykwCpFBmFOSc0iYPFqJZo0mEpsJQ76+wJbrBrKrEo9nmNs
- ZgSBsLMbn5gSujjwiM9+A2Ut5yJUmDY0rLKA8hcDKkIQJCPsjUpvQ3nRRKQRMY/OPV
- I80FJuKhnIDrVr9c3L0OKrBKo50KaQQi2hgOJyv7mbq1cJ3kvDlZyYKoDIRW7yeq51
- dxF8E/uUq8TlQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v2 5/6] powerpc/32s: prepare prevent_user_access() for
- user_access_end()
-In-Reply-To: <824b69f5452d1d41d12c4dbd306d4b8f32d493fc.1579715466.git.christophe.leroy@c-s.fr>
-References: <12a4be679e43de1eca6e5e2173163f27e2f25236.1579715466.git.christophe.leroy@c-s.fr>
- <824b69f5452d1d41d12c4dbd306d4b8f32d493fc.1579715466.git.christophe.leroy@c-s.fr>
-Date: Thu, 23 Jan 2020 21:59:07 +1100
-Message-ID: <87pnfaiglg.fsf@mpe.ellerman.id.au>
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com
+ (mail-db8eur05on2041.outbound.protection.outlook.com [40.107.20.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483KYL1yXQzDqVL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 22:19:31 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lHIX29rrRaHA/n8r5x1VpEfkI+mHhDjyq7/006mhugPIxBKh6+wD/TeNwrb6JqXRJU52Ck7yToasx2njSi0g+gXVdTovzNDwKV1iuKCupoRpxlVJ7W1uMHKByUXzVAVq4Pe7Jq+IQhCaOz0GLCrNhhcMVh74NZokQH6PlWMDkKeA7kHjkbZwfntu/Z/+mLV8cOt9Ei4CvepbU02kToMthWZnHTinAfIUV9GhS/QTfGp3xIozwHmKD3AM0Mw7W6KhYv9aiadnmtJErQ+p5XWJ5ttO5Om+TbnDhzhvmQ8yiTyYwjR03IB90UsPk5D1k2+SleEd1S7ytpXjNBY6NGPtvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hwYB92UaAiVD6zyggC3JbzvjtjnWo9noS1G5TkEtS/0=;
+ b=lBW+e8HpVtpUAw+bcjRXctPe2pQnpF1bC+YXWwEt6n+wCM+nrUNs9YDdmwp/SmmG8jOWTfO/WRnwRMbQto8TgrkBy17A+PFG0v2FPN1LpsoEp2OC+XWfghkoq2VhPZPkJx3j2g1V4UC7O9G5Fn4sGEkvLSMidk8BWRbNCO7m5+GC14vvz+/3HbYh5Fsg9C1fa33W5Avhtz82YHXbF6u0X7ffx93xEu+CdpJu5m9UBacBVU5ewv00u04Fh9MrR3NOumeLkM3/mUGNVHj1OZSd6iGdQuchXZEtTmbyeDKY3Cn0cNfjQfdR1nX4GWlplUKJetK0q+kAHWgRUgNQxrUbwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hwYB92UaAiVD6zyggC3JbzvjtjnWo9noS1G5TkEtS/0=;
+ b=V34+SC6nSITF/JgkTGU1ceDEps+6znMe5wTWTgAbG62qi4twzm6OM6x9m9xbKYzQHjpFTmHhIWymNZPwDliBZlV3wtWDotn63Hx5kYewN4XJxlQwmvH17HplnbGQ4VS+QRkppUS57tdWJIP2QrcetszRNmPiZ576+oOtFSLQe5k=
+Received: from AM6PR04MB5878.eurprd04.prod.outlook.com (20.179.0.89) by
+ AM6PR04MB4679.eurprd04.prod.outlook.com (20.177.37.96) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2644.19; Thu, 23 Jan 2020 11:19:25 +0000
+Received: from AM6PR04MB5878.eurprd04.prod.outlook.com
+ ([fe80::bcef:1c59:7d27:d0e]) by AM6PR04MB5878.eurprd04.prod.outlook.com
+ ([fe80::bcef:1c59:7d27:d0e%6]) with mapi id 15.20.2644.027; Thu, 23 Jan 2020
+ 11:19:25 +0000
+Received: from fsr-ub1864-101.ea.freescale.net (89.37.124.34) by
+ LO2P265CA0090.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:8::30) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2623.9 via Frontend Transport; Thu, 23 Jan 2020 11:19:24 +0000
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+To: "oss@buserror.net" <oss@buserror.net>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/fsl_booke: avoid creating duplicate tlb1 entry
+Thread-Topic: [PATCH] powerpc/fsl_booke: avoid creating duplicate tlb1 entry
+Thread-Index: AQHV0d73S4yfrqtzL0CCUBQaf/Q2KQ==
+Date: Thu, 23 Jan 2020 11:19:25 +0000
+Message-ID: <20200123111914.2565-1-laurentiu.tudor@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: LO2P265CA0090.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:8::30) To AM6PR04MB5878.eurprd04.prod.outlook.com
+ (2603:10a6:20b:a2::25)
+x-mailer: git-send-email 2.17.1
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=laurentiu.tudor@nxp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [89.37.124.34]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 70323e96-e45a-431f-e780-08d79ff61a5f
+x-ms-traffictypediagnostic: AM6PR04MB4679:|AM6PR04MB4679:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM6PR04MB4679D3B5EAE977ED13EFC48BEC0F0@AM6PR04MB4679.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2276;
+x-forefront-prvs: 029174C036
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(346002)(376002)(396003)(39860400002)(366004)(136003)(199004)(189003)(316002)(54906003)(110136005)(44832011)(2906002)(956004)(2616005)(36756003)(478600001)(86362001)(4326008)(71200400001)(52116002)(66446008)(186003)(64756008)(16526019)(66476007)(6512007)(5660300002)(66556008)(26005)(1076003)(66946007)(6486002)(81166006)(6506007)(81156014)(8936002)(8676002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:AM6PR04MB4679;
+ H:AM6PR04MB5878.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: CR30ktTEf03bz4WNRschwH6fzznIkCobofji8yai43nchkwRJ4W62idyeXkHIzYy3MF7a+GcVh3ylG64md25bk1u1T5yP1s8Vx76gLKEs8xQffR8wHJRuKQkYv7ZD9XbPLUyPeBEXdauMy4mGubMAwFAjTcY7d8GVUhmM1GAUE++G+qutwf7txd0jjmbsL9LJIvg77TvykYOdtA8pgN800CmKZRJ1omkBDO1XQBmgRcyeXH/GR8CD3uXTQkzCymCrwvwUfk4+/TJhI7ZUG1wRGu0+AkIRQo8TCAnOGmeVPt7NvCGCqMP3QeiK48grXnpW0a7GdVQus98fDpGtNlfgjnV/nbIXqhWmieQGS8eUH3OEMDsDMJ6MZtbx6d7Wd12OtcXQ3XpubVYk6WKlD0tuLkuaRQ7Jb9/TbHoUz5zqOs7yeu3Z/Gm4vTLIc/KTIQp
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <026E68B3014B5546B523C1E54921E0FA@eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70323e96-e45a-431f-e780-08d79ff61a5f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2020 11:19:25.2326 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nfV5qnKD9xFBGxoD+im9ObN1xMw1RjtePnlfrw99H1sywLEcwn8KRw5O0hq1CbmZHrJ0g561FfyuCdcalCMqRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB4679
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,31 +112,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Diana Madalina Craciun <diana.craciun@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> In preparation of implementing user_access_begin and friends
-> on powerpc, the book3s/32 version of prevent_user_access() need
-> to be prepared for user_access_end().
->
-> user_access_end() doesn't provide the address and size which
-> were passed to user_access_begin(), required by prevent_user_access()
-> to know which segment to modify.
->
-> The list of segments which where unprotected by allow_user_access()
-> are available in current->kuap. But we don't want prevent_user_access()
-> to read this all the time, especially everytime it is 0 (for instance
-> because the access was not a write access).
->
-> Implement a special direction case named KUAP_SELF. In this case only,
-> the addr and end are retrieved from current->kuap.
+In the current implementation, the call to loadcam_multi() is wrapped
+between switch_to_as1() and restore_to_as0() calls so, when it tries
+to create its own temporary AS=3D1 TLB1 entry, it ends up duplicating the
+existing one created by switch_to_as1(). Add a check to skip creating
+the temporary entry if already running in AS=3D1.
 
-Can we call it KUAP_CURRENT?
+Fixes: d9e1831a4202 ("powerpc/85xx: Load all early TLB entries at once")
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: stable@vger.kernel.org
+---
+ arch/powerpc/mm/nohash/tlb_low.S | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-ie. "use the KUAP state in current"
+diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_=
+low.S
+index 2ca407cedbe7..eaeee402f96e 100644
+--- a/arch/powerpc/mm/nohash/tlb_low.S
++++ b/arch/powerpc/mm/nohash/tlb_low.S
+@@ -397,7 +397,7 @@ _GLOBAL(set_context)
+  * extern void loadcam_entry(unsigned int index)
+  *
+  * Load TLBCAM[index] entry in to the L2 CAM MMU
+- * Must preserve r7, r8, r9, and r10
++ * Must preserve r7, r8, r9, r10 and r11
+  */
+ _GLOBAL(loadcam_entry)
+ 	mflr	r5
+@@ -433,6 +433,10 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_BIG_PHYS)
+  */
+ _GLOBAL(loadcam_multi)
+ 	mflr	r8
++	/* Don't switch to AS=3D1 if already there */
++	mfmsr	r11
++	andi.	r11,r11,MSR_IS
++	bne	10f
+=20
+ 	/*
+ 	 * Set up temporary TLB entry that is the same as what we're
+@@ -458,6 +462,7 @@ _GLOBAL(loadcam_multi)
+ 	mtmsr	r6
+ 	isync
+=20
++10:
+ 	mr	r9,r3
+ 	add	r10,r3,r4
+ 2:	bl	loadcam_entry
+@@ -466,6 +471,10 @@ _GLOBAL(loadcam_multi)
+ 	mr	r3,r9
+ 	blt	2b
+=20
++	/* Don't return to AS=3D0 if we were in AS=3D1 at function start */
++	andi.	r11,r11,MSR_IS
++	bne	3f
++
+ 	/* Return to AS=3D0 and clear the temporary entry */
+ 	mfmsr	r6
+ 	rlwinm.	r6,r6,0,~(MSR_IS|MSR_DS)
+@@ -481,6 +490,7 @@ _GLOBAL(loadcam_multi)
+ 	tlbwe
+ 	isync
+=20
++3:
+ 	mtlr	r8
+ 	blr
+ #endif
+--=20
+2.17.1
 
-cheers
