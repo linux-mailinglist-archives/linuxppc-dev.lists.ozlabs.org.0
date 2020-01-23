@@ -1,78 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01548147125
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 19:50:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483WYm4sHZzDqbg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 05:50:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6501147214
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 20:49:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 483Xt071FSzDqXr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 06:49:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::241;
- helo=mail-lj1-x241.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=Mj9KYt/E; 
- dkim-atps=neutral
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=GiT4oOAM; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483WVs3Q01zDqYb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 05:48:04 +1100 (AEDT)
-Received: by mail-lj1-x241.google.com with SMTP id r19so4794181ljg.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 10:48:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=nTTlf7PIq8m+h1b8hl1eM7lP8o081tv0+h5Byplabe4=;
- b=Mj9KYt/E2aNDAWdYyMNCrPSCFRO71sOFNKIv1qcIG2H25vJy2SyD3sMLVq4FaDcfeP
- iGlcEsouR1fuzQs9IjFsmMH6TyLgOGNtzw0PWZ+6esf3f+uNHjTwy2QjoAL8divZL0PF
- 0AN44j8uLfXOosmSCqaAgRkchGVu+6EMdfKNs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=nTTlf7PIq8m+h1b8hl1eM7lP8o081tv0+h5Byplabe4=;
- b=KoF4Ukz86gfBsQq9+rP6Y3XBJZ29LlETYGG7d62aSD9lvLCYrgx6SlKKlm+JVvpbpB
- zk/MyIS2xhudnUzOQIG6g20Y+NDwTHb6Yp2958xkSaHz4XwjvJeqUWfDPMyB091OlWz+
- pZ+z+/WlV3Ta3fSGV8gGVcGSaN8B1DlU5ig2Yp9v/dSlFTNhdss64JLDV4YACdPS0jkJ
- xhSSU1YbqGPA/g7m8o92TkXz6o8rNaxmLCmfJYT9CptOAoua0jgV7KJxm8yqpjUyWtUG
- IX0HkBZM0Rnzb+bgm+JGngeF1oes0k42wYlolnj7Lc0Y803jETsCpnNF91NBMo2G7H+s
- YL4Q==
-X-Gm-Message-State: APjAAAWofTbtX3JZLP4snv2mFV8AUmiDsFfNRjGCrG5ccstCTWXPNbKp
- uCLnQFwqcZoJExOUFAP34VRviEwO1pU=
-X-Google-Smtp-Source: APXvYqx6BO97Q8RcOkw4K3CyZ3ArKrHucKOZWgToWYsKNIRu+T+VfTXyHZa1jzJAC5tD1HA65eswXA==
-X-Received: by 2002:a2e:9c0b:: with SMTP id s11mr23357892lji.11.1579805279377; 
- Thu, 23 Jan 2020 10:47:59 -0800 (PST)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com.
- [209.85.167.47])
- by smtp.gmail.com with ESMTPSA id u16sm1742132lfi.36.2020.01.23.10.47.58
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Jan 2020 10:47:58 -0800 (PST)
-Received: by mail-lf1-f47.google.com with SMTP id v201so3094354lfa.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 10:47:58 -0800 (PST)
-X-Received: by 2002:a19:4849:: with SMTP id v70mr5482335lfa.30.1579805278133; 
- Thu, 23 Jan 2020 10:47:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483XqC29vKzDqXq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 06:47:16 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 483Xq32wGFz9twsF;
+ Thu, 23 Jan 2020 20:47:11 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=GiT4oOAM; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id SdrD6o_7qs43; Thu, 23 Jan 2020 20:47:11 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 483Xq31j0Sz9twsD;
+ Thu, 23 Jan 2020 20:47:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579808831; bh=7aISpSDwk7v2lI/VXtmtSlwWRv+BW39/h3hG4uOf4xk=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=GiT4oOAMsDoIJbqHVSxG301CAWwldgZmQRaIfFMSVrBDbBc/V9IXlyBKUf1FQX89s
+ crLgitQifrTzbgyEVrCPJRbrcv2z6CpXbA2e1nkKThpAmm/AlGNMSMpu/ixIreuf5B
+ KfqT02ezurVVK0RQGGtRw0A4me1TlQkiUzi+NGDM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C6F28B837;
+ Thu, 23 Jan 2020 20:47:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id LHxckWJhJw66; Thu, 23 Jan 2020 20:47:11 +0100 (CET)
+Received: from [192.168.232.53] (unknown [192.168.232.53])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 151148B836;
+ Thu, 23 Jan 2020 20:47:10 +0100 (CET)
+Subject: Re: [PATCH v3 2/7] uaccess: Tell user_access_begin() if it's for a
+ write or not
+To: Linus Torvalds <torvalds@linux-foundation.org>
+References: <fed4f49349913cb6739dac647ba6a61d56b989d2.1579783936.git.christophe.leroy@c-s.fr>
+ <e11a8f0670251267f87e3114e0bdbacb1eb72980.1579783936.git.christophe.leroy@c-s.fr>
+ <CAHk-=wg4HEABOZdjxMzbembNmxs1zYfrNAEc2L+JS9FBSnM8JA@mail.gmail.com>
+From: christophe leroy <christophe.leroy@c-s.fr>
+Message-ID: <fc5c94a2-5a25-0715-5240-5ba3cbe0f2b2@c-s.fr>
+Date: Thu, 23 Jan 2020 20:47:06 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-References: <70f99f7474826883877e84f93224e937d9c974de.1579767339.git.christophe.leroy@c-s.fr>
-In-Reply-To: <70f99f7474826883877e84f93224e937d9c974de.1579767339.git.christophe.leroy@c-s.fr>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 23 Jan 2020 10:47:42 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgcm5JzyacekDGQ4Ocoe-F5it-7-sbgU8oPnhwnSH3KAA@mail.gmail.com>
-Message-ID: <CAHk-=wgcm5JzyacekDGQ4Ocoe-F5it-7-sbgU8oPnhwnSH3KAA@mail.gmail.com>
-Subject: Re: [PATCH] lib: Reduce user_access_begin() boundaries in
- strncpy_from_user() and strnlen_user()
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- linux-arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAHk-=wg4HEABOZdjxMzbembNmxs1zYfrNAEc2L+JS9FBSnM8JA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
+X-Antivirus: Avast (VPS 200122-2, 22/01/2020), Outbound message
+X-Antivirus-Status: Not-Tested
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,32 +82,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+Cc: the arch/x86 maintainers <x86@kernel.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>, Linux-MM <linux-mm@kvack.org>,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 23, 2020 at 12:34 AM Christophe Leroy
-<christophe.leroy@c-s.fr> wrote:
->
-> The range passed to user_access_begin() by strncpy_from_user() and
-> strnlen_user() starts at 'src' and goes up to the limit of userspace
-> allthough reads will be limited by the 'count' param.
->
-> On 32 bits powerpc (book3s/32) access has to be granted for each 256Mbytes
-> segment and the cost increases with the number of segments to unlock.
->
-> Limit the range with 'count' param.
 
-Ack. I'm tempted to take this for 5.5 too, just so that the
-unquestionably trivial fixes are in that baseline, and the
-infrastructure is ready for any architecture that has issues like
-this.
 
-Adding 'linux-arch' to the participants, to see if other architectures
-are at all looking at actually implementing the whole
-user_access_begin/end() dance too..
+Le 23/01/2020 à 19:02, Linus Torvalds a écrit :
+> On Thu, Jan 23, 2020 at 4:59 AM Christophe Leroy
+> <christophe.leroy@c-s.fr> wrote:
+>>
+>> On 32 bits powerPC (book3s/32), only write accesses to user are
+>> protected and there is no point spending time on unlocking for reads.
+> 
+> Honestly, I'm starting to think that 32-bit ppc just needs to look
+> more like everybody else, than make these changes.
 
-               Linus
+Well, beside ppc32, I was also seen it as an opportunity for the modern 
+ppc64. On it, you can unlock either read or write or both. And this is 
+what is done for get_user() / put_user() and friends: unlock only reads 
+for get_user() and only writes for put_user().
+
+Could also be a compromise between performance and security: keeping 
+reads allowed at all time and only protect against writes on modern 
+architectures which support it like ppc64.
+
+> 
+> We used to have a read/write argument to the old "verify_area()" and
+> "access_ok()" model, and it was a mistake. It was due to odd i386 user
+> access issues. We got rid of it. I'm not convinced this is any better
+> - it looks very similar and for odd ppc access issues.
+
+I'm going to leave it aside, at least for the time being, and do it as a 
+second step later after evaluating the real performance impact. I'll 
+respin tomorrow in that way.
+
+> 
+> But if we really do want to do this, then:
+
+Indeed I took the idea from a discussion in last Octobre (Subject: 
+"book3s/32 KUAP (was Re: [PATCH] Convert filldir[64]() from __put_user() 
+to unsafe_put_user())" )
+
+https://lore.kernel.org/lkml/87h84avffi.fsf@mpe.ellerman.id.au/
+
+
+> 
+>> Add an argument to user_access_begin() to tell when it's for write and
+>> return an opaque key that will be used by user_access_end() to know
+>> what was done by user_access_begin().
+> 
+> You should make it more opaque than "unsigned long".
+> 
+> Also, it shouldn't be a "is this a write". What if it's a read _and_ a
+> write? Only a write? Only a read?
+
+Indeed that was more: does it includes a write. It's either RO or RW
+
+Christophe
