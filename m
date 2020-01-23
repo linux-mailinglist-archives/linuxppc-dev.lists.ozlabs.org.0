@@ -1,79 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CB5146042
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 02:23:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01D3146032
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 02:06:51 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4833yJ1S4NzDqTW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 12:06:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4834Kk5XWkzDqW6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 12:23:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4833wL6KZyzDqMM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 12:05:06 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00N10dAm139244; Wed, 22 Jan 2020 20:05:01 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xp963a4af-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jan 2020 20:05:00 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00N13lrI011375;
- Thu, 23 Jan 2020 01:04:59 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma05wdc.us.ibm.com with ESMTP id 2xksn6sv7t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jan 2020 01:04:59 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00N14vaR34275738
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Jan 2020 01:04:57 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A3FA6E052;
- Thu, 23 Jan 2020 01:04:57 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85E2B6E04E;
- Thu, 23 Jan 2020 01:04:57 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.70.94.45])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 23 Jan 2020 01:04:57 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id E69C62E0F41; Wed, 22 Jan 2020 17:04:55 -0800 (PST)
-Date: Wed, 22 Jan 2020 17:04:55 -0800
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/xmon: Fix compile error in print_insn* functions
-Message-ID: <20200123010455.GA15080@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4834Hw3JNBzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 12:22:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=fdFVs/v0; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4834Hv6lljz9sS3; Thu, 23 Jan 2020 12:22:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1579742524;
+ bh=z/eRlm5KI2ojpKo1UKbpG9UI1ViifmpZ99+o9Yw0RjI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=fdFVs/v0G2DHapiOPKY8nmHmFpgJnZvR3OdGZnhf1HhNYLeBixibnp64txklSZguB
+ LF2Q5wQl1yneEtaKDPjiPPDHkyZi4XfDOn1yqG5gzYpic4HzCeQsgiHH78q/Mro6cw
+ FEEaCJmGBs+apnM3Wke8RtYu6fLRcXZW1gDcsqGY=
+Date: Thu, 23 Jan 2020 12:17:30 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel RFC 0/4] powerpc/powenv/ioda: Allow huge DMA
+ window at 4GB
+Message-ID: <20200123011730.GL2347@umbus.fritz.box>
+References: <20191202015953.127902-1-aik@ozlabs.ru>
+ <002b30d2-a9e4-da11-2423-b003288ce8f3@ozlabs.ru>
+ <9423b5e0-75e9-4a7a-7e65-818879d52d48@ozlabs.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="tv2SIFopg1r47n4a"
 Content-Disposition: inline
-X-Operating-System: Linux 2.0.32 on an i486
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-22_08:2020-01-22,
- 2020-01-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 impostorscore=0 spamscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 mlxscore=0
- suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-2001230005
+In-Reply-To: <9423b5e0-75e9-4a7a-7e65-818879d52d48@ozlabs.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,44 +55,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From 72a7497a8673c93a4b80aa4fc38b88a8e90aa650 Mon Sep 17 00:00:00 2001
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Date: Wed, 22 Jan 2020 18:57:18 -0600
-Subject: [PATCH 1/1] powerpc/xmon: Fix compile error in print_insn* functions
 
-Fix couple of compile errors I stumbled upon with CONFIG_XMON=y and
-CONFIG_XMON_DISASSEMBLY=n
+--tv2SIFopg1r47n4a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
----
- arch/powerpc/xmon/dis-asm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Thu, Jan 23, 2020 at 11:53:32AM +1100, Alexey Kardashevskiy wrote:
+> Anyone, ping?
 
-diff --git a/arch/powerpc/xmon/dis-asm.h b/arch/powerpc/xmon/dis-asm.h
-index c4d246ebca37..c4c982d6402e 100644
---- a/arch/powerpc/xmon/dis-asm.h
-+++ b/arch/powerpc/xmon/dis-asm.h
-@@ -13,13 +13,13 @@ extern int print_insn_spu(unsigned long insn, unsigned long memaddr);
- #else
- static inline int print_insn_powerpc(unsigned long insn, unsigned long memaddr)
- {
--	printf("%.8x", insn);
-+	printf("%.8lx", insn);
- 	return 0;
- }
- 
- static inline int print_insn_spu(unsigned long insn, unsigned long memaddr)
- {
--	printf("%.8x", insn);
-+	printf("%.8lx", insn);
- 	return 0;
- }
- #endif
--- 
-2.18.1
+Sorry, I've totally lost track of this one.  I think you'll need to
+repost.
 
+
+>=20
+>=20
+> On 10/01/2020 15:18, Alexey Kardashevskiy wrote:
+> >=20
+> >=20
+> > On 02/12/2019 12:59, Alexey Kardashevskiy wrote:
+> >> Here is an attempt to support bigger DMA space for devices
+> >> supporting DMA masks less than 59 bits (GPUs come into mind
+> >> first). POWER9 PHBs have an option to map 2 windows at 0
+> >> and select a windows based on DMA address being below or above
+> >> 4GB.
+> >>
+> >> This adds the "iommu=3Diommu_bypass" kernel parameter and
+> >> supports VFIO+pseries machine - current this requires telling
+> >> upstream+unmodified QEMU about this via
+> >> -global spapr-pci-host-bridge.dma64_win_addr=3D0x100000000
+> >> or per-phb property. 4/4 advertises the new option but
+> >> there is no automation around it in QEMU (should it be?).
+> >>
+> >> For now it is either 1<<59 or 4GB mode; dynamic switching is
+> >> not supported (could be via sysfs).
+> >>
+> >> This is based on sha1
+> >> a6ed68d6468b Linus Torvalds "Merge tag 'drm-next-2019-11-27' of git://=
+anongit.freedesktop.org/drm/drm".
+> >>
+> >> Please comment. Thanks.
+> >=20
+> >=20
+> > David, Alistair, ping? Thanks,
+>=20
+>=20
+> >=20
+> >=20
+> >>
+> >>
+> >>
+> >> Alexey Kardashevskiy (4):
+> >>   powerpc/powernv/ioda: Rework for huge DMA window at 4GB
+> >>   powerpc/powernv/ioda: Allow smaller TCE table levels
+> >>   powerpc/powernv/phb4: Add 4GB IOMMU bypass mode
+> >>   vfio/spapr_tce: Advertise and allow a huge DMA windows at 4GB
+> >>
+> >>  arch/powerpc/include/asm/iommu.h              |   1 +
+> >>  arch/powerpc/include/asm/opal-api.h           |  11 +-
+> >>  arch/powerpc/include/asm/opal.h               |   2 +
+> >>  arch/powerpc/platforms/powernv/pci.h          |   1 +
+> >>  include/uapi/linux/vfio.h                     |   2 +
+> >>  arch/powerpc/platforms/powernv/opal-call.c    |   2 +
+> >>  arch/powerpc/platforms/powernv/pci-ioda-tce.c |   4 +-
+> >>  arch/powerpc/platforms/powernv/pci-ioda.c     | 219 ++++++++++++++----
+> >>  drivers/vfio/vfio_iommu_spapr_tce.c           |  10 +-
+> >>  9 files changed, 202 insertions(+), 50 deletions(-)
+> >>
+> >=20
+>=20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--tv2SIFopg1r47n4a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4o9CoACgkQbDjKyiDZ
+s5IoBRAAxW76DPH88n1mYxAySWeYWKFjnlj2Ux3ZK8149IQJ6BRRsoUp/LytS+TC
+IaCJECsiFjyy6RnxKr4YffqLCYNgjWKfDe/GfKfdUHuhWXOQg5W1qLyMOcmHmE7a
+SojAlmouKYalFzuziIuXzlrD+7Evbzwc+oEs2Hh/vM8AAWzjgpExPrmvrv98DRAV
+fTikygE92DE+iDJX0UiW88sdI7+MfSsGQWBM/Zq841d9CHDx7rnZFMmoFFttuw/I
+tUPT9XX0o0R3xFveaG+KUwUeEb+s0OMZ+Q99rsa/erh9Yu0sSjgtH7NmsDL6OaM7
+GqDmncC4KGeCUKTG/L8dgq+50cBTIgdZc3/+j3MFZ5Kz1P1wh+JRFBwNS8XlZ7vq
+zzxw5c3pVntwHahQZOCHAKS3yp+X9Inc7h5KkKUmylQaGanB4U8McxQG0ZblJJhW
+PA6T7qFAP53OkoJkSb4wrGW0au0lH5q6aoWpxcq3Fr/L20qdP5Cp8TMV86mI8Mws
+2J1R5lH/gHkyatyVPu+2DBm5ZQaeKWITtgnm7x9lpXLz7dPsfVJd9HwllaTW5ZgQ
+6CELRA/yE8VOsFwl4Qm4Pimxt8Jv5J+9Fb1JWgxIC0O7Izp34LOr7jFRR7hlbDRU
+VG7w5wILBAmzdm+2ZAtEei08WIhvzDxgY8MG/HriUqQBRajWwzQ=
+=fRHa
+-----END PGP SIGNATURE-----
+
+--tv2SIFopg1r47n4a--
