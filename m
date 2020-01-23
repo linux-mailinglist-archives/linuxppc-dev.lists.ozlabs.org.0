@@ -2,80 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C804146957
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 14:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFEC146D9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 16:58:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483NjJ00jczDqYX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 00:41:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483Rl942v7zDqYL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 02:58:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483NdV5dpFzDqFt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 00:38:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=jLNXR1xi; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 483NdV20v9z8sxP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 00:38:22 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 483NdV0cTsz9sRl; Fri, 24 Jan 2020 00:38:22 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::841;
- helo=mail-qt1-x841.google.com; envelope-from=joel.stan@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=jLNXR1xi; dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 483NdT2R5mz9sSN
- for <linuxppc-dev@ozlabs.org>; Fri, 24 Jan 2020 00:38:21 +1100 (AEDT)
-Received: by mail-qt1-x841.google.com with SMTP id h12so2469517qtu.1
- for <linuxppc-dev@ozlabs.org>; Thu, 23 Jan 2020 05:38:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=QFIT/ZNVqFYwIVYE5bqklL/THEWS9+AkUSSk3Xy6/6A=;
- b=jLNXR1xiaZU8QBKdkcZHem7zT48J7SOEMydLoJKVrjO0K3aLdWGnKEIQRBkJ2T2YMJ
- UpUTsGDFA4SbZN0Vx8xNjyYvL7UJMV/DL0JEqhUbZPeVlh71dy/4BcEiv6mL+nuUTA1W
- OkGnpuVBs6nG1j/VQFnDa+GxyxE2S3JiWklSc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=QFIT/ZNVqFYwIVYE5bqklL/THEWS9+AkUSSk3Xy6/6A=;
- b=MYQZLCKpR39SmQu9B0Az4Vn0bkWX88KzxcNiUp93gUUDncZg6GGQ2zARf2tLUxdaUD
- ok1DmkqdQfq8fTV5N+OVab+M7qVHp8bm7c81ZY4u/BOwXIhpWpGJcfLFDDY8yRhBSY9f
- AcF97bZ4S18mcOAfjlikH3hoK6ykmGY2oGkRir8PVi/QxOXBYdXlM/qq1+8gbSv0LKYG
- 2JH/VIdwyaBBpK94vBtF951PwV3cUgyHhxDD9NGPcR9RoEhRwMcLD//wL4AUrqFTHI9P
- HgrfGD29VHmYATtLxH9ReMvklhJOXFkrx8GYsnuMYUecOXoIWBMPV/jhjdm6SPMnVVRa
- VheQ==
-X-Gm-Message-State: APjAAAWpQw+tC8KZifFWbimjLcCexK69bj1qmYLI/nhHDmgeLJoeF+Hv
- go98K7TygSVR/MJvW1dh798nZ7du9D3MM8XDeBA=
-X-Google-Smtp-Source: APXvYqzVOFJYmkh8h6OauochH3AycuaCQUh2xmhwIwBnImRFWfiCD+yYLgNNj2T0I4d8yA0I8VARmBEfXvoDrylqJDo=
-X-Received: by 2002:ac8:1ac1:: with SMTP id h1mr9465555qtk.255.1579786695711; 
- Thu, 23 Jan 2020 05:38:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483Rhp04XbzDqXJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 02:56:25 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00NFlsLm141519; Thu, 23 Jan 2020 10:56:13 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xqeeeg8kk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jan 2020 10:56:13 -0500
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 00NFoOos022344;
+ Thu, 23 Jan 2020 10:56:12 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xqeeeg8jj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jan 2020 10:56:12 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00NFtPcr031469;
+ Thu, 23 Jan 2020 15:56:11 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04wdc.us.ibm.com with ESMTP id 2xksn6y1fj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jan 2020 15:56:11 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00NFuASY44040532
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jan 2020 15:56:10 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D9129AE067;
+ Thu, 23 Jan 2020 15:56:10 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B22F0AE063;
+ Thu, 23 Jan 2020 15:56:10 +0000 (GMT)
+Received: from localhost (unknown [9.85.181.148])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Jan 2020 15:56:10 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Libor Pechacek <lpechacek@suse.cz>
+Subject: Re: [PATCH] powerpc: drmem: avoid NULL pointer dereference when drmem
+ is unavailable
+In-Reply-To: <20200116102758.GC25138@fm.suse.cz>
+References: <20200116102758.GC25138@fm.suse.cz>
+Date: Thu, 23 Jan 2020 09:56:10 -0600
+Message-ID: <87o8uudv51.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <20200121043000.16212-1-mpe@ellerman.id.au>
- <20200121043000.16212-7-mpe@ellerman.id.au>
-In-Reply-To: <20200121043000.16212-7-mpe@ellerman.id.au>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 23 Jan 2020 13:38:03 +0000
-Message-ID: <CACPK8XeXNb_9ftjtTKG2i6DbyFwWFAT4bPhQ0+6eR8i-1a5JrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 07/10] powerpc/configs/skiroot: Enable security features
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-23_08:2020-01-23,
+ 2020-01-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=1
+ lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-2001230129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,76 +89,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Oliver O'Halloran <oohall@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>, Michal Suchanek <msuchanek@suse.cz>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Leonardo Bras <leonardo@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 21 Jan 2020 at 04:30, Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> From: Joel Stanley <joel@jms.id.au>
->
-> This turns on HARDENED_USERCOPY with HARDENED_USERCOPY_PAGESPAN, and
-> FORTIFY_SOURCE.
->
-> It also enables SECURITY_LOCKDOWN_LSM with _EARLY and
-> LOCK_DOWN_KERNEL_FORCE_INTEGRITY options enabled. This still allows
-> xmon to be used in read-only mode.
->
-> MODULE_SIG is selected by lockdown, so it is still enabled.
->
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> [mpe: Switch to lockdown integrity mode per oohal]
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Hello and thanks for the patch.
 
-I did some testing and with change we break kexec. As it's critical
-for this kernel to be able to kexec we need to set KEXEC_FILE=y if
-we're setting FORCE_INTEGRITY=y.
+Libor Pechacek <lpechacek@suse.cz> writes:
+> In KVM guests drmem structure is only zero initialized. Trying to
+> manipulate DLPAR parameters results in a crash in this environment.
 
-I've tested your series with that modification made and userspace was
-once again able to kexec (with -s).
+I think this statement needs qualification. Unless I'm mistaken, this
+happens only when you boot a guest without any hotpluggable memory
+configured, and then try to add or remove memory.
 
-Cheers,
 
-Joel
+> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+> index 3d76e1c388c2..28c3d936fdf3 100644
+> --- a/arch/powerpc/include/asm/drmem.h
+> +++ b/arch/powerpc/include/asm/drmem.h
+> @@ -27,12 +27,12 @@ struct drmem_lmb_info {
+>  extern struct drmem_lmb_info *drmem_info;
+>  
+>  #define for_each_drmem_lmb_in_range(lmb, start, end)		\
+> -	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
+> +	for ((lmb) = (start); (lmb) < (end); (lmb)++)
+>  
+>  #define for_each_drmem_lmb(lmb)					\
+>  	for_each_drmem_lmb_in_range((lmb),			\
+>  		&drmem_info->lmbs[0],				\
+> -		&drmem_info->lmbs[drmem_info->n_lmbs - 1])
+> +		&drmem_info->lmbs[drmem_info->n_lmbs])
+>  
+>  /*
+>   * The of_drconf_cell_v1 struct defines the layout of the LMB data
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index c126b94d1943..4ea6af002e27 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -236,9 +236,9 @@ static int get_lmb_range(u32 drc_index, int n_lmbs,
+>  	if (!start)
+>  		return -EINVAL;
+>  
+> -	end = &start[n_lmbs - 1];
+> +	end = &start[n_lmbs];
+>  
+> -	last_lmb = &drmem_info->lmbs[drmem_info->n_lmbs - 1];
+> +	last_lmb = &drmem_info->lmbs[drmem_info->n_lmbs];
+>  	if (end > last_lmb)
+>  		return -EINVAL;
 
-> ---
->  arch/powerpc/configs/skiroot_defconfig | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> v2: Switch to lockdown integrity mode rather than confidentiality as noticed by
-> dja and discussed with jms and oohal.
->
-> diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
-> index 24a210fe0049..93b478436a2b 100644
-> --- a/arch/powerpc/configs/skiroot_defconfig
-> +++ b/arch/powerpc/configs/skiroot_defconfig
-> @@ -49,7 +49,6 @@ CONFIG_JUMP_LABEL=y
->  CONFIG_STRICT_KERNEL_RWX=y
->  CONFIG_MODULES=y
->  CONFIG_MODULE_UNLOAD=y
-> -CONFIG_MODULE_SIG=y
->  CONFIG_MODULE_SIG_FORCE=y
->  CONFIG_MODULE_SIG_SHA512=y
->  CONFIG_PARTITION_ADVANCED=y
-> @@ -272,6 +271,16 @@ CONFIG_NLS_ASCII=y
->  CONFIG_NLS_ISO8859_1=y
->  CONFIG_NLS_UTF8=y
->  CONFIG_ENCRYPTED_KEYS=y
-> +CONFIG_SECURITY=y
-> +CONFIG_HARDENED_USERCOPY=y
-> +# CONFIG_HARDENED_USERCOPY_FALLBACK is not set
-> +CONFIG_HARDENED_USERCOPY_PAGESPAN=y
-> +CONFIG_FORTIFY_SOURCE=y
-> +CONFIG_SECURITY_LOCKDOWN_LSM=y
-> +CONFIG_SECURITY_LOCKDOWN_LSM_EARLY=y
-> +CONFIG_LOCK_DOWN_KERNEL_FORCE_INTEGRITY=y
-> +# CONFIG_INTEGRITY is not set
-> +CONFIG_LSM="yama,loadpin,safesetid,integrity"
->  # CONFIG_CRYPTO_HW is not set
->  CONFIG_CRC16=y
->  CONFIG_CRC_ITU_T=y
-> --
-> 2.21.1
->
+Is this not undefined behavior? I'd rather do this in a way that does
+not involve forming out-of-bounds pointers. Even if it's safe, naming
+that pointer "last_lmb" now actively hinders understanding of the code;
+it should be named "limit" or something.
+
+Anyway, I confess I've had the following patch sitting unsubmitted due
+to a combination of perceived low urgency and lack of time. I've
+verified it addresses your reported problem but I need a day or two to
+check that it doesn't regress memory add/remove on suitably configured
+guests:
+
+================================================================
+
+powerpc/drmem: make drmem list traversal safe on non-drmem systems
+
+A user has reported a crash when attempting to remove an LMB on a KVM
+guest where the device tree lacks the nodes and properties
+(ibm,dynamic-reconfiguration-memory etc) which allow the drmem code to
+support dynamic memory removal:
+
+pseries-hotplug-mem: Attempting to hot-remove 1 LMB(s)
+Unable to handle kernel paging request for data at address 0x00000010
+Faulting instruction address: 0xc0000000000f0a30
+Oops: Kernel access of bad area, sig: 11 [#1]
+[... regs etc ...]
+NIP [c0000000000f0a30] dlpar_memory+0x510/0xb50
+LR [c0000000000f09e8] dlpar_memory+0x4c8/0xb50
+Call Trace:
+[c0000001edf97ba0] [c0000000000f09e8] dlpar_memory+0x4c8/0xb50 (unreliable)
+[c0000001edf97c20] [c0000000000e8390] handle_dlpar_errorlog+0x60/0x140
+[c0000001edf97c90] [c0000000000e85e0] dlpar_store+0x170/0x490
+[c0000001edf97d40] [c000000000cb0c90] kobj_attr_store+0x30/0x50
+[c0000001edf97d60] [c000000000591598] sysfs_kf_write+0x68/0xa0
+[c0000001edf97d80] [c00000000058fec4] kernfs_fop_write+0x104/0x270
+[c0000001edf97dd0] [c0000000004a1078] sys_write+0x128/0x380
+[c0000001edf97e30] [c00000000000b388] system_call+0x5c/0x70
+
+Make for_each_drmem_lmb() safe for the case where the list of drmem
+LMBs is unpopulated.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+
+1 file changed, 36 insertions(+), 7 deletions(-)
+arch/powerpc/include/asm/drmem.h | 43 +++++++++++++++++++++++++++++++++-------
+
+modified   arch/powerpc/include/asm/drmem.h
+@@ -20,19 +20,48 @@ struct drmem_lmb {
+ 
+ struct drmem_lmb_info {
+ 	struct drmem_lmb        *lmbs;
+-	int                     n_lmbs;
++	unsigned int            n_lmbs;
+ 	u32                     lmb_size;
+ };
+ 
+ extern struct drmem_lmb_info *drmem_info;
+ 
+-#define for_each_drmem_lmb_in_range(lmb, start, end)		\
+-	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
++static inline bool drmem_present(void)
++{
++	return drmem_info->lmbs != NULL;
++}
++
++static inline struct drmem_lmb *drmem_lmb_index(unsigned int index)
++{
++	if (!drmem_present())
++		return NULL;
+ 
+-#define for_each_drmem_lmb(lmb)					\
+-	for_each_drmem_lmb_in_range((lmb),			\
+-		&drmem_info->lmbs[0],				\
+-		&drmem_info->lmbs[drmem_info->n_lmbs - 1])
++	if (WARN_ON(index >= drmem_info->n_lmbs))
++		return NULL;
++
++	return &drmem_info->lmbs[index];
++}
++
++static inline struct drmem_lmb *drmem_first_lmb(void)
++{
++	return drmem_lmb_index(0);
++}
++
++static inline struct drmem_lmb *drmem_last_lmb(void)
++{
++	if (!drmem_present())
++		return NULL;
++
++	return drmem_lmb_index(drmem_info->n_lmbs - 1);
++}
++
++#define for_each_drmem_lmb(lmb)						\
++	for ((lmb) = drmem_first_lmb();					\
++	     (lmb) != NULL && (lmb) <= drmem_last_lmb();		\
++	     (lmb)++)
++
++#define for_each_drmem_lmb_in_range(lmb, start, end)	\
++	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
+ 
+ /*
+  * The of_drconf_cell_v1 struct defines the layout of the LMB data
+
