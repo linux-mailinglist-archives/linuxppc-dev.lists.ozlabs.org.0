@@ -2,75 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6501147214
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 20:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B61614725E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 21:07:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483Xt071FSzDqXr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 06:49:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483YG81YGNzDqZC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 07:07:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::243;
+ helo=mail-lj1-x243.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=GiT4oOAM; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483XqC29vKzDqXq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 06:47:16 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 483Xq32wGFz9twsF;
- Thu, 23 Jan 2020 20:47:11 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=GiT4oOAM; dkim-adsp=pass;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=eQxTZQW0; 
  dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id SdrD6o_7qs43; Thu, 23 Jan 2020 20:47:11 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 483Xq31j0Sz9twsD;
- Thu, 23 Jan 2020 20:47:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579808831; bh=7aISpSDwk7v2lI/VXtmtSlwWRv+BW39/h3hG4uOf4xk=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=GiT4oOAMsDoIJbqHVSxG301CAWwldgZmQRaIfFMSVrBDbBc/V9IXlyBKUf1FQX89s
- crLgitQifrTzbgyEVrCPJRbrcv2z6CpXbA2e1nkKThpAmm/AlGNMSMpu/ixIreuf5B
- KfqT02ezurVVK0RQGGtRw0A4me1TlQkiUzi+NGDM=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C6F28B837;
- Thu, 23 Jan 2020 20:47:11 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LHxckWJhJw66; Thu, 23 Jan 2020 20:47:11 +0100 (CET)
-Received: from [192.168.232.53] (unknown [192.168.232.53])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 151148B836;
- Thu, 23 Jan 2020 20:47:10 +0100 (CET)
-Subject: Re: [PATCH v3 2/7] uaccess: Tell user_access_begin() if it's for a
- write or not
-To: Linus Torvalds <torvalds@linux-foundation.org>
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483YDB1Nh8zDqY5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 07:05:28 +1100 (AEDT)
+Received: by mail-lj1-x243.google.com with SMTP id r19so5108514ljg.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 12:05:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=8DVtOQwrFkEAE5or+ctC9NfF/UngBhO5F9zvyg/cwIE=;
+ b=eQxTZQW0N74htNr8ZIoBTg2RQDPW3OjTEHCMc4sFe5oYhaOUGSJvrl6o1eL0CZRoF6
+ x82sJpEoaWzhBeyAQr4AJVLWbXFgY8LgUhy1SsB1ddXX6DI1lqW3atZTfWsWptXew+SX
+ fwPcf1xNLR3ZLFeVh0I0M9xVVUDiWrMIvhW4U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=8DVtOQwrFkEAE5or+ctC9NfF/UngBhO5F9zvyg/cwIE=;
+ b=EcKBUi4J85H/iLiEe7+U4BxwwKjjYiWMMJ9tID0JCK/RJN09yBVHgOe1GuJNk+nZvp
+ qNWsKrIXnxrXm8IIanrMJNnLHyaPIXQSnKQtXQoJPfiyGtUfqO1xsUcP/tG+cvQ+QbN7
+ RO9Bf1TxtFXZovGTKYSeLAmDbhIQx3SksIBQcVn+fBkyLprrsd5jSiUKobLDN09/LkH+
+ 3fgO/FT3MSvL/jF77Fh29NVCJTDLxtvf8Nk3yzbEqnZjXFBa4riqLSDY7zeMFkePoOd1
+ MM58RuLPENJsM5TU/11x/fnvCMnhm9EMqMeUAv1C1q0ePRzoeaRkRSiidIf2vP+0Bj2N
+ iaVQ==
+X-Gm-Message-State: APjAAAUrPo2PfjqweCKYIQKlvH4Y4izo4zc9sqGOXVf8NFztWzI2P0Sl
+ l+o6rsG1vPW9GSrWfDwbvM6yhSkUSwA=
+X-Google-Smtp-Source: APXvYqza7NoCbDcYKi+Se0BNGSVWG21e7l1mLNvVLcXw4LQT9LYxvmS0Fn596uIBMviR8q5gC49GXQ==
+X-Received: by 2002:a05:651c:1b0:: with SMTP id
+ c16mr41807ljn.236.1579809922344; 
+ Thu, 23 Jan 2020 12:05:22 -0800 (PST)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com.
+ [209.85.208.181])
+ by smtp.gmail.com with ESMTPSA id s12sm2048952ljo.9.2020.01.23.12.05.21
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Jan 2020 12:05:22 -0800 (PST)
+Received: by mail-lj1-f181.google.com with SMTP id y6so5136753lji.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 12:05:21 -0800 (PST)
+X-Received: by 2002:a2e:88c5:: with SMTP id a5mr3682ljk.201.1579809493632;
+ Thu, 23 Jan 2020 11:58:13 -0800 (PST)
+MIME-Version: 1.0
 References: <fed4f49349913cb6739dac647ba6a61d56b989d2.1579783936.git.christophe.leroy@c-s.fr>
  <e11a8f0670251267f87e3114e0bdbacb1eb72980.1579783936.git.christophe.leroy@c-s.fr>
  <CAHk-=wg4HEABOZdjxMzbembNmxs1zYfrNAEc2L+JS9FBSnM8JA@mail.gmail.com>
-From: christophe leroy <christophe.leroy@c-s.fr>
-Message-ID: <fc5c94a2-5a25-0715-5240-5ba3cbe0f2b2@c-s.fr>
-Date: Thu, 23 Jan 2020 20:47:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
-MIME-Version: 1.0
-In-Reply-To: <CAHk-=wg4HEABOZdjxMzbembNmxs1zYfrNAEc2L+JS9FBSnM8JA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-X-Antivirus: Avast (VPS 200122-2, 22/01/2020), Outbound message
-X-Antivirus-Status: Not-Tested
+ <fc5c94a2-5a25-0715-5240-5ba3cbe0f2b2@c-s.fr>
+In-Reply-To: <fc5c94a2-5a25-0715-5240-5ba3cbe0f2b2@c-s.fr>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 23 Jan 2020 11:57:57 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wi8FvaeRv6PpisQ+L_Cv52yE6jCxZzUHQPZ_K7HzFkaBQ@mail.gmail.com>
+Message-ID: <CAHk-=wi8FvaeRv6PpisQ+L_Cv52yE6jCxZzUHQPZ_K7HzFkaBQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] uaccess: Tell user_access_begin() if it's for a
+ write or not
+To: christophe leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,57 +101,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jan 23, 2020 at 11:47 AM christophe leroy
+<christophe.leroy@c-s.fr> wrote:
+>
+> I'm going to leave it aside, at least for the time being, and do it as a
+> second step later after evaluating the real performance impact. I'll
+> respin tomorrow in that way.
 
+Ok, good.
 
-Le 23/01/2020 à 19:02, Linus Torvalds a écrit :
-> On Thu, Jan 23, 2020 at 4:59 AM Christophe Leroy
-> <christophe.leroy@c-s.fr> wrote:
->>
->> On 32 bits powerPC (book3s/32), only write accesses to user are
->> protected and there is no point spending time on unlocking for reads.
-> 
-> Honestly, I'm starting to think that 32-bit ppc just needs to look
-> more like everybody else, than make these changes.
+From a "narrow the access window type" standpoint it does seem to be a
+good idea to specify what kind of user accesses will be done, so I
+don't hate the idea, it's more that I'm not convinced it matters
+enough.
 
-Well, beside ppc32, I was also seen it as an opportunity for the modern 
-ppc64. On it, you can unlock either read or write or both. And this is 
-what is done for get_user() / put_user() and friends: unlock only reads 
-for get_user() and only writes for put_user().
+On x86, we have made the rule that user_access_begin/end() can contain
+_very_ few operations, and objtool really does enforce that. With
+objtool and KASAN, you really end up with very small ranges of
+user_access_begin/end().
 
-Could also be a compromise between performance and security: keeping 
-reads allowed at all time and only protect against writes on modern 
-architectures which support it like ppc64.
+And since we actually verify it statically on x86-64, I would say that
+the added benefit of narrowing by access type is fairly small. We're
+not going to have complicated code in that user access region, at
+least in generic code.
 
-> 
-> We used to have a read/write argument to the old "verify_area()" and
-> "access_ok()" model, and it was a mistake. It was due to odd i386 user
-> access issues. We got rid of it. I'm not convinced this is any better
-> - it looks very similar and for odd ppc access issues.
+> > Also, it shouldn't be a "is this a write". What if it's a read _and_ a
+> > write? Only a write? Only a read?
+>
+> Indeed that was more: does it includes a write. It's either RO or RW
 
-I'm going to leave it aside, at least for the time being, and do it as a 
-second step later after evaluating the real performance impact. I'll 
-respin tomorrow in that way.
+I would expect that most actual users would be RO or WO, so it's a bit
+odd to have those choices.
 
-> 
-> But if we really do want to do this, then:
+Of course, often writing ends up requiring read permissions anyway if
+the architecture has problems with alignment handling or similar, but
+still... The real RW case does exist conceptually (we have
+"copy_in_user()", after all), but still feels like it shouldn't be
+seen as the only _interface_ choice.
 
-Indeed I took the idea from a discussion in last Octobre (Subject: 
-"book3s/32 KUAP (was Re: [PATCH] Convert filldir[64]() from __put_user() 
-to unsafe_put_user())" )
+IOW, an architecture may decide to turn WO into RW because of
+architecture limitations (or, like x86 and arm, ignore the whole
+RO/RW/WO _entirely_ because there's just a single "allow user space
+accesses" flag), but on an interface layer if we add this flag, I
+really think it should be an explicit "read or write or both".
 
-https://lore.kernel.org/lkml/87h84avffi.fsf@mpe.ellerman.id.au/
+So thus my "let's try to avoid doing it in the first place, but if we
+_do_ do this, then do it right" plea.
 
-
-> 
->> Add an argument to user_access_begin() to tell when it's for write and
->> return an opaque key that will be used by user_access_end() to know
->> what was done by user_access_begin().
-> 
-> You should make it more opaque than "unsigned long".
-> 
-> Also, it shouldn't be a "is this a write". What if it's a read _and_ a
-> write? Only a write? Only a read?
-
-Indeed that was more: does it includes a write. It's either RO or RW
-
-Christophe
+                 Linus
