@@ -1,79 +1,154 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C931146022
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 01:55:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC01145D59
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2020 21:53:41 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 482yLB41y7zDqVV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 07:53:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4833j80VCxzDqVb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 11:55:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::344;
- helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=KTTat97k; dkim-atps=neutral
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=S+7Snx8v; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 482yJ170DWzDqQ1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 07:51:44 +1100 (AEDT)
-Received: by mail-ot1-x344.google.com with SMTP id 59so603206otp.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 12:51:44 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4833g958dYzDqLh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 11:53:39 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id d9so560434plo.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 16:53:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=sIoRmzHYTdpp+dqkgtOBAN7ncVHrjk3h+URxl69sPsU=;
- b=KTTat97kNuZvEUjvtDsTDzjPFUlG4KFZhZl+L6EC2PUatXH7uO7Fwgd4s6J58cZhN5
- gFfWgSMR9b8GP4PDwfSvlZvOzvYU7a8/5bet4UUOtnOoJDkm3Z2dEBjnwzrocD017Rf4
- Fi2e7cyAJ7RFuyunUhht5zqTEOrcAgKo8OuGKuibOv6MaxPQI6yH2gj1cQL4WVe9JLVb
- 9suPZhEO9ZuVE+dk4q7RjQzz3bYS71BwsbbExkx8V/pfSsmMhU+Bm7J8DfdFJ7XNpM1K
- jE32TDYypZKfW0hhy389pFV0hc9k9hp2LMRDf2xco+fNCjphLs7c5CjBg9cy3okaphV1
- T2qw==
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:from:to:cc:references:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=+gnjeoMOpzHa3khzbosixcZqcphLfD4IchJzD9MJ3Js=;
+ b=S+7Snx8vG4zVDhBpdAGGSFJXVBrlQ5pmoKrLewBVe6VxPhMTzQ3bnouIJeaPY7WfND
+ fziwGIeiNHZQbqrfa1yD1POD0RwQAB2mRqHiAVfSQM93/JpI2niYWi9vg11j9gbUPTQV
+ iSaEjia1SdRY6Vc5+Is9ko+WEdzixRQCZwfFc8mx16nN1vVf0h76DTEHIBwTjZHUJF6J
+ XhEFO6nENO/CLgmo9w96aBO1jOaYBS+We6QeK82v/DCbspAiXU2fSX2d0x3OT3NrAkVj
+ qHyMjzQ1GA39dqVGumuPe6tsE5h9W5Inm6tZatUv0iiKbLah+GGlPwM1anSfb11zk0q8
+ KQnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=sIoRmzHYTdpp+dqkgtOBAN7ncVHrjk3h+URxl69sPsU=;
- b=O5jSSYdeakkHlVO1AOymx72MFYgolF1lwIfkB3bys/9svtO6+PvzWoHGU0+3PAnsbr
- xhOADCQyjjiPGYNQlc/0ehfI8IhkthHAbK2DTRT6CHfYdJnt9AIeLsjOAZnzDIbwyDVn
- eg8Ih6GoEieDUGLSyAGxDcJ7Q48up5/VhCv7ZpyIPcyQT+i/PC/En+lpbpdEKvtjnoql
- NJxoidghPibAhOlxXqc4gnW5vd5qfDarPth9BaxG2/BjU8FZ/wJ11sh9KQ68nnK63GkF
- zgRAn3PKikdXeV30D40r4bqPDce4WF7A9rtcdCzusL81l0nqwWWGz3eOBKMuwl0hGHei
- hCtg==
-X-Gm-Message-State: APjAAAV9Hb2RiAY60k1Zby4E6grFXcfdZRmx40hDj7iJp/8lJ7fI4ZFg
- bLJfo58YWZdQSktYEb/cYGqVA4H52VmhnIrAdVjwMQ==
-X-Google-Smtp-Source: APXvYqw6v4/RiaBhyLB4WHjODSz1dAkLJtJwJGKbGaMd/yQZSfCSqgwxWgXkA77oncy7GPixkDTN6S48x5VwRtTkUVA=
-X-Received: by 2002:a05:6830:4d9:: with SMTP id
- s25mr8907122otd.171.1579726300916; 
- Wed, 22 Jan 2020 12:51:40 -0800 (PST)
+ h=x-gm-message-state:subject:from:to:cc:references:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=+gnjeoMOpzHa3khzbosixcZqcphLfD4IchJzD9MJ3Js=;
+ b=B6gW7nYlwk7zRHLX2cI1IRwBZVltpPG6slTrFe4d+H32a7R5FFFyVCMWxp5Rs9nxLV
+ iVkHjCp012uWz7qpQia61i9pxULv6IV7MFnC9Nv9y2MKH5HR1qmOoQSN6xJ1KbO7/3Qt
+ qIMgdvIGvFg/SJwOia11d7JGhjYu9spHggu2x31SN6fG09v0UVBOLjtrlcub2u942AiP
+ 3NBF25IbOrxHVR3RyHoSUmW/bcV9H9+t6+wMcyPbFLtTjA8ezCS2OcQv08NoibZwdSht
+ mFmo0UO4ahrAoHPZdV/1woMe0gJWKXbFNqz19BrwVrmI+Mp94lsFoL36pAoIab40NOnU
+ X08g==
+X-Gm-Message-State: APjAAAUJlF9lGwEPZq6Gre6xZcZ3VRm3yrzM6ocer/ZAzwQvEDERZXJy
+ Y14rB1WtnDCKo/saLXk46NP1fg==
+X-Google-Smtp-Source: APXvYqyKDHCdTaSlqXdDJrtI6HuRkInxH1Q2tHaBobXhCrleJt06FWSPawEuJd5RX+4ftlyTkn4C8A==
+X-Received: by 2002:a17:90a:db48:: with SMTP id
+ u8mr1480609pjx.54.1579740817104; 
+ Wed, 22 Jan 2020 16:53:37 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id u12sm120934pfm.165.2020.01.22.16.53.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Jan 2020 16:53:36 -0800 (PST)
+Subject: Re: [PATCH kernel RFC 0/4] powerpc/powenv/ioda: Allow huge DMA window
+ at 4GB
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+References: <20191202015953.127902-1-aik@ozlabs.ru>
+ <002b30d2-a9e4-da11-2423-b003288ce8f3@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <9423b5e0-75e9-4a7a-7e65-818879d52d48@ozlabs.ru>
+Date: Thu, 23 Jan 2020 11:53:32 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-References: <a5f0bd8d-de5e-9f27-5c94-7746a3d20a95@redhat.com>
- <20200121120714.GJ29276@dhcp22.suse.cz>
- <a29b49b9-28ad-44fa-6c0b-90cd43902f29@redhat.com>
- <20200122104230.GU29276@dhcp22.suse.cz>
- <98b6c208-b4dd-9052-43f6-543068c649cc@redhat.com>
- <816ddd66-c90b-76f1-f4a0-72fe41263edd@redhat.com>
- <20200122164618.GY29276@dhcp22.suse.cz>
- <626d344e-8243-c161-cd07-ed1276eba73d@redhat.com>
- <20200122183809.GB29276@dhcp22.suse.cz>
- <f35cbe9e-b8bf-127e-698f-d08972d30614@redhat.com>
- <20200122190903.GD29276@dhcp22.suse.cz>
-In-Reply-To: <20200122190903.GD29276@dhcp22.suse.cz>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 22 Jan 2020 12:51:28 -0800
-Message-ID: <CAPcyv4hrEKHFnPQwzU+NCNhC2Hfqxd440XbsxsHf4f6RhquJFQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v1] mm: is_mem_section_removable() overhaul
-To: Michal Hocko <mhocko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <002b30d2-a9e4-da11-2423-b003288ce8f3@ozlabs.ru>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,55 +160,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- David Hildenbrand <david@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Leonardo Bras <leonardo@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Allison Randal <allison@lohutok.net>, lantianyu1986@gmail.com
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Oliver O'Halloran <oohall@gmail.com>, kvm@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 22, 2020 at 11:09 AM Michal Hocko <mhocko@kernel.org> wrote:
->
-> On Wed 22-01-20 19:46:15, David Hildenbrand wrote:
-> > On 22.01.20 19:38, Michal Hocko wrote:
-> [...]
-> > > How exactly is check + offline more optimal then offline which makes
-> > > check as its first step? I will get to your later points after this is
-> > > clarified.
-> >
-> > Scanning (almost) lockless is more efficient than bouncing back and
-> > forth with the device_hotplug_lock, mem_hotplug_lock, cpu_hotplug_lock
-> > and zone locks - as far as I understand.
->
-> All but the zone lock shouldn't be really contended and as such
-> shouldn't cause any troubles. zone->lock really depends on the page
-> allocator usage of course. But as soon as we have a contention then it
-> is just more likely that the result is less reliable.
->
-> I would be also really curious about how much actual time could be saved
-> by this - some real numbers - because hotplug operations shouldn't
-> happen so often that this would stand out. At least that is my
-> understanding.
->
-> > And as far as I understood, that was the whole reason of the original
-> > commit.
->
-> Well, I have my doubts but it might be just me and I might be wrong. My
-> experience from a large part of the memory hotplug functionality is that
-> it was driven by a good intention but without a due diligence to think
-> behind the most obvious usecase. Having a removable flag on the memblock
-> sounds like a neat idea of course. But an inherently racy flag is just
-> borderline useful.
->
-> Anyway, I will stop at this moment and wait for real usecases.
+Anyone, ping?
 
-...that and practical numbers showing that optimizing an interface
-that can at best give rough estimate answers is worth the code change.
+
+On 10/01/2020 15:18, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 02/12/2019 12:59, Alexey Kardashevskiy wrote:
+>> Here is an attempt to support bigger DMA space for devices
+>> supporting DMA masks less than 59 bits (GPUs come into mind
+>> first). POWER9 PHBs have an option to map 2 windows at 0
+>> and select a windows based on DMA address being below or above
+>> 4GB.
+>>
+>> This adds the "iommu=iommu_bypass" kernel parameter and
+>> supports VFIO+pseries machine - current this requires telling
+>> upstream+unmodified QEMU about this via
+>> -global spapr-pci-host-bridge.dma64_win_addr=0x100000000
+>> or per-phb property. 4/4 advertises the new option but
+>> there is no automation around it in QEMU (should it be?).
+>>
+>> For now it is either 1<<59 or 4GB mode; dynamic switching is
+>> not supported (could be via sysfs).
+>>
+>> This is based on sha1
+>> a6ed68d6468b Linus Torvalds "Merge tag 'drm-next-2019-11-27' of git://anongit.freedesktop.org/drm/drm".
+>>
+>> Please comment. Thanks.
+> 
+> 
+> David, Alistair, ping? Thanks,
+
+
+> 
+> 
+>>
+>>
+>>
+>> Alexey Kardashevskiy (4):
+>>   powerpc/powernv/ioda: Rework for huge DMA window at 4GB
+>>   powerpc/powernv/ioda: Allow smaller TCE table levels
+>>   powerpc/powernv/phb4: Add 4GB IOMMU bypass mode
+>>   vfio/spapr_tce: Advertise and allow a huge DMA windows at 4GB
+>>
+>>  arch/powerpc/include/asm/iommu.h              |   1 +
+>>  arch/powerpc/include/asm/opal-api.h           |  11 +-
+>>  arch/powerpc/include/asm/opal.h               |   2 +
+>>  arch/powerpc/platforms/powernv/pci.h          |   1 +
+>>  include/uapi/linux/vfio.h                     |   2 +
+>>  arch/powerpc/platforms/powernv/opal-call.c    |   2 +
+>>  arch/powerpc/platforms/powernv/pci-ioda-tce.c |   4 +-
+>>  arch/powerpc/platforms/powernv/pci-ioda.c     | 219 ++++++++++++++----
+>>  drivers/vfio/vfio_iommu_spapr_tce.c           |  10 +-
+>>  9 files changed, 202 insertions(+), 50 deletions(-)
+>>
+> 
+
+-- 
+Alexey
