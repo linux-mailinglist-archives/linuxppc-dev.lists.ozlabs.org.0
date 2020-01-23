@@ -1,49 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CB5146042
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 02:23:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4834Kk5XWkzDqW6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 12:23:38 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4ED91460E9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 04:21:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4836xH4YWxzDqWs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 14:21:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4834Hw3JNBzDqQy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 12:22:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=fdFVs/v0; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4834Hv6lljz9sS3; Thu, 23 Jan 2020 12:22:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1579742524;
- bh=z/eRlm5KI2ojpKo1UKbpG9UI1ViifmpZ99+o9Yw0RjI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=fdFVs/v0G2DHapiOPKY8nmHmFpgJnZvR3OdGZnhf1HhNYLeBixibnp64txklSZguB
- LF2Q5wQl1yneEtaKDPjiPPDHkyZi4XfDOn1yqG5gzYpic4HzCeQsgiHH78q/Mro6cw
- FEEaCJmGBs+apnM3Wke8RtYu6fLRcXZW1gDcsqGY=
-Date: Thu, 23 Jan 2020 12:17:30 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel RFC 0/4] powerpc/powenv/ioda: Allow huge DMA
- window at 4GB
-Message-ID: <20200123011730.GL2347@umbus.fritz.box>
-References: <20191202015953.127902-1-aik@ozlabs.ru>
- <002b30d2-a9e4-da11-2423-b003288ce8f3@ozlabs.ru>
- <9423b5e0-75e9-4a7a-7e65-818879d52d48@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4836vZ0QW8zDqTT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 14:19:37 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00N374Dn066777
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 22:19:35 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xnnn87hvy-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 22:19:34 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
+ Thu, 23 Jan 2020 03:19:33 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 23 Jan 2020 03:19:30 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00N3JS4f66650304
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jan 2020 03:19:28 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 756C44204F;
+ Thu, 23 Jan 2020 03:19:28 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4E8BB42041;
+ Thu, 23 Jan 2020 03:19:26 +0000 (GMT)
+Received: from vajain21.in.ibm.com.com (unknown [9.85.93.69])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Jan 2020 03:19:26 +0000 (GMT)
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH] libnvdimm/of_pmem: Fix leaking bus_desc.provider_name in some
+ paths
+Date: Thu, 23 Jan 2020 08:48:47 +0530
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="tv2SIFopg1r47n4a"
-Content-Disposition: inline
-In-Reply-To: <9423b5e0-75e9-4a7a-7e65-818879d52d48@ozlabs.ru>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20012303-0020-0000-0000-000003A32B30
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20012303-0021-0000-0000-000021FAC29C
+Message-Id: <20200123031847.149325-1-vaibhav@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-22_08:2020-01-22,
+ 2020-01-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-2001230026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,108 +87,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Alex Williamson <alex.williamson@redhat.com>,
- Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org
+Cc: Vishal Verma <vishal.l.verma@intel.com>, stable@vger.kernel.org,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+String 'bus_desc.provider_name' allocated inside
+of_pmem_region_probe() will leak in case call to nvdimm_bus_register()
+fails or when of_pmem_region_remove() is called.
 
---tv2SIFopg1r47n4a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This minor patch ensures that 'bus_desc.provider_name' is freed in
+error path for of_pmem_region_probe() as well as in
+of_pmem_region_remove().
 
-On Thu, Jan 23, 2020 at 11:53:32AM +1100, Alexey Kardashevskiy wrote:
-> Anyone, ping?
+Cc: stable@vger.kernel.org
+Fixes:49bddc73d15c2("libnvdimm/of_pmem: Provide a unique name for bus provider")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+ drivers/nvdimm/of_pmem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sorry, I've totally lost track of this one.  I think you'll need to
-repost.
+diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+index 8224d1431ea9..9cb76f9837ad 100644
+--- a/drivers/nvdimm/of_pmem.c
++++ b/drivers/nvdimm/of_pmem.c
+@@ -36,6 +36,7 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+ 
+ 	priv->bus = bus = nvdimm_bus_register(&pdev->dev, &priv->bus_desc);
+ 	if (!bus) {
++		kfree(priv->bus_desc.provider_name);
+ 		kfree(priv);
+ 		return -ENODEV;
+ 	}
+@@ -81,6 +82,7 @@ static int of_pmem_region_remove(struct platform_device *pdev)
+ 	struct of_pmem_private *priv = platform_get_drvdata(pdev);
+ 
+ 	nvdimm_bus_unregister(priv->bus);
++	kfree(priv->bus_desc.provider_name);
+ 	kfree(priv);
+ 
+ 	return 0;
+-- 
+2.24.1
 
-
->=20
->=20
-> On 10/01/2020 15:18, Alexey Kardashevskiy wrote:
-> >=20
-> >=20
-> > On 02/12/2019 12:59, Alexey Kardashevskiy wrote:
-> >> Here is an attempt to support bigger DMA space for devices
-> >> supporting DMA masks less than 59 bits (GPUs come into mind
-> >> first). POWER9 PHBs have an option to map 2 windows at 0
-> >> and select a windows based on DMA address being below or above
-> >> 4GB.
-> >>
-> >> This adds the "iommu=3Diommu_bypass" kernel parameter and
-> >> supports VFIO+pseries machine - current this requires telling
-> >> upstream+unmodified QEMU about this via
-> >> -global spapr-pci-host-bridge.dma64_win_addr=3D0x100000000
-> >> or per-phb property. 4/4 advertises the new option but
-> >> there is no automation around it in QEMU (should it be?).
-> >>
-> >> For now it is either 1<<59 or 4GB mode; dynamic switching is
-> >> not supported (could be via sysfs).
-> >>
-> >> This is based on sha1
-> >> a6ed68d6468b Linus Torvalds "Merge tag 'drm-next-2019-11-27' of git://=
-anongit.freedesktop.org/drm/drm".
-> >>
-> >> Please comment. Thanks.
-> >=20
-> >=20
-> > David, Alistair, ping? Thanks,
->=20
->=20
-> >=20
-> >=20
-> >>
-> >>
-> >>
-> >> Alexey Kardashevskiy (4):
-> >>   powerpc/powernv/ioda: Rework for huge DMA window at 4GB
-> >>   powerpc/powernv/ioda: Allow smaller TCE table levels
-> >>   powerpc/powernv/phb4: Add 4GB IOMMU bypass mode
-> >>   vfio/spapr_tce: Advertise and allow a huge DMA windows at 4GB
-> >>
-> >>  arch/powerpc/include/asm/iommu.h              |   1 +
-> >>  arch/powerpc/include/asm/opal-api.h           |  11 +-
-> >>  arch/powerpc/include/asm/opal.h               |   2 +
-> >>  arch/powerpc/platforms/powernv/pci.h          |   1 +
-> >>  include/uapi/linux/vfio.h                     |   2 +
-> >>  arch/powerpc/platforms/powernv/opal-call.c    |   2 +
-> >>  arch/powerpc/platforms/powernv/pci-ioda-tce.c |   4 +-
-> >>  arch/powerpc/platforms/powernv/pci-ioda.c     | 219 ++++++++++++++----
-> >>  drivers/vfio/vfio_iommu_spapr_tce.c           |  10 +-
-> >>  9 files changed, 202 insertions(+), 50 deletions(-)
-> >>
-> >=20
->=20
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---tv2SIFopg1r47n4a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4o9CoACgkQbDjKyiDZ
-s5IoBRAAxW76DPH88n1mYxAySWeYWKFjnlj2Ux3ZK8149IQJ6BRRsoUp/LytS+TC
-IaCJECsiFjyy6RnxKr4YffqLCYNgjWKfDe/GfKfdUHuhWXOQg5W1qLyMOcmHmE7a
-SojAlmouKYalFzuziIuXzlrD+7Evbzwc+oEs2Hh/vM8AAWzjgpExPrmvrv98DRAV
-fTikygE92DE+iDJX0UiW88sdI7+MfSsGQWBM/Zq841d9CHDx7rnZFMmoFFttuw/I
-tUPT9XX0o0R3xFveaG+KUwUeEb+s0OMZ+Q99rsa/erh9Yu0sSjgtH7NmsDL6OaM7
-GqDmncC4KGeCUKTG/L8dgq+50cBTIgdZc3/+j3MFZ5Kz1P1wh+JRFBwNS8XlZ7vq
-zzxw5c3pVntwHahQZOCHAKS3yp+X9Inc7h5KkKUmylQaGanB4U8McxQG0ZblJJhW
-PA6T7qFAP53OkoJkSb4wrGW0au0lH5q6aoWpxcq3Fr/L20qdP5Cp8TMV86mI8Mws
-2J1R5lH/gHkyatyVPu+2DBm5ZQaeKWITtgnm7x9lpXLz7dPsfVJd9HwllaTW5ZgQ
-6CELRA/yE8VOsFwl4Qm4Pimxt8Jv5J+9Fb1JWgxIC0O7Izp34LOr7jFRR7hlbDRU
-VG7w5wILBAmzdm+2ZAtEei08WIhvzDxgY8MG/HriUqQBRajWwzQ=
-=fRHa
------END PGP SIGNATURE-----
-
---tv2SIFopg1r47n4a--
