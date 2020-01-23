@@ -2,80 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4ED91460E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 04:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B021461FC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 07:28:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4836xH4YWxzDqWs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 14:21:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483C5f27kkzDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2020 17:28:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=qDUreYcv; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4836vZ0QW8zDqTT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 14:19:37 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00N374Dn066777
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 22:19:35 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xnnn87hvy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2020 22:19:34 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Thu, 23 Jan 2020 03:19:33 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 23 Jan 2020 03:19:30 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00N3JS4f66650304
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Jan 2020 03:19:28 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 756C44204F;
- Thu, 23 Jan 2020 03:19:28 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E8BB42041;
- Thu, 23 Jan 2020 03:19:26 +0000 (GMT)
-Received: from vajain21.in.ibm.com.com (unknown [9.85.93.69])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 Jan 2020 03:19:26 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: [PATCH] libnvdimm/of_pmem: Fix leaking bus_desc.provider_name in some
- paths
-Date: Thu, 23 Jan 2020 08:48:47 +0530
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483C406NdrzDqNn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2020 17:27:10 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 483C3s270Bz9v0vB;
+ Thu, 23 Jan 2020 07:27:05 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=qDUreYcv; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 88agPtHElRwH; Thu, 23 Jan 2020 07:27:05 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 483C3s0xK1z9v0v9;
+ Thu, 23 Jan 2020 07:27:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579760825; bh=+JkacBp8xGLVJ+/XN1IrJUelPycgDc81GD+/7UFttpw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=qDUreYcveQN7gkbU+RuAbIMMqLqZ82rgNMtClWvQ8ePujCDqYxvkFik+8fnkC18sG
+ gZNT3xq7kQCiAg6BdKA+RiMh2IRDP/xc2PC6WjWartHwRR2V8S3tnKhPj2O6M2BBzD
+ yBYVxAK+65cOfxEa9jp2d+CKb17Lm1Il6wiJffuQ=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ED7F08B81A;
+ Thu, 23 Jan 2020 07:27:05 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id u2yqNAN-A3Tc; Thu, 23 Jan 2020 07:27:05 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 601238B75B;
+ Thu, 23 Jan 2020 07:27:04 +0100 (CET)
+Subject: Re: [PATCH v2 1/6] fs/readdir: Fix filldir() and filldir64() use of
+ user_access_begin()
+To: Linus Torvalds <torvalds@linux-foundation.org>
+References: <12a4be679e43de1eca6e5e2173163f27e2f25236.1579715466.git.christophe.leroy@c-s.fr>
+ <CAHk-=wgNQ-rWoLg0OCJYYYbKBnRAUK4NPU-OD+vv-6fWnd=8kA@mail.gmail.com>
+ <CAHk-=winQ_607Sp09H1w70A_WPmt7ydxrNrwvk=N29S=FpASZw@mail.gmail.com>
+ <CAHk-=whzabmci2b7ras3RcMpimvzNAk4QHDcYf=irvwXnunS8w@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <75590182-8291-9030-c0bf-b11c6b4fccec@c-s.fr>
+Date: Thu, 23 Jan 2020 07:27:04 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
+In-Reply-To: <CAHk-=whzabmci2b7ras3RcMpimvzNAk4QHDcYf=irvwXnunS8w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20012303-0020-0000-0000-000003A32B30
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012303-0021-0000-0000-000021FAC29C
-Message-Id: <20200123031847.149325-1-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-22_08:2020-01-22,
- 2020-01-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999
- spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001230026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,49 +81,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, stable@vger.kernel.org,
- Oliver O'Halloran <oohall@gmail.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-String 'bus_desc.provider_name' allocated inside
-of_pmem_region_probe() will leak in case call to nvdimm_bus_register()
-fails or when of_pmem_region_remove() is called.
 
-This minor patch ensures that 'bus_desc.provider_name' is freed in
-error path for of_pmem_region_probe() as well as in
-of_pmem_region_remove().
 
-Cc: stable@vger.kernel.org
-Fixes:49bddc73d15c2("libnvdimm/of_pmem: Provide a unique name for bus provider")
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- drivers/nvdimm/of_pmem.c | 2 ++
- 1 file changed, 2 insertions(+)
+Le 22/01/2020 à 21:37, Linus Torvalds a écrit :
+> [ Talking to myself ]
+> 
+> On Wed, Jan 22, 2020 at 12:00 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+>>
+>> COMPLETELY UNTESTED! It compiles for me. The generated assembly looks
+>> ok from a quick look.
+> 
+> 
+> So here's a slightly updated patch that does exactly that, and avoids
+> the objtool warning.
+> 
+> It actually generates better code than the last one too, because now
+> we don't duplicate the user_access_end() for the EINTR case.
+> 
+> So test this one instead, please.
 
-diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-index 8224d1431ea9..9cb76f9837ad 100644
---- a/drivers/nvdimm/of_pmem.c
-+++ b/drivers/nvdimm/of_pmem.c
-@@ -36,6 +36,7 @@ static int of_pmem_region_probe(struct platform_device *pdev)
- 
- 	priv->bus = bus = nvdimm_bus_register(&pdev->dev, &priv->bus_desc);
- 	if (!bus) {
-+		kfree(priv->bus_desc.provider_name);
- 		kfree(priv);
- 		return -ENODEV;
- 	}
-@@ -81,6 +82,7 @@ static int of_pmem_region_remove(struct platform_device *pdev)
- 	struct of_pmem_private *priv = platform_get_drvdata(pdev);
- 
- 	nvdimm_bus_unregister(priv->bus);
-+	kfree(priv->bus_desc.provider_name);
- 	kfree(priv);
- 
- 	return 0;
--- 
-2.24.1
+This patch works on my ppc board, thanks
 
+Christophe
