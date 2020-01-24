@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBB214788F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 07:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C621478CE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 08:05:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483q1r2y4VzDqbw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 17:27:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483qt03tFvzDqc4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 18:05:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,57 +17,60 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=IXHw71jg; dkim-atps=neutral
+ header.s=mail header.b=AmfhqxCL; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483q034cjpzDqZb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 17:25:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483qqd4FrHzDqP3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 18:03:40 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 483pzz5cLxz9tyNG;
- Fri, 24 Jan 2020 07:25:51 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 483qqX1ywTz9tyWR;
+ Fri, 24 Jan 2020 08:03:36 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=IXHw71jg; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=AmfhqxCL; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yJpettp7HOEK; Fri, 24 Jan 2020 07:25:51 +0100 (CET)
+ with ESMTP id 1MTHMFIssLu8; Fri, 24 Jan 2020 08:03:36 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 483pzz41gtz9tyNF;
- Fri, 24 Jan 2020 07:25:51 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 483qqW6WN3z9tyWM;
+ Fri, 24 Jan 2020 08:03:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579847151; bh=lJ1+jMnixtf3rj4GZ+pA1zFszDpc7oCJGloWFuxNhN4=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=IXHw71jg1Kvlg/eqqyrBnKWG+MaRC13Mt5rjRMQ3mQmCtHMJx3jAh4bGMaOQylu3A
- WP2KFyB+HuW+7qYPUSjWsATH0jxRMraKrBsbJoz46gaRjQ2eAxuwQCLVa6LdtPTl6h
- +UP2PeHULABqUHHnYUUFnFbXSIIKbBJilxOE0OXE=
+ t=1579849415; bh=ITaOlJ0/QZZrDkYtjFjngyVQpAL/zHUltBD1tC8H/AY=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=AmfhqxCLvYIIarRc5Sj6TqXdi78MZxs1FJIy8UehPMFzYNeRnkGrPgkHJmGwOZujp
+ owUVkiZjvW4DtF3OJ28hx/nh5NlUgcag9iG4v4NCT7B8lTB0CRmNtoha0qps7OzE/o
+ r00NWOLgPqUZvtDLxJJmjEqEg7OEz6W6rUUx14n8=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 37B908B83D;
- Fri, 24 Jan 2020 07:25:52 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BBC498B83D;
+ Fri, 24 Jan 2020 08:03:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YWp1fOtM3W3N; Fri, 24 Jan 2020 07:25:52 +0100 (CET)
-Received: from [172.25.230.111] (po15451.idsi0.si.c-s.fr [172.25.230.111])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F08338B768;
- Fri, 24 Jan 2020 07:25:51 +0100 (CET)
-Subject: Re: [PATCH] lib: Reduce user_access_begin() boundaries in
- strncpy_from_user() and strnlen_user()
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- linux-arch <linux-arch@vger.kernel.org>
-References: <70f99f7474826883877e84f93224e937d9c974de.1579767339.git.christophe.leroy@c-s.fr>
- <CAHk-=wgcm5JzyacekDGQ4Ocoe-F5it-7-sbgU8oPnhwnSH3KAA@mail.gmail.com>
+ with ESMTP id JdtNjI8kHPZZ; Fri, 24 Jan 2020 08:03:36 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.111])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7AE098B768;
+ Fri, 24 Jan 2020 08:03:36 +0100 (CET)
+Subject: Re: [PATCH 1/2] powerpc/irq: don't use current_stack_pointer() in
+ check_stack_overflow()
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <8de7ba48-7bf4-8d43-5dfc-dacf34f80537@c-s.fr>
-Date: Fri, 24 Jan 2020 07:25:51 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <bae3e75a0c7f9037e4012ee547842c04cd527931.1575871613.git.christophe.leroy@c-s.fr>
+ <87d0b9iez3.fsf@mpe.ellerman.id.au>
+ <f4196f83-82ac-4df0-8c15-267a2c6c07ba@c-s.fr>
+Message-ID: <74cb4227-1a24-6fe1-2df4-3d4b069453c4@c-s.fr>
+Date: Fri, 24 Jan 2020 07:03:36 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-In-Reply-To: <CAHk-=wgcm5JzyacekDGQ4Ocoe-F5it-7-sbgU8oPnhwnSH3KAA@mail.gmail.com>
+In-Reply-To: <f4196f83-82ac-4df0-8c15-267a2c6c07ba@c-s.fr>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,35 +83,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 23/01/2020 à 19:47, Linus Torvalds a écrit :
-> On Thu, Jan 23, 2020 at 12:34 AM Christophe Leroy
-> <christophe.leroy@c-s.fr> wrote:
->>
->> The range passed to user_access_begin() by strncpy_from_user() and
->> strnlen_user() starts at 'src' and goes up to the limit of userspace
->> allthough reads will be limited by the 'count' param.
->>
->> On 32 bits powerpc (book3s/32) access has to be granted for each 256Mbytes
->> segment and the cost increases with the number of segments to unlock.
->>
->> Limit the range with 'count' param.
+On 01/24/2020 06:19 AM, Christophe Leroy wrote:
 > 
-> Ack. I'm tempted to take this for 5.5 too, just so that the
-> unquestionably trivial fixes are in that baseline, and the
-> infrastructure is ready for any architecture that has issues like
-> this.
+> 
+> Le 24/01/2020 à 06:46, Michael Ellerman a écrit :
+>>
+>> If I do this it seems to work, but feels a little dicey:
+>>
+>>     asm ("" : "=r" (r1));
+>>     sp = r1 & (THREAD_SIZE - 1);
+> 
+> 
+> Or we could do add in asm/reg.h what we have in boot/reg.h:
+> 
+> register void *__stack_pointer asm("r1");
+> #define get_sp()    (__stack_pointer)
+> 
+> And use get_sp()
+> 
 
-It would be nice, then the user_access_begin stuff for powerpc could go 
-for 5.6 without worring about.
+It works, and I guess doing it this way is acceptable as it's exactly 
+what's done for current in asm/current.h with register r2.
 
-Thanks
+Now I (still) get:
+
+	sp = get_sp() & (THREAD_SIZE - 1);
+  b9c:	54 24 04 fe 	clrlwi  r4,r1,19
+	if (unlikely(sp < 2048)) {
+  ba4:	2f 84 07 ff 	cmpwi   cr7,r4,2047
+
+
+
+
+
+Allthough GCC 8.1 what doing exactly the same with the form CLANG don't 
+like:
+
+	register unsigned long r1 asm("r1");
+	long sp = r1 & (THREAD_SIZE - 1);
+  b84:	54 24 04 fe 	clrlwi  r4,r1,19
+	if (unlikely(sp < 2048)) {
+  b8c:	2f 84 07 ff 	cmpwi   cr7,r4,2047
+
+
 Christophe
