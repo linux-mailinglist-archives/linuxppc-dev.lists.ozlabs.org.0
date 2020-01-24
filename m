@@ -1,61 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFD91484CB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 12:59:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153C01484AF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 12:51:29 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483yCd65PLzDqdL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 22:51:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483yP43xJYzDqSH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 22:59:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=V//h0p7U; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483y1P6BmzzDqdV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 22:42:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=V1JMWp+0; 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483yHS1j2kzDqWW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 22:54:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 483yHL5Jhfz9tyMx;
+ Fri, 24 Jan 2020 12:54:38 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=V//h0p7U; dkim-adsp=pass;
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 483y1J1HmQzB3tj;
- Fri, 24 Jan 2020 22:42:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1579866150;
- bh=XaZMz/ewQ8WVnUJd7DwXYe7WjqOD/WGfWhNKLiw8QQQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=V1JMWp+0dsJ2f3QmYFJcjDhHPizqFbFS3hAUoOBJcqaLytxd3C9jX04ajMBQoMCjy
- gPnP+iyQ1qiwWQ5W11MhbrOQjOfrfdoDRUuQUUESHIeGINrHV+cELguNJXf2m7L1IY
- A8RiCUpdjCVX0jciX26B/YpYc+jNt8Vjbh+8Tj9sE3oQIOkZ/Dxobk0uPSYJKejiJz
- YvoBIZgRcDEyVkp2RtvV78dWumjWi0tjJCraXvrMcVoEMIRkcMAPqRO/8B/aHAiTVf
- DXszYFKoYxPUnYHRjiPiDtPIEKpT4xYJSoTA6r+qDwO1NbTNGwo+Dbu5gGXzMK2RuM
- n61wxB0rhvm2g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
- Christian Zigotzky <chzigotzky@xenosoft.de>
-Subject: Re: [FSL P5020 P5040 PPC] Onboard SD card doesn't work anymore after
- the 'mmc-v5.4-2' updates
-In-Reply-To: <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com>
-References: <20200108093903.57620-1-hdegoede@redhat.com>
- <20200108093903.57620-2-hdegoede@redhat.com>
- <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com>
- <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com>
- <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com>
- <93446e09-5f12-800a-62fa-bf3ecea7273d@redhat.com>
- <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com>
- <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de>
- <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com>
-Date: Fri, 24 Jan 2020 22:42:24 +1100
-Message-ID: <8736c5hyhr.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id hC0xabd_cC7B; Fri, 24 Jan 2020 12:54:38 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 483yHL49tRz9tyMv;
+ Fri, 24 Jan 2020 12:54:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579866878; bh=fFxxBbDSiQ4kyaur0i36Y7pRI4nKyfmVPP5T0+RR+xU=;
+ h=From:Subject:To:Cc:Date:From;
+ b=V//h0p7UdpCJ5oKx89rwT4aC4Igd9sFhpaRglHuvYGEr3w5++06ZWAbgBlniipIzS
+ SxFNVUCWKyhEYKG5ypDhfmUGGf+N6tb9ZAVqiSRp7QXLeTD8qT31Sr8L2zzfgsxDzU
+ V8SjL9gy5fr4JSrLNGcwxixekydFV/fo09MNYqEk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CC3078B85D;
+ Fri, 24 Jan 2020 12:54:39 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id QZuQzUt0Vq3W; Fri, 24 Jan 2020 12:54:39 +0100 (CET)
+Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.111])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9EE558B84A;
+ Fri, 24 Jan 2020 12:54:39 +0100 (CET)
+Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 5C061651F0; Fri, 24 Jan 2020 11:54:39 +0000 (UTC)
+Message-Id: <b6f97231868c43b90ae7abe7f68f84d176a8ebe1.1579866752.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v4 1/7] readdir: make user_access_begin() use the real access
+ range
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 24 Jan 2020 11:54:39 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,116 +74,248 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- Julian Margetson <runaway@candw.ms>, Christoph Hellwig <hch@infradead.org>,
- Rob Herring <robh+dt@kernel.org>, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ulf Hansson <ulf.hansson@linaro.org> writes:
-> On Thu, 16 Jan 2020 at 12:18, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->>
->> Hi All,
->>
->> We still need the attached patch for our onboard SD card interface
->> [1,2]. Could you please add this patch to the tree?
->
-> No, because according to previous discussion that isn't the correct
-> solution and more importantly it will break other archs (if I recall
-> correctly).
->
-> Looks like someone from the ppc community needs to pick up the ball.
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-That's a pretty small community these days :) :/
+In commit 9f79b78ef744 ("Convert filldir[64]() from __put_user() to
+unsafe_put_user()") I changed filldir to not do individual __put_user()
+accesses, but instead use unsafe_put_user() surrounded by the proper
+user_access_begin/end() pair.
 
-Christian can you test this please? I think I got the polarity of all
-the tests right, but it's Friday night so maybe I'm wrong :)
+That make them enormously faster on modern x86, where the STAC/CLAC
+games make individual user accesses fairly heavy-weight.
 
-cheers
+However, the user_access_begin() range was not really the exact right
+one, since filldir() has the unfortunate problem that it needs to not
+only fill out the new directory entry, it also needs to fix up the
+previous one to contain the proper file offset.
 
+It's unfortunate, but the "d_off" field in "struct dirent" is _not_ the
+file offset of the directory entry itself - it's the offset of the next
+one.  So we end up backfilling the offset in the previous entry as we
+walk along.
 
-From 975ba6e8b52d6f5358e93c1f5a47adc4a0b5fb70 Mon Sep 17 00:00:00 2001
-From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 24 Jan 2020 22:26:59 +1100
-Subject: [PATCH] of: Add OF_DMA_DEFAULT_COHERENT & select it on powerpc
+But since x86 didn't really care about the exact range, and used to be
+the only architecture that did anything fancy in user_access_begin() to
+begin with, the filldir[64]() changes did something lazy, and even
+commented on it:
 
-There's an OF helper called of_dma_is_coherent(), which checks if a
-device has a "dma-coherent" property to see if the device is coherent
-for DMA.
+	/*
+	 * Note! This range-checks 'previous' (which may be NULL).
+	 * The real range was checked in getdents
+	 */
+	if (!user_access_begin(dirent, sizeof(*dirent)))
+		goto efault;
 
-But on some platforms devices are coherent by default, and on some
-platforms it's not possible to update existing device trees to add the
-"dma-coherent" property.
+and it all worked fine.
 
-So add a Kconfig symbol to allow arch code to tell
-of_dma_is_coherent() that devices are coherent by default, regardless
-of the presence of the property.
+But now 32-bit ppc is starting to also implement user_access_begin(),
+and the fact that we faked the range to only be the (possibly not even
+valid) previous directory entry becomes a problem, because ppc32 will
+actually be using the range that is passed in for more than just "check
+that it's user space".
 
-Select that symbol on powerpc when NOT_COHERENT_CACHE is not set, ie.
-when the system has a coherent cache.
+This is a complete rewrite of Christophe's original patch.
 
-Fixes: 92ea637edea3 ("of: introduce of_dma_is_coherent() helper")
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+By saving off the record length of the previous entry instead of a
+pointer to it in the filldir data structures, we can simplify the range
+check and the writing of the previous entry d_off field.  No need for
+any conditionals in the user accesses themselves, although we retain the
+conditional EINTR checking for the "was this the first directory entry"
+signal handling latency logic.
+
+Fixes: 9f79b78ef744 ("Convert filldir[64]() from __put_user() to unsafe_put_user()")
+Link: https://lore.kernel.org/lkml/a02d3426f93f7eb04960a4d9140902d278cab0bb.1579697910.git.christophe.leroy@c-s.fr/
+Link: https://lore.kernel.org/lkml/408c90c4068b00ea8f1c41cca45b84ec23d4946b.1579783936.git.christophe.leroy@c-s.fr/
+Reported-and-tested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/Kconfig | 1 +
- drivers/of/Kconfig   | 4 ++++
- drivers/of/address.c | 6 +++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+v4: taken from Linus' tree
+---
+ fs/readdir.c | 73 +++++++++++++++++++++++++---------------------------
+ 1 file changed, 35 insertions(+), 38 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 62752c3bfabf..460678ab2375 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -235,6 +235,7 @@ config PPC
- 	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
- 	select NEED_SG_DMA_LENGTH
- 	select OF
-+	select OF_DMA_DEFAULT_COHERENT		if !NOT_COHERENT_CACHE
- 	select OF_EARLY_FLATTREE
- 	select OLD_SIGACTION			if PPC32
- 	select OLD_SIGSUSPEND
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 37c2ccbefecd..d91618641be6 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -103,4 +103,8 @@ config OF_OVERLAY
- config OF_NUMA
- 	bool
- 
-+config OF_DMA_DEFAULT_COHERENT
-+	# arches should select this if DMA is coherent by default for OF devices
-+	bool
-+
- endif # OF
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 99c1b8058559..e8a39c3ec4d4 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -995,12 +995,16 @@ int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr, u64 *siz
-  * @np:	device node
-  *
-  * It returns true if "dma-coherent" property was found
-- * for this device in DT.
-+ * for this device in the DT, or if DMA is coherent by
-+ * default for OF devices on the current platform.
-  */
- bool of_dma_is_coherent(struct device_node *np)
+diff --git a/fs/readdir.c b/fs/readdir.c
+index d26d5ea4de7b..d5ee72280c82 100644
+--- a/fs/readdir.c
++++ b/fs/readdir.c
+@@ -206,7 +206,7 @@ struct linux_dirent {
+ struct getdents_callback {
+ 	struct dir_context ctx;
+ 	struct linux_dirent __user * current_dir;
+-	struct linux_dirent __user * previous;
++	int prev_reclen;
+ 	int count;
+ 	int error;
+ };
+@@ -214,12 +214,13 @@ struct getdents_callback {
+ static int filldir(struct dir_context *ctx, const char *name, int namlen,
+ 		   loff_t offset, u64 ino, unsigned int d_type)
  {
- 	struct device_node *node = of_node_get(np);
+-	struct linux_dirent __user * dirent;
++	struct linux_dirent __user *dirent, *prev;
+ 	struct getdents_callback *buf =
+ 		container_of(ctx, struct getdents_callback, ctx);
+ 	unsigned long d_ino;
+ 	int reclen = ALIGN(offsetof(struct linux_dirent, d_name) + namlen + 2,
+ 		sizeof(long));
++	int prev_reclen;
  
-+	if (IS_ENABLED(CONFIG_OF_DMA_DEFAULT_COHERENT))
-+		return true;
+ 	buf->error = verify_dirent_name(name, namlen);
+ 	if (unlikely(buf->error))
+@@ -232,28 +233,24 @@ static int filldir(struct dir_context *ctx, const char *name, int namlen,
+ 		buf->error = -EOVERFLOW;
+ 		return -EOVERFLOW;
+ 	}
+-	dirent = buf->previous;
+-	if (dirent && signal_pending(current))
++	prev_reclen = buf->prev_reclen;
++	if (prev_reclen && signal_pending(current))
+ 		return -EINTR;
+-
+-	/*
+-	 * Note! This range-checks 'previous' (which may be NULL).
+-	 * The real range was checked in getdents
+-	 */
+-	if (!user_access_begin(dirent, sizeof(*dirent)))
+-		goto efault;
+-	if (dirent)
+-		unsafe_put_user(offset, &dirent->d_off, efault_end);
+ 	dirent = buf->current_dir;
++	prev = (void __user *) dirent - prev_reclen;
++	if (!user_access_begin(prev, reclen + prev_reclen))
++		goto efault;
 +
- 	while (node) {
- 		if (of_property_read_bool(node, "dma-coherent")) {
- 			of_node_put(node);
++	/* This might be 'dirent->d_off', but if so it will get overwritten */
++	unsafe_put_user(offset, &prev->d_off, efault_end);
+ 	unsafe_put_user(d_ino, &dirent->d_ino, efault_end);
+ 	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+ 	unsafe_put_user(d_type, (char __user *) dirent + reclen - 1, efault_end);
+ 	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+ 	user_access_end();
+ 
+-	buf->previous = dirent;
+-	dirent = (void __user *)dirent + reclen;
+-	buf->current_dir = dirent;
++	buf->current_dir = (void __user *)dirent + reclen;
++	buf->prev_reclen = reclen;
+ 	buf->count -= reclen;
+ 	return 0;
+ efault_end:
+@@ -267,7 +264,6 @@ SYSCALL_DEFINE3(getdents, unsigned int, fd,
+ 		struct linux_dirent __user *, dirent, unsigned int, count)
+ {
+ 	struct fd f;
+-	struct linux_dirent __user * lastdirent;
+ 	struct getdents_callback buf = {
+ 		.ctx.actor = filldir,
+ 		.count = count,
+@@ -285,8 +281,10 @@ SYSCALL_DEFINE3(getdents, unsigned int, fd,
+ 	error = iterate_dir(f.file, &buf.ctx);
+ 	if (error >= 0)
+ 		error = buf.error;
+-	lastdirent = buf.previous;
+-	if (lastdirent) {
++	if (buf.prev_reclen) {
++		struct linux_dirent __user * lastdirent;
++		lastdirent = (void __user *)buf.current_dir - buf.prev_reclen;
++
+ 		if (put_user(buf.ctx.pos, &lastdirent->d_off))
+ 			error = -EFAULT;
+ 		else
+@@ -299,7 +297,7 @@ SYSCALL_DEFINE3(getdents, unsigned int, fd,
+ struct getdents_callback64 {
+ 	struct dir_context ctx;
+ 	struct linux_dirent64 __user * current_dir;
+-	struct linux_dirent64 __user * previous;
++	int prev_reclen;
+ 	int count;
+ 	int error;
+ };
+@@ -307,11 +305,12 @@ struct getdents_callback64 {
+ static int filldir64(struct dir_context *ctx, const char *name, int namlen,
+ 		     loff_t offset, u64 ino, unsigned int d_type)
+ {
+-	struct linux_dirent64 __user *dirent;
++	struct linux_dirent64 __user *dirent, *prev;
+ 	struct getdents_callback64 *buf =
+ 		container_of(ctx, struct getdents_callback64, ctx);
+ 	int reclen = ALIGN(offsetof(struct linux_dirent64, d_name) + namlen + 1,
+ 		sizeof(u64));
++	int prev_reclen;
+ 
+ 	buf->error = verify_dirent_name(name, namlen);
+ 	if (unlikely(buf->error))
+@@ -319,30 +318,27 @@ static int filldir64(struct dir_context *ctx, const char *name, int namlen,
+ 	buf->error = -EINVAL;	/* only used if we fail.. */
+ 	if (reclen > buf->count)
+ 		return -EINVAL;
+-	dirent = buf->previous;
+-	if (dirent && signal_pending(current))
++	prev_reclen = buf->prev_reclen;
++	if (prev_reclen && signal_pending(current))
+ 		return -EINTR;
+-
+-	/*
+-	 * Note! This range-checks 'previous' (which may be NULL).
+-	 * The real range was checked in getdents
+-	 */
+-	if (!user_access_begin(dirent, sizeof(*dirent)))
+-		goto efault;
+-	if (dirent)
+-		unsafe_put_user(offset, &dirent->d_off, efault_end);
+ 	dirent = buf->current_dir;
++	prev = (void __user *)dirent - prev_reclen;
++	if (!user_access_begin(prev, reclen + prev_reclen))
++		goto efault;
++
++	/* This might be 'dirent->d_off', but if so it will get overwritten */
++	unsafe_put_user(offset, &prev->d_off, efault_end);
+ 	unsafe_put_user(ino, &dirent->d_ino, efault_end);
+ 	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+ 	unsafe_put_user(d_type, &dirent->d_type, efault_end);
+ 	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+ 	user_access_end();
+ 
+-	buf->previous = dirent;
+-	dirent = (void __user *)dirent + reclen;
+-	buf->current_dir = dirent;
++	buf->prev_reclen = reclen;
++	buf->current_dir = (void __user *)dirent + reclen;
+ 	buf->count -= reclen;
+ 	return 0;
++
+ efault_end:
+ 	user_access_end();
+ efault:
+@@ -354,7 +350,6 @@ int ksys_getdents64(unsigned int fd, struct linux_dirent64 __user *dirent,
+ 		    unsigned int count)
+ {
+ 	struct fd f;
+-	struct linux_dirent64 __user * lastdirent;
+ 	struct getdents_callback64 buf = {
+ 		.ctx.actor = filldir64,
+ 		.count = count,
+@@ -372,9 +367,11 @@ int ksys_getdents64(unsigned int fd, struct linux_dirent64 __user *dirent,
+ 	error = iterate_dir(f.file, &buf.ctx);
+ 	if (error >= 0)
+ 		error = buf.error;
+-	lastdirent = buf.previous;
+-	if (lastdirent) {
++	if (buf.prev_reclen) {
++		struct linux_dirent64 __user * lastdirent;
+ 		typeof(lastdirent->d_off) d_off = buf.ctx.pos;
++
++		lastdirent = (void __user *) buf.current_dir - buf.prev_reclen;
+ 		if (__put_user(d_off, &lastdirent->d_off))
+ 			error = -EFAULT;
+ 		else
 -- 
-2.21.1
-
+2.25.0
 
