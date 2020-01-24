@@ -2,49 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3951479E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 10:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1F8147DB6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 11:05:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483tQ85WxxzDqd7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 20:00:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483vsP56H0zDqZn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 21:05:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=g0Phn/14; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483tNK6K4CzDqPy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 19:58:41 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00O8wVx7016348;
- Fri, 24 Jan 2020 02:58:31 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 00O8wU1T016347;
- Fri, 24 Jan 2020 02:58:30 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Fri, 24 Jan 2020 02:58:30 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH 1/2] powerpc/irq: don't use current_stack_pointer() in
- check_stack_overflow()
-Message-ID: <20200124085830.GT3191@gate.crashing.org>
-References: <bae3e75a0c7f9037e4012ee547842c04cd527931.1575871613.git.christophe.leroy@c-s.fr>
- <87d0b9iez3.fsf@mpe.ellerman.id.au>
- <f4196f83-82ac-4df0-8c15-267a2c6c07ba@c-s.fr>
- <74cb4227-1a24-6fe1-2df4-3d4b069453c4@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483vnq1PxpzDqWw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 21:02:23 +1100 (AEDT)
+Received: from localhost (unknown [145.15.244.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2DFBF218AC;
+ Fri, 24 Jan 2020 10:02:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579860141;
+ bh=nku4WsZUiPHkaEu9FPbGvUwT9I9Fi64lJU9GYqeCyOM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=g0Phn/14WIJG8pkjMoxrTwRf0pUTQTMF8TNIzpOyMe25m75eT+WEIIOquLj+SHqPT
+ UafcezI1gaZQzqMVlL12VEKZidjUzhQZfsMppST96jvWRO8CxGXuKg2gLXVJsKB/8E
+ VeltXcnQm1aUdnBd3qpV4I3tshQAYa6UH+JFr3ag=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 4.14 243/343] perf/ioctl: Add check for the sample_period value
+Date: Fri, 24 Jan 2020 10:31:01 +0100
+Message-Id: <20200124092952.083914150@linuxfoundation.org>
+X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200124092919.490687572@linuxfoundation.org>
+References: <20200124092919.490687572@linuxfoundation.org>
+User-Agent: quilt/0.66
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <74cb4227-1a24-6fe1-2df4-3d4b069453c4@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,58 +58,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
+ acme@kernel.org, Vince Weaver <vincent.weaver@maine.edu>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Stephane Eranian <eranian@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 24, 2020 at 07:03:36AM +0000, Christophe Leroy wrote:
-> >Le 24/01/2020 à 06:46, Michael Ellerman a écrit :
-> >>
-> >>If I do this it seems to work, but feels a little dicey:
-> >>
-> >>    asm ("" : "=r" (r1));
-> >>    sp = r1 & (THREAD_SIZE - 1);
-> >
-> >
-> >Or we could do add in asm/reg.h what we have in boot/reg.h:
-> >
-> >register void *__stack_pointer asm("r1");
-> >#define get_sp()    (__stack_pointer)
-> >
-> >And use get_sp()
-> >
-> 
-> It works, and I guess doing it this way is acceptable as it's exactly 
-> what's done for current in asm/current.h with register r2.
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 
-That is a *global* register variable.  That works.  We still need to
-document a bit better what it does exactly, but this is the expected
-use case, so that will work.
+[ Upstream commit 913a90bc5a3a06b1f04c337320e9aeee2328dd77 ]
 
-> Now I (still) get:
-> 
-> 	sp = get_sp() & (THREAD_SIZE - 1);
->  b9c:	54 24 04 fe 	clrlwi  r4,r1,19
-> 	if (unlikely(sp < 2048)) {
->  ba4:	2f 84 07 ff 	cmpwi   cr7,r4,2047
-> 
-> Allthough GCC 8.1 what doing exactly the same with the form CLANG don't 
-> like:
-> 
-> 	register unsigned long r1 asm("r1");
-> 	long sp = r1 & (THREAD_SIZE - 1);
->  b84:	54 24 04 fe 	clrlwi  r4,r1,19
-> 	if (unlikely(sp < 2048)) {
->  b8c:	2f 84 07 ff 	cmpwi   cr7,r4,2047
+perf_event_open() limits the sample_period to 63 bits. See:
 
-Sure, if it did what you expected, things will usually work out fine ;-)
+  0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
 
-(Pity that the compiler didn't come up with
-    rlwinm. r4,r1,0,19,20
-    bne bad
-Or are the low bits of r4 used later again?)
+Make ioctl() consistent with it.
+
+Also on PowerPC, negative sample_period could cause a recursive
+PMIs leading to a hang (reported when running perf-fuzzer).
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vince Weaver <vincent.weaver@maine.edu>
+Cc: acme@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.vnet.ibm.com
+Cc: mpe@ellerman.id.au
+Fixes: 0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
+Link: https://lkml.kernel.org/r/20190604042953.914-1-ravi.bangoria@linux.ibm.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/events/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index ea4f3f7a0c6f3..2ac73b4cb8a93 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4762,6 +4762,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
+ 	if (perf_event_check_period(event, value))
+ 		return -EINVAL;
+ 
++	if (!event->attr.freq && (value & (1ULL << 63)))
++		return -EINVAL;
++
+ 	event_function_call(event, __perf_event_period, &value);
+ 
+ 	return 0;
+-- 
+2.20.1
 
 
-Segher
+
