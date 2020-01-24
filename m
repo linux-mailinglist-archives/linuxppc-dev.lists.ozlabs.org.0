@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E13147F01
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 11:51:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483wtv6R8bzDqbw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 21:51:50 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8FE148291
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 12:29:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 483xkD2z24zDqT7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 22:29:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483wsB6dW9zDqbl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 21:50:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BxtlYqQM; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 483wsB4n3Wz9s1x;
- Fri, 24 Jan 2020 21:50:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1579863022;
- bh=FlLbOGsqSlCeC/50V2BI8ts1eiue9EfeRzHTZVTueQg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=BxtlYqQM9H66VT2RNOtC7Bk7cxDqT6NgJxHqcVpfQK/c7arwiUOxIqc70ZZxD7sBj
- cHpwvubEP3UZqTcTOrU2m+aJ8oXRSSNrCuk52dC15/+913/vwDQ+JUO2tBk20C1Fhk
- XCNr84UBbCr2X423huWtIyPAn2tEXYZsnJJZxlcus0Yh/aMC1H3/1FY0fBL+0XW+Y7
- 6pyL6VjtmzVwttuczrqmNxPrizOPMVk0NEBU04K03/hEfTY+TVt/Olzf830r1AJfAD
- S4sabn2a2pSO1+kOVq3ptKiwWixyF3/6UntCJhpYclLZ9/hLWZhmJ1iV17quIdSrSS
- JtmedbTIa50yA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- LKML <linux-kernel@vger.kernel.org>
-Subject: Re: vmlinux ELF header sometimes corrupt
-In-Reply-To: <71aa76d0-a3b8-b4f3-a7c3-766cfb75412f@rasmusvillemoes.dk>
-References: <71aa76d0-a3b8-b4f3-a7c3-766cfb75412f@rasmusvillemoes.dk>
-Date: Fri, 24 Jan 2020 21:50:20 +1100
-Message-ID: <875zh1i0wj.fsf@mpe.ellerman.id.au>
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=1tSfVD1t; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483xds4K01zDqS2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 22:25:37 +1100 (AEDT)
+Received: from localhost (ip-213-127-102-57.ip.prioritytelecom.net
+ [213.127.102.57])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id DA7D2206D4;
+ Fri, 24 Jan 2020 11:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1579865135;
+ bh=6TtykuFZrqLHKaZtkj3B2ER4gFI3EtL5V4YPruKL8aM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=1tSfVD1tWWSuyK+7Yfxyv7vGNHgMnm3/tl157G1FNuL4vy0R874PA8JuR+/LNDIXd
+ sKg9yrl4Df8fh9ANepmGXynwLE/T5KMReyUUWv6UpJSzlXb8GhcRvnFMfuAfKO0J+o
+ uhjqgE3t60T2sgx2gIVCpIYhicA9h63i+COIQFE0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 4.19 447/639] perf/ioctl: Add check for the sample_period value
+Date: Fri, 24 Jan 2020 10:30:17 +0100
+Message-Id: <20200124093143.005390193@linuxfoundation.org>
+X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200124093047.008739095@linuxfoundation.org>
+References: <20200124093047.008739095@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,62 +59,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
+ acme@kernel.org, Vince Weaver <vincent.weaver@maine.edu>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Stephane Eranian <eranian@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rasmus Villemoes <linux@rasmusvillemoes.dk> writes:
-> I'm building for a ppc32 (mpc8309) target using Yocto, and I'm hitting a
-> very hard to debug problem that maybe someone else has encountered. This
-> doesn't happen always, perhaps 1 in 8 times or something like that.
->
-> The issue is that when the build gets to do "${CROSS}objcopy -O binary
-> ... vmlinux", vmlinux is not (no longer) a proper ELF file, so naturally
-> that fails with
->
->   powerpc-oe-linux-objcopy:vmlinux: file format not recognized
->
-> So I hacked link-vmlinux.sh to stash copies of vmlinux before and after
-> sortextable vmlinux. Both of those are proper ELF files, and comparing
-> the corrupted vmlinux to vmlinux.after_sort they are identical after the
-> first 52 bytes; in vmlinux, those first 52 bytes are all 0.
->
-> I also saved stat(1) info to see if vmlinux is being replaced or
-> modified in-place.
->
-> $ cat vmlinux.stat.after_sort
->   File: 'vmlinux'
->   Size: 8608456     Blocks: 16696      IO Block: 4096   regular file
-> Device: 811h/2065d  Inode: 21919132    Links: 1
-> Access: (0755/-rwxr-xr-x)  Uid: ( 1000/    user)   Gid: ( 1001/    user)
-> Access: 2020-01-22 10:52:38.946703081 +0000
-> Modify: 2020-01-22 10:52:38.954703105 +0000
-> Change: 2020-01-22 10:52:38.954703105 +0000
->
-> $ stat vmlinux
->   File: 'vmlinux'
->   Size: 8608456         Blocks: 16688      IO Block: 4096   regular file
-> Device: 811h/2065d      Inode: 21919132    Links: 1
-> Access: (0755/-rwxr-xr-x)  Uid: ( 1000/    user)   Gid: ( 1001/    user)
-> Access: 2020-01-22 17:20:00.650379057 +0000
-> Modify: 2020-01-22 10:52:38.954703105 +0000
-> Change: 2020-01-22 10:52:38.954703105 +0000
->
-> So the inode number and mtime/ctime are exactly the same, but for some
-> reason Blocks: has changed? This is on an ext4 filesystem, but I don't
-> suspect the filesystem to be broken, because it's always just vmlinux
-> that ends up corrupt, and always in exactly this way with the first 52
-> bytes having been wiped.
->
-> Any ideas?
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 
-Not really sorry. Haven't seen or heard of that before.
+[ Upstream commit 913a90bc5a3a06b1f04c337320e9aeee2328dd77 ]
 
-Are you doing a parallel make? If so does -j 1 fix it?
+perf_event_open() limits the sample_period to 63 bits. See:
 
-If it seems like sortextable is at fault then strace'ing it would be my
-next step.
+  0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
 
-cheers
+Make ioctl() consistent with it.
+
+Also on PowerPC, negative sample_period could cause a recursive
+PMIs leading to a hang (reported when running perf-fuzzer).
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vince Weaver <vincent.weaver@maine.edu>
+Cc: acme@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.vnet.ibm.com
+Cc: mpe@ellerman.id.au
+Fixes: 0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
+Link: https://lkml.kernel.org/r/20190604042953.914-1-ravi.bangoria@linux.ibm.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/events/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 751888cbed5c0..16af86ab24c42 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5012,6 +5012,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
+ 	if (perf_event_check_period(event, value))
+ 		return -EINVAL;
+ 
++	if (!event->attr.freq && (value & (1ULL << 63)))
++		return -EINVAL;
++
+ 	event_function_call(event, __perf_event_period, &value);
+ 
+ 	return 0;
+-- 
+2.20.1
+
+
+
