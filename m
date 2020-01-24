@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D7C147996
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 09:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3951479E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 10:00:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483t6S1hyzzDqf5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 19:46:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483tQ85WxxzDqd7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 20:00:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,28 +19,31 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
  (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483t4k65VszDqN2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 19:45:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483tNK6K4CzDqPy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 19:58:41 +1100 (AEDT)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00O8ipf2015536;
- Fri, 24 Jan 2020 02:44:51 -0600
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00O8wVx7016348;
+ Fri, 24 Jan 2020 02:58:31 -0600
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 00O8ioUT015535;
- Fri, 24 Jan 2020 02:44:50 -0600
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 00O8wU1T016347;
+ Fri, 24 Jan 2020 02:58:30 -0600
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Fri, 24 Jan 2020 02:44:50 -0600
+Date: Fri, 24 Jan 2020 02:58:30 -0600
 From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH 1/2] powerpc/irq: don't use current_stack_pointer() in
  check_stack_overflow()
-Message-ID: <20200124084450.GS3191@gate.crashing.org>
+Message-ID: <20200124085830.GT3191@gate.crashing.org>
 References: <bae3e75a0c7f9037e4012ee547842c04cd527931.1575871613.git.christophe.leroy@c-s.fr>
  <87d0b9iez3.fsf@mpe.ellerman.id.au>
+ <f4196f83-82ac-4df0-8c15-267a2c6c07ba@c-s.fr>
+ <74cb4227-1a24-6fe1-2df4-3d4b069453c4@c-s.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <87d0b9iez3.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <74cb4227-1a24-6fe1-2df4-3d4b069453c4@c-s.fr>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -53,51 +56,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+On Fri, Jan 24, 2020 at 07:03:36AM +0000, Christophe Leroy wrote:
+> >Le 24/01/2020 à 06:46, Michael Ellerman a écrit :
+> >>
+> >>If I do this it seems to work, but feels a little dicey:
+> >>
+> >>    asm ("" : "=r" (r1));
+> >>    sp = r1 & (THREAD_SIZE - 1);
+> >
+> >
+> >Or we could do add in asm/reg.h what we have in boot/reg.h:
+> >
+> >register void *__stack_pointer asm("r1");
+> >#define get_sp()    (__stack_pointer)
+> >
+> >And use get_sp()
+> >
+> 
+> It works, and I guess doing it this way is acceptable as it's exactly 
+> what's done for current in asm/current.h with register r2.
 
-On Fri, Jan 24, 2020 at 04:46:24PM +1100, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> >  static inline void check_stack_overflow(void)
-> >  {
-> >  #ifdef CONFIG_DEBUG_STACKOVERFLOW
-> > -	long sp;
-> > -
-> > -	sp = current_stack_pointer() & (THREAD_SIZE-1);
-> > +	register unsigned long r1 asm("r1");
-> > +	long sp = r1 & (THREAD_SIZE - 1);
-> 
-> This appears to work but seems to be "unsupported" by GCC, and clang
-> actually complains about it:
-> 
->   /linux/arch/powerpc/kernel/irq.c:603:12: error: variable 'r1' is uninitialized when used here [-Werror,-Wuninitialized]
->           long sp = r1 & (THREAD_SIZE - 1);
->                     ^~
-> 
-> The GCC docs say:
-> 
->   The only supported use for this feature is to specify registers for
->   input and output operands when calling Extended asm (see Extended
->   Asm).
-> 
-> https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/Local-Register-Variables.html#Local-Register-Variables
+That is a *global* register variable.  That works.  We still need to
+document a bit better what it does exactly, but this is the expected
+use case, so that will work.
 
-Yes.  Don't use local register variables any other way.  It *will* break.
-
-> If I do this it seems to work, but feels a little dicey:
+> Now I (still) get:
 > 
-> 	asm ("" : "=r" (r1));
-> 	sp = r1 & (THREAD_SIZE - 1);
+> 	sp = get_sp() & (THREAD_SIZE - 1);
+>  b9c:	54 24 04 fe 	clrlwi  r4,r1,19
+> 	if (unlikely(sp < 2048)) {
+>  ba4:	2f 84 07 ff 	cmpwi   cr7,r4,2047
+> 
+> Allthough GCC 8.1 what doing exactly the same with the form CLANG don't 
+> like:
+> 
+> 	register unsigned long r1 asm("r1");
+> 	long sp = r1 & (THREAD_SIZE - 1);
+>  b84:	54 24 04 fe 	clrlwi  r4,r1,19
+> 	if (unlikely(sp < 2048)) {
+>  b8c:	2f 84 07 ff 	cmpwi   cr7,r4,2047
 
-The only thing dicey about that is that you are writing to r1.  Heh.
-Well that certainly is bad enough, the compiler does not know how to
-handle that at all...  Of course you aren't *actually* changing
-anything, so it might just work.
+Sure, if it did what you expected, things will usually work out fine ;-)
+
+(Pity that the compiler didn't come up with
+    rlwinm. r4,r1,0,19,20
+    bne bad
+Or are the low bits of r4 used later again?)
 
 
 Segher
