@@ -1,52 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1F8147DB6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 11:05:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483vsP56H0zDqZn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 21:05:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5A3147EEE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 11:44:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 483wjw3cXZzDqfD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 21:44:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483whK6HJczDqb0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 21:42:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=g0Phn/14; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483vnq1PxpzDqWw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 21:02:23 +1100 (AEDT)
-Received: from localhost (unknown [145.15.244.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2DFBF218AC;
- Fri, 24 Jan 2020 10:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1579860141;
- bh=nku4WsZUiPHkaEu9FPbGvUwT9I9Fi64lJU9GYqeCyOM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=g0Phn/14WIJG8pkjMoxrTwRf0pUTQTMF8TNIzpOyMe25m75eT+WEIIOquLj+SHqPT
- UafcezI1gaZQzqMVlL12VEKZidjUzhQZfsMppST96jvWRO8CxGXuKg2gLXVJsKB/8E
- VeltXcnQm1aUdnBd3qpV4I3tshQAYa6UH+JFr3ag=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.14 243/343] perf/ioctl: Add check for the sample_period value
-Date: Fri, 24 Jan 2020 10:31:01 +0100
-Message-Id: <20200124092952.083914150@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200124092919.490687572@linuxfoundation.org>
-References: <20200124092919.490687572@linuxfoundation.org>
-User-Agent: quilt/0.66
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=MmR6teA2; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 483whD6FWGz9s1x;
+ Fri, 24 Jan 2020 21:42:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1579862561;
+ bh=H4j0Futj5uqyyAbpgglurPALtZHLyOVkkBYQKpFq/88=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=MmR6teA231c1fXQY1+vLqi0yz+Vc/SdGtcRyQ5HHkVx+BNa3Psa5ILkQxN57JPZ+l
+ QIDQJ6babRxL+JNOJ1Ihqnztvi+zDQ0ClPcWniXnyA9m5CrYol7du1yr6gvZgrSqj9
+ Sm2JIYeF0VfZ0LNwzGOk02j//mTV+bi0mJJXC3wPwjd0kXnV/egJmn1DK/vMu2Ze/H
+ PEy7abr1N9fN1d18XYZwK4cyAbdcoaYAt+wPy0l8aEU5uIJ2g2Gc0DLfd86fF20aOj
+ IDGhhd9mt4ij7rNrL1OTDb6LldjgXtBTveq+DlS/1iY4HEmLNb4b5jrGYiOtxTLgBD
+ 84Co0BMAqYRew==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 1/6] fs/readdir: Fix filldir() and filldir64() use of
+ user_access_begin()
+In-Reply-To: <CAHk-=whCk8z2_kggSCoAGMne8PNSvcT2T4bBH62ngoFrsTyV6w@mail.gmail.com>
+References: <12a4be679e43de1eca6e5e2173163f27e2f25236.1579715466.git.christophe.leroy@c-s.fr>
+ <87muaeidyc.fsf@mpe.ellerman.id.au> <87k15iidrq.fsf@mpe.ellerman.id.au>
+ <CAHk-=whCk8z2_kggSCoAGMne8PNSvcT2T4bBH62ngoFrsTyV6w@mail.gmail.com>
+Date: Fri, 24 Jan 2020 21:42:30 +1100
+Message-ID: <878slxi19l.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,71 +60,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- acme@kernel.org, Vince Weaver <vincent.weaver@maine.edu>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Stephane Eranian <eranian@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> On Thu, Jan 23, 2020 at 4:00 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> So I guess I'll wait and see what happens with patch 1.
+>
+> I've committed my fixes to filldir[64]() directly - they really were
+> fixing me being lazy about the range, and the name length checking
+> really is a theoretical "access wrong user space pointer" issue with
+> corrupted filesystems regardless (even though I suspect it's entirely
+> theoretical - even a corrupt filesystem hopefully won't be passing in
+> negative directory entry lengths or something like that).
 
-[ Upstream commit 913a90bc5a3a06b1f04c337320e9aeee2328dd77 ]
+Great, thanks.
 
-perf_event_open() limits the sample_period to 63 bits. See:
+> The "pass in read/write" part I'm not entirely convinced about.
+> Honestly, if this is just for ppc32 and nobody else really needs it,
+> make the ppc32s thing always just enable both user space reads and
+> writes. That's the semantics for x86 and arm as is, I'm not convinced
+> that we should complicate this for a legacy platform.
 
-  0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
+We can use the read/write info on Power9 too. That's a niche platform
+but hopefully not legacy status yet :P
 
-Make ioctl() consistent with it.
+But it's entirely optional, as you say we can just enable read/write if
+we aren't passed the read/write info from the upper-level API.
 
-Also on PowerPC, negative sample_period could cause a recursive
-PMIs leading to a hang (reported when running perf-fuzzer).
+I think our priority should be getting objtool going on powerpc to check
+our user access regions are well contained. Once we have that working
+maybe then we can look at plumbing the direction through
+user_access_begin() etc.
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vince Weaver <vincent.weaver@maine.edu>
-Cc: acme@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.vnet.ibm.com
-Cc: mpe@ellerman.id.au
-Fixes: 0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
-Link: https://lkml.kernel.org/r/20190604042953.914-1-ravi.bangoria@linux.ibm.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/events/core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ea4f3f7a0c6f3..2ac73b4cb8a93 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4762,6 +4762,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
- 	if (perf_event_check_period(event, value))
- 		return -EINVAL;
- 
-+	if (!event->attr.freq && (value & (1ULL << 63)))
-+		return -EINVAL;
-+
- 	event_function_call(event, __perf_event_period, &value);
- 
- 	return 0;
--- 
-2.20.1
-
-
-
+cheers
