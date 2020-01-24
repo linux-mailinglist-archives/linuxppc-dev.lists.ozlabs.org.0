@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AF41478D4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 08:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFC51478DC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 08:13:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 483r0X0W2nzDqd3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 18:11:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 483r2l3lyGzDqdW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 18:13:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,53 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=LVGZPs8j; dkim-atps=neutral
+ header.s=mail header.b=nY/E0H35; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 483qwX5C7lzDqQq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 18:07:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 483qwZ0GsjzDqP3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 18:07:57 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 483qwS5RPgz9tyWV;
- Fri, 24 Jan 2020 08:07:52 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 483qwT5mPvz9tyWd;
+ Fri, 24 Jan 2020 08:07:53 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=LVGZPs8j; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=nY/E0H35; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id phykYOSKMkXm; Fri, 24 Jan 2020 08:07:52 +0100 (CET)
+ with ESMTP id eb61aV3emSk8; Fri, 24 Jan 2020 08:07:53 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 483qwS4DKyz9tyWM;
- Fri, 24 Jan 2020 08:07:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579849672; bh=fhFiAnvvWyjTIiMqAPcGOlHB6PXfVt634Yxsn29/V2g=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=LVGZPs8joBTmAZSxtukaFS53pwlP+h4eFQLAeZ98CTdmZqaoaB1oUdFb0J95vOjhC
- sCXr+nVxrAy+3jx4ORi362UiixeHQ/tIOQ/TcWMQ4WLn3ZB/2ZezWwNy3XIOlgH+rD
- JvyZf7TzJK6+W4vVz2Xwsuq8GmmKJYZZZgYatqb4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7DD6F8B83D;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 483qwT4Ztzz9tyWM;
  Fri, 24 Jan 2020 08:07:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1579849673; bh=7sNJkXXrrR2l09m78IGdGM/V65gmCVpuHAJKsu4TK5w=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=nY/E0H35e3j5q9kSynJCW29VBxKp+r5I9zaCY22ZI888zStCb3Q8KEG/YAZEdRZNN
+ wdX+EXlvUaL0hsWJGo68tFZ/txIHYTc9SaGqgmm7tUcRRkFV8HRrhc0Q/wb8RAvwDX
+ cWeZMmWYP0D+YXz5Bgw2xBfR5IQjxErEwdKTzn2s=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8572A8B83D;
+ Fri, 24 Jan 2020 08:07:54 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id aFWddb0YxbC0; Fri, 24 Jan 2020 08:07:53 +0100 (CET)
+ with ESMTP id qUFsSM37Df73; Fri, 24 Jan 2020 08:07:54 +0100 (CET)
 Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.111])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 604C98B768;
- Fri, 24 Jan 2020 08:07:53 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 64F658B768;
+ Fri, 24 Jan 2020 08:07:54 +0100 (CET)
 Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 5F2716379C; Fri, 24 Jan 2020 07:07:53 +0000 (UTC)
-Message-Id: <98855694e9e8993673af08cc2e97e16e0cf50f4a.1579849665.git.christophe.leroy@c-s.fr>
+ id 6358E6379C; Fri, 24 Jan 2020 07:07:54 +0000 (UTC)
+Message-Id: <a37e699e7ab897742c07b6838a08af33bc9217e3.1579849665.git.christophe.leroy@c-s.fr>
 In-Reply-To: <435e0030e942507766cbef5bc95f906262d2ccf2.1579849665.git.christophe.leroy@c-s.fr>
 References: <435e0030e942507766cbef5bc95f906262d2ccf2.1579849665.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2 2/3] powerpc/irq: use IS_ENABLED() in check_stack_overflow()
+Subject: [PATCH v2 3/3] powerpc/irq: don't use current_stack_pointer() in
+ do_IRQ()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 24 Jan 2020 07:07:53 +0000 (UTC)
+Date: Fri, 24 Jan 2020 07:07:54 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,42 +81,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of #ifdef, use IS_ENABLED(CONFIG_DEBUG_STACKOVERFLOW).
-This enable GCC to check for code validity even when the option
-is not selected.
----
-v2: rebased
+Until commit 7306e83ccf5c ("powerpc: Don't use CURRENT_THREAD_INFO to
+find the stack"), the current stack base address was obtained by
+calling current_thread_info(). That inline function was simply masking
+out the value of r1.
+
+In that commit, it was changed to using current_stack_pointer(), which
+is an heavier function as it is an outline assembly function which
+cannot be inlined and which reads the content of the stack at 0(r1)
+
+Revert to just using get_sp() for geting r1 and masking out its value
+to obtain the base address of the stack pointer as before.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Fixes: 7306e83ccf5c ("powerpc: Don't use CURRENT_THREAD_INFO to find the stack")
 ---
- arch/powerpc/kernel/irq.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+v2: New in this series. Using get_sp()
+---
+ arch/powerpc/kernel/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index cd29c2eb2d8e..9333e115418f 100644
+index 9333e115418f..193c2b64ce37 100644
 --- a/arch/powerpc/kernel/irq.c
 +++ b/arch/powerpc/kernel/irq.c
-@@ -598,9 +598,11 @@ u64 arch_irq_stat_cpu(unsigned int cpu)
+@@ -647,7 +647,7 @@ void do_IRQ(struct pt_regs *regs)
+ 	void *cursp, *irqsp, *sirqsp;
  
- static inline void check_stack_overflow(void)
- {
--#ifdef CONFIG_DEBUG_STACKOVERFLOW
- 	long sp;
+ 	/* Switch to the irq stack to handle this */
+-	cursp = (void *)(current_stack_pointer() & ~(THREAD_SIZE - 1));
++	cursp = (void *)(get_sp() & ~(THREAD_SIZE - 1));
+ 	irqsp = hardirq_ctx[raw_smp_processor_id()];
+ 	sirqsp = softirq_ctx[raw_smp_processor_id()];
  
-+	if (!IS_ENABLED(CONFIG_DEBUG_STACKOVERFLOW))
-+		return;
-+
- 	sp = get_sp() & (THREAD_SIZE - 1);
- 
- 	/* check for stack overflow: is there less than 2KB free? */
-@@ -608,7 +610,6 @@ static inline void check_stack_overflow(void)
- 		pr_err("do_IRQ: stack overflow: %ld\n", sp);
- 		dump_stack();
- 	}
--#endif
- }
- 
- void __do_irq(struct pt_regs *regs)
 -- 
 2.25.0
 
