@@ -1,66 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E51148CC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 18:10:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08A8148CBD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2020 18:07:50 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4845Dg3sqxzDqfc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2020 04:07:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4845H95LYszDqg8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2020 04:09:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=i+5jKj/E; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48458M0cTgzDqb0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2020 04:04:00 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48458B3zK3z9v0MK;
- Fri, 24 Jan 2020 18:03:54 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=i+5jKj/E; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yuzFQHyUGURI; Fri, 24 Jan 2020 18:03:54 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48458B20zmz9v0M9;
- Fri, 24 Jan 2020 18:03:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1579885434; bh=chTY8KOFUdIW7lrDskHq6oZgb87BRhKjCjqVWyCr550=;
- h=From:Subject:To:Cc:Date:From;
- b=i+5jKj/EniZeoFRcmhj3btWHWMdpbFpPgINGN8F1DUl0i1pRfp7huAoLi3+9e7UOH
- a5mGv2ZlvdkFcihJ8xptbeoPh+HUxw3i9VqpchkPcaG3p3pWdoeGHYIHAh3//+FNMz
- lr9Kz3DLYq4LAYX85jYEdzkoXG59ebs7GK4MXIw8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6796E8B84A;
- Fri, 24 Jan 2020 18:03:54 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eX3X1B3hY19z; Fri, 24 Jan 2020 18:03:54 +0100 (CET)
-Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 46DA18B86C;
- Fri, 24 Jan 2020 18:03:49 +0100 (CET)
-Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 2D1FB651F7; Fri, 24 Jan 2020 17:03:49 +0000 (UTC)
-Message-Id: <c9b86c174b96a0d4aac9b9036d7fcfb459214e52.1579885400.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/32: Warn and return ENOSYS on syscalls from kernel
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 24 Jan 2020 17:03:49 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4845DM5jTTzDqjV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2020 04:07:31 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00OH5xma109424
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 12:07:28 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xq3ma5vp7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2020 12:07:28 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Fri, 24 Jan 2020 17:07:26 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 24 Jan 2020 17:07:23 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00OH7Mv723265404
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Jan 2020 17:07:22 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E88042047;
+ Fri, 24 Jan 2020 17:07:22 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E9FB042045;
+ Fri, 24 Jan 2020 17:07:20 +0000 (GMT)
+Received: from [9.85.89.94] (unknown [9.85.89.94])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Jan 2020 17:07:20 +0000 (GMT)
+Subject: Re: [PATCH v4 1/6] libnvdimm/namespace: Make namespace size
+ validation arch dependent
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20200120140749.69549-1-aneesh.kumar@linux.ibm.com>
+ <20200120140749.69549-2-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4jcZhQcKr=0OGWc1aZb0OQ1ws2edd-LZMR-EJ_Z2174Sg@mail.gmail.com>
+ <5fd11235-5f26-b10a-140f-ef24214c85b1@linux.ibm.com>
+ <CAPcyv4jP3S0h9vUVVU16ipeauXyaW3qxUdridagA4SNJ1UW+Vw@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Date: Fri, 24 Jan 2020 22:37:19 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4jP3S0h9vUVVU16ipeauXyaW3qxUdridagA4SNJ1UW+Vw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20012417-0020-0000-0000-000003A3AE9F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20012417-0021-0000-0000-000021FB4D1E
+Message-Id: <cb71528e-0ea9-cb56-6b51-ae7a5231ad54@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-24_06:2020-01-24,
+ 2020-01-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ mlxlogscore=778 mlxscore=0 adultscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001240140
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,150 +95,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Vishal L Verma <vishal.l.verma@intel.com>, jmoyer <jmoyer@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit b86fb88855ea ("powerpc/32: implement fast entry for
-syscalls on non BOOKE") and commit 1a4b739bbb4f ("powerpc/32:
-implement fast entry for syscalls on BOOKE"), syscalls from
-kernel are unexpected and can have catastrophic consequences
-as it will destroy the kernel stack.
+On 1/24/20 10:15 PM, Dan Williams wrote:
+> On Thu, Jan 23, 2020 at 11:34 PM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
+>> On 1/24/20 11:27 AM, Dan Williams wrote:
+>>> On Mon, Jan 20, 2020 at 6:08 AM Aneesh Kumar K.V
+>>>
+>>
+>> ....
+>>
+>>>>
+>>>> +unsigned long arch_namespace_map_size(void)
+>>>> +{
+>>>> +       return PAGE_SIZE;
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(arch_namespace_map_size);
+>>>> +
+>>>> +
+>>>>    static void __cpa_flush_all(void *arg)
+>>>>    {
+>>>>           unsigned long cache = (unsigned long)arg;
+>>>> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+>>>> index 9df091bd30ba..a3476dbd2656 100644
+>>>> --- a/include/linux/libnvdimm.h
+>>>> +++ b/include/linux/libnvdimm.h
+>>>> @@ -284,4 +284,5 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
+>>>>    }
+>>>>    #endif
+>>>>
+>>>> +unsigned long arch_namespace_map_size(void);
+>>>
+>>> This property is more generic than the nvdimm namespace mapping size,
+>>> it's more the fundamental remap granularity that the architecture
+>>> supports. So I would expect this to be defined in core header files.
+>>> Something like:
+>>>
+>>> diff --git a/include/linux/io.h b/include/linux/io.h
+>>> index a59834bc0a11..58b3b2091dbb 100644
+>>> --- a/include/linux/io.h
+>>> +++ b/include/linux/io.h
+>>> @@ -155,6 +155,13 @@ enum {
+>>>    void *memremap(resource_size_t offset, size_t size, unsigned long flags);
+>>>    void memunmap(void *addr);
+>>>
+>>> +#ifndef memremap_min_align
+>>> +static inline unsigned int memremap_min_align(void)
+>>> +{
+>>> +       return PAGE_SIZE;
+>>> +}
+>>> +#endif
+>>> +
+>>
+>>
+>> Should that be memremap_pages_min_align()?
+> 
+> No, and on second look it needs to be a common value that results in
+> properly aligned / sized namespaces across architectures.
+> 
+> What would it take for Power to make it's minimum mapping granularity
+> SUBSECTION_SIZE? The minute that the minimum alignment changes across
+> architectures we lose compatibility.
+> 
+> The namespaces need to be sized such that the mode can be changed freely.
+> 
 
-Test MSR_PR on syscall entry. In case syscall is from kernel,
-emit a warning and return ENOSYS error.
+Linux on ppc64 with hash translation use just one page size for direct 
+mapping and that is 16MB.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
-v2: Rebased on powerpc/next-test, ie on top of VMAP_STACK series
----
- arch/powerpc/kernel/entry_32.S   | 26 ++++++++++++++++++++++++++
- arch/powerpc/kernel/head_32.h    | 18 +++++++++++-------
- arch/powerpc/kernel/head_booke.h |  5 ++++-
- 3 files changed, 41 insertions(+), 8 deletions(-)
-
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 3795654d15d1..73b80143ffac 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -574,6 +574,32 @@ syscall_exit_work:
- 	bl	do_syscall_trace_leave
- 	b	ret_from_except_full
- 
-+	/*
-+	 * System call was called from kernel. We get here with SRR1 in r9.
-+	 * Mark the exception as recoverable once we have retrieved SRR0,
-+	 * trap a warning and return ENOSYS with CR[SO] set.
-+	 */
-+	.globl	ret_from_kernel_syscall
-+ret_from_kernel_syscall:
-+	mfspr	r11, SPRN_SRR0
-+#if !defined(CONFIG_4xx) && !defined(CONFIG_BOOKE)
-+	LOAD_REG_IMMEDIATE(r12, MSR_KERNEL & ~(MSR_IR|MSR_DR))
-+	MTMSRD(r12)
-+#endif
-+
-+0:	trap
-+	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
-+
-+	li	r3, ENOSYS
-+	crset	so
-+#if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
-+	mtspr	SPRN_NRI, r0
-+#endif
-+	mtspr	SPRN_SRR1, r9
-+	mtspr	SPRN_SRR0, r11
-+	SYNC
-+	RFI
-+
- /*
-  * The fork/clone functions need to copy the full register set into
-  * the child process. Therefore we need to save all the nonvolatile
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index a6a5fbbf8504..5f3cfc9ef1b6 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -112,13 +112,17 @@
- .macro SYSCALL_ENTRY trapno
- 	mfspr	r12,SPRN_SPRG_THREAD
- #ifdef CONFIG_VMAP_STACK
--	mfspr	r9, SPRN_SRR0
--	mfspr	r11, SPRN_SRR1
--	stw	r9, SRR0(r12)
--	stw	r11, SRR1(r12)
-+	mfspr	r11, SPRN_SRR0
-+	mfspr	r9, SPRN_SRR1
-+	stw	r11, SRR0(r12)
-+	stw	r9, SRR1(r12)
-+#else
-+	mfspr	r9, SPRN_SRR1
- #endif
- 	mfcr	r10
-+	andi.	r11, r9, MSR_PR
- 	lwz	r11,TASK_STACK-THREAD(r12)
-+	beq-	99f
- 	rlwinm	r10,r10,0,4,2	/* Clear SO bit in CR */
- 	addi	r11, r11, THREAD_SIZE - INT_FRAME_SIZE
- #ifdef CONFIG_VMAP_STACK
-@@ -128,15 +132,14 @@
- #endif
- 	tovirt_vmstack r12, r12
- 	tophys_novmstack r11, r11
--	mflr	r9
- 	stw	r10,_CCR(r11)		/* save registers */
--	stw	r9, _LINK(r11)
-+	mflr	r10
-+	stw	r10, _LINK(r11)
- #ifdef CONFIG_VMAP_STACK
- 	lwz	r10, SRR0(r12)
- 	lwz	r9, SRR1(r12)
- #else
- 	mfspr	r10,SPRN_SRR0
--	mfspr	r9,SPRN_SRR1
- #endif
- 	stw	r1,GPR1(r11)
- 	stw	r1,0(r11)
-@@ -209,6 +212,7 @@
- 	mtspr	SPRN_SRR0,r11
- 	SYNC
- 	RFI				/* jump to handler, enable MMU */
-+99:	b	ret_from_kernel_syscall
- .endm
- 
- .macro save_dar_dsisr_on_stack reg1, reg2, sp
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 37fc84ed90e3..bd2e5ed8dd50 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -104,16 +104,18 @@ FTR_SECTION_ELSE
- #ifdef CONFIG_KVM_BOOKE_HV
- ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- #endif
-+	mfspr	r9, SPRN_SRR1
- 	BOOKE_CLEAR_BTB(r11)
-+	andi.	r11, r9, MSR_PR
- 	lwz	r11, TASK_STACK - THREAD(r10)
- 	rlwinm	r12,r12,0,4,2	/* Clear SO bit in CR */
-+	beq-	99f
- 	ALLOC_STACK_FRAME(r11, THREAD_SIZE - INT_FRAME_SIZE)
- 	stw	r12, _CCR(r11)		/* save various registers */
- 	mflr	r12
- 	stw	r12,_LINK(r11)
- 	mfspr	r12,SPRN_SRR0
- 	stw	r1, GPR1(r11)
--	mfspr	r9,SPRN_SRR1
- 	stw	r1, 0(r11)
- 	mr	r1, r11
- 	stw	r12,_NIP(r11)
-@@ -176,6 +178,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	mtspr	SPRN_SRR0,r11
- 	SYNC
- 	RFI				/* jump to handler, enable MMU */
-+99:	b	ret_from_kernel_syscall
- .endm
- 
- /* To handle the additional exception priority levels on 40x and Book-E
--- 
-2.25.0
+-aneesh
 
