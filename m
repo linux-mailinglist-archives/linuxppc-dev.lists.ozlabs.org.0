@@ -2,75 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B65149B51
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jan 2020 16:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CB0149F38
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2020 08:24:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 485Gbx6dStzDqMl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2020 02:13:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 485h8P6fPdzDqMG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2020 18:24:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mg.codeaurora.org (client-ip=104.130.122.26;
- helo=mail26.static.mailgun.info;
- envelope-from=bounce+ee6c0f.be9e4a-linuxppc-dev=lists.ozlabs.org@mg.codeaurora.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=codeaurora.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org
- header.a=rsa-sha256 header.s=smtp header.b=eqNQ5wZc; 
- dkim-atps=neutral
-Received: from mail26.static.mailgun.info (mail26.static.mailgun.info
- [104.130.122.26])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 485GYs0S7fzDqL8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2020 02:11:43 +1100 (AEDT)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org;
- q=dns/txt; 
- s=smtp; t=1580051505; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=GgNouC08XBq9czPTNzqE2b2+ochAUWZ+cpydcRWvAGA=;
- b=eqNQ5wZcRe4iLH6MOqUMriPSVKdGbvx09wxstqIUAjQcKz5Y+pcNtiJrOa034Vp+T79IkBKf
- LiGnTBQkkIuHit/NufvDUuIRkSFufC3tkNLVyd4etayxBPUHFato7XlByqiej+iaFun10cDE
- YfQXQ4LBJ+1evaTgzrNT08wkVeU=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI5ZmEyMiIsICJsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2dac29.7f70516be5a8-smtp-out-n02;
- Sun, 26 Jan 2020 15:11:37 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
- id D33A4C433CB; Sun, 26 Jan 2020 15:11:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
- aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
- MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi
- [88.114.240.156])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested) (Authenticated sender: kvalo)
- by smtp.codeaurora.org (Postfix) with ESMTPSA id 77D01C43383;
- Sun, 26 Jan 2020 15:11:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 77D01C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
- dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
- spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 485h6p17KvzDq7k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2020 18:23:14 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=ZkdUqd2z; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 485h6n56LQz8t5c
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2020 18:23:13 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 485h6n3hzhz9sRR; Mon, 27 Jan 2020 18:23:13 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::a44;
+ helo=mail-vk1-xa44.google.com; envelope-from=ulf.hansson@linaro.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=ZkdUqd2z; dkim-atps=neutral
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com
+ [IPv6:2607:f8b0:4864:20::a44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 485h6n2mvcz9sR1
+ for <linuxppc-dev@ozlabs.org>; Mon, 27 Jan 2020 18:23:10 +1100 (AEDT)
+Received: by mail-vk1-xa44.google.com with SMTP id m195so1103217vkh.10
+ for <linuxppc-dev@ozlabs.org>; Sun, 26 Jan 2020 23:23:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=9Zs7ordlPu6oLMie0ztw+ViABr97RTMvxSHDoSvg2y8=;
+ b=ZkdUqd2zKSeWdVR91y36SdzJKYZWn6y3ItuefmZXZQ65FE7TOnAneczRyXuYZ73Q09
+ dxyrhyivxIhtQcR2Niso9FYPdVIMx7MpX3rk2ZMJ0xzAOkFCuRZxaewbU0pVz0EnbFTf
+ RwBf8kQhz4qiuQMkW/EoW11SdohZV+sqIYsjjZXPVt4bwAZ+59aKtKpOT4x+mz3DATbJ
+ l8XSQjy40AFGHpBJmIXEwQ54J73jRsoZi6Gy68//Pw8gcbJwFQ77p8u1E4EGmL7UpgvB
+ JZ/1N0idA75Y+pP1l/5Pl9EJcLI54QRiC4BtLNNHuB7wI92mBOYSLhRXl9HWHp1fHViD
+ 6DQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=9Zs7ordlPu6oLMie0ztw+ViABr97RTMvxSHDoSvg2y8=;
+ b=NX6wfMkhLL3xhPC6zSGCu+ThRcJ9nHzhoygsT8X+BmpErOlC9b/XvIhJatZuLvfy2R
+ cada6Um2i9n6AIjq3SIjbQvJ5xVAhuBAOdg/kZ8iJJCJxr1vLOQKXSkBfa+1F8DAS1e0
+ 4DVB4Xv8ftoGmjnQEP743633l7DfaabkY9r9Y2zO2JkwjvvOAbGdDPVnxG3t0eipaGf3
+ TTAfzIZqPSzVUPYCNU1DRcQXdehoDLYQKg9u0uwielevviUdq0v40pV6Cd3mtZiky6Zp
+ TAg9yERioODksUJBxFiGfwgQJ1pi5j0FGbzuYxtg4vNNIqgjpM8ygWi+QqnvHxZhlqAV
+ DEAQ==
+X-Gm-Message-State: APjAAAUdTyJTpzPK6sVhaDscrBSVSWFmxwb959ZTczX+tQyKI1ikLJLf
+ W7VN6koavEekMQEi97BrnwF6YIMUlv/bNbZDVygr4Q==
+X-Google-Smtp-Source: APXvYqz4OQZA/2kIUqEb6B2klRTdDoZkhD2PvmDkLDercb9w5oGLFffYnzmHjIgmSkCuBSvVCAvCAxfvm+k7OKQr2M8=
+X-Received: by 2002:a1f:434b:: with SMTP id q72mr8497371vka.53.1580109787392; 
+ Sun, 26 Jan 2020 23:23:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 2/9] net: wireless: rtl818x: Constify ioreadX() iomem
- argument (as in generic implementation)
-From: Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200108200528.4614-3-krzk@kernel.org>
-References: <20200108200528.4614-3-krzk@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126151137.D33A4C433CB@smtp.codeaurora.org>
-Date: Sun, 26 Jan 2020 15:11:37 +0000 (UTC)
+References: <20200126115247.13402-1-mpe@ellerman.id.au>
+In-Reply-To: <20200126115247.13402-1-mpe@ellerman.id.au>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 27 Jan 2020 08:22:29 +0100
+Message-ID: <CAPDyKFrbYmV6_nV6psVLq6VRKMXf0PXpemBbj48yjOr3P130BA@mail.gmail.com>
+Subject: Re: [PATCH] of: Add OF_DMA_DEFAULT_COHERENT & select it on powerpc
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,50 +89,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "Michael S. Tsirkin" <mst@redhat.com>, David Airlie <airlied@linux.ie>,
- Jason Wang <jasowang@redhat.com>, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-arch@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- linux-sh@vger.kernel.org, Alexey Brodkin <abrodkin@synopsys.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Ben Skeggs <bskeggs@redhat.com>,
- nouveau@lists.freedesktop.org, Dave Airlie <airlied@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- Nick Kossifidis <mickflemm@gmail.com>, Allen Hubbe <allenbh@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Thomas Gleixner <tglx@linutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, Jon Mason <jdmason@kudzu.us>,
- linux-ntb@googlegroups.com, linux-media@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: DTML <devicetree@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev@ozlabs.org, Rob Herring <robh+dt@kernel.org>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Sun, 26 Jan 2020 at 12:53, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> There's an OF helper called of_dma_is_coherent(), which checks if a
+> device has a "dma-coherent" property to see if the device is coherent
+> for DMA.
+>
+> But on some platforms devices are coherent by default, and on some
+> platforms it's not possible to update existing device trees to add the
+> "dma-coherent" property.
+>
+> So add a Kconfig symbol to allow arch code to tell
+> of_dma_is_coherent() that devices are coherent by default, regardless
+> of the presence of the property.
+>
+> Select that symbol on powerpc when NOT_COHERENT_CACHE is not set, ie.
+> when the system has a coherent cache.
+>
+> Fixes: 92ea637edea3 ("of: introduce of_dma_is_coherent() helper")
+> Cc: stable@vger.kernel.org # v3.16+
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-> The ioreadX() helpers have inconsistent interface.  On some architectures
-> void *__iomem address argument is a pointer to const, on some not.
-> 
-> Implementations of ioreadX() do not modify the memory under the address
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Thanks Michael for helping out fixing and this! The patch looks good to me.
 
-I assume this and patch 9 are going via some other tree so dropping them
-from my patchwork queue.
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
--- 
-https://patchwork.kernel.org/patch/11324461/
+Kind regards
+Uffe
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> ---
+>  arch/powerpc/Kconfig | 1 +
+>  drivers/of/Kconfig   | 4 ++++
+>  drivers/of/address.c | 6 +++++-
+>  3 files changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 1ec34e16ed65..19f5aa8ac9a3 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -238,6 +238,7 @@ config PPC
+>         select NEED_DMA_MAP_STATE               if PPC64 || NOT_COHERENT_CACHE
+>         select NEED_SG_DMA_LENGTH
+>         select OF
+> +       select OF_DMA_DEFAULT_COHERENT          if !NOT_COHERENT_CACHE
+>         select OF_EARLY_FLATTREE
+>         select OLD_SIGACTION                    if PPC32
+>         select OLD_SIGSUSPEND
+> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> index 37c2ccbefecd..d91618641be6 100644
+> --- a/drivers/of/Kconfig
+> +++ b/drivers/of/Kconfig
+> @@ -103,4 +103,8 @@ config OF_OVERLAY
+>  config OF_NUMA
+>         bool
+>
+> +config OF_DMA_DEFAULT_COHERENT
+> +       # arches should select this if DMA is coherent by default for OF devices
+> +       bool
+> +
+>  endif # OF
+> diff --git a/drivers/of/address.c b/drivers/of/address.c
+> index 99c1b8058559..e8a39c3ec4d4 100644
+> --- a/drivers/of/address.c
+> +++ b/drivers/of/address.c
+> @@ -995,12 +995,16 @@ int of_dma_get_range(struct device_node *np, u64 *dma_addr, u64 *paddr, u64 *siz
+>   * @np:        device node
+>   *
+>   * It returns true if "dma-coherent" property was found
+> - * for this device in DT.
+> + * for this device in the DT, or if DMA is coherent by
+> + * default for OF devices on the current platform.
+>   */
+>  bool of_dma_is_coherent(struct device_node *np)
+>  {
+>         struct device_node *node = of_node_get(np);
+>
+> +       if (IS_ENABLED(CONFIG_OF_DMA_DEFAULT_COHERENT))
+> +               return true;
+> +
+>         while (node) {
+>                 if (of_property_read_bool(node, "dma-coherent")) {
+>                         of_node_put(node);
+> --
+> 2.21.1
+>
