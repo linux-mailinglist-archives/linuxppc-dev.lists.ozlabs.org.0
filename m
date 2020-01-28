@@ -1,72 +1,140 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B0914BE6E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 18:22:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E1614BE52
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 18:07:49 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486Y2n5DxLzDqLR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 04:07:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486YMr00xHzDqMp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 04:22:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=synopsys.com (client-ip=149.117.73.133;
+ helo=smtprelay-out1.synopsys.com; envelope-from=vineet.gupta1@synopsys.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=NyfqsIb0; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486Y0W5d5LzDqKf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 04:05:45 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 486Y0M18SRz9tyrg;
- Tue, 28 Jan 2020 18:05:39 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=NyfqsIb0; dkim-adsp=pass;
+ dmarc=pass (p=none dis=none) header.from=synopsys.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
+ header.s=mail header.b=eZFeKkwh; 
+ dkim=fail reason="signature verification failed" (1024-bit key;
+ unprotected) header.d=synopsys.onmicrosoft.com
+ header.i=@synopsys.onmicrosoft.com header.a=rsa-sha256
+ header.s=selector2-synopsys-onmicrosoft-com header.b=awPpksET; 
  dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id BxhrHtxf1fJY; Tue, 28 Jan 2020 18:05:39 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 486Y0L6ltRz9tyrf;
- Tue, 28 Jan 2020 18:05:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580231138; bh=ihfPCvoS5mhssdU/CWQGRQyoTkFqbnCSL7XYZpDWBBI=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=NyfqsIb0WYfGkwwRXCi4mviBXVht5035XRkQEUMkYVrK+kvXsqyC01Ge/84pDXico
- JiX6P4e/rd1XwHKFdfUYAulUl8Bab7lOcDCfWoS6b7lkyqkPzcXggxczTjMouWp1w8
- BakNDUS9X1lr5teDKcou4UiSzbqUTfYKRsLhysmw=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 775F08B7E7;
- Tue, 28 Jan 2020 18:05:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 34jfQVcpYhXe; Tue, 28 Jan 2020 18:05:40 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AE28C8B7E6;
- Tue, 28 Jan 2020 18:05:37 +0100 (CET)
+X-Greylist: delayed 383 seconds by postgrey-1.36 at bilbo;
+ Wed, 29 Jan 2020 04:20:55 AEDT
+Received: from smtprelay-out1.synopsys.com (sv2-smtprelay2.synopsys.com
+ [149.117.73.133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486YKz1Hh8zDqLd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 04:20:53 +1100 (AEDT)
+Received: from mailhost.synopsys.com (badc-mailhost2.synopsys.com
+ [10.192.0.18])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ (No client certificate requested)
+ by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 7695440806;
+ Tue, 28 Jan 2020 17:14:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+ t=1580231667; bh=JvKmCuUTNL4iUOVu78Qd4rTdNCqY5tQQ1mVSu1JOuHs=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+ b=eZFeKkwhX7PH39cItmopJnaxxUclrKulcBr7XqovPBI0u+27T3d3X/lwjYopMqpR4
+ tbn7Peh7ny7OM8jgb5H0wp4pXv6wbFCIMe/xqZpiKqRDoxXivA3Y61JLkpVs2BmPrP
+ oOJp+sg7A/dJqr+lk/XdgvccsubHGWip/pTRuzy16K6YXYru6FBzFtU9pPAQ/4oTSC
+ jnuvBVlNNdX+poh0gyu1XgRz/KvKgfKMndbms5jaLgfB+I9zaUU1rrRmU+NQQf1BM3
+ GtYks05nCG8pQ4apNnJkeDh6zKfZdG4eiCPe9UjzunCiXZ9KQ9Co/cI5amv1PPY6JJ
+ TxzRFwAhhH+DA==
+Received: from US01WEHTC3.internal.synopsys.com
+ (us01wehtc3.internal.synopsys.com [10.15.84.232])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mailhost.synopsys.com (Postfix) with ESMTPS id 762E0A0067;
+ Tue, 28 Jan 2020 17:14:08 +0000 (UTC)
+Received: from us01hybrid1.internal.synopsys.com (10.200.27.51) by
+ US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Tue, 28 Jan 2020 09:14:08 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (10.202.3.67) by
+ mrs.synopsys.com (10.200.27.51) with Microsoft SMTP Server (TLS) id
+ 14.3.408.0; Tue, 28 Jan 2020 09:14:07 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CXo+xcjlJ8WLICyJ2pOeYvTTCGSD1vYOrIk2jw6GYdpvFWmhyVoo0HC+w4VxSBwYXpZC1IHdyc4APuX9bhq/2d6N+iGAEJZHhxg1lWxwvwSK0vtVaxmqFMwdBA494CJ7O1wa0BFy6KknQMm676z1uXIymHOTFVoP61w57Mghp2/p+h/hN0afqWPshtF/xy7qn6MYBAd+Eu1L+YqylRTCYcmmdxtl6Y2yCCAUzu5OEQxtLnmQeCJQPGMARJJfXH94ssI0BXKxU8G5QuTbK0b/dT560YgkuS4lqk3PVkXoeKI8oFduuzRkYFT/msPZ+4AJlb8NyQfPy5cZ8RqaZe3ifw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JvKmCuUTNL4iUOVu78Qd4rTdNCqY5tQQ1mVSu1JOuHs=;
+ b=eFOg0EKCPCv8E5mrPCfclCHSGXkJQl+JRHSlxVsN/84mDv3+9so7bA2h0fN9Y2SycxpLwFkTykMFv5eE18CuhRDkX5Dkl0bB/wLp5IQDr0FS4akyd/eCwMYQF1T6Wt+whlw7Mi2ChJ08FTW+L/RDKv19XDbtRQjB05edRZ5iqpLE6ONpaHnUiT03Cn96F1uU6sFkxXdfSO/9c6WIw0IwsA0HhJ+Lm0L88gMdkuWQXwwMEZ7z7c2QjVYbomGuNNeGDeWxgA1/Kp+DAGN67br5sXcLhorVBsIqmVauXLX0Pl8kJ4IfTuo5Xq+DrO2GRbSyuw5CanPkDXlWLgvV5S3PUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
+ dkim=pass header.d=synopsys.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=synopsys.onmicrosoft.com; s=selector2-synopsys-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JvKmCuUTNL4iUOVu78Qd4rTdNCqY5tQQ1mVSu1JOuHs=;
+ b=awPpksEToYbCsL8EJr5oIAO4xY7nsrKjgFZH7/4cGX0BusI3beLQEE2HYN/lzue7ukIUFO5rHAZg5J0NaHX0jnWhSRMVd1JjnCHpa8w9BIh0gn927HhNqw7a7uamoQT39/3HTgnH1mHOmEknKojWJ/UbbNSSBLuDexc3iN1F2Lw=
+Received: from BYAPR12MB3592.namprd12.prod.outlook.com (20.178.54.89) by
+ BYAPR12MB3400.namprd12.prod.outlook.com (20.178.54.16) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2665.23; Tue, 28 Jan 2020 17:14:05 +0000
+Received: from BYAPR12MB3592.namprd12.prod.outlook.com
+ ([fe80::39a1:22ee:7030:8333]) by BYAPR12MB3592.namprd12.prod.outlook.com
+ ([fe80::39a1:22ee:7030:8333%6]) with mapi id 15.20.2665.026; Tue, 28 Jan 2020
+ 17:14:05 +0000
+From: Vineet Gupta <Vineet.Gupta1@synopsys.com>
+To: Qian Cai <cai@lca.pw>, Anshuman Khandual <anshuman.khandual@arm.com>
 Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
  table helpers
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Thread-Topic: [PATCH V12] mm/debug: Add tests validating architecture page
+ table helpers
+Thread-Index: AQHV1XpKRF306px9dEGOLGVKM9THdaf/VaiAgAAPI4CAAAeRAIAA5V0A
+Date: Tue, 28 Jan 2020 17:14:05 +0000
+Message-ID: <b4ad58b0-304c-bd94-311e-1750c74ccf1f@synopsys.com>
 References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <68ed6488-aa25-ab41-8da6-f0ddeb15d52b@c-s.fr>
-Date: Tue, 28 Jan 2020 18:05:37 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ <14882A91-17DE-4ABD-ABF2-08E7CCEDF660@lca.pw>
+ <214c0d53-eb34-9b0c-2e4e-1aa005146331@arm.com>
+ <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
+In-Reply-To: <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=vgupta@synopsys.com; 
+x-originating-ip: [149.117.75.13]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 015da85d-ebc8-4a2d-e116-08d7a4157aa5
+x-ms-traffictypediagnostic: BYAPR12MB3400:
+x-microsoft-antispam-prvs: <BYAPR12MB34001B6A5074393F8FF29B93B60A0@BYAPR12MB3400.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 029651C7A1
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10019020)(366004)(189003)(199004)(6512007)(31696002)(4326008)(86362001)(498600001)(6506007)(53546011)(66556008)(6486002)(66476007)(64756008)(66446008)(76116006)(2906002)(66946007)(54906003)(110136005)(36756003)(81166006)(8936002)(81156014)(7416002)(7406005)(186003)(2616005)(26005)(71200400001)(31686004)(5660300002)(8676002);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:BYAPR12MB3400;
+ H:BYAPR12MB3592.namprd12.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: synopsys.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: H9FcOT2KiM7N1fZ6eAAf0bUUR8ORXc9w/yszE4JY7j2uDrArNFHYOaQjOGjc8Y5IDC1cOW1sgFD/lG1P273BGxIuEMc6pZGMjop/S7sK+QFmqieOemMrngUuLKPRwMaZZvF2Ffyjs9+NztUznRPm4WS7OPE1pdKUYvgTS5YvYKlfr7H7Uba6QUlx9YFMcHyIulAJRjvBRSMpeLqSEBxRnjxt4W4mWrr+dGEvq49AYfO+d2FXz420wlVW/l+jwZg03qmA0WHf51jYdW6JAyMbCmcDOxq6xIaQopEdSjtLx4qWJsH9IL4eLQ3VRAbJ/ffUZ/IVa2qPUoZX+W2l4nfxSGMcPdZAxADXOgJbX6wec4KF8EgANU66C/CDgSQ8oV7SuaiAOZC5vY6Lz3dSHJdMtzulSl1QhwrPwTsBQx1jBVZbzz1j9Wj9xKmVfXnURIG9
+x-ms-exchange-antispam-messagedata: QglAsK9q4xtn8gOA0HmEBA5p49ezaKzQECgljgN7TYhC+kW0LnaZLBoYAU31XN6HrAkT+af34oE8+hSq+2ZimKtvB8Tn5D17KVH+BE8Qh3evckDfChPMuriryi4rNXidrja/rDPBe9ZkAxjiN5AswA==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7C4A7FD0FCAB004286BDCEDDB0447312@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-Network-Message-Id: 015da85d-ebc8-4a2d-e116-08d7a4157aa5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jan 2020 17:14:05.0407 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KJHSGvi6NdcZH9ceNp0lebLg/K+ttp+GZqsB95A/Nqhj9KFLhw4LifAi9aMUgmiZ0UOj2lH7TyzAuw5/pJoTVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3400
+X-OriginatorOrg: synopsys.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,260 +146,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+Cc: Mark Rutland <Mark.Rutland@arm.com>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>, Tetsuo
+ Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Dave Hansen <dave.hansen@intel.com>, Paul
+ Mackerras <paulus@samba.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
  Russell King - ARM Linux <linux@armlinux.org.uk>,
  Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-arm-kernel@lists.infradead.org,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ arcml <linux-snps-arc@lists.infradead.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, Mark
+ Brown <broonie@kernel.org>, "Kirill A .
+ Shutemov" <kirill@shutemov.name>, Dan
+ Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>, Ard
+ Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Burton <paul.burton@mips.com>, Mike
+ Rapoport <rppt@linux.vnet.ibm.com>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 28/01/2020 à 02:27, Anshuman Khandual a écrit :
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
-> 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
-> 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
-> 
-
-[...]
-
-> 
-> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
-
-Also tested on PPC64 (under QEMU): book3s/64 64k pages, book3s/64 4k 
-pages and book3e/64
-
-> Reviewed-by: Ingo Molnar <mingo@kernel.org>
-> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-
-[...]
-
-> 
-> diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-> new file mode 100644
-> index 000000000000..f3f8111edbe3
-> --- /dev/null
-> +++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-> @@ -0,0 +1,35 @@
-> +#
-> +# Feature name:          debug-vm-pgtable
-> +#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
-> +#         description:   arch supports pgtable tests for semantics compliance
-> +#
-> +    -----------------------
-> +    |         arch |status|
-> +    -----------------------
-> +    |       alpha: | TODO |
-> +    |         arc: |  ok  |
-> +    |         arm: | TODO |
-> +    |       arm64: |  ok  |
-> +    |         c6x: | TODO |
-> +    |        csky: | TODO |
-> +    |       h8300: | TODO |
-> +    |     hexagon: | TODO |
-> +    |        ia64: | TODO |
-> +    |        m68k: | TODO |
-> +    |  microblaze: | TODO |
-> +    |        mips: | TODO |
-> +    |       nds32: | TODO |
-> +    |       nios2: | TODO |
-> +    |    openrisc: | TODO |
-> +    |      parisc: | TODO |
-> +    |  powerpc/32: |  ok  |
-> +    |  powerpc/64: | TODO |
-
-You can change the two above lines by
-
-	powerpc: ok
-
-> +    |       riscv: | TODO |
-> +    |        s390: | TODO |
-> +    |          sh: | TODO |
-> +    |       sparc: | TODO |
-> +    |          um: | TODO |
-> +    |   unicore32: | TODO |
-> +    |         x86: |  ok  |
-> +    |      xtensa: | TODO |
-> +    -----------------------
-
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 1ec34e16ed65..253dcab0bebc 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -120,6 +120,7 @@ config PPC
->   	#
->   	select ARCH_32BIT_OFF_T if PPC32
->   	select ARCH_HAS_DEBUG_VIRTUAL
-> +	select ARCH_HAS_DEBUG_VM_PGTABLE if PPC32
-
-Remove the 'if PPC32' as we now know it also work on PPC64.
-
->   	select ARCH_HAS_DEVMEM_IS_ALLOWED
->   	select ARCH_HAS_ELF_RANDOMIZE
->   	select ARCH_HAS_FORTIFY_SOURCE
-
-> diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-> index 0b6c4042942a..fb0e76d254b3 100644
-> --- a/arch/x86/include/asm/pgtable_64.h
-> +++ b/arch/x86/include/asm/pgtable_64.h
-> @@ -53,6 +53,12 @@ static inline void sync_initial_page_table(void) { }
->   
->   struct mm_struct;
->   
-> +#define mm_p4d_folded mm_p4d_folded
-> +static inline bool mm_p4d_folded(struct mm_struct *mm)
-> +{
-> +	return !pgtable_l5_enabled();
-> +}
-> +
-
-For me this should be part of another patch, it is not directly linked 
-to the tests.
-
->   void set_pte_vaddr_p4d(p4d_t *p4d_page, unsigned long vaddr, pte_t new_pte);
->   void set_pte_vaddr_pud(pud_t *pud_page, unsigned long vaddr, pte_t new_pte);
->   
-> diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-> index 798ea36a0549..e0b04787e789 100644
-> --- a/include/asm-generic/pgtable.h
-> +++ b/include/asm-generic/pgtable.h
-> @@ -1208,6 +1208,12 @@ static inline bool arch_has_pfn_modify_check(void)
->   # define PAGE_KERNEL_EXEC PAGE_KERNEL
->   #endif
->   
-> +#ifdef CONFIG_DEBUG_VM_PGTABLE
-
-Not sure it is a good idea to put that in include/asm-generic/pgtable.h
-
-By doing this you are forcing a rebuild of almost all files, whereas 
-only init/main.o and mm/debug_vm_pgtable.o should be rebuilt when 
-activating this config option.
-
-> +extern void debug_vm_pgtable(void);
-
-Please don't use the 'extern' keyword, it is useless and not to be used 
-for functions declaration.
-
-> +#else
-> +static inline void debug_vm_pgtable(void) { }
-> +#endif
-> +
->   #endif /* !__ASSEMBLY__ */
->   
->   #ifndef io_remap_pfn_range
-> diff --git a/init/main.c b/init/main.c
-> index da1bc0b60a7d..5e59e6ac0780 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -1197,6 +1197,7 @@ static noinline void __init kernel_init_freeable(void)
->   	sched_init_smp();
->   
->   	page_alloc_init_late();
-> +	debug_vm_pgtable();
-
-Wouldn't it be better to call debug_vm_pgtable() in kernel_init() 
-between the call to async_synchronise_full() and ftrace_free_init_mem() ?
-
->   	/* Initialize page ext after all struct pages are initialized. */
->   	page_ext_init();
->   
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index 5ffe144c9794..7cceae923c05 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -653,6 +653,12 @@ config SCHED_STACK_END_CHECK
->   	  data corruption or a sporadic crash at a later stage once the region
->   	  is examined. The runtime overhead introduced is minimal.
->   
-> +config ARCH_HAS_DEBUG_VM_PGTABLE
-> +	bool
-> +	help
-> +	  An architecture should select this when it can successfully
-> +	  build and run DEBUG_VM_PGTABLE.
-> +
->   config DEBUG_VM
->   	bool "Debug VM"
->   	depends on DEBUG_KERNEL
-> @@ -688,6 +694,22 @@ config DEBUG_VM_PGFLAGS
->   
->   	  If unsure, say N.
->   
-> +config DEBUG_VM_PGTABLE
-> +	bool "Debug arch page table for semantics compliance"
-> +	depends on MMU
-> +	depends on DEBUG_VM
-
-Does it really need to depend on DEBUG_VM ?
-I think we could make it standalone and 'default y if DEBUG_VM' instead.
-
-> +	depends on ARCH_HAS_DEBUG_VM_PGTABLE
-> +	default y
-> +	help
-> +	  This option provides a debug method which can be used to test
-> +	  architecture page table helper functions on various platforms in
-> +	  verifying if they comply with expected generic MM semantics. This
-> +	  will help architecture code in making sure that any changes or
-> +	  new additions of these helpers still conform to expected
-> +	  semantics of the generic MM.
-> +
-> +	  If unsure, say N.
-> +
-
-Does it make sense to make it 'default y' and say 'If unsure, say N' ?
-
->   config ARCH_HAS_DEBUG_VIRTUAL
->   	bool
->   
-
-Christophe
+T24gMS8yNy8yMCA3OjMzIFBNLCBRaWFuIENhaSB3cm90ZToNCj4NCj4+PiBXaGF04oCZcyB0aGUg
+dmFsdWUgb2YgdGhpcyBibG9jayBvZiBuZXcgY29kZT8gSXQgb25seSBzdXBwb3J0cyB4ODYgYW5k
+IGFybTY0DQo+Pj4gd2hpY2ggYXJlIHN1cHBvc2VkIHRvIGJlIGdvb2Qgbm93Lg0KPj4gV2UgaGF2
+ZSBiZWVuIG92ZXIgdGhlIHVzZWZ1bG5lc3Mgb2YgdGhpcyBjb2RlIG1hbnkgdGltZXMgYmVmb3Jl
+IGFzIHRoZSBwYXRjaCBpcw0KPj4gYWxyZWFkeSBpbiBpdCdzIFYxMi4gQ3VycmVudGx5IGl0IGlz
+IGVuYWJsZWQgb24gYXJtNjQsIHg4NiAoZXhjZXB0IFBBRSksIGFyYyBhbmQNCj4+IHBwYzMyLiBU
+aGVyZSBhcmUgYnVpbGQgdGltZSBvciBydW50aW1lIHByb2JsZW1zIHdpdGggb3RoZXIgYXJjaHMg
+d2hpY2ggcHJldmVudA0KPiBJIGFtIG5vdCBzdXJlIGlmIEkgY2FyZSB0b28gbXVjaCBhYm91dCBh
+cmMgYW5kIHBwYzMyIHdoaWNoIGFyZSBwcmV0dHkgbXVjaCBsZWdhY3kNCj4gcGxhdGZvcm1zLg0K
+DQpZb3UgcmVhbGx5IG5lZWQgdG8gYnJ1c2ggdXAgb24geW91ciBkZWZpbml0aW9uIGFuZCBrbm93
+bGVkZ2Ugb2Ygd2hhdCAibGVnYWN5IiBtZWFucy4NCkFSQyBpcyBhY3RpdmVseSBtYWludGFpbmVk
+IGFuZCB1c2VkIGJ5IHNldmVyYWwgY3VzdG9tZXJzLCBzb21lIGluIGFyY2gvYXJjL3BsYXQqDQph
+bmQgc29tZSBub3QgaW4gdGhlcmUuDQpJdCBpcyBwcmVzZW50IGluIGJyb2FkYmFuZCByb3V0ZXJz
+IHVzZWQgYnkgbWFqb3IgSVNQLCBtYXNzaXZlbHkgbXVsdGljb3JlIGRlZXANCnBhY2tldCBpbnNw
+ZWN0aW9uIHN5c3RlbSBmcm9tIEVaQ2hpcCwgYW5kIG1hbnkgbW9yZS4uLi4NCg0KU3VyZSB5b3Ug
+bWF5IG5vdCBjYXJlIGFib3V0IHRoZW0sIGJ1dCB0aGUgbWFpbnRhaW5lcnMgZm9yIHRoZSBwbGF0
+Zm9ybXMgZG8uDQpJdCB3b3VsZCBoYXZlIGJlZW4gYmV0dGVyIGlmIHlvdSBoYWQgc3BlbnQgdGhl
+IHRpbWUgYW5kIGVuZXJneSBpbiBpbXByb3ZpbmcgdGhlDQpjb2RlIG92ZXIgMTIgcmV2aXNpb25z
+IHJhdGhlciB0aGFuIGJpa2Ugc2hlZGRpbmcuDQoNCi1WaW5lZXQNCg==
