@@ -1,51 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FF414C2E7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 23:19:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486gyt0YvnzDqFG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 09:19:50 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEC514C3CC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 00:58:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 486k930PXszDqJB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 10:58:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mentor.com (client-ip=68.232.129.153; helo=esa1.mentor.iphmx.com;
- envelope-from=joseph_myers@mentor.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=codesourcery.com
-X-Greylist: delayed 71 seconds by postgrey-1.36 at bilbo;
- Wed, 29 Jan 2020 09:18:09 AEDT
-Received: from esa1.mentor.iphmx.com (esa1.mentor.iphmx.com [68.232.129.153])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486gwx4DgTzDqNk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 09:18:09 +1100 (AEDT)
-IronPort-SDR: TUrtB2YQ/xGSHlj7fQMGW6gSnLbKpaIe22p5uAY352NaxZm3X8LZN7L7AOFF5NlGpjIH/NhU8e
- hdHXRb9VNr5ef9HNJK7/AT4htp7T2QXrxVT7j631mHtKFfOj2lJtKoB2TCGsYKbspY1XZj+zf0
- ZMOjpc52ebMUo5lldO6rquzLRPvNNmkpsLiVH/L7PPXidnrYDm9ZZFQfuIyY5Hc27c9PhXerXn
- zzYwUiQzlvknAnaqRa5e8dMAd7PnjOMd4YSGye1g3K6VFggkeCAUs+bj7Glh7mKyI1nJyYMrBp
- M1Y=
-X-IronPort-AV: E=Sophos;i="5.70,375,1574150400"; d="scan'208";a="47197600"
-Received: from orw-gwy-02-in.mentorg.com ([192.94.38.167])
- by esa1.mentor.iphmx.com with ESMTP; 28 Jan 2020 14:16:55 -0800
-IronPort-SDR: AhhLI590DNwEACU9QrL8HRDues2kuCIAx6QoBzjC7lEsIeJCYoq3zAFpwOs12ZCm2pPqRLEIvR
- IfOXzSoK5OBg==
-Date: Tue, 28 Jan 2020 22:14:48 +0000
-From: Joseph Myers <joseph@codesourcery.com>
-X-X-Sender: jsm28@digraph.polyomino.org.uk
-To: Florian Weimer <fweimer@redhat.com>
-Subject: Re: powerpc Linux scv support and scv system call ABI proposal
-In-Reply-To: <87tv4fd8wp.fsf@oldenburg2.str.redhat.com>
-Message-ID: <alpine.DEB.2.21.2001282210470.22424@digraph.polyomino.org.uk>
-References: <1580207907.c96c1lh9t0.astroid@bobo.none>
- <87tv4fd8wp.fsf@oldenburg2.str.redhat.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486k751CjlzDqN1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 10:57:04 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00SNd1uv039837; Tue, 28 Jan 2020 18:56:59 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xrk2fxqk4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Jan 2020 18:56:58 -0500
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 00SNt1EF134993;
+ Tue, 28 Jan 2020 18:56:58 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xrk2fxqjq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Jan 2020 18:56:58 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00SNtIva020067;
+ Tue, 28 Jan 2020 23:56:57 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02wdc.us.ibm.com with ESMTP id 2xrda6nnwv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Jan 2020 23:56:57 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00SNuuco58982910
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Jan 2020 23:56:56 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 69928C6059;
+ Tue, 28 Jan 2020 23:56:56 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4A611C6055;
+ Tue, 28 Jan 2020 23:56:56 +0000 (GMT)
+Received: from localhost (unknown [9.41.179.160])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Jan 2020 23:56:56 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Scott Cheloha <cheloha@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/drmem: cache LMBs in xarray to accelerate lookup
+In-Reply-To: <20200128221113.17158-1-cheloha@linux.ibm.com>
+References: <20200128221113.17158-1-cheloha@linux.ibm.com>
+Date: Tue, 28 Jan 2020 17:56:55 -0600
+Message-ID: <87pnf3i188.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [137.202.0.90]
-X-ClientProxiedBy: SVR-IES-MBX-08.mgc.mentorg.com (139.181.222.8) To
- svr-ies-mbx-01.mgc.mentorg.com (139.181.222.1)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-28_09:2020-01-28,
+ 2020-01-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 suspectscore=1
+ mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=758 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001280175
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,29 +89,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org,
- Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Nathan Fontenont <ndfont@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Rick Lindsley <ricklind@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 28 Jan 2020, Florian Weimer wrote:
+Scott Cheloha <cheloha@linux.ibm.com> writes:
+> LMB lookup is currently an O(n) linear search.  This scales poorly when
+> there are many LMBs.
+>
+> If we cache each LMB by both its base address and its DRC index
+> in an xarray we can cut lookups to O(log n), greatly accelerating
+> drmem initialization and memory hotplug.
+>
+> This patch introduces two xarrays of of LMBs and fills them during
+> drmem initialization.  The patch also adds two interfaces for LMB
+> lookup.
 
-> I don't think we can save LR in a regular register around the system
-> call, explicitly in the inline asm statement, because we still have to
-> generate proper unwinding information using CFI directives, something
-> that you cannot do from within the asm statement.
-
-What other architectures in glibc have done for code sequences for 
-syscalls that are problematic for compiler-generated CFI is made the C 
-syscall macros call separate functions defined in a .S file (see 
-sysdeps/unix/sysv/linux/arm/libc-do-syscall.S, 
-sysdeps/unix/sysv/linux/i386/libc-do-syscall.S, 
-sysdeps/unix/sysv/linux/mips/mips32/mips-syscall[567].S).  I don't know if 
-you can do that in this case and still get the performance benefits of the 
-new instruction.
-
--- 
-Joseph S. Myers
-joseph@codesourcery.com
+Good but can you replace the array of LMBs altogether
+(drmem_info->lmbs)? xarray allows iteration over the members if needed.
