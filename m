@@ -2,76 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38A414BA9E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 15:40:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C65EA14BC58
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 15:53:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486Tms4LpkzDq9G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 01:40:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486V3T57LbzDqFG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 01:53:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p02-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5302::1;
+ helo=mo6-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=QMPkOAnm; 
+ dkim-atps=neutral
+Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5302::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486TT92bZczDqJ3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 01:26:53 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 486TT66k5Tz8sxV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 01:26:50 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 486TT652FCzB3w3; Wed, 29 Jan 2020 01:26:50 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 486TT62r8hzB3w2
- for <linuxppc-dev@ozlabs.org>; Wed, 29 Jan 2020 01:26:50 +1100 (AEDT)
-Received: by mail-ot1-f66.google.com with SMTP id z9so12131626oth.5
- for <linuxppc-dev@ozlabs.org>; Tue, 28 Jan 2020 06:26:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=qQkCUlHSeSutqpYYYEuSpgaq1CGRr1gMxP5zgQMXFLE=;
- b=bUOWzdFiSaBFdqZFs82XXGPl+bNlhFz5LKzL9n/Ju+mpQUzBXiwHv8TYzAsVcl8XtP
- uXNQ3yym7+zNxz+h9rw8o+SMXze3hXOiXKeuT+BzJfi9ebryheXD6y3LnjhvMDstazvo
- g/4tTWBuTWee7nltVv0kdrUSKgQLpzQVIl558h5jygfLmT1m1BOHVALWipoJiSuIarvU
- AW2dyShv1/KVwM6stJC5Y1cttTZP64DUUQcL6bNpQ04qYIdR9aT/fUDn3EnijjLHcjIW
- iYK7gE+t1L+vtfHuKaTpNli4gtqQGVfwOFym3XzM+C5/RWBVKoVM4O/NOw2Dzp+nHUjX
- WWYQ==
-X-Gm-Message-State: APjAAAU/rdQroNtBjHqhcejaCLRAybdt4OugNAYNhLBaFD4i+0JxAip2
- VDVQfen7Lw75SjuDsqc1wA==
-X-Google-Smtp-Source: APXvYqwFJVk0FJAugT05thhhxD8ynpQt6Xxwj2dYD7xIOhRcGHbVx5Pc86KH1o6GE7zkGGtDMoAw+w==
-X-Received: by 2002:a05:6830:1116:: with SMTP id
- w22mr16929063otq.63.1580221607750; 
- Tue, 28 Jan 2020 06:26:47 -0800 (PST)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id f37sm5770746otb.33.2020.01.28.06.26.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2020 06:26:46 -0800 (PST)
-Received: (nullmailer pid 18064 invoked by uid 1000);
- Tue, 28 Jan 2020 14:26:46 -0000
-Date: Tue, 28 Jan 2020 08:26:46 -0600
-From: Rob Herring <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] of: Add OF_DMA_DEFAULT_COHERENT & select it on powerpc
-Message-ID: <20200128142646.GA17341@bogus>
-References: <20200126115247.13402-1-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486Tyl5qzqzDqDP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 01:49:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1580222939;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=Yd8278IdffBOus6O3P2vy23ykNevCPa9Nig0acvB1Ps=;
+ b=QMPkOAnmxXokcLX71Dm+Wi8hoWn4zbmbABGXEqVHW0F9wwhuqeOU2iDhwoBnB+5PDG
+ 8G+VXyanVjxfCPjMp5KjkhCdaG2teUyosQ+4aWXnqdcX/cpzevyi9XKl2gPVwRPSg8Yf
+ hCgrDsHNXr7DEwsS2gy87lqtGjFtAfeplTUOQ7IQFq7VpyboWf3RiBb5eJ4OMPzy5/i+
+ 598RcC1R3RDGMnggWPnYnrvBJcfMPOd92fT4z616CVRUgt5AYulTs7obZrLeWILx0jBY
+ eoZjsja7cfTKenLUcjhdILOE1WOcZwhgic6BAMUsjyob1iu2fvRhjACEM78A2Z6kV/M4
+ zBSg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgHL/0viBvFGid1vGKl+pRiZ7f+cg=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:d904:eb1c:cd43:d772]
+ by smtp.strato.de (RZmta 46.1.7 AUTH) with ESMTPSA id k0b198w0SEm6OUY
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Tue, 28 Jan 2020 15:48:06 +0100 (CET)
+Subject: Re: [PASEMI PA6T PPC] Onboard CF card device with new SanDisk High
+ (>8G) CF cards
+To: Rob Herring <robh+dt@kernel.org>
+References: <20200108093903.57620-1-hdegoede@redhat.com>
+ <20200108093903.57620-2-hdegoede@redhat.com>
+ <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com>
+ <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com>
+ <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com>
+ <93446e09-5f12-800a-62fa-bf3ecea7273d@redhat.com>
+ <399ac7d5-2518-799a-595e-f6b6878cf4ab@intel.com>
+ <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de>
+ <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com>
+ <8736c5hyhr.fsf@mpe.ellerman.id.au>
+ <688f1943-5b81-6200-d4d9-38d21b69e180@xenosoft.de>
+ <CAL_Jsq+r9a0BhvO4-VK59+Fh=9Ean=JgKwwxS+bqVz7=OWD5_w@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <516d9b3f-426e-3f19-67c8-fa20368901ef@xenosoft.de>
+Date: Tue, 28 Jan 2020 15:48:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200126115247.13402-1-mpe@ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAL_Jsq+r9a0BhvO4-VK59+Fh=9Ean=JgKwwxS+bqVz7=OWD5_w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,41 +80,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, ulf.hansson@linaro.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, robh+dt@kernel.org,
- chzigotzky@xenosoft.de, hch@lst.de
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+ Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+ Julian Margetson <runaway@candw.ms>, Christoph Hellwig <hch@infradead.org>,
+ "contact@a-eon.com" <contact@a-eon.com>, mad skateman <madskateman@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 26 Jan 2020 22:52:47 +1100, Michael Ellerman wrote:
-> There's an OF helper called of_dma_is_coherent(), which checks if a
-> device has a "dma-coherent" property to see if the device is coherent
-> for DMA.
-> 
-> But on some platforms devices are coherent by default, and on some
-> platforms it's not possible to update existing device trees to add the
-> "dma-coherent" property.
-> 
-> So add a Kconfig symbol to allow arch code to tell
-> of_dma_is_coherent() that devices are coherent by default, regardless
-> of the presence of the property.
-> 
-> Select that symbol on powerpc when NOT_COHERENT_CACHE is not set, ie.
-> when the system has a coherent cache.
-> 
-> Fixes: 92ea637edea3 ("of: introduce of_dma_is_coherent() helper")
-> Cc: stable@vger.kernel.org # v3.16+
-> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/Kconfig | 1 +
->  drivers/of/Kconfig   | 4 ++++
->  drivers/of/address.c | 6 +++++-
->  3 files changed, 10 insertions(+), 1 deletion(-)
-> 
-
-Applied, thanks.
-
-Rob
+On 28 January 2020 at 3:16 pm, Rob Herring wrote:
+> On Tue, Jan 28, 2020 at 2:01 AM Christian Zigotzky
+> <chzigotzky@xenosoft.de> wrote:
+>> Hi All,
+>>
+>> Which mailing list is responsible for the pata_pcmcia driver? We are
+>> using new SanDisk High (>8G) CF cards with this driver [1] and we need
+>> the following line in the file "drivers/ata/pata_pcmcia.c".
+>>
+>> +    PCMCIA_DEVICE_MANF_CARD(0x00f1, 0x0101),        /* SanDisk High
+>> (>8G) CFA */
+> Run get_maintainers.pl and it will answer that for you:
+>
+> $ scripts/get_maintainer.pl -f drivers/ata/pata_pcmcia.c
+> Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> (maintainer:LIBATA PATA DRIVERS)
+> Jens Axboe <axboe@kernel.dk> (maintainer:LIBATA PATA DRIVERS)
+> linux-ide@vger.kernel.org (open list:LIBATA PATA DRIVERS)
+> linux-kernel@vger.kernel.org (open list)
+Thank you!
