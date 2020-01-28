@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E02414AFBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 07:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FDD14AFC0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 07:24:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486Gjf3YWPzDqKN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 17:21:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486Glz4nChzDqF7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 17:23:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.120; helo=mga04.intel.com;
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
  envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486GTr5J9KzDqD3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 17:11:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486GVj6Mt1zDqHb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 17:12:29 +1100 (AEDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2020 22:11:41 -0800
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2020 22:12:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,372,1574150400"; d="scan'208";a="252178707"
+X-IronPort-AV: E=Sophos;i="5.70,372,1574150400"; d="scan'208";a="221990078"
 Received: from linux.intel.com ([10.54.29.200])
- by fmsmga004.fm.intel.com with ESMTP; 27 Jan 2020 22:11:40 -0800
+ by orsmga008.jf.intel.com with ESMTP; 27 Jan 2020 22:12:27 -0800
 Received: from [10.252.25.124] (abudanko-mobl.ccr.corp.intel.com
  [10.252.25.124])
- by linux.intel.com (Postfix) with ESMTP id CAF7D580277;
- Mon, 27 Jan 2020 22:11:32 -0800 (PST)
-Subject: [PATCH v6 06/10] trace/bpf_trace: open access for CAP_PERFMON
- privileged process
+ by linux.intel.com (Postfix) with ESMTP id 909725803C1;
+ Mon, 27 Jan 2020 22:12:19 -0800 (PST)
+Subject: [PATCH v6 07/10] powerpc/perf: open access for CAP_PERFMON privileged
+ process
 From: Alexey Budankov <alexey.budankov@linux.intel.com>
 To: Peter Zijlstra <peterz@infradead.org>,
  Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
@@ -46,8 +46,8 @@ To: Peter Zijlstra <peterz@infradead.org>,
  Alexei Starovoitov <ast@kernel.org>
 References: <74d524ab-ac11-a7b8-1052-eba10f117e09@linux.intel.com>
 Organization: Intel Corp.
-Message-ID: <4fdbe164-d83d-a52f-4e8c-fe8bd15c6f8c@linux.intel.com>
-Date: Tue, 28 Jan 2020 09:11:31 +0300
+Message-ID: <3ce8fc61-a61f-5efc-9167-94f5d39b6f1b@linux.intel.com>
+Date: Tue, 28 Jan 2020 09:12:18 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
@@ -86,7 +86,7 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Open access to bpf_trace monitoring for CAP_PERFMON privileged process.
+Open access to monitoring for CAP_PERFMON privileged process.
 Providing the access under CAP_PERFMON capability singly, without the
 rest of CAP_SYS_ADMIN credentials, excludes chances to misuse the
 credentials and makes operation more secure.
@@ -98,29 +98,37 @@ or program be granted only those privileges (e.g., capabilities) necessary
 to accomplish its legitimate function, and only for the time that such
 privileges are actually required)
 
-For backward compatibility reasons access to bpf_trace monitoring remains
-open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for
-secure bpf_trace monitoring is discouraged with respect to CAP_PERFMON
-capability.
+For backward compatibility reasons access to the monitoring remains open
+for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage for secure
+monitoring is discouraged with respect to CAP_PERFMON capability.
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 ---
- kernel/trace/bpf_trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/perf/imc-pmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index e5ef4ae9edb5..334f1d71ebb1 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1395,7 +1395,7 @@ int perf_event_query_prog_array(struct perf_event *event, void __user *info)
- 	u32 *ids, prog_cnt, ids_len;
- 	int ret;
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index cb50a9e1fd2d..e837717492e4 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -898,7 +898,7 @@ static int thread_imc_event_init(struct perf_event *event)
+ 	if (event->attr.type != event->pmu->type)
+ 		return -ENOENT;
  
 -	if (!capable(CAP_SYS_ADMIN))
 +	if (!perfmon_capable())
- 		return -EPERM;
- 	if (event->attr.type != PERF_TYPE_TRACEPOINT)
- 		return -EINVAL;
+ 		return -EACCES;
+ 
+ 	/* Sampling not supported */
+@@ -1307,7 +1307,7 @@ static int trace_imc_event_init(struct perf_event *event)
+ 	if (event->attr.type != event->pmu->type)
+ 		return -ENOENT;
+ 
+-	if (!capable(CAP_SYS_ADMIN))
++	if (!perfmon_capable())
+ 		return -EACCES;
+ 
+ 	/* Return if this is a couting event */
 -- 
 2.20.1
 
