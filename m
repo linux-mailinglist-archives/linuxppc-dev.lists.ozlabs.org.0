@@ -1,41 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B213E14B30E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 11:53:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4337D14B27F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 11:22:15 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486N2r0SvmzDqG8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 21:22:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486Nkl65RPzDqKW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 21:53:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=lpechacek@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
+ helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bA6jUyMd; dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486N062j5nzDqFt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 21:19:49 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 917F8B25F;
- Tue, 28 Jan 2020 10:19:46 +0000 (UTC)
-Date: Tue, 28 Jan 2020 11:19:45 +0100
-From: Libor Pechacek <lpechacek@suse.cz>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc: drmem: avoid NULL pointer dereference when
- drmem is unavailable
-Message-ID: <20200128101945.GA20336@fm.suse.cz>
-References: <20200116102758.GC25138@fm.suse.cz> <87o8uudv51.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486Nhv5DylzDqKW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 21:51:41 +1100 (AEDT)
+Received: by mail-pg1-x529.google.com with SMTP id q127so6781499pga.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 02:51:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:mime-version:user-agent:message-id
+ :content-transfer-encoding;
+ bh=DzdGDVKVeO3wAlEL0UiWdC6FBKuQaEEusiSwawwBnbY=;
+ b=bA6jUyMdolfaKI+c9meNA+tBrK157wpPvVEJeAc/JxbkxsdaVsqkS1ItZIvrrixvUZ
+ bApYeoqh+mEaHTWr1CNt/S16myNJOJBufyCoaX10GmGayTsr+gHNGn8jNTRyc7mcMIIq
+ ov9JUrtah4+uWwGIXUaTX2nXjoyKafyBgYcp7NlhHOWQ5xZI8kS01iX8vGkX/S6iN9jL
+ G90RowTT6lFURbMuWrFM5Ldk+X8UQUD500n73pTGqLu5+nkoY7MB/nlqQF8l0nuFesnh
+ FjbuljKWkCPBOV1izXcSvzQ8fuq4/w3TjoE6nE5GBczSWi0zsrgjK+CyrVOY0uTqix2g
+ HEew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:mime-version:user-agent
+ :message-id:content-transfer-encoding;
+ bh=DzdGDVKVeO3wAlEL0UiWdC6FBKuQaEEusiSwawwBnbY=;
+ b=i8v2cQvqUrneXU5go2sOMHm5xk3V7kKcoZxuX+6GbcHwwkHdnG/x6Zd0ManU0CuDZL
+ VjkudfZzyG3J5tHcgqxBe7ngn2oa7zb3XDyl+t8WrkcD7a6z0ljSW1xFCK3mEDdub7kE
+ Lmsi5ytz5FE/YFg2v3bo2mlzW0pHObNRMNnopC1JGgBpuWED049Dv05p+Izjwetdw+vR
+ 9Y7nkhdWZXdJefmhjt/msN+0dPtuim80Iq67u05Ak1mIRYGTLM/OtEatX44hqLf4bGOq
+ KkttivFE1wDcBb52JLrMtc89H/hr/t57RjKR5EaHzDTbFQ4A8/vxWXHDews+CFnJ6zSz
+ 6ISg==
+X-Gm-Message-State: APjAAAX2NHhG/qt6uQdZYOhfQgQbYtKYvld2y2HcfFlSda9hxvuXzu9M
+ DZ9474PrSa2lBz3hZxCIO1RdArUH
+X-Google-Smtp-Source: APXvYqwk9oYy0B0gEm+4Cgvp6SDZ5qgRkuDXsHTLWbimhic/CStXAT1I+gbmH+wPuN0DTZvowyr3Wg==
+X-Received: by 2002:a62:f94d:: with SMTP id g13mr3302572pfm.60.1580208698938; 
+ Tue, 28 Jan 2020 02:51:38 -0800 (PST)
+Received: from localhost (203-219-188-70.tpgi.com.au. [203.219.188.70])
+ by smtp.gmail.com with ESMTPSA id u1sm18874681pfn.133.2020.01.28.02.51.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 Jan 2020 02:51:38 -0800 (PST)
+Date: Tue, 28 Jan 2020 20:50:48 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: powerpc Linux scv support and scv system call ABI proposal
+To: linuxppc-dev@lists.ozlabs.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o8uudv51.fsf@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1580207907.c96c1lh9t0.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,149 +77,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Michal Suchanek <msuchanek@suse.cz>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
+Cc: Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
+ libc-alpha@sourceware.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Nathan,
+I would like to enable support for the scv instruction to provide the Linux
+system calls.
 
-On Thu 23-01-20 09:56:10, Nathan Lynch wrote:
-> Libor Pechacek <lpechacek@suse.cz> writes:
-> > In KVM guests drmem structure is only zero initialized. Trying to
-> > manipulate DLPAR parameters results in a crash in this environment.
-> 
-> I think this statement needs qualification. Unless I'm mistaken, this
-> happens only when you boot a guest without any hotpluggable memory
-> configured, and then try to add or remove memory.
+This requires two things to be defined, firstly how to advertise support
+for scv and how to allocate and advertise support for individual scv
+vectors. Secondly, how to define a Linux system call ABI with this new
+instruction.
 
-Thanks for the review. The introductory statement can indeed be clearer.
+I have put together a rough proposal along with some options and=20
+questions. Any thoughts or input would be welcome, I have probably
+missed some things so please point them out.
 
-[...]
-> > diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > index c126b94d1943..4ea6af002e27 100644
-> > --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > @@ -236,9 +236,9 @@ static int get_lmb_range(u32 drc_index, int n_lmbs,
-> >  	if (!start)
-> >  		return -EINVAL;
-> >  
-> > -	end = &start[n_lmbs - 1];
-> > +	end = &start[n_lmbs];
-> >  
-> > -	last_lmb = &drmem_info->lmbs[drmem_info->n_lmbs - 1];
-> > +	last_lmb = &drmem_info->lmbs[drmem_info->n_lmbs];
-> >  	if (end > last_lmb)
-> >  		return -EINVAL;
-> 
-> Is this not undefined behavior? I'd rather do this in a way that does
-> not involve forming out-of-bounds pointers.
+(I will be on vacation for two weeks from the end of the week, may not
+get to replying immediately)
 
-Well, this is a tough question for the case when drmem_info->lmbs was not
-allocated. Given that the array does not exist, what bounds are we talking
-about?
+Thanks,
+Nick
 
-My patch builds on the fact that NULL[0] is NULL and NULL < NULL is false.
-Talking about a pointer to one past the last element of an non-existent array
-is too much philosophy for me.
+System Call Vectored (scv) ABI
 
-For the case when drmem_info->lmbs is allocated, last_lmb is a pointer to one
-past the last element of the array as Michal mentioned.
+The scv instruction is introduced with POWER9 / ISA3, it comes with an
+rfscv counter-part. The benefit of these instructions is performance
+(trading slower SRR0/1 with faster LR/CTR registers, and entering the
+kernel with MSR[EE] and MSR[RI] left enabled, which can avoid one mtmsrd
+instruction. Another benefit is that the ABI can be changed if there is
+a good reason to.
 
-> Even if it's safe, naming that pointer "last_lmb" now actively hinders
-> understanding of the code; it should be named "limit" or something.
+The scv instruction has 128 interrupt entry points (not enough to cover
+the Linux system call space). The proposal is to assign scv numbers
+conservatively. 'scv 0' could be used for the regular Linux system call
+ABI initially. Examples of other assignments could be 32-bit compat
+system calls, and firmware service calls.
 
-Good catch.
+Linux has not enabled FSCR[SCV] yet, so the instruction will trap with ille=
+gal
+instruction on current environments. Linux has defined a HWCAP2 bit
+PPC_FEATURE2_SCV for SCV support, but does not set it.
 
-[...]
-> 1 file changed, 36 insertions(+), 7 deletions(-)
-> arch/powerpc/include/asm/drmem.h | 43 +++++++++++++++++++++++++++++++++-------
-> 
-> modified   arch/powerpc/include/asm/drmem.h
-> @@ -20,19 +20,48 @@ struct drmem_lmb {
->  
->  struct drmem_lmb_info {
->  	struct drmem_lmb        *lmbs;
-> -	int                     n_lmbs;
-> +	unsigned int            n_lmbs;
->  	u32                     lmb_size;
->  };
->  
->  extern struct drmem_lmb_info *drmem_info;
->  
-> -#define for_each_drmem_lmb_in_range(lmb, start, end)		\
-> -	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
-> +static inline bool drmem_present(void)
-> +{
-> +	return drmem_info->lmbs != NULL;
-> +}
+One option is for PPC_FEATURE2_SCV to indicate 'scv 0' support, and a new H=
+WCAP
+bit assigned for each new scv vector supported for userspace. This is the m=
+ost
+regular and flexible approach. It requires the most HWCAP space, but vector
+usage is not expected to grow quickly.
 
-Yes, use of this test was also my first idea about the fix.
+Another option is for PPC_FEATURE2_SCV to indicate 'scv 0', and other vecto=
+rs
+will each return -ENOSYS, then when they are assigned to a new ABI, it will
+define a particular way they can be queried for support (which would return
+something other than -ENOSYS if supported). This will not require more HWCA=
+P
+bits, but it's less regular and more complicated to determine.
 
-> +static inline struct drmem_lmb *drmem_lmb_index(unsigned int index)
-> +{
-> +	if (!drmem_present())
-> +		return NULL;
->  
-> -#define for_each_drmem_lmb(lmb)					\
-> -	for_each_drmem_lmb_in_range((lmb),			\
-> -		&drmem_info->lmbs[0],				\
-> -		&drmem_info->lmbs[drmem_info->n_lmbs - 1])
-> +	if (WARN_ON(index >= drmem_info->n_lmbs))
-> +		return NULL;
+* Proposal is for PPC_FEATURE2_SCV to indicate 'scv 0' support, all other
+  vectors will return -ENOSYS, and the decision for how to add support for
+  a new vector deferred until we see the next user.
 
-Why is this WARN_ON needed?
+* Proposal is for scv 0 to provide the standard Linux system call ABI with =
+some
+  differences:
 
-> +
-> +	return &drmem_info->lmbs[index];
-> +}
-> +
-> +static inline struct drmem_lmb *drmem_first_lmb(void)
-> +{
-> +	return drmem_lmb_index(0);
-> +}
-> +
-> +static inline struct drmem_lmb *drmem_last_lmb(void)
-> +{
-> +	if (!drmem_present())
-> +		return NULL;
-> +
-> +	return drmem_lmb_index(drmem_info->n_lmbs - 1);
+- LR is volatile across scv calls. This is necessary for support because th=
+e
+  scv instruction clobbers LR.
 
-Is the unsigned integer wraparound intended in drmem_info->n_lmbs == 0 case?
+- CR1 and CR5-CR7 are volatile. This matches the C ABI and would allow the
+  system call exit to avoid restoring the CR register.
 
-> +}
-> +
-> +#define for_each_drmem_lmb(lmb)						\
-> +	for ((lmb) = drmem_first_lmb();					\
+- Error handling: use of CR0[SO] to indicate error requires a mtcr / mtocr
+  instruction on the kernel side, and it is currently not implemented well
+  in glibc, requiring a mfcr (mfocr should be possible and asm goto support
+  would allow a better implementation). Is it worth continuing this style o=
+f
+  error handling? Or just move to -ve return means error? Using a different
+  bit would allow the kernel to piggy back the CR return code setting with
+  a test for the error case exit.
 
-drmem_first_lmb() is essentially a call to drmem_info->lmbs(0). What
-happens if drmem_info->n_lmbs is zero and drmem_info->lmbs is not NULL?
+- R2 could be volatile as though it's an external function call, which
+  would avoid one store  in the system call entry path. However it would
+  require the caller to load R2 after the system call returns, where the
+  latency of the load can not be overlapped with the costly system call
+  exit sequence. On balance, it may be better to keep R2 as non-volatile.
 
-> +	     (lmb) != NULL && (lmb) <= drmem_last_lmb();		\
-> +	     (lmb)++)
-> +
-> +#define for_each_drmem_lmb_in_range(lmb, start, end)	\
-> +	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
->  
->  /*
->   * The of_drconf_cell_v1 struct defines the layout of the LMB data
-> 
+- Number of volatile registers available seems sufficient. Linux's 'sc'
+  handler is badly constrained here, but that is because it is shared
+  between both hypercall and syscall handlers, which have different
+  call conventions that share no volatile GPR registers! r9-r12 should
+  be quite enough.
 
-After all, I don't mind how the bug will be fixed. As you can see, my
-preference is towards simpler solutions.
+- Should this be for 64-bit only? 'scv 1' could be reserved for 32-bit
+  calls if there was interest in developing an ABI for 32-bit programs.
+  Marginal benefit in avoiding compat syscall selection.
 
-In my opinion your solution special-cased drmem_info->lmbs == NULL and opened
-the doorway to the combination of drmem_info->lmbs != NULL &&
-!drmem_info->n_lmbs. Maybe the condition can never become true but the code
-should IMHO be robust enough to handle it.
-
-Thanks!
-
-Libor
--- 
-Libor Pechacek
-SUSE Labs                                Remember to have fun...
+=
