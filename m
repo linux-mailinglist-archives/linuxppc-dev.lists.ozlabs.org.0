@@ -1,78 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252E514AECE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 06:00:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8573A14AE6F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 04:36:17 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486C2Q32HwzDqJ8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 14:36:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486DvX6SldzDqHg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 16:00:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=KHS74x6y; dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486Bz05BDYzDqBH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 14:33:15 +1100 (AEDT)
-Received: by mail-qt1-x842.google.com with SMTP id d9so9198081qte.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2020 19:33:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=hiF0rDs1H28qeAvw6niA1Fht63msxN8o6VOgzZRc4ZY=;
- b=KHS74x6yTx0RnN7ss0tz6JoIoUgSasIumDJZMZv93DPcof2L1ji3yecx4t+Jd3Mi0y
- nhP8AaMOJYfgwoZgDGCzvhuxs8L6/lFaOrIjyGg1+fn0M6Prx395HWnXkClydRQjs2gB
- ZEqWD0BAtPz9E0JKcr5erVXORB3D6kYVfb446oJmbSSMZHoltRCqLv3TEWCS4VyXgokl
- WClhm57Fzz9bDqlopLexq8FZKIpGq/nVddaadFBm4izkl0CzG3z0MPs0d9OlsUrBNBF7
- zQx4OBLh8MEjxjAFj5bePuEIU17leN8ASXF0lVZd6mLs8j+gGhYOl4HcWbf4FJsYsWKc
- zOHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=hiF0rDs1H28qeAvw6niA1Fht63msxN8o6VOgzZRc4ZY=;
- b=POViCpOoWPrZ6+VUz2Ox7/8l/ZAnF11ql5/Y4FsBxaB3XnPzeVSJ4jSjm5ReKSccwG
- 1xSf8qAVp7Xmc833E1bQmOlVB0yKiZ3hu8E+DSTiCRhzjBBnWMBhl60cmb0HP4fFal52
- NU+NmJt8t0gT9D5lpVJPn8ZD9IpPmJrUhcIIAEQ6gdr5sojZr/cqudSjKtQy4M4myI8A
- 4n3vUvUmUgXBF5LLqss2ZYb01AjMjPvIjux+uCH38CiaDuoOwsBoP8+q8QzoseUgdt04
- 8XxJ/IHaM7zas6+g6yXjnbI88Y1I8GXraJ0gCc7TrkpAAVlDzJ3fLPudlla28tuhveXJ
- rAqA==
-X-Gm-Message-State: APjAAAUrJwjSCbFkVY03SllP3Wpsk3YI4Im58JwcydU7eL7xdOEpWS3Q
- P2j7DwgVNS2EgCWWsXySiQpxaA==
-X-Google-Smtp-Source: APXvYqwv8G+QCXSGBnR3Z9NxxxYOPT18bysSnp4r4ypjfj9SFKtIHbtOKzlHQY2Zr1dmADEVne6QFQ==
-X-Received: by 2002:aed:25a4:: with SMTP id x33mr19760654qtc.165.1580182391598; 
- Mon, 27 Jan 2020 19:33:11 -0800 (PST)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id z126sm11409542qka.34.2020.01.27.19.33.09
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 27 Jan 2020 19:33:11 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.40.2.2.4\))
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 486Drx2f4dzDqFB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 15:58:06 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B96C31B;
+ Mon, 27 Jan 2020 20:58:03 -0800 (PST)
+Received: from [10.163.1.151] (unknown [10.163.1.151])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97BA23F68E;
+ Mon, 27 Jan 2020 20:57:49 -0800 (PST)
 Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
  table helpers
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <214c0d53-eb34-9b0c-2e4e-1aa005146331@arm.com>
-Date: Mon, 27 Jan 2020 22:33:08 -0500
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
+To: Qian Cai <cai@lca.pw>
 References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
  <14882A91-17DE-4ABD-ABF2-08E7CCEDF660@lca.pw>
  <214c0d53-eb34-9b0c-2e4e-1aa005146331@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-X-Mailer: Apple Mail (2.3608.40.2.2.4)
+ <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <012158b7-a40e-050f-cd1b-d6ce7faf042f@arm.com>
+Date: Tue, 28 Jan 2020 10:27:46 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,165 +83,159 @@ Sender: "Linuxppc-dev"
 
 
 
-> On Jan 27, 2020, at 10:06 PM, Anshuman Khandual =
-<anshuman.khandual@arm.com> wrote:
->=20
->=20
->=20
-> On 01/28/2020 07:41 AM, Qian Cai wrote:
->>=20
->>=20
->>> On Jan 27, 2020, at 8:28 PM, Anshuman Khandual =
-<Anshuman.Khandual@arm.com> wrote:
->>>=20
->>> This adds tests which will validate architecture page table helpers =
-and
->>> other accessors in their compliance with expected generic MM =
-semantics.
->>> This will help various architectures in validating changes to =
-existing
->>> page table helpers or addition of new ones.
->>>=20
->>> This test covers basic page table entry transformations including =
-but not
->>> limited to old, young, dirty, clean, write, write protect etc at =
-various
->>> level along with populating intermediate entries with next page =
-table page
->>> and validating them.
->>>=20
->>> Test page table pages are allocated from system memory with required =
-size
->>> and alignments. The mapped pfns at page table levels are derived =
-from a
->>> real pfn representing a valid kernel text symbol. This test gets =
-called
->>> right after page_alloc_init_late().
->>>=20
->>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected =
-along with
->>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also =
-need to
->>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to =
-x86 and
->>> arm64. Going forward, other architectures too can enable this after =
-fixing
->>> build or runtime problems (if any) with their page table helpers.
->=20
-> Hello Qian,
->=20
->>=20
->> What=E2=80=99s the value of this block of new code? It only supports =
-x86 and arm64
->> which are supposed to be good now.
->=20
-> We have been over the usefulness of this code many times before as the =
-patch is
-> already in it's V12. Currently it is enabled on arm64, x86 (except =
-PAE), arc and
-> ppc32. There are build time or runtime problems with other archs which =
-prevent
+On 01/28/2020 09:03 AM, Qian Cai wrote:
+> 
+> 
+>> On Jan 27, 2020, at 10:06 PM, Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>
+>>
+>>
+>> On 01/28/2020 07:41 AM, Qian Cai wrote:
+>>>
+>>>
+>>>> On Jan 27, 2020, at 8:28 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>>>
+>>>> This adds tests which will validate architecture page table helpers and
+>>>> other accessors in their compliance with expected generic MM semantics.
+>>>> This will help various architectures in validating changes to existing
+>>>> page table helpers or addition of new ones.
+>>>>
+>>>> This test covers basic page table entry transformations including but not
+>>>> limited to old, young, dirty, clean, write, write protect etc at various
+>>>> level along with populating intermediate entries with next page table page
+>>>> and validating them.
+>>>>
+>>>> Test page table pages are allocated from system memory with required size
+>>>> and alignments. The mapped pfns at page table levels are derived from a
+>>>> real pfn representing a valid kernel text symbol. This test gets called
+>>>> right after page_alloc_init_late().
+>>>>
+>>>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+>>>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+>>>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+>>>> arm64. Going forward, other architectures too can enable this after fixing
+>>>> build or runtime problems (if any) with their page table helpers.
+>>
+>> Hello Qian,
+>>
+>>>
+>>> What’s the value of this block of new code? It only supports x86 and arm64
+>>> which are supposed to be good now.
+>>
+>> We have been over the usefulness of this code many times before as the patch is
+>> already in it's V12. Currently it is enabled on arm64, x86 (except PAE), arc and
+>> ppc32. There are build time or runtime problems with other archs which prevent
+> 
+> I am not sure if I care too much about arc and ppc32 which are pretty much legacy
+> platforms.
 
-I am not sure if I care too much about arc and ppc32 which are pretty =
-much legacy
-platforms.
+Okay but FWIW the maintainers for all these enabled platforms cared for this test
+at the least and really helped in shaping the test to it's current state. Besides
+I am still failing to understand your point here about evaluating particular feature's
+usefulness based on it's support on relative and perceived importance of some platforms
+compared to others. Again the idea is to integrate all platforms eventually but we had
+discovered build and runtime issues which needs to be resolved at platform level first.
+Unless I am mistaken, debug feature like this which is putting down a framework while
+also benefiting some initial platforms to start with, will be a potential candidate for
+eventual inclusion in the mainline. Otherwise, please point to any other agreed upon
+community criteria for debug feature's mainline inclusion which I will try to adhere.
+I wonder if all other similar debug features from the past ever met 'the all inclusive
+at the beginning' criteria which you are trying to propose here. This test also adds a
+feature file, enlisting all supported archs as suggested by Ingo for the exact same
+reason. This is not the first time, a feature is listing out archs which are supported
+and archs which are not.
 
-> enablement of this test (for the moment) but then the goal is to =
-integrate all
-> of them going forward. The test not only validates platform's =
-adherence to the
-> expected semantics from generic MM but also helps in keeping it that =
-way during
-> code changes in future as well.
+> 
+>> enablement of this test (for the moment) but then the goal is to integrate all
+>> of them going forward. The test not only validates platform's adherence to the
+>> expected semantics from generic MM but also helps in keeping it that way during
+>> code changes in future as well.
+> 
+> Another option maybe to get some decent arches on board first before merging this
+> thing, so it have more changes to catch regressions for developers who might run this. 
+> 
+>>
+>>> Did those tests ever find any regression or this is almost only useful for new
+>>
+>> The test has already found problems with s390 page table helpers.
+> 
+> Hmm, that is pretty weak where s390 is not even official supported with this version.
 
-Another option maybe to get some decent arches on board first before =
-merging this
-thing, so it have more changes to catch regressions for developers who =
-might run this.=20
+And there were valid reasons why s390 could not be enabled just yet as explained by s390
+folks during our previous discussions. I just pointed out an example where this test was
+useful as you had asked previously. Not being official supported in this version does
+not take away the fact the it was indeed useful for that platform in discovering a bug.
 
->=20
->> Did those tests ever find any regression or this is almost only =
-useful for new
->=20
-> The test has already found problems with s390 page table helpers.
+> 
+>>
+>>> architectures which only happened once in a few years?
+>>
+>> Again, not only it validates what exist today but its also a tool to make
+>> sure that all platforms continue adhere to a common agreed upon semantics
+>> as reflected through the tests here.
+>>
+>>> The worry if not many people will use this config and code those that much in
+>>
+>> Debug features or tests in the kernel are used when required. These are never or
+>> should not be enabled by default. AFAICT this is true even for entire DEBUG_VM
+>> packaged tests. Do you have any particular data or precedence to substantiate
+>> the fact that this test will be used any less often than the other similar ones
+>> in the tree ? I can only speak for arm64 platform but the very idea for this
+>> test came from Catalin when we were trying to understand the semantics for THP
+>> helpers while enabling THP migration without split. Apart from going over the
+>> commit messages from the past, there were no other way to figure out how any
+>> particular page table helper is suppose to change given page table entry. This
+>> test tries to formalize those semantics.
+> 
+> I am thinking about how we made so many mistakes before by merging too many of
+> those debugging options that many of them have been broken for many releases
+> proving that nobody actually used them regularly. We don’t need to repeat the same
 
-Hmm, that is pretty weak where s390 is not even official supported with =
-this version.
+Again will ask for some data to substantiate these claims. Though I am not really
+sure but believe that there are integration test frameworks out there which regularly
+validates each of these code path on multiple platforms. One such automation found
+that V11 of the test was broken on X86 PAE platform which I fixed. Nonetheless, I can
+speak only for arm64 platform and we intend to use this test to validate arm64 exported
+page table helpers. Citing unsubstantiated past examples should not really block these
+enabled platforms (arm64 at the very least) from getting this debug feature which has
+already demonstrated it's usefulness during arm64 THP migration development and on s390
+platforms as well.
 
->=20
->> architectures which only happened once in a few years?
->=20
-> Again, not only it validates what exist today but its also a tool to =
-make
-> sure that all platforms continue adhere to a common agreed upon =
-semantics
-> as reflected through the tests here.
->=20
->> The worry if not many people will use this config and code those that =
-much in
->=20
-> Debug features or tests in the kernel are used when required. These =
-are never or
-> should not be enabled by default. AFAICT this is true even for entire =
-DEBUG_VM
-> packaged tests. Do you have any particular data or precedence to =
-substantiate
-> the fact that this test will be used any less often than the other =
-similar ones
-> in the tree ? I can only speak for arm64 platform but the very idea =
-for this
-> test came from Catalin when we were trying to understand the semantics =
-for THP
-> helpers while enabling THP migration without split. Apart from going =
-over the
-> commit messages from the past, there were no other way to figure out =
-how any
-> particular page table helper is suppose to change given page table =
-entry. This
-> test tries to formalize those semantics.
+> mistake again. I am actually thinking about to remove things like  page_poisoning often
+> which is almost are never found any bug recently and only cause pains when interacting
+> with other new features that almost nobody will test them together to begin with.
+> We even have some SLUB debugging code sit there for almost 15 years that almost
+> nobody used it and maintainers refused to remove it.
 
-I am thinking about how we made so many mistakes before by merging too =
-many of
-those debugging options that many of them have been broken for many =
-releases
-proving that nobody actually used them regularly. We don=E2=80=99t need =
-to repeat the same
-mistake again. I am actually thinking about to remove things like  =
-page_poisoning often
-which is almost are never found any bug recently and only cause pains =
-when interacting
-with other new features that almost nobody will test them together to =
-begin with.
-We even have some SLUB debugging code sit there for almost 15 years that =
-almost
-nobody used it and maintainers refused to remove it.
+Unlike those, the proposed test here is isolated as a stand alone test and stays clear
+off from any other code path. I have not been involved in or aware of the usefulness of
+existing MM debug features and hence will just leave them upto the judgment of the
+maintainers whether to keep or discard them.
 
->=20
->> the future because it is inefficient to find bugs, it will simply be =
-rotten
-> Could you be more specific here ? What parts of the test are =
-inefficient ? I
-> am happy to improve upon the test. Do let me know you if you have =
-suggestions.
->=20
->> like a few other debugging options out there we have in the mainline =
-that
-> will be a pain to remove later on.
->>=20
->=20
-> Even though I am not agreeing to your assessment about the usefulness =
-of the
-> test without any substantial data backing up the claims, the test case =
-in
-> itself is very much compartmentalized, staying clear from generic MM =
-and
-> debug_vm_pgtable() is only function executing the test which is =
-getting
-> called from kernel_init_freeable() path.
+> 
+>>
+>>> the future because it is inefficient to find bugs, it will simply be rotten
+>> Could you be more specific here ? What parts of the test are inefficient ? I
+>> am happy to improve upon the test. Do let me know you if you have suggestions.
+>>
+>>> like a few other debugging options out there we have in the mainline that
+>> will be a pain to remove later on.
+>>>
+>>
+>> Even though I am not agreeing to your assessment about the usefulness of the
+>> test without any substantial data backing up the claims, the test case in
+>> itself is very much compartmentalized, staying clear from generic MM and
+>> debug_vm_pgtable() is only function executing the test which is getting
+>> called from kernel_init_freeable() path.
+> 
+> I am thinking exactly the other way around. You are proposing to merge this tests
+> without proving how useful it will be able to find regressions for future developers
+> to make sure it will actually get used.
 
-I am thinking exactly the other way around. You are proposing to merge =
-this tests
-without proving how useful it will be able to find regressions for =
-future developers
-to make sure it will actually get used.
+As I had mentioned before, the test attempts to formalize page table helper semantics
+as expected from generic MM code paths and intend to catch deviations when enabled on
+a given platform. How else should we test semantics errors otherwise ? There are past
+examples of usefulness for this procedure on arm64 and on s390. I am wondering how
+else to prove the usefulness of a debug feature if these references are not enough.
 
+> 
