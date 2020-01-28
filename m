@@ -2,61 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EE614B09B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 09:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A158614B0B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 09:11:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486Jw95B2WzDqKs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 19:01:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486K7h0zJYzDqFZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 19:11:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p02-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5302::4;
- helo=mo6-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+99a02e0d02778047748b+6001+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=XNjnUC/9; 
- dkim-atps=neutral
-Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5302::4])
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486Jt46P5YzDqBj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 18:59:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1580198361;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=QV6nYKZBIO4WI3rfmuSOXDfWplBLhb0C0CHbzIiwZ5Q=;
- b=XNjnUC/9oezmdXTuM9CpY3RCc2GDzX717i2YtjICgMbOVQrUHBgKaDr8Ll881gMiSk
- zU26VYAHRMKtjZ3l9iPdvA93FUeMdtkmFyTS7mICtj8FtqKav6ZZX0tBZTBv/WhYMCBO
- +xtCZ4kZ5rQ9P+SORqAD1voOTZeFxB4EGoH86RctwMpQDw98hsZrQTVpgNxclQjUSEHL
- laTeNy401nR0Cr++HfV0YKO4MIsWGDncn6gojjNNX247drmjgWGnPIu/Dithg6ueANjb
- k7odfEvkCK4ylqdxHJ7qWa0co2pQWZfv6b5xGZqbYdNg8zmU5lVlr1l9r0FflGLxnZjr
- aRUQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhQIm3EseWh4IuTiRKK0dhKoJuKag=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:34b8:6e34:7a4d:c0db]
- by smtp.strato.de (RZmta 46.1.7 AUTH) with ESMTPSA id k0b198w0S7wULJ0
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 28 Jan 2020 08:58:30 +0100 (CET)
-Subject: [PASEMI PA6T PPC] Onboard CF card device with new SanDisk High (>8G)
- CF cards
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- Julian Margetson <runaway@candw.ms>, "contact@a-eon.com"
- <contact@a-eon.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Rob Herring <robh+dt@kernel.org>, Christoph Hellwig <hch@infradead.org>
-References: <20200108093903.57620-1-hdegoede@redhat.com>
- <20200108093903.57620-2-hdegoede@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486K584KR6zDqDs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 19:09:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
+ :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Fu3XLdvdr0IP82rYkgFcpjUv0Mxvp/OR1gY+ZDGdVqM=; b=dfbLU+6xsIWrtOs6Oft/5Nz4rl
+ 4GhQ96YPPd/+WCWPfzjxryOhu4o2nBMynHYhi+iExb5SndS+xEnPu35mIqiblHZyA8ftLG7qMaJ01
+ mIacK+l5KlpyWYFmkenj+92PNgY8Um1sYFKSxpDDSs4ss86oVKSAH/T8qoOKCWhGZhze03fu0Ig6L
+ GTCyi/Vrg40gVv+26SePbmLjwCSMdHAHFNAOcZjIm+FFef7eOAeg7TJTHg+9Tzjjl4Y/rkw4mDTT2
+ 2REMyFqJkGWeHsdlVpD0ARVaAU4OmHFnbzJtJxIm1gg/Wo19sAkE4kzkURfjd9/G29BM9aV8kIguj
+ RLXxvUkg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1iwLvF-000473-UG; Tue, 28 Jan 2020 08:08:33 +0000
+Date: Tue, 28 Jan 2020 00:08:33 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PASEMI PA6T PPC] Onboard CF card device with new SanDisk High
+ (>8G) CF cards
+Message-ID: <20200128080833.GA14099@infradead.org>
+References: <20200108093903.57620-2-hdegoede@redhat.com>
  <61bc9265-ece0-eeb6-d4a1-4631138ecf29@intel.com>
  <8d67882d-04a8-0607-be4e-c1430b7fda21@redhat.com>
  <84a32714-ba08-74a0-0c76-3c36db44dd68@intel.com>
@@ -65,16 +52,14 @@ References: <20200108093903.57620-1-hdegoede@redhat.com>
  <a9ab8946-c599-5f83-7527-2387a9e82e8a@xenosoft.de>
  <CAPDyKFoydOuSE=Eaq168=2_Ycouo7hzyw+RZXhGq7q4D4Qe8TQ@mail.gmail.com>
  <8736c5hyhr.fsf@mpe.ellerman.id.au>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <688f1943-5b81-6200-d4d9-38d21b69e180@xenosoft.de>
-Date: Tue, 28 Jan 2020 08:58:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ <688f1943-5b81-6200-d4d9-38d21b69e180@xenosoft.de>
 MIME-Version: 1.0
-In-Reply-To: <8736c5hyhr.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+In-Reply-To: <688f1943-5b81-6200-d4d9-38d21b69e180@xenosoft.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,20 +71,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+ Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+ Julian Margetson <runaway@candw.ms>, Christoph Hellwig <hch@infradead.org>,
+ Rob Herring <robh+dt@kernel.org>, "contact@a-eon.com" <contact@a-eon.com>,
+ mad skateman <madskateman@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
+On Tue, Jan 28, 2020 at 08:58:29AM +0100, Christian Zigotzky wrote:
+> Hi All,
+> 
+> Which mailing list is responsible for the pata_pcmcia driver? We are using
+> new SanDisk High (>8G) CF cards with this driver [1] and we need the
+> following line in the file "drivers/ata/pata_pcmcia.c".
+> 
+> +    PCMCIA_DEVICE_MANF_CARD(0x00f1, 0x0101),        /* SanDisk High (>8G)
+> CFA */
 
-Which mailing list is responsible for the pata_pcmcia driver? We are 
-using new SanDisk High (>8G) CF cards with this driver [1] and we need 
-the following line in the file "drivers/ata/pata_pcmcia.c".
-
-+Â Â Â  PCMCIA_DEVICE_MANF_CARD(0x00f1, 0x0101),Â Â Â  Â Â Â  /* SanDisk High 
-(>8G) CFA */
-
-Thanks,
-Christian
-
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?f=35&t=4282
+Please send a formal patch for it to linux-ide@vger.kernel.org
