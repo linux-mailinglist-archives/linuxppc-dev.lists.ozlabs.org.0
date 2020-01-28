@@ -1,140 +1,122 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B0914BE6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 18:22:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486YMr00xHzDqMp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 04:22:32 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A0D14BE86
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 18:28:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 486YVM2F66zDqFS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 04:28:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=synopsys.com (client-ip=149.117.73.133;
- helo=smtprelay-out1.synopsys.com; envelope-from=vineet.gupta1@synopsys.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::741;
+ helo=mail-qk1-x741.google.com; envelope-from=adhemerval.zanella@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=synopsys.com
+ dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
- header.s=mail header.b=eZFeKkwh; 
- dkim=fail reason="signature verification failed" (1024-bit key;
- unprotected) header.d=synopsys.onmicrosoft.com
- header.i=@synopsys.onmicrosoft.com header.a=rsa-sha256
- header.s=selector2-synopsys-onmicrosoft-com header.b=awPpksET; 
- dkim-atps=neutral
-X-Greylist: delayed 383 seconds by postgrey-1.36 at bilbo;
- Wed, 29 Jan 2020 04:20:55 AEDT
-Received: from smtprelay-out1.synopsys.com (sv2-smtprelay2.synopsys.com
- [149.117.73.133])
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=wILsJ/tE; dkim-atps=neutral
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486YKz1Hh8zDqLd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 04:20:53 +1100 (AEDT)
-Received: from mailhost.synopsys.com (badc-mailhost2.synopsys.com
- [10.192.0.18])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
- (No client certificate requested)
- by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 7695440806;
- Tue, 28 Jan 2020 17:14:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
- t=1580231667; bh=JvKmCuUTNL4iUOVu78Qd4rTdNCqY5tQQ1mVSu1JOuHs=;
- h=From:To:CC:Subject:Date:References:In-Reply-To:From;
- b=eZFeKkwhX7PH39cItmopJnaxxUclrKulcBr7XqovPBI0u+27T3d3X/lwjYopMqpR4
- tbn7Peh7ny7OM8jgb5H0wp4pXv6wbFCIMe/xqZpiKqRDoxXivA3Y61JLkpVs2BmPrP
- oOJp+sg7A/dJqr+lk/XdgvccsubHGWip/pTRuzy16K6YXYru6FBzFtU9pPAQ/4oTSC
- jnuvBVlNNdX+poh0gyu1XgRz/KvKgfKMndbms5jaLgfB+I9zaUU1rrRmU+NQQf1BM3
- GtYks05nCG8pQ4apNnJkeDh6zKfZdG4eiCPe9UjzunCiXZ9KQ9Co/cI5amv1PPY6JJ
- TxzRFwAhhH+DA==
-Received: from US01WEHTC3.internal.synopsys.com
- (us01wehtc3.internal.synopsys.com [10.15.84.232])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by mailhost.synopsys.com (Postfix) with ESMTPS id 762E0A0067;
- Tue, 28 Jan 2020 17:14:08 +0000 (UTC)
-Received: from us01hybrid1.internal.synopsys.com (10.200.27.51) by
- US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 28 Jan 2020 09:14:08 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (10.202.3.67) by
- mrs.synopsys.com (10.200.27.51) with Microsoft SMTP Server (TLS) id
- 14.3.408.0; Tue, 28 Jan 2020 09:14:07 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CXo+xcjlJ8WLICyJ2pOeYvTTCGSD1vYOrIk2jw6GYdpvFWmhyVoo0HC+w4VxSBwYXpZC1IHdyc4APuX9bhq/2d6N+iGAEJZHhxg1lWxwvwSK0vtVaxmqFMwdBA494CJ7O1wa0BFy6KknQMm676z1uXIymHOTFVoP61w57Mghp2/p+h/hN0afqWPshtF/xy7qn6MYBAd+Eu1L+YqylRTCYcmmdxtl6Y2yCCAUzu5OEQxtLnmQeCJQPGMARJJfXH94ssI0BXKxU8G5QuTbK0b/dT560YgkuS4lqk3PVkXoeKI8oFduuzRkYFT/msPZ+4AJlb8NyQfPy5cZ8RqaZe3ifw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JvKmCuUTNL4iUOVu78Qd4rTdNCqY5tQQ1mVSu1JOuHs=;
- b=eFOg0EKCPCv8E5mrPCfclCHSGXkJQl+JRHSlxVsN/84mDv3+9so7bA2h0fN9Y2SycxpLwFkTykMFv5eE18CuhRDkX5Dkl0bB/wLp5IQDr0FS4akyd/eCwMYQF1T6Wt+whlw7Mi2ChJ08FTW+L/RDKv19XDbtRQjB05edRZ5iqpLE6ONpaHnUiT03Cn96F1uU6sFkxXdfSO/9c6WIw0IwsA0HhJ+Lm0L88gMdkuWQXwwMEZ7z7c2QjVYbomGuNNeGDeWxgA1/Kp+DAGN67br5sXcLhorVBsIqmVauXLX0Pl8kJ4IfTuo5Xq+DrO2GRbSyuw5CanPkDXlWLgvV5S3PUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=synopsys.onmicrosoft.com; s=selector2-synopsys-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JvKmCuUTNL4iUOVu78Qd4rTdNCqY5tQQ1mVSu1JOuHs=;
- b=awPpksEToYbCsL8EJr5oIAO4xY7nsrKjgFZH7/4cGX0BusI3beLQEE2HYN/lzue7ukIUFO5rHAZg5J0NaHX0jnWhSRMVd1JjnCHpa8w9BIh0gn927HhNqw7a7uamoQT39/3HTgnH1mHOmEknKojWJ/UbbNSSBLuDexc3iN1F2Lw=
-Received: from BYAPR12MB3592.namprd12.prod.outlook.com (20.178.54.89) by
- BYAPR12MB3400.namprd12.prod.outlook.com (20.178.54.16) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2665.23; Tue, 28 Jan 2020 17:14:05 +0000
-Received: from BYAPR12MB3592.namprd12.prod.outlook.com
- ([fe80::39a1:22ee:7030:8333]) by BYAPR12MB3592.namprd12.prod.outlook.com
- ([fe80::39a1:22ee:7030:8333%6]) with mapi id 15.20.2665.026; Tue, 28 Jan 2020
- 17:14:05 +0000
-From: Vineet Gupta <Vineet.Gupta1@synopsys.com>
-To: Qian Cai <cai@lca.pw>, Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-Thread-Topic: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-Thread-Index: AQHV1XpKRF306px9dEGOLGVKM9THdaf/VaiAgAAPI4CAAAeRAIAA5V0A
-Date: Tue, 28 Jan 2020 17:14:05 +0000
-Message-ID: <b4ad58b0-304c-bd94-311e-1750c74ccf1f@synopsys.com>
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
- <14882A91-17DE-4ABD-ABF2-08E7CCEDF660@lca.pw>
- <214c0d53-eb34-9b0c-2e4e-1aa005146331@arm.com>
- <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
-In-Reply-To: <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=vgupta@synopsys.com; 
-x-originating-ip: [149.117.75.13]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 015da85d-ebc8-4a2d-e116-08d7a4157aa5
-x-ms-traffictypediagnostic: BYAPR12MB3400:
-x-microsoft-antispam-prvs: <BYAPR12MB34001B6A5074393F8FF29B93B60A0@BYAPR12MB3400.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 029651C7A1
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10019020)(366004)(189003)(199004)(6512007)(31696002)(4326008)(86362001)(498600001)(6506007)(53546011)(66556008)(6486002)(66476007)(64756008)(66446008)(76116006)(2906002)(66946007)(54906003)(110136005)(36756003)(81166006)(8936002)(81156014)(7416002)(7406005)(186003)(2616005)(26005)(71200400001)(31686004)(5660300002)(8676002);
- DIR:OUT; SFP:1102; SCL:1; SRVR:BYAPR12MB3400;
- H:BYAPR12MB3592.namprd12.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: synopsys.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: H9FcOT2KiM7N1fZ6eAAf0bUUR8ORXc9w/yszE4JY7j2uDrArNFHYOaQjOGjc8Y5IDC1cOW1sgFD/lG1P273BGxIuEMc6pZGMjop/S7sK+QFmqieOemMrngUuLKPRwMaZZvF2Ffyjs9+NztUznRPm4WS7OPE1pdKUYvgTS5YvYKlfr7H7Uba6QUlx9YFMcHyIulAJRjvBRSMpeLqSEBxRnjxt4W4mWrr+dGEvq49AYfO+d2FXz420wlVW/l+jwZg03qmA0WHf51jYdW6JAyMbCmcDOxq6xIaQopEdSjtLx4qWJsH9IL4eLQ3VRAbJ/ffUZ/IVa2qPUoZX+W2l4nfxSGMcPdZAxADXOgJbX6wec4KF8EgANU66C/CDgSQ8oV7SuaiAOZC5vY6Lz3dSHJdMtzulSl1QhwrPwTsBQx1jBVZbzz1j9Wj9xKmVfXnURIG9
-x-ms-exchange-antispam-messagedata: QglAsK9q4xtn8gOA0HmEBA5p49ezaKzQECgljgN7TYhC+kW0LnaZLBoYAU31XN6HrAkT+af34oE8+hSq+2ZimKtvB8Tn5D17KVH+BE8Qh3evckDfChPMuriryi4rNXidrja/rDPBe9ZkAxjiN5AswA==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7C4A7FD0FCAB004286BDCEDDB0447312@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486YS95PPkzDqCX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 04:26:11 +1100 (AEDT)
+Received: by mail-qk1-x741.google.com with SMTP id 21so14156181qky.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 09:26:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:subject:references:to:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=qrLxCF3gXXjAi7fh2HIPL9O2VyFYvQ93CdijTmizzpM=;
+ b=wILsJ/tEg9lAwVBA7GenytKrm38LDn5Wh1Lkw7uUvkG0Tkc5uJlCBg79vuo4flY0An
+ xpucQqb3I3z5dNReVHpfp3+ZuK6ujF0q9onm1JlBFoIcpdtwSydr+9uHBQ4uwB8L5F+B
+ 70JXSDmBdMzFge22CzZXXj/YaBUrLTTU0n4oGBIyPfmadfQa7LnTMOTEWNc5gPtO4O1m
+ Ht3DtYnJNIvk6hccKpgs3HERKecB0WD+Ro764RdXEXVeKMfDSNFRGXJ2un7l1RDQkSKk
+ GTG0DJ/oavmK0/gyoIr+EspoeJST+oGche0iXmPOdK88zEE+zfYPgHsv2IXxVP0SsEC2
+ vGzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:subject:references:to:autocrypt:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=qrLxCF3gXXjAi7fh2HIPL9O2VyFYvQ93CdijTmizzpM=;
+ b=mtLPOOml39pPJDpf6AstWZjGlCtYj1j1HcYu2/LD6kVYgmpWQIWrTbEYstC/YmPCTb
+ q54cOlR522xdXFfPSjZ4DPSu7QYadyRoJBPvz91xWsGswpMpOXHb1YKWA98Ja+pHZToj
+ roI3Lm5J9wnVy25mlxZ+neFgwLZtn9NGoaCzXmlRUoygK8iuQBf6cDvqCMgUIWSGaK/l
+ QHP40D2Ry+6TmTnD+ZAjFkyN0pTFI9PhHRtYiEGyCIUWqNE117fyAtJJ1jxokVCAj6cE
+ GxPA6jBcb7/6JceygXV5cIylyuBjLIcPMvWlFWMQgjapKgawjwmYJZ/M1LtNWOuR4Ihb
+ Q5/Q==
+X-Gm-Message-State: APjAAAVaM/fysB91mf9njdfLlXKSEapNICrfLebnuCHcFx2ZsermdgWC
+ 3iYo0bGMAXejhaje0/4cQ+DzTA==
+X-Google-Smtp-Source: APXvYqzMIfz6+seweZt0KvN9iBd8117/fFdk5bnBjJZQNo1bXbXk1kBjfhKyZBpuQPnH4f7SdHO8hA==
+X-Received: by 2002:a37:89c7:: with SMTP id
+ l190mr23537566qkd.498.1580232367961; 
+ Tue, 28 Jan 2020 09:26:07 -0800 (PST)
+Received: from [192.168.1.4] ([177.194.48.209])
+ by smtp.googlemail.com with ESMTPSA id a22sm12597279qtd.48.2020.01.28.09.26.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Jan 2020 09:26:07 -0800 (PST)
+From: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Subject: Re: powerpc Linux scv support and scv system call ABI proposal
+References: <1580207907.c96c1lh9t0.astroid@bobo.none>
+ <87tv4fd8wp.fsf@oldenburg2.str.redhat.com>
+ <1580218232.2tezmthp1x.astroid@bobo.none>
+To: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Autocrypt: addr=adhemerval.zanella@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <cd9e4b28-d577-8850-7c2b-a488fcb4740d@linaro.org>
+Date: Tue, 28 Jan 2020 14:26:04 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 015da85d-ebc8-4a2d-e116-08d7a4157aa5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jan 2020 17:14:05.0407 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KJHSGvi6NdcZH9ceNp0lebLg/K+ttp+GZqsB95A/Nqhj9KFLhw4LifAi9aMUgmiZ0UOj2lH7TyzAuw5/pJoTVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3400
-X-OriginatorOrg: synopsys.com
+In-Reply-To: <1580218232.2tezmthp1x.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -146,59 +128,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <Mark.Rutland@arm.com>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>, Tetsuo
- Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Dave Hansen <dave.hansen@intel.com>, Paul
- Mackerras <paulus@samba.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- arcml <linux-snps-arc@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>, Mark
- Brown <broonie@kernel.org>, "Kirill A .
- Shutemov" <kirill@shutemov.name>, Dan
- Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>, Ard
- Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Ralf Baechle <ralf@linux-mips.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Burton <paul.burton@mips.com>, Mike
- Rapoport <rppt@linux.vnet.ibm.com>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gMS8yNy8yMCA3OjMzIFBNLCBRaWFuIENhaSB3cm90ZToNCj4NCj4+PiBXaGF04oCZcyB0aGUg
-dmFsdWUgb2YgdGhpcyBibG9jayBvZiBuZXcgY29kZT8gSXQgb25seSBzdXBwb3J0cyB4ODYgYW5k
-IGFybTY0DQo+Pj4gd2hpY2ggYXJlIHN1cHBvc2VkIHRvIGJlIGdvb2Qgbm93Lg0KPj4gV2UgaGF2
-ZSBiZWVuIG92ZXIgdGhlIHVzZWZ1bG5lc3Mgb2YgdGhpcyBjb2RlIG1hbnkgdGltZXMgYmVmb3Jl
-IGFzIHRoZSBwYXRjaCBpcw0KPj4gYWxyZWFkeSBpbiBpdCdzIFYxMi4gQ3VycmVudGx5IGl0IGlz
-IGVuYWJsZWQgb24gYXJtNjQsIHg4NiAoZXhjZXB0IFBBRSksIGFyYyBhbmQNCj4+IHBwYzMyLiBU
-aGVyZSBhcmUgYnVpbGQgdGltZSBvciBydW50aW1lIHByb2JsZW1zIHdpdGggb3RoZXIgYXJjaHMg
-d2hpY2ggcHJldmVudA0KPiBJIGFtIG5vdCBzdXJlIGlmIEkgY2FyZSB0b28gbXVjaCBhYm91dCBh
-cmMgYW5kIHBwYzMyIHdoaWNoIGFyZSBwcmV0dHkgbXVjaCBsZWdhY3kNCj4gcGxhdGZvcm1zLg0K
-DQpZb3UgcmVhbGx5IG5lZWQgdG8gYnJ1c2ggdXAgb24geW91ciBkZWZpbml0aW9uIGFuZCBrbm93
-bGVkZ2Ugb2Ygd2hhdCAibGVnYWN5IiBtZWFucy4NCkFSQyBpcyBhY3RpdmVseSBtYWludGFpbmVk
-IGFuZCB1c2VkIGJ5IHNldmVyYWwgY3VzdG9tZXJzLCBzb21lIGluIGFyY2gvYXJjL3BsYXQqDQph
-bmQgc29tZSBub3QgaW4gdGhlcmUuDQpJdCBpcyBwcmVzZW50IGluIGJyb2FkYmFuZCByb3V0ZXJz
-IHVzZWQgYnkgbWFqb3IgSVNQLCBtYXNzaXZlbHkgbXVsdGljb3JlIGRlZXANCnBhY2tldCBpbnNw
-ZWN0aW9uIHN5c3RlbSBmcm9tIEVaQ2hpcCwgYW5kIG1hbnkgbW9yZS4uLi4NCg0KU3VyZSB5b3Ug
-bWF5IG5vdCBjYXJlIGFib3V0IHRoZW0sIGJ1dCB0aGUgbWFpbnRhaW5lcnMgZm9yIHRoZSBwbGF0
-Zm9ybXMgZG8uDQpJdCB3b3VsZCBoYXZlIGJlZW4gYmV0dGVyIGlmIHlvdSBoYWQgc3BlbnQgdGhl
-IHRpbWUgYW5kIGVuZXJneSBpbiBpbXByb3ZpbmcgdGhlDQpjb2RlIG92ZXIgMTIgcmV2aXNpb25z
-IHJhdGhlciB0aGFuIGJpa2Ugc2hlZGRpbmcuDQoNCi1WaW5lZXQNCg==
+
+
+On 28/01/2020 11:05, Nicholas Piggin wrote:
+> Florian Weimer's on January 28, 2020 11:09 pm:
+>> * Nicholas Piggin:
+>>
+>>> * Proposal is for PPC_FEATURE2_SCV to indicate 'scv 0' support, all other
+>>>   vectors will return -ENOSYS, and the decision for how to add support for
+>>>   a new vector deferred until we see the next user.
+>>
+>> Seems reasonable.  We don't have to decide this today.
+>>
+>>> * Proposal is for scv 0 to provide the standard Linux system call ABI with some
+>>>   differences:
+>>>
+>>> - LR is volatile across scv calls. This is necessary for support because the
+>>>   scv instruction clobbers LR.
+>>
+>> I think we can express this in the glibc system call assembler wrapper
+>> generators.  The mcount profiling wrappers already have this property.
+>>
+>> But I don't think we are so lucky for the inline system calls.  GCC
+>> recognizes an "lr" clobber with inline asm (even though it is not
+>> documented), but it generates rather strange assembler output as a
+>> result:
+>>
+>> long
+>> f (long x)
+>> {
+>>   long y;
+>>   asm ("#" : "=r" (y) : "r" (x) : "lr");
+>>   return y;
+>> }
+>>
+>> 	.abiversion 2
+>> 	.section	".text"
+>> 	.align 2
+>> 	.p2align 4,,15
+>> 	.globl f
+>> 	.type	f, @function
+>> f:
+>> .LFB0:
+>> 	.cfi_startproc
+>> 	mflr 0
+>> 	.cfi_register 65, 0
+>> #APP
+>>  # 5 "t.c" 1
+>> 	#
+>>  # 0 "" 2
+>> #NO_APP
+>> 	std 0,16(1)
+>> 	.cfi_offset 65, 16
+>> 	ori 2,2,0
+>> 	ld 0,16(1)
+>> 	mtlr 0
+>> 	.cfi_restore 65
+>> 	blr
+>> 	.long 0
+>> 	.byte 0,0,0,1,0,0,0,0
+>> 	.cfi_endproc
+>> .LFE0:
+>> 	.size	f,.-f
+>>
+>>
+>> That's with GCC 8.3 at -O2.  I don't understand what the ori is about.
+> 
+> ori 2,2,0 is the group terminating nop hint for POWER8 type cores
+> which had dispatch grouping rules.
+
+It worth to note that it aims to mitigate a load-hit-store cpu stall
+on some powerpc chips.
+
+> 
+>>
+>> I don't think we can save LR in a regular register around the system
+>> call, explicitly in the inline asm statement, because we still have to
+>> generate proper unwinding information using CFI directives, something
+>> that you cannot do from within the asm statement.
+>>
+>> Supporting this in GCC should not be impossible, but someone who
+>> actually knows this stuff needs to look at it.
+> 
+> The generated assembler actually seems okay to me. If we compile
+> something like a syscall and with -mcpu=power9:
+> 
+> long
+> f (long _r3, long _r4, long _r5, long _r6, long _r7, long _r8, long _r0)
+> {
+>   register long r0 asm ("r0") = _r0;
+>   register long r3 asm ("r3") = _r3;
+>   register long r4 asm ("r4") = _r4;
+>   register long r5 asm ("r5") = _r5;
+>   register long r6 asm ("r6") = _r6;
+>   register long r7 asm ("r7") = _r7;
+>   register long r8 asm ("r8") = _r8;
+> 
+>   asm ("# scv" : "=r"(r3) : "r"(r0), "r"(r4), "r"(r5), "r"(r6), "r"(r7), "r"(r8) : "lr", "ctr", "cc", "xer");
+> 
+>   return r3;
+> }
+> 
+> 
+> f:
+> .LFB0:
+>         .cfi_startproc
+>         mflr 0
+>         std 0,16(1)
+>         .cfi_offset 65, 16
+>         mr 0,9
+> #APP
+>  # 12 "a.c" 1
+>         # scv
+>  # 0 "" 2
+> #NO_APP
+>         ld 0,16(1)
+>         mtlr 0
+>         .cfi_restore 65
+>         blr
+>         .long 0
+>         .byte 0,0,0,1,0,0,0,0
+>         .cfi_endproc
+> 
+> That gets the LR save/restore right when we're also using r0.
+> 
+>>
+>>> - CR1 and CR5-CR7 are volatile. This matches the C ABI and would allow the
+>>>   system call exit to avoid restoring the CR register.
+>>
+>> This sounds reasonable, but I don't know what kind of knock-on effects
+>> this has.  The inline system call wrappers can handle this with minor
+>> tweaks.
+> 
+> Okay, good. In the end we would have to check code trace through the
+> kernel and libc of course, but I think there's little to no opportunity
+> to take advantage of current extra non-volatile cr regs.
+> 
+> mtcr has to write 8 independently renamed registers so it's cracked into
+> 2 insns on POWER9 (and likely to always be a bit troublesome). It's not
+> much in the scheme of a system call, but while we can tweak the ABI...
+
+We don't really need a mfcr/mfocr to implement the Linux syscall ABI on
+powerpc, we can use a 'bns+' plus a neg instead as:
+
+--
+#define internal_syscall6(name, err, nr, arg1, arg2, arg3, arg4, arg5,  \
+                          arg6)                                         \
+  ({                                                                    \
+    register long int r0  __asm__ ("r0") = (long int) (name);           \
+    register long int r3  __asm__ ("r3") = (long int) (arg1);           \
+    register long int r4  __asm__ ("r4") = (long int) (arg2);           \
+    register long int r5  __asm__ ("r5") = (long int) (arg3);           \
+    register long int r6  __asm__ ("r6") = (long int) (arg4);           \
+    register long int r7  __asm__ ("r7") = (long int) (arg5);           \
+    register long int r8  __asm__ ("r8") = (long int) (arg6);           \
+    __asm__ __volatile__                                                \
+      ("sc\n\t"                                                         \
+       "bns+ 1f\n\t"                                                    \
+       "neg %1, %1\n\t"                                                 \
+       "1:\n\t"                                                         \
+       : "+r" (r0), "+r" (r3), "+r" (r4), "+r" (r5), "+r" (r6),         \
+         "+r" (r7), "+r" (r8)                                           \
+       :                                                                \
+       : "r9", "r10", "r11", "r12",                                     \
+         "cr0", "memory");                                              \
+    r3;                                                                 \
+  })
+--
+
+And change INTERNAL_SYSCALL_ERROR_P to check for the expected invalid
+range (((unsigned long) (val) >= (unsigned long) -4095)) and 
+INTERNAL_SYSCALL_ERRNO to return a negative value (since the value will
+be negated by INTERNAL_SYSCALL_ERROR_P).
+
+The powerpc kernel ABI to use a different constraint to signal error
+also requires glibc to reimplement the vDSO symbol call to be arch
+specific instead a straight function call (since it might fallbacks
+to a syscall).
+
+Even for POWER-specific system call that uses all result bits, either
+it should not fail or it would require a arch-specific implementation
+to setup the expected error value (since the information would require
+another source or a pre-defined value). 
+
+In fact I think we make the assumption that INTERNAL_SYSCALL returns
+a negative errno value in case or an error and make all the handling
+to check for a syscall failure and errno setting generic. This will
+required change ia64, mips, nios2, and sparc though.
+
+> 
+>>
+>>> - Error handling: use of CR0[SO] to indicate error requires a mtcr / mtocr
+>>>   instruction on the kernel side, and it is currently not implemented well
+>>>   in glibc, requiring a mfcr (mfocr should be possible and asm goto support
+>>>   would allow a better implementation). Is it worth continuing this style of
+>>>   error handling? Or just move to -ve return means error? Using a different
+>>>   bit would allow the kernel to piggy back the CR return code setting with
+>>>   a test for the error case exit.
+>>
+>> GCC does not model the condition registers, so for inline system calls,
+>> we have to produce a value anyway that the subsequence C code can check.
+>> The assembler syscall wrappers do not need to do this, of course, but
+>> I'm not sure which category of interfaces is more important.
+> 
+> Right. asm goto can improve this kind of pattern if it's inlined
+> into the C code which tests the result, it can branch using the flags
+> to the C error handling label, rather than move flags into GPR, test
+> GPR, branch. However...
+> 
+>> But the kernel uses the -errno convention internally, so I think it
+>> would make sense to pass this to userspace and not convert back and
+>> forth.  This would align with what most of the architectures do, and
+>> also avoids the GCC oddity.
+> 
+> Yes I would be interested in opinions for this option. It seems like
+> matching other architectures is a good idea. Maybe there are some
+> reasons not to.
+> 
+>>> - Should this be for 64-bit only? 'scv 1' could be reserved for 32-bit
+>>>   calls if there was interest in developing an ABI for 32-bit programs.
+>>>   Marginal benefit in avoiding compat syscall selection.
+>>
+>> We don't have an ELFv2 ABI for 32-bit.  I doubt it makes sense to
+>> provide an ELFv1 port for this given that it's POWER9-specific.
+> 
+> Okay. There's no reason not to enable this for BE, at least for the
+> kernel it's no additional work so it probably remains enabled (unless
+> there is something really good we could do with the ABI if we exclude
+> ELFv1 but I don't see anything).
+> 
+> But if glibc only builds for ELFv2 support that's probably reasonable.
+> 
+>>
+>> From the glibc perspective, the major question is how we handle run-time
+>> selection of the system call instruction sequence.  On i386, we use a
+>> function pointer in the TCB to call an instruction sequence in the vDSO.
+>> That's problematic from a security perspective.  I expect that on
+>> POWER9, using a pointer in read-only memory would be equally
+>> non-attractive due to a similar lack of PC-relative addressing.  We
+>> could use the HWCAP bit in the TCB, but that would add another (easy to
+>> predict) conditional branch to every system call.
+> 
+> I would have to defer to glibc devs on this. Conditional branch
+> should be acceptable I think, scv improves speed as much as several
+> mispredicted branches (about 90 cycles).
+> 
+>> I don't think it matters whether both system call variants use the same
+>> error convention because we could have different error code extraction
+>> code on the two branches.
+> 
+> That's one less difficulty.
+
+We already had to push a similar hack where glibc used to abort transactions
+prior syscalls to avoid some side-effects on kernel (commit 56cf2763819d2f).
+It was eventually removed from syscall handling by f0458cf4f9ff3d870, where
+we only enable TLE if kernel suppors PPC_FEATURE2_HTM_NOSC.
+
+The transaction syscall abort used to read a variable directly from TCB,
+so this could be an option. I would expect that we could optimize it where
+if glibc is building against a recent kernel and compiler is building
+for a ISA 3.0+ cpu we could remove the 'sc' code.
