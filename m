@@ -1,75 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1E214B1D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 10:40:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01CA14B0BC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 09:14:04 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486KBx4YDXzDqG0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 19:14:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486M6w281bzDqLj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2020 20:40:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::141;
- helo=mail-lf1-x141.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.a=rsa-sha256 header.s=google header.b=YsPuHSyJ; 
- dkim-atps=neutral
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
- [IPv6:2a00:1450:4864:20::141])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486K8t43rtzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 19:12:13 +1100 (AEDT)
-Received: by mail-lf1-x141.google.com with SMTP id n25so8398631lfl.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 00:12:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:from:to:cc:references:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=YtcRS1L5k8wBwwPdgRKCV0zDBNlxax9vadneAgBCrDM=;
- b=YsPuHSyJhbIqoeJPTniUj3/nc9kroQ5qUmdrzSLMXulbuST72e/qK6II+7d2ypcXnL
- WQoSVOv4y9f3Ov9svBNHmkQ16+V+HhE5ezmG18N673upe2+lor6gIHHtJd3a7p1v4qA+
- Fsxg2JFNAHVGCkVHzFvd7NiYxfQgKUd9XmN1g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:cc:references:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=YtcRS1L5k8wBwwPdgRKCV0zDBNlxax9vadneAgBCrDM=;
- b=ZMNKxuNPhz0C/4dbV3IDAg40zjHN4AWZgfwiP5KBPpVTqDrRZSr7S20hwDbtYlK6cf
- 0gfBIm2pFIKL4xjEsqND0xL50KdeZdSpokn7ADW/aeR0G/bZwfgMGH1GnEHEjMDq3SYl
- gotCyPFyQ+kjJAVRymhaHY9TkV91DS9DShNORkRp7M+5jorOZHs1/FEPrA7lykTOY7aA
- cRgiPNbwg62cVFZTZCgZMvQ89dB6m3M/FTECUWTlZbfWdBz/7nnrErq9l/BuItNvmzX/
- WX+Y+/DtVVnp5wpdAe5YbbUPwunlz3DoTApmEvSPqcvNuhco1tHCqlaEo7R8KsPKjLA0
- BaHQ==
-X-Gm-Message-State: APjAAAUH4bE7mXg3z261+TMQ+HkZqKh2+cYJ9YBPlUAx5LD2GpS35+DQ
- z88D1oBenlPhC+bvLdPnsNhZMw==
-X-Google-Smtp-Source: APXvYqxHAUbMIrGBLdv8Yti7EDHcHua1MWBUehPXejuLPYcnKyCX57FpmTzajDy4Sg/aAffBMQXHgA==
-X-Received: by 2002:ac2:5964:: with SMTP id h4mr1665454lfp.213.1580199127298; 
- Tue, 28 Jan 2020 00:12:07 -0800 (PST)
-Received: from [172.16.11.50] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id i13sm9246212ljg.89.2020.01.28.00.12.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Jan 2020 00:12:06 -0800 (PST)
-Subject: Re: vmlinux ELF header sometimes corrupt
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: LKML <linux-kernel@vger.kernel.org>
-References: <71aa76d0-a3b8-b4f3-a7c3-766cfb75412f@rasmusvillemoes.dk>
-Message-ID: <5997e9b6-95fd-405b-05f8-16f9e34d9d87@rasmusvillemoes.dk>
-Date: Tue, 28 Jan 2020 09:12:05 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486M4F1L3qzDqC3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 20:38:20 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00S9bCmn060704
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 04:38:18 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xrk2f43as-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2020 04:38:17 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
+ Tue, 28 Jan 2020 09:38:15 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 28 Jan 2020 09:38:10 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00S9c9FS59899944
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Jan 2020 09:38:09 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 230EFAE051;
+ Tue, 28 Jan 2020 09:38:09 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD1FFAE045;
+ Tue, 28 Jan 2020 09:38:06 +0000 (GMT)
+Received: from [9.124.35.38] (unknown [9.124.35.38])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Jan 2020 09:38:06 +0000 (GMT)
+Subject: Re: [PATCH v16 00/23] selftests, powerpc, x86: Memory Protection Keys
+To: Dave Hansen <dave.hansen@intel.com>
+References: <cover.1579507768.git.sandipan@linux.ibm.com>
+ <3ceb2814-f8b0-ec6b-3c24-ec72297a99f5@intel.com>
+ <8f14bee0-ab1c-fc90-dfdb-5128607b767f@linux.ibm.com>
+ <3eca7a91-aa3e-cb01-47c8-5d36020993a2@intel.com>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Date: Tue, 28 Jan 2020 15:08:06 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <71aa76d0-a3b8-b4f3-a7c3-766cfb75412f@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <3eca7a91-aa3e-cb01-47c8-5d36020993a2@intel.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20012809-0028-0000-0000-000003D51B29
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20012809-0029-0000-0000-000024996203
+Message-Id: <fb83ce52-b92a-ed42-dc06-a86ca8431ff6@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-28_02:2020-01-24,
+ 2020-01-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 suspectscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001280078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,73 +94,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ext4@vger.kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, linuxram@us.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+ linux-kselftest@vger.kernel.org, msuchanek@suse.de, shuah@kernel.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/01/2020 18.52, Rasmus Villemoes wrote:
-> I'm building for a ppc32 (mpc8309) target using Yocto, and I'm hitting a
-> very hard to debug problem that maybe someone else has encountered. This
-> doesn't happen always, perhaps 1 in 8 times or something like that.
-> 
-> The issue is that when the build gets to do "${CROSS}objcopy -O binary
-> ... vmlinux", vmlinux is not (no longer) a proper ELF file, so naturally
-> that fails with
-> 
->   powerpc-oe-linux-objcopy:vmlinux: file format not recognized
-> 
-> So I hacked link-vmlinux.sh to stash copies of vmlinux before and after
-> sortextable vmlinux. Both of those are proper ELF files, and comparing
-> the corrupted vmlinux to vmlinux.after_sort they are identical after the
-> first 52 bytes; in vmlinux, those first 52 bytes are all 0.
-> 
-> I also saved stat(1) info to see if vmlinux is being replaced or
-> modified in-place.
-> 
-> $ cat vmlinux.stat.after_sort
->   File: 'vmlinux'
->   Size: 8608456     Blocks: 16696      IO Block: 4096   regular file
-> Device: 811h/2065d  Inode: 21919132    Links: 1
-> Access: (0755/-rwxr-xr-x)  Uid: ( 1000/    user)   Gid: ( 1001/    user)
-> Access: 2020-01-22 10:52:38.946703081 +0000
-> Modify: 2020-01-22 10:52:38.954703105 +0000
-> Change: 2020-01-22 10:52:38.954703105 +0000
-> 
-> $ stat vmlinux
->   File: 'vmlinux'
->   Size: 8608456         Blocks: 16688      IO Block: 4096   regular file
-> Device: 811h/2065d      Inode: 21919132    Links: 1
-> Access: (0755/-rwxr-xr-x)  Uid: ( 1000/    user)   Gid: ( 1001/    user)
-> Access: 2020-01-22 17:20:00.650379057 +0000
-> Modify: 2020-01-22 10:52:38.954703105 +0000
-> Change: 2020-01-22 10:52:38.954703105 +0000
-> 
-> So the inode number and mtime/ctime are exactly the same, but for some
-> reason Blocks: has changed? This is on an ext4 filesystem, but I don't
-> suspect the filesystem to be broken, because it's always just vmlinux
-> that ends up corrupt, and always in exactly this way with the first 52
-> bytes having been wiped.
+Hi Dave,
 
-So, I think I take that last part back. I just hit a case where I built
-the kernel manually, made a copy of vmlinux to vmlinux.copy, and file(1)
-said both were fine (and cmp(1) agreed they were identical). Then I went
-off and did work elsewhere with a lot of I/O. When I came back to the
-linux build dir, vmlinux was broken, exactly as before. So I now suspect
-it to be some kind of "while the file is in the pagecache, everything is
-fine, but when it's read back from disk it's broken".
+On 27/01/20 9:12 pm, Dave Hansen wrote:
+> 
+> How have you tested this patch (and the whole series for that matter)?
+> 
 
-My ext4 fs does have inline_data enabled, which could explain why the
-corruption happens in the beginning. It's just very odd that it only
-ever seems to trigger for vmlinux and not other files, but perhaps the
-I/O patterns that ld and/or sortextable does are exactly what are needed
-to trigger the bug.
+I replaced the second patch with this one and did a build test.
+Till v16, I had tested the whole series (build + run) on both a POWER8
+system (with 4K and 64K page sizes) and a Skylake SP system but for
+x86_64 only. Following that, I could only do a build test locally on
+my laptop for i386 and x86_64 on my laptop as I did not have access to
+the Skylake system anymore.
 
-I've done a long overdue kernel update, and there are quite a few
-fs/ext4/ -stable patches in there, so now I'll see if it still happens.
-And if anything more comes of this, I'll remove the kbuild and ppc lists
-from cc, sorry for the noise.
+This is how I tested the build process:
 
-Rasmus
+$ cd linux
+$ make -C tools/testing/selftests
+...
+make[1]: Entering directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+...
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+...
+
+$ make -C tools/testing/selftests clean
+$ make -C tools/testing/selftests/vm
+make: Entering directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+make --no-builtin-rules ARCH=x86_64 -C ../../../.. headers_install
+make[1]: Entering directory '/home/sandipan/.devel/linux'
+  INSTALL ./usr/include
+make[1]: Leaving directory '/home/sandipan/.devel/linux'
+...
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+...
+
+$ make -C tools/testing/selftests/vm clean
+$ make -C tools/testing/selftests/vm protection_keys
+make: Entering directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+make: Leaving directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+
+$ make -C tools/testing/selftests/vm clean
+$ make -C tools/testing/selftests/vm protection_keys_32
+make: Entering directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+make: Leaving directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+
+$ make -C tools/testing/selftests/vm protection_keys_64
+make: Entering directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+make: Leaving directory '/home/sandipan/.devel/linux/tools/testing/selftests/vm'
+
+$ make -C tools/testing/selftests/vm clean
+$ cd tools/testing/selftests/vm
+$ make
+make --no-builtin-rules ARCH=x86_64 -C ../../../.. headers_install
+make[1]: Entering directory '/home/sandipan/.devel/linux'
+  INSTALL ./usr/include
+make[1]: Leaving directory '/home/sandipan/.devel/linux'
+...
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+...
+
+$ make clean
+$ make protection_keys
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+
+$ make clean
+$ make protection_keys_32
+gcc -Wall -I ../../../../usr/include  -no-pie -m32  protection_keys.c -lrt -lrt -ldl -lm -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_32
+
+$ make protection_keys_64
+gcc -Wall -I ../../../../usr/include  -no-pie -m64  protection_keys.c -lrt -lrt -ldl -o /home/sandipan/.devel/linux/tools/testing/selftests/vm/protection_keys_64
+
+
+- Sandipan
+
