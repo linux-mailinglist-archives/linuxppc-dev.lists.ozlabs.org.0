@@ -2,31 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BCA14C657
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 07:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4995714C659
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 07:07:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486tHv1833zDqND
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 17:05:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486tKx5rMPzDqRD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 17:07:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486sDw3H68zDqNG
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486sDw3FLQzDqN8
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 16:17:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 486sDs3h6zz9sSP; Wed, 29 Jan 2020 16:17:32 +1100 (AEDT)
+ id 486sDr53nSz9sSF; Wed, 29 Jan 2020 16:17:32 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: fbee6ba2dca30d302efe6bddb3a886f5e964a257
-In-Reply-To: <1578632042-12415-1-git-send-email-kernelfans@gmail.com>
-To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: 7e6f8cbc5e10cf7601c762db267b795273d53078
+In-Reply-To: <20200108064647.169637-1-aneesh.kumar@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, dan.j.williams@intel.com,
+ "Oliver O'Halloran" <oohall@gmail.com>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pseries: in lmb_is_removable(),
- advance pfn if section is not present
-Message-Id: <486sDs3h6zz9sSP@ozlabs.org>
+Subject: Re: [PATCH] powerpc/papr_scm: Don't enable direct map for a region by
+ default
+Message-Id: <486sDr53nSz9sSF@ozlabs.org>
 Date: Wed, 29 Jan 2020 16:17:32 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -39,23 +40,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Pingfan Liu <kernelfans@gmail.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-01-10 at 04:54:02 UTC, Pingfan Liu wrote:
-> In lmb_is_removable(), if a section is not present, it should continue to
-> test the rest sections in the block. But the current code fails to do so.
+On Wed, 2020-01-08 at 06:46:47 UTC, "Aneesh Kumar K.V" wrote:
+> Setting ND_REGION_PAGEMAP flag implies namespace mode defaults to fsdax mode.
+> This also means kernel ends up creating struct page backing for these namspace
+> ranges. With large namespaces that is not the right thing to do. We
+> should let the user select the mode he/she wants the namespace to be created
+> with.
 > 
-> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> To: linuxppc-dev@lists.ozlabs.org
+> Hence disable ND_REGION_PAGEMAP for papr_scm regions. We still keep the flag for
+> of_pmem because it supports only small persistent memory regions.
+> 
+> This is similar to what is done for x86 with commit
+> commit: 004f1afbe199 ("libnvdimm, pmem: direct map legacy pmem by default")
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/fbee6ba2dca30d302efe6bddb3a886f5e964a257
+https://git.kernel.org/powerpc/c/7e6f8cbc5e10cf7601c762db267b795273d53078
 
 cheers
