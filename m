@@ -2,32 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABCC14C66E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 07:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7725D14C674
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 07:24:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486td93s26zDqX3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 17:20:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 486tk207xpzDqYS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 17:24:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486sF31nTszDqNV
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486sF35QYmzDqNb
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 16:17:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 486sF15MZrz9sRs; Wed, 29 Jan 2020 16:17:41 +1100 (AEDT)
+ id 486sF25VYjz9sSc; Wed, 29 Jan 2020 16:17:42 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 1e3531982ee70adf1880715a968d9c3365f321ed
-In-Reply-To: <20200121013153.9937-1-chenzhou10@huawei.com>
-To: Chen Zhou <chenzhou10@huawei.com>, <benh@kernel.crashing.org>,
- <paulus@samba.org>
+X-powerpc-patch-commit: 414f50434aa2463202a5b35e844f4125dd1a7101
+In-Reply-To: <20200122031125.25991-1-oohall@gmail.com>
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH -next] powerpc/maple: fix comparing pointer to 0
-Message-Id: <486sF15MZrz9sRs@ozlabs.org>
-Date: Wed, 29 Jan 2020 16:17:41 +1100 (AEDT)
+Subject: Re: [PATCH] selftests/eeh: Bump EEH wait time to 60s
+Message-Id: <486sF25VYjz9sSc@ozlabs.org>
+Date: Wed, 29 Jan 2020 16:17:42 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,24 +38,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenzhou10@huawei.com, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, nivedita@alum.mit.edu, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org, allison@lohutok.net
+Cc: Oliver O'Halloran <oohall@gmail.com>, Douglas Miller <dougmill@us.ibm.com>,
+ Steve Best <sbest@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-01-21 at 01:31:53 UTC, Chen Zhou wrote:
-> Fixes coccicheck warning:
-> ./arch/powerpc/platforms/maple/setup.c:232:15-16:
-> 	WARNING comparing pointer to 0
+On Wed, 2020-01-22 at 03:11:25 UTC, Oliver O'Halloran wrote:
+> Some newer cards supported by aacraid can take up to 40s to recover
+> after an EEH event. This causes spurious failures in the basic EEH
+> self-test since the current maximim timeout is only 30s.
 > 
-> Compare pointer-typed values to NULL rather than 0.
+> Fix the immediate issue by bumping the timeout to a default of 60s,
+> and allow the wait time to be specified via an environmental variable
+> (EEH_MAX_WAIT).
 > 
-> Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+> Reported-by: Steve Best <sbest@redhat.com>
+> Suggested-by: Douglas Miller <dougmill@us.ibm.com>
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/1e3531982ee70adf1880715a968d9c3365f321ed
+https://git.kernel.org/powerpc/c/414f50434aa2463202a5b35e844f4125dd1a7101
 
 cheers
