@@ -1,34 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984E414C61A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 06:48:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 486swp5h8KzDqHG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 16:48:42 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9F14C621
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 06:52:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 486t120VbmzDqGx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 16:52:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 486sDl6j1vzDqN1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 16:17:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 486sDn0GhWzDqMm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 16:17:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 486sDl4nWCz9sRk; Wed, 29 Jan 2020 16:17:27 +1100 (AEDT)
+ id 486sDm0x6Cz9sRl; Wed, 29 Jan 2020 16:17:28 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 39bccfd164970557c5cfc60b2db029f70542549f
-In-Reply-To: <22469e78230edea3dbd0c79a555d73124f6c6d93.1576916812.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: 0f9aee0cb9da7db7d96f63cfa2dc5e4f1bffeb87
+In-Reply-To: <0728849e826ba16f1fbd6fa7f5c6cc87bd64e097.1577087627.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, dja@axtens.net
+ Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v5 01/17] powerpc/32: replace MTMSRD() by mtmsr
-Message-Id: <486sDl4nWCz9sRk@ozlabs.org>
-Date: Wed, 29 Jan 2020 16:17:27 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/mm: don't log user reads to 0xffffffff
+Message-Id: <486sDm0x6Cz9sRl@ozlabs.org>
+Date: Wed, 29 Jan 2020 16:17:28 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,22 +40,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2019-12-21 at 08:32:22 UTC, Christophe Leroy wrote:
-> On PPC32, MTMSRD() is simply defined as mtmsr.
+On Mon, 2019-12-23 at 07:54:22 UTC, Christophe Leroy wrote:
+> Running vdsotest leaves many times the following log:
 > 
-> Replace MTMSRD(reg) by mtmsr reg in files dedicated to PPC32,
-> this makes the code less obscure.
+> [   79.629901] vdsotest[396]: User access of kernel address (ffffffff) - exploit attempt? (uid: 0)
+> 
+> A pointer set to (-1) is likely a programming error similar to
+> a NULL pointer and is not worth logging as an exploit attempt.
+> 
+> Don't log user accesses to 0xffffffff.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/39bccfd164970557c5cfc60b2db029f70542549f
+https://git.kernel.org/powerpc/c/0f9aee0cb9da7db7d96f63cfa2dc5e4f1bffeb87
 
 cheers
