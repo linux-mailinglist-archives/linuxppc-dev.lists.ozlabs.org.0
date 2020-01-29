@@ -1,85 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3E714D0E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 20:02:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9822714D042
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2020 19:17:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487BY936lCzDqTF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 05:17:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487CY260krzDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 06:02:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487BNk4GJ4zDqSd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 05:10:24 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00TI7T6x129481; Wed, 29 Jan 2020 13:10:17 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xtpmtaccq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jan 2020 13:10:17 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 00TI7k5O131193;
- Wed, 29 Jan 2020 13:10:16 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xtpmtacc5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jan 2020 13:10:16 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00TI53W7010000;
- Wed, 29 Jan 2020 18:10:15 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma05wdc.us.ibm.com with ESMTP id 2xrda741py-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jan 2020 18:10:15 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00TIAEa456164636
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 Jan 2020 18:10:14 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D75DC605D;
- Wed, 29 Jan 2020 18:10:14 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7928DC6062;
- Wed, 29 Jan 2020 18:10:14 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.32])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 29 Jan 2020 18:10:14 +0000 (GMT)
-Date: Wed, 29 Jan 2020 12:10:13 -0600
-From: Scott Cheloha <cheloha@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/drmem: cache LMBs in xarray to accelerate lookup
-Message-ID: <20200129181013.lz6q5lpntnhwclqi@rascal.austin.ibm.com>
-References: <20200128221113.17158-1-cheloha@linux.ibm.com>
- <87pnf3i188.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487CTH724PzDqQH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 05:59:24 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2020 10:59:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,378,1574150400"; d="scan'208";a="232563501"
+Received: from ray.jf.intel.com (HELO [10.7.201.139]) ([10.7.201.139])
+ by orsmga006.jf.intel.com with ESMTP; 29 Jan 2020 10:59:21 -0800
+Subject: Re: [PATCH v16 00/23] selftests, powerpc, x86: Memory Protection Keys
+To: Sandipan Das <sandipan@linux.ibm.com>
+References: <cover.1579507768.git.sandipan@linux.ibm.com>
+ <3ceb2814-f8b0-ec6b-3c24-ec72297a99f5@intel.com>
+ <8f14bee0-ab1c-fc90-dfdb-5128607b767f@linux.ibm.com>
+ <3eca7a91-aa3e-cb01-47c8-5d36020993a2@intel.com>
+ <fb83ce52-b92a-ed42-dc06-a86ca8431ff6@linux.ibm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Message-ID: <ca6cfdeb-00f2-d926-e4e1-c1723cc25445@intel.com>
+Date: Wed, 29 Jan 2020 10:59:21 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pnf3i188.fsf@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-29_05:2020-01-28,
- 2020-01-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- adultscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 spamscore=0
- suspectscore=1 impostorscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1911200001 definitions=main-2001290146
+In-Reply-To: <fb83ce52-b92a-ed42-dc06-a86ca8431ff6@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,43 +100,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Fontenont <ndfont@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, linuxram@us.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+ linux-kselftest@vger.kernel.org, msuchanek@suse.de, shuah@kernel.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 28, 2020 at 05:56:55PM -0600, Nathan Lynch wrote:
-> Scott Cheloha <cheloha@linux.ibm.com> writes:
-> > LMB lookup is currently an O(n) linear search.  This scales poorly when
-> > there are many LMBs.
-> >
-> > If we cache each LMB by both its base address and its DRC index
-> > in an xarray we can cut lookups to O(log n), greatly accelerating
-> > drmem initialization and memory hotplug.
-> >
-> > This patch introduces two xarrays of of LMBs and fills them during
-> > drmem initialization.  The patch also adds two interfaces for LMB
-> > lookup.
-> 
-> Good but can you replace the array of LMBs altogether
-> (drmem_info->lmbs)? xarray allows iteration over the members if needed.
+On 1/28/20 1:38 AM, Sandipan Das wrote:
+> On 27/01/20 9:12 pm, Dave Hansen wrote:
+>> How have you tested this patch (and the whole series for that matter)?
+>>
+> I replaced the second patch with this one and did a build test.
+> Till v16, I had tested the whole series (build + run) on both a POWER8
+> system (with 4K and 64K page sizes) and a Skylake SP system but for
+> x86_64 only.
 
-I don't think we can without potentially changing the current behavior.
-
-The current behavior in dlpar_memory_{add,remove}_by_ic() is to advance
-linearly through the array from the LMB with the matching DRC index.
-
-Iteration through the xarray via xa_for_each_start() will return LMBs
-indexed with monotonically increasing DRC indices.
-
-Are they equivalent?  Or can we have an LMB with a smaller DRC index
-appear at a greater offset in the array?
-
-If the following condition is possible:
-
-	drmem_info->lmbs[i].drc_index > drmem_info->lmbs[j].drc_index
-
-where i < j, then we have a possible behavior change because
-xa_for_each_start() may not return a contiguous array slice.  It might
-"leap backwards" in the array.  Or it might skip over a chunk of LMBs.
+Do you have any idea why I was seeing x86 build errors and you were not?
