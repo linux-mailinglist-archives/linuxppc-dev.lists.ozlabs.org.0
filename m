@@ -2,38 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8160814D9C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 12:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4933414DA5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 13:06:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487dPz5N18zDqXY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 22:28:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487fGF0RzSzDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 23:06:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=fweimer@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=gARRmL+g; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487dLl6Xq6zDqY6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 22:25:19 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00UBPDSX026018;
- Thu, 30 Jan 2020 05:25:13 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 00UBPCkD026017;
- Thu, 30 Jan 2020 05:25:12 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 30 Jan 2020 05:25:12 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Florian Weimer <fweimer@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487fCX2dDkzDqXd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 23:04:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1580385841;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jKuBJA8OPCdrwIVumv/E6YJ57Qgp9vb3v6pG7Dh/nj8=;
+ b=gARRmL+gCWbKL6FqXTPxIURilQtE7W9fp+2UWYrvuTZ7mB+i4chZSN70qlkLwoAlz6qWM4
+ Xh4ba/OktFBro60J9KyBEdnnVKyfHPiYAEMQaxRoXh5b06XKc17lzSlF/PNgkSuJDWQg3t
+ mMuXnjrZxI5nnQFeSBR2LCmuJ696vQE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-353-oSPlSeQRO3i_9_2sqYW4Mw-1; Thu, 30 Jan 2020 07:03:59 -0500
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6D947107ACC7;
+ Thu, 30 Jan 2020 12:03:56 +0000 (UTC)
+Received: from oldenburg2.str.redhat.com (ovpn-116-29.ams2.redhat.com
+ [10.36.116.29])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F0AA55C1B2;
+ Thu, 30 Jan 2020 12:03:54 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
 Subject: Re: powerpc Linux scv support and scv system call ABI proposal
-Message-ID: <20200130112512.GS22482@gate.crashing.org>
 References: <87tv4fd8wp.fsf@oldenburg2.str.redhat.com>
  <1580218232.2tezmthp1x.astroid@bobo.none>
  <20200128154026.GI22482@gate.crashing.org>
@@ -44,11 +61,19 @@ References: <87tv4fd8wp.fsf@oldenburg2.str.redhat.com>
  <87imku8ac5.fsf@oldenburg2.str.redhat.com>
  <20200129175104.GO22482@gate.crashing.org>
  <87k1595iok.fsf@oldenburg2.str.redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87k1595iok.fsf@oldenburg2.str.redhat.com>
-User-Agent: Mutt/1.4.2.3i
+ <20200130112512.GS22482@gate.crashing.org>
+Date: Thu, 30 Jan 2020 13:03:53 +0100
+In-Reply-To: <20200130112512.GS22482@gate.crashing.org> (Segher Boessenkool's
+ message of "Thu, 30 Jan 2020 05:25:12 -0600")
+Message-ID: <87y2tp40d2.fsf@oldenburg2.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-MC-Unique: oSPlSeQRO3i_9_2sqYW4Mw-1
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,101 +92,70 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 30, 2020 at 11:42:51AM +0100, Florian Weimer wrote:
-> * Segher Boessenkool:
-> > No, that *is* supported: as input to or output from an asm, a local
-> > register asm variable *is* guaranteed to live in the specified register.
-> > This is the *only* supported use.  Other uses may sometimes still work,
-> > but they never worked reliably, and it cannot be made reliable; it has
-> > been documented as not supported since ages, and it will not work at all
-> > anymore some day.
-> 
-> I must say I find this situation *very* confusing.
+* Segher Boessenkool:
 
-Local register variables live in that register when they are operands to
-an (extended) inline asm.  There are no other guarantees.  That is all.
+>> I *assumed* that I would still get
+>> the value of r0 (the register) from the associated extended asm in this
+>> expression, even if it may now be a different register.  Your comment
+>> made me think that this is undefined.
+>
+> Please show full(er) examples, I think we are talking about something
+> else?
 
-> You said that r0 & 1 is undefined.
+No, I think we are in agreement here how things should behave under the
+new model.  But I have doubts whether that is implemented in GCC 9.
 
-I said that in
+>> The GCC documentation has this warning:
+>>=20
+>> |  _Warning:_ In the above example, be aware that a register (for
+>> | example 'r0') can be call-clobbered by subsequent code, including
+>> | function calls and library calls for arithmetic operators on other
+>> | variables (for example the initialization of 'p2').
+>
+> Yes.  This does not matter for the only supported use.
 
-  int reg asm("r0");
-  ...
-  ...  reg & 1  ...
+I'm not so sure.  See below.
 
-in that last expression, reg can be in any register, not necessarily r0.
-The code is still perfectly well-defined of course, it just might not do
-what you expected.
+> This is why that *is* the only supported use.  The documentation could
+> use a touch-up, I think.  Unless we still have problems here?
 
->  I *assumed* that I would still get
-> the value of r0 (the register) from the associated extended asm in this
-> expression, even if it may now be a different register.  Your comment
-> made me think that this is undefined.
+I really don't know.  GCC still has *some* support for the old behavior,
+though.  For example, local register variables are treated as
+initialized, and I think you can still use registers like global
+variables.  GCC does not perform copy propagation here:
 
-Please show full(er) examples, I think we are talking about something
-else?
+int f1 (int);
 
-> But then the syscall wrappers use
-> this construct:
-> 
->     __asm__ __volatile__						\
->       ("sc\n\t"								\
->        "mfcr  %0\n\t"							\
->        "0:"								\
->        : "=&r" (r0),							\
->          "=&r" (r3), "=&r" (r4), "=&r" (r5),				\
->          "=&r" (r6), "=&r" (r7), "=&r" (r8)				\
->        : ASM_INPUT_##nr							\
->        : "r9", "r10", "r11", "r12",					\
->          "cr0", "ctr", "memory");					\
-> 	  err = r0;  \
->     r3;  \
-> 
-> That lone r3 at the end would be equally undefined because it is not
-> used in an input or output operand of an extended asm statement.
+int
+f (void)
+{
+  register int edi __asm__ ("edi");
+  int edi_copy =3D edi;
+  return f1 (1) + edi_copy;
+}
 
-Nothing is undefined.  That r3 variable at the end might not live in
-register r3 there; but the output from the asm does (the compiler can
-have swapped registers around already, or even put this in memory
-(which is what will probably happen here at -O0!), etc.
+And the case that we agreed should be defined in fact is not:
 
-> The GCC documentation has this warning:
-> 
-> |  _Warning:_ In the above example, be aware that a register (for
-> | example 'r0') can be call-clobbered by subsequent code, including
-> | function calls and library calls for arithmetic operators on other
-> | variables (for example the initialization of 'p2').
+void f1 (int);
 
-Yes.  This does not matter for the only supported use.  This is why that
-*is* the only supported use.  The documentation could use a touch-up, I
-think.  Unless we still have problems here?
+int
+f (void)
+{
+  register int edi __asm__ ("edi");
+  asm ("#" : "=3Dr" (edi));
+  f1 (1);
+  return edi;
+}
 
-> On POWER, the LOADARGS macros attempt to deal with this by using
-> non-register temporaries.  However, I don't know how effective this is
-> if the compiler really doesn't deal with call-clobbered registers
-> properly.
+On x86-64, %edi is used to pass the first function parameter, so the
+call clobbers %edi.  It is simply ambiguous whether edi (the variable)
+should retain the value prior to the call to f1 (which I think is what
+should happen under the new model, where register variables are only
+affect asm operands), or if edi (the variable) should have the value of
+%edi (the register) after the call (the old model).
 
-It worked on old compilers.  This isn't necessary on newer compilers.
+Should we move this to the gcc list?
 
-> For the extended asm use case (to express register assignments that
-> cannot be listed in constraints), I would expect that these variables
-> retain their values according to the C specification (so they are never
-> clobbered by calls), but that they only reside in their designated
-> registers when used as input or output operands in extended asm
-> statements.
+Thanks,
+Florian
 
-That is what is done now.
-
-In the old days (more than ten years ago), local register variables had
-more guarantees, guarantees that were broken once by one (or all all of
-the time, depends on your viewpoint ;-) )  Such variables *did* live in
-the specified register everywhere, well, not *everywhere*, and there
-the problems started.
-
-Nowadays:
-
-Local register variables live in that register when they are operands to
-an (extended) inline asm.  There are no other guarantees.  That is all.
-
-
-Segher
