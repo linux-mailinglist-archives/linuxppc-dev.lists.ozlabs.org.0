@@ -2,52 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357F614E3B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2961F14E3B8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:13:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487s2g4t3tzDqZ3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 07:12:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487s4V2YWmzDqVp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 07:13:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=ndfont@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 487kGr5JRRzDqVZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 02:07:14 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1FEA31B;
- Thu, 30 Jan 2020 07:07:11 -0800 (PST)
-Received: from [192.168.0.129] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F053F3F68E;
- Thu, 30 Jan 2020 07:06:51 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-To: linux-mm@kvack.org, linux-alpha@vger.kernel.org,
- Richard Henderson <rth@twiddle.net>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, linux-c6x-dev@linux-c6x.org,
- Mark Salter <msalter@redhat.com>,
- Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org,
- Brian Cain <bcain@codeaurora.org>, linux-m68k@lists.linux-m68k.org,
- Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>,
- linux-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Guan Xuetao <gxt@pku.edu.cn>,
- linux-xtensa@linux-xtensa.org, Chris Zankel <chris@zankel.net>,
- Max Filippov <jcmvbkbc@gmail.com>
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
-Message-ID: <fe26671a-7f26-17d7-402b-5e01fdca773e@arm.com>
-Date: Thu, 30 Jan 2020 20:36:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=EM7GjmqY; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487lfx6qm5zDqXt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 03:09:39 +1100 (AEDT)
+Received: by mail-ot1-x342.google.com with SMTP id 66so3599020otd.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 08:09:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=c85UXDffSb2PXv2XpV6UzKNMBIzxhdNtxwM+oiL4ZfE=;
+ b=EM7GjmqYIBO2WAnrvccmL3zonHAn+mRqth2qs6/SwOaauF5pna+ED/XapC1LRHMnRO
+ QwwPWQbR+MZN5cas22iyUJowvCXZgVBOfVffSDO7v6Er/pLrZ6F7RFFEUJ8q54bxcBTu
+ UWl0Sf3pEf6ylzzoMRw/vic+iXLSmxw0hpzN+uaw+B7b6zfatIE7GKrrAsf+S1AWc7XZ
+ Gkk7bsBtQIgXRWdWxYuEAQEXvYMDlcNwBvBDkurnNzoadv4JoU1r51YCOLwiCutwifOs
+ iI/8KZ8vrOnrmyGsM6DyN0MScG7siymJysokG5qKl9uSO7riuU19hy7Hk9trrySjGfJ1
+ sP8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=c85UXDffSb2PXv2XpV6UzKNMBIzxhdNtxwM+oiL4ZfE=;
+ b=W3cxUdjKs+2l99LwK8RsJa0LnMrFxN9p8XN3JLmEVVoTt0dtc4nRUf47RFXsNubNR5
+ cUmqTKpkzr8xZIPQA9lJKvco2kmHD82ZGV2fa12Of11yALnOnZKWl/Hqg8dhOm60NabC
+ D4LsoPZZEq17N8YqyWKV1tgvD2hovTOkVmuYmL81MTWU/zDq6LWM1/cBL+tnO14QMicA
+ J86GhsQGC9insbKJMZWOBjZw8A1YGU/31WKxm/Htf7CX4i4wewtKY9zGfC+6T7mx1FRJ
+ j+pWrqwADrhuEK7G3o+/IWoT95nqivSqiWLqod9g1dKpS1I1NxDHOB9cIg2xiAcd+xAO
+ 7XuA==
+X-Gm-Message-State: APjAAAUgWf3C4zMs/hZ6dsPsVofrhmnuq4+w53ek2SMxOPgcE6epKECD
+ Q/2My0W93qN6UMl9WJchVg==
+X-Google-Smtp-Source: APXvYqwa9xjKXt29xk4s3SxDL1xFfz94p2+LDPjwwMGl0PNRiE7Fyb8nzl+Z4QUOT8sgvoLMeuA5iw==
+X-Received: by 2002:a9d:7590:: with SMTP id s16mr3832406otk.89.1580400573885; 
+ Thu, 30 Jan 2020 08:09:33 -0800 (PST)
+Received: from [10.236.30.189] ([165.204.77.1])
+ by smtp.gmail.com with ESMTPSA id m15sm1969943otr.65.2020.01.30.08.09.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Jan 2020 08:09:33 -0800 (PST)
+Subject: Re: [PATCH] powerpc/drmem: cache LMBs in xarray to accelerate lookup
+To: Scott Cheloha <cheloha@linux.ibm.com>, Nathan Lynch <nathanl@linux.ibm.com>
+References: <20200128221113.17158-1-cheloha@linux.ibm.com>
+ <87pnf3i188.fsf@linux.ibm.com>
+ <20200129181013.lz6q5lpntnhwclqi@rascal.austin.ibm.com>
+From: "Fontenot, Nathan" <ndfont@gmail.com>
+Message-ID: <4dfb2f93-7af8-8c5f-854c-22afead18a8c@gmail.com>
+Date: Thu, 30 Jan 2020 10:09:32 -0600
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-In-Reply-To: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <20200129181013.lz6q5lpntnhwclqi@rascal.austin.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -63,158 +85,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Rick Lindsley <ricklind@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/28/2020 06:57 AM, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
+On 1/29/2020 12:10 PM, Scott Cheloha wrote:
+> On Tue, Jan 28, 2020 at 05:56:55PM -0600, Nathan Lynch wrote:
+>> Scott Cheloha <cheloha@linux.ibm.com> writes:
+>>> LMB lookup is currently an O(n) linear search.  This scales poorly when
+>>> there are many LMBs.
+>>>
+>>> If we cache each LMB by both its base address and its DRC index
+>>> in an xarray we can cut lookups to O(log n), greatly accelerating
+>>> drmem initialization and memory hotplug.
+>>>
+>>> This patch introduces two xarrays of of LMBs and fills them during
+>>> drmem initialization.  The patch also adds two interfaces for LMB
+>>> lookup.
+>>
+>> Good but can you replace the array of LMBs altogether
+>> (drmem_info->lmbs)? xarray allows iteration over the members if needed.
 > 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
+> I don't think we can without potentially changing the current behavior.
 > 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
+> The current behavior in dlpar_memory_{add,remove}_by_ic() is to advance
+> linearly through the array from the LMB with the matching DRC index.
 > 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
+> Iteration through the xarray via xa_for_each_start() will return LMBs
+> indexed with monotonically increasing DRC indices.> 
+> Are they equivalent?  Or can we have an LMB with a smaller DRC index
+> appear at a greater offset in the array?
 > 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
+> If the following condition is possible:
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Steven Price <Steven.Price@arm.com>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Kirill A. Shutemov <kirill@shutemov.name>
-> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: linux-kernel@vger.kernel.org
+> 	drmem_info->lmbs[i].drc_index > drmem_info->lmbs[j].drc_index
+> 
+> where i < j, then we have a possible behavior change because
+> xa_for_each_start() may not return a contiguous array slice.  It might
+> "leap backwards" in the array.  Or it might skip over a chunk of LMBs.
+> 
 
-I should have included mailing lists for all missing platforms here.
-Will add them in the patch next time around but for now just adding
-them here explicitly so that hopefully in case some of them can build
-and run the test successfully on respective platforms.
+The LMB array should have each LMB in monotonically increasing DRC Index
+value. Note that this is set up based on the DT property but I don't recall
+ever seeing the DT specify LMBs out of order or not being contiguous.
 
-ALPHA:
+I am not very familiar with xarrays but it appears this should be possible.
 
-+ linux-alpha@vger.kernel.org
-+ Richard Henderson <rth@twiddle.net>
-+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-+ Matt Turner <mattst88@gmail.com>
-
-C6X:
-
-+ linux-c6x-dev@linux-c6x.org
-+ Mark Salter <msalter@redhat.com>
-+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>
-
-H8300:
-
-+ uclinux-h8-devel@lists.sourceforge.jp
-+ Yoshinori Sato <ysato@users.sourceforge.jp>
-
-HEXAGON:
-
-+ linux-hexagon@vger.kernel.org
-+ Brian Cain <bcain@codeaurora.org>
-
-M68K:
-
-+ linux-m68k@lists.linux-m68k.org
-+ Geert Uytterhoeven <geert@linux-m68k.org>
-
-MICROBLAZE:
-
-+ Michal Simek <monstr@monstr.eu>
-
-RISCV:
-
-+ linux-riscv@lists.infradead.org
-+ Paul Walmsley <paul.walmsley@sifive.com>
-+ Palmer Dabbelt <palmer@dabbelt.com>
-
-UNICORE32:
-
-+ Guan Xuetao <gxt@pku.edu.cn>
-
-XTENSA:
-
-+ linux-xtensa@linux-xtensa.org
-+ Chris Zankel <chris@zankel.net>
-+ Max Filippov <jcmvbkbc@gmail.com>
-
-Please feel free to add others if I have missed.
+-Nathan
