@@ -1,78 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4369914D936
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 11:44:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487cRd2LRvzDqYY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:44:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E27B14D965
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 11:59:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 487cn03XgyzDqXd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:59:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=fweimer@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=d+Ixtu1J; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487cQ12vcLzDqXP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 21:43:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1580380978;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=a6Ginh0j5d7XoUqTZZ2aGUPtIjlN67TMT+PMSjfhxdo=;
- b=d+Ixtu1JgPNTDL4WQwQ0Cb9t92anw8R8hDFPaSnaWrndB/Tv5JTTUMq/k+W7uuBZdO0y0x
- P4CPXKulADkNjNp669lp0659QvLv64jBcFYCUi8aLthnibWmhrAsyaxvfZTGyRaWnI1cMB
- Dnbbn7k2mPpMDzPrMeWKJZfzjgSzVd8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-156-eALbzks0ObO4fGREEnG1AQ-1; Thu, 30 Jan 2020 05:42:56 -0500
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E9F431005513;
- Thu, 30 Jan 2020 10:42:54 +0000 (UTC)
-Received: from oldenburg2.str.redhat.com (ovpn-116-29.ams2.redhat.com
- [10.36.116.29])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 215E487B13;
- Thu, 30 Jan 2020 10:42:52 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: powerpc Linux scv support and scv system call ABI proposal
-References: <1580207907.c96c1lh9t0.astroid@bobo.none>
- <87tv4fd8wp.fsf@oldenburg2.str.redhat.com>
- <1580218232.2tezmthp1x.astroid@bobo.none>
- <20200128154026.GI22482@gate.crashing.org>
- <87o8unbm8u.fsf@oldenburg2.str.redhat.com>
- <20200128200133.GJ22482@gate.crashing.org>
- <87wo9a8cc8.fsf@oldenburg2.str.redhat.com>
- <20200129162947.GN22482@gate.crashing.org>
- <87imku8ac5.fsf@oldenburg2.str.redhat.com>
- <20200129175104.GO22482@gate.crashing.org>
-Date: Thu, 30 Jan 2020 11:42:51 +0100
-In-Reply-To: <20200129175104.GO22482@gate.crashing.org> (Segher Boessenkool's
- message of "Wed, 29 Jan 2020 11:51:04 -0600")
-Message-ID: <87k1595iok.fsf@oldenburg2.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487clG0VZtzDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 21:57:58 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00UAs3SP061148; Thu, 30 Jan 2020 05:57:53 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xuagnvauh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jan 2020 05:57:52 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00UAvAAp001155;
+ Thu, 30 Jan 2020 10:57:51 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 2xrda6k5md-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jan 2020 10:57:51 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00UAvph150856238
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Jan 2020 10:57:51 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 63D3C112066;
+ Thu, 30 Jan 2020 10:57:51 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25BCF112061;
+ Thu, 30 Jan 2020 10:57:51 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.31.110])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Jan 2020 10:57:51 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 8FACD2E3006; Thu, 30 Jan 2020 16:27:47 +0530 (IST)
+Date: Thu, 30 Jan 2020 16:27:47 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4] powerpc/smp: Use nid as fallback for package_id
+Message-ID: <20200130105747.GD1988@in.ibm.com>
+References: <20200129135121.24617-1-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-MC-Unique: eALbzks0ObO4fGREEnG1AQ-1
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200129135121.24617-1-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-30_03:2020-01-28,
+ 2020-01-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011
+ mlxlogscore=999 malwarescore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001300079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,93 +85,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org,
- Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Segher Boessenkool:
+Hello Srikar,
 
-> On Wed, Jan 29, 2020 at 06:02:34PM +0100, Florian Weimer wrote:
->> * Segher Boessenkool:
->>=20
->> > On Wed, Jan 29, 2020 at 05:19:19PM +0100, Florian Weimer wrote:
->> >> * Segher Boessenkool:
->> >> >> But GCC doesn't expose them as integers to C code, so you can't do=
- much
->> >> >> without them.
->> >> >
->> >> > Sure, it doesn't expose any other registers directly, either.
->> >>=20
->> >> I can use r0 & 1 with a register variable r0 to check a bit.
->> >
->> > That is not reliable, or supported, and it *will* break.  This is
->> > explicit for local register asm, and global register asm is
->> > underdefined.
->>=20
->> Ugh.  I did not know that.  And neither did the person who wrote
->> powerpc64/sysdep.h because it uses register variables in regular C
->> expressions. 8-(  Other architectures are affected as well.
+
+
+On Wed, Jan 29, 2020 at 07:21:21PM +0530, Srikar Dronamraju wrote:
+
+[..snip..]
+
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -1185,10 +1185,34 @@ static inline void add_cpu_to_smallcore_masks(int cpu)
+>  	}
+>  }
+> 
+> +int get_physical_package_id(int cpu)
+> +{
+> +	int ppid = cpu_to_chip_id(cpu);
+> +
+> +#ifdef CONFIG_PPC_SPLPAR
+> +	/*
+> +	 * If the platform is PowerNV or Guest on KVM, ibm,chip-id is
+> +	 * defined. Hence we would return the chip-id as the
+> +	 * get_physical_package_id.
+> +	 */
+> +	if (ppid == -1 && firmware_has_feature(FW_FEATURE_LPAR)) {
+> +		struct device_node *np = of_get_cpu_node(cpu, NULL);
+> +
+> +		if (np) {
+> +			ppid = of_node_to_nid(np);
+> +			of_node_put(np);
+> +		}
+> +	}
+> +#endif /* CONFIG_PPC_SPLPAR */
+> +
+> +	return ppid;
+> +}
+> +EXPORT_SYMBOL_GPL(get_physical_package_id);
+> +
+>  static void add_cpu_to_masks(int cpu)
+>  {
+>  	int first_thread = cpu_first_thread_sibling(cpu);
+> -	int chipid = cpu_to_chip_id(cpu);
+> +	int ppid = get_physical_package_id(cpu);
+>  	int i;
+> 
+>  	/*
+> @@ -1217,11 +1241,11 @@ static void add_cpu_to_masks(int cpu)
+>  	for_each_cpu(i, cpu_l2_cache_mask(cpu))
+>  		set_cpus_related(cpu, i, cpu_core_mask);
+> 
+> -	if (chipid == -1)
+> +	if (ppid == -1)
+>  		return;
+
+Can get_physical_package_id() return -1 ?
+
+> 
+>  	for_each_cpu(i, cpu_online_mask)
+> -		if (cpu_to_chip_id(i) == chipid)
+> +		if (get_physical_package_id(i) == ppid)
+>  			set_cpus_related(cpu, i, cpu_core_mask);
+>  }
+> 
+> -- 
+> 2.18.1
 >
-> Where?  I don't see any?  Ah, the other one, heh (there are two).
->
-> No, that *is* supported: as input to or output from an asm, a local
-> register asm variable *is* guaranteed to live in the specified register.
-> This is the *only* supported use.  Other uses may sometimes still work,
-> but they never worked reliably, and it cannot be made reliable; it has
-> been documented as not supported since ages, and it will not work at all
-> anymore some day.
 
-I must say I find this situation *very* confusing.
-
-You said that r0 & 1 is undefined.  I *assumed* that I would still get
-the value of r0 (the register) from the associated extended asm in this
-expression, even if it may now be a different register.  Your comment
-made me think that this is undefined.  But then the syscall wrappers use
-this construct:
-
-    __asm__ __volatile__=09=09=09=09=09=09\
-      ("sc\n\t"=09=09=09=09=09=09=09=09\
-       "mfcr  %0\n\t"=09=09=09=09=09=09=09\
-       "0:"=09=09=09=09=09=09=09=09\
-       : "=3D&r" (r0),=09=09=09=09=09=09=09\
-         "=3D&r" (r3), "=3D&r" (r4), "=3D&r" (r5),=09=09=09=09\
-         "=3D&r" (r6), "=3D&r" (r7), "=3D&r" (r8)=09=09=09=09\
-       : ASM_INPUT_##nr=09=09=09=09=09=09=09\
-       : "r9", "r10", "r11", "r12",=09=09=09=09=09\
-         "cr0", "ctr", "memory");=09=09=09=09=09\
-=09  err =3D r0;  \
-    r3;  \
-
-That lone r3 at the end would be equally undefined because it is not
-used in an input or output operand of an extended asm statement.
-
-The GCC documentation has this warning:
-
-|  _Warning:_ In the above example, be aware that a register (for
-| example 'r0') can be call-clobbered by subsequent code, including
-| function calls and library calls for arithmetic operators on other
-| variables (for example the initialization of 'p2').
-
-On POWER, the LOADARGS macros attempt to deal with this by using
-non-register temporaries.  However, I don't know how effective this is
-if the compiler really doesn't deal with call-clobbered registers
-properly.
-
-For the extended asm use case (to express register assignments that
-cannot be listed in constraints), I would expect that these variables
-retain their values according to the C specification (so they are never
-clobbered by calls), but that they only reside in their designated
-registers when used as input or output operands in extended asm
-statements.
-
-However, this is incompatible with other (ab)uses of local and global
-register variables, which may well expect that they are clobbered by
-calls.  It looks like GCC uses the same construct for two unrelated
-things.
-
-Thanks,
-Florian
-
+--
+Thanks and Regards
+gautham.
