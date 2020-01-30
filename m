@@ -1,48 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357F614E3B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:12:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F6F14E36C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 20:54:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487rdd1KMpzDqcR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 06:53:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487s2g4t3tzDqZ3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 07:12:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=krzk@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=OQws0o/r; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487rc117MTzDqYK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 06:52:32 +1100 (AEDT)
-Received: from localhost.localdomain (unknown [194.230.155.229])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8C802214AF;
- Thu, 30 Jan 2020 19:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1580413950;
- bh=gAyYIH9ob0eRGq2U6rLlcQVg/eGpJkA1jigawwxyAnw=;
- h=From:To:Cc:Subject:Date:From;
- b=OQws0o/rXFPZbDvO/xo2jq/rqAib1fjaoqJU/xtZxSaEDVYjBgula2/MmPDf219dD
- +1JCAHynOCj3amJOd27BmxxhJ3ap5G9fAEay755vJX0QYJ0oSLZG9f90ttuXAI0Dth
- q7XWUaVUVUy7PdtEkxvpZSDE7tQsXAC1jgfoy9CQ=
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: configs: Cleanup old Kconfig options
-Date: Thu, 30 Jan 2020 20:52:23 +0100
-Message-Id: <20200130195223.3843-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 487kGr5JRRzDqVZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 02:07:14 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1FEA31B;
+ Thu, 30 Jan 2020 07:07:11 -0800 (PST)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F053F3F68E;
+ Thu, 30 Jan 2020 07:06:51 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
+ table helpers
+To: linux-mm@kvack.org, linux-alpha@vger.kernel.org,
+ Richard Henderson <rth@twiddle.net>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, linux-c6x-dev@linux-c6x.org,
+ Mark Salter <msalter@redhat.com>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org,
+ Brian Cain <bcain@codeaurora.org>, linux-m68k@lists.linux-m68k.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>,
+ linux-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ linux-xtensa@linux-xtensa.org, Chris Zankel <chris@zankel.net>,
+ Max Filippov <jcmvbkbc@gmail.com>
+References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+Message-ID: <fe26671a-7f26-17d7-402b-5e01fdca773e@arm.com>
+Date: Thu, 30 Jan 2020 20:36:47 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Fri, 31 Jan 2020 07:10:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,169 +63,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CONFIG_ENABLE_WARN_DEPRECATED is gone since
-commit 771c035372a0 ("deprecate the '__deprecated' attribute warnings
-entirely and for good").
+On 01/28/2020 06:57 AM, Anshuman Khandual wrote:
+> This adds tests which will validate architecture page table helpers and
+> other accessors in their compliance with expected generic MM semantics.
+> This will help various architectures in validating changes to existing
+> page table helpers or addition of new ones.
+> 
+> This test covers basic page table entry transformations including but not
+> limited to old, young, dirty, clean, write, write protect etc at various
+> level along with populating intermediate entries with next page table page
+> and validating them.
+> 
+> Test page table pages are allocated from system memory with required size
+> and alignments. The mapped pfns at page table levels are derived from a
+> real pfn representing a valid kernel text symbol. This test gets called
+> right after page_alloc_init_late().
+> 
+> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+> arm64. Going forward, other architectures too can enable this after fixing
+> build or runtime problems (if any) with their page table helpers.
+> 
+> Folks interested in making sure that a given platform's page table helpers
+> conform to expected generic MM semantics should enable the above config
+> which will just trigger this test during boot. Any non conformity here will
+> be reported as an warning which would need to be fixed. This test will help
+> catch any changes to the agreed upon semantics expected from generic MM and
+> enable platforms to accommodate it thereafter.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Steven Price <Steven.Price@arm.com>
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+> Cc: Dave Hansen <dave.hansen@intel.com>
+> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: x86@kernel.org
+> Cc: linux-kernel@vger.kernel.org
 
-CONFIG_IOSCHED_DEADLINE and CONFIG_IOSCHED_CFQ are gone since
-commit f382fb0bcef4 ("block: remove legacy IO schedulers").
+I should have included mailing lists for all missing platforms here.
+Will add them in the patch next time around but for now just adding
+them here explicitly so that hopefully in case some of them can build
+and run the test successfully on respective platforms.
 
-The IOSCHED_DEADLINE was replaced by MQ_IOSCHED_DEADLINE and it will be
-now enabled by default (along with MQ_IOSCHED_KYBER).
+ALPHA:
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/powerpc/configs/44x/sam440ep_defconfig | 2 --
- arch/powerpc/configs/52xx/pcm030_defconfig  | 2 --
- arch/powerpc/configs/83xx/kmeter1_defconfig | 2 --
- arch/powerpc/configs/adder875_defconfig     | 1 -
- arch/powerpc/configs/ep8248e_defconfig      | 1 -
- arch/powerpc/configs/ep88xc_defconfig       | 1 -
- arch/powerpc/configs/mgcoge_defconfig       | 1 -
- arch/powerpc/configs/mpc512x_defconfig      | 1 -
- arch/powerpc/configs/mpc885_ads_defconfig   | 1 -
- arch/powerpc/configs/storcenter_defconfig   | 1 -
- arch/powerpc/configs/tqm8xx_defconfig       | 1 -
- 11 files changed, 14 deletions(-)
++ linux-alpha@vger.kernel.org
++ Richard Henderson <rth@twiddle.net>
++ Ivan Kokshaysky <ink@jurassic.park.msu.ru>
++ Matt Turner <mattst88@gmail.com>
 
-diff --git a/arch/powerpc/configs/44x/sam440ep_defconfig b/arch/powerpc/configs/44x/sam440ep_defconfig
-index ed02f12dbd54..22dc0dadf576 100644
---- a/arch/powerpc/configs/44x/sam440ep_defconfig
-+++ b/arch/powerpc/configs/44x/sam440ep_defconfig
-@@ -10,8 +10,6 @@ CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_AMIGA_PARTITION=y
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- # CONFIG_EBONY is not set
- CONFIG_SAM440EP=y
- CONFIG_CMDLINE_BOOL=y
-diff --git a/arch/powerpc/configs/52xx/pcm030_defconfig b/arch/powerpc/configs/52xx/pcm030_defconfig
-index fdb11daeb688..789622ffd844 100644
---- a/arch/powerpc/configs/52xx/pcm030_defconfig
-+++ b/arch/powerpc/configs/52xx/pcm030_defconfig
-@@ -14,8 +14,6 @@ CONFIG_SLAB=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- # CONFIG_PPC_CHRP is not set
- CONFIG_PPC_MPC52xx=y
- CONFIG_PPC_MPC5200_SIMPLE=y
-diff --git a/arch/powerpc/configs/83xx/kmeter1_defconfig b/arch/powerpc/configs/83xx/kmeter1_defconfig
-index 648c6b3dccf9..24bf1bde1bb4 100644
---- a/arch/powerpc/configs/83xx/kmeter1_defconfig
-+++ b/arch/powerpc/configs/83xx/kmeter1_defconfig
-@@ -11,8 +11,6 @@ CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- # CONFIG_MSDOS_PARTITION is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- # CONFIG_PPC_CHRP is not set
- # CONFIG_PPC_PMAC is not set
- CONFIG_PPC_83xx=y
-diff --git a/arch/powerpc/configs/adder875_defconfig b/arch/powerpc/configs/adder875_defconfig
-index 510f7fd1f6a3..f55e23cb176c 100644
---- a/arch/powerpc/configs/adder875_defconfig
-+++ b/arch/powerpc/configs/adder875_defconfig
-@@ -9,7 +9,6 @@ CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_PPC_ADDER875=y
- CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
-diff --git a/arch/powerpc/configs/ep8248e_defconfig b/arch/powerpc/configs/ep8248e_defconfig
-index 6e08d9502d89..00d69965f898 100644
---- a/arch/powerpc/configs/ep8248e_defconfig
-+++ b/arch/powerpc/configs/ep8248e_defconfig
-@@ -6,7 +6,6 @@ CONFIG_EXPERT=y
- CONFIG_KALLSYMS_ALL=y
- CONFIG_SLAB=y
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- # CONFIG_PPC_CHRP is not set
- # CONFIG_PPC_PMAC is not set
- CONFIG_PPC_82xx=y
-diff --git a/arch/powerpc/configs/ep88xc_defconfig b/arch/powerpc/configs/ep88xc_defconfig
-index 9c1bf60f1e19..0e2e5e81a359 100644
---- a/arch/powerpc/configs/ep88xc_defconfig
-+++ b/arch/powerpc/configs/ep88xc_defconfig
-@@ -11,7 +11,6 @@ CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_PPC_EP88XC=y
- CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
-diff --git a/arch/powerpc/configs/mgcoge_defconfig b/arch/powerpc/configs/mgcoge_defconfig
-index 6ce4f206eac7..dcc8dccf54f3 100644
---- a/arch/powerpc/configs/mgcoge_defconfig
-+++ b/arch/powerpc/configs/mgcoge_defconfig
-@@ -12,7 +12,6 @@ CONFIG_KALLSYMS_ALL=y
- CONFIG_EMBEDDED=y
- CONFIG_SLAB=y
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- # CONFIG_PPC_PMAC is not set
- CONFIG_PPC_82xx=y
- CONFIG_MGCOGE=y
-diff --git a/arch/powerpc/configs/mpc512x_defconfig b/arch/powerpc/configs/mpc512x_defconfig
-index 1f3a045ab081..e39346b3dc3b 100644
---- a/arch/powerpc/configs/mpc512x_defconfig
-+++ b/arch/powerpc/configs/mpc512x_defconfig
-@@ -9,7 +9,6 @@ CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- # CONFIG_PPC_CHRP is not set
- CONFIG_PPC_MPC512x=y
- CONFIG_MPC512x_LPBFIFO=y
-diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
-index 0327a329316f..82a008c04eae 100644
---- a/arch/powerpc/configs/mpc885_ads_defconfig
-+++ b/arch/powerpc/configs/mpc885_ads_defconfig
-@@ -11,7 +11,6 @@ CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
- CONFIG_HZ_100=y
-diff --git a/arch/powerpc/configs/storcenter_defconfig b/arch/powerpc/configs/storcenter_defconfig
-index 29b19ec7e5d7..b964084e4056 100644
---- a/arch/powerpc/configs/storcenter_defconfig
-+++ b/arch/powerpc/configs/storcenter_defconfig
-@@ -77,5 +77,4 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
- CONFIG_CRC_T10DIF=y
--# CONFIG_ENABLE_WARN_DEPRECATED is not set
- # CONFIG_ENABLE_MUST_CHECK is not set
-diff --git a/arch/powerpc/configs/tqm8xx_defconfig b/arch/powerpc/configs/tqm8xx_defconfig
-index ffed2b4256d6..eda8bfb2d0a3 100644
---- a/arch/powerpc/configs/tqm8xx_defconfig
-+++ b/arch/powerpc/configs/tqm8xx_defconfig
-@@ -14,7 +14,6 @@ CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_TQM8XX=y
- CONFIG_8xx_COPYBACK=y
- # CONFIG_8xx_CPU15 is not set
--- 
-2.17.1
+C6X:
 
++ linux-c6x-dev@linux-c6x.org
++ Mark Salter <msalter@redhat.com>
++ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>
+
+H8300:
+
++ uclinux-h8-devel@lists.sourceforge.jp
++ Yoshinori Sato <ysato@users.sourceforge.jp>
+
+HEXAGON:
+
++ linux-hexagon@vger.kernel.org
++ Brian Cain <bcain@codeaurora.org>
+
+M68K:
+
++ linux-m68k@lists.linux-m68k.org
++ Geert Uytterhoeven <geert@linux-m68k.org>
+
+MICROBLAZE:
+
++ Michal Simek <monstr@monstr.eu>
+
+RISCV:
+
++ linux-riscv@lists.infradead.org
++ Paul Walmsley <paul.walmsley@sifive.com>
++ Palmer Dabbelt <palmer@dabbelt.com>
+
+UNICORE32:
+
++ Guan Xuetao <gxt@pku.edu.cn>
+
+XTENSA:
+
++ linux-xtensa@linux-xtensa.org
++ Chris Zankel <chris@zankel.net>
++ Max Filippov <jcmvbkbc@gmail.com>
+
+Please feel free to add others if I have missed.
