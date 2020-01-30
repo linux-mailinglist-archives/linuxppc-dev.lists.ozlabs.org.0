@@ -1,52 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6755C14E3D1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:19:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487sC16MYgzDqYk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 07:19:25 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5369414E3FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 21:32:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 487sTc5MtGzDqVl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 07:32:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.178.242; helo=mslow2.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ghiti.fr
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487s8d0lyLzDqCt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 07:17:18 +1100 (AEDT)
-Received: from relay4-d.mail.gandi.net (unknown [217.70.183.196])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 9D3C63A84FA
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 20:08:42 +0000 (UTC)
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
- (Authenticated sender: alex@ghiti.fr)
- by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id EC913E0008;
- Thu, 30 Jan 2020 20:08:10 +0000 (UTC)
-Subject: Re: [PATCH v2] powerpc: Do not consider weak unresolved symbol
- relocations as bad
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Stephen Rothwell <sfr@canb.auug.org.au>, Alexei Starovoitov
- <ast@kernel.org>, linux-next@vger.kernel.org, Zong Li <zong.li@sifive.com>,
- Palmer Dabbelt <palmerdabbelt@google.com>
-References: <20200118170335.21440-1-alex@ghiti.fr>
-From: Alex Ghiti <alex@ghiti.fr>
-Message-ID: <8a8d45c6-4ad2-c682-abfb-3d97188d0d45@ghiti.fr>
-Date: Thu, 30 Jan 2020 15:07:10 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487sGT6vs4zDqYb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 07:22:24 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2020 12:22:22 -0800
+X-IronPort-AV: E=Sophos;i="5.70,382,1574150400"; d="scan'208";a="218395047"
+Received: from dwillia2-desk3.jf.intel.com (HELO
+ dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2020 12:22:21 -0800
+Subject: [PATCH 4/5] libnvdimm/region: Introduce NDD_LABELING
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Thu, 30 Jan 2020 12:06:18 -0800
+Message-ID: <158041477856.3889308.4212605617834097674.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <158041475480.3889308.655103391935006598.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <158041475480.3889308.655103391935006598.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-In-Reply-To: <20200118170335.21440-1-alex@ghiti.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,121 +51,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, linux-kernel@vger.kernel.org,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/18/20 12:03 PM, Alexandre Ghiti wrote:
-> Commit 8580ac9404f6 ("bpf: Process in-kernel BTF") introduced two weak
-> symbols that may be unresolved at link time which result in an absolute
-> relocation to 0. relocs_check.sh emits the following warning:
->
-> "WARNING: 2 bad relocations
-> c000000001a41478 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
-> c000000001a41480 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end"
->
-> whereas those relocations are legitimate even for a relocatable kernel
-> compiled with -pie option.
->
-> relocs_check.sh already excluded some weak unresolved symbols explicitly:
-> remove those hardcoded symbols and add some logic that parses the symbols
-> using nm, retrieves all the weak unresolved symbols and excludes those from
-> the list of the potential bad relocations.
->
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
->
-> Changes in v2:
-> - Follow Stephen advice of using grep -F instead of looping over weak symbols
->    using read, patch is way smaller and cleaner.
-> - Add missing nm in comment
->
->   arch/powerpc/Makefile.postlink     |  4 ++--
->   arch/powerpc/tools/relocs_check.sh | 20 ++++++++++++--------
->   2 files changed, 14 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/powerpc/Makefile.postlink b/arch/powerpc/Makefile.postlink
-> index 134f12f89b92..2268396ff4bb 100644
-> --- a/arch/powerpc/Makefile.postlink
-> +++ b/arch/powerpc/Makefile.postlink
-> @@ -17,11 +17,11 @@ quiet_cmd_head_check = CHKHEAD $@
->   quiet_cmd_relocs_check = CHKREL  $@
->   ifdef CONFIG_PPC_BOOK3S_64
->         cmd_relocs_check =						\
-> -	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$@" ; \
-> +	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@" ; \
->   	$(BASH) $(srctree)/arch/powerpc/tools/unrel_branch_check.sh "$(OBJDUMP)" "$@"
->   else
->         cmd_relocs_check =						\
-> -	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$@"
-> +	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
->   endif
->   
->   # `@true` prevents complaint when there is nothing to be done
-> diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
-> index 7b9fe0a567cf..014e00e74d2b 100755
-> --- a/arch/powerpc/tools/relocs_check.sh
-> +++ b/arch/powerpc/tools/relocs_check.sh
-> @@ -10,14 +10,21 @@
->   # based on relocs_check.pl
->   # Copyright © 2009 IBM Corporation
->   
-> -if [ $# -lt 2 ]; then
-> -	echo "$0 [path to objdump] [path to vmlinux]" 1>&2
-> +if [ $# -lt 3 ]; then
-> +	echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
->   	exit 1
->   fi
->   
-> -# Have Kbuild supply the path to objdump so we handle cross compilation.
-> +# Have Kbuild supply the path to objdump and nm so we handle cross compilation.
->   objdump="$1"
-> -vmlinux="$2"
-> +nm="$2"
-> +vmlinux="$3"
-> +
-> +# Remove from the bad relocations those that match an undefined weak symbol
-> +# which will result in an absolute relocation to 0.
-> +# Weak unresolved symbols are of that form in nm output:
-> +# "                  w _binary__btf_vmlinux_bin_end"
-> +undef_weak_symbols=$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
->   
->   bad_relocs=$(
->   $objdump -R "$vmlinux" |
-> @@ -26,8 +33,6 @@ $objdump -R "$vmlinux" |
->   	# These relocations are okay
->   	# On PPC64:
->   	#	R_PPC64_RELATIVE, R_PPC64_NONE
-> -	#	R_PPC64_ADDR64 mach_<name>
-> -	#	R_PPC64_ADDR64 __crc_<name>
->   	# On PPC:
->   	#	R_PPC_RELATIVE, R_PPC_ADDR16_HI,
->   	#	R_PPC_ADDR16_HA,R_PPC_ADDR16_LO,
-> @@ -39,8 +44,7 @@ R_PPC_ADDR16_HI
->   R_PPC_ADDR16_HA
->   R_PPC_RELATIVE
->   R_PPC_NONE' |
-> -	grep -E -v '\<R_PPC64_ADDR64[[:space:]]+mach_' |
-> -	grep -E -v '\<R_PPC64_ADDR64[[:space:]]+__crc_'
-> +	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || cat)
->   )
->   
->   if [ -z "$bad_relocs" ]; then
+The NDD_ALIASING flag is used to indicate where pmem capacity might
+alias with blk capacity and require labeling. It is also used to
+indicate whether the DIMM supports labeling. Separate this latter
+capability into its own flag so that the NDD_ALIASING flag is scoped to
+true aliased configurations.
 
+To my knowledge aliased configurations only exist in the ACPI spec,
+there are no known platforms that ship this support in production.
 
-Hi guys,
+This clarity allows namespace-capacity alignment constraints around
+interleave-ways to be relaxed.
 
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ arch/powerpc/platforms/pseries/papr_scm.c |    2 +-
+ drivers/acpi/nfit/core.c                  |    4 +++-
+ drivers/nvdimm/dimm.c                     |    2 +-
+ drivers/nvdimm/dimm_devs.c                |    9 +++++----
+ drivers/nvdimm/namespace_devs.c           |    2 +-
+ drivers/nvdimm/nd.h                       |    2 +-
+ drivers/nvdimm/region_devs.c              |   10 +++++-----
+ include/linux/libnvdimm.h                 |    2 ++
+ 8 files changed, 19 insertions(+), 14 deletions(-)
 
-Any thought about that ?
-
-I do think this patch makes the whole check about absolute relocations 
-clearer.
-And in the future, it will avoid anyone to spend some time on those 
-"bad" relocations
-which actually aren't.
-
-Thanks,
-
-Alex
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index c2ef320ba1bf..aae60cfd4e38 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -326,7 +326,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	}
+ 
+ 	dimm_flags = 0;
+-	set_bit(NDD_ALIASING, &dimm_flags);
++	set_bit(NDD_LABELING, &dimm_flags);
+ 
+ 	p->nvdimm = nvdimm_create(p->bus, p, NULL, dimm_flags,
+ 				  PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index a3320f93616d..71d7f2aa1b12 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2026,8 +2026,10 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
+ 			continue;
+ 		}
+ 
+-		if (nfit_mem->bdw && nfit_mem->memdev_pmem)
++		if (nfit_mem->bdw && nfit_mem->memdev_pmem) {
+ 			set_bit(NDD_ALIASING, &flags);
++			set_bit(NDD_LABELING, &flags);
++		}
+ 
+ 		/* collate flags across all memdevs for this dimm */
+ 		list_for_each_entry(nfit_memdev, &acpi_desc->memdevs, list) {
+diff --git a/drivers/nvdimm/dimm.c b/drivers/nvdimm/dimm.c
+index 64776ed15bb3..7d4ddc4d9322 100644
+--- a/drivers/nvdimm/dimm.c
++++ b/drivers/nvdimm/dimm.c
+@@ -99,7 +99,7 @@ static int nvdimm_probe(struct device *dev)
+ 	if (ndd->ns_current >= 0) {
+ 		rc = nd_label_reserve_dpa(ndd);
+ 		if (rc == 0)
+-			nvdimm_set_aliasing(dev);
++			nvdimm_set_labeling(dev);
+ 	}
+ 	nvdimm_bus_unlock(dev);
+ 
+diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
+index 94ea6dba6b4f..64159d4d4b8f 100644
+--- a/drivers/nvdimm/dimm_devs.c
++++ b/drivers/nvdimm/dimm_devs.c
+@@ -32,7 +32,7 @@ int nvdimm_check_config_data(struct device *dev)
+ 
+ 	if (!nvdimm->cmd_mask ||
+ 	    !test_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm->cmd_mask)) {
+-		if (test_bit(NDD_ALIASING, &nvdimm->flags))
++		if (test_bit(NDD_LABELING, &nvdimm->flags))
+ 			return -ENXIO;
+ 		else
+ 			return -ENOTTY;
+@@ -173,11 +173,11 @@ int nvdimm_set_config_data(struct nvdimm_drvdata *ndd, size_t offset,
+ 	return rc;
+ }
+ 
+-void nvdimm_set_aliasing(struct device *dev)
++void nvdimm_set_labeling(struct device *dev)
+ {
+ 	struct nvdimm *nvdimm = to_nvdimm(dev);
+ 
+-	set_bit(NDD_ALIASING, &nvdimm->flags);
++	set_bit(NDD_LABELING, &nvdimm->flags);
+ }
+ 
+ void nvdimm_set_locked(struct device *dev)
+@@ -312,8 +312,9 @@ static ssize_t flags_show(struct device *dev,
+ {
+ 	struct nvdimm *nvdimm = to_nvdimm(dev);
+ 
+-	return sprintf(buf, "%s%s\n",
++	return sprintf(buf, "%s%s%s\n",
+ 			test_bit(NDD_ALIASING, &nvdimm->flags) ? "alias " : "",
++			test_bit(NDD_LABELING, &nvdimm->flags) ? "label" : "",
+ 			test_bit(NDD_LOCKED, &nvdimm->flags) ? "lock " : "");
+ }
+ static DEVICE_ATTR_RO(flags);
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index aff1f32fdb4f..30cda9f235de 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -2531,7 +2531,7 @@ static int init_active_labels(struct nd_region *nd_region)
+ 		if (!ndd) {
+ 			if (test_bit(NDD_LOCKED, &nvdimm->flags))
+ 				/* fail, label data may be unreadable */;
+-			else if (test_bit(NDD_ALIASING, &nvdimm->flags))
++			else if (test_bit(NDD_LABELING, &nvdimm->flags))
+ 				/* fail, labels needed to disambiguate dpa */;
+ 			else
+ 				return 0;
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index c9f6a5b5253a..ca39abe29c7c 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -252,7 +252,7 @@ int nvdimm_set_config_data(struct nvdimm_drvdata *ndd, size_t offset,
+ 		void *buf, size_t len);
+ long nvdimm_clear_poison(struct device *dev, phys_addr_t phys,
+ 		unsigned int len);
+-void nvdimm_set_aliasing(struct device *dev);
++void nvdimm_set_labeling(struct device *dev);
+ void nvdimm_set_locked(struct device *dev);
+ void nvdimm_clear_locked(struct device *dev);
+ int nvdimm_security_setup_events(struct device *dev);
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index a19e535830d9..a5fc6e4c56ff 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -195,16 +195,16 @@ EXPORT_SYMBOL_GPL(nd_blk_region_set_provider_data);
+ int nd_region_to_nstype(struct nd_region *nd_region)
+ {
+ 	if (is_memory(&nd_region->dev)) {
+-		u16 i, alias;
++		u16 i, label;
+ 
+-		for (i = 0, alias = 0; i < nd_region->ndr_mappings; i++) {
++		for (i = 0, label = 0; i < nd_region->ndr_mappings; i++) {
+ 			struct nd_mapping *nd_mapping = &nd_region->mapping[i];
+ 			struct nvdimm *nvdimm = nd_mapping->nvdimm;
+ 
+-			if (test_bit(NDD_ALIASING, &nvdimm->flags))
+-				alias++;
++			if (test_bit(NDD_LABELING, &nvdimm->flags))
++				label++;
+ 		}
+-		if (alias)
++		if (label)
+ 			return ND_DEVICE_NAMESPACE_PMEM;
+ 		else
+ 			return ND_DEVICE_NAMESPACE_IO;
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index 9df091bd30ba..18da4059be09 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -37,6 +37,8 @@ enum {
+ 	NDD_WORK_PENDING = 4,
+ 	/* ignore / filter NSLABEL_FLAG_LOCAL for this DIMM, i.e. no aliasing */
+ 	NDD_NOBLK = 5,
++	/* dimm supports namespace labels */
++	NDD_LABELING = 6,
+ 
+ 	/* need to set a limit somewhere, but yes, this is likely overkill */
+ 	ND_IOCTL_MAX_BUFLEN = SZ_4M,
 
