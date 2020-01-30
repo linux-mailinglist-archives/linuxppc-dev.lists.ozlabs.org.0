@@ -2,16 +2,16 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C698914D713
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 08:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB13B14D836
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 10:22:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487X9B04ntzDqNf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 18:31:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487ZcV5C1wzDqYk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 20:22:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=rppt@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,69 +19,70 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487X5152QlzDqfL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 18:28:05 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487ZZd1QQQzDqXV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 20:20:24 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 00U7PPcu072736
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 02:28:01 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xueh6v64s-1
+ 00U9ERZr013857
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 04:20:21 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xu6ss5bx9-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 02:28:00 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 04:20:21 -0500
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <rppt@linux.ibm.com>;
- Thu, 30 Jan 2020 07:27:57 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
+ Thu, 30 Jan 2020 09:20:18 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 30 Jan 2020 07:27:47 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 00U7Rk2i44564690
+ Thu, 30 Jan 2020 09:20:15 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00U9KD1815728656
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Jan 2020 07:27:47 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BD406AE051;
- Thu, 30 Jan 2020 07:27:46 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C847AE04D;
- Thu, 30 Jan 2020 07:27:43 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.148.8.154])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu, 30 Jan 2020 07:27:43 +0000 (GMT)
-Date: Thu, 30 Jan 2020 09:27:41 +0200
-From: Mike Rapoport <rppt@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
- <14882A91-17DE-4ABD-ABF2-08E7CCEDF660@lca.pw>
- <214c0d53-eb34-9b0c-2e4e-1aa005146331@arm.com>
- <016A776F-EFD9-4D2B-A3A9-788008617D95@lca.pw>
- <20200129232044.2d133d98@thinkpad>
+ Thu, 30 Jan 2020 09:20:13 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E53A5205F;
+ Thu, 30 Jan 2020 09:20:13 +0000 (GMT)
+Received: from [9.124.35.38] (unknown [9.124.35.38])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1F9B652050;
+ Thu, 30 Jan 2020 09:20:10 +0000 (GMT)
+Subject: Re: [PATCH v16 00/23] selftests, powerpc, x86: Memory Protection Keys
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+References: <cover.1579507768.git.sandipan@linux.ibm.com>
+ <3ceb2814-f8b0-ec6b-3c24-ec72297a99f5@intel.com>
+ <8f14bee0-ab1c-fc90-dfdb-5128607b767f@linux.ibm.com>
+ <3eca7a91-aa3e-cb01-47c8-5d36020993a2@intel.com>
+ <fb83ce52-b92a-ed42-dc06-a86ca8431ff6@linux.ibm.com>
+ <ca6cfdeb-00f2-d926-e4e1-c1723cc25445@intel.com>
+ <26f630e5-1f70-888c-4b43-30e73c9f270c@linux.ibm.com>
+Date: Thu, 30 Jan 2020 14:50:10 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200129232044.2d133d98@thinkpad>
+In-Reply-To: <26f630e5-1f70-888c-4b43-30e73c9f270c@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 20013007-0008-0000-0000-0000034DFF2E
+x-cbid: 20013009-0028-0000-0000-000003D5C3C4
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20013007-0009-0000-0000-00004A6E7E76
-Message-Id: <20200130072741.GA23707@linux.ibm.com>
+x-cbparentid: 20013009-0029-0000-0000-0000249A11D6
+Message-Id: <880326d5-e23c-6724-1c93-7b1d0281dcbd@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-01-30_01:2020-01-28,
+ definitions=2020-01-30_02:2020-01-28,
  2020-01-30 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- clxscore=1015 lowpriorityscore=0 suspectscore=56 impostorscore=0
- adultscore=0 malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1911200001 definitions=main-2001300050
+ clxscore=1015 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 suspectscore=0
+ mlxscore=0 adultscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001300066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,54 +94,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
- Kees Cook <keescook@chromium.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Qian Cai <cai@lca.pw>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, linuxram@us.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+ linux-kselftest@vger.kernel.org, msuchanek@suse.de, shuah@kernel.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 29, 2020 at 11:20:44PM +0100, Gerald Schaefer wrote:
-> On Mon, 27 Jan 2020 22:33:08 -0500
+
+
+On 30/01/20 11:49 am, Sandipan Das wrote:
+> Hi Dave,
 > 
-> For example, who would have thought that pXd_bad() is supposed to
-> report large entries as bad? It's not really documented anywhere,
+> On 30/01/20 12:29 am, Dave Hansen wrote:
+>> On 1/28/20 1:38 AM, Sandipan Das wrote:
+>>> On 27/01/20 9:12 pm, Dave Hansen wrote:
+>>>> How have you tested this patch (and the whole series for that matter)?
+>>>>
+>>> I replaced the second patch with this one and did a build test.
+>>> Till v16, I had tested the whole series (build + run) on both a POWER8
+>>> system (with 4K and 64K page sizes) and a Skylake SP system but for
+>>> x86_64 only.
+>>
+>> Do you have any idea why I was seeing x86 build errors and you were not?
+>>
+> 
+> There were problems with patch 2 from v17. The fixed patch is what I replied
+> with previously in this thread. The test results that I posted were with that
+> patch included. Will post out v18 today with the fix.
+> 
 
-A bit off-topic,
+In patch 2 of v17, the issue was with the target names. Upon adding something
+to TEST_GEN_FILES, rules for targets like the following are expected to be
+defined.
+  <path-to-linux-source>/tools/testing/selftests/vm/protection_keys_32
+  <path-to-linux-source>/tools/testing/selftests/vm/protection_keys_64
+  <path-to-linux-source>/tools/testing/selftests/vm/protection_keys
 
-@Anshuman, maybe you could start a Documentation/ patch that describes at
-least some of the pXd_whaterver()?
-Or that would be too much to ask? ;-)
+But instead, I only defined rules for these.
+  protection_keys_32
+  protection_keys_64
+  protection_keys
 
-> so we just checked them for sanity like normal entries, which
-> apparently worked fine so far, but for how long?
+Hence the build was failing in these cases:
+  $ make -C tools/testing/selftests
+  $ make -C tools/testing/selftests/vm
+  $ cd tools/testing/selftests/vm
+  $ make
 
--- 
-Sincerely yours,
-Mike.
+But worked in these cases:
+  $ make -C tools/testing/selftests/vm protection_keys
+  $ cd tools/testing/selftests/vm
+  $ make protection_keys
+
+This has been addressed in v18.
+
+- Sandipan
 
