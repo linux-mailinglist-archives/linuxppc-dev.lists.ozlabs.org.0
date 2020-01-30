@@ -1,72 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0423C14D6BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 07:51:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C2014D66C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 07:33:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487Vsx06XRzDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 17:33:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487WH72TJMzDqYJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 17:51:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZCGHTqe/; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487VrR6qM3zDqTY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 17:32:07 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id z124so1096654pgb.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2020 22:32:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=aiIv7BR4lBXqbaAn948s6C/PVELDA5YM0WOpkGkhJLg=;
- b=ZCGHTqe/rYgwMK558BvTKgbeGblyE9d3yhsFSTS3djgrqeCh4/tEsL6khA02oEXUTd
- MD0UtQBCA1wN/AWqX3dDgMWF/elPh4J2K0f/RecxGiUQVMEf9KpJEF3AUHkNI/T9SsYW
- 40g8m0OM9aUctCvDX0jxzRjZkyDCWbYa2Jsq+uyT2DQkbfUqJ+hg62wI2SVhphtX6atT
- X9LNWob6Au5gTMQ+djIzhHWaercvJhnTODoYZOW5pK/hsfcgkFmYJJCM9W6yEjbgJs97
- HbWh7P0PHoaIpbpUQ1t5mUvMRbqT3FLfjr8Pd2YJnsBTd7oEtcjDeCsSbD5e/JANEZwi
- UOUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=aiIv7BR4lBXqbaAn948s6C/PVELDA5YM0WOpkGkhJLg=;
- b=BPHcjrpDjV6lONrTp6kiHmfgY1Yjl/PfYyaB1iX0la/M8SdkTVxRkHT275ctsgs2iJ
- fV7CkEJT9/PCkp8L07SZGJDgQBA176Y3T0ff0O41ET2XLjOW6roz15E01SCFrdNKX0/M
- 4FJrW4eiiYpoFIHgD8FbTyP+KW9zAGiglHWPUuJIhZpg+h1uL5/XTukXuSWUB7zv6KRI
- 0I/SVY5uI3Jggs5I0exi1zVUQRZc0sJP6gmJD70bluaRmkUhZKtWiiSTRsBjzyBUX4wm
- LJXcQxJzpyHOyDADueQoAEnb2hzcuUwf6Iq2mEtgfQOMLrDEZrWxwwoadvjSYJXig/B8
- dzCw==
-X-Gm-Message-State: APjAAAVNkny7efph2Zy5L7ESNTNizvQiTQm6h5kpzFB1Ww7dwIf44t4c
- LqHiVVLvMQ5CuYzXV9PbnBvAbyMW
-X-Google-Smtp-Source: APXvYqzwGKggVfCruyuqqX8wuzfFJR7Sj4CH5j1o5rBiOd+aYMJHJRY8mDn/Edctx/pGNGxsUklQ+Q==
-X-Received: by 2002:a63:48d:: with SMTP id 135mr3103650pge.66.1580365925728;
- Wed, 29 Jan 2020 22:32:05 -0800 (PST)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 199sm784100pfu.71.2020.01.29.22.32.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Jan 2020 22:32:05 -0800 (PST)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] pseries/makefile: Remove CONFIG_PPC_PSERIES check
-Date: Thu, 30 Jan 2020 17:31:53 +1100
-Message-Id: <20200130063153.19915-2-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200130063153.19915-1-oohall@gmail.com>
-References: <20200130063153.19915-1-oohall@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487Vyv2C5WzDqTn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 17:37:42 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 00U6bbL2096837
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 01:37:37 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xttnuh650-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2020 01:37:37 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
+ Thu, 30 Jan 2020 06:37:15 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 30 Jan 2020 06:37:11 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 00U6b9vh32964682
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Jan 2020 06:37:09 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D9A14C040;
+ Thu, 30 Jan 2020 06:37:09 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B8034C050;
+ Thu, 30 Jan 2020 06:37:07 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Jan 2020 06:37:06 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: shuah@kernel.org, skhan@linuxfoundation.org,
+ linux-kselftest@vger.kernel.org
+Subject: [PATCH v18 00/24] selftests, powerpc, x86: Memory Protection Keys
+Date: Thu, 30 Jan 2020 12:06:42 +0530
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+x-cbid: 20013006-4275-0000-0000-0000039C3381
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20013006-4276-0000-0000-000038B0505C
+Message-Id: <cover.1580365432.git.sandipan@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-01-30_01:2020-01-28,
+ 2020-01-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ spamscore=0 impostorscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001300042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,32 +85,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, dave.hansen@intel.com,
+ aneesh.kumar@linux.ibm.com, x86@kernel.org, linuxram@us.ibm.com,
+ mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com, msuchanek@suse.de,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The platform makefile (arch/powerpc/platforms/pseries/Makefile) is only
-included by the platform makefile (arch/powerpc/platform/Makefile) when
-CONFIG_PPC_PSERIES is selected, so checking for CONFIG_PPC_PSERIES in the
-pseries makefile is pointless.
+Memory protection keys enables an application to protect its address
+space from inadvertent access by its own code.
 
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/platforms/pseries/Makefile | 2 --
- 1 file changed, 2 deletions(-)
+This feature is now enabled on powerpc and has been available since
+4.16-rc1. The patches move the selftests to arch neutral directory
+and enhance their test coverage.
 
-diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-index a3c74a5..c8a2b0b 100644
---- a/arch/powerpc/platforms/pseries/Makefile
-+++ b/arch/powerpc/platforms/pseries/Makefile
-@@ -29,6 +29,4 @@ obj-$(CONFIG_PPC_SPLPAR)	+= vphn.o
- obj-$(CONFIG_PPC_SVM)		+= svm.o
- obj-$(CONFIG_FA_DUMP)		+= rtas-fadump.o
- 
--ifdef CONFIG_PPC_PSERIES
- obj-$(CONFIG_SUSPEND)		+= suspend.o
--endif
+Tested on powerpc64 and x86_64 (Skylake-SP).
+
+Link to development branch:
+https://github.com/sandip4n/linux/tree/pkey-selftests
+
+Changelog
+---------
+Link to previous version (v17):
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=154174
+
+v18:
+	(1) Fixed issues with x86 multilib builds based on
+	    feedback from Dave.
+	(2) Moved patch 2 to the end of the series.
+
+v17:
+	(1) Fixed issues with i386 builds when running on x86_64
+	    based on feedback from Dave.
+	(2) Replaced patch 6 from previous version with patch 7.
+	    This addresses u64 format specifier related concerns
+	    that Michael had raised in v15.
+
+v16:
+	(1) Rebased on top of latest master.
+	(2) Switched to u64 instead of using an arch-dependent
+	    pkey_reg_t type for references to the pkey register
+	    based on suggestions from Dave, Michal and Michael.
+	(3) Removed build time determination of page size based
+	    on suggestion from Michael.
+	(4) Fixed comment before the definition of __page_o_noops()
+	    from patch 13 ("selftests/vm/pkeys: Introduce powerpc
+	    support").
+
+v15:
+	(1) Rebased on top of latest master.
+	(2) Addressed review comments from Dave Hansen.
+	(3) Moved code for getting or setting pkey bits to new
+	    helpers. These changes replace patch 7 of v14.
+	(4) Added a fix which ensures that the correct count of
+	    reserved keys is used across different platforms.
+	(5) Added a fix which ensures that the correct page size
+	    is used as powerpc supports both 4K and 64K pages.
+
+v14:
+	(1) Incorporated another round of comments from Dave Hansen.
+
+v13:
+	(1) Incorporated comments for Dave Hansen.
+	(2) Added one more test for correct pkey-0 behavior.
+
+v12:
+	(1) Fixed the offset of pkey field in the siginfo structure for
+	    x86_64 and powerpc. And tries to use the actual field
+	    if the headers have it defined.
+
+v11:
+	(1) Fixed a deadlock in the ptrace testcase.
+
+v10 and prior:
+	(1) Moved the testcase to arch neutral directory.
+	(2) Split the changes into incremental patches.
+
+Desnes A. Nunes do Rosario (1):
+  selftests/vm/pkeys: Fix number of reserved powerpc pkeys
+
+Ram Pai (16):
+  selftests/x86/pkeys: Move selftests to arch-neutral directory
+  selftests/vm/pkeys: Rename all references to pkru to a generic name
+  selftests/vm/pkeys: Move generic definitions to header file
+  selftests/vm/pkeys: Fix pkey_disable_clear()
+  selftests/vm/pkeys: Fix assertion in pkey_disable_set/clear()
+  selftests/vm/pkeys: Fix alloc_random_pkey() to make it really random
+  selftests/vm/pkeys: Introduce generic pkey abstractions
+  selftests/vm/pkeys: Introduce powerpc support
+  selftests/vm/pkeys: Fix assertion in test_pkey_alloc_exhaust()
+  selftests/vm/pkeys: Improve checks to determine pkey support
+  selftests/vm/pkeys: Associate key on a mapped page and detect access
+    violation
+  selftests/vm/pkeys: Associate key on a mapped page and detect write
+    violation
+  selftests/vm/pkeys: Detect write violation on a mapped
+    access-denied-key page
+  selftests/vm/pkeys: Introduce a sub-page allocator
+  selftests/vm/pkeys: Test correct behaviour of pkey-0
+  selftests/vm/pkeys: Override access right definitions on powerpc
+
+Sandipan Das (5):
+  selftests: vm: pkeys: Use sane types for pkey register
+  selftests: vm: pkeys: Add helpers for pkey bits
+  selftests: vm: pkeys: Use the correct huge page size
+  selftests: vm: pkeys: Use the correct page size on powerpc
+  selftests: vm: pkeys: Fix multilib builds for x86
+
+Thiago Jung Bauermann (2):
+  selftests/vm/pkeys: Move some definitions to arch-specific header
+  selftests/vm/pkeys: Make gcc check arguments of sigsafe_printf()
+
+ tools/testing/selftests/vm/.gitignore         |   1 +
+ tools/testing/selftests/vm/Makefile           |  73 ++
+ tools/testing/selftests/vm/pkey-helpers.h     | 225 ++++++
+ tools/testing/selftests/vm/pkey-powerpc.h     | 136 ++++
+ tools/testing/selftests/vm/pkey-x86.h         | 181 +++++
+ .../selftests/{x86 => vm}/protection_keys.c   | 696 ++++++++++--------
+ tools/testing/selftests/x86/.gitignore        |   1 -
+ tools/testing/selftests/x86/Makefile          |   2 +-
+ tools/testing/selftests/x86/pkey-helpers.h    | 219 ------
+ 9 files changed, 1002 insertions(+), 532 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/pkey-helpers.h
+ create mode 100644 tools/testing/selftests/vm/pkey-powerpc.h
+ create mode 100644 tools/testing/selftests/vm/pkey-x86.h
+ rename tools/testing/selftests/{x86 => vm}/protection_keys.c (74%)
+ delete mode 100644 tools/testing/selftests/x86/pkey-helpers.h
+
 -- 
-2.9.5
+2.17.1
 
