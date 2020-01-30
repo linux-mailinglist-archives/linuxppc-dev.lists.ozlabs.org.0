@@ -2,53 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900A714E4FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 22:42:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 672BD14E522
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2020 22:53:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 487v3F3t0JzDqbC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 08:42:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 487vHJ5qRYzDqck
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 08:53:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 487v1W3hfvzDqZx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 08:41:18 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00ULf7Qh021302;
- Thu, 30 Jan 2020 15:41:07 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 00ULf6cG021301;
- Thu, 30 Jan 2020 15:41:06 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 30 Jan 2020 15:41:05 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Subject: Re: powerpc Linux scv support and scv system call ABI proposal
-Message-ID: <20200130214105.GX22482@gate.crashing.org>
-References: <20200128200133.GJ22482@gate.crashing.org>
- <87wo9a8cc8.fsf@oldenburg2.str.redhat.com>
- <20200129162947.GN22482@gate.crashing.org>
- <87imku8ac5.fsf@oldenburg2.str.redhat.com>
- <20200129175104.GO22482@gate.crashing.org>
- <87k1595iok.fsf@oldenburg2.str.redhat.com>
- <20200130112512.GS22482@gate.crashing.org>
- <87y2tp40d2.fsf@oldenburg2.str.redhat.com>
- <20200130135030.GV22482@gate.crashing.org>
- <f46bafbd-c553-565a-38a4-73d81cc5a8d2@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f46bafbd-c553-565a-38a4-73d81cc5a8d2@linaro.org>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 487vFg2WFmzDqbh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 08:51:49 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2020 13:51:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,382,1574150400"; d="scan'208";a="233107404"
+Received: from ray.jf.intel.com (HELO [10.7.201.139]) ([10.7.201.139])
+ by orsmga006.jf.intel.com with ESMTP; 30 Jan 2020 13:51:46 -0800
+Subject: Re: [PATCH v18 00/24] selftests, powerpc, x86: Memory Protection Keys
+To: Sandipan Das <sandipan@linux.ibm.com>, shuah@kernel.org,
+ skhan@linuxfoundation.org, linux-kselftest@vger.kernel.org
+References: <cover.1580365432.git.sandipan@linux.ibm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Message-ID: <5887a858-b669-752e-b65e-ed7d7ded34aa@intel.com>
+Date: Thu, 30 Jan 2020 13:51:45 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <cover.1580365432.git.sandipan@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,115 +97,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Florian Weimer <fweimer@redhat.com>, libc-alpha@sourceware.org,
- Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, linuxram@us.ibm.com, mhocko@kernel.org, linux-mm@kvack.org,
+ mingo@redhat.com, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+On 1/29/20 10:36 PM, Sandipan Das wrote:
+> v18:
+> 	(1) Fixed issues with x86 multilib builds based on
+> 	    feedback from Dave.
+> 	(2) Moved patch 2 to the end of the series.
 
-On Thu, Jan 30, 2020 at 02:04:51PM -0300, Adhemerval Zanella wrote:
-> On 30/01/2020 10:50, Segher Boessenkool wrote:
-> > On Thu, Jan 30, 2020 at 01:03:53PM +0100, Florian Weimer wrote:
-> >>> This is why that *is* the only supported use.  The documentation could
-> >>> use a touch-up, I think.  Unless we still have problems here?
-> >>
-> >> I really don't know.  GCC still has *some* support for the old behavior,
-> >> though.
-> > 
-> > No.  No support.  It still does some of the same things, but that can
-> > change (and probably should).  But this hasn't been supported since the
-> > dark ages, and the documentation has become gradually more explicit
-> > about it.
-> > 
-> 
-> I think this might be related to an odd sparc32 issue I am seeing with 
-> newer clock_nanosleep.  The expanded code is:
-> 
-> --
->   register long err __asm__("g1");                                   // INTERNAL_SYSCALL_DECL  (err)
->   r = ({                                                             // r = INTERNAL_SYSCALL_CANCEL (...)
-> 	 long int sc_ret;
->          if (SINGLE_THREAD_P)
-> 	   sc_ret = INTERNAL_SYSCALL_CALL (__VA_ARGS__);
->          else
->            {
-> 	     int sc_cancel_oldtype = __libc_enable_asynccancel ();
-> 	     sc_ret = INTERNAL_SYSCALL_CALL (__VA_ARGS__);          // It issues the syscall with the asm (...)
-> 	     __librt_disable_asynccancel (sc_cancel_oldtype);
-> 	   }
->          sc_ret;
->        });
->   if ((void) (val), __builtin_expect((err) != 0, 0))                // if (! INTERNAL_SYSCALL_ERROR_P (r, err))
->     return 0;
->   if ((-(val)) != ENOSYS)                                           // if (INTERNAL_SYSCALL_ERRNO (r, err) != ENOSYS)
->     return ((-(val)));                                              //   return INTERNAL_SYSCALL_ERRNO (r, err);
-> 
->   [...]
-> 
->   r = ({                                                             // r = INTERNAL_SYSCALL_CANCEL (...)
->        [...]
->       )}
->   if ((void) (val), __builtin_expect((err) != 0, 0))                // if (! INTERNAL_SYSCALL_ERROR_P (r, err))
->     {
->       [...]
->     }
->   return ((void) (val), __builtin_expect((err) != 0, 0))            // return (INTERNAL_SYSCALL_ERROR_P (r, err)
->          ? ((-(val))) : 0;                                          //        ? INTERNAL_SYSCALL_ERRNO (r, err) : 0);
-> --
-> 
-> It requires that 'err' (assigned to 'g1')
+These (finally) build and run successfully for me on an x86 system with
+protection keys.  Feel free to add my Tested-by, and Acked-by.
 
-What do you mean by "assigned to g1"?
-
-> be value propagated over
-> functions calls and over different scopes, which I take from your 
-> explanation is not supported and fragile.
-
-You probably misundertand that, but let me ask: where is err assigned to
-at all in the code you quoted?  I don't see it.  Maybe it's hidden in some
-macro?
-
-Or, maybe some asm writes to g1?  This is explicitly not okay (quote
-from the GCC manual):
-
-  Defining a register variable does not reserve the register.  Other than
-  when invoking the Extended 'asm', the contents of the specified register
-  are not guaranteed.  For this reason, the following uses are explicitly
-  _not_ supported.  If they appear to work, it is only happenstance, and
-  may stop working as intended due to (seemingly) unrelated changes in
-  surrounding code, or even minor changes in the optimization of a future
-  version of gcc:
-
-   * Passing parameters to or from Basic 'asm'
-   * Passing parameters to or from Extended 'asm' without using input or
-     output operands.
-   * Passing parameters to or from routines written in assembler (or
-     other languages) using non-standard calling conventions.
-
-> It also seems that if I 
-> move the __libc_enable_* calls before 'err' initialization and after
-> its usage the code seems to works, but again it seems this usage
-> is not really supported on gcc.
-> 
-> So it seems that the current usage of 'INTERNAL_SYSCALL_DECL' and
-> 'INTERNAL_SYSCALL_ERROR_P' are fragile if the architecture *does*
-> use the 'err' variable and it is defined a register alias (which 
-> its the case only for sparc currently).
-> 
-> Although a straightforward for sparc would be redefine 
-> INTERNAL_SYSCALL_DECL to not use a register alias, I still think
-> we should just follow Linux kernel ABI convention where value in 
-> the range between -4095 and -1 indicates an error and handle any 
-> specific symbols that might not strictly follow it with an 
-> arch-specific implementation (as we do for lseek on x32 and
-> mips64n32).  It would allow cleanup a lot of code and avoid such
-> pitfalls.
-
-I don't really understand what you call a "register alias", either.
-(And i don't know the Sparc ABI well enough to help you with that).
-
-
-Segher
+FWIW, I don't think look perfect, but my standards are lower for
+selftests/ than normal kernel code. :)
