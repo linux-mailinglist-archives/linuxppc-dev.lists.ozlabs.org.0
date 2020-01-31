@@ -1,91 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B559514E90B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 08:03:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4887Th6fhszDqhs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 18:03:04 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3E014E9FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 10:20:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 488BWv2T6CzDqfP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 20:20:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.24;
- helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=WUnP55PU; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=eWMqdOV0; 
- dkim-atps=neutral
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
- [64.147.123.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4887S46C8gzDqZB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 18:01:40 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.west.internal (Postfix) with ESMTP id B98E372C;
- Fri, 31 Jan 2020 02:01:37 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute1.internal (MEProxy); Fri, 31 Jan 2020 02:01:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- t/GpK6YsM5srRFf7eFpXme57d41WlX9+o+qAquTPbfY=; b=WUnP55PUGNZUnNgg
- nCC6+Xby2ixN1VG0TnMXE0MGmvManZHvl4QjoRSIWlWn501h0A97hT86h/W3Vv0d
- /SyDesb9JQeXveIte5GJuz+jHsDasy459cDE+iAskHk1r1qnVNSZeMoNwU3K1hhR
- 75g9mWhEQXTLd91Md+saO87sl9mnSkrPcM1+GGxzlhmL2gRIEn7fAy+GdqBPQv0n
- Y6ppTNw5CCLL2NQaOcrVVL48LW3MeoY1Li8UzZSTRwmppBv42rXqoMF5sspgfvBF
- 5agO1T+IDNV+BnFtE4sy62gRy5DvPvTYcTMiZbQSrlSMJlD8BEOoEXxMNO1FYOyz
- iqlLwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; bh=t/GpK6YsM5srRFf7eFpXme57d41WlX9+o+qAquTPb
- fY=; b=eWMqdOV0wHgRiduKdiglB1u/pBpJaQMLLyYLQ1mA2ovG2/QAoJ18iTR+c
- z2q5mVR5mdF3stI2oRU658zN3PMKmC0hMkhHEwbhvgwxCjHFCRdqlql55RwC1ADa
- l5ODIF4jsBWsiUslco2kQgWJN8xsHV0EMNuySn9cMf+Cz36HsXWo13JoeYCdStk8
- r8NmqBlFp93DSeApXK4zmj600vjkOR2jpT7Us2nEu43PEuomXlei7PMjYs7U/lYc
- r04jLCxy3xbG4jUDfJuXJ4S1n4Z/1Y6GaNSTTyU2pe8KlORAIcWkJwSeqNmSk4JS
- ecuXaUuHMgY5U/w/khTGLLmo2oivg==
-X-ME-Sender: <xms:0NAzXqGzS9sO_L0E_NiIJt5SU0J2TR67rtnar_Yr_vDaq4yo1l64Wg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrfeelgdeljecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculdeftddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttder
- jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrddutdenucevlhhushhtvghrufhi
- iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllh
- drtggt
-X-ME-Proxy: <xmx:0NAzXnYqT8QLiIlSkd5nmOajtCbm_lecNG9Ec6XF5MsF33FGiW57Ww>
- <xmx:0NAzXqHSQcXlNGODJm_uaD8wtvvWalJTXVQAv9dUJoGE0ZLJyxZO6Q>
- <xmx:0NAzXlBiAeGTCGIsyf9Cyn9yrL4OXtPQl43bxAt1R08nA_r5hpM6nA>
- <xmx:0dAzXjG8XyG67mG2BYnamOPEQ07UDA6GdP2sDeTAd0jX-r2WLqnc_Q>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 403D53060A08;
- Fri, 31 Jan 2020 02:01:34 -0500 (EST)
-Message-ID: <9edd517d0238dc3319788a23d708b68102cdbc2f.camel@russell.cc>
-Subject: Re: [PATCH] lkdtm: Test KUAP directional user access unlocks on
- powerpc
-From: Russell Currey <ruscur@russell.cc>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, keescook@chromium.org, 
- mpe@ellerman.id.au
-Date: Fri, 31 Jan 2020 18:01:32 +1100
-In-Reply-To: <c05a4327-0c81-0e3e-d93a-9d62183b146c@c-s.fr>
-References: <20200131053157.22463-1-ruscur@russell.cc>
- <1b40cea6-0675-731a-58b1-bdc65f1e495e@c-s.fr>
- <0b016861756cbe27e66651b5c21229a06558cb57.camel@russell.cc>
- <c05a4327-0c81-0e3e-d93a-9d62183b146c@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 488BTy1HmyzDqVk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 20:18:30 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=mBhwEQHD; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 488BTw54LNz9sRR;
+ Fri, 31 Jan 2020 20:18:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1580462309;
+ bh=cCI4WreJl9TPaQKBLWhchJurIy1jFBvqbedUEJxwYO0=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=mBhwEQHDz1XN3CYCwbbKhv0GeXIMwF6PpEKmhsU6baEkq/O5znNz1kxwO04DdH2cV
+ cQHk2ukvWfkffBL51JWySB3i6n7Xl7+K7RF1CR+iQJlUb4nIovevkPsf/8IiWcXORj
+ GnpcWStMenr/9iLqB+KmRYUxsIRmXjpWUw5hp3ZUkzSpP5jJKbtBG4k1xfmDmVRV+b
+ DxTrd/E5w6IIfyo7oKOaCcXqhx0VhKUuGDld1R6qNtw50PBEprXULq816EfAofOTaJ
+ iSMjmoBQSKBOxBN5hak7fA5eN3jYxhDXL/fQxIQu/+805iAC1oUuQmmADCj4gw1uOq
+ PWLBEBWRkYeDw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alex Ghiti <alex@ghiti.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexei Starovoitov <ast@kernel.org>, linux-next@vger.kernel.org,
+ Zong Li <zong.li@sifive.com>, Palmer Dabbelt <palmerdabbelt@google.com>
+Subject: Re: [PATCH v2] powerpc: Do not consider weak unresolved symbol
+ relocations as bad
+In-Reply-To: <8a8d45c6-4ad2-c682-abfb-3d97188d0d45@ghiti.fr>
+References: <20200118170335.21440-1-alex@ghiti.fr>
+ <8a8d45c6-4ad2-c682-abfb-3d97188d0d45@ghiti.fr>
+Date: Fri, 31 Jan 2020 20:18:25 +1100
+Message-ID: <87wo98f0gu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,43 +64,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-hardening@lists.openwall.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-01-31 at 07:58 +0100, Christophe Leroy wrote:
-> 
-> Le 31/01/2020 à 07:53, Russell Currey a écrit :
-> > On Fri, 2020-01-31 at 07:44 +0100, Christophe Leroy wrote:
-> > > Le 31/01/2020 à 06:31, Russell Currey a écrit :
-> > > > +	pr_info("attempting bad read at %px with write
-> > > > allowed\n",
-> > > > ptr);
-> > > > +	tmp = *ptr;
-> > > > +	tmp += 0xc0dec0de;
-> > > > +	prevent_write_to_user(ptr, sizeof(unsigned long));
-> > > 
-> > > Does it work ? I would have thought that if the read fails the
-> > > process
-> > > will die and the following test won't be performed.
-> > 
-> > Correct, the ACCESS_USERSPACE test does the same thing.  Splitting
-> > this
-> > into separate R and W tests makes sense, even if it is unlikely
-> > that
-> > one would be broken without the other.
-> > 
-> 
-> Or once we are using user_access_begin() stuff, we can use 
-> unsafe_put_user() and unsafe_get_user() which should return an error 
-> instead of killing the caller.
+Alex Ghiti <alex@ghiti.fr> writes:
+> On 1/18/20 12:03 PM, Alexandre Ghiti wrote:
+>> Commit 8580ac9404f6 ("bpf: Process in-kernel BTF") introduced two weak
+>> symbols that may be unresolved at link time which result in an absolute
+>> relocation to 0. relocs_check.sh emits the following warning:
+>>
+>> "WARNING: 2 bad relocations
+>> c000000001a41478 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
+>> c000000001a41480 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end"
+>>
+>> whereas those relocations are legitimate even for a relocatable kernel
+>> compiled with -pie option.
+>>
+>> relocs_check.sh already excluded some weak unresolved symbols explicitly:
+>> remove those hardcoded symbols and add some logic that parses the symbols
+>> using nm, retrieves all the weak unresolved symbols and excludes those from
+>> the list of the potential bad relocations.
+>>
+>> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+>> ---
+>>
+>> Changes in v2:
+>> - Follow Stephen advice of using grep -F instead of looping over weak symbols
+>>    using read, patch is way smaller and cleaner.
+>> - Add missing nm in comment
+>>
+>>   arch/powerpc/Makefile.postlink     |  4 ++--
+>>   arch/powerpc/tools/relocs_check.sh | 20 ++++++++++++--------
+>>   2 files changed, 14 insertions(+), 10 deletions(-)
+>>
+...
+>
+> Hi guys,
+>
+>
+> Any thought about that ?
+>
+> I do think this patch makes the whole check about absolute relocations 
+> clearer.
+> And in the future, it will avoid anyone to spend some time on those 
+> "bad" relocations
+> which actually aren't.
 
-Even better, and thanks for your work on all this stuff.
+Sorry I missed the v2. Will pick it up.
 
-- Russell
-
-> 
-> Christophe
-
+cheers
