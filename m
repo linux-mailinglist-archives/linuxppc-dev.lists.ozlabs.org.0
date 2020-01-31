@@ -2,53 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5D014EC1F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 12:57:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF55614ED62
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 14:32:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 488G1p0fxPzDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 22:57:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 488J6r4Q1KzDqfc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2020 00:32:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 488FzJ1HyXzDqfH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 22:55:39 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 00VBtFCD018161;
- Fri, 31 Jan 2020 05:55:15 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 00VBtEuF018160;
- Fri, 31 Jan 2020 05:55:14 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Fri, 31 Jan 2020 05:55:14 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Subject: Re: powerpc Linux scv support and scv system call ABI proposal
-Message-ID: <20200131115514.GZ22482@gate.crashing.org>
-References: <20200129162947.GN22482@gate.crashing.org>
- <87imku8ac5.fsf@oldenburg2.str.redhat.com>
- <20200129175104.GO22482@gate.crashing.org>
- <87k1595iok.fsf@oldenburg2.str.redhat.com>
- <20200130112512.GS22482@gate.crashing.org>
- <87y2tp40d2.fsf@oldenburg2.str.redhat.com>
- <20200130135030.GV22482@gate.crashing.org>
- <f46bafbd-c553-565a-38a4-73d81cc5a8d2@linaro.org>
- <20200130214105.GX22482@gate.crashing.org>
- <7568c170-55ef-d3b0-fe85-e5bec68c1fe1@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7568c170-55ef-d3b0-fe85-e5bec68c1fe1@linaro.org>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 488J380MBHzDqSW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2020 00:29:07 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 107B7AC9D;
+ Fri, 31 Jan 2020 13:29:02 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org, Nathan Lynch <nathanl@linux.ibm.com>,
+ Libor Pechacek <lpechacek@suse.cz>
+Subject: [PATCH v2] powerpc: drmem: avoid NULL pointer dereference when drmem
+ is unavailable
+Date: Fri, 31 Jan 2020 14:28:29 +0100
+Message-Id: <20200131132829.10281-1-msuchanek@suse.de>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20200128101945.GA20336@fm.suse.cz>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,73 +47,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Florian Weimer <fweimer@redhat.com>, libc-alpha@sourceware.org,
- Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, Michal Suchanek <msuchanek@suse.cz>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leonardo@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Michal Suchanek <msuchanek@suse.de>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
 
-On Fri, Jan 31, 2020 at 08:30:45AM -0300, Adhemerval Zanella wrote:
-> On 30/01/2020 18:41, Segher Boessenkool wrote:
-> > On Thu, Jan 30, 2020 at 02:04:51PM -0300, Adhemerval Zanella wrote:
-> >> be value propagated over
-> >> functions calls and over different scopes, which I take from your 
-> >> explanation is not supported and fragile.
-> > 
-> > You probably misundertand that, but let me ask: where is err assigned to
-> > at all in the code you quoted?  I don't see it.  Maybe it's hidden in some
-> > macro?
-> 
-> Indeed it was not explicit in the example code, it is burried in the
-> INTERNAL_SYSCALL_CALL macro which calls sparc-defined macros. For instance, 
-> with 6 argument kernel syscall, it issues:
-> 
-> #define inline_syscall6(string,err,name,arg1,arg2,arg3,arg4,arg5,arg6)  \
-> ({                                                                      \
->         register long __o0 __asm__ ("o0") = (long)(arg1);               \
->         register long __o1 __asm__ ("o1") = (long)(arg2);               \
->         register long __o2 __asm__ ("o2") = (long)(arg3);               \
->         register long __o3 __asm__ ("o3") = (long)(arg4);               \
->         register long __o4 __asm__ ("o4") = (long)(arg5);               \
->         register long __o5 __asm__ ("o5") = (long)(arg6);               \
->         err = name;                                                     \
->         __asm __volatile (string : "=r" (err), "=r" (__o0) :            \
->                           "0" (err), "1" (__o0), "r" (__o1),            \
->                           "r" (__o2), "r" (__o3), "r" (__o4),           \
->                           "r" (__o5) :                                  \
->                           __SYSCALL_CLOBBERS);                          \
->         __o0;                                                           \
-> })
-> 
-> Where 'err' defined by 'INTERNAL_SYSCALL_DECL' should be the 'err' macro
-> argument.
+From: Libor Pechacek <lpechacek@suse.cz>
 
-GCC makes sure that what is in register g1 at the end of this asm does
-end up in the C variable "err" (at least conceptually, the actual code
-can be optimised further).
+In guests without hotplugagble memory drmem structure is only zero
+initialized. Trying to manipulate DLPAR parameters results in a crash.
 
-> I meant a register variable where its use 'after' the extended asm
-> is expected to use the define register.
+$ echo "memory add count 1" > /sys/kernel/dlpar
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+Modules linked in: af_packet(E) rfkill(E) nvram(E) vmx_crypto(E)
+gf128mul(E) e1000(E) virtio_balloon(E) rtc_generic(E) crct10dif_vpmsum(E)
+btrfs(E) blake2b_generic(E) libcrc32c(E) xor(E) raid6_pq(E) virtio_rng(E)
+virtio_blk(E) ohci_pci(E) ehci_pci(E) ohci_hcd(E) ehci_hcd(E)
+crc32c_vpmsum(E) usbcore(E) virtio_pci(E) virtio_ring(E) virtio(E) sg(E)
+dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E)
+scsi_mod(E)
+CPU: 1 PID: 4114 Comm: bash Kdump: loaded Tainted: G            E     5.5.0-rc6-2-default #1
+NIP:  c0000000000ff294 LR: c0000000000ff248 CTR: 0000000000000000
+REGS: c0000000fb9d3880 TRAP: 0300   Tainted: G            E      (5.5.0-rc6-2-default)
+MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28242428  XER: 20000000
+CFAR: c0000000009a6c10 DAR: 0000000000000010 DSISR: 40000000 IRQMASK: 0
+GPR00: c0000000000ff248 c0000000fb9d3b10 c000000001682e00 0000000000000033
+GPR04: c0000000ff30bf90 c0000000ff394800 0000000000005110 ffffffffffffffe8
+GPR08: 0000000000000000 0000000000000000 00000000fe1c0000 0000000000000000
+GPR12: 0000000000002200 c00000003fffee00 0000000000000000 000000011cbc37c0
+GPR16: 000000011cb27ed0 0000000000000000 000000011cb6dd10 0000000000000000
+GPR20: 000000011cb7db28 000001003ce035f0 000000011cbc7828 000000011cbc6c70
+GPR24: 000001003cf01210 0000000000000000 c0000000ffade4e0 c000000002d7216b
+GPR28: 0000000000000001 c000000002d78560 0000000000000000 c0000000015458d0
+NIP [c0000000000ff294] dlpar_memory+0x6e4/0xd00
+LR [c0000000000ff248] dlpar_memory+0x698/0xd00
+Call Trace:
+[c0000000fb9d3b10] [c0000000000ff248] dlpar_memory+0x698/0xd00 (unreliable)
+[c0000000fb9d3ba0] [c0000000000f5990] handle_dlpar_errorlog+0xc0/0x190
+[c0000000fb9d3c10] [c0000000000f5c58] dlpar_store+0x198/0x4a0
+[c0000000fb9d3cd0] [c000000000c4cb00] kobj_attr_store+0x30/0x50
+[c0000000fb9d3cf0] [c0000000005a37b4] sysfs_kf_write+0x64/0x90
+[c0000000fb9d3d10] [c0000000005a2c90] kernfs_fop_write+0x1b0/0x290
+[c0000000fb9d3d60] [c0000000004a2bec] __vfs_write+0x3c/0x70
+[c0000000fb9d3d80] [c0000000004a6560] vfs_write+0xd0/0x260
+[c0000000fb9d3dd0] [c0000000004a69ac] ksys_write+0xdc/0x130
+[c0000000fb9d3e20] [c00000000000b478] system_call+0x5c/0x68
+Instruction dump:
+ebc90000 1ce70018 38e7ffe8 7cfe3a14 7fbe3840 419dff14 fb610068 7fc9f378
+39000000 4800000c 60000000 4195fef4 <81490010> 39290018 38c80001 7ea93840
+---[ end trace cc2dd8152608c295 ]---
 
-Yes, that is not supported like this.  You'll have to use some more
-inline asm at that use (with "err" as input there).  Or, if you actually
-care about this being in a specific register, maybe you shouldn't write
-this in C at all?  Writing assembler code in assembler language (in a
-single inline asm block, or even in an assembler source file) tends to
-give much better results (and is a lot easier) than trying to second-
-guess the compiler.  You can write pretty much anything as inline
-assembler code, but that doesn't mean you have to, or that that would
-be a good idea.
+Taking closer look at the code, I can see that for_each_drmem_lmb is a
+macro expanding into `for (lmb = &drmem_info->lmbs[0]; lmb <=
+&drmem_info->lmbs[drmem_info->n_lmbs - 1]; lmb++)`. When drmem_info->lmbs
+is NULL, the loop would iterate through the whole address range if it
+weren't stopped by the NULL pointer dereference on the next line.
 
-Things on the border like system calls are hard to handle.  I like the
-idea of doing those in compiler builtins ("compiler intrinsics"), but
-that has its own problems as well: mostly, need to {write down / lock
-down / determine in advance} more of the calling convention than the
-other approaches.  And of course it will take years before most projects
-can use it :-/
+This patch aligns for_each_drmem_lmb and for_each_drmem_lmb_in_range macro
+behavior with the common C semantics, where the end marker does not belong
+to the scanned range, and alters get_lmb_range() semantics. As a side
+effect, the wraparound observed in the crash is prevented.
 
+Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+Cc: Michal Suchanek <msuchanek@suse.cz>
+Cc: stable@vger.kernel.org
+Signed-off-by: Libor Pechacek <lpechacek@suse.cz>
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+v2: rename last_lmb -> limit, clarify error condition.
+---
+ arch/powerpc/include/asm/drmem.h                | 4 ++--
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-Segher
+diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+index 3d76e1c388c2..28c3d936fdf3 100644
+--- a/arch/powerpc/include/asm/drmem.h
++++ b/arch/powerpc/include/asm/drmem.h
+@@ -27,12 +27,12 @@ struct drmem_lmb_info {
+ extern struct drmem_lmb_info *drmem_info;
+ 
+ #define for_each_drmem_lmb_in_range(lmb, start, end)		\
+-	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
++	for ((lmb) = (start); (lmb) < (end); (lmb)++)
+ 
+ #define for_each_drmem_lmb(lmb)					\
+ 	for_each_drmem_lmb_in_range((lmb),			\
+ 		&drmem_info->lmbs[0],				\
+-		&drmem_info->lmbs[drmem_info->n_lmbs - 1])
++		&drmem_info->lmbs[drmem_info->n_lmbs])
+ 
+ /*
+  * The of_drconf_cell_v1 struct defines the layout of the LMB data
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index c126b94d1943..a6b207dd1d7d 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -223,7 +223,7 @@ static int get_lmb_range(u32 drc_index, int n_lmbs,
+ 			 struct drmem_lmb **end_lmb)
+ {
+ 	struct drmem_lmb *lmb, *start, *end;
+-	struct drmem_lmb *last_lmb;
++	struct drmem_lmb *limit;
+ 
+ 	start = NULL;
+ 	for_each_drmem_lmb(lmb) {
+@@ -236,10 +236,10 @@ static int get_lmb_range(u32 drc_index, int n_lmbs,
+ 	if (!start)
+ 		return -EINVAL;
+ 
+-	end = &start[n_lmbs - 1];
++	end = &start[n_lmbs];
+ 
+-	last_lmb = &drmem_info->lmbs[drmem_info->n_lmbs - 1];
+-	if (end > last_lmb)
++	limit = &drmem_info->lmbs[drmem_info->n_lmbs];
++	if (end > limit)
+ 		return -EINVAL;
+ 
+ 	*start_lmb = start;
+-- 
+2.23.0
+
