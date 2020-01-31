@@ -1,74 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B559514E90B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 08:03:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F85A14E903
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 07:59:41 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4887Pk17ghzDqdx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 17:59:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4887Th6fhszDqhs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2020 18:03:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.24;
+ helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=jTZK3fEZ; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=WUnP55PU; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=eWMqdOV0; 
+ dkim-atps=neutral
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4887ND5vTszDqBN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 17:58:20 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4887N76kRdzB09ZD;
- Fri, 31 Jan 2020 07:58:15 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jTZK3fEZ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id TQmu1wzwnnpb; Fri, 31 Jan 2020 07:58:15 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4887N75VM7zB09ZC;
- Fri, 31 Jan 2020 07:58:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580453895; bh=E/UTGg1s6b1EYySKa+amKSGPOfF0kUbXPz2zxvIF7cg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=jTZK3fEZYE6QtuREWRsaTnslBL9ihw9XPwf4Edt2vBlM2x00xoUnbwKN4NDbsaxbY
- wp3Dmd2jnsnWrHOYKD3qWZL/Q2l+IESBAsZJczmCo2kQY8GolXsCzlejesZFBXFn5q
- i/drXngqIiYsyxR2Vzbe11BWcYLeUOEIwha/Z4SA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9DBDB8B88A;
- Fri, 31 Jan 2020 07:58:16 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1xrAjDn3g1SS; Fri, 31 Jan 2020 07:58:16 +0100 (CET)
-Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 78AF38B884;
- Fri, 31 Jan 2020 07:58:16 +0100 (CET)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4887S46C8gzDqZB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2020 18:01:40 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id B98E372C;
+ Fri, 31 Jan 2020 02:01:37 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute1.internal (MEProxy); Fri, 31 Jan 2020 02:01:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
+ t/GpK6YsM5srRFf7eFpXme57d41WlX9+o+qAquTPbfY=; b=WUnP55PUGNZUnNgg
+ nCC6+Xby2ixN1VG0TnMXE0MGmvManZHvl4QjoRSIWlWn501h0A97hT86h/W3Vv0d
+ /SyDesb9JQeXveIte5GJuz+jHsDasy459cDE+iAskHk1r1qnVNSZeMoNwU3K1hhR
+ 75g9mWhEQXTLd91Md+saO87sl9mnSkrPcM1+GGxzlhmL2gRIEn7fAy+GdqBPQv0n
+ Y6ppTNw5CCLL2NQaOcrVVL48LW3MeoY1Li8UzZSTRwmppBv42rXqoMF5sspgfvBF
+ 5agO1T+IDNV+BnFtE4sy62gRy5DvPvTYcTMiZbQSrlSMJlD8BEOoEXxMNO1FYOyz
+ iqlLwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=t/GpK6YsM5srRFf7eFpXme57d41WlX9+o+qAquTPb
+ fY=; b=eWMqdOV0wHgRiduKdiglB1u/pBpJaQMLLyYLQ1mA2ovG2/QAoJ18iTR+c
+ z2q5mVR5mdF3stI2oRU658zN3PMKmC0hMkhHEwbhvgwxCjHFCRdqlql55RwC1ADa
+ l5ODIF4jsBWsiUslco2kQgWJN8xsHV0EMNuySn9cMf+Cz36HsXWo13JoeYCdStk8
+ r8NmqBlFp93DSeApXK4zmj600vjkOR2jpT7Us2nEu43PEuomXlei7PMjYs7U/lYc
+ r04jLCxy3xbG4jUDfJuXJ4S1n4Z/1Y6GaNSTTyU2pe8KlORAIcWkJwSeqNmSk4JS
+ ecuXaUuHMgY5U/w/khTGLLmo2oivg==
+X-ME-Sender: <xms:0NAzXqGzS9sO_L0E_NiIJt5SU0J2TR67rtnar_Yr_vDaq4yo1l64Wg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrfeelgdeljecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculdeftddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttder
+ jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
+ gvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrddutdenucevlhhushhtvghrufhi
+ iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllh
+ drtggt
+X-ME-Proxy: <xmx:0NAzXnYqT8QLiIlSkd5nmOajtCbm_lecNG9Ec6XF5MsF33FGiW57Ww>
+ <xmx:0NAzXqHSQcXlNGODJm_uaD8wtvvWalJTXVQAv9dUJoGE0ZLJyxZO6Q>
+ <xmx:0NAzXlBiAeGTCGIsyf9Cyn9yrL4OXtPQl43bxAt1R08nA_r5hpM6nA>
+ <xmx:0dAzXjG8XyG67mG2BYnamOPEQ07UDA6GdP2sDeTAd0jX-r2WLqnc_Q>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 403D53060A08;
+ Fri, 31 Jan 2020 02:01:34 -0500 (EST)
+Message-ID: <9edd517d0238dc3319788a23d708b68102cdbc2f.camel@russell.cc>
 Subject: Re: [PATCH] lkdtm: Test KUAP directional user access unlocks on
  powerpc
-To: Russell Currey <ruscur@russell.cc>, keescook@chromium.org,
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, keescook@chromium.org, 
  mpe@ellerman.id.au
+Date: Fri, 31 Jan 2020 18:01:32 +1100
+In-Reply-To: <c05a4327-0c81-0e3e-d93a-9d62183b146c@c-s.fr>
 References: <20200131053157.22463-1-ruscur@russell.cc>
  <1b40cea6-0675-731a-58b1-bdc65f1e495e@c-s.fr>
  <0b016861756cbe27e66651b5c21229a06558cb57.camel@russell.cc>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <c05a4327-0c81-0e3e-d93a-9d62183b146c@c-s.fr>
-Date: Fri, 31 Jan 2020 07:58:16 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ <c05a4327-0c81-0e3e-d93a-9d62183b146c@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 
 MIME-Version: 1.0
-In-Reply-To: <0b016861756cbe27e66651b5c21229a06558cb57.camel@russell.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,29 +103,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 31/01/2020 à 07:53, Russell Currey a écrit :
-> On Fri, 2020-01-31 at 07:44 +0100, Christophe Leroy wrote:
->>
->> Le 31/01/2020 à 06:31, Russell Currey a écrit :
->>> +	pr_info("attempting bad read at %px with write allowed\n",
->>> ptr);
->>> +	tmp = *ptr;
->>> +	tmp += 0xc0dec0de;
->>> +	prevent_write_to_user(ptr, sizeof(unsigned long));
->>
->> Does it work ? I would have thought that if the read fails the
->> process
->> will die and the following test won't be performed.
+On Fri, 2020-01-31 at 07:58 +0100, Christophe Leroy wrote:
 > 
-> Correct, the ACCESS_USERSPACE test does the same thing.  Splitting this
-> into separate R and W tests makes sense, even if it is unlikely that
-> one would be broken without the other.
+> Le 31/01/2020 à 07:53, Russell Currey a écrit :
+> > On Fri, 2020-01-31 at 07:44 +0100, Christophe Leroy wrote:
+> > > Le 31/01/2020 à 06:31, Russell Currey a écrit :
+> > > > +	pr_info("attempting bad read at %px with write
+> > > > allowed\n",
+> > > > ptr);
+> > > > +	tmp = *ptr;
+> > > > +	tmp += 0xc0dec0de;
+> > > > +	prevent_write_to_user(ptr, sizeof(unsigned long));
+> > > 
+> > > Does it work ? I would have thought that if the read fails the
+> > > process
+> > > will die and the following test won't be performed.
+> > 
+> > Correct, the ACCESS_USERSPACE test does the same thing.  Splitting
+> > this
+> > into separate R and W tests makes sense, even if it is unlikely
+> > that
+> > one would be broken without the other.
+> > 
 > 
+> Or once we are using user_access_begin() stuff, we can use 
+> unsafe_put_user() and unsafe_get_user() which should return an error 
+> instead of killing the caller.
 
-Or once we are using user_access_begin() stuff, we can use 
-unsafe_put_user() and unsafe_get_user() which should return an error 
-instead of killing the caller.
+Even better, and thanks for your work on all this stuff.
 
-Christophe
+- Russell
+
+> 
+> Christophe
+
