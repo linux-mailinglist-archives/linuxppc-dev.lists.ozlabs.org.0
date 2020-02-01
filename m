@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE9814F8EA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2020 17:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B574014F8FB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2020 17:43:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48901G55m3zDqHF
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 03:29:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4890JP41PVzDqf3
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 03:43:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=OND2aOfE; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=jsFiPNcF; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 488zyj5H0CzDqHd
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 03:27:39 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 488zyY576yz9vBmZ;
- Sat,  1 Feb 2020 17:27:33 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=OND2aOfE; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cOc3nVoSmWt8; Sat,  1 Feb 2020 17:27:33 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 488zyY3LN2z9vBmY;
- Sat,  1 Feb 2020 17:27:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580574453; bh=ZjmS/adFTgLgsg7zeCN7l9gy5WSfkM50nGalFqI61jU=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=OND2aOfEStqUhg9CLiDtWmwPWq3FmlU74CaysGCTUMcz0p1a48c2qlAmwAxt7MAQQ
- E265BrP4WfszNHtCemUVGjvXf5G2t1LHZmExnGWA733/QVFOZ423m52qO9DBQnzs0e
- YdVUZmhsiDqgEteMFdpWWdCCqfYLJk8o0SjKAFp4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 054808B78B;
- Sat,  1 Feb 2020 17:27:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id artbkuQxn9DU; Sat,  1 Feb 2020 17:27:34 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A0A648B752;
- Sat,  1 Feb 2020 17:27:34 +0100 (CET)
-Subject: Re: [PATCH v2] powerpc/32s: Don't flush all TLBs when flushing one
- page
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <b30b2eae6960502eaf0d9e36c60820b839693c33.1580542939.git.christophe.leroy@c-s.fr>
-Message-ID: <601bc775-6b51-c6c3-128e-ccd36d54f933@c-s.fr>
-Date: Sat, 1 Feb 2020 17:27:33 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4890Fl0rVHzDqbv
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 03:40:40 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id fa20so4339339pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Feb 2020 08:40:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=QwZ3CLPSOKerZ4q2cB/Hi0ai1yGFzd/B3udh3ZqTtuM=;
+ b=jsFiPNcF+Kv+AD+cCoimAjdmxdXVfz+jklLjuWAodKYGoYYpsmGFXd7lewm9b+k+0a
+ YxyMuZnoFgQBJJT4fvhBfbLaQinvoO/ovQPcFEXi5AGzl5olCx5gYZ4Eq7/UZCm/eIOr
+ OQ9onHvvIcrtHkP4clI72kPgvkSCx4wYKUuIw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=QwZ3CLPSOKerZ4q2cB/Hi0ai1yGFzd/B3udh3ZqTtuM=;
+ b=ndR6hu8fHygv+dEVXXj9Uum+C25NoTIU8aaIN9Is2OWCb5Vc83nzNiFtjoYc1itBUg
+ 4Z1yjxqKbujvflhnCE0l19zX4CzK2EKKAC+LakI3DsBB2RkkYSrfb63qCrUeKRfFcIQ8
+ vVoSiDiWbJHtUrSYinIVrAEUtjjUFzszmWV1u6G+dmwh0FnCCJPWkh//h9bIka9t0UZp
+ q5tCcPe9mSTkMjIAi1Mgq1WdeLb0eq18RCMX2gz59g4VWgyEUwwCAv4bbnjfFyMiqS2b
+ R8hoIjGmVwzMAp4vgXp2wOqNJGyBFyddycXlnn8nFYk5RMJPBVrtCssTypm3+WLRFnsE
+ 1JCg==
+X-Gm-Message-State: APjAAAVfNvDdaAGUqnE5aHSV/o2wdA1ZJoBckMw2jMhhP9ifkRL8bMnT
+ hp7tEn9W5fMpUDW0h+TJS6MgRQ==
+X-Google-Smtp-Source: APXvYqxXMppfrfTklyz+pwg0P3CdY6ihdgY9Vslz5MfHbndtzF8KzUGwo01U+1jLgg/AvUUKozH1GA==
+X-Received: by 2002:a17:902:d20f:: with SMTP id
+ t15mr16360800ply.55.1580575236433; 
+ Sat, 01 Feb 2020 08:40:36 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id dw10sm14222430pjb.11.2020.02.01.08.40.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 01 Feb 2020 08:40:35 -0800 (PST)
+Date: Sat, 1 Feb 2020 08:40:34 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Russell Currey <ruscur@russell.cc>
+Subject: Re: [PATCH] lkdtm: Test KUAP directional user access unlocks on
+ powerpc
+Message-ID: <202002010836.76B19684@keescook>
+References: <20200131053157.22463-1-ruscur@russell.cc>
+ <1b40cea6-0675-731a-58b1-bdc65f1e495e@c-s.fr>
+ <0b016861756cbe27e66651b5c21229a06558cb57.camel@russell.cc>
 MIME-Version: 1.0
-In-Reply-To: <b30b2eae6960502eaf0d9e36c60820b839693c33.1580542939.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b016861756cbe27e66651b5c21229a06558cb57.camel@russell.cc>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,49 +79,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kernel-hardening@lists.openwall.com, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Jan 31, 2020 at 05:53:14PM +1100, Russell Currey wrote:
+> Correct, the ACCESS_USERSPACE test does the same thing.  Splitting this
+> into separate R and W tests makes sense, even if it is unlikely that
+> one would be broken without the other.
 
+That would be my preference too -- the reason it wasn't separated before
+was because it was one big toggle before. I just had both directions in
+the test out of a desire for completeness.
 
-Le 01/02/2020 à 09:04, Christophe Leroy a écrit :
-> When flushing any memory range, the flushing function
-> flushes all TLBs.
-> 
-> When (start) and (end - 1) are in the same memory page,
-> flush that page instead.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Splitting into WRITE_USERSPACE and READ_USERSPACE seems good. Though if
+you want to test functionality (read while only write disabled), then
+I'm not sure what that should look like. Does the new
+user_access_begin() API provide a way to query existing state? I'll go
+read the series...
 
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-
-> ---
-> v2: Reworked the test as the previous one was always false (end - start was PAGE_SIZE - 1 for a single page)
-> ---
->   arch/powerpc/mm/book3s32/tlb.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
-> index 2fcd321040ff..724c0490fb17 100644
-> --- a/arch/powerpc/mm/book3s32/tlb.c
-> +++ b/arch/powerpc/mm/book3s32/tlb.c
-> @@ -79,11 +79,14 @@ static void flush_range(struct mm_struct *mm, unsigned long start,
->   	int count;
->   	unsigned int ctx = mm->context.id;
->   
-> +	start &= PAGE_MASK;
->   	if (!Hash) {
-> -		_tlbia();
-> +		if (end - start <= PAGE_SIZE)
-> +			_tlbie(start);
-> +		else
-> +			_tlbia();
->   		return;
->   	}
-> -	start &= PAGE_MASK;
->   	if (start >= end)
->   		return;
->   	end = (end - 1) | ~PAGE_MASK;
-> 
+-- 
+Kees Cook
