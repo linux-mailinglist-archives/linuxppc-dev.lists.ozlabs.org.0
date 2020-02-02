@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B69114FC52
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 09:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B5D14FCE8
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 12:29:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 489PNL4zt9zDqWp
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 19:32:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 489TJ05jFrzDqTm
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 22:29:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=jxSd4bcB; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=ktqi1Si5; dkim-atps=neutral
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 489PLm2HlQzDqWp
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 19:31:27 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 489PLc2Pfyz9tyWF;
- Sun,  2 Feb 2020 09:31:20 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jxSd4bcB; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 0yWRy2TLi9QC; Sun,  2 Feb 2020 09:31:20 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 489PLc0zVpz9tyWB;
- Sun,  2 Feb 2020 09:31:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580632280; bh=gJ+YBiU1siNA6yw0ERrSRXytsUyJ6J4mmY1g8irtvMg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=jxSd4bcBMPwDDkQQtltYvbDM7RjmY7wn3YHePmJyrQoSpGxb+srr+7WWVT07acbk4
- Gd8wx/ElVf48v1NQ7kacblPWNxOSr0bIjH1lQW4QiWnAuYKH9BZIwizDmpyvIglx32
- bf4U9cZQC+HCcZh0MgO0YttEmPTxX2H/LjarVNYo=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E45E88B762;
- Sun,  2 Feb 2020 09:31:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wqc16BLAbHuO; Sun,  2 Feb 2020 09:31:22 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A80498B752;
- Sun,  2 Feb 2020 09:31:20 +0100 (CET)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 489TDr6ZlJzDqTT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 22:26:35 +1100 (AEDT)
+Received: by mail-qk1-x741.google.com with SMTP id u19so3750179qku.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Feb 2020 03:26:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=haUAAZdbmdU3COyJ/sqnDbNti6tUXhiH5WpEb5CUu3o=;
+ b=ktqi1Si5IANgowqGSuWt2goxaefj9MArH9hBL4drDxYpQy5gO9eIMpaj4x1g9qz0Ft
+ wJg8PZziG/0FMCaYMFvU0R1ed/sRIgt60RVYo/fiPoIuWPHtw5CoKADSbrdPinp59eNX
+ GqmqoNXOemL5q0rosXYIx2UJ1orNdlYcFK73Ygg0a/RE2arXPeSnjr+QO/TuQNX54JbP
+ bi9ii20//c0h4YooeibM3yZGm2vZjIxTdT2q1agyMmadm90FFuyO+OFJ2urFPdZeXwtw
+ AgKWNyLv5Arxyw8debfI90Lt1gaaDIBA8bYeatlKiESPBREuLesS3poug3ybj8+iH21/
+ Psqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=haUAAZdbmdU3COyJ/sqnDbNti6tUXhiH5WpEb5CUu3o=;
+ b=fmRifeFleY9C5qpryeg5qa7OBR03O+gMp1khWY8yWVyNV1PW8Z7OQsapknbSgbIrjk
+ oCOyepDnPmgq1SdYqNiCzyOVTV6LmkL5ktHl4UHLMM8nrfeOEBO1s0+34CdhrAcdu8Nc
+ isU93HFFWAWQMrb6e6ByaQlpKzVo8oEF7UgV6MpJccEPdQJ6qqk+4oEUBUduyHQdgsIL
+ SNuGLUF/4tHLbTXo7xaksW2Moha+nZap98+XcwXfbzjNw1bXiwRkecQoj97rvIb/Mz9C
+ 6wVO/4uVt3RI1i9TOGPLLMfzzaemVfTjbar3Zvl0UAwLRvr2QoxYGi3SK2OL4faQd8mW
+ qLHA==
+X-Gm-Message-State: APjAAAWXK5A6642Zkz8+GicEUOc/mY3Gt1V/9C66wYqZDRyKIL002XbJ
+ ZRftAJcdgsB3T2fbC1WSV16Fgw==
+X-Google-Smtp-Source: APXvYqz2LMXXgwCpUXH7EnnO/Ck2Cj8Gc2SWzAj6pxocjOsHmdsAhT1kwXiGUD+liMIX2mq/rCkMKw==
+X-Received: by 2002:a05:620a:218d:: with SMTP id
+ g13mr19497581qka.286.1580642791619; 
+ Sun, 02 Feb 2020 03:26:31 -0800 (PST)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id s1sm7274932qkm.84.2020.02.02.03.26.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 02 Feb 2020 03:26:30 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
 Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
  table helpers
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
- <68ed6488-aa25-ab41-8da6-f0ddeb15d52b@c-s.fr>
- <49754f74-53a7-0e4a-bb16-53617f8c902c@arm.com>
- <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
- <ad5ad414-3524-2efa-df16-1ee357e6e2e4@arm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <e1e046d7-bf1d-eaec-1d0b-fe056b83b84c@c-s.fr>
-Date: Sun, 2 Feb 2020 09:31:18 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
-MIME-Version: 1.0
-In-Reply-To: <ad5ad414-3524-2efa-df16-1ee357e6e2e4@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Date: Sun, 2 Feb 2020 06:26:29 -0500
+Message-Id: <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+References: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
+In-Reply-To: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+X-Mailer: iPhone Mail (17C54)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,26 +82,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
  linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ James Hogan <jhogan@kernel.org>,
  Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ kasan-dev <kasan-dev@googlegroups.com>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
  linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
  Kees Cook <keescook@chromium.org>,
+ Anshuman Khandual <Anshuman.Khandual@arm.com>,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
  Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
  Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
  linux-arm-kernel@lists.infradead.org,
  Sri Krishna chowdary <schowdary@nvidia.com>,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
  Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
  Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
  Vineet Gupta <vgupta@synopsys.com>,
@@ -114,45 +116,16 @@ Sender: "Linuxppc-dev"
 
 
 
-Le 02/02/2020 à 08:18, Anshuman Khandual a écrit :
-> On 01/30/2020 07:43 PM, Christophe Leroy wrote:
->>
->>
->> Le 30/01/2020 à 14:04, Anshuman Khandual a écrit :
->>>
->>> On 01/28/2020 10:35 PM, Christophe Leroy wrote:
->>
->>>
->>>> I think we could make it standalone and 'default y if DEBUG_VM' instead.
->>>
->>> Which will yield the same result like before but in a different way. But
->>> yes, this test could go about either way but unless there is a good enough
->>> reason why change the current one.
->>
->> I think if we want people to really use it on other architectures it must be possible to activate it without having to modify Kconfig. Otherwise people won't even know the test exists and the architecture fails the test.
->>
->> The purpose of a test suite is to detect bugs. If you can't run the test until you have fixed the bugs, I guess nobody will ever detect the bugs and they will never be fixed.
->>
->> So I think:
->> - the test should be 'default y' when ARCH_HAS_DEBUG_VM_PGTABLE is selected
->> - the test should be 'default n' when ARCH_HAS_DEBUG_VM_PGTABLE is not selected, and it should be user selectable if EXPERT is selected.
->>
->> Something like:
->>
->> config DEBUG_VM_PGTABLE
->>      bool "Debug arch page table for semantics compliance" if ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
->>      depends on MMU
-> 
-> (ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT) be moved along side MMU on the same line ?
+> On Jan 30, 2020, at 9:13 AM, Christophe Leroy <christophe.leroy@c-s.fr> wr=
+ote:
+>=20
+> config DEBUG_VM_PGTABLE
+>    bool "Debug arch page table for semantics compliance" if ARCH_HAS_DEBUG=
+_VM_PGTABLE || EXPERT
+>    depends on MMU
+>    default 'n' if !ARCH_HAS_DEBUG_VM_PGTABLE
+>    default 'y' if DEBUG_VM
 
-Yes could also go along side MMU, or could be a depend by itself:
-	depends on ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
-
-> 
->>      default 'n' if !ARCH_HAS_DEBUG_VM_PGTABLE
->>      default 'y' if DEBUG_VM
-> 
-> This looks good, at least until we get all platforms enabled. Will do all these
-> changes along with s390 enablement and re-spin.
-
-Christophe
+Does it really necessary to potentially force all bots to run this? Syzbot, k=
+ernel test robot etc? Does it ever pay off for all their machine times there=
+?=
