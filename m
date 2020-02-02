@@ -2,44 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A02A14F920
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2020 18:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008B514FB04
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 01:12:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4890zg53lJzDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 04:13:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 489BHG5pdZzDqlm
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2020 11:12:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4890x33gnGzDqdG
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 04:11:12 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2020 09:11:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,390,1574150400"; d="scan'208";a="248059603"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga002.jf.intel.com with ESMTP; 01 Feb 2020 09:11:07 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1ixwIV-000H7i-Cr; Sun, 02 Feb 2020 01:11:07 +0800
-Date: Sun, 02 Feb 2020 01:10:38 +0800
-From: kbuild test robot <lkp@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 489BFs11cdzDqGc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 11:11:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=bzZqisX4; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 489BFr4dt0z8tPV
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2020 11:11:28 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 489BFr4PDyz9sRW; Sun,  2 Feb 2020 11:11:28 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::5;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=bzZqisX4; 
+ dkim-atps=neutral
+X-Greylist: delayed 157 seconds by postgrey-1.36 at bilbo;
+ Sun, 02 Feb 2020 11:11:26 AEDT
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 489BFp4gkzz9s29
+ for <linuxppc-dev@ozlabs.org>; Sun,  2 Feb 2020 11:11:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1580602282;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:Subject:From:References:Cc:To:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=M2p6BlJKlzc7zwD9OCcddn1toLSZU/FWLhGgP48heGQ=;
+ b=bzZqisX4TTdFe6F8iDg017ER9VXqXGVvqCrMOlFfFVPNGfYIT9WO/4EF3nyrvox6Sa
+ E6NUuKhqGxrFx9z2T14iSIu9yoDMKeYWZHQRkuMID5QLSgRzibc4jlelMNhQvkVNejMl
+ ZpDoL5UCnvCvnCp+KKML6wGRseWq4M6VQ6+o2mtpytF3DI1+tKlRsTfTP6U2ZsncJM4T
+ F8qr2ZaH9iNf+Py0YThXmPDVBxMXcJPIh914MTKDXP3YqQnJ5XRySyG1qEz+fxMQPDH0
+ gSnpJGonsbIhHFeIe0egeo49Dh96u5Aek/jrPpEn3rC8227f00OMVyx8XG/MZduJhulr
+ QdVg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSLlpvF7aofGh9KUohSyVOsmPy"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:188b:8a2:e727:e5f1]
+ by smtp.strato.de (RZmta 46.1.12 AUTH)
+ with ESMTPSA id 40bcf3w1208HBpI
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sun, 2 Feb 2020 01:08:17 +0100 (CET)
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 41196224883a64e56e0ef237c19eb837058df071
-Message-ID: <5e35b10e.FgvaOJfsPj1T/7Zp%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+References: <20200126115247.13402-1-mpe@ellerman.id.au>
+ <CAPDyKFrbYmV6_nV6psVLq6VRKMXf0PXpemBbj48yjOr3P130BA@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate ioctl
+ for device
+Message-ID: <58a6d45c-0712-18df-1b14-2f04cf12a1cb@xenosoft.de>
+Date: Sun, 2 Feb 2020 01:08:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <CAPDyKFrbYmV6_nV6psVLq6VRKMXf0PXpemBbj48yjOr3P130BA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,264 +91,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: 41196224883a64e56e0ef237c19eb837058df071  powerpc/32s: Fix kasan_early_hash_table() for CONFIG_VMAP_STACK
+Hello,
 
-elapsed time: 3111m
+We regularly compile and test Linux kernels every day during the merge 
+window. Since Thuesday we have very high CPU loads because of the avahi 
+daemon on our desktop Linux systems (Ubuntu, Debian etc).
 
-configs tested: 241
-configs skipped: 25
+Error message: avahi-daemon[2410]: ioctl(): Inappropriate ioctl for device
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Could you please test the latest Git kernel?
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-sparc                            allyesconfig
-parisc                              defconfig
-arc                                 defconfig
-um                           x86_64_defconfig
-arc                              allyesconfig
-riscv                          rv32_defconfig
-sparc64                          allyesconfig
-parisc                         b180_defconfig
-m68k                           sun3_defconfig
-s390                                defconfig
-microblaze                      mmu_defconfig
-um                             i386_defconfig
-ia64                                defconfig
-powerpc                             defconfig
-c6x                        evmc6678_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-alpha                               defconfig
-mips                             allmodconfig
-i386                             alldefconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-xtensa                       common_defconfig
-openrisc                    or1ksim_defconfig
-nios2                         3c120_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-nios2                         10m50_defconfig
-openrisc                 simple_smp_defconfig
-csky                                defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                            allyesonfig
-parisc                        c3000_defconfig
-x86_64               randconfig-a001-20200130
-x86_64               randconfig-a002-20200130
-x86_64               randconfig-a003-20200130
-i386                 randconfig-a001-20200130
-i386                 randconfig-a002-20200130
-i386                 randconfig-a003-20200130
-x86_64               randconfig-a001-20200129
-x86_64               randconfig-a002-20200129
-x86_64               randconfig-a003-20200129
-i386                 randconfig-a001-20200129
-i386                 randconfig-a002-20200129
-i386                 randconfig-a003-20200129
-x86_64               randconfig-a001-20200131
-x86_64               randconfig-a002-20200131
-x86_64               randconfig-a003-20200131
-i386                 randconfig-a001-20200131
-i386                 randconfig-a002-20200131
-i386                 randconfig-a003-20200131
-alpha                randconfig-a001-20200130
-m68k                 randconfig-a001-20200130
-mips                 randconfig-a001-20200130
-nds32                randconfig-a001-20200130
-parisc               randconfig-a001-20200130
-riscv                randconfig-a001-20200130
-alpha                randconfig-a001-20200131
-m68k                 randconfig-a001-20200131
-mips                 randconfig-a001-20200131
-nds32                randconfig-a001-20200131
-parisc               randconfig-a001-20200131
-c6x                  randconfig-a001-20200130
-h8300                randconfig-a001-20200130
-microblaze           randconfig-a001-20200130
-nios2                randconfig-a001-20200130
-sparc64              randconfig-a001-20200130
-c6x                  randconfig-a001-20200131
-h8300                randconfig-a001-20200131
-microblaze           randconfig-a001-20200131
-nios2                randconfig-a001-20200131
-sparc64              randconfig-a001-20200131
-csky                 randconfig-a001-20200130
-openrisc             randconfig-a001-20200130
-s390                 randconfig-a001-20200130
-sh                   randconfig-a001-20200130
-xtensa               randconfig-a001-20200130
-x86_64               randconfig-b001-20200131
-x86_64               randconfig-b002-20200131
-x86_64               randconfig-b003-20200131
-i386                 randconfig-b001-20200131
-i386                 randconfig-b002-20200131
-i386                 randconfig-b003-20200131
-x86_64               randconfig-b001-20200129
-x86_64               randconfig-b002-20200129
-x86_64               randconfig-b003-20200129
-i386                 randconfig-b001-20200129
-i386                 randconfig-b002-20200129
-i386                 randconfig-b003-20200129
-x86_64               randconfig-c001-20200131
-x86_64               randconfig-c002-20200131
-x86_64               randconfig-c003-20200131
-i386                 randconfig-c001-20200131
-i386                 randconfig-c002-20200131
-i386                 randconfig-c003-20200131
-x86_64               randconfig-c001-20200129
-x86_64               randconfig-c002-20200129
-x86_64               randconfig-c003-20200129
-i386                 randconfig-c001-20200129
-i386                 randconfig-c002-20200129
-i386                 randconfig-c003-20200129
-x86_64               randconfig-d001-20200129
-x86_64               randconfig-d002-20200129
-x86_64               randconfig-d003-20200129
-i386                 randconfig-d001-20200129
-i386                 randconfig-d002-20200129
-i386                 randconfig-d003-20200129
-x86_64               randconfig-d001-20200130
-x86_64               randconfig-d002-20200130
-x86_64               randconfig-d003-20200130
-i386                 randconfig-d001-20200130
-i386                 randconfig-d002-20200130
-i386                 randconfig-d003-20200130
-x86_64               randconfig-d001-20200131
-x86_64               randconfig-d002-20200131
-x86_64               randconfig-d003-20200131
-i386                 randconfig-d001-20200131
-i386                 randconfig-d002-20200131
-i386                 randconfig-d003-20200131
-x86_64               randconfig-e001-20200129
-x86_64               randconfig-e002-20200129
-x86_64               randconfig-e003-20200129
-i386                 randconfig-e001-20200129
-i386                 randconfig-e002-20200129
-i386                 randconfig-e003-20200129
-x86_64               randconfig-e001-20200130
-x86_64               randconfig-e002-20200130
-x86_64               randconfig-e003-20200130
-i386                 randconfig-e001-20200130
-i386                 randconfig-e002-20200130
-i386                 randconfig-e003-20200130
-x86_64               randconfig-f001-20200130
-x86_64               randconfig-f002-20200130
-x86_64               randconfig-f003-20200130
-i386                 randconfig-f001-20200130
-i386                 randconfig-f002-20200130
-i386                 randconfig-f003-20200130
-x86_64               randconfig-f001-20200129
-x86_64               randconfig-f002-20200129
-x86_64               randconfig-f003-20200129
-i386                 randconfig-f001-20200129
-i386                 randconfig-f002-20200129
-i386                 randconfig-f003-20200129
-x86_64               randconfig-g001-20200129
-x86_64               randconfig-g002-20200129
-x86_64               randconfig-g003-20200129
-i386                 randconfig-g001-20200129
-i386                 randconfig-g002-20200129
-i386                 randconfig-g003-20200129
-x86_64               randconfig-g001-20200130
-x86_64               randconfig-g002-20200130
-x86_64               randconfig-g003-20200130
-i386                 randconfig-g001-20200130
-i386                 randconfig-g002-20200130
-i386                 randconfig-g003-20200130
-x86_64               randconfig-h001-20200129
-x86_64               randconfig-h002-20200129
-x86_64               randconfig-h003-20200129
-i386                 randconfig-h001-20200129
-i386                 randconfig-h002-20200129
-i386                 randconfig-h003-20200129
-arc                  randconfig-a001-20200131
-arm                  randconfig-a001-20200131
-arm64                randconfig-a001-20200131
-ia64                 randconfig-a001-20200131
-powerpc              randconfig-a001-20200131
-sparc                randconfig-a001-20200131
-arm64                randconfig-a001-20200130
-ia64                 randconfig-a001-20200130
-sparc                randconfig-a001-20200130
-arm                  randconfig-a001-20200130
-arc                  randconfig-a001-20200130
-powerpc              randconfig-a001-20200130
-arc                  randconfig-a001-20200129
-arm                  randconfig-a001-20200129
-arm64                randconfig-a001-20200129
-ia64                 randconfig-a001-20200129
-powerpc              randconfig-a001-20200129
-sparc                randconfig-a001-20200129
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                             defconfig
-um                                  defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
+It is possible to deactivate the avahi daemon with the following lines 
+in the file "/etc/avahi/avahi-daemon.conf":
 
----
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+use-ipv4=no
+use-ipv6=no
+
+But this is only a temporary solution.
+
+Thanks,
+Christian
