@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DE31501E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 08:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 577691501E7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 08:15:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 489zZn5PD0zDqM1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 18:13:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 489zcc5YG9zDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 18:15:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,52 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=nNh3p4Sv; dkim-atps=neutral
+ header.s=mail header.b=TuT1j7vc; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 489zXb66NGzDq5y
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2020 18:11:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 489zXc3cSJzDqLd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2020 18:12:00 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 489zXS1YKhz9tyK1;
- Mon,  3 Feb 2020 08:11:52 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 489zXT0HYRz9tyK2;
+ Mon,  3 Feb 2020 08:11:53 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=nNh3p4Sv; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=TuT1j7vc; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ej8gC9mxBZP7; Mon,  3 Feb 2020 08:11:52 +0100 (CET)
+ with ESMTP id rACRmnZx5uGd; Mon,  3 Feb 2020 08:11:52 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 489zXS0HVXz9tyK0;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 489zXS6NCcz9tyK0;
  Mon,  3 Feb 2020 08:11:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580713912; bh=S1h3J5fMUjsNTF7VkXfe5cliEvJr6GtLTC9ah4vuETY=;
- h=From:Subject:To:Cc:Date:From;
- b=nNh3p4Sv59HLG9j+ax6EpZV716oUTerzA2khBfmmQHfbto/CNf0AeqM1Wb8TWjxwP
- jHCzqZ4Hl/liGrpwvI6BMPZbl+BqNif65Rpd9uBzDqcip97W3l6Zs2Nq2Cd0sooC+n
- Ew1N2v6ICBjX1e0E1kkl+94f253ifyGFQa3Igd8A=
+ t=1580713912; bh=Hl7td6ehvi+friZkP3h29//VBfgNZmbTD687vF6OjtA=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=TuT1j7vcLwXb3zXTwp26qDdV2QR3/UKUmGJZDFm/N+QQfzWsX2CChpCzO0d7uUdpb
+ un4+j1oyaUgFMQ1mAZZeNOno05viKyaZaKv/sAo4f6yySZSQS9g9kQT/Tknc5uemlF
+ pUl/VtBhbsG09vYV+fpzKWRkDUT6E63QhmteLhDs=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9618D8B791;
- Mon,  3 Feb 2020 08:11:56 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 73B458B791;
+ Mon,  3 Feb 2020 08:11:57 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ZUomNni_0tTE; Mon,  3 Feb 2020 08:11:56 +0100 (CET)
+ with ESMTP id Bk508yKGDFCm; Mon,  3 Feb 2020 08:11:57 +0100 (CET)
 Received: from po14934vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 50D5E8B752;
- Mon,  3 Feb 2020 08:11:56 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 470F08B752;
+ Mon,  3 Feb 2020 08:11:57 +0100 (CET)
 Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 8285A652AD; Mon,  3 Feb 2020 07:11:55 +0000 (UTC)
-Message-Id: <80ebd9075cd7c8b412c6d5d05f7542f9026642ef.1580713729.git.christophe.leroy@c-s.fr>
+ id 2B99E652AD; Mon,  3 Feb 2020 07:11:56 +0000 (UTC)
+Message-Id: <68a800e0afa0ca6797358cd8b5b12394eac89fdc.1580713729.git.christophe.leroy@c-s.fr>
+In-Reply-To: <80ebd9075cd7c8b412c6d5d05f7542f9026642ef.1580713729.git.christophe.leroy@c-s.fr>
+References: <80ebd9075cd7c8b412c6d5d05f7542f9026642ef.1580713729.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 1/7] powerpc/mm: Implement set_memory() routines
+Subject: [PATCH v3 2/7] powerpc/kprobes: Mark newly allocated probes as RO
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  ruscur@russell.cc
-Date: Mon,  3 Feb 2020 07:11:55 +0000 (UTC)
+Date: Mon,  3 Feb 2020 07:11:56 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,186 +81,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
-and are generally useful primitives to have.  This implementation is
-designed to be completely generic across powerpc's many MMUs.
+With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will be one
+W+X page at boot by default.  This can be tested with
+CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking the
+kernel log during boot.
 
-It's possible that this could be optimised to be faster for specific
-MMUs, but the focus is on having a generic and safe implementation for
-now.
+powerpc doesn't implement its own alloc() for kprobes like other
+architectures do, but we couldn't immediately mark RO anyway since we do
+a memcpy to the page we allocate later.  After that, nothing should be
+allowed to modify the page, and write permissions are removed well
+before the kprobe is armed.
 
-This implementation does not handle cases where the caller is attempting
-to change the mapping of the page it is executing from, or if another
-CPU is concurrently using the page being altered.  These cases likely
-shouldn't happen, but a more complex implementation with MMU-specific code
-could safely handle them, so that is left as a TODO for now.
+The memcpy() would fail if >1 probes were allocated, so use
+patch_instruction() instead which is safe for RO.
 
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
-v3:
-- Changes 'action' from int to long to avoid build failure on PPC64 when casting to/from void*
-- Move pageattr.o into obj-y in Makefile
-
-v2:
-- use integers instead of pointers for action
-- drop action check, nobody should call change_memory_attr() directly.
-Should it happen, the function will just do nothing.
-- Renamed confusing 'pte_val' var to 'pte' as pte_val() is already a function.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+v3: copied alloc_insn_page() from arm64, set_memory_ro() is now called there.
+v2: removed the redundant flush
 ---
- arch/powerpc/Kconfig                  |  1 +
- arch/powerpc/include/asm/set_memory.h | 32 ++++++++++++
- arch/powerpc/mm/Makefile              |  2 +-
- arch/powerpc/mm/pageattr.c            | 74 +++++++++++++++++++++++++++
- 4 files changed, 108 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/include/asm/set_memory.h
- create mode 100644 arch/powerpc/mm/pageattr.c
+ arch/powerpc/kernel/kprobes.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 730c06668f22..d0c6e7b7a62d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -129,6 +129,7 @@ config PPC
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
-+	select ARCH_HAS_SET_MEMORY
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-new file mode 100644
-index 000000000000..64011ea444b4
---- /dev/null
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_SET_MEMORY_H
-+#define _ASM_POWERPC_SET_MEMORY_H
-+
-+#define SET_MEMORY_RO	0
-+#define SET_MEMORY_RW	1
-+#define SET_MEMORY_NX	2
-+#define SET_MEMORY_X	3
-+
-+int change_memory_attr(unsigned long addr, int numpages, long action);
-+
-+static inline int set_memory_ro(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
-+}
-+
-+static inline int set_memory_rw(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
-+}
-+
-+static inline int set_memory_nx(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
-+}
-+
-+static inline int set_memory_x(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_X);
-+}
-+
-+#endif
-diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-index 5e147986400d..a998fdac52f9 100644
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -5,7 +5,7 @@
- 
- ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
- 
--obj-y				:= fault.o mem.o pgtable.o mmap.o \
-+obj-y				:= fault.o mem.o pgtable.o mmap.o pageattr.o \
- 				   init_$(BITS).o pgtable_$(BITS).o \
- 				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
- 				   init-common.o mmu_context.o drmem.o
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-new file mode 100644
-index 000000000000..2b573768a7f7
---- /dev/null
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -0,0 +1,74 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * MMU-generic set_memory implementation for powerpc
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ */
-+
-+#include <linux/mm.h>
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 2d27ec4feee4..bfab91ded234 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -24,6 +24,8 @@
+ #include <asm/sstep.h>
+ #include <asm/sections.h>
+ #include <linux/uaccess.h>
 +#include <linux/set_memory.h>
-+
-+#include <asm/mmu.h>
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+
-+
-+/*
-+ * Updates the attributes of a page in three steps:
-+ *
-+ * 1. invalidate the page table entry
-+ * 2. flush the TLB
-+ * 3. install the new entry with the updated attributes
-+ *
-+ * This is unsafe if the caller is attempting to change the mapping of the
-+ * page it is executing from, or if another CPU is concurrently using the
-+ * page being altered.
-+ *
-+ * TODO make the implementation resistant to this.
-+ */
-+static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
++#include <linux/vmalloc.h>
+ 
+ DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+@@ -102,6 +104,16 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
+ 	return addr;
+ }
+ 
++void *alloc_insn_page(void)
 +{
-+	long action = (long)data;
-+	pte_t pte;
++	void *page = vmalloc_exec(PAGE_SIZE);
 +
-+	spin_lock(&init_mm.page_table_lock);
++	if (page)
++		set_memory_ro((unsigned long)page, 1);
 +
-+	/* invalidate the PTE so it's safe to modify */
-+	pte = ptep_get_and_clear(&init_mm, addr, ptep);
-+	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+
-+	/* modify the PTE bits as desired, then apply */
-+	switch (action) {
-+	case SET_MEMORY_RO:
-+		pte = pte_wrprotect(pte);
-+		break;
-+	case SET_MEMORY_RW:
-+		pte = pte_mkwrite(pte);
-+		break;
-+	case SET_MEMORY_NX:
-+		pte = pte_exprotect(pte);
-+		break;
-+	case SET_MEMORY_X:
-+		pte = pte_mkexec(pte);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	set_pte_at(&init_mm, addr, ptep, pte);
-+	spin_unlock(&init_mm.page_table_lock);
-+
-+	return 0;
++	return page;
 +}
 +
-+int change_memory_attr(unsigned long addr, int numpages, long action)
-+{
-+	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-+	unsigned long sz = numpages * PAGE_SIZE;
-+
-+	if (!numpages)
-+		return 0;
-+
-+	return apply_to_page_range(&init_mm, start, sz, change_page_attr, (void *)action);
-+}
+ int arch_prepare_kprobe(struct kprobe *p)
+ {
+ 	int ret = 0;
+@@ -124,11 +136,8 @@ int arch_prepare_kprobe(struct kprobe *p)
+ 	}
+ 
+ 	if (!ret) {
+-		memcpy(p->ainsn.insn, p->addr,
+-				MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
++		patch_instruction(p->ainsn.insn, *p->addr);
+ 		p->opcode = *p->addr;
+-		flush_icache_range((unsigned long)p->ainsn.insn,
+-			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
+ 	}
+ 
+ 	p->ainsn.boostable = 0;
 -- 
 2.25.0
 
