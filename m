@@ -1,83 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FE41500FF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 05:55:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B44C1500FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 05:52:02 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 489wR13bBnzDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 15:51:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 489wW83zTqzDqdG
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 15:55:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.19;
+ helo=wout3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=TotxA/Mk; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=iMY/H/Cy; 
+ dkim-atps=neutral
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com
+ [64.147.123.19])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 489wPC1vpszDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2020 15:50:23 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0134oH7H021102; Sun, 2 Feb 2020 23:50:19 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xxcmb8e0h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 02 Feb 2020 23:50:19 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0134nx48007166;
- Mon, 3 Feb 2020 04:50:18 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04wdc.us.ibm.com with ESMTP id 2xw0y663ku-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Feb 2020 04:50:18 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0134oHrZ62456292
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Feb 2020 04:50:17 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1DFB413604F;
- Mon,  3 Feb 2020 04:50:17 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C86A4136051;
- Mon,  3 Feb 2020 04:50:16 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.124.31.110])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  3 Feb 2020 04:50:16 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 19FAF2E2DB0; Mon,  3 Feb 2020 10:20:14 +0530 (IST)
-Date: Mon, 3 Feb 2020 10:20:14 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/3] powerpc/sysfs: Show idle_purr and idle_spurr for
- every CPU
-Message-ID: <20200203045013.GC13468@in.ibm.com>
-References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
- <1574856072-30972-3-git-send-email-ego@linux.vnet.ibm.com>
- <1575564547.si4rk0s96p.naveen@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 489wPK5GSDzDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2020 15:50:29 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id 21891725;
+ Sun,  2 Feb 2020 23:50:26 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Sun, 02 Feb 2020 23:50:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
+ bFOUHt7V3C4f1TpU4gQyO6wPuUUc6O2MFNH7/EMga9Y=; b=TotxA/MkYWmTcJAk
+ iEa8IfjfrpQHh/fIOtqge0pfHDmUhttrkia5OwjxpGNFlvfc5jc5KN7qmEif5CnF
+ tg4mSF9rOj/BFlu8/gO/cQeevwy5Ri1GJEKf4bcWkOyT4PFq5/AL7lGIfLAl6p1z
+ RwUq2J9kt/X45MZVQA7qnDjxX79QQ0Ry7lAAIP0Kii6BOJ2M0e7wSCrfVwDorsB7
+ nlSHDAT34qPuxfNizWOR/TmVuSiBABN7QM8uJOrpJ4SHgcxpmdVtuWdSIw6YddT5
+ 0yiBurE32MxAyGDPLFvXnzjqnJ+yZquS4UWEZQJICXE0KMmyauAgRLbbHJnI8MAT
+ C6X1iA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=bFOUHt7V3C4f1TpU4gQyO6wPuUUc6O2MFNH7/EMga
+ 9Y=; b=iMY/H/Cyr70rWB30iy2bxK99ytKSA+1JzLtXQRUzGpg2v8YUhtuMe+nDY
+ AuwlKz5elc9XaW9hH57P/xTa0FOP5X5lrq3Viom3XLtIycWZuOdG6Ln0TFt/5wo6
+ Lk7aL8iLYmsK61grO1iZlVXBEUZO/7IQ+ZJTc01ocBkc4m3Ewuz6x8Z/sxjMiEvF
+ ysE35gQCdJ8Q+F+vSoPAMSORUrEjCEX7xAUPix1V8zxx87GyUgBIRgm7jssGhs8f
+ ckgzs2djm5nNnZTuG+Kw6rFwd+mLGj0LGdBhmRiDYD1pVtBuASxBUy+m+g2vCXfV
+ hGP6Gp3enxMZsYxMqO3RWVP5ocQQg==
+X-ME-Sender: <xms:kKY3Xl1Tw-4kUHM1ytFMGWq4rc_k1VTMf1DnBBtlqfuUn_v0D44u6Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrgeeigdejgecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculddutddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttder
+ jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
+ gvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrddutdenucevlhhushhtvghrufhi
+ iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllh
+ drtggt
+X-ME-Proxy: <xmx:kKY3XgUC8UbMVYlq_LRjyG3PhAjyQY-3fRhMEckL7ci861M5AuPg0A>
+ <xmx:kKY3Xg5HtbBlZ14vuy6l80-LDNB2uerE4zxbXU32EsOCMoVO-O6qrg>
+ <xmx:kKY3XnLe7M4v3h2t3vkakRgHMrYrXusWPz742Ss2l_LM5zVg3xOH-w>
+ <xmx:kaY3XgE5h4blsJe8-0UBYNnCTQPg-3w7_T0GL0mV-ItYd9BLsf2kxA>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 5C8A4328005D;
+ Sun,  2 Feb 2020 23:50:22 -0500 (EST)
+Message-ID: <3078df74c232e54aef3e8bb3523587a3053ab0ec.camel@russell.cc>
+Subject: Re: [PATCH v2 2/7] powerpc/kprobes: Mark newly allocated probes as RO
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>
+Date: Mon, 03 Feb 2020 15:50:19 +1100
+In-Reply-To: <01fdf1b7375b3e1e43a634bf6719b576c4c5db11.1580477672.git.christophe.leroy@c-s.fr>
+References: <84be5ad6a996adf5693260749dcb4d8c69182073.1580477672.git.christophe.leroy@c-s.fr>
+ <01fdf1b7375b3e1e43a634bf6719b576c4c5db11.1580477672.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1575564547.si4rk0s96p.naveen@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-02_09:2020-02-02,
- 2020-02-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 adultscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1911200001 definitions=main-2002030037
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,61 +95,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Naveen,
-
-On Thu, Dec 05, 2019 at 10:23:58PM +0530, Naveen N. Rao wrote:
-> >diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-> >index 80a676d..42ade55 100644
-> >--- a/arch/powerpc/kernel/sysfs.c
-> >+++ b/arch/powerpc/kernel/sysfs.c
-> >@@ -1044,6 +1044,36 @@ static ssize_t show_physical_id(struct device *dev,
-> > }
-> > static DEVICE_ATTR(physical_id, 0444, show_physical_id, NULL);
-> >
-> >+static ssize_t idle_purr_show(struct device *dev,
-> >+			      struct device_attribute *attr, char *buf)
-> >+{
-> >+	struct cpu *cpu = container_of(dev, struct cpu, dev);
-> >+	unsigned int cpuid = cpu->dev.id;
-> >+	struct lppaca *cpu_lppaca_ptr = paca_ptrs[cpuid]->lppaca_ptr;
-> >+	u64 idle_purr_cycles = be64_to_cpu(cpu_lppaca_ptr->wait_state_cycles);
-> >+
-> >+	return sprintf(buf, "%llx\n", idle_purr_cycles);
-> >+}
-> >+static DEVICE_ATTR_RO(idle_purr);
-> >+
-> >+DECLARE_PER_CPU(u64, idle_spurr_cycles);
-> >+static ssize_t idle_spurr_show(struct device *dev,
-> >+			       struct device_attribute *attr, char *buf)
-> >+{
-> >+	struct cpu *cpu = container_of(dev, struct cpu, dev);
-> >+	unsigned int cpuid = cpu->dev.id;
-> >+	u64 *idle_spurr_cycles_ptr = per_cpu_ptr(&idle_spurr_cycles, cpuid);
+On Fri, 2020-01-31 at 13:34 +0000, Christophe Leroy wrote:
+> With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will be
+> one
+> W+X page at boot by default.  This can be tested with
+> CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking the
+> kernel log during boot.
 > 
-> Is it possible for a user to read stale values if a particular cpu is in an
-> extended cede? Is it possible to use smp_call_function_single() to force the
-> cpu out of idle?
-
-Yes, if the CPU whose idle_spurr cycle is being read is still in idle,
-then we will miss reporting the delta spurr cycles for this last
-idle-duration. Yes, we can use an smp_call_function_single(), though
-that will introduce IPI noise. How often will idle_[s]purr be read ?
-
+> powerpc doesn't implement its own alloc() for kprobes like other
+> architectures do, but we couldn't immediately mark RO anyway since we
+> do
+> a memcpy to the page we allocate later.  After that, nothing should
+> be
+> allowed to modify the page, and write permissions are removed well
+> before the kprobe is armed.
 > 
-> - Naveen
->
+> The memcpy() would fail if >1 probes were allocated, so use
+> patch_instruction() instead which is safe for RO.
+> 
+> Reviewed-by: Daniel Axtens <dja@axtens.net>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+> v2: removed the redundant flush
+> ---
+>  arch/powerpc/kernel/kprobes.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/kprobes.c
+> b/arch/powerpc/kernel/kprobes.c
+> index 2d27ec4feee4..d3e594e6094c 100644
+> --- a/arch/powerpc/kernel/kprobes.c
+> +++ b/arch/powerpc/kernel/kprobes.c
+> @@ -24,6 +24,7 @@
+>  #include <asm/sstep.h>
+>  #include <asm/sections.h>
+>  #include <linux/uaccess.h>
+> +#include <linux/set_memory.h>
+>  
+>  DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+>  DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+> @@ -124,13 +125,12 @@ int arch_prepare_kprobe(struct kprobe *p)
+>  	}
+>  
+>  	if (!ret) {
+> -		memcpy(p->ainsn.insn, p->addr,
+> -				MAX_INSN_SIZE *
+> sizeof(kprobe_opcode_t));
+> +		patch_instruction(p->ainsn.insn, *p->addr);
+>  		p->opcode = *p->addr;
+> -		flush_icache_range((unsigned long)p->ainsn.insn,
+> -			(unsigned long)p->ainsn.insn +
+> sizeof(kprobe_opcode_t));
+>  	}
+>  
+> +	set_memory_ro((unsigned long)p->ainsn.insn, 1);
+> +
 
---
-Thanks and Regards
-gautham.
+
+Since this can be called multiple times on the same page, can avoid by
+implementing:
+
+void *alloc_insn_page(void)
+{
+	void *page;
+
+	page = vmalloc_exec(PAGE_SIZE);
+	if (page)
+		set_memory_ro((unsigned long)page, 1);
+
+	return page;
+}
+
+Which is pretty much the same as what's in arm64.  Works for me and
+passes ftracetest, I was originally doing this but cut it because it
+broke with the memcpy, but works with patch_instruction().
+
+>  	p->ainsn.boostable = 0;
+>  	return ret;
+>  }
+
