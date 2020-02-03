@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3C6150646
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 13:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E058150661
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 13:53:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48B6r82QQQzDqMH
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 23:40:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48B7641w3lzDqMB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 23:53:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,27 +17,26 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (lhrrgout.huawei.com [185.176.76.210])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48B6m25r9MzDqMB
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2020 23:37:19 +1100 (AEDT)
-Received: from lhreml704-cah.china.huawei.com (unknown [172.18.7.107])
- by Forcepoint Email with ESMTP id 3C5B5B98C4AD21534E93;
- Mon,  3 Feb 2020 12:37:15 +0000 (GMT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48B72R1Gb7zDqCt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2020 23:49:48 +1100 (AEDT)
+Received: from LHREML711-CAH.china.huawei.com (unknown [172.18.7.108])
+ by Forcepoint Email with ESMTP id 1E05179899897B42BEEF;
+ Mon,  3 Feb 2020 12:49:45 +0000 (GMT)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml704-cah.china.huawei.com (10.201.108.45) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 3 Feb 2020 12:37:14 +0000
+ LHREML711-CAH.china.huawei.com (10.201.108.34) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 3 Feb 2020 12:49:44 +0000
 Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 3 Feb 2020
- 12:37:14 +0000
-Date: Mon, 3 Feb 2020 12:37:12 +0000
+ 12:49:44 +0000
+Date: Mon, 3 Feb 2020 12:49:42 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Alastair D'Silva <alastair@au1.ibm.com>
-Subject: Re: [PATCH v2 06/27] ocxl: Tally up the LPC memory on a link &
- allow it to be mapped
-Message-ID: <20200203123712.0000461a@Huawei.com>
-In-Reply-To: <20191203034655.51561-7-alastair@au1.ibm.com>
+Subject: Re: [PATCH v2 07/27] ocxl: Add functions to map/unmap LPC memory
+Message-ID: <20200203124942.00003b68@Huawei.com>
+In-Reply-To: <20191203034655.51561-8-alastair@au1.ibm.com>
 References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203034655.51561-7-alastair@au1.ibm.com>
+ <20191203034655.51561-8-alastair@au1.ibm.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -81,195 +80,183 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 3 Dec 2019 14:46:34 +1100
+On Tue, 3 Dec 2019 14:46:35 +1100
 Alastair D'Silva <alastair@au1.ibm.com> wrote:
 
 > From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> Tally up the LPC memory on an OpenCAPI link & allow it to be mapped
+> Add functions to map/unmap LPC memory
 > 
 > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-Hi Alastair,
-
-A few trivial comments inline.
-
-Jonathan
-
 > ---
->  drivers/misc/ocxl/core.c          | 10 ++++++
->  drivers/misc/ocxl/link.c          | 60 +++++++++++++++++++++++++++++++
->  drivers/misc/ocxl/ocxl_internal.h | 33 +++++++++++++++++
->  3 files changed, 103 insertions(+)
+>  drivers/misc/ocxl/config.c        |  4 +++
+>  drivers/misc/ocxl/core.c          | 50 +++++++++++++++++++++++++++++++
+>  drivers/misc/ocxl/ocxl_internal.h |  3 ++
+>  include/misc/ocxl.h               | 18 +++++++++++
+>  4 files changed, 75 insertions(+)
 > 
+> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
+> index c8e19bfb5ef9..fb0c3b6f8312 100644
+> --- a/drivers/misc/ocxl/config.c
+> +++ b/drivers/misc/ocxl/config.c
+> @@ -568,6 +568,10 @@ static int read_afu_lpc_memory_info(struct pci_dev *dev,
+>  		afu->special_purpose_mem_size =
+>  			total_mem_size - lpc_mem_size;
+>  	}
+> +
+> +	dev_info(&dev->dev, "Probed LPC memory of %#llx bytes and special purpose memory of %#llx bytes\n",
+> +		afu->lpc_mem_size, afu->special_purpose_mem_size);
+> +
+
+If we are being fussy, this block has nothing todo with the rest of the patch
+so we should be seeing it here.
+
+>  	return 0;
+>  }
+>  
 > diff --git a/drivers/misc/ocxl/core.c b/drivers/misc/ocxl/core.c
-> index b7a09b21ab36..2531c6cf19a0 100644
+> index 2531c6cf19a0..98611faea219 100644
 > --- a/drivers/misc/ocxl/core.c
 > +++ b/drivers/misc/ocxl/core.c
-> @@ -230,8 +230,18 @@ static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct pci_dev *dev)
->  	if (rc)
->  		goto err_free_pasid;
->  
-> +	if (afu->config.lpc_mem_size || afu->config.special_purpose_mem_size) {
-> +		rc = ocxl_link_add_lpc_mem(afu->fn->link, afu->config.lpc_mem_offset,
-> +					   afu->config.lpc_mem_size +
-> +					   afu->config.special_purpose_mem_size);
-> +		if (rc)
-> +			goto err_free_mmio;
-> +	}
-> +
->  	return 0;
->  
-> +err_free_mmio:
-> +	unmap_mmio_areas(afu);
->  err_free_pasid:
->  	reclaim_afu_pasid(afu);
->  err_free_actag:
-> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> index 58d111afd9f6..d8503f0dc6ec 100644
-> --- a/drivers/misc/ocxl/link.c
-> +++ b/drivers/misc/ocxl/link.c
-> @@ -84,6 +84,11 @@ struct ocxl_link {
->  	int dev;
->  	atomic_t irq_available;
->  	struct spa *spa;
-> +	struct mutex lpc_mem_lock;
-
-Always a good idea to explicitly document what a lock is intended to protect.
-
-> +	u64 lpc_mem_sz; /* Total amount of LPC memory presented on the link */
-> +	u64 lpc_mem;
-> +	int lpc_consumers;
-> +
->  	void *platform_data;
->  };
->  static struct list_head links_list = LIST_HEAD_INIT(links_list);
-> @@ -396,6 +401,8 @@ static int alloc_link(struct pci_dev *dev, int PE_mask, struct ocxl_link **out_l
->  	if (rc)
->  		goto err_spa;
->  
-> +	mutex_init(&link->lpc_mem_lock);
-> +
->  	/* platform specific hook */
->  	rc = pnv_ocxl_spa_setup(dev, link->spa->spa_mem, PE_mask,
->  				&link->platform_data);
-> @@ -711,3 +718,56 @@ void ocxl_link_free_irq(void *link_handle, int hw_irq)
->  	atomic_inc(&link->irq_available);
+> @@ -210,6 +210,55 @@ static void unmap_mmio_areas(struct ocxl_afu *afu)
+>  	release_fn_bar(afu->fn, afu->config.global_mmio_bar);
 >  }
->  EXPORT_SYMBOL_GPL(ocxl_link_free_irq);
-> +
-> +int ocxl_link_add_lpc_mem(void *link_handle, u64 offset, u64 size)
+>  
+> +int ocxl_afu_map_lpc_mem(struct ocxl_afu *afu)
 > +{
-> +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
+> +	struct pci_dev *dev = to_pci_dev(afu->fn->dev.parent);
 > +
-> +	// Check for overflow
-
-Stray c++ style comment.
-
-> +	if (offset > (offset + size))
+> +	if ((afu->config.lpc_mem_size + afu->config.special_purpose_mem_size) == 0)
+> +		return 0;
+> +
+> +	afu->lpc_base_addr = ocxl_link_lpc_map(afu->fn->link, dev);
+> +	if (afu->lpc_base_addr == 0)
 > +		return -EINVAL;
 > +
-> +	mutex_lock(&link->lpc_mem_lock);
-> +	link->lpc_mem_sz = max(link->lpc_mem_sz, offset + size);
+> +	if (afu->config.lpc_mem_size) {
+
+I was happy with the explicit check on 0 above, but we should be consistent.  Either
+we make use of 0 == false, or we don't and explicitly check vs 0.
+
+Hence
+
+if (afu->config.pc_mem_size != 0) { 
+
+here or
+
+if (!(afu->config.pc_mem_size + afu->config.special_purpose_mem_size))
+	return 0;
+
+above.
+
+> +		afu->lpc_res.start = afu->lpc_base_addr + afu->config.lpc_mem_offset;
+> +		afu->lpc_res.end = afu->lpc_res.start + afu->config.lpc_mem_size - 1;
+> +	}
 > +
-> +	mutex_unlock(&link->lpc_mem_lock);
+> +	if (afu->config.special_purpose_mem_size) {
+> +		afu->special_purpose_res.start = afu->lpc_base_addr +
+> +						 afu->config.special_purpose_mem_offset;
+> +		afu->special_purpose_res.end = afu->special_purpose_res.start +
+> +					       afu->config.special_purpose_mem_size - 1;
+> +	}
 > +
 > +	return 0;
 > +}
+> +EXPORT_SYMBOL_GPL(ocxl_afu_map_lpc_mem);
 > +
-> +u64 ocxl_link_lpc_map(void *link_handle, struct pci_dev *pdev)
+> +struct resource *ocxl_afu_lpc_mem(struct ocxl_afu *afu)
 > +{
-> +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	u64 lpc_mem;
+> +	return &afu->lpc_res;
+> +}
+> +EXPORT_SYMBOL_GPL(ocxl_afu_lpc_mem);
 > +
-> +	mutex_lock(&link->lpc_mem_lock);
-> +	if (link->lpc_mem) {
-
-If you don't modify this later in the series (I haven't read it all yet :),
-it rather feels like it would be more compact and just as readable as
-something like...
-
-	if (!link->lpc_mem)
-		link->lpc_mem = pnv_ocxl...
-
-	if (link->lpc_mem)
-		link->lpc_consumers++;
-	mutex_unlock(&link->lpc_mem_lock);
-		
-	return link->lpc_mem;
-
-> +		lpc_mem = link->lpc_mem;
+> +static void unmap_lpc_mem(struct ocxl_afu *afu)
+> +{
+> +	struct pci_dev *dev = to_pci_dev(afu->fn->dev.parent);
 > +
-> +		link->lpc_consumers++;
-> +		mutex_unlock(&link->lpc_mem_lock);
-> +		return lpc_mem;
+> +	if (afu->lpc_res.start || afu->special_purpose_res.start) {
+> +		void *link = afu->fn->link;
+> +
+> +		ocxl_link_lpc_release(link, dev);
+> +
+> +		afu->lpc_res.start = 0;
+> +		afu->lpc_res.end = 0;
+> +		afu->special_purpose_res.start = 0;
+> +		afu->special_purpose_res.end = 0;
 > +	}
-> +
-> +	link->lpc_mem = pnv_ocxl_platform_lpc_setup(pdev, link->lpc_mem_sz);
-> +	if (link->lpc_mem)
-> +		link->lpc_consumers++;
-> +	lpc_mem = link->lpc_mem;
-> +	mutex_unlock(&link->lpc_mem_lock);
-> +
-> +	return lpc_mem;
 > +}
 > +
-> +void ocxl_link_lpc_release(void *link_handle, struct pci_dev *pdev)
-> +{
-> +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +
-> +	mutex_lock(&link->lpc_mem_lock);
-> +	WARN_ON(--link->lpc_consumers < 0);
-> +	if (link->lpc_consumers == 0) {
-> +		pnv_ocxl_platform_lpc_release(pdev);
-> +		link->lpc_mem = 0;
-> +	}
-> +
-> +	mutex_unlock(&link->lpc_mem_lock);
-> +}
+>  static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct pci_dev *dev)
+>  {
+>  	int rc;
+> @@ -251,6 +300,7 @@ static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct pci_dev *dev)
+>  
+>  static void deconfigure_afu(struct ocxl_afu *afu)
+>  {
+> +	unmap_lpc_mem(afu);
+
+Hmm. This breaks the existing balance between configure_afu and deconfigure_afu.
+
+Given comments below on why we don't do map_lpc_mem in the afu bring up
+(as it's a shared operation) it seems to me that we should be doing this
+outside of the afu deconfigure.  Perhaps ocxl_function_close is appropriate?
+I don't know this infrastructure well enough to be sure.
+
+If it does need to be here, then a comment to give more info on
+why would be great!
+
+>  	unmap_mmio_areas(afu);
+>  	reclaim_afu_pasid(afu);
+>  	reclaim_afu_actag(afu);
 > diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
-> index 97415afd79f3..20b417e00949 100644
+> index 20b417e00949..9f4b47900e62 100644
 > --- a/drivers/misc/ocxl/ocxl_internal.h
 > +++ b/drivers/misc/ocxl/ocxl_internal.h
-> @@ -141,4 +141,37 @@ int ocxl_irq_offset_to_id(struct ocxl_context *ctx, u64 offset);
->  u64 ocxl_irq_id_to_offset(struct ocxl_context *ctx, int irq_id);
->  void ocxl_afu_irq_free_all(struct ocxl_context *ctx);
+> @@ -52,6 +52,9 @@ struct ocxl_afu {
+>  	void __iomem *global_mmio_ptr;
+>  	u64 pp_mmio_start;
+>  	void *private;
+> +	u64 lpc_base_addr; /* Covers both LPC & special purpose memory */
+> +	struct resource lpc_res;
+> +	struct resource special_purpose_res;
+>  };
+>  
+>  enum ocxl_context_status {
+> diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
+> index 06dd5839e438..6f7c02f0d5e3 100644
+> --- a/include/misc/ocxl.h
+> +++ b/include/misc/ocxl.h
+> @@ -212,6 +212,24 @@ int ocxl_irq_set_handler(struct ocxl_context *ctx, int irq_id,
+>  
+>  // AFU Metadata
 >  
 > +/**
-> + * ocxl_link_add_lpc_mem() - Increment the amount of memory required by an OpenCAPI link
+> + * Map the LPC system & special purpose memory for an AFU
 > + *
-> + * @link_handle: The OpenCAPI link handle
-> + * @offset: The offset of the memory to add
-> + * @size: The amount of memory to increment by
+> + * Do not call this during device discovery, as there may me multiple
+> + * devices on a link, and the memory is mapped for the whole link, not
+> + * just one device. It should only be called after all devices have
+> + * registered their memory on the link.
 > + *
-> + * Return 0 on success, negative on overflow
+> + * afu: The AFU that has the LPC memory to map
+Run kernel-doc over these files and fix all the errors + warnings.
+
+@afu: ..
+
+and missing function name etc.
+
+
 > + */
-> +int ocxl_link_add_lpc_mem(void *link_handle, u64 offset, u64 size);
+> +extern int ocxl_afu_map_lpc_mem(struct ocxl_afu *afu);
 > +
 > +/**
-> + * ocxl_link_lpc_map() - Map the LPC memory for an OpenCAPI device
-> + *
-> + * Since LPC memory belongs to a link, the whole LPC memory available
-> + * on the link bust be mapped in order to make it accessible to a device.
-
-must
-
-> + *
-> + * @link_handle: The OpenCAPI link handle
-> + * @pdev: A device that is on the link
+> + * Get the physical address range of LPC memory for an AFU
+> + * afu: The AFU associated with the LPC memory
 > + */
-> +u64 ocxl_link_lpc_map(void *link_handle, struct pci_dev *pdev);
+> +extern struct resource *ocxl_afu_lpc_mem(struct ocxl_afu *afu);
 > +
-> +/**
-> + * ocxl_link_lpc_release() - Release the LPC memory device for an OpenCAPI device
-> + *
-> + * Offlines LPC memory on an OpenCAPI link for a device. If this is the
-> + * last device on the link to release the memory, unmap it from the link.
-> + *
-> + * @link_handle: The OpenCAPI link handle
-> + * @pdev: A device that is on the link
-> + */
-> +void ocxl_link_lpc_release(void *link_handle, struct pci_dev *pdev);
-> +
->  #endif /* _OCXL_INTERNAL_H_ */
+>  /**
+>   * Get a pointer to the config for an AFU
+>   *
 
 
