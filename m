@@ -1,101 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79158150E6C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 18:11:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D41F150E48
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 18:00:46 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48BDbv0QcLzDqLM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 04:00:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48BDrN5gPFzDqMm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 04:11:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=infinera.com (client-ip=40.107.68.87;
- helo=nam04-bn3-obe.outbound.protection.outlook.com;
- envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=Lk62Mgcn; 
- dkim-atps=neutral
-Received: from NAM04-BN3-obe.outbound.protection.outlook.com
- (mail-eopbgr680087.outbound.protection.outlook.com [40.107.68.87])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48BDX45qdXzDqGl
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 03:57:24 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m9jRuk5x8vIIo/WmrUqLgorQOUwaPXWTMDgAWBwkMG50YgSi1njqS6sjDu7Zbcfz5kl70BYj7iEvxTiTDPGk4r/RHMafN80O1NZJcqQ5bd0cx8OsePUntLBUlnbdgGdOC2uk/iI9ucZap4ja+1wXh95OlTKXOvdPM1Z6YQP4fPhqNHxz988PUw3zfQ8VZZisq0oe3IlpOmZpkuaGcbSs1yaaSqWMM79uT8Vc+r9l5njIzA/5dgBae1IEURF/DZKqRVdXW+phi7pf91l/agIJLdCm9L4WEccAV7KaBSaA1/h/gom52AVJHaGi+poa19tXhzxJmbw/4j+PyUlgOx20ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2oG8EhnfJI/mtTvQpd7S/DQAPmeWwUzWs3Q+kAr3FOw=;
- b=MGlkl43AkUFLeO1ougsCCnXvuVggIy/i3dC3sj9XHIj1UggjkuOD7QnI+2k9HVPGuYRY1aK+D2DyQepvUIMZDngu3V0gCmNP5e/l8Vjptxjcmv0tUSieeY9lATtI+uNyijF6e2u+pwi8PqiKR+KeuoCJT6+obT4i0XclBPBAiieKDkGoYztEiCwAYGTU8vINpnvAUv5kdUMtZq+agv7eQK9fALHpiLZYyMbnhBbghPCIP5wtuzQLNHtjQmNeguMr9/J+vEZNO6Cy5K/SFbarKH/y24QFiFcnZfhfCpwb7Yad22V30qOEK6YY2spn7SD7Gt4GB07kvDJyGUmzk1SvrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2oG8EhnfJI/mtTvQpd7S/DQAPmeWwUzWs3Q+kAr3FOw=;
- b=Lk62MgcntyyQT0p08lgXoJl0ynuwKEY1Zso9pVjhpPynqnd6ppxuwPHzu/snrwVOqhExU8EAU/5iMHJxXjBTTYQ02rfLbfgx3fYu/1ZZN8WHh0dXJizX6BXkitU+lT/0pPB8f0bSL6HRNRURETge/FgP4TQUTnp7Cslrnxkoi3c=
-Received: from BN8PR10MB3540.namprd10.prod.outlook.com (20.179.77.152) by
- BN8PR10MB3122.namprd10.prod.outlook.com (20.179.136.205) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2686.30; Mon, 3 Feb 2020 16:57:19 +0000
-Received: from BN8PR10MB3540.namprd10.prod.outlook.com
- ([fe80::6922:a072:d75e:74ef]) by BN8PR10MB3540.namprd10.prod.outlook.com
- ([fe80::6922:a072:d75e:74ef%7]) with mapi id 15.20.2686.031; Mon, 3 Feb 2020
- 16:57:19 +0000
-From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To: "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "paulus@samba.org" <paulus@samba.org>,
- "benh@kernel.crashing.org" <benh@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/32s: Slenderize _tlbia() for powerpc 603/603e
-Thread-Topic: [PATCH] powerpc/32s: Slenderize _tlbia() for powerpc 603/603e
-Thread-Index: AQHV2rIGZrz+QhEtGU6AUzvbXw5RXKgJsJeA
-Date: Mon, 3 Feb 2020 16:57:18 +0000
-Message-ID: <bfab6635148b83deed8ac9fcbb19dde8c32fb988.camel@infinera.com>
-References: <12f4f4f0ff89aeab3b937fc96c84fb35e1b2517e.1580748445.git.christophe.leroy@c-s.fr>
-In-Reply-To: <12f4f4f0ff89aeab3b937fc96c84fb35e1b2517e.1580748445.git.christophe.leroy@c-s.fr>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Joakim.Tjernlund@infinera.com; 
-x-originating-ip: [88.131.87.201]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4f155cfb-76c1-4f58-ef69-08d7a8ca213d
-x-ms-traffictypediagnostic: BN8PR10MB3122:
-x-microsoft-antispam-prvs: <BN8PR10MB312290A6882919B4C066B363F4000@BN8PR10MB3122.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2399;
-x-forefront-prvs: 0302D4F392
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(39860400002)(396003)(366004)(376002)(346002)(136003)(189003)(199004)(4326008)(71200400001)(81166006)(66946007)(66446008)(54906003)(186003)(81156014)(6486002)(36756003)(5660300002)(6512007)(86362001)(8936002)(2906002)(6506007)(2616005)(110136005)(478600001)(26005)(76116006)(91956017)(64756008)(66556008)(66476007)(316002)(8676002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:BN8PR10MB3122;
- H:BN8PR10MB3540.namprd10.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: infinera.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: tX6bXyu0maiQa28Xs2liHjRK4uz5jjiQUAuVlEDs/8WQeILM2kK7a1m/ACjOmvwVADp209CZxb1Cimf3WYEVShHLh8cavYP8bUc1bFaxsedHJg9dR/FAivopjzHSy/n1P/NoHqDGSC8D9bQ/fHVaf3SSoNkXC1Vw5dLKkKYGgB+0QqyRSE4iB35A/5b/0fclomASIeY7z3Ucv1ZunwjxXGdh7R1LVoaogtIMt+ii+ooJneyXeFJLrrnZi1uSUtAHnUUyO7xN0CiGWWbjjewlIF/rNkY8Zj6+aj3Av80mlboflt8KaSjYoUlDcNu0PKWJUdfsVJtV40A7wfF1FA45MLOPcWn8o3MbPco79o0kzAN7dy54QQEPmsG24HjPI+zMGgqcwi28VGnVkJbTU1oSjKhx65+JuxxKMzRY1QPPHeoQxoW9YsRGDRb2IG9Wc+gt
-x-ms-exchange-antispam-messagedata: pjbDxDaUKy8E1YJg/+2i+4VKrhsZgQ3gJbm7U8C8rsHzrF5qRsbRS7onvZF5g/qB1bK7htgYpcPE2lv+ADHkWmkIeEcqWFzKjyx4TIeq2vsMeRvnNFo2967SC2ZtwZLhQmLH6u0jasCRDgjB8CKrPA==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A4BAA88EE63DCB40B83010576C289562@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48BDnt4sG4zDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 04:09:21 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 013H85vP120224; Mon, 3 Feb 2020 12:09:07 -0500
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xxbmn7hnp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Feb 2020 12:09:05 -0500
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 013H1nmH018633;
+ Mon, 3 Feb 2020 17:09:03 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma01dal.us.ibm.com with ESMTP id 2xw0y6f590-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Feb 2020 17:09:03 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 013H91Ca49742286
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 3 Feb 2020 17:09:01 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7465078063;
+ Mon,  3 Feb 2020 17:09:01 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B9157805C;
+ Mon,  3 Feb 2020 17:08:59 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.92.150])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  3 Feb 2020 17:08:58 +0000 (GMT)
+X-Mailer: emacs 27.0.60 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
+Subject: Re: [PATCH 1/5] mm/memremap_pages: Kill unused __devm_memremap_pages()
+In-Reply-To: <158041476158.3889308.4221100673554151124.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <158041475480.3889308.655103391935006598.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158041476158.3889308.4221100673554151124.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 03 Feb 2020 22:38:56 +0530
+Message-ID: <87y2tjfviv.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f155cfb-76c1-4f58-ef69-08d7a8ca213d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Feb 2020 16:57:18.9292 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aKWz+LJ5lbVv3KApuDMyAlqA75HM1LdaOmJAu7nbk3bvvC2SIS2YKqiSV/dAaZMewezc9vdNO8XK4Dmmsp/Vnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR10MB3122
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-03_06:2020-02-02,
+ 2020-02-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0
+ suspectscore=2 priorityscore=1501 bulkscore=0 phishscore=0
+ lowpriorityscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015
+ mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2002030127
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,39 +84,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gTW9uLCAyMDIwLTAyLTAzIGF0IDE2OjQ3ICswMDAwLCBDaHJpc3RvcGhlIExlcm95IHdyb3Rl
-Og0KPiBDQVVUSU9OOiBUaGlzIGVtYWlsIG9yaWdpbmF0ZWQgZnJvbSBvdXRzaWRlIG9mIHRoZSBv
-cmdhbml6YXRpb24uIERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVz
-cyB5b3UgcmVjb2duaXplIHRoZSBzZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4N
-Cj4gDQo+IA0KPiBfdGxiaWEoKSBpcyBhIGZ1bmN0aW9uIHVzZWQgb25seSBvbiA2MDMvNjAzZSBj
-b3JlLCBpZSBvbiBDUFVzIHdoaWNoDQo+IGRvbid0IGhhdmUgYSBoYXNoIHRhYmxlLg0KPiANCj4g
-X3RsYmlhKCkgdXNlcyB0aGUgdGxiaWEgbWFjcm8gd2hpY2ggaW1wbGVtZW50cyBhIGxvb3Agb2Yg
-MTAyNCB0bGJpZS4NCj4gDQo+IE9uIHRoZSA2MDMvNjAzZSBjb3JlLCBmbHVzaGluZyB0aGUgZW50
-aXJlIFRMQiByZXF1aXJlcyBubyBtb3JlIHRoYW4NCj4gMzIgdGxiaWUuDQo+IA0KPiBSZXBsYWNl
-IHRsYmlhIGJ5IGEgbG9vcCBvZiAzMiB0bGJpZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IENocmlz
-dG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAYy1zLmZyPg0KPiAtLS0NCj4gIGFyY2gvcG93
-ZXJwYy9tbS9ib29rM3MzMi9oYXNoX2xvdy5TIHwgMTMgKysrKysrKystLS0tLQ0KPiAgMSBmaWxl
-IGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1n
-aXQgYS9hcmNoL3Bvd2VycGMvbW0vYm9vazNzMzIvaGFzaF9sb3cuUyBiL2FyY2gvcG93ZXJwYy9t
-bS9ib29rM3MzMi9oYXNoX2xvdy5TDQo+IGluZGV4IGMxMWIwYTAwNTE5Ni4uYTUwMzlhZDEwNDI5
-IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvbW0vYm9vazNzMzIvaGFzaF9sb3cuUw0KPiAr
-KysgYi9hcmNoL3Bvd2VycGMvbW0vYm9vazNzMzIvaGFzaF9sb3cuUw0KPiBAQCAtNjk2LDE4ICs2
-OTYsMjEgQEAgX0dMT0JBTChfdGxiaWEpDQo+ICAgICAgICAgYm5lLSAgICAxMGINCj4gICAgICAg
-ICBzdHdjeC4gIHI4LDAscjkNCj4gICAgICAgICBibmUtICAgIDEwYg0KPiArI2VuZGlmIC8qIENP
-TkZJR19TTVAgKi8NCj4gKyAgICAgICBsaSAgICAgIHI1LCAzMg0KPiArICAgICAgIGxpcyAgICAg
-cjQsIEtFUk5FTEJBU0VAaA0KPiArICAgICAgIG10Y3RyICAgcjUNCj4gICAgICAgICBzeW5jDQo+
-IC0gICAgICAgdGxiaWENCj4gKzA6ICAgICB0bGJpZSAgIHI0DQo+ICsgICAgICAgYWRkaSAgICBy
-NCwgcjQsIDB4MTAwMA0KDQpJcyBwYWdlIHNpemUgYWx3YXlzIDQwOTYgaGVyZSBvciBkb2VzIGl0
-IG5vdCBtYXR0ZXIgPw0KDQo+ICsgICAgICAgYmRueiAgICAwYg0KPiAgICAgICAgIHN5bmMNCj4g
-KyNpZmRlZiBDT05GSUdfU01QDQo+ICAgICAgICAgVExCU1lOQw0KPiAgICAgICAgIGxpICAgICAg
-cjAsMA0KPiAgICAgICAgIHN0dyAgICAgcjAsMChyOSkgICAgICAgICAgICAgICAgLyogY2xlYXIg
-bW11X2hhc2hfbG9jayAqLw0KPiAgICAgICAgIG10bXNyICAgcjEwDQo+ICAgICAgICAgU1lOQ182
-MDENCj4gICAgICAgICBpc3luYw0KPiAtI2Vsc2UgLyogQ09ORklHX1NNUCAqLw0KPiAtICAgICAg
-IHN5bmMNCj4gLSAgICAgICB0bGJpYQ0KPiAtICAgICAgIHN5bmMNCj4gICNlbmRpZiAvKiBDT05G
-SUdfU01QICovDQo+ICAgICAgICAgYmxyDQo+IC0tDQo+IDIuMjUuMA0KPiANCg0K
+Dan Williams <dan.j.williams@intel.com> writes:
+
+> Kill this definition that was introduced in commit 41e94a851304 ("add
+> devm_memremap_pages") add never used.
+>
+
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+> Cc: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  include/linux/io.h |    2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/include/linux/io.h b/include/linux/io.h
+> index a59834bc0a11..35e8d84935e0 100644
+> --- a/include/linux/io.h
+> +++ b/include/linux/io.h
+> @@ -79,8 +79,6 @@ void *devm_memremap(struct device *dev, resource_size_t offset,
+>  		size_t size, unsigned long flags);
+>  void devm_memunmap(struct device *dev, void *addr);
+>  
+> -void *__devm_memremap_pages(struct device *dev, struct resource *res);
+> -
+>  #ifdef CONFIG_PCI
+>  /*
+>   * The PCI specifications (Rev 3.0, 3.2.5 "Transaction Ordering and
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
