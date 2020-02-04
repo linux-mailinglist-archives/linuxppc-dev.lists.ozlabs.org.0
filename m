@@ -2,34 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED347151A6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 13:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EE2151A72
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 13:20:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48BkHf2YVtzDqBM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 23:18:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48BkLF5CT3zDqD7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 23:20:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48BjwL3sLZzDqLv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 23:01:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48BjwN5LD2zDqLv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 23:01:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48BjwK1mspzB3x2; Tue,  4 Feb 2020 23:01:36 +1100 (AEDT)
+ id 48BjwN1rjLzB3x3; Tue,  4 Feb 2020 23:01:38 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 41196224883a64e56e0ef237c19eb837058df071
-In-Reply-To: <fc8390a33c2a470105f01abbcbdc7916c30c0a54.1580301269.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
+X-powerpc-patch-commit: 34b5a946a9543ce38d8ad1aacc4362533a813db7
+In-Reply-To: <20200130195223.3843-1-krzk@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+ Paul Mackerras <paulus@samba.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/32s: Fix kasan_early_hash_table() for
- CONFIG_VMAP_STACK
-Message-Id: <48BjwK1mspzB3x2@ozlabs.org>
-Date: Tue,  4 Feb 2020 23:01:36 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc: configs: Cleanup old Kconfig options
+Message-Id: <48BjwN1rjLzB3x3@ozlabs.org>
+Date: Tue,  4 Feb 2020 23:01:38 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,25 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-01-29 at 12:34:36 UTC, Christophe Leroy wrote:
-> On book3s/32 CPUs that are handling MMU through a hash table,
-> MMU_init_hw() function was adapted for VMAP_STACK in order to
-> handle virtual addresses instead of physical addresses in the
-> low level hash functions.
+On Thu, 2020-01-30 at 19:52:23 UTC, Krzysztof Kozlowski wrote:
+> CONFIG_ENABLE_WARN_DEPRECATED is gone since
+> commit 771c035372a0 ("deprecate the '__deprecated' attribute warnings
+> entirely and for good").
 > 
-> When using KASAN, the same adaptations are required for the
-> early hash table set up by kasan_early_hash_table() function.
+> CONFIG_IOSCHED_DEADLINE and CONFIG_IOSCHED_CFQ are gone since
+> commit f382fb0bcef4 ("block: remove legacy IO schedulers").
 > 
-> Fixes: cd08f109e262 ("powerpc/32s: Enable CONFIG_VMAP_STACK")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> The IOSCHED_DEADLINE was replaced by MQ_IOSCHED_DEADLINE and it will be
+> now enabled by default (along with MQ_IOSCHED_KYBER).
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/41196224883a64e56e0ef237c19eb837058df071
+https://git.kernel.org/powerpc/c/34b5a946a9543ce38d8ad1aacc4362533a813db7
 
 cheers
