@@ -2,68 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D4B151696
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 08:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 645691516A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 08:54:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48BcCy0RDPzDqJT
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 18:44:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48BcQj6CpSzDqLg
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 18:54:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=hSRMu9wz; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Bc492fLLzDqGX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 18:37:59 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Bc432sGMz9vC1g;
- Tue,  4 Feb 2020 08:37:55 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=hSRMu9wz; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id IWa7axmcAhxe; Tue,  4 Feb 2020 08:37:55 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Bc431n5hz9vC1c;
- Tue,  4 Feb 2020 08:37:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580801875; bh=IXjiKlijLtzQuR/CNi0kS3j7+7PM/7fqUO8AWUmnzeg=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=hSRMu9wznvfD+qbck0wOIk87YeVy3P7ZkgPtDiAnur09tpGBUEosTAAmr8VsL7vyr
- x/zwOKFKm6fKOd2TnHGotd6uDnkaDr+NqKtNlK8FQDDE5NIg8tCFrZwJXzp0hl8qxi
- V0MdkHXXn+CXa8fUDjK9UzDcdYrupgzkjLxCktt4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B7018B7B6;
- Tue,  4 Feb 2020 08:37:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id RM1G0Aq0u8hX; Tue,  4 Feb 2020 08:37:56 +0100 (CET)
-Received: from po14934vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D1AEC8B755;
- Tue,  4 Feb 2020 08:37:55 +0100 (CET)
-Received: by po14934vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 9C3F0652B3; Tue,  4 Feb 2020 07:37:55 +0000 (UTC)
-Message-Id: <a4453f734d9d7f0c6625b7bf306ec2d28631f56c.1580801787.git.christophe.leroy@c-s.fr>
-In-Reply-To: <f96ed94dc57ea810b738c4e02263e08c2c8781b6.1580801787.git.christophe.leroy@c-s.fr>
-References: <f96ed94dc57ea810b738c4e02263e08c2c8781b6.1580801787.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH 4/4] powerpc/uaccess: Implement user_read_access_begin and
- user_write_access_begin
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue,  4 Feb 2020 07:37:55 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48BcNx5K3JzDqBg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 18:52:30 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0147nB9R051704
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Feb 2020 02:52:28 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xxk9hag6k-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Feb 2020 02:52:28 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Tue, 4 Feb 2020 07:52:26 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 4 Feb 2020 07:52:23 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0147qLFh40960210
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Feb 2020 07:52:21 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E5C242049;
+ Tue,  4 Feb 2020 07:52:21 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D45842041;
+ Tue,  4 Feb 2020 07:52:21 +0000 (GMT)
+Received: from localhost (unknown [9.199.60.222])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Feb 2020 07:52:20 +0000 (GMT)
+Date: Tue, 04 Feb 2020 13:22:19 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/3] powerpc/sysfs: Show idle_purr and idle_spurr for
+ every CPU
+To: ego@linux.vnet.ibm.com
+References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1574856072-30972-3-git-send-email-ego@linux.vnet.ibm.com>
+ <1575564547.si4rk0s96p.naveen@linux.ibm.com>
+ <20200203045013.GC13468@in.ibm.com>
+In-Reply-To: <20200203045013.GC13468@in.ibm.com>
+MIME-Version: 1.0
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20020407-0008-0000-0000-0000034F8587
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20020407-0009-0000-0000-00004A70116E
+Message-Id: <1580802180.jpxk9s8apz.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-04_01:2020-02-04,
+ 2020-02-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 lowpriorityscore=0
+ bulkscore=0 mlxscore=0 impostorscore=0 clxscore=1011 mlxlogscore=894
+ suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2002040057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,108 +93,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for selective read or write user access with
-user_read_access_begin/end and user_write_access_begin/end.
+Gautham R Shenoy wrote:
+> Hi Naveen,
+>=20
+> On Thu, Dec 05, 2019 at 10:23:58PM +0530, Naveen N. Rao wrote:
+>> >diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+>> >index 80a676d..42ade55 100644
+>> >--- a/arch/powerpc/kernel/sysfs.c
+>> >+++ b/arch/powerpc/kernel/sysfs.c
+>> >@@ -1044,6 +1044,36 @@ static ssize_t show_physical_id(struct device *d=
+ev,
+>> > }
+>> > static DEVICE_ATTR(physical_id, 0444, show_physical_id, NULL);
+>> >
+>> >+static ssize_t idle_purr_show(struct device *dev,
+>> >+			      struct device_attribute *attr, char *buf)
+>> >+{
+>> >+	struct cpu *cpu =3D container_of(dev, struct cpu, dev);
+>> >+	unsigned int cpuid =3D cpu->dev.id;
+>> >+	struct lppaca *cpu_lppaca_ptr =3D paca_ptrs[cpuid]->lppaca_ptr;
+>> >+	u64 idle_purr_cycles =3D be64_to_cpu(cpu_lppaca_ptr->wait_state_cycle=
+s);
+>> >+
+>> >+	return sprintf(buf, "%llx\n", idle_purr_cycles);
+>> >+}
+>> >+static DEVICE_ATTR_RO(idle_purr);
+>> >+
+>> >+DECLARE_PER_CPU(u64, idle_spurr_cycles);
+>> >+static ssize_t idle_spurr_show(struct device *dev,
+>> >+			       struct device_attribute *attr, char *buf)
+>> >+{
+>> >+	struct cpu *cpu =3D container_of(dev, struct cpu, dev);
+>> >+	unsigned int cpuid =3D cpu->dev.id;
+>> >+	u64 *idle_spurr_cycles_ptr =3D per_cpu_ptr(&idle_spurr_cycles, cpuid)=
+;
+>>=20
+>> Is it possible for a user to read stale values if a particular cpu is in=
+ an
+>> extended cede? Is it possible to use smp_call_function_single() to force=
+ the
+>> cpu out of idle?
+>=20
+> Yes, if the CPU whose idle_spurr cycle is being read is still in idle,
+> then we will miss reporting the delta spurr cycles for this last
+> idle-duration. Yes, we can use an smp_call_function_single(), though
+> that will introduce IPI noise. How often will idle_[s]purr be read ?
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/book3s/32/kup.h |  4 ++--
- arch/powerpc/include/asm/kup.h           | 14 +++++++++++++-
- arch/powerpc/include/asm/uaccess.h       | 22 ++++++++++++++++++++++
- 3 files changed, 37 insertions(+), 3 deletions(-)
+Since it is possible for a cpu to go into extended cede for multiple=20
+seconds during which time it is possible to mis-report utilization, I=20
+think it is better to ensure that the sysfs interface for idle_[s]purr=20
+report the proper values through use of IPI.
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index 3c0ba22dc360..1617e73bee30 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -108,7 +108,7 @@ static __always_inline void allow_user_access(void __user *to, const void __user
- 	u32 addr, end;
- 
- 	BUILD_BUG_ON(!__builtin_constant_p(dir));
--	BUILD_BUG_ON(dir == KUAP_CURRENT);
-+	BUILD_BUG_ON(dir & ~KUAP_READ_WRITE);
- 
- 	if (!(dir & KUAP_WRITE))
- 		return;
-@@ -131,7 +131,7 @@ static __always_inline void prevent_user_access(void __user *to, const void __us
- 
- 	BUILD_BUG_ON(!__builtin_constant_p(dir));
- 
--	if (dir == KUAP_CURRENT) {
-+	if (dir & KUAP_CURRENT_WRITE) {
- 		u32 kuap = current->thread.kuap;
- 
- 		if (unlikely(!kuap))
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 92bcd1a26d73..c745ee41ad66 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -10,7 +10,9 @@
-  * Use the current saved situation instead of the to/from/size params.
-  * Used on book3s/32
-  */
--#define KUAP_CURRENT	4
-+#define KUAP_CURRENT_READ	4
-+#define KUAP_CURRENT_WRITE	8
-+#define KUAP_CURRENT		(KUAP_CURRENT_READ | KUAP_CURRENT_WRITE)
- 
- #ifdef CONFIG_PPC64
- #include <asm/book3s/64/kup-radix.h>
-@@ -101,6 +103,16 @@ static inline void prevent_current_access_user(void)
- 	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT);
- }
- 
-+static inline void prevent_current_read_from_user(void)
-+{
-+	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT_READ);
-+}
-+
-+static inline void prevent_current_write_to_user(void)
-+{
-+	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT_WRITE);
-+}
-+
- #endif /* !__ASSEMBLY__ */
- 
- #endif /* _ASM_POWERPC_KUAP_H_ */
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 2f500debae21..4427d419eb1d 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -468,6 +468,28 @@ static __must_check inline bool user_access_begin(const void __user *ptr, size_t
- #define user_access_save	prevent_user_access_return
- #define user_access_restore	restore_user_access
- 
-+static __must_check inline bool
-+user_read_access_begin(const void __user *ptr, size_t len)
-+{
-+	if (unlikely(!access_ok(ptr, len)))
-+		return false;
-+	allow_read_from_user(ptr, len);
-+	return true;
-+}
-+#define user_read_access_begin	user_read_access_begin
-+#define user_read_access_end		prevent_current_read_from_user
-+
-+static __must_check inline bool
-+user_write_access_begin(const void __user *ptr, size_t len)
-+{
-+	if (unlikely(!access_ok(ptr, len)))
-+		return false;
-+	allow_write_to_user((void __user *)ptr, len);
-+	return true;
-+}
-+#define user_write_access_begin	user_write_access_begin
-+#define user_write_access_end		prevent_current_write_to_user
-+
- #define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
- #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
- #define unsafe_put_user(x, p, e) unsafe_op_wrap(__put_user_allowed(x, p), e)
--- 
-2.25.0
+With repect to lparstat, the read interval is user-specified and just=20
+gets passed onto sleep().
+
+- Naveen
 
