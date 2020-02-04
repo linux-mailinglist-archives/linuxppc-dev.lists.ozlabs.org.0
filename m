@@ -1,38 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C9E151A50
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 13:08:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Bk420mwpzDqM2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 23:08:18 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB48151A57
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 13:10:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Bk745jkFzDqMC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 23:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48BjwD4l32zDqLH
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 23:01:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48BjwG2FQlzDqLH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 23:01:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 48BjwG0NkZzB3wq; Tue,  4 Feb 2020 23:01:34 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48BjwD2PG2zB3ws; Tue,  4 Feb 2020 23:01:31 +1100 (AEDT)
+ id 48BjwF4V2NzB3wt; Tue,  4 Feb 2020 23:01:33 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 43e76cd368fbb67e767da5363ffeaa3989993c8c
-In-Reply-To: <20200118170335.21440-1-alex@ghiti.fr>
-To: Alexandre Ghiti <alex@ghiti.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- Alexei Starovoitov <ast@kernel.org>, linux-next@vger.kernel.org,
- Zong Li <zong.li@sifive.com>, Palmer Dabbelt <palmerdabbelt@google.com>
+X-powerpc-patch-commit: 76e4bd93369b87d97c2b1bcd6e754a89f422235b
+In-Reply-To: <20200121043000.16212-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc: Do not consider weak unresolved symbol
- relocations as bad
-Message-Id: <48BjwD2PG2zB3ws@ozlabs.org>
-Date: Tue,  4 Feb 2020 23:01:31 +1100 (AEDT)
+Subject: Re: [PATCH v2 01/10] powerpc/configs: Drop CONFIG_QLGE which moved to
+ staging
+Message-Id: <48BjwF4V2NzB3wt@ozlabs.org>
+Date: Tue,  4 Feb 2020 23:01:33 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,33 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: oohall@gmail.com, joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2020-01-18 at 17:03:35 UTC, Alexandre Ghiti wrote:
-> Commit 8580ac9404f6 ("bpf: Process in-kernel BTF") introduced two weak
-> symbols that may be unresolved at link time which result in an absolute
-> relocation to 0. relocs_check.sh emits the following warning:
+On Tue, 2020-01-21 at 04:29:51 UTC, Michael Ellerman wrote:
+> The QLGE driver moved to staging in commit 955315b0dc8c ("qlge: Move
+> drivers/net/ethernet/qlogic/qlge/ to drivers/staging/qlge/"), meaning
+> our defconfigs that enable it have no effect as we don't enable
+> CONFIG_STAGING.
 > 
-> "WARNING: 2 bad relocations
-> c000000001a41478 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
-> c000000001a41480 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end"
+> It sounds like the device is obsolete, so drop the driver.
 > 
-> whereas those relocations are legitimate even for a relocatable kernel
-> compiled with -pie option.
-> 
-> relocs_check.sh already excluded some weak unresolved symbols explicitly:
-> remove those hardcoded symbols and add some logic that parses the symbols
-> using nm, retrieves all the weak unresolved symbols and excludes those from
-> the list of the potential bad relocations.
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Applied to powerpc next, thanks.
+Patches 1-9 applied to powerpc next.
 
-https://git.kernel.org/powerpc/c/43e76cd368fbb67e767da5363ffeaa3989993c8c
+https://git.kernel.org/powerpc/c/76e4bd93369b87d97c2b1bcd6e754a89f422235b
 
 cheers
