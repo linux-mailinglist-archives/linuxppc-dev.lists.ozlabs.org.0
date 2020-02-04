@@ -2,86 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE6C1510D0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2020 21:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D2C15140A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 02:48:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48BJwR1khHzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 07:15:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48BSJk45PszDqQ0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 12:48:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=IWzFutDt; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48BJtr39yVzDqJt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 07:13:56 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 013K7gdx070632; Mon, 3 Feb 2020 15:13:49 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xxfrv7hke-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Feb 2020 15:13:49 -0500
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 013K7dO7070507;
- Mon, 3 Feb 2020 15:13:49 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2xxfrv7hk5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Feb 2020 15:13:48 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 013KArhM011612;
- Mon, 3 Feb 2020 20:13:48 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 2xw0y6rh2x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Feb 2020 20:13:48 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 013KDkiT56099320
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Feb 2020 20:13:47 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DFBFE6E050;
- Mon,  3 Feb 2020 20:13:46 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0DA56E04C;
- Mon,  3 Feb 2020 20:13:46 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.32])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  3 Feb 2020 20:13:46 +0000 (GMT)
-Date: Mon, 3 Feb 2020 14:13:46 -0600
-From: Scott Cheloha <cheloha@linux.ibm.com>
-To: "Fontenot, Nathan" <ndfont@gmail.com>, Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/drmem: cache LMBs in xarray to accelerate lookup
-Message-ID: <20200203201346.deqkxwgfmkifeb5s@rascal.austin.ibm.com>
-References: <20200128221113.17158-1-cheloha@linux.ibm.com>
- <87pnf3i188.fsf@linux.ibm.com>
- <20200129181013.lz6q5lpntnhwclqi@rascal.austin.ibm.com>
- <4dfb2f93-7af8-8c5f-854c-22afead18a8c@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4dfb2f93-7af8-8c5f-854c-22afead18a8c@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-03_06:2020-02-02,
- 2020-02-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- bulkscore=0 suspectscore=1 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 malwarescore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1911200001 definitions=main-2002030144
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48BSH66WDTzDqGn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2020 12:46:57 +1100 (AEDT)
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
+ [73.231.172.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6D90E20732;
+ Tue,  4 Feb 2020 01:46:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1580780815;
+ bh=L7qyiSaKYCSiXFTQrei6zHPTHLJYHqYmnQdeCSNYJUw=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=IWzFutDti1oCSWF1rKXWbGepy5r6blJTGBSX9wsjZ0oqHgkfm4NxusQXKFZZqkXS4
+ NPCAIbBhdT0BVAZ8ppji0sqcwu4XIHKjpjrvicl1df/vB4ckh6YRbrrE3EDakSdqrT
+ RtE2FA9knl1TQs3a2jK8E9n8CkAtByewbWYTl5bY=
+Date: Mon, 3 Feb 2020 17:46:53 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v6 00/10] mm/memory_hotplug: Shrink zones before
+ removing memory
+Message-Id: <20200203174653.74630ef5744c68be55374b0d@linux-foundation.org>
+In-Reply-To: <f7ed4448-8f41-599d-4689-914eeaf84d6d@redhat.com>
+References: <20191006085646.5768-1-david@redhat.com>
+ <ac27f0e1-26e9-dfc1-3ee1-cbee7ad847bf@redhat.com>
+ <20191203133633.GA2600@linux>
+ <20200130204043.29e21049775e3a637db733e0@linux-foundation.org>
+ <f7ed4448-8f41-599d-4689-914eeaf84d6d@redhat.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,91 +63,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Pankaj Gupta <pagupta@redhat.com>,
+ Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>, Rich Felker <dalias@libc.org>,
+ Alexander Potapenko <glider@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Qian Cai <cai@lca.pw>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Jun Yao <yaojun8558363@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>, Tony Luck <tony.luck@intel.com>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Steve Capper <steve.capper@arm.com>, linux-kernel@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Wei Yang <richardw.yang@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ Tom Lendacky <thomas.lendacky@amd.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 30, 2020 at 10:09:32AM -0600, Fontenot, Nathan wrote:
-> On 1/29/2020 12:10 PM, Scott Cheloha wrote:
-> > On Tue, Jan 28, 2020 at 05:56:55PM -0600, Nathan Lynch wrote:
-> >> Scott Cheloha <cheloha@linux.ibm.com> writes:
-> >>> LMB lookup is currently an O(n) linear search.  This scales poorly when
-> >>> there are many LMBs.
-> >>>
-> >>> If we cache each LMB by both its base address and its DRC index
-> >>> in an xarray we can cut lookups to O(log n), greatly accelerating
-> >>> drmem initialization and memory hotplug.
-> >>>
-> >>> This patch introduces two xarrays of of LMBs and fills them during
-> >>> drmem initialization.  The patch also adds two interfaces for LMB
-> >>> lookup.
+On Fri, 31 Jan 2020 10:18:34 +0100 David Hildenbrand <david@redhat.com> wrote:
+
+> On 31.01.20 05:40, Andrew Morton wrote:
+> > On Tue, 3 Dec 2019 14:36:38 +0100 Oscar Salvador <osalvador@suse.de> wrote:
+> > 
+> >> On Mon, Dec 02, 2019 at 10:09:51AM +0100, David Hildenbrand wrote:
+> >>> @Michal, @Oscar, can some of you at least have a patch #5 now so we can
+> >>> proceed with that? (the other patches can stay in -next some time longer)
 > >>
-> >> Good but can you replace the array of LMBs altogether
-> >> (drmem_info->lmbs)? xarray allows iteration over the members if needed.
+> >> Hi, 
+> >>
+> >> I will be having a look at patch#5 shortly.
+> >>
+> >> Thanks for the reminder
 > > 
-> > I don't think we can without potentially changing the current behavior.
+> > Things haven't improved a lot :(
 > > 
-> > The current behavior in dlpar_memory_{add,remove}_by_ic() is to advance
-> > linearly through the array from the LMB with the matching DRC index.
+> > mm-memmap_init-update-variable-name-in-memmap_init_zone.patch
+> > mm-memory_hotplug-poison-memmap-in-remove_pfn_range_from_zone.patch
+> > mm-memory_hotplug-we-always-have-a-zone-in-find_smallestbiggest_section_pfn.patch
+> > mm-memory_hotplug-dont-check-for-all-holes-in-shrink_zone_span.patch
+> > mm-memory_hotplug-drop-local-variables-in-shrink_zone_span.patch
+> > mm-memory_hotplug-cleanup-__remove_pages.patch
 > > 
-> > Iteration through the xarray via xa_for_each_start() will return LMBs
-> > indexed with monotonically increasing DRC indices.> 
-> > Are they equivalent?  Or can we have an LMB with a smaller DRC index
-> > appear at a greater offset in the array?
-> > 
-> > If the following condition is possible:
-> > 
-> > 	drmem_info->lmbs[i].drc_index > drmem_info->lmbs[j].drc_index
-> > 
-> > where i < j, then we have a possible behavior change because
-> > xa_for_each_start() may not return a contiguous array slice.  It might
-> > "leap backwards" in the array.  Or it might skip over a chunk of LMBs.
-> > 
+> > The first patch has reviews, the remainder are unloved.
 > 
-> The LMB array should have each LMB in monotonically increasing DRC Index
-> value. Note that this is set up based on the DT property but I don't recall
-> ever seeing the DT specify LMBs out of order or not being contiguous.
+> Trying hard not to rant about the review mentality on this list, but I'm
+> afraid I can't totally bite my tongue ... :)
+> 
+> Now, this is an uncomfortable situation for you and me. You have to ping
+> people about review and patches are stuck in your tree. I have a growing
+> list of patches that are somewhat considered "done", but well,
+> not-upstream-at-all. I have patches that are long in RHEL and were
+> properly tested, but could get dropped any time because -ENOREVIEW.
+> 
+> Our process nowadays seems to be, to only upstream what has an ACK/RB
+> (fixes/features/cleanups).
 
-Is that ordering guaranteed by the PAPR or some other spec or is that
-just a convention?
+Yes, we've been doing this for a couple of years now.  I make an
+exception for Vitaly's zswap patches because he appears to be the only
+person who knows the code (since Harry's internship ended).
 
-Code like drmem_update_dt_v1() makes me very nervous:
+I think this is the first time we've hit a significant logjam. 
+Presumably the holiday season contributed to this.
 
-static int drmem_update_dt_v1(struct device_node *memory,
-                              struct property *prop)
-{
-        struct property *new_prop;
-        struct of_drconf_cell_v1 *dr_cell;
-        struct drmem_lmb *lmb;
-        u32 *p;
+It isn't clear to me that we've gained much from this policy.  But
+until this cycle I've seen little harm.
 
-        new_prop = clone_property(prop, prop->length);
-        if (!new_prop)
-                return -1;
+> I can understand this is desirable (yet, I am
+> not sure if this makes sense with the current take-and-not-give-back
+> review mentality on this list).
+> 
+> Although it will make upstreaming stuff *even harder* and *even slower*,
+> maybe we should start to only queue patches that have an ACK/RB, so they
+> won't get blocked by this later on? At least that makes your life easier
+> and people won't have to eventually follow up on patches that have been
+> in linux-next for months.
 
-        p = new_prop->value;
-        *p++ = cpu_to_be32(drmem_info->n_lmbs);
+The merge rate would still be the review rate, but the resulting merges
+would be of less tested code.
 
-        dr_cell = (struct of_drconf_cell_v1 *)p;
+> Note: the result will be that many of my patches will still not get
+> reviewed, won't get queued/upstreamed, I will continuously ping and
+> resend, I will lose interest because I have better things to do, I will
+> lose interest in our code quality, I will lose interest to review.
+> 
+> (side note: some people might actually enjoy me sending less cleanup
+> patches, so this approach might be desirable for some ;) )
+> 
+> One alternative is to send patches upstream once they have been lying
+> around in linux-next for $RANDOM number of months, because they
+> obviously saw some testing and nobody started to yell at them once
+> stumbling over them on linux-mm.
 
-        for_each_drmem_lmb(lmb) {
-                dr_cell->base_addr = cpu_to_be64(lmb->base_addr);
-                dr_cell->drc_index = cpu_to_be32(lmb->drc_index);
-                dr_cell->aa_index = cpu_to_be32(lmb->aa_index);
-                dr_cell->flags = cpu_to_be32(drmem_lmb_flags(lmb));
+Yes, I think that's the case with these patches and I've sent them to
+Linus.  Hopefully Michel will be able to find time to look them over in
+the next month or so.
 
-                dr_cell++;
-        }
-
-        of_update_property(memory, new_prop);
-        return 0;
-}
-
-If for whatever reason the firmware has a DRC that isn't monotonically
-increasing and we update a firmware property at the wrong offset I have
-no idea what would happen.
-
-With the array we preserve the order.  Without it we might violate
-some assumption the firmware has made.
