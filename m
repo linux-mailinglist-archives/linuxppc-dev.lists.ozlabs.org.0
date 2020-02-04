@@ -1,47 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA211151B0E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 14:18:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Blcx0Gc5zDqQD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 00:18:25 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC369151B51
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2020 14:31:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Blw01p62zDq5n
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 00:31:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=Rk/bwZCA; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48BlXG5QSLzDqKP
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2020 00:14:21 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 014DDuF4027799;
- Tue, 4 Feb 2020 07:13:56 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 014DDrtu027796;
- Tue, 4 Feb 2020 07:13:53 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 4 Feb 2020 07:13:53 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v6 10/10] mm/memory_hotplug: Cleanup __remove_pages()
-Message-ID: <20200204131353.GJ22482@gate.crashing.org>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-11-david@redhat.com> <20200204094652.GE6494@linux>
- <5d698f94-af18-0714-bc97-14b6c520572c@redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d698f94-af18-0714-bc97-14b6c520572c@redhat.com>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Blmw2ZWPzDqLD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2020 00:25:20 +1100 (AEDT)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.6-1 tag
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1580822717;
+ bh=N0Wnx6hjJLstyz1lA+v+EjrgLErGA6F36ngCuwLl8wg=;
+ h=From:In-Reply-To:References:Date:To:Cc:From;
+ b=Rk/bwZCApMOUODsemV9dwILJUa0CpCajVoc2O7YHpAVczTqCmoqFX+pPRlM7uCUEw
+ gcnU1sDkVkEg3ZkZLWBUFx+F0H5zMjviRNSjZv9oH2jiKIrp6bcYVp4QBvgkeQqu1s
+ dxIr4uKls431Qjj82E/h+2dP1vi0YB5E6j+Cf4pU=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <878sli3640.fsf@mpe.ellerman.id.au>
+References: <878sli3640.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <878sli3640.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.6-1
+X-PR-Tracked-Commit-Id: 4c25df5640ae6e4491ee2c50d3f70c1559ef037d
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 71c3a888cbcaf453aecf8d2f8fb003271d28073f
+Message-Id: <158082271757.19118.3664369841819660996.pr-tracker-bot@kernel.org>
+Date: Tue, 04 Feb 2020 13:25:17 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,33 +55,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Wei Yang <richardw.yang@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
- Oscar Salvador <osalvador@suse.de>
+Cc: aik@ozlabs.ru, jniethe5@gmail.com, bigeasy@linutronix.de,
+ linuxram@us.ibm.com, kernelfans@gmail.com, oohall@gmail.com,
+ sukadev@linux.ibm.com, shawn@anastas.io, alex@ghiti.fr,
+ aneesh.kumar@linux.ibm.com, krzk@kernel.org, chenzhou10@huawei.com,
+ anju@linux.vnet.ibm.com, joel@jms.id.au, byj.tea@gmail.com,
+ sukadev@linux.vnet.ibm.com, ajd@linux.ibm.com, groug@kaod.org,
+ npiggin@gmail.com, oss@buserror.net, tyreld@linux.vnet.ibm.com,
+ natechancellor@gmail.com, laurentiu.tudor@nxp.com, peter.ujfalusi@ti.com,
+ timur@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ rdunlap@infradead.org, mwb@linux.ibm.com, linux-kernel@vger.kernel.org,
+ Julia.Lawall@inria.fr, fbarrat@linux.ibm.com, vaibhav@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 04, 2020 at 01:41:06PM +0100, David Hildenbrand wrote:
-> On 04.02.20 10:46, Oscar Salvador wrote:
-> > I have to confess that it took me while to wrap around my head
-> > with the new min() change, but looks ok:
-> 
-> It's a pattern commonly used in compilers and emulators to calculate the
-> number of bytes to the next block/alignment. (we're missing a macro
-> (like we have ALIGN_UP/IS_ALIGNED) for that - but it's hard to come up
-> with a good name (e.g., SIZE_TO_NEXT_ALIGN) .
+The pull request you sent on Tue, 04 Feb 2020 23:10:55 +1100:
 
-You can just write the easy to understand
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.6-1
 
-  ...  ALIGN_UP(x) - x  ...
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/71c3a888cbcaf453aecf8d2f8fb003271d28073f
 
-which is better *without* having a separate name.  Does that not
-generate good machine code for you?
+Thank you!
 
-
-Segher
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
