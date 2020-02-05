@@ -1,57 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5E31536F5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 18:47:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CTXx1CrGzDqSk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:47:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A13315387E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 19:53:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CW1B3WK6zDqTX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 05:53:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=hjl.tools@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=isgBFcKo; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CTKL67j3zDqRd
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 04:37:26 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2020 09:37:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,406,1574150400"; d="scan'208";a="225024006"
-Received: from linux.intel.com ([10.54.29.200])
- by fmsmga007.fm.intel.com with ESMTP; 05 Feb 2020 09:37:24 -0800
-Received: from [10.252.5.149] (abudanko-mobl.ccr.corp.intel.com [10.252.5.149])
- by linux.intel.com (Postfix) with ESMTP id 77F3C5802BC;
- Wed,  5 Feb 2020 09:37:17 -0800 (PST)
-Subject: [PATCH v6 10/10] drivers/oprofile: open access for CAP_PERFMON
- privileged process
-From: Alexey Budankov <alexey.budankov@linux.intel.com>
-To: James Morris <jmorris@namei.org>, Serge Hallyn <serge@hallyn.com>,
- Stephen Smalley <sds@tycho.nsa.gov>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
- Alexei Starovoitov <ast@kernel.org>, Will Deacon <will@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <576a6141-36d4-14c0-b395-8d195892b916@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <e4d47d0d-b534-db55-9783-1181a2f73b82@linux.intel.com>
-Date: Wed, 5 Feb 2020 20:37:16 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CVzn0QQ1zDqR5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 05:52:17 +1100 (AEDT)
+Received: by mail-ot1-x341.google.com with SMTP id i6so2938129otr.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Feb 2020 10:52:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3aoJL06fSGb5A06dlkDHuU+UUCGfR+HTV+83FDox/UU=;
+ b=isgBFcKomY7kWKbLgf4DfjPBR4xx6pdH2Puu+QVB70dYG3ezpf0WHsl8sDMZM0SrZL
+ XBWfnMPXwKcQWjZfNtZfcAi/0qvo5KMebRNaEAjFASKKkbPjgpsT653AsGzTJthBv8Kf
+ gOA5MiDOy5dRaCOzMD0b/CBRmgaqg9rwylK4beki75swzWKRxVDB3QUYZ6tc54UWOilW
+ fkvPpHL/bGI1+adC27WQAYlZbUE+22K+YUWa4VGazq7zeoBWfMSB6RK3Le6Bk2CEMO4t
+ u1JwGpB0/vmKf0mewFSY7r+rTSTwT+kI3U8c+04/zpBAtT0oRprRD4Vv210FLEOzA0ub
+ cc6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3aoJL06fSGb5A06dlkDHuU+UUCGfR+HTV+83FDox/UU=;
+ b=COtNW+jQPb9trD7TFgA4JQj/uUEoef/Lu8NlXDb7nRA24JOrWP78JN7q5wym3GFC1R
+ m/fvqQl+8jZo+sApXzaUg8C5AtqteOJkIW/m/zlbgNrwaubljyArhJbLqyQnv3uR1POJ
+ Z/DDQPQznksiYgyFxvWMZVKAiNAUmBfFsDXlCWQjwex5UQ1dkzryv+1h09YHaYfkFlpj
+ 9q1JdNF4Zmt9nxznJBuwVecoGX7hd7B2P2tP1zFwSZFSJULprsbUSmAxQGgy6MxZffTs
+ I5whFbnonQ6ITEYMDO15RtNibTZBGhUFg2vukpOwIr3pOW5rPDubMGLFY/jJK61ONqJW
+ lFVw==
+X-Gm-Message-State: APjAAAVksBiAVltiCGi8MaarvVnpdZlIcdRlcRNAc9VKZxm7Cyi+cPGf
+ iQx22Qhhi1efW7or6rD2ZUPignleRCGfH3x5GDY=
+X-Google-Smtp-Source: APXvYqwZ/36nQpN7EEbQK5DSDZAFaQKFZwqP1ZlDtf+BkPCZZDtyyGNKispBc09oUy4Z+l+QTtd1eHxmByDCkXQNiPM=
+X-Received: by 2002:a9d:7590:: with SMTP id s16mr25529544otk.89.1580928734294; 
+ Wed, 05 Feb 2020 10:52:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <576a6141-36d4-14c0-b395-8d195892b916@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <202002050743.dc2PtIsm%lkp@intel.com>
+In-Reply-To: <202002050743.dc2PtIsm%lkp@intel.com>
+From: "H.J. Lu" <hjl.tools@gmail.com>
+Date: Wed, 5 Feb 2020 10:51:38 -0800
+Message-ID: <CAMe9rOrJEVL8Qw3fgm9FeDjwGZNxGoZ-OO6bfmV=gtK=g68cvQ@mail.gmail.com>
+Subject: Re: [yyu168-linux_cet:cet 55/58] powerpc64le-linux-ld: warning:
+ discarding dynamic section .rela___ksymtab+jiffies_to_timeval
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,59 +75,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andi Kleen <ak@linux.intel.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- Igor Lubashev <ilubashe@akamai.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Stephane Eranian <eranian@google.com>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, oprofile-list@lists.sf.net,
- Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: Yu-cheng Yu <yu-cheng.yu@intel.com>, kbuild-all@lists.01.org,
+ Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Feb 4, 2020 at 3:37 PM kbuild test robot <lkp@intel.com> wrote:
+>
+> tree:   https://github.com/yyu168/linux_cet.git cet
+> head:   bba707cc4715c1036b6561ab38b16747f9c49cfa
+> commit: 71bb971dd76eeacd351690f28864ad5c5bec3691 [55/58] Discard .note.gnu.property sections in generic NOTES
+> config: powerpc-rhel-kconfig (attached as .config)
+> compiler: powerpc64le-linux-gcc (GCC) 7.5.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout 71bb971dd76eeacd351690f28864ad5c5bec3691
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.5.0 make.cross ARCH=powerpc
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All warnings (new ones prefixed by >>):
+>
+>    powerpc64le-linux-ld: warning: discarding dynamic section .rela___ksymtab_gpl+__wait_rcu_gp
 
-Open access to monitoring for CAP_PERFMON privileged process.
-Providing the access under CAP_PERFMON capability singly, without 
-the rest of CAP_SYS_ADMIN credentials, excludes chances to misuse
-the credentials and makes operation more secure.
+arch/powerpc/kernel/vmlinux.lds.S has
 
-CAP_PERFMON implements the principal of least privilege for performance
-monitoring and observability operations (POSIX IEEE 1003.1e 2.2.2.39
-principle of least privilege: A security design principle that states
-that a process or program be granted only those privileges (e.g.,
-capabilities) necessary to accomplish its legitimate function, and only
-for the time that such privileges are actually required)
-
-For backward compatibility reasons access to the monitoring remains
-open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage
-for secure monitoring is discouraged with respect to CAP_PERFMON
-capability.
-
-Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
----
- drivers/oprofile/event_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/oprofile/event_buffer.c b/drivers/oprofile/event_buffer.c
-index 12ea4a4ad607..6c9edc8bbc95 100644
---- a/drivers/oprofile/event_buffer.c
-+++ b/drivers/oprofile/event_buffer.c
-@@ -113,7 +113,7 @@ static int event_buffer_open(struct inode *inode, struct file *file)
+ .rela.dyn : AT(ADDR(.rela.dyn) - (0xc000000000000000 -0x00000000))
  {
- 	int err = -EPERM;
- 
--	if (!capable(CAP_SYS_ADMIN))
-+	if (!perfmon_capable())
- 		return -EPERM;
- 
- 	if (test_and_set_bit_lock(0, &buffer_opened))
+  __rela_dyn_start = .;
+  *(.rela*) <<<<<<<< Keep .rela* sections
+ }
+...
+ /DISCARD/ : {
+  *(*.EMB.apuinfo)
+  *(.glink .iplt .plt .rela* .comment)
+                           ^^^^ Discard  .rela* sections.  But it is ignored.
+  *(.gnu.version*)
+  *(.gnu.attributes)
+  *(.eh_frame)
+ }
+
+With my
+
+ommit 71bb971dd76eeacd351690f28864ad5c5bec3691
+Author: H.J. Lu <hjl.tools@gmail.com>
+Date:   Thu Jan 30 12:39:09 2020 -0800
+
+    Discard .note.gnu.property sections in generic NOTES
+
+    With the command-line option, -mx86-used-note=yes, the x86 assembler
+    in binutils 2.32 and above generates a program property note in a note
+    section, .note.gnu.property, to encode used x86 ISAs and features.  But
+    kernel linker script only contains a single NOTE segment:
+
+/DISCARD/ : { *(.note.gnu.property) }
+
+is placed before
+
+.rela.dyn : AT(ADDR(.rela.dyn) - (0xc000000000000000 -0x00000000))
+ {
+  __rela_dyn_start = .;
+  *(.rela*) <<<<<<<< Keep .rela* sections
+ }
+
+Then .rela* in
+
+ /DISCARD/ : {
+  *(*.EMB.apuinfo)
+  *(.glink .iplt .plt .rela* .comment)
+  *(.gnu.version*)
+  *(.gnu.attributes)
+  *(.eh_frame)
+ }
+
+is honored.  Can someone from POWERPC comment on it?
+
+
 -- 
-2.20.1
-
-
+H.J.
