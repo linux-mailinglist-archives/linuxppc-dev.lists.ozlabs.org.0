@@ -2,114 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC8A15337F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 15:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FAA153400
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 16:37:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CPnF48xBzDqCK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 01:57:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CQfd6PlnzDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 02:37:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=IW0Kysh6; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CPl94MhBzDq8M
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 01:56:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1580914563;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=S9EMtKAvU8u8rdzKktG+IRcxyEdzZIzUOYQ9AfnbCZo=;
- b=IW0Kysh6gJzG+zCJLKkxETn6N5hser41vV11zuUM+Ak+CorFnYzHqHM+GFSbxAnNW4AcB4
- 6sme44Eq0i/ofNn8X3lQIe4eJ4WS6Ce6W+3zRRBSr30+uG3BLP5pos1zXjVc3s1xHWrGYZ
- ijh0gyqAt5sIccL+EQDuqf32449Rkok=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-146-rDgwbHIINW24G1Uka7sddQ-1; Wed, 05 Feb 2020 09:55:58 -0500
-X-MC-Unique: rDgwbHIINW24G1Uka7sddQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9DD6C107B270;
- Wed,  5 Feb 2020 14:55:56 +0000 (UTC)
-Received: from [10.36.116.217] (ovpn-116-217.ams2.redhat.com [10.36.116.217])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ABE495C541;
- Wed,  5 Feb 2020 14:55:53 +0000 (UTC)
-Subject: Re: [PATCH v6 08/10] mm/memory_hotplug: Don't check for "all holes"
- in shrink_zone_span()
-To: David Laight <David.Laight@ACULAB.COM>,
- 'Wei Yang' <richardw.yang@linux.intel.com>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-9-david@redhat.com> <20200205095924.GC24162@richard>
- <b8f142b9d569459d84b71949cb5efc27@AcuMS.aculab.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <00d040ca-1885-1b38-e3da-54276c37bc8e@redhat.com>
-Date: Wed, 5 Feb 2020 15:55:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=qais.yousef@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48CQcb5XJGzDq83
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 02:35:18 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8917B31B;
+ Wed,  5 Feb 2020 07:35:15 -0800 (PST)
+Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com
+ [10.1.195.21])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 86EA23F68E;
+ Wed,  5 Feb 2020 07:35:09 -0800 (PST)
+Date: Wed, 5 Feb 2020 15:35:07 +0000
+From: Qais Yousef <qais.yousef@arm.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 00/14] Convert cpu_up/down to device_online/offline
+Message-ID: <20200205153505.bkib7pxnib3x24tx@e107158-lin.cambridge.arm.com>
+References: <20191125112754.25223-1-qais.yousef@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <b8f142b9d569459d84b71949cb5efc27@AcuMS.aculab.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Disposition: inline
+In-Reply-To: <20191125112754.25223-1-qais.yousef@arm.com>
+User-Agent: NeoMutt/20171215
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,48 +48,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Dan Williams <dan.j.williams@intel.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Oscar Salvador <osalvador@suse.de>
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org,
+ linux-ia64@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Richard Fontana <rfontana@redhat.com>, Nadav Amit <namit@vmware.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Helge Deller <deller@gmx.de>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Russell King <linux@armlinux.org.uk>, Eiichi Tsukata <devel@etsukata.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
+ Fenghua Yu <fenghua.yu@intel.com>, Juergen Gross <jgross@suse.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Josh Triplett <josh@joshtriplett.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Borislav Petkov <bp@alien8.de>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Pavankumar Kondeti <pkondeti@codeaurora.org>,
+ linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
+ linux-parisc@vger.kernel.org, Steve Capper <steve.capper@arm.com>,
+ Jiri Kosina <jkosina@suse.cz>, linuxppc-dev@lists.ozlabs.org,
+ Zhenzhong Duan <zhenzhong.duan@oracle.com>, Armijn Hemel <armijn@tjaldur.nl>,
+ James Morse <james.morse@arm.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05.02.20 15:54, David Laight wrote:
-> From: Wei Yang
->> Sent: 05 February 2020 09:59
-> ...
->> If it is me, I would like to take out these two similar logic out.
->>
->> For example:
->>
->> 	if () {
->> 	} else if () {
->> 	} else {
->> 		goto out;
->> 	}
+Hi Thomas
+
+On 11/25/19 11:27, Qais Yousef wrote:
+> Changes in v2:
+> 	* Add 2 new patches that create smp_shutdown_nonboot_cpus() to be used
+> 	  in machine_shutdown() in ia64, arm and arm64
+> 	* Use proper kernel-doc for the newly introduced functions
+> 	* Renamed a function
+> 	* Removed a stale comment in a function
+> 	* Rebased on top of 5.4-rc8
 > 
-> I'm pretty sure the kernel layout rules disallow 'else if'.
+> 	git clone git://linux-arm.org/linux-qy.git -b cpu-hp-cleanup-v2
 
-Huh?
+I want to spin v3 to address Russel's comments. If you have any feedback it'd
+be great to have them before I spin v3.
 
-git grep "else if" | wc -l
-49336
+Thanks
 
-I'm afraid I don't get what you mean :)
+--
+Qais Yousef
 
--- 
-Thanks,
-
-David / dhildenb
-
+> 
+> Using cpu_up/down directly to bring cpus online/offline loses synchronization
+> with sysfs and could suffer from a race similar to what is described in
+> commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and serialization
+> during LPM").
+> 
+> cpu_up/down seem to be more of a internal implementation detail for the cpu
+> subsystem to use to boot up cpus, perform suspend/resume and low level hotplug
+> operations. Users outside of the cpu subsystem would be better using the device
+> core API to bring a cpu online/offline which is the interface used to hotplug
+> memory and other system devices.
+> 
+> Several users have already migrated to use the device core API, this series
+> converts the remaining users and hides cpu_up/down from internal users at the
+> end.
+> 
+> I noticed this problem while working on a hack to disable offlining
+> a particular CPU but noticed that setting the offline_disabled attribute in the
+> device struct isn't enough because users can easily bypass the device core.
+> While my hack isn't a valid use case but it did highlight the inconsistency in
+> the way cpus are being onlined/offlined and this attempt hopefully improves on
+> this.
+> 
+> The first 8 patches fix arch users.
+> 
+> The remaining 6 patches fix generic code users. Particularly creating a new
+> special exported API for the device core to use instead of cpu_up/down.
+> 
+> The last patch removes cpu_up/down from cpu.h and unexport the functions.
+> 
+> In some cases where the use of cpu_up/down seemed legitimate, I encapsulated
+> the logic in a higher level - special purposed function; and converted the code
+> to use that instead.
+> 
+> I did re-run the rcu torture, lock torture and psci checker tests and no
+> problem was noticed. I did perform build tests on all arch affected except for
+> parisc.
+> 
+> Hopefully I got the CC list right for all the patches. Apologies in advance if
+> some people were omitted from some patches but they should have been CCed.
+> 
+> CC: Armijn Hemel <armijn@tjaldur.nl>
+> CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> CC: Bjorn Helgaas <bhelgaas@google.com>
+> CC: Borislav Petkov <bp@alien8.de>
+> CC: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+> CC: Catalin Marinas <catalin.marinas@arm.com>
+> CC: Christophe Leroy <christophe.leroy@c-s.fr>
+> CC: Daniel Lezcano <daniel.lezcano@linaro.org>
+> CC: Davidlohr Bueso <dave@stgolabs.net>
+> CC: "David S. Miller" <davem@davemloft.net>
+> CC: Eiichi Tsukata <devel@etsukata.com>
+> CC: Enrico Weigelt <info@metux.net>
+> CC: Fenghua Yu <fenghua.yu@intel.com>
+> CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> CC: Helge Deller <deller@gmx.de>
+> CC: "H. Peter Anvin" <hpa@zytor.com>
+> CC: Ingo Molnar <mingo@kernel.org>
+> CC: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> CC: James Morse <james.morse@arm.com>
+> CC: Jiri Kosina <jkosina@suse.cz>
+> CC: Josh Poimboeuf <jpoimboe@redhat.com>
+> CC: Josh Triplett <josh@joshtriplett.org>
+> CC: Juergen Gross <jgross@suse.com>
+> CC: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> CC: Mark Rutland <mark.rutland@arm.com>
+> CC: Michael Ellerman <mpe@ellerman.id.au>
+> CC: Nadav Amit <namit@vmware.com>
+> CC: Nicholas Piggin <npiggin@gmail.com>
+> CC: "Paul E. McKenney" <paulmck@kernel.org>
+> CC: Paul Mackerras <paulus@samba.org>
+> CC: Pavankumar Kondeti <pkondeti@codeaurora.org>
+> CC: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+> CC: "Rafael J. Wysocki" <rafael@kernel.org>
+> CC: Ram Pai <linuxram@us.ibm.com>
+> CC: Richard Fontana <rfontana@redhat.com>
+> CC: Russell King <linux@armlinux.org.uk>
+> CC: Sakari Ailus <sakari.ailus@linux.intel.com>
+> CC: Stefano Stabellini <sstabellini@kernel.org>
+> CC: Steve Capper <steve.capper@arm.com>
+> CC: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> CC: Thomas Gleixner <tglx@linutronix.de>
+> CC: Tony Luck <tony.luck@intel.com>
+> CC: Will Deacon <will@kernel.org>
+> CC: Zhenzhong Duan <zhenzhong.duan@oracle.com>
+> CC: linux-arm-kernel@lists.infradead.org
+> CC: linux-ia64@vger.kernel.org
+> CC: linux-kernel@vger.kernel.org
+> CC: linux-parisc@vger.kernel.org
+> CC: linuxppc-dev@lists.ozlabs.org
+> CC: sparclinux@vger.kernel.org
+> CC: x86@kernel.org
+> CC: xen-devel@lists.xenproject.org
+> 
+> 
+> Qais Yousef (14):
+>   smp: create a new function to shutdown nonboot cpus
+>   ia64: Replace cpu_down with smp_shutdown_nonboot_cpus()
+>   arm: arm64: Don't use disable_nonboot_cpus()
+>   arm64: hibernate.c: create a new function to handle cpu_up(sleep_cpu)
+>   x86: Replace cpu_up/down with devcie_online/offline
+>   powerpc: Replace cpu_up/down with device_online/offline
+>   sparc: Replace cpu_up/down with device_online/offline
+>   parisc: Replace cpu_up/down with device_online/offline
+>   driver: base: cpu: export device_online/offline
+>   driver: xen: Replace cpu_up/down with device_online/offline
+>   firmware: psci: Replace cpu_up/down with device_online/offline
+>   torture: Replace cpu_up/down with device_online/offline
+>   smp: Create a new function to bringup nonboot cpus online
+>   cpu: Hide cpu_up/down
+> 
+>  arch/arm/kernel/reboot.c               |  4 +-
+>  arch/arm64/kernel/hibernate.c          | 13 ++--
+>  arch/arm64/kernel/process.c            |  4 +-
+>  arch/ia64/kernel/process.c             |  8 +--
+>  arch/parisc/kernel/processor.c         |  4 +-
+>  arch/powerpc/kernel/machine_kexec_64.c |  4 +-
+>  arch/sparc/kernel/ds.c                 |  8 ++-
+>  arch/x86/kernel/topology.c             |  4 +-
+>  arch/x86/mm/mmio-mod.c                 |  8 ++-
+>  arch/x86/xen/smp.c                     |  4 +-
+>  drivers/base/core.c                    |  4 ++
+>  drivers/base/cpu.c                     |  4 +-
+>  drivers/firmware/psci/psci_checker.c   |  6 +-
+>  drivers/xen/cpu_hotplug.c              |  2 +-
+>  include/linux/cpu.h                    |  8 ++-
+>  kernel/cpu.c                           | 85 ++++++++++++++++++++++++--
+>  kernel/smp.c                           |  9 +--
+>  kernel/torture.c                       | 15 +++--
+>  18 files changed, 143 insertions(+), 51 deletions(-)
+> 
+> -- 
+> 2.17.1
+> 
