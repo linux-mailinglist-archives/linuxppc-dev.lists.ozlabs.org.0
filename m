@@ -1,81 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5E21539A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 21:41:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A2015399E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 21:39:29 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CYML0zQjzDqTl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 07:39:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CYPW0DByzDqT8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 07:41:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CPKs19HJzDqDc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 01:37:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=fskKNcfl; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=toradex.com (client-ip=52.101.151.213;
+ helo=eur05-vi1-obe.outbound.protection.outlook.com;
+ envelope-from=oleksandr.suvorov@toradex.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=toradex.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256
+ header.s=selector2 header.b=KxLjUhCm; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48CPKr6tCpz8swW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 01:37:36 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48CPKr6Ff3z9sSQ; Thu,  6 Feb 2020 01:37:36 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::9;
- helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=fskKNcfl; 
- dkim-atps=neutral
-Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5301::9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com
+ (mail-vi1eur05hn2213.outbound.protection.outlook.com [52.101.151.213])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48CPKr0xZCz9sS9
- for <linuxppc-dev@ozlabs.org>; Thu,  6 Feb 2020 01:37:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1580913452;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=3K5CMMID3EALjv0xH2AwoQDAzF9cnjIP2QV6HxlHeTI=;
- b=fskKNcflSeCyEKytz7flwC9exCsJXcVykr4G4TUKs5ozgiNVajbTCwKzNOwLL8kT7g
- wKQNevSmI0sRkf+WtuNycosNZyrzZGWlTZeeNERidoHa/uLwEi1MocCFdvPajNnVR7Re
- 4IiDdynBo0TjLjgcByB4ZtS8HE/YCoefHoPginPs0sNjQ/GjIzhO4c3nirIuF+JGC+ea
- Z1w0Wx6PezfT45r2/jJ55eI7r4mqBpvmc4aT7s+YBEHhiSkjrCheJcfwqHHFLDRplTrB
- 8P2/VTfRqC+9R0I5AnjFJjxL1ecxGDemorioh644g01bEMVHYTzkK+SOtg79ItC+6D/j
- /uVg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2dxj7pixyCIG81lQblfm6W5F5TlnscZDhMmlFcU"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:b004:73f8:d588:90b7:1e12:571a]
- by smtp.strato.de (RZmta 46.1.12 AUTH)
- with ESMTPSA id 40bcf3w15EaiTwK
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 5 Feb 2020 15:36:44 +0100 (CET)
-Content-Type: multipart/alternative;
- boundary=Apple-Mail-54688FF3-D1BA-44EC-AD1F-3F8C74847704
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0 (1.0)
-Subject: Re: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate
- ioctl for device
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
-Date: Wed, 5 Feb 2020 15:36:43 +0100
-Message-Id: <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
-References: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: iPhone Mail (17B111)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CRGj4JpjzDqRM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 03:04:59 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IZC1FHSO3kZ3QI1sbnGRdH/F7I2Uw5rxqhYHs6WYUnFlgDQAg2ocP9ILQg4dFAMsuxmCpZ5gJfR5P8iA6wmH90REiDCDeNxdlgOQshQMeV23wH79AjSbjuNFldyojgsiWy9n2dULVKKK78jhoMoWlk1ku8T2iuZxxxwdPN6G0/4eEYQT8xBxX7N0moxnrhoSLQyAI9Gz12z3WhP4oJdFr82OY6cqqPo3Q8pz3zuVFqcb0+k+iFcDK4Jl9s1UTQy//9EVHZS85p03XzshKeo7ZJuy6AKdKBfEm5NXFgRRevuVnhuf/KZVuwuV3q8sJ7tu1/hwbYYf+txi1hVXcv3X/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=itU0ED0w/Hmd36ELD5ckm1ecQ5jx70sKj6AhR/rNJO4=;
+ b=A1+8EMfI2mYCWYacb7StJFvkcXZy+9cp1ugQWqRLIFcTS9/RWiVl5NwxJEelTjzAYECCtRON0zzoPQraIWMsL60AN2Jek1bfEdqcF9QtQMPYnbIer5MtxIpjZ8v5X5g3MzgprPoRpO4NQUlo/Wi0HvCH1Ssk1efOIxf5Lz3fz044qGdJxxrj5acQPv+hrQnbQ145HAmraIiR4OnxhDwwNkbTjBHippKbSAk2IO0jYCUUltLgR5k/yaevolOVGHIZNAqlqkYhDNlzYZhdaAqk7MxfNO8OT2MmhHxATPuGEfciSlLTyvCVpZ2aLEyfL4G+lyjICE+cZ6p9HhWV6HH5YQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=toradex.com; dmarc=pass action=none header.from=toradex.com;
+ dkim=pass header.d=toradex.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=itU0ED0w/Hmd36ELD5ckm1ecQ5jx70sKj6AhR/rNJO4=;
+ b=KxLjUhCmBrsxDjBLFUQH0NtbbjopsKx0MYZV6hfBktchcd/SShE+0OVgtvd7Axberk05+wwIDrjPsnWX+QCOrhfVcjDcRsjuXuylg275sLBpyCa4FAJk2R9uWmzcTiK92HAxRVPqVl9NWaVclUF9paA70JXFHmgn0pM1bMe4qC0=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=oleksandr.suvorov@toradex.com; 
+Received: from VI1PR05MB3279.eurprd05.prod.outlook.com (10.170.238.24) by
+ VI1PR05MB5197.eurprd05.prod.outlook.com (20.178.11.151) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2686.33; Wed, 5 Feb 2020 16:04:41 +0000
+Received: from VI1PR05MB3279.eurprd05.prod.outlook.com
+ ([fe80::c14f:4592:515f:6e52]) by VI1PR05MB3279.eurprd05.prod.outlook.com
+ ([fe80::c14f:4592:515f:6e52%7]) with mapi id 15.20.2686.035; Wed, 5 Feb 2020
+ 16:04:41 +0000
+From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+To: alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_sai: Fix exiting path on probing failure
+Date: Wed,  5 Feb 2020 18:04:36 +0200
+Message-Id: <20200205160436.3813642-1-oleksandr.suvorov@toradex.com>
+X-Mailer: git-send-email 2.24.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: GV0P278CA0030.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:710:28::17) To VI1PR05MB3279.eurprd05.prod.outlook.com
+ (2603:10a6:802:1c::24)
+MIME-Version: 1.0
+Received: from localhost (194.105.145.90) by
+ GV0P278CA0030.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:28::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2707.21 via Frontend Transport; Wed, 5 Feb 2020 16:04:40 +0000
+X-Mailer: git-send-email 2.24.1
+X-Originating-IP: [194.105.145.90]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 1544a42a-6a1e-4d4a-0b73-08d7aa551bc4
+X-MS-TrafficTypeDiagnostic: VI1PR05MB5197:|VI1PR05MB5197:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR05MB5197C785940398ECBB568757F9020@VI1PR05MB5197.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
+X-Forefront-PRVS: 0304E36CA3
+X-Forefront-Antispam-Report: SFV:SPM;
+ SFS:(10019020)(4636009)(346002)(366004)(136003)(39850400004)(376002)(396003)(199004)(189003)(316002)(16526019)(81156014)(8676002)(186003)(81166006)(956004)(8936002)(66946007)(6666004)(7416002)(66556008)(66476007)(478600001)(6916009)(6496006)(36756003)(52116002)(26005)(86362001)(1076003)(2906002)(6486002)(44832011)(4326008)(2616005)(54906003)(5660300002)(23200700001);
+ DIR:OUT; SFP:1501; SCL:5; SRVR:VI1PR05MB5197;
+ H:VI1PR05MB3279.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; CAT:OSPM; 
+Received-SPF: None (protection.outlook.com: toradex.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Sw0vJi4XEAvc11+yt9IK+E2rAzJi47VDLVXns3uw2GZVgLf5kjN59NQG0FK/wxnPNUkdkMoLN0sno7pqP+M2kqJeztgiOhR3vmwXuuurZRePT2R3ChiS5JrrUVQAQyrCpggz6ZyqnO00bKfvIBhRoKWoo7NHZuP7N/cjL6mhIq6KI2rk18FjzxAVc5J8SDPoRhK163H+39pMoqM6I8PiLsXZxGkVG1WfAZd6vH5rf+rDaPaceB9c8ZHq3Coi4FjJYW/dK29RImKF7Y6PvGuWAKHScr/pFbfe+fHo2txlU4HoxzNg6/8CWXDR2FSe7j40c/DAVlV5X8sm48CDvSc+uulMZQpL4XaB+LEWf4kffM4HWtHBoVwxAkcV00Sony07YX919QZK5B/zDLIGpj++Hdd7OVEXW2dwtj8PseR4qh0Mq8rXhyUGr3tiYD0qYT3ARyhdb07llH4UGf+hFAdVTuUh3pjDN4QFQ2vjkuacHXAzPEiw+/twtWQIZJuDfeReESRsmPjUGGbdisftcCAeFkX36XQSm7q+vfzBhfQg3V3PL8FMYjBa0aCxiVGPrU/6ujUVNoqw5MjBpULvlIlTeiCzp2cuRyfF2sbF8/At9CJw4dfoMWejU28NnUnT8FQd/BzZcZ6QczvuRFQN4RsFVAfq4BNfbbDoEnBzoIP8g9FWm9TgzlUlGHIc01/HeUb1DkscTXFJwu5rpuT5QyONl3xvxK1A1Cxcyx585J6v4ghjwDg+J07HQcebYBwiNoqLtwVxwadFQqAUvNFJa+Jr/w==
+X-MS-Exchange-AntiSpam-MessageData: Mz2GOcg9jXO8x4f4wfofIOvEJSlpXjescALvGGIQ6gdROHOSs9GWCRi+xwk6a565B1JqZXim7M2kJesMJIQMv1wdvDdvNNHlN+p70wTXSIVebwF2Ea+z5IvpOsB/3MOIAd+ghx3PVjpHRhxZoqGZmQ==
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1544a42a-6a1e-4d4a-0b73-08d7aa551bc4
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2020 16:04:41.2908 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2xEopcBa3erDQ2vMSJK4aW7H4B2pFPiqyx7PY6qZSwWhafhplRl5lxd1iX4Ow30M7wWXwnMvsCscOPgovzZ0Fu6C0ikVHQJkCATMF80+hRA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB5197
 X-Mailman-Approved-At: Thu, 06 Feb 2020 07:37:45 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,182 +106,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: Nicolin Chen <nicoleotsuka@gmail.com>,
+ Igor Opaniuk <igor.opaniuk@toradex.com>, linuxppc-dev@lists.ozlabs.org,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>,
+ Oleksandr Suvorov <oleksandr.suvorov@toradex.com>,
+ Philippe Schenker <philippe.schenker@toradex.com>,
+ Mark Brown <broonie@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+If the imx-sdma driver is built as a module, the fsl-sai device doesn't
+disable on probing failure, which causes the warning in the next probing:
 
---Apple-Mail-54688FF3-D1BA-44EC-AD1F-3F8C74847704
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+==================================================================
+fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
+fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
+fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
+fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
+fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
+fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
+==================================================================
 
-Kernel 5.5 PowerPC is also affected.
+Disabling the device properly fixes the issue.
 
-=E2=80=94 Christian
+Fixes: 812ad463e089 ("ASoC: fsl_sai: Add support for runtime pm")
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+---
 
-Christian Zigotzky wrote:
+ sound/soc/fsl/fsl_sai.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-Hi All,
-
-The issue with the avahi-daemon still exist in the latest Git kernel. It's a=
- PowerPC issue. I compiled the latest Git kernel on a PC today and there are=
-n't any issues with the avahi daemon. Another Power Mac user reported the sa=
-me issue on his G5. I tested with the AmigaOne X1000 and X5000 in the last d=
-ays.
-
-I bisected today but I think the result isn't correct because it found the o=
-ther problem with ordering of PCSCSI definition in esp_rev enum. I don't kno=
-w how to bisect if there is another issue at the same time. Maybe "git bisec=
-t skip"?
-
-2086faae3c55a652cfbd369e18ecdb703aacc493 is the first bad commit
-commit 2086faae3c55a652cfbd369e18ecdb703aacc493
-Author: Kars de Jong <jongk@linux-m68k.org>
-Date:   Tue Nov 19 21:20:20 2019 +0100
-
-    scsi: esp_scsi: Correct ordering of PCSCSI definition in esp_rev enum
-
-    The order of the definitions in the esp_rev enum is important. The value=
-s
-    are used in comparisons for chip features.
-
-    Add a comment to the enum explaining this.
-
-    Also, the actual values for the enum fields are irrelevant, so remove th=
-e
-    explicit values (suggested by Geert Uytterhoeven). This makes adding a n=
-ew
-    field in the middle of the enum easier.
-
-    Finally, move the PCSCSI definition to the right place in the enum. In i=
-ts
-    previous location, at the end of the enum, the wrong values are written t=
-o
-    the CONFIG3 register when used with FAST-SCSI targets.
-
-    Link: https://lore.kernel.org/r/20191119202021.28720-2-jongk@linux-m68k.=
-org
-    Signed-off-by: Kars de Jong <jongk@linux-m68k.org>
-    Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-
-:040000 040000 cdc128596e33fb60406b5de9b17b79623c187c1a 48ceab06439f95285e8b=
-30181e75f9a68c25fcb5 M    drivers=
-
---Apple-Mail-54688FF3-D1BA-44EC-AD1F-3F8C74847704
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
-utf-8"></head><body dir=3D"auto"><p style=3D"margin: 0px; font-stretch: norm=
-al; font-size: 12px; line-height: normal; font-family: Helvetica;">Kernel 5.=
-5 PowerPC is also affected.</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">=E2=80=94 Christian</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">Christian Zigotzky wrote:</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">Hi All,</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">The issue with the avahi-daemon still exis=
-t in the latest Git kernel. It's a PowerPC issue. I compiled the latest Git k=
-ernel on a PC today and there aren't any issues with the avahi daemon. Anoth=
-er Power Mac user reported the same issue on his G5. I tested with the Amiga=
-One X1000 and X5000 in the last days.</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">I bisected today but I think the result is=
-n't correct because it found the other problem with ordering of PCSCSI defin=
-ition in esp_rev enum. I don't know how to bisect if there is another issue a=
-t the same time. Maybe "git bisect skip"?</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">2086faae3c55a652cfbd369e18ecdb703aacc493 i=
-s the first bad commit</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">commit 2086faae3c55a652cfbd369e18ecdb703aa=
-cc493</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">Author: Kars de Jong &lt;jongk@linux-m68k.=
-org&gt;</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">Date: &nbsp; Tue Nov 19 21:20:20 2019 +010=
-0</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; scsi: esp_scsi: Correct orde=
-ring of PCSCSI definition in esp_rev enum</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; The order of the definitions=
- in the esp_rev enum is important. The values</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; are used in comparisons for c=
-hip features.</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; Add a comment to the enum ex=
-plaining this.</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; Also, the actual values for t=
-he enum fields are irrelevant, so remove the</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; explicit values (suggested b=
-y Geert Uytterhoeven). This makes adding a new</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; field in the middle of the e=
-num easier.</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; Finally, move the PCSCSI def=
-inition to the right place in the enum. In its</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; previous location, at the en=
-d of the enum, the wrong values are written to</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; the CONFIG3 register when us=
-ed with FAST-SCSI targets.</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; Link: https://lore.kernel.or=
-g/r/20191119202021.28720-2-jongk@linux-m68k.org</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; Signed-off-by: Kars de Jong &=
-lt;jongk@linux-m68k.org&gt;</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">&nbsp; &nbsp; Signed-off-by: Martin K. Pet=
-ersen &lt;martin.petersen@oracle.com&gt;</p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica; min-height: 13.8px;"><br></p>
-<p style=3D"margin: 0px; font-stretch: normal; font-size: 12px; line-height:=
- normal; font-family: Helvetica;">:040000 040000 cdc128596e33fb60406b5de9b17=
-b79623c187c1a 48ceab06439f95285e8b30181e75f9a68c25fcb5 M&nbsp; &nbsp; driver=
-s</p></body></html>=
-
---Apple-Mail-54688FF3-D1BA-44EC-AD1F-3F8C74847704--
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 8c3ea7300972..9d436b0c5718 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1020,12 +1020,24 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_component,
+ 			&fsl_sai_dai, 1);
+ 	if (ret)
+-		return ret;
++		goto err_pm_disable;
+ 
+-	if (sai->soc_data->use_imx_pcm)
+-		return imx_pcm_dma_init(pdev, IMX_SAI_DMABUF_SIZE);
+-	else
+-		return devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
++	if (sai->soc_data->use_imx_pcm) {
++		ret = imx_pcm_dma_init(pdev, IMX_SAI_DMABUF_SIZE);
++		if (ret)
++			goto err_pm_disable;
++	} else {
++		ret = devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
++		if (ret)
++			goto err_pm_disable;
++	}
++
++	return ret;
++
++err_pm_disable:
++	pm_runtime_disable(&pdev->dev);
++
++	return ret;
+ }
+ 
+ static int fsl_sai_remove(struct platform_device *pdev)
+-- 
+2.24.1
 
