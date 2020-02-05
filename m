@@ -1,52 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A43152519
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 04:06:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48C60x1GvczDqM6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 14:06:57 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB0C152594
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 05:22:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48C7gZ0jv4zDqN1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 15:22:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48C5yq43XgzDqL5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2020 14:05:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oLjjl/Qm; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48C5yp0hsYz9sSR;
- Wed,  5 Feb 2020 14:05:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1580871907;
- bh=Dy2HNszoS5jMHuHyexeNZ1i6v2XpVUmuydKw/9Caj58=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oLjjl/QmMaQUGkaI425lp8ZqbybG1H7xgmO+WmWq3t6CGe3Ydfi2omMvBob16Z5TS
- LHkGOmvtvcpZoOVFbp1xrUN8gFyM+NV2mLZMiM0QNEI7mXLXmjvRfPJAaikuMqME9U
- DdqyIDLQ8fMvvU9O3fXj+2ZNog4M9YaBI1kKj0vVSxuvesokyfqnXtxONTr0BTRBPw
- GW6r4NuLz+BlK//+r3+ZzGcMec3ZhTxzZS+gLGPQpEtFPtWSi10F20kXho2mhO2xk1
- C2dHxfOWKKQ1nfwjw5I8ncgxAzNir+zHOoAFGWZtbmPWBsUWAIawAKTavRpdoKHRah
- /1o2zj3OuuW7Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
-Subject: Re: [PATCH 2/5] mm/memremap_pages: Introduce memremap_compat_align()
-In-Reply-To: <158041476763.3889308.13149849631980018039.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <158041475480.3889308.655103391935006598.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158041476763.3889308.13149849631980018039.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Wed, 05 Feb 2020 14:05:02 +1100
-Message-ID: <875zgl3fa9.fsf@mpe.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48C7dP40yrzDq63
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2020 15:20:09 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0154IgxB065034; Tue, 4 Feb 2020 23:20:01 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xyhn27wn4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Feb 2020 23:20:00 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0154F1Iw002400;
+ Wed, 5 Feb 2020 04:20:00 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 2xykc99w38-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Feb 2020 04:20:00 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0154JxPk40894772
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 5 Feb 2020 04:19:59 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3A3F02805A;
+ Wed,  5 Feb 2020 04:19:59 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F06EA28058;
+ Wed,  5 Feb 2020 04:19:58 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.31.110])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  5 Feb 2020 04:19:58 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 26C4F2E3006; Wed,  5 Feb 2020 09:49:56 +0530 (IST)
+Date: Wed, 5 Feb 2020 09:49:56 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/3] powerpc/sysfs: Show idle_purr and idle_spurr for
+ every CPU
+Message-ID: <20200205041956.GA5401@in.ibm.com>
+References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1574856072-30972-3-git-send-email-ego@linux.vnet.ibm.com>
+ <1575564547.si4rk0s96p.naveen@linux.ibm.com>
+ <20200203045013.GC13468@in.ibm.com>
+ <1580802180.jpxk9s8apz.naveen@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1580802180.jpxk9s8apz.naveen@linux.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-04_09:2020-02-04,
+ 2020-02-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 malwarescore=0 suspectscore=0 phishscore=0 clxscore=1015
+ adultscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 lowpriorityscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002050034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,78 +90,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Jeff Moyer <jmoyer@redhat.com>,
- Paul Mackerras <paulus@samba.org>, vishal.l.verma@intel.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, ego@linux.vnet.ibm.com,
+ Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
-> The "sub-section memory hotplug" facility allows memremap_pages() users
-> like libnvdimm to compensate for hardware platforms like x86 that have a
-> section size larger than their hardware memory mapping granularity.  The
-> compensation that sub-section support affords is being tolerant of
-> physical memory resources shifting by units smaller (64MiB on x86) than
-> the memory-hotplug section size (128 MiB). Where the platform
-> physical-memory mapping granularity is limited by the number and
-> capability of address-decode-registers in the memory controller.
->
-> While the sub-section support allows memremap_pages() to operate on
-> sub-section (2MiB) granularity, the Power architecture may still
-> require 16MiB alignment on "!radix_enabled()" platforms.
->
-> In order for libnvdimm to be able to detect and manage this per-arch
-> limitation, introduce memremap_compat_align() as a common minimum
-> alignment across all driver-facing memory-mapping interfaces, and let
-> Power override it to 16MiB in the "!radix_enabled()" case.
->
-> The assumption / requirement for 16MiB to be a viable
-> memremap_compat_align() value is that Power does not have platforms
-> where its equivalent of address-decode-registers never hardware remaps a
-> persistent memory resource on smaller than 16MiB boundaries.
->
-> Based on an initial patch by Aneesh.
->
-> Link: http://lore.kernel.org/r/CAPcyv4gBGNP95APYaBcsocEa50tQj9b5h__83vgngjq3ouGX_Q@mail.gmail.com
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  arch/powerpc/include/asm/io.h |   10 ++++++++++
->  drivers/nvdimm/pfn_devs.c     |    2 +-
->  include/linux/io.h            |   23 +++++++++++++++++++++++
->  include/linux/mmzone.h        |    1 +
->  4 files changed, 35 insertions(+), 1 deletion(-)
+Hi Naveen,
 
-The powerpc change here looks fine to me.
+On Tue, Feb 04, 2020 at 01:22:19PM +0530, Naveen N. Rao wrote:
+> Gautham R Shenoy wrote:
+> >Hi Naveen,
+> >
+> >On Thu, Dec 05, 2019 at 10:23:58PM +0530, Naveen N. Rao wrote:
+> >>>diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+> >>>index 80a676d..42ade55 100644
+> >>>--- a/arch/powerpc/kernel/sysfs.c
+> >>>+++ b/arch/powerpc/kernel/sysfs.c
+> >>>@@ -1044,6 +1044,36 @@ static ssize_t show_physical_id(struct device *dev,
+> >>> }
+> >>> static DEVICE_ATTR(physical_id, 0444, show_physical_id, NULL);
+> >>>
+> >>>+static ssize_t idle_purr_show(struct device *dev,
+> >>>+			      struct device_attribute *attr, char *buf)
+> >>>+{
+> >>>+	struct cpu *cpu = container_of(dev, struct cpu, dev);
+> >>>+	unsigned int cpuid = cpu->dev.id;
+> >>>+	struct lppaca *cpu_lppaca_ptr = paca_ptrs[cpuid]->lppaca_ptr;
+> >>>+	u64 idle_purr_cycles = be64_to_cpu(cpu_lppaca_ptr->wait_state_cycles);
+> >>>+
+> >>>+	return sprintf(buf, "%llx\n", idle_purr_cycles);
+> >>>+}
+> >>>+static DEVICE_ATTR_RO(idle_purr);
+> >>>+
+> >>>+DECLARE_PER_CPU(u64, idle_spurr_cycles);
+> >>>+static ssize_t idle_spurr_show(struct device *dev,
+> >>>+			       struct device_attribute *attr, char *buf)
+> >>>+{
+> >>>+	struct cpu *cpu = container_of(dev, struct cpu, dev);
+> >>>+	unsigned int cpuid = cpu->dev.id;
+> >>>+	u64 *idle_spurr_cycles_ptr = per_cpu_ptr(&idle_spurr_cycles, cpuid);
+> >>
+> >>Is it possible for a user to read stale values if a particular cpu is in an
+> >>extended cede? Is it possible to use smp_call_function_single() to force the
+> >>cpu out of idle?
+> >
+> >Yes, if the CPU whose idle_spurr cycle is being read is still in idle,
+> >then we will miss reporting the delta spurr cycles for this last
+> >idle-duration. Yes, we can use an smp_call_function_single(), though
+> >that will introduce IPI noise. How often will idle_[s]purr be read ?
+> 
+> Since it is possible for a cpu to go into extended cede for multiple seconds
+> during which time it is possible to mis-report utilization, I think it is
+> better to ensure that the sysfs interface for idle_[s]purr report the proper
+> values through use of IPI.
+>
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Fair enough.
 
-cheers
 
-> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-> index a63ec938636d..0fa2dc483008 100644
-> --- a/arch/powerpc/include/asm/io.h
-> +++ b/arch/powerpc/include/asm/io.h
-> @@ -734,6 +734,16 @@ extern void __iomem * __ioremap_at(phys_addr_t pa, void *ea,
->  				   unsigned long size, pgprot_t prot);
->  extern void __iounmap_at(void *ea, unsigned long size);
->  
-> +#ifdef CONFIG_SPARSEMEM
-> +static inline unsigned long memremap_compat_align(void)
-> +{
-> +	if (radix_enabled())
-> +		return SUBSECTION_SIZE;
-> +	return (1UL << mmu_psize_defs[mmu_linear_psize].shift);
-> +}
-> +#define memremap_compat_align memremap_compat_align
-> +#endif
-> +
->  /*
->   * When CONFIG_PPC_INDIRECT_PIO is set, we use the generic iomap implementation
->   * which needs some additional definitions here. They basically allow PIO
+> With repect to lparstat, the read interval is user-specified and just gets
+> passed onto sleep().
+
+Ok. So I guess currently you will be sending smp_call_function every
+time you read a PURR and SPURR. That number will now increase by 2
+times when we read idle_purr and idle_spurr.
+
+
+> 
+> - Naveen
+> 
+
+--
+Thanks and Regards
+gautham.
