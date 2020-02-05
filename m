@@ -1,38 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9361536E1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 18:44:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E337D1536E0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 18:43:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CTRj3sDCzDqTT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:42:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CTTN5yHDzDqWb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:44:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.126; helo=mga18.intel.com;
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
  envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CTGw1nfrzDqBK
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 04:35:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CTHg3CR2zDqFJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 04:35:59 +1100 (AEDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2020 09:35:16 -0800
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2020 09:35:54 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,406,1574150400"; d="scan'208";a="225023575"
+X-IronPort-AV: E=Sophos;i="5.70,406,1574150400"; d="scan'208";a="404218446"
 Received: from linux.intel.com ([10.54.29.200])
- by fmsmga007.fm.intel.com with ESMTP; 05 Feb 2020 09:35:14 -0800
+ by orsmga005.jf.intel.com with ESMTP; 05 Feb 2020 09:35:54 -0800
 Received: from [10.252.5.149] (abudanko-mobl.ccr.corp.intel.com [10.252.5.149])
- by linux.intel.com (Postfix) with ESMTP id 8909D5803E3;
- Wed,  5 Feb 2020 09:35:07 -0800 (PST)
-Subject: [PATCH v6 07/10] powerpc/perf: open access for CAP_PERFMON privileged
+ by linux.intel.com (Postfix) with ESMTP id 919B05802BC;
+ Wed,  5 Feb 2020 09:35:46 -0800 (PST)
+Subject: [PATCH v6 08/10] parisc/perf: open access for CAP_PERFMON privileged
  process
 From: Alexey Budankov <alexey.budankov@linux.intel.com>
 To: James Morris <jmorris@namei.org>, Serge Hallyn <serge@hallyn.com>,
@@ -43,8 +43,8 @@ To: James Morris <jmorris@namei.org>, Serge Hallyn <serge@hallyn.com>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
 References: <576a6141-36d4-14c0-b395-8d195892b916@linux.intel.com>
 Organization: Intel Corp.
-Message-ID: <9b151c8e-8845-3254-9016-71cfc3041a01@linux.intel.com>
-Date: Wed, 5 Feb 2020 20:35:06 +0300
+Message-ID: <15e3133b-3090-f7e4-f12d-f47c60f8c93d@linux.intel.com>
+Date: Wed, 5 Feb 2020 20:35:45 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.2
 MIME-Version: 1.0
@@ -99,31 +99,22 @@ capability.
 
 Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
 ---
- arch/powerpc/perf/imc-pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/kernel/perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index cb50a9e1fd2d..e837717492e4 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -898,7 +898,7 @@ static int thread_imc_event_init(struct perf_event *event)
- 	if (event->attr.type != event->pmu->type)
- 		return -ENOENT;
+diff --git a/arch/parisc/kernel/perf.c b/arch/parisc/kernel/perf.c
+index 676683641d00..c4208d027794 100644
+--- a/arch/parisc/kernel/perf.c
++++ b/arch/parisc/kernel/perf.c
+@@ -300,7 +300,7 @@ static ssize_t perf_write(struct file *file, const char __user *buf,
+ 	else
+ 		return -EFAULT;
  
 -	if (!capable(CAP_SYS_ADMIN))
 +	if (!perfmon_capable())
  		return -EACCES;
  
- 	/* Sampling not supported */
-@@ -1307,7 +1307,7 @@ static int trace_imc_event_init(struct perf_event *event)
- 	if (event->attr.type != event->pmu->type)
- 		return -ENOENT;
- 
--	if (!capable(CAP_SYS_ADMIN))
-+	if (!perfmon_capable())
- 		return -EACCES;
- 
- 	/* Return if this is a couting event */
+ 	if (count != sizeof(uint32_t))
 -- 
 2.20.1
 
