@@ -2,80 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A752153322
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 15:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535F1153352
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 15:47:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CPJ60bd1zDqCs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 01:36:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CPXk1T78zDqRY
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 01:47:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=ndfont@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dY3pxJvI; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=NHjQg4s/; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CPFS3BLMzDqCp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 01:33:46 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id h9so2057853otj.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Feb 2020 06:33:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=a2Q+FJJ7ymzq1vpGgV7nlcxJJEeDcXgTcSuun2ahR3E=;
- b=dY3pxJvID6PLcV83rCPo28gm7GHN2YwlG9xrPqmyMSuFgvc3NLlLykZMCsM8jGbpLJ
- 2nUSXqHjCfPticf1Ouuch3siGfCW9d2R1hftHLXQrirh8PW4V1MAGhy+XiV3orr5hy5e
- STSNinpP5wR3wE3otHFW1enNLMrXOv3jGHFReBD0xq0zRXMw3m6UO8BqgirsvOy8ajfn
- JzmhY11rg74Z8Fq/PChhoYF/W5WJyfumAyudYtHKtKr0dsBpXueicdoaQlSboii4z7Lv
- xqJOrooZqbc8kMTVwR8YMKdba8dvf/GialehxZAajunNc1cyG1Nab6FKV0VHy+dZ+MV8
- XM7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=a2Q+FJJ7ymzq1vpGgV7nlcxJJEeDcXgTcSuun2ahR3E=;
- b=VGnrVhWSLLSawloDZjkHJq6DJStcKCVDLiJF0IoIH1DwzgJ/kKMH7+a0vuO+/dy4qi
- tZ6laegNOlItFvamqwU3tCFnGS6p4AzoMV0Q7q/ocrD75HwRYL/98r3iVRKLVfhdMi3u
- Zyn93WVmcgHEQ8qMx9dei5h04v610C/Zdnufkisbd9csQyXU9wOKFZUJG0Xs3uzUiGFF
- DyYFdjfOOpLzzbAtNcy9MQZc0IwKf2H3Or17r8kQR/PQNEhg0mB6vZsdLqLZGyVznHxb
- f4tmMw0OSy7qvp4KGDyey2x8JlmUameS150KngPFGUGkRxe9SIkLxxz1UjyDEw9mEY6b
- RXYg==
-X-Gm-Message-State: APjAAAXFRN71A3MdLKwgF0mwlXHYgrInTwXKFFXr1jm8pBtVpmoIRbLA
- zzVxJsTKmlwzJVZBcmbtZw==
-X-Google-Smtp-Source: APXvYqzxVnLjQYctWfjtUnn4bSqM/ku6JsnRwW3/SfU1UZn46nnAsfDbo0KLkuaDg+9BpOjdzSqFag==
-X-Received: by 2002:a05:6830:155a:: with SMTP id
- l26mr26380657otp.339.1580913223228; 
- Wed, 05 Feb 2020 06:33:43 -0800 (PST)
-Received: from [172.31.9.147] (ausvpn.amd.com. [165.204.77.11])
- by smtp.gmail.com with ESMTPSA id j45sm8895622ota.59.2020.02.05.06.33.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Feb 2020 06:33:42 -0800 (PST)
-Subject: Re: [PATCH] powerpc/drmem: cache LMBs in xarray to accelerate lookup
-To: Scott Cheloha <cheloha@linux.ibm.com>, Nathan Lynch <nathanl@linux.ibm.com>
-References: <20200128221113.17158-1-cheloha@linux.ibm.com>
- <87pnf3i188.fsf@linux.ibm.com>
- <20200129181013.lz6q5lpntnhwclqi@rascal.austin.ibm.com>
- <4dfb2f93-7af8-8c5f-854c-22afead18a8c@gmail.com>
- <20200203201346.deqkxwgfmkifeb5s@rascal.austin.ibm.com>
-From: "Fontenot, Nathan" <ndfont@gmail.com>
-Message-ID: <081c4f0e-5d7a-93c1-2075-608790f8e35f@gmail.com>
-Date: Wed, 5 Feb 2020 08:33:40 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
-MIME-Version: 1.0
-In-Reply-To: <20200203201346.deqkxwgfmkifeb5s@rascal.austin.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CPVY309PzDq5y
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 01:45:08 +1100 (AEDT)
+Received: from localhost (unknown [137.135.114.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 122192082E;
+ Wed,  5 Feb 2020 14:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1580913906;
+ bh=iLEBPIJdnBR8ezKbALWPJNjYnmUhdF1Uco/Ebv/bItI=;
+ h=Date:From:To:To:To:Cc:Cc:Subject:In-Reply-To:References:From;
+ b=NHjQg4s/BD+/AWxpTlxBNj04+hCbmZOjDS96ve7fxZbYnxIJ8+MaNdmE8NAFxlCah
+ JvPoRIjE/DN19yox9/HX1h30+ShyCwl/zJt5Veqo7ZtyUK6vrhtGpILlS6/VA2AdGu
+ LGm5lpsSjKl406TpN5iPihAGBjBTvLcUVnr3wEBU=
+Date: Wed, 05 Feb 2020 14:45:05 +0000
+From: Sasha Levin <sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+To: Gustavo Luiz Duarte <gustavold@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 1/3] powerpc/tm: Clear the current thread's MSR[TS]
+ after treclaim
+In-Reply-To: <20200203160906.24482-1-gustavold@linux.ibm.com>
+References: <20200203160906.24482-1-gustavold@linux.ibm.com>
+Message-Id: <20200205144506.122192082E@mail.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,101 +55,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Cc: , mikey@neuling.org, stable@vger.kernel.org, gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/3/2020 2:13 PM, Scott Cheloha wrote:
-> On Thu, Jan 30, 2020 at 10:09:32AM -0600, Fontenot, Nathan wrote:
->> On 1/29/2020 12:10 PM, Scott Cheloha wrote:
->>> On Tue, Jan 28, 2020 at 05:56:55PM -0600, Nathan Lynch wrote:
->>>> Scott Cheloha <cheloha@linux.ibm.com> writes:
->>>>> LMB lookup is currently an O(n) linear search.  This scales poorly when
->>>>> there are many LMBs.
->>>>>
->>>>> If we cache each LMB by both its base address and its DRC index
->>>>> in an xarray we can cut lookups to O(log n), greatly accelerating
->>>>> drmem initialization and memory hotplug.
->>>>>
->>>>> This patch introduces two xarrays of of LMBs and fills them during
->>>>> drmem initialization.  The patch also adds two interfaces for LMB
->>>>> lookup.
->>>>
->>>> Good but can you replace the array of LMBs altogether
->>>> (drmem_info->lmbs)? xarray allows iteration over the members if needed.
->>>
->>> I don't think we can without potentially changing the current behavior.
->>>
->>> The current behavior in dlpar_memory_{add,remove}_by_ic() is to advance
->>> linearly through the array from the LMB with the matching DRC index.
->>>
->>> Iteration through the xarray via xa_for_each_start() will return LMBs
->>> indexed with monotonically increasing DRC indices.> 
->>> Are they equivalent?  Or can we have an LMB with a smaller DRC index
->>> appear at a greater offset in the array?
->>>
->>> If the following condition is possible:
->>>
->>> 	drmem_info->lmbs[i].drc_index > drmem_info->lmbs[j].drc_index
->>>
->>> where i < j, then we have a possible behavior change because
->>> xa_for_each_start() may not return a contiguous array slice.  It might
->>> "leap backwards" in the array.  Or it might skip over a chunk of LMBs.
->>>
->>
->> The LMB array should have each LMB in monotonically increasing DRC Index
->> value. Note that this is set up based on the DT property but I don't recall
->> ever seeing the DT specify LMBs out of order or not being contiguous.
-> 
-> Is that ordering guaranteed by the PAPR or some other spec or is that
-> just a convention?
+Hi,
 
-From what I remember the PAPR does not specify that DRC indexes are guaranteed
-to be contiguous. In past discussions with pHyp developers I had been told that
-they always generate contiguous DRC index values but without a specification in
-the PAPR that could always break.
+[This is an automated email]
 
--Nathan
+This commit has been processed because it contains a "Fixes:" tag,
+fixing commit: 2b0a576d15e0 ("powerpc: Add new transactional memory state to the signal context").
 
-> 
-> Code like drmem_update_dt_v1() makes me very nervous:
-> 
-> static int drmem_update_dt_v1(struct device_node *memory,
->                               struct property *prop)
-> {
->         struct property *new_prop;
->         struct of_drconf_cell_v1 *dr_cell;
->         struct drmem_lmb *lmb;
->         u32 *p;
-> 
->         new_prop = clone_property(prop, prop->length);
->         if (!new_prop)
->                 return -1;
-> 
->         p = new_prop->value;
->         *p++ = cpu_to_be32(drmem_info->n_lmbs);
-> 
->         dr_cell = (struct of_drconf_cell_v1 *)p;
-> 
->         for_each_drmem_lmb(lmb) {
->                 dr_cell->base_addr = cpu_to_be64(lmb->base_addr);
->                 dr_cell->drc_index = cpu_to_be32(lmb->drc_index);
->                 dr_cell->aa_index = cpu_to_be32(lmb->aa_index);
->                 dr_cell->flags = cpu_to_be32(drmem_lmb_flags(lmb));
-> 
->                 dr_cell++;
->         }
-> 
->         of_update_property(memory, new_prop);
->         return 0;
-> }
-> 
-> If for whatever reason the firmware has a DRC that isn't monotonically
-> increasing and we update a firmware property at the wrong offset I have
-> no idea what would happen.
-> 
-> With the array we preserve the order.  Without it we might violate
-> some assumption the firmware has made.
-> 
+The bot has tested the following trees: v5.5.1, v5.4.17, v4.19.101, v4.14.169, v4.9.212, v4.4.212.
+
+v5.5.1: Build OK!
+v5.4.17: Build OK!
+v4.19.101: Build OK!
+v4.14.169: Failed to apply! Possible dependencies:
+    1c200e63d055 ("powerpc/tm: Fix endianness flip on trap")
+    92fb8690bd04 ("powerpc/tm: P9 disable transactionally suspended sigcontexts")
+
+v4.9.212: Failed to apply! Possible dependencies:
+    1c200e63d055 ("powerpc/tm: Fix endianness flip on trap")
+    92fb8690bd04 ("powerpc/tm: P9 disable transactionally suspended sigcontexts")
+
+v4.4.212: Failed to apply! Possible dependencies:
+    1c200e63d055 ("powerpc/tm: Fix endianness flip on trap")
+    92fb8690bd04 ("powerpc/tm: P9 disable transactionally suspended sigcontexts")
+    a7d623d4d053 ("powerpc: Move part of giveup_vsx into c")
+    b86fd2bd0302 ("powerpc: Simplify TM restore checks")
+    d11994314b2b ("powerpc: signals: Stop using current in signal code")
+    d96f234f47af ("powerpc: Avoid load hit store in setup_sigcontext()")
+    e1c0d66fcb17 ("powerpc: Set used_(vsr|vr|spe) in sigreturn path when MSR bits are active")
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks,
+Sasha
