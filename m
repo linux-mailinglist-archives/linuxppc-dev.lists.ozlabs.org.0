@@ -2,46 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5AF15253A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 04:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A43152519
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 04:06:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48C6MH39w9zDqB4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 14:22:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48C60x1GvczDqM6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2020 14:06:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48C6FT713dzDqMX
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2020 14:17:49 +1100 (AEDT)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id A41588CE0A3BFBCBC63E;
- Wed,  5 Feb 2020 10:56:41 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Wed, 5 Feb 2020
- 10:56:32 +0800
-From: Jason Yan <yanaijie@huawei.com>
-To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
- <oss@buserror.net>
-Subject: [PATCH v2 6/6] powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to
- kaslr-booke.rst and add 64bit part
-Date: Wed, 5 Feb 2020 10:55:27 +0800
-Message-ID: <20200205025527.28640-7-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20200205025527.28640-1-yanaijie@huawei.com>
-References: <20200205025527.28640-1-yanaijie@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48C5yq43XgzDqL5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2020 14:05:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=oLjjl/Qm; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48C5yp0hsYz9sSR;
+ Wed,  5 Feb 2020 14:05:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1580871907;
+ bh=Dy2HNszoS5jMHuHyexeNZ1i6v2XpVUmuydKw/9Caj58=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oLjjl/QmMaQUGkaI425lp8ZqbybG1H7xgmO+WmWq3t6CGe3Ydfi2omMvBob16Z5TS
+ LHkGOmvtvcpZoOVFbp1xrUN8gFyM+NV2mLZMiM0QNEI7mXLXmjvRfPJAaikuMqME9U
+ DdqyIDLQ8fMvvU9O3fXj+2ZNog4M9YaBI1kKj0vVSxuvesokyfqnXtxONTr0BTRBPw
+ GW6r4NuLz+BlK//+r3+ZzGcMec3ZhTxzZS+gLGPQpEtFPtWSi10F20kXho2mhO2xk1
+ C2dHxfOWKKQ1nfwjw5I8ncgxAzNir+zHOoAFGWZtbmPWBsUWAIawAKTavRpdoKHRah
+ /1o2zj3OuuW7Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
+Subject: Re: [PATCH 2/5] mm/memremap_pages: Introduce memremap_compat_align()
+In-Reply-To: <158041476763.3889308.13149849631980018039.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <158041475480.3889308.655103391935006598.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158041476763.3889308.13149849631980018039.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Wed, 05 Feb 2020 14:05:02 +1100
+Message-ID: <875zgl3fa9.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,89 +58,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason Yan <yanaijie@huawei.com>, linux-kernel@vger.kernel.org,
- zhaohongjiang@huawei.com
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Jeff Moyer <jmoyer@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, vishal.l.verma@intel.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now we support both 32 and 64 bit KASLR for fsl booke. Add document for
-64 bit part and rename kaslr-booke32.rst to kaslr-booke.rst.
+Dan Williams <dan.j.williams@intel.com> writes:
+> The "sub-section memory hotplug" facility allows memremap_pages() users
+> like libnvdimm to compensate for hardware platforms like x86 that have a
+> section size larger than their hardware memory mapping granularity.  The
+> compensation that sub-section support affords is being tolerant of
+> physical memory resources shifting by units smaller (64MiB on x86) than
+> the memory-hotplug section size (128 MiB). Where the platform
+> physical-memory mapping granularity is limited by the number and
+> capability of address-decode-registers in the memory controller.
+>
+> While the sub-section support allows memremap_pages() to operate on
+> sub-section (2MiB) granularity, the Power architecture may still
+> require 16MiB alignment on "!radix_enabled()" platforms.
+>
+> In order for libnvdimm to be able to detect and manage this per-arch
+> limitation, introduce memremap_compat_align() as a common minimum
+> alignment across all driver-facing memory-mapping interfaces, and let
+> Power override it to 16MiB in the "!radix_enabled()" case.
+>
+> The assumption / requirement for 16MiB to be a viable
+> memremap_compat_align() value is that Power does not have platforms
+> where its equivalent of address-decode-registers never hardware remaps a
+> persistent memory resource on smaller than 16MiB boundaries.
+>
+> Based on an initial patch by Aneesh.
+>
+> Link: http://lore.kernel.org/r/CAPcyv4gBGNP95APYaBcsocEa50tQj9b5h__83vgngjq3ouGX_Q@mail.gmail.com
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Reported-by: Jeff Moyer <jmoyer@redhat.com>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  arch/powerpc/include/asm/io.h |   10 ++++++++++
+>  drivers/nvdimm/pfn_devs.c     |    2 +-
+>  include/linux/io.h            |   23 +++++++++++++++++++++++
+>  include/linux/mmzone.h        |    1 +
+>  4 files changed, 35 insertions(+), 1 deletion(-)
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Cc: Scott Wood <oss@buserror.net>
-Cc: Diana Craciun <diana.craciun@nxp.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
----
- .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 ++++++++++++++++---
- 1 file changed, 31 insertions(+), 4 deletions(-)
- rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} (59%)
+The powerpc change here looks fine to me.
 
-diff --git a/Documentation/powerpc/kaslr-booke32.rst b/Documentation/powerpc/kaslr-booke.rst
-similarity index 59%
-rename from Documentation/powerpc/kaslr-booke32.rst
-rename to Documentation/powerpc/kaslr-booke.rst
-index 8b259fdfdf03..42121fed8249 100644
---- a/Documentation/powerpc/kaslr-booke32.rst
-+++ b/Documentation/powerpc/kaslr-booke.rst
-@@ -1,15 +1,18 @@
- .. SPDX-License-Identifier: GPL-2.0
- 
--===========================
--KASLR for Freescale BookE32
--===========================
-+=========================
-+KASLR for Freescale BookE
-+=========================
- 
- The word KASLR stands for Kernel Address Space Layout Randomization.
- 
- This document tries to explain the implementation of the KASLR for
--Freescale BookE32. KASLR is a security feature that deters exploit
-+Freescale BookE. KASLR is a security feature that deters exploit
- attempts relying on knowledge of the location of kernel internals.
- 
-+KASLR for Freescale BookE32
-+-------------------------
-+
- Since CONFIG_RELOCATABLE has already supported, what we need to do is
- map or copy kernel to a proper place and relocate. Freescale Book-E
- parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
-@@ -38,5 +41,29 @@ bit of the entropy to decide the index of the 64M zone. Then we chose a
- 
-                               kernstart_virt_addr
- 
-+
-+KASLR for Freescale BookE64
-+---------------------------
-+
-+The implementation for Freescale BookE64 is similar as BookE32. One
-+difference is that Freescale BookE64 set up a TLB mapping of 1G during
-+booting. Another difference is that ppc64 needs the kernel to be
-+64K-aligned. So we can randomize the kernel in this 1G mapping and make
-+it 64K-aligned. This can save some code to creat another TLB map at early
-+boot. The disadvantage is that we only have about 1G/64K = 16384 slots to
-+put the kernel in::
-+
-+    KERNELBASE
-+
-+          64K                     |--> kernel <--|
-+           |                      |              |
-+        +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
-+        |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
-+        +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
-+        |                         |                        1G
-+        |----->   offset    <-----|
-+
-+                              kernstart_virt_addr
-+
- To enable KASLR, set CONFIG_RANDOMIZE_BASE = y. If KASLR is enable and you
- want to disable it at runtime, add "nokaslr" to the kernel cmdline.
--- 
-2.17.2
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
+cheers
+
+> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+> index a63ec938636d..0fa2dc483008 100644
+> --- a/arch/powerpc/include/asm/io.h
+> +++ b/arch/powerpc/include/asm/io.h
+> @@ -734,6 +734,16 @@ extern void __iomem * __ioremap_at(phys_addr_t pa, void *ea,
+>  				   unsigned long size, pgprot_t prot);
+>  extern void __iounmap_at(void *ea, unsigned long size);
+>  
+> +#ifdef CONFIG_SPARSEMEM
+> +static inline unsigned long memremap_compat_align(void)
+> +{
+> +	if (radix_enabled())
+> +		return SUBSECTION_SIZE;
+> +	return (1UL << mmu_psize_defs[mmu_linear_psize].shift);
+> +}
+> +#define memremap_compat_align memremap_compat_align
+> +#endif
+> +
+>  /*
+>   * When CONFIG_PPC_INDIRECT_PIO is set, we use the generic iomap implementation
+>   * which needs some additional definitions here. They basically allow PIO
