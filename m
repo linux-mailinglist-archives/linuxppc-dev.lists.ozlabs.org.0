@@ -2,151 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8000153DD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 05:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A881153DD8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 05:26:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ClhG3FH3zDqV5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 15:24:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ClkJ37HMzDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 15:26:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=ZSLzilzi; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ClfT2DZfzDqSp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 15:23:10 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id q8so2364552pfh.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Feb 2020 20:23:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=NhHfw27OM6QtaNDnF1wz5s2GUJ41VvIqPjI87pRWRn8=;
- b=ZSLzilziAZinzscO803GzyR6U1uk9cJmpc49PIBev5O4LFTestoNFC0YAinjHRXMqt
- Bif4/DyTY7/uZxfdkQdAxvUedkFEFBhge/7uhvWWVJwQXOCb/AdDOPQroV1jgB4G39NB
- Ng+vaIv7amoXenwCSNOYPixZL5S8GsLZLwGVJMGtNjAtTw2O/5Rg+MIOuqxDffyraH0i
- 7Jx75Mrlm6vxr5nKFFjtJsIV23KfcBQXumWgVbCVyodCMGxrXWSDYglOdMtZeRd3sQhC
- NteTu47ly+hbFFDiY0hcFv3rR872prP7XwSuNOtgflPtX/bYj5rJ24t+3BL7XFR+tice
- DP0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=NhHfw27OM6QtaNDnF1wz5s2GUJ41VvIqPjI87pRWRn8=;
- b=j6uVy8ODdexlnAJe6KfoPU8a0HUo9uhUI0tXCs9P5OTpPf+EGkZfrdknba3sNj7MJ6
- c+SmS56Kqx4ft1PWCvYO9SdE5565mU/YX6FWHGTg8aq7Qlkefc3l8uiRe6ruw02c/LSs
- XB+4IMHLEdYEb7Ztrc9cknlPf8CTMG2egDAzN0a8zUjQDty2OrWDYsGGWZpcH09cc8O/
- mhG6ASJm4Qnohj3Gbqh/Y4M5G6aaJYsEoSTk0d7rpszvVmlhfukp9Y1ePmhSeTTCxu0B
- rnf5BEW2ZLKZqFXoK0YIr7WtXKP7aQqDL0+WPJ5ZwLZ4v8cQrVIohtfaSw5/lC55xdJH
- tKYw==
-X-Gm-Message-State: APjAAAXnZpfDOHsIS5k+kXFwIwWsy5QQtSg6lDseiu4F2gAy5ChIP2I2
- haFINBe/iIQuodhvuckT2jxTzA==
-X-Google-Smtp-Source: APXvYqw40Ukbz+EFLpMpIh8ooPVV06BVuRvgVs0eonFt7DAOLTdTLBF5adh5rsCFLAac5wDsy7Qb6g==
-X-Received: by 2002:a63:5f8e:: with SMTP id t136mr1454088pgb.411.1580962987678; 
- Wed, 05 Feb 2020 20:23:07 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id x6sm1095846pfi.83.2020.02.05.20.23.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Feb 2020 20:23:07 -0800 (PST)
-Subject: Re: [PATCH 1/1] vfio-pci/nvlink2: Allow fallback to ibm,mmio-atsd[0]
-To: Sam Bobroff <sbobroff@linux.ibm.com>, kvm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Alex Williamson <alex.williamson@redhat.com>
-References: <426f75e09ac1a6879a6d51f592bf683c698b4bda.1580959044.git.sbobroff@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <84147d70-3409-e216-495d-fc54366b92a6@ozlabs.ru>
-Date: Thu, 6 Feb 2020 15:23:03 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Clfz0RlLzDqT6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 15:23:38 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0164JPe9145257
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 5 Feb 2020 23:23:37 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xyhn50w3t-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Feb 2020 23:23:36 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Thu, 6 Feb 2020 04:23:34 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 6 Feb 2020 04:23:33 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0164NWL632964734
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Feb 2020 04:23:32 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 47219A405B;
+ Thu,  6 Feb 2020 04:23:32 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1BD4A404D;
+ Thu,  6 Feb 2020 04:23:31 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Feb 2020 04:23:31 +0000 (GMT)
+Received: from osmium (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 780D5A00EE;
+ Thu,  6 Feb 2020 15:23:27 +1100 (AEDT)
+Date: Thu, 6 Feb 2020 15:23:29 +1100
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH 2/6] powerpc/eeh: Remove eeh_add_device_tree_late()
+References: <20200203083521.16549-1-oohall@gmail.com>
+ <20200203083521.16549-3-oohall@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <426f75e09ac1a6879a6d51f592bf683c698b4bda.1580959044.git.sbobroff@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="/Uq4LBwYP4y1W6pO"
+Content-Disposition: inline
+In-Reply-To: <20200203083521.16549-3-oohall@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20020604-0020-0000-0000-000003A76E7F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20020604-0021-0000-0000-000021FF3BEF
+Message-Id: <20200206042328.GE15629@osmium>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-05_06:2020-02-04,
+ 2020-02-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 bulkscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002060031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -158,67 +96,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--/Uq4LBwYP4y1W6pO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 06/02/2020 14:17, Sam Bobroff wrote:
-> Older versions of skiboot only provide a single value in the device	
-> tree property "ibm,mmio-atsd", even when multiple Address Translation
-> Shoot Down (ATSD) registers are present. This prevents NVLink2 devices
-> (other than the first) from being used with vfio-pci because vfio-pci
-> expects to be able to assign a dedicated ATSD register to each NVLink2
-> device.
-> 
-> However, ATSD registers can be shared among devices. This change
-> allows vfio-pci to fall back to sharing the register at index 0 if
-> necessary.
-> 
-> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
+On Mon, Feb 03, 2020 at 07:35:17PM +1100, Oliver O'Halloran wrote:
+> On pseries and PowerNV pcibios_bus_add_device() calls eeh_add_device_late=
+()
+> so there's no need to do a separate tree traversal to bind the eeh_dev and
+> pci_dev together setting up the PHB at boot. As a result we can remove
+> eeh_add_device_tree_late().
+>=20
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+
+=2E.. with pcibios_bus_add_device() being called from
+pci_bus_add_devices(), in this case.
+
+Looks good.
+
+Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
+
 > ---
->  drivers/vfio/pci/vfio_pci_nvlink2.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_nvlink2.c b/drivers/vfio/pci/vfio_pci_nvlink2.c
-> index f2983f0f84be..851ba673882b 100644
-> --- a/drivers/vfio/pci/vfio_pci_nvlink2.c
-> +++ b/drivers/vfio/pci/vfio_pci_nvlink2.c
-> @@ -420,8 +420,17 @@ int vfio_pci_ibm_npu2_init(struct vfio_pci_device *vdev)
->  
->  	if (of_property_read_u64_index(hose->dn, "ibm,mmio-atsd", nvlink_index,
->  			&mmio_atsd)) {
-> -		dev_warn(&vdev->pdev->dev, "No available ATSD found\n");
-> -		mmio_atsd = 0;
-> +		dev_warn(&vdev->pdev->dev,
-> +			 "No ibm,mmio-atsd[%d] found: trying ibm,mmio-atsd[0]\n",
-> +			 nvlink_index);
-
-
-We do not really need this warning (nvlink_index doesn't matter that
-much, we can work out from the device tree what happened), warnings
-below are enough (if you really want, you can print nvlink_index there).
-
-Either way,
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-
-> +		if (of_property_read_u64_index(hose->dn, "ibm,mmio-atsd", 0,
-> +				&mmio_atsd)) {
-> +			dev_warn(&vdev->pdev->dev, "No available ATSD found\n");
-> +			mmio_atsd = 0;
-> +		} else {
-> +			dev_warn(&vdev->pdev->dev,
-> +				 "Using fallback ibm,mmio-atsd[0] for ATSD.\n");
-> +		}
+>  arch/powerpc/include/asm/eeh.h    |  3 ---
+>  arch/powerpc/kernel/eeh.c         | 25 -------------------------
+>  arch/powerpc/kernel/of_platform.c |  3 ---
+>  arch/powerpc/kernel/pci-common.c  |  3 ---
+>  4 files changed, 34 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/ee=
+h.h
+> index 5a34907..5d10781 100644
+> --- a/arch/powerpc/include/asm/eeh.h
+> +++ b/arch/powerpc/include/asm/eeh.h
+> @@ -304,7 +304,6 @@ void eeh_addr_cache_init(void);
+>  void eeh_add_device_early(struct pci_dn *);
+>  void eeh_add_device_tree_early(struct pci_dn *);
+>  void eeh_add_device_late(struct pci_dev *);
+> -void eeh_add_device_tree_late(struct pci_bus *);
+>  void eeh_remove_device(struct pci_dev *);
+>  int eeh_unfreeze_pe(struct eeh_pe *pe);
+>  int eeh_pe_reset_and_recover(struct eeh_pe *pe);
+> @@ -365,8 +364,6 @@ static inline void eeh_add_device_tree_early(struct p=
+ci_dn *pdn) { }
+> =20
+>  static inline void eeh_add_device_late(struct pci_dev *dev) { }
+> =20
+> -static inline void eeh_add_device_tree_late(struct pci_bus *bus) { }
+> -
+>  static inline void eeh_remove_device(struct pci_dev *dev) { }
+> =20
+>  #define EEH_POSSIBLE_ERROR(val, type) (0)
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index 0878912..9cb3370 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1214,31 +1214,6 @@ void eeh_add_device_late(struct pci_dev *dev)
+>  }
+> =20
+>  /**
+> - * eeh_add_device_tree_late - Perform EEH initialization for the indicat=
+ed PCI bus
+> - * @bus: PCI bus
+> - *
+> - * This routine must be used to perform EEH initialization for PCI
+> - * devices which are attached to the indicated PCI bus. The PCI bus
+> - * is added after system boot through hotplug or dlpar.
+> - */
+> -void eeh_add_device_tree_late(struct pci_bus *bus)
+> -{
+> -	struct pci_dev *dev;
+> -
+> -	if (eeh_has_flag(EEH_FORCE_DISABLED))
+> -		return;
+> -	list_for_each_entry(dev, &bus->devices, bus_list) {
+> -		eeh_add_device_late(dev);
+> -		if (dev->hdr_type =3D=3D PCI_HEADER_TYPE_BRIDGE) {
+> -			struct pci_bus *subbus =3D dev->subordinate;
+> -			if (subbus)
+> -				eeh_add_device_tree_late(subbus);
+> -		}
+> -	}
+> -}
+> -EXPORT_SYMBOL_GPL(eeh_add_device_tree_late);
+> -
+> -/**
+>   * eeh_remove_device - Undo EEH setup for the indicated pci device
+>   * @dev: pci device to be removed
+>   *
+> diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_p=
+latform.c
+> index cb68800..64edac81 100644
+> --- a/arch/powerpc/kernel/of_platform.c
+> +++ b/arch/powerpc/kernel/of_platform.c
+> @@ -80,9 +80,6 @@ static int of_pci_phb_probe(struct platform_device *dev)
+>  	 */
+>  	pcibios_claim_one_bus(phb->bus);
+> =20
+> -	/* Finish EEH setup */
+> -	eeh_add_device_tree_late(phb->bus);
+> -
+>  	/* Add probed PCI devices to the device model */
+>  	pci_bus_add_devices(phb->bus);
+> =20
+> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-c=
+ommon.c
+> index 3d2b1cf..8983afa 100644
+> --- a/arch/powerpc/kernel/pci-common.c
+> +++ b/arch/powerpc/kernel/pci-common.c
+> @@ -1399,9 +1399,6 @@ void pcibios_finish_adding_to_bus(struct pci_bus *b=
+us)
+>  			pci_assign_unassigned_bus_resources(bus);
 >  	}
->  
->  	if (of_property_read_u64(npu_node, "ibm,device-tgt-addr", &tgt)) {
-> 
+> =20
+> -	/* Fixup EEH */
+> -	eeh_add_device_tree_late(bus);
+> -
+>  	/* Add new devices to global lists.  Register in proc, sysfs. */
+>  	pci_bus_add_devices(bus);
+>  }
+> --=20
+> 2.9.5
+>=20
 
--- 
-Alexey
+--/Uq4LBwYP4y1W6pO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl47lLkACgkQMX8w6AQl
+/iJmhQf/ZaNUaz83zqvpZje1a+sGL8OPWvkVqQn4GEpTtwsCArsCymSSoTA4E332
+UFo+Zz2wclvavic31vor+uonkOkcU58/lUcah3CwZltWpP34JYBs19TNsEVz67wo
+eckxcUAjvWM6/QLbDBesTTN7STkPDPSEFr+81212YOcvgvhKmnOiDbTnCr2PCOlB
+uFH7llzAwEOs4gTrKaY+3QLsk92sm9ZDDes80HiIPaZ9o/MN5SR4/nqH2bivxCM5
+O0QiRGl/bayM3bQaM2Iu7B/MMJCqaVUUwV6DjsGn4pGB9ZAgbksRXmZjSKXy6GB6
+m2VeAiJVjrR8W5dPsGFMmDWunTCQ4Q==
+=cHjk
+-----END PGP SIGNATURE-----
+
+--/Uq4LBwYP4y1W6pO--
+
