@@ -2,60 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADDC154B4E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 19:39:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3910154C17
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 20:23:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48D6fq6g0fzDqb0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 05:39:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48D7dZ6Cv8zDqbv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 06:23:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=eA4qP6F2; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48D6dH2G0qzDqWm
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 05:38:26 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2020 10:38:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,410,1574150400"; d="scan'208";a="279752683"
-Received: from linux.intel.com ([10.54.29.200])
- by FMSMGA003.fm.intel.com with ESMTP; 06 Feb 2020 10:38:22 -0800
-Received: from [10.251.88.4] (abudanko-mobl.ccr.corp.intel.com [10.251.88.4])
- by linux.intel.com (Postfix) with ESMTP id D2C645803E3;
- Thu,  6 Feb 2020 10:38:15 -0800 (PST)
-Subject: Re: [PATCH v6 01/10] capabilities: introduce CAP_PERFMON to kernel
- and user space
-To: Stephen Smalley <sds@tycho.nsa.gov>, James Morris <jmorris@namei.org>,
- Serge Hallyn <serge@hallyn.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
- Alexei Starovoitov <ast@kernel.org>, Will Deacon <will@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <576a6141-36d4-14c0-b395-8d195892b916@linux.intel.com>
- <a4c5da70-b6d1-b133-9b64-34e164834b03@linux.intel.com>
- <5be0f67c-17e2-7861-37f3-a0f8a82be8f0@tycho.nsa.gov>
- <1bcb4cb1-98c4-cc1a-b8e3-fd8a0e1e606f@linux.intel.com>
- <06cdca0e-65f2-b58d-a84e-5a1907aa9eb5@tycho.nsa.gov>
-From: Alexey Budankov <alexey.budankov@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <e5d8dc64-6573-21f5-80dd-64cfbf72e13f@linux.intel.com>
-Date: Thu, 6 Feb 2020 21:38:14 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
-MIME-Version: 1.0
-In-Reply-To: <06cdca0e-65f2-b58d-a84e-5a1907aa9eb5@tycho.nsa.gov>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48D7bY2FPqzDqYM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 06:21:58 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48D7bQ5yPCz9tx2j;
+ Thu,  6 Feb 2020 20:21:54 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=eA4qP6F2; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id u5YvdLrNcwVZ; Thu,  6 Feb 2020 20:21:54 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48D7bQ4jTfz9tx2C;
+ Thu,  6 Feb 2020 20:21:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1581016914; bh=VG0VhbYQuAfDWPMKE2lgKw3iWBAVfeVCbcPDNU4BlEI=;
+ h=From:Subject:To:Cc:Date:From;
+ b=eA4qP6F2wWlut4SdtEbtcfqFej9EqeeBWdsc72/wVjvWZcKaCmQse844duitNqbUq
+ imPPpXQSb1F9yqThuSQAGXz2jRlKuUgIO+wiukY4NQQop6OyFhXvrm7LbgeryvhSSl
+ 38HKVqhZB/ORZQKZyk4VFlELXDU5waQ+5mGEfj8M=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CEBC38B8A5;
+ Thu,  6 Feb 2020 20:21:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id M2OH8G-5PC74; Thu,  6 Feb 2020 20:21:54 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 92D238B8A4;
+ Thu,  6 Feb 2020 20:21:54 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 2B7EA652B0; Thu,  6 Feb 2020 19:21:54 +0000 (UTC)
+Message-Id: <4ad03047ac61bfbdad3edb92542dedc807fc3cf4.1581011735.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 1/2] powerpc/8xx: Merge 8M hugepage slice and basepage slice
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ aneesh.kumar@linux.ibm.com
+Date: Thu,  6 Feb 2020 19:21:54 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,87 +73,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andi Kleen <ak@linux.intel.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- Igor Lubashev <ilubashe@akamai.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Stephane Eranian <eranian@google.com>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, oprofile-list@lists.sf.net,
- Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 8xx, slices are used because hugepages (512k or 8M) and small
+pages (4k or 16k) cannot share the same PGD entry. However, as 8M
+entirely covers two PGD entries (One PGD entry covers 4M), there
+will implicitely be no conflict between 8M pages and any other size.
+So 8M is compatible with the basepage size as well.
 
-On 06.02.2020 21:30, Stephen Smalley wrote:
-> On 2/6/20 1:26 PM, Alexey Budankov wrote:
->>
->> On 06.02.2020 21:23, Stephen Smalley wrote:
->>> On 2/5/20 12:30 PM, Alexey Budankov wrote:
->>>>
->>>> Introduce CAP_PERFMON capability designed to secure system performance
->>>> monitoring and observability operations so that CAP_PERFMON would assist
->>>> CAP_SYS_ADMIN capability in its governing role for performance monitoring
->>>> and observability subsystems.
->>>>
->>>> CAP_PERFMON hardens system security and integrity during performance
->>>> monitoring and observability operations by decreasing attack surface that
->>>> is available to a CAP_SYS_ADMIN privileged process [2]. Providing the access
->>>> to system performance monitoring and observability operations under CAP_PERFMON
->>>> capability singly, without the rest of CAP_SYS_ADMIN credentials, excludes
->>>> chances to misuse the credentials and makes the operation more secure.
->>>> Thus, CAP_PERFMON implements the principal of least privilege for performance
->>>> monitoring and observability operations (POSIX IEEE 1003.1e: 2.2.2.39 principle
->>>> of least privilege: A security design principle that states that a process
->>>> or program be granted only those privileges (e.g., capabilities) necessary
->>>> to accomplish its legitimate function, and only for the time that such
->>>> privileges are actually required)
->>>>
->>>> CAP_PERFMON meets the demand to secure system performance monitoring and
->>>> observability operations for adoption in security sensitive, restricted,
->>>> multiuser production environments (e.g. HPC clusters, cloud and virtual compute
->>>> environments), where root or CAP_SYS_ADMIN credentials are not available to
->>>> mass users of a system, and securely unblocks accessibility of system performance monitoring and observability operations beyond root and CAP_SYS_ADMIN use cases.
->>>>
->>>> CAP_PERFMON takes over CAP_SYS_ADMIN credentials related to system performance
->>>> monitoring and observability operations and balances amount of CAP_SYS_ADMIN
->>>> credentials following the recommendations in the capabilities man page [1]
->>>> for CAP_SYS_ADMIN: "Note: this capability is overloaded; see Notes to kernel
->>>> developers, below." For backward compatibility reasons access to system
->>>> performance monitoring and observability subsystems of the kernel remains
->>>> open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN capability
->>>> usage for secure system performance monitoring and observability operations
->>>> is discouraged with respect to the designed CAP_PERFMON capability.
->>>>
->>>> Although the software running under CAP_PERFMON can not ensure avoidance
->>>> of related hardware issues, the software can still mitigate these issues
->>>> following the official hardware issues mitigation procedure [2]. The bugs
->>>> in the software itself can be fixed following the standard kernel development
->>>> process [3] to maintain and harden security of system performance monitoring
->>>> and observability operations.
->>>>
->>>> [1] http://man7.org/linux/man-pages/man7/capabilities.7.html
->>>> [2] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
->>>> [3] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
->>>>
->>>> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
->>>
->>> This will require a small update to the selinux-testsuite to correctly reflect the new capability requirements, but that's easy enough.
->>
->> Is the suite a part of the kernel sources or something else?
-> 
-> It is external,
-> https://github.com/SELinuxProject/selinux-testsuite
-> 
-> I wasn't suggesting that your patch be blocked on updating the testsuite, just noting that it will need to be done.
+Remove the struct slice_mask mask_8m from mm_context_t and make
+vma_mmu_pagesize() rely on vma_kernel_pagesize() as the base
+slice can now host several sizes.
 
-Ok. Thanks!
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 7 ++-----
+ arch/powerpc/mm/hugetlbpage.c                | 3 ++-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-~Alexey
-
+diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+index 76af5b0cb16e..54f7f3362edb 100644
+--- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+@@ -215,9 +215,8 @@ typedef struct {
+ 	unsigned char low_slices_psize[SLICE_ARRAY_SIZE];
+ 	unsigned char high_slices_psize[0];
+ 	unsigned long slb_addr_limit;
+-	struct slice_mask mask_base_psize; /* 4k or 16k */
++	struct slice_mask mask_base_psize; /* 4k or 16k or 8M */
+ 	struct slice_mask mask_512k;
+-	struct slice_mask mask_8m;
+ #endif
+ 	void *pte_frag;
+ } mm_context_t;
+@@ -257,10 +256,8 @@ static inline struct slice_mask *slice_mask_for_size(mm_context_t *ctx, int psiz
+ {
+ 	if (psize == MMU_PAGE_512K)
+ 		return &ctx->mask_512k;
+-	if (psize == MMU_PAGE_8M)
+-		return &ctx->mask_8m;
+ 
+-	BUG_ON(psize != mmu_virtual_psize);
++	BUG_ON(psize != mmu_virtual_psize && psize != MMU_PAGE_8M);
+ 
+ 	return &ctx->mask_base_psize;
+ }
+diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+index edf511c2a30a..0b4ab741bf09 100644
+--- a/arch/powerpc/mm/hugetlbpage.c
++++ b/arch/powerpc/mm/hugetlbpage.c
+@@ -551,7 +551,8 @@ unsigned long hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+ unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
+ {
+ 	/* With radix we don't use slice, so derive it from vma*/
+-	if (IS_ENABLED(CONFIG_PPC_MM_SLICES) && !radix_enabled()) {
++	if (IS_ENABLED(CONFIG_PPC_MM_SLICES) && !IS_ENABLED(CONFIG_PPC_8xx) &&
++	    !radix_enabled()) {
+ 		unsigned int psize = get_slice_psize(vma->vm_mm, vma->vm_start);
+ 
+ 		return 1UL << mmu_psize_to_shift(psize);
+-- 
+2.25.0
 
