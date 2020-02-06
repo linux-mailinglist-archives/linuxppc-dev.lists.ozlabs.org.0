@@ -2,57 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93645153DEA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 05:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDFD153E05
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 06:24:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Clyl40BCzDqWt
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 15:37:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Cn0r48XszDqYL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 16:24:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ClwR2WhszDqD4
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 15:35:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Whkwu/LR; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48ClwN1nkBz9sRp; Thu,  6 Feb 2020 15:35:16 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48ClwM2XjNz9s29;
- Thu,  6 Feb 2020 15:35:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1580963716;
- bh=59zFNalJmp/WvnEScCF3ArwVDsj2RfvIy0ivPyUHgHA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Whkwu/LRfqatjhKrdPr0f6xAsscgI2GAcwnucCINarqZf1GbbRhy7k46Mc95LWSxm
- qrw0UUlfp3K2Y5GLbLZ5L6O2QFWD7qzytCKVyZlR99x5BsGuSsWxCI9EU07mIe+fQb
- bpSF1e9l2lrORXLJK8P2vkZRljA3gDojwjw/eKNOTAuvcg6gBadUo2Tj+HPeTgRAob
- FvYXHJbaAlsaWTzMt2Bo8615d2IFgJ8jDochbh0K3L2rvqFAY6nExHRirdN9p2hfiK
- s7nrhSFtwublQSzPKXjUpdIVC2rn+cSC8CoTDJ4i41+Ptpg2R3Em4zZ6IoRxHwp7bN
- rB/awUKLetxHQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- Jakub Kicinski <kuba@kernel.org>
-Subject: Re: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate
- ioctl for device
-In-Reply-To: <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
-References: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
- <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
-Date: Thu, 06 Feb 2020 15:35:10 +1100
-Message-ID: <87tv441gg1.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CmzC3KszzDqWy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 16:22:45 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0165K63w074382
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Feb 2020 00:22:43 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2xyhmhg13x-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2020 00:22:42 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Thu, 6 Feb 2020 05:22:41 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 6 Feb 2020 05:22:38 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0165McEg46006622
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Feb 2020 05:22:38 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F2C8EA405C;
+ Thu,  6 Feb 2020 05:22:37 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 570D4A405B;
+ Thu,  6 Feb 2020 05:22:37 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Feb 2020 05:22:37 +0000 (GMT)
+Received: from osmium (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3461BA00EE;
+ Thu,  6 Feb 2020 16:22:33 +1100 (AEDT)
+Date: Thu, 6 Feb 2020 16:22:35 +1100
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH 3/6] powerpc/eeh: Do early EEH init only when required
+References: <20200203083521.16549-1-oohall@gmail.com>
+ <20200203083521.16549-4-oohall@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="fXStkuK2IQBfcDe+"
+Content-Disposition: inline
+In-Reply-To: <20200203083521.16549-4-oohall@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20020605-0016-0000-0000-000002E4214F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20020605-0017-0000-0000-000033470511
+Message-Id: <20200206052234.GF15629@osmium>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-05_06:2020-02-04,
+ 2020-02-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ spamscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 mlxscore=0
+ clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002060040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,113 +96,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christoph Hellwig <hch@lst.de>
+Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian Zigotzky <chzigotzky@xenosoft.de> writes:
-> Kernel 5.5 PowerPC is also affected.
 
-I don't know what you mean by that. What sha are you talking about?
+--fXStkuK2IQBfcDe+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I have a system with avahi running and everything's fine.
+On Mon, Feb 03, 2020 at 07:35:18PM +1100, Oliver O'Halloran wrote:
+> The pci hotplug helper (pci_hp_add_devices()) calls
+> eeh_add_device_tree_early() to scan the device-tree for new PCI devices a=
+nd
+> do the early EEH probe before the device is scanned. This early probe is a
+> no-op in a lot of cases because:
+>=20
+> a) The early init is only required to satisfy a PAPR requirement that EEH
+>    be configured before we start doing config accesses. On PowerNV it is
+>    a no-op.
+>=20
+> b) It's a no-op for devices that have already had their eeh_dev
+>    initialised.
+>=20
+> There are four callers of pci_hp_add_devices():
+>=20
+> 1. arch/powerpc/kernel/eeh_driver.c
+> 	Here the hotplug helper is called when re-scanning pci_devs that
+> 	were removed during an EEH recovery pass. The EEH stat for each
+> 	removed device (the eeh_dev) is retained across a recovery pass
+> 	so the early init is a no-op in this case.
+>=20
+> 2. drivers/pci/hotplug/pnv_php.c
+> 	This is also a no-op since the PowerNV hotplug driver is, suprisingly,
+> 	PowerNV specific.
+>=20
+> 3. drivers/pci/hotplug/rpaphp_core.c
+> 4. drivers/pci/hotplug/rpaphp_pci.c
+> 	In these two cases new devices have been hotplugged and FW has
+> 	provided new DT nodes for each. These are the only two cases where
+> 	the EEH we might have new PCI device nodes in the DT so these are
+> 	the only two cases where the early EEH probe needs to be done.
+>=20
+> We can move the calls to eeh_add_device_tree_early() to the locations whe=
+re
+> it's needed and remove it from the generic path. This is preparation for
+> making the early EEH probe pseries specific.
+>=20
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
-  # grep use- /etc/avahi/avahi-daemon.conf=20
-  use-ipv4=3Dyes
-  use-ipv6=3Dyes
-=20=20
-  # systemctl status -l --no-pager avahi-daemon
-  =E2=97=8F avahi-daemon.service - Avahi mDNS/DNS-SD Stack
-     Loaded: loaded (/lib/systemd/system/avahi-daemon.service; enabled; ven=
-dor preset: enabled)
-     Active: active (running) since Thu 2020-02-06 14:55:34 AEDT; 38min ago
-   Main PID: 1884 (avahi-daemon)
-     Status: "avahi-daemon 0.7 starting up."
-     CGroup: /system.slice/avahi-daemon.service
-             =E2=94=9C=E2=94=801884 avahi-daemon: running [mpe-ubuntu-le.lo=
-cal]
-             =E2=94=94=E2=94=801888 avahi-daemon: chroot helper
-=20=20
-  Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new address=
- record for fe80::5054:ff:fe66:2a19 on eth0.*.
-  Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new address=
- record for 10.61.141.81 on eth0.IPv4.
-  Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new address=
- record for ::1 on lo.*.
-  Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new address=
- record for 127.0.0.1 on lo.IPv4.
-  Feb 06 14:55:34 mpe-ubuntu-le systemd[1]: Started Avahi mDNS/DNS-SD Stack.
-  Feb 06 14:55:35 mpe-ubuntu-le avahi-daemon[1884]: Server startup complete=
-. Host name is mpe-ubuntu-le.local. Local service cookie is 3972418141.
-  Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Leaving mDNS multicast =
-group on interface eth0.IPv6 with address fe80::5054:ff:fe66:2a19.
-  Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Joining mDNS multicast =
-group on interface eth0.IPv6 with address fd69:d75f:b8b5:61:5054:ff:fe66:2a=
-19.
-  Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Registering new address=
- record for fd69:d75f:b8b5:61:5054:ff:fe66:2a19 on eth0.*.
-  Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Withdrawing address rec=
-ord for fe80::5054:ff:fe66:2a19 on eth0.
-=20=20
-  # uname -r
-  5.5.0-gcc-8.2.0
+Makes sense to me.
+Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
 
+> ---
+>  arch/powerpc/kernel/pci-hotplug.c | 2 --
+>  drivers/pci/hotplug/rpaphp_core.c | 2 ++
+>  drivers/pci/hotplug/rpaphp_pci.c  | 4 +++-
+>  3 files changed, 5 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-=
+hotplug.c
+> index d6a67f8..bf83f76 100644
+> --- a/arch/powerpc/kernel/pci-hotplug.c
+> +++ b/arch/powerpc/kernel/pci-hotplug.c
+> @@ -112,8 +112,6 @@ void pci_hp_add_devices(struct pci_bus *bus)
+>  	struct pci_controller *phb;
+>  	struct device_node *dn =3D pci_bus_to_OF_node(bus);
+> =20
+> -	eeh_add_device_tree_early(PCI_DN(dn));
+> -
+>  	phb =3D pci_bus_to_host(bus);
+> =20
+>  	mode =3D PCI_PROBE_NORMAL;
+> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpap=
+hp_core.c
+> index e408e40..9c1e43e 100644
+> --- a/drivers/pci/hotplug/rpaphp_core.c
+> +++ b/drivers/pci/hotplug/rpaphp_core.c
+> @@ -494,6 +494,8 @@ static int enable_slot(struct hotplug_slot *hotplug_s=
+lot)
+>  		return retval;
+> =20
+>  	if (state =3D=3D PRESENT) {
+> +		eeh_add_device_tree_early(PCI_DN(slot->dn));
+> +
+>  		pci_lock_rescan_remove();
+>  		pci_hp_add_devices(slot->bus);
+>  		pci_unlock_rescan_remove();
+> diff --git a/drivers/pci/hotplug/rpaphp_pci.c b/drivers/pci/hotplug/rpaph=
+p_pci.c
+> index beca61b..61ebbd8 100644
+> --- a/drivers/pci/hotplug/rpaphp_pci.c
+> +++ b/drivers/pci/hotplug/rpaphp_pci.c
+> @@ -95,8 +95,10 @@ int rpaphp_enable_slot(struct slot *slot)
+>  			return -EINVAL;
+>  		}
+> =20
+> -		if (list_empty(&bus->devices))
+> +		if (list_empty(&bus->devices)) {
+> +			eeh_add_device_tree_early(PCI_DN(slot->dn));
+>  			pci_hp_add_devices(bus);
+> +		}
+> =20
+>  		if (!list_empty(&bus->devices)) {
+>  			slot->state =3D CONFIGURED;
+> --=20
+> 2.9.5
+>=20
 
-The key question is what ioctl is it complaining about. You should be
-able to find that via strace.
+--fXStkuK2IQBfcDe+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-cheers
+-----BEGIN PGP SIGNATURE-----
 
-> Christian Zigotzky wrote:
->
-> Hi All,
->
-> The issue with the avahi-daemon still exist in the latest Git kernel. It'=
-s a PowerPC issue. I compiled the latest Git kernel on a PC today and there=
- aren't any issues with the avahi daemon. Another Power Mac user reported t=
-he same issue on his G5. I tested with the AmigaOne X1000 and X5000 in the =
-last days.
->
-> I bisected today but I think the result isn't correct because it found th=
-e other problem with ordering of PCSCSI definition in esp_rev enum. I don't=
- know how to bisect if there is another issue at the same time. Maybe "git =
-bisect skip"?
->
-> 2086faae3c55a652cfbd369e18ecdb703aacc493 is the first bad commit
-> commit 2086faae3c55a652cfbd369e18ecdb703aacc493
-> Author: Kars de Jong <jongk@linux-m68k.org>
-> Date:   Tue Nov 19 21:20:20 2019 +0100
->
->     scsi: esp_scsi: Correct ordering of PCSCSI definition in esp_rev enum
->
->     The order of the definitions in the esp_rev enum is important. The va=
-lues
->     are used in comparisons for chip features.
->
->     Add a comment to the enum explaining this.
->
->     Also, the actual values for the enum fields are irrelevant, so remove=
- the
->     explicit values (suggested by Geert Uytterhoeven). This makes adding =
-a new
->     field in the middle of the enum easier.
->
->     Finally, move the PCSCSI definition to the right place in the enum. I=
-n its
->     previous location, at the end of the enum, the wrong values are writt=
-en to
->     the CONFIG3 register when used with FAST-SCSI targets.
->
->     Link: https://lore.kernel.org/r/20191119202021.28720-2-jongk@linux-m6=
-8k.org
->     Signed-off-by: Kars de Jong <jongk@linux-m68k.org>
->     Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
->
-> :040000 040000 cdc128596e33fb60406b5de9b17b79623c187c1a 48ceab06439f95285=
-e8b30181e75f9a68c25fcb5 M    drivers
+iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl47opQACgkQMX8w6AQl
+/iJx4Qf/a/FAx6YyjFDkLI8F5/e8XR4oZlghX/FUqhs54MP5yQDXr6itTwqQCQuS
+jc9Euzxa6gCt1KQOM8k/8WTz1ueJqZiYEaxRQPT/lxcIl05wo/LFdcudREBDq8c3
+nsbEjdTt+FJ6ncVrZq+bjsTQaoH3VFFQmudHlQm+K3SzC2eMrQVdfikJSjZazdfI
+7lWIKGTiTS+fYeJDZDgxLEWLiJeddvIBZOrr9dAvLUG4DgASDQTYV67fhV4uHdFn
+aXlGFlwMrSQGTOjDLeH/4M1CHs1wG32YE+9i9l/FyAHILSI8kuaCZB8LFMpgRiAB
+Fgwqel17mI6P7Vx7A+MqXUjqr2cRVQ==
+=Owld
+-----END PGP SIGNATURE-----
+
+--fXStkuK2IQBfcDe+--
+
