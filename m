@@ -2,69 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BF2153E60
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 06:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8055153E6A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 06:56:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Cnf94fbszDqW4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 16:53:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Cnjx5ZrRzDqTv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 16:56:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=xqhYbXKD; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=S0F7eAPt; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CncZ2G4bzDqVc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 16:51:40 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id r27so4387949otc.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Feb 2020 21:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5g0ucY/9ZUFtix2XnQy2cuPMuPVQiShNOwSgn0I8OBU=;
- b=xqhYbXKDufyJWDOQlr2Ba/YbuGJTDJ2ziwxMsioPHK8lJUB4/CAxrEL+moRSD8vyrb
- P8EqSdqAMegqk31UKFdftPK5/+cmDLrCM6ly22OIyg6gsdd2R7ZLPjw9pcUJ/q5RR0G5
- fLmVfaMcawk1UE/23D6St4s/a6I9mTLo3F5jajstpw7oCE/fYrfhTRbXrLuPqW2SHJPy
- AJ5z5DEgvFpoMlwxgzPfG0OUuAZs64RZ1jdy1x38BTGcFFSZZlvzqoHwnS5WYlKlxHrT
- S4P0VJvg0zJv7zvW0pAdwx8kw9JZ9LQMIqF1abVjF4Dd0TKDl4DBYq5Lc7iYYQ8GUTiR
- SyXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=5g0ucY/9ZUFtix2XnQy2cuPMuPVQiShNOwSgn0I8OBU=;
- b=DS1PvmX1t36N80aKKJ9K1jCSj4cp4mvCjAFQsIjZ/5qyQS3FEluGT4/lN0PeiavhoI
- 1HI4yTxVfNSomuwrecLm05y4WDm1u+esIgeBFr956kb/Od3bWN0xaygLKtfN8JMWKwiJ
- qf/NWHV/foAJPUivK4V2C6MpAmicY7uV2MsEbEuhKpSQrX4Xomt/yt0s+SD0H+EK02j3
- z55h57aK15pTxPcyx0seADrxpJKxKdcOgALvdSKO6bpOQkCPTM6RrwjrIJiSXNGmXMcw
- wNOq4AjiGMnMPpkKH9aQQb+AjjbKl6jQm63uOfkY8yhV1LzGbaSBKylXGbtx4TunOtvy
- X9cQ==
-X-Gm-Message-State: APjAAAXDVy50Wki1gGsEMNZzmpkgRk9bCPr9RVmR6qpSjkKs8v2FQvuq
- AvlNP64Atha9YJHz33rPdxUowYaUxN6pTrAWwncANw==
-X-Google-Smtp-Source: APXvYqypAdFCvnslXe/NRqIbZavieNDLc3RQJ1uJD67YGnwibNCmUiqPR2pnxgssN+GhWMlzNTosjpJpU37+bWuZVfs=
-X-Received: by 2002:a9d:64d8:: with SMTP id n24mr27237824otl.71.1580968298443; 
- Wed, 05 Feb 2020 21:51:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Cnh46yW5zDqVc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 16:54:44 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48Cnh11K9LzB09b4;
+ Thu,  6 Feb 2020 06:54:41 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=S0F7eAPt; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id PeyJBm5d3ZjO; Thu,  6 Feb 2020 06:54:41 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48Cnh06jH1zB09b3;
+ Thu,  6 Feb 2020 06:54:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1580968480; bh=+f8zGT9Ebstem/Pxu4Cc5kGrF5RDE+p8c6MevcVDVRY=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=S0F7eAPt7dAILYlJsklcUf+6F62oSjTIx7JnglrKhz714+RhC1qH7YiuZIag86/SP
+ iOtkJ41PYMq7as/vgcVlvIC7B892qJ2prn5WkGVNA7Lrn6l0P75rW/jvDwBTaO5tcr
+ bjeXm4IrDa8ro+bGiE5QSFM5FtpGZAbMttDt3MeM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B002F8B787;
+ Thu,  6 Feb 2020 06:54:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id EalpXgNeYE9k; Thu,  6 Feb 2020 06:54:41 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0AEA38B776;
+ Thu,  6 Feb 2020 06:54:40 +0100 (CET)
+Subject: Re: [PATCH v6 01/11] asm-generic/pgtable: Adds generic functions to
+ track lockless pgtable walks
+To: Leonardo Bras <leonardo@linux.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Steven Price <steven.price@arm.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Balbir Singh <bsingharora@gmail.com>, Reza Arbab <arbab@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>
+References: <20200206030900.147032-1-leonardo@linux.ibm.com>
+ <20200206030900.147032-2-leonardo@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <f55e593c-27d5-df12-602f-ea217f62c5a1@c-s.fr>
+Date: Thu, 6 Feb 2020 06:54:39 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-References: <158041475480.3889308.655103391935006598.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158041476763.3889308.13149849631980018039.stgit@dwillia2-desk3.amr.corp.intel.com>
- <875zgl3fa9.fsf@mpe.ellerman.id.au>
-In-Reply-To: <875zgl3fa9.fsf@mpe.ellerman.id.au>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 5 Feb 2020 21:51:27 -0800
-Message-ID: <CAPcyv4jVHnJbPYp1gqDnuwtEgt1NNHDt72vby7hK5dP43C+s8Q@mail.gmail.com>
-Subject: Re: [PATCH 2/5] mm/memremap_pages: Introduce memremap_compat_align()
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200206030900.147032-2-leonardo@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,67 +90,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jeff Moyer <jmoyer@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 4, 2020 at 7:05 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Dan Williams <dan.j.williams@intel.com> writes:
-> > The "sub-section memory hotplug" facility allows memremap_pages() users
-> > like libnvdimm to compensate for hardware platforms like x86 that have a
-> > section size larger than their hardware memory mapping granularity.  The
-> > compensation that sub-section support affords is being tolerant of
-> > physical memory resources shifting by units smaller (64MiB on x86) than
-> > the memory-hotplug section size (128 MiB). Where the platform
-> > physical-memory mapping granularity is limited by the number and
-> > capability of address-decode-registers in the memory controller.
-> >
-> > While the sub-section support allows memremap_pages() to operate on
-> > sub-section (2MiB) granularity, the Power architecture may still
-> > require 16MiB alignment on "!radix_enabled()" platforms.
-> >
-> > In order for libnvdimm to be able to detect and manage this per-arch
-> > limitation, introduce memremap_compat_align() as a common minimum
-> > alignment across all driver-facing memory-mapping interfaces, and let
-> > Power override it to 16MiB in the "!radix_enabled()" case.
-> >
-> > The assumption / requirement for 16MiB to be a viable
-> > memremap_compat_align() value is that Power does not have platforms
-> > where its equivalent of address-decode-registers never hardware remaps a
-> > persistent memory resource on smaller than 16MiB boundaries.
-> >
-> > Based on an initial patch by Aneesh.
-> >
-> > Link: http://lore.kernel.org/r/CAPcyv4gBGNP95APYaBcsocEa50tQj9b5h__83vgngjq3ouGX_Q@mail.gmail.com
-> > Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > Cc: Paul Mackerras <paulus@samba.org>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  arch/powerpc/include/asm/io.h |   10 ++++++++++
-> >  drivers/nvdimm/pfn_devs.c     |    2 +-
-> >  include/linux/io.h            |   23 +++++++++++++++++++++++
-> >  include/linux/mmzone.h        |    1 +
-> >  4 files changed, 35 insertions(+), 1 deletion(-)
->
-> The powerpc change here looks fine to me.
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Thanks Michael, unfortunately the kbuild robot just woke up and said
-that mips does not like including mmzone.h from io.h. The
-entanglements look intractable.
 
-Is there a file I can stash a strong definition of
-memremap_compat_align(), maybe arch/powerpc/mm/mem.c? Then I can put a
-generic __weak definition in mm/memremap.c rather than play header
-file include games.
+Le 06/02/2020 à 04:08, Leonardo Bras a écrit :
+> It's necessary to track lockless pagetable walks, in order to avoid doing
+> THP splitting/collapsing during them.
+> 
+> The default solution is to disable irq before lockless pagetable walks and
+> enable it after it's finished.
+> 
+> On code, this means you can find local_irq_disable() and local_irq_enable()
+> around some pieces of code, usually without comments on why it is needed.
+> 
+> This patch proposes a set of generic functions to be called before starting
+> and after finishing a lockless pagetable walk. It is supposed to make clear
+> that a lockless pagetable walk happens there, and also carries information
+> on why the irq disable/enable is needed.
+> 
+> begin_lockless_pgtbl_walk()
+>          Insert before starting any lockless pgtable walk
+> end_lockless_pgtbl_walk()
+>          Insert after the end of any lockless pgtable walk
+>          (Mostly after the ptep is last used)
+> 
+> A memory barrier was also added just to make sure there is no speculative
+> read outside the interrupt disabled area. Other than that, it is not
+> supposed to have any change of behavior from current code.
+
+Is that speculative barrier necessary for all architectures ? Does it 
+impact performance ? Shouldn't this be another patch ?
+
+> 
+> It is planned to allow arch-specific versions, so that additional steps can
+> be added while keeping the code clean.
+> 
+> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+> ---
+>   include/asm-generic/pgtable.h | 51 +++++++++++++++++++++++++++++++++++
+>   1 file changed, 51 insertions(+)
+> 
+> diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
+> index e2e2bef07dd2..8d368d3c0974 100644
+> --- a/include/asm-generic/pgtable.h
+> +++ b/include/asm-generic/pgtable.h
+> @@ -1222,6 +1222,57 @@ static inline bool arch_has_pfn_modify_check(void)
+>   #endif
+>   #endif
+>   
+> +#ifndef __HAVE_ARCH_LOCKLESS_PGTBL_WALK_CONTROL
+> +/*
+> + * begin_lockless_pgtbl_walk: Must be inserted before a function call that does
+> + *   lockless pagetable walks, such as __find_linux_pte()
+> + */
+> +static inline
+> +unsigned long begin_lockless_pgtbl_walk(void)
+
+What about keeping the same syntax as local_irq_save(), something like:
+
+#define begin_lockless_pgtbl_walk(flags) \
+do {
+	local_irq_save(flags);
+	smp_mb();
+} while (0)
+
+> +{
+> +	unsigned long irq_mask;
+> +
+> +	/*
+> +	 * Interrupts must be disabled during the lockless page table walk.
+> +	 * That's because the deleting or splitting involves flushing TLBs,
+> +	 * which in turn issues interrupts, that will block when disabled.
+> +	 */
+> +	local_irq_save(irq_mask);
+> +
+> +	/*
+> +	 * This memory barrier pairs with any code that is either trying to
+> +	 * delete page tables, or split huge pages. Without this barrier,
+> +	 * the page tables could be read speculatively outside of interrupt
+> +	 * disabling.
+> +	 */
+> +	smp_mb();
+> +
+> +	return irq_mask;
+> +}
+> +
+> +/*
+> + * end_lockless_pgtbl_walk: Must be inserted after the last use of a pointer
+> + *   returned by a lockless pagetable walk, such as __find_linux_pte()
+> + */
+> +static inline void end_lockless_pgtbl_walk(unsigned long irq_mask)
+
+Same
+
+#define end_lockless_pgtbl_walk(flags) \
+do {
+	smp_mb();
+	local_irq_restore(flags);
+} while (0);
+
+> +{
+> +	/*
+> +	 * This memory barrier pairs with any code that is either trying to
+> +	 * delete page tables, or split huge pages. Without this barrier,
+> +	 * the page tables could be read speculatively outside of interrupt
+> +	 * disabling.
+> +	 */
+> +	smp_mb();
+> +
+> +	/*
+> +	 * Interrupts must be disabled during the lockless page table walk.
+> +	 * That's because the deleting or splitting involves flushing TLBs,
+> +	 * which in turn issues interrupts, that will block when disabled.
+> +	 */
+> +	local_irq_restore(irq_mask);
+> +}
+> +#endif
+> +
+>   /*
+>    * On some architectures it depends on the mm if the p4d/pud or pmd
+>    * layer of the page table hierarchy is folded or not.
+> 
+
+Christophe
