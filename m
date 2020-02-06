@@ -1,66 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9938D1540D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 10:05:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA950154093
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 09:43:35 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CsQq5fbfzDqc1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 19:43:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Csw107jgzDqRy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 20:05:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=wkjVDANm; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CsP91qdLzDqQT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 19:42:05 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48CsP44jN9z9vC0r;
- Thu,  6 Feb 2020 09:42:00 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=wkjVDANm; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 2lcOikkEyzC2; Thu,  6 Feb 2020 09:42:00 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48CsP43hxRz9vC0n;
- Thu,  6 Feb 2020 09:42:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1580978520; bh=89Y1BOmA6wd1Qv1aLetSGC2roM1Y6EfmkaNgZWi44Bs=;
- h=From:Subject:To:Cc:Date:From;
- b=wkjVDANm8pbO0N3AKTilK3eCwh8bumOVKS5vfWKUrOYOvLd6ZaUIcXBSVPjSmTBF5
- AxrjfEnc382MsgT0Ui6v/WgrJ5MrsZ8rI4UsEs44JCQQakGPkP1SYEk1kpDnL1SxOa
- dJewoePk7SdTIQO0dfgnZdaPFmr2x/li07lS00j4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FC0A8B863;
- Thu,  6 Feb 2020 09:42:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MqOjk89_hQPt; Thu,  6 Feb 2020 09:42:01 +0100 (CET)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0CA8F8B85F;
- Thu,  6 Feb 2020 09:42:01 +0100 (CET)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id BCF98652B7; Thu,  6 Feb 2020 08:42:00 +0000 (UTC)
-Message-Id: <9a404a13c871c4bd0ba9ede68f69a1225180dd7e.1580978385.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] selftests/vm: Fix map_hugetlb length used for testing read
- and write
-To: Michael Ellerman <mpe@ellerman.id.au>, Shuah Khan <shuah@kernel.org>
-Date: Thu,  6 Feb 2020 08:42:00 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Cst82S5bzDqY1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 20:03:43 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01690P5D095712
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Feb 2020 04:03:40 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xyhmn96tk-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2020 04:03:39 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.ibm.com>;
+ Thu, 6 Feb 2020 09:03:37 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 6 Feb 2020 09:03:35 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01693YE250987228
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Feb 2020 09:03:34 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 10BF011C05C;
+ Thu,  6 Feb 2020 09:03:34 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD10B11C052;
+ Thu,  6 Feb 2020 09:03:32 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.52.236])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Feb 2020 09:03:32 +0000 (GMT)
+Subject: Re: [PATCH v2 1/5] powerpc/powernv: Re-enable imc trace-mode in kernel
+To: Anju T Sudhakar <anju@linux.vnet.ibm.com>, mpe@ellerman.id.au
+References: <20200121101728.14858-1-anju@linux.vnet.ibm.com>
+ <20200121101728.14858-2-anju@linux.vnet.ibm.com>
+From: maddy <maddy@linux.ibm.com>
+Date: Thu, 6 Feb 2020 14:33:31 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <20200121101728.14858-2-anju@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 20020609-0020-0000-0000-000003A781F6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20020609-0021-0000-0000-000021FF5021
+Message-Id: <4d3acc0e-7eb9-c5fe-7a29-d3e5b984e2f6@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-05_06:2020-02-04,
+ 2020-02-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 mlxscore=0 phishscore=0 malwarescore=0 priorityscore=1501
+ mlxlogscore=999 suspectscore=0 bulkscore=0 adultscore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002060071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,73 +92,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: nasastry@in.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and
-page size in map_hugetlb") added the possibility to change the size
-of memory mapped for the test, but left the read and write test using
-the default value. This is unnoticed when mapping a length greater
-than the default one, but segfaults otherwise.
 
-Fix read_bytes() and write_bytes() by giving them the real length.
 
-Also fix the call to munmap().
+On 1/21/20 3:47 PM, Anju T Sudhakar wrote:
+> commit <249fad734a25> ""powerpc/perf: Disable trace_imc pmu"
+> disables IMC(In-Memory Collection) trace-mode in kernel, since frequent
+> mode switching between accumulation mode and trace mode via the spr LDBAR
+> in the hardware can trigger a checkstop(system crash).
+>
+> Patch to re-enable imc-trace mode in kernel.
+>
+> The following patch in this series will address the mode switching issue
+> by implementing a global lock, and will restrict the usage of
+> accumulation and trace-mode at a time.
 
-Fixes: fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and page size in map_hugetlb")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- tools/testing/selftests/vm/map_hugetlb.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Reviewed-by: MAdhavan Srinivasan <maddy@linux.ibm.com>
 
-diff --git a/tools/testing/selftests/vm/map_hugetlb.c b/tools/testing/selftests/vm/map_hugetlb.c
-index 5a2d7b8efc40..6af951900aa3 100644
---- a/tools/testing/selftests/vm/map_hugetlb.c
-+++ b/tools/testing/selftests/vm/map_hugetlb.c
-@@ -45,20 +45,20 @@ static void check_bytes(char *addr)
- 	printf("First hex is %x\n", *((unsigned int *)addr));
- }
- 
--static void write_bytes(char *addr)
-+static void write_bytes(char *addr, size_t length)
- {
- 	unsigned long i;
- 
--	for (i = 0; i < LENGTH; i++)
-+	for (i = 0; i < length; i++)
- 		*(addr + i) = (char)i;
- }
- 
--static int read_bytes(char *addr)
-+static int read_bytes(char *addr, size_t length)
- {
- 	unsigned long i;
- 
- 	check_bytes(addr);
--	for (i = 0; i < LENGTH; i++)
-+	for (i = 0; i < length; i++)
- 		if (*(addr + i) != (char)i) {
- 			printf("Mismatch at %lu\n", i);
- 			return 1;
-@@ -96,11 +96,11 @@ int main(int argc, char **argv)
- 
- 	printf("Returned address is %p\n", addr);
- 	check_bytes(addr);
--	write_bytes(addr);
--	ret = read_bytes(addr);
-+	write_bytes(addr, length);
-+	ret = read_bytes(addr, length);
- 
- 	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
--	if (munmap(addr, LENGTH)) {
-+	if (munmap(addr, length)) {
- 		perror("munmap");
- 		exit(1);
- 	}
--- 
-2.25.0
+>
+> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+> ---
+>   arch/powerpc/platforms/powernv/opal-imc.c | 9 +--------
+>   1 file changed, 1 insertion(+), 8 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+> index 000b350d4060..3b4518f4b643 100644
+> --- a/arch/powerpc/platforms/powernv/opal-imc.c
+> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
+> @@ -278,14 +278,7 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
+>   			domain = IMC_DOMAIN_THREAD;
+>   			break;
+>   		case IMC_TYPE_TRACE:
+> -			/*
+> -			 * FIXME. Using trace_imc events to monitor application
+> -			 * or KVM thread performance can cause a checkstop
+> -			 * (system crash).
+> -			 * Disable it for now.
+> -			 */
+> -			pr_info_once("IMC: disabling trace_imc PMU\n");
+> -			domain = -1;
+> +			domain = IMC_DOMAIN_TRACE;
+>   			break;
+>   		default:
+>   			pr_warn("IMC Unknown Device type \n");
 
