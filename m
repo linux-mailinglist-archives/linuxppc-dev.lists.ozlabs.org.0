@@ -2,86 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7021A1540DA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 10:07:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B562D1541D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 11:27:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Csy11jSmzDqWS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 20:07:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Cvkj5LV7zDqSv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 21:27:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Csvn5Wm9zDqDC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 20:05:09 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0168xJ6P053404
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Feb 2020 04:05:07 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xyhpytamg-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2020 04:05:06 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.ibm.com>;
- Thu, 6 Feb 2020 09:05:04 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 6 Feb 2020 09:05:03 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 016948IP35979648
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Feb 2020 09:04:08 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 04A0A11C04C;
- Thu,  6 Feb 2020 09:05:02 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5B00711C04A;
- Thu,  6 Feb 2020 09:05:00 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.52.236])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  6 Feb 2020 09:05:00 +0000 (GMT)
-Subject: Re: [PATCH v2 2/5] powerpc/perf: Implement a global lock to avoid
- races between trace, core and thread imc events.
-To: Anju T Sudhakar <anju@linux.vnet.ibm.com>, mpe@ellerman.id.au
-References: <20200121101728.14858-1-anju@linux.vnet.ibm.com>
- <20200121101728.14858-3-anju@linux.vnet.ibm.com>
-From: maddy <maddy@linux.ibm.com>
-Date: Thu, 6 Feb 2020 14:34:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Cvhp518XzDqSl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 21:25:40 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2020 02:25:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,409,1574150400"; d="scan'208";a="225219356"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga007.fm.intel.com with ESMTP; 06 Feb 2020 02:25:34 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1izeLl-0007ar-Pn; Thu, 06 Feb 2020 18:25:33 +0800
+Date: Thu, 06 Feb 2020 18:25:09 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 4399efc3f2f04ad8e6948461795de04ed1358402
+Message-ID: <5e3be985.JxbAUBPquWoSQDBp%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20200121101728.14858-3-anju@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20020609-4275-0000-0000-0000039E7604
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20020609-4276-0000-0000-000038B2A2A4
-Message-Id: <2c2c5173-6928-fb2d-d1bf-c72cd59567a8@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-05_06:2020-02-04,
- 2020-02-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- impostorscore=0 mlxscore=0 phishscore=0 suspectscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002060071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,347 +52,303 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nasastry@in.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://github.com/linuxppc/linux  fixes-test
+branch HEAD: 4399efc3f2f04ad8e6948461795de04ed1358402  selftests/powerpc: Don't rely on segfault to rerun the test
 
+elapsed time: 2768m
 
-On 1/21/20 3:47 PM, Anju T Sudhakar wrote:
-> IMC(In-memory Collection Counters) does performance monitoring in
-> two different modes, i.e accumulation mode(core-imc and thread-imc events),
-> and trace mode(trace-imc events). A cpu thread can either be in
-> accumulation-mode or trace-mode at a time and this is done via the LDBAR
-> register in POWER architecture. The current design does not address the
-> races between thread-imc and trace-imc events.
->
-> Patch implements a global id and lock to avoid the races between
-> core, trace and thread imc events. With this global id-lock
-> implementation, the system can either run core, thread or trace imc
-> events at a time. i.e. to run any core-imc events, thread/trace imc events
-> should not be enabled/monitored.
+configs tested: 280
+configs skipped: 5
 
-Changes looks fine to me.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+sparc                            allyesconfig
+um                                  defconfig
+xtensa                       common_defconfig
+sh                            titan_defconfig
+h8300                     edosk2674_defconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+i386                             allyesconfig
+microblaze                      mmu_defconfig
+sparc64                             defconfig
+m68k                       m5475evb_defconfig
+nios2                         3c120_defconfig
+nds32                               defconfig
+sh                          rsk7269_defconfig
+sparc64                          allmodconfig
+i386                              allnoconfig
+h8300                    h8300h-sim_defconfig
+sparc                               defconfig
+alpha                               defconfig
+parisc                              defconfig
+h8300                       h8s-sim_defconfig
+um                             i386_defconfig
+parisc                         b180_defconfig
+s390                             alldefconfig
+arc                                 defconfig
+parisc                            allnoconfig
+um                           x86_64_defconfig
+microblaze                    nommu_defconfig
+ia64                             allyesconfig
+mips                      fuloong2e_defconfig
+s390                                defconfig
+ia64                                defconfig
+m68k                             allmodconfig
+i386                             alldefconfig
+powerpc                           allnoconfig
+s390                          debug_defconfig
+riscv                             allnoconfig
+i386                                defconfig
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                          iss_defconfig
+csky                                defconfig
+nds32                             allnoconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      malta_kvm_defconfig
+parisc                            allyesonfig
+parisc                        c3000_defconfig
+x86_64               randconfig-a001-20200206
+x86_64               randconfig-a002-20200206
+x86_64               randconfig-a003-20200206
+i386                 randconfig-a001-20200206
+i386                 randconfig-a002-20200206
+i386                 randconfig-a003-20200206
+i386                 randconfig-a003-20200204
+i386                 randconfig-a002-20200204
+x86_64               randconfig-a003-20200204
+x86_64               randconfig-a002-20200204
+i386                 randconfig-a001-20200204
+x86_64               randconfig-a001-20200204
+x86_64               randconfig-a001-20200205
+x86_64               randconfig-a002-20200205
+x86_64               randconfig-a003-20200205
+i386                 randconfig-a001-20200205
+i386                 randconfig-a002-20200205
+i386                 randconfig-a003-20200205
+alpha                randconfig-a001-20200206
+m68k                 randconfig-a001-20200206
+mips                 randconfig-a001-20200206
+nds32                randconfig-a001-20200206
+parisc               randconfig-a001-20200206
+riscv                randconfig-a001-20200206
+alpha                randconfig-a001-20200204
+m68k                 randconfig-a001-20200204
+mips                 randconfig-a001-20200204
+nds32                randconfig-a001-20200204
+parisc               randconfig-a001-20200204
+riscv                randconfig-a001-20200204
+c6x                  randconfig-a001-20200206
+h8300                randconfig-a001-20200206
+microblaze           randconfig-a001-20200206
+nios2                randconfig-a001-20200206
+sparc64              randconfig-a001-20200206
+c6x                  randconfig-a001-20200205
+h8300                randconfig-a001-20200205
+microblaze           randconfig-a001-20200205
+nios2                randconfig-a001-20200205
+sparc64              randconfig-a001-20200205
+c6x                  randconfig-a001-20200204
+h8300                randconfig-a001-20200204
+microblaze           randconfig-a001-20200204
+nios2                randconfig-a001-20200204
+sparc64              randconfig-a001-20200204
+csky                 randconfig-a001-20200205
+openrisc             randconfig-a001-20200205
+s390                 randconfig-a001-20200205
+sh                   randconfig-a001-20200205
+xtensa               randconfig-a001-20200205
+csky                 randconfig-a001-20200206
+openrisc             randconfig-a001-20200206
+s390                 randconfig-a001-20200206
+sh                   randconfig-a001-20200206
+xtensa               randconfig-a001-20200206
+x86_64               randconfig-b001-20200206
+x86_64               randconfig-b002-20200206
+x86_64               randconfig-b003-20200206
+i386                 randconfig-b001-20200206
+i386                 randconfig-b002-20200206
+i386                 randconfig-b003-20200206
+x86_64               randconfig-b001-20200205
+x86_64               randconfig-b002-20200205
+x86_64               randconfig-b003-20200205
+i386                 randconfig-b001-20200205
+i386                 randconfig-b002-20200205
+i386                 randconfig-b003-20200205
+i386                 randconfig-b001-20200204
+i386                 randconfig-b002-20200204
+x86_64               randconfig-b002-20200204
+x86_64               randconfig-b001-20200204
+i386                 randconfig-b003-20200204
+x86_64               randconfig-b003-20200204
+x86_64               randconfig-c001-20200204
+x86_64               randconfig-c002-20200204
+x86_64               randconfig-c003-20200204
+i386                 randconfig-c001-20200204
+i386                 randconfig-c002-20200204
+i386                 randconfig-c003-20200204
+x86_64               randconfig-c001-20200205
+x86_64               randconfig-c002-20200205
+x86_64               randconfig-c003-20200205
+i386                 randconfig-c001-20200205
+i386                 randconfig-c002-20200205
+i386                 randconfig-c003-20200205
+x86_64               randconfig-d001-20200205
+x86_64               randconfig-d002-20200205
+x86_64               randconfig-d003-20200205
+i386                 randconfig-d001-20200205
+i386                 randconfig-d002-20200205
+i386                 randconfig-d003-20200205
+x86_64               randconfig-d001-20200206
+x86_64               randconfig-d002-20200206
+x86_64               randconfig-d003-20200206
+i386                 randconfig-d001-20200206
+i386                 randconfig-d002-20200206
+i386                 randconfig-d003-20200206
+i386                 randconfig-e003-20200205
+i386                 randconfig-e002-20200205
+x86_64               randconfig-e001-20200205
+x86_64               randconfig-e003-20200205
+i386                 randconfig-e001-20200205
+x86_64               randconfig-e002-20200205
+x86_64               randconfig-e001-20200206
+x86_64               randconfig-e002-20200206
+x86_64               randconfig-e003-20200206
+i386                 randconfig-e001-20200206
+i386                 randconfig-e002-20200206
+i386                 randconfig-e003-20200206
+x86_64               randconfig-e001-20200204
+x86_64               randconfig-e002-20200204
+x86_64               randconfig-e003-20200204
+i386                 randconfig-e001-20200204
+i386                 randconfig-e002-20200204
+i386                 randconfig-e003-20200204
+x86_64               randconfig-f001-20200206
+x86_64               randconfig-f002-20200206
+x86_64               randconfig-f003-20200206
+i386                 randconfig-f001-20200206
+i386                 randconfig-f002-20200206
+i386                 randconfig-f003-20200206
+x86_64               randconfig-f001-20200204
+x86_64               randconfig-f002-20200204
+x86_64               randconfig-f003-20200204
+i386                 randconfig-f001-20200204
+i386                 randconfig-f002-20200204
+i386                 randconfig-f003-20200204
+i386                 randconfig-f002-20200205
+i386                 randconfig-f003-20200205
+x86_64               randconfig-f002-20200205
+i386                 randconfig-f001-20200205
+x86_64               randconfig-f001-20200205
+x86_64               randconfig-f003-20200205
+x86_64               randconfig-g001-20200205
+x86_64               randconfig-g002-20200205
+x86_64               randconfig-g003-20200205
+i386                 randconfig-g001-20200205
+i386                 randconfig-g002-20200205
+i386                 randconfig-g003-20200205
+x86_64               randconfig-g001-20200206
+x86_64               randconfig-g002-20200206
+x86_64               randconfig-g003-20200206
+i386                 randconfig-g001-20200206
+i386                 randconfig-g002-20200206
+i386                 randconfig-g003-20200206
+x86_64               randconfig-g001-20200204
+x86_64               randconfig-g002-20200204
+x86_64               randconfig-g003-20200204
+i386                 randconfig-g001-20200204
+i386                 randconfig-g002-20200204
+i386                 randconfig-g003-20200204
+x86_64               randconfig-h001-20200206
+x86_64               randconfig-h002-20200206
+x86_64               randconfig-h003-20200206
+i386                 randconfig-h001-20200206
+i386                 randconfig-h002-20200206
+i386                 randconfig-h003-20200206
+x86_64               randconfig-h001-20200205
+x86_64               randconfig-h002-20200205
+x86_64               randconfig-h003-20200205
+i386                 randconfig-h001-20200205
+i386                 randconfig-h002-20200205
+i386                 randconfig-h003-20200205
+x86_64               randconfig-h001-20200204
+x86_64               randconfig-h002-20200204
+x86_64               randconfig-h003-20200204
+i386                 randconfig-h001-20200204
+i386                 randconfig-h002-20200204
+i386                 randconfig-h003-20200204
+arc                  randconfig-a001-20200204
+arm                  randconfig-a001-20200204
+arm64                randconfig-a001-20200204
+ia64                 randconfig-a001-20200204
+powerpc              randconfig-a001-20200204
+sparc                randconfig-a001-20200204
+arc                  randconfig-a001-20200206
+arm                  randconfig-a001-20200206
+arm64                randconfig-a001-20200206
+ia64                 randconfig-a001-20200206
+powerpc              randconfig-a001-20200206
+sparc                randconfig-a001-20200206
+arm                  randconfig-a001-20200205
+arm64                randconfig-a001-20200205
+ia64                 randconfig-a001-20200205
+powerpc              randconfig-a001-20200205
+riscv                            allmodconfig
+riscv                            allyesconfig
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
-> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/perf/imc-pmu.c | 177 +++++++++++++++++++++++++++++++-----
->   1 file changed, 153 insertions(+), 24 deletions(-)
->
-> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-> index cb50a9e1fd2d..2e220f199530 100644
-> --- a/arch/powerpc/perf/imc-pmu.c
-> +++ b/arch/powerpc/perf/imc-pmu.c
-> @@ -44,6 +44,16 @@ static DEFINE_PER_CPU(u64 *, trace_imc_mem);
->   static struct imc_pmu_ref *trace_imc_refc;
->   static int trace_imc_mem_size;
->
-> +/*
-> + * Global data structure used to avoid races between thread,
-> + * core and trace-imc
-> + */
-> +static struct imc_pmu_ref imc_global_refc = {
-> +	.lock = __MUTEX_INITIALIZER(imc_global_refc.lock),
-> +	.id = 0,
-> +	.refc = 0,
-> +};
-> +
->   static struct imc_pmu *imc_event_to_pmu(struct perf_event *event)
->   {
->   	return container_of(event->pmu, struct imc_pmu, pmu);
-> @@ -759,6 +769,20 @@ static void core_imc_counters_release(struct perf_event *event)
->   		ref->refc = 0;
->   	}
->   	mutex_unlock(&ref->lock);
-> +
-> +	mutex_lock(&imc_global_refc.lock);
-> +	if (imc_global_refc.id == IMC_DOMAIN_CORE) {
-> +		imc_global_refc.refc--;
-> +		/*
-> +		 * If no other thread is running any core-imc
-> +		 * event, set the global id to zero.
-> +		 */
-> +		if (imc_global_refc.refc <= 0) {
-> +			imc_global_refc.refc = 0;
-> +			imc_global_refc.id = 0;
-> +		}
-> +	}
-> +	mutex_unlock(&imc_global_refc.lock);
->   }
->
->   static int core_imc_event_init(struct perf_event *event)
-> @@ -779,6 +803,22 @@ static int core_imc_event_init(struct perf_event *event)
->   	if (event->cpu < 0)
->   		return -EINVAL;
->
-> +	/*
-> +	 * Take the global lock, and make sure
-> +	 * no other thread is running any trace OR thread imc event
-> +	 */
-> +	mutex_lock(&imc_global_refc.lock);
-> +	if (imc_global_refc.id == 0) {
-> +		imc_global_refc.id = IMC_DOMAIN_CORE;
-> +		imc_global_refc.refc++;
-> +	} else if (imc_global_refc.id == IMC_DOMAIN_CORE) {
-> +		imc_global_refc.refc++;
-> +	} else {
-> +		mutex_unlock(&imc_global_refc.lock);
-> +		return -EBUSY;
-> +	}
-> +	mutex_unlock(&imc_global_refc.lock);
-> +
->   	event->hw.idx = -1;
->   	pmu = imc_event_to_pmu(event);
->
-> @@ -877,7 +917,16 @@ static int ppc_thread_imc_cpu_online(unsigned int cpu)
->
->   static int ppc_thread_imc_cpu_offline(unsigned int cpu)
->   {
-> -	mtspr(SPRN_LDBAR, 0);
-> +	/*
-> +	 * Toggle the bit 0 of LDBAR.
-> +	 *
-> +	 * If bit 0 of LDBAR is unset, it will stop posting
-> +	 * the counetr data to memory.
-> +	 * For thread-imc, bit 0 of LDBAR will be set to 1 in the
-> +	 * event_add function. So toggle this bit here, to stop the updates
-> +	 * to memory in the cpu_offline path.
-> +	 */
-> +	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
->   	return 0;
->   }
->
-> @@ -889,6 +938,24 @@ static int thread_imc_cpu_init(void)
->   			  ppc_thread_imc_cpu_offline);
->   }
->
-> +static void thread_imc_counters_release(struct perf_event *event)
-> +{
-> +
-> +	mutex_lock(&imc_global_refc.lock);
-> +	if (imc_global_refc.id == IMC_DOMAIN_THREAD) {
-> +		imc_global_refc.refc--;
-> +		/*
-> +		 * If no other thread is running any thread-imc
-> +		 * event, set the global id to zero.
-> +		 */
-> +		if (imc_global_refc.refc <= 0) {
-> +			imc_global_refc.refc = 0;
-> +			imc_global_refc.id = 0;
-> +		}
-> +	}
-> +	mutex_unlock(&imc_global_refc.lock);
-> +}
-> +
->   static int thread_imc_event_init(struct perf_event *event)
->   {
->   	u32 config = event->attr.config;
-> @@ -905,6 +972,27 @@ static int thread_imc_event_init(struct perf_event *event)
->   	if (event->hw.sample_period)
->   		return -EINVAL;
->
-> +	mutex_lock(&imc_global_refc.lock);
-> +	/*
-> +	 * Check if any other thread is running
-> +	 * core-engine, if not set the global id to
-> +	 * thread-imc.
-> +	 */
-> +	if (imc_global_refc.id == 0) {
-> +		imc_global_refc.id = IMC_DOMAIN_THREAD;
-> +		imc_global_refc.refc++;
-> +	} else if (imc_global_refc.id == IMC_DOMAIN_THREAD) {
-> +		/*
-> +		 * Increase the ref count if the global id is
-> +		 * set to thread-imc.
-> +		 */
-> +		imc_global_refc.refc++;
-> +	} else {
-> +		mutex_unlock(&imc_global_refc.lock);
-> +		return -EBUSY;
-> +	}
-> +	mutex_unlock(&imc_global_refc.lock);
-> +
->   	event->hw.idx = -1;
->   	pmu = imc_event_to_pmu(event);
->
-> @@ -917,6 +1005,7 @@ static int thread_imc_event_init(struct perf_event *event)
->   		return -EINVAL;
->
->   	event->pmu->task_ctx_nr = perf_sw_context;
-> +	event->destroy = thread_imc_counters_release;
->   	return 0;
->   }
->
-> @@ -1063,10 +1152,12 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
->   	int core_id;
->   	struct imc_pmu_ref *ref;
->
-> -	mtspr(SPRN_LDBAR, 0);
-> -
->   	core_id = smp_processor_id() / threads_per_core;
->   	ref = &core_imc_refc[core_id];
-> +	if (!ref) {
-> +		pr_debug("imc: Failed to get event reference count\n");
-> +		return;
-> +	}
->
->   	mutex_lock(&ref->lock);
->   	ref->refc--;
-> @@ -1082,6 +1173,10 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
->   		ref->refc = 0;
->   	}
->   	mutex_unlock(&ref->lock);
-> +
-> +	/* Toggle bit 0 of LDBAR */
-> +	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
-> +
->   	/*
->   	 * Take a snapshot and calculate the delta and update
->   	 * the event counter values.
-> @@ -1133,7 +1228,8 @@ static int ppc_trace_imc_cpu_online(unsigned int cpu)
->
->   static int ppc_trace_imc_cpu_offline(unsigned int cpu)
->   {
-> -	mtspr(SPRN_LDBAR, 0);
-> +	/* Toggle bit 0 of LDBAR. */
-> +	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
->   	return 0;
->   }
->
-> @@ -1226,15 +1322,14 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
->   	local_mem = get_trace_imc_event_base_addr();
->   	ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) | TRACE_IMC_ENABLE;
->
-> -	if (core_imc_refc)
-> -		ref = &core_imc_refc[core_id];
-> +	/* trace-imc reference count */
-> +	if (trace_imc_refc)
-> +		ref = &trace_imc_refc[core_id];
->   	if (!ref) {
-> -		/* If core-imc is not enabled, use trace-imc reference count */
-> -		if (trace_imc_refc)
-> -			ref = &trace_imc_refc[core_id];
-> -		if (!ref)
-> -			return -EINVAL;
-> +		pr_debug("imc: Failed to get the event reference count\n");
-> +		return -EINVAL;
->   	}
-> +
->   	mtspr(SPRN_LDBAR, ldbar_value);
->   	mutex_lock(&ref->lock);
->   	if (ref->refc == 0) {
-> @@ -1242,13 +1337,11 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
->   				get_hard_smp_processor_id(smp_processor_id()))) {
->   			mutex_unlock(&ref->lock);
->   			pr_err("trace-imc: Unable to start the counters for core %d\n", core_id);
-> -			mtspr(SPRN_LDBAR, 0);
->   			return -EINVAL;
->   		}
->   	}
->   	++ref->refc;
->   	mutex_unlock(&ref->lock);
-> -
->   	return 0;
->   }
->
-> @@ -1274,16 +1367,13 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
->   	int core_id = smp_processor_id() / threads_per_core;
->   	struct imc_pmu_ref *ref = NULL;
->
-> -	if (core_imc_refc)
-> -		ref = &core_imc_refc[core_id];
-> +	if (trace_imc_refc)
-> +		ref = &trace_imc_refc[core_id];
->   	if (!ref) {
-> -		/* If core-imc is not enabled, use trace-imc reference count */
-> -		if (trace_imc_refc)
-> -			ref = &trace_imc_refc[core_id];
-> -		if (!ref)
-> -			return;
-> +		pr_debug("imc: Failed to get event reference count\n");
-> +		return;
->   	}
-> -	mtspr(SPRN_LDBAR, 0);
-> +
->   	mutex_lock(&ref->lock);
->   	ref->refc--;
->   	if (ref->refc == 0) {
-> @@ -1297,9 +1387,30 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
->   		ref->refc = 0;
->   	}
->   	mutex_unlock(&ref->lock);
-> +
-> +	/* Toggle bit 0 of LDBAR */
-> +	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
-> +
->   	trace_imc_event_stop(event, flags);
->   }
->
-> +static void trace_imc_counters_release(struct perf_event *event)
-> +{
-> +	mutex_lock(&imc_global_refc.lock);
-> +	if (imc_global_refc.id == IMC_DOMAIN_TRACE) {
-> +		imc_global_refc.refc--;
-> +		/*
-> +		 * If no other thread is running any trace-imc
-> +		 * event, set the global id to zero.
-> +		 */
-> +		if (imc_global_refc.refc <= 0) {
-> +			imc_global_refc.refc = 0;
-> +			imc_global_refc.id = 0;
-> +		}
-> +	}
-> +	mutex_unlock(&imc_global_refc.lock);
-> +}
-> +
->   static int trace_imc_event_init(struct perf_event *event)
->   {
->   	struct task_struct *target;
-> @@ -1314,10 +1425,28 @@ static int trace_imc_event_init(struct perf_event *event)
->   	if (event->attr.sample_period == 0)
->   		return -ENOENT;
->
-> +	/*
-> +	 * Take the global lock, and make sure
-> +	 * no other thread is running any core/thread imc
-> +	 * event
-> +	 */
-> +	mutex_lock(&imc_global_refc.lock);
-> +	if (imc_global_refc.id == 0) {
-> +		imc_global_refc.id = IMC_DOMAIN_TRACE;
-> +		imc_global_refc.refc++;
-> +	} else if (imc_global_refc.id == IMC_DOMAIN_TRACE) {
-> +		imc_global_refc.refc++;
-> +	} else {
-> +		mutex_unlock(&imc_global_refc.lock);
-> +		return -EBUSY;
-> +	}
-> +	mutex_unlock(&imc_global_refc.lock);
-> +
->   	event->hw.idx = -1;
->   	target = event->hw.target;
->
->   	event->pmu->task_ctx_nr = perf_hw_context;
-> +	event->destroy = trace_imc_counters_release;
->   	return 0;
->   }
->
-> @@ -1429,10 +1558,10 @@ static void cleanup_all_core_imc_memory(void)
->   static void thread_imc_ldbar_disable(void *dummy)
->   {
->   	/*
-> -	 * By Zeroing LDBAR, we disable thread-imc
-> -	 * updates.
-> +	 * By toggling 0th bit of LDBAR, we disable thread-imc
-> +	 * updates to memory.
->   	 */
-> -	mtspr(SPRN_LDBAR, 0);
-> +	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) ^ (1UL << 63)));
->   }
->
->   void thread_imc_disable(void)
-
+---
+0-DAY kernel test infrastructure                 Open Source Technology Center
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
