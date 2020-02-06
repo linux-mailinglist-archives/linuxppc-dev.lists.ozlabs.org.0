@@ -2,95 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D01F153DA5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 703C9153DA6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:39:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Ckfs4nBkzDqjW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 14:38:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CkhL1RNyzDqcv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 14:39:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CkNM0jwnzDqGN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 14:25:54 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0163EM4O118249; Wed, 5 Feb 2020 22:25:36 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xyphx1566-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Feb 2020 22:25:36 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0163LKY9016276;
- Wed, 5 Feb 2020 22:25:35 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xyphx155m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Feb 2020 22:25:35 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0163Blmv019116;
- Thu, 6 Feb 2020 03:25:34 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 2xykc9hw66-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Feb 2020 03:25:34 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0163PXtR29163848
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Feb 2020 03:25:33 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7EA70AE05F;
- Thu,  6 Feb 2020 03:25:33 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 350F1AE05C;
- Thu,  6 Feb 2020 03:25:24 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.163.250])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  6 Feb 2020 03:25:23 +0000 (GMT)
-Message-ID: <760c238043196e0628c8c0eff48a8e938ef539ba.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 02/11] mm/gup: Use functions to track lockless pgtbl
- walks on gup_pgd_range
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Arnd Bergmann
- <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar
- K.V" <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Steven Price
- <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>, Mahesh
- Salgaonkar <mahesh@linux.vnet.ibm.com>, Balbir Singh
- <bsingharora@gmail.com>, Reza Arbab <arbab@linux.ibm.com>, Thomas Gleixner
- <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
- <rppt@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>
-Date: Thu, 06 Feb 2020 00:25:18 -0300
-In-Reply-To: <20200206030900.147032-3-leonardo@linux.ibm.com>
-References: <20200206030900.147032-1-leonardo@linux.ibm.com>
- <20200206030900.147032-3-leonardo@linux.ibm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-5TGq9qc6jmgO8SfflYEA"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CkPQ4wPgzDqJq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 14:26:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=rLS0PFZd; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48CkPN3S20z9sRG;
+ Thu,  6 Feb 2020 14:26:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1580959609;
+ bh=8OfTVfN8xQPUJ7uI6RIUaXiPM9RlpWEIvFQyGAd09m4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=rLS0PFZdW3p2Rhbqx+18BYen6fJK1S7v7vVgd2/tz8PnZoOMzjwcAc2u6w5fOc3EM
+ cPKUh9kXagQ/vuNKl6ZjK3U1EUtDkRtiyhbo+FA57K3n80m668HEUbArubeliGvOE9
+ ysBeRW1JGvvnVCPur3tmNPYowD9fsj2yPjJb6pvsrAjeHdb44NY/gUR7INkzWq4VX2
+ lNc84tXcy/2vt+axddHuR7mgqY2Op2K0CAPFODWGp0B3lrQ7JFQV967hUfFMVyTu1z
+ TcWBSZvLPCnjgzCbt0c+c1qq5F/RXFumFqjbnZOySXxOOfcTkMx7S4PGsXR6YdaQ/+
+ SpulMtXKHQZ+w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "H.J. Lu" <hjl.tools@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [yyu168-linux_cet:cet 55/58] powerpc64le-linux-ld: warning:
+ discarding dynamic section .rela___ksymtab+jiffies_to_timeval
+In-Reply-To: <CAMe9rOrJEVL8Qw3fgm9FeDjwGZNxGoZ-OO6bfmV=gtK=g68cvQ@mail.gmail.com>
+References: <202002050743.dc2PtIsm%lkp@intel.com>
+ <CAMe9rOrJEVL8Qw3fgm9FeDjwGZNxGoZ-OO6bfmV=gtK=g68cvQ@mail.gmail.com>
+Date: Thu, 06 Feb 2020 14:26:47 +1100
+Message-ID: <87wo901jm0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-05_06:2020-02-04,
- 2020-02-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 suspectscore=0 phishscore=0
- mlxlogscore=918 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002060023
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,50 +62,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: Yu-cheng Yu <yu-cheng.yu@intel.com>, kbuild-all@lists.01.org,
+ Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+"H.J. Lu" <hjl.tools@gmail.com> writes:
+> On Tue, Feb 4, 2020 at 3:37 PM kbuild test robot <lkp@intel.com> wrote:
+>>
+>> tree:   https://github.com/yyu168/linux_cet.git cet
+>> head:   bba707cc4715c1036b6561ab38b16747f9c49cfa
+>> commit: 71bb971dd76eeacd351690f28864ad5c5bec3691 [55/58] Discard .note.gnu.property sections in generic NOTES
+>> config: powerpc-rhel-kconfig (attached as .config)
+>> compiler: powerpc64le-linux-gcc (GCC) 7.5.0
+>> reproduce:
+>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>>         chmod +x ~/bin/make.cross
+>>         git checkout 71bb971dd76eeacd351690f28864ad5c5bec3691
+>>         # save the attached .config to linux build tree
+>>         GCC_VERSION=7.5.0 make.cross ARCH=powerpc
+>>
+>> If you fix the issue, kindly add following tag
+>> Reported-by: kbuild test robot <lkp@intel.com>
+>>
+>> All warnings (new ones prefixed by >>):
+>>
+>>    powerpc64le-linux-ld: warning: discarding dynamic section .rela___ksymtab_gpl+__wait_rcu_gp
+>
+> arch/powerpc/kernel/vmlinux.lds.S has
+>
+>  .rela.dyn : AT(ADDR(.rela.dyn) - (0xc000000000000000 -0x00000000))
+>  {
+>   __rela_dyn_start = .;
+>   *(.rela*) <<<<<<<< Keep .rela* sections
+>  }
 
---=-5TGq9qc6jmgO8SfflYEA
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The above is inside #ifdef CONFIG_RELOCATABLE
 
-On Thu, 2020-02-06 at 00:08 -0300, Leonardo Bras wrote:
->                 gup_pgd_range(addr, end, gup_flags, pages, &nr);
-> -               local_irq_enable();
-> +               end_lockless_pgtbl_walk(IRQS_ENABLED);
->                 ret =3D nr;
->         }
-> =20
+> ...
+>  /DISCARD/ : {
+>   *(*.EMB.apuinfo)
+>   *(.glink .iplt .plt .rela* .comment)
+>                            ^^^^ Discard  .rela* sections.  But it is ignored.
+>   *(.gnu.version*)
+>   *(.gnu.attributes)
+>   *(.eh_frame)
+>  }
 
-Just noticed IRQS_ENABLED is not available on other archs than ppc64.
-I will fix this for v7.
+But that is not #ifdef'ed at all.
 
---=-5TGq9qc6jmgO8SfflYEA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+> With my
+>
+> ommit 71bb971dd76eeacd351690f28864ad5c5bec3691
+> Author: H.J. Lu <hjl.tools@gmail.com>
+> Date:   Thu Jan 30 12:39:09 2020 -0800
+>
+>     Discard .note.gnu.property sections in generic NOTES
+>
+>     With the command-line option, -mx86-used-note=yes, the x86 assembler
+>     in binutils 2.32 and above generates a program property note in a note
+>     section, .note.gnu.property, to encode used x86 ISAs and features.  But
+>     kernel linker script only contains a single NOTE segment:
+>
+> /DISCARD/ : { *(.note.gnu.property) }
+>
+> is placed before
+>
+> .rela.dyn : AT(ADDR(.rela.dyn) - (0xc000000000000000 -0x00000000))
+>  {
+>   __rela_dyn_start = .;
+>   *(.rela*) <<<<<<<< Keep .rela* sections
+>  }
+>
+> Then .rela* in
+>
+>  /DISCARD/ : {
+>   *(*.EMB.apuinfo)
+>   *(.glink .iplt .plt .rela* .comment)
+>   *(.gnu.version*)
+>   *(.gnu.attributes)
+>   *(.eh_frame)
+>  }
+>
+> is honored.  Can someone from POWERPC comment on it?
 
------BEGIN PGP SIGNATURE-----
+Hmm OK. I'm not really a toolchain person.
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl47hx4ACgkQlQYWtz9S
-ttTS9w/9E7lK8J1xIstn8wQNOKb6Mpalq1gAoAMSwEKVsxtJCgv5GQoVzfi83uzh
-s6Qq+5ydWu172eeRW66NmQaespclUattqesFf5qhvVnLGpwTbGSPlSF0IWzKr7s9
-ofzcAbyqaDh6+DTOestPd3ADSlUZ4HWxOKc5XSi5TyHX0RP9JK/gu26hdvr9oHDI
-ZU16OrdCAecYyE7/hKY0a+VGRsyZVab3VBWy/6EJdo9Z8bNc/aquHQQ+RkdaB3M/
-VtA1A0NUOBcbu+tFKG3Q2yzPQb9/5Ob7m5uG2Oa2f3huyk8FOXySioH4qUHqZAuB
-8bZIrD49y3YXZ9sFF4b4eqyDyeutnHAoMa/FBuMPmQW/diiFKhSIvLsiEz4gu1B9
-jn04+n0wrnV8wXxe3xUEQ6ooxhCY6UmNSIjlXOewvk/j2E37mZIdaPY5Bx6GlDBM
-MSXHfcN2LtpRH1FTqH8tZvwYf7JdkspVbbBipLrr8Ba8fGZ3fKcnfIIaOSRd1tvE
-uTHEgfICZKnzXxPM/tpI3n5kx7PbB6hPFDdtvjA1Vyq3tuA295qNF5fkEmTkvzmg
-swZfIo4OEGyw3Oh+jsK0PH646dK6jkD17Q7Fe81+BF7uYygxdxBptKUj/GJEnqfU
-3ZEFP0bpEMV17eoArkTN5eP4CNvd1VRWagVtnNLWS44WlNvdOxc=
-=i1Uf
------END PGP SIGNATURE-----
+The comment on DISCARDS says:
 
---=-5TGq9qc6jmgO8SfflYEA--
+   * Some archs want to discard exit text/data at runtime rather than
+   * link time due to cross-section references such as alt instructions,
+   * bug table, eh_frame, etc.  DISCARDS must be the last of output
+   * section definitions so that such archs put those in earlier section
+   * definitions.
+   */
 
+But I guess you're changing those semantics in your series.
+
+This seems to fix the warning for me?
+
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index b4c89a1acebb..076b3e8a849d 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -365,9 +365,12 @@ SECTIONS
+ 	DISCARDS
+ 	/DISCARD/ : {
+ 		*(*.EMB.apuinfo)
+-		*(.glink .iplt .plt .rela* .comment)
++		*(.glink .iplt .plt .comment)
+ 		*(.gnu.version*)
+ 		*(.gnu.attributes)
+ 		*(.eh_frame)
++#ifndef CONFIG_RELOCATABLE
++		*(.rela*)
++#endif
+ 	}
+ }
+
+
+cheers
