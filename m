@@ -2,55 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D061548A6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 16:56:51 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48D32l6XzgzDqKl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 02:56:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2401548FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 17:22:18 +0100 (CET)
+Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48D3c7271bzDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 03:22:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=sirena.org.uk
- (client-ip=172.104.155.198; helo=heliosphere.sirena.org.uk;
- envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.a=rsa-sha256 header.s=20170815-heliosphere header.b=CZkbK093; 
- dkim-atps=neutral
-Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
- [172.104.155.198])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48D30c3JzxzDqYY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 02:54:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
- Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
- List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=eFZpDdmMDc+jg0LQsv6cOH8jUl8NU8Wb3prM5WogJw4=; b=CZkbK0934Flb
- PlFSFEfPcSC1DjY1rrTXiRvPEKG+WXzVzsaZIi6UK4y2ymJdtolZb3Irl4t3RaVV79EDZ6Ar1PqD3
- 8Kpfxol4XRvMuLUI15TW/hU8ZpTWH9TaeosaZplboZyJQrJ5Iv6EEn1Q7CUHw7TY3WrSuoJSg4uUo
- 5UJAA=;
-Received: from fw-tnat-cam2.arm.com ([217.140.106.50]
- helo=fitzroy.sirena.org.uk) by heliosphere.sirena.org.uk with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <broonie@sirena.org.uk>)
- id 1izjUL-0002lU-O2; Thu, 06 Feb 2020 15:54:45 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
- id 29824D02A55; Thu,  6 Feb 2020 15:54:45 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Subject: Applied "ASoC: fsl_sai: Fix exiting path on probing failure" to the
- asoc tree
-In-Reply-To: <20200205160436.3813642-1-oleksandr.suvorov@toradex.com>
-Message-Id: <applied-20200205160436.3813642-1-oleksandr.suvorov@toradex.com>
-X-Patchwork-Hint: ignore
-Date: Thu,  6 Feb 2020 15:54:45 +0000 (GMT)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48D3ZL5TbRzDqYb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 03:20:37 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2020 08:20:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,410,1574150400"; d="scan'208";a="404532981"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by orsmga005.jf.intel.com with ESMTP; 06 Feb 2020 08:20:32 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1izjtI-00087Z-6h; Fri, 07 Feb 2020 00:20:32 +0800
+Date: Fri, 07 Feb 2020 00:20:26 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 530a1cfd52af0aba1af4b1c9a7bc66a202a459b1
+Message-ID: <5e3c3cca.Rca1igd9wNNxlsd5%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,107 +51,302 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Philippe Schenker <philippe.schenker@toradex.com>,
- Marcel Ziswiler <marcel.ziswiler@toradex.com>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Igor Opaniuk <igor.opaniuk@toradex.com>, Mark Brown <broonie@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>,
- Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 530a1cfd52af0aba1af4b1c9a7bc66a202a459b1  Automatic merge of branches 'master', 'next' and 'fixes' into merge
 
-   ASoC: fsl_sai: Fix exiting path on probing failure
+elapsed time: 3124m
 
-has been applied to the asoc tree at
+configs tested: 279
+configs skipped: 1
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.6
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+sparc                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+sparc64                             defconfig
+um                                  defconfig
+nds32                               defconfig
+sh                          rsk7269_defconfig
+sparc64                          allmodconfig
+i386                              allnoconfig
+h8300                    h8300h-sim_defconfig
+sparc                               defconfig
+alpha                               defconfig
+parisc                              defconfig
+h8300                       h8s-sim_defconfig
+um                             i386_defconfig
+arc                                 defconfig
+parisc                            allnoconfig
+um                           x86_64_defconfig
+microblaze                    nommu_defconfig
+microblaze                      mmu_defconfig
+s390                                defconfig
+riscv                             allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                                defconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+xtensa                          iss_defconfig
+csky                                defconfig
+nds32                             allnoconfig
+h8300                     edosk2674_defconfig
+m68k                             allmodconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allyesonfig
+parisc                         b180_defconfig
+parisc                        c3000_defconfig
+x86_64               randconfig-a001-20200206
+x86_64               randconfig-a002-20200206
+x86_64               randconfig-a003-20200206
+i386                 randconfig-a001-20200206
+i386                 randconfig-a002-20200206
+i386                 randconfig-a003-20200206
+x86_64               randconfig-a001-20200204
+x86_64               randconfig-a002-20200204
+x86_64               randconfig-a003-20200204
+i386                 randconfig-a001-20200204
+i386                 randconfig-a002-20200204
+i386                 randconfig-a003-20200204
+alpha                randconfig-a001-20200206
+m68k                 randconfig-a001-20200206
+mips                 randconfig-a001-20200206
+nds32                randconfig-a001-20200206
+parisc               randconfig-a001-20200206
+riscv                randconfig-a001-20200206
+alpha                randconfig-a001-20200204
+m68k                 randconfig-a001-20200204
+mips                 randconfig-a001-20200204
+nds32                randconfig-a001-20200204
+parisc               randconfig-a001-20200204
+riscv                randconfig-a001-20200204
+c6x                  randconfig-a001-20200206
+h8300                randconfig-a001-20200206
+microblaze           randconfig-a001-20200206
+nios2                randconfig-a001-20200206
+sparc64              randconfig-a001-20200206
+c6x                  randconfig-a001-20200205
+h8300                randconfig-a001-20200205
+microblaze           randconfig-a001-20200205
+nios2                randconfig-a001-20200205
+sparc64              randconfig-a001-20200205
+c6x                  randconfig-a001-20200204
+h8300                randconfig-a001-20200204
+microblaze           randconfig-a001-20200204
+nios2                randconfig-a001-20200204
+sparc64              randconfig-a001-20200204
+csky                 randconfig-a001-20200205
+openrisc             randconfig-a001-20200205
+s390                 randconfig-a001-20200205
+sh                   randconfig-a001-20200205
+xtensa               randconfig-a001-20200205
+csky                 randconfig-a001-20200204
+openrisc             randconfig-a001-20200204
+s390                 randconfig-a001-20200204
+sh                   randconfig-a001-20200204
+xtensa               randconfig-a001-20200204
+csky                 randconfig-a001-20200206
+openrisc             randconfig-a001-20200206
+s390                 randconfig-a001-20200206
+sh                   randconfig-a001-20200206
+xtensa               randconfig-a001-20200206
+x86_64               randconfig-b001-20200206
+x86_64               randconfig-b002-20200206
+x86_64               randconfig-b003-20200206
+i386                 randconfig-b001-20200206
+i386                 randconfig-b002-20200206
+i386                 randconfig-b003-20200206
+x86_64               randconfig-b001-20200205
+x86_64               randconfig-b002-20200205
+x86_64               randconfig-b003-20200205
+i386                 randconfig-b001-20200205
+i386                 randconfig-b002-20200205
+i386                 randconfig-b003-20200205
+i386                 randconfig-b001-20200204
+i386                 randconfig-b002-20200204
+x86_64               randconfig-b002-20200204
+x86_64               randconfig-b001-20200204
+i386                 randconfig-b003-20200204
+x86_64               randconfig-b003-20200204
+x86_64               randconfig-c001-20200204
+x86_64               randconfig-c002-20200204
+x86_64               randconfig-c003-20200204
+i386                 randconfig-c001-20200204
+i386                 randconfig-c002-20200204
+i386                 randconfig-c003-20200204
+x86_64               randconfig-c001-20200205
+x86_64               randconfig-c002-20200205
+x86_64               randconfig-c003-20200205
+i386                 randconfig-c001-20200205
+i386                 randconfig-c002-20200205
+i386                 randconfig-c003-20200205
+x86_64               randconfig-d001-20200204
+x86_64               randconfig-d002-20200204
+x86_64               randconfig-d003-20200204
+i386                 randconfig-d001-20200204
+i386                 randconfig-d002-20200204
+i386                 randconfig-d003-20200204
+x86_64               randconfig-d001-20200205
+x86_64               randconfig-d002-20200205
+x86_64               randconfig-d003-20200205
+i386                 randconfig-d001-20200205
+i386                 randconfig-d002-20200205
+i386                 randconfig-d003-20200205
+x86_64               randconfig-d001-20200206
+x86_64               randconfig-d002-20200206
+x86_64               randconfig-d003-20200206
+i386                 randconfig-d001-20200206
+i386                 randconfig-d002-20200206
+i386                 randconfig-d003-20200206
+x86_64               randconfig-e001-20200206
+x86_64               randconfig-e002-20200206
+x86_64               randconfig-e003-20200206
+i386                 randconfig-e001-20200206
+i386                 randconfig-e002-20200206
+i386                 randconfig-e003-20200206
+x86_64               randconfig-e001-20200204
+x86_64               randconfig-e002-20200204
+x86_64               randconfig-e003-20200204
+i386                 randconfig-e001-20200204
+i386                 randconfig-e002-20200204
+i386                 randconfig-e003-20200204
+i386                 randconfig-f002-20200204
+i386                 randconfig-f003-20200204
+x86_64               randconfig-f002-20200204
+i386                 randconfig-f001-20200204
+x86_64               randconfig-f001-20200204
+x86_64               randconfig-f003-20200204
+x86_64               randconfig-f001-20200205
+x86_64               randconfig-f002-20200205
+x86_64               randconfig-f003-20200205
+i386                 randconfig-f001-20200205
+i386                 randconfig-f002-20200205
+i386                 randconfig-f003-20200205
+x86_64               randconfig-f001-20200206
+x86_64               randconfig-f002-20200206
+x86_64               randconfig-f003-20200206
+i386                 randconfig-f001-20200206
+i386                 randconfig-f002-20200206
+i386                 randconfig-f003-20200206
+x86_64               randconfig-g001-20200205
+x86_64               randconfig-g002-20200205
+x86_64               randconfig-g003-20200205
+i386                 randconfig-g001-20200205
+i386                 randconfig-g002-20200205
+i386                 randconfig-g003-20200205
+x86_64               randconfig-g001-20200204
+x86_64               randconfig-g002-20200204
+x86_64               randconfig-g003-20200204
+i386                 randconfig-g001-20200204
+i386                 randconfig-g002-20200204
+i386                 randconfig-g003-20200204
+x86_64               randconfig-g001-20200206
+x86_64               randconfig-g002-20200206
+x86_64               randconfig-g003-20200206
+i386                 randconfig-g001-20200206
+i386                 randconfig-g002-20200206
+i386                 randconfig-g003-20200206
+x86_64               randconfig-h001-20200206
+x86_64               randconfig-h002-20200206
+x86_64               randconfig-h003-20200206
+i386                 randconfig-h001-20200206
+i386                 randconfig-h002-20200206
+i386                 randconfig-h003-20200206
+x86_64               randconfig-h001-20200204
+x86_64               randconfig-h002-20200204
+x86_64               randconfig-h003-20200204
+i386                 randconfig-h001-20200204
+i386                 randconfig-h002-20200204
+i386                 randconfig-h003-20200204
+x86_64               randconfig-h001-20200205
+x86_64               randconfig-h002-20200205
+x86_64               randconfig-h003-20200205
+i386                 randconfig-h001-20200205
+i386                 randconfig-h002-20200205
+i386                 randconfig-h003-20200205
+arc                  randconfig-a001-20200204
+arm                  randconfig-a001-20200204
+arm64                randconfig-a001-20200204
+ia64                 randconfig-a001-20200204
+powerpc              randconfig-a001-20200204
+sparc                randconfig-a001-20200204
+arm                  randconfig-a001-20200205
+arm64                randconfig-a001-20200205
+ia64                 randconfig-a001-20200205
+powerpc              randconfig-a001-20200205
+arc                  randconfig-a001-20200206
+arm                  randconfig-a001-20200206
+arm64                randconfig-a001-20200206
+ia64                 randconfig-a001-20200206
+powerpc              randconfig-a001-20200206
+sparc                randconfig-a001-20200206
+riscv                            allmodconfig
+riscv                            allyesconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                            titan_defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From d1520889782dff58610c0b6b54d4cf3211ceb690 Mon Sep 17 00:00:00 2001
-From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Date: Wed, 5 Feb 2020 18:04:36 +0200
-Subject: [PATCH] ASoC: fsl_sai: Fix exiting path on probing failure
-
-If the imx-sdma driver is built as a module, the fsl-sai device doesn't
-disable on probing failure, which causes the warning in the next probing:
-
-==================================================================
-fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
-fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
-fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
-fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
-fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
-fsl-sai 308a0000.sai: Unbalanced pm_runtime_enable!
-==================================================================
-
-Disabling the device properly fixes the issue.
-
-Fixes: 812ad463e089 ("ASoC: fsl_sai: Add support for runtime pm")
-Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Link: https://lore.kernel.org/r/20200205160436.3813642-1-oleksandr.suvorov@toradex.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 8c3ea7300972..9d436b0c5718 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -1020,12 +1020,24 @@ static int fsl_sai_probe(struct platform_device *pdev)
- 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_component,
- 			&fsl_sai_dai, 1);
- 	if (ret)
--		return ret;
-+		goto err_pm_disable;
- 
--	if (sai->soc_data->use_imx_pcm)
--		return imx_pcm_dma_init(pdev, IMX_SAI_DMABUF_SIZE);
--	else
--		return devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
-+	if (sai->soc_data->use_imx_pcm) {
-+		ret = imx_pcm_dma_init(pdev, IMX_SAI_DMABUF_SIZE);
-+		if (ret)
-+			goto err_pm_disable;
-+	} else {
-+		ret = devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
-+		if (ret)
-+			goto err_pm_disable;
-+	}
-+
-+	return ret;
-+
-+err_pm_disable:
-+	pm_runtime_disable(&pdev->dev);
-+
-+	return ret;
- }
- 
- static int fsl_sai_remove(struct platform_device *pdev)
--- 
-2.20.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
