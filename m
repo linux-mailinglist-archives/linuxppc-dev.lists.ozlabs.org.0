@@ -2,53 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63BB153C01
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 00:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AE5153D21
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:03:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48CdHZ29KWzDqS4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 10:36:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48CjtZ28YyzDqTp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 14:03:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=richardw.yang@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CdF52vdRzDqHr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 10:34:16 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2020 15:34:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,407,1574150400"; d="scan'208";a="264405373"
-Received: from richard.sh.intel.com (HELO localhost) ([10.239.159.54])
- by fmsmga002.fm.intel.com with ESMTP; 05 Feb 2020 15:34:12 -0800
-Date: Thu, 6 Feb 2020 07:34:28 +0800
-From: Wei Yang <richardw.yang@linux.intel.com>
-To: Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v6 08/10] mm/memory_hotplug: Don't check for "all holes"
- in shrink_zone_span()
-Message-ID: <20200205233428.GD28446@richard>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-9-david@redhat.com>
- <20200205095924.GC24162@richard>
- <20200205144811.GF26758@MiWiFi-R3L-srv>
- <20200205225633.GA28446@richard>
- <20200205230826.GF8965@MiWiFi-R3L-srv>
- <20200205232620.GC28446@richard>
- <20200205233051.GG8965@MiWiFi-R3L-srv>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Cjp8452xzDqTM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 13:59:41 +1100 (AEDT)
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 2D99B7C3F8276CE31737;
+ Thu,  6 Feb 2020 10:59:35 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Thu, 6 Feb 2020
+ 10:59:25 +0800
+From: Jason Yan <yanaijie@huawei.com>
+To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
+ <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
+ <oss@buserror.net>
+Subject: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
+Date: Thu, 6 Feb 2020 10:58:19 +0800
+Message-ID: <20200206025825.22934-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200205233051.GG8965@MiWiFi-R3L-srv>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,90 +50,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Wei Yang <richardw.yang@linux.intel.com>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- David Hildenbrand <david@redhat.com>, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Michal Hocko <mhocko@suse.com>, Wei Yang <richardw.yang@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
- Oscar Salvador <osalvador@suse.de>
+Cc: Jason Yan <yanaijie@huawei.com>, linux-kernel@vger.kernel.org,
+ zhaohongjiang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 06, 2020 at 07:30:51AM +0800, Baoquan He wrote:
->On 02/06/20 at 07:26am, Wei Yang wrote:
->> On Thu, Feb 06, 2020 at 07:08:26AM +0800, Baoquan He wrote:
->> >On 02/06/20 at 06:56am, Wei Yang wrote:
->> >> On Wed, Feb 05, 2020 at 10:48:11PM +0800, Baoquan He wrote:
->> >> >Hi Wei Yang,
->> >> >
->> >> >On 02/05/20 at 05:59pm, Wei Yang wrote:
->> >> >> >diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> >> >> >index f294918f7211..8dafa1ba8d9f 100644
->> >> >> >--- a/mm/memory_hotplug.c
->> >> >> >+++ b/mm/memory_hotplug.c
->> >> >> >@@ -393,6 +393,9 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
->> >> >> > 		if (pfn) {
->> >> >> > 			zone->zone_start_pfn = pfn;
->> >> >> > 			zone->spanned_pages = zone_end_pfn - pfn;
->> >> >> >+		} else {
->> >> >> >+			zone->zone_start_pfn = 0;
->> >> >> >+			zone->spanned_pages = 0;
->> >> >> > 		}
->> >> >> > 	} else if (zone_end_pfn == end_pfn) {
->> >> >> > 		/*
->> >> >> >@@ -405,34 +408,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
->> >> >> > 					       start_pfn);
->> >> >> > 		if (pfn)
->> >> >> > 			zone->spanned_pages = pfn - zone_start_pfn + 1;
->> >> >> >+		else {
->> >> >> >+			zone->zone_start_pfn = 0;
->> >> >> >+			zone->spanned_pages = 0;
->> >> >> >+		}
->> >> >> > 	}
->> >> >> 
->> >> >> If it is me, I would like to take out these two similar logic out.
->> >> >
->> >> >I also like this style. 
->> >> >> 
->> >> >> For example:
->> >> >> 
->> >> >> 	if () {
->> >> >> 	} else if () {
->> >> >> 	} else {
->> >> >> 		goto out;
->> >> >Here the last else is unnecessary, right?
->> >> >
->> >> 
->> >> I am afraid not.
->> >> 
->> >> If the range is not the first or last, we would leave pfn not initialized.
->> >
->> >Ah, you are right. I forgot that one. Then pfn can be assigned the
->> >zone_start_pfn as the old code. Then the following logic is the same
->> >as the original code, find_smallest_section_pfn()/find_biggest_section_pfn() 
->> >have done the iteration the old for loop was doing.
->> >
->> >	unsigned long pfn = zone_start_pfn;	
->> >	if () {
->> >	} else if () {
->> >	} 
->> >
->> >	/* The zone has no valid section */
->> >	if (!pfn) {
->> >        	zone->zone_start_pfn = 0;
->> >        	zone->spanned_pages = 0;
->> >	}
->> 
->> This one look better :-)
->
->Thanks for your confirmation, I will make one patch like this and post.
+This is a try to implement KASLR for Freescale BookE64 which is based on
+my earlier implementation for Freescale BookE32:
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=131718
 
-Sure :-)
+The implementation for Freescale BookE64 is similar as BookE32. One
+difference is that Freescale BookE64 set up a TLB mapping of 1G during
+booting. Another difference is that ppc64 needs the kernel to be
+64K-aligned. So we can randomize the kernel in this 1G mapping and make
+it 64K-aligned. This can save some code to creat another TLB map at
+early boot. The disadvantage is that we only have about 1G/64K = 16384
+slots to put the kernel in.
+
+    KERNELBASE
+
+          64K                     |--> kernel <--|
+           |                      |              |
+        +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
+        |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
+        +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
+        |                         |                        1G
+        |----->   offset    <-----|
+
+                              kernstart_virt_addr
+
+I'm not sure if the slot numbers is enough or the design has any
+defects. If you have some better ideas, I would be happy to hear that.
+
+Thank you all.
+
+v2->v3:
+  Fix build error when KASLR is disabled.
+v1->v2:
+  Add __kaslr_offset for the secondary cpu boot up.
+
+Jason Yan (6):
+  powerpc/fsl_booke/kaslr: refactor kaslr_legal_offset() and
+    kaslr_early_init()
+  powerpc/fsl_booke/64: introduce reloc_kernel_entry() helper
+  powerpc/fsl_booke/64: implement KASLR for fsl_booke64
+  powerpc/fsl_booke/64: do not clear the BSS for the second pass
+  powerpc/fsl_booke/64: clear the original kernel if randomized
+  powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to kaslr-booke.rst
+    and add 64bit part
+
+ .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 +++++++--
+ arch/powerpc/Kconfig                          |  2 +-
+ arch/powerpc/kernel/exceptions-64e.S          | 23 ++++++
+ arch/powerpc/kernel/head_64.S                 | 14 ++++
+ arch/powerpc/kernel/setup_64.c                |  4 +-
+ arch/powerpc/mm/mmu_decl.h                    | 19 ++---
+ arch/powerpc/mm/nohash/kaslr_booke.c          | 71 +++++++++++++------
+ 7 files changed, 132 insertions(+), 36 deletions(-)
+ rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} (59%)
 
 -- 
-Wei Yang
-Help you, Help me
+2.17.2
+
