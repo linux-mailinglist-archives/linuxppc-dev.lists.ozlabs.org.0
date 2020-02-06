@@ -1,17 +1,17 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE01153DA2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:36:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Ckd05Jp4zDqYY
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 14:36:52 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D01F153DA5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 04:38:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Ckfs4nBkzDqjW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 14:38:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,67 +19,78 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48CkBp6WSCzDqSM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 14:17:35 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48CkNM0jwnzDqGN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 14:25:54 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0163FrO1005057
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 5 Feb 2020 22:17:33 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2xyhmyc55g-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Feb 2020 22:17:32 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Thu, 6 Feb 2020 03:17:29 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 6 Feb 2020 03:17:28 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0163HROY47775860
+ 0163EM4O118249; Wed, 5 Feb 2020 22:25:36 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xyphx1566-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Feb 2020 22:25:36 -0500
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0163LKY9016276;
+ Wed, 5 Feb 2020 22:25:35 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2xyphx155m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Feb 2020 22:25:35 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0163Blmv019116;
+ Thu, 6 Feb 2020 03:25:34 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 2xykc9hw66-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Feb 2020 03:25:34 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0163PXtR29163848
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Feb 2020 03:17:27 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3881E4203F;
- Thu,  6 Feb 2020 03:17:27 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7DEF42041;
- Thu,  6 Feb 2020 03:17:26 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  6 Feb 2020 03:17:26 +0000 (GMT)
-Received: from osmium.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AB959A00EE;
- Thu,  6 Feb 2020 14:17:22 +1100 (AEDT)
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/1] vfio-pci/nvlink2: Allow fallback to ibm,mmio-atsd[0]
-Date: Thu,  6 Feb 2020 14:17:25 +1100
-X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
+ Thu, 6 Feb 2020 03:25:33 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7EA70AE05F;
+ Thu,  6 Feb 2020 03:25:33 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 350F1AE05C;
+ Thu,  6 Feb 2020 03:25:24 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.163.250])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Feb 2020 03:25:23 +0000 (GMT)
+Message-ID: <760c238043196e0628c8c0eff48a8e938ef539ba.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 02/11] mm/gup: Use functions to track lockless pgtbl
+ walks on gup_pgd_range
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Arnd Bergmann
+ <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar
+ K.V" <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Steven Price
+ <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>, Mahesh
+ Salgaonkar <mahesh@linux.vnet.ibm.com>, Balbir Singh
+ <bsingharora@gmail.com>, Reza Arbab <arbab@linux.ibm.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
+ <rppt@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>
+Date: Thu, 06 Feb 2020 00:25:18 -0300
+In-Reply-To: <20200206030900.147032-3-leonardo@linux.ibm.com>
+References: <20200206030900.147032-1-leonardo@linux.ibm.com>
+ <20200206030900.147032-3-leonardo@linux.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-5TGq9qc6jmgO8SfflYEA"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20020603-0028-0000-0000-000003D7D5E5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20020603-0029-0000-0000-0000249C365F
-Message-Id: <426f75e09ac1a6879a6d51f592bf683c698b4bda.1580959044.git.sbobroff@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-05_06:2020-02-04,
  2020-02-05 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- spamscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
- impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2002060023
+ spamscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ mlxlogscore=918 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002060023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,51 +102,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Older versions of skiboot only provide a single value in the device
-tree property "ibm,mmio-atsd", even when multiple Address Translation
-Shoot Down (ATSD) registers are present. This prevents NVLink2 devices
-(other than the first) from being used with vfio-pci because vfio-pci
-expects to be able to assign a dedicated ATSD register to each NVLink2
-device.
 
-However, ATSD registers can be shared among devices. This change
-allows vfio-pci to fall back to sharing the register at index 0 if
-necessary.
+--=-5TGq9qc6jmgO8SfflYEA
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
----
- drivers/vfio/pci/vfio_pci_nvlink2.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+On Thu, 2020-02-06 at 00:08 -0300, Leonardo Bras wrote:
+>                 gup_pgd_range(addr, end, gup_flags, pages, &nr);
+> -               local_irq_enable();
+> +               end_lockless_pgtbl_walk(IRQS_ENABLED);
+>                 ret =3D nr;
+>         }
+> =20
 
-diff --git a/drivers/vfio/pci/vfio_pci_nvlink2.c b/drivers/vfio/pci/vfio_pci_nvlink2.c
-index f2983f0f84be..851ba673882b 100644
---- a/drivers/vfio/pci/vfio_pci_nvlink2.c
-+++ b/drivers/vfio/pci/vfio_pci_nvlink2.c
-@@ -420,8 +420,17 @@ int vfio_pci_ibm_npu2_init(struct vfio_pci_device *vdev)
- 
- 	if (of_property_read_u64_index(hose->dn, "ibm,mmio-atsd", nvlink_index,
- 			&mmio_atsd)) {
--		dev_warn(&vdev->pdev->dev, "No available ATSD found\n");
--		mmio_atsd = 0;
-+		dev_warn(&vdev->pdev->dev,
-+			 "No ibm,mmio-atsd[%d] found: trying ibm,mmio-atsd[0]\n",
-+			 nvlink_index);
-+		if (of_property_read_u64_index(hose->dn, "ibm,mmio-atsd", 0,
-+				&mmio_atsd)) {
-+			dev_warn(&vdev->pdev->dev, "No available ATSD found\n");
-+			mmio_atsd = 0;
-+		} else {
-+			dev_warn(&vdev->pdev->dev,
-+				 "Using fallback ibm,mmio-atsd[0] for ATSD.\n");
-+		}
- 	}
- 
- 	if (of_property_read_u64(npu_node, "ibm,device-tgt-addr", &tgt)) {
--- 
-2.22.0.216.g00a2a96fc9
+Just noticed IRQS_ENABLED is not available on other archs than ppc64.
+I will fix this for v7.
+
+--=-5TGq9qc6jmgO8SfflYEA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl47hx4ACgkQlQYWtz9S
+ttTS9w/9E7lK8J1xIstn8wQNOKb6Mpalq1gAoAMSwEKVsxtJCgv5GQoVzfi83uzh
+s6Qq+5ydWu172eeRW66NmQaespclUattqesFf5qhvVnLGpwTbGSPlSF0IWzKr7s9
+ofzcAbyqaDh6+DTOestPd3ADSlUZ4HWxOKc5XSi5TyHX0RP9JK/gu26hdvr9oHDI
+ZU16OrdCAecYyE7/hKY0a+VGRsyZVab3VBWy/6EJdo9Z8bNc/aquHQQ+RkdaB3M/
+VtA1A0NUOBcbu+tFKG3Q2yzPQb9/5Ob7m5uG2Oa2f3huyk8FOXySioH4qUHqZAuB
+8bZIrD49y3YXZ9sFF4b4eqyDyeutnHAoMa/FBuMPmQW/diiFKhSIvLsiEz4gu1B9
+jn04+n0wrnV8wXxe3xUEQ6ooxhCY6UmNSIjlXOewvk/j2E37mZIdaPY5Bx6GlDBM
+MSXHfcN2LtpRH1FTqH8tZvwYf7JdkspVbbBipLrr8Ba8fGZ3fKcnfIIaOSRd1tvE
+uTHEgfICZKnzXxPM/tpI3n5kx7PbB6hPFDdtvjA1Vyq3tuA295qNF5fkEmTkvzmg
+swZfIo4OEGyw3Oh+jsK0PH646dK6jkD17Q7Fe81+BF7uYygxdxBptKUj/GJEnqfU
+3ZEFP0bpEMV17eoArkTN5eP4CNvd1VRWagVtnNLWS44WlNvdOxc=
+=i1Uf
+-----END PGP SIGNATURE-----
+
+--=-5TGq9qc6jmgO8SfflYEA--
 
