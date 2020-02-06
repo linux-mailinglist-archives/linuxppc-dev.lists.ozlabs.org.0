@@ -1,70 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F06154C34
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 20:25:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48D7gh0qghzDqLv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 06:25:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464B9154CDA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2020 21:18:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48D8s54VlDzDqdL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 07:18:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=FnsFNy7q; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48D7bY1crzzDqYB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 06:21:59 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48D7bR5kC8z9txcP;
- Thu,  6 Feb 2020 20:21:55 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=FnsFNy7q; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id v0XWkAqMqL9I; Thu,  6 Feb 2020 20:21:55 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48D7bR48qpz9tx2C;
- Thu,  6 Feb 2020 20:21:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1581016915; bh=fR04HRUXwg1sWVzHFRIjKuCirjdx7mzJ4CnZCEi2JNk=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=FnsFNy7q4MWwXztAQHY/4IMkqEyRuAKDe3GUpKRbiOorksqYkRlVMaIpMML8A1R8n
- fjpgH60RIvUBZ3UPisn1a266yvCz4TBtGgooqyZ0VghedxENrR7m6H/ze35mPqKBkV
- z8mcgzL/t+VS2hYD0sLqEoXiHTEhMx7YTMKqkW9Q=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C08488B8A5;
- Thu,  6 Feb 2020 20:21:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YCS103tFZWcr; Thu,  6 Feb 2020 20:21:55 +0100 (CET)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 765858B8A4;
- Thu,  6 Feb 2020 20:21:55 +0100 (CET)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 35929652B0; Thu,  6 Feb 2020 19:21:55 +0000 (UTC)
-Message-Id: <53df932fadfab3ca442d503484cd999efeba1975.1581011735.git.christophe.leroy@c-s.fr>
-In-Reply-To: <4ad03047ac61bfbdad3edb92542dedc807fc3cf4.1581011735.git.christophe.leroy@c-s.fr>
-References: <4ad03047ac61bfbdad3edb92542dedc807fc3cf4.1581011735.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH 2/2] powerpc/8xx: Make 8M hugepages also compatible with the
- 512K pages slice
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- aneesh.kumar@linux.ibm.com
-Date: Thu,  6 Feb 2020 19:21:55 +0000 (UTC)
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48Crwt1vqGzDqY3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2020 19:21:00 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A4DD1FB;
+ Thu,  6 Feb 2020 00:20:57 -0800 (PST)
+Received: from [10.162.16.51] (p8cg001049571a15.blr.arm.com [10.162.16.51])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 822673F68E;
+ Thu,  6 Feb 2020 00:23:20 -0800 (PST)
+Subject: Re: [PATCH V13] mm/debug: Add tests validating architecture page
+ table helpers
+To: kbuild test robot <lkp@intel.com>
+References: <1580897674-16456-1-git-send-email-anshuman.khandual@arm.com>
+ <202002060619.wEOdAZU1%lkp@intel.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <78d3ce6b-e100-2561-6b09-124c29731d1a@arm.com>
+Date: Thu, 6 Feb 2020 13:49:35 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <202002060619.wEOdAZU1%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Fri, 07 Feb 2020 07:17:25 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,91 +51,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, uclinux-h8-devel@lists.sourceforge.jp,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>, Mark Salter <msalter@redhat.com>,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, linux-alpha@vger.kernel.org,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ Vlastimil Babka <vbabka@suse.cz>, Richard Henderson <rth@twiddle.net>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ kbuild-all@lists.01.org, Brian Cain <bcain@codeaurora.org>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, Qian Cai <cai@lca.pw>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8xx, slices are used because hugepages (512k or 8M) and small
-pages (4k or 16k) cannot share the same PGD entry. However, as 8M
-entirely covers two PGD entries (One PGD entry covers 4M), there
-will implicitely be no conflict between 8M pages and any other size.
-So 8M is also compatible with the 512K page slices as well.
 
-Handle 512K page slices as fallback compat mask for 8M pages.
+On 02/06/2020 04:40 AM, kbuild test robot wrote:
+> Hi Anshuman,
+> 
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on powerpc/next]
+> [also build test ERROR on s390/features linus/master arc/for-next v5.5]
+> [cannot apply to mmotm/master tip/x86/core arm64/for-next/core next-20200205]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-debug-Add-tests-validating-architecture-page-table-helpers/20200205-215507
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: ia64-allmodconfig (attached as .config)
+> compiler: ia64-linux-gcc (GCC) 7.5.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.5.0 make.cross ARCH=ia64 
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All error/warnings (new ones prefixed by >>):
+> 
+>    In file included from include/asm-generic/pgtable-nopud.h:8:0,
+>                     from arch/ia64/include/asm/pgtable.h:586,
+>                     from include/linux/mm.h:99,
+>                     from include/linux/highmem.h:8,
+>                     from mm/debug_vm_pgtable.c:14:
+>    mm/debug_vm_pgtable.c: In function 'pud_clear_tests':
+>>> include/asm-generic/pgtable-nop4d-hack.h:47:32: error: implicit declaration of function '__pgd'; did you mean '__p4d'? [-Werror=implicit-function-declaration]
+>     #define __pud(x)    ((pud_t) { __pgd(x) })
+>                                    ^
+>>> mm/debug_vm_pgtable.c:141:8: note: in expansion of macro '__pud'
+>      pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
+>            ^~~~~
+>>> include/asm-generic/pgtable-nop4d-hack.h:47:22: warning: missing braces around initializer [-Wmissing-braces]
+>     #define __pud(x)    ((pud_t) { __pgd(x) })
+>                          ^
+>>> mm/debug_vm_pgtable.c:141:8: note: in expansion of macro '__pud'
+>      pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
+>            ^~~~~
+>    cc1: some warnings being treated as errors
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/mm/slice.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+This build failure is expected now given that we have allowed DEBUG_VM_PGTABLE
+with EXPERT without platform requiring ARCH_HAS_DEBUG_VM_PGTABLE. This problem
+i.e build failure caused without a platform __pgd(), is known to exist both on
+ia64 and arm (32bit) platforms. Please refer https://lkml.org/lkml/2019/9/24/314
+for details where this was discussed earlier.
 
-diff --git a/arch/powerpc/mm/slice.c b/arch/powerpc/mm/slice.c
-index dffe1a45b6ed..cb5b532d3d48 100644
---- a/arch/powerpc/mm/slice.c
-+++ b/arch/powerpc/mm/slice.c
-@@ -422,6 +422,8 @@ static inline void slice_andnot_mask(struct slice_mask *dst,
- 
- #ifdef CONFIG_PPC_64K_PAGES
- #define MMU_PAGE_BASE	MMU_PAGE_64K
-+#elif defined(CONFIG_PPC_16K_PAGES)
-+#define MMU_PAGE_BASE	MMU_PAGE_16K
- #else
- #define MMU_PAGE_BASE	MMU_PAGE_4K
- #endif
-@@ -514,9 +516,19 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
- 	 * If we support combo pages, we can allow 64k pages in 4k slices
- 	 * The mask copies could be avoided in most cases here if we had
- 	 * a pointer to good mask for the next code to use.
-+	 *
-+	 * On 8xx, slices are used because hugepages (512k or 8M) and small
-+	 * pages (4k or 16k) cannot share the same PGD entry. However, as 8M
-+	 * entirely covers two PGD entries, there will implicitely be no
-+	 * conflict between 8M pages and any other size. So 8M is compatible
-+	 * with the 512k page slice as well.
- 	 */
--	if (IS_ENABLED(CONFIG_PPC_64K_PAGES) && psize == MMU_PAGE_64K) {
--		compat_maskp = slice_mask_for_size(&mm->context, MMU_PAGE_4K);
-+	if ((IS_ENABLED(CONFIG_PPC_64K_PAGES) && psize == MMU_PAGE_64K) ||
-+	    (IS_ENABLED(CONFIG_PPC_8xx) && psize == MMU_PAGE_8M)) {
-+		if (IS_ENABLED(CONFIG_PPC_8xx))
-+			compat_maskp = slice_mask_for_size(&mm->context, MMU_PAGE_512K);
-+		else
-+			compat_maskp = slice_mask_for_size(&mm->context, MMU_PAGE_4K);
- 		if (fixed)
- 			slice_or_mask(&good_mask, maskp, compat_maskp);
- 		else
-@@ -593,9 +605,8 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
- 	newaddr = slice_find_area(mm, len, &potential_mask,
- 				  psize, topdown, high_limit);
- 
--	if (IS_ENABLED(CONFIG_PPC_64K_PAGES) && newaddr == -ENOMEM &&
--	    psize == MMU_PAGE_64K) {
--		/* retry the search with 4k-page slices included */
-+	if (compat_maskp && newaddr == -ENOMEM) {
-+		/* retry the search with compatible slices included */
- 		slice_or_mask(&potential_mask, &potential_mask, compat_maskp);
- 		newaddr = slice_find_area(mm, len, &potential_mask,
- 					  psize, topdown, high_limit);
-@@ -767,12 +778,16 @@ int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
- 
- 	maskp = slice_mask_for_size(&mm->context, psize);
- 
--	/* We need to account for 4k slices too */
--	if (IS_ENABLED(CONFIG_PPC_64K_PAGES) && psize == MMU_PAGE_64K) {
-+	/* We need to account for compatible slices too */
-+	if ((IS_ENABLED(CONFIG_PPC_64K_PAGES) && psize == MMU_PAGE_64K) ||
-+	    (IS_ENABLED(CONFIG_PPC_8xx) && psize == MMU_PAGE_8M)) {
- 		const struct slice_mask *compat_maskp;
- 		struct slice_mask available;
- 
--		compat_maskp = slice_mask_for_size(&mm->context, MMU_PAGE_4K);
-+		if (IS_ENABLED(CONFIG_PPC_8xx))
-+			compat_maskp = slice_mask_for_size(&mm->context, MMU_PAGE_512K);
-+		else
-+			compat_maskp = slice_mask_for_size(&mm->context, MMU_PAGE_4K);
- 		slice_or_mask(&available, maskp, compat_maskp);
- 		return !slice_check_range_fits(mm, &available, addr, len);
- 	}
--- 
-2.25.0
-
+- Anshuman
