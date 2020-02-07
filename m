@@ -2,82 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7741559C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 15:37:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68E4155B59
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 17:05:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48DdDh5f77zDqjX
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 01:37:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Dg9w4HCWzDqkd
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 03:05:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48DdBN6KGKzDq9R
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 01:35:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Dg8M2ZvtzDqfr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 03:03:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=NXiZwee9; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48DdBL4DMfz8vVc
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 01:35:22 +1100 (AEDT)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=t/i9IkcX; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48Dg8L5g4Nz8svt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 03:03:46 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 48DdBL0Td9z9sRR; Sat,  8 Feb 2020 01:35:22 +1100 (AEDT)
+ id 48Dg8L4sTVz9sSJ; Sat,  8 Feb 2020 03:03:46 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::12;
- helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=NXiZwee9; 
- dkim-atps=neutral
-Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5301::12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=t/i9IkcX; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48DdBJ440Lz9sSJ
- for <linuxppc-dev@ozlabs.org>; Sat,  8 Feb 2020 01:35:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1581086114;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=cNnAQeGGvvTjFRamv7ZkW4dXUfu1hiTbBBwJDVmkbDw=;
- b=NXiZwee9AY12FvHtlpTyQ6ldsfy1WI2rJSketRgeQFMHR9kD6yC6nqjj6zGr94liaq
- W/v+b9rC4pxGY44GtIOkKQ8TfZTcs3k/T5f5ZU15RPNQ552PzNv6oAAx42rXkkH0r0c5
- VgE7+PPDVxXzqHXijkTaD4oJgOCyDs3SloIM+W9vSkDcBkU6ZOdwbQiS5L6G7/vpXgu+
- KDgwjpjCTOGsjn40QAXL8O+UwnbtkZFcCrhdVA704AhAHU0/b4elxHbis5elRa2GSSgn
- qp77hA2xXqst8jSVBS1vtz1g88HqA+KxVo6e2AD7mJRqzFfkjmEneP1eQbXJV4dWgc0w
- 7Gug==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgBL7coCbpz+JyHSiG0DZUc3rEWew=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:b9f8:3811:c7de:b70d]
- by smtp.strato.de (RZmta 46.1.12 AUTH)
- with ESMTPSA id 40bcf3w17EYpeyF
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Fri, 7 Feb 2020 15:34:51 +0100 (CET)
-Subject: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate ioctl
- for device
-To: arnd@arndb.de
-References: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
- <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
- <87tv441gg1.fsf@mpe.ellerman.id.au>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <42888ad2-71e0-6d03-ddff-3de6f0ee5d43@xenosoft.de>
-Date: Fri, 7 Feb 2020 15:34:51 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by ozlabs.org (Postfix) with ESMTPS id 48Dg8K2KFSz9sRK
+ for <linuxppc-dev@ozlabs.org>; Sat,  8 Feb 2020 03:03:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48Dg8B3yGxz9v0Z4;
+ Fri,  7 Feb 2020 17:03:38 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=t/i9IkcX; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id zEa2JQMDWBgP; Fri,  7 Feb 2020 17:03:38 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48Dg8B2t5kz9v0Z2;
+ Fri,  7 Feb 2020 17:03:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1581091418; bh=dtfmT3LfaCliYknPGpwarGAcHjTbvLJexd/Fuj59Yyg=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=t/i9IkcXk52yTMyQNnhxbsvOpsknsgEtvQ9b5vX2ludGgU0QYKR6OJWHhlC8PGs15
+ wGN2uU8ydTOcGkjJ/R+4BYi0wDlO32nxgRihgWt/HlBsT3u2VFFzxj1i6y9qWTdNdX
+ NXD9fZYoaCyNV6t6ikPmXDp7QFmDg1kiKsSpEXu8=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 12E088B8D9;
+ Fri,  7 Feb 2020 17:03:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id qGIrUrCe-egF; Fri,  7 Feb 2020 17:03:39 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7F1A48B8BA;
+ Fri,  7 Feb 2020 17:03:39 +0100 (CET)
+Subject: Re: [PATCH] powerpc/futex: Fix incorrect user access blocking
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+References: <20200207122145.11928-1-mpe@ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <e5d2e152-21af-cc25-c3d2-057661d3e329@c-s.fr>
+Date: Fri, 7 Feb 2020 17:03:39 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-In-Reply-To: <87tv441gg1.fsf@mpe.ellerman.id.au>
-Content-Type: multipart/mixed; boundary="------------25FA60D130063DB92E20AE88"
-Content-Language: en-AU
+In-Reply-To: <20200207122145.11928-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,445 +94,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------25FA60D130063DB92E20AE88
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hello Arnd,
 
-We regularly compile and test Linux kernels every day during the merge 
-window. Since Thursday last week we have very high CPU usage because of 
-the avahi daemon on our desktop Linux systems (Ubuntu, Debian etc). The 
-avahi daemon produces a lot of the following log message. This generates 
-high CPU usage.
+Le 07/02/2020 à 13:21, Michael Ellerman a écrit :
+> The early versions of our kernel user access prevention (KUAP) were
+> written by Russell and Christophe, and didn't have separate
+> read/write access.
+> 
+> At some point I picked up the series and added the read/write access,
+> but I failed to update the usages in futex.h to correctly allow read
+> and write.
+> 
+> However we didn't notice because of another bug which was causing the
+> low-level code to always enable read and write. That bug was fixed
+> recently in commit 1d8f739b07bd ("powerpc/kuap: Fix set direction in
+> allow/prevent_user_access()").
+> 
+> futex_atomic_cmpxchg_inatomic() is passed the user address as %3 and
+> does:
+> 
+>    1:     lwarx   %1,  0, %3
+>           cmpw    0,  %1, %4
+>           bne-    3f
+>    2:     stwcx.  %5,  0, %3
+> 
+> Which clearly loads and stores from/to %3. The logic in
+> arch_futex_atomic_op_inuser() is similar, so fix both of them to use
+> allow_read_write_user().
+> 
+> Without this fix, and with PPC_KUAP_DEBUG=y, we see eg:
+> 
+>    Bug: Read fault blocked by AMR!
+>    WARNING: CPU: 94 PID: 149215 at arch/powerpc/include/asm/book3s/64/kup-radix.h:126 __do_page_fault+0x600/0xf30
+>    CPU: 94 PID: 149215 Comm: futex_requeue_p Tainted: G        W         5.5.0-rc7-gcc9x-g4c25df5640ae #1
+>    ...
+>    NIP [c000000000070680] __do_page_fault+0x600/0xf30
+>    LR [c00000000007067c] __do_page_fault+0x5fc/0xf30
+>    Call Trace:
+>    [c00020138e5637e0] [c00000000007067c] __do_page_fault+0x5fc/0xf30 (unreliable)
+>    [c00020138e5638c0] [c00000000000ada8] handle_page_fault+0x10/0x30
+>    --- interrupt: 301 at cmpxchg_futex_value_locked+0x68/0xd0
+>        LR = futex_lock_pi_atomic+0xe0/0x1f0
+>    [c00020138e563bc0] [c000000000217b50] futex_lock_pi_atomic+0x80/0x1f0 (unreliable)
+>    [c00020138e563c30] [c00000000021b668] futex_requeue+0x438/0xb60
+>    [c00020138e563d60] [c00000000021c6cc] do_futex+0x1ec/0x2b0
+>    [c00020138e563d90] [c00000000021c8b8] sys_futex+0x128/0x200
+>    [c00020138e563e20] [c00000000000b7ac] system_call+0x5c/0x68
+> 
+> Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
+> Cc: stable@vger.kernel.org # v5.2+
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Error message: avahi-daemon[2410]: ioctl(): Inappropriate ioctl for device
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-strace /usr/sbin/avahi-daemon:
-
-poll([{fd=4, events=POLLIN}, {fd=16, events=POLLIN}, {fd=15, 
-events=POLLIN}, {fd=14, events=POLLIN}, {fd=13, events=POLLIN}, {fd=12, 
-events=POLLIN}, {fd=11, events=POLLIN}, {fd=10, events=POLLIN}, {fd=9, 
-events=POLLIN}, {fd=8, events=POLLIN}, {fd=6, events=POLLIN}], 11, 65) = 
-2 ([{fd=12, revents=POLLIN}, {fd=9, revents=POLLIN}])
-ioctl(12, FIONREAD, 0xffba6f24)         = -1 ENOTTY (Inappropriate ioctl 
-for device)
-write(2, "ioctl(): Inappropriate ioctl for"..., 39ioctl(): Inappropriate 
-ioctl for device) = 39
-write(2, "\n", 1
-)                       = 1
-
-----------------------
-
-I bisected the latest kernel source code today.
-
-Result:
-
-77b9040195dea3fcddf19e136c9e99a501351778 is the first bad commit
-commit 77b9040195dea3fcddf19e136c9e99a501351778
-Author: Arnd Bergmann <arnd@arndb.de>
-Date:   Wed Nov 27 21:25:36 2019 +0100
-
-     compat_ioctl: simplify the implementation
-
-     Now that both native and compat ioctl syscalls are
-     in the same file, a couple of simplifications can
-     be made, bringing the implementation closer together:
-
-     - do_vfs_ioctl(), ioctl_preallocate(), and compat_ioctl_preallocate()
-       can become static, allowing the compiler to optimize better
-
-     - slightly update the coding style for consistency between
-       the functions.
-
-     - rather than listing each command in two switch statements
-       for the compat case, just call a single function that has
-       all the common commands.
-
-     As a side-effect, FS_IOC_RESVSP/FS_IOC_RESVSP64 are now available
-     to x86 compat tasks, along with FS_IOC_RESVSP_32/FS_IOC_RESVSP64_32.
-     This is harmless for i386 emulation, and can be considered a bugfix
-     for x32 emulation, which never supported these in the past.
-
-     Reviewed-by: Ben Hutchings <ben.hutchings@codethink.co.uk>
-     Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-:040000 040000 5c4b62f4d1bfe643d3bbf9d9a3b50ee50ae0f159 
-5ca610e3197df96adfcae4f94fceeb496756609b M    fs
-:040000 040000 086f2e2ac49384988733cbb706243943748c4ce7 
-b906926e53dfa2e8927629e77a0708dda6f49d31 M    include
-
-----------------------
-
-Link to the first bad commit: 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=77b9040195dea3fcddf19e136c9e99a501351778
-
-I was able to revert the first bad commit.
-
-git revert 77b9040195dea3fcddf19e136c9e99a501351778
-
-[master a91dcf9dc14c] Revert "compat_ioctl: simplify the implementation"
-  4 files changed, 105 insertions(+), 64 deletions(-)
-
-After that the avahi daemon works without any problems again.
-
-I created a patch today. (attached)
-
-It is also possible to deactivate the avahi daemon with the following lines
-in the file "/etc/avahi/avahi-daemon.conf":
-
-use-ipv4=no
-use-ipv6=no
-
-Could you please check your commit?
-
-Thanks,
-Christian
-
---------------25FA60D130063DB92E20AE88
-Content-Type: text/x-patch; charset=UTF-8;
- name="compat_ioctl-v1.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="compat_ioctl-v1.patch"
-
-diff -rupN a/fs/internal.h b/fs/internal.h
---- a/fs/internal.h	2020-02-07 13:20:46.294317088 +0100
-+++ b/fs/internal.h	2020-02-07 13:16:06.731416797 +0100
-@@ -182,6 +182,12 @@ extern void mnt_pin_kill(struct mount *m
-  */
- extern const struct dentry_operations ns_dentry_operations;
- 
-+/*
-+ * fs/ioctl.c
-+ */
-+extern int do_vfs_ioctl(struct file *file, unsigned int fd, unsigned int cmd,
-+		    unsigned long arg);
-+
- /* direct-io.c: */
- int sb_init_dio_done_wq(struct super_block *sb);
- 
-diff -rupN a/fs/ioctl.c b/fs/ioctl.c
---- a/fs/ioctl.c	2020-02-07 13:20:46.294317088 +0100
-+++ b/fs/ioctl.c	2020-02-07 13:16:06.331418365 +0100
-@@ -467,7 +467,7 @@ EXPORT_SYMBOL(generic_block_fiemap);
-  * Only the l_start, l_len and l_whence fields of the 'struct space_resv'
-  * are used here, rest are ignored.
-  */
--static int ioctl_preallocate(struct file *filp, int mode, void __user *argp)
-+int ioctl_preallocate(struct file *filp, int mode, void __user *argp)
- {
- 	struct inode *inode = file_inode(filp);
- 	struct space_resv sr;
-@@ -495,8 +495,8 @@ static int ioctl_preallocate(struct file
- /* on ia32 l_start is on a 32-bit boundary */
- #if defined CONFIG_COMPAT && defined(CONFIG_X86_64)
- /* just account for different alignment */
--static int compat_ioctl_preallocate(struct file *file, int mode,
--				    struct space_resv_32 __user *argp)
-+int compat_ioctl_preallocate(struct file *file, int mode,
-+				struct space_resv_32 __user *argp)
- {
- 	struct inode *inode = file_inode(file);
- 	struct space_resv_32 sr;
-@@ -521,9 +521,11 @@ static int compat_ioctl_preallocate(stru
- }
- #endif
- 
--static int file_ioctl(struct file *filp, unsigned int cmd, int __user *p)
-+static int file_ioctl(struct file *filp, unsigned int cmd,
-+		unsigned long arg)
- {
- 	struct inode *inode = file_inode(filp);
-+	int __user *p = (int __user *)arg;
- 
- 	switch (cmd) {
- 	case FIBMAP:
-@@ -540,7 +542,7 @@ static int file_ioctl(struct file *filp,
- 		return ioctl_preallocate(filp, FALLOC_FL_ZERO_RANGE, p);
- 	}
- 
--	return -ENOIOCTLCMD;
-+	return vfs_ioctl(filp, cmd, arg);
- }
- 
- static int ioctl_fionbio(struct file *filp, int __user *argp)
-@@ -659,48 +661,53 @@ out:
- }
- 
- /*
-+ * When you add any new common ioctls to the switches above and below
-+ * please update compat_sys_ioctl() too.
-+ *
-  * do_vfs_ioctl() is not for drivers and not intended to be EXPORT_SYMBOL()'d.
-  * It's just a simple helper for sys_ioctl and compat_sys_ioctl.
-- *
-- * When you add any new common ioctls to the switches above and below,
-- * please ensure they have compatible arguments in compat mode.
-  */
--static int do_vfs_ioctl(struct file *filp, unsigned int fd,
--			unsigned int cmd, unsigned long arg)
-+int do_vfs_ioctl(struct file *filp, unsigned int fd, unsigned int cmd,
-+	     unsigned long arg)
- {
-+	int error = 0;
- 	void __user *argp = (void __user *)arg;
- 	struct inode *inode = file_inode(filp);
- 
- 	switch (cmd) {
- 	case FIOCLEX:
- 		set_close_on_exec(fd, 1);
--		return 0;
-+		break;
- 
- 	case FIONCLEX:
- 		set_close_on_exec(fd, 0);
--		return 0;
-+		break;
- 
- 	case FIONBIO:
--		return ioctl_fionbio(filp, argp);
-+		error = ioctl_fionbio(filp, argp);
-+		break;
- 
- 	case FIOASYNC:
--		return ioctl_fioasync(fd, filp, argp);
-+		error = ioctl_fioasync(fd, filp, argp);
-+		break;
- 
- 	case FIOQSIZE:
- 		if (S_ISDIR(inode->i_mode) || S_ISREG(inode->i_mode) ||
- 		    S_ISLNK(inode->i_mode)) {
- 			loff_t res = inode_get_bytes(inode);
--			return copy_to_user(argp, &res, sizeof(res)) ?
--					    -EFAULT : 0;
--		}
--
--		return -ENOTTY;
-+			error = copy_to_user(argp, &res, sizeof(res)) ?
-+					-EFAULT : 0;
-+		} else
-+			error = -ENOTTY;
-+		break;
- 
- 	case FIFREEZE:
--		return ioctl_fsfreeze(filp);
-+		error = ioctl_fsfreeze(filp);
-+		break;
- 
- 	case FITHAW:
--		return ioctl_fsthaw(filp);
-+		error = ioctl_fsthaw(filp);
-+		break;
- 
- 	case FS_IOC_FIEMAP:
- 		return ioctl_fiemap(filp, argp);
-@@ -709,7 +716,6 @@ static int do_vfs_ioctl(struct file *fil
- 		/* anon_bdev filesystems may not have a block size */
- 		if (!inode->i_sb->s_blocksize)
- 			return -EINVAL;
--
- 		return put_user(inode->i_sb->s_blocksize, (int __user *)argp);
- 
- 	case FICLONE:
-@@ -723,30 +729,24 @@ static int do_vfs_ioctl(struct file *fil
- 
- 	default:
- 		if (S_ISREG(inode->i_mode))
--			return file_ioctl(filp, cmd, argp);
-+			error = file_ioctl(filp, cmd, arg);
-+		else
-+			error = vfs_ioctl(filp, cmd, arg);
- 		break;
- 	}
--
--	return -ENOIOCTLCMD;
-+	return error;
- }
- 
- int ksys_ioctl(unsigned int fd, unsigned int cmd, unsigned long arg)
- {
--	struct fd f = fdget(fd);
- 	int error;
-+	struct fd f = fdget(fd);
- 
- 	if (!f.file)
- 		return -EBADF;
--
- 	error = security_file_ioctl(f.file, cmd, arg);
--	if (error)
--		goto out;
--
--	error = do_vfs_ioctl(f.file, fd, cmd, arg);
--	if (error == -ENOIOCTLCMD)
--		error = vfs_ioctl(f.file, cmd, arg);
--
--out:
-+	if (!error)
-+		error = do_vfs_ioctl(f.file, fd, cmd, arg);
- 	fdput(f);
- 	return error;
- }
-@@ -790,63 +790,92 @@ long compat_ptr_ioctl(struct file *file,
- EXPORT_SYMBOL(compat_ptr_ioctl);
- 
- COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
--		       compat_ulong_t, arg)
-+		       compat_ulong_t, arg32)
- {
-+	unsigned long arg = arg32;
- 	struct fd f = fdget(fd);
--	int error;
--
-+	int error = -EBADF;
- 	if (!f.file)
--		return -EBADF;
-+		goto out;
- 
- 	/* RED-PEN how should LSM module know it's handling 32bit? */
- 	error = security_file_ioctl(f.file, cmd, arg);
- 	if (error)
--		goto out;
-+		goto out_fput;
- 
- 	switch (cmd) {
--	/* FICLONE takes an int argument, so don't use compat_ptr() */
-+	/* these are never seen by ->ioctl(), no argument or int argument */
-+	case FIOCLEX:
-+	case FIONCLEX:
-+	case FIFREEZE:
-+	case FITHAW:
- 	case FICLONE:
--		error = ioctl_file_clone(f.file, arg, 0, 0, 0);
--		break;
--
--#if defined(CONFIG_X86_64)
-+		goto do_ioctl;
-+	/* these are never seen by ->ioctl(), pointer argument */
-+	case FIONBIO:
-+	case FIOASYNC:
-+	case FIOQSIZE:
-+	case FS_IOC_FIEMAP:
-+	case FIGETBSZ:
-+	case FICLONERANGE:
-+	case FIDEDUPERANGE:
-+		goto found_handler;
-+	/*
-+	 * The next group is the stuff handled inside file_ioctl().
-+	 * For regular files these never reach ->ioctl(); for
-+	 * devices, sockets, etc. they do and one (FIONREAD) is
-+	 * even accepted in some cases.  In all those cases
-+	 * argument has the same type, so we can handle these
-+	 * here, shunting them towards do_vfs_ioctl().
-+	 * ->compat_ioctl() will never see any of those.
-+	 */
-+	/* pointer argument, never actually handled by ->ioctl() */
-+	case FIBMAP:
-+		goto found_handler;
-+	/* handled by some ->ioctl(); always a pointer to int */
-+	case FIONREAD:
-+		goto found_handler;
- 	/* these get messy on amd64 due to alignment differences */
-+#if defined(CONFIG_X86_64)
- 	case FS_IOC_RESVSP_32:
- 	case FS_IOC_RESVSP64_32:
- 		error = compat_ioctl_preallocate(f.file, 0, compat_ptr(arg));
--		break;
-+		goto out_fput;
- 	case FS_IOC_UNRESVSP_32:
- 	case FS_IOC_UNRESVSP64_32:
- 		error = compat_ioctl_preallocate(f.file, FALLOC_FL_PUNCH_HOLE,
- 				compat_ptr(arg));
--		break;
-+		goto out_fput;
- 	case FS_IOC_ZERO_RANGE_32:
- 		error = compat_ioctl_preallocate(f.file, FALLOC_FL_ZERO_RANGE,
- 				compat_ptr(arg));
--		break;
-+		goto out_fput;
-+#else
-+	case FS_IOC_RESVSP:
-+	case FS_IOC_RESVSP64:
-+	case FS_IOC_UNRESVSP:
-+	case FS_IOC_UNRESVSP64:
-+	case FS_IOC_ZERO_RANGE:
-+		goto found_handler;
- #endif
- 
--	/*
--	 * everything else in do_vfs_ioctl() takes either a compatible
--	 * pointer argument or no argument -- call it with a modified
--	 * argument.
--	 */
- 	default:
--		error = do_vfs_ioctl(f.file, fd, cmd,
--				     (unsigned long)compat_ptr(arg));
--		if (error != -ENOIOCTLCMD)
--			break;
--
--		if (f.file->f_op->compat_ioctl)
-+		if (f.file->f_op->compat_ioctl) {
- 			error = f.file->f_op->compat_ioctl(f.file, cmd, arg);
--		if (error == -ENOIOCTLCMD)
--			error = -ENOTTY;
--		break;
-+			if (error != -ENOIOCTLCMD)
-+				goto out_fput;
-+		}
-+		error = -ENOTTY;
-+		goto out_fput;
- 	}
- 
-- out:
-+ found_handler:
-+	arg = (unsigned long)compat_ptr(arg);
-+ do_ioctl:
-+	error = do_vfs_ioctl(f.file, fd, cmd, arg);
-+ out_fput:
- 	fdput(f);
--
-+ out:
- 	return error;
- }
- #endif
-diff -rupN a/include/linux/falloc.h b/include/linux/falloc.h
---- a/include/linux/falloc.h	2020-02-07 13:20:46.382316741 +0100
-+++ b/include/linux/falloc.h	2020-02-07 13:16:06.331418365 +0100
-@@ -51,6 +51,8 @@ struct space_resv_32 {
- #define FS_IOC_UNRESVSP64_32	_IOW ('X', 43, struct space_resv_32)
- #define FS_IOC_ZERO_RANGE_32	_IOW ('X', 57, struct space_resv_32)
- 
-+int compat_ioctl_preallocate(struct file *, int, struct space_resv_32 __user *);
-+
- #endif
- 
- #endif /* _FALLOC_H_ */
-diff -rupN a/include/linux/fs.h b/include/linux/fs.h
---- a/include/linux/fs.h	2020-02-07 13:20:46.382316741 +0100
-+++ b/include/linux/fs.h	2020-02-07 13:16:06.731416797 +0100
-@@ -2563,6 +2563,10 @@ extern int finish_open(struct file *file
- 			int (*open)(struct inode *, struct file *));
- extern int finish_no_open(struct file *file, struct dentry *dentry);
- 
-+/* fs/ioctl.c */
-+
-+extern int ioctl_preallocate(struct file *filp, int mode, void __user *argp);
-+
- /* fs/dcache.c */
- extern void __init vfs_caches_init_early(void);
- extern void __init vfs_caches_init(void);
-
---------------25FA60D130063DB92E20AE88--
+> ---
+>   arch/powerpc/include/asm/futex.h | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/futex.h b/arch/powerpc/include/asm/futex.h
+> index eea28ca679db..bc7d9d06a6d9 100644
+> --- a/arch/powerpc/include/asm/futex.h
+> +++ b/arch/powerpc/include/asm/futex.h
+> @@ -35,7 +35,7 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
+>   {
+>   	int oldval = 0, ret;
+>   
+> -	allow_write_to_user(uaddr, sizeof(*uaddr));
+> +	allow_read_write_user(uaddr, uaddr, sizeof(*uaddr));
+>   	pagefault_disable();
+>   
+>   	switch (op) {
+> @@ -62,7 +62,7 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
+>   
+>   	*oval = oldval;
+>   
+> -	prevent_write_to_user(uaddr, sizeof(*uaddr));
+> +	prevent_read_write_user(uaddr, uaddr, sizeof(*uaddr));
+>   	return ret;
+>   }
+>   
+> @@ -76,7 +76,8 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+>   	if (!access_ok(uaddr, sizeof(u32)))
+>   		return -EFAULT;
+>   
+> -	allow_write_to_user(uaddr, sizeof(*uaddr));
+> +	allow_read_write_user(uaddr, uaddr, sizeof(*uaddr));
+> +
+>           __asm__ __volatile__ (
+>           PPC_ATOMIC_ENTRY_BARRIER
+>   "1:     lwarx   %1,0,%3         # futex_atomic_cmpxchg_inatomic\n\
+> @@ -97,7 +98,8 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+>           : "cc", "memory");
+>   
+>   	*uval = prev;
+> -	prevent_write_to_user(uaddr, sizeof(*uaddr));
+> +	prevent_read_write_user(uaddr, uaddr, sizeof(*uaddr));
+> +
+>           return ret;
+>   }
+>   
+> 
