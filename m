@@ -1,84 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E32155CAC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 18:15:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Dhkc16RyzDqjk
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 04:15:04 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFF2155CB3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 18:17:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Dhnq5LgGzDqhb
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 04:17:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Dhhw5rnLzDqf6
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 04:13:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48Dhhw2hcWz8shd
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 04:13:36 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48Dhhw2KNVz9sRl; Sat,  8 Feb 2020 04:13:36 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-X-Greylist: delayed 308 seconds by postgrey-1.36 at bilbo;
- Sat, 08 Feb 2020 04:13:34 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=B5Dzvz78; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48Dhht5Y8Gz9sRX
- for <linuxppc-dev@ozlabs.org>; Sat,  8 Feb 2020 04:13:34 +1100 (AEDT)
-Received: from mail-lj1-f172.google.com ([209.85.208.172]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MSI6i-1j6oAt2xdQ-00SdUl for <linuxppc-dev@ozlabs.org>; Fri, 07 Feb 2020
- 18:08:19 +0100
-Received: by mail-lj1-f172.google.com with SMTP id v17so72486ljg.4
- for <linuxppc-dev@ozlabs.org>; Fri, 07 Feb 2020 09:08:18 -0800 (PST)
-X-Gm-Message-State: APjAAAVArC7TgcWNQzcud0h0/S0OvwJHUUfb9v8dz0p5hQQIZamhMT6/
- mlJTishihraaVGEgGsrez++hNNW3gaS2f16Tuok=
-X-Google-Smtp-Source: APXvYqw9u3WcxbpVw6rO3j9Ozu9XMB+H2m1FoTnlA7ltWTv2RF4oTSzNzORrzx5UZNelPR7iZjN33BiBam2VYEndX7Q=
-X-Received: by 2002:a2e:5056:: with SMTP id v22mr142178ljd.164.1581095297786; 
- Fri, 07 Feb 2020 09:08:17 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DhmF3bBXzDqfZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 04:16:27 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48Dhm55y0VzB09Zt;
+ Fri,  7 Feb 2020 18:16:21 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=B5Dzvz78; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id PEOQoOqqWjQO; Fri,  7 Feb 2020 18:16:21 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48Dhm54pNWzB09Zs;
+ Fri,  7 Feb 2020 18:16:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1581095781; bh=8UYDnsZAmrHOVztmoT77XYqHoguzdvY3lFNKOQp23ng=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=B5Dzvz78nsBw203A8/6p1JW9VQvaW4lp1cb9w+lV/ZwBRmp3klX8ZSu0mB0QgxVcW
+ SmXqbmzyjTu35cbj/PDOhCRj275FgOIPk2Hmn+eOQnMPisMQc8RXntZ4yG0otNlirr
+ Wc/w/faEitCxw1TSTLJigm9ogAzsm5NTtK+WHHmo=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 67B598B8DB;
+ Fri,  7 Feb 2020 18:16:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id VLVEuB4rbdIk; Fri,  7 Feb 2020 18:16:23 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D89BB8B8BA;
+ Fri,  7 Feb 2020 18:16:22 +0100 (CET)
+Subject: Re: [PATCH v5 17/17] powerpc/32s: Enable CONFIG_VMAP_STACK
+To: Guenter Roeck <linux@roeck-us.net>
+References: <cover.1576916812.git.christophe.leroy@c-s.fr>
+ <2e2509a242fd5f3e23df4a06530c18060c4d321e.1576916812.git.christophe.leroy@c-s.fr>
+ <20200206203146.GA23248@roeck-us.net>
+ <c6285f2a-f8f5-0d97-2d80-061da1f1a7fc@c-s.fr>
+ <0f866131-4292-a66b-2637-c34139277486@c-s.fr>
+ <551bad84-3e80-265b-93ab-25eae4aa9807@roeck-us.net>
+ <29bd8702-9b8f-6931-2bbc-db7e444907d5@c-s.fr>
+ <d6158967-fde3-1a87-44b6-07638bd2b5b0@roeck-us.net>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <05cd3886-7a70-3a6c-c7e6-999a5f829ad9@c-s.fr>
+Date: Fri, 7 Feb 2020 17:16:22 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-References: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
- <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
- <87tv441gg1.fsf@mpe.ellerman.id.au>
- <42888ad2-71e0-6d03-ddff-3de6f0ee5d43@xenosoft.de>
-In-Reply-To: <42888ad2-71e0-6d03-ddff-3de6f0ee5d43@xenosoft.de>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 7 Feb 2020 17:08:06 +0000
-X-Gmail-Original-Message-ID: <CAK8P3a39L5i4aEbKe9CiW6unbioL=T8GqXC007mXxUu+_j84FA@mail.gmail.com>
-Message-ID: <CAK8P3a39L5i4aEbKe9CiW6unbioL=T8GqXC007mXxUu+_j84FA@mail.gmail.com>
-Subject: Re: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate
- ioctl for device
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:fdtBRiF7UB4mERUOcTVlOg7mSp4wF9WF7ALnFzXbfkPV1T6jeUR
- 1uQaQ+94jix1VZJcqlKP31Y9hAcTIYRLFvaTD78pEca1ZnQL5WyipDnA1pcFcPdIYjgRzRe
- xcUJsUxo5JnJnPX21mc9A0gPYkVlbX5eHZ6va/cGYkV2iauEsYWgzcyMPv0i4ZxCDWQzGXS
- LxIJs/jdHRr1+wA+NrXeQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:U5UzjEcUpo4=:dXUeruSHBIWWFuiIORVZKH
- gBvE4xEbbSJp9hCXsFegEYGunQwQMAOn+MVkHP0YVye/8eYJ+WpgYXOpg9SdanJR8DVlc5sJm
- 2yztCszcSXVuJ1sAImt3XDCkZlaq12ddhXCwu/R285oQwR90w9FDeSYhL1FAuEWQn1jqSjrPt
- UadaVxUj5Dk6/922dPm9vf/WlNdch4htCpkjilKQI+CivGS9EbgaqcLmXdPB44NZSCzIvWlTk
- 8+8Ngm+Z2DcW8toWUn4WVIsqzCYm8nIuR+lpBr9RGrrdbfA8KjLma1mWo+W6a7XbATaZACCC1
- d3dK6/MKzKEWrnoGBw4dPI75XETCkWChAklGEbvW0UNRkNEFoo+bji+B9n8500w13uJ1P+tNr
- ymL6rOc/4VT1ldz2YoU+HwEEt4vF4N+EbkY5Jpcc1lf5fTmjKd5Mz3aN4V3XDOxU/XXPn/jc0
- ginBYBDWflnNGXpo6p1U9b8B69nSXvk1wDCFSsiaYKa5I2SEKkm7qUp2blLYIh+BbOWKYIYsO
- Zb/kew0Azp4UnfOSmQgI4WXppSYRAdOR1Jydse4EZjy2zTZkbuPFrE2ekU3KfcuLYItcPiqmn
- J36xFaogQvnQNQoCgz9JOoZohsCirbeX1KbDoDhl99P3wZipAePSBlXADIwB1AN03kBX0KgWp
- FslCB3nFDZZ1EMtXMt756jYAgZEdYK3mvZ7ODfRYsyyZwaLjQX+RVk7L9k78mwgRWBjk8DR6q
- eQaaWGX9WhZjMeqwQAkQRIPST6anX8U0Cbn2+QDNMR9l1YKJ5ig7AD5QqWqQDRGMXTnhDd5LJ
- EWYTaDfQg6qC5XgE/14jBBUlEXovKWaHCTI7Xpe905xhw/09uk=
+In-Reply-To: <d6158967-fde3-1a87-44b6-07638bd2b5b0@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,38 +84,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 7, 2020 at 3:34 PM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
->
-> Hello Arnd,
->
-> We regularly compile and test Linux kernels every day during the merge
-> window. Since Thursday last week we have very high CPU usage because of
-> the avahi daemon on our desktop Linux systems (Ubuntu, Debian etc). The
-> avahi daemon produces a lot of the following log message. This generates
-> high CPU usage.
->
-> Error message: avahi-daemon[2410]: ioctl(): Inappropriate ioctl for device
->
-> strace /usr/sbin/avahi-daemon:
->
 
-Thanks a lot for the detailed analysis, with this I immediately saw
-what went wrong in my
-original commit and I sent you a fix. Please test to ensure that this
-correctly addresses
-the problem.
 
-        Arnd
+On 02/07/2020 01:44 PM, Guenter Roeck wrote:
+> On 2/7/20 5:29 AM, Christophe Leroy wrote:
+>>
+>>
+>> On 02/07/2020 01:08 PM, Guenter Roeck wrote:
+>>> On 2/7/20 12:28 AM, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> On 02/07/2020 06:13 AM, Christophe Leroy wrote:
+>>>>>
+>>>>>
+>>>>> Le 06/02/2020 à 21:31, Guenter Roeck a écrit :
+>>>>>> On Sat, Dec 21, 2019 at 08:32:38AM +0000, Christophe Leroy wrote:
+>>>>>>> A few changes to retrieve DAR and DSISR from struct regs
+>>>>>>> instead of retrieving them directly, as they may have
+>>>>>>> changed due to a TLB miss.
+>>>>>>>
+>>>>>>> Also modifies hash_page() and friends to work with virtual
+>>>>>>> data addresses instead of physical ones. Same on load_up_fpu()
+>>>>>>> and load_up_altivec().
+>>>>>>>
+>>>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>>>>
+>>>>>> This patch results in qemu boot failures (mac99 with 
+>>>>>> pmac32_defconfig).
+>>>>>> Images fail silently; there is no console output. Reverting the patch
+>>>>>> fixes the problem. Bisect log is attached below.
+>>>>>>
+>>>>>> Assuming this was tested on real hardware, am I correct to assume 
+>>>>>> that qemu
+>>>>>> for ppc32 (more specifically, qemu's mac99 and g3beige machines) 
+>>>>>> no longer
+>>>>>> works with the upstream kernel ?
+>>>>>
+>>>>> Before submitting the series, I successfully tested:
+>>>>> - Real HW with powerpc 8xx
+>>>>> - Real HW with powerpc 832x
+>>>>> - Qemu's mac99
+>>>>>
+>>>>> I'll re-check the upstream kernel.
+>>>>>
+>>>>
+>>>> This is still working for me with the upstream kernel:
+>>>>
+>>>
+>>> Interesting. What is your kernel configuration, your qemu version, and
+>>> your qemu command line ?
+>>
+>> Config is pmac32_defconfig + CONFIG_DEVTMPFS (But kernel also boots 
+>> without CONFIG_DEVTMPFS)
+>>
+>> QEMU emulator version 2.11.2
+>>
+>> qemu-system-ppc -kernel vmlinux -M mac99 -initrd rootfs.cpio.gz -s -m 
+>> 1024
+>>
+>> Works with both GCC 5.5 and GCC 8.1
+>>
+> Actually, the problem is that I have locking selftest options enabled
+> in my tests. Everything works if I disable those. The "culprit" seems
+> to be CONFIG_PROVE_LOCKING. Can you retest with CONFIG_PROVE_LOCKING=y ?
+> 
+
+With CONFIG_PROVE_LOCKING, I get a deadlock after:
+
+[...]
+Kernel virtual memory layout:
+   * 0xffbcf000..0xfffff000  : fixmap
+   * 0xff400000..0xff800000  : highmem PTEs
+   * 0xfeb36000..0xff400000  : early ioremap
+   * 0xf1000000..0xfeb36000  : vmalloc & ioremap
+SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Running RCU self tests
+NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+mpic: Resetting
+mpic: Setting up MPIC " MPIC 1   " version 1.2 at 80040000, max 1 CPUs
+mpic: ISU size: 64, shift: 6, mask: 3f
+mpic: Initializing for 64 sources
+GMT Delta read from XPRAM: 0 minutes, DST: on
+time_init: decrementer frequency = 100.000000 MHz
+time_init: processor frequency   = 900.000000 MHz
+clocksource: timebase: mask: 0xffffffffffffffff max_cycles: 
+0x171024e7e0, max_idle_ns: 440795205315 ns
+clocksource: timebase mult[a000000] shift[24] registered
+clockevent: decrementer mult[1999999a] shift[32] cpu[0]
+Console: colour dummy device 80x25
+Lock dependency validator: Copyright (c) 2006 Red Hat, Inc., Ingo Molnar
+
+
+
+Please test the patch I'll send out in a few minutes.
+
+Thanks
+Christophe
