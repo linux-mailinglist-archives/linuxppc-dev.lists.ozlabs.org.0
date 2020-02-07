@@ -1,98 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A54015515C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 04:52:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48DLw04rR0zDqgP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 14:52:00 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7BC9155163
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 04:57:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48DM2d2GvwzDqcw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 14:57:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::141;
+ helo=mail-il1-x141.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fKCxejqK; dkim-atps=neutral
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48DLtW4mfdzDqcV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 14:50:43 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0173iPCu012192; Thu, 6 Feb 2020 22:50:24 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y0p3k9m36-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Feb 2020 22:50:24 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0173jp7w014848;
- Thu, 6 Feb 2020 22:50:23 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y0p3k9m2c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Feb 2020 22:50:23 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0173muEP023176;
- Fri, 7 Feb 2020 03:50:22 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04dal.us.ibm.com with ESMTP id 2xykc9xrhj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Feb 2020 03:50:22 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0173oKbg30998926
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Feb 2020 03:50:20 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFD64C6059;
- Fri,  7 Feb 2020 03:50:20 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A722CC605A;
- Fri,  7 Feb 2020 03:50:01 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.188.217])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri,  7 Feb 2020 03:50:00 +0000 (GMT)
-Message-ID: <31b7229b979da2b0bdec041724dd1698cf76298c.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 06/11] powerpc/mm/book3s64/hash: Use functions to
- track lockless pgtbl walks
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>, Andrew Morton
- <akpm@linux-foundation.org>, "Aneesh Kumar K.V"
- <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Steven
- Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>, Mahesh
- Salgaonkar <mahesh@linux.vnet.ibm.com>, Balbir Singh
- <bsingharora@gmail.com>, Reza Arbab <arbab@linux.ibm.com>, Thomas Gleixner
- <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
- <rppt@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>
-Date: Fri, 07 Feb 2020 00:49:56 -0300
-In-Reply-To: <1b65f1a8-42a8-6ffc-3a06-08fbb34edab5@c-s.fr>
-References: <20200206030900.147032-1-leonardo@linux.ibm.com>
- <20200206030900.147032-7-leonardo@linux.ibm.com>
- <1b65f1a8-42a8-6ffc-3a06-08fbb34edab5@c-s.fr>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-CBJiDJxhT4An72p6WJMR"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DM1716HnzDqXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 14:56:26 +1100 (AEDT)
+Received: by mail-il1-x141.google.com with SMTP id f10so537470ils.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2020 19:56:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=KkzsNJV+aY0g/K99TGSPn/rUfA0jwLEbrpPdI3caRWA=;
+ b=fKCxejqKnB0Fhrdbvhdp+Vvh5beWV2AD8QofBmHqQVZBCO46ttxmuXuhdD9ariDZDA
+ T+80DcTnbT7eT+5NonmhzMt4OF9rG2eVkCJ1vqL+uImM00m7cHr8SwZKK15nQQXOAO9+
+ 7Y6OntSmQfyQZ67Cne9beMKI1OwwD5gxiZRCQb3NLpoWjlEq0Vg7puvhWUodvmZeZkPS
+ /4/8Ryi3mWb3TV6QY98E31gehG4dHmdBUCr6RaJsiMbpH6RMhIWE4nFcAf2aIdbHkP7F
+ 5SYLC0CE0eaBHNyh73gru63KkpOKN4RLaqBGErVjukVJZa3SPVmYF78a6RL4ATEPjNGz
+ UPzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=KkzsNJV+aY0g/K99TGSPn/rUfA0jwLEbrpPdI3caRWA=;
+ b=nrB00bWvNM0p/QEXgWDKhf24+4SWdQtDAeuudaNTYqzSwDipOap48viNguRq5jJT0R
+ 5xmBHmuqm06wBZ2y3Jnp4WkPPEUHV2zvYjixk3PaFx6noHHEuvnmNdPdgFyrDWMsNzRw
+ Gt4PSJK6aY+lZh+QHICxwc4DYDcTqAxgYtVZWcW9PiveBxeYY+bvhdJjp51p1YzdBmIu
+ XglQJkisyYf1PC8rG1swqZmK5ERENReR3TZT40Z+P5B0yQDEPJa9bI6CuD3/tiB8Kj73
+ 4vHhVAVUb4OmlgfUCYr5tgrOImP3q2G48ipo6t4NcQU3A6U5HPZp8OQCLa8xg+re8ilz
+ BKQw==
+X-Gm-Message-State: APjAAAWSffWxJ0silttMQE/5tWDhQGRth+nd6UwFtRj2+FoFXA7VW03I
+ Fspz2r+/YWeZ3aVUNIpWejiA7hy37lRb2xL80XSbuw==
+X-Google-Smtp-Source: APXvYqwkGYsQQCuTeeLq963UCrVFLpJoTYwkCwuSuKEu1dH8KKXhs/FayQZsCoFmN1qHj5uSZyV+OWo9XUJY5Azyebk=
+X-Received: by 2002:a92:910b:: with SMTP id t11mr7420305ild.195.1581047784416; 
+ Thu, 06 Feb 2020 19:56:24 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-06_04:2020-02-06,
- 2020-02-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 impostorscore=0
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002070021
+References: <20200203083521.16549-1-oohall@gmail.com>
+ <20200203083521.16549-6-oohall@gmail.com>
+ <20200207022412.GA21238@osmium>
+ <CAOSf1CEBuv-5GLbOX6Kaux1zA2uNVheXRtDfjVkbx+wcKtZHng@mail.gmail.com>
+In-Reply-To: <CAOSf1CEBuv-5GLbOX6Kaux1zA2uNVheXRtDfjVkbx+wcKtZHng@mail.gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 7 Feb 2020 14:56:13 +1100
+Message-ID: <CAOSf1CEjdt_RVH4YvDscCR_kjS9-Gv0MvwJkY+QaCoYYb1+RrQ@mail.gmail.com>
+Subject: Re: [PATCH 5/6] powerpc/eeh: Make early EEH init pseries specific
+To: Sam Bobroff <sbobroff@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,182 +75,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Feb 7, 2020 at 2:35 PM Oliver O'Halloran <oohall@gmail.com> wrote:
+>
+> On Fri, Feb 7, 2020 at 1:24 PM Sam Bobroff <sbobroff@linux.ibm.com> wrote:
+> >
+> > On Mon, Feb 03, 2020 at 07:35:20PM +1100, Oliver O'Halloran wrote:
+> > > The eeh_ops->probe() function is called from two different contexts:
+> > >
+> > > 1. On pseries, where set set EEH_PROBE_MODE_DEVTREE, it's called in
+> > "set set" -> "we set"
+> > >    eeh_add_device_early() which is supposed to run before we create
+> > >    a pci_dev.
+> > >
+> > > 2. On PowerNV, where we set EEH_PROBE_MODE_DEV, it's called in
+> > >    eeh_device_add_late() which is supposed to run *after* the
+> > >    pci_dev is created.
+> > >
+> > > The "early" probe is required because PAPR requires that we perform an RTAS
+> > > call to enable EEH support on a device before we start interacting with it
+> > > via config space or MMIO. This requirement doesn't exist on PowerNV and
+> > > shoehorning two completely separate initialisation paths into a common
+> > > interface just results in a convoluted code everywhere.
+> > >
+> > > Additionally the early probe requires the probe function to take an pci_dn
+> > > rather than a pci_dev argument. We'd like to make pci_dn a pseries specific
+> > > data structure since there's no real requirement for them on PowerNV. To
+> > > help both goals move the early probe into the pseries containment zone
+> > > so the platform depedence is more explicit.
+> > >
+> > I had a look around near your comment:
+> > > +                     // XXX: uh, do we have the rescan lock held here?
+> > And we definitely don't have the lock when it gets called via the module
+> > init path (as rpaphp is loaded) -- I tried it and there was no deadlock.
+> > I don't think we have the lock in other situations but I haven't
+> > unravelled it all enough yet to tell, either.
+>
+> The other hotplug drivers seem to be taking the lock manually in their
+> enable_slot() callback. So I guess we need to be doing it there too.
+> I'll fix it in another patch since this one is a bit big.
 
---=-CBJiDJxhT4An72p6WJMR
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2020-02-06 at 07:06 +0100, Christophe Leroy wrote:
-> > -	/* Get PTE and page size from page tables */
-> > +	/* Get PTE and page size from page tables :
-> > +	 * Called in from DataAccess interrupt (data_access_common: 0x300),
-> > +	 * interrupts are disabled here.
-> > +	 */
->=20
-> Comments formatting is not in line with Linux kernel rules. Should be no=
-=20
-> text on the first /* line.
-
-My mistake. Will be corrected in v7.
-
-> > +	__begin_lockless_pgtbl_walk(false);
->=20
-> I think it would be better to not use __begin_lockless_pgtbl_walk()=20
-> directly but keep it in a single place, and define something like=20
-> begin_lockless_pgtbl_walk_noirq() similar to begin_lockless_pgtbl_walk()
-
-There are places where touching irq is decided by a boolean, like in
-patch 8: http://patchwork.ozlabs.org/patch/1234130/
-
-If I were to change this, I would have to place ifs and decide to call
-either normal or *_noirq() versions in every function.
-
-What you suggest?
-
-> >   	ptep =3D find_linux_pte(pgdir, ea, &is_thp, &hugeshift);
-> >   	if (ptep =3D=3D NULL || !pte_present(*ptep)) {
-> >   		DBG_LOW(" no PTE !\n");
-> >   		rc =3D 1;
-> > -		goto bail;
-> > +		goto bail_pgtbl_walk;
->=20
-> What's the point in changing the name of this label ? There is only one=
-=20
-> label, why polute the function with so huge name ?
->=20
-> For me, everyone understand what 'bail' means. Unneccessary changes=20
-> should be avoided. If you really really want to do it, it should be=20
-> another patch.
->=20
-> See kernel codying style, chapter 'naming':
-> "LOCAL variable names should be short". This also applies to labels.
->=20
-> "C is a Spartan language, and so should your naming be. Unlike Modula-2=
-=20
-> and Pascal programmers, C programmers do not use cute names like=20
-> ThisVariableIsATemporaryCounter. A C programmer would call that variable=
-=20
-> tmp, which is much easier to write, and not the least more difficult to=
-=20
-> understand."
->=20
-
-It's not label name changing. There are two possible bails in
-hash_page_mm(): one for before __begin_lockless_pagetable_walk() and
-other for after it. The new one also runs __end_lockless_pgtbl_walk()
-before running what the previous did:
-
-> > +bail_pgtbl_walk:
-> > +	__end_lockless_pgtbl_walk(0, false);
-> >   bail:
-> >   	exception_exit(prev_state);
-> >   	return rc;
-
-As for the label name lengh, I see no problem changing it to something
-like bail_ptw.=20
-
-
-> > @@ -1545,7 +1551,7 @@ static void hash_preload(struct mm_struct *mm, un=
-signed long ea,
-> >   	unsigned long vsid;
-> >   	pgd_t *pgdir;
-> >   	pte_t *ptep;
-> > -	unsigned long flags;
-> > +	unsigned long irq_mask;
-> >   	int rc, ssize, update_flags =3D 0;
-> >   	unsigned long access =3D _PAGE_PRESENT | _PAGE_READ | (is_exec ? _PA=
-GE_EXEC : 0);
-> >  =20
-> > @@ -1567,11 +1573,12 @@ static void hash_preload(struct mm_struct *mm, =
-unsigned long ea,
-> >   	vsid =3D get_user_vsid(&mm->context, ea, ssize);
-> >   	if (!vsid)
-> >   		return;
-> > +
->=20
-> Is this new line related to the patch ?
-
-Nope. I have added while reading code and it just went trough my pre-
-sending revision. I can remove it, if it bothers.
-
->=20
-> >   	/*
-> >   	 * Hash doesn't like irqs. Walking linux page table with irq disable=
-d
-> >   	 * saves us from holding multiple locks.
-> >   	 */
-> > -	local_irq_save(flags);
-> > +	irq_mask =3D begin_lockless_pgtbl_walk();
-> >  =20
-> >   	/*
-> >   	 * THP pages use update_mmu_cache_pmd. We don't do
-> > @@ -1616,7 +1623,7 @@ static void hash_preload(struct mm_struct *mm, un=
-signed long ea,
-> >   				   mm_ctx_user_psize(&mm->context),
-> >   				   pte_val(*ptep));
-> >   out_exit:
-> > -	local_irq_restore(flags);
-> > +	end_lockless_pgtbl_walk(irq_mask);
-> >   }
-> >  =20
-> >   /*
-> > @@ -1679,16 +1686,16 @@ u16 get_mm_addr_key(struct mm_struct *mm, unsig=
-ned long address)
-> >   {
-> >   	pte_t *ptep;
-> >   	u16 pkey =3D 0;
-> > -	unsigned long flags;
-> > +	unsigned long irq_mask;
-> >  =20
-> >   	if (!mm || !mm->pgd)
-> >   		return 0;
-> >  =20
-> > -	local_irq_save(flags);
-> > +	irq_mask =3D begin_lockless_pgtbl_walk();
-> >   	ptep =3D find_linux_pte(mm->pgd, address, NULL, NULL);
-> >   	if (ptep)
-> >   		pkey =3D pte_to_pkey_bits(pte_val(READ_ONCE(*ptep)));
-> > -	local_irq_restore(flags);
-> > +	end_lockless_pgtbl_walk(irq_mask);
-> >  =20
-> >   	return pkey;
-> >   }
-> >=20
->=20
-> Christophe
-
-Thanks for giving feedback,
-
-Leonardo Bras
-
---=-CBJiDJxhT4An72p6WJMR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl483mQACgkQlQYWtz9S
-ttT0RhAA0oKi/2XxY/SIX1F2r5GCR1RED6qxY0qr3xnxzpM3v721Eauf6gu1qqn+
-mLHWCjePDMZExodUEzcikEKxWX8xKJremMeTtKb9NsWunyDeBJsc/DZYjfgrbV06
-gIolgdRivEhBdPxuy1PuDVgkw1wbtWXIcbOV38cZUK5nPplruTem+BgpHUey7B9P
-X4FMTaZS4I4FLTxW21HLzr8finjGCD/Te4UeStnFaf5CWDb1rHhYmfVS6d0sVs7d
-yX97lrw9TkiQdwiCVv7ubcdyyJzP7ZJvhYvikVx2R+S2QZU2sSy9omWp14kAmmDS
-fBou25w24OyCphm2MD+cHl+i51aCOVhRwM4SmxFtUhDdoSTzSwJpLr4W+iyTOQGE
-DghnMCnPNN8f+zdJG+cofT0SxIPq8M2qvUyppRximtgc8C2mlLNgrm1dmcDj+/He
-cR0V5zvcCUNpGEQFZ7McZYh3iYkyKOOgWDbnf9NCWCO7wxKaFJm/OuRE3QnI1R1L
-wK/1YkmxJYw+e2ighyOrsIc95aezgjWO1ErqrbUr8slXMu7cj26MAFHCwa/2apCO
-gbieqVCJc80O47JXNXW9hTiTcyly25oGR98Mowr8k+C4tcRtFwFwaG8yEz1nyoUV
-54GtadMwB6OFVlSJdalc+p/GPxVPFwYyWVXGs15Y6g0DdXVkQbc=
-=D0Zg
------END PGP SIGNATURE-----
-
---=-CBJiDJxhT4An72p6WJMR--
-
+On closer inspection I think we'll need to have a deeper look at this.
+This function isn't used for operations on the hotplug slot. Instead
+it's used for DLPAR operations including adding / removing whole PHBs.
+There doesn't appear to be any code in the DLPAR add / remove paths
+which takes the PCI rescan / remove lock so I think we'll need to have
+a careful look at what's going on there. Great stuff...
