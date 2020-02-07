@@ -2,96 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5AF1550DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 04:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA6A1550F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 04:24:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48DL2h6tBWzDqgM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 14:12:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48DLJV5w5rzDqdS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 14:24:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
+ helo=mail-il1-x144.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=X8aVsk+2; dkim-atps=neutral
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
+ [IPv6:2607:f8b0:4864:20::144])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48DL1K3SlKzDqbq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 14:11:33 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0173B2Cn091052; Thu, 6 Feb 2020 22:11:10 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y0nnfscqf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Feb 2020 22:11:10 -0500
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0173B9o1091762;
- Thu, 6 Feb 2020 22:11:09 -0500
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y0nnfsch6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Feb 2020 22:11:09 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01738JVU028315;
- Fri, 7 Feb 2020 03:10:30 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 2xykc9t0x2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Feb 2020 03:10:30 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0173ATxc53346728
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Feb 2020 03:10:29 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD65EAC059;
- Fri,  7 Feb 2020 03:10:29 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02534AC05B;
- Fri,  7 Feb 2020 03:10:08 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.188.217])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  7 Feb 2020 03:10:08 +0000 (GMT)
-Message-ID: <34c67571bf366886aa8298373f3887f476b811a2.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 07/11] powerpc/kvm/e500: Use functions to track
- lockless pgtbl walks
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>, Andrew Morton
- <akpm@linux-foundation.org>, "Aneesh Kumar K.V"
- <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Steven
- Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>, Mahesh
- Salgaonkar <mahesh@linux.vnet.ibm.com>, Balbir Singh
- <bsingharora@gmail.com>, Reza Arbab <arbab@linux.ibm.com>, Thomas Gleixner
- <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
- <rppt@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>
-Date: Fri, 07 Feb 2020 00:10:02 -0300
-In-Reply-To: <fae235d5-78b6-87aa-ed3f-1a908d61abf4@c-s.fr>
-References: <20200206030900.147032-1-leonardo@linux.ibm.com>
- <20200206030900.147032-8-leonardo@linux.ibm.com>
- <fae235d5-78b6-87aa-ed3f-1a908d61abf4@c-s.fr>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-XtWHJcJJjtE0nWIZHITR"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DLGg4ny5zDqc4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 14:23:05 +1100 (AEDT)
+Received: by mail-il1-x144.google.com with SMTP id b15so511765iln.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2020 19:23:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=999+ro1o71YjmL31hHjYlyWQofbf4WDiQJUb05dcYmk=;
+ b=X8aVsk+2LLQM5aWqCqB4wtLmYJhWTuHsR0nkEhswG03BUXPNETkgBci6SiZBHdqTfG
+ /5kkNNq9oQcqq5KC/uZAhg8P88X9Bwtx1dboZgs3FQ1T8wEaRA2PKFdPjWvVDbmhkQqC
+ emUlQQFv85qU13dQKxIZaZddPIkWi15ygR4CP+TG7vdMY7+FshtLbG8IOVxTgXJDci7C
+ CRjKa6rQMkwhVRfysaOrSeoIgS30WUVM8fhD00lr/BQGlrFxo8sq60XBFCPNjPc+3c3R
+ TRldFvuQWup5hBp2vaiverX5MHyHu8r22d4lfUvLubrxJjCR5DbTb35KoGFkAxC6w3n3
+ KDJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=999+ro1o71YjmL31hHjYlyWQofbf4WDiQJUb05dcYmk=;
+ b=g7QluUi+rmTQ00ZJhHyUsm+vCds0InJ0q1ILG7GdTIhKlfvasIYlY3O0NjurTVUWLh
+ m+Et5Ryc+Rhfyk4YS1fxVZGG8SBws6g2NrKA/1eZ/GStKAFss5QFuA7yO8FNnti6omOD
+ VQuHixa5Zb2awjlff1QdbafkdspZfRNoBTyodBkSJdeLSLQ09sr6AHoqYALprVHshnfY
+ ChVCeSZSurOI0Obno+ofPSNnWMC3yYjhSgNT0/MdqkPTCnu/4eqExU79OU2QPtXC7H8H
+ wjCPOdPMdW7Li/KLLfy5v0XpWrTpnFXwAqM0xQ8ZQVlWvLAh4xSoOqzTxCxr4rckNS3V
+ fLIA==
+X-Gm-Message-State: APjAAAWrHdU/tR9CUAa0anyoDmnoZuVZZNZGNodr4xDmmBLPbCR7yJoR
+ O/UHaAm4oOt9gt8YmzS1PDrxGzSnxOOprIL360DPFw==
+X-Google-Smtp-Source: APXvYqy/V3SG+xXFCWsfcdxja+eeYWt4fX8Z7rQ1VoFNlplzeIJETZ6f9thOx+Z5rTDidoBGmRDjm95wnE+plkvkGCQ=
+X-Received: by 2002:a92:4e:: with SMTP id 75mr7075819ila.276.1581045780075;
+ Thu, 06 Feb 2020 19:23:00 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-06_04:2020-02-06,
- 2020-02-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 clxscore=1015 mlxlogscore=999 adultscore=0 priorityscore=1501
- bulkscore=0 suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002070018
+References: <20200203083521.16549-1-oohall@gmail.com>
+ <20200203083521.16549-2-oohall@gmail.com>
+ <20200206041311.GD15629@osmium>
+In-Reply-To: <20200206041311.GD15629@osmium>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 7 Feb 2020 14:22:49 +1100
+Message-ID: <CAOSf1CGuNvj7voW+sh_Y+d-PLf5DVy1qngXzCGuPvtbDPERcKA@mail.gmail.com>
+Subject: Re: [PATCH 1/6] powerpc/eeh: Add sysfs files in late probe
+To: Sam Bobroff <sbobroff@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,72 +74,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Feb 6, 2020 at 3:13 PM Sam Bobroff <sbobroff@linux.ibm.com> wrote:
+>
+> On Mon, Feb 03, 2020 at 07:35:16PM +1100, Oliver O'Halloran wrote:
+> > Move creating the EEH specific sysfs files into eeh_add_device_late()
+> > rather than being open-coded all over the place. Calling the function is
+> > generally done immediately after calling eeh_add_device_late() anyway. The
+> > two cases where it's not done there (OF based PCI probing and the pseries
+> > VFs) don't seem to have any issues with the re-ordering.
+>
+> I haven't tested it explicitly, but I suspect the re-ordering will
+> actually improve things: in some error cases it will no longer add sysfs
+> files for devices that have failed to init, because bailing out in
+> eeh_add_device_late() (or eeh_probve_device()) will now prevent
+> eeh_sysfs_add_device() from being called.
+>
+> Nice cleanup.
+>
+> Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
 
---=-XtWHJcJJjtE0nWIZHITR
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hello Christophe,=20
-
-On Thu, 2020-02-06 at 07:18 +0100, Christophe Leroy wrote:
->=20
-> I don't really like unbalanced begin/end.
->=20
-> Something like the following would be cleaner:
->=20
->=20
-> begin_lockless_pgtbl_walk()
-> ptep =3D find()
-> if (ptep) {
-> 	pte =3D READ_ONCE()
-> 	if (pte_present(pte))
-> 		wing=3D
-> 	else
-> 		ret =3D -EINVAL;
-> }
-> end_lockless_pgtbl_walk()
->=20
-> if (ret) {
-> 	pr_err_rate...()
-> 	goto out;
-> }
->=20
->=20
-
-Sure, looks better that way. I will change that for v7.
-
-Thanks for the feedback,
-
-Leonardo Bras
-
---=-XtWHJcJJjtE0nWIZHITR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl481QoACgkQlQYWtz9S
-ttTcdA//Xke6/twgyWIan1bRF0vWJ3qSy+yFDyf4csKImVLRQqAa/asW4bIBwGZS
-re3EzPV46Nuq6ZAg64yxwOokHEfwY1cdOmSCVmxZf0SUGViqZ2whL/CCED2H+f7f
-Lt+hw1ibONlzz8AvDLtplxj18Uc58G9mrXOOxLEz2LzqXrsL1AU/15R+NiDPaK1N
-lW5kxUsb8jHHzIOXem9B2aQRFDoCCx0uJzhNJn13ft30PZeaanSUNYqSuEa67tlA
-7iFqrtoLCD7KKXLNbvAh+43w+lvpEqRf9MBt7SoCXJQWCVrIXhj4yI3dbRaePyf3
-jY3vXrk/TapcfQQceptI47oaOtptRJ2MBntJYdh/kUYhLpy61px3q1mJvy4qZOrO
-gm9Y2YfVGf23zkcc9/YzOfOm0t+tf5VKUQj4a0rCIuSj/EgHW2vj3pq85Vt2PUB/
-aGp88Aosd2Wz3pqQ7aGsasy7vKlSc/nVOgItr/9Y8q51y3DdYkw+rUqqqZK4JH1h
-4qRGpb4jp2mZZdzvxxCklhHdqXNwLdSW+d6ZBYEww0N6T5aNCPp1hAAY16I9ZmYF
-AE/ZMZjVc9UNYqA9bHE29IETN0vuv8AIaREvwoK27Oip8cnhLpf8FA2uMWW80AcL
-7yw4v3Cojj76UcRoZkMRNCutFnPeIr7EUc5Po2GqKSMXQAYLLu8=
-=ZwdP
------END PGP SIGNATURE-----
-
---=-XtWHJcJJjtE0nWIZHITR--
-
+Ah, good point. I'll update the commit message.
