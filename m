@@ -2,86 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0B81557CF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 13:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E4E155826
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 14:11:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48DZTN3YvfzDqfj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 23:33:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48DbKG4lmmzDqfW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 00:11:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=q3mbCsFH; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48DZQZ4TzFzDqf4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 23:30:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=q+NDyaCW; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48DZQY5nmHz8vRR
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 23:30:45 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48DZQY31kfz9sSD; Fri,  7 Feb 2020 23:30:45 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=q+NDyaCW; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48DZQX5dswz9sRK
- for <linuxppc-dev@ozlabs.org>; Fri,  7 Feb 2020 23:30:44 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id d5so868247pjz.5
- for <linuxppc-dev@ozlabs.org>; Fri, 07 Feb 2020 04:30:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=VzXdoXe4eRLUi/xmmH61WzNlPRTJzhzUUU/V5eO1MbY=;
- b=q+NDyaCWigf6RnQvq6dETBmSKUJ/VWdSeClcSEB+89QuNoJAnIncef1Oy1oDi96IQc
- yy7HChkYiLvpNVxXdNEuSirsoDjIWsalfaja1btglBkLgwWQZ7MgXJty8xEGr8RLX5z/
- oxf706R9DxJNWJR/642abG0kyIoFeAW0Y/NhU=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DbFs60nqzDqfG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 00:08:17 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id n96so914413pjc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Feb 2020 05:08:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=z3DaoOJkhTG6G3BmjkBdZhMduYvYgvSmSTWWEthlkSk=;
+ b=q3mbCsFHzqyeqCJYLMglgwLFkVQ5mI7OMEB82wzE62obxmgZyo65BZlaOsUCDTv6Nu
+ kRnhvLFZBTulcUKzB90AiP86bJ9FOC7Lb6fEEZmsQ3XsfxT9aeQhLutvYHfw5KYKC/6r
+ aYDYXrDSWqkWyG0KJ+6xEyOjyW9W527U63CPdbqwXfSUrsDCA1O6gaoxxbzY8iqYpx1l
+ SG8zv1SBFVCkaB/58pZIKQo9NjrMVcmOtSOUuE9OEJZhuzETd1WMA0rlZL8QCWHr7Hry
+ 1YuQZnpzVZQvuxHJ7A5HIaqECZ1HygnQ2qAN6OCM+i8IWriBmJVHNNwYwxdznBk3r3XP
+ ja7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=VzXdoXe4eRLUi/xmmH61WzNlPRTJzhzUUU/V5eO1MbY=;
- b=S3tRFmNU/d66Su06l7IhWGf8X0rFV2tq8OsT1oBGvJylLd/GcNi0rUmtahJ3TbwPQq
- XMhtGftBdUyPezs80prS5/bdrRYrX0vCwPJ039cSDkhJ3P+gqyeLfTFcuFKwf6vK81v6
- qNRdOnsTc7vYo8e1mMSH58P3KniToP6sTAd7j/PkmvH6ZB+zvFPpex02Cq/gAe3C6D4Q
- 4HITNjJkDa29EoxWZu9EMI+7kjV6dhzyJmO1NI8hSk5foXuI5yjBFlN7fhBLpcPJM6/D
- uMOf7kUWXYGmHCSYCL8Gxl4hwRYdNI6R6Aboduetx4mKyCUP5+ka/YKLk6i/3cqilZeO
- STpg==
-X-Gm-Message-State: APjAAAUjAkxU90l5CPj4CpRPnS8A8NB96LtCD/8K4XpOjfseiPVZsVJU
- cke7MCvGm2aL7pvCfFHoRZEG8w==
-X-Google-Smtp-Source: APXvYqz4BXj4ZEWKeC4WncaoJjsnO+L9zTYPead8lpi1UAaaT+vFUQ5tlwWHU1NX34JTwTnkEQskYg==
-X-Received: by 2002:a17:902:9a8c:: with SMTP id
- w12mr9393595plp.149.1581078641349; 
- Fri, 07 Feb 2020 04:30:41 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-79c1-8a2e-ebd0-3bb8.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:79c1:8a2e:ebd0:3bb8])
- by smtp.gmail.com with ESMTPSA id t63sm3060449pfb.70.2020.02.07.04.30.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Feb 2020 04:30:40 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH] powerpc/futex: Fix incorrect user access blocking
-In-Reply-To: <20200207122145.11928-1-mpe@ellerman.id.au>
-References: <20200207122145.11928-1-mpe@ellerman.id.au>
-Date: Fri, 07 Feb 2020 23:30:37 +1100
-Message-ID: <87k14yh95e.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=z3DaoOJkhTG6G3BmjkBdZhMduYvYgvSmSTWWEthlkSk=;
+ b=YLHGSzJH2jCiC2HOBmeD5UjEJY5RkGDVOqttxppsUb/wcTHWAAt9HUCjGPbICUhDeO
+ MZE1hmkijk+B29H65TebwQZQQIuAjFwVCTDoyDU/g62MF1llUthKNss/+Lq7mcJkabCv
+ V+fqezohjSpv4Me1wETxWkNYZblgHSIJ8Jm2xEzd8t/NS7KL3pp9iX2wC0CY9zTlCyKM
+ U4CfRzq3LuJQIBNmUOpOPY9rl8Ntv2NHNAkraMcPQw1maf/JKh2vSUelTmyWehVjDT/K
+ EEf7pKR7c/z4XZw4k7BTP40pRUj6pfsxS4BIppebs30HryiNMC3HVCFzSl3kSFraeXyz
+ kSDw==
+X-Gm-Message-State: APjAAAWc3aIG5lkfRdRwLG58XDgdWEk6MIGTYn6PHDKK3svHncZpSZIV
+ XE/6jYZue8NQlibErNX/1xA=
+X-Google-Smtp-Source: APXvYqwk8HrzennbNw/RIl9zKUEV7VY8jBDjhQsLTxfvUQMy8RkJMoubgl4aCH6DLaBXk1SQQcZZrQ==
+X-Received: by 2002:a17:902:b110:: with SMTP id
+ q16mr9434632plr.289.1581080893188; 
+ Fri, 07 Feb 2020 05:08:13 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ d14sm3244514pfq.117.2020.02.07.05.08.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Feb 2020 05:08:12 -0800 (PST)
+Subject: Re: [PATCH v5 17/17] powerpc/32s: Enable CONFIG_VMAP_STACK
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+References: <cover.1576916812.git.christophe.leroy@c-s.fr>
+ <2e2509a242fd5f3e23df4a06530c18060c4d321e.1576916812.git.christophe.leroy@c-s.fr>
+ <20200206203146.GA23248@roeck-us.net>
+ <c6285f2a-f8f5-0d97-2d80-061da1f1a7fc@c-s.fr>
+ <0f866131-4292-a66b-2637-c34139277486@c-s.fr>
+From: Guenter Roeck <linux@roeck-us.net>
+Message-ID: <551bad84-3e80-265b-93ab-25eae4aa9807@roeck-us.net>
+Date: Fri, 7 Feb 2020 05:08:11 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <0f866131-4292-a66b-2637-c34139277486@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,57 +88,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+On 2/7/20 12:28 AM, Christophe Leroy wrote:
+> 
+> 
+> On 02/07/2020 06:13 AM, Christophe Leroy wrote:
+>>
+>>
+>> Le 06/02/2020 à 21:31, Guenter Roeck a écrit :
+>>> On Sat, Dec 21, 2019 at 08:32:38AM +0000, Christophe Leroy wrote:
+>>>> A few changes to retrieve DAR and DSISR from struct regs
+>>>> instead of retrieving them directly, as they may have
+>>>> changed due to a TLB miss.
+>>>>
+>>>> Also modifies hash_page() and friends to work with virtual
+>>>> data addresses instead of physical ones. Same on load_up_fpu()
+>>>> and load_up_altivec().
+>>>>
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>
+>>> This patch results in qemu boot failures (mac99 with pmac32_defconfig).
+>>> Images fail silently; there is no console output. Reverting the patch
+>>> fixes the problem. Bisect log is attached below.
+>>>
+>>> Assuming this was tested on real hardware, am I correct to assume that qemu
+>>> for ppc32 (more specifically, qemu's mac99 and g3beige machines) no longer
+>>> works with the upstream kernel ?
+>>
+>> Before submitting the series, I successfully tested:
+>> - Real HW with powerpc 8xx
+>> - Real HW with powerpc 832x
+>> - Qemu's mac99
+>>
+>> I'll re-check the upstream kernel.
+>>
+> 
+> This is still working for me with the upstream kernel:
+> 
 
-> The early versions of our kernel user access prevention (KUAP) were
-> written by Russell and Christophe, and didn't have separate
-> read/write access.
->
-> At some point I picked up the series and added the read/write access,
-> but I failed to update the usages in futex.h to correctly allow read
-> and write.
->
-> However we didn't notice because of another bug which was causing the
-> low-level code to always enable read and write. That bug was fixed
-> recently in commit 1d8f739b07bd ("powerpc/kuap: Fix set direction in
-> allow/prevent_user_access()").
->
-> futex_atomic_cmpxchg_inatomic() is passed the user address as %3 and
-> does:
->
->   1:     lwarx   %1,  0, %3
->          cmpw    0,  %1, %4
->          bne-    3f
->   2:     stwcx.  %5,  0, %3
->
-> Which clearly loads and stores from/to %3. The logic in
-> arch_futex_atomic_op_inuser() is similar, so fix both of them to use
-> allow_read_write_user().
->
-> Without this fix, and with PPC_KUAP_DEBUG=y, we see eg:
->
->   Bug: Read fault blocked by AMR!
->   WARNING: CPU: 94 PID: 149215 at arch/powerpc/include/asm/book3s/64/kup-radix.h:126 __do_page_fault+0x600/0xf30
->   CPU: 94 PID: 149215 Comm: futex_requeue_p Tainted: G        W         5.5.0-rc7-gcc9x-g4c25df5640ae #1
->   ...
->   NIP [c000000000070680] __do_page_fault+0x600/0xf30
->   LR [c00000000007067c] __do_page_fault+0x5fc/0xf30
->   Call Trace:
->   [c00020138e5637e0] [c00000000007067c] __do_page_fault+0x5fc/0xf30 (unreliable)
->   [c00020138e5638c0] [c00000000000ada8] handle_page_fault+0x10/0x30
->   --- interrupt: 301 at cmpxchg_futex_value_locked+0x68/0xd0
->       LR = futex_lock_pi_atomic+0xe0/0x1f0
->   [c00020138e563bc0] [c000000000217b50] futex_lock_pi_atomic+0x80/0x1f0 (unreliable)
->   [c00020138e563c30] [c00000000021b668] futex_requeue+0x438/0xb60
->   [c00020138e563d60] [c00000000021c6cc] do_futex+0x1ec/0x2b0
->   [c00020138e563d90] [c00000000021c8b8] sys_futex+0x128/0x200
->   [c00020138e563e20] [c00000000000b7ac] system_call+0x5c/0x68
->
-> Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
-Reported-by: syzbot+e808452bad7c375cbee6@syzkaller-ppc64.appspotmail.com
-> Cc: stable@vger.kernel.org # v5.2+
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Interesting. What is your kernel configuration, your qemu version, and
+your qemu command line ?
+
+It works for me with CONFIG_VMAP_STACK=n, but not with pmac32_defconfig.
+
+Thanks,
+Guenter
