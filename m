@@ -1,83 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337711558BE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 14:46:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Dc6M2kkKzDqgd
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 00:46:51 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7741559C2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 15:37:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48DdDh5f77zDqjX
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 01:37:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fVoyEgNH; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Dc4D4m6pzDq63
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 00:44:58 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id w21so1149895pgl.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Feb 2020 05:44:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=TmoRmsENHw/YgWCwWFkHSM2l2USy9CK+G0NuOZCqp44=;
- b=fVoyEgNH50TPz5iNwBF4sRHBoHE1P/Fw7CCX0Sp3ZONdUEmOoHEaiOLGk2/cytkHxU
- Z7Rwa5fJvZPUm8K2/YpZM2+H+zzM6YtEWjUZEZjNO7U+FuZylBqVF4nSajmiU65nkNwx
- K37RVgHdVvMxZcJOw2l1zweoGQL30NyhBzYHIDB95zytrKB80NDB47b8+2EYS5H3Gk7X
- YkxVdPmS/QfGvUZ6TWSBEy+suT1cJlsZF0rEVQ9us5OdBrfJUCB/t/0mRxfDtpTr/ANm
- Z/ZA2DCLgP6CiRQuVKWIp2hnxLHZlGorBLBB2eQ0QEgB4n00BIjT3UhzrRb+Vz2PDfTr
- My/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=TmoRmsENHw/YgWCwWFkHSM2l2USy9CK+G0NuOZCqp44=;
- b=Z4QLSupOoI/NMEkksFaWu17o933ilSOwZ6bGLhyNBIImDNWRU1Kd3HlDIfqpMSZkgG
- 8ktMrPa9arORiPvhCFk3i44Mhugmp8JfH5y1CXsv9FhE7ssQJeJd2Yhur6SfVoVq/Ph7
- RbwfSzOBL0t66kEZrIYyGKTE8HbKnrWLwOnsk4WUDOqqzJNxbxS7Wo3HwOzgc4kPZy3W
- grH9BccrQrEPSxhMFdpfnhjHHrhiUz0XwhsQOeKIQb3Y/925ntiDj9OCyNyVUEj48vpw
- 3c4XTLJB5YD4MMCkXDIStHSZCXEHHIUZ3QZKkkjalVuRwr+jMjTqT6kJG2nBwmjbdc4z
- XdMg==
-X-Gm-Message-State: APjAAAW4dyDuKxRbjoVJiee0YJrLWx0sU7BON8zVMmkBJcTjj3lCJIQf
- PH7Vlz+z5VzcgnoShA4xHyQ=
-X-Google-Smtp-Source: APXvYqzLIjVfPMlPuGmcyhC+sTDXsk/8JGDtyYCCRAsN9lqcd65jI1rVjkgVAQAgkzbMz6DWgiLl5A==
-X-Received: by 2002:aa7:9218:: with SMTP id 24mr9887692pfo.145.1581083094993; 
- Fri, 07 Feb 2020 05:44:54 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- z16sm3155140pff.125.2020.02.07.05.44.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Feb 2020 05:44:53 -0800 (PST)
-Subject: Re: [PATCH v5 17/17] powerpc/32s: Enable CONFIG_VMAP_STACK
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <cover.1576916812.git.christophe.leroy@c-s.fr>
- <2e2509a242fd5f3e23df4a06530c18060c4d321e.1576916812.git.christophe.leroy@c-s.fr>
- <20200206203146.GA23248@roeck-us.net>
- <c6285f2a-f8f5-0d97-2d80-061da1f1a7fc@c-s.fr>
- <0f866131-4292-a66b-2637-c34139277486@c-s.fr>
- <551bad84-3e80-265b-93ab-25eae4aa9807@roeck-us.net>
- <29bd8702-9b8f-6931-2bbc-db7e444907d5@c-s.fr>
-From: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <d6158967-fde3-1a87-44b6-07638bd2b5b0@roeck-us.net>
-Date: Fri, 7 Feb 2020 05:44:52 -0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DdBN6KGKzDq9R
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 01:35:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=NXiZwee9; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48DdBL4DMfz8vVc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 01:35:22 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48DdBL0Td9z9sRR; Sat,  8 Feb 2020 01:35:22 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::12;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=NXiZwee9; 
+ dkim-atps=neutral
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 48DdBJ440Lz9sSJ
+ for <linuxppc-dev@ozlabs.org>; Sat,  8 Feb 2020 01:35:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1581086114;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=cNnAQeGGvvTjFRamv7ZkW4dXUfu1hiTbBBwJDVmkbDw=;
+ b=NXiZwee9AY12FvHtlpTyQ6ldsfy1WI2rJSketRgeQFMHR9kD6yC6nqjj6zGr94liaq
+ W/v+b9rC4pxGY44GtIOkKQ8TfZTcs3k/T5f5ZU15RPNQ552PzNv6oAAx42rXkkH0r0c5
+ VgE7+PPDVxXzqHXijkTaD4oJgOCyDs3SloIM+W9vSkDcBkU6ZOdwbQiS5L6G7/vpXgu+
+ KDgwjpjCTOGsjn40QAXL8O+UwnbtkZFcCrhdVA704AhAHU0/b4elxHbis5elRa2GSSgn
+ qp77hA2xXqst8jSVBS1vtz1g88HqA+KxVo6e2AD7mJRqzFfkjmEneP1eQbXJV4dWgc0w
+ 7Gug==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgBL7coCbpz+JyHSiG0DZUc3rEWew=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:b9f8:3811:c7de:b70d]
+ by smtp.strato.de (RZmta 46.1.12 AUTH)
+ with ESMTPSA id 40bcf3w17EYpeyF
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Fri, 7 Feb 2020 15:34:51 +0100 (CET)
+Subject: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate ioctl
+ for device
+To: arnd@arndb.de
+References: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
+ <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
+ <87tv441gg1.fsf@mpe.ellerman.id.au>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <42888ad2-71e0-6d03-ddff-3de6f0ee5d43@xenosoft.de>
+Date: Fri, 7 Feb 2020 15:34:51 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <29bd8702-9b8f-6931-2bbc-db7e444907d5@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87tv441gg1.fsf@mpe.ellerman.id.au>
+Content-Type: multipart/mixed; boundary="------------25FA60D130063DB92E20AE88"
+Content-Language: en-AU
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,69 +89,445 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org,
- dja@axtens.net
+Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
+ mad skateman <madskateman@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/7/20 5:29 AM, Christophe Leroy wrote:
-> 
-> 
-> On 02/07/2020 01:08 PM, Guenter Roeck wrote:
->> On 2/7/20 12:28 AM, Christophe Leroy wrote:
->>>
->>>
->>> On 02/07/2020 06:13 AM, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 06/02/2020 à 21:31, Guenter Roeck a écrit :
->>>>> On Sat, Dec 21, 2019 at 08:32:38AM +0000, Christophe Leroy wrote:
->>>>>> A few changes to retrieve DAR and DSISR from struct regs
->>>>>> instead of retrieving them directly, as they may have
->>>>>> changed due to a TLB miss.
->>>>>>
->>>>>> Also modifies hash_page() and friends to work with virtual
->>>>>> data addresses instead of physical ones. Same on load_up_fpu()
->>>>>> and load_up_altivec().
->>>>>>
->>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>>>>
->>>>> This patch results in qemu boot failures (mac99 with pmac32_defconfig).
->>>>> Images fail silently; there is no console output. Reverting the patch
->>>>> fixes the problem. Bisect log is attached below.
->>>>>
->>>>> Assuming this was tested on real hardware, am I correct to assume that qemu
->>>>> for ppc32 (more specifically, qemu's mac99 and g3beige machines) no longer
->>>>> works with the upstream kernel ?
->>>>
->>>> Before submitting the series, I successfully tested:
->>>> - Real HW with powerpc 8xx
->>>> - Real HW with powerpc 832x
->>>> - Qemu's mac99
->>>>
->>>> I'll re-check the upstream kernel.
->>>>
->>>
->>> This is still working for me with the upstream kernel:
->>>
->>
->> Interesting. What is your kernel configuration, your qemu version, and
->> your qemu command line ?
-> 
-> Config is pmac32_defconfig + CONFIG_DEVTMPFS (But kernel also boots without CONFIG_DEVTMPFS)
-> 
-> QEMU emulator version 2.11.2
-> 
-> qemu-system-ppc -kernel vmlinux -M mac99 -initrd rootfs.cpio.gz -s -m 1024
-> 
-> Works with both GCC 5.5 and GCC 8.1
-> 
-Actually, the problem is that I have locking selftest options enabled
-in my tests. Everything works if I disable those. The "culprit" seems
-to be CONFIG_PROVE_LOCKING. Can you retest with CONFIG_PROVE_LOCKING=y ?
+This is a multi-part message in MIME format.
+--------------25FA60D130063DB92E20AE88
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Hello Arnd,
+
+We regularly compile and test Linux kernels every day during the merge 
+window. Since Thursday last week we have very high CPU usage because of 
+the avahi daemon on our desktop Linux systems (Ubuntu, Debian etc). The 
+avahi daemon produces a lot of the following log message. This generates 
+high CPU usage.
+
+Error message: avahi-daemon[2410]: ioctl(): Inappropriate ioctl for device
+
+strace /usr/sbin/avahi-daemon:
+
+poll([{fd=4, events=POLLIN}, {fd=16, events=POLLIN}, {fd=15, 
+events=POLLIN}, {fd=14, events=POLLIN}, {fd=13, events=POLLIN}, {fd=12, 
+events=POLLIN}, {fd=11, events=POLLIN}, {fd=10, events=POLLIN}, {fd=9, 
+events=POLLIN}, {fd=8, events=POLLIN}, {fd=6, events=POLLIN}], 11, 65) = 
+2 ([{fd=12, revents=POLLIN}, {fd=9, revents=POLLIN}])
+ioctl(12, FIONREAD, 0xffba6f24)         = -1 ENOTTY (Inappropriate ioctl 
+for device)
+write(2, "ioctl(): Inappropriate ioctl for"..., 39ioctl(): Inappropriate 
+ioctl for device) = 39
+write(2, "\n", 1
+)                       = 1
+
+----------------------
+
+I bisected the latest kernel source code today.
+
+Result:
+
+77b9040195dea3fcddf19e136c9e99a501351778 is the first bad commit
+commit 77b9040195dea3fcddf19e136c9e99a501351778
+Author: Arnd Bergmann <arnd@arndb.de>
+Date:   Wed Nov 27 21:25:36 2019 +0100
+
+     compat_ioctl: simplify the implementation
+
+     Now that both native and compat ioctl syscalls are
+     in the same file, a couple of simplifications can
+     be made, bringing the implementation closer together:
+
+     - do_vfs_ioctl(), ioctl_preallocate(), and compat_ioctl_preallocate()
+       can become static, allowing the compiler to optimize better
+
+     - slightly update the coding style for consistency between
+       the functions.
+
+     - rather than listing each command in two switch statements
+       for the compat case, just call a single function that has
+       all the common commands.
+
+     As a side-effect, FS_IOC_RESVSP/FS_IOC_RESVSP64 are now available
+     to x86 compat tasks, along with FS_IOC_RESVSP_32/FS_IOC_RESVSP64_32.
+     This is harmless for i386 emulation, and can be considered a bugfix
+     for x32 emulation, which never supported these in the past.
+
+     Reviewed-by: Ben Hutchings <ben.hutchings@codethink.co.uk>
+     Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+:040000 040000 5c4b62f4d1bfe643d3bbf9d9a3b50ee50ae0f159 
+5ca610e3197df96adfcae4f94fceeb496756609b M    fs
+:040000 040000 086f2e2ac49384988733cbb706243943748c4ce7 
+b906926e53dfa2e8927629e77a0708dda6f49d31 M    include
+
+----------------------
+
+Link to the first bad commit: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=77b9040195dea3fcddf19e136c9e99a501351778
+
+I was able to revert the first bad commit.
+
+git revert 77b9040195dea3fcddf19e136c9e99a501351778
+
+[master a91dcf9dc14c] Revert "compat_ioctl: simplify the implementation"
+  4 files changed, 105 insertions(+), 64 deletions(-)
+
+After that the avahi daemon works without any problems again.
+
+I created a patch today. (attached)
+
+It is also possible to deactivate the avahi daemon with the following lines
+in the file "/etc/avahi/avahi-daemon.conf":
+
+use-ipv4=no
+use-ipv6=no
+
+Could you please check your commit?
 
 Thanks,
-Guenter
+Christian
 
+--------------25FA60D130063DB92E20AE88
+Content-Type: text/x-patch; charset=UTF-8;
+ name="compat_ioctl-v1.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="compat_ioctl-v1.patch"
+
+diff -rupN a/fs/internal.h b/fs/internal.h
+--- a/fs/internal.h	2020-02-07 13:20:46.294317088 +0100
++++ b/fs/internal.h	2020-02-07 13:16:06.731416797 +0100
+@@ -182,6 +182,12 @@ extern void mnt_pin_kill(struct mount *m
+  */
+ extern const struct dentry_operations ns_dentry_operations;
+ 
++/*
++ * fs/ioctl.c
++ */
++extern int do_vfs_ioctl(struct file *file, unsigned int fd, unsigned int cmd,
++		    unsigned long arg);
++
+ /* direct-io.c: */
+ int sb_init_dio_done_wq(struct super_block *sb);
+ 
+diff -rupN a/fs/ioctl.c b/fs/ioctl.c
+--- a/fs/ioctl.c	2020-02-07 13:20:46.294317088 +0100
++++ b/fs/ioctl.c	2020-02-07 13:16:06.331418365 +0100
+@@ -467,7 +467,7 @@ EXPORT_SYMBOL(generic_block_fiemap);
+  * Only the l_start, l_len and l_whence fields of the 'struct space_resv'
+  * are used here, rest are ignored.
+  */
+-static int ioctl_preallocate(struct file *filp, int mode, void __user *argp)
++int ioctl_preallocate(struct file *filp, int mode, void __user *argp)
+ {
+ 	struct inode *inode = file_inode(filp);
+ 	struct space_resv sr;
+@@ -495,8 +495,8 @@ static int ioctl_preallocate(struct file
+ /* on ia32 l_start is on a 32-bit boundary */
+ #if defined CONFIG_COMPAT && defined(CONFIG_X86_64)
+ /* just account for different alignment */
+-static int compat_ioctl_preallocate(struct file *file, int mode,
+-				    struct space_resv_32 __user *argp)
++int compat_ioctl_preallocate(struct file *file, int mode,
++				struct space_resv_32 __user *argp)
+ {
+ 	struct inode *inode = file_inode(file);
+ 	struct space_resv_32 sr;
+@@ -521,9 +521,11 @@ static int compat_ioctl_preallocate(stru
+ }
+ #endif
+ 
+-static int file_ioctl(struct file *filp, unsigned int cmd, int __user *p)
++static int file_ioctl(struct file *filp, unsigned int cmd,
++		unsigned long arg)
+ {
+ 	struct inode *inode = file_inode(filp);
++	int __user *p = (int __user *)arg;
+ 
+ 	switch (cmd) {
+ 	case FIBMAP:
+@@ -540,7 +542,7 @@ static int file_ioctl(struct file *filp,
+ 		return ioctl_preallocate(filp, FALLOC_FL_ZERO_RANGE, p);
+ 	}
+ 
+-	return -ENOIOCTLCMD;
++	return vfs_ioctl(filp, cmd, arg);
+ }
+ 
+ static int ioctl_fionbio(struct file *filp, int __user *argp)
+@@ -659,48 +661,53 @@ out:
+ }
+ 
+ /*
++ * When you add any new common ioctls to the switches above and below
++ * please update compat_sys_ioctl() too.
++ *
+  * do_vfs_ioctl() is not for drivers and not intended to be EXPORT_SYMBOL()'d.
+  * It's just a simple helper for sys_ioctl and compat_sys_ioctl.
+- *
+- * When you add any new common ioctls to the switches above and below,
+- * please ensure they have compatible arguments in compat mode.
+  */
+-static int do_vfs_ioctl(struct file *filp, unsigned int fd,
+-			unsigned int cmd, unsigned long arg)
++int do_vfs_ioctl(struct file *filp, unsigned int fd, unsigned int cmd,
++	     unsigned long arg)
+ {
++	int error = 0;
+ 	void __user *argp = (void __user *)arg;
+ 	struct inode *inode = file_inode(filp);
+ 
+ 	switch (cmd) {
+ 	case FIOCLEX:
+ 		set_close_on_exec(fd, 1);
+-		return 0;
++		break;
+ 
+ 	case FIONCLEX:
+ 		set_close_on_exec(fd, 0);
+-		return 0;
++		break;
+ 
+ 	case FIONBIO:
+-		return ioctl_fionbio(filp, argp);
++		error = ioctl_fionbio(filp, argp);
++		break;
+ 
+ 	case FIOASYNC:
+-		return ioctl_fioasync(fd, filp, argp);
++		error = ioctl_fioasync(fd, filp, argp);
++		break;
+ 
+ 	case FIOQSIZE:
+ 		if (S_ISDIR(inode->i_mode) || S_ISREG(inode->i_mode) ||
+ 		    S_ISLNK(inode->i_mode)) {
+ 			loff_t res = inode_get_bytes(inode);
+-			return copy_to_user(argp, &res, sizeof(res)) ?
+-					    -EFAULT : 0;
+-		}
+-
+-		return -ENOTTY;
++			error = copy_to_user(argp, &res, sizeof(res)) ?
++					-EFAULT : 0;
++		} else
++			error = -ENOTTY;
++		break;
+ 
+ 	case FIFREEZE:
+-		return ioctl_fsfreeze(filp);
++		error = ioctl_fsfreeze(filp);
++		break;
+ 
+ 	case FITHAW:
+-		return ioctl_fsthaw(filp);
++		error = ioctl_fsthaw(filp);
++		break;
+ 
+ 	case FS_IOC_FIEMAP:
+ 		return ioctl_fiemap(filp, argp);
+@@ -709,7 +716,6 @@ static int do_vfs_ioctl(struct file *fil
+ 		/* anon_bdev filesystems may not have a block size */
+ 		if (!inode->i_sb->s_blocksize)
+ 			return -EINVAL;
+-
+ 		return put_user(inode->i_sb->s_blocksize, (int __user *)argp);
+ 
+ 	case FICLONE:
+@@ -723,30 +729,24 @@ static int do_vfs_ioctl(struct file *fil
+ 
+ 	default:
+ 		if (S_ISREG(inode->i_mode))
+-			return file_ioctl(filp, cmd, argp);
++			error = file_ioctl(filp, cmd, arg);
++		else
++			error = vfs_ioctl(filp, cmd, arg);
+ 		break;
+ 	}
+-
+-	return -ENOIOCTLCMD;
++	return error;
+ }
+ 
+ int ksys_ioctl(unsigned int fd, unsigned int cmd, unsigned long arg)
+ {
+-	struct fd f = fdget(fd);
+ 	int error;
++	struct fd f = fdget(fd);
+ 
+ 	if (!f.file)
+ 		return -EBADF;
+-
+ 	error = security_file_ioctl(f.file, cmd, arg);
+-	if (error)
+-		goto out;
+-
+-	error = do_vfs_ioctl(f.file, fd, cmd, arg);
+-	if (error == -ENOIOCTLCMD)
+-		error = vfs_ioctl(f.file, cmd, arg);
+-
+-out:
++	if (!error)
++		error = do_vfs_ioctl(f.file, fd, cmd, arg);
+ 	fdput(f);
+ 	return error;
+ }
+@@ -790,63 +790,92 @@ long compat_ptr_ioctl(struct file *file,
+ EXPORT_SYMBOL(compat_ptr_ioctl);
+ 
+ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
+-		       compat_ulong_t, arg)
++		       compat_ulong_t, arg32)
+ {
++	unsigned long arg = arg32;
+ 	struct fd f = fdget(fd);
+-	int error;
+-
++	int error = -EBADF;
+ 	if (!f.file)
+-		return -EBADF;
++		goto out;
+ 
+ 	/* RED-PEN how should LSM module know it's handling 32bit? */
+ 	error = security_file_ioctl(f.file, cmd, arg);
+ 	if (error)
+-		goto out;
++		goto out_fput;
+ 
+ 	switch (cmd) {
+-	/* FICLONE takes an int argument, so don't use compat_ptr() */
++	/* these are never seen by ->ioctl(), no argument or int argument */
++	case FIOCLEX:
++	case FIONCLEX:
++	case FIFREEZE:
++	case FITHAW:
+ 	case FICLONE:
+-		error = ioctl_file_clone(f.file, arg, 0, 0, 0);
+-		break;
+-
+-#if defined(CONFIG_X86_64)
++		goto do_ioctl;
++	/* these are never seen by ->ioctl(), pointer argument */
++	case FIONBIO:
++	case FIOASYNC:
++	case FIOQSIZE:
++	case FS_IOC_FIEMAP:
++	case FIGETBSZ:
++	case FICLONERANGE:
++	case FIDEDUPERANGE:
++		goto found_handler;
++	/*
++	 * The next group is the stuff handled inside file_ioctl().
++	 * For regular files these never reach ->ioctl(); for
++	 * devices, sockets, etc. they do and one (FIONREAD) is
++	 * even accepted in some cases.  In all those cases
++	 * argument has the same type, so we can handle these
++	 * here, shunting them towards do_vfs_ioctl().
++	 * ->compat_ioctl() will never see any of those.
++	 */
++	/* pointer argument, never actually handled by ->ioctl() */
++	case FIBMAP:
++		goto found_handler;
++	/* handled by some ->ioctl(); always a pointer to int */
++	case FIONREAD:
++		goto found_handler;
+ 	/* these get messy on amd64 due to alignment differences */
++#if defined(CONFIG_X86_64)
+ 	case FS_IOC_RESVSP_32:
+ 	case FS_IOC_RESVSP64_32:
+ 		error = compat_ioctl_preallocate(f.file, 0, compat_ptr(arg));
+-		break;
++		goto out_fput;
+ 	case FS_IOC_UNRESVSP_32:
+ 	case FS_IOC_UNRESVSP64_32:
+ 		error = compat_ioctl_preallocate(f.file, FALLOC_FL_PUNCH_HOLE,
+ 				compat_ptr(arg));
+-		break;
++		goto out_fput;
+ 	case FS_IOC_ZERO_RANGE_32:
+ 		error = compat_ioctl_preallocate(f.file, FALLOC_FL_ZERO_RANGE,
+ 				compat_ptr(arg));
+-		break;
++		goto out_fput;
++#else
++	case FS_IOC_RESVSP:
++	case FS_IOC_RESVSP64:
++	case FS_IOC_UNRESVSP:
++	case FS_IOC_UNRESVSP64:
++	case FS_IOC_ZERO_RANGE:
++		goto found_handler;
+ #endif
+ 
+-	/*
+-	 * everything else in do_vfs_ioctl() takes either a compatible
+-	 * pointer argument or no argument -- call it with a modified
+-	 * argument.
+-	 */
+ 	default:
+-		error = do_vfs_ioctl(f.file, fd, cmd,
+-				     (unsigned long)compat_ptr(arg));
+-		if (error != -ENOIOCTLCMD)
+-			break;
+-
+-		if (f.file->f_op->compat_ioctl)
++		if (f.file->f_op->compat_ioctl) {
+ 			error = f.file->f_op->compat_ioctl(f.file, cmd, arg);
+-		if (error == -ENOIOCTLCMD)
+-			error = -ENOTTY;
+-		break;
++			if (error != -ENOIOCTLCMD)
++				goto out_fput;
++		}
++		error = -ENOTTY;
++		goto out_fput;
+ 	}
+ 
+- out:
++ found_handler:
++	arg = (unsigned long)compat_ptr(arg);
++ do_ioctl:
++	error = do_vfs_ioctl(f.file, fd, cmd, arg);
++ out_fput:
+ 	fdput(f);
+-
++ out:
+ 	return error;
+ }
+ #endif
+diff -rupN a/include/linux/falloc.h b/include/linux/falloc.h
+--- a/include/linux/falloc.h	2020-02-07 13:20:46.382316741 +0100
++++ b/include/linux/falloc.h	2020-02-07 13:16:06.331418365 +0100
+@@ -51,6 +51,8 @@ struct space_resv_32 {
+ #define FS_IOC_UNRESVSP64_32	_IOW ('X', 43, struct space_resv_32)
+ #define FS_IOC_ZERO_RANGE_32	_IOW ('X', 57, struct space_resv_32)
+ 
++int compat_ioctl_preallocate(struct file *, int, struct space_resv_32 __user *);
++
+ #endif
+ 
+ #endif /* _FALLOC_H_ */
+diff -rupN a/include/linux/fs.h b/include/linux/fs.h
+--- a/include/linux/fs.h	2020-02-07 13:20:46.382316741 +0100
++++ b/include/linux/fs.h	2020-02-07 13:16:06.731416797 +0100
+@@ -2563,6 +2563,10 @@ extern int finish_open(struct file *file
+ 			int (*open)(struct inode *, struct file *));
+ extern int finish_no_open(struct file *file, struct dentry *dentry);
+ 
++/* fs/ioctl.c */
++
++extern int ioctl_preallocate(struct file *filp, int mode, void __user *argp);
++
+ /* fs/dcache.c */
+ extern void __init vfs_caches_init_early(void);
+ extern void __init vfs_caches_init(void);
+
+--------------25FA60D130063DB92E20AE88--
