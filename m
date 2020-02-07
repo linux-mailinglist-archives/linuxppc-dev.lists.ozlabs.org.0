@@ -2,73 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAA8155D09
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 18:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF64156163
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 23:56:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48DjHb665kzDqkL
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 04:40:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48DrJk5M6yzDqjX
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 09:56:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=groeck7@gmail.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=roeck-us.net
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DIPvIFNW; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
+ header.s=n1 header.b=qqXHc6wK; dkim-atps=neutral
+Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
+ [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48DjFy4dDszDqg1
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 04:38:44 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id c23so25064plz.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Feb 2020 09:38:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=OiMCk3HNlA+VYlmzK8C7KfB3ijS3pxsMTQRh/DwJS98=;
- b=DIPvIFNWz82jW5jdNCN7WS3F+SQ26RG5xOeXI72hbKx5hdyOiREZSJbZJRFbzMxP5z
- GcPlR/hwSDEjldjA28tMgKQ+vWpcgcf8pVsbeIQ+lgQCNhQy1Sgh8lMRAlYe6EcURoCb
- ONgSclgsXPB3wV2jCGTyUfNmcfqD3NohxJmKTRdEtZMUrkvI5CZwetjarcHTaMN0pMpk
- Z9r98dl5GyAkmFMCPcSz9LXz5BziHAoGsg0BVyc5hubYQdGwgic0CCLiLEdS1T56j9LL
- p2YHC+NTZWs/HWexwfDLFRad9gpJSqs/egEMNOU6MiEMULrKumUZknJBBNr3ZfSJMeLS
- s3rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=OiMCk3HNlA+VYlmzK8C7KfB3ijS3pxsMTQRh/DwJS98=;
- b=C3TbRhATO5eZe2prySBYFrllgj9/loDnwWqX12m8Vuh1EGokBcxWLmUXy22IG6MlzG
- r6HXsjhvq7HVxMDkiWYtzY+aciGz/vmV6ZMKKJOOC9mz6ftRVxYQpZJtF1xF0orTfHeR
- 0a2d5yFJf2KHel70oFDItuDdb7ywdfNzXVUXqAZxvqkuiEWkpJk2Th7niDfsss0rTQNk
- rmqdC0ZqKKqdKQtUs2UgmJCcTQARuW7esfpRpq0IKdqHjCWTEbxzmuVLk+uQMi+w+TVf
- KhZtqx4Mo2/D2Ssug8QbiVZ10c2uHnI9DtXacRXT1ymS5pmDuAwA5cXEykJKNkRMpy5I
- kmzQ==
-X-Gm-Message-State: APjAAAX67/ZvpNlqO/jXk0s2kB5BmX9Muw2cxfDTUnlt7UQpj3mO7Kg5
- 3kcyQ7d7rmXstxPBIgQsors=
-X-Google-Smtp-Source: APXvYqwp1PutHtvP0hC+zOIRQmLP5aOwlkctuCUXhYERECa9pdF/NW68x0lKYXiMUZqTtWJAUoo97w==
-X-Received: by 2002:a17:90a:26e1:: with SMTP id
- m88mr5108116pje.101.1581097120913; 
- Fri, 07 Feb 2020 09:38:40 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id c19sm3803503pgh.8.2020.02.07.09.38.39
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 07 Feb 2020 09:38:40 -0800 (PST)
-Date: Fri, 7 Feb 2020 09:38:39 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc: Fix CONFIG_TRACE_IRQFLAGS with CONFIG_VMAP_STACK
-Message-ID: <20200207173839.GA8313@roeck-us.net>
-References: <daeacdc0dec0416d1c587cc9f9e7191ad3068dc0.1581095957.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DrGS4LgLzDqgp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 09:54:40 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5e3dea6a0001>; Fri, 07 Feb 2020 14:53:30 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Fri, 07 Feb 2020 14:54:30 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Fri, 07 Feb 2020 14:54:30 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 7 Feb
+ 2020 22:54:30 +0000
+Subject: Re: [PATCH v6 02/11] mm/gup: Use functions to track lockless pgtbl
+ walks on gup_pgd_range
+To: Leonardo Bras <leonardo@linux.ibm.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Steven Price <steven.price@arm.com>, Robin Murphy
+ <robin.murphy@arm.com>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Balbir
+ Singh <bsingharora@gmail.com>, Reza Arbab <arbab@linux.ibm.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
+ <rppt@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>
+References: <20200206030900.147032-1-leonardo@linux.ibm.com>
+ <20200206030900.147032-3-leonardo@linux.ibm.com>
+ <760c238043196e0628c8c0eff48a8e938ef539ba.camel@linux.ibm.com>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <0c2f5a89-4890-fd84-6a6d-e470ba110399@nvidia.com>
+Date: Fri, 7 Feb 2020 14:54:29 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <daeacdc0dec0416d1c587cc9f9e7191ad3068dc0.1581095957.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <760c238043196e0628c8c0eff48a8e938ef539ba.camel@linux.ibm.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1581116011; bh=hL0GxG3AZWC0D09Bdwot9dPs+jKalw2embmHLRKcnSQ=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=qqXHc6wKJGDUDF5WUptm+LMkjfedSjWuOu7hMwGWAEkS/3j+Ej1V3oKUpca41Ng0y
+ urYrrpUGJl5PZBrXWCNaNq1r74YQg17xXkIfJEWZ2ETV4sIRQXyC3DDK3t90yWS7il
+ ZXJ/nzwWmzLVsoVKwO280dnaulqiEx3taYp7fGo5yaPYHNGnw7pCZS5Qjxa7jYDPsD
+ BSwO7rSz/qtqmDQuTXDD1olCWd+q6M4eHN1MgscfP2hM2HIwSt7OPQQwDfmfujj3As
+ e0W9hTPErF+Jl0u4dsX/7aGtT+P4HJYVsa+n+JpAOCxoK109dMJE9yLaNhzZA5BrNc
+ GSGJo2lJJ8LpQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,47 +88,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 07, 2020 at 05:20:57PM +0000, Christophe Leroy wrote:
-> When CONFIG_PROVE_LOCKING is selected together with (now default)
-> CONFIG_VMAP_STACK, kernel enter deadlock during boot.
+On 2/5/20 7:25 PM, Leonardo Bras wrote:
+> On Thu, 2020-02-06 at 00:08 -0300, Leonardo Bras wrote:
+>>                 gup_pgd_range(addr, end, gup_flags, pages, &nr);
+>> -               local_irq_enable();
+>> +               end_lockless_pgtbl_walk(IRQS_ENABLED);
+>>                 ret = nr;
+>>         }
+>>  
 > 
-> At the point of checking whether interrupts are enabled or not, the
-> value of MSR saved on stack is read using the physical address of the
-> stack. But at this point, when using VMAP stack the DATA MMU
-> translation has already been re-enabled, leading to deadlock.
+> Just noticed IRQS_ENABLED is not available on other archs than ppc64.
+> I will fix this for v7.
 > 
-> Don't use the physical address of the stack when
-> CONFIG_VMAP_STACK is set.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Fixes: 028474876f47 ("powerpc/32: prepare for CONFIG_VMAP_STACK")
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+What's the fix going to look like, approximately?
 
-> ---
->  arch/powerpc/kernel/entry_32.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-> index 77abbc34bbe0..0713daa651d9 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -214,7 +214,7 @@ transfer_to_handler_cont:
->  	 * To speed up the syscall path where interrupts stay on, let's check
->  	 * first if we are changing the MSR value at all.
->  	 */
-> -	tophys(r12, r1)
-> +	tophys_novmstack r12, r1
->  	lwz	r12,_MSR(r12)
->  	andi.	r12,r12,MSR_EE
->  	bne	1f
-> -- 
-> 2.25.0
-> 
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
