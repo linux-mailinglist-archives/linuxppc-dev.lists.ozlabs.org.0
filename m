@@ -1,73 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E18155285
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 07:43:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E7E155254
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 07:15:22 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48DQ5M5bftzDqbk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 17:15:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48DQk86PZLzDqfX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2020 17:43:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=natechancellor@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=VBI9HpSi; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Vs8xRFTr; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48DQ3W4GnDzDqX6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 17:13:42 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48DQ3P0lRqz9vCRd;
- Fri,  7 Feb 2020 07:13:37 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=VBI9HpSi; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id gzVgY-i6r0ul; Fri,  7 Feb 2020 07:13:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48DQ3N6p6Nz9vCRc;
- Fri,  7 Feb 2020 07:13:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1581056016; bh=bbu/3mso59R+gEjJVL9ywigwi8zK6YunGCEdD2uledg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=VBI9HpSipL/hmjUvWCjqwBXcNu2OQ6sDKKNiyBCjPP2weW1+lAERYRTTL8epFki0u
- dezve6NbgxgTXvP+vTg2wohpL0lfpONr+lbced14i8eWELCMc1xmYkdVhSbk0bbhZN
- 3uqg5zrxVlgYsbugBH4aziHQ1KZv8tx/m6i/AMCI=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E80318B8AE;
- Fri,  7 Feb 2020 07:13:37 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id cciXfyni8DUB; Fri,  7 Feb 2020 07:13:37 +0100 (CET)
-Received: from [172.25.230.107] (po15451.idsi0.si.c-s.fr [172.25.230.107])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C04DA8B75B;
- Fri,  7 Feb 2020 07:13:37 +0100 (CET)
-Subject: Re: [PATCH v5 17/17] powerpc/32s: Enable CONFIG_VMAP_STACK
-To: Guenter Roeck <linux@roeck-us.net>
-References: <cover.1576916812.git.christophe.leroy@c-s.fr>
- <2e2509a242fd5f3e23df4a06530c18060c4d321e.1576916812.git.christophe.leroy@c-s.fr>
- <20200206203146.GA23248@roeck-us.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <c6285f2a-f8f5-0d97-2d80-061da1f1a7fc@c-s.fr>
-Date: Fri, 7 Feb 2020 07:13:37 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48DQhY3HcxzDqcg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2020 17:42:16 +1100 (AEDT)
+Received: by mail-ot1-x342.google.com with SMTP id i6so1132387otr.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2020 22:42:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to
+ :user-agent; bh=nS5JPWneySiodQp4hbvudj9hL13ty2+PLssqsVAS96w=;
+ b=Vs8xRFTrFsZE+EsSeCBIS2SL2f3chCCp8q53YEs384RGhmJyR25P2g1CveTLhp+fQg
+ 4YqpqJxKR3akAHbk38yJBQi7gRysih+h5j9CVYCFcCy7Z2AQtOoaJqxMIkT9Vi4bwJX1
+ ZULLciChr57C6Yr4X2mqzTXrrwKj1tYhY/ADWz3ljJ3emjYTFa51ndT1oevSdaAlBTRc
+ ObcLLuahG2SyQpYCPeIRv6sxUDF7wPlSEwZDKSLgnTiND+jPzhpg0qHCI7fttrPpc/Nx
+ F35SCGsNLUZG43xmMpe6w4U3aPkHWvXa+hdcOo2gJhw1Qpzsfekyefja1knccBOZ3MH4
+ b1jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to:user-agent;
+ bh=nS5JPWneySiodQp4hbvudj9hL13ty2+PLssqsVAS96w=;
+ b=eSIbgCvxQSacd3T0vWB6bxeFXGD91V13aJwSYjtobwjNBOaDsQYlsOzRteJ10eXmXY
+ FyvwXuysJ0/LWcPDkTImemhLl/LFbozbDDH21f7dpT2uzuAY7qYplIyrBjdaaUMdJxaB
+ SdKKhVaLpZiHrkV0Whgot8KuIIeCpHP8Og5SxTrn3tobHsiBdm+baNZxpM+j5/aHVnpn
+ Cd8FEh8bThekP78PDiMlnAAQnbHokek7yTAVtv1ZkCogRegBmi42jjovDUppZ9gCV4Y7
+ EvubuCmT1m+Omi/5EI9nEOmnyNg2KKjc0rMFQLRjQ2I4w+Q6neRiSBpllveWkiNEWVUH
+ SdWQ==
+X-Gm-Message-State: APjAAAVFWkZBSk2HGeKIO4O82NpxkpYsFM/w5F7jKkpptLT2hIQfx6jB
+ Fk+7TK5rxfqIiLUBxWQxCSf2xmzSRKg=
+X-Google-Smtp-Source: APXvYqxY08dp4nEVmXY+bzQpTc9NeccNUwPT87+k4AMkhnYV8ZH2K7XLvmf5ma93LqZCe823DQW28w==
+X-Received: by 2002:a05:6830:12c3:: with SMTP id
+ a3mr1569040otq.341.1581057732875; 
+ Thu, 06 Feb 2020 22:42:12 -0800 (PST)
+Received: from ubuntu-x2-xlarge-x86 ([2604:1380:4111:8b00::1])
+ by smtp.gmail.com with ESMTPSA id z21sm777102oto.52.2020.02.06.22.42.11
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 06 Feb 2020 22:42:12 -0800 (PST)
+Date: Thu, 6 Feb 2020 23:42:10 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/vdso32: mark __kernel_datapage_offset as
+ STV_PROTECTED
+Message-ID: <20200207064210.GA13125@ubuntu-x2-xlarge-x86>
+References: <20200205005054.k72fuikf6rwrgfe4@google.com>
+ <10e3d362-ec29-3816-88ff-8415d5c78e3b@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200206203146.GA23248@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <10e3d362-ec29-3816-88ff-8415d5c78e3b@c-s.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,42 +84,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- dja@axtens.net
+Cc: Fangrui Song <maskray@google.com>, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 06/02/2020 Ã  21:31, Guenter Roeck a Ã©critÂ :
-> On Sat, Dec 21, 2019 at 08:32:38AM +0000, Christophe Leroy wrote:
->> A few changes to retrieve DAR and DSISR from struct regs
->> instead of retrieving them directly, as they may have
->> changed due to a TLB miss.
->>
->> Also modifies hash_page() and friends to work with virtual
->> data addresses instead of physical ones. Same on load_up_fpu()
->> and load_up_altivec().
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+On Wed, Feb 05, 2020 at 07:25:59AM +0100, Christophe Leroy wrote:
 > 
-> This patch results in qemu boot failures (mac99 with pmac32_defconfig).
-> Images fail silently; there is no console output. Reverting the patch
-> fixes the problem. Bisect log is attached below.
 > 
-> Assuming this was tested on real hardware, am I correct to assume that qemu
-> for ppc32 (more specifically, qemu's mac99 and g3beige machines) no longer
-> works with the upstream kernel ?
+> Le 05/02/2020 à 01:50, Fangrui Song a écrit :
+> > A PC-relative relocation (R_PPC_REL16_LO in this case) referencing a
+> > preemptible symbol in a -shared link is not allowed.  GNU ld's powerpc
+> > port is permissive and allows it [1], but lld will report an error after
+> > https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=ec0895f08f99515194e9fcfe1338becf6f759d38
+> 
+> Note that there is a series whose first two patches aim at dropping
+> __kernel_datapage_offset . See
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=156045 and
+> especially patches https://patchwork.ozlabs.org/patch/1231467/ and
+> https://patchwork.ozlabs.org/patch/1231461/
+> 
+> Those patches can be applied independentely of the rest.
+> 
+> Christophe
 
-Before submitting the series, I successfully tested:
-- Real HW with powerpc 8xx
-- Real HW with powerpc 832x
-- Qemu's mac99
+If that is the case, it would be nice if those could be fast tracked to
+5.6 because as it stands now, all PowerPC builds that were working with
+ld.lld are now broken. Either that or take this patch and rebase that
+series on this one.
 
-I'll re-check the upstream kernel.
-
-In the mean time, you can still unselect CONFIG_VMAP_STACK in your config.
-
-Christophe
+Cheers,
+Nathan
