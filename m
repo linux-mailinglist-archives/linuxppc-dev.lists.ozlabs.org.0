@@ -2,59 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC2215643F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 13:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA599156447
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 13:53:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48FBZD1L2BzDqTN
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 23:39:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48FBtq4N3mzDqXR
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2020 23:53:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48FBW11TpCzDqTL
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 23:36:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48FBpP6JkkzDqM3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2020 23:50:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RJe6RTnI; 
- dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 48FBW03XT0z9sRR; Sat,  8 Feb 2020 23:36:44 +1100 (AEDT)
+ id 48FBpN4rRLz9sPK; Sat,  8 Feb 2020 23:50:04 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48FBVx05h8z9sPJ;
- Sat,  8 Feb 2020 23:36:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1581165403;
- bh=TIsBMikK22tP+iVnpNdBWnTezaZnCH4QX2IsCZvPKH0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RJe6RTnIjucqdrkV1R47EoAVUruFQ21tuPJZRji3dj8PHMoMeJiDFBH0WcpE8OUbv
- wpxfqHmP9Qs1/IiKuxPCsx1YBPpZqRbXqhf6QRPj+YAkH9ema/+g9Er8KctHpzCEyY
- f6Md2+myTJ+qW6Z1mSKpjdBC0zGiAwTmcznmdNbMYECjAsN046hiVhJqXQ/WF24sgQ
- LSZX0tqiMWziqXP2NqBYLSDWl1iLv2W9qhHcynY7KxySG9dRjatXwJvBLJ/m8dg5Dg
- khxlrwC15v3zsNVTHLkC2MFi7tkjVcEkUM4y5V5GR/7bzpA5BvdqRvcEc85KgRLZif
- mZk9CrM9j07sA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- Jakub Kicinski <kuba@kernel.org>
-Subject: Re: Latest Git kernel: avahi-daemon[2410]: ioctl(): Inappropriate
- ioctl for device
-In-Reply-To: <f438e4ed-7746-1d80-6d72-455281884a1e@xenosoft.de>
-References: <20200203095325.24c3ab1c@cakuba.hsd1.ca.comcast.net>
- <C11859E1-BE71-494F-81E2-9B27E27E60EE@xenosoft.de>
- <87tv441gg1.fsf@mpe.ellerman.id.au>
- <f438e4ed-7746-1d80-6d72-455281884a1e@xenosoft.de>
-Date: Sat, 08 Feb 2020 23:36:34 +1100
-Message-ID: <87imkh1cj1.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 48FBpN38XHz9sRR; Sat,  8 Feb 2020 23:50:04 +1100 (AEDT)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: 9dc086f1e9ef39dd823bd27954b884b2062f9e70
+In-Reply-To: <20200207122145.11928-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/futex: Fix incorrect user access blocking
+Message-Id: <48FBpN38XHz9sRR@ozlabs.org>
+Date: Sat,  8 Feb 2020 23:50:04 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,133 +41,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linuxppc-dev@ozlabs.org, "contact@a-eon.com" <contact@a-eon.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christoph Hellwig <hch@lst.de>
+Cc: dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian Zigotzky <chzigotzky@xenosoft.de> writes:
-> On 06 February 2020 at 05:35 am, Michael Ellerman wrote:
->> Christian Zigotzky <chzigotzky@xenosoft.de> writes:
->>> Kernel 5.5 PowerPC is also affected.
->> I don't know what you mean by that. What sha are you talking about?
->>
->> I have a system with avahi running and everything's fine.
->>
->>    # grep use- /etc/avahi/avahi-daemon.conf
->>    use-ipv4=3Dyes
->>    use-ipv6=3Dyes
->>=20=20=20=20
->>    # systemctl status -l --no-pager avahi-daemon
->>    =E2=97=8F avahi-daemon.service - Avahi mDNS/DNS-SD Stack
->>       Loaded: loaded (/lib/systemd/system/avahi-daemon.service; enabled;=
- vendor preset: enabled)
->>       Active: active (running) since Thu 2020-02-06 14:55:34 AEDT; 38min=
- ago
->>     Main PID: 1884 (avahi-daemon)
->>       Status: "avahi-daemon 0.7 starting up."
->>       CGroup: /system.slice/avahi-daemon.service
->>               =E2=94=9C=E2=94=801884 avahi-daemon: running [mpe-ubuntu-l=
-e.local]
->>               =E2=94=94=E2=94=801888 avahi-daemon: chroot helper
->>=20=20=20=20
->>    Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new add=
-ress record for fe80::5054:ff:fe66:2a19 on eth0.*.
->>    Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new add=
-ress record for 10.61.141.81 on eth0.IPv4.
->>    Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new add=
-ress record for ::1 on lo.*.
->>    Feb 06 14:55:34 mpe-ubuntu-le avahi-daemon[1884]: Registering new add=
-ress record for 127.0.0.1 on lo.IPv4.
->>    Feb 06 14:55:34 mpe-ubuntu-le systemd[1]: Started Avahi mDNS/DNS-SD S=
-tack.
->>    Feb 06 14:55:35 mpe-ubuntu-le avahi-daemon[1884]: Server startup comp=
-lete. Host name is mpe-ubuntu-le.local. Local service cookie is 3972418141.
->>    Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Leaving mDNS multic=
-ast group on interface eth0.IPv6 with address fe80::5054:ff:fe66:2a19.
->>    Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Joining mDNS multic=
-ast group on interface eth0.IPv6 with address fd69:d75f:b8b5:61:5054:ff:fe6=
-6:2a19.
->>    Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Registering new add=
-ress record for fd69:d75f:b8b5:61:5054:ff:fe66:2a19 on eth0.*.
->>    Feb 06 14:55:38 mpe-ubuntu-le avahi-daemon[1884]: Withdrawing address=
- record for fe80::5054:ff:fe66:2a19 on eth0.
->>=20=20=20=20
->>    # uname -r
->>    5.5.0-gcc-8.2.0
->>
->>
->> The key question is what ioctl is it complaining about. You should be
->> able to find that via strace.
->>
->> cheers
->>
-> Hello Michael,
->
-> Sorry it isn't true that the kernel 5.5 is also affected. A Power Mac G5=
-=20
-> user told me that but this isn't correct. I compiled and tested the=20
-> stable kernel 5.5.1 and 5.5.2 today and both kernels don't have the=20
-> issue with the avahi daemon.
+On Fri, 2020-02-07 at 12:21:45 UTC, Michael Ellerman wrote:
+> The early versions of our kernel user access prevention (KUAP) were
+> written by Russell and Christophe, and didn't have separate
+> read/write access.
+> 
+> At some point I picked up the series and added the read/write access,
+> but I failed to update the usages in futex.h to correctly allow read
+> and write.
+> 
+> However we didn't notice because of another bug which was causing the
+> low-level code to always enable read and write. That bug was fixed
+> recently in commit 1d8f739b07bd ("powerpc/kuap: Fix set direction in
+> allow/prevent_user_access()").
+> 
+> futex_atomic_cmpxchg_inatomic() is passed the user address as %3 and
+> does:
+> 
+>   1:     lwarx   %1,  0, %3
+>          cmpw    0,  %1, %4
+>          bne-    3f
+>   2:     stwcx.  %5,  0, %3
+> 
+> Which clearly loads and stores from/to %3. The logic in
+> arch_futex_atomic_op_inuser() is similar, so fix both of them to use
+> allow_read_write_user().
+> 
+> Without this fix, and with PPC_KUAP_DEBUG=y, we see eg:
+> 
+>   Bug: Read fault blocked by AMR!
+>   WARNING: CPU: 94 PID: 149215 at arch/powerpc/include/asm/book3s/64/kup-radix.h:126 __do_page_fault+0x600/0xf30
+>   CPU: 94 PID: 149215 Comm: futex_requeue_p Tainted: G        W         5.5.0-rc7-gcc9x-g4c25df5640ae #1
+>   ...
+>   NIP [c000000000070680] __do_page_fault+0x600/0xf30
+>   LR [c00000000007067c] __do_page_fault+0x5fc/0xf30
+>   Call Trace:
+>   [c00020138e5637e0] [c00000000007067c] __do_page_fault+0x5fc/0xf30 (unreliable)
+>   [c00020138e5638c0] [c00000000000ada8] handle_page_fault+0x10/0x30
+>   --- interrupt: 301 at cmpxchg_futex_value_locked+0x68/0xd0
+>       LR = futex_lock_pi_atomic+0xe0/0x1f0
+>   [c00020138e563bc0] [c000000000217b50] futex_lock_pi_atomic+0x80/0x1f0 (unreliable)
+>   [c00020138e563c30] [c00000000021b668] futex_requeue+0x438/0xb60
+>   [c00020138e563d60] [c00000000021c6cc] do_futex+0x1ec/0x2b0
+>   [c00020138e563d90] [c00000000021c8b8] sys_futex+0x128/0x200
+>   [c00020138e563e20] [c00000000000b7ac] system_call+0x5c/0x68
+> 
+> Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
+> Cc: stable@vger.kernel.org # v5.2+
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-OK good to know.
+Applied to powerpc fixes.
 
-> Could you please also test the latest Git kernel?
-
-That's literally all I ever do.
-
-The problem here is you didn't tell me you were running a big endian
-distro, which uses compat mode.
-
-In hindsight I should have thought of that.
-
-Now that I know that, I can reproduce the bug:
-
-  Feb 08 23:31:12 mpe-ubuntu-be avahi-daemon[24819]: ioctl(): Inappropriate=
- ioctl for device
-  Feb 08 23:31:12 mpe-ubuntu-be avahi-daemon[24819]: ioctl(): Inappropriate=
- ioctl for device
-  Feb 08 23:31:12 mpe-ubuntu-be avahi-daemon[24819]: ioctl(): Inappropriate=
- ioctl for device
-  Feb 08 23:31:12 mpe-ubuntu-be avahi-daemon[24819]: ioctl(): Inappropriate=
- ioctl for device
-
-
-But it seems you've already identified the problem commit, thanks for
-bisecting.
-
-I'm sure Arnd will be able to fix it now that you've identified the
-problematic commit.
+https://git.kernel.org/powerpc/c/9dc086f1e9ef39dd823bd27954b884b2062f9e70
 
 cheers
-
-
-> strace /usr/sbin/avahi-daemon
->
-> ...
-> poll([{fd=3D4, events=3DPOLLIN}, {fd=3D16, events=3DPOLLIN}, {fd=3D15,=20
-> events=3DPOLLIN}, {fd=3D14, events=3DPOLLIN}, {fd=3D13, events=3DPOLLIN},=
- {fd=3D12,=20
-> events=3DPOLLIN}, {fd=3D11, events=3DPOLLIN}, {fd=3D10, events=3DPOLLIN},=
- {fd=3D9,=20
-> events=3DPOLLIN}, {fd=3D8, events=3DPOLLIN}, {fd=3D6, events=3DPOLLIN}], =
-11, 65) =3D=20
-> 2 ([{fd=3D12, revents=3DPOLLIN}, {fd=3D9, revents=3DPOLLIN}])
-> ioctl(12, FIONREAD, 0xffba6f24)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 =3D -1 ENOTTY (Inappropriate ioctl=20
-> for device)
-> write(2, "ioctl(): Inappropriate ioctl for"..., 39ioctl(): Inappropriate=
-=20
-> ioctl for device) =3D 39
-> write(2, "\n", 1
-> )=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D 1
-> ...
->
-> Thanks,
-> Christian
