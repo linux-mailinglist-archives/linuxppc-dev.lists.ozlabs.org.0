@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155AD156A3F
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2020 14:00:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03935156A91
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2020 14:15:46 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48FqKV3zD2zDqDp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 00:15:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Fq0F4gzRzDqPQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 00:00:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,31 +17,33 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ZGX16Twk; dkim-atps=neutral
+ header.s=default header.b=q0pvgGxm; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Fpw34Y18zDqN8
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2020 23:57:07 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48FpvF6jfwzDqM7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2020 23:56:23 +1100 (AEDT)
 Received: from localhost (unknown [38.98.37.135])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5CA792081E;
- Sun,  9 Feb 2020 12:57:04 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E6F9720733;
+ Sun,  9 Feb 2020 12:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581253025;
- bh=GZDs+2I8Zu/fkAf+zMYTdMQ6mWpB0sh+HmrhjqeNZpg=;
- h=From:To:Cc:Subject:Date:From;
- b=ZGX16Twk8Pz+EE4u2eqM+8EbdYsiuKKWGuWzdgzHlY/QQnjZQL9WZkAWA82l8Z6Lp
- W8C4yqkbHO2YyaSjMg73C/hyrhcqKWcc1XFA/1s5M84U4XWSIR3hCWYE0/58Wbwnv7
- SZtwray3/cEojve2FxyFkSS3YwBTrLoGbgTQpFaA=
+ s=default; t=1581252981;
+ bh=wEuQkILbzCrkndaHaGMt/QtlgcEM66cBemstNp3v6fc=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=q0pvgGxmXPCg+rjYkFKJt2HyuXWgGZhiT7YOmln8fKJBzYM12o/J5X1vbWBzh0oeF
+ Lq/3rIDWIZgfAtdZxifVETZ/neuldW0mlzsYEYkBkP6uqbgHtUa1VwGzmeUklx18du
+ uCFghsuR0sqpWrr+L2oCz8XA374intx0hYUB0BqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/6] powerpc: kernel: no need to check return value of
+Subject: [PATCH 2/6] powerpc: kvm: no need to check return value of
  debugfs_create functions
-Date: Sun,  9 Feb 2020 11:58:56 +0100
-Message-Id: <20200209105901.1620958-1-gregkh@linuxfoundation.org>
+Date: Sun,  9 Feb 2020 11:58:57 +0100
+Message-Id: <20200209105901.1620958-2-gregkh@linuxfoundation.org>
 X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200209105901.1620958-1-gregkh@linuxfoundation.org>
+References: <20200209105901.1620958-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -55,9 +57,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -66,104 +67,124 @@ When calling debugfs functions, there is no need to ever check the
 return value.  The function can work or not, but the code logic should
 never do something different based on this.
 
+Because of this cleanup, we get to remove a few fields in struct
+kvm_arch that are now unused.
+
+Cc: Paul Mackerras <paulus@ozlabs.org>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: kvm-ppc@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/fadump.c       |  9 ++-------
- arch/powerpc/kernel/setup-common.c |  3 +--
- arch/powerpc/kernel/traps.c        | 25 +++++--------------------
- 3 files changed, 8 insertions(+), 29 deletions(-)
+ arch/powerpc/include/asm/kvm_host.h    |  3 ---
+ arch/powerpc/kvm/book3s_64_mmu_hv.c    |  5 ++---
+ arch/powerpc/kvm/book3s_64_mmu_radix.c |  5 ++---
+ arch/powerpc/kvm/book3s_hv.c           |  9 ++-------
+ arch/powerpc/kvm/timing.c              | 13 +++----------
+ 5 files changed, 9 insertions(+), 26 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index ff0114aeba9b..b83fa42c19e1 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1432,7 +1432,6 @@ DEFINE_SHOW_ATTRIBUTE(fadump_region);
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 6e8b8ffd06ad..877f8aa2bc1e 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -308,8 +308,6 @@ struct kvm_arch {
+ 	pgd_t *pgtable;
+ 	u64 process_table;
+ 	struct dentry *debugfs_dir;
+-	struct dentry *htab_dentry;
+-	struct dentry *radix_dentry;
+ 	struct kvm_resize_hpt *resize_hpt; /* protected by kvm->lock */
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+@@ -830,7 +828,6 @@ struct kvm_vcpu_arch {
+ 	struct kvmhv_tb_accumulator cede_time;	/* time napping inside guest */
  
- static void fadump_init_files(void)
+ 	struct dentry *debugfs_dir;
+-	struct dentry *debugfs_timings;
+ #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+ };
+ 
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index 6c372f5c61b6..8b4eac0c9dcd 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -2138,9 +2138,8 @@ static const struct file_operations debugfs_htab_fops = {
+ 
+ void kvmppc_mmu_debugfs_init(struct kvm *kvm)
  {
+-	kvm->arch.htab_dentry = debugfs_create_file("htab", 0400,
+-						    kvm->arch.debugfs_dir, kvm,
+-						    &debugfs_htab_fops);
++	debugfs_create_file("htab", 0400, kvm->arch.debugfs_dir, kvm,
++			    &debugfs_htab_fops);
+ }
+ 
+ void kvmppc_mmu_book3s_hv_init(struct kvm_vcpu *vcpu)
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 803940d79b73..1d75ed684b53 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -1376,9 +1376,8 @@ static const struct file_operations debugfs_radix_fops = {
+ 
+ void kvmhv_radix_debugfs_init(struct kvm *kvm)
+ {
+-	kvm->arch.radix_dentry = debugfs_create_file("radix", 0400,
+-						     kvm->arch.debugfs_dir, kvm,
+-						     &debugfs_radix_fops);
++	debugfs_create_file("radix", 0400, kvm->arch.debugfs_dir, kvm,
++			    &debugfs_radix_fops);
+ }
+ 
+ int kvmppc_radix_init(void)
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 2cefd071b848..33be4d93248a 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2258,14 +2258,9 @@ static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
+ 	struct kvm *kvm = vcpu->kvm;
+ 
+ 	snprintf(buf, sizeof(buf), "vcpu%u", id);
+-	if (IS_ERR_OR_NULL(kvm->arch.debugfs_dir))
+-		return;
+ 	vcpu->arch.debugfs_dir = debugfs_create_dir(buf, kvm->arch.debugfs_dir);
+-	if (IS_ERR_OR_NULL(vcpu->arch.debugfs_dir))
+-		return;
+-	vcpu->arch.debugfs_timings =
+-		debugfs_create_file("timings", 0444, vcpu->arch.debugfs_dir,
+-				    vcpu, &debugfs_timings_ops);
++	debugfs_create_file("timings", 0444, vcpu->arch.debugfs_dir, vcpu,
++			    &debugfs_timings_ops);
+ }
+ 
+ #else /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+diff --git a/arch/powerpc/kvm/timing.c b/arch/powerpc/kvm/timing.c
+index bfe4f106cffc..8e4791c6f2af 100644
+--- a/arch/powerpc/kvm/timing.c
++++ b/arch/powerpc/kvm/timing.c
+@@ -207,19 +207,12 @@ static const struct file_operations kvmppc_exit_timing_fops = {
+ void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id)
+ {
+ 	static char dbg_fname[50];
 -	struct dentry *debugfs_file;
- 	int rc = 0;
  
- 	rc = sysfs_create_file(kernel_kobj, &fadump_attr.attr);
-@@ -1445,12 +1444,8 @@ static void fadump_init_files(void)
- 		printk(KERN_ERR "fadump: unable to create sysfs file"
- 			" fadump_registered (%d)\n", rc);
- 
--	debugfs_file = debugfs_create_file("fadump_region", 0444,
--					powerpc_debugfs_root, NULL,
--					&fadump_region_fops);
--	if (!debugfs_file)
--		printk(KERN_ERR "fadump: unable to create debugfs file"
--				" fadump_region\n");
-+	debugfs_create_file("fadump_region", 0444, powerpc_debugfs_root, NULL,
-+			    &fadump_region_fops);
- 
- 	if (fw_dump.dump_active) {
- 		rc = sysfs_create_file(kernel_kobj, &fadump_release_attr.attr);
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 7f8c890360fe..f9c0d888ce8a 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -787,8 +787,7 @@ EXPORT_SYMBOL(powerpc_debugfs_root);
- static int powerpc_debugfs_init(void)
- {
- 	powerpc_debugfs_root = debugfs_create_dir("powerpc", NULL);
+ 	snprintf(dbg_fname, sizeof(dbg_fname), "vm%u_vcpu%u_timing",
+ 		 current->pid, id);
+-	debugfs_file = debugfs_create_file(dbg_fname, 0666,
+-					kvm_debugfs_dir, vcpu,
+-					&kvmppc_exit_timing_fops);
 -
--	return powerpc_debugfs_root == NULL;
-+	return 0;
- }
- arch_initcall(powerpc_debugfs_init);
- #endif
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 82a3438300fd..3fca22276bb1 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -2278,35 +2278,20 @@ void ppc_warn_emulated_print(const char *type)
- 
- static int __init ppc_warn_emulated_init(void)
- {
--	struct dentry *dir, *d;
-+	struct dentry *dir;
- 	unsigned int i;
- 	struct ppc_emulated_entry *entries = (void *)&ppc_emulated;
- 
--	if (!powerpc_debugfs_root)
--		return -ENODEV;
--
- 	dir = debugfs_create_dir("emulated_instructions",
- 				 powerpc_debugfs_root);
--	if (!dir)
--		return -ENOMEM;
- 
--	d = debugfs_create_u32("do_warn", 0644, dir,
--			       &ppc_warn_emulated);
--	if (!d)
--		goto fail;
-+	debugfs_create_u32("do_warn", 0644, dir, &ppc_warn_emulated);
- 
--	for (i = 0; i < sizeof(ppc_emulated)/sizeof(*entries); i++) {
--		d = debugfs_create_u32(entries[i].name, 0644, dir,
--				       (u32 *)&entries[i].val.counter);
--		if (!d)
--			goto fail;
+-	if (!debugfs_file) {
+-		printk(KERN_ERR"%s: error creating debugfs file %s\n",
+-			__func__, dbg_fname);
+-		return;
 -	}
-+	for (i = 0; i < sizeof(ppc_emulated)/sizeof(*entries); i++)
-+		debugfs_create_u32(entries[i].name, 0644, dir,
-+				   (u32 *)&entries[i].val.counter);
++	debugfs_create_file(dbg_fname, 0666, kvm_debugfs_dir, vcpu,
++			    &kvmppc_exit_timing_fops);
++
  
- 	return 0;
--
--fail:
--	debugfs_remove_recursive(dir);
--	return -ENOMEM;
+ 	vcpu->arch.debugfs_exit_timing = debugfs_file;
  }
- 
- device_initcall(ppc_warn_emulated_init);
 -- 
 2.25.0
 
