@@ -2,55 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7815A156E81
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 05:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 888CF156E9B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 06:15:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GCzL3stfzDqQr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 15:46:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GDcq0QCMzDqBV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 16:15:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48GCxY0z6BzDqD9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 15:44:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Tk+C+i2S; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48GCxX3gB1z9sRl; Mon, 10 Feb 2020 15:44:48 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48GCxV4nP4z9sRh;
- Mon, 10 Feb 2020 15:44:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1581309888;
- bh=eC7Vr4qMU4DoQXk5j0w+V5swoIMqa+xLz/r2Lpz2x4M=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Tk+C+i2SmiBkigHAQ6Fk9UeoYKVM2UomMO5RmbB1dJHzQeq4WDXIWYi4SJKXZlg0F
- NrKCOIy9jb0nTUAIZF9HMrZ5pOx/xIqfBeXVElYyStaguNIBkGNtweJX7yVnQEMpkb
- DrHuj/qp7c6GliUgZAjKsM6oo+CGy7WGFRRs7O9wO/0DxpSbv+l8m/nXDTr65Rn1GW
- q016z92JCimTRS+xzo3aF1fLRVF3nAxIjiZTRaW1bJ+7WVAdE4ATP+aY8eJbVClUCx
- ZqqROhVAhk/3AmYt08uqTHQWTBsSZAc3GqU5RWXt3A+YFIm4t2F7ShzvkBy339sQPp
- hdrVQzNtjWNgA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH v6 2/6] sysfs: wrap __compat_only_sysfs_link_entry_to_kobj
- function to change the symlink name
-In-Reply-To: <20191211160910.21656-3-sourabhjain@linux.ibm.com>
-References: <20191211160910.21656-1-sourabhjain@linux.ibm.com>
- <20191211160910.21656-3-sourabhjain@linux.ibm.com>
-Date: Mon, 10 Feb 2020 15:44:42 +1100
-Message-ID: <878slb126d.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GDZl2MXMzDqMl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 16:13:34 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01A57HJN037509; Mon, 10 Feb 2020 00:13:15 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2y1u1hfg7b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Feb 2020 00:13:15 -0500
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01A59lYc043319;
+ Mon, 10 Feb 2020 00:13:14 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2y1u1hfg76-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Feb 2020 00:13:14 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01A568Hn004524;
+ Mon, 10 Feb 2020 05:13:14 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2y1mm6jd5u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Feb 2020 05:13:13 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01A5DDRh10290066
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 10 Feb 2020 05:13:13 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 29D95112065;
+ Mon, 10 Feb 2020 05:13:13 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7186B112061;
+ Mon, 10 Feb 2020 05:13:12 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 10 Feb 2020 05:13:12 +0000 (GMT)
+Subject: Re: [PATCH V5 09/14] powerpc/vas: Update CSB and notify process
+ for fault CRBs
+From: Haren Myneni <haren@linux.ibm.com>
+To: Michael Neuling <mikey@neuling.org>
+In-Reply-To: <67467b52ddd8fcd6ccd8390f9b1f0ed7c09bb3bf.camel@neuling.org>
+References: <1579679802.26081.6.camel@hbabu-laptop>
+ <1579681061.26081.48.camel@hbabu-laptop>
+ <67467b52ddd8fcd6ccd8390f9b1f0ed7c09bb3bf.camel@neuling.org>
+Content-Type: text/plain; charset="UTF-8"
+Date: Sun, 09 Feb 2020 21:12:49 -0800
+Message-ID: <1581311569.18705.18.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-10_01:2020-02-07,
+ 2020-02-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ impostorscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002100040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,110 +93,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, gregkh@linuxfoundation.org, hbathini@linux.ibm.com
+Cc: herbert@gondor.apana.org.au, npiggin@gmail.com, hch@infradead.org,
+ oohall@gmail.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
-> The __compat_only_sysfs_link_entry_to_kobj function creates a symlink to a
-> kobject but doesn't provide an option to change the symlink file name.
->
-> This patch adds a wrapper function compat_only_sysfs_link_entry_to_kobj
-> that extends the __compat_only_sysfs_link_entry_to_kobj functionality
-> which allows function caller to customize the symlink name.
->
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
->  fs/sysfs/group.c      | 28 +++++++++++++++++++++++++---
->  include/linux/sysfs.h | 12 ++++++++++++
->  2 files changed, 37 insertions(+), 3 deletions(-)
+Mikey, Thanks for your review comments.
 
-I'll assume no one has any objections to this and merge it via the
-powerpc tree with the rest of the series.
+On Fri, 2020-02-07 at 16:46 +1100, Michael Neuling wrote:
+> On Wed, 2020-01-22 at 00:17 -0800, Haren Myneni wrote:
+> > For each fault CRB, update fault address in CRB (fault_storage_addr)
+> > and translation error status in CSB so that user space can touch the
+> > fault address and resend the request. If the user space passed invalid
+> > CSB address send signal to process with SIGSEGV.
+> > 
+> > Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> > ---
+> >  arch/powerpc/platforms/powernv/vas-fault.c | 116
+> > +++++++++++++++++++++++++++++
+> >  1 file changed, 116 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/platforms/powernv/vas-fault.c
+> > b/arch/powerpc/platforms/powernv/vas-fault.c
+> > index 5c2cada..2cfab0c 100644
+> > --- a/arch/powerpc/platforms/powernv/vas-fault.c
+> > +++ b/arch/powerpc/platforms/powernv/vas-fault.c
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/slab.h>
+> >  #include <linux/uaccess.h>
+> >  #include <linux/kthread.h>
+> > +#include <linux/sched/signal.h>
+> >  #include <linux/mmu_context.h>
+> >  #include <asm/icswx.h>
+> >  
+> > @@ -26,6 +27,120 @@
+> >  #define VAS_FAULT_WIN_FIFO_SIZE	(4 << 20)
+> >  
+> >  /*
+> > + * Update the CSB to indicate a translation error.
+> > + *
+> > + * If the fault is in the CSB address itself or if we are unable to
+> > + * update the CSB, send a signal to the process, because we have no
+> > + * other way of notifying the user process.
+> > + *
+> > + * Remaining settings in the CSB are based on wait_for_csb() of
+> > + * NX-GZIP.
+> > + */
+> > +static void update_csb(struct vas_window *window,
+> > +			struct coprocessor_request_block *crb)
+> > +{
+> > +	int rc;
+> > +	struct pid *pid;
+> > +	void __user *csb_addr;
+> > +	struct task_struct *tsk;
+> > +	struct kernel_siginfo info;
+> > +	struct coprocessor_status_block csb;
+> > +
+> > +	/*
+> > +	 * NX user space windows can not be opened for task->mm=NULL
+> > +	 * and faults will not be generated for kernel requests.
+> > +	 */
+> > +	if (!window->mm || !window->user_win)
+> > +		return;
+> > +
+> > +	csb_addr = (void *)be64_to_cpu(crb->csb_addr);
+> > +
+> > +	csb.cc = CSB_CC_TRANSLATION;
+> > +	csb.ce = CSB_CE_TERMINATION;
+> > +	csb.cs = 0;
+> > +	csb.count = 0;
+> > +
+> > +	/*
+> > +	 * Returns the fault address in CPU format since it is passed with
+> > +	 * signal. But if the user space expects BE format, need changes.
+> > +	 * i.e either kernel (here) or user should convert to CPU format.
+> > +	 * Not both!
+> > +	 */
+> > +	csb.address = be64_to_cpu(crb->stamp.nx.fault_storage_addr);
+> 
+> This looks wrong and I don't understand the comment. You need to convert this
+> back to be64 to write it to csb.address. ie.
+> 
+>   csb.address = cpu_to_be64(be64_to_cpu(crb->stamp.nx.fault_storage_addr));
+> 
+> Which I think you can just avoid the endian conversion all together.
 
-cheers
+NX pastes fault CRB in big-endian, so passing this address in CPU format
+to user space, otherwise the library has to convert. 
 
-> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
-> index d41c21fef138..0993645f0b59 100644
-> --- a/fs/sysfs/group.c
-> +++ b/fs/sysfs/group.c
-> @@ -424,6 +424,25 @@ EXPORT_SYMBOL_GPL(sysfs_remove_link_from_group);
->  int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
->  				      struct kobject *target_kobj,
->  				      const char *target_name)
-> +{
-> +	return compat_only_sysfs_link_entry_to_kobj(kobj, target_kobj,
-> +						target_name, NULL);
-> +}
-> +EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
-> +
-> +/**
-> + * compat_only_sysfs_link_entry_to_kobj - add a symlink to a kobject pointing
-> + * to a group or an attribute
-> + * @kobj:		The kobject containing the group.
-> + * @target_kobj:	The target kobject.
-> + * @target_name:	The name of the target group or attribute.
-> + * @symlink_name:	The name of the symlink file (target_name will be
-> + *			considered if symlink_name is NULL).
-> + */
-> +int compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
-> +					 struct kobject *target_kobj,
-> +					 const char *target_name,
-> +					 const char *symlink_name)
->  {
->  	struct kernfs_node *target;
->  	struct kernfs_node *entry;
-> @@ -448,12 +467,15 @@ int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
->  		return -ENOENT;
->  	}
->  
-> -	link = kernfs_create_link(kobj->sd, target_name, entry);
-> +	if (!symlink_name)
-> +		symlink_name = target_name;
-> +
-> +	link = kernfs_create_link(kobj->sd, symlink_name, entry);
->  	if (IS_ERR(link) && PTR_ERR(link) == -EEXIST)
-> -		sysfs_warn_dup(kobj->sd, target_name);
-> +		sysfs_warn_dup(kobj->sd, symlink_name);
->  
->  	kernfs_put(entry);
->  	kernfs_put(target);
->  	return PTR_ERR_OR_ZERO(link);
->  }
-> -EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
-> +EXPORT_SYMBOL_GPL(compat_only_sysfs_link_entry_to_kobj);
-> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-> index 5420817ed317..15b195a4529d 100644
-> --- a/include/linux/sysfs.h
-> +++ b/include/linux/sysfs.h
-> @@ -300,6 +300,10 @@ void sysfs_remove_link_from_group(struct kobject *kobj, const char *group_name,
->  int __compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
->  				      struct kobject *target_kobj,
->  				      const char *target_name);
-> +int compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
-> +					 struct kobject *target_kobj,
-> +					 const char *target_name,
-> +					 const char *symlink_name);
->  
->  void sysfs_notify(struct kobject *kobj, const char *dir, const char *attr);
->  
-> @@ -508,6 +512,14 @@ static inline int __compat_only_sysfs_link_entry_to_kobj(
->  	return 0;
->  }
->  
-> +static int compat_only_sysfs_link_entry_to_kobj(struct kobject *kobj,
-> +						struct kobject *target_kobj,
-> +						const char *target_name,
-> +						const char *symlink_name)
-> +{
-> +	return 0;
-> +}
-> +
->  static inline void sysfs_notify(struct kobject *kobj, const char *dir,
->  				const char *attr)
->  {
-> -- 
-> 2.17.2
+What is the standard way for passing to user space? 
+
+> 
+> > +	csb.flags = 0;
+> > +
+> > +	pid = window->pid;
+> > +	tsk = get_pid_task(pid, PIDTYPE_PID);
+> > +	/*
+> > +	 * Send window will be closed after processing all NX requests
+> > +	 * and process exits after closing all windows. In multi-thread
+> > +	 * applications, thread may not exists, but does not close FD
+> > +	 * (means send window) upon exit. Parent thread (tgid) can use
+> > +	 * and close the window later.
+> > +	 * pid and mm references are taken when window is opened by
+> > +	 * process (pid). So tgid is used only when child thread opens
+> > +	 * a window and exits without closing it in multithread tasks.
+> > +	 */
+> > +	if (!tsk) {
+> > +		pid = window->tgid;
+> > +		tsk = get_pid_task(pid, PIDTYPE_PID);
+> > +		/*
+> > +		 * Parent thread will be closing window during its exit.
+> > +		 * So should not get here.
+> > +		 */
+> > +		if (!tsk)
+> > +			return;
+> > +	}
+> > +
+> > +	/* Return if the task is exiting. */
+> > +	if (tsk->flags & PF_EXITING) {
+> > +		put_task_struct(tsk);
+> > +		return;
+> > +	}
+> > +
+> > +	use_mm(window->mm);
+> > +	rc = copy_to_user(csb_addr, &csb, sizeof(csb));
+> > +	/*
+> > +	 * User space polls on csb.flags (first byte). So add barrier
+> > +	 * then copy first byte with csb flags update.
+> > +	 */
+> > +	smp_mb();
+> > +	if (!rc) {
+> > +		csb.flags = CSB_V;
+> > +		rc = copy_to_user(csb_addr, &csb, sizeof(u8));
+> > +	}
+> > +	unuse_mm(window->mm);
+> > +	put_task_struct(tsk);
+> > +
+> > +	/* Success */
+> > +	if (!rc)
+> > +		return;
+> > +
+> > +	pr_err("Invalid CSB address 0x%p signalling pid(%d)\n",
+> > +			csb_addr, pid_vnr(pid));
+> 
+> This is a userspace error, not a kernel error. This should not be a pr_err().
+> 
+> Userspace could spam the console with this.
+
+Will change it to pr_debug/info. Added pr_err() during development and
+missed to remove. 
+> 
+> > +
+> > +	clear_siginfo(&info);
+> > +	info.si_signo = SIGSEGV;
+> > +	info.si_errno = EFAULT;
+> > +	info.si_code = SEGV_MAPERR;
+> > +	info.si_addr = csb_addr;
+> > +
+> > +	/*
+> > +	 * process will be polling on csb.flags after request is sent to
+> > +	 * NX. So generally CSB update should not fail except when an
+> > +	 * application does not follow the process properly. So an error
+> > +	 * message will be displayed and leave it to user space whether
+> > +	 * to ignore or handle this signal.
+> > +	 */
+> > +	rcu_read_lock();
+> > +	rc = kill_pid_info(SIGSEGV, &info, pid);
+> > +	rcu_read_unlock();
+> 
+> why the rcu_read_un/lock() here?
+
+Used same as in kill_proc_info()/kill_something_info()
+> 
+> > +
+> > +	pr_devel("%s(): pid %d kill_proc_info() rc %d\n", __func__,
+> > +			pid_vnr(pid), rc);
+> > +}
+> > +
+> > +/*
+> >   * Process CRBs that we receive on the fault window.
+> >   */
+> >  irqreturn_t vas_fault_handler(int irq, void *data)
+> > @@ -104,6 +219,7 @@ irqreturn_t vas_fault_handler(int irq, void *data)
+> >  			return IRQ_HANDLED;
+> >  		}
+> >  
+> > +		update_csb(window, crb);
+> >  	} while (true);
+> >  
+> >  	return IRQ_HANDLED;
+> 
+
+
