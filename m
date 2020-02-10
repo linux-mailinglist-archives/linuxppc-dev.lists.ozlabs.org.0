@@ -1,78 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A5D157E1B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 16:06:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03757157D54
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 15:24:47 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GSpg3W7czDqCw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 01:24:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GTkK0xx1zDqM7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 02:05:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
+ helo=mail-io1-xd44.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=uImQGabY; dkim-atps=neutral
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48GSjY2KCNzDqN8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 01:20:15 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01AEJEo7141577; Mon, 10 Feb 2020 09:20:09 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y1u9p0enc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Feb 2020 09:20:09 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01AEK86n029753;
- Mon, 10 Feb 2020 14:20:08 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma05wdc.us.ibm.com with ESMTP id 2y1mm69qj8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Feb 2020 14:20:08 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01AEK8v713763156
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Feb 2020 14:20:08 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 20F9112405E;
- Mon, 10 Feb 2020 14:20:07 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3CEB12405B;
- Mon, 10 Feb 2020 14:20:04 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.70.51])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 10 Feb 2020 14:20:04 +0000 (GMT)
-X-Mailer: emacs 27.0.60 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2] libnvdimm: Update persistence domain value for
- of_pmem and papr_scm device
-In-Reply-To: <CAPcyv4hBAk-dwO4=AT7cQm5YUwCBg0AECsZsiCjRJ_ZGWvWUAw@mail.gmail.com>
-References: <20200205052056.74604-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hBAk-dwO4=AT7cQm5YUwCBg0AECsZsiCjRJ_ZGWvWUAw@mail.gmail.com>
-Date: Mon, 10 Feb 2020 19:50:00 +0530
-Message-ID: <87y2ta8qy7.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GTdv46qczDqGt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 02:02:09 +1100 (AEDT)
+Received: by mail-io1-xd44.google.com with SMTP id t26so7841855ioi.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 07:02:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=bhMwZCYROirrJMoN5ENbQVM31GkKgHRjbPr+9bhi68s=;
+ b=uImQGabY9dxOZONqTfKUL5gE1YbSZdXoJ8AWTRjzEHCFO7x8127xTjm4QQwIjpWIVB
+ jrgOeGxFcmfdngVwXgLzHMvbmpZbQNeRyYmkCFDRMKzM8yppUhFMHb6WLK9qQl8oLhqC
+ jNa0HenIjQLy+ohapkQQ4ci3ZGTupit7jPRweeMsjyZkln1gQs1JgJcRvbKK+2xWXd6D
+ x8m8WVAGeEHODeM99C8aGyHwmXTOgXyZ5yqPEgOjVu+ClX9bF+98A6FaNy163TZRr5IJ
+ P9U9+arKycX7zzDMFgbkc64HfLZUPPjzIBaJPoIWQLLooOvdcn00Nw69bs1OiUB4OjTQ
+ 4VXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=bhMwZCYROirrJMoN5ENbQVM31GkKgHRjbPr+9bhi68s=;
+ b=UaNwOSz9jLEUigrZY4bAMr1N12QzI8EGvfBPBKpZJS5qtpROLnYzS6JQvjLtjnAn/O
+ 9WeD6Siyxkx8YvRSWkrT+AlzY1gdU7JkjChcL4/NWLfhKWmRx3+hORrrKsLUAq9222AS
+ r0yDAU2YwEbuqArN3+8ED1yrXbkplJQEVCnHkX9NS31oROYhaSOKCY4dHbeaHsGoogQY
+ yKHfIfRKrfOQaChAD0ZIRURVSmbOU9oYhG+sxMmgYKSk2MVS3QfDx2VYX9WgwrLHZXzs
+ /p2n0Yiy6bckb56Gmopeu5de4aMWtC/NrL2dfz+XK536Nrb6nJkKH0Xw/MCyhVRH7B7l
+ CBaA==
+X-Gm-Message-State: APjAAAVpBSisSrRp2tPLYnFI7TVS5PygpI/7BPDjEWy2+QY5+H9RREeb
+ XvLHUF8k/ppOE+zjENtss7jyYf4RzI8ZJ+bQPt4=
+X-Google-Smtp-Source: APXvYqyPnVtT5nH7L0EYMs6xaLx+NOHB7rwRvqU4Z1bh2gtYeyUtXSbA9kAV3MDESOSvEfpVZfpbl96NqCLZcY0b05Q=
+X-Received: by 2002:a02:8525:: with SMTP id g34mr10179487jai.72.1581346925348; 
+ Mon, 10 Feb 2020 07:02:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-10_04:2020-02-10,
- 2020-02-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002100111
+References: <20200209105901.1620958-1-gregkh@linuxfoundation.org>
+ <20200209105901.1620958-6-gregkh@linuxfoundation.org>
+In-Reply-To: <20200209105901.1620958-6-gregkh@linuxfoundation.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 11 Feb 2020 02:01:53 +1100
+Message-ID: <CAOSf1CEKwjDkp-=SMjmJfQirxdGCkadougZbdDS6FK1muNNCZw@mail.gmail.com>
+Subject: Re: [PATCH 6/6] powerpc: powernv: no need to check return value of
+ debugfs_create functions
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,119 +74,215 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Paul Mackerras <paulus@samba.org>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Tue, Feb 4, 2020 at 9:21 PM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> Currently, kernel shows the below values
->>         "persistence_domain":"cpu_cache"
->>         "persistence_domain":"memory_controller"
->>         "persistence_domain":"unknown"
->>
->> "cpu_cache" indicates no extra instructions is needed to ensure the persistence
->> of data in the pmem media on power failure.
->>
->> "memory_controller" indicates platform provided instructions need to be issued
+On Mon, Feb 10, 2020 at 12:12 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> No, it does not. The only requirement implied by "memory_controller"
-> is global visibility outside the cpu cache. If there are special
-> instructions beyond that then it isn't persistent memory, at least not
-> pmem that is safe for dax. virtio-pmem is an example of pmem-like
-> memory that is not enabled for userspace flushing (MAP_SYNC disabled).
+> When calling debugfs functions, there is no need to ever check the
+> return value.  The function can work or not, but the code logic should
+> never do something different based on this.
+
+For memtrace debugfs is the only way to actually use the feature. It'd
+be nice if it still printed out *something* if it failed to create the
+files rather than just being mysteriously absent, but maybe debugfs
+itself does that. Looks fine otherwise.
+
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  arch/powerpc/platforms/powernv/memtrace.c  |  7 ----
+>  arch/powerpc/platforms/powernv/opal-imc.c  | 24 ++++----------
+>  arch/powerpc/platforms/powernv/pci-ioda.c  |  5 ---
+>  arch/powerpc/platforms/powernv/vas-debug.c | 37 ++--------------------
+>  4 files changed, 10 insertions(+), 63 deletions(-)
 >
-
-Can you explain this more? The way I was expecting the application to
-interpret the value was, a regular store instruction doesn't guarantee
-persistence if you find the "memory_controller" value for
-persistence_domain. Instead, we need to make sure we flush data to the
-controller at which point the platform will take care of the persistence in
-case of power loss. How we flush data to the controller will also be
-defined by the platform.
-
-
->> as per documented sequence to make sure data get flushed so that it is
->> guaranteed to be on pmem media in case of system power loss.
->>
->> Based on the above use memory_controller for non volatile regions on ppc64.
->>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/papr_scm.c | 7 ++++++-
->>  drivers/nvdimm/of_pmem.c                  | 4 +++-
->>  include/linux/libnvdimm.h                 | 1 -
->>  3 files changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index 7525635a8536..ffcd0d7a867c 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->> @@ -359,8 +359,13 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>
->>         if (p->is_volatile)
->>                 p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
->> -       else
->> +       else {
->> +               /*
->> +                * We need to flush things correctly to guarantee persistance
->> +                */
+> diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+> index eb2e75dac369..d6d64f8718e6 100644
+> --- a/arch/powerpc/platforms/powernv/memtrace.c
+> +++ b/arch/powerpc/platforms/powernv/memtrace.c
+> @@ -187,11 +187,6 @@ static int memtrace_init_debugfs(void)
 >
-> There are never guarantees. If you're going to comment what does
-> software need to flush, and how?
-
-Can you explain why you say there are never guarantees? If you follow the platform
-recommended instruction sequence to flush data, we can be sure of data
-persistence in the pmem media.
-
-
+>                 snprintf(ent->name, 16, "%08x", ent->nid);
+>                 dir = debugfs_create_dir(ent->name, memtrace_debugfs_dir);
+> -               if (!dir) {
+> -                       pr_err("Failed to create debugfs directory for node %d\n",
+> -                               ent->nid);
+> -                       return -1;
+> -               }
 >
->> +               set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
->>                 p->region = nvdimm_pmem_region_create(p->bus, &ndr_desc);
->> +       }
->>         if (!p->region) {
->>                 dev_err(dev, "Error registering region %pR from %pOF\n",
->>                                 ndr_desc.res, p->dn);
->> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
->> index 8224d1431ea9..6826a274a1f1 100644
->> --- a/drivers/nvdimm/of_pmem.c
->> +++ b/drivers/nvdimm/of_pmem.c
->> @@ -62,8 +62,10 @@ static int of_pmem_region_probe(struct platform_device *pdev)
->>
->>                 if (is_volatile)
->>                         region = nvdimm_volatile_region_create(bus, &ndr_desc);
->> -               else
->> +               else {
->> +                       set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
->>                         region = nvdimm_pmem_region_create(bus, &ndr_desc);
->> +               }
->>
->>                 if (!region)
->>                         dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
->> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
->> index 0f366706b0aa..771d888a5ed7 100644
->> --- a/include/linux/libnvdimm.h
->> +++ b/include/linux/libnvdimm.h
->> @@ -54,7 +54,6 @@ enum {
->>         /*
->>          * Platform provides mechanisms to automatically flush outstanding
->>          * write data from memory controler to pmem on system power loss.
->> -        * (ADR)
+>                 ent->dir = dir;
+>                 debugfs_create_file("trace", 0400, dir, ent, &memtrace_fops);
+> @@ -314,8 +309,6 @@ static int memtrace_init(void)
+>  {
+>         memtrace_debugfs_dir = debugfs_create_dir("memtrace",
+>                                                   powerpc_debugfs_root);
+> -       if (!memtrace_debugfs_dir)
+> -               return -1;
 >
-> I'd rather not delete critical terminology for a developer / platform
-> owner to be able to consult documentation, or their vendor. Can you
-> instead add the PowerPC equivalent term for this capability? I.e. list
-> (x86: ADR PowerPC: foo ...).
-
-Power ISA doesn't clearly call out what mechanism will be used to ensure
-that a load following power loss will return the previously flushed
-data. Hence there is no description of details like Asynchronous DRAM
-Refresh. Only details specified is with respect to flush sequence that ensures
-that a load following power loss will return the value stored.
-
--aneesh
+>         debugfs_create_file("enable", 0600, memtrace_debugfs_dir,
+>                             NULL, &memtrace_init_fops);
+> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+> index 000b350d4060..968b9a4d1cd9 100644
+> --- a/arch/powerpc/platforms/powernv/opal-imc.c
+> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
+> @@ -35,11 +35,10 @@ static int imc_mem_set(void *data, u64 val)
+>  }
+>  DEFINE_DEBUGFS_ATTRIBUTE(fops_imc_x64, imc_mem_get, imc_mem_set, "0x%016llx\n");
+>
+> -static struct dentry *imc_debugfs_create_x64(const char *name, umode_t mode,
+> -                                            struct dentry *parent, u64  *value)
+> +static void imc_debugfs_create_x64(const char *name, umode_t mode,
+> +                                  struct dentry *parent, u64  *value)
+>  {
+> -       return debugfs_create_file_unsafe(name, mode, parent,
+> -                                         value, &fops_imc_x64);
+> +       debugfs_create_file_unsafe(name, mode, parent, value, &fops_imc_x64);
+>  }
+>
+>  /*
+> @@ -59,9 +58,6 @@ static void export_imc_mode_and_cmd(struct device_node *node,
+>
+>         imc_debugfs_parent = debugfs_create_dir("imc", powerpc_debugfs_root);
+>
+> -       if (!imc_debugfs_parent)
+> -               return;
+> -
+>         if (of_property_read_u32(node, "cb_offset", &cb_offset))
+>                 cb_offset = IMC_CNTL_BLK_OFFSET;
+>
+> @@ -69,21 +65,15 @@ static void export_imc_mode_and_cmd(struct device_node *node,
+>                 loc = (u64)(ptr->vbase) + cb_offset;
+>                 imc_mode_addr = (u64 *)(loc + IMC_CNTL_BLK_MODE_OFFSET);
+>                 sprintf(mode, "imc_mode_%d", (u32)(ptr->id));
+> -               if (!imc_debugfs_create_x64(mode, 0600, imc_debugfs_parent,
+> -                                           imc_mode_addr))
+> -                       goto err;
+> +               imc_debugfs_create_x64(mode, 0600, imc_debugfs_parent,
+> +                                      imc_mode_addr);
+>
+>                 imc_cmd_addr = (u64 *)(loc + IMC_CNTL_BLK_CMD_OFFSET);
+>                 sprintf(cmd, "imc_cmd_%d", (u32)(ptr->id));
+> -               if (!imc_debugfs_create_x64(cmd, 0600, imc_debugfs_parent,
+> -                                           imc_cmd_addr))
+> -                       goto err;
+> +               imc_debugfs_create_x64(cmd, 0600, imc_debugfs_parent,
+> +                                      imc_cmd_addr);
+>                 ptr++;
+>         }
+> -       return;
+> -
+> -err:
+> -       debugfs_remove_recursive(imc_debugfs_parent);
+>  }
+>
+>  /*
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 22c22cd7bd82..57d3a6af1d52 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -3174,11 +3174,6 @@ static void pnv_pci_ioda_create_dbgfs(void)
+>
+>                 sprintf(name, "PCI%04x", hose->global_number);
+>                 phb->dbgfs = debugfs_create_dir(name, powerpc_debugfs_root);
+> -               if (!phb->dbgfs) {
+> -                       pr_warn("%s: Error on creating debugfs on PHB#%x\n",
+> -                               __func__, hose->global_number);
+> -                       continue;
+> -               }
+>
+>                 debugfs_create_file_unsafe("dump_diag_regs", 0200, phb->dbgfs,
+>                                            phb, &pnv_pci_diag_data_fops);
+> diff --git a/arch/powerpc/platforms/powernv/vas-debug.c b/arch/powerpc/platforms/powernv/vas-debug.c
+> index 09e63df53c30..44035a3d6414 100644
+> --- a/arch/powerpc/platforms/powernv/vas-debug.c
+> +++ b/arch/powerpc/platforms/powernv/vas-debug.c
+> @@ -115,7 +115,7 @@ void vas_window_free_dbgdir(struct vas_window *window)
+>
+>  void vas_window_init_dbgdir(struct vas_window *window)
+>  {
+> -       struct dentry *f, *d;
+> +       struct dentry *d;
+>
+>         if (!window->vinst->dbgdir)
+>                 return;
+> @@ -127,28 +127,10 @@ void vas_window_init_dbgdir(struct vas_window *window)
+>         snprintf(window->dbgname, 16, "w%d", window->winid);
+>
+>         d = debugfs_create_dir(window->dbgname, window->vinst->dbgdir);
+> -       if (IS_ERR(d))
+> -               goto free_name;
+> -
+>         window->dbgdir = d;
+>
+> -       f = debugfs_create_file("info", 0444, d, window, &info_fops);
+> -       if (IS_ERR(f))
+> -               goto remove_dir;
+> -
+> -       f = debugfs_create_file("hvwc", 0444, d, window, &hvwc_fops);
+> -       if (IS_ERR(f))
+> -               goto remove_dir;
+> -
+> -       return;
+> -
+> -remove_dir:
+> -       debugfs_remove_recursive(window->dbgdir);
+> -       window->dbgdir = NULL;
+> -
+> -free_name:
+> -       kfree(window->dbgname);
+> -       window->dbgname = NULL;
+> +       debugfs_create_file("info", 0444, d, window, &info_fops);
+> +       debugfs_create_file("hvwc", 0444, d, window, &hvwc_fops);
+>  }
+>
+>  void vas_instance_init_dbgdir(struct vas_instance *vinst)
+> @@ -156,8 +138,6 @@ void vas_instance_init_dbgdir(struct vas_instance *vinst)
+>         struct dentry *d;
+>
+>         vas_init_dbgdir();
+> -       if (!vas_debugfs)
+> -               return;
+>
+>         vinst->dbgname = kzalloc(16, GFP_KERNEL);
+>         if (!vinst->dbgname)
+> @@ -166,16 +146,7 @@ void vas_instance_init_dbgdir(struct vas_instance *vinst)
+>         snprintf(vinst->dbgname, 16, "v%d", vinst->vas_id);
+>
+>         d = debugfs_create_dir(vinst->dbgname, vas_debugfs);
+> -       if (IS_ERR(d))
+> -               goto free_name;
+> -
+>         vinst->dbgdir = d;
+> -       return;
+> -
+> -free_name:
+> -       kfree(vinst->dbgname);
+> -       vinst->dbgname = NULL;
+> -       vinst->dbgdir = NULL;
+>  }
+>
+>  /*
+> @@ -191,6 +162,4 @@ void vas_init_dbgdir(void)
+>
+>         first_time = false;
+>         vas_debugfs = debugfs_create_dir("vas", NULL);
+> -       if (IS_ERR(vas_debugfs))
+> -               vas_debugfs = NULL;
+>  }
+> --
+> 2.25.0
+>
