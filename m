@@ -1,74 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF2A1573CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 13:02:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GPfy2LGDzDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 23:02:50 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D96CF157CB9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 14:48:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GS0v2PtLzDqDf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 00:48:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
- (client-ip=2001:4d48:ad52:3201:214:fdff:fe10:1be6;
- helo=pandora.armlinux.org.uk;
- envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=armlinux.org.uk
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=armlinux.org.uk header.i=@armlinux.org.uk
- header.a=rsa-sha256 header.s=pandora-2019 header.b=qrkbsPru; 
- dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
- [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48GNS958xvzDqJf
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 22:08:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
- Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
- Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=iTw2i6MUZITUD5eWPb+PW1VnYag/93bvIyoh66pK7Nw=; b=qrkbsPru1lr3ira5I9xWBowT9
- pYyZLn+zGIyBwT0E94NzTtGTmKxIJthJ13h6C97vIAIg0RliWwgKf+WmKWXxBlrndc+VYR8DqF0u8
- kLn5LP8E9C0yosgq5Zwl69HxjzG0vd3eUX37M0JzcOlOw0ylRSXG7MJNBvaf5Zjhmm+iVAuZZpi4P
- wkVwMkOhw7imN7PjDlbW9t8EGGVTegaRakCCh7775d7zk985OYH3cWbveigOQwvuzN1SoPIwwjGPF
- aJUGhEExIsLTHen8dY9vGmFUFIx9Q9xQJkrjq7idtYLtOfV3IdkZgc1cyFRmbJDqlBuxPFHLpFbxt
- Ho5+QgUHg==;
-Received: from shell.armlinux.org.uk
- ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:38428)
- by pandora.armlinux.org.uk with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.90_1)
- (envelope-from <linux@armlinux.org.uk>)
- id 1j16u1-0006Ks-96; Mon, 10 Feb 2020 11:06:57 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
- (envelope-from <linux@shell.armlinux.org.uk>)
- id 1j16tj-0007pZ-6Y; Mon, 10 Feb 2020 11:06:39 +0000
-Date: Mon, 10 Feb 2020 11:06:39 +0000
-From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH V13] mm/debug: Add tests validating architecture page
- table helpers
-Message-ID: <20200210110639.GC25745@shell.armlinux.org.uk>
-References: <1580897674-16456-1-git-send-email-anshuman.khandual@arm.com>
- <202002060619.wEOdAZU1%lkp@intel.com>
- <78d3ce6b-e100-2561-6b09-124c29731d1a@arm.com>
- <20200209205231.44d098f8749e88190b8ba10c@linux-foundation.org>
- <955229f7-f161-f720-0e75-a3163f63817d@arm.com>
- <aef1048f-68c4-d14f-e669-8f288ba9ac7a@c-s.fr>
- <20200210100200.GB25745@shell.armlinux.org.uk>
- <7cb3a5bb-eaea-a01c-4047-e3c000b7ad1d@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GRvK1h9hzDqL5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 00:43:35 +1100 (AEDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2020 05:43:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,425,1574150400"; d="scan'208";a="256134150"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 10 Feb 2020 05:43:30 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1j19LW-00076b-BZ; Mon, 10 Feb 2020 21:43:30 +0800
+Date: Mon, 10 Feb 2020 21:42:39 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS a5bc6e124219546a81ce334dc9b16483d55e9abf
+Message-ID: <5e415dcf.HlhQgEP8ouu9mfaB%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7cb3a5bb-eaea-a01c-4047-e3c000b7ad1d@c-s.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Mon, 10 Feb 2020 23:00:02 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,158 +51,200 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, uclinux-h8-devel@lists.sourceforge.jp,
- linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
- linux-s390@vger.kernel.org, kbuild test robot <lkp@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Max Filippov <jcmvbkbc@gmail.com>,
- x86@kernel.org, Matthew Wilcox <willy@infradead.org>,
- Steven Price <Steven.Price@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>, linux-alpha@vger.kernel.org,
- Aurelien Jacquiot <jacquiot.aurelien@gmail.com>, linux-c6x-dev@linux-c6x.org,
- Mark Brown <broonie@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Vlastimil Babka <vbabka@suse.cz>, Richard Henderson <rth@twiddle.net>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>, kbuild-all@lists.01.org,
- Brian Cain <bcain@codeaurora.org>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, Qian Cai <cai@lca.pw>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 10, 2020 at 11:46:23AM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 10/02/2020 à 11:02, Russell King - ARM Linux admin a écrit :
-> > On Mon, Feb 10, 2020 at 07:38:38AM +0100, Christophe Leroy wrote:
-> > > 
-> > > 
-> > > Le 10/02/2020 à 06:35, Anshuman Khandual a écrit :
-> > > > 
-> > > > 
-> > > > On 02/10/2020 10:22 AM, Andrew Morton wrote:
-> > > > > On Thu, 6 Feb 2020 13:49:35 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> > > > > 
-> > > > > > 
-> > > > > > On 02/06/2020 04:40 AM, kbuild test robot wrote:
-> > > > > > > Hi Anshuman,
-> > > > > > > 
-> > > > > > > Thank you for the patch! Yet something to improve:
-> > > > > > > 
-> > > > > > > [auto build test ERROR on powerpc/next]
-> > > > > > > [also build test ERROR on s390/features linus/master arc/for-next v5.5]
-> > > > > > > [cannot apply to mmotm/master tip/x86/core arm64/for-next/core next-20200205]
-> > > > > > > [if your patch is applied to the wrong git tree, please drop us a note to help
-> > > > > > > improve the system. BTW, we also suggest to use '--base' option to specify the
-> > > > > > > base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-> > > > > > > 
-> > > > > > > url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-debug-Add-tests-validating-architecture-page-table-helpers/20200205-215507
-> > > > > > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-> > > > > > > config: ia64-allmodconfig (attached as .config)
-> > > > > > > compiler: ia64-linux-gcc (GCC) 7.5.0
-> > > > > > > reproduce:
-> > > > > > >           wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> > > > > > >           chmod +x ~/bin/make.cross
-> > > > > > >           # save the attached .config to linux build tree
-> > > > > > >           GCC_VERSION=7.5.0 make.cross ARCH=ia64
-> > > > > > > 
-> > > > > > > If you fix the issue, kindly add following tag
-> > > > > > > Reported-by: kbuild test robot <lkp@intel.com>
-> > > > > > > 
-> > > > > > > All error/warnings (new ones prefixed by >>):
-> > > > > > > 
-> > > > > > >      In file included from include/asm-generic/pgtable-nopud.h:8:0,
-> > > > > > >                       from arch/ia64/include/asm/pgtable.h:586,
-> > > > > > >                       from include/linux/mm.h:99,
-> > > > > > >                       from include/linux/highmem.h:8,
-> > > > > > >                       from mm/debug_vm_pgtable.c:14:
-> > > > > > >      mm/debug_vm_pgtable.c: In function 'pud_clear_tests':
-> > > > > > > > > include/asm-generic/pgtable-nop4d-hack.h:47:32: error: implicit declaration of function '__pgd'; did you mean '__p4d'? [-Werror=implicit-function-declaration]
-> > > > > > >       #define __pud(x)    ((pud_t) { __pgd(x) })
-> > > > > > >                                      ^
-> > > > > > > > > mm/debug_vm_pgtable.c:141:8: note: in expansion of macro '__pud'
-> > > > > > >        pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
-> > > > > > >              ^~~~~
-> > > > > > > > > include/asm-generic/pgtable-nop4d-hack.h:47:22: warning: missing braces around initializer [-Wmissing-braces]
-> > > > > > >       #define __pud(x)    ((pud_t) { __pgd(x) })
-> > > > > > >                            ^
-> > > > > > > > > mm/debug_vm_pgtable.c:141:8: note: in expansion of macro '__pud'
-> > > > > > >        pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
-> > > > > > >              ^~~~~
-> > > > > > >      cc1: some warnings being treated as errors
-> > > > > > 
-> > > > > > This build failure is expected now given that we have allowed DEBUG_VM_PGTABLE
-> > > > > > with EXPERT without platform requiring ARCH_HAS_DEBUG_VM_PGTABLE. This problem
-> > > > > > i.e build failure caused without a platform __pgd(), is known to exist both on
-> > > > > > ia64 and arm (32bit) platforms. Please refer https://lkml.org/lkml/2019/9/24/314
-> > > > > > for details where this was discussed earlier.
-> > > > > > 
-> > > > > 
-> > > > > I'd prefer not to merge a patch which is known to cause build
-> > > > > regressions.  Is there some temporary thing we can do to prevent these
-> > > > > errors until arch maintainers(?) get around to implementing the
-> > > > > long-term fixes?
-> > > > 
-> > > > We could explicitly disable CONFIG_DEBUG_VM_PGTABLE on ia64 and arm platforms
-> > > > which will ensure that others can still use the EXPERT path.
-> > > > 
-> > > > config DEBUG_VM_PGTABLE
-> > > > 	bool "Debug arch page table for semantics compliance"
-> > > > 	depends on MMU
-> > > > 	depends on !(IA64 || ARM)
-> > > > 	depends on ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
-> > > > 	default n if !ARCH_HAS_DEBUG_VM_PGTABLE
-> > > > 	default y if DEBUG_VM
-> > > > 
-> > > 
-> > > On both ia32 and arm, the fix is trivial.
-> > > 
-> > > Can we include the fix within this patch, just the same way as the
-> > > mm_p4d_folded() fix for x86 ?
-> > 
-> > Why should arm include a macro for something that nothing (apart from
-> > this checker) requires?  If the checker requires it but the rest of
-> > the kernel does not, it suggests that the checker isn't actually
-> > correct, and the results can't be relied upon.
-> > 
-> 
-> As far as I can see, the problem is that arm opencodes part of the API
-> instead of including asm-generic/pgtable-nopmd.h
-> 
-> Here, the ARM has 2 levels, ie only PGD and PTE. But instead of defining
-> __pgd and __pte and getting everything else from asm-generic, it defines a
-> __pmd then redefines the folded levels like the pud, etc ...
-> 
-> That's exactly what the checker aims at detecting: architectures than do not
-> properly use the standard linux page table structures.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: a5bc6e124219546a81ce334dc9b16483d55e9abf  Automatic merge of branches 'master', 'next' and 'fixes' into merge
 
-There are good reasons for the way ARM does stuff.  The generic crap was
-written without regard for the circumstances that ARM has, and thus is
-entirely unsuitable for 32-bit ARM.
+elapsed time: 2918m
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+configs tested: 177
+configs skipped: 0
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+sparc                            allyesconfig
+sh                               allmodconfig
+riscv                               defconfig
+arc                                 defconfig
+nds32                               defconfig
+um                                  defconfig
+xtensa                       common_defconfig
+s390                          debug_defconfig
+sparc64                           allnoconfig
+um                           x86_64_defconfig
+m68k                       m5475evb_defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+parisc                         b180_defconfig
+i386                                defconfig
+sparc                               defconfig
+sh                          rsk7269_defconfig
+sparc64                          allyesconfig
+s390                             allyesconfig
+ia64                                defconfig
+powerpc                       ppc64_defconfig
+nios2                         3c120_defconfig
+sh                            titan_defconfig
+sparc64                          allmodconfig
+parisc                           allyesconfig
+riscv                            allmodconfig
+mips                      fuloong2e_defconfig
+microblaze                    nommu_defconfig
+m68k                          multi_defconfig
+riscv                             allnoconfig
+parisc                            allnoconfig
+c6x                              allyesconfig
+s390                                defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+ia64                             alldefconfig
+ia64                              allnoconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                          iss_defconfig
+alpha                               defconfig
+csky                                defconfig
+nds32                             allnoconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                             allmodconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+microblaze                      mmu_defconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      malta_kvm_defconfig
+parisc                        c3000_defconfig
+parisc                              defconfig
+x86_64               randconfig-a001-20200210
+x86_64               randconfig-a002-20200210
+x86_64               randconfig-a003-20200210
+i386                 randconfig-a001-20200210
+i386                 randconfig-a002-20200210
+i386                 randconfig-a003-20200210
+alpha                randconfig-a001-20200208
+parisc               randconfig-a001-20200208
+m68k                 randconfig-a001-20200208
+nds32                randconfig-a001-20200208
+mips                 randconfig-a001-20200208
+riscv                randconfig-a001-20200208
+c6x                  randconfig-a001-20200210
+h8300                randconfig-a001-20200210
+microblaze           randconfig-a001-20200210
+nios2                randconfig-a001-20200210
+sparc64              randconfig-a001-20200210
+h8300                randconfig-a001-20200208
+nios2                randconfig-a001-20200208
+microblaze           randconfig-a001-20200208
+sparc64              randconfig-a001-20200208
+c6x                  randconfig-a001-20200208
+x86_64               randconfig-b001-20200210
+x86_64               randconfig-b002-20200210
+x86_64               randconfig-b003-20200210
+i386                 randconfig-b001-20200210
+i386                 randconfig-b002-20200210
+i386                 randconfig-b003-20200210
+x86_64               randconfig-c001-20200210
+x86_64               randconfig-c002-20200210
+x86_64               randconfig-c003-20200210
+i386                 randconfig-c001-20200210
+i386                 randconfig-c002-20200210
+i386                 randconfig-c003-20200210
+x86_64               randconfig-c001-20200209
+x86_64               randconfig-c002-20200209
+x86_64               randconfig-c003-20200209
+i386                 randconfig-c001-20200209
+i386                 randconfig-c002-20200209
+i386                 randconfig-c003-20200209
+x86_64               randconfig-d001-20200210
+x86_64               randconfig-d002-20200210
+x86_64               randconfig-d003-20200210
+i386                 randconfig-d001-20200210
+i386                 randconfig-d002-20200210
+i386                 randconfig-d003-20200210
+x86_64               randconfig-e001-20200210
+x86_64               randconfig-e002-20200210
+x86_64               randconfig-e003-20200210
+i386                 randconfig-e001-20200210
+i386                 randconfig-e002-20200210
+i386                 randconfig-e003-20200210
+x86_64               randconfig-f001-20200210
+x86_64               randconfig-f002-20200210
+x86_64               randconfig-f003-20200210
+i386                 randconfig-f001-20200210
+i386                 randconfig-f002-20200210
+i386                 randconfig-f003-20200210
+i386                 randconfig-f002-20200208
+i386                 randconfig-f003-20200208
+x86_64               randconfig-f002-20200208
+i386                 randconfig-f001-20200208
+x86_64               randconfig-f001-20200208
+x86_64               randconfig-f003-20200208
+x86_64               randconfig-g001-20200210
+x86_64               randconfig-g002-20200210
+x86_64               randconfig-g003-20200210
+i386                 randconfig-g001-20200210
+i386                 randconfig-g002-20200210
+i386                 randconfig-g003-20200210
+x86_64               randconfig-h001-20200210
+x86_64               randconfig-h002-20200210
+x86_64               randconfig-h003-20200210
+i386                 randconfig-h001-20200210
+i386                 randconfig-h002-20200210
+i386                 randconfig-h003-20200210
+arc                  randconfig-a001-20200209
+arm                  randconfig-a001-20200209
+arm64                randconfig-a001-20200209
+ia64                 randconfig-a001-20200209
+powerpc              randconfig-a001-20200209
+sparc                randconfig-a001-20200209
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                       zfcpdump_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc64                             defconfig
+um                             i386_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
