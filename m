@@ -1,79 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B0F157038
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 09:07:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12378156FEF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 08:37:11 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GHmM5rJDzDqQl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 18:37:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GJRd4G9szDqQF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2020 19:07:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=harish@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=Q9PZ66ec; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48GHkd4Q0czDqLb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 18:35:34 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01A7Z5Xj124466
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 02:35:30 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y1u9njmgj-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 02:35:30 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <harish@linux.ibm.com>;
- Mon, 10 Feb 2020 07:35:28 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 10 Feb 2020 07:35:27 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01A7ZQgJ60424256
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Feb 2020 07:35:26 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0333B42049;
- Mon, 10 Feb 2020 07:35:26 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0358542041;
- Mon, 10 Feb 2020 07:35:25 +0000 (GMT)
-Received: from dhcp-9-193-99-222.in.ibm.com (unknown [9.193.99.222])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 10 Feb 2020 07:35:24 +0000 (GMT)
-From: Harish <harish@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [RESEND][PATCH] selftests/vm: Fix vm tests build and run
-Date: Mon, 10 Feb 2020 13:05:21 +0530
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GJPj51v4zDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 19:06:00 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48GJPV6qZSz9v1WW;
+ Mon, 10 Feb 2020 09:05:50 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Q9PZ66ec; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VXrcAwCnm-QK; Mon, 10 Feb 2020 09:05:50 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48GJPV5hbBz9v1WV;
+ Mon, 10 Feb 2020 09:05:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1581321950; bh=g5lELxiDPugJidKDMMRMUo7mvZxA3VLd9BiCzyPCPoo=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=Q9PZ66ecIR0CCXR8WUeTiCM3sTHzQtkVfOH89/VJNoS0GNYaomLxeUB+vaPA+4rMS
+ +Usk8AaPJ9jbhpXT8SqIu7DtwTSA0AD5Ek3vFQoQbKfLVFMYC7uNLcRGoVUowJrG9K
+ 1tj8qq6bI9JZFxUDlf/oH+YJWmZUdoBs8VuJtgYM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E48B8B7A7;
+ Mon, 10 Feb 2020 09:05:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id zHAuZwC68M1o; Mon, 10 Feb 2020 09:05:55 +0100 (CET)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 482E38B798;
+ Mon, 10 Feb 2020 09:05:55 +0100 (CET)
+Subject: Re: [RESEND][PATCH] selftests/vm: Fix vm tests build and run
+To: Harish <harish@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au
+References: <20200210073521.14117-1-harish@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <fa68a829-b909-a743-68da-957c692f5c84@c-s.fr>
+Date: Mon, 10 Feb 2020 09:05:55 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
+In-Reply-To: <20200210073521.14117-1-harish@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20021007-0028-0000-0000-000003D91B03
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021007-0029-0000-0000-0000249D84DA
-Message-Id: <20200210073521.14117-1-harish@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-10_02:2020-02-07,
- 2020-02-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=4 clxscore=1011 mlxlogscore=406 mlxscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002100064
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,68 +78,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Harish <harish@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A recent change overrides the ARCH env variable and hence runs
-using make fails with the following.
 
-$ make -C vm/
-make: Entering directory '/home/harish/linux/tools/testing/selftests/vm'
-make --no-builtin-rules ARCH=ppc64le -C ../../../.. headers_install
-make[1]: Entering directory '/home/harish/linux'
-Makefile:652: arch/ppc64le/Makefile: No such file or directory
-make[1]: *** No rule to make target 'arch/ppc64le/Makefile'.  Stop.
-make[1]: Leaving directory '/home/harish/linux'
-make: *** [../lib.mk:50: khdr] Error 2
-make: Leaving directory '/home/harish/linux/tools/testing/selftests/vm'
 
-Patch fixes this issue and also handles ppc64/ppc64le archs to enable
-few tests
+Le 10/02/2020 à 08:35, Harish a écrit :
+> A recent change overrides the ARCH env variable and hence runs
+> using make fails with the following.
+> 
+> $ make -C vm/
+> make: Entering directory '/home/harish/linux/tools/testing/selftests/vm'
+> make --no-builtin-rules ARCH=ppc64le -C ../../../.. headers_install
+> make[1]: Entering directory '/home/harish/linux'
+> Makefile:652: arch/ppc64le/Makefile: No such file or directory
+> make[1]: *** No rule to make target 'arch/ppc64le/Makefile'.  Stop.
+> make[1]: Leaving directory '/home/harish/linux'
+> make: *** [../lib.mk:50: khdr] Error 2
+> make: Leaving directory '/home/harish/linux/tools/testing/selftests/vm'
+> 
+> Patch fixes this issue and also handles ppc64/ppc64le archs to enable
+> few tests
 
-Signed-off-by: Harish <harish@linux.ibm.com>
----
- tools/testing/selftests/vm/Makefile    | 4 ++--
- tools/testing/selftests/vm/run_vmtests | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Isn't it the same as 
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=155975 ?
 
-diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
-index 7f9a8a8c31da..49bb15be1447 100644
---- a/tools/testing/selftests/vm/Makefile
-+++ b/tools/testing/selftests/vm/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for vm selftests
- uname_M := $(shell uname -m 2>/dev/null || echo not)
--ARCH ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/')
-+ARCH_USED ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/' -e 's/ppc64.*/ppc64/')
- 
- CFLAGS = -Wall -I ../../../../usr/include $(EXTRA_CFLAGS)
- LDLIBS = -lrt
-@@ -19,7 +19,7 @@ TEST_GEN_FILES += thuge-gen
- TEST_GEN_FILES += transhuge-stress
- TEST_GEN_FILES += userfaultfd
- 
--ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
-+ifneq (,$(filter $(ARCH_USED),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
- TEST_GEN_FILES += va_128TBswitch
- TEST_GEN_FILES += virtual_address_range
- endif
-diff --git a/tools/testing/selftests/vm/run_vmtests b/tools/testing/selftests/vm/run_vmtests
-index a692ea828317..da63dfb9713a 100755
---- a/tools/testing/selftests/vm/run_vmtests
-+++ b/tools/testing/selftests/vm/run_vmtests
-@@ -61,7 +61,7 @@ fi
- #filter 64bit architectures
- ARCH64STR="arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64"
- if [ -z $ARCH ]; then
--  ARCH=`uname -m 2>/dev/null | sed -e 's/aarch64.*/arm64/'`
-+  ARCH=`uname -m 2>/dev/null | sed -e 's/aarch64.*/arm64/' -e 's/ppc64.*/ppc64/'`
- fi
- VADDR64=0
- echo "$ARCH64STR" | grep $ARCH && VADDR64=1
--- 
-2.21.0
+Christophe
 
+> 
+> Signed-off-by: Harish <harish@linux.ibm.com>
+> ---
+>   tools/testing/selftests/vm/Makefile    | 4 ++--
+>   tools/testing/selftests/vm/run_vmtests | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
+> index 7f9a8a8c31da..49bb15be1447 100644
+> --- a/tools/testing/selftests/vm/Makefile
+> +++ b/tools/testing/selftests/vm/Makefile
+> @@ -1,7 +1,7 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   # Makefile for vm selftests
+>   uname_M := $(shell uname -m 2>/dev/null || echo not)
+> -ARCH ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/')
+> +ARCH_USED ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/' -e 's/ppc64.*/ppc64/')
+>   
+>   CFLAGS = -Wall -I ../../../../usr/include $(EXTRA_CFLAGS)
+>   LDLIBS = -lrt
+> @@ -19,7 +19,7 @@ TEST_GEN_FILES += thuge-gen
+>   TEST_GEN_FILES += transhuge-stress
+>   TEST_GEN_FILES += userfaultfd
+>   
+> -ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
+> +ifneq (,$(filter $(ARCH_USED),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
+>   TEST_GEN_FILES += va_128TBswitch
+>   TEST_GEN_FILES += virtual_address_range
+>   endif
+> diff --git a/tools/testing/selftests/vm/run_vmtests b/tools/testing/selftests/vm/run_vmtests
+> index a692ea828317..da63dfb9713a 100755
+> --- a/tools/testing/selftests/vm/run_vmtests
+> +++ b/tools/testing/selftests/vm/run_vmtests
+> @@ -61,7 +61,7 @@ fi
+>   #filter 64bit architectures
+>   ARCH64STR="arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64"
+>   if [ -z $ARCH ]; then
+> -  ARCH=`uname -m 2>/dev/null | sed -e 's/aarch64.*/arm64/'`
+> +  ARCH=`uname -m 2>/dev/null | sed -e 's/aarch64.*/arm64/' -e 's/ppc64.*/ppc64/'`
+>   fi
+>   VADDR64=0
+>   echo "$ARCH64STR" | grep $ARCH && VADDR64=1
+> 
