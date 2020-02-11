@@ -2,51 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915611586BD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 01:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C52EE158870
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 03:51:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Gk2g19JtzDqJm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 11:20:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GnNh6KptzDqM3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 13:51:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Gk0p4BFxzDqFS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 11:19:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GnLg4z6czDqC8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 13:50:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=co9y5UiF; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=JTdJPJi/; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48Gk0p0CtSz9sRX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 11:19:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1581380362;
- bh=M/1ioLfoIBJFPPLaYmRQrVfYx5GvVgMDJutRa3Iem/U=;
- h=Date:From:To:Subject:In-Reply-To:References:From;
- b=co9y5UiFFVyfCvHN/SsxnrWg91Pucyz4/vcf5PgaDEXIZKSE1bsCETySg5ZnnQofs
- jb9v7skFVxIDovDO71/vjfjL3jvnrIEoLbomtGZG6ZDeka3EL1jBKNzfstDYqZVm/G
- 4QZN9Ul1tbOyGgppBPTizNHx+MuWjeus2h5Sf+26yN+gVEQhmvBVa5aAVCqBcte11E
- dE/yZ4515ML7JNcZ5x95GQg6SndHrBJgejyBWwuwnMqQjdxO3qu0eu6N3rwCoybwHf
- tTjROJ7XzHCf8jBtqELFaoonRM7xgpvfpho038awje/xpFoNLvfNgSLoCfCsbYuqzQ
- 3Dsz453fOSGlA==
-Date: Tue, 11 Feb 2020 11:19:21 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: ppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: DTS build warnings
-Message-ID: <20200211111921.594e7dc0@canb.auug.org.au>
-In-Reply-To: <20190731153936.02083439@canb.auug.org.au>
-References: <20190731153936.02083439@canb.auug.org.au>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48GnLf1ph6z9sP7;
+ Tue, 11 Feb 2020 13:50:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1581389403;
+ bh=8X60AtLN4V7FB/5Mq0L2zAq5HCYgpqp/UiCwagFf5PE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=JTdJPJi/kjPOL3TzyFuXaInMZ2XKxoO4t4T+ia3oW5bA3Hhtjxmo5gfyRCTj30rrm
+ AoLM8NK0nZdQnvpINWnCg/bJsx6Hq6yD8I8HbTSE4U4gebl/VMJP2JSMxhjohtBd2/
+ L4oJz4EqHC/dyhRO6yvgCwCS/oQ808G0muHDikXxxkT8IfEP6OwPqwMQaBm1q13pCQ
+ +o+e31+IsaWDJjNF06zZqntkYrdIJTunIimVR1xmBP6XU1caDJsjewrBx17/ZWuIML
+ 3wiRHtFV7h0NwFF6cQhupIL5ByooQzgjFwJXZY9QZ6Z+PE7cCeynB99eeEleHk9vzV
+ V9+/vXPN34wHw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sandipan Das <sandipan@linux.ibm.com>, shuah@kernel.org,
+ skhan@linuxfoundation.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 1/2] selftests: vm: Do not override definition of ARCH
+In-Reply-To: <471a73600bf9f59a59484726f50f81d7f54f4b2f.1580367152.git.sandipan@linux.ibm.com>
+References: <cover.1580367152.git.sandipan@linux.ibm.com>
+ <471a73600bf9f59a59484726f50f81d7f54f4b2f.1580367152.git.sandipan@linux.ibm.com>
+Date: Tue, 11 Feb 2020 13:49:59 +1100
+Message-ID: <87lfp9zvl4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/EZUbvqkMtql8SQvdpDwPomZ";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,347 +59,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@kvack.org, kamalesh@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mhiramat@kernel.org, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/EZUbvqkMtql8SQvdpDwPomZ
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-On Wed, 31 Jul 2019 15:39:36 +1000 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
+Sandipan Das <sandipan@linux.ibm.com> writes:
+> Independent builds of the vm selftests is currently broken
+> because commit 7549b3364201 overrides the value of ARCH with
+> the machine name from uname. This does not always match the
+> architecture names used for tasks like header installation.
 >
-> I have been getting the following warnings from a couple of powerpc
-> builds for quite a while now.  I was hoping someone might have time to
-> look at them and maybe even fix them up :-)
+> E.g. for building tests on powerpc64, we need ARCH=powerpc
+> and not ARCH=ppc64 or ARCH=ppc64le. Otherwise, the build
+> fails as shown below.
+>
+>   $ uname -m
+>   ppc64le
+>
+>   $ make -C tools/testing/selftests/vm
+>   make: Entering directory '/home/sandipan/linux/tools/testing/selftests/vm'
+>   make --no-builtin-rules ARCH=ppc64le -C ../../../.. headers_install
+>   make[1]: Entering directory '/home/sandipan/linux'
+>   Makefile:653: arch/ppc64le/Makefile: No such file or directory
+>   make[1]: *** No rule to make target 'arch/ppc64le/Makefile'.  Stop.
+>   make[1]: Leaving directory '/home/sandipan/linux'
+>   ../lib.mk:50: recipe for target 'khdr' failed
+>   make: *** [khdr] Error 2
+>   make: Leaving directory '/home/sandipan/linux/tools/testing/selftests/vm'
+>
+> Fixes: 7549b3364201 ("selftests: vm: Build/Run 64bit tests only on 64bit arch")
+> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+> ---
+>  tools/testing/selftests/vm/Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Today's list (from an allyesconfig build) looks like this:
+Tested-by: Michael Ellerman <mpe@ellerman.id.au>
 
-arch/powerpc/boot/dts/icon.dts:318.26-357.5: Warning (pci_bridge): /plb/pci=
-ex@d00000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/icon.dts:359.26-398.5: Warning (pci_bridge): /plb/pci=
-ex@d20000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/icon.dtb: Warning (pci_device_bus_num): Failed prereq=
-uisite 'pci_bridge'
-arch/powerpc/boot/dts/virtex440-ml510.dts:335.37-439.6: Warning (pci_bridge=
-): /plb@0/plbv46-pci@85e00000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/virtex440-ml510.dtb: Warning (pci_device_bus_num): Fa=
-iled prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/o2mnt.dtb: Warning (pci_device_bus_num): Failed prere=
-quisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
- /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-arch/powerpc/boot/dts/o2mnt.dtb: Warning (spi_bus_reg): Failed prerequisite=
- 'spi_bus_bridge'
-arch/powerpc/boot/dts/makalu.dts:271.25-310.5: Warning (pci_bridge): /plb/p=
-ciex@a0000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/makalu.dts:312.25-351.5: Warning (pci_bridge): /plb/p=
-ciex@c0000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/makalu.dtb: Warning (pci_device_bus_num): Failed prer=
-equisite 'pci_bridge'
-arch/powerpc/boot/dts/mgcoge.dts:230.14-234.7: Warning (spi_bus_reg): /soc@=
-f0000000/cpm@119c0/spi@11aa0/ds3106@1: SPI bus unit address format error, e=
-xpected "0"
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/motionpro.dts:84.15-86.4
-arch/powerpc/boot/dts/motionpro.dtb: Warning (pci_device_bus_num): Failed p=
-rerequisite 'pci_bridge'
-arch/powerpc/boot/dts/glacier.dts:492.26-532.5: Warning (pci_bridge): /plb/=
-pciex@d00000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/glacier.dts:534.26-574.5: Warning (pci_bridge): /plb/=
-pciex@d20000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/glacier.dtb: Warning (pci_device_bus_num): Failed pre=
-requisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/p2020rdb.dts:251.22-254.4: Warning (pci_bridge): =
-/pcie@ffe08000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p2020si-post.dtsi:43.7-68.3
-arch/powerpc/boot/dts/fsl/p2020si-post.dtsi:52.9-67.4: Warning (pci_bridge)=
-: /pcie@ffe08000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/p2020rdb.dtb: Warning (pci_device_bus_num): Faile=
-d prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/mvme7100.dts:135.22-137.4: Warning (pci_bridge): =
-/pcie@f1008000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:92.7-117.3
-arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:102.9-116.4: Warning (pci_bri=
-dge): /pcie@f1008000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/mvme7100.dts:139.22-141.4: Warning (pci_bridge): =
-/pcie@f1009000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:119.7-144.3
-arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:129.9-143.4: Warning (pci_bri=
-dge): /pcie@f1009000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/mvme7100.dtb: Warning (pci_device_bus_num): Faile=
-d prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/mvme7100.dts:30.11-32.6: Warning (i2c_bus_reg): /=
-soc@f1000000/i2c@3000/rtc@68: missing or empty reg property
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@fffe00000/mdio@24000/ethernet-phy@0:#interrupt-cells: size is (8)=
-, expected multiple of 16
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@fffe00000/mdio@24000/ethernet-phy@1:#interrupt-cells: size is (8)=
-, expected multiple of 16
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/uc101.dts:100.15-102.4
-arch/powerpc/boot/dts/uc101.dtb: Warning (pci_device_bus_num): Failed prere=
-quisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@fffe00000/mdio@24000/ethernet-phy@0:#interrupt-cells: size is (8)=
-, expected multiple of 16
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@fffe00000/mdio@24000/ethernet-phy@1:#interrupt-cells: size is (8)=
-, expected multiple of 16
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@ffe00000/mdio@24000/ethernet-phy@0:#interrupt-cells: size is (8),=
- expected multiple of 16
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@ffe00000/mdio@24000/ethernet-phy@1:#interrupt-cells: size is (8),=
- expected multiple of 16
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/a3m071.dts:135.15-137.4
-arch/powerpc/boot/dts/a3m071.dtb: Warning (pci_device_bus_num): Failed prer=
-equisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/o2d.dtb: Warning (pci_device_bus_num): Failed prerequ=
-isite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
- /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-arch/powerpc/boot/dts/o2d.dtb: Warning (spi_bus_reg): Failed prerequisite '=
-spi_bus_bridge'
-arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts:189.11-193.6: Warning (spi_bus_re=
-g): /soc@ffe00000/spi@7000/slic@0: SPI bus unit address format error, expec=
-ted "1"
-arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts:195.11-199.6: Warning (spi_bus_re=
-g): /soc@ffe00000/spi@7000/slic@1: SPI bus unit address format error, expec=
-ted "2"
-arch/powerpc/boot/dts/mpc5121.dtsi:397.13-406.5: Warning (spi_bus_bridge): =
-/soc@80000000/psc@11400: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/ac14xx.dts:305.19-326.5
-arch/powerpc/boot/dts/mpc5121.dtsi:409.13-418.5: Warning (spi_bus_bridge): =
-/soc@80000000/psc@11500: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/ac14xx.dts:329.19-344.5
-arch/powerpc/boot/dts/ac14xx.dtb: Warning (spi_bus_reg): Failed prerequisit=
-e 'spi_bus_bridge'
-arch/powerpc/boot/dts/fsl/mpc8555cds.dts:330.3-21: Warning (pci_device_bus_=
-num): /pci@e0008000/i8259@19000:bus-range: PCI bus number 1 out of range, e=
-xpected (0 - 0)
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/cm5200.dts:70.15-72.4
-arch/powerpc/boot/dts/cm5200.dtb: Warning (pci_device_bus_num): Failed prer=
-equisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5121.dtsi:457.13-466.5: Warning (spi_bus_bridge): =
-/soc@80000000/psc@11900: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/pdm360ng.dts:172.13-185.5
-arch/powerpc/boot/dts/pdm360ng.dtb: Warning (spi_bus_reg): Failed prerequis=
-ite 'spi_bus_bridge'
-arch/powerpc/boot/dts/haleakala.dts:240.25-279.5: Warning (pci_bridge): /pl=
-b/pciex@a0000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/haleakala.dtb: Warning (pci_device_bus_num): Failed p=
-rerequisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@ffe00000/mdio@24000/ethernet-phy@0:#interrupt-cells: size is (8),=
- expected multiple of 16
-arch/powerpc/boot/dts/fsl/pq3-mpic.dtsi:38.2-25: Warning (interrupts_proper=
-ty): /soc@ffe00000/mdio@24000/ethernet-phy@1:#interrupt-cells: size is (8),=
- expected multiple of 16
-arch/powerpc/boot/dts/katmai.dts:322.26-361.5: Warning (pci_bridge): /plb/p=
-ciex@d00000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/katmai.dts:363.26-402.5: Warning (pci_bridge): /plb/p=
-ciex@d20000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/katmai.dts:404.26-443.5: Warning (pci_bridge): /plb/p=
-ciex@d40000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/katmai.dtb: Warning (pci_device_bus_num): Failed prer=
-equisite 'pci_bridge'
-arch/powerpc/boot/dts/bluestone.dts:328.26-368.5: Warning (pci_bridge): /pl=
-b/pciex@d00000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/bluestone.dtb: Warning (pci_device_bus_num): Failed p=
-rerequisite 'pci_bridge'
-arch/powerpc/boot/dts/bluestone.dts:272.13-277.7: Warning (i2c_bus_reg): /p=
-lb/opb/i2c@ef600700/sttm@4C: I2C bus unit address format error, expected "4=
-c"
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/o2i.dtb: Warning (pci_device_bus_num): Failed prerequ=
-isite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
- /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-arch/powerpc/boot/dts/o2i.dtb: Warning (spi_bus_reg): Failed prerequisite '=
-spi_bus_bridge'
-arch/powerpc/boot/dts/fsl/gef_sbc610.dts:209.22-211.4: Warning (pci_bridge)=
-: /pcie@fef09000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:119.7-144.3
-arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:129.9-143.4: Warning (pci_bri=
-dge): /pcie@fef09000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/gef_sbc610.dtb: Warning (pci_device_bus_num): Fai=
-led prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/currituck.dts:125.28-161.5: Warning (pci_bridge): /pl=
-b/pciex@10100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/currituck.dts:163.28-198.5: Warning (pci_bridge): /pl=
-b/pciex@30100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/currituck.dts:200.28-235.5: Warning (pci_bridge): /pl=
-b/pciex@38100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/currituck.dtb: Warning (pci_device_bus_num): Failed p=
-rerequisite 'pci_bridge'
-arch/powerpc/boot/dts/xpedite5200.dts:135.11-138.6: Warning (i2c_bus_reg): =
-/soc@ef000000/i2c@3000/dtt@48: I2C bus unit address format error, expected =
-"34"
-arch/powerpc/boot/dts/mpc8610_hpcd.dts:420.3-21: Warning (pci_device_bus_nu=
-m): /pcie@e000a000/pcie@0:bus-range: PCI bus number 0 out of range, expecte=
-d (1 - 1)
-arch/powerpc/boot/dts/akebono.dts:251.28-289.5: Warning (pci_bridge): /plb/=
-pciex@10100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/akebono.dts:291.28-329.5: Warning (pci_bridge): /plb/=
-pciex@20100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/akebono.dts:331.28-369.5: Warning (pci_bridge): /plb/=
-pciex@18100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/akebono.dts:371.28-409.5: Warning (pci_bridge): /plb/=
-pciex@28100000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/akebono.dtb: Warning (pci_device_bus_num): Failed pre=
-requisite 'pci_bridge'
-arch/powerpc/boot/dts/canyonlands.dts:464.26-504.5: Warning (pci_bridge): /=
-plb/pciex@d00000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/canyonlands.dts:506.26-546.5: Warning (pci_bridge): /=
-plb/pciex@d20000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/canyonlands.dtb: Warning (pci_device_bus_num): Failed=
- prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/stxssa8555.dts:329.3-21: Warning (pci_device_bus_num)=
-: /pci@e0008000/i8259@19000:bus-range: PCI bus number 1 out of range, expec=
-ted (0 - 0)
-arch/powerpc/boot/dts/fsl/gef_ppc9a.dts:211.22-213.4: Warning (pci_bridge):=
- /pcie@fef09000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:119.7-144.3
-arch/powerpc/boot/dts/fsl/mpc8641si-post.dtsi:129.9-143.4: Warning (pci_bri=
-dge): /pcie@fef09000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/gef_ppc9a.dtb: Warning (pci_device_bus_num): Fail=
-ed prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/o2dnt2.dtb: Warning (pci_device_bus_num): Failed prer=
-equisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
- /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-arch/powerpc/boot/dts/o2dnt2.dtb: Warning (spi_bus_reg): Failed prerequisit=
-e 'spi_bus_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/o3dnt.dtb: Warning (pci_device_bus_num): Failed prere=
-quisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
- /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-arch/powerpc/boot/dts/o3dnt.dtb: Warning (spi_bus_reg): Failed prerequisite=
- 'spi_bus_bridge'
-arch/powerpc/boot/dts/redwood.dts:238.26-277.5: Warning (pci_bridge): /plb/=
-pciex@d00000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/redwood.dts:279.26-318.5: Warning (pci_bridge): /plb/=
-pciex@d20000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/redwood.dts:320.26-359.5: Warning (pci_bridge): /plb/=
-pciex@d40000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/redwood.dtb: Warning (pci_device_bus_num): Failed pre=
-requisite 'pci_bridge'
-arch/powerpc/boot/dts/xpedite5200_xmon.dts:139.11-142.6: Warning (i2c_bus_r=
-eg): /soc@ef000000/i2c@3000/dtt@48: I2C bus unit address format error, expe=
-cted "34"
-arch/powerpc/boot/dts/fsl/oca4080.dts:132.23-134.4: Warning (pci_bridge): /=
-pcie@ffe200000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p4080si-post.dtsi:58.7-84.3
-arch/powerpc/boot/dts/fsl/p4080si-post.dtsi:68.9-83.4: Warning (pci_bridge)=
-: /pcie@ffe200000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/oca4080.dts:136.23-138.4: Warning (pci_bridge): /=
-pcie@ffe201000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p4080si-post.dtsi:87.7-113.3
-arch/powerpc/boot/dts/fsl/p4080si-post.dtsi:97.9-112.4: Warning (pci_bridge=
-): /pcie@ffe201000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/oca4080.dts:140.23-142.4: Warning (pci_bridge): /=
-pcie@ffe202000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p4080si-post.dtsi:116.7-142.3
-arch/powerpc/boot/dts/fsl/p4080si-post.dtsi:126.9-141.4: Warning (pci_bridg=
-e): /pcie@ffe202000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/oca4080.dtb: Warning (pci_device_bus_num): Failed=
- prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/ppa8548.dts:34.22-37.4: Warning (pci_bridge): /pc=
-i@fe0008000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8548si-post.dtsi:43.7-51.3
-arch/powerpc/boot/dts/fsl/ppa8548.dts:39.22-42.4: Warning (pci_bridge): /pc=
-i@fe0009000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8548si-post.dtsi:54.7-62.3
-arch/powerpc/boot/dts/fsl/ppa8548.dts:44.23-47.4: Warning (pci_bridge): /pc=
-ie@fe000a000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/mpc8548si-post.dtsi:65.7-90.3
-arch/powerpc/boot/dts/fsl/mpc8548si-post.dtsi:74.9-89.4: Warning (pci_bridg=
-e): /pcie@fe000a000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/ppa8548.dtb: Warning (pci_device_bus_num): Failed=
- prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
-i@f0000d00: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/o2d300.dtb: Warning (pci_device_bus_num): Failed prer=
-equisite 'pci_bridge'
-arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
- /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
-  also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-arch/powerpc/boot/dts/o2d300.dtb: Warning (spi_bus_reg): Failed prerequisit=
-e 'spi_bus_bridge'
-arch/powerpc/boot/dts/kilauea.dts:325.25-364.5: Warning (pci_bridge): /plb/=
-pciex@a0000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/kilauea.dts:366.25-405.5: Warning (pci_bridge): /plb/=
-pciex@c0000000: node name is not "pci" or "pcie"
-arch/powerpc/boot/dts/kilauea.dtb: Warning (pci_device_bus_num): Failed pre=
-requisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/p2020rdb-pc_36b.dts:59.23-62.4: Warning (pci_brid=
-ge): /pcie@fffe08000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p2020si-post.dtsi:100.7-126.3
-arch/powerpc/boot/dts/fsl/p2020si-post.dtsi:109.9-125.4: Warning (pci_bridg=
-e): /pcie@fffe08000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/p2020rdb-pc_36b.dtb: Warning (pci_device_bus_num)=
-: Failed prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/p2020rdb-pc_32b.dts:59.22-62.4: Warning (pci_brid=
-ge): /pcie@ffe08000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p2020si-post.dtsi:100.7-126.3
-arch/powerpc/boot/dts/fsl/p2020si-post.dtsi:109.9-125.4: Warning (pci_bridg=
-e): /pcie@ffe08000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/p2020rdb-pc_32b.dtb: Warning (pci_device_bus_num)=
-: Failed prerequisite 'pci_bridge'
-arch/powerpc/boot/dts/fsl/mpc8541cds.dts:330.3-21: Warning (pci_device_bus_=
-num): /pci@e0008000/i8259@19000:bus-range: PCI bus number 1 out of range, e=
-xpected (0 - 0)
-arch/powerpc/boot/dts/fsl/kmcoge4.dts:196.23-198.4: Warning (pci_bridge): /=
-pcie@ffe201000: missing ranges for PCI bridge (or not a bridge)
-  also defined at arch/powerpc/boot/dts/fsl/p2041si-post.dtsi:87.7-113.3
-arch/powerpc/boot/dts/fsl/p2041si-post.dtsi:97.9-112.4: Warning (pci_bridge=
-): /pcie@ffe201000/pcie@0: missing ranges for PCI bridge (or not a bridge)
-arch/powerpc/boot/dts/fsl/kmcoge4.dtb: Warning (pci_device_bus_num): Failed=
- prerequisite 'pci_bridge'
+cheers
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/EZUbvqkMtql8SQvdpDwPomZ
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl5B8wkACgkQAVBC80lX
-0Gy1gggAm1S3bMFnG/0ZGfC6IJjiiYvblprV19fjthZn0k7BuWPqHnnx7Z6S/oqj
-UcIGgV/i7jdP64OEGb1M2tDjb1gH4mijZ5cS8fL8kJhNWwlUhla4RDJHY/Q2RYDx
-uX5uSqZz6Mor4LeiIU7Hc16d7guDFhqTCFIygciTtMSgHAEloE5Irpw8ZVBM00bR
-Ff1dgfhljO85OAFNOYTcEUl/vYLxCERN3R8/uIzfeJx4+bwNP9WF3VQjQcpJsmAc
-coxV8Tw2wZzQ/I1n0yJTj9y2RsNAr/XFY0x97KjXAhBRG3vBZLTHUI46YoSEDYTW
-SCe36xFtbDwBpKIh3mhrJ8OQwihxNQ==
-=33vw
------END PGP SIGNATURE-----
-
---Sig_/EZUbvqkMtql8SQvdpDwPomZ--
+> diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
+> index 7f9a8a8c31da..3f2e2f0ccbc9 100644
+> --- a/tools/testing/selftests/vm/Makefile
+> +++ b/tools/testing/selftests/vm/Makefile
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for vm selftests
+>  uname_M := $(shell uname -m 2>/dev/null || echo not)
+> -ARCH ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/')
+> +MACHINE ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/')
+>  
+>  CFLAGS = -Wall -I ../../../../usr/include $(EXTRA_CFLAGS)
+>  LDLIBS = -lrt
+> @@ -19,7 +19,7 @@ TEST_GEN_FILES += thuge-gen
+>  TEST_GEN_FILES += transhuge-stress
+>  TEST_GEN_FILES += userfaultfd
+>  
+> -ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
+> +ifneq (,$(filter $(MACHINE),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
+>  TEST_GEN_FILES += va_128TBswitch
+>  TEST_GEN_FILES += virtual_address_range
+>  endif
+> -- 
+> 2.17.1
