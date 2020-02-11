@@ -2,54 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F20915891C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 05:10:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5950415892B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 05:30:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Gq781PlZzDq9k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 15:10:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GqZm0XwSzDqJh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 15:30:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Gq5R2YjczDq8W
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 15:08:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
- header.s=201811 header.b=jklE4gdx; dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 48Gq5Q6cPDz9s3x;
- Tue, 11 Feb 2020 15:08:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1581394123;
- bh=I1D8xdUK3isDDjs1NxNpkqQK/jyPQEZ1w0H0xbIo8Og=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=jklE4gdxW+HBrkcNwPrg672nuHl4S/5r982EVPRNogX+zCfLBjNCsXjU8rCdrH+tF
- vtOKP/4asM4wPz3rKN6quWPOvC1DI1O4+EzQKPTyCy6y//ryMsNQqymxmeggu4ml8A
- hS1q4f+NI0pvR66jQmyHkqWN1FYx9KSjZ7Px54YqTZRtjmTaDhhFK6R+QjpI2/JFlA
- pDgGXPM61fNFKtg5QYE5IsSuZBuRAsN1QoU0OM5Th0JbbIINK9BJXM42Zr33LWvPT5
- FqQx4D7LEt6rYXPijMJjcC0FuT09IkuDsadxRIPXorGp9k/xLltu4wvpsVjPdqA7Jj
- E/f2O2YVdvXnw==
-Received: by neuling.org (Postfix, from userid 1000)
- id D933D2C01E7; Tue, 11 Feb 2020 15:08:42 +1100 (AEDT)
-Message-ID: <467a63b4549006a62843fbb53eaa7270d34c8078.camel@neuling.org>
-Subject: Re: [PATCH V5 06/14] powerpc/vas: Setup thread IRQ handler per VAS
- instance
-From: Michael Neuling <mikey@neuling.org>
-To: Haren Myneni <haren@linux.ibm.com>
-Date: Tue, 11 Feb 2020 15:08:42 +1100
-In-Reply-To: <1581311856.18705.23.camel@hbabu-laptop>
-References: <1579679802.26081.6.camel@hbabu-laptop>
- <1579680639.26081.31.camel@hbabu-laptop>
- <71427c6b8d8e00461fa27e603db2012e8215f467.camel@neuling.org>
- <1581311856.18705.23.camel@hbabu-laptop>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GqXx4w62zDqBc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 15:29:05 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01B4SeWA085221; Mon, 10 Feb 2020 23:28:54 -0500
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y1tndsjtw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Feb 2020 23:28:54 -0500
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01B4QUH4014697;
+ Tue, 11 Feb 2020 04:28:53 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2y1mm6yuh7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Feb 2020 04:28:53 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01B4SqE550397458
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Feb 2020 04:28:52 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9E2B6AE05C;
+ Tue, 11 Feb 2020 04:28:52 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 673A1AE060;
+ Tue, 11 Feb 2020 04:28:49 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.155.18])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 11 Feb 2020 04:28:49 +0000 (GMT)
+Message-ID: <1cd9c970771ba9f08621ae8357340c93f386bc24.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/8xx: Fix clearing of bits 20-23 in ITLB miss
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: christophe.leroy@c-s.fr, benh@kernel.crashing.org, paulus@samba.org,
+ mpe@ellerman.id.au
+Date: Tue, 11 Feb 2020 01:28:44 -0300
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-xDAOyXIsHMs0j4R39yqj"
 User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-10_08:2020-02-10,
+ 2020-02-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002110030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,63 +82,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: herbert@gondor.apana.org.au, npiggin@gmail.com, hch@infradead.org,
- oohall@gmail.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2020-02-09 at 21:17 -0800, Haren Myneni wrote:
-> On Fri, 2020-02-07 at 16:57 +1100, Michael Neuling wrote:
-> > >  /*
-> > > + * Process CRBs that we receive on the fault window.
-> > > + */
-> > > +irqreturn_t vas_fault_handler(int irq, void *data)
-> > > +{
-> > > +	struct vas_instance *vinst =3D data;
-> > > +	struct coprocessor_request_block buf, *crb;
-> > > +	struct vas_window *window;
-> > > +	void *fifo;
-> > > +
-> > > +	/*
-> > > +	 * VAS can interrupt with multiple page faults. So process all
-> > > +	 * valid CRBs within fault FIFO until reaches invalid CRB.
-> > > +	 * NX updates nx_fault_stamp in CRB and pastes in fault FIFO.
-> > > +	 * kernel retrives send window from parition send window ID
-> > > +	 * (pswid) in nx_fault_stamp. So pswid should be non-zero and
-> > > +	 * use this to check whether CRB is valid.
-> > > +	 * After reading CRB entry, it is reset with 0's in fault FIFO.
-> > > +	 *
-> > > +	 * In case kernel receives another interrupt with different page
-> > > +	 * fault and CRBs are processed by the previous handling, will be
-> > > +	 * returned from this function when it sees invalid CRB (means 0's)=
-.
-> > > +	 */
-> > > +	do {
-> > > +		mutex_lock(&vinst->mutex);
-> >=20
-> > This isn't going to work.
-> >=20
-> > From Documentation/locking/mutex-design.rst
-> >=20
-> >     - Mutexes may not be used in hardware or software interrupt
-> >       contexts such as tasklets and timers.
->=20
-> Initially used kernel thread per VAS instance and later using IRQ
-> thread.=20
->=20
-> vas_fault_handler() is IRQ thread function, not IRQ handler. I thought
-> we can use mutex_lock() in thread function.
 
-Sorry, I missed it was a threaded IRQ handler, so I think is ok to use a
-mutex_lock() in there.
+--=-xDAOyXIsHMs0j4R39yqj
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-You should run with CONFIG DEBUG_MUTEXES and CONFIG_LOCKDEP enabled to give=
- you
-some more confidence.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
 
-It would be good to document how this mutex is used and document the start =
-of
-the function so it doesn't get changed later to a non-threaded handler.=20
+> In ITLB miss handled the line supposed to clear bits 20-23 on the
+> L2 ITLB entry is buggy and does indeed nothing, leading to undefined
+> value which could allow execution when it shouldn't.
+>
+> Properly do the clearing with the relevant instruction.
+>
+> Fixes: 74fabcadfd43 ("powerpc/8xx: don't use r12/SPRN_SPRG_SCRATCH2 in TL=
+B Miss handlers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>  arch/powerpc/kernel/head_8xx.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8x=
+x.S
+> index 9922306ae512..073a651787df 100644
+> --- a/arch/powerpc/kernel/head_8xx.S
+> +++ b/arch/powerpc/kernel/head_8xx.S
+> @@ -256,7 +256,7 @@ InstructionTLBMiss:
+>  	 * set.  All other Linux PTE bits control the behavior
+>  	 * of the MMU.
+>  	 */
+> -	rlwimi	r10, r10, 0, 0x0f00	/* Clear bits 20-23 */
+> +	rlwinm	r10, r10, 0, ~0x0f00	/* Clear bits 20-23 */
+>  	rlwimi	r10, r10, 4, 0x0400	/* Copy _PAGE_EXEC into bit 21 */
+>  	ori	r10, r10, RPN_PATTERN | 0x200 /* Set 22 and 24-27 */
+>  	mtspr	SPRN_MI_RPN, r10	/* Update TLB entry */
+> --=20
+> 2.25.0
 
-Mikey
+Looks a valid change.
+rlwimi  r10, r10, 0, 0x0f00 means:=20
+r10 =3D ((r10 << 0) & 0x0f00) | (r10 & ~0x0f00) which ends up being
+r10 =3D r10=20
+
+On ISA, rlwinm is recommended for clearing high order bits.
+rlwinm  r10, r10, 0, ~0x0f00 means:
+r10 =3D (r10 << 0) & ~0x0f00
+
+Which does exactly what the comments suggests.
+
+FWIW:
+Reviwed-by: Leonardo Bras <leonardo@linux.ibm.com>
+
+--=-xDAOyXIsHMs0j4R39yqj
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5CLXwACgkQlQYWtz9S
+ttTvxg/+P4NqENWap51cZFh1Umvzrmqhy+i/SX1us+WFPUoW7paLgqSPZDz5G1iq
+4NotVXJCw1ZC5hf7bYBzIsFjfB5pLPSjUExie/P5O9yNvOjon3BOdrcwdx5p8sfS
+5Xca8szD9e6Om/YVrTmvY3aIhorGTtVboyCZ/xZIZjdcSh5wC7fyGQE0+eK2Cu5w
+6tIHwdvwO0/Z/ovOo/hQlprh8Zz24R7qJVOae8LAUMENSeNN5tNUW5YCTYJOsuR8
+RQ/4NzFw5DBRhZtPcJxBh7wZ/GDvRr5s1eIGgft1L4IWqUap73GI34VaeClVKRZD
+/EW5JThmcbmN2DlyOw1BRs4yrrJD5jXbMQlj6TXeSXrzGLs4azyGHS2K3/XbGBYv
+C+x/+PsDx5/otJe2OWWjuypyy9GI/LQiTCQUZfrUaDafNP1EiP/UiyKLbhsMacAB
+hB/mRHoTXvIMK/qa7+QYoAqPIlVTQXKTZmOwGXPQtSvi7NNFpX55DjU28SWguJsi
+eRXdo0/imfSJUCz9HPzg5DjfVK94BuZtSX2+w8P99Ic6mEbIN/BBW1vffoT1vT1B
+a8LXCpXdbZwyiuKAwiwDDqX0s0XjYLDo/7L3qCmgKPkYBrY3etAfr/eohV6UlxAF
+8k6d/nDfltv3B2G0DxlzfBgFR1RUlYfJIVQYe0DPdgxNUohwn4A=
+=LkZr
+-----END PGP SIGNATURE-----
+
+--=-xDAOyXIsHMs0j4R39yqj--
+
