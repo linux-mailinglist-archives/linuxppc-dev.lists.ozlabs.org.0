@@ -2,52 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F083158904
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 04:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C52841588E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 04:40:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Gpdq11CLzDqGb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 14:48:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48GpSl5pTszDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 14:40:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gustavold@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48Gmpv3w4dzDqLf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 13:25:56 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1FA6531B;
- Mon, 10 Feb 2020 18:25:54 -0800 (PST)
-Received: from [10.162.16.95] (p8cg001049571a15.blr.arm.com [10.162.16.95])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAA353F6CF;
- Mon, 10 Feb 2020 18:25:37 -0800 (PST)
-Subject: Re: [PATCH V13] mm/debug: Add tests validating architecture page
- table helpers
-To: Russell King - ARM Linux admin <linux@armlinux.org.uk>,
- Christophe Leroy <christophe.leroy@c-s.fr>
-References: <1580897674-16456-1-git-send-email-anshuman.khandual@arm.com>
- <202002060619.wEOdAZU1%lkp@intel.com>
- <78d3ce6b-e100-2561-6b09-124c29731d1a@arm.com>
- <20200209205231.44d098f8749e88190b8ba10c@linux-foundation.org>
- <955229f7-f161-f720-0e75-a3163f63817d@arm.com>
- <aef1048f-68c4-d14f-e669-8f288ba9ac7a@c-s.fr>
- <20200210100200.GB25745@shell.armlinux.org.uk>
- <7cb3a5bb-eaea-a01c-4047-e3c000b7ad1d@c-s.fr>
- <20200210110639.GC25745@shell.armlinux.org.uk>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <82317d50-57a2-ce84-7557-21635d57448e@arm.com>
-Date: Tue, 11 Feb 2020 07:55:41 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48GpQx01J0zDqCc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 14:38:48 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01B3UTkQ110483; Mon, 10 Feb 2020 22:38:44 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y1ufm0spk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Feb 2020 22:38:44 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01B3aoVA018067;
+ Tue, 11 Feb 2020 03:38:44 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01wdc.us.ibm.com with ESMTP id 2y1mm670jb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Feb 2020 03:38:43 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01B3cgFB49545666
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Feb 2020 03:38:42 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8562AC6055;
+ Tue, 11 Feb 2020 03:38:42 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05ED1C605B;
+ Tue, 11 Feb 2020 03:38:40 +0000 (GMT)
+Received: from moss.ibm.com (unknown [9.85.133.82])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 11 Feb 2020 03:38:40 +0000 (GMT)
+From: Gustavo Luiz Duarte <gustavold@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 1/3] powerpc/tm: Fix clearing MSR[TS] in current when
+ reclaiming on signal delivery
+Date: Tue, 11 Feb 2020 00:38:29 -0300
+Message-Id: <20200211033831.11165-1-gustavold@linux.ibm.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-In-Reply-To: <20200210110639.GC25745@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Tue, 11 Feb 2020 14:46:50 +1100
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-10_08:2020-02-10,
+ 2020-02-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ impostorscore=0 priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015
+ mlxlogscore=794 bulkscore=0 spamscore=0 lowpriorityscore=0 suspectscore=1
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002110023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,167 +82,288 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, uclinux-h8-devel@lists.sourceforge.jp,
- linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- kbuild test robot <lkp@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>, linux-alpha@vger.kernel.org,
- Aurelien Jacquiot <jacquiot.aurelien@gmail.com>, linux-c6x-dev@linux-c6x.org,
- Mark Brown <broonie@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Vlastimil Babka <vbabka@suse.cz>, Richard Henderson <rth@twiddle.net>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>, kbuild-all@lists.01.org,
- Brian Cain <bcain@codeaurora.org>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, Qian Cai <cai@lca.pw>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: mikey@neuling.org, Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ stable@vger.kernel.org, gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+After a treclaim, we expect to be in non-transactional state. If we don't clear
+the current thread's MSR[TS] before we get preempted, then
+tm_recheckpoint_new_task() will recheckpoint and we get rescheduled in
+suspended transaction state.
 
+When handling a signal caught in transactional state, handle_rt_signal64()
+calls get_tm_stackpointer() that treclaims the transaction using
+tm_reclaim_current() but without clearing the thread's MSR[TS]. This can cause
+the TM Bad Thing exception below if later we pagefault and get preempted trying
+to access the user's sigframe, using __put_user(). Afterwards, when we are
+rescheduled back into do_page_fault() (but now in suspended state since the
+thread's MSR[TS] was not cleared), upon executing 'rfid' after completion of
+the page fault handling, the exception is raised because a transition from
+suspended to non-transactional state is invalid.
 
-On 02/10/2020 04:36 PM, Russell King - ARM Linux admin wrote:
-> On Mon, Feb 10, 2020 at 11:46:23AM +0100, Christophe Leroy wrote:
->>
->>
->> Le 10/02/2020 à 11:02, Russell King - ARM Linux admin a écrit :
->>> On Mon, Feb 10, 2020 at 07:38:38AM +0100, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 10/02/2020 à 06:35, Anshuman Khandual a écrit :
->>>>>
->>>>>
->>>>> On 02/10/2020 10:22 AM, Andrew Morton wrote:
->>>>>> On Thu, 6 Feb 2020 13:49:35 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
->>>>>>
->>>>>>>
->>>>>>> On 02/06/2020 04:40 AM, kbuild test robot wrote:
->>>>>>>> Hi Anshuman,
->>>>>>>>
->>>>>>>> Thank you for the patch! Yet something to improve:
->>>>>>>>
->>>>>>>> [auto build test ERROR on powerpc/next]
->>>>>>>> [also build test ERROR on s390/features linus/master arc/for-next v5.5]
->>>>>>>> [cannot apply to mmotm/master tip/x86/core arm64/for-next/core next-20200205]
->>>>>>>> [if your patch is applied to the wrong git tree, please drop us a note to help
->>>>>>>> improve the system. BTW, we also suggest to use '--base' option to specify the
->>>>>>>> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
->>>>>>>>
->>>>>>>> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-debug-Add-tests-validating-architecture-page-table-helpers/20200205-215507
->>>>>>>> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
->>>>>>>> config: ia64-allmodconfig (attached as .config)
->>>>>>>> compiler: ia64-linux-gcc (GCC) 7.5.0
->>>>>>>> reproduce:
->>>>>>>>           wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->>>>>>>>           chmod +x ~/bin/make.cross
->>>>>>>>           # save the attached .config to linux build tree
->>>>>>>>           GCC_VERSION=7.5.0 make.cross ARCH=ia64
->>>>>>>>
->>>>>>>> If you fix the issue, kindly add following tag
->>>>>>>> Reported-by: kbuild test robot <lkp@intel.com>
->>>>>>>>
->>>>>>>> All error/warnings (new ones prefixed by >>):
->>>>>>>>
->>>>>>>>      In file included from include/asm-generic/pgtable-nopud.h:8:0,
->>>>>>>>                       from arch/ia64/include/asm/pgtable.h:586,
->>>>>>>>                       from include/linux/mm.h:99,
->>>>>>>>                       from include/linux/highmem.h:8,
->>>>>>>>                       from mm/debug_vm_pgtable.c:14:
->>>>>>>>      mm/debug_vm_pgtable.c: In function 'pud_clear_tests':
->>>>>>>>>> include/asm-generic/pgtable-nop4d-hack.h:47:32: error: implicit declaration of function '__pgd'; did you mean '__p4d'? [-Werror=implicit-function-declaration]
->>>>>>>>       #define __pud(x)    ((pud_t) { __pgd(x) })
->>>>>>>>                                      ^
->>>>>>>>>> mm/debug_vm_pgtable.c:141:8: note: in expansion of macro '__pud'
->>>>>>>>        pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
->>>>>>>>              ^~~~~
->>>>>>>>>> include/asm-generic/pgtable-nop4d-hack.h:47:22: warning: missing braces around initializer [-Wmissing-braces]
->>>>>>>>       #define __pud(x)    ((pud_t) { __pgd(x) })
->>>>>>>>                            ^
->>>>>>>>>> mm/debug_vm_pgtable.c:141:8: note: in expansion of macro '__pud'
->>>>>>>>        pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
->>>>>>>>              ^~~~~
->>>>>>>>      cc1: some warnings being treated as errors
->>>>>>>
->>>>>>> This build failure is expected now given that we have allowed DEBUG_VM_PGTABLE
->>>>>>> with EXPERT without platform requiring ARCH_HAS_DEBUG_VM_PGTABLE. This problem
->>>>>>> i.e build failure caused without a platform __pgd(), is known to exist both on
->>>>>>> ia64 and arm (32bit) platforms. Please refer https://lkml.org/lkml/2019/9/24/314
->>>>>>> for details where this was discussed earlier.
->>>>>>>
->>>>>>
->>>>>> I'd prefer not to merge a patch which is known to cause build
->>>>>> regressions.  Is there some temporary thing we can do to prevent these
->>>>>> errors until arch maintainers(?) get around to implementing the
->>>>>> long-term fixes?
->>>>>
->>>>> We could explicitly disable CONFIG_DEBUG_VM_PGTABLE on ia64 and arm platforms
->>>>> which will ensure that others can still use the EXPERT path.
->>>>>
->>>>> config DEBUG_VM_PGTABLE
->>>>> 	bool "Debug arch page table for semantics compliance"
->>>>> 	depends on MMU
->>>>> 	depends on !(IA64 || ARM)
->>>>> 	depends on ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
->>>>> 	default n if !ARCH_HAS_DEBUG_VM_PGTABLE
->>>>> 	default y if DEBUG_VM
->>>>>
->>>>
->>>> On both ia32 and arm, the fix is trivial.
->>>>
->>>> Can we include the fix within this patch, just the same way as the
->>>> mm_p4d_folded() fix for x86 ?
->>>
->>> Why should arm include a macro for something that nothing (apart from
->>> this checker) requires?  If the checker requires it but the rest of
->>> the kernel does not, it suggests that the checker isn't actually
->>> correct, and the results can't be relied upon.
->>>
->>
->> As far as I can see, the problem is that arm opencodes part of the API
->> instead of including asm-generic/pgtable-nopmd.h
->>
->> Here, the ARM has 2 levels, ie only PGD and PTE. But instead of defining
->> __pgd and __pte and getting everything else from asm-generic, it defines a
->> __pmd then redefines the folded levels like the pud, etc ...
->>
->> That's exactly what the checker aims at detecting: architectures than do not
->> properly use the standard linux page table structures.
-> 
-> There are good reasons for the way ARM does stuff.  The generic crap was
-> written without regard for the circumstances that ARM has, and thus is
-> entirely unsuitable for 32-bit ARM.
+	Unexpected TM Bad Thing exception at c00000000000de44 (msr 0x8000000302a03031) tm_scratch=800000010280b033
+	Oops: Unrecoverable exception, sig: 6 [#1]
+	LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+	Modules linked in: nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip6_tables ip_tables nft_compat ip_set nf_tables nfnetlink xts vmx_crypto sg virtio_balloon
+	r_mod cdrom virtio_net net_failover virtio_blk virtio_scsi failover dm_mirror dm_region_hash dm_log dm_mod
+	CPU: 25 PID: 15547 Comm: a.out Not tainted 5.4.0-rc2 #32
+	NIP:  c00000000000de44 LR: c000000000034728 CTR: 0000000000000000
+	REGS: c00000003fe7bd70 TRAP: 0700   Not tainted  (5.4.0-rc2)
+	MSR:  8000000302a03031 <SF,VEC,VSX,FP,ME,IR,DR,LE,TM[SE]>  CR: 44000884  XER: 00000000
+	CFAR: c00000000000dda4 IRQMASK: 0
+	PACATMSCRATCH: 800000010280b033
+	GPR00: c000000000034728 c000000f65a17c80 c000000001662800 00007fffacf3fd78
+	GPR04: 0000000000001000 0000000000001000 0000000000000000 c000000f611f8af0
+	GPR08: 0000000000000000 0000000078006001 0000000000000000 000c000000000000
+	GPR12: c000000f611f84b0 c00000003ffcb200 0000000000000000 0000000000000000
+	GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+	GPR20: 0000000000000000 0000000000000000 0000000000000000 c000000f611f8140
+	GPR24: 0000000000000000 00007fffacf3fd68 c000000f65a17d90 c000000f611f7800
+	GPR28: c000000f65a17e90 c000000f65a17e90 c000000001685e18 00007fffacf3f000
+	NIP [c00000000000de44] fast_exception_return+0xf4/0x1b0
+	LR [c000000000034728] handle_rt_signal64+0x78/0xc50
+	Call Trace:
+	[c000000f65a17c80] [c000000000034710] handle_rt_signal64+0x60/0xc50 (unreliable)
+	[c000000f65a17d30] [c000000000023640] do_notify_resume+0x330/0x460
+	[c000000f65a17e20] [c00000000000dcc4] ret_from_except_lite+0x70/0x74
+	Instruction dump:
+	7c4ff120 e8410170 7c5a03a6 38400000 f8410060 e8010070 e8410080 e8610088
+	60000000 60000000 e8810090 e8210078 <4c000024> 48000000 e8610178 88ed0989
+	---[ end trace 93094aa44b442f87 ]---
 
-Since we dont have an agreement here, lets just settle with disabling the
-test for now on platforms where the build fails. CONFIG_EXPERT is enabling
-this test for better adaptability and coverage, hence how about re framing
-the config like this ? This at the least conveys the fact that EXPERT only
-works when platform is neither IA64 or ARM.
+The simplified sequence of events that triggers the above exception is:
 
-config DEBUG_VM_PGTABLE
-	bool "Debug arch page table for semantics compliance"
-	depends on MMU
-	depends on ARCH_HAS_DEBUG_VM_PGTABLE || (EXPERT &&  !(IA64 || ARM))
-	default n if !ARCH_HAS_DEBUG_VM_PGTABLE
-	default y if DEBUG_VM
+  ...				# userspace in NON-TRANSACTIONAL state
+  tbegin			# userspace in TRANSACTIONAL state
+  signal delivery		# kernelspace in SUSPENDED state
+  handle_rt_signal64()
+    get_tm_stackpointer()
+      treclaim			# kernelspace in NON-TRANSACTIONAL state
+    __put_user()
+      page fault happens. We will never get back here because of the TM Bad Thing exception.
+
+  page fault handling kicks in and we voluntarily preempt ourselves
+  do_page_fault()
+    __schedule()
+      __switch_to(other_task)
+
+  our task is rescheduled and we recheckpoint because the thread's MSR[TS] was not cleared
+  __switch_to(our_task)
+    switch_to_tm()
+      tm_recheckpoint_new_task()
+        trechkpt			# kernelspace in SUSPENDED state
+
+  The page fault handling resumes, but now we are in suspended transaction state
+  do_page_fault()    completes
+  rfid     <----- trying to get back where the page fault happened (we were non-transactional back then)
+  TM Bad Thing			# illegal transition from suspended to non-transactional
+
+This patch fixes that issue by clearing the current thread's MSR[TS] just after
+treclaim in get_tm_stackpointer() so that we stay in non-transactional state in
+case we are preempted. In order to make treclaim and clearing the thread's
+MSR[TS] atomic from a preemption perspective when CONFIG_PREEMPT is set,
+preempt_disable/enable() is used. It's also necessary to save the previous
+value of the thread's MSR before get_tm_stackpointer() is called so that it can
+be exposed to the signal handler later in setup_tm_sigcontexts() to inform the
+userspace MSR at the moment of the signal delivery.
+
+Found with tm-signal-context-force-tm kernel selftest.
+
+v3: Subject and comment improvements.
+v2: Fix build failure when tm is disabled.
+
+Fixes: 2b0a576d15e0 ("powerpc: Add new transactional memory state to the signal context")
+Cc: stable@vger.kernel.org # v3.9
+Signed-off-by: Gustavo Luiz Duarte <gustavold@linux.ibm.com>
+---
+ arch/powerpc/kernel/signal.c    | 16 ++++++++++++++--
+ arch/powerpc/kernel/signal_32.c | 28 ++++++++++++++--------------
+ arch/powerpc/kernel/signal_64.c | 22 ++++++++++------------
+ 3 files changed, 38 insertions(+), 28 deletions(-)
+
+diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+index e6c30cee6abf..76d99bc111dc 100644
+--- a/arch/powerpc/kernel/signal.c
++++ b/arch/powerpc/kernel/signal.c
+@@ -200,14 +200,26 @@ unsigned long get_tm_stackpointer(struct task_struct *tsk)
+ 	 * normal/non-checkpointed stack pointer.
+ 	 */
+ 
++	unsigned long ret = tsk->thread.regs->gpr[1];
++
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	BUG_ON(tsk != current);
+ 
+ 	if (MSR_TM_ACTIVE(tsk->thread.regs->msr)) {
++		preempt_disable();
+ 		tm_reclaim_current(TM_CAUSE_SIGNAL);
+ 		if (MSR_TM_TRANSACTIONAL(tsk->thread.regs->msr))
+-			return tsk->thread.ckpt_regs.gpr[1];
++			ret = tsk->thread.ckpt_regs.gpr[1];
++
++		/* If we treclaim, we must clear the current thread's TM bits
++		 * before re-enabling preemption. Otherwise we might be
++		 * preempted and have the live MSR[TS] changed behind our back
++		 * (tm_recheckpoint_new_task() would recheckpoint). Besides, we
++		 * enter the signal handler in non-transactional state.
++		 */
++		tsk->thread.regs->msr &= ~MSR_TS_MASK;
++		preempt_enable();
+ 	}
+ #endif
+-	return tsk->thread.regs->gpr[1];
++	return ret;
+ }
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 98600b276f76..1b090a76b444 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -489,19 +489,11 @@ static int save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
+  */
+ static int save_tm_user_regs(struct pt_regs *regs,
+ 			     struct mcontext __user *frame,
+-			     struct mcontext __user *tm_frame, int sigret)
++			     struct mcontext __user *tm_frame, int sigret,
++			     unsigned long msr)
+ {
+-	unsigned long msr = regs->msr;
+-
+ 	WARN_ON(tm_suspend_disabled);
+ 
+-	/* Remove TM bits from thread's MSR.  The MSR in the sigcontext
+-	 * just indicates to userland that we were doing a transaction, but we
+-	 * don't want to return in transactional state.  This also ensures
+-	 * that flush_fp_to_thread won't set TIF_RESTORE_TM again.
+-	 */
+-	regs->msr &= ~MSR_TS_MASK;
+-
+ 	/* Save both sets of general registers */
+ 	if (save_general_regs(&current->thread.ckpt_regs, frame)
+ 	    || save_general_regs(regs, tm_frame))
+@@ -912,6 +904,10 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	int sigret;
+ 	unsigned long tramp;
+ 	struct pt_regs *regs = tsk->thread.regs;
++#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
++	/* Save the thread's msr before get_tm_stackpointer() changes it */
++	unsigned long msr = regs->msr;
++#endif
+ 
+ 	BUG_ON(tsk != current);
+ 
+@@ -944,13 +940,13 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	tm_frame = &rt_sf->uc_transact.uc_mcontext;
+-	if (MSR_TM_ACTIVE(regs->msr)) {
++	if (MSR_TM_ACTIVE(msr)) {
+ 		if (__put_user((unsigned long)&rt_sf->uc_transact,
+ 			       &rt_sf->uc.uc_link) ||
+ 		    __put_user((unsigned long)tm_frame,
+ 			       &rt_sf->uc_transact.uc_regs))
+ 			goto badframe;
+-		if (save_tm_user_regs(regs, frame, tm_frame, sigret))
++		if (save_tm_user_regs(regs, frame, tm_frame, sigret, msr))
+ 			goto badframe;
+ 	}
+ 	else
+@@ -1369,6 +1365,10 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	int sigret;
+ 	unsigned long tramp;
+ 	struct pt_regs *regs = tsk->thread.regs;
++#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
++	/* Save the thread's msr before get_tm_stackpointer() changes it */
++	unsigned long msr = regs->msr;
++#endif
+ 
+ 	BUG_ON(tsk != current);
+ 
+@@ -1402,9 +1402,9 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	tm_mctx = &frame->mctx_transact;
+-	if (MSR_TM_ACTIVE(regs->msr)) {
++	if (MSR_TM_ACTIVE(msr)) {
+ 		if (save_tm_user_regs(regs, &frame->mctx, &frame->mctx_transact,
+-				      sigret))
++				      sigret, msr))
+ 			goto badframe;
+ 	}
+ 	else
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index 117515564ec7..84ed2e77ef9c 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -192,7 +192,8 @@ static long setup_sigcontext(struct sigcontext __user *sc,
+ static long setup_tm_sigcontexts(struct sigcontext __user *sc,
+ 				 struct sigcontext __user *tm_sc,
+ 				 struct task_struct *tsk,
+-				 int signr, sigset_t *set, unsigned long handler)
++				 int signr, sigset_t *set, unsigned long handler,
++				 unsigned long msr)
+ {
+ 	/* When CONFIG_ALTIVEC is set, we _always_ setup v_regs even if the
+ 	 * process never used altivec yet (MSR_VEC is zero in pt_regs of
+@@ -207,12 +208,11 @@ static long setup_tm_sigcontexts(struct sigcontext __user *sc,
+ 	elf_vrreg_t __user *tm_v_regs = sigcontext_vmx_regs(tm_sc);
+ #endif
+ 	struct pt_regs *regs = tsk->thread.regs;
+-	unsigned long msr = tsk->thread.regs->msr;
+ 	long err = 0;
+ 
+ 	BUG_ON(tsk != current);
+ 
+-	BUG_ON(!MSR_TM_ACTIVE(regs->msr));
++	BUG_ON(!MSR_TM_ACTIVE(msr));
+ 
+ 	WARN_ON(tm_suspend_disabled);
+ 
+@@ -222,13 +222,6 @@ static long setup_tm_sigcontexts(struct sigcontext __user *sc,
+ 	 */
+ 	msr |= tsk->thread.ckpt_regs.msr & (MSR_FP | MSR_VEC | MSR_VSX);
+ 
+-	/* Remove TM bits from thread's MSR.  The MSR in the sigcontext
+-	 * just indicates to userland that we were doing a transaction, but we
+-	 * don't want to return in transactional state.  This also ensures
+-	 * that flush_fp_to_thread won't set TIF_RESTORE_TM again.
+-	 */
+-	regs->msr &= ~MSR_TS_MASK;
+-
+ #ifdef CONFIG_ALTIVEC
+ 	err |= __put_user(v_regs, &sc->v_regs);
+ 	err |= __put_user(tm_v_regs, &tm_sc->v_regs);
+@@ -824,6 +817,10 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	unsigned long newsp = 0;
+ 	long err = 0;
+ 	struct pt_regs *regs = tsk->thread.regs;
++#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
++	/* Save the thread's msr before get_tm_stackpointer() changes it */
++	unsigned long msr = regs->msr;
++#endif
+ 
+ 	BUG_ON(tsk != current);
+ 
+@@ -841,7 +838,7 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	err |= __put_user(0, &frame->uc.uc_flags);
+ 	err |= __save_altstack(&frame->uc.uc_stack, regs->gpr[1]);
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+-	if (MSR_TM_ACTIVE(regs->msr)) {
++	if (MSR_TM_ACTIVE(msr)) {
+ 		/* The ucontext_t passed to userland points to the second
+ 		 * ucontext_t (for transactional state) with its uc_link ptr.
+ 		 */
+@@ -849,7 +846,8 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 		err |= setup_tm_sigcontexts(&frame->uc.uc_mcontext,
+ 					    &frame->uc_transact.uc_mcontext,
+ 					    tsk, ksig->sig, NULL,
+-					    (unsigned long)ksig->ka.sa.sa_handler);
++					    (unsigned long)ksig->ka.sa.sa_handler,
++					    msr);
+ 	} else
+ #endif
+ 	{
+-- 
+2.21.1
+
