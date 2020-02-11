@@ -2,52 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C13B158874
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 03:53:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77525158882
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 04:04:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GnQc11XHzDqLj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 13:53:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Gng70FnhzDqMC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 14:04:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48GnLy1316zDqLt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 13:50:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=kernelfans@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KiyG58KO; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=InBKraSF; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48GnLx2h15z9sP7;
- Tue, 11 Feb 2020 13:50:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1581389417;
- bh=BUV6k8b4/tEi4PgXiYi4XOSMaNTQi4awrwVuF6nbQKg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KiyG58KOvujvM95ACCeJJIpDaFgjROxtgymhz4D8vCzlr9CSrjHECEcd02zTz6mh0
- qm4p9sZFS4aXmJt3o6Ar/UO2zEqYlPwTh2VT9kKwEBGP+KJ/9GaYEJCutIQ/00Ebit
- qCyeh/TXMW0k4Zv11ydg02PcEc+YpCeSP1I8TvN1aDVjUMFik2gPqsTzzlQgRrtx3X
- 03QEqasOQLwgW7Lg1l+AbQt+vGy68t/+u6sUADbX6rOGefrEJS/eBfZcj66ymDMB0i
- L38dBZcY4WJm8NlqI7096qn+FOeN7p8oNQN3EuiKiYKLSeeJD7K+26UBwwA74XmeHT
- ov63hnh/OiWZQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sandipan Das <sandipan@linux.ibm.com>, shuah@kernel.org,
- skhan@linuxfoundation.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/2] selftests: vm: Fix 64-bit test builds for powerpc64le
-In-Reply-To: <e9178d28dddfc64a23ffd51e2fecd06ad16ac92a.1580367152.git.sandipan@linux.ibm.com>
-References: <cover.1580367152.git.sandipan@linux.ibm.com>
- <e9178d28dddfc64a23ffd51e2fecd06ad16ac92a.1580367152.git.sandipan@linux.ibm.com>
-Date: Tue, 11 Feb 2020 13:50:16 +1100
-Message-ID: <87imkdzvkn.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Gnd64TwNzDqFm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 14:02:31 +1100 (AEDT)
+Received: by mail-pj1-x1044.google.com with SMTP id f2so439792pjq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 19:02:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=6B8koftBLrJDRWsxr6z2TFPm4iMsY2o3qs+tDinMff0=;
+ b=InBKraSFiqSGyDmus3TCOMGIumhYKcRYHegPQdIcmR2sZKnIVOZezmDgNJes2S+78B
+ 6XetujltT/fMKLymnlUbwgOhGVz/gQZbTX6yXfwf5zaKcgOYO6Otr+G1PPNTcELsjZWY
+ wD8la3Je3I8ej13kvJlodqETmdb3e6L4b6/Aln7c61IHnA8N6b7q77h/78MSypIk+DwM
+ bK9RxTd+S9KOwljXwhwEErrWjiHBefR2kw2ahjNMVvRR1VSuWEijRigDAShY2jefHIHo
+ TV++8c6XRKiHSv9uxBnUbun1FgEBUq8qVLZx9I4xHTN48Ge88ZoMkcDUwaUR+UZyxiLl
+ 7KRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=6B8koftBLrJDRWsxr6z2TFPm4iMsY2o3qs+tDinMff0=;
+ b=MDIvV/3JPx+Y2weScw03OBNzk/TIhof0B4aMfTIvmHhmELQdfoJTbGYT1c210cFfbG
+ yyfT21FlDB9UCiRyE1WvFD2Cl7I6tyb65a6eDN4V9lMdQ//s3/Gj6TuAKDYTLoXJMdjW
+ 33pZ7cO9peLBFRLG195SEMZnzXyAGs7MntqQBdXKH2LJAnYcekmdjcbq0cAtefGsH6JS
+ AkNZCdsw+R1FGlSuAey7IZRDE6Ib8fE1H0W3Thbqq2fRCONPVx/9m+WzeiwYaDRsnPuw
+ rb7+Mekli7xC8OTwJs+t+I6p74SKVgebuD05pTRbDqDk9qH6L+POeF4cGyijHap4BlJX
+ 38ZQ==
+X-Gm-Message-State: APjAAAUSXD/EfN9Mamdol1AwxD7rccRljEYJSTbFmL8S7BOkGV+6Qrik
+ SyE9CZss5MS4l9YiRZyZ/fN8oBM=
+X-Google-Smtp-Source: APXvYqxk/wxKJbVrY6xNhPK0ZmuQcxunZ4TKmL5ApijvUqtr0xxEO8C1JUMioQRBYQEik2hJOYh7Jw==
+X-Received: by 2002:a17:902:74c3:: with SMTP id
+ f3mr16432519plt.0.1581390147995; 
+ Mon, 10 Feb 2020 19:02:27 -0800 (PST)
+Received: from mylaptop.redhat.com ([209.132.188.80])
+ by smtp.gmail.com with ESMTPSA id m71sm1290633pje.0.2020.02.10.19.02.24
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 10 Feb 2020 19:02:27 -0800 (PST)
+From: Pingfan Liu <kernelfans@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/pseries: group lmb operation and memblock's
+Date: Tue, 11 Feb 2020 10:59:41 +0800
+Message-Id: <1581389982-5701-1-git-send-email-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.7.5
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,54 +73,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, kamalesh@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mhiramat@kernel.org, aneesh.kumar@linux.ibm.com
+Cc: kexec@lists.infradead.org, Pingfan Liu <kernelfans@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sandipan Das <sandipan@linux.ibm.com> writes:
-> Some tests are built only for 64-bit systems. This makes
-> sure that these tests are built for both big and little
-> endian variants of powerpc64.
->
-> Fixes: 7549b3364201 ("selftests: vm: Build/Run 64bit tests only on 64bit arch")
-> Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-> ---
->  tools/testing/selftests/vm/Makefile    | 2 +-
->  tools/testing/selftests/vm/run_vmtests | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+This patch prepares for the incoming patch which swaps the order of KOBJ_
+uevent and dt's updating.
 
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
+It has no functional effect, just groups lmb operation and memblock's in
+order to insert dt updating operation easily, and makes it easier to
+review.
 
-cheers
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: kexec@lists.infradead.org
+---
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 26 ++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-> diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
-> index 3f2e2f0ccbc9..8074340c6b3a 100644
-> --- a/tools/testing/selftests/vm/Makefile
-> +++ b/tools/testing/selftests/vm/Makefile
-> @@ -19,7 +19,7 @@ TEST_GEN_FILES += thuge-gen
->  TEST_GEN_FILES += transhuge-stress
->  TEST_GEN_FILES += userfaultfd
->  
-> -ifneq (,$(filter $(MACHINE),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
-> +ifneq (,$(filter $(MACHINE),arm64 ia64 mips64 parisc64 ppc64 ppc64le riscv64 s390x sh64 sparc64 x86_64))
->  TEST_GEN_FILES += va_128TBswitch
->  TEST_GEN_FILES += virtual_address_range
->  endif
-> diff --git a/tools/testing/selftests/vm/run_vmtests b/tools/testing/selftests/vm/run_vmtests
-> index a692ea828317..db8e0d1c7b39 100755
-> --- a/tools/testing/selftests/vm/run_vmtests
-> +++ b/tools/testing/selftests/vm/run_vmtests
-> @@ -59,7 +59,7 @@ else
->  fi
->  
->  #filter 64bit architectures
-> -ARCH64STR="arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64"
-> +ARCH64STR="arm64 ia64 mips64 parisc64 ppc64 ppc64le riscv64 s390x sh64 sparc64 x86_64"
->  if [ -z $ARCH ]; then
->    ARCH=`uname -m 2>/dev/null | sed -e 's/aarch64.*/arm64/'`
->  fi
-> -- 
-> 2.17.1
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index c126b94..a3a9353 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -375,7 +375,8 @@ static int dlpar_add_lmb(struct drmem_lmb *);
+ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ {
+ 	unsigned long block_sz;
+-	int rc;
++	phys_addr_t base_addr;
++	int rc, nid;
+ 
+ 	if (!lmb_is_removable(lmb))
+ 		return -EINVAL;
+@@ -384,17 +385,19 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ 	if (rc)
+ 		return rc;
+ 
++	base_addr = lmb->base_addr;
++	nid = lmb->nid;
+ 	block_sz = pseries_memory_block_size();
+ 
+-	__remove_memory(lmb->nid, lmb->base_addr, block_sz);
+-
+-	/* Update memory regions for memory remove */
+-	memblock_remove(lmb->base_addr, block_sz);
+-
+ 	invalidate_lmb_associativity_index(lmb);
+ 	lmb_clear_nid(lmb);
+ 	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
+ 
++	__remove_memory(nid, base_addr, block_sz);
++
++	/* Update memory regions for memory remove */
++	memblock_remove(base_addr, block_sz);
++
+ 	return 0;
+ }
+ 
+@@ -661,6 +664,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 	}
+ 
+ 	lmb_set_nid(lmb);
++	lmb->flags |= DRCONF_MEM_ASSIGNED;
++
+ 	block_sz = memory_block_size_bytes();
+ 
+ 	/* Add the memory */
+@@ -672,11 +677,14 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 
+ 	rc = dlpar_online_lmb(lmb);
+ 	if (rc) {
+-		__remove_memory(lmb->nid, lmb->base_addr, block_sz);
++		int nid = lmb->nid;
++		phys_addr_t base_addr = lmb->base_addr;
++
+ 		invalidate_lmb_associativity_index(lmb);
+ 		lmb_clear_nid(lmb);
+-	} else {
+-		lmb->flags |= DRCONF_MEM_ASSIGNED;
++		lmb->flags &= ~DRCONF_MEM_ASSIGNED;
++
++		__remove_memory(nid, base_addr, block_sz);
+ 	}
+ 
+ 	return rc;
+-- 
+2.7.5
+
