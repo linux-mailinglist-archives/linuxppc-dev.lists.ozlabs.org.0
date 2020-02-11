@@ -1,76 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5950415892B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 05:30:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GqZm0XwSzDqJh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 15:30:40 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F151589A8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 06:36:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Gs343mQCzDqKs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 16:36:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
+ helo=mail-pl1-x62d.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TlljJs6L; dkim-atps=neutral
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
+ [IPv6:2607:f8b0:4864:20::62d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48GqXx4w62zDqBc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 15:29:05 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01B4SeWA085221; Mon, 10 Feb 2020 23:28:54 -0500
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y1tndsjtw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Feb 2020 23:28:54 -0500
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01B4QUH4014697;
- Tue, 11 Feb 2020 04:28:53 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2y1mm6yuh7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 11 Feb 2020 04:28:53 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01B4SqE550397458
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Feb 2020 04:28:52 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E2B6AE05C;
- Tue, 11 Feb 2020 04:28:52 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 673A1AE060;
- Tue, 11 Feb 2020 04:28:49 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.155.18])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 11 Feb 2020 04:28:49 +0000 (GMT)
-Message-ID: <1cd9c970771ba9f08621ae8357340c93f386bc24.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/8xx: Fix clearing of bits 20-23 in ITLB miss
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: christophe.leroy@c-s.fr, benh@kernel.crashing.org, paulus@samba.org,
- mpe@ellerman.id.au
-Date: Tue, 11 Feb 2020 01:28:44 -0300
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-xDAOyXIsHMs0j4R39yqj"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-10_08:2020-02-10,
- 2020-02-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0 phishscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002110030
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Gs0l4cPXzDqBP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 16:34:47 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id c23so3798408plz.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 21:34:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=rWkvnU+gIxhYcB1ndawLyk0tag0eyiLVR3R/EOjiSMA=;
+ b=TlljJs6LfI90GgHu9wAQyLTW5C4lUX9d82ysGcjz8iAyHMdpoNdEf7o6Rx8apkS7lv
+ Uv6NfKVBng8KMmMHaKrfH0Dgezkph9+iqD+cRKOM5xHVS+JBgNQb7CvCROpZGhGfeh8S
+ A8jupq3xDgxjFHZxqtg/mFcHShEY3maT2R0i7AwwtCKHRx8uU9Z9aAxXxGNCpPOtVuUT
+ QCseY7CzDAzgblxL3iDc7KwYAt/2Pc286PXTE/vz0LinLT9g0Y+tzBxD1r+vypNK50LD
+ rIyiT0/i4TFxGx1VTlldXT9dQ70HA57No3zpEgp5oDyq2Ec4WCu/HVJx6+u8HLkqOKXD
+ y7+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=rWkvnU+gIxhYcB1ndawLyk0tag0eyiLVR3R/EOjiSMA=;
+ b=knRmzcQaIQ3QDYjpzNA27ecd7ltewfxey/M0KLvhgxp0AjCvF0MOKaHXwynjyJDvQ2
+ 795nWuxP83jFdDw9688zKyVsvsCdJH8YjVqG1Brzq4v94ji4nCu4EOfcNa2rjX5NKPaC
+ DQ9RhkHOaLIC25dUY2ZG0F2GBVfkentJkIQlu79Uh2AvqxYa9NHMKRKtUVDYJKmsl5uj
+ cRlEpCNhy+LWnWUJB+xU3VwXNzHOHYFwK2Eol/W7wtgLvcW4Tghjf4Ug8CNx/PaiLqcs
+ bWOkO0TKLqwPOef8brhPg25gawNxIhrBY8sWoAmT5D5WIEvvtE0HbKcAYE8TMppgkjO4
+ 9bdQ==
+X-Gm-Message-State: APjAAAUPvQs4XXWVRyX/AMrUHlebtJ0cBvfBZMzjdraZPZastr1jxNpS
+ mcNJtsXgTZHx318ANon+vxzWYx/9cxo=
+X-Google-Smtp-Source: APXvYqz3ip1B1ECw8VvASaedx9JF5nQ8Y/Nu3QFttz94SLuax/tRQqDSNv65QhpHjafSRApZtgIZ4w==
+X-Received: by 2002:a17:90a:a385:: with SMTP id
+ x5mr1746442pjp.102.1581399284003; 
+ Mon, 10 Feb 2020 21:34:44 -0800 (PST)
+Received: from localhost.localdomain
+ (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
+ by smtp.gmail.com with ESMTPSA id a19sm1189025pju.11.2020.02.10.21.34.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Feb 2020 21:34:43 -0800 (PST)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/13] Initial Prefixed Instruction support
+Date: Tue, 11 Feb 2020 16:33:42 +1100
+Message-Id: <20200211053355.21574-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,84 +74,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alistair@popple.id.au, mpe@ellerman.id.a,
+ Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net, bala24@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+A future revision of the ISA will introduce prefixed instructions. A
+prefixed instruction is composed of a 4-byte prefix followed by a
+4-byte suffix.
 
---=-xDAOyXIsHMs0j4R39yqj
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+All prefixes have the major opcode 1. A prefix will never be a valid
+word instruction. A suffix may be an existing word instruction or a
+new instruction.
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+This series enables prefixed instructions and extends the instruction
+emulation to support them. Then the places where prefixed instructions
+might need to be emulated are updated.
 
-> In ITLB miss handled the line supposed to clear bits 20-23 on the
-> L2 ITLB entry is buggy and does indeed nothing, leading to undefined
-> value which could allow execution when it shouldn't.
->
-> Properly do the clearing with the relevant instruction.
->
-> Fixes: 74fabcadfd43 ("powerpc/8xx: don't use r12/SPRN_SPRG_SCRATCH2 in TL=
-B Miss handlers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/kernel/head_8xx.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8x=
-x.S
-> index 9922306ae512..073a651787df 100644
-> --- a/arch/powerpc/kernel/head_8xx.S
-> +++ b/arch/powerpc/kernel/head_8xx.S
-> @@ -256,7 +256,7 @@ InstructionTLBMiss:
->  	 * set.  All other Linux PTE bits control the behavior
->  	 * of the MMU.
->  	 */
-> -	rlwimi	r10, r10, 0, 0x0f00	/* Clear bits 20-23 */
-> +	rlwinm	r10, r10, 0, ~0x0f00	/* Clear bits 20-23 */
->  	rlwimi	r10, r10, 4, 0x0400	/* Copy _PAGE_EXEC into bit 21 */
->  	ori	r10, r10, RPN_PATTERN | 0x200 /* Set 22 and 24-27 */
->  	mtspr	SPRN_MI_RPN, r10	/* Update TLB entry */
-> --=20
-> 2.25.0
+This v2 incorporates feedback from Daniel Axtens and and Balamuruhan
+S. The major changes are:
+    - Squashing together all commits about SRR1 bits
+    - Squashing all commits for supporting prefixed load stores
+    - Changing abbreviated references to sufx/prfx -> suffix/prefix
+    - Introducing macros for returning the length of an instruction
+    - Removing sign extension flag from pstd/pld in sstep.c
+    - Dropping patch  "powerpc/fault: Use analyse_instr() to check for
+      store with updates to sp" from the series, it did not really fit
+      with prefixed enablement in the first place and as reported by Greg
+      Kurz did not work correctly.
+	
 
-Looks a valid change.
-rlwimi  r10, r10, 0, 0x0f00 means:=20
-r10 =3D ((r10 << 0) & 0x0f00) | (r10 & ~0x0f00) which ends up being
-r10 =3D r10=20
+Alistair Popple (1):
+  powerpc: Enable Prefixed Instructions
 
-On ISA, rlwinm is recommended for clearing high order bits.
-rlwinm  r10, r10, 0, ~0x0f00 means:
-r10 =3D (r10 << 0) & ~0x0f00
+Jordan Niethe (12):
+  powerpc: Define new SRR1 bits for a future ISA version
+  powerpc sstep: Prepare to support prefixed instructions
+  powerpc sstep: Add support for prefixed load/stores
+  powerpc sstep: Add support for prefixed fixed-point arithmetic
+  powerpc: Support prefixed instructions in alignment handler
+  powerpc/traps: Check for prefixed instructions in
+    facility_unavailable_exception()
+  powerpc/xmon: Add initial support for prefixed instructions
+  powerpc/xmon: Dump prefixed instructions
+  powerpc/kprobes: Support kprobes on prefixed instructions
+  powerpc/uprobes: Add support for prefixed instructions
+  powerpc/hw_breakpoints: Initial support for prefixed instructions
+  powerpc: Add prefix support to mce_find_instr_ea_and_pfn()
 
-Which does exactly what the comments suggests.
+ arch/powerpc/include/asm/kprobes.h    |   5 +-
+ arch/powerpc/include/asm/ppc-opcode.h |   5 +
+ arch/powerpc/include/asm/reg.h        |   7 +-
+ arch/powerpc/include/asm/sstep.h      |   9 +-
+ arch/powerpc/include/asm/uaccess.h    |  30 +++++
+ arch/powerpc/include/asm/uprobes.h    |  16 ++-
+ arch/powerpc/kernel/align.c           |   8 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c     |  23 ++++
+ arch/powerpc/kernel/hw_breakpoint.c   |   8 +-
+ arch/powerpc/kernel/kprobes.c         |  47 +++++--
+ arch/powerpc/kernel/mce_power.c       |   6 +-
+ arch/powerpc/kernel/optprobes.c       |  31 +++--
+ arch/powerpc/kernel/optprobes_head.S  |   6 +
+ arch/powerpc/kernel/traps.c           |  22 +++-
+ arch/powerpc/kernel/uprobes.c         |   4 +-
+ arch/powerpc/kvm/book3s_hv_nested.c   |   2 +-
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c   |   2 +-
+ arch/powerpc/kvm/emulate_loadstore.c  |   2 +-
+ arch/powerpc/lib/sstep.c              | 181 +++++++++++++++++++++++++-
+ arch/powerpc/lib/test_emulate_step.c  |  30 ++---
+ arch/powerpc/xmon/xmon.c              | 133 +++++++++++++++----
+ 21 files changed, 487 insertions(+), 90 deletions(-)
 
-FWIW:
-Reviwed-by: Leonardo Bras <leonardo@linux.ibm.com>
-
---=-xDAOyXIsHMs0j4R39yqj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5CLXwACgkQlQYWtz9S
-ttTvxg/+P4NqENWap51cZFh1Umvzrmqhy+i/SX1us+WFPUoW7paLgqSPZDz5G1iq
-4NotVXJCw1ZC5hf7bYBzIsFjfB5pLPSjUExie/P5O9yNvOjon3BOdrcwdx5p8sfS
-5Xca8szD9e6Om/YVrTmvY3aIhorGTtVboyCZ/xZIZjdcSh5wC7fyGQE0+eK2Cu5w
-6tIHwdvwO0/Z/ovOo/hQlprh8Zz24R7qJVOae8LAUMENSeNN5tNUW5YCTYJOsuR8
-RQ/4NzFw5DBRhZtPcJxBh7wZ/GDvRr5s1eIGgft1L4IWqUap73GI34VaeClVKRZD
-/EW5JThmcbmN2DlyOw1BRs4yrrJD5jXbMQlj6TXeSXrzGLs4azyGHS2K3/XbGBYv
-C+x/+PsDx5/otJe2OWWjuypyy9GI/LQiTCQUZfrUaDafNP1EiP/UiyKLbhsMacAB
-hB/mRHoTXvIMK/qa7+QYoAqPIlVTQXKTZmOwGXPQtSvi7NNFpX55DjU28SWguJsi
-eRXdo0/imfSJUCz9HPzg5DjfVK94BuZtSX2+w8P99Ic6mEbIN/BBW1vffoT1vT1B
-a8LXCpXdbZwyiuKAwiwDDqX0s0XjYLDo/7L3qCmgKPkYBrY3etAfr/eohV6UlxAF
-8k6d/nDfltv3B2G0DxlzfBgFR1RUlYfJIVQYe0DPdgxNUohwn4A=
-=LkZr
------END PGP SIGNATURE-----
-
---=-xDAOyXIsHMs0j4R39yqj--
+-- 
+2.17.1
 
