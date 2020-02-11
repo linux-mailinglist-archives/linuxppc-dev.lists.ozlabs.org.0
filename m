@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9631589E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 07:02:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129011589E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 07:00:16 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48GsZ43MJyzDqGG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 17:00:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Gscw2vsjzDqHv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2020 17:02:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Jea2t7Sx; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20161025 header.b=rfkyHpie; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Gs3W6SPDzDqGG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 16:37:11 +1100 (AEDT)
-Received: by mail-pj1-x1042.google.com with SMTP id j17so751602pjz.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 21:37:11 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Gs3l2SkPzDqDV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 16:37:23 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id b35so5083305pgm.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2020 21:37:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=SwaMwZKcMmVHXoGGrTp6uh8O/gB56OwcABr8TDUPUvw=;
- b=Jea2t7SxAVuDsCDEW2xvagz1AJOgKUszLhUM+cWhGJK5aUNrceYc/rWE8aFHAQWYmD
- Q519GBbd0Twx9MJHMw7ik5GeLKyI3XUJSFnnj7CRdwUZD5qCGVZhQRp1wOqODlcYzQMQ
- zVr52akHBq5OZOMkwkDVMeGFCMyIB2ik0p/B9ysnm9SF1/Lnz164lEqtTRGMpT7PnKur
- h5Pi8a5eE93AdZp2lIiBxfXIdUxRAxYtTNiK9Clho5kBPb3S6VCf/1Uyu6LA5My6hOn/
- sK9lEayaQeK8uSuBENGF81w74SoX647VGSq5+kdC5N+Ac4BV3sH5HrdrRZqQClMZ7zNe
- Ivhw==
+ bh=4APAJa04OqQvBuPh8qOA4vaLQx6bRHVlMgJ4rnMsd4U=;
+ b=rfkyHpiey7FOpfdmglnZDdVbKxwDOZpLJszUtFpY0chLKRR7RMkScEk1dA2qYTF4c6
+ DHZskMF+VI8Ueuw7OWyx5dPhZ2bqGSYwzq3svLDjbszVktazFw82jlzs0sn0lVadY6cU
+ srBlTwJjsbPGT1Aye1Hk7hmAEAoDQN2sSZf9DUaBK1YBXOGsbZ46YTeag5HwAduMNgC0
+ fcdQg/45N9m2mskf2Q+nS5X2Y3HuoahswCwRsfAC/2IF2ioBQBA9vq5o2Jxs2ZecScq/
+ fopp6zgXooyujoj17+yZ3KhN3qe2mDXRMP7iUTenzABhEyYHMwFOTTlo2u5mCpOPIV2A
+ 9OSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=SwaMwZKcMmVHXoGGrTp6uh8O/gB56OwcABr8TDUPUvw=;
- b=VB1lSQOf2Vb8ToYdoGNEoM4iupIN/U6IDnObtjG+iI1odgqhzfnTGwlQMpQI3xcpV5
- zMtRs10PjFJBBHKqxwBcIKpxmYm9+tXkBrR7bej9YGKSOoW0KPtk4aCT/gtxD9fjiYg7
- PooddOT3Mun/7BzvxR/NyYv7DVD7KEQQEAhXF/ubcuNZHc1EaLH9+gWIcvGMsdqulWxk
- UPeFXvzIcPCY4roPjVC9Lh5MKLktb4ewORQIXkqtyJi4TKgSBg1ghvEUgBEcrJJNqWhq
- Jp4qvEmYcwGVnXjms2DHH1a7eqZZzIfiQwe2wjEkHkCae6/NKZpNAbfv0zottRVzM2Fb
- n1Zw==
-X-Gm-Message-State: APjAAAUH/EOdTH7bJTnzElT7pGsF7hNc6ACCIpDkCF//D+4V1DJrHxb0
- mZY70c4VHVPxWAgQ4Ayt1rI2Zt1Oxt22bg==
-X-Google-Smtp-Source: APXvYqz5QPUkzl7qQ6lk4hqr7wZRWS7MIQ2vK6pB+5VME72PSXVy1svGdZttyvyJzyhH6u/np0URrg==
-X-Received: by 2002:a17:902:bb88:: with SMTP id
- m8mr1581292pls.63.1581399428601; 
- Mon, 10 Feb 2020 21:37:08 -0800 (PST)
+ bh=4APAJa04OqQvBuPh8qOA4vaLQx6bRHVlMgJ4rnMsd4U=;
+ b=UEOopu2wCmGMXwhGt/WnMsQS7j/VCSlmmTgkuX89Qvlv/XVAB/JcEsZH/K8B0jggs6
+ 8LIzQl7kBMNYy4p5cpjGvyZWg+Bkesenz1IY+OI+SrX7F+15VgXN1ypQFKB5iNBaTW+V
+ XlxElo7hNtsCAm1szm+io0RAvqoJBYc2T5L3X1k9LupVifEkFWjnNubj2nFU+Hepb4Ga
+ GeUMz8JEKneHA6d/bOMA/QjreZ5+9xgAcSzKelyUap5nPuKvCv5xaR4bLxhv8FRMkYX4
+ 2ta7NrHVrhTXjyBOG6dZ54g4RAtoQcuUcGLiRyfyXTcKUtaN15DRs1U950aEQMbCZ6WM
+ glcw==
+X-Gm-Message-State: APjAAAXgFNA5V0WDaTAwREUZAMfhMC0bt3ovhWu40UOvU9wvCGlja1wc
+ Uq2Y8uVdd4nuxf97beCDHmEDLgtEENVKVg==
+X-Google-Smtp-Source: APXvYqyG9wTLxDIvhi3npkM4a1QYKXCT1cfeEM3Qd0f8tEiK+qTedn233BijX4udeBC5PNDhtF9/iQ==
+X-Received: by 2002:a65:420b:: with SMTP id c11mr1426389pgq.306.1581399440905; 
+ Mon, 10 Feb 2020 21:37:20 -0800 (PST)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id a19sm1189025pju.11.2020.02.10.21.36.54
+ by smtp.gmail.com with ESMTPSA id a19sm1189025pju.11.2020.02.10.21.37.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Feb 2020 21:37:08 -0800 (PST)
+ Mon, 10 Feb 2020 21:37:20 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 12/13] powerpc/hw_breakpoints: Initial support for prefixed
- instructions
-Date: Tue, 11 Feb 2020 16:33:54 +1100
-Message-Id: <20200211053355.21574-13-jniethe5@gmail.com>
+Subject: [PATCH v2 13/13] powerpc: Add prefix support to
+ mce_find_instr_ea_and_pfn()
+Date: Tue, 11 Feb 2020 16:33:55 +1100
+Message-Id: <20200211053355.21574-14-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200211053355.21574-1-jniethe5@gmail.com>
 References: <20200211053355.21574-1-jniethe5@gmail.com>
@@ -84,50 +83,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently when getting an instruction to emulate in
-hw_breakpoint_handler() we do not load the suffix of a prefixed
-instruction. Ensure we load the suffix if the instruction we need to
-emulate is a prefixed instruction.
+mce_find_instr_ea_and_pfn analyses an instruction to determine the
+effective address that caused the machine check. Update this to load and
+pass the suffix to analyse_instr for prefixed instructions.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v2: Rename sufx to suffix
+v2: - Rename sufx to suffix
 ---
- arch/powerpc/kernel/hw_breakpoint.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/mce_power.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 3a7ec6760dab..c69189641b05 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -243,15 +243,15 @@ dar_range_overlaps(unsigned long dar, int size, struct arch_hw_breakpoint *info)
- static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
- 			     struct arch_hw_breakpoint *info)
- {
--	unsigned int instr = 0;
-+	unsigned int instr = 0, suffix = 0;
- 	int ret, type, size;
+diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
+index 824eda536f5d..091bab4a5464 100644
+--- a/arch/powerpc/kernel/mce_power.c
++++ b/arch/powerpc/kernel/mce_power.c
+@@ -365,7 +365,7 @@ static int mce_find_instr_ea_and_phys(struct pt_regs *regs, uint64_t *addr,
+ 	 * in real-mode is tricky and can lead to recursive
+ 	 * faults
+ 	 */
+-	int instr;
++	int instr, suffix = 0;
+ 	unsigned long pfn, instr_addr;
  	struct instruction_op op;
- 	unsigned long addr = info->address;
- 
--	if (__get_user_inatomic(instr, (unsigned int *)regs->nip))
-+	if (__get_user_instr_inatomic(instr, suffix, (unsigned int *)regs->nip))
- 		goto fail;
- 
--	ret = analyse_instr(&op, regs, instr, PPC_NO_SUFFIX);
-+	ret = analyse_instr(&op, regs, instr, suffix);
- 	type = GETTYPE(op.type);
- 	size = GETSIZE(op.type);
- 
-@@ -275,7 +275,7 @@ static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
- 		return false;
- 	}
- 
--	if (!emulate_step(regs, instr, PPC_NO_SUFFIX))
-+	if (!emulate_step(regs, instr, suffix))
- 		goto fail;
- 
- 	return true;
+ 	struct pt_regs tmp = *regs;
+@@ -374,7 +374,9 @@ static int mce_find_instr_ea_and_phys(struct pt_regs *regs, uint64_t *addr,
+ 	if (pfn != ULONG_MAX) {
+ 		instr_addr = (pfn << PAGE_SHIFT) + (regs->nip & ~PAGE_MASK);
+ 		instr = *(unsigned int *)(instr_addr);
+-		if (!analyse_instr(&op, &tmp, instr, PPC_NO_SUFFIX)) {
++		if (IS_PREFIX(instr))
++			suffix = *(unsigned int *)(instr_addr + 4);
++		if (!analyse_instr(&op, &tmp, instr, suffix)) {
+ 			pfn = addr_to_pfn(regs, op.ea);
+ 			*addr = op.ea;
+ 			*phys_addr = (pfn << PAGE_SHIFT);
 -- 
 2.17.1
 
