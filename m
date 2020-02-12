@@ -2,59 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA1A15A40E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 09:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A4315A53A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 10:46:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48HYR360NFzDqNP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 19:56:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48HZXg6kZvzDqMt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 20:46:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=alexey.budankov@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48HYP04VWkzDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 19:54:43 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2020 00:53:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,428,1574150400"; d="scan'208";a="226740960"
-Received: from linux.intel.com ([10.54.29.200])
- by fmsmga007.fm.intel.com with ESMTP; 12 Feb 2020 00:53:37 -0800
-Received: from [10.125.252.164] (abudanko-mobl.ccr.corp.intel.com
- [10.125.252.164])
- by linux.intel.com (Postfix) with ESMTP id 25BB9580409;
- Wed, 12 Feb 2020 00:53:28 -0800 (PST)
-Subject: Re: [PATCH v5 01/10] capabilities: introduce CAP_PERFMON to kernel
- and user space
-To: Stephen Smalley <sds@tycho.nsa.gov>
-References: <0548c832-7f4b-dc4c-8883-3f2b6d351a08@linux.intel.com>
- <9b77124b-675d-5ac7-3741-edec575bd425@linux.intel.com>
- <64cab472-806e-38c4-fb26-0ffbee485367@tycho.nsa.gov>
- <05297eff-8e14-ccdf-55a4-870c64516de8@linux.intel.com>
- <CAADnVQK-JzK-GUk4KOozn4c1xr=7TiCpB9Fi0QDC9nE6iVn8iQ@mail.gmail.com>
- <537bdb28-c9e4-f44f-d665-25250065a6bb@linux.intel.com>
- <63d9700f-231d-7973-5307-3e56a48c54cb@linux.intel.com>
- <d7213569-9578-7201-6106-f5ebc95bd6be@tycho.nsa.gov>
-From: Alexey Budankov <alexey.budankov@linux.intel.com>
-Organization: Intel Corp.
-Message-ID: <2e38c33d-f085-1320-8cc2-45f74b6ad86d@linux.intel.com>
-Date: Wed, 12 Feb 2020 11:53:27 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48HZSx0N9SzDqMt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 20:43:09 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4F4230E;
+ Wed, 12 Feb 2020 01:43:05 -0800 (PST)
+Received: from [10.163.1.114] (unknown [10.163.1.114])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F02F3F6CF;
+ Wed, 12 Feb 2020 01:42:51 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
+ table helpers
+To: Catalin Marinas <catalin.marinas@arm.com>
+References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+ <20200210153716.GB9283@E121110.arm.com>
+Message-ID: <b169ff9d-7b87-91f4-b3d0-e97f86680d0c@arm.com>
+Date: Wed, 12 Feb 2020 15:12:54 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <d7213569-9578-7201-6106-f5ebc95bd6be@tycho.nsa.gov>
+In-Reply-To: <20200210153716.GB9283@E121110.arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,93 +50,349 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Song Liu <songliubraving@fb.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
- Will Deacon <will.deacon@arm.com>, Alexei Starovoitov <ast@kernel.org>,
- Stephane Eranian <eranian@google.com>,
- "james.bottomley@hansenpartnership.com"
- <james.bottomley@hansenpartnership.com>, Paul Mackerras <paulus@samba.org>,
- Jiri Olsa <jolsa@redhat.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andi Kleen <ak@linux.intel.com>, Igor Lubashev <ilubashe@akamai.com>,
- James Morris <jmorris@namei.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, oprofile-list@lists.sf.net,
- Serge Hallyn <serge@hallyn.com>, Robert Richter <rric@kernel.org>,
- "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- "rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
- Andy Lutomirski <luto@amacapital.net>,
- "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Dan Williams <dan.j.williams@intel.com>, Mark Brown <broonie@kernel.org>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Dave Hansen <dave.hansen@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Stephen,
-
-On 22.01.2020 17:07, Stephen Smalley wrote:
-> On 1/22/20 5:45 AM, Alexey Budankov wrote:
->>
->> On 21.01.2020 21:27, Alexey Budankov wrote:
->>>
->>> On 21.01.2020 20:55, Alexei Starovoitov wrote:
->>>> On Tue, Jan 21, 2020 at 9:31 AM Alexey Budankov
->>>> <alexey.budankov@linux.intel.com> wrote:
->>>>>
->>>>>
->>>>> On 21.01.2020 17:43, Stephen Smalley wrote:
->>>>>> On 1/20/20 6:23 AM, Alexey Budankov wrote:
->>>>>>>
-<SNIP>
->>>>>>> Introduce CAP_PERFMON capability designed to secure system performance
->>>>>>
->>>>>> Why _noaudit()?  Normally only used when a permission failure is non-fatal to the operation.  Otherwise, we want the audit message.
->>
->> So far so good, I suggest using the simplest version for v6:
->>
->> static inline bool perfmon_capable(void)
->> {
->>     return capable(CAP_PERFMON) || capable(CAP_SYS_ADMIN);
->> }
->>
->> It keeps the implementation simple and readable. The implementation is more
->> performant in the sense of calling the API - one capable() call for CAP_PERFMON
->> privileged process.
->>
->> Yes, it bloats audit log for CAP_SYS_ADMIN privileged and unprivileged processes,
->> but this bloating also advertises and leverages using more secure CAP_PERFMON
->> based approach to use perf_event_open system call.
+On 02/10/2020 09:07 PM, Catalin Marinas wrote:
+> On Tue, Jan 28, 2020 at 06:57:53AM +0530, Anshuman Khandual wrote:
+>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+>> arm64. Going forward, other architectures too can enable this after fixing
+>> build or runtime problems (if any) with their page table helpers.
 > 
-> I can live with that.  We just need to document that when you see both a CAP_PERFMON and a CAP_SYS_ADMIN audit message for a process, try only allowing CAP_PERFMON first and see if that resolves the issue.  We have a similar issue with CAP_DAC_READ_SEARCH versus CAP_DAC_OVERRIDE.
+> It may be worth posting the next version to linux-arch to reach out to
+> other arch maintainers.
 
-I am trying to reproduce this double logging with CAP_PERFMON.
-I am using the refpolicy version with enabled perf_event tclass [1], in permissive mode.
-When running perf stat -a I am observing this AVC audit messages:
+Sure, will do.
 
-type=AVC msg=audit(1581496695.666:8691): avc:  denied  { open } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-type=AVC msg=audit(1581496695.666:8691): avc:  denied  { kernel } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-type=AVC msg=audit(1581496695.666:8691): avc:  denied  { cpu } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
-type=AVC msg=audit(1581496695.666:8692): avc:  denied  { write } for  pid=2779 comm="perf" scontext=user_u:user_r:user_systemd_t tcontext=user_u:user_r:user_systemd_t tclass=perf_event permissive=1
+> 
+> Also I've seen that you posted a v13 but it hasn't reached
+> linux-arm-kernel (likely held in moderation because of the large amount
+> of addresses cc'ed) and I don't normally follow LKML. I'm not cc'ed to
+> this patch either (which is fine as long as you post to a list that I
+> read).
 
-However there is no capability related messages around. I suppose my refpolicy should 
-be modified somehow to observe capability related AVCs.
+Right, the CC list on V13 was a disaster. I did not realize that it will
+exceed the permitted limit when the lists will start refusing to take. In
+fact, it looks like LKML did not get the email either.
 
-Could you please comment or clarify on how to enable caps related AVCs in order
-to test the concerned logging.
+> 
+> Since I started the reply on v12 about a week ago, I'll follow up here.
+> When you post a v14, please trim the people on cc only to those strictly
+> necessary (e.g. arch maintainers, linux-mm, linux-arch and lkml).
 
-Thanks,
-Alexey
+Sure, will do.
 
----
-[1] https://github.com/SELinuxProject/refpolicy.git
+> 
+>> diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+>> new file mode 100644
+>> index 000000000000..f3f8111edbe3
+>> --- /dev/null
+>> +++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+>> @@ -0,0 +1,35 @@
+>> +#
+>> +# Feature name:          debug-vm-pgtable
+>> +#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
+>> +#         description:   arch supports pgtable tests for semantics compliance
+>> +#
+>> +    -----------------------
+>> +    |         arch |status|
+>> +    -----------------------
+>> +    |       alpha: | TODO |
+>> +    |         arc: |  ok  |
+>> +    |         arm: | TODO |
+> 
+> I'm sure you can find some arm32 hardware around (or a VM) to give this
+> a try ;).
+
+It does not build on arm32 and we dont have an agreement on how to go about
+that either, hence will disable this test on IA64 and ARM (32) in order to
+prevent the known build failures (as Andrew had requested).
+
+> 
+>> diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
+>> index 0b6c4042942a..fb0e76d254b3 100644
+>> --- a/arch/x86/include/asm/pgtable_64.h
+>> +++ b/arch/x86/include/asm/pgtable_64.h
+> [...]
+>> @@ -1197,6 +1197,7 @@ static noinline void __init kernel_init_freeable(void)
+>>  	sched_init_smp();
+>>  
+>>  	page_alloc_init_late();
+>> +	debug_vm_pgtable();
+>>  	/* Initialize page ext after all struct pages are initialized. */
+>>  	page_ext_init();
+> 
+> I guess you could even make debug_vm_pgtable() an early_initcall(). I
+> don't have a strong opinion either way.
+> 
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> new file mode 100644
+>> index 000000000000..0f37f32d15f1
+>> --- /dev/null
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -0,0 +1,388 @@
+> [...]
+>> +/*
+>> + * Basic operations
+>> + *
+>> + * mkold(entry)			= An old and not a young entry
+>> + * mkyoung(entry)		= A young and not an old entry
+>> + * mkdirty(entry)		= A dirty and not a clean entry
+>> + * mkclean(entry)		= A clean and not a dirty entry
+>> + * mkwrite(entry)		= A write and not a write protected entry
+>> + * wrprotect(entry)		= A write protected and not a write entry
+>> + * pxx_bad(entry)		= A mapped and non-table entry
+>> + * pxx_same(entry1, entry2)	= Both entries hold the exact same value
+>> + */
+>> +#define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
+>> +
+>> +/*
+>> + * On s390 platform, the lower 12 bits are used to identify given page table
+>> + * entry type and for other arch specific requirements. But these bits might
+>> + * affect the ability to clear entries with pxx_clear(). So while loading up
+>> + * the entries skip all lower 12 bits in order to accommodate s390 platform.
+>> + * It does not have affect any other platform.
+>> + */
+>> +#define RANDOM_ORVALUE	(0xfffffffffffff000UL)
+> 
+> I'd suggest you generate this mask with something like
+> GENMASK(BITS_PER_LONG, PAGE_SHIFT).
+
+IIRC the lower 12 bits constrains on s390 platform might not be really related
+to it's PAGE_SHIFT which can be a variable, but instead just a constant number.
+But can definitely use GENMASK or it's variants here.
+
+https://lkml.org/lkml/2019/9/5/862
+
+> 
+>> +#define RANDOM_NZVALUE	(0xff)
+>> +
+>> +static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +	pte_t pte = pfn_pte(pfn, prot);
+>> +
+>> +	WARN_ON(!pte_same(pte, pte));
+>> +	WARN_ON(!pte_young(pte_mkyoung(pte)));
+>> +	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
+>> +	WARN_ON(!pte_write(pte_mkwrite(pte)));
+>> +	WARN_ON(pte_young(pte_mkold(pte)));
+>> +	WARN_ON(pte_dirty(pte_mkclean(pte)));
+>> +	WARN_ON(pte_write(pte_wrprotect(pte)));
+> 
+> Given that you start with rwx permissions set,
+> some of these ops would not have any effect. For example, on arm64 at
+> least, mkwrite clears a bit already cleared here. You could try with
+
+PTE_RDONLY !
+
+> multiple rwx combinations values (e.g. all set and all cleared) or maybe
+
+Which will require running the sequence of tests multiple times, each
+time with different prot value (e.g all set or all clear). Wondering
+if that would be better than the proposed single pass.
+
+> something like below:
+> 
+> 	WARN_ON(!pte_write(pte_mkwrite(pte_wrprotect(pte))));
+
+Hmm, we should run invert functions first for each function we are
+trying to test ? That makes sense because any platform specific bit
+combination (clear or set) for the function to be tested, will first
+be flipped with it's invert function.
+
+> 
+> You could also try something like this:
+> 
+> 	WARN_ON(!pte_same(pte_wrprotect(pte), pte_wrprotect(pte_mkwrite(pte))));
+> 
+> though the above approach may not work for arm64 ptep_set_wrprotect() on
+> a dirty pte (if you extend these tests later).
+
+Okay, will use the previous method (invert function -> actual function) for
+basic tests on each level.
+
+> 
+>> +}
+>> +
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +	pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +	WARN_ON(!pmd_same(pmd, pmd));
+>> +	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
+>> +	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
+>> +	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
+>> +	WARN_ON(pmd_young(pmd_mkold(pmd)));
+>> +	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
+>> +	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
+>> +	/*
+>> +	 * A huge page does not point to next level page table
+>> +	 * entry. Hence this must qualify as pmd_bad().
+>> +	 */
+>> +	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
+>> +}
+>> +
+>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +	pud_t pud = pfn_pud(pfn, prot);
+>> +
+>> +	WARN_ON(!pud_same(pud, pud));
+>> +	WARN_ON(!pud_young(pud_mkyoung(pud)));
+>> +	WARN_ON(!pud_write(pud_mkwrite(pud)));
+>> +	WARN_ON(pud_write(pud_wrprotect(pud)));
+>> +	WARN_ON(pud_young(pud_mkold(pud)));
+>> +
+>> +	if (mm_pmd_folded(mm) || __is_defined(ARCH_HAS_4LEVEL_HACK))
+>> +		return;
+>> +
+>> +	/*
+>> +	 * A huge page does not point to next level page table
+>> +	 * entry. Hence this must qualify as pud_bad().
+>> +	 */
+>> +	WARN_ON(!pud_bad(pud_mkhuge(pud)));
+>> +}
+>> +#else
+>> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +#endif
+>> +#else
+>> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +#endif
+>> +
+>> +static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +	p4d_t p4d;
+>> +
+>> +	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
+>> +	WARN_ON(!p4d_same(p4d, p4d));
+>> +}
+>> +
+>> +static void __init pgd_basic_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +	pgd_t pgd;
+>> +
+>> +	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
+>> +	WARN_ON(!pgd_same(pgd, pgd));
+>> +}
+>> +
+>> +#ifndef __ARCH_HAS_4LEVEL_HACK
+> 
+> This macro doesn't exist in the kernel anymore (it's a 5LEVEL now). But
+
+I was aware about the work to drop __ARCH_HAS_4LEVEL_HACK but did not realize
+that it has already merged.
+
+> can you not use the __PAGETABLE_PUD_FOLDED instead?
+
+Sure, will try.
+
+> 
+>> +static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp)
+>> +{
+>> +	pud_t pud = READ_ONCE(*pudp);
+>> +
+>> +	if (mm_pmd_folded(mm))
+>> +		return;
+>> +
+>> +	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
+>> +	WRITE_ONCE(*pudp, pud);
+>> +	pud_clear(pudp);
+>> +	pud = READ_ONCE(*pudp);
+>> +	WARN_ON(!pud_none(pud));
+>> +}
+>> +
+>> +static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
+>> +				      pmd_t *pmdp)
+>> +{
+>> +	pud_t pud;
+>> +
+>> +	if (mm_pmd_folded(mm))
+>> +		return;
+>> +	/*
+>> +	 * This entry points to next level page table page.
+>> +	 * Hence this must not qualify as pud_bad().
+>> +	 */
+>> +	pmd_clear(pmdp);
+>> +	pud_clear(pudp);
+>> +	pud_populate(mm, pudp, pmdp);
+>> +	pud = READ_ONCE(*pudp);
+>> +	WARN_ON(pud_bad(pud));
+>> +}
+>> +#else
+>> +static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp) { }
+>> +static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
+>> +				      pmd_t *pmdp)
+>> +{
+>> +}
+>> +#endif
+>> +
+>> +#ifndef __ARCH_HAS_5LEVEL_HACK
+> 
+> Could you use __PAGETABLE_P4D_FOLDED instead?
+
+Sure, will try.
+
+Initial tests with __PAGETABLE_PUD_FOLDED and __PAGETABLE_P4D_FOLDED
+replacement looks okay.
+ 
+> 
+>> +static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp)
+>> +{
+>> +	p4d_t p4d = READ_ONCE(*p4dp);
+>> +
+>> +	if (mm_pud_folded(mm))
+>> +		return;
+>> +
+>> +	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
+>> +	WRITE_ONCE(*p4dp, p4d);
+>> +	p4d_clear(p4dp);
+>> +	p4d = READ_ONCE(*p4dp);
+>> +	WARN_ON(!p4d_none(p4d));
+>> +}
+> 
+> Otherwise the patch looks fine. As per the comment on v13, make sure you
+> don't break the build on any architecture, so this could either be an
+> opt-in or patch those architectures before this patch is applied.
+
+We already have an opt-in method through ARCH_HAS_DEBUG_VM_PGTABLE config.
+But lately (v13) we had decided to enable the test through CONFIG_EXPERT,
+for better adaptability on non supported platforms without requiring it's
+Kconfig change. This exposed the existing build failures on IA64 and ARM.
+I will probably disable the test on those platforms as agreed upon on V13
+thread.
+
+> 
+> Thanks.
+> 
