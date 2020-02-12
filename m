@@ -2,85 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6E015AF4F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 18:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4170415AF5C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 19:02:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48HnS35VNQzDqKW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 04:58:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48HnXT5JgNzDqS9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 05:02:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@de.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=none (no SPF record) smtp.mailfrom=free.fr
+ (client-ip=2a01:e0c:1:1599::12; helo=smtp3-g21.free.fr;
+ envelope-from=dftxbs3e@free.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=free.fr
+Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [IPv6:2a01:e0c:1:1599::12])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48HnPh1nttzDqGY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2020 04:56:08 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01CHngjf086203
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 12:56:05 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y4j85b25n-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 12:56:05 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <gerald.schaefer@de.ibm.com>;
- Wed, 12 Feb 2020 17:56:01 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 12 Feb 2020 17:55:51 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01CHtoBV51576916
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Feb 2020 17:55:50 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E98CA4055;
- Wed, 12 Feb 2020 17:55:50 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5B2C5A4057;
- Wed, 12 Feb 2020 17:55:49 +0000 (GMT)
-Received: from thinkpad (unknown [9.152.96.168])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 12 Feb 2020 17:55:49 +0000 (GMT)
-Date: Wed, 12 Feb 2020 18:55:48 +0100
-From: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-In-Reply-To: <b169ff9d-7b87-91f4-b3d0-e97f86680d0c@arm.com>
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
- <20200210153716.GB9283@E121110.arm.com>
- <b169ff9d-7b87-91f4-b3d0-e97f86680d0c@arm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48HnVD5x0JzDqCV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2020 05:00:02 +1100 (AEDT)
+Received: from [IPv6:2a01:e0a:2a2:1590:3130:d4af:7a6d:562c] (unknown
+ [IPv6:2a01:e0a:2a2:1590:3130:d4af:7a6d:562c])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 88DD713F838;
+ Wed, 12 Feb 2020 18:59:52 +0100 (CET)
+To: Greg Kurz <groug@kaod.org>
+References: <7544eb90-71a6-3709-c530-9c83beb943a7@free.fr>
+ <20200212120508.18be4f0c@bahia.lan>
+From: dftxbs3e <dftxbs3e@free.fr>
+Autocrypt: addr=dftxbs3e@free.fr; keydata=
+ mDMEW0o6qRYJKwYBBAHaRw8BAQdAbzmHTymig5H3K1qe5lc6O1Xfij3iBbOBd6I3KJyEZSO0
+ G2RmdHhiczNlIDxkZnR4YnMzZUBmcmVlLmZyPoiWBBMWCAA+FiEEKM08rOoS3GtxJLfLtx4S
+ 8Z+hqHsFAltKOqkCGwMFCQlmAYAFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQtx4S8Z+h
+ qHvjGAD+JgSjdZXX2K4hhsT9I2fbXbUfXm/QdIrZuYPsyv2PoP0A/RP5UIDWs5nhVq43AiF0
+ TAm8nDyGol5naZ29BP85QAEKuDgEW0o6qRIKKwYBBAGXVQEFAQEHQB6eBz8MftqVte4x2lyG
+ so13JoTSbSZ3iGlX6brVhkw+AwEIB4h+BBgWCAAmFiEEKM08rOoS3GtxJLfLtx4S8Z+hqHsF
+ AltKOqkCGwwFCQlmAYAACgkQtx4S8Z+hqHuyPQD9FS4KPlZWunp51NWYGBAkqLM0pnhfGsNm
+ gaW5YDQmWmgBALmWjkK7/SmreApokoV3TDKs4ACAKm1fEQuddUvKYogG
+Subject: Re: QEMU/KVM snapshot restore bug
+Message-ID: <5b164716-a9a7-753a-7a8b-bc433f979c51@free.fr>
+Date: Wed, 12 Feb 2020 18:59:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux ppc64le; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20021217-0020-0000-0000-000003A98A3E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021217-0021-0000-0000-00002201718D
-Message-Id: <20200212185548.3274ec2e@thinkpad>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-12_08:2020-02-12,
- 2020-02-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0
- impostorscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 clxscore=1015
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002120131
+In-Reply-To: <20200212120508.18be4f0c@bahia.lan>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="lpSH2L4kOIrwdNim6pfPuqzMSq5StAj4q"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,73 +58,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
- linux-s390@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Vlastimil Babka <vbabka@suse.cz>, James Hogan <jhogan@kernel.org>,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Dan Williams <dan.j.williams@intel.com>, Mark Brown <broonie@kernel.org>,
- "Kirill A
- . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Dave Hansen <dave.hansen@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 12 Feb 2020 15:12:54 +0530
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--lpSH2L4kOIrwdNim6pfPuqzMSq5StAj4q
+Content-Type: multipart/mixed; boundary="CTHBRlj5rNrUpGMhtLl22HTWXOwPyWxeS";
+ protected-headers="v1"
+From: dftxbs3e <dftxbs3e@free.fr>
+To: Greg Kurz <groug@kaod.org>
+Cc: linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>
+Message-ID: <5b164716-a9a7-753a-7a8b-bc433f979c51@free.fr>
+Subject: Re: QEMU/KVM snapshot restore bug
+References: <7544eb90-71a6-3709-c530-9c83beb943a7@free.fr>
+ <20200212120508.18be4f0c@bahia.lan>
+In-Reply-To: <20200212120508.18be4f0c@bahia.lan>
 
-> >> +/*
-> >> + * On s390 platform, the lower 12 bits are used to identify given page table
-> >> + * entry type and for other arch specific requirements. But these bits might
-> >> + * affect the ability to clear entries with pxx_clear(). So while loading up
-> >> + * the entries skip all lower 12 bits in order to accommodate s390 platform.
-> >> + * It does not have affect any other platform.
-> >> + */
-> >> +#define RANDOM_ORVALUE	(0xfffffffffffff000UL)  
-> > 
-> > I'd suggest you generate this mask with something like
-> > GENMASK(BITS_PER_LONG, PAGE_SHIFT).  
-> 
-> IIRC the lower 12 bits constrains on s390 platform might not be really related
-> to it's PAGE_SHIFT which can be a variable, but instead just a constant number.
-> But can definitely use GENMASK or it's variants here.
-> 
-> https://lkml.org/lkml/2019/9/5/862
+--CTHBRlj5rNrUpGMhtLl22HTWXOwPyWxeS
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
 
-PAGE_SHIFT would be fine, it is 12 on s390. However, in order to be
-more precise, we do not really need all 12 bits, only the last 4 bits.
-So, something like this would work:
+Hello,
+> A big endian guest doing XIVE ?!? I'm pretty sure we didn't do much tes=
+ting, if
+> any, on such a setup... What distro is used in the VM ?
+A live Void Linux ISO ;
+https://repo.voidlinux-ppc.org/live/current/void-live-ppc64-20190901.iso
+> This indicates that QEMU failed to configure the source targeting
+> for the HW interrupt 0x1309, which is an MSI interrupt used by
+> a PCI device plugged in the default PHB. Especially, -EBUSY means
+>
+>     -EBUSY:  No CPU available to serve interrupt
+>
+Okay.
+> This warning means that we have vCPU without a configured event queue.
+>
+> Since kvmppc_xive_select_target() is trying all vCPUs before bailing ou=
+t
+> with -EBUSY, you might be seeing several WARNINGs (1 per vCPU) in dmesg=
+,
+> correct ?
+>
+> Anyway, this looks wrong since QEMU is supposed to have already configu=
+red
+> the event queues at this point... Not sure what's happening here...
+>
+Indeed. VM core count + 1 such messages in dmesg.
+> Yeah, QEMU command line, QEMU version, guest kernel version can help. A=
+lso,
+> what kind of workload is running inside the guest ? Is this easy to rep=
+roduce ?
 
-#define RANDOM_ORVALUE GENMASK(BITS_PER_LONG - 1, 4)
+/usr/bin/qemu-system-ppc64 -name guest=3Dvoidlinux-ppc64,debug-threads=3D=
+on
+-S -object
+secret,id=3DmasterKey0,format=3Draw,file=3D/var/lib/libvirt/qemu/domain-1=
+3-voidlinux-ppc64/master-key.aes
+-machine pseries-4.1,accel=3Dkvm,usb=3Doff,dump-guest-core=3Doff -m 8192
+-overcommit mem-lock=3Doff -smp 8,sockets=3D8,cores=3D1,threads=3D1 -uuid=
 
-The text in the comment could then also be changed from 12 to 4, and
-be a bit more specific on the fact that the impact on pxx_clear()
-results from the dynamic page table folding logic on s390:
+5dd7af48-f00d-43c1-86ed-df5e0f7b4f1c -no-user-config -nodefaults
+-chardev socket,id=3Dcharmonitor,fd=3D41,server,nowait -mon
+chardev=3Dcharmonitor,id=3Dmonitor,mode=3Dcontrol -rtc base=3Dutc -no-shu=
+tdown
+-boot strict=3Don -device qemu-xhci,p2=3D15,p3=3D15,id=3Dusb,bus=3Dpci.0,=
+addr=3D0x2
+-device virtio-scsi-pci,id=3Dscsi0,bus=3Dpci.0,addr=3D0x3 -device
+virtio-serial-pci,id=3Dvirtio-serial0,bus=3Dpci.0,addr=3D0x4 -drive
+file=3D/var/lib/libvirt/images/voidlinux-ppc64.qcow2,format=3Dqcow2,if=3D=
+none,id=3Ddrive-virtio-disk0
+-device
+virtio-blk-pci,scsi=3Doff,bus=3Dpci.0,addr=3D0x5,drive=3Ddrive-virtio-dis=
+k0,id=3Dvirtio-disk0,bootindex=3D1
+-drive
+file=3D/home/jdoe/Downloads/void-live-ppc64-20190901.iso,format=3Draw,if=3D=
+none,id=3Ddrive-scsi0-0-0-0,readonly=3Don
+-device
+scsi-cd,bus=3Dscsi0.0,channel=3D0,scsi-id=3D0,lun=3D0,device_id=3Ddrive-s=
+csi0-0-0-0,drive=3Ddrive-scsi0-0-0-0,id=3Dscsi0-0-0-0,bootindex=3D2
+-netdev tap,fd=3D43,id=3Dhostnet0,vhost=3Don,vhostfd=3D44 -device
+virtio-net-pci,netdev=3Dhostnet0,id=3Dnet0,mac=3D52:54:00:ae:d7:62,bus=3D=
+pci.0,addr=3D0x1
+-chardev pty,id=3Dcharserial0 -device
+spapr-vty,chardev=3Dcharserial0,id=3Dserial0,reg=3D0x30000000 -chardev
+socket,id=3Dcharchannel0,fd=3D45,server,nowait -device
+virtserialport,bus=3Dvirtio-serial0.0,nr=3D1,chardev=3Dcharchannel0,id=3D=
+channel0,name=3Dorg.qemu.guest_agent.0
+-device usb-tablet,id=3Dinput0,bus=3Dusb.0,port=3D1 -device
+usb-kbd,id=3Dinput1,bus=3Dusb.0,port=3D2 -vnc 127.0.0.1:2 -device
+VGA,id=3Dvideo0,vgamem_mb=3D16,bus=3Dpci.0,addr=3D0x8 -device
+virtio-balloon-pci,id=3Dballoon0,bus=3Dpci.0,addr=3D0x6 -object
+rng-random,id=3Dobjrng0,filename=3D/dev/urandom -device
+virtio-rng-pci,rng=3Dobjrng0,id=3Drng0,bus=3Dpci.0,addr=3D0x7 -loadvm
+guix-gentoo -sandbox
+on,obsolete=3Ddeny,elevateprivileges=3Ddeny,spawn=3Ddeny,resourcecontrol=3D=
+deny
+-msg timestamp=3Don
 
-/*
- * On s390 platform, the lower 4 bits are used to identify given page table
- * entry type. But these bits might affect the ability to clear entries with
- * pxx_clear() because of how dynamic page table folding works on s390. So
- * while loading up the entries do not change the lower 4 bits.
- * It does not have affect any other platform.
- */
+I am using virt-manager, which is why the command line is so long.
 
+And ;
+
+$ qemu-system-ppc64 --version
+QEMU emulator version 4.1.1 (qemu-4.1.1-1.fc31)
+Copyright (c) 2003-2019 Fabrice Bellard and the QEMU Project developers
+
+Workload at snapshot time, the VM was idle, I was compiling software
+using a Gentoo ppc64 big endian chroot inside the Void Linux ppc64 big
+endian headless live system.
+
+And yes it is easy to reproduce, download that Void Linux ppc64 big
+endian ISO, using virt-manager, create a ppc64 vm with a disk, set the
+VM to 8192MB of RAM and 8 cores (less RAM and cores might work,
+untested) and it should reproduce the issue. It seems that a 1 core,
+512MB of RAM VM suffers from no issue with snapshotting.
+
+Thanks!
+
+
+
+--CTHBRlj5rNrUpGMhtLl22HTWXOwPyWxeS--
+
+--lpSH2L4kOIrwdNim6pfPuqzMSq5StAj4q
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQQozTys6hLca3Ekt8u3HhLxn6GoewUCXkQ9GAAKCRC3HhLxn6Go
+eyh7AP9igsWriLcM9HFb+dHe8AlumZffh9q7bmTr+gL5XEr+2AD/Q3CGOrbyabNG
+j5AVaWcwo8PD1U5HRfmWudJkBxOKGgk=
+=2q88
+-----END PGP SIGNATURE-----
+
+--lpSH2L4kOIrwdNim6pfPuqzMSq5StAj4q--
