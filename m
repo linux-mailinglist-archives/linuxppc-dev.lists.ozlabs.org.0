@@ -1,67 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AEB159E03
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 01:33:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48HLGS4zYPzDqM4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 11:33:20 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2431C159E0D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 01:35:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48HLKJ4LsSzDqLt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 11:35:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::344;
+ helo=mail-ot1-x344.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=d/PrxWdm; dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
+ header.s=20161025 header.b=ETMHDtZA; dkim-atps=neutral
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48HLD56nZDzDqH2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 11:31:17 +1100 (AEDT)
-Received: by mail-oi1-x242.google.com with SMTP id a142so333104oii.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 16:31:17 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48HLFG2NpfzDqLY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 11:32:18 +1100 (AEDT)
+Received: by mail-ot1-x344.google.com with SMTP id b18so221069otp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2020 16:32:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
  :cc:content-transfer-encoding;
- bh=SsFeTGQiCwnDdp2AwNJ5yoz90PO1yIPUzXujkTGXE3U=;
- b=d/PrxWdm+4/x3kbZ6ZjLNZQkxq+9QwJxXP2tvuiJmalB/cYwWRgBGc2L4T1NXCJUnS
- R0EAMJyb3xtzIFNVNWMZxzLyjPzA+2k7A5AydlYXfURNSnbN6HgEIs+2E/OZ6fLYPWAP
- pVW2zNjOGeZ0Csy0S1FHHKgedfq/NqQ5RajkJOihhBjgIiBYF0qAL2yaCHQPNorR7XxM
- yzZPCwIMrbehFIMgHRDEpha1Il3/kLeBrjJehGedDiCu6I/VYHGwkxFFf+y9ndtegW8K
- 4zFwii4W1aRkWssyQnHQ/3NXCEDfLT+BoiGamn5A1LG3BguvFwHRm3qU2hi0oOwmh/ww
- DX6A==
+ bh=garS9B2jijdBoyO3r+RMJe44/q1Dmtmh2HXsi+bsb3Q=;
+ b=ETMHDtZA9a92v9hMIubRqzNtpGWUcl7b5yIA4uOL7LJe/wYH8JlnlRL+aFcXeXHF3i
+ 8QTCjYar6oBK6KqkCuLL724Uk1wd7hL72BouGSnmfSbip2mOZwRR81W0N/sdKsnqFTAr
+ HPSqYS+rKlzb/ystK0d4sYV2DiJIERjfnTx+wLy8QP1lI4gMvyC3IBckEj5BA+J59MrX
+ DeN1Tmi08wL8PNht22aILD7Lepertc2UDvOMJCzkhoatyFUYYyH3OmS88X51I6F9sMAC
+ H9a/fQBKP7tSHE+K4RWvxB/kVq/HJB7cZhO34J2KV+3ZbkcpkZISMQoosTyLjt8+MhEA
+ AVmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc:content-transfer-encoding;
- bh=SsFeTGQiCwnDdp2AwNJ5yoz90PO1yIPUzXujkTGXE3U=;
- b=Di0ka2NAswpn4yH05MibsXRe5TRtxJP9kKx5RK7LZjBWkIMassR0ERP63H0V3KQQSl
- gsKX50CbkUgY5T/goV+uV086duz6WLTKZErCNFw5mzh+wKjAcHgM9xpWs6ndM2scSxJb
- aetTfBuOO6JP2Wq9xL2fiMiajiV0s/uLw2MsYwdPMfjyxHN5tkMkuzqxTfX0uFM1gpll
- mG6g9G9++5j/U/leXtJJazvkZE6dJa1bCkB41VE2qodFEWxDjZvabtEtUClHJQ61eGM8
- 0CVWkXOwjNoqaFFtmVtK9E2IZcx3yCgAgHoKRaCyXp4FIniNnNOIJXWAkQ7dLpuJWSPN
- DfwA==
-X-Gm-Message-State: APjAAAW0xvsDnUIbeM7jhb8Cojq5Nc2FKuWinfLfP01XrqtagYmy0/BI
- BKsNk4YDTyXYTdfnTLWr+vRUFjiAhf4wWxKk9dw=
-X-Google-Smtp-Source: APXvYqxiVMa73LQHY9IdBEWSFYYxXbeCTbbUWhAdssCh4zhIAr3P+jHCDBwLvFpgjXvlNACWbHSo6x/lps1QzO1IUZQ=
-X-Received: by 2002:aca:54cc:: with SMTP id i195mr4514158oib.126.1581467474318; 
- Tue, 11 Feb 2020 16:31:14 -0800 (PST)
+ bh=garS9B2jijdBoyO3r+RMJe44/q1Dmtmh2HXsi+bsb3Q=;
+ b=CBrX7NzQqD8MwRSCw9H6Eti09ptiwvKj+fvbMj6elsgNqTJhTkXbFm++9yO3rTvqSA
+ tbY05l3Btu1P+goOYglk/lxtCPzVWDLJA+hbt+LRoqJ0Ey4j09JhkENuJTC5lk0m17JC
+ JUczIDK7QA4O0blQnT1kXwo8hiCB+1teaWBwqMuwU8Jrcu65bo72KqJmKQcZKpYlQhky
+ arlUgYHUlMvU7J1OuJpUE+JGdRHLXd5YMW936jlB4qFAxlcG8Dx+UF7Ltb+wWd9ztlie
+ F8WlU2iI7+90KC+VblnRI+/7Txg2sdaijjqRvvtQoDXRuw9GXlXpIRp/6IpxDrSiyasn
+ kq7Q==
+X-Gm-Message-State: APjAAAXW8Cwhj9RfOo22xwP9j3QvqB1WmDqBEjaTnldr+Z5bdmEbld/w
+ IPoaojx2kUVQveg/AUsFmCoBEbx4n8VTkNEfCpw=
+X-Google-Smtp-Source: APXvYqwbCyhxOWPPXRdNm0aPXXikQGN5q9g4GVO0feJOa8HiWCaXEiKVw3sb21ZPeC27fP2oe9MFlKdwSek0xdFcENk=
+X-Received: by 2002:a05:6830:43:: with SMTP id
+ d3mr7623132otp.259.1581467534961; 
+ Tue, 11 Feb 2020 16:32:14 -0800 (PST)
 MIME-Version: 1.0
 References: <20200211053355.21574-1-jniethe5@gmail.com>
- <20200211053355.21574-10-jniethe5@gmail.com>
- <52a33d2b-0dd7-1e29-564d-3ec982b36ef9@c-s.fr>
-In-Reply-To: <52a33d2b-0dd7-1e29-564d-3ec982b36ef9@c-s.fr>
+ <20200211053355.21574-11-jniethe5@gmail.com>
+ <4557dfcc-064f-6c94-7620-df13370b6cfb@c-s.fr>
+In-Reply-To: <4557dfcc-064f-6c94-7620-df13370b6cfb@c-s.fr>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Wed, 12 Feb 2020 11:31:03 +1100
-Message-ID: <CACzsE9qY+jNJ7oTsLJxoFKJDYutUvGc-x2985LaT_EqV7Qs0dA@mail.gmail.com>
-Subject: Re: [PATCH v2 09/13] powerpc/xmon: Dump prefixed instructions
+Date: Wed, 12 Feb 2020 11:32:03 +1100
+Message-ID: <CACzsE9pL0ycdRD-FGocckSxJ_NPun3tqXvBOTSXUCSfOpRNU-g@mail.gmail.com>
+Subject: Re: [PATCH v2 10/13] powerpc/kprobes: Support kprobes on prefixed
+ instructions
 To: Christophe Leroy <christophe.leroy@c-s.fr>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -83,139 +85,160 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 11, 2020 at 5:39 PM Christophe Leroy
+On Tue, Feb 11, 2020 at 5:46 PM Christophe Leroy
 <christophe.leroy@c-s.fr> wrote:
 >
 >
 >
 > Le 11/02/2020 =C3=A0 06:33, Jordan Niethe a =C3=A9crit :
-> > Currently when xmon is dumping instructions it reads a word at a time
-> > and then prints that instruction (either as a hex number or by
-> > disassembling it). For prefixed instructions it would be nice to show
-> > its prefix and suffix as together. Use read_instr() so that if a prefix
-> > is encountered its suffix is loaded too. Then print these in the form:
-> >      prefix:suffix
-> > Xmon uses the disassembly routines from GNU binutils. These currently d=
-o
-> > not support prefixed instructions so we will not disassemble the
-> > prefixed instructions yet.
+> > A prefixed instruction is composed of a word prefix followed by a word
+> > suffix. It does not make sense to be able to have a kprobe on the suffi=
+x
+> > of a prefixed instruction, so make this impossible.
+> >
+> > Kprobes work by replacing an instruction with a trap and saving that
+> > instruction to be single stepped out of place later. Currently there is
+> > not enough space allocated to keep a prefixed instruction for single
+> > stepping. Increase the amount of space allocated for holding the
+> > instruction copy.
+> >
+> > kprobe_post_handler() expects all instructions to be 4 bytes long which
+> > means that it does not function correctly for prefixed instructions.
+> > Add checks for prefixed instructions which will use a length of 8 bytes
+> > instead.
+> >
+> > For optprobes we normally patch in loading the instruction we put a
+> > probe on into r4 before calling emulate_step(). We now make space and
+> > patch in loading the suffix into r5 as well.
 > >
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> > v2: Rename sufx to suffix
-> > ---
-> >   arch/powerpc/xmon/xmon.c | 50 +++++++++++++++++++++++++++++++--------=
+> >   arch/powerpc/include/asm/kprobes.h   |  5 +--
+> >   arch/powerpc/kernel/kprobes.c        | 47 +++++++++++++++++++++------=
 -
-> >   1 file changed, 39 insertions(+), 11 deletions(-)
+> >   arch/powerpc/kernel/optprobes.c      | 32 ++++++++++---------
+> >   arch/powerpc/kernel/optprobes_head.S |  6 ++++
+> >   4 files changed, 63 insertions(+), 27 deletions(-)
 > >
-> > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> > index 0b085642bbe7..513901ee18b0 100644
-> > --- a/arch/powerpc/xmon/xmon.c
-> > +++ b/arch/powerpc/xmon/xmon.c
-> > @@ -2903,6 +2903,21 @@ prdump(unsigned long adrs, long ndump)
-> >       }
-> >   }
+> > diff --git a/arch/powerpc/include/asm/kprobes.h b/arch/powerpc/include/=
+asm/kprobes.h
+> > index 66b3f2983b22..0d44ce8a3163 100644
+> > --- a/arch/powerpc/include/asm/kprobes.h
+> > +++ b/arch/powerpc/include/asm/kprobes.h
+> > @@ -38,12 +38,13 @@ extern kprobe_opcode_t optprobe_template_entry[];
+> >   extern kprobe_opcode_t optprobe_template_op_address[];
+> >   extern kprobe_opcode_t optprobe_template_call_handler[];
+> >   extern kprobe_opcode_t optprobe_template_insn[];
+> > +extern kprobe_opcode_t optprobe_template_suffix[];
+> >   extern kprobe_opcode_t optprobe_template_call_emulate[];
+> >   extern kprobe_opcode_t optprobe_template_ret[];
+> >   extern kprobe_opcode_t optprobe_template_end[];
 > >
-> > +static bool instrs_are_equal(unsigned long insta, unsigned long suffix=
-a,
-> > +                          unsigned long instb, unsigned long suffixb)
-> > +{
-> > +     if (insta !=3D instb)
-> > +             return false;
-> > +
-> > +     if (!IS_PREFIX(insta) && !IS_PREFIX(instb))
-> > +             return true;
-> > +
-> > +     if (IS_PREFIX(insta) && IS_PREFIX(instb))
-> > +             return suffixa =3D=3D suffixb;
-> > +
-> > +     return false;
-> > +}
-> > +
-> >   typedef int (*instruction_dump_func)(unsigned long inst, unsigned lon=
-g addr);
+> > -/* Fixed instruction size for powerpc */
+> > -#define MAX_INSN_SIZE                1
+> > +/* Prefixed instructions are two words */
+> > +#define MAX_INSN_SIZE                2
+> >   #define MAX_OPTIMIZED_LENGTH        sizeof(kprobe_opcode_t) /* 4 byte=
+s */
+> >   #define MAX_OPTINSN_SIZE    (optprobe_template_end - optprobe_templat=
+e_entry)
+> >   #define RELATIVEJUMP_SIZE   sizeof(kprobe_opcode_t) /* 4 bytes */
+> > diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobe=
+s.c
+> > index 24a56f062d9e..b061deba4fe7 100644
+> > --- a/arch/powerpc/kernel/kprobes.c
+> > +++ b/arch/powerpc/kernel/kprobes.c
+> > @@ -104,17 +104,30 @@ kprobe_opcode_t *kprobe_lookup_name(const char *n=
+ame, unsigned int offset)
 > >
-> >   static int
-> > @@ -2911,12 +2926,11 @@ generic_inst_dump(unsigned long adr, long count=
-, int praddr,
+> >   int arch_prepare_kprobe(struct kprobe *p)
 > >   {
-> >       int nr, dotted;
-> >       unsigned long first_adr;
-> > -     unsigned int inst, last_inst =3D 0;
-> > -     unsigned char val[4];
-> > +     unsigned int inst, suffix, last_inst =3D 0, last_suffix =3D 0;
+> > +     int len;
+> >       int ret =3D 0;
+> > +     struct kprobe *prev;
+> >       kprobe_opcode_t insn =3D *p->addr;
+> > +     kprobe_opcode_t prefix =3D *(p->addr - 1);
 > >
-> >       dotted =3D 0;
-> > -     for (first_adr =3D adr; count > 0; --count, adr +=3D 4) {
-> > -             nr =3D mread(adr, val, 4);
-> > +     for (first_adr =3D adr; count > 0; --count, adr +=3D nr) {
-> > +             nr =3D read_instr(adr, &inst, &suffix);
-> >               if (nr =3D=3D 0) {
-> >                       if (praddr) {
-> >                               const char *x =3D fault_chars[fault_type]=
-;
-> > @@ -2924,8 +2938,9 @@ generic_inst_dump(unsigned long adr, long count, =
-int praddr,
-> >                       }
-> >                       break;
-> >               }
-> > -             inst =3D GETWORD(val);
-> > -             if (adr > first_adr && inst =3D=3D last_inst) {
-> > +             if (adr > first_adr && instrs_are_equal(inst, suffix,
-> > +                                                     last_inst,
-> > +                                                     last_suffix)) {
-> >                       if (!dotted) {
-> >                               printf(" ...\n");
-> >                               dotted =3D 1;
-> > @@ -2934,11 +2949,24 @@ generic_inst_dump(unsigned long adr, long count=
-, int praddr,
-> >               }
-> >               dotted =3D 0;
-> >               last_inst =3D inst;
-> > -             if (praddr)
-> > -                     printf(REG"  %.8x", adr, inst);
-> > -             printf("\t");
-> > -             dump_func(inst, adr);
-> > -             printf("\n");
-> > +             last_suffix =3D suffix;
-> > +             if (IS_PREFIX(inst)) {
-> > +                     if (praddr)
-> > +                             printf(REG"  %.8x:%.8x", adr, inst, suffi=
-x);
-> > +                     printf("\t");
-> > +                     /*
-> > +                      * Just use this until binutils ppc disassembly
-> > +                      * prints prefixed instructions.
-> > +                      */
-> > +                     printf("%.8x:%.8x", inst, suffix);
-> > +                     printf("\n");
-> > +             } else {
-> > +                     if (praddr)
-> > +                             printf(REG"  %.8x", adr, inst);
-> > +                     printf("\t");
-> > +                     dump_func(inst, adr);
-> > +                     printf("\n");
-> > +             }
->
-> What about:
->
->
->                 if (pr_addr) {
->                         printf(REG"  %.8x", adr, inst);
->                         if (IS_PREFIX(inst))
->                                 printf(":%.8x", suffix);
->                 }
->                 printf("\t");
->                 if (IS_PREFIX(inst))
->                         printf("%.8x:%.8x", inst, suffix);
->                 else
->                         dump_func(inst, adr);
->                 printf("\n");
->
-Yeah that looks better.
+> > +     preempt_disable();
+> >       if ((unsigned long)p->addr & 0x03) {
+> >               printk("Attempt to register kprobe at an unaligned addres=
+s\n");
+> >               ret =3D -EINVAL;
+> >       } else if (IS_MTMSRD(insn) || IS_RFID(insn) || IS_RFI(insn)) {
+> >               printk("Cannot register a kprobe on rfi/rfid or mtmsr[d]\=
+n");
+> >               ret =3D -EINVAL;
+> > +     } else if (IS_PREFIX(prefix)) {
+> > +             printk("Cannot register a kprobe on the second word of pr=
+efixed instruction\n");
+> > +             ret =3D -EINVAL;
+> > +     }
+> > +     prev =3D get_kprobe(p->addr - 1);
+> > +     if (prev && IS_PREFIX(*prev->ainsn.insn)) {
+> > +             printk("Cannot register a kprobe on the second word of pr=
+efixed instruction\n");
+> > +             ret =3D -EINVAL;
 > >       }
-> >       return adr - first_adr;
-> >   }
 > >
+> > +
+> >       /* insn must be on a special executable page on ppc64.  This is
+> >        * not explicitly required on ppc32 (right now), but it doesn't h=
+urt */
+> >       if (!ret) {
+> > @@ -124,14 +137,18 @@ int arch_prepare_kprobe(struct kprobe *p)
+> >       }
+> >
+> >       if (!ret) {
+> > -             memcpy(p->ainsn.insn, p->addr,
+> > -                             MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
+> > +             if (IS_PREFIX(insn))
+> > +                     len =3D MAX_INSN_SIZE * sizeof(kprobe_opcode_t);
+> > +             else
+> > +                     len =3D sizeof(kprobe_opcode_t);
+> > +             memcpy(p->ainsn.insn, p->addr, len);
+>
+> This code is about to get changed, see
+> https://patchwork.ozlabs.org/patch/1232619/
+Ah thank you for the heads up.
+>
+> >               p->opcode =3D *p->addr;
+> >               flush_icache_range((unsigned long)p->ainsn.insn,
+> >                       (unsigned long)p->ainsn.insn + sizeof(kprobe_opco=
+de_t));
+> >       }
+> >
+> >       p->ainsn.boostable =3D 0;
+> > +     preempt_enable_no_resched();
+> >       return ret;
+> >   }
+> >   NOKPROBE_SYMBOL(arch_prepare_kprobe);
+> > @@ -216,10 +233,11 @@ NOKPROBE_SYMBOL(arch_prepare_kretprobe);
+> >   static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
+> >   {
+> >       int ret;
+> > -     unsigned int insn =3D *p->ainsn.insn;
+> > +     unsigned int insn =3D p->ainsn.insn[0];
+> > +     unsigned int suffix =3D p->ainsn.insn[1];
+> >
+> >       /* regs->nip is also adjusted if emulate_step returns 1 */
+> > -     ret =3D emulate_step(regs, insn, PPC_NO_SUFFIX);
+> > +     ret =3D emulate_step(regs, insn, suffix);
+> >       if (ret > 0) {
+> >               /*
+> >                * Once this instruction has been boosted
+> > @@ -233,7 +251,11 @@ static int try_to_emulate(struct kprobe *p, struct=
+ pt_regs *regs)
+> >                * So, we should never get here... but, its still
+> >                * good to catch them, just in case...
+> >                */
+> > -             printk("Can't step on instruction %x\n", insn);
+> > +             if (!IS_PREFIX(insn))
+> > +                     printk("Can't step on instruction %x\n", insn);
+> > +             else
+> > +                     printk("Can't step on instruction %x %x\n", insn,
+> > +                            suffix);
+>
+> Maybe %x:%x as in xmon ?
+Good point.
 >
 > Christophe
