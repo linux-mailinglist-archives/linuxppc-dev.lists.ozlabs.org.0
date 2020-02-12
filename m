@@ -2,74 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A127415A696
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 11:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E8A15A71B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 11:55:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Hbgj4GD5zDqNw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 21:37:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Hc4C06qYzDqNv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 21:55:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=monstr.eu
+ (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
+ envelope-from=monstr@monstr.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=lstPK/Ib; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=xilinx.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=monstr-eu.20150623.gappssmtp.com
+ header.i=@monstr-eu.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=cfEHKyCz; dkim-atps=neutral
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48HbdZ6kztzDqLM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 21:35:46 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48HbdS2CM5z9tyYb;
- Wed, 12 Feb 2020 11:35:40 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=lstPK/Ib; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id HsF2zY7jBGR0; Wed, 12 Feb 2020 11:35:40 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48HbdS0h0Gz9v3Yf;
- Wed, 12 Feb 2020 11:35:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1581503740; bh=JvA0CG6jDvr0RSzi8Qrt1q4uSzBaTaD34CT+eJj09s4=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=lstPK/Ib2+8vie8poXNbqVcythLXlR1tHLuUJC3GNGwZ2L+6Yx1mtqVuGZHnqoc65
- Ycr1ncLWk+lBEYO05/YVLVbZMj0KStRymMZB01DQ9saxxVIM9UCuMHyIXogAKZjM40
- XDMiL8zqJ/kXJE4oGa+LlzkUYftB1ialHc1HXzM4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 417A58B80C;
- Wed, 12 Feb 2020 11:35:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wbLwY91DPYyD; Wed, 12 Feb 2020 11:35:41 +0100 (CET)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 13B278B806;
- Wed, 12 Feb 2020 11:35:41 +0100 (CET)
-Subject: Re: [PATCH v6 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- kasan-dev@googlegroups.com, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-References: <20200212054724.7708-1-dja@axtens.net>
- <20200212054724.7708-5-dja@axtens.net>
- <224745f3-db66-fe46-1459-d1d41867b4f3@c-s.fr>
- <87imkcru6b.fsf@dja-thinkpad.axtens.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <5e392944-50ac-ed06-5896-2664894335d9@c-s.fr>
-Date: Wed, 12 Feb 2020 11:35:40 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Hc2G3mGWzDqLP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 21:53:37 +1100 (AEDT)
+Received: by mail-wr1-x442.google.com with SMTP id z7so1622912wrl.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 02:53:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=monstr-eu.20150623.gappssmtp.com; s=20150623;
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=iCxaKYylUaTagw0CiACoN5PmGBZhgyb9phU3hhP0tOU=;
+ b=cfEHKyCzPVV+G0Ct3fk+e76eZPGNTeImhNiFGDVimPzL4uYn8zjyFG9WyB0koRR2qN
+ EwMnN8vjUGQ2wbhjgaIjph2vjfhe8yjFmu9ClTKqCx2OtRi5VsZHinaDNjSlIBmgdAxy
+ wxZcB8m80XRXcoyEYhnoHyLx5c4HUKj1j5ketT2WaaEFRPaldEWGCoEuAfq2/3tjkHap
+ 8wX1V3Fo/iwSy3etqyDyJk14F8tfP9OcXDnIFVgeOxj2H0AcSvMFus1GiH7Bo5SBr38M
+ +OGCJMD8zbYUhdsAjqZ8LRFVbVVV0cBL4zfH47rlbg/l3/sDFnDyyciz4KUYMzOvm7Ic
+ iHHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=iCxaKYylUaTagw0CiACoN5PmGBZhgyb9phU3hhP0tOU=;
+ b=c2imzlBDJNE4KTTIAaNuIFnl6220VCA1BK26CXMkv9gVpoFs8L7If5eW2Cw/uxnt+X
+ rB/qYj3OHZEa40+9PYK1X5r/acYqEGx4HZ0JpBpS0Kths+SmbsI3jRVWePoOa54+X/na
+ bsTpQa0CBLf6MxCTGxzW/MQqYxcQa+nIRIKaW1DRAjpZ9f6ivLb/pLF2+LfQ20TUKrOW
+ Kefvt2DhKpbu4Wfg8FW9Kw2rLx3/rBrQHcbvrriTJbwEgsqK90i3iXmaejTSgw1QT2y9
+ pax5ha9BDwCuwt2Ok7H2JAeKaZmcicSzBJVdXPRIYTx84Z1WDYs09SljQM/S9X7OV/fB
+ r3WA==
+X-Gm-Message-State: APjAAAWPXLN599LvjetEN66Xb37qfwA942iUeDhApsr+JLf8Tlaki5rc
+ EBBFulOQu2UMxt/9UNN/XDaTHA==
+X-Google-Smtp-Source: APXvYqxgTVJqQTyquzXfMccEeyNdAmwRbsVgVjP0iCL7Yk3Bd8yKTybDkb7CTMq7CHnJcPN3jls9ZA==
+X-Received: by 2002:a5d:5273:: with SMTP id l19mr15503626wrc.175.1581504812588; 
+ Wed, 12 Feb 2020 02:53:32 -0800 (PST)
+Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
+ by smtp.gmail.com with ESMTPSA id b10sm123284wrw.61.2020.02.12.02.53.30
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 12 Feb 2020 02:53:30 -0800 (PST)
+From: Michal Simek <michal.simek@xilinx.com>
+To: linux-kernel@vger.kernel.org, monstr@monstr.eu, michal.simek@xilinx.com,
+ git@xilinx.com, arnd@arndb.de, akpm@linux-foundation.org
+Subject: [PATCH v3] asm-generic: Fix unistd_32.h generation format
+Date: Wed, 12 Feb 2020 11:53:29 +0100
+Message-Id: <4d32ab4e1fb2edb691d2e1687e8fb303c09fd023.1581504803.git.michal.simek@xilinx.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <87imkcru6b.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,87 +79,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Stefan Asserhall <stefan.asserhall@xilinx.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ Matt Turner <mattst88@gmail.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ linux-xtensa@linux-xtensa.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Paul Burton <paulburton@kernel.org>,
+ linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-alpha@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Generated files are also checked by sparse that's why add newline
+to remove sparse (C=1) warning.
 
+The issue was found on Microblaze and reported like this:
+./arch/microblaze/include/generated/uapi/asm/unistd_32.h:438:45:
+warning: no newline at end of file
 
-Le 12/02/2020 à 11:12, Daniel Axtens a écrit :
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> 
->> Le 12/02/2020 à 06:47, Daniel Axtens a écrit :
->>> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
->>> index fbff9ff9032e..2911fdd3a6a0 100644
->>> --- a/arch/powerpc/include/asm/kasan.h
->>> +++ b/arch/powerpc/include/asm/kasan.h
->>> @@ -2,6 +2,8 @@
->>>    #ifndef __ASM_KASAN_H
->>>    #define __ASM_KASAN_H
->>>    
->>> +#include <asm/page.h>
->>> +
->>>    #ifdef CONFIG_KASAN
->>>    #define _GLOBAL_KASAN(fn)	_GLOBAL(__##fn)
->>>    #define _GLOBAL_TOC_KASAN(fn)	_GLOBAL_TOC(__##fn)
->>> @@ -14,29 +16,41 @@
->>>    
->>>    #ifndef __ASSEMBLY__
->>>    
->>> -#include <asm/page.h>
->>> -
->>>    #define KASAN_SHADOW_SCALE_SHIFT	3
->>>    
->>>    #define KASAN_SHADOW_START	(KASAN_SHADOW_OFFSET + \
->>>    				 (PAGE_OFFSET >> KASAN_SHADOW_SCALE_SHIFT))
->>>    
->>> +#ifdef CONFIG_KASAN_SHADOW_OFFSET
->>>    #define KASAN_SHADOW_OFFSET	ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
->>> +#endif
->>>    
->>> +#ifdef CONFIG_PPC32
->>>    #define KASAN_SHADOW_END	0UL
->>>    
->>> -#define KASAN_SHADOW_SIZE	(KASAN_SHADOW_END - KASAN_SHADOW_START)
->>> +#ifdef CONFIG_KASAN
->>> +void kasan_late_init(void);
->>> +#else
->>> +static inline void kasan_late_init(void) { }
->>> +#endif
->>> +
->>> +#endif
->>> +
->>> +#ifdef CONFIG_PPC_BOOK3S_64
->>> +#define KASAN_SHADOW_END	(KASAN_SHADOW_OFFSET + \
->>> +				 (RADIX_VMEMMAP_END >> KASAN_SHADOW_SCALE_SHIFT))
->>> +
->>> +static inline void kasan_late_init(void) { }
->>> +#endif
->>>    
->>>    #ifdef CONFIG_KASAN
->>>    void kasan_early_init(void);
->>>    void kasan_mmu_init(void);
->>>    void kasan_init(void);
->>> -void kasan_late_init(void);
->>>    #else
->>>    static inline void kasan_init(void) { }
->>>    static inline void kasan_mmu_init(void) { }
->>> -static inline void kasan_late_init(void) { }
->>>    #endif
->>
->> Why modify all this kasan_late_init() stuff ?
->>
->> This function is only called from kasan init_32.c, it is never called by
->> PPC64, so you should not need to modify anything at all.
-> 
-> I got a compile error for a missing symbol. I'll repro it and attach it.
-> 
+Mips and PowerPC have it already but let's align with style used by m68k.
 
-Oops, sorry. I looked too quickly. It is defined in kasan_init_32.c and 
-called from mm/mem.c
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Reviewed-by: Stefan Asserhall <stefan.asserhall@xilinx.com>
+Acked-by: Max Filippov <jcmvbkbc@gmail.com> (xtensa)
+---
 
-We don't have a performance issue here, since this is called only once 
-during startup. Could you define an empty kasan_late_init() in 
-init_book3s_64.c instead ?
+Changes in v3:
+- Add notes about mips/ppc and m68 - Max/Geert
 
-Christophe
+Changes in v2:
+- Update also others archs not just microblaze - Arnd
+- Align subject and description to match multiarch change
+
+ arch/alpha/kernel/syscalls/syscallhdr.sh      | 2 +-
+ arch/ia64/kernel/syscalls/syscallhdr.sh       | 2 +-
+ arch/microblaze/kernel/syscalls/syscallhdr.sh | 2 +-
+ arch/mips/kernel/syscalls/syscallhdr.sh       | 3 +--
+ arch/parisc/kernel/syscalls/syscallhdr.sh     | 2 +-
+ arch/powerpc/kernel/syscalls/syscallhdr.sh    | 3 +--
+ arch/sh/kernel/syscalls/syscallhdr.sh         | 2 +-
+ arch/sparc/kernel/syscalls/syscallhdr.sh      | 2 +-
+ arch/xtensa/kernel/syscalls/syscallhdr.sh     | 2 +-
+ 9 files changed, 9 insertions(+), 11 deletions(-)
+
+diff --git a/arch/alpha/kernel/syscalls/syscallhdr.sh b/arch/alpha/kernel/syscalls/syscallhdr.sh
+index e5b99bd2e5e7..1780e861492a 100644
+--- a/arch/alpha/kernel/syscalls/syscallhdr.sh
++++ b/arch/alpha/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/ia64/kernel/syscalls/syscallhdr.sh b/arch/ia64/kernel/syscalls/syscallhdr.sh
+index 0c2d2c748565..f407b6e53283 100644
+--- a/arch/ia64/kernel/syscalls/syscallhdr.sh
++++ b/arch/ia64/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/microblaze/kernel/syscalls/syscallhdr.sh b/arch/microblaze/kernel/syscalls/syscallhdr.sh
+index 2e9062a926a3..a914854f8d9f 100644
+--- a/arch/microblaze/kernel/syscalls/syscallhdr.sh
++++ b/arch/microblaze/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/mips/kernel/syscalls/syscallhdr.sh b/arch/mips/kernel/syscalls/syscallhdr.sh
+index d2bcfa8f4d1a..2e241e713a7d 100644
+--- a/arch/mips/kernel/syscalls/syscallhdr.sh
++++ b/arch/mips/kernel/syscalls/syscallhdr.sh
+@@ -32,6 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
+-	printf "\n"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/parisc/kernel/syscalls/syscallhdr.sh b/arch/parisc/kernel/syscalls/syscallhdr.sh
+index 50242b747d7c..730db288fe54 100644
+--- a/arch/parisc/kernel/syscalls/syscallhdr.sh
++++ b/arch/parisc/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/powerpc/kernel/syscalls/syscallhdr.sh b/arch/powerpc/kernel/syscalls/syscallhdr.sh
+index c0a9a32937f1..02d6751f3be3 100644
+--- a/arch/powerpc/kernel/syscalls/syscallhdr.sh
++++ b/arch/powerpc/kernel/syscalls/syscallhdr.sh
+@@ -32,6 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
+-	printf "\n"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/sh/kernel/syscalls/syscallhdr.sh b/arch/sh/kernel/syscalls/syscallhdr.sh
+index 1de0334e577f..4c0519861e97 100644
+--- a/arch/sh/kernel/syscalls/syscallhdr.sh
++++ b/arch/sh/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/sparc/kernel/syscalls/syscallhdr.sh b/arch/sparc/kernel/syscalls/syscallhdr.sh
+index 626b5740a9f1..cf50a75cc0bb 100644
+--- a/arch/sparc/kernel/syscalls/syscallhdr.sh
++++ b/arch/sparc/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+diff --git a/arch/xtensa/kernel/syscalls/syscallhdr.sh b/arch/xtensa/kernel/syscalls/syscallhdr.sh
+index d37db641ca31..eebfb8a8ace6 100644
+--- a/arch/xtensa/kernel/syscalls/syscallhdr.sh
++++ b/arch/xtensa/kernel/syscalls/syscallhdr.sh
+@@ -32,5 +32,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#define __NR_syscalls\t%s\n" "${nxt}"
+ 	printf "#endif\n"
+ 	printf "\n"
+-	printf "#endif /* %s */" "${fileguard}"
++	printf "#endif /* %s */\n" "${fileguard}"
+ ) > "$out"
+-- 
+2.25.0
+
