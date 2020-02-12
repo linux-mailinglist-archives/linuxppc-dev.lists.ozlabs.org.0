@@ -2,52 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25B7159FA1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 04:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2AD15A040
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 05:40:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48HQXl3lJwzDqKb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 14:45:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48HRl45GqQzDqGP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2020 15:40:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48HQVr1GR8zDqJt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 14:44:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
- header.s=201811 header.b=TFl8ycTo; dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 48HQVq2L1kz9s29;
- Wed, 12 Feb 2020 14:44:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1581479059;
- bh=vHvxgr9Mi4kVU4CP+DLd8jLZICVO9UpdLx4IRY8/qAc=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=TFl8ycTowgf15CJA30P9wKR0Qk6bpdlEFhoGn9MjMkQU7T5LYHPkWySg+SlXE12X3
- fCQ8pfyWR+gG9m4Uy4Y4i4EKfy/CVMLaLn9jxyAgyKMetLmhUwlY4HdmQzYTCRzrtM
- xuchTnNhSJAPanXtVv1RgVhjOxKX2UQNMLabej6VAK/a4BGMQjy9/apaPx0XwaveHW
- OVB6OMj6MrpYDq0th8hozc5uL6zdrEhHqkWj3SGYC/siPo6uQHt73MusUoX2wPc1dE
- UMjwTYu1mguWl2kJuI7Fs6+VBsC3vgsSIPk5De0QISt60MKI28PucWHANsN5APwwJ/
- 6ikU8sJMHnonQ==
-Received: by neuling.org (Postfix, from userid 1000)
- id B4D462C1FF6; Wed, 12 Feb 2020 14:44:18 +1100 (AEDT)
-Message-ID: <c88cd4e86f3d1874c277b5052e030625dd373f90.camel@neuling.org>
-Subject: Re: [PATCH v3 1/3] powerpc/tm: Fix clearing MSR[TS] in current when
- reclaiming on signal delivery
-From: Michael Neuling <mikey@neuling.org>
-To: Gustavo Luiz Duarte <gustavold@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org
-Date: Wed, 12 Feb 2020 14:44:18 +1100
-In-Reply-To: <20200211033831.11165-1-gustavold@linux.ibm.com>
-References: <20200211033831.11165-1-gustavold@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
-MIME-Version: 1.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48HRfM5xnQzDqKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 15:35:46 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0B3C71C71D7;
+ Wed, 12 Feb 2020 05:35:42 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id E37BF1B3959;
+ Wed, 12 Feb 2020 05:35:34 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 3C20D402A9;
+ Wed, 12 Feb 2020 12:35:26 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, robh+dt@kernel.org,
+ mark.rutland@arm.com, devicetree@vger.kernel.org
+Subject: [PATCH 0/3] Add new module driver for new ASRC
+Date: Wed, 12 Feb 2020 12:30:00 +0800
+Message-Id: <cover.1581475981.git.shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,19 +52,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, gromero@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Found with tm-signal-context-force-tm kernel selftest.
->=20
-> v3: Subject and comment improvements.
-> v2: Fix build failure when tm is disabled.
->=20
-> Fixes: 2b0a576d15e0 ("powerpc: Add new transactional memory state to the
-> signal context")
-> Cc: stable@vger.kernel.org # v3.9
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@linux.ibm.com>
+Add new module driver for new ASRC in i.MX815/865
 
-Acked-By: Michael Neuling <mikey@neuling.org>
+Shengjiu Wang (3):
+  ASoC: fsl_asrc: Move common definition to fsl_asrc_common
+  ASoC: dt-bindings: fsl_easrc: Add document for EASRC
+  ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and platform drivers
+
+ .../devicetree/bindings/sound/fsl,easrc.txt   |   57 +
+ sound/soc/fsl/fsl_asrc.h                      |   11 +-
+ sound/soc/fsl/fsl_asrc_common.h               |   22 +
+ sound/soc/fsl/fsl_easrc.c                     | 2265 +++++++++++++++++
+ sound/soc/fsl/fsl_easrc.h                     |  668 +++++
+ sound/soc/fsl/fsl_easrc_dma.c                 |  440 ++++
+ 6 files changed, 3453 insertions(+), 10 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.txt
+ create mode 100644 sound/soc/fsl/fsl_asrc_common.h
+ create mode 100644 sound/soc/fsl/fsl_easrc.c
+ create mode 100644 sound/soc/fsl/fsl_easrc.h
+ create mode 100644 sound/soc/fsl/fsl_easrc_dma.c
+
+-- 
+2.21.0
+
