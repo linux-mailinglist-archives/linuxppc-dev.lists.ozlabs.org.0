@@ -1,105 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752F415B9A3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 07:37:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48J6JW0F8tzDqVQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 17:37:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5816215BA3F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 08:47:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48J7rk3bGvzDqTQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 18:47:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.8.88; helo=eur04-vi1-obe.outbound.protection.outlook.com;
- envelope-from=qiang.zhao@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::143;
+ helo=mail-lf1-x143.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=M8rteVZ9; 
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.a=rsa-sha256 header.s=google header.b=biWiIy6c; 
  dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- (mail-eopbgr80088.outbound.protection.outlook.com [40.107.8.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48J6Gz1pRczDqPy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2020 17:36:23 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LjoNqon6x9iMiIPou19cgfDfJsLncYoQqkBJ4nhoBSGFfVFt87i4M6yZivmVnBgh6jpG4PcwslQeA+rOGO4KywW17/W7yvbqxvyfkvUZxW0FZZ6ltnqCLvlvAZRIy/5XVZnR7oImUm7sKF4w3L1d9KjNaFSqMj3WglSNyaviUqOqwAKZReuDzj05TrE2vSC0mPZ6dOG6eKsJidaxtm6rjcOGdOC06Q8xzrQdQt+iraAngF1ss/RJfit6THf2qYJZ0CjsGobUj9eMIOxFIpIPoejd6Sorp2sQGdJqqxpX6e/Xuz2ip5I1iMFG3wbgrCcodtWIzNakGYH5IuOPOvEyKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n87dds8nwrMXM5t5tZ0j7rDrB7m3cFCVPq5zrQ3Lm6s=;
- b=GFsBDI7IPOdqkN9jF7OXLtVl6k7gtsAVhnzv3okZ3lHEAHijf5hS6be9BPXVsWdQ8n+O45KSZBCPirAK1VBDpTaVC5t7u6GOzu14rb8jghTAaJ359en0TnY/TeX+GWOC2hPaYiqgWscIlB645umFHU66hLAQg0ndN0bv5OIXL7QPHGnKipQgvfykzWj2Kq83GpVERBPyuLb0ao8+bX9uYoI5aF2e72oy6bojWOYFVDX1aF6NX4Go+555KvPcIHfTZASwSTIg6Jd8dpiUDlOxFEWyL1dvN7Ph76vaFIDevrBs9Jinr6+aMI9iJN3sDwifE2dXFrM6fr1G1GlATvtSdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n87dds8nwrMXM5t5tZ0j7rDrB7m3cFCVPq5zrQ3Lm6s=;
- b=M8rteVZ9Zoa0ZC/jrc/9YXIkA9iMaZzO582B34v54pRPWyt5Dpc6ebbS8bL9SVJ/99VAYaI2JCtyqmK0mBYHufzJMBmJVcC/+V6raxh7cLd/H4wa9W76cqv80j6ub+13XZLPVcpXQV7bHi7oZ6c7TIJjugZxYbEyPpfluRP6nI4=
-Received: from VE1PR04MB6768.eurprd04.prod.outlook.com (10.255.118.26) by
- VE1PR04MB6607.eurprd04.prod.outlook.com (20.179.234.19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2729.25; Thu, 13 Feb 2020 06:36:17 +0000
-Received: from VE1PR04MB6768.eurprd04.prod.outlook.com
- ([fe80::b1d4:f0d5:b56c:365b]) by VE1PR04MB6768.eurprd04.prod.outlook.com
- ([fe80::b1d4:f0d5:b56c:365b%5]) with mapi id 15.20.2729.024; Thu, 13 Feb 2020
- 06:36:16 +0000
-From: Qiang Zhao <qiang.zhao@nxp.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Leo Li <leoyang.li@nxp.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Subject: RE: [Regression 5.6-rc1][Bisected b6231ea2b3c6] Powerpc 8xx doesn't
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48J7pq16M3zDqT1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2020 18:45:37 +1100 (AEDT)
+Received: by mail-lf1-x143.google.com with SMTP id n25so3568488lfl.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 23:45:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=tccHDFw8Be0tCiwLFmvqNHBCYLNSpms3aI/0Nu1Lkcw=;
+ b=biWiIy6cSpYBYseYC5rG9zg0yZrhQDMcxudJjex+4XKfDJs5X9uRsoByIs3ZPg2On5
+ jo9rIt6nZQenqD3JNRPCsh+HcCyg6TQGtIvpn6dorob+z2JtRRyIsV08SbF1Ftkt+eMX
+ +sSnpaCuqr43G996HOyFc+XyiKQV+fRGDUvsQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=tccHDFw8Be0tCiwLFmvqNHBCYLNSpms3aI/0Nu1Lkcw=;
+ b=bQvLWurjgpHBnjdnuuvXbk6kxJqg+SH7WsbhbwtvCRX8WqQFcL/eBAxAPkL/doh6k+
+ 8LU8RHyvHEfIzkVGYUFPvVCXdWoKOegMbwhutxrICWWdFgppzAhxwp/c42qUEZR35SlM
+ pfT+EcQ4lpLVT+37lNOCRIECgrXWUA1gqnL/9dfgIAtCIwJNt7NCc+dwWdLsZjykQJh0
+ c+U0Cw7wz6h1tJSDjnLihRb79AqIL54reDXJAk/B7IHobwrOjoNyxLG1rqLU7lMD0XNQ
+ DKSXVJBtn3GHmni/LgOim2CqryLuPILs9RgWdPYsGqRb7x5WJrH3g/yLdnrdkFGgzxYZ
+ avtA==
+X-Gm-Message-State: APjAAAWSvYE4iRp/VlR1+TzuKukFapu6LWE7ggrWDUcP+8UR25vxrsfO
+ Fu+5LtksB1lXUMPP3Ds6Kj9uvw==
+X-Google-Smtp-Source: APXvYqw0quAloIVavV+0KAsCtOQX6LMqkFeiTVZoBqg/BRZSHx3nU8/X33CUk+TdrSB1k2JH4qEHWg==
+X-Received: by 2002:ac2:5391:: with SMTP id g17mr6979327lfh.93.1581579930294; 
+ Wed, 12 Feb 2020 23:45:30 -0800 (PST)
+Received: from [172.16.11.50] ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id h7sm745141lfj.29.2020.02.12.23.45.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Feb 2020 23:45:29 -0800 (PST)
+Subject: Re: [Regression 5.6-rc1][Bisected b6231ea2b3c6] Powerpc 8xx doesn't
  boot anymore
-Thread-Topic: [Regression 5.6-rc1][Bisected b6231ea2b3c6] Powerpc 8xx doesn't
- boot anymore
-Thread-Index: AQHV4bApbcHQWh4/P0SAWF2GezJkLKgXpBIAgADUkHCAAC5lgIAAAdyQ
-Date: Thu, 13 Feb 2020 06:36:16 +0000
-Message-ID: <VE1PR04MB6768B1BFFED67B35D048D72D911A0@VE1PR04MB6768.eurprd04.prod.outlook.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Li Yang <leoyang.li@nxp.com>, 
+ Qiang Zhao <qiang.zhao@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <0d45fa64-51ee-0052-cb34-58c770c5b3ce@c-s.fr>
- <aee10440-c244-7c93-d3bb-fd29d8a83be4@c-s.fr>
- <VE1PR04MB6768B3B0F369280338370B87911A0@VE1PR04MB6768.eurprd04.prod.outlook.com>
- <0c217693-7c73-1696-8a86-e81dbabefe02@c-s.fr>
-In-Reply-To: <0c217693-7c73-1696-8a86-e81dbabefe02@c-s.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=qiang.zhao@nxp.com; 
-x-originating-ip: [64.157.242.222]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 3779b45b-0bf6-429e-6cdd-08d7b04f0742
-x-ms-traffictypediagnostic: VE1PR04MB6607:|VE1PR04MB6607:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB660769C574A0C74EFDBE8F4F911A0@VE1PR04MB6607.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1148;
-x-forefront-prvs: 031257FE13
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(366004)(396003)(346002)(136003)(376002)(39860400002)(189003)(199004)(71200400001)(2906002)(76116006)(66946007)(55016002)(53546011)(6506007)(110136005)(26005)(186003)(44832011)(86362001)(81156014)(9686003)(4326008)(54906003)(8936002)(81166006)(33656002)(316002)(8676002)(478600001)(52536014)(7696005)(5660300002)(66476007)(64756008)(66446008)(66556008);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6607;
- H:VE1PR04MB6768.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: P5wfT7cnqh1wCT8QVBeZO2Kok6wEZUVKqO8GVwe+vqW4phFXhiRtNNcYCpweYFm9uc77rmxC33IRLHA0TQk7uDVJhYNc003ylhJVita6aGanIOyETY0lPO8xx+UInvK4eBRLvDrUe4Ky0nsqg4KSvbKFC+9YkRClPoedv40YEylFdbuRZU8jWCm8Oq35tI2TFAkaOxrcNU7ikb2Ozoq92Q17smFpl4T8VEBoDRABSDCTAvggqR9GXwdbAflt+//gRCXcRYNfsIjV8WrScII4xeDupmnAK+3CFxdcJcRNE01BV09ol5mVoATFNUsmMu2lDna3TKjKJIinr6n3ff3K7BQPKOVGBm3G80KSU09Qf73R68Lv/oxY6J4qwvkNMpHahB42A4VeSRXZRogbTJqWkn1L0uMFFuxTNpbykPI0upsrbtfyQsQwI2MtjcTI33IJ
-x-ms-exchange-antispam-messagedata: pu0nthYVnV818s2AnWd3Q4lTQFPm5Ko+JRluORO/RRvY7vrGeZ+qGvVaj04YBjf4QEwfxMw6xmXS5xyZr0mMUF9z767AU2zp+PY6c9SRy/J6Yo22fPhwAtYa3CqRmytfyeOSsTfoLPEr02cQtRMkpA==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <f67f7566-24f2-9c71-36be-2e55ec436097@rasmusvillemoes.dk>
+Date: Thu, 13 Feb 2020 08:45:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3779b45b-0bf6-429e-6cdd-08d7b04f0742
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2020 06:36:16.6313 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NKJDHyzBjtKfCT6QjR3GAu9+5c43rRBeuIhGsRFLUgJ5tn3UNQqb5aUkPjXRT1+7/wp6qZYIhtC9T4rLUaZiCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6607
+In-Reply-To: <0d45fa64-51ee-0052-cb34-58c770c5b3ce@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,46 +86,51 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Scott Wood <oss@buserror.net>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+ LKML <linux-kernel@vger.kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gMDIvMTMvMjAyMCAxNDoxNyBQTSwgQ2hyaXN0b3BoZSBMZXJveSB3cm90ZToNCj4gLS0tLS1P
-cmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3Bo
-ZS5sZXJveUBjLXMuZnI+DQo+IFNlbnQ6IDIwMjDlubQy5pyIMTPml6UgMTQ6MTcNCj4gVG86IFFp
-YW5nIFpoYW8gPHFpYW5nLnpoYW9AbnhwLmNvbT47IFJhc211cyBWaWxsZW1vZXMNCj4gPGxpbnV4
-QHJhc211c3ZpbGxlbW9lcy5kaz47IExlbyBMaSA8bGVveWFuZy5saUBueHAuY29tPjsgR3JlZw0K
-PiBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4NCj4gQ2M6IFNjb3R0
-IFdvb2QgPG9zc0BidXNlcnJvci5uZXQ+OyBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZzsg
-TEtNTA0KPiA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz47IGxpbnV4LWFybS1rZXJuZWxA
-bGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBSZTogW1JlZ3Jlc3Npb24gNS42LXJjMV1b
-QmlzZWN0ZWQgYjYyMzFlYTJiM2M2XSBQb3dlcnBjIDh4eCBkb2Vzbid0DQo+IGJvb3QgYW55bW9y
-ZQ0KPiANCj4gDQo+IA0KPiBMZSAxMy8wMi8yMDIwIMOgIDA0OjM1LCBRaWFuZyBaaGFvIGEgw6lj
-cml0wqA6DQo+ID4gT24gMDIvMTIvMjAyMCAyMjo1MCBQTSwgQ2hyaXN0b3BoZSBMZXJveSB3cm90
-ZToNCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPj4gRnJvbTogQ2hyaXN0b3Bo
-ZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMuZnI+DQo+ID4+IFNlbnQ6IDIwMjDlubQy5pyI
-MTLml6UgMjI6NTANCj4gPj4gVG86IFJhc211cyBWaWxsZW1vZXMgPGxpbnV4QHJhc211c3ZpbGxl
-bW9lcy5kaz47IExlbyBMaQ0KPiA+PiA8bGVveWFuZy5saUBueHAuY29tPjsgUWlhbmcgWmhhbyA8
-cWlhbmcuemhhb0BueHAuY29tPjsgR3JlZw0KPiA+PiBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGlu
-dXhmb3VuZGF0aW9uLm9yZz4NCj4gPj4gQ2M6IFNjb3R0IFdvb2QgPG9zc0BidXNlcnJvci5uZXQ+
-OyBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZzsNCj4gPj4gTEtNTCA8bGludXgta2VybmVs
-QHZnZXIua2VybmVsLm9yZz47DQo+ID4+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFk
-Lm9yZw0KPiA+PiBTdWJqZWN0OiBSZTogW1JlZ3Jlc3Npb24gNS42LXJjMV1bQmlzZWN0ZWQgYjYy
-MzFlYTJiM2M2XSBQb3dlcnBjIDh4eA0KPiA+PiBkb2Vzbid0IGJvb3QgYW55bW9yZQ0KPiA+Pg0K
-PiA+PiAtLS0NCj4gPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdHR5L3NlcmlhbC9jcG1fdWFydC9j
-cG1fdWFydF9jb3JlLmMNCj4gPj4gYi9kcml2ZXJzL3R0eS9zZXJpYWwvY3BtX3VhcnQvY3BtX3Vh
-cnRfY29yZS5jDQo+ID4+IGluZGV4IDRjYWJkZWQ4MzkwYi4uMzQxZDY4MmVjNmViIDEwMDY0NA0K
-PiA+PiAtLS0gYS9kcml2ZXJzL3R0eS9zZXJpYWwvY3BtX3VhcnQvY3BtX3VhcnRfY29yZS5jDQo+
-ID4+ICsrKyBiL2RyaXZlcnMvdHR5L3NlcmlhbC9jcG1fdWFydC9jcG1fdWFydF9jb3JlLmMNCj4g
-Pj4gQEAgLTEzNTEsNiArMTM1MSw3IEBAIHN0YXRpYyBpbnQgX19pbml0IGNwbV91YXJ0X2NvbnNv
-bGVfc2V0dXAoc3RydWN0DQo+ID4+IGNvbnNvbGUgKmNvLCBjaGFyICpvcHRpb25zKQ0KPiA+PiAg
-ICAJCWNscmJpdHMzMigmcGluZm8tPnNjY3AtPnNjY19nc21ybCwgU0NDX0dTTVJMX0VOUiB8DQo+
-ID4+IFNDQ19HU01STF9FTlQpOw0KPiA+PiAgICAJfQ0KPiA+Pg0KPiA+PiArCWNwbV9tdXJhbV9p
-bml0KCk7DQo+ID4+ICAgIAlyZXQgPSBjcG1fdWFydF9hbGxvY2J1ZihwaW5mbywgMSk7DQo+ID4+
-DQo+ID4+ICAgIAlpZiAocmV0KQ0KPiA+Pg0KPiA+IEhvdyBhYm91dCB0aGUgcGF0Y2ggbGlrZSBi
-ZWxvdz8gSnVzdCBhIGRyYWZ0Lg0KPiANCj4gWWVzLCBJIHNlZSB0aGUgaWRlYS4gSSB0aGluayB3
-ZSBjb3VsZCBnbyBmb3Igc29tZXRoaW5nIGxpa2UgdGhhdC4NCj4gQnV0IGluIHRoZSBwb3dlcnBj
-IDh4eCBjYXNlLCB3ZSBhcmUgdGFsa2luZyBhYm91dCBjcG1faW5pdCgpLCBub3QgcWVfaW5pdCgp
-Lg0KDQpZZXMsIGNwbV9pbml0LiAgDQoNCkJlc3QgUmVnYXJkcw0KUWlhbmcgWmhhbw0K
+On 12/02/2020 15.24, Christophe Leroy wrote:
+> Hi Rasmus,
+> 
+> Kernel 5.6-rc1 silently fails on boot.
+> 
+> I bisected the problem to commit b6231ea2b3c6 ("soc: fsl: qe: drop
+> broken lazy call of cpm_muram_init()")
+> 
+> I get a bad_page_fault() for an access at address 8 in
+> cpm_muram_alloc_common(), called from cpm_uart_console_setup() via
+> cpm_uart_allocbuf()
+
+Sorry about that. But I'm afraid I don't see what I could have done
+differently - the patch series, including b6231ea2b3c6, has been in
+-next since 20191210, both you and ppc-dev were cc'ed on the entire
+series (last revision sent November 28). And I've been dogfooding the
+patches on both arm- and ppc-derived boards ever since (but obviously
+only for a few cpus).
+
+> Reverting the guilty commit on top of 5.6-rc1 is not trivial.
+> 
+> In your commit text you explain that cpm_muram_init() is called via
+> subsys_initcall. But console init is done before that, so it cannot work.
+
+No, but neither did the code I removed seem to work - how does doing
+spin_lock_init on a held spinlock, and then unlocking it, work? Is
+everything-spinlock always a no-op in your configuration? And even so,
+I'd think a GFP_KERNEL allocation under spin_lock_irqsave() would
+trigger some splat somewhere?
+
+Please note I'm not claiming my patch is not at fault, it clearly is, I
+just want to try to understand how I could have been wrong about the
+"nobody can have been relying on it" part.
+
+> Do you have a fix for that ?
+
+Not right now, but I'll have a look. It's true that the patch probably
+doesn't revert cleanly, but it shouldn't be hard to add back those few
+lines in the appropriate spot, with a big fat comment that this does
+something very fishy (at least as a temporary measure if we don't find a
+proper solution soonish).
+
+Rasmus
