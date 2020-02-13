@@ -2,68 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7B215CCCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 22:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF1515CD37
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 22:27:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48JTT4711wzDqWX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 08:01:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48JV2f2R7GzDqVV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 08:27:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.8.75; helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=i/QifI3f; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=NUzPqc77; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com
+ (mail-eopbgr80075.outbound.protection.outlook.com [40.107.8.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48JTQh6f6GzDqLt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 07:59:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1581627559;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CsVqx+kyd9Ql+81DltyyZW5LFYl4/Tko9hU86AVRTT8=;
- b=i/QifI3foFvOag/As7Cul0nJOvwzrsBSuZraNq5pevEmkC++AqtjGCVwIAvOIXm9bcEydX
- ns+NR1hmONrVxi10K0PrYOaWE11g2vXzRkFxg/oHYEqfclNSELVC4VQBZ6oAOXsJSQR2ta
- TeNid4pO43llLGJCD4+erQkxebQdnqA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-101-NpHPUwgpMoqKZVVBz_ghvg-1; Thu, 13 Feb 2020 11:57:56 -0500
-X-MC-Unique: NpHPUwgpMoqKZVVBz_ghvg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F0BE48010DF;
- Thu, 13 Feb 2020 16:57:54 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com
- (segfault.boston.devel.redhat.com [10.19.60.26])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 00C2960C05;
- Thu, 13 Feb 2020 16:57:52 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 1/4] mm/memremap_pages: Introduce
- memremap_compat_align()
-References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158155490379.3343782.10305190793306743949.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Thu, 13 Feb 2020 11:57:52 -0500
-In-Reply-To: <158155490379.3343782.10305190793306743949.stgit@dwillia2-desk3.amr.corp.intel.com>
- (Dan Williams's message of "Wed, 12 Feb 2020 16:48:23 -0800")
-Message-ID: <x498sl677cf.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JV0h1vHYzDqSg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 08:25:19 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nc7CG7ZrkY59iZsCmGzWQADlxd0jRqZj/vkU1gnJBkTwVXcP40w7wAzjn+ZZa65DFaIiBrxd7sMSOvkchu+V8MtcGKTXsM120Rh4LrmxMS5OG/oBs2rdGnZBhTYCzDCqpSDzBcKA9P/+7NyteYPETOEY4DkQ1gUFMtF/tqzxEtUzOawuvURz5dXudHxf66jf9wF64FPnP4MVvQShL0CO8MtQvTNz1Eb0gG2zDIghVQ3xHKqef9M3ALEOidQqhcZMazTAt8GqphB0UQRGP8EvMDJHkl9MqVKtZn8ZJwU9Yacnuk8QrCMgvaP3sqWjQEGodEAVlnCHu7iXYUrLjQNC0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MxxWoRx44chqG0YiHPzaigHafOdDOYU7n5YJHTyuiQE=;
+ b=a9Hy8d0QbutxQ46YWudMPhTHmPUic1kChflfD9yfpFhm+RZJeDaAgjweyoXKrPUb1pc5Ps2hNLPd6qvskWBSesp8YoYT1yK0b0NWU4Ku/TZbuLHnoVDNMH+iyMQOxoIATHQRTF+u6BdLR9ikXOlt4ZIQjrzqQk9qppMAhcye27VdWuODoq7tfV+ZfTeGZIL1ip338meO37WzXI1/jNupbfPf1CwzFKPIKQurfmvgXxI042u/2bGmoTYqV6S6Uu88YDWfFLmY0OqI4NuZkcirvCxBab4p+LqUuSLudqxC4AE45nMC1sXv4zIPMIFpcqGW8aqmXw7ff/cxeo5GJb9yQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MxxWoRx44chqG0YiHPzaigHafOdDOYU7n5YJHTyuiQE=;
+ b=NUzPqc77SlVhdHdEjddZm9YYj+tZRroiMNZ+3OlD08KPzN0bNuZp/N9xRfpjw2/fVei4ZsuW1PKWyRMgZuopA0qgWK2GkyGYIXOc59DJ8Rm4TQCPhHTajVSvZniVcDnG6K9aHHrdbqCVGt6TUpUcgnS7Vd2fh1UgwvSbRALGU5o=
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
+ VE1PR04MB6767.eurprd04.prod.outlook.com (20.179.234.220) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2729.25; Thu, 13 Feb 2020 21:25:14 +0000
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::b896:5bc0:c4dd:bd23]) by VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::b896:5bc0:c4dd:bd23%2]) with mapi id 15.20.2729.025; Thu, 13 Feb 2020
+ 21:25:14 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.com>, Timur Tabi
+ <timur@kernel.org>
+Subject: RE: [PATCH] serial: cpm_uart: call cpm_muram_init before registering
+ console
+Thread-Topic: [PATCH] serial: cpm_uart: call cpm_muram_init before registering
+ console
+Thread-Index: AQHV4mLcwlaGVGakwUiwrPknOrcTP6gZozHw
+Date: Thu, 13 Feb 2020 21:25:13 +0000
+Message-ID: <VE1PR04MB668747A445A3882DCDAE60358F1A0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+References: <20200213114342.21712-1-linux@rasmusvillemoes.dk>
+In-Reply-To: <20200213114342.21712-1-linux@rasmusvillemoes.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=leoyang.li@nxp.com; 
+x-originating-ip: [64.157.242.222]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 43304c2f-83a4-40e5-cb37-08d7b0cb36dd
+x-ms-traffictypediagnostic: VE1PR04MB6767:|VE1PR04MB6767:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VE1PR04MB67670C4500771158D683CA088F1A0@VE1PR04MB6767.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:156;
+x-forefront-prvs: 031257FE13
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(39860400002)(396003)(376002)(136003)(366004)(346002)(189003)(199004)(9686003)(71200400001)(55016002)(8936002)(110136005)(478600001)(8676002)(66476007)(66556008)(64756008)(2906002)(54906003)(66446008)(66946007)(76116006)(33656002)(5660300002)(81156014)(81166006)(7696005)(26005)(186003)(86362001)(4326008)(52536014)(6506007)(316002)(53546011);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6767;
+ H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: LN1JDcIYObKkD6Js+Jb1ZA8EDHXFCuB3F4b+L3LCbTMOs/FDm7dClDko96tAoVog9EYIkAasUp/QrjNQh4rRllpcuLJj3SOv0bPP0nUeHcfSjp0PDpMZoGX2G8FJ/Kq7t7XU+oT/sUwD5rCbdLnIW6/scDml4nNtLsbt+C5Yy+dhMSpRkoO5wj9BarFmtJcESCC8eFuQ23vigu0hovc8mn18w2bNDCEkC6Dlps5itwDSZY+xc1s9+IwI58A7FAkO9UmfQXnk+km5qVnuux/bw7u6zE0BHawt5SvM5N7iyW+bTODKyY5Ce3NodpTYVIP4t241CMojooTkVr6ZtkRWBR794/1WDayYQFLe5Ued9gTiQwXOpOUnvjCWOalT3iEQz7W/vB8Yz5kzEx2IwQIDEVMUXmCyBNP253an0qbjBIEdJbbWji5Ur0vn2TCwpJL2
+x-ms-exchange-antispam-messagedata: qla6gQ7Lp/TH+/6d8UXku6wCTZegVbiwkmbS9B4fNpFrT6WV0UJsw7uvvAgOfv4hcKOLMLA1N3WeBMmg9UVjXT9UVTVndrdgUPraT5H8CFkXLfBQhyo7xv24aoKowey9Tgiux+yos9jioBbzRcvMRQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43304c2f-83a4-40e5-cb37-08d7b0cb36dd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2020 21:25:13.9970 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XgS7X0PFVHkhyxXMwR1gWUJryMXACQmXBTzu/a5i8D7Ds5rlAgurI3TfPzlJydhOsrYbvo0L4MtvFHEAg6AFhQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6767
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,213 +108,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- vishal.l.verma@intel.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
 
-> The "sub-section memory hotplug" facility allows memremap_pages() users
-> like libnvdimm to compensate for hardware platforms like x86 that have a
-> section size larger than their hardware memory mapping granularity.  The
-> compensation that sub-section support affords is being tolerant of
-> physical memory resources shifting by units smaller (64MiB on x86) than
-> the memory-hotplug section size (128 MiB). Where the platform
-> physical-memory mapping granularity is limited by the number and
-> capability of address-decode-registers in the memory controller.
->
-> While the sub-section support allows memremap_pages() to operate on
-> sub-section (2MiB) granularity, the Power architecture may still
-> require 16MiB alignment on "!radix_enabled()" platforms.
->
-> In order for libnvdimm to be able to detect and manage this per-arch
-> limitation, introduce memremap_compat_align() as a common minimum
-> alignment across all driver-facing memory-mapping interfaces, and let
-> Power override it to 16MiB in the "!radix_enabled()" case.
->
-> The assumption / requirement for 16MiB to be a viable
-> memremap_compat_align() value is that Power does not have platforms
-> where its equivalent of address-decode-registers never hardware remaps a
-> persistent memory resource on smaller than 16MiB boundaries. Note that I
-> tried my best to not add a new Kconfig symbol, but header include
-> entanglements defeated the #ifndef memremap_compat_align design pattern
-> and the need to export it defeats the __weak design pattern for arch
-> overrides.
->
-> Based on an initial patch by Aneesh.
 
-I have just a couple of questions.
+> -----Original Message-----
+> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Sent: Thursday, February 13, 2020 5:44 AM
+> To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; Jiri Slaby
+> <jslaby@suse.com>; Timur Tabi <timur@kernel.org>; Leo Li
+> <leoyang.li@nxp.com>; Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Cc: Qiang Zhao <qiang.zhao@nxp.com>; linuxppc-dev@lists.ozlabs.org; Scott
+> Wood <oss@buserror.net>; Christophe Leroy <christophe.leroy@c-s.fr>;
+> linux-serial@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH] serial: cpm_uart: call cpm_muram_init before registering
+> console
+>=20
+> Christophe reports that powerpc 8xx silently fails to 5.6-rc1. It turns o=
+ut I was
+> wrong about nobody relying on the lazy initialization of the cpm/qe muram=
+ in
+> commit b6231ea2b3c6 (soc: fsl: qe: drop broken lazy call of
+> cpm_muram_init()).
+>=20
+> Rather than reinstating the somewhat dubious lazy call (initializing a cu=
+rrently
+> held spinlock, and implicitly doing a GFP_KERNEL under that spinlock), ma=
+ke
+> sure that cpm_muram_init() is called early enough - I thought the calls f=
+rom
+> the subsys_initcalls were good enough, but when used by console drivers,
+> that's obviously not the case. cpm_muram_init() is safe to call twice (th=
+ere's
+> an early return if it is already initialized), so keep the call from cpm_=
+init() - in
+> case SERIAL_CPM_CONSOLE=3Dn.
+>=20
+> Reported-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Fixes: b6231ea2b3c6 (soc: fsl: qe: drop broken lazy call of cpm_muram_ini=
+t())
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-First, can you please add a comment above the generic implementation of
-memremap_compat_align describing its purpose, and why a platform might
-want to override it?
+Acked-by: Li Yang <leoyang.li@nxp.com>
 
-Second, I will take it at face value that the power architecture
-requires a 16MB alignment, but it's not clear to me why mmu_linear_psize
-was chosen to represent that.  What's the relationship, there, and can
-we please have a comment explaining it?
-
-Thanks!
-Jeff
-
->
-> Link: http://lore.kernel.org/r/CAPcyv4gBGNP95APYaBcsocEa50tQj9b5h__83vgngjq3ouGX_Q@mail.gmail.com
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  arch/powerpc/Kconfig      |    1 +
->  arch/powerpc/mm/ioremap.c |   12 ++++++++++++
->  drivers/nvdimm/pfn_devs.c |    2 +-
->  include/linux/memremap.h  |    8 ++++++++
->  include/linux/mmzone.h    |    1 +
->  lib/Kconfig               |    3 +++
->  mm/memremap.c             |   13 +++++++++++++
->  7 files changed, 39 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 497b7d0b2d7e..e6ffe905e2b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -122,6 +122,7 @@ config PPC
->  	select ARCH_HAS_GCOV_PROFILE_ALL
->  	select ARCH_HAS_KCOV
->  	select ARCH_HAS_HUGEPD			if HUGETLB_PAGE
-> +	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN
->  	select ARCH_HAS_MMIOWB			if PPC64
->  	select ARCH_HAS_PHYS_TO_DMA
->  	select ARCH_HAS_PMEM_API
-> diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
-> index fc669643ce6a..38b5ba7d3e2d 100644
-> --- a/arch/powerpc/mm/ioremap.c
-> +++ b/arch/powerpc/mm/ioremap.c
-> @@ -2,6 +2,7 @@
->  
->  #include <linux/io.h>
->  #include <linux/slab.h>
-> +#include <linux/mmzone.h>
->  #include <linux/vmalloc.h>
->  #include <asm/io-workarounds.h>
->  
-> @@ -97,3 +98,14 @@ void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
->  
->  	return NULL;
+>=20
+> Christophe, can I get you to add a formal Tested-by?
+>=20
+> I'm not sure which tree this should go through.
+>=20
+>  drivers/tty/serial/cpm_uart/cpm_uart_core.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> index 19d5a4cf29a6..d4b81b06e0cb 100644
+> --- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> +++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> @@ -1373,6 +1373,7 @@ static struct console cpm_scc_uart_console =3D {
+>=20
+>  static int __init cpm_uart_console_init(void)  {
+> +	cpm_muram_init();
+>  	register_console(&cpm_scc_uart_console);
+>  	return 0;
 >  }
-> +
-> +#ifdef CONFIG_ZONE_DEVICE
-> +/* override of the generic version in mm/memremap.c */
-> +unsigned long memremap_compat_align(void)
-> +{
-> +       if (radix_enabled())
-> +               return SUBSECTION_SIZE;
-> +       return (1UL << mmu_psize_defs[mmu_linear_psize].shift);
-> +}
-> +EXPORT_SYMBOL_GPL(memremap_compat_align);
-> +#endif
-> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> index b94f7a7e94b8..a5c25cb87116 100644
-> --- a/drivers/nvdimm/pfn_devs.c
-> +++ b/drivers/nvdimm/pfn_devs.c
-> @@ -750,7 +750,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->  	start = nsio->res.start;
->  	size = resource_size(&nsio->res);
->  	npfns = PHYS_PFN(size - SZ_8K);
-> -	align = max(nd_pfn->align, (1UL << SUBSECTION_SHIFT));
-> +	align = max(nd_pfn->align, SUBSECTION_SIZE);
->  	end_trunc = start + size - ALIGN_DOWN(start + size, align);
->  	if (nd_pfn->mode == PFN_MODE_PMEM) {
->  		/*
-> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-> index 6fefb09af7c3..8af1cbd8f293 100644
-> --- a/include/linux/memremap.h
-> +++ b/include/linux/memremap.h
-> @@ -132,6 +132,7 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
->  
->  unsigned long vmem_altmap_offset(struct vmem_altmap *altmap);
->  void vmem_altmap_free(struct vmem_altmap *altmap, unsigned long nr_pfns);
-> +unsigned long memremap_compat_align(void);
->  #else
->  static inline void *devm_memremap_pages(struct device *dev,
->  		struct dev_pagemap *pgmap)
-> @@ -165,6 +166,12 @@ static inline void vmem_altmap_free(struct vmem_altmap *altmap,
->  		unsigned long nr_pfns)
->  {
->  }
-> +
-> +/* when memremap_pages() is disabled all archs can remap a single page */
-> +static inline unsigned long memremap_compat_align(void)
-> +{
-> +	return PAGE_SIZE;
-> +}
->  #endif /* CONFIG_ZONE_DEVICE */
->  
->  static inline void put_dev_pagemap(struct dev_pagemap *pgmap)
-> @@ -172,4 +179,5 @@ static inline void put_dev_pagemap(struct dev_pagemap *pgmap)
->  	if (pgmap)
->  		percpu_ref_put(pgmap->ref);
->  }
-> +
->  #endif /* _LINUX_MEMREMAP_H_ */
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 462f6873905a..6b77f7239af5 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1170,6 +1170,7 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
->  #define SECTION_ALIGN_DOWN(pfn)	((pfn) & PAGE_SECTION_MASK)
->  
->  #define SUBSECTION_SHIFT 21
-> +#define SUBSECTION_SIZE (1UL << SUBSECTION_SHIFT)
->  
->  #define PFN_SUBSECTION_SHIFT (SUBSECTION_SHIFT - PAGE_SHIFT)
->  #define PAGES_PER_SUBSECTION (1UL << PFN_SUBSECTION_SHIFT)
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index 0cf875fd627c..17dbc7bd3895 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -618,6 +618,9 @@ config ARCH_HAS_PMEM_API
->  config MEMREGION
->  	bool
->  
-> +config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
-> +	bool
-> +
->  # use memcpy to implement user copies for nommu architectures
->  config UACCESS_MEMCPY
->  	bool
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 09b5b7adc773..a6905d28fe91 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -7,6 +7,7 @@
->  #include <linux/mm.h>
->  #include <linux/pfn_t.h>
->  #include <linux/swap.h>
-> +#include <linux/mmzone.h>
->  #include <linux/swapops.h>
->  #include <linux/types.h>
->  #include <linux/wait_bit.h>
-> @@ -14,6 +15,18 @@
->  
->  static DEFINE_XARRAY(pgmap_array);
->  
-> +/*
-> + * Minimum compatible alignment of the resource (start, end) across
-> + * memremap interfaces (i.e. memremap + memremap_pages)
-> + */
-> +#ifndef CONFIG_ARCH_HAS_MEMREMAP_COMPAT_ALIGN
-> +unsigned long memremap_compat_align(void)
-> +{
-> +	return SUBSECTION_SIZE;
-> +}
-> +EXPORT_SYMBOL_GPL(memremap_compat_align);
-> +#endif
-> +
->  #ifdef CONFIG_DEV_PAGEMAP_OPS
->  DEFINE_STATIC_KEY_FALSE(devmap_managed_key);
->  EXPORT_SYMBOL(devmap_managed_key);
+> --
+> 2.23.0
 
