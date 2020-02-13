@@ -2,44 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1AC815B66E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 02:14:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F066D15B708
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 03:12:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Hz6x3CyPzDqSg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 12:14:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48J0Qh2TPGzDqSf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2020 13:12:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=B4o4H9MS; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48HywJ4sM4zDqS7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2020 12:04:48 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2020 17:04:44 -0800
-X-IronPort-AV: E=Sophos;i="5.70,434,1574150400"; d="scan'208";a="227990750"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2020 17:04:44 -0800
-Subject: [PATCH v2 4/4] libnvdimm/region: Introduce an 'align' attribute
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Wed, 12 Feb 2020 16:48:39 -0800
-Message-ID: <158155491952.3343782.4541070487858304628.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48J0NW457HzDqS0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2020 13:10:51 +1100 (AEDT)
+Received: by mail-qt1-x843.google.com with SMTP id t13so3289299qto.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2020 18:10:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=mUdWWp+c0fomnydwOZuzDqMxQIhxsbRs6tTf2TPYRzA=;
+ b=B4o4H9MS03jB3qy+5V0hztuGt3eAHe4/kGTzKfPzIWZrT6Y4P2LcjHeFf4TFYvd/4j
+ c1VJvS86dpFeceOKyicjeG6kYeVBDsmpTaXrZ20HPUemdGubmkbA7sBEC6ahtejz3YAO
+ cVaQ/gJ7T9m2ApmVqTSgj3VnjBCPXehozQsheNAbO72TPNNrMu7/PbSeLE1OlLLEzsTB
+ z4uefz8/7cc19Ehm9ubSScg/EwOgQB7zT4isfIYAYKb8EVl8NR11BCDQkCjmPNd4LrUE
+ biYkgKUS8ALiZ3ciyqkigVZnZldwIJ6DlBboH0IqE/3d4W/ufw9l2xwsxLZV41XTE03f
+ uN/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=mUdWWp+c0fomnydwOZuzDqMxQIhxsbRs6tTf2TPYRzA=;
+ b=CGZMyjxOFOV1eh5fPdyPve0QWpYncEMIvBJ1YpGwfwOU6O5joMJcflC12sIhHMRPQ7
+ s4IZEXjkMarI8ePHWAmBRq6s39afRhK13QNemvHFM3tSOX6onl7Vuxh6Sud5xFOQ9gh7
+ Hqx29CA+pIfS5DFUCrpv5IEeltDkmsareB5wHC/Mbq5F8C4bFhF2C/IfDIhh7olSv+xY
+ +fTtdkLsEPnILYcOJU/CVPlyi0586rCCplpkSS5MWjz5klK9PRCnFKmUPfujrNc7x8p8
+ O974yWOSkLwwzZUASxL4EKVQnkoZWQtktW84ig1/kplmMzY8kYA1GUPcqB6KESXbE5Hy
+ vdCg==
+X-Gm-Message-State: APjAAAXVpqBbkmjrtdmzl6MxpzfNPrDp+apOJi5+WWESCyXsmNTAo7q2
+ fawb2WsM3p4lxD2TDZY1RCz/ez8mqD2iukzmdU8=
+X-Google-Smtp-Source: APXvYqxdyDijz1rGqrbYCmLrIjViy7wgwMXb68AAZ4r2pC01PDuSdhiWq9HvmosjKuHgpR9L2JZlZb6NKQE8p5vXjwU=
+X-Received: by 2002:ac8:3a27:: with SMTP id w36mr21937606qte.204.1581559847782; 
+ Wed, 12 Feb 2020 18:10:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <cover.1581475981.git.shengjiu.wang@nxp.com>
+ <1ae9af586a2003e23885ccc7ef58ee2b1dce29f7.1581475981.git.shengjiu.wang@nxp.com>
+ <CAOMZO5Do=dzh4WXvm44mB7-PeesWuA6qRtMXwHCH9piXd1dZEw@mail.gmail.com>
+In-Reply-To: <CAOMZO5Do=dzh4WXvm44mB7-PeesWuA6qRtMXwHCH9piXd1dZEw@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 13 Feb 2020 10:10:36 +0800
+Message-ID: <CAA+D8ANGtnPYNA9__Zeg8MJDaiw_kVebUUgU-jPmp8GXRNX4hg@mail.gmail.com>
+Subject: Re: [alsa-devel] [PATCH 2/3] ASoC: dt-bindings: fsl_easrc: Add
+ document for EASRC
+To: Fabio Estevam <festevam@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,452 +75,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Jeff Moyer <jmoyer@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, vishal.l.verma@intel.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, Takashi Iwai <tiwai@suse.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The align attribute applies an alignment constraint for namespace
-creation in a region. Whereas the 'align' attribute of a namespace
-applied alignment padding via an info block, the 'align' attribute
-applies alignment constraints to the free space allocation.
+Hi
 
-The default for 'align' is the maximum known memremap_compat_align()
-across all archs (16MiB from PowerPC at time of writing) multiplied by
-the number of interleave ways if there is blk-aliasing. The minimum is
-PAGE_SIZE and allows for the creation of cross-arch incompatible
-namespaces, just as previous kernels allowed, but the expectation is
-cross-arch and mode-independent compatibility by default.
-
-The regression risk with this change is limited to cases that were
-dependent on the ability to create unaligned namespaces, *and* for some
-reason are unable to opt-out of aligned namespaces by writing to
-'regionX/align'. If such a scenario arises the default can be flipped
-from opt-out to opt-in of compat-aligned namespace creation, but that is
-a last resort. The kernel will otherwise continue to support existing
-defined misaligned namespaces.
-
-Unfortunately this change needs to touch several parts of the
-implementation at once:
-
-- region/available_size: expand busy extents to current align
-- region/max_available_extent: expand busy extents to current align
-- namespace/size: trim free space to current align
-
-...to keep the free space accounting conforming to the dynamic align
-setting.
-
-Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reported-by: Jeff Moyer <jmoyer@redhat.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Link: https://lore.kernel.org/r/158041478371.3889308.14542630147672668068.stgit@dwillia2-desk3.amr.corp.intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/nvdimm/dimm_devs.c      |   86 +++++++++++++++++++++++----
- drivers/nvdimm/namespace_devs.c |    9 ++-
- drivers/nvdimm/nd.h             |    1 
- drivers/nvdimm/region_devs.c    |  122 ++++++++++++++++++++++++++++++++++++---
- 4 files changed, 192 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index 64159d4d4b8f..b4994abb655f 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -563,6 +563,21 @@ int nvdimm_security_freeze(struct nvdimm *nvdimm)
- 	return rc;
- }
- 
-+static unsigned long dpa_align(struct nd_region *nd_region)
-+{
-+	struct device *dev = &nd_region->dev;
-+
-+	if (dev_WARN_ONCE(dev, !is_nvdimm_bus_locked(dev),
-+				"bus lock required for capacity provision\n"))
-+		return 0;
-+	if (dev_WARN_ONCE(dev, !nd_region->ndr_mappings || nd_region->align
-+				% nd_region->ndr_mappings,
-+				"invalid region align %#lx mappings: %d\n",
-+				nd_region->align, nd_region->ndr_mappings))
-+		return 0;
-+	return nd_region->align / nd_region->ndr_mappings;
-+}
-+
- int alias_dpa_busy(struct device *dev, void *data)
- {
- 	resource_size_t map_end, blk_start, new;
-@@ -571,6 +586,7 @@ int alias_dpa_busy(struct device *dev, void *data)
- 	struct nd_region *nd_region;
- 	struct nvdimm_drvdata *ndd;
- 	struct resource *res;
-+	unsigned long align;
- 	int i;
- 
- 	if (!is_memory(dev))
-@@ -608,13 +624,21 @@ int alias_dpa_busy(struct device *dev, void *data)
- 	 * Find the free dpa from the end of the last pmem allocation to
- 	 * the end of the interleave-set mapping.
- 	 */
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
-+
- 	for_each_dpa_resource(ndd, res) {
-+		resource_size_t start, end;
-+
- 		if (strncmp(res->name, "pmem", 4) != 0)
- 			continue;
--		if ((res->start >= blk_start && res->start < map_end)
--				|| (res->end >= blk_start
--					&& res->end <= map_end)) {
--			new = max(blk_start, min(map_end + 1, res->end + 1));
-+
-+		start = ALIGN_DOWN(res->start, align);
-+		end = ALIGN(res->end + 1, align) - 1;
-+		if ((start >= blk_start && start < map_end)
-+				|| (end >= blk_start && end <= map_end)) {
-+			new = max(blk_start, min(map_end, end) + 1);
- 			if (new != blk_start) {
- 				blk_start = new;
- 				goto retry;
-@@ -654,6 +678,7 @@ resource_size_t nd_blk_available_dpa(struct nd_region *nd_region)
- 		.res = NULL,
- 	};
- 	struct resource *res;
-+	unsigned long align;
- 
- 	if (!ndd)
- 		return 0;
-@@ -661,10 +686,20 @@ resource_size_t nd_blk_available_dpa(struct nd_region *nd_region)
- 	device_for_each_child(&nvdimm_bus->dev, &info, alias_dpa_busy);
- 
- 	/* now account for busy blk allocations in unaliased dpa */
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
- 	for_each_dpa_resource(ndd, res) {
-+		resource_size_t start, end, size;
-+
- 		if (strncmp(res->name, "blk", 3) != 0)
- 			continue;
--		info.available -= resource_size(res);
-+		start = ALIGN_DOWN(res->start, align);
-+		end = ALIGN(res->end + 1, align) - 1;
-+		size = end - start + 1;
-+		if (size >= info.available)
-+			return 0;
-+		info.available -= size;
- 	}
- 
- 	return info.available;
-@@ -683,19 +718,31 @@ resource_size_t nd_pmem_max_contiguous_dpa(struct nd_region *nd_region,
- 	struct nvdimm_bus *nvdimm_bus;
- 	resource_size_t max = 0;
- 	struct resource *res;
-+	unsigned long align;
- 
- 	/* if a dimm is disabled the available capacity is zero */
- 	if (!ndd)
- 		return 0;
- 
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
-+
- 	nvdimm_bus = walk_to_nvdimm_bus(ndd->dev);
- 	if (__reserve_free_pmem(&nd_region->dev, nd_mapping->nvdimm))
- 		return 0;
- 	for_each_dpa_resource(ndd, res) {
-+		resource_size_t start, end;
-+
- 		if (strcmp(res->name, "pmem-reserve") != 0)
- 			continue;
--		if (resource_size(res) > max)
--			max = resource_size(res);
-+		/* trim free space relative to current alignment setting */
-+		start = ALIGN(res->start, align);
-+		end = ALIGN_DOWN(res->end + 1, align) - 1;
-+		if (end < start)
-+			continue;
-+		if (end - start + 1 > max)
-+			max = end - start + 1;
- 	}
- 	release_free_pmem(nvdimm_bus, nd_mapping);
- 	return max;
-@@ -723,24 +770,33 @@ resource_size_t nd_pmem_available_dpa(struct nd_region *nd_region,
- 	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
- 	struct resource *res;
- 	const char *reason;
-+	unsigned long align;
- 
- 	if (!ndd)
- 		return 0;
- 
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
-+
- 	map_start = nd_mapping->start;
- 	map_end = map_start + nd_mapping->size - 1;
- 	blk_start = max(map_start, map_end + 1 - *overlap);
- 	for_each_dpa_resource(ndd, res) {
--		if (res->start >= map_start && res->start < map_end) {
-+		resource_size_t start, end;
-+
-+		start = ALIGN_DOWN(res->start, align);
-+		end = ALIGN(res->end + 1, align) - 1;
-+		if (start >= map_start && start < map_end) {
- 			if (strncmp(res->name, "blk", 3) == 0)
- 				blk_start = min(blk_start,
--						max(map_start, res->start));
--			else if (res->end > map_end) {
-+						max(map_start, start));
-+			else if (end > map_end) {
- 				reason = "misaligned to iset";
- 				goto err;
- 			} else
--				busy += resource_size(res);
--		} else if (res->end >= map_start && res->end <= map_end) {
-+				busy += end - start + 1;
-+		} else if (end >= map_start && end <= map_end) {
- 			if (strncmp(res->name, "blk", 3) == 0) {
- 				/*
- 				 * If a BLK allocation overlaps the start of
-@@ -749,8 +805,8 @@ resource_size_t nd_pmem_available_dpa(struct nd_region *nd_region,
- 				 */
- 				blk_start = map_start;
- 			} else
--				busy += resource_size(res);
--		} else if (map_start > res->start && map_start < res->end) {
-+				busy += end - start + 1;
-+		} else if (map_start > start && map_start < end) {
- 			/* total eclipse of the mapping */
- 			busy += nd_mapping->size;
- 			blk_start = map_start;
-@@ -760,7 +816,7 @@ resource_size_t nd_pmem_available_dpa(struct nd_region *nd_region,
- 	*overlap = map_end + 1 - blk_start;
- 	available = blk_start - map_start;
- 	if (busy < available)
--		return available - busy;
-+		return ALIGN_DOWN(available - busy, align);
- 	return 0;
- 
-  err:
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index 30cda9f235de..4720ad69e1c5 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -541,6 +541,11 @@ static void space_valid(struct nd_region *nd_region, struct nvdimm_drvdata *ndd,
- {
- 	bool is_reserve = strcmp(label_id->id, "pmem-reserve") == 0;
- 	bool is_pmem = strncmp(label_id->id, "pmem", 4) == 0;
-+	unsigned long align;
-+
-+	align = nd_region->align / nd_region->ndr_mappings;
-+	valid->start = ALIGN(valid->start, align);
-+	valid->end = ALIGN_DOWN(valid->end + 1, align) - 1;
- 
- 	if (valid->start >= valid->end)
- 		goto invalid;
-@@ -980,10 +985,10 @@ static ssize_t __size_store(struct device *dev, unsigned long long val)
- 		return -ENXIO;
- 	}
- 
--	div_u64_rem(val, PAGE_SIZE * nd_region->ndr_mappings, &remainder);
-+	div_u64_rem(val, nd_region->align, &remainder);
- 	if (remainder) {
- 		dev_dbg(dev, "%llu is not %ldK aligned\n", val,
--				(PAGE_SIZE * nd_region->ndr_mappings) / SZ_1K);
-+				nd_region->align / SZ_1K);
- 		return -EINVAL;
- 	}
- 
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index ca39abe29c7c..c4d69c1cce55 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -146,6 +146,7 @@ struct nd_region {
- 	struct device *btt_seed;
- 	struct device *pfn_seed;
- 	struct device *dax_seed;
-+	unsigned long align;
- 	u16 ndr_mappings;
- 	u64 ndr_size;
- 	u64 ndr_start;
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index a5fc6e4c56ff..bf239e783940 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -216,21 +216,25 @@ int nd_region_to_nstype(struct nd_region *nd_region)
- }
- EXPORT_SYMBOL(nd_region_to_nstype);
- 
--static ssize_t size_show(struct device *dev,
--		struct device_attribute *attr, char *buf)
-+static unsigned long long region_size(struct nd_region *nd_region)
- {
--	struct nd_region *nd_region = to_nd_region(dev);
--	unsigned long long size = 0;
--
--	if (is_memory(dev)) {
--		size = nd_region->ndr_size;
-+	if (is_memory(&nd_region->dev)) {
-+		return nd_region->ndr_size;
- 	} else if (nd_region->ndr_mappings == 1) {
- 		struct nd_mapping *nd_mapping = &nd_region->mapping[0];
- 
--		size = nd_mapping->size;
-+		return nd_mapping->size;
- 	}
- 
--	return sprintf(buf, "%llu\n", size);
-+	return 0;
-+}
-+
-+static ssize_t size_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nd_region *nd_region = to_nd_region(dev);
-+
-+	return sprintf(buf, "%llu\n", region_size(nd_region));
- }
- static DEVICE_ATTR_RO(size);
- 
-@@ -529,6 +533,55 @@ static ssize_t read_only_store(struct device *dev,
- }
- static DEVICE_ATTR_RW(read_only);
- 
-+static ssize_t align_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nd_region *nd_region = to_nd_region(dev);
-+
-+	return sprintf(buf, "%#lx\n", nd_region->align);
-+}
-+
-+static ssize_t align_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t len)
-+{
-+	struct nd_region *nd_region = to_nd_region(dev);
-+	unsigned long val, dpa;
-+	u32 remainder;
-+	int rc;
-+
-+	rc = kstrtoul(buf, 0, &val);
-+	if (rc)
-+		return rc;
-+
-+	if (!nd_region->ndr_mappings)
-+		return -ENXIO;
-+
-+	/*
-+	 * Ensure space-align is evenly divisible by the region
-+	 * interleave-width because the kernel typically has no facility
-+	 * to determine which DIMM(s), dimm-physical-addresses, would
-+	 * contribute to the tail capacity in system-physical-address
-+	 * space for the namespace.
-+	 */
-+	dpa = val;
-+	remainder = do_div(dpa, nd_region->ndr_mappings);
-+	if (!is_power_of_2(dpa) || dpa < PAGE_SIZE
-+			|| val > region_size(nd_region) || remainder)
-+		return -EINVAL;
-+
-+	/*
-+	 * Given that space allocation consults this value multiple
-+	 * times ensure it does not change for the duration of the
-+	 * allocation.
-+	 */
-+	nvdimm_bus_lock(dev);
-+	nd_region->align = val;
-+	nvdimm_bus_unlock(dev);
-+
-+	return len;
-+}
-+static DEVICE_ATTR_RW(align);
-+
- static ssize_t region_badblocks_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
-@@ -571,6 +624,7 @@ static DEVICE_ATTR_RO(persistence_domain);
- 
- static struct attribute *nd_region_attributes[] = {
- 	&dev_attr_size.attr,
-+	&dev_attr_align.attr,
- 	&dev_attr_nstype.attr,
- 	&dev_attr_mappings.attr,
- 	&dev_attr_btt_seed.attr,
-@@ -626,6 +680,19 @@ static umode_t region_visible(struct kobject *kobj, struct attribute *a, int n)
- 		return a->mode;
- 	}
- 
-+	if (a == &dev_attr_align.attr) {
-+		int i;
-+
-+		for (i = 0; i < nd_region->ndr_mappings; i++) {
-+			struct nd_mapping *nd_mapping = &nd_region->mapping[i];
-+			struct nvdimm *nvdimm = nd_mapping->nvdimm;
-+
-+			if (test_bit(NDD_LABELING, &nvdimm->flags))
-+				return a->mode;
-+		}
-+		return 0;
-+	}
-+
- 	if (a != &dev_attr_set_cookie.attr
- 			&& a != &dev_attr_available_size.attr)
- 		return a->mode;
-@@ -935,6 +1002,42 @@ void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane)
- }
- EXPORT_SYMBOL(nd_region_release_lane);
- 
-+/*
-+ * PowerPC requires this alignment for memremap_pages(). All other archs
-+ * should be ok with SUBSECTION_SIZE (see memremap_compat_align()).
-+ */
-+#define MEMREMAP_COMPAT_ALIGN_MAX SZ_16M
-+
-+static unsigned long default_align(struct nd_region *nd_region)
-+{
-+	unsigned long align, per_mapping;
-+	int i, mappings;
-+	u32 remainder;
-+
-+	if (is_nd_blk(&nd_region->dev))
-+		align = PAGE_SIZE;
-+	else
-+		align = MEMREMAP_COMPAT_ALIGN_MAX;
-+
-+	for (i = 0; i < nd_region->ndr_mappings; i++) {
-+		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
-+		struct nvdimm *nvdimm = nd_mapping->nvdimm;
-+
-+		if (test_bit(NDD_ALIASING, &nvdimm->flags)) {
-+			align = MEMREMAP_COMPAT_ALIGN_MAX;
-+			break;
-+		}
-+	}
-+
-+	mappings = max_t(u16, 1, nd_region->ndr_mappings);
-+	per_mapping = align;
-+	remainder = do_div(per_mapping, mappings);
-+	if (remainder)
-+		align *= mappings;
-+
-+	return align;
-+}
-+
- static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 		struct nd_region_desc *ndr_desc,
- 		const struct device_type *dev_type, const char *caller)
-@@ -1039,6 +1142,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 	dev->of_node = ndr_desc->of_node;
- 	nd_region->ndr_size = resource_size(ndr_desc->res);
- 	nd_region->ndr_start = ndr_desc->res->start;
-+	nd_region->align = default_align(nd_region);
- 	if (ndr_desc->flush)
- 		nd_region->flush = ndr_desc->flush;
- 	else
-
+On Thu, Feb 13, 2020 at 1:26 AM Fabio Estevam <festevam@gmail.com> wrote:
+>
+> On Wed, Feb 12, 2020 at 1:35 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> >
+> > EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
+> > IP module found on i.MX815.
+>
+> i.MX815 in an internal terminology. Please avoid it on the commit log.
+>
+Ok, will use i.MX8MN instead.
