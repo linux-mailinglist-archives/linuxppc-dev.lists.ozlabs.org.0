@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B99715D3F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 09:38:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3DB15D3F6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 09:41:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48JmxW4N8tzDqXT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:38:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Jn0g2kCKzDqbk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:41:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,58 +17,52 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=bxnstb7b; dkim-atps=neutral
+ header.s=mail header.b=jaqqs9jF; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jmvp3P18zDqCY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 19:37:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Jmyx5W0XzDqBv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 19:39:53 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Jmvk0gCfz9txhn;
- Fri, 14 Feb 2020 09:37:06 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 48Jmys4ssFz9txhq;
+ Fri, 14 Feb 2020 09:39:49 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=bxnstb7b; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=jaqqs9jF; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 9ANGaoymhzTK; Fri, 14 Feb 2020 09:37:06 +0100 (CET)
+ with ESMTP id 50U80ObWLknG; Fri, 14 Feb 2020 09:39:49 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Jmvj6kYRz9txhm;
- Fri, 14 Feb 2020 09:37:05 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48Jmys3n50z9txhn;
+ Fri, 14 Feb 2020 09:39:49 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1581669425; bh=ddxc67V5RXhkdNTVaQ7sd3n3LU9GQgEQfAysbLNxMao=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=bxnstb7bOoshwKDEpC12LAZEnPqZvsQEHDw+7ZngXz7fQ1ewn+wdk7/kGYLNmN82b
- 6x1eAOdicY8YQc//mS4FHachzifppVcAWniSjZNIR/8UDR11jbHIoXsm8QVdithFsy
- ZcVZWcj9LCWffy6J+rJbSyB9nyuUxz9VVklzwPk0=
+ t=1581669589; bh=6gQazCc4WD16N17R9Ucj88w7ApMUGuUdxrC5CbZ6kUo=;
+ h=From:Subject:To:Cc:Date:From;
+ b=jaqqs9jFSGENAD7NHdG9Xqc4Alx7dezcbLukx1hq0a2cdwzs1UKZqfIXBohObK5sE
+ qkpMRBWZ/o3bWdsPEyg/lcu5J8gCJJBVGkPxF5CjZJR2ycwaWshXiraNeWvbAGloIC
+ 1iQ2NVm5vPb5706Mxep/Xw0YYo7ny8x7CNRbrQNY=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DC7EF8B87B;
- Fri, 14 Feb 2020 09:37:06 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7D97C8B87B;
+ Fri, 14 Feb 2020 09:39:50 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HfggUkm26GkN; Fri, 14 Feb 2020 09:37:06 +0100 (CET)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A568A8B874;
- Fri, 14 Feb 2020 09:37:06 +0100 (CET)
-Subject: Re: [PATCH 1/2] powerpc/8xx: Merge 8M hugepage slice and basepage
- slice
+ with ESMTP id wS7cpYO9s94s; Fri, 14 Feb 2020 09:39:50 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D74B8B874;
+ Fri, 14 Feb 2020 09:39:50 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 466D565320; Fri, 14 Feb 2020 08:39:50 +0000 (UTC)
+Message-Id: <d2330584f8c42d3039896e2b56f5d39676dc919c.1581669558.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH RESEND with Fixes: tag] powerpc/chrp: Fix enter_rtas() with
+ CONFIG_VMAP_STACK
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- aneesh.kumar@linux.ibm.com
-References: <4ad03047ac61bfbdad3edb92542dedc807fc3cf4.1581011735.git.christophe.leroy@c-s.fr>
-Message-ID: <70082b0a-00c4-4d53-8846-ceab9a626328@c-s.fr>
-Date: Fri, 14 Feb 2020 09:37:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <4ad03047ac61bfbdad3edb92542dedc807fc3cf4.1581011735.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 14 Feb 2020 08:39:50 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,70 +79,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+With CONFIG_VMAP_STACK, data MMU has to be enabled
+to read data on the stack.
 
+Fixes: cd08f109e262 ("powerpc/32s: Enable CONFIG_VMAP_STACK")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/kernel/entry_32.S | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Le 06/02/2020 à 20:21, Christophe Leroy a écrit :
-> On 8xx, slices are used because hugepages (512k or 8M) and small
-> pages (4k or 16k) cannot share the same PGD entry. However, as 8M
-> entirely covers two PGD entries (One PGD entry covers 4M), there
-> will implicitely be no conflict between 8M pages and any other size.
-> So 8M is compatible with the basepage size as well.
-> 
-> Remove the struct slice_mask mask_8m from mm_context_t and make
-> vma_mmu_pagesize() rely on vma_kernel_pagesize() as the base
-> slice can now host several sizes.
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 0713daa651d9..bc056d906b51 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -1354,12 +1354,17 @@ _GLOBAL(enter_rtas)
+ 	mtspr	SPRN_SRR0,r8
+ 	mtspr	SPRN_SRR1,r9
+ 	RFI
+-1:	tophys(r9,r1)
++1:	tophys_novmstack r9, r1
++#ifdef CONFIG_VMAP_STACK
++	li	r0, MSR_KERNEL & ~MSR_IR	/* can take DTLB miss */
++	mtmsr	r0
++	isync
++#endif
+ 	lwz	r8,INT_FRAME_SIZE+4(r9)	/* get return address */
+ 	lwz	r9,8(r9)	/* original msr value */
+ 	addi	r1,r1,INT_FRAME_SIZE
+ 	li	r0,0
+-	tophys(r7, r2)
++	tophys_novmstack r7, r2
+ 	stw	r0, THREAD + RTAS_SP(r7)
+ 	mtspr	SPRN_SRR0,r8
+ 	mtspr	SPRN_SRR1,r9
+-- 
+2.25.0
 
-I'm working on getting rid of CONFIG_PPC_MM_SLICES on the 8xx, so this 
-little series is probably not worth merging.
-
-Christophe
-
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->   arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 7 ++-----
->   arch/powerpc/mm/hugetlbpage.c                | 3 ++-
->   2 files changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-> index 76af5b0cb16e..54f7f3362edb 100644
-> --- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-> +++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-> @@ -215,9 +215,8 @@ typedef struct {
->   	unsigned char low_slices_psize[SLICE_ARRAY_SIZE];
->   	unsigned char high_slices_psize[0];
->   	unsigned long slb_addr_limit;
-> -	struct slice_mask mask_base_psize; /* 4k or 16k */
-> +	struct slice_mask mask_base_psize; /* 4k or 16k or 8M */
->   	struct slice_mask mask_512k;
-> -	struct slice_mask mask_8m;
->   #endif
->   	void *pte_frag;
->   } mm_context_t;
-> @@ -257,10 +256,8 @@ static inline struct slice_mask *slice_mask_for_size(mm_context_t *ctx, int psiz
->   {
->   	if (psize == MMU_PAGE_512K)
->   		return &ctx->mask_512k;
-> -	if (psize == MMU_PAGE_8M)
-> -		return &ctx->mask_8m;
->   
-> -	BUG_ON(psize != mmu_virtual_psize);
-> +	BUG_ON(psize != mmu_virtual_psize && psize != MMU_PAGE_8M);
->   
->   	return &ctx->mask_base_psize;
->   }
-> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-> index edf511c2a30a..0b4ab741bf09 100644
-> --- a/arch/powerpc/mm/hugetlbpage.c
-> +++ b/arch/powerpc/mm/hugetlbpage.c
-> @@ -551,7 +551,8 @@ unsigned long hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
->   unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
->   {
->   	/* With radix we don't use slice, so derive it from vma*/
-> -	if (IS_ENABLED(CONFIG_PPC_MM_SLICES) && !radix_enabled()) {
-> +	if (IS_ENABLED(CONFIG_PPC_MM_SLICES) && !IS_ENABLED(CONFIG_PPC_8xx) &&
-> +	    !radix_enabled()) {
->   		unsigned int psize = get_slice_psize(vma->vm_mm, vma->vm_start);
->   
->   		return 1UL << mmu_psize_to_shift(psize);
-> 
