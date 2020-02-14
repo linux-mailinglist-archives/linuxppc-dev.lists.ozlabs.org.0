@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394C915F78D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 21:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EF515F798
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 21:19:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K4Ng6JZJzDqgj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 07:14:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K4Tx4Ts4zDqgB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 07:19:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48K1rr2jnBzDqdL
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 05:20:28 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48K1xl3T1BzDqd9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 05:24:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=J2tIAn2s; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48K1rn2tTnz8wMf
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 05:20:25 +1100 (AEDT)
+ header.s=20161025 header.b=Psab2Wrc; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48K1xl1m0Pz8sxx
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 05:24:43 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 48K1rm5VHZzB49b; Sat, 15 Feb 2020 05:20:24 +1100 (AEDT)
+ id 48K1xk48MfzB4B1; Sat, 15 Feb 2020 05:24:42 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
@@ -34,48 +34,50 @@ Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=J2tIAn2s; dkim-atps=neutral
+ header.s=20161025 header.b=Psab2Wrc; dkim-atps=neutral
 Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
  [IPv6:2607:f8b0:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48K1rk1jJPzB49V
- for <linuxppc-dev@ozlabs.org>; Sat, 15 Feb 2020 05:20:22 +1100 (AEDT)
-Received: by mail-ot1-x343.google.com with SMTP id 59so10004742otp.12
- for <linuxppc-dev@ozlabs.org>; Fri, 14 Feb 2020 10:20:21 -0800 (PST)
+ by ozlabs.org (Postfix) with ESMTPS id 48K1xj3TRlzB49v
+ for <linuxppc-dev@ozlabs.org>; Sat, 15 Feb 2020 05:24:40 +1100 (AEDT)
+Received: by mail-ot1-x343.google.com with SMTP id r27so10014120otc.8
+ for <linuxppc-dev@ozlabs.org>; Fri, 14 Feb 2020 10:24:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ h=sender:from:subject:to:cc:references:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=UMEjP6jiAH/OYDI2ZXQY0jXirotSACylgyVCi6kzEY8=;
- b=J2tIAn2sFEFgVmijMh2KXTLon2W3H9c0p+ZBOxghX8QkfnVP2bs/y1TRnvKJLixhea
- uZPLkchMwWxq+yeE2063BV5vlXH0TSiZbWSM4ub5ofkQ4hXrYUzVjMP94t5SsmIxkLhf
- bmUMJqKQGu++t1rUMD4RiZiAmRmEcEayRCjehI0D4skOBjzkKWwIQzcFcn9q2KlKtEnU
- frZ6kk4hZ44OCSBm6C97i/K2eIafWQuQORiXEUPFDYnC16/dSO2b1Ter0y/DRTr1wqwY
- k/2ZoEWKOrk7L472CpRbKrbcoVNt/pbE3bFyMnyVQ0x7ekyFehWGd14k/SwEN0Xpcxkp
- YBNA==
+ bh=z0o9PTPr4V6rc2xuwJq0y+EUklSvuaeXBTIkzgGQnLU=;
+ b=Psab2Wrc8zWLf0/LRmbezeql4HypqnoAn5t9fSLwbB60dNa8jdf6HiQAVu/jdzTgBp
+ szGQ3L2nOU/OHaZBAwgKzCRgRS63dlnF0BhFEfqBYTOvHTn7OfhIQnKpCOZV7coVqeU4
+ QyEplQy1F5oQfzjLnyj0mbqD/PmKVZjZClCItTO76p30yT0wNNi1rP+PDFXpoT0j1xYn
+ 2pd6YBaUUj0XIszJjXOP35djNbhtPPMEPnjXe2FNAaPRM7Mg3WCOi2Yu5NK+YOVeLG+H
+ XUL+W4SH8kf8Wj3R/l7gYGzVgzgr6TjePtTr9nMx2W9SkBOkUO7ObGATmeOGlahS4Iw2
+ mYLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ h=x-gm-message-state:sender:from:subject:to:cc:references:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=UMEjP6jiAH/OYDI2ZXQY0jXirotSACylgyVCi6kzEY8=;
- b=WqmVe6DZ8lDuBNn8jpuG3EuLr0h3fi+sp10rsHPzHlDRn8xe6ad8MhAk9C+ucwiCeP
- T97Kp8D3rzqy2AEjYzFB1x0Eyu3iHFZGAeSS+GWUajW0he7q81QoJaV3GnDBSKGFcQ+T
- K8POPHdsqV5O/nPcexGuMtXcUjNWlsRqc73PGI655aqi+ybDBzWr8j+baSr48tdJ9k5D
- uM83ojLo/Grsw26isZcunHIgzqz3542iGOlAVQqtslg3o4O4waRXM4jwjWlCLk4KaiFA
- nxI/jIQfsf53mn79XMBJYSnHj1tphBg7JZkbjsewKoLTTse6/cuoCsV97cnBJnxGcH6Y
- YuiQ==
-X-Gm-Message-State: APjAAAU920rvZvvA5ImvNpgBicWtWXkQeYD277oY18GggIhVU/awsH+y
- gDRwaKP9BXf0iG2o0sjNELLacOpr
-X-Google-Smtp-Source: APXvYqxd76quSEwk4MiTNJAgaPdRab19d+jjOpeiPS5qmGYhsGImXCv6B+zxu+OMhDmEQ95rtAABvg==
-X-Received: by 2002:a9d:864:: with SMTP id 91mr708978oty.289.1581704418178;
- Fri, 14 Feb 2020 10:20:18 -0800 (PST)
+ bh=z0o9PTPr4V6rc2xuwJq0y+EUklSvuaeXBTIkzgGQnLU=;
+ b=fq8h4RHMQoYV2ks/t1ckrMUsKlZS0i1qf3+oUyrSHITrqkpWUI3l32t38niMjzlReS
+ Y8NBS+AbAnQdVrOdMj2UpV2uVhxIzWusGhs5lHqtWx6YIpGCuJE9K0X3J2hew6AcCU3z
+ eUjbmcRIqLs3hJ35fHqUn4BJ6gk2ZTTu2NAdKPbo6VhQ/tMF9tN1hRY9QN5QuOfBVQb5
+ JDAj2ByQa6+g+s0M/VcEbLftLFvb1/DtGksXBT2kc/rPwrfGZySj2LfyA/F2LdZ/6uoP
+ o3sRUybm5c7vX2L7xSUUqJQ1ICxEtqGTTU3tH9vw9Is9GvCu8yNQFwETfrK06ReewQ16
+ CS5Q==
+X-Gm-Message-State: APjAAAWxNTPHKxlpaX2h1FSbAjE6ApL1/lDXzzqKXyGZvYT+EmOQQGLH
+ YU4PauqorLV4FsoJ1d2i2aKHHUFb
+X-Google-Smtp-Source: APXvYqzkaVzkrzzC2CbWfo/ab5El4EtPIT8XEZ8hSUQ5ls0PPS5oAGtFMy+u7ECc0viQjHHpxT1+qg==
+X-Received: by 2002:a05:6830:15a:: with SMTP id
+ j26mr3198809otp.137.1581704678809; 
+ Fri, 14 Feb 2020 10:24:38 -0800 (PST)
 Received: from [192.168.1.120] (cpe-24-31-245-230.kc.res.rr.com.
  [24.31.245.230])
- by smtp.gmail.com with ESMTPSA id 5sm2219495otr.13.2020.02.14.10.20.17
+ by smtp.gmail.com with ESMTPSA id a30sm2218344otc.79.2020.02.14.10.24.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Feb 2020 10:20:17 -0800 (PST)
+ Fri, 14 Feb 2020 10:24:38 -0800 (PST)
+From: Larry Finger <Larry.Finger@lwfinger.net>
 Subject: Re: RESEND: Re: Problem booting a PowerBook G4 Aluminum after commit
  cd08f109 with CONFIG_VMAP_STACK=y
 To: Christophe Leroy <christophe.leroy@c-s.fr>
@@ -89,9 +91,8 @@ References: <f7565b89-c8b2-d2e7-929e-4b1abf72fc63@lwfinger.net>
  <9429f86e-8c7d-b2e6-6dc1-8f58c44baadc@c-s.fr>
  <2da19b26-9a44-2e4e-ab7d-d3fff65091bd@lwfinger.net>
  <02ce1278-5880-063c-2281-178edd541232@c-s.fr>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <8960e20a-a1bc-d47c-0d77-0b30ab8e01d4@lwfinger.net>
-Date: Fri, 14 Feb 2020 12:20:17 -0600
+Message-ID: <f3f628ca-4085-e9c2-2c62-170cf9801ac2@lwfinger.net>
+Date: Fri, 14 Feb 2020 12:24:37 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.2
 MIME-Version: 1.0
@@ -131,6 +132,8 @@ When I apply that patch, there is an error at
   DataAccess:
 
 It complains about "an attempt to move .org backwards".
+
+When I change the 0x300 to 0x310 in two places, it builds OK. Is that OK?
 
 Larry
 
