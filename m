@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D990F15E419
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 17:34:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48JzVJ1dCCzDqcH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 03:34:16 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB7715E559
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 17:41:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Jzfx1PFwzDqSm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 03:41:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=vL0Fo+cU; dkim-atps=neutral
+ header.s=default header.b=tCG6Xo9h; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jyhx3X8szDqSY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 02:58:25 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Jyhz2jG6zDqY0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 02:58:27 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A91F324689;
- Fri, 14 Feb 2020 15:58:22 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C4B172082F;
+ Fri, 14 Feb 2020 15:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581695903;
- bh=RPAB72Coo722ZwprKZsAXV2OiHXky2bshLNuUdhPIE0=;
+ s=default; t=1581695904;
+ bh=ISVgM2uaL0NDzsSwfis/vLF2Fomgdr3iu2TfHqtIxR0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=vL0Fo+cUP8bAj2h6qKRDLW3vhoYGcQkgT+MAZ3HjTgVP7hLi1ZdGLHksSX/SEfMdk
- UMvQYVb7C5Esza1OuKVrzAu+WiB3mekXvF2/nhMGge7HkExxl6ux080vBMjSBp8rbd
- WzJQW8HHetrUOCyrmG5nlqBi44WcIECr6JTVr578=
+ b=tCG6Xo9hxkJdSKLsvkg+Lox9zvy9yNkgYsxNYI5ACsa1ACU1OF1trS8/esCmLNnKA
+ 723JPKX0KSVXo8mOc22lWxp+A/urhkTIUWbWC6G0Q/YQPWcuypW9OlYwAfLgrlGDbY
+ N7a7nWPazpmnw5nVi1rbPmPpqpmi3Vx+18wtdQB8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 444/542] powerpc/ptdump: Fix W+X verification call
- in mark_rodata_ro()
-Date: Fri, 14 Feb 2020 10:47:16 -0500
-Message-Id: <20200214154854.6746-444-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 445/542] powerpc/ptdump: Only enable PPC_CHECK_WX
+ with STRICT_KERNEL_RWX
+Date: Fri, 14 Feb 2020 10:47:17 -0500
+Message-Id: <20200214154854.6746-445-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
 References: <20200214154854.6746-1-sashal@kernel.org>
@@ -67,31 +67,32 @@ Sender: "Linuxppc-dev"
 
 From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-[ Upstream commit e26ad936dd89d79f66c2b567f700e0c2a7103070 ]
+[ Upstream commit f509247b08f2dcf7754d9ed85ad69a7972aa132b ]
 
-ptdump_check_wx() also have to be called when pages are mapped
-by blocks.
+ptdump_check_wx() is called from mark_rodata_ro() which only exists
+when CONFIG_STRICT_KERNEL_RWX is selected.
 
 Fixes: 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/37517da8310f4457f28921a4edb88fb21d27b62a.1578989531.git.christophe.leroy@c-s.fr
+Link: https://lore.kernel.org/r/922d4939c735c6b52b4137838bcc066fffd4fc33.1578989545.git.christophe.leroy@c-s.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/pgtable_32.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/Kconfig.debug | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 73b84166d06a6..5fb90edd865e6 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -218,6 +218,7 @@ void mark_rodata_ro(void)
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 4e1d398474627..0b063830eea84 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -371,7 +371,7 @@ config PPC_PTDUMP
  
- 	if (v_block_mapped((unsigned long)_sinittext)) {
- 		mmu_mark_rodata_ro();
-+		ptdump_check_wx();
- 		return;
- 	}
+ config PPC_DEBUG_WX
+ 	bool "Warn on W+X mappings at boot"
+-	depends on PPC_PTDUMP
++	depends on PPC_PTDUMP && STRICT_KERNEL_RWX
+ 	help
+ 	  Generate a warning if any W+X mappings are found at boot.
  
 -- 
 2.20.1
