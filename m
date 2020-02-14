@@ -2,89 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0179A15F775
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 21:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394C915F78D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 21:14:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K4GS5vR4zDqj1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 07:09:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K4Ng6JZJzDqgj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 07:14:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jzz02pqzzDqFp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:55:39 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01EGo5dn132006
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 11:55:36 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y5jxu0e3f-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 11:55:36 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Fri, 14 Feb 2020 16:55:34 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 14 Feb 2020 16:55:32 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01EGtV7W27656442
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2020 16:55:31 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52E7711C05C;
- Fri, 14 Feb 2020 16:55:31 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C111711C04A;
- Fri, 14 Feb 2020 16:55:29 +0000 (GMT)
-Received: from [9.85.93.41] (unknown [9.85.93.41])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 14 Feb 2020 16:55:29 +0000 (GMT)
-Subject: Re: [PATCH v2 2/4] libnvdimm/namespace: Enforce
- memremap_compat_align()
-To: Jeff Moyer <jmoyer@redhat.com>, Dan Williams <dan.j.williams@intel.com>
-References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158155490897.3343782.14216276134794923581.stgit@dwillia2-desk3.amr.corp.intel.com>
- <x49k14q5ezs.fsf@segfault.boston.devel.redhat.com>
- <CAPcyv4hQouRNBcJ4uZ2mysr_aKstLhvUf66gRQ_3QoQNyOy72g@mail.gmail.com>
- <x49h7ztdsp5.fsf@segfault.boston.devel.redhat.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Fri, 14 Feb 2020 22:25:28 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48K1rr2jnBzDqdL
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 05:20:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=J2tIAn2s; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48K1rn2tTnz8wMf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 05:20:25 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48K1rm5VHZzB49b; Sat, 15 Feb 2020 05:20:24 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
+ helo=mail-ot1-x343.google.com; envelope-from=larry.finger@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=J2tIAn2s; dkim-atps=neutral
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 48K1rk1jJPzB49V
+ for <linuxppc-dev@ozlabs.org>; Sat, 15 Feb 2020 05:20:22 +1100 (AEDT)
+Received: by mail-ot1-x343.google.com with SMTP id 59so10004742otp.12
+ for <linuxppc-dev@ozlabs.org>; Fri, 14 Feb 2020 10:20:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=UMEjP6jiAH/OYDI2ZXQY0jXirotSACylgyVCi6kzEY8=;
+ b=J2tIAn2sFEFgVmijMh2KXTLon2W3H9c0p+ZBOxghX8QkfnVP2bs/y1TRnvKJLixhea
+ uZPLkchMwWxq+yeE2063BV5vlXH0TSiZbWSM4ub5ofkQ4hXrYUzVjMP94t5SsmIxkLhf
+ bmUMJqKQGu++t1rUMD4RiZiAmRmEcEayRCjehI0D4skOBjzkKWwIQzcFcn9q2KlKtEnU
+ frZ6kk4hZ44OCSBm6C97i/K2eIafWQuQORiXEUPFDYnC16/dSO2b1Ter0y/DRTr1wqwY
+ k/2ZoEWKOrk7L472CpRbKrbcoVNt/pbE3bFyMnyVQ0x7ekyFehWGd14k/SwEN0Xpcxkp
+ YBNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=UMEjP6jiAH/OYDI2ZXQY0jXirotSACylgyVCi6kzEY8=;
+ b=WqmVe6DZ8lDuBNn8jpuG3EuLr0h3fi+sp10rsHPzHlDRn8xe6ad8MhAk9C+ucwiCeP
+ T97Kp8D3rzqy2AEjYzFB1x0Eyu3iHFZGAeSS+GWUajW0he7q81QoJaV3GnDBSKGFcQ+T
+ K8POPHdsqV5O/nPcexGuMtXcUjNWlsRqc73PGI655aqi+ybDBzWr8j+baSr48tdJ9k5D
+ uM83ojLo/Grsw26isZcunHIgzqz3542iGOlAVQqtslg3o4O4waRXM4jwjWlCLk4KaiFA
+ nxI/jIQfsf53mn79XMBJYSnHj1tphBg7JZkbjsewKoLTTse6/cuoCsV97cnBJnxGcH6Y
+ YuiQ==
+X-Gm-Message-State: APjAAAU920rvZvvA5ImvNpgBicWtWXkQeYD277oY18GggIhVU/awsH+y
+ gDRwaKP9BXf0iG2o0sjNELLacOpr
+X-Google-Smtp-Source: APXvYqxd76quSEwk4MiTNJAgaPdRab19d+jjOpeiPS5qmGYhsGImXCv6B+zxu+OMhDmEQ95rtAABvg==
+X-Received: by 2002:a9d:864:: with SMTP id 91mr708978oty.289.1581704418178;
+ Fri, 14 Feb 2020 10:20:18 -0800 (PST)
+Received: from [192.168.1.120] (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id 5sm2219495otr.13.2020.02.14.10.20.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 Feb 2020 10:20:17 -0800 (PST)
+Subject: Re: RESEND: Re: Problem booting a PowerBook G4 Aluminum after commit
+ cd08f109 with CONFIG_VMAP_STACK=y
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+References: <f7565b89-c8b2-d2e7-929e-4b1abf72fc63@lwfinger.net>
+ <159ed5d8-376b-1642-fb4b-01406d671cf1@c-s.fr>
+ <6a1802b8-c6a7-d091-1036-689e089b786f@lwfinger.net>
+ <f35ea4e6-7c54-6acc-7d91-3a6eea56133c@c-s.fr>
+ <608a1a18-a0ed-2059-bfbc-081c9ef1bfd8@lwfinger.net>
+ <a8a38651-974a-819a-810c-83c4097adc10@c-s.fr>
+ <7f63e8a8-95c5-eeca-dc79-3c13f4d98d39@lwfinger.net>
+ <9429f86e-8c7d-b2e6-6dc1-8f58c44baadc@c-s.fr>
+ <2da19b26-9a44-2e4e-ab7d-d3fff65091bd@lwfinger.net>
+ <02ce1278-5880-063c-2281-178edd541232@c-s.fr>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <8960e20a-a1bc-d47c-0d77-0b30ab8e01d4@lwfinger.net>
+Date: Fri, 14 Feb 2020 12:20:17 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-In-Reply-To: <x49h7ztdsp5.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <02ce1278-5880-063c-2281-178edd541232@c-s.fr>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20021416-0028-0000-0000-000003DB0464
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021416-0029-0000-0000-000024A0047E
-Message-Id: <0843d8bf-c9e4-37c9-d9c2-ba4407daae21@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-14_05:2020-02-12,
- 2020-02-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxlogscore=999
- bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0 clxscore=1015
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002140127
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,202 +110,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal L Verma <vishal.l.verma@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/14/20 10:14 PM, Jeff Moyer wrote:
-> Dan Williams <dan.j.williams@intel.com> writes:
+On 2/14/20 12:24 AM, Christophe Leroy wrote:
 > 
->> On Thu, Feb 13, 2020 at 1:55 PM Jeff Moyer <jmoyer@redhat.com> wrote:
->>>
->>> Dan Williams <dan.j.williams@intel.com> writes:
->>>
->>>> The pmem driver on PowerPC crashes with the following signature when
->>>> instantiating misaligned namespaces that map their capacity via
->>>> memremap_pages().
->>>>
->>>>      BUG: Unable to handle kernel data access at 0xc001000406000000
->>>>      Faulting instruction address: 0xc000000000090790
->>>>      NIP [c000000000090790] arch_add_memory+0xc0/0x130
->>>>      LR [c000000000090744] arch_add_memory+0x74/0x130
->>>>      Call Trace:
->>>>       arch_add_memory+0x74/0x130 (unreliable)
->>>>       memremap_pages+0x74c/0xa30
->>>>       devm_memremap_pages+0x3c/0xa0
->>>>       pmem_attach_disk+0x188/0x770
->>>>       nvdimm_bus_probe+0xd8/0x470
->>>>
->>>> With the assumption that only memremap_pages() has alignment
->>>> constraints, enforce memremap_compat_align() for
->>>> pmem_should_map_pages(), nd_pfn, or nd_dax cases.
->>>>
->>>> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>> Cc: Jeff Moyer <jmoyer@redhat.com>
->>>> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>> Link: https://lore.kernel.org/r/158041477336.3889308.4581652885008605170.stgit@dwillia2-desk3.amr.corp.intel.com
->>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>>> ---
->>>>   drivers/nvdimm/namespace_devs.c |   10 ++++++++++
->>>>   1 file changed, 10 insertions(+)
->>>>
->>>> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
->>>> index 032dc61725ff..aff1f32fdb4f 100644
->>>> --- a/drivers/nvdimm/namespace_devs.c
->>>> +++ b/drivers/nvdimm/namespace_devs.c
->>>> @@ -1739,6 +1739,16 @@ struct nd_namespace_common *nvdimm_namespace_common_probe(struct device *dev)
->>>>                return ERR_PTR(-ENODEV);
->>>>        }
->>>>
->>>> +     if (pmem_should_map_pages(dev) || nd_pfn || nd_dax) {
->>>> +             struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
->>>> +             resource_size_t start = nsio->res.start;
->>>> +
->>>> +             if (!IS_ALIGNED(start | size, memremap_compat_align())) {
->>>> +                     dev_dbg(&ndns->dev, "misaligned, unable to map\n");
->>>> +                     return ERR_PTR(-EOPNOTSUPP);
->>>> +             }
->>>> +     }
->>>> +
->>>>        if (is_namespace_pmem(&ndns->dev)) {
->>>>                struct nd_namespace_pmem *nspm;
->>>>
->>>
->>> Actually, I take back my ack.  :) This prevents a previously working
->>> namespace from being successfully probed/setup.
->>
->> Do you have a test case handy? I can see a potential gap with a
->> namespace that used internal padding to fix up the alignment.
-> 
-> # ndctl list -v -n namespace0.0
-> [
->    {
->      "dev":"namespace0.0",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":52846133248,
->      "uuid":"b99f6f6a-2909-4189-9bfa-6eeebd95d40e",
->      "raw_uuid":"aff43777-015b-493f-bbf9-7c7b0fe33519",
->      "sector_size":512,
->      "align":4096,
->      "blockdev":"pmem0",
->      "numa_node":0
->    }
-> ]
-> 
-> # cat /sys/bus/nd/devices/region0/mappings
-> 6
-> 
-> # grep namespace0.0 /proc/iomem
->    1860000000-24e0003fff : namespace0.0
-> 
->> The goal of this check is to catch cases that are just going to fail
->> devm_memremap_pages(), and the expectation is that it could not have
->> worked before unless it was ported from another platform, or someone
->> flipped the page-size switch on PowerPC.
-> 
-> On x86, creation and probing of the namespace worked fine before this
-> patch.  What *doesn't* work is creating another fsdax namespace after
-> this one.  sector mode namespaces can still be created, though:
-> 
-> [
->    {
->      "dev":"namespace0.1",
->      "mode":"sector",
->      "size":53270768640,
->      "uuid":"67ea2c74-d4b1-4fc9-9c1a-a7d2a6c2a4a7",
->      "sector_size":512,
->      "blockdev":"pmem0.1s"
->    },
-> 
-> # grep namespace0.1 /proc/iomem
->    24e0004000-3160007fff : namespace0.1
-> 
->>> I thought we were only going to enforce the alignment for a newly
->>> created namespace?  This should only check whether the alignment
->>> works for the current platform.
->>
->> The model is a new default 16MB alignment is enforced at creation
->> time, but if you need to support previously created namespaces then
->> you can manually trim that alignment requirement to no less than
->> memremap_compat_align() because that's the point at which
->> devm_memremap_pages() will start failing or crashing.
-> 
-> The problem is that older kernels did not enforce alignment to
-> SUBSECTION_SIZE.  We shouldn't prevent those namespaces from being
-> accessed.  The probe itself will not cause the WARN_ON to trigger.
-> Creating new namespaces at misaligned addresses could, but you've
-> altered the free space allocation such that we won't hit that anymore.
-> 
-> If I drop this patch, the probe will still work, and allocating new
-> namespaces will also work:
-> 
-> # ndctl list
-> [
->    {
->      "dev":"namespace0.1",
->      "mode":"sector",
->      "size":53270768640,
->      "uuid":"67ea2c74-d4b1-4fc9-9c1a-a7d2a6c2a4a7",
->      "sector_size":512,
->      "blockdev":"pmem0.1s"
->    },
->    {
->      "dev":"namespace0.0",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":52846133248,
->      "uuid":"b99f6f6a-2909-4189-9bfa-6eeebd95d40e",
->      "sector_size":512,
->      "align":4096,
->      "blockdev":"pmem0"
->    }
-> ]
->   ndctl create-namespace -m fsdax -s 36g -r 0
-> {
->    "dev":"namespace0.2",
->    "mode":"fsdax",
->    "map":"dev",
->    "size":"35.44 GiB (38.05 GB)",
->    "uuid":"7893264c-c7ef-4cbe-95e1-ccf2aff041fb",
->    "sector_size":512,
->    "align":2097152,
->    "blockdev":"pmem0.2"
-> }
-> 
-> proc/iomem:
-> 
-> 1860000000-d55fffffff : Persistent Memory
->    1860000000-24e0003fff : namespace0.0
->    24e0004000-3160007fff : namespace0.1
->    3162000000-3a61ffffff : namespace0.2
-> 
-> So, maybe the right thing is to make memremap_compat_align return
-> PAGE_SIZE for x86 instead of SUBSECTION_SIZE?
-> 
+> Did you try with the patch at https://patchwork.ozlabs.org/patch/1237387/ ?
 
+Christophe,
 
-I did that as part of 
-https://lore.kernel.org/linux-nvdimm/20200120140749.69549-2-aneesh.kumar@linux.ibm.com 
-and applied the subsection details only when creating new namespace
+When I apply that patch, there is an error at
 
-https://lore.kernel.org/linux-nvdimm/20200120140749.69549-4-aneesh.kumar@linux.ibm.com
+--- a/arch/powerpc/kernel/head_32.S
++++ b/arch/powerpc/kernel/head_32.S
+@@ -301,6 +301,39 @@  MachineCheck:
+  	. = 0x300
+  	DO_KVM  0x300
+  DataAccess:
 
+It complains about "an attempt to move .org backwards".
 
-But I do agree with the approach that in-order to create a compatible 
-namespace we need enforce max possible align value across all supported 
-architectures.
-
-
-On POWER we should still be able to enforce SUBSECTION_SIZE 
-restrictions. We did put that as document w.r.t. distributions like Suse 
-https://www.suse.com/support/kb/doc/?id=7024300
-
-
-
--aneesh
+Larry
 
