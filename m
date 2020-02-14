@@ -1,86 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E349F15D7AB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 13:51:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0174B15D683
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 12:26:57 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Jrgd58mFzDqbx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 22:26:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48JtXl0nxtzDqb0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 23:51:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=NkAUUNKo; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48JrHL1fDhzDqTY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 22:09:17 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01EB6xvp022339
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 06:09:15 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y4j8at313-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 06:09:14 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Fri, 14 Feb 2020 11:09:12 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 14 Feb 2020 11:09:06 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01EB94aI55640210
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Feb 2020 11:09:04 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 787A5A405B;
- Fri, 14 Feb 2020 11:09:04 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74ADFA406A;
- Fri, 14 Feb 2020 11:09:03 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.28.205])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 14 Feb 2020 11:09:03 +0000 (GMT)
-Subject: Re: [PATCH v2 05/27] powerpc: Map & release OpenCAPI LPC memory
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203034655.51561-6-alastair@au1.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Fri, 14 Feb 2020 12:09:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20191203034655.51561-6-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20021411-0020-0000-0000-000003AA12A9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021411-0021-0000-0000-000022020116
-Message-Id: <85e5a3d4-bac2-a8fc-8fc7-865be539dc3c@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-14_03:2020-02-12,
- 2020-02-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=894
- clxscore=1015 phishscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
- suspectscore=2 lowpriorityscore=0 spamscore=0 mlxscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002140091
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JtT75kPkzDqZS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 23:47:54 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48JtT05l5Nz9vCQl;
+ Fri, 14 Feb 2020 13:47:48 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=NkAUUNKo; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id efUaM-2d1a0F; Fri, 14 Feb 2020 13:47:48 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48JtT04FJMz9vCQk;
+ Fri, 14 Feb 2020 13:47:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1581684468; bh=3fiaA5FcWScVQJkSV4HPlPfihfk9MOHk1QtHl3KvFe4=;
+ h=From:Subject:To:Cc:Date:From;
+ b=NkAUUNKomt6tvLBELE+9DTFnFIgIts539Rh+tclNjXG0xYNuymK+xeeKZgA2r+TRH
+ luzMoAi+FfNkoWkwLIHscsau1OuDErfa9yGjMpbWVAS/J1A8sr+/K7H0cWMnF4aOMM
+ wKMgyrrF7mLRk4Ka4ceMI5xFUFHifyMlBlv4yv0Y=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D54B78B898;
+ Fri, 14 Feb 2020 13:47:49 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 9H4XewX8cR8U; Fri, 14 Feb 2020 13:47:49 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 804F18B897;
+ Fri, 14 Feb 2020 13:47:49 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 4DAF0652FA; Fri, 14 Feb 2020 12:47:49 +0000 (UTC)
+Message-Id: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/kprobes: Fix trap address when trap happened in real
+ mode
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Date: Fri, 14 Feb 2020 12:47:49 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,114 +76,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Keith Busch <keith.busch@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, stable@kernel.vger.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When a program check exception happens while MMU translation is
+disabled, following Oops happens in kprobe_handler() in the following
+test:
 
+		} else if (*addr != BREAKPOINT_INSTRUCTION) {
 
-Le 03/12/2019 à 04:46, Alastair D'Silva a écrit :
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> This patch adds platform support to map & release LPC memory.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->   arch/powerpc/include/asm/pnv-ocxl.h   |  2 ++
->   arch/powerpc/platforms/powernv/ocxl.c | 42 +++++++++++++++++++++++++++
->   2 files changed, 44 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
-> index 7de82647e761..f8f8ffb48aa8 100644
-> --- a/arch/powerpc/include/asm/pnv-ocxl.h
-> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
-> @@ -32,5 +32,7 @@ extern int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
->   
->   extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
->   extern void pnv_ocxl_free_xive_irq(u32 irq);
-> +extern u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size);
-> +extern void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev);
->   
->   #endif /* _ASM_PNV_OCXL_H */
-> diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-> index 8c65aacda9c8..b56a48daf48c 100644
-> --- a/arch/powerpc/platforms/powernv/ocxl.c
-> +++ b/arch/powerpc/platforms/powernv/ocxl.c
-> @@ -475,6 +475,48 @@ void pnv_ocxl_spa_release(void *platform_data)
->   }
->   EXPORT_SYMBOL_GPL(pnv_ocxl_spa_release);
->   
-> +u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size)
-> +{
-> +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> +	struct pnv_phb *phb = hose->private_data;
-> +	u32 bdfn = pci_dev_id(pdev);
-> +	__be64 base_addr_be64;
-> +	u64 base_addr;
-> +	int rc;
-> +
-> +	rc = opal_npu_mem_alloc(phb->opal_id, bdfn, size, &base_addr_be64);
-> +	if (rc) {
-> +		dev_warn(&pdev->dev,
-> +			 "OPAL could not allocate LPC memory, rc=%d\n", rc);
-> +		return 0;
-> +	}
-> +
-> +	base_addr = be64_to_cpu(base_addr_be64);
-> +
-> +	rc = check_hotplug_memory_addressable(base_addr >> PAGE_SHIFT,
-> +					      size >> PAGE_SHIFT);
+[   33.098554] BUG: Unable to handle kernel data access on read at 0x0000e268
+[   33.105091] Faulting instruction address: 0xc000ec34
+[   33.110010] Oops: Kernel access of bad area, sig: 11 [#1]
+[   33.115348] BE PAGE_SIZE=16K PREEMPT CMPC885
+[   33.119540] Modules linked in:
+[   33.122591] CPU: 0 PID: 429 Comm: cat Not tainted 5.6.0-rc1-s3k-dev-00824-g84195dc6c58a #3267
+[   33.131005] NIP:  c000ec34 LR: c000ecd8 CTR: c019cab8
+[   33.136002] REGS: ca4d3b58 TRAP: 0300   Not tainted  (5.6.0-rc1-s3k-dev-00824-g84195dc6c58a)
+[   33.144324] MSR:  00001032 <ME,IR,DR,RI>  CR: 2a4d3c52  XER: 00000000
+[   33.150699] DAR: 0000e268 DSISR: c0000000
+[   33.150699] GPR00: c000b09c ca4d3c10 c66d0620 00000000 ca4d3c60 00000000 00009032 00000000
+[   33.150699] GPR08: 00020000 00000000 c087de44 c000afe0 c66d0ad0 100d3dd6 fffffff3 00000000
+[   33.150699] GPR16: 00000000 00000041 00000000 ca4d3d70 00000000 00000000 0000416d 00000000
+[   33.150699] GPR24: 00000004 c53b6128 00000000 0000e268 00000000 c07c0000 c07bb6fc ca4d3c60
+[   33.188015] NIP [c000ec34] kprobe_handler+0x128/0x290
+[   33.192989] LR [c000ecd8] kprobe_handler+0x1cc/0x290
+[   33.197854] Call Trace:
+[   33.200340] [ca4d3c30] [c000b09c] program_check_exception+0xbc/0x6fc
+[   33.206590] [ca4d3c50] [c000e43c] ret_from_except_full+0x0/0x4
+[   33.212392] --- interrupt: 700 at 0xe268
+[   33.270401] Instruction dump:
+[   33.273335] 913e0008 81220000 38600001 3929ffff 91220000 80010024 bb410008 7c0803a6
+[   33.280992] 38210020 4e800020 38600000 4e800020 <813b0000> 6d2a7fe0 2f8a0008 419e0154
+[   33.288841] ---[ end trace 5b9152d4cdadd06d ]---
 
+Check MSR and convert regs->nip to virtual address if the trap
+happened with MSR_IR cleared.
 
-check_hotplug_memory_addressable() is only declared if 
-CONFIG_MEMORY_HOTPLUG_SPARSE is selected.
-I think we also need a #ifdef here.
+Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
+Fixes: 6cc89bad60a6 ("powerpc/kprobes: Invoke handlers directly")
+Cc: stable@kernel.vger.org
+Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-   Fred
+---
+The bug might have existed even before that commit from Naveen.
 
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/kernel/kprobes.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> +	if (rc)
-> +		return 0;
-> +
-> +	return base_addr;
-> +}
-> +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_setup);
-> +
-> +void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev)
-> +{
-> +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> +	struct pnv_phb *phb = hose->private_data;
-> +	u32 bdfn = pci_dev_id(pdev);
-> +	int rc;
-> +
-> +	rc = opal_npu_mem_release(phb->opal_id, bdfn);
-> +	if (rc)
-> +		dev_warn(&pdev->dev,
-> +			 "OPAL reported rc=%d when releasing LPC memory\n", rc);
-> +}
-> +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_release);
-> +
-> +
->   int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
->   {
->   	struct spa_data *data = (struct spa_data *) platform_data;
-> 
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 2d27ec4feee4..f8b848aa65bd 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -23,6 +23,7 @@
+ #include <asm/cacheflush.h>
+ #include <asm/sstep.h>
+ #include <asm/sections.h>
++#include <asm/io.h>
+ #include <linux/uaccess.h>
+ 
+ DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+@@ -264,6 +265,9 @@ int kprobe_handler(struct pt_regs *regs)
+ 	if (user_mode(regs))
+ 		return 0;
+ 
++	if (!(regs->msr & MSR_IR))
++		addr = phys_to_virt(regs->nip);
++
+ 	/*
+ 	 * We don't want to be preempted for the entire
+ 	 * duration of kprobe processing
+-- 
+2.25.0
 
