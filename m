@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122BF15F62B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:52:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C5415F616
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:49:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K2VB5qXdzDqX0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 05:49:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K2ZG5C0HzDqhl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 05:52:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=tL951TCS; dkim-atps=neutral
+ header.s=default header.b=kSs44vaQ; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jz3p3kZ7zDqBl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:14:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Jz531YswzDqbw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:15:51 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E3A11246AA;
- Fri, 14 Feb 2020 16:14:41 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1BB5A246EA;
+ Fri, 14 Feb 2020 16:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581696882;
- bh=tt4qicG9AyUyxBltT0C/4gAsKNu/2tuaYYs+7jDOo1w=;
+ s=default; t=1581696949;
+ bh=fwizeftwlR9izkeLredXixUH0zyGGLB15OEPZL7soIU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=tL951TCSCdOPhLdnwaQ451puBbvIbEVyn5Y20W8fZ6sOlnlbhn3qp6g2F596doH6d
- AM69/rRovh408Z3ACMO454Db+LM/ggCfMO3h/8FIgDiYAvpe1iM03zV4kb8baVg6Lv
- uDxprYSPYHZPtuGYrbZclGM8BdThTozHVkz6GQMk=
+ b=kSs44vaQ9x/975PbRAiuAuOPdJiTNiGiNDXVfLRnUSNGhuSmAP/wyGXWWZ/QSDmg1
+ iqAFbukJFy98zaFoKGtWAluHu3VdyjBcem9PtkUvUVjwXOAZqzWaRcOQ0Da44Omoar
+ l8v/ZXbYyUz4yMYwfsq7rr53YRUbAE+l+LbUmrks=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 137/252] soc: fsl: qe: remove set but not used
- variable 'mm_gc'
-Date: Fri, 14 Feb 2020 11:09:52 -0500
-Message-Id: <20200214161147.15842-137-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 190/252] ide: remove set but not used variable
+ 'hwif'
+Date: Fri, 14 Feb 2020 11:10:45 -0500
+Message-Id: <20200214161147.15842-190-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214161147.15842-1-sashal@kernel.org>
 References: <20200214161147.15842-1-sashal@kernel.org>
@@ -60,53 +60,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Chen Zhou <chenzhou10@huawei.com>,
- YueHaibing <yuehaibing@huawei.com>, Li Yang <leoyang.li@nxp.com>,
- Hulk Robot <hulkci@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Sasha Levin <sashal@kernel.org>, Wang Hai <wanghai38@huawei.com>,
+ linux-ide@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 6e62bd36e9ad85a22d92b1adce6a0336ea549733 ]
+[ Upstream commit 98949a1946d70771789def0c9dbc239497f9f138 ]
 
-drivers/soc/fsl/qe/gpio.c: In function qe_pin_request:
-drivers/soc/fsl/qe/gpio.c:163:26: warning: variable mm_gc set but not used [-Wunused-but-set-variable]
+Fix the following gcc warning:
 
-commit 1e714e54b5ca ("powerpc: qe_lib-gpio: use gpiochip data pointer")
-left behind this unused variable.
+drivers/ide/pmac.c: In function pmac_ide_setup_device:
+drivers/ide/pmac.c:1027:14: warning: variable hwif set but not used
+[-Wunused-but-set-variable]
 
+Fixes: d58b0c39e32f ("powerpc/macio: Rework hotplug media bay support")
 Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/gpio.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/ide/pmac.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
-index 51b3a47b5a559..2aa4088a63e6c 100644
---- a/drivers/soc/fsl/qe/gpio.c
-+++ b/drivers/soc/fsl/qe/gpio.c
-@@ -164,7 +164,6 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
- {
- 	struct qe_pin *qe_pin;
- 	struct gpio_chip *gc;
--	struct of_mm_gpio_chip *mm_gc;
- 	struct qe_gpio_chip *qe_gc;
- 	int err;
- 	unsigned long flags;
-@@ -190,7 +189,6 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
- 		goto err0;
+diff --git a/drivers/ide/pmac.c b/drivers/ide/pmac.c
+index 203ed4adc04ae..7db083ec5ee06 100644
+--- a/drivers/ide/pmac.c
++++ b/drivers/ide/pmac.c
+@@ -1024,7 +1024,6 @@ static int pmac_ide_setup_device(pmac_ide_hwif_t *pmif, struct ide_hw *hw)
+ 	struct device_node *np = pmif->node;
+ 	const int *bidp;
+ 	struct ide_host *host;
+-	ide_hwif_t *hwif;
+ 	struct ide_hw *hws[] = { hw };
+ 	struct ide_port_info d = pmac_port_info;
+ 	int rc;
+@@ -1080,7 +1079,7 @@ static int pmac_ide_setup_device(pmac_ide_hwif_t *pmif, struct ide_hw *hw)
+ 		rc = -ENOMEM;
+ 		goto bail;
  	}
+-	hwif = pmif->hwif = host->ports[0];
++	pmif->hwif = host->ports[0];
  
--	mm_gc = to_of_mm_gpio_chip(gc);
- 	qe_gc = gpiochip_get_data(gc);
- 
- 	spin_lock_irqsave(&qe_gc->lock, flags);
+ 	if (on_media_bay(pmif)) {
+ 		/* Fixup bus ID for media bay */
 -- 
 2.20.1
 
