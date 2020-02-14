@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F56015F64C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 20:02:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C8015F63C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:58:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K2jD0wJPzDqYP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 05:58:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K2nL6YZPzDqTd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 06:02:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=FwSi0fBP; dkim-atps=neutral
+ header.s=default header.b=s4SPFqwT; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jz6q4vftzDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:17:23 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Jz786NzTzDqCR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:17:40 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9F3CD246A7;
- Fri, 14 Feb 2020 16:17:20 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DC5B62468E;
+ Fri, 14 Feb 2020 16:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581697041;
- bh=uCw4b9kqzYE6LWAY5bUvM5sqyYD1BlxbEqaUQv+llWU=;
+ s=default; t=1581697058;
+ bh=8InE86H468oaSvZmmcITyyVP/obxoGRHX02l4sK1+fQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=FwSi0fBPmTYvnAKarrK8QyCao1unhu5nh5TxCFQeRz5XlSRZGPLSvbRXPsQDQqIrf
- CA/Rk9DxSp4/K4aKUscTySerotuDSP9FKh2vrfiMoh6V4hq4JQ5kuoOHCgaQDe+1YH
- 39rukDV/pJ690TFm89PLp9uQsl+0aKIuXB6rHXa4=
+ b=s4SPFqwT7vhsoGmjAMBTr5KPhwsjXdc26hf08qp5sDbGwYlsVC3/IMwl6zavPzDsQ
+ vSj0UNhZF/ntP5AKwOZTnylFOWFnbnatvAheJx8oOViFgGfz8KfNLWN1zQh/B7p8a3
+ rLJoNXiefttcXvYwKSM2JMDJ4assR2h2hzRp36N4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 004/186] soc: fsl: qe: change return type of
- cpm_muram_alloc() to s32
-Date: Fri, 14 Feb 2020 11:14:13 -0500
-Message-Id: <20200214161715.18113-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 017/186] powerpc/powernv/iov: Ensure the pdn for
+ VFs always contains a valid PE number
+Date: Fri, 14 Feb 2020 11:14:26 -0500
+Message-Id: <20200214161715.18113-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
 References: <20200214161715.18113-1-sashal@kernel.org>
@@ -60,193 +60,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Timur Tabi <timur@kernel.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Li Yang <leoyang.li@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+From: Oliver O'Halloran <oohall@gmail.com>
 
-[ Upstream commit 800cd6fb76f0ec7711deb72a86c924db1ae42648 ]
+[ Upstream commit 3b5b9997b331e77ce967eba2c4bc80dc3134a7fe ]
 
-There are a number of problems with cpm_muram_alloc() and its
-callers. Most callers assign the return value to some variable and
-then use IS_ERR_VALUE to check for allocation failure. However, when
-that variable is not sizeof(long), this leads to warnings - and it is
-indeed broken to do e.g.
+On pseries there is a bug with adding hotplugged devices to an IOMMU
+group. For a number of dumb reasons fixing that bug first requires
+re-working how VFs are configured on PowerNV. For background, on
+PowerNV we use the pcibios_sriov_enable() hook to do two things:
 
-  u32 foo = cpm_muram_alloc();
-  if (IS_ERR_VALUE(foo))
+  1. Create a pci_dn structure for each of the VFs, and
+  2. Configure the PHB's internal BARs so the MMIO range for each VF
+     maps to a unique PE.
 
-on a 64-bit platform, since the condition
+Roughly speaking a PE is the hardware counterpart to a Linux IOMMU
+group since all the devices in a PE share the same IOMMU table. A PE
+also defines the set of devices that should be isolated in response to
+a PCI error (i.e. bad DMA, UR/CA, AER events, etc). When isolated all
+MMIO and DMA traffic to and from devicein the PE is blocked by the
+root complex until the PE is recovered by the OS.
 
-  foo >= (unsigned long)-ENOMEM
+The requirement to block MMIO causes a giant headache because the P8
+PHB generally uses a fixed mapping between MMIO addresses and PEs. As
+a result we need to delay configuring the IOMMU groups for device
+until after MMIO resources are assigned. For physical devices (i.e.
+non-VFs) the PE assignment is done in pcibios_setup_bridge() which is
+called immediately after the MMIO resources for downstream
+devices (and the bridge's windows) are assigned. For VFs the setup is
+more complicated because:
 
-is tautologically false. There are also callers that ignore the
-possibility of error, and then there are those that check for error by
-comparing the return value to 0...
+  a) pcibios_setup_bridge() is not called again when VFs are activated, and
+  b) The pci_dev for VFs are created by generic code which runs after
+     pcibios_sriov_enable() is called.
 
-One could fix that by changing all callers to store the return value
-temporarily in an "unsigned long" and test that. However, use of
-IS_ERR_VALUE() is error-prone and should be restricted to things which
-are inherently long-sized (stuff in pt_regs etc.). Instead, let's aim
-for changing to the standard kernel style
+The work around for this is a two step process:
 
-  int foo = cpm_muram_alloc();
-  if (foo < 0)
-    deal_with_it()
-  some->where = foo;
+  1. A fixup in pcibios_add_device() is used to initialised the cached
+     pe_number in pci_dn, then
+  2. A bus notifier then adds the device to the IOMMU group for the PE
+     specified in pci_dn->pe_number.
 
-Changing the return type from unsigned long to s32 (aka signed int)
-doesn't change the value that gets stored into any of the callers'
-variables except if the caller was storing the result in a u64 _and_
-the allocation failed, so in itself this patch should be a no-op.
+A side effect fixing the pseries bug mentioned in the first paragraph
+is moving the fixup out of pcibios_add_device() and into
+pcibios_bus_add_device(), which is called much later. This results in
+step 2. failing because pci_dn->pe_number won't be initialised when
+the bus notifier is run.
 
-Another problem with cpm_muram_alloc() is that it can certainly
-validly return 0 - and except if some cpm_muram_alloc_fixed() call
-interferes, the very first cpm_muram_alloc() call will return just
-that. But that shows that both ucc_slow_free() and ucc_fast_free() are
-buggy, since they assume that a value of 0 means "that field was never
-allocated". We'll later change cpm_muram_free() to accept (and ignore)
-a negative offset, so callers can use a sentinel of -1 instead of 0
-and just unconditionally call cpm_muram_free().
+We can fix this by removing the need for the fixup. The PE for a VF is
+known before the VF is even scanned so we can initialise
+pci_dn->pe_number pcibios_sriov_enable() instead. Unfortunately,
+moving the initialisation causes two problems:
 
-Reviewed-by: Timur Tabi <timur@kernel.org>
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
+  1. We trip the WARN_ON() in the current fixup code, and
+  2. The EEH core clears pdn->pe_number when recovering a VF and
+     relies on the fixup to correctly re-set it.
+
+The only justification for either of these is a comment in
+eeh_rmv_device() suggesting that pdn->pe_number *must* be set to
+IODA_INVALID_PE in order for the VF to be scanned. However, this
+comment appears to have no basis in reality. Both bugs can be fixed by
+just deleting the code.
+
+Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191028085424.12006-1-oohall@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/qe_common.c | 29 ++++++++++++++++-------------
- include/soc/fsl/qe/qe.h        | 16 ++++++++--------
- 2 files changed, 24 insertions(+), 21 deletions(-)
+ arch/powerpc/kernel/eeh_driver.c          |  6 ------
+ arch/powerpc/platforms/powernv/pci-ioda.c | 19 +++++++++++++++----
+ arch/powerpc/platforms/powernv/pci.c      |  4 ----
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qe_common.c b/drivers/soc/fsl/qe/qe_common.c
-index 104e68d9b84f2..4f60724b06b7c 100644
---- a/drivers/soc/fsl/qe/qe_common.c
-+++ b/drivers/soc/fsl/qe/qe_common.c
-@@ -35,7 +35,7 @@ static phys_addr_t muram_pbase;
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 470284f9e4f66..5a48c93aaa1b3 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -520,12 +520,6 @@ static void *eeh_rmv_device(void *data, void *userdata)
  
- struct muram_block {
- 	struct list_head head;
--	unsigned long start;
-+	s32 start;
- 	int size;
- };
+ 		pci_iov_remove_virtfn(edev->physfn, pdn->vf_index, 0);
+ 		edev->pdev = NULL;
+-
+-		/*
+-		 * We have to set the VF PE number to invalid one, which is
+-		 * required to plug the VF successfully.
+-		 */
+-		pdn->pe_number = IODA_INVALID_PE;
+ #endif
+ 		if (rmv_data)
+ 			list_add(&edev->rmv_list, &rmv_data->edev_list);
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index d3d5796f7df60..36ef504eeab32 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1523,6 +1523,10 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
  
-@@ -113,13 +113,14 @@ int cpm_muram_init(void)
-  * @algo: algorithm for alloc.
-  * @data: data for genalloc's algorithm.
-  *
-- * This function returns an offset into the muram area.
-+ * This function returns a non-negative offset into the muram area, or
-+ * a negative errno on failure.
-  */
--static unsigned long cpm_muram_alloc_common(unsigned long size,
--		genpool_algo_t algo, void *data)
-+static s32 cpm_muram_alloc_common(unsigned long size,
-+				  genpool_algo_t algo, void *data)
- {
- 	struct muram_block *entry;
--	unsigned long start;
-+	s32 start;
+ 	/* Reserve PE for each VF */
+ 	for (vf_index = 0; vf_index < num_vfs; vf_index++) {
++		int vf_devfn = pci_iov_virtfn_devfn(pdev, vf_index);
++		int vf_bus = pci_iov_virtfn_bus(pdev, vf_index);
++		struct pci_dn *vf_pdn;
++
+ 		if (pdn->m64_single_mode)
+ 			pe_num = pdn->pe_num_map[vf_index];
+ 		else
+@@ -1535,13 +1539,11 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+ 		pe->pbus = NULL;
+ 		pe->parent_dev = pdev;
+ 		pe->mve_number = -1;
+-		pe->rid = (pci_iov_virtfn_bus(pdev, vf_index) << 8) |
+-			   pci_iov_virtfn_devfn(pdev, vf_index);
++		pe->rid = (vf_bus << 8) | vf_devfn;
  
- 	if (!muram_pool && cpm_muram_init())
- 		goto out2;
-@@ -140,7 +141,7 @@ static unsigned long cpm_muram_alloc_common(unsigned long size,
- out1:
- 	gen_pool_free(muram_pool, start, size);
- out2:
--	return (unsigned long)-ENOMEM;
-+	return -ENOMEM;
+ 		pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
+ 			hose->global_number, pdev->bus->number,
+-			PCI_SLOT(pci_iov_virtfn_devfn(pdev, vf_index)),
+-			PCI_FUNC(pci_iov_virtfn_devfn(pdev, vf_index)), pe_num);
++			PCI_SLOT(vf_devfn), PCI_FUNC(vf_devfn), pe_num);
+ 
+ 		if (pnv_ioda_configure_pe(phb, pe)) {
+ 			/* XXX What do we do here ? */
+@@ -1555,6 +1557,15 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+ 		list_add_tail(&pe->list, &phb->ioda.pe_list);
+ 		mutex_unlock(&phb->ioda.pe_list_mutex);
+ 
++		/* associate this pe to it's pdn */
++		list_for_each_entry(vf_pdn, &pdn->parent->child_list, list) {
++			if (vf_pdn->busno == vf_bus &&
++			    vf_pdn->devfn == vf_devfn) {
++				vf_pdn->pe_number = pe_num;
++				break;
++			}
++		}
++
+ 		pnv_pci_ioda2_setup_dma_pe(phb, pe);
+ 	}
  }
+diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+index 961c131a5b7e8..844ca1886063b 100644
+--- a/arch/powerpc/platforms/powernv/pci.c
++++ b/arch/powerpc/platforms/powernv/pci.c
+@@ -978,16 +978,12 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
+ 	struct pnv_phb *phb = hose->private_data;
+ #ifdef CONFIG_PCI_IOV
+ 	struct pnv_ioda_pe *pe;
+-	struct pci_dn *pdn;
  
- /*
-@@ -148,13 +149,14 @@ static unsigned long cpm_muram_alloc_common(unsigned long size,
-  * @size: number of bytes to allocate
-  * @align: requested alignment, in bytes
-  *
-- * This function returns an offset into the muram area.
-+ * This function returns a non-negative offset into the muram area, or
-+ * a negative errno on failure.
-  * Use cpm_dpram_addr() to get the virtual address of the area.
-  * Use cpm_muram_free() to free the allocation.
-  */
--unsigned long cpm_muram_alloc(unsigned long size, unsigned long align)
-+s32 cpm_muram_alloc(unsigned long size, unsigned long align)
- {
--	unsigned long start;
-+	s32 start;
- 	unsigned long flags;
- 	struct genpool_data_align muram_pool_data;
- 
-@@ -171,7 +173,7 @@ EXPORT_SYMBOL(cpm_muram_alloc);
-  * cpm_muram_free - free a chunk of multi-user ram
-  * @offset: The beginning of the chunk as returned by cpm_muram_alloc().
-  */
--int cpm_muram_free(unsigned long offset)
-+int cpm_muram_free(s32 offset)
- {
- 	unsigned long flags;
- 	int size;
-@@ -197,13 +199,14 @@ EXPORT_SYMBOL(cpm_muram_free);
-  * cpm_muram_alloc_fixed - reserve a specific region of multi-user ram
-  * @offset: offset of allocation start address
-  * @size: number of bytes to allocate
-- * This function returns an offset into the muram area
-+ * This function returns @offset if the area was available, a negative
-+ * errno otherwise.
-  * Use cpm_dpram_addr() to get the virtual address of the area.
-  * Use cpm_muram_free() to free the allocation.
-  */
--unsigned long cpm_muram_alloc_fixed(unsigned long offset, unsigned long size)
-+s32 cpm_muram_alloc_fixed(unsigned long offset, unsigned long size)
- {
--	unsigned long start;
-+	s32 start;
- 	unsigned long flags;
- 	struct genpool_data_fixed muram_pool_data_fixed;
- 
-diff --git a/include/soc/fsl/qe/qe.h b/include/soc/fsl/qe/qe.h
-index b3d1aff5e8ad5..deb6238416947 100644
---- a/include/soc/fsl/qe/qe.h
-+++ b/include/soc/fsl/qe/qe.h
-@@ -102,26 +102,26 @@ static inline void qe_reset(void) {}
- int cpm_muram_init(void);
- 
- #if defined(CONFIG_CPM) || defined(CONFIG_QUICC_ENGINE)
--unsigned long cpm_muram_alloc(unsigned long size, unsigned long align);
--int cpm_muram_free(unsigned long offset);
--unsigned long cpm_muram_alloc_fixed(unsigned long offset, unsigned long size);
-+s32 cpm_muram_alloc(unsigned long size, unsigned long align);
-+int cpm_muram_free(s32 offset);
-+s32 cpm_muram_alloc_fixed(unsigned long offset, unsigned long size);
- void __iomem *cpm_muram_addr(unsigned long offset);
- unsigned long cpm_muram_offset(void __iomem *addr);
- dma_addr_t cpm_muram_dma(void __iomem *addr);
- #else
--static inline unsigned long cpm_muram_alloc(unsigned long size,
--					    unsigned long align)
-+static inline s32 cpm_muram_alloc(unsigned long size,
-+				  unsigned long align)
- {
- 	return -ENOSYS;
- }
- 
--static inline int cpm_muram_free(unsigned long offset)
-+static inline int cpm_muram_free(s32 offset)
- {
- 	return -ENOSYS;
- }
- 
--static inline unsigned long cpm_muram_alloc_fixed(unsigned long offset,
--						  unsigned long size)
-+static inline s32 cpm_muram_alloc_fixed(unsigned long offset,
-+					unsigned long size)
- {
- 	return -ENOSYS;
- }
+ 	/* Fix the VF pdn PE number */
+ 	if (pdev->is_virtfn) {
+-		pdn = pci_get_pdn(pdev);
+-		WARN_ON(pdn->pe_number != IODA_INVALID_PE);
+ 		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
+ 			if (pe->rid == ((pdev->bus->number << 8) |
+ 			    (pdev->devfn & 0xff))) {
+-				pdn->pe_number = pe->pe_number;
+ 				pe->pdev = pdev;
+ 				break;
+ 			}
 -- 
 2.20.1
 
