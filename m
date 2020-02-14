@@ -2,97 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD7715D63B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 12:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2094615D644
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 12:07:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Jr9z5WMlzDqZn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 22:04:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48JrDw6ygFzDqZk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 22:07:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jr7v62WZzDqXw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 22:02:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=AXPIAzZI; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48Jr7v4Wwqz8syf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 22:02:51 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48Jr7v4CqNz9sRQ; Fri, 14 Feb 2020 22:02:51 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=AXPIAzZI; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48Jr7t1hTkz9sNg
- for <linuxppc-dev@ozlabs.org>; Fri, 14 Feb 2020 22:02:48 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Jr7j1ntmz9txYh;
- Fri, 14 Feb 2020 12:02:41 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=AXPIAzZI; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id dr3spzWu6Kgn; Fri, 14 Feb 2020 12:02:41 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Jr7j093fz9txYg;
- Fri, 14 Feb 2020 12:02:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1581678161; bh=v9M8VmksV7u9xH2sUOYyhQSMnHo0bJJ8k5ZvL4FuUMI=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=AXPIAzZI+Eb+swPa+oOmgB8SuiUHeFit7p7h8jS66VMNzXt3yRGAv7THN9GAJDobc
- /XGC86cTmSvySDqPPtv5M6tKwdUVOuzg12OWQZB26+IDSr3esEIk+JV+x2BoWO23ZK
- CE/3GX2MTL5CP0Bcxa7nT4bgUrnFpaivimr2SwGI=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6C17C8B896;
- Fri, 14 Feb 2020 12:02:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id c7FDXdAbgLDq; Fri, 14 Feb 2020 12:02:41 +0100 (CET)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DABF68B895;
- Fri, 14 Feb 2020 12:02:40 +0100 (CET)
-Subject: Re: RESEND: Re: Problem booting a PowerBook G4 Aluminum after commit
- cd08f109 with CONFIG_VMAP_STACK=y
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Larry Finger <Larry.Finger@lwfinger.net>
-References: <f7565b89-c8b2-d2e7-929e-4b1abf72fc63@lwfinger.net>
- <159ed5d8-376b-1642-fb4b-01406d671cf1@c-s.fr>
- <6a1802b8-c6a7-d091-1036-689e089b786f@lwfinger.net>
- <f35ea4e6-7c54-6acc-7d91-3a6eea56133c@c-s.fr>
- <608a1a18-a0ed-2059-bfbc-081c9ef1bfd8@lwfinger.net>
- <a8a38651-974a-819a-810c-83c4097adc10@c-s.fr>
- <7f63e8a8-95c5-eeca-dc79-3c13f4d98d39@lwfinger.net>
- <9429f86e-8c7d-b2e6-6dc1-8f58c44baadc@c-s.fr>
- <2da19b26-9a44-2e4e-ab7d-d3fff65091bd@lwfinger.net>
- <02ce1278-5880-063c-2281-178edd541232@c-s.fr>
-Message-ID: <bd705040-914b-21a8-dfb2-c98bc8c96609@c-s.fr>
-Date: Fri, 14 Feb 2020 12:02:40 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Jr996hbSzDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 22:03:57 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01EB0OPI020742
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 06:03:54 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2y4j88jt6g-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 06:03:54 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
+ Fri, 14 Feb 2020 11:03:52 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 14 Feb 2020 11:03:47 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 01EB3jRr47186200
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Feb 2020 11:03:45 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8EFFDA4064;
+ Fri, 14 Feb 2020 11:03:45 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A7BABA4054;
+ Fri, 14 Feb 2020 11:03:40 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.37.109])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Feb 2020 11:03:40 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/8] powerpc/perf: Add json file metric support for the
+ hv_24x7 socket/chip level events
+Date: Fri, 14 Feb 2020 16:33:27 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <02ce1278-5880-063c-2281-178edd541232@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20021411-0028-0000-0000-000003DA7838
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20021411-0029-0000-0000-0000249EF294
+Message-Id: <20200214110335.31483-1-kjain@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-14_03:2020-02-12,
+ 2020-02-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 clxscore=1011 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002140090
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,64 +88,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
+Cc: ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com, jmario@redhat.com,
+ mpetlan@redhat.com, peterz@infradead.org, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com,
+ linux-perf-users@vger.kernel.org, ak@linux.intel.com, yao.jin@linux.intel.com,
+ anju@linux.vnet.ibm.com, kjain@linux.ibm.com, jolsa@kernel.org,
+ namhyung@kernel.org, mingo@kernel.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The hv_24×7 feature in IBM® POWER9™ processor-based servers provide the
+facility to continuously collect large numbers of hardware performance
+metrics efficiently and accurately.
 
+First patch of the patchset fix inconsistent results we are getting when
+we run multiple 24x7 events.
 
-Le 14/02/2020 à 07:24, Christophe Leroy a écrit :
-> Larry,
-> 
-> Le 14/02/2020 à 00:09, Larry Finger a écrit :
->> Christophe,
->>
->> With this patch, it gets further. Sometime after the boot process 
->> tries to start process init, it crashes with the unable to read data 
->> at 0x000157a0 with a faulting address of 0xc001683c. The screenshot is 
->> attached and the gzipped vmlinux is at 
->> http://www.lwfinger.com/download/vmlinux2.gz. The patches that were 
->> applied for this kernel are also attached,
->>
-> 
-> 
-> Did you try with the patch at https://patchwork.ozlabs.org/patch/1237387/ ?
-> 
-> I see the problem happens in kprobe_handler(). Can you try without 
-> CONFIG_KPROBE ?
-> 
+Patchset adds json file metric support for the hv_24x7 socket/chip level
+events. "hv_24x7" pmu interface events needs system dependent parameter
+like socket/chip/core. For example, hv_24x7 chip level events needs
+specific chip-id to which the data is requested should be added as part
+of pmu events.
 
-In fact, you hit two bugs. The first one is due to CONFIG_VMAP_STACK. 
-The second one has always existed (at least since kernel source tree has 
-been in git).
+So to enable JSON file support to "hv_24x7" interface, patchset expose
+total number of sockets and chips per-socket details in sysfs
+files (sockets, chips) under "/sys/devices/hv_24x7/interface/".
 
-First bug is in function enter_rtas() which tries to read data on stack 
-by using the linear physical address translation. This cannot be used 
-with VM stack, it must re-enable data MMU translation to access data on 
-the stack.
+To get sockets and number of chips per sockets, patchset adds a rtas call
+with token "PROCESSOR_MODULE_INFO" to get these details. Patchset also
+handles partition migration case to re-init these system depended
+parameters by adding proper calls in post_mobility_fixup() (mobility.c).
 
-Second bug is in kprobe_handler() function, which does:
+Patch 6 & 8 of the patchset handles perf tool plumbing needed to replace
+the "?" character in the metric expression to proper value and hv_24x7
+json metric file for different Socket/chip resources.
 
-	if (*addr != BREAKPOINT_INSTRUCTION)
+Patch set also enable Hz/hz prinitg for --metric-only option to print
+metric data for bus frequency.
 
-addr is the address where the 'trap' happened. When a trap happens with 
-MMU disabled, addr contains the physical address of the trap. 
-kprobe_handler() tries to read the instruction using physical address 
-whereas MMU is enabled, so you get a bad access either because the said 
-address is not mapped, or because access to userspace is not allowed.
+Kajol Jain (8):
+  powerpc/perf/hv-24x7: Fix inconsistent output values incase multiple
+    hv-24x7 events run
+  powerpc/hv-24x7: Add rtas call in hv-24x7 driver to get processor
+    details
+  powerpc/hv-24x7: Add sysfs files inside hv-24x7 device to show
+    processor details
+  Documentation/ABI: Add ABI documentation for chips and sockets
+  powerpc/hv-24x7: Update post_mobility_fixup() to handle migration
+  perf/tools: Enhance JSON/metric infrastructure to handle "?"
+  tools/perf: Enable Hz/hz prinitg for --metric-only option
+  perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip level metric
+    events
 
+ .../sysfs-bus-event_source-devices-hv_24x7    |  14 +++
+ arch/powerpc/perf/hv-24x7.c                   |  96 ++++++++++++++-
+ arch/powerpc/platforms/pseries/mobility.c     |  12 ++
+ arch/powerpc/platforms/pseries/pseries.h      |   3 +
+ tools/perf/arch/powerpc/util/header.c         |  40 +++++++
+ .../arch/powerpc/power9/hv_24x7_metrics.json  |  19 +++
+ tools/perf/util/expr.h                        |   1 +
+ tools/perf/util/expr.y                        |  17 ++-
+ tools/perf/util/metricgroup.c                 | 112 +++++++++++-------
+ tools/perf/util/metricgroup.h                 |   1 +
+ tools/perf/util/stat-display.c                |   2 -
+ tools/perf/util/stat-shadow.c                 |   5 +
+ 12 files changed, 277 insertions(+), 45 deletions(-)
+ create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/hv_24x7_metrics.json
 
-Due to the first bug, you get a 'machine check', and as 
-current->thread.rtas_sp has not been cleared yet, the machine check 
-handler jumps to 'machine_check_in_rtas'.
+-- 
+2.18.1
 
-machine_check_in_rtas does a trap, which in turn triggers the second bug.
-
-
-Once the first bug is fixed, the second one should not popup.
-
-Can you test patch https://patchwork.ozlabs.org/patch/1237929/ that 
-fixes the first bug ?
-
-Christophe
