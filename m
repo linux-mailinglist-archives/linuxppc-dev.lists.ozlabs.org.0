@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D7815F6E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 20:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 688F715F6F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 20:36:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K3Sd3ytwzDq9T
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 06:33:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K3Y331skzDqk8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 06:36:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=InhpFNCP; dkim-atps=neutral
+ header.s=default header.b=GeYiI3sq; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48JzDh3WGnzDqRX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:22:28 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JzFD5xH3zDqbp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:22:56 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BACF72474D;
- Fri, 14 Feb 2020 16:22:23 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1604224764;
+ Fri, 14 Feb 2020 16:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581697344;
- bh=UO55tRwkGBNUjjrj++FD29xVqIkGuWGsESnDe4rEb70=;
+ s=default; t=1581697374;
+ bh=MLyC7p5DCKqMmpilfaOF4DuT3roGEBIotitr0W0Cwvo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=InhpFNCPOznifp4nrgSwOUceFRsCPWcCVAFkykuAmTKOb+MpIZFOUwgr7i5tUnxwf
- SZ75ZPTys09SYH1J1IGNKZrmP6vJ46cexUr77yktQUlNlsNNUROC2HGvDZKkz2TH17
- kQye9uyyphoHy+L9R+ntAdOto19SjS/rLf3igiBg=
+ b=GeYiI3sq78bvCQFIlAAJ6dM05ed1kGH6DyZb9r8vwHdD+4Bag/NgVTBaH3JahPqQ+
+ QHSZNFq5erVl6uxwIRyh3hBh6leNBgXFbERvXtY4vliHOKYRyvR/WFO2dDEs6vtrXb
+ NZY+hqtlYSbCGz+k9CegW/96mmmXN1J+lft87mLs=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 049/141] net/wan/fsl_ucc_hdlc: reject muram
- offsets above 64K
-Date: Fri, 14 Feb 2020 11:19:49 -0500
-Message-Id: <20200214162122.19794-49-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 072/141] net/wan/fsl_ucc_hdlc: remove set but not
+ used variables 'ut_info' and 'ret'
+Date: Fri, 14 Feb 2020 11:20:12 -0500
+Message-Id: <20200214162122.19794-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
 References: <20200214162122.19794-1-sashal@kernel.org>
@@ -60,50 +60,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Timur Tabi <timur@kernel.org>,
- netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Sasha Levin <sashal@kernel.org>, Chen Zhou <chenzhou10@huawei.com>,
+ netdev@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+From: Chen Zhou <chenzhou10@huawei.com>
 
-[ Upstream commit 148587a59f6b85831695e0497d9dd1af5f0495af ]
+[ Upstream commit 270fe2ceda66b6964d4c6f261d7f562a02c1c786 ]
 
-Qiang Zhao points out that these offsets get written to 16-bit
-registers, and there are some QE platforms with more than 64K
-muram. So it is possible that qe_muram_alloc() gives us an allocation
-that can't actually be used by the hardware, so detect and reject
-that.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Reported-by: Qiang Zhao <qiang.zhao@nxp.com>
-Reviewed-by: Timur Tabi <timur@kernel.org>
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
+drivers/net/wan/fsl_ucc_hdlc.c: In function ucc_hdlc_irq_handler:
+drivers/net/wan/fsl_ucc_hdlc.c:643:23:
+	warning: variable ut_info set but not used [-Wunused-but-set-variable]
+drivers/net/wan/fsl_ucc_hdlc.c: In function uhdlc_suspend:
+drivers/net/wan/fsl_ucc_hdlc.c:880:23:
+	warning: variable ut_info set but not used [-Wunused-but-set-variable]
+drivers/net/wan/fsl_ucc_hdlc.c: In function uhdlc_resume:
+drivers/net/wan/fsl_ucc_hdlc.c:925:6:
+	warning: variable ret set but not used [-Wunused-but-set-variable]
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wan/fsl_ucc_hdlc.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index af85a1b3135e2..87bf05a81db50 100644
+index 87bf05a81db50..7c4a30391f746 100644
 --- a/drivers/net/wan/fsl_ucc_hdlc.c
 +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -209,6 +209,11 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
- 		ret = -ENOMEM;
- 		goto free_riptr;
- 	}
-+	if (riptr != (u16)riptr || tiptr != (u16)tiptr) {
-+		dev_err(priv->dev, "MURAM allocation out of addressable range\n");
-+		ret = -ENOMEM;
-+		goto free_tiptr;
-+	}
+@@ -591,11 +591,9 @@ static irqreturn_t ucc_hdlc_irq_handler(int irq, void *dev_id)
+ 	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)dev_id;
+ 	struct net_device *dev = priv->ndev;
+ 	struct ucc_fast_private *uccf;
+-	struct ucc_tdm_info *ut_info;
+ 	u32 ucce;
+ 	u32 uccm;
  
- 	/* Set RIPTR, TIPTR */
- 	iowrite16be(riptr, &priv->ucc_pram->riptr);
+-	ut_info = priv->ut_info;
+ 	uccf = priv->uccf;
+ 
+ 	ucce = ioread32be(uccf->p_ucce);
+@@ -826,7 +824,6 @@ static void resume_clk_config(struct ucc_hdlc_private *priv)
+ static int uhdlc_suspend(struct device *dev)
+ {
+ 	struct ucc_hdlc_private *priv = dev_get_drvdata(dev);
+-	struct ucc_tdm_info *ut_info;
+ 	struct ucc_fast __iomem *uf_regs;
+ 
+ 	if (!priv)
+@@ -838,7 +835,6 @@ static int uhdlc_suspend(struct device *dev)
+ 	netif_device_detach(priv->ndev);
+ 	napi_disable(&priv->napi);
+ 
+-	ut_info = priv->ut_info;
+ 	uf_regs = priv->uf_regs;
+ 
+ 	/* backup gumr guemr*/
+@@ -872,7 +868,7 @@ static int uhdlc_resume(struct device *dev)
+ 	struct ucc_fast __iomem *uf_regs;
+ 	struct ucc_fast_private *uccf;
+ 	struct ucc_fast_info *uf_info;
+-	int ret, i;
++	int i;
+ 	u32 cecr_subblock;
+ 	u16 bd_status;
+ 
+@@ -917,16 +913,16 @@ static int uhdlc_resume(struct device *dev)
+ 
+ 	/* Write to QE CECR, UCCx channel to Stop Transmission */
+ 	cecr_subblock = ucc_fast_get_qe_cr_subblock(uf_info->ucc_num);
+-	ret = qe_issue_cmd(QE_STOP_TX, cecr_subblock,
+-			   (u8)QE_CR_PROTOCOL_UNSPECIFIED, 0);
++	qe_issue_cmd(QE_STOP_TX, cecr_subblock,
++		     (u8)QE_CR_PROTOCOL_UNSPECIFIED, 0);
+ 
+ 	/* Set UPSMR normal mode */
+ 	iowrite32be(0, &uf_regs->upsmr);
+ 
+ 	/* init parameter base */
+ 	cecr_subblock = ucc_fast_get_qe_cr_subblock(uf_info->ucc_num);
+-	ret = qe_issue_cmd(QE_ASSIGN_PAGE_TO_DEVICE, cecr_subblock,
+-			   QE_CR_PROTOCOL_UNSPECIFIED, priv->ucc_pram_offset);
++	qe_issue_cmd(QE_ASSIGN_PAGE_TO_DEVICE, cecr_subblock,
++		     QE_CR_PROTOCOL_UNSPECIFIED, priv->ucc_pram_offset);
+ 
+ 	priv->ucc_pram = (struct ucc_hdlc_param __iomem *)
+ 				qe_muram_addr(priv->ucc_pram_offset);
 -- 
 2.20.1
 
