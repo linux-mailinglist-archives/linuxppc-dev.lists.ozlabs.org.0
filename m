@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF47115F28E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9320315F387
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 19:22:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K1gz60jszDqPc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 05:12:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K1tc2CHJzDqdZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 05:22:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,38 +16,39 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=yCklJDq8; dkim-atps=neutral
+ header.s=default header.b=iOfrwb5r; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jyz45P2RzDqQf
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:10:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JyzQ2wXkzDqGk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:10:58 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0CCB524695;
- Fri, 14 Feb 2020 16:10:37 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id B191A24695;
+ Fri, 14 Feb 2020 16:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581696638;
- bh=H01V1yAvGUnL110QyGxoWUFcprdk0MX1LGVD14UnwEQ=;
+ s=default; t=1581696656;
+ bh=9QBWaElHKC0zBpOGCtZQxcNbGjkEOVXoSNV7W+soaiU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=yCklJDq8Q2mynhT7Um6Wp1estXSHPhiQ2SiOH/05679ePMr8LMOUwBIBYseAlLbk2
- nIPXnXVmJWStrp4FHyNUpdImm6soZ5Nv8RwEWWyWBb75jckZB3qyZsex051WBY4s1L
- o5CyLmAgX0DIdn6ZJkgwKoSubKN3hbpUWy8TUtYE=
+ b=iOfrwb5rJ/XOgt8vfoazqjCT6WCNcIEG3kVMzYF4BxoiHTg0n1kz+rvXzSUrhIYJJ
+ 6QNS4oxJGcLq8eohf6Fv3ojPGfHqJrzauN4PAdhzIwJRm9Vv7IbNh/ZNeAaBEGUkzq
+ jE63JdDmsq91aRd5/YwMy3DuqwG/24r/nokeawDk=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 416/459] powerpc/mm: Don't log user reads to
- 0xffffffff
-Date: Fri, 14 Feb 2020 11:01:06 -0500
-Message-Id: <20200214160149.11681-416-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 430/459] powerpc: Do not consider weak unresolved
+ symbol relocations as bad
+Date: Fri, 14 Feb 2020 11:01:20 -0500
+Message-Id: <20200214160149.11681-430-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
 References: <20200214160149.11681-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,46 +61,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexandre Ghiti <alex@ghiti.fr>, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+From: Alexandre Ghiti <alex@ghiti.fr>
 
-[ Upstream commit 0f9aee0cb9da7db7d96f63cfa2dc5e4f1bffeb87 ]
+[ Upstream commit 43e76cd368fbb67e767da5363ffeaa3989993c8c ]
 
-Running vdsotest leaves many times the following log:
+Commit 8580ac9404f6 ("bpf: Process in-kernel BTF") introduced two weak
+symbols that may be unresolved at link time which result in an absolute
+relocation to 0. relocs_check.sh emits the following warning:
 
-  [   79.629901] vdsotest[396]: User access of kernel address (ffffffff) - exploit attempt? (uid: 0)
+"WARNING: 2 bad relocations
+c000000001a41478 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
+c000000001a41480 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end"
 
-A pointer set to (-1) is likely a programming error similar to
-a NULL pointer and is not worth logging as an exploit attempt.
+whereas those relocations are legitimate even for a relocatable kernel
+compiled with -pie option.
 
-Don't log user accesses to 0xffffffff.
+relocs_check.sh already excluded some weak unresolved symbols explicitly:
+remove those hardcoded symbols and add some logic that parses the symbols
+using nm, retrieves all the weak unresolved symbols and excludes those from
+the list of the potential bad relocations.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/0728849e826ba16f1fbd6fa7f5c6cc87bd64e097.1577087627.git.christophe.leroy@c-s.fr
+Link: https://lore.kernel.org/r/20200118170335.21440-1-alex@ghiti.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/fault.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/Makefile.postlink     |  4 ++--
+ arch/powerpc/tools/relocs_check.sh | 20 ++++++++++++--------
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 9298905cfe74f..881a026a603a6 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -354,6 +354,9 @@ static void sanity_check_fault(bool is_write, bool is_user,
- 	 * Userspace trying to access kernel address, we get PROTFAULT for that.
- 	 */
- 	if (is_user && address >= TASK_SIZE) {
-+		if ((long)address == -1)
-+			return;
+diff --git a/arch/powerpc/Makefile.postlink b/arch/powerpc/Makefile.postlink
+index 134f12f89b92b..2268396ff4bba 100644
+--- a/arch/powerpc/Makefile.postlink
++++ b/arch/powerpc/Makefile.postlink
+@@ -17,11 +17,11 @@ quiet_cmd_head_check = CHKHEAD $@
+ quiet_cmd_relocs_check = CHKREL  $@
+ ifdef CONFIG_PPC_BOOK3S_64
+       cmd_relocs_check =						\
+-	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$@" ; \
++	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@" ; \
+ 	$(BASH) $(srctree)/arch/powerpc/tools/unrel_branch_check.sh "$(OBJDUMP)" "$@"
+ else
+       cmd_relocs_check =						\
+-	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$@"
++	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
+ endif
+ 
+ # `@true` prevents complaint when there is nothing to be done
+diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
+index 7b9fe0a567cf3..014e00e74d2b6 100755
+--- a/arch/powerpc/tools/relocs_check.sh
++++ b/arch/powerpc/tools/relocs_check.sh
+@@ -10,14 +10,21 @@
+ # based on relocs_check.pl
+ # Copyright © 2009 IBM Corporation
+ 
+-if [ $# -lt 2 ]; then
+-	echo "$0 [path to objdump] [path to vmlinux]" 1>&2
++if [ $# -lt 3 ]; then
++	echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
+ 	exit 1
+ fi
+ 
+-# Have Kbuild supply the path to objdump so we handle cross compilation.
++# Have Kbuild supply the path to objdump and nm so we handle cross compilation.
+ objdump="$1"
+-vmlinux="$2"
++nm="$2"
++vmlinux="$3"
 +
- 		pr_crit_ratelimited("%s[%d]: User access of kernel address (%lx) - exploit attempt? (uid: %d)\n",
- 				   current->comm, current->pid, address,
- 				   from_kuid(&init_user_ns, current_uid()));
++# Remove from the bad relocations those that match an undefined weak symbol
++# which will result in an absolute relocation to 0.
++# Weak unresolved symbols are of that form in nm output:
++# "                  w _binary__btf_vmlinux_bin_end"
++undef_weak_symbols=$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
+ 
+ bad_relocs=$(
+ $objdump -R "$vmlinux" |
+@@ -26,8 +33,6 @@ $objdump -R "$vmlinux" |
+ 	# These relocations are okay
+ 	# On PPC64:
+ 	#	R_PPC64_RELATIVE, R_PPC64_NONE
+-	#	R_PPC64_ADDR64 mach_<name>
+-	#	R_PPC64_ADDR64 __crc_<name>
+ 	# On PPC:
+ 	#	R_PPC_RELATIVE, R_PPC_ADDR16_HI,
+ 	#	R_PPC_ADDR16_HA,R_PPC_ADDR16_LO,
+@@ -39,8 +44,7 @@ R_PPC_ADDR16_HI
+ R_PPC_ADDR16_HA
+ R_PPC_RELATIVE
+ R_PPC_NONE' |
+-	grep -E -v '\<R_PPC64_ADDR64[[:space:]]+mach_' |
+-	grep -E -v '\<R_PPC64_ADDR64[[:space:]]+__crc_'
++	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || cat)
+ )
+ 
+ if [ -z "$bad_relocs" ]; then
 -- 
 2.20.1
 
