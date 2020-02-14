@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1E415DE75
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 17:05:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B76115DF62
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 17:08:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Jyrb11vszDqC6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 03:05:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Jywk0XRhzDqC6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 03:08:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=cBKoBXyx; dkim-atps=neutral
+ header.s=default header.b=cd2zLyMQ; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48JyXQ5CkZzDqbm
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 02:51:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JyXZ28BjzDqbf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 02:51:10 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 379E324650;
- Fri, 14 Feb 2020 15:50:59 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5E79924681;
+ Fri, 14 Feb 2020 15:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581695460;
- bh=3ZLagoY0BDpz1UKaLQ4kYqILyy5tH1cOQdTLX/jHHm0=;
+ s=default; t=1581695468;
+ bh=QJtTy7MFyHcChWSVPxgWsBwRynjwmpJPstPRMkqQB5s=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cBKoBXyxoYY6bFS0t/UykUm8OHjhardSahKpstV8RiakyUNSICzpWrXffGAx+FAE9
- XcvJ2DreywTVgGHswjTsJtITEcq6ZrAoJgLsG84LvsluLstKW+dxiPHKAFpislW/Vw
- mlrfXF6XBmQnw314RZcf0cYg/onqZ93bh7sruoE8=
+ b=cd2zLyMQFeWgUVfi7Va4M1M/TI0m5qJyUbw+nGnajO87oTPT2ZKgDxjVah8azQVaT
+ xymm+Z/07JkvrQJzBup/IOlkOaH14DGz/BZbBR6zZRlD5wFvOIlpJc1wNn3UAf2QW9
+ hxzo5JEIBSfoOuXWjgDDk5GVeUZiQg1M6IUvjhqQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 097/542] powerpc/iov: Move VF pdev fixup into
- pcibios_fixup_iov()
-Date: Fri, 14 Feb 2020 10:41:29 -0500
-Message-Id: <20200214154854.6746-97-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 103/542] powerpc/papr_scm: Fix leaking
+ 'bus_desc.provider_name' in some paths
+Date: Fri, 14 Feb 2020 10:41:35 -0500
+Message-Id: <20200214154854.6746-103-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
 References: <20200214154854.6746-1-sashal@kernel.org>
@@ -60,127 +60,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Oliver O'Halloran <oohall@gmail.com>
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-[ Upstream commit 965c94f309be58fbcc6c8d3e4f123376c5970d79 ]
+[ Upstream commit 5649607a8d0b0e019a4db14aab3de1e16c3a2b4f ]
 
-An ioda_pe for each VF is allocated in pnv_pci_sriov_enable() before
-the pci_dev for the VF is created. We need to set the pe->pdev pointer
-at some point after the pci_dev is created. Currently we do that in:
+String 'bus_desc.provider_name' allocated inside
+papr_scm_nvdimm_init() will leaks in case call to
+nvdimm_bus_register() fails or when papr_scm_remove() is called.
 
-pcibios_bus_add_device()
-	pnv_pci_dma_dev_setup() (via phb->ops.dma_dev_setup)
-		/* fixup is done here */
-		pnv_pci_ioda_dma_dev_setup() (via pnv_phb->dma_dev_setup)
+This minor patch ensures that 'bus_desc.provider_name' is freed in
+error path for nvdimm_bus_register() as well as in papr_scm_remove().
 
-The fixup needs to be done before setting up DMA for for the VF's PE,
-but there's no real reason to delay it until this point. Move the
-fixup into pnv_pci_ioda_fixup_iov() so the ordering is:
-
-	pcibios_add_device()
-		pnv_pci_ioda_fixup_iov() (via ppc_md.pcibios_fixup_sriov)
-
-	pcibios_bus_add_device()
-		...
-
-This isn't strictly required, but it's a slightly more logical place
-to do the fixup and it simplifies pnv_pci_dma_dev_setup().
-
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Fixes: b5beae5e224f ("powerpc/pseries: Add driver for PAPR SCM regions")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20200110070207.439-4-oohall@gmail.com
+Link: https://lore.kernel.org/r/20200122155140.120429-1-vaibhav@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 29 +++++++++++++++++++----
- arch/powerpc/platforms/powernv/pci.c      | 14 -----------
- 2 files changed, 25 insertions(+), 18 deletions(-)
+ arch/powerpc/platforms/pseries/papr_scm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 67b836f102402..b4afabe20744a 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2905,9 +2905,6 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
- 	struct pci_dn *pdn;
- 	int mul, total_vfs;
- 
--	if (!pdev->is_physfn || pci_dev_is_added(pdev))
--		return;
--
- 	pdn = pci_get_pdn(pdev);
- 	pdn->vfs_expanded = 0;
- 	pdn->m64_single_mode = false;
-@@ -2982,6 +2979,30 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
- 		res->end = res->start - 1;
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index c2ef320ba1bf2..eb420655ed0b9 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -322,6 +322,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	p->bus = nvdimm_bus_register(NULL, &p->bus_desc);
+ 	if (!p->bus) {
+ 		dev_err(dev, "Error creating nvdimm bus %pOF\n", p->dn);
++		kfree(p->bus_desc.provider_name);
+ 		return -ENXIO;
  	}
- }
-+
-+static void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
-+{
-+	if (WARN_ON(pci_dev_is_added(pdev)))
-+		return;
-+
-+	if (pdev->is_virtfn) {
-+		struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
-+
-+		/*
-+		 * VF PEs are single-device PEs so their pdev pointer needs to
-+		 * be set. The pdev doesn't exist when the PE is allocated (in
-+		 * (pcibios_sriov_enable()) so we fix it up here.
-+		 */
-+		pe->pdev = pdev;
-+		WARN_ON(!(pe->flags & PNV_IODA_PE_VF));
-+	} else if (pdev->is_physfn) {
-+		/*
-+		 * For PFs adjust their allocated IOV resources to match what
-+		 * the PHB can support using it's M64 BAR table.
-+		 */
-+		pnv_pci_ioda_fixup_iov_resources(pdev);
-+	}
-+}
- #endif /* CONFIG_PCI_IOV */
  
- static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
-@@ -3878,7 +3899,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
- 	ppc_md.pcibios_default_alignment = pnv_pci_default_alignment;
+@@ -477,6 +478,7 @@ static int papr_scm_remove(struct platform_device *pdev)
  
- #ifdef CONFIG_PCI_IOV
--	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov_resources;
-+	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov;
- 	ppc_md.pcibios_iov_resource_alignment = pnv_pci_iov_resource_alignment;
- 	ppc_md.pcibios_sriov_enable = pnv_pcibios_sriov_enable;
- 	ppc_md.pcibios_sriov_disable = pnv_pcibios_sriov_disable;
-diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index e8e58a2cccddf..8307e1f4086cb 100644
---- a/arch/powerpc/platforms/powernv/pci.c
-+++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -814,20 +814,6 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
- {
- 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
- 	struct pnv_phb *phb = hose->private_data;
--#ifdef CONFIG_PCI_IOV
--	struct pnv_ioda_pe *pe;
--
--	/* Fix the VF pdn PE number */
--	if (pdev->is_virtfn) {
--		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
--			if (pe->rid == ((pdev->bus->number << 8) |
--			    (pdev->devfn & 0xff))) {
--				pe->pdev = pdev;
--				break;
--			}
--		}
--	}
--#endif /* CONFIG_PCI_IOV */
+ 	nvdimm_bus_unregister(p->bus);
+ 	drc_pmem_unbind(p);
++	kfree(p->bus_desc.provider_name);
+ 	kfree(p);
  
- 	if (phb && phb->dma_dev_setup)
- 		phb->dma_dev_setup(phb, pdev);
+ 	return 0;
 -- 
 2.20.1
 
