@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688F715F6F3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 20:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936DC15F700
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 20:41:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K3Y331skzDqk8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 06:36:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K3f25FLqzDq61
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 06:41:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=GeYiI3sq; dkim-atps=neutral
+ header.s=default header.b=0zDxkqRi; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48JzFD5xH3zDqbp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:22:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JzFR6w14zDqc1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:23:07 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1604224764;
- Fri, 14 Feb 2020 16:22:53 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C189F24764;
+ Fri, 14 Feb 2020 16:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581697374;
- bh=MLyC7p5DCKqMmpilfaOF4DuT3roGEBIotitr0W0Cwvo=;
+ s=default; t=1581697385;
+ bh=R/V26Uk66pI1xhuzn7FQgeiwbYiDu6oZfjrYL6llAlY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=GeYiI3sq78bvCQFIlAAJ6dM05ed1kGH6DyZb9r8vwHdD+4Bag/NgVTBaH3JahPqQ+
- QHSZNFq5erVl6uxwIRyh3hBh6leNBgXFbERvXtY4vliHOKYRyvR/WFO2dDEs6vtrXb
- NZY+hqtlYSbCGz+k9CegW/96mmmXN1J+lft87mLs=
+ b=0zDxkqRiGe59MXBOgnZzeFMI9xJPiWip2XtXJTK5ppCUOwlClU7kBj+gEVKU9xIED
+ 8IJXHrZrZ4kNdzT7oF58GoQn8Oze5vCwlmpJeJlswjkc9+AZigj7rqEOW3lHlPcQeD
+ kYH9CAowhM6g0W+m26ym9P9jjZT1x3Fx3kOe05Cs=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 072/141] net/wan/fsl_ucc_hdlc: remove set but not
- used variables 'ut_info' and 'ret'
-Date: Fri, 14 Feb 2020 11:20:12 -0500
-Message-Id: <20200214162122.19794-72-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 081/141] soc: fsl: qe: remove set but not used
+ variable 'mm_gc'
+Date: Fri, 14 Feb 2020 11:20:21 -0500
+Message-Id: <20200214162122.19794-81-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
 References: <20200214162122.19794-1-sashal@kernel.org>
@@ -61,98 +61,52 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Sasha Levin <sashal@kernel.org>, Chen Zhou <chenzhou10@huawei.com>,
- netdev@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+ YueHaibing <yuehaibing@huawei.com>, Li Yang <leoyang.li@nxp.com>,
+ Hulk Robot <hulkci@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Chen Zhou <chenzhou10@huawei.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 270fe2ceda66b6964d4c6f261d7f562a02c1c786 ]
+[ Upstream commit 6e62bd36e9ad85a22d92b1adce6a0336ea549733 ]
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+drivers/soc/fsl/qe/gpio.c: In function qe_pin_request:
+drivers/soc/fsl/qe/gpio.c:163:26: warning: variable mm_gc set but not used [-Wunused-but-set-variable]
 
-drivers/net/wan/fsl_ucc_hdlc.c: In function ucc_hdlc_irq_handler:
-drivers/net/wan/fsl_ucc_hdlc.c:643:23:
-	warning: variable ut_info set but not used [-Wunused-but-set-variable]
-drivers/net/wan/fsl_ucc_hdlc.c: In function uhdlc_suspend:
-drivers/net/wan/fsl_ucc_hdlc.c:880:23:
-	warning: variable ut_info set but not used [-Wunused-but-set-variable]
-drivers/net/wan/fsl_ucc_hdlc.c: In function uhdlc_resume:
-drivers/net/wan/fsl_ucc_hdlc.c:925:6:
-	warning: variable ret set but not used [-Wunused-but-set-variable]
+commit 1e714e54b5ca ("powerpc: qe_lib-gpio: use gpiochip data pointer")
+left behind this unused variable.
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/soc/fsl/qe/gpio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 87bf05a81db50..7c4a30391f746 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -591,11 +591,9 @@ static irqreturn_t ucc_hdlc_irq_handler(int irq, void *dev_id)
- 	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)dev_id;
- 	struct net_device *dev = priv->ndev;
- 	struct ucc_fast_private *uccf;
--	struct ucc_tdm_info *ut_info;
- 	u32 ucce;
- 	u32 uccm;
- 
--	ut_info = priv->ut_info;
- 	uccf = priv->uccf;
- 
- 	ucce = ioread32be(uccf->p_ucce);
-@@ -826,7 +824,6 @@ static void resume_clk_config(struct ucc_hdlc_private *priv)
- static int uhdlc_suspend(struct device *dev)
+diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
+index b5a7107a9c0a9..de2c0b6f72a1f 100644
+--- a/drivers/soc/fsl/qe/gpio.c
++++ b/drivers/soc/fsl/qe/gpio.c
+@@ -137,7 +137,6 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
  {
- 	struct ucc_hdlc_private *priv = dev_get_drvdata(dev);
--	struct ucc_tdm_info *ut_info;
- 	struct ucc_fast __iomem *uf_regs;
+ 	struct qe_pin *qe_pin;
+ 	struct gpio_chip *gc;
+-	struct of_mm_gpio_chip *mm_gc;
+ 	struct qe_gpio_chip *qe_gc;
+ 	int err;
+ 	unsigned long flags;
+@@ -163,7 +162,6 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
+ 		goto err0;
+ 	}
  
- 	if (!priv)
-@@ -838,7 +835,6 @@ static int uhdlc_suspend(struct device *dev)
- 	netif_device_detach(priv->ndev);
- 	napi_disable(&priv->napi);
+-	mm_gc = to_of_mm_gpio_chip(gc);
+ 	qe_gc = gpiochip_get_data(gc);
  
--	ut_info = priv->ut_info;
- 	uf_regs = priv->uf_regs;
- 
- 	/* backup gumr guemr*/
-@@ -872,7 +868,7 @@ static int uhdlc_resume(struct device *dev)
- 	struct ucc_fast __iomem *uf_regs;
- 	struct ucc_fast_private *uccf;
- 	struct ucc_fast_info *uf_info;
--	int ret, i;
-+	int i;
- 	u32 cecr_subblock;
- 	u16 bd_status;
- 
-@@ -917,16 +913,16 @@ static int uhdlc_resume(struct device *dev)
- 
- 	/* Write to QE CECR, UCCx channel to Stop Transmission */
- 	cecr_subblock = ucc_fast_get_qe_cr_subblock(uf_info->ucc_num);
--	ret = qe_issue_cmd(QE_STOP_TX, cecr_subblock,
--			   (u8)QE_CR_PROTOCOL_UNSPECIFIED, 0);
-+	qe_issue_cmd(QE_STOP_TX, cecr_subblock,
-+		     (u8)QE_CR_PROTOCOL_UNSPECIFIED, 0);
- 
- 	/* Set UPSMR normal mode */
- 	iowrite32be(0, &uf_regs->upsmr);
- 
- 	/* init parameter base */
- 	cecr_subblock = ucc_fast_get_qe_cr_subblock(uf_info->ucc_num);
--	ret = qe_issue_cmd(QE_ASSIGN_PAGE_TO_DEVICE, cecr_subblock,
--			   QE_CR_PROTOCOL_UNSPECIFIED, priv->ucc_pram_offset);
-+	qe_issue_cmd(QE_ASSIGN_PAGE_TO_DEVICE, cecr_subblock,
-+		     QE_CR_PROTOCOL_UNSPECIFIED, priv->ucc_pram_offset);
- 
- 	priv->ucc_pram = (struct ucc_hdlc_param __iomem *)
- 				qe_muram_addr(priv->ucc_pram_offset);
+ 	spin_lock_irqsave(&qe_gc->lock, flags);
 -- 
 2.20.1
 
