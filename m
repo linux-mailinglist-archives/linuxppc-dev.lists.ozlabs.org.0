@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2D715EF19
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 18:45:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02E015EE9C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 18:42:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K1112xWPzDqfD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 04:42:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K14y1llkzDqQs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 04:45:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=w02Y38Qo; dkim-atps=neutral
+ header.s=default header.b=yMcpLFn8; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Jyxg0zG9zDqSY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:09:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JyyF2xtWzDqTY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 03:09:57 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3C82F24676;
- Fri, 14 Feb 2020 16:09:23 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8C64A2468D;
+ Fri, 14 Feb 2020 16:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581696564;
- bh=d+9gNOD854fWNgAc5iQ16LXpzEKeNEDnNS+wxdQNT+E=;
+ s=default; t=1581696595;
+ bh=ZNUKpT2QmFCsGmu27p7x5piDzLV1yR86miM35jdeFyQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=w02Y38QoPFQhq8bIsEOPDfJ4GJBjCUrE+nR7wY5ED0ZOw+Zj8QHYJk7tIuNLym+tY
- epZe1n/DUekJI+kpy0dQmjFkQA2trvEzgwcclwo6DozotJ+oGrmZk47k3CSM/loVpI
- 8z2e4CS7iNGeZ+jbObbZNDK1pTlcD+dxFZtfQ2yA=
+ b=yMcpLFn808bU9pxDFrfNbsWNvCKB2lIFFmG2QASQ14T+/5PZ8pC8nU6F9XbEztzwa
+ u1c1zeP05qPs2G2Dl2Xc00q9BQ1YyvBUAzg6O2wkDKmV+bkz7GuB9HauHUz6DIPYFK
+ Ec31KJpx+ANkaMx2QuEayyA+tAXPjp4XCMJcUkLE=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 354/459] ide: remove set but not used variable
- 'hwif'
-Date: Fri, 14 Feb 2020 11:00:04 -0500
-Message-Id: <20200214160149.11681-354-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 381/459] powerpc/ptdump: Fix W+X verification call
+ in mark_rodata_ro()
+Date: Fri, 14 Feb 2020 11:00:31 -0500
+Message-Id: <20200214160149.11681-381-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
 References: <20200214160149.11681-1-sashal@kernel.org>
@@ -60,53 +60,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Wang Hai <wanghai38@huawei.com>,
- linux-ide@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-[ Upstream commit 98949a1946d70771789def0c9dbc239497f9f138 ]
+[ Upstream commit e26ad936dd89d79f66c2b567f700e0c2a7103070 ]
 
-Fix the following gcc warning:
+ptdump_check_wx() also have to be called when pages are mapped
+by blocks.
 
-drivers/ide/pmac.c: In function pmac_ide_setup_device:
-drivers/ide/pmac.c:1027:14: warning: variable hwif set but not used
-[-Wunused-but-set-variable]
-
-Fixes: d58b0c39e32f ("powerpc/macio: Rework hotplug media bay support")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/37517da8310f4457f28921a4edb88fb21d27b62a.1578989531.git.christophe.leroy@c-s.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ide/pmac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/mm/pgtable_32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ide/pmac.c b/drivers/ide/pmac.c
-index b5647e34e74ee..ea0b064b5f56b 100644
---- a/drivers/ide/pmac.c
-+++ b/drivers/ide/pmac.c
-@@ -1019,7 +1019,6 @@ static int pmac_ide_setup_device(pmac_ide_hwif_t *pmif, struct ide_hw *hw)
- 	struct device_node *np = pmif->node;
- 	const int *bidp;
- 	struct ide_host *host;
--	ide_hwif_t *hwif;
- 	struct ide_hw *hws[] = { hw };
- 	struct ide_port_info d = pmac_port_info;
- 	int rc;
-@@ -1075,7 +1074,7 @@ static int pmac_ide_setup_device(pmac_ide_hwif_t *pmif, struct ide_hw *hw)
- 		rc = -ENOMEM;
- 		goto bail;
- 	}
--	hwif = pmif->hwif = host->ports[0];
-+	pmif->hwif = host->ports[0];
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index 8ec5dfb65b2eb..784cae9f56975 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -221,6 +221,7 @@ void mark_rodata_ro(void)
  
- 	if (on_media_bay(pmif)) {
- 		/* Fixup bus ID for media bay */
+ 	if (v_block_mapped((unsigned long)_sinittext)) {
+ 		mmu_mark_rodata_ro();
++		ptdump_check_wx();
+ 		return;
+ 	}
+ 
 -- 
 2.20.1
 
