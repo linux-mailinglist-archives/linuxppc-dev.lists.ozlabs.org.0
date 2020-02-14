@@ -1,79 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974D515F831
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 21:52:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48K5Cz56bRzDqdS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 07:52:15 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C1015F862
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 22:02:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48K5Rw0Jl4zDqkD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 08:02:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=jmoyer@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.a=rsa-sha256 header.s=google header.b=SarBqj+o; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=CO8COIjk; 
  dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48K58n1gLczDqd9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 07:49:26 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id m16so12437878wrx.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2020 12:49:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=BG/k+1n242XmQ392+l/+QM8WpV3CVNW+mSgRrXUNaOk=;
- b=SarBqj+oUxptfwZyuPnoE9f5TdNLgDfCHQUMJ/hlsyT34Ix7OOciJH7CP+Ir3b2GzM
- 9zb3YRPgjRMX5OrfVnsaU+NWX65BwvyfNy/jlvmnZvXwHmUhKJyKKN4i2ekuDyB+AUaN
- m0OvEgnVfVGPMiW73eqXyVcabZ6/knDSWdzPA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=BG/k+1n242XmQ392+l/+QM8WpV3CVNW+mSgRrXUNaOk=;
- b=VM2VhxaPvqQUvyDtqg1TEliw3xhWaRgowSjjd9qNINeJFrbPBEXI1peAz/7PPcl3PX
- VH4hg81P6FMhZ/HUOktGs41AFs7sdLzePdhGp6IOh26p/gMFclHVDz1NopxMVCZdgVBI
- lIB6+LDZQo4e49KVA6cmChXFf17sDcStXe4qvkEiyl6F1UaajU8zINgExuHmLGPfUd7Q
- 9JErBxvbTelyTzLEZ0dugdgvs6T8qlnNNnXNMSGHsdhh9Exm7fXu5FJU0ua601bLVE0v
- O5yCafqcJDHvYiWE4gbcD+cjmAxEQ4lc4mGWazWuxtexnZUdKKEoSPvenyHTP/Pfzf/8
- MefA==
-X-Gm-Message-State: APjAAAVQT3uqPvvuyg1DMPUpOUK5jtNbB7wWpYi4+diWBmLj4oFuy5XO
- JmtC6zxD5E7eq+w9ZLfuOwuzsQ==
-X-Google-Smtp-Source: APXvYqxncTdduvArrIOwd2nDXfNPYclGCAutEyIXX9NPCJWgKiNMBPvLCR/gffpuMOaRVYxDiBFUkg==
-X-Received: by 2002:adf:e74a:: with SMTP id c10mr6152109wrn.254.1581713361497; 
- Fri, 14 Feb 2020 12:49:21 -0800 (PST)
-Received: from [192.168.1.149] (ip-5-186-115-54.cgn.fibianet.dk.
- [5.186.115.54])
- by smtp.gmail.com with ESMTPSA id r6sm8400054wrp.95.2020.02.14.12.49.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Feb 2020 12:49:20 -0800 (PST)
-Subject: Re: [PATCH AUTOSEL 4.9 003/141] soc: fsl: qe: change return type of
- cpm_muram_alloc() to s32
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20200214162122.19794-1-sashal@kernel.org>
- <20200214162122.19794-3-sashal@kernel.org>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <a920b57f-ad9e-5c25-3981-0462febd952a@rasmusvillemoes.dk>
-Date: Fri, 14 Feb 2020 21:49:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48K5N82BhCzDqfB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 07:59:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1581713955;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ references:references; bh=xlGrvI1xaS/R+PG6hF0vkvw8F7V03CIoauMXv5nvLHg=;
+ b=CO8COIjkx1Z/7HJ9d5deLRfhg/tPX548Sp71Q3Q9T6rvUXJVOpejF4sXqpQWvJrNHHayK9
+ fWZCWrKeRC8x1kvp2+lFljYwYS1PbgiWRzzQQci0AT6wtPq5mXwps1AZFXx2mGgISRlOGv
+ OdNH2h8GRl6vUp/GEzbLnyUCm7iW3DE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-115-GvUqMV_VNn-dvokEBCfy1w-1; Fri, 14 Feb 2020 15:59:13 -0500
+X-MC-Unique: GvUqMV_VNn-dvokEBCfy1w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2F188100550E;
+ Fri, 14 Feb 2020 20:59:11 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com
+ (segfault.boston.devel.redhat.com [10.19.60.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EA2628AC42;
+ Fri, 14 Feb 2020 20:59:09 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 1/4] mm/memremap_pages: Introduce
+ memremap_compat_align()
+References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158155490379.3343782.10305190793306743949.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <x498sl677cf.fsf@segfault.boston.devel.redhat.com>
+ <CAPcyv4i8xNEsdX=8c2+ehf24U2AFcc-sKmAPS9UoVvm8z0aRng@mail.gmail.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Fri, 14 Feb 2020 15:59:08 -0500
+Message-ID: <x49k14odgwz.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200214162122.19794-3-sashal@kernel.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,33 +74,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- Timur Tabi <timur@kernel.org>, Li Yang <leoyang.li@nxp.com>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Vishal L Verma <vishal.l.verma@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14/02/2020 17.19, Sasha Levin wrote:
-> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> 
-> [ Upstream commit 800cd6fb76f0ec7711deb72a86c924db1ae42648 ]
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Hmm. Please note that these two autosel patches were part of a giant
-48-patch series. While not all depending on each other, there are
-definitely some dependencies, and between 800cd6fb76f0 and 148587a59f6b
-there is e.g. be2e9415f8b3 which changes the type used to store the
-return value from cpm_muram_alloc(), and a whole lot of other
-cpm_muram_alloc() refactorings and cleanups - one of which
-(b6231ea2b3c6) caused a regression on ppc 8xx.
+> On Thu, Feb 13, 2020 at 8:58 AM Jeff Moyer <jmoyer@redhat.com> wrote:
 
-So I think taking just these two might not work as expected, but taking
-even more from that series is quite error-prone. Unless someone speaks
-up and explicitly points out and verifies some specific subset of the
-patches for a specific stable tree, I think they should not be added to
-any -stable kernel.
+>> I have just a couple of questions.
+>>
+>> First, can you please add a comment above the generic implementation of
+>> memremap_compat_align describing its purpose, and why a platform might
+>> want to override it?
+>
+> Sure, how about:
+>
+> /*
+>  * The memremap() and memremap_pages() interfaces are alternately used
+>  * to map persistent memory namespaces. These interfaces place different
+>  * constraints on the alignment and size of the mapping (namespace).
+>  * memremap() can map individual PAGE_SIZE pages. memremap_pages() can
+>  * only map subsections (2MB), and at least one architecture (PowerPC)
+>  * the minimum mapping granularity of memremap_pages() is 16MB.
+>  *
+>  * The role of memremap_compat_align() is to communicate the minimum
+>  * arch supported alignment of a namespace such that it can freely
+>  * switch modes without violating the arch constraint. Namely, do not
+>  * allow a namespace to be PAGE_SIZE aligned since that namespace may be
+>  * reconfigured into a mode that requires SUBSECTION_SIZE alignment.
+>  */
 
-[FWIW, we use the whole series backported to 4.19.y on both arm and ppc
-platforms, but as the b6231ea2b3c6 case showed, that doesn't really
-prove there are no problems cherry-picking these].
+Well, if we modify the x86 variant to be PAGE_SIZE, I think that text
+won't work.  How about:
 
-Rasmus
+/*
+ * memremap_compat_align should return the minimum alignment for
+ * mapping memory via memremap() and memremap_pages().  For x86, this
+ * is the system PAGE_SIZE.  Other architectures may impose different
+ * restrictions, as is seen on powerpc where the minimum alignment is
+ * tied to the linear mapping page size.
+ *
+ * When creating persistent memory namespaces, the alignment is forced
+ * to the least common denominator (MEMREMAP_COMPAT_ALIGN_MAX,
+ * currently 16MB).  However, older kernels did not enforce this
+ * behavior, so we allow mapping namespaces with smaller alignments,
+ * so long as the platform supports it.  See nvdimm_namespace_common_probe.
+ */
+
+-Jeff
+
