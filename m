@@ -2,50 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA8615D8D8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 14:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882DC15DC00
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2020 16:52:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Jw0G1tLTzDqZF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 00:56:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48JyYf1TZxzDqcV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2020 02:52:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=XCEyVK5P; dkim-atps=neutral
+ header.s=default header.b=1+KnDFrV; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48JvyB2rv2zDqWl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 00:54:42 +1100 (AEDT)
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48JyVJ2mgHzDqXC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2020 02:49:12 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 166DA206ED;
- Fri, 14 Feb 2020 13:54:36 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 024A72086A;
+ Fri, 14 Feb 2020 15:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581688479;
- bh=wz0k6GqQmi+Fvcb/lnayt8W8UqC9MtsNkbxEZ8jAoEk=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=XCEyVK5Po4EwK1bFoT+cnmsZVUFhLEE6vq4GV84ShsWy/CUEOYpnwIJXRZoUqdq+m
- vkiwPvcDifpDt2UD3F00h/o18e7e0I6R8xb2+ihC9swq9bMvJyvdzV4CI4o9wC0tw6
- 655SKCpWO0SwmojpMXzbdmjbeJov1Tajdi1By6Ls=
-Date: Fri, 14 Feb 2020 22:54:34 +0900
-From: Masami Hiramatsu <mhiramat@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/kprobes: Fix trap address when trap happened in
- real mode
-Message-Id: <20200214225434.464ec467ad9094961abb8ddc@kernel.org>
-In-Reply-To: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
-References: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ s=default; t=1581695349;
+ bh=0Z+JHiR+WvYE+26WSTGJxc9i13KKy1NyrwNA4itp59k=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=1+KnDFrVXZY7ZlGyAskkp+1jxXhgoptRY90/0Fv4gBHZakJCSBqjC9EI6xNz84kYH
+ WZqeVnuCC3vZp7oHDkjA0x1p9+sgIviJCWAk+79vbfNOEBYzwpHfZzHkKwCLvvSPUV
+ pdISX9W/EHSaOMltoyvKicli5BslOcwsPqKoeuPY=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.5 012/542] soc: fsl: qe: change return type of
+ cpm_muram_alloc() to s32
+Date: Fri, 14 Feb 2020 10:40:04 -0500
+Message-Id: <20200214154854.6746-12-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
+References: <20200214154854.6746-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,107 +60,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Paul Mackerras <paulus@samba.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- stable@kernel.vger.org, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Sasha Levin <sashal@kernel.org>, Timur Tabi <timur@kernel.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, Li Yang <leoyang.li@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-On Fri, 14 Feb 2020 12:47:49 +0000 (UTC)
-Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+[ Upstream commit 800cd6fb76f0ec7711deb72a86c924db1ae42648 ]
 
-> When a program check exception happens while MMU translation is
-> disabled, following Oops happens in kprobe_handler() in the following
-> test:
-> 
-> 		} else if (*addr != BREAKPOINT_INSTRUCTION) {
+There are a number of problems with cpm_muram_alloc() and its
+callers. Most callers assign the return value to some variable and
+then use IS_ERR_VALUE to check for allocation failure. However, when
+that variable is not sizeof(long), this leads to warnings - and it is
+indeed broken to do e.g.
 
-Thanks for the report and patch. I'm not so sure about powerpc implementation
-but at where the MMU translation is disabled, can the handler work correctly?
-(And where did you put the probe on?)
+  u32 foo = cpm_muram_alloc();
+  if (IS_ERR_VALUE(foo))
 
-Your fix may fix this Oops, but if the handler needs special care, it is an
-option to blacklist such place (if possible).
+on a 64-bit platform, since the condition
 
-Anyway, Naveen, can you review it?
+  foo >= (unsigned long)-ENOMEM
 
-Thank you,
+is tautologically false. There are also callers that ignore the
+possibility of error, and then there are those that check for error by
+comparing the return value to 0...
 
-> 
-> [   33.098554] BUG: Unable to handle kernel data access on read at 0x0000e268
-> [   33.105091] Faulting instruction address: 0xc000ec34
-> [   33.110010] Oops: Kernel access of bad area, sig: 11 [#1]
-> [   33.115348] BE PAGE_SIZE=16K PREEMPT CMPC885
-> [   33.119540] Modules linked in:
-> [   33.122591] CPU: 0 PID: 429 Comm: cat Not tainted 5.6.0-rc1-s3k-dev-00824-g84195dc6c58a #3267
-> [   33.131005] NIP:  c000ec34 LR: c000ecd8 CTR: c019cab8
-> [   33.136002] REGS: ca4d3b58 TRAP: 0300   Not tainted  (5.6.0-rc1-s3k-dev-00824-g84195dc6c58a)
-> [   33.144324] MSR:  00001032 <ME,IR,DR,RI>  CR: 2a4d3c52  XER: 00000000
-> [   33.150699] DAR: 0000e268 DSISR: c0000000
-> [   33.150699] GPR00: c000b09c ca4d3c10 c66d0620 00000000 ca4d3c60 00000000 00009032 00000000
-> [   33.150699] GPR08: 00020000 00000000 c087de44 c000afe0 c66d0ad0 100d3dd6 fffffff3 00000000
-> [   33.150699] GPR16: 00000000 00000041 00000000 ca4d3d70 00000000 00000000 0000416d 00000000
-> [   33.150699] GPR24: 00000004 c53b6128 00000000 0000e268 00000000 c07c0000 c07bb6fc ca4d3c60
-> [   33.188015] NIP [c000ec34] kprobe_handler+0x128/0x290
-> [   33.192989] LR [c000ecd8] kprobe_handler+0x1cc/0x290
-> [   33.197854] Call Trace:
-> [   33.200340] [ca4d3c30] [c000b09c] program_check_exception+0xbc/0x6fc
-> [   33.206590] [ca4d3c50] [c000e43c] ret_from_except_full+0x0/0x4
-> [   33.212392] --- interrupt: 700 at 0xe268
-> [   33.270401] Instruction dump:
-> [   33.273335] 913e0008 81220000 38600001 3929ffff 91220000 80010024 bb410008 7c0803a6
-> [   33.280992] 38210020 4e800020 38600000 4e800020 <813b0000> 6d2a7fe0 2f8a0008 419e0154
-> [   33.288841] ---[ end trace 5b9152d4cdadd06d ]---
-> 
-> Check MSR and convert regs->nip to virtual address if the trap
-> happened with MSR_IR cleared.
-> 
-> Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Fixes: 6cc89bad60a6 ("powerpc/kprobes: Invoke handlers directly")
-> Cc: stable@kernel.vger.org
-> Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> 
-> ---
-> The bug might have existed even before that commit from Naveen.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/kernel/kprobes.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> index 2d27ec4feee4..f8b848aa65bd 100644
-> --- a/arch/powerpc/kernel/kprobes.c
-> +++ b/arch/powerpc/kernel/kprobes.c
-> @@ -23,6 +23,7 @@
->  #include <asm/cacheflush.h>
->  #include <asm/sstep.h>
->  #include <asm/sections.h>
-> +#include <asm/io.h>
->  #include <linux/uaccess.h>
->  
->  DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
-> @@ -264,6 +265,9 @@ int kprobe_handler(struct pt_regs *regs)
->  	if (user_mode(regs))
->  		return 0;
->  
-> +	if (!(regs->msr & MSR_IR))
-> +		addr = phys_to_virt(regs->nip);
-> +
->  	/*
->  	 * We don't want to be preempted for the entire
->  	 * duration of kprobe processing
-> -- 
-> 2.25.0
-> 
+One could fix that by changing all callers to store the return value
+temporarily in an "unsigned long" and test that. However, use of
+IS_ERR_VALUE() is error-prone and should be restricted to things which
+are inherently long-sized (stuff in pt_regs etc.). Instead, let's aim
+for changing to the standard kernel style
 
+  int foo = cpm_muram_alloc();
+  if (foo < 0)
+    deal_with_it()
+  some->where = foo;
 
+Changing the return type from unsigned long to s32 (aka signed int)
+doesn't change the value that gets stored into any of the callers'
+variables except if the caller was storing the result in a u64 _and_
+the allocation failed, so in itself this patch should be a no-op.
+
+Another problem with cpm_muram_alloc() is that it can certainly
+validly return 0 - and except if some cpm_muram_alloc_fixed() call
+interferes, the very first cpm_muram_alloc() call will return just
+that. But that shows that both ucc_slow_free() and ucc_fast_free() are
+buggy, since they assume that a value of 0 means "that field was never
+allocated". We'll later change cpm_muram_free() to accept (and ignore)
+a negative offset, so callers can use a sentinel of -1 instead of 0
+and just unconditionally call cpm_muram_free().
+
+Reviewed-by: Timur Tabi <timur@kernel.org>
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/fsl/qe/qe_common.c | 29 ++++++++++++++++-------------
+ include/soc/fsl/qe/qe.h        | 16 ++++++++--------
+ 2 files changed, 24 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/soc/fsl/qe/qe_common.c b/drivers/soc/fsl/qe/qe_common.c
+index 83e85e61669f5..84c90105e588b 100644
+--- a/drivers/soc/fsl/qe/qe_common.c
++++ b/drivers/soc/fsl/qe/qe_common.c
+@@ -32,7 +32,7 @@ static phys_addr_t muram_pbase;
+ 
+ struct muram_block {
+ 	struct list_head head;
+-	unsigned long start;
++	s32 start;
+ 	int size;
+ };
+ 
+@@ -110,13 +110,14 @@ int cpm_muram_init(void)
+  * @algo: algorithm for alloc.
+  * @data: data for genalloc's algorithm.
+  *
+- * This function returns an offset into the muram area.
++ * This function returns a non-negative offset into the muram area, or
++ * a negative errno on failure.
+  */
+-static unsigned long cpm_muram_alloc_common(unsigned long size,
+-		genpool_algo_t algo, void *data)
++static s32 cpm_muram_alloc_common(unsigned long size,
++				  genpool_algo_t algo, void *data)
+ {
+ 	struct muram_block *entry;
+-	unsigned long start;
++	s32 start;
+ 
+ 	if (!muram_pool && cpm_muram_init())
+ 		goto out2;
+@@ -137,7 +138,7 @@ static unsigned long cpm_muram_alloc_common(unsigned long size,
+ out1:
+ 	gen_pool_free(muram_pool, start, size);
+ out2:
+-	return (unsigned long)-ENOMEM;
++	return -ENOMEM;
+ }
+ 
+ /*
+@@ -145,13 +146,14 @@ static unsigned long cpm_muram_alloc_common(unsigned long size,
+  * @size: number of bytes to allocate
+  * @align: requested alignment, in bytes
+  *
+- * This function returns an offset into the muram area.
++ * This function returns a non-negative offset into the muram area, or
++ * a negative errno on failure.
+  * Use cpm_dpram_addr() to get the virtual address of the area.
+  * Use cpm_muram_free() to free the allocation.
+  */
+-unsigned long cpm_muram_alloc(unsigned long size, unsigned long align)
++s32 cpm_muram_alloc(unsigned long size, unsigned long align)
+ {
+-	unsigned long start;
++	s32 start;
+ 	unsigned long flags;
+ 	struct genpool_data_align muram_pool_data;
+ 
+@@ -168,7 +170,7 @@ EXPORT_SYMBOL(cpm_muram_alloc);
+  * cpm_muram_free - free a chunk of multi-user ram
+  * @offset: The beginning of the chunk as returned by cpm_muram_alloc().
+  */
+-int cpm_muram_free(unsigned long offset)
++int cpm_muram_free(s32 offset)
+ {
+ 	unsigned long flags;
+ 	int size;
+@@ -194,13 +196,14 @@ EXPORT_SYMBOL(cpm_muram_free);
+  * cpm_muram_alloc_fixed - reserve a specific region of multi-user ram
+  * @offset: offset of allocation start address
+  * @size: number of bytes to allocate
+- * This function returns an offset into the muram area
++ * This function returns @offset if the area was available, a negative
++ * errno otherwise.
+  * Use cpm_dpram_addr() to get the virtual address of the area.
+  * Use cpm_muram_free() to free the allocation.
+  */
+-unsigned long cpm_muram_alloc_fixed(unsigned long offset, unsigned long size)
++s32 cpm_muram_alloc_fixed(unsigned long offset, unsigned long size)
+ {
+-	unsigned long start;
++	s32 start;
+ 	unsigned long flags;
+ 	struct genpool_data_fixed muram_pool_data_fixed;
+ 
+diff --git a/include/soc/fsl/qe/qe.h b/include/soc/fsl/qe/qe.h
+index c1036d16ed03b..2d35d5db16231 100644
+--- a/include/soc/fsl/qe/qe.h
++++ b/include/soc/fsl/qe/qe.h
+@@ -98,26 +98,26 @@ static inline void qe_reset(void) {}
+ int cpm_muram_init(void);
+ 
+ #if defined(CONFIG_CPM) || defined(CONFIG_QUICC_ENGINE)
+-unsigned long cpm_muram_alloc(unsigned long size, unsigned long align);
+-int cpm_muram_free(unsigned long offset);
+-unsigned long cpm_muram_alloc_fixed(unsigned long offset, unsigned long size);
++s32 cpm_muram_alloc(unsigned long size, unsigned long align);
++int cpm_muram_free(s32 offset);
++s32 cpm_muram_alloc_fixed(unsigned long offset, unsigned long size);
+ void __iomem *cpm_muram_addr(unsigned long offset);
+ unsigned long cpm_muram_offset(void __iomem *addr);
+ dma_addr_t cpm_muram_dma(void __iomem *addr);
+ #else
+-static inline unsigned long cpm_muram_alloc(unsigned long size,
+-					    unsigned long align)
++static inline s32 cpm_muram_alloc(unsigned long size,
++				  unsigned long align)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline int cpm_muram_free(unsigned long offset)
++static inline int cpm_muram_free(s32 offset)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline unsigned long cpm_muram_alloc_fixed(unsigned long offset,
+-						  unsigned long size)
++static inline s32 cpm_muram_alloc_fixed(unsigned long offset,
++					unsigned long size)
+ {
+ 	return -ENOSYS;
+ }
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.20.1
+
