@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374AD16058B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2020 19:36:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539B81606EC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2020 23:35:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48LG620JKBzDqf4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 05:36:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LMQ21jMfzDqdf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 09:35:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=87.98.150.177; helo=15.mo3.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 1045 seconds by postgrey-1.36 at bilbo;
- Mon, 17 Feb 2020 05:34:38 AEDT
-Received: from 15.mo3.mail-out.ovh.net (15.mo3.mail-out.ovh.net
- [87.98.150.177])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48LG4G3dB7zDqd3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 05:34:34 +1100 (AEDT)
-Received: from player789.ha.ovh.net (unknown [10.110.171.227])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 03D472414DD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2020 19:17:02 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player789.ha.ovh.net (Postfix) with ESMTPSA id 29F43F7446D3;
- Sun, 16 Feb 2020 18:17:00 +0000 (UTC)
-Subject: Re: QEMU/KVM snapshot restore bug
-To: dftxbs3e <dftxbs3e@free.fr>, linuxppc-dev@lists.ozlabs.org,
- Greg Kurz <groug@kaod.org>
-References: <7544eb90-71a6-3709-c530-9c83beb943a7@free.fr>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <06cc1954-9bf5-0178-668e-130411ea1b13@kaod.org>
-Date: Sun, 16 Feb 2020 19:16:55 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48LMNH5KX9zDqLt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 09:33:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
+ header.s=201811 header.b=izLMkKNK; dkim-atps=neutral
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 48LMNG3cXPz9sPk;
+ Mon, 17 Feb 2020 09:33:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1581892431;
+ bh=IzVd3zz9l6kPQTSe8Nj+Ga0PypI0I2VtiI7TPnVOQrY=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=izLMkKNKro+4UaU4NyZyvFFwQxyAvV8WHby0/+sU16FohAkhCP8xpodCbETwQD4H+
+ Kbf5T+Sltm6K5SG7jU03OfXdEcvMoYnWbqk3qQtKTMEaEIjqlOvu/z7+ULva/ILRm0
+ A2nOGCJidPEC6Unmb1ho0W5lQMI5ZScWTAC4Ce/8n4M2gMdGfbvJuGK6WNknf1hkXg
+ IcjRwX4qaH/u0dwUeDgY6sn+ejB/zd+Xce1n7lp4BnpsCaanSUe02Ewd/v2RTSnFIM
+ VMSPrl7+RcB5nGZadKVKhkY9QebfoBRaxC0ynLtIjfyn1SKKbsfkcj8eo9AdIdNQAT
+ nd1nCAkuHeJQA==
+Received: by neuling.org (Postfix, from userid 1000)
+ id F1D392C01ED; Mon, 17 Feb 2020 09:33:49 +1100 (AEDT)
+Message-ID: <f61f9a59ddb0f103cd62792e13afde4ca8afa7bb.camel@neuling.org>
+Subject: Re: [PATCH 1/1] powerpc/cputable: Remove unnecessary copy of
+ cpu_spec->oprofile_type
+From: Michael Neuling <mikey@neuling.org>
+To: Leonardo Bras <leonardo@linux.ibm.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@c-s.fr>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Thomas Gleixner
+ <tglx@linutronix.de>, desnesn@linux.ibm.com
+Date: Mon, 17 Feb 2020 09:33:49 +1100
+In-Reply-To: <20200215053637.280880-1-leonardo@linux.ibm.com>
+References: <20200215053637.280880-1-leonardo@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <7544eb90-71a6-3709-c530-9c83beb943a7@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: base64
-X-Ovh-Tracer-Id: 9736219447722675097
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrjeeggdduudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgsehtsgertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeekledrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,92 +62,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gMi8xMS8yMCA0OjU3IEFNLCBkZnR4YnMzZSB3cm90ZToNCj4gSGVsbG8sDQo+IA0KPiBJ
-IHRvb2sgYSBzbmFwc2hvdCBvZiBhIHBwYzY0IChiaWcgZW5kaWFuKSBWTSBmcm9tIGEgcHBj
-NjQgKGxpdHRsZSBlbmRpYW4pIGhvc3QgdXNpbmcgYHZpcnNoIHNuYXBzaG90LWNyZWF0ZS1h
-cyAtLWRvbWFpbiA8bmFtZT4gLS1uYW1lIDxuYW1lPmANCj4NCj4gVGhlbiBJIHJlc3RhcnRl
-ZCBteSBzeXN0ZW0gYW5kIHRyaWVkIHJlc3RvcmluZyB0aGUgc25hcHNob3Q6DQo+IA0KPiAj
-IHZpcnNoIHNuYXBzaG90LXJldmVydCAtLWRvbWFpbiA8bmFtZT4gLS1zbmFwc2hvdG5hbWUg
-PG5hbWU+DQo+IGVycm9yOiBpbnRlcm5hbCBlcnJvcjogcHJvY2VzcyBleGl0ZWQgd2hpbGUg
-Y29ubmVjdGluZyB0byBtb25pdG9yOiAyMDIwLTAyLTExVDAzOjE4OjA4LjExMDU4MlogcWVt
-dS1zeXN0ZW0tcHBjNjQ6IEtWTV9TRVRfREVWSUNFX0FUVFIgZmFpbGVkOiBHcm91cCAzIGF0
-dHIgMHgwMDAwMDAwMDAwMDAxMzA5OiBEZXZpY2Ugb3IgcmVzb3VyY2UgYnVzeQ0KPiAyMDIw
-LTAyLTExVDAzOjE4OjA4LjExMDYwNVogcWVtdS1zeXN0ZW0tcHBjNjQ6IGVycm9yIHdoaWxl
-IGxvYWRpbmcgc3RhdGUgZm9yIGluc3RhbmNlIDB4MCBvZiBkZXZpY2UgJ3NwYXByJw0KPiAy
-MDIwLTAyLTExVDAzOjE4OjA4LjExMjg0M1ogcWVtdS1zeXN0ZW0tcHBjNjQ6IEVycm9yIC0x
-IHdoaWxlIGxvYWRpbmcgVk0gc3RhdGUNCj4gDQo+IEFuZCBkbWVzZyBzaG93cyBlYWNoIHRp
-bWUgdGhlIHJlc3RvcmUgY29tbWFuZCBpcyBleGVjdXRlZDoNCj4gDQo+IFsgIDE4MC4xNzY2
-MDZdIFdBUk5JTkc6IENQVTogMTYgUElEOiA1NTI4IGF0IGFyY2gvcG93ZXJwYy9rdm0vYm9v
-azNzX3hpdmUuYzozNDUgeGl2ZV90cnlfcGlja19xdWV1ZSsweDQwLzB4YjggW2t2bV0NCj4g
-WyAgMTgwLjE3NjYwOF0gTW9kdWxlcyBsaW5rZWQgaW46IHZob3N0X25ldCB2aG9zdCB0YXAg
-a3ZtX2h2IGt2bSB4dF9DSEVDS1NVTSB4dF9NQVNRVUVSQURFIG5mX25hdF90ZnRwIG5mX2Nv
-bm50cmFja190ZnRwIHR1biBicmlkZ2UgODAyMXEgZ2FycCBtcnAgc3RwIGxsYyByZmtpbGwg
-bmZfY29ubnRyYWNrX25ldGJpb3NfbnMgbmZfY29ubnRyYWNrX2Jyb2FkY2FzdCB4dF9DVCBp
-cDZ0X1JFSkVDVCBuZl9yZWplY3RfaXB2NiBpcDZ0X3JwZmlsdGVyIGlwdF9SRUpFQ1QgbmZf
-cmVqZWN0X2lwdjQgeHRfY29ubnRyYWNrIGVidGFibGVfbmF0IGVidGFibGVfYnJvdXRlIGlw
-NnRhYmxlX25hdCBpcDZ0YWJsZV9tYW5nbGUgaXA2dGFibGVfcmF3IGlwNnRhYmxlX3NlY3Vy
-aXR5IGlwdGFibGVfbmF0IG5mX25hdCBpcHRhYmxlX21hbmdsZSBpcHRhYmxlX3JhdyBpcHRh
-YmxlX3NlY3VyaXR5IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9kZWZyYWdfaXB2
-NCBpcF9zZXQgbmZuZXRsaW5rIGVidGFibGVfZmlsdGVyIGVidGFibGVzIGlwNnRhYmxlX2Zp
-bHRlciBpcDZfdGFibGVzIGlwdGFibGVfZmlsdGVyIHN1bnJwYyByYWlkMSBhdDI0IHJlZ21h
-cF9pMmMgc25kX2hkYV9jb2RlY19oZG1pIHNuZF9oZGFfaW50ZWwgc25kX2ludGVsX2RzcGNm
-ZyBqb3lkZXYgc25kX2hkYV9jb2RlYyBzbmRfaGRhX2NvcmUgb2ZwYXJ0IHNuZF9od2RlcCBj
-cmN0MTBkaWZfdnBtc3VtIHNuZF9zZXEgaXBtaV9wb3dlcm52IHBvd2VybnZfZmxhc2ggaXBt
-aV9kZXZpbnRmIHNuZF9zZXFfZGV2aWNlIG10ZCBpcG1pX21zZ2hhbmRsZXIgcnRjX29wYWwg
-c25kX3BjbSBvcGFsX3ByZCBpMmNfb3BhbCBzbmRfdGltZXIgc25kIHNvdW5kY29yZSBsejQg
-bHo0X2NvbXByZXNzIHpyYW0gaXBfdGFibGVzIHhmcyBsaWJjcmMzMmMgZG1fY3J5cHQgYW1k
-Z3B1IGFzdCBkcm1fdnJhbV9oZWxwZXIgbWZkX2NvcmUgaTJjX2FsZ29fYml0IGdwdV9zY2hl
-ZCBkcm1fa21zX2hlbHBlciBtcHQzc2FzDQo+IFsgIDE4MC4xNzY2NTJdICBzeXNjb3B5YXJl
-YSBzeXNmaWxscmVjdCBzeXNpbWdibHQgZmJfc3lzX2ZvcHMgdHRtIGRybSB2bXhfY3J5cHRv
-IHRnMyBjcmMzMmNfdnBtc3VtIG52bWUgcmFpZF9jbGFzcyBzY3NpX3RyYW5zcG9ydF9zYXMg
-bnZtZV9jb3JlIGRybV9wYW5lbF9vcmllbnRhdGlvbl9xdWlya3MgaTJjX2NvcmUgZnVzZQ0K
-PiBbICAxODAuMTc2NjYzXSBDUFU6IDE2IFBJRDogNTUyOCBDb21tOiBxZW11LXN5c3RlbS1w
-cGMgTm90IHRhaW50ZWQgNS40LjE3LTIwMC5mYzMxLnBwYzY0bGUgIzENCj4gWyAgMTgwLjE3
-NjY2NV0gTklQOiAgYzAwODAwMDAwYTg4M2M4MCBMUjogYzAwODAwMDAwYTg4NmRiOCBDVFI6
-IGMwMDgwMDAwMGE4OGE5ZTANCj4gWyAgMTgwLjE3NjY2N10gUkVHUzogYzAwMDAwMDc2N2Ex
-Nzg5MCBUUkFQOiAwNzAwICAgTm90IHRhaW50ZWQgICg1LjQuMTctMjAwLmZjMzEucHBjNjRs
-ZSkNCj4gWyAgMTgwLjE3NjY2OF0gTVNSOiAgOTAwMDAwMDAwMDAyOTAzMyA8U0YsSFYsRUUs
-TUUsSVIsRFIsUkksTEU+ICBDUjogNDgyMjQyNDggIFhFUjogMjAwNDAwMDANCj4gWyAgMTgw
-LjE3NjY3M10gQ0ZBUjogYzAwODAwMDAwYTg4NmRiNCBJUlFNQVNLOiAwIA0KPiAgICAgICAg
-ICAgICAgICBHUFIwMDogYzAwODAwMDAwYTg4NmRiOCBjMDAwMDAwNzY3YTE3YjIwIGMwMDgw
-MDAwMGE4YWVkMDAgYzAwMDIwMDU0NjhhNDQ4MCANCj4gICAgICAgICAgICAgICAgR1BSMDQ6
-IDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDAwIDAw
-MDAwMDAwMDAwMDAwMDEgDQo+ICAgICAgICAgICAgICAgIEdQUjA4OiBjMDAwMjAwNzE0MmIy
-NDAwIGMwMDAyMDA3MTQyYjI0MDAgMDAwMDAwMDAwMDAwMDAwMCBjMDA4MDAwMDBhODkxMGYw
-IA0KPiAgICAgICAgICAgICAgICBHUFIxMjogYzAwODAwMDAwYTg4YTQ4OCBjMDAwMDAwN2Zm
-ZmVkMDAwIDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDAwMDAwMCANCj4gICAgICAgICAg
-ICAgICAgR1BSMTY6IDAwMDAwMDAxNDk1MjQxODAgMDAwMDdmZmZmMzliZGE3OCAwMDAwN2Zm
-ZmYzOWJkYTMwIDAwMDAwMDAwMDAwMDAyNWMgDQo+ICAgICAgICAgICAgICAgIEdQUjIwOiAw
-MDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAwMDMgYzAwMDIwMDZmMTNhMDAwMCAwMDAw
-MDAwMDAwMDAwMDAwIA0KPiAgICAgICAgICAgICAgICBHUFIyNDogMDAwMDAwMDAwMDAwMTM1
-OSAwMDAwMDAwMDAwMDAwMDAwIGMwMDAwMDAyZjhjOTZjMzggYzAwMDAwMDJmOGM4MDAwMCAN
-Cj4gICAgICAgICAgICAgICAgR1BSMjg6IDAwMDAwMDAwMDAwMDAwMDAgYzAwMDIwMDZmMTNh
-MDAwMCBjMDAwMjAwNmYxM2E0MDM4IGMwMDAwMDA3NjdhMTdiZTQgDQo+IFsgIDE4MC4xNzY2
-ODhdIE5JUCBbYzAwODAwMDAwYTg4M2M4MF0geGl2ZV90cnlfcGlja19xdWV1ZSsweDQwLzB4
-YjggW2t2bV0NCj4gWyAgMTgwLjE3NjY5M10gTFIgW2MwMDgwMDAwMGE4ODZkYjhdIGt2bXBw
-Y194aXZlX3NlbGVjdF90YXJnZXQrMHgxMDAvMHgyMTAgW2t2bV0NCj4gWyAgMTgwLjE3NjY5
-NF0gQ2FsbCBUcmFjZToNCj4gWyAgMTgwLjE3NjY5Nl0gW2MwMDAwMDA3NjdhMTdiMjBdIFtj
-MDAwMDAwNzY3YTE3YjcwXSAweGMwMDAwMDA3NjdhMTdiNzAgKHVucmVsaWFibGUpDQo+IFsg
-IDE4MC4xNzY3MDFdIFtjMDAwMDAwNzY3YTE3YjcwXSBbYzAwODAwMDAwYTg4YjQyMF0ga3Zt
-cHBjX3hpdmVfbmF0aXZlX3NldF9hdHRyKzB4Zjk4LzB4MTc2MCBba3ZtXQ0KPiBbICAxODAu
-MTc2NzA1XSBbYzAwMDAwMDc2N2ExN2NjMF0gW2MwMDgwMDAwMGE4NjM5MmNdIGt2bV9kZXZp
-Y2VfaW9jdGwrMHhmNC8weDE4MCBba3ZtXQ0KPiBbICAxODAuMTc2NzEwXSBbYzAwMDAwMDc2
-N2ExN2QxMF0gW2MwMDAwMDAwMDA1MzgwYjBdIGRvX3Zmc19pb2N0bCsweGFhMC8weGQ5MA0K
-PiBbICAxODAuMTc2NzEyXSBbYzAwMDAwMDc2N2ExN2RkMF0gW2MwMDAwMDAwMDA1Mzg0NjRd
-IHN5c19pb2N0bCsweGM0LzB4MTEwDQo+IFsgIDE4MC4xNzY3MTZdIFtjMDAwMDAwNzY3YTE3
-ZTIwXSBbYzAwMDAwMDAwMDAwYjlkMF0gc3lzdGVtX2NhbGwrMHg1Yy8weDY4DQo+IFsgIDE4
-MC4xNzY3MTddIEluc3RydWN0aW9uIGR1bXA6DQo+IFsgIDE4MC4xNzY3MTldIDc5NGFkMTgy
-IDBiMGEwMDAwIDJjMjkwMDAwIDQxODIwMDgwIDg5NDkwMDEwIDJjMGEwMDAwIDQxODIwMDc0
-IDc4ODgzNjY0IA0KPiBbICAxODAuMTc2NzIzXSA3ZDA5NDIxNCBlOTQ4MDA3MCA3ZDQ3MDA3
-NCA3OGU3ZDE4MiA8MGIwNzAwMDA+IDJjMmEwMDAwIDQxODIwMDU0IDgxNDgwMDc4IA0KPiBb
-ICAxODAuMTc2NzI3XSAtLS1bIGVuZCB0cmFjZSAwNTZhNmRkMjc1ZTIwNjg0IF0tLS0NCj4g
-DQo+IExldCBtZSBrbm93IGlmIEkgY2FuIHByb3ZpZGUgbW9yZSBpbmZvcm1hdGlvbg0KDQpJ
-IHRoaW5rIHRoaXMgaXMgZml4ZWQgYnkgY29tbWl0IGY1NTc1MGU0ZTRmYiAoInNwYXByL3hp
-dmU6IE1hc2sgdGhlIEVBUyB3aGVuIA0KYWxsb2NhdGluZyBhbiBJUlEiKSB3aGljaCBpcyBu
-b3QgaW4gUUVNVSA0LjEuMS4gVGhlIHNhbWUgcHJvYmxlbSBzaG91bGQgYWxzbyANCm9jY3Vy
-IHdpdGggTEUgZ3Vlc3RzLiANCg0KQ291bGQgeW91IHBvc3NpYmx5IHJlZ2VuZXJhdGUgdGhl
-IFFFTVUgcnBtIHdpdGggdGhpcyBwYXRjaCA/IA0KDQpUaGFua3MsDQoNCkMuDQo=
+On Sat, 2020-02-15 at 02:36 -0300, Leonardo Bras wrote:
+> Before checking for cpu_type =3D=3D NULL, this same copy happens, so doin=
+g
+> it here will just write the same value to the t->oprofile_type
+> again.
+>=20
+> Remove the repeated copy, as it is unnecessary.
+>=20
+> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+
+LGTM
+
+Reviewed-by: Michael Neuling <mikey@neuling.org>
+
+> ---
+>  arch/powerpc/kernel/cputable.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputabl=
+e.c
+> index e745abc5457a..5a87ec96582f 100644
+> --- a/arch/powerpc/kernel/cputable.c
+> +++ b/arch/powerpc/kernel/cputable.c
+> @@ -2197,7 +2197,6 @@ static struct cpu_spec * __init setup_cpu_spec(unsi=
+gned
+> long offset,
+>  		 */
+>  		if (old.oprofile_cpu_type !=3D NULL) {
+>  			t->oprofile_cpu_type =3D old.oprofile_cpu_type;
+> -			t->oprofile_type =3D old.oprofile_type;
+>  		}
+>  	}
+> =20
+
