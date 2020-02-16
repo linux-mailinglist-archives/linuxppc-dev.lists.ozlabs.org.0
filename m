@@ -2,71 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9059F160546
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2020 19:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374AD16058B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2020 19:36:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48LFjP4vBSzDqd9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 05:18:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LG620JKBzDqf4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 05:36:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=87.98.150.177; helo=15.mo3.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.74; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-X-Greylist: delayed 308 seconds by postgrey-1.36 at bilbo;
- Mon, 17 Feb 2020 05:16:29 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 1045 seconds by postgrey-1.36 at bilbo;
+ Mon, 17 Feb 2020 05:34:38 AEDT
+Received: from 15.mo3.mail-out.ovh.net (15.mo3.mail-out.ovh.net
+ [87.98.150.177])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48LFgK5C2zzDqd2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 05:16:28 +1100 (AEDT)
-Received: from mail-qv1-f46.google.com ([209.85.219.46]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1N6szR-1jXLws1YAJ-018GHR for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb
- 2020 19:11:13 +0100
-Received: by mail-qv1-f46.google.com with SMTP id u10so6639121qvi.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2020 10:11:12 -0800 (PST)
-X-Gm-Message-State: APjAAAVamEJqdLl08Xb+FiLUfubXc71x5P0APRRGCWL0spaQwoHIcOuM
- wvCy+qRm7U9GyubhFn3BgmHZnBpARrOoJtx5JjA=
-X-Google-Smtp-Source: APXvYqzvtOyO80NGJ0NQzbdKQvJf1lkKW8T220YClkzb69MFsE4nIeROks8Hz90TjXKc5YYn+5v58NnqAVTN3OLIhHE=
-X-Received: by 2002:a05:6214:524:: with SMTP id
- x4mr10124633qvw.4.1581876671327; 
- Sun, 16 Feb 2020 10:11:11 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48LG4G3dB7zDqd3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 05:34:34 +1100 (AEDT)
+Received: from player789.ha.ovh.net (unknown [10.110.171.227])
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 03D472414DD
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2020 19:17:02 +0100 (CET)
+Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
+ (Authenticated sender: clg@kaod.org)
+ by player789.ha.ovh.net (Postfix) with ESMTPSA id 29F43F7446D3;
+ Sun, 16 Feb 2020 18:17:00 +0000 (UTC)
+Subject: Re: QEMU/KVM snapshot restore bug
+To: dftxbs3e <dftxbs3e@free.fr>, linuxppc-dev@lists.ozlabs.org,
+ Greg Kurz <groug@kaod.org>
+References: <7544eb90-71a6-3709-c530-9c83beb943a7@free.fr>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <06cc1954-9bf5-0178-668e-130411ea1b13@kaod.org>
+Date: Sun, 16 Feb 2020 19:16:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <cover.1577111363.git.christophe.leroy@c-s.fr>
- <bd4557a7-9715-59aa-5d8e-488c5e516a98@c-s.fr>
- <20200109200733.GS3191@gate.crashing.org>
- <77a8bf25-6615-6c0a-56d4-eae7aa8a8f09@c-s.fr>
- <20200111113328.GX3191@gate.crashing.org>
-In-Reply-To: <20200111113328.GX3191@gate.crashing.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Sun, 16 Feb 2020 19:10:55 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a11wX1zJ+TAacDTkYsrzvfdVmNrcB6OC23aFvCxF57opQ@mail.gmail.com>
-Message-ID: <CAK8P3a11wX1zJ+TAacDTkYsrzvfdVmNrcB6OC23aFvCxF57opQ@mail.gmail.com>
-Subject: Re: Surprising code generated for vdso_read_begin()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dN68M7Rx9/jpw44e9e9mkIkj7fC/wf0g6lC8tMiJxkZ7KbaRIJ2
- JqEyiKbZiRl8w5pco38K4uw8UeRawNrG833rU+C/yyVFAEaejJBZ1bO+bNrWNPT3PNDCg9d
- Wi0ZNpbftALzC/KC6YXoq691adEu64GA5GbiiWkcye+nrY2kPvdQIIhoXMSDtfETJxaS++Q
- JC4q3Y2fnKz33x6J6hO2Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:M2t794Vvnas=:ebgcCPANGlVnqxVPLJmaoK
- dd9NHiRNfBy5/iljs0Mj7MacHfm8jtVlQtjmcW8GVfjdxyLVHy0UbDT4r7ch0yQb2L32Ki6UG
- q+NsZaheWb9pi5qpXWQ9dojGWeQSMKUIgVUPkRimY6F6uuTxgqyc7qAgztF/Z8XcDaC3VNHgJ
- 7w4N0qLVNb24YWlQP/G+rCVi2v4P68UtdajejoHUIEuKH6IwUsW20iVCO8nHNNqfLwlsm+1gD
- EB3y/hNuaPzsqtwzAjTritCoPhuc8whMzTM+STRcrP3SHhGiZraD7L5tt974d0utAGmvguB0y
- Gb2ER0WmZxQKPb6pi6JrAyLdZV/5EGKlnTFVg7tVD1EMsYdsxUwKz1U8H6WUlybeRQgX8wzKP
- j9/pOgPKKA8193FRPbzlDx3cIBn4wVdXWj5RNX6m6rV5oENKmtIqxBtfs+h3yxHTmiAd4iCu1
- 3d/DAt2v9ywTGUmBx/aiIX101XZvm2jq0b5U8FDpEaHzjaEiLyuA5wEV/IhNHC8XMceMkyiti
- p+ZoeBAr8gnegfLp2dlUVi59GAFssXkA62NxyDUc33GaWFIVKjDHw8OVz/n8/EK8WUOmsK9H6
- kbrya5oXonmYSvcylzT5n6A5sj6exnodtcq5Jm0tYu+Vurmb2ZGbZMWu8oc84nhIW+B3/SdPf
- VBdD7BEmfmrT2g7kobr7pD7nj7RPC7wLLJ2TBhb+Ka7CcQuIWph/qdJSm9pG6zq4JXZawdcZR
- OVcft5UKs+P0UkPZ7TWYcWf5QaaLJngPQWq75xe75Lmf39+wHwUC9IU2El1ul7Y4r82DDPs8o
- 1dGV8xOMiefDgKzAG4ONMXZoWei2fB/Qdb5znJcXuSKygnqaL4=
+In-Reply-To: <7544eb90-71a6-3709-c530-9c83beb943a7@free.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: base64
+X-Ovh-Tracer-Id: 9736219447722675097
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrjeeggdduudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgsehtsgertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeekledrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,39 +58,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: the arch/x86 maintainers <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 11, 2020 at 12:33 PM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
->
-> On Fri, Jan 10, 2020 at 07:45:44AM +0100, Christophe Leroy wrote:
-> > Le 09/01/2020 =C3=A0 21:07, Segher Boessenkool a =C3=A9crit :
-> > >It looks like the compiler did loop peeling.  What GCC version is this=
-?
-> > >Please try current trunk (to become GCC 10), or at least GCC 9?
-> >
-> > It is with GCC 5.5
-> >
-> > https://mirrors.edge.kernel.org/pub/tools/crosstool/ doesn't have more
-> > recent than 8.1
->
-> Arnd, can you update the tools?  We are at 8.3 and 9.2 now :-)  Or is
-> this hard and/or painful to do?
-
-To follow up on this older thread, I have now uploaded 6.5, 7.5, 8.3 and 9.=
-2
-binaries, as well as a recent 10.0 snapshot.
-
-I hope these work, let me know if there are problems.
-
-       Arnd
+T24gMi8xMS8yMCA0OjU3IEFNLCBkZnR4YnMzZSB3cm90ZToNCj4gSGVsbG8sDQo+IA0KPiBJ
+IHRvb2sgYSBzbmFwc2hvdCBvZiBhIHBwYzY0IChiaWcgZW5kaWFuKSBWTSBmcm9tIGEgcHBj
+NjQgKGxpdHRsZSBlbmRpYW4pIGhvc3QgdXNpbmcgYHZpcnNoIHNuYXBzaG90LWNyZWF0ZS1h
+cyAtLWRvbWFpbiA8bmFtZT4gLS1uYW1lIDxuYW1lPmANCj4NCj4gVGhlbiBJIHJlc3RhcnRl
+ZCBteSBzeXN0ZW0gYW5kIHRyaWVkIHJlc3RvcmluZyB0aGUgc25hcHNob3Q6DQo+IA0KPiAj
+IHZpcnNoIHNuYXBzaG90LXJldmVydCAtLWRvbWFpbiA8bmFtZT4gLS1zbmFwc2hvdG5hbWUg
+PG5hbWU+DQo+IGVycm9yOiBpbnRlcm5hbCBlcnJvcjogcHJvY2VzcyBleGl0ZWQgd2hpbGUg
+Y29ubmVjdGluZyB0byBtb25pdG9yOiAyMDIwLTAyLTExVDAzOjE4OjA4LjExMDU4MlogcWVt
+dS1zeXN0ZW0tcHBjNjQ6IEtWTV9TRVRfREVWSUNFX0FUVFIgZmFpbGVkOiBHcm91cCAzIGF0
+dHIgMHgwMDAwMDAwMDAwMDAxMzA5OiBEZXZpY2Ugb3IgcmVzb3VyY2UgYnVzeQ0KPiAyMDIw
+LTAyLTExVDAzOjE4OjA4LjExMDYwNVogcWVtdS1zeXN0ZW0tcHBjNjQ6IGVycm9yIHdoaWxl
+IGxvYWRpbmcgc3RhdGUgZm9yIGluc3RhbmNlIDB4MCBvZiBkZXZpY2UgJ3NwYXByJw0KPiAy
+MDIwLTAyLTExVDAzOjE4OjA4LjExMjg0M1ogcWVtdS1zeXN0ZW0tcHBjNjQ6IEVycm9yIC0x
+IHdoaWxlIGxvYWRpbmcgVk0gc3RhdGUNCj4gDQo+IEFuZCBkbWVzZyBzaG93cyBlYWNoIHRp
+bWUgdGhlIHJlc3RvcmUgY29tbWFuZCBpcyBleGVjdXRlZDoNCj4gDQo+IFsgIDE4MC4xNzY2
+MDZdIFdBUk5JTkc6IENQVTogMTYgUElEOiA1NTI4IGF0IGFyY2gvcG93ZXJwYy9rdm0vYm9v
+azNzX3hpdmUuYzozNDUgeGl2ZV90cnlfcGlja19xdWV1ZSsweDQwLzB4YjggW2t2bV0NCj4g
+WyAgMTgwLjE3NjYwOF0gTW9kdWxlcyBsaW5rZWQgaW46IHZob3N0X25ldCB2aG9zdCB0YXAg
+a3ZtX2h2IGt2bSB4dF9DSEVDS1NVTSB4dF9NQVNRVUVSQURFIG5mX25hdF90ZnRwIG5mX2Nv
+bm50cmFja190ZnRwIHR1biBicmlkZ2UgODAyMXEgZ2FycCBtcnAgc3RwIGxsYyByZmtpbGwg
+bmZfY29ubnRyYWNrX25ldGJpb3NfbnMgbmZfY29ubnRyYWNrX2Jyb2FkY2FzdCB4dF9DVCBp
+cDZ0X1JFSkVDVCBuZl9yZWplY3RfaXB2NiBpcDZ0X3JwZmlsdGVyIGlwdF9SRUpFQ1QgbmZf
+cmVqZWN0X2lwdjQgeHRfY29ubnRyYWNrIGVidGFibGVfbmF0IGVidGFibGVfYnJvdXRlIGlw
+NnRhYmxlX25hdCBpcDZ0YWJsZV9tYW5nbGUgaXA2dGFibGVfcmF3IGlwNnRhYmxlX3NlY3Vy
+aXR5IGlwdGFibGVfbmF0IG5mX25hdCBpcHRhYmxlX21hbmdsZSBpcHRhYmxlX3JhdyBpcHRh
+YmxlX3NlY3VyaXR5IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9kZWZyYWdfaXB2
+NCBpcF9zZXQgbmZuZXRsaW5rIGVidGFibGVfZmlsdGVyIGVidGFibGVzIGlwNnRhYmxlX2Zp
+bHRlciBpcDZfdGFibGVzIGlwdGFibGVfZmlsdGVyIHN1bnJwYyByYWlkMSBhdDI0IHJlZ21h
+cF9pMmMgc25kX2hkYV9jb2RlY19oZG1pIHNuZF9oZGFfaW50ZWwgc25kX2ludGVsX2RzcGNm
+ZyBqb3lkZXYgc25kX2hkYV9jb2RlYyBzbmRfaGRhX2NvcmUgb2ZwYXJ0IHNuZF9od2RlcCBj
+cmN0MTBkaWZfdnBtc3VtIHNuZF9zZXEgaXBtaV9wb3dlcm52IHBvd2VybnZfZmxhc2ggaXBt
+aV9kZXZpbnRmIHNuZF9zZXFfZGV2aWNlIG10ZCBpcG1pX21zZ2hhbmRsZXIgcnRjX29wYWwg
+c25kX3BjbSBvcGFsX3ByZCBpMmNfb3BhbCBzbmRfdGltZXIgc25kIHNvdW5kY29yZSBsejQg
+bHo0X2NvbXByZXNzIHpyYW0gaXBfdGFibGVzIHhmcyBsaWJjcmMzMmMgZG1fY3J5cHQgYW1k
+Z3B1IGFzdCBkcm1fdnJhbV9oZWxwZXIgbWZkX2NvcmUgaTJjX2FsZ29fYml0IGdwdV9zY2hl
+ZCBkcm1fa21zX2hlbHBlciBtcHQzc2FzDQo+IFsgIDE4MC4xNzY2NTJdICBzeXNjb3B5YXJl
+YSBzeXNmaWxscmVjdCBzeXNpbWdibHQgZmJfc3lzX2ZvcHMgdHRtIGRybSB2bXhfY3J5cHRv
+IHRnMyBjcmMzMmNfdnBtc3VtIG52bWUgcmFpZF9jbGFzcyBzY3NpX3RyYW5zcG9ydF9zYXMg
+bnZtZV9jb3JlIGRybV9wYW5lbF9vcmllbnRhdGlvbl9xdWlya3MgaTJjX2NvcmUgZnVzZQ0K
+PiBbICAxODAuMTc2NjYzXSBDUFU6IDE2IFBJRDogNTUyOCBDb21tOiBxZW11LXN5c3RlbS1w
+cGMgTm90IHRhaW50ZWQgNS40LjE3LTIwMC5mYzMxLnBwYzY0bGUgIzENCj4gWyAgMTgwLjE3
+NjY2NV0gTklQOiAgYzAwODAwMDAwYTg4M2M4MCBMUjogYzAwODAwMDAwYTg4NmRiOCBDVFI6
+IGMwMDgwMDAwMGE4OGE5ZTANCj4gWyAgMTgwLjE3NjY2N10gUkVHUzogYzAwMDAwMDc2N2Ex
+Nzg5MCBUUkFQOiAwNzAwICAgTm90IHRhaW50ZWQgICg1LjQuMTctMjAwLmZjMzEucHBjNjRs
+ZSkNCj4gWyAgMTgwLjE3NjY2OF0gTVNSOiAgOTAwMDAwMDAwMDAyOTAzMyA8U0YsSFYsRUUs
+TUUsSVIsRFIsUkksTEU+ICBDUjogNDgyMjQyNDggIFhFUjogMjAwNDAwMDANCj4gWyAgMTgw
+LjE3NjY3M10gQ0ZBUjogYzAwODAwMDAwYTg4NmRiNCBJUlFNQVNLOiAwIA0KPiAgICAgICAg
+ICAgICAgICBHUFIwMDogYzAwODAwMDAwYTg4NmRiOCBjMDAwMDAwNzY3YTE3YjIwIGMwMDgw
+MDAwMGE4YWVkMDAgYzAwMDIwMDU0NjhhNDQ4MCANCj4gICAgICAgICAgICAgICAgR1BSMDQ6
+IDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDAwIDAw
+MDAwMDAwMDAwMDAwMDEgDQo+ICAgICAgICAgICAgICAgIEdQUjA4OiBjMDAwMjAwNzE0MmIy
+NDAwIGMwMDAyMDA3MTQyYjI0MDAgMDAwMDAwMDAwMDAwMDAwMCBjMDA4MDAwMDBhODkxMGYw
+IA0KPiAgICAgICAgICAgICAgICBHUFIxMjogYzAwODAwMDAwYTg4YTQ4OCBjMDAwMDAwN2Zm
+ZmVkMDAwIDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDAwMDAwMCANCj4gICAgICAgICAg
+ICAgICAgR1BSMTY6IDAwMDAwMDAxNDk1MjQxODAgMDAwMDdmZmZmMzliZGE3OCAwMDAwN2Zm
+ZmYzOWJkYTMwIDAwMDAwMDAwMDAwMDAyNWMgDQo+ICAgICAgICAgICAgICAgIEdQUjIwOiAw
+MDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAwMDMgYzAwMDIwMDZmMTNhMDAwMCAwMDAw
+MDAwMDAwMDAwMDAwIA0KPiAgICAgICAgICAgICAgICBHUFIyNDogMDAwMDAwMDAwMDAwMTM1
+OSAwMDAwMDAwMDAwMDAwMDAwIGMwMDAwMDAyZjhjOTZjMzggYzAwMDAwMDJmOGM4MDAwMCAN
+Cj4gICAgICAgICAgICAgICAgR1BSMjg6IDAwMDAwMDAwMDAwMDAwMDAgYzAwMDIwMDZmMTNh
+MDAwMCBjMDAwMjAwNmYxM2E0MDM4IGMwMDAwMDA3NjdhMTdiZTQgDQo+IFsgIDE4MC4xNzY2
+ODhdIE5JUCBbYzAwODAwMDAwYTg4M2M4MF0geGl2ZV90cnlfcGlja19xdWV1ZSsweDQwLzB4
+YjggW2t2bV0NCj4gWyAgMTgwLjE3NjY5M10gTFIgW2MwMDgwMDAwMGE4ODZkYjhdIGt2bXBw
+Y194aXZlX3NlbGVjdF90YXJnZXQrMHgxMDAvMHgyMTAgW2t2bV0NCj4gWyAgMTgwLjE3NjY5
+NF0gQ2FsbCBUcmFjZToNCj4gWyAgMTgwLjE3NjY5Nl0gW2MwMDAwMDA3NjdhMTdiMjBdIFtj
+MDAwMDAwNzY3YTE3YjcwXSAweGMwMDAwMDA3NjdhMTdiNzAgKHVucmVsaWFibGUpDQo+IFsg
+IDE4MC4xNzY3MDFdIFtjMDAwMDAwNzY3YTE3YjcwXSBbYzAwODAwMDAwYTg4YjQyMF0ga3Zt
+cHBjX3hpdmVfbmF0aXZlX3NldF9hdHRyKzB4Zjk4LzB4MTc2MCBba3ZtXQ0KPiBbICAxODAu
+MTc2NzA1XSBbYzAwMDAwMDc2N2ExN2NjMF0gW2MwMDgwMDAwMGE4NjM5MmNdIGt2bV9kZXZp
+Y2VfaW9jdGwrMHhmNC8weDE4MCBba3ZtXQ0KPiBbICAxODAuMTc2NzEwXSBbYzAwMDAwMDc2
+N2ExN2QxMF0gW2MwMDAwMDAwMDA1MzgwYjBdIGRvX3Zmc19pb2N0bCsweGFhMC8weGQ5MA0K
+PiBbICAxODAuMTc2NzEyXSBbYzAwMDAwMDc2N2ExN2RkMF0gW2MwMDAwMDAwMDA1Mzg0NjRd
+IHN5c19pb2N0bCsweGM0LzB4MTEwDQo+IFsgIDE4MC4xNzY3MTZdIFtjMDAwMDAwNzY3YTE3
+ZTIwXSBbYzAwMDAwMDAwMDAwYjlkMF0gc3lzdGVtX2NhbGwrMHg1Yy8weDY4DQo+IFsgIDE4
+MC4xNzY3MTddIEluc3RydWN0aW9uIGR1bXA6DQo+IFsgIDE4MC4xNzY3MTldIDc5NGFkMTgy
+IDBiMGEwMDAwIDJjMjkwMDAwIDQxODIwMDgwIDg5NDkwMDEwIDJjMGEwMDAwIDQxODIwMDc0
+IDc4ODgzNjY0IA0KPiBbICAxODAuMTc2NzIzXSA3ZDA5NDIxNCBlOTQ4MDA3MCA3ZDQ3MDA3
+NCA3OGU3ZDE4MiA8MGIwNzAwMDA+IDJjMmEwMDAwIDQxODIwMDU0IDgxNDgwMDc4IA0KPiBb
+ICAxODAuMTc2NzI3XSAtLS1bIGVuZCB0cmFjZSAwNTZhNmRkMjc1ZTIwNjg0IF0tLS0NCj4g
+DQo+IExldCBtZSBrbm93IGlmIEkgY2FuIHByb3ZpZGUgbW9yZSBpbmZvcm1hdGlvbg0KDQpJ
+IHRoaW5rIHRoaXMgaXMgZml4ZWQgYnkgY29tbWl0IGY1NTc1MGU0ZTRmYiAoInNwYXByL3hp
+dmU6IE1hc2sgdGhlIEVBUyB3aGVuIA0KYWxsb2NhdGluZyBhbiBJUlEiKSB3aGljaCBpcyBu
+b3QgaW4gUUVNVSA0LjEuMS4gVGhlIHNhbWUgcHJvYmxlbSBzaG91bGQgYWxzbyANCm9jY3Vy
+IHdpdGggTEUgZ3Vlc3RzLiANCg0KQ291bGQgeW91IHBvc3NpYmx5IHJlZ2VuZXJhdGUgdGhl
+IFFFTVUgcnBtIHdpdGggdGhpcyBwYXRjaCA/IA0KDQpUaGFua3MsDQoNCkMuDQo=
