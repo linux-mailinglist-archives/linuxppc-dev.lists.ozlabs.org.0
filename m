@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461431609CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 06:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 873731609CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 06:09:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48LX7D3Xp6zDqfc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 16:08:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LX935L36zDqcJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 16:09:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=arm.com
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48LX2t2bVtzDqVP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 16:04:21 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 48LX2z3w1tzDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 16:04:26 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B8081FB;
- Sun, 16 Feb 2020 21:04:20 -0800 (PST)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE0E81063;
+ Sun, 16 Feb 2020 21:04:25 -0800 (PST)
 Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
  [10.162.16.95])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3017F3F703;
- Sun, 16 Feb 2020 21:04:13 -0800 (PST)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BC20F3F703;
+ Sun, 16 Feb 2020 21:04:20 -0800 (PST)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/5] mm/vma: Make vma_is_accessible() available for general use
-Date: Mon, 17 Feb 2020 10:33:50 +0530
-Message-Id: <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+Subject: [PATCH 3/5] mm/vma: Replace all remaining open encodings with
+ is_vm_hugetlb_page()
+Date: Mon, 17 Feb 2020 10:33:51 +0530
+Message-Id: <1581915833-21984-4-git-send-email-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com>
 References: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com>
@@ -45,213 +46,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Guo Ren <guoren@kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
+Cc: kvm-ppc@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, linux-m68k@lists.linux-m68k.org,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Paul Burton <paulburton@kernel.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Nick Piggin <npiggin@gmail.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lets move vma_is_accessible() helper to include/linux/mm.h which makes it
-available for general use. While here, this replaces all remaining open
-encodings for VMA access check with vma_is_accessible().
+This replaces all remaining open encodings with is_vm_hugetlb_page().
 
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paulburton@kernel.org>
+Cc: Paul Mackerras <paulus@ozlabs.org>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-mips@vger.kernel.org
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: kvm-ppc@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-sh@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
 Cc: linux-mm@kvack.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/csky/mm/fault.c    | 2 +-
- arch/m68k/mm/fault.c    | 2 +-
- arch/mips/mm/fault.c    | 2 +-
- arch/powerpc/mm/fault.c | 2 +-
- arch/sh/mm/fault.c      | 2 +-
- arch/x86/mm/fault.c     | 2 +-
- include/linux/mm.h      | 5 +++++
- kernel/sched/fair.c     | 2 +-
- mm/gup.c                | 2 +-
- mm/memory.c             | 5 -----
- mm/mempolicy.c          | 3 +--
- 11 files changed, 14 insertions(+), 15 deletions(-)
+ arch/powerpc/kvm/e500_mmu_host.c | 2 +-
+ fs/binfmt_elf.c                  | 2 +-
+ include/asm-generic/tlb.h        | 2 +-
+ kernel/events/core.c             | 3 ++-
+ 4 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
-index f76618b630f9..4b3511b8298d 100644
---- a/arch/csky/mm/fault.c
-+++ b/arch/csky/mm/fault.c
-@@ -137,7 +137,7 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
- 		if (!(vma->vm_flags & VM_WRITE))
- 			goto bad_area;
- 	} else {
--		if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
-+		if (!vma_is_accessible(vma))
- 			goto bad_area;
- 	}
- 
-diff --git a/arch/m68k/mm/fault.c b/arch/m68k/mm/fault.c
-index e9b1d7585b43..d5131ec5d923 100644
---- a/arch/m68k/mm/fault.c
-+++ b/arch/m68k/mm/fault.c
-@@ -125,7 +125,7 @@ int do_page_fault(struct pt_regs *regs, unsigned long address,
- 		case 1:		/* read, present */
- 			goto acc_err;
- 		case 0:		/* read, not present */
--			if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
-+			if (!vma_is_accessible(vma))
- 				goto acc_err;
- 	}
- 
-diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-index 1e8d00793784..5b9f947bfa32 100644
---- a/arch/mips/mm/fault.c
-+++ b/arch/mips/mm/fault.c
-@@ -142,7 +142,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
- 				goto bad_area;
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index 425d13806645..3922575a1c31 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -422,7 +422,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 				break;
  			}
- 		} else {
--			if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
-+			if (!vma_is_accessible(vma))
- 				goto bad_area;
- 		}
+ 		} else if (vma && hva >= vma->vm_start &&
+-			   (vma->vm_flags & VM_HUGETLB)) {
++			   (is_vm_hugetlb_page(vma))) {
+ 			unsigned long psize = vma_kernel_pagesize(vma);
+ 
+ 			tsize = (gtlbe->mas1 & MAS1_TSIZE_MASK) >>
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index f4713ea76e82..6bc97ede10ba 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1317,7 +1317,7 @@ static unsigned long vma_dump_size(struct vm_area_struct *vma,
  	}
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 8db0507619e2..71a3658c516b 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -314,7 +314,7 @@ static bool access_error(bool is_write, bool is_exec,
- 		return false;
- 	}
  
--	if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
-+	if (unlikely(!vma_is_accessible(vma)))
- 		return true;
- 	/*
- 	 * We should ideally do the vma pkey access check here. But in the
-diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
-index 5f51456f4fc7..a8c4253f37d7 100644
---- a/arch/sh/mm/fault.c
-+++ b/arch/sh/mm/fault.c
-@@ -355,7 +355,7 @@ static inline int access_error(int error_code, struct vm_area_struct *vma)
- 		return 1;
- 
- 	/* read, not present: */
--	if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
-+	if (unlikely(!vma_is_accessible(vma)))
- 		return 1;
- 
- 	return 0;
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index fa4ea09593ab..c461eaab0306 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1200,7 +1200,7 @@ access_error(unsigned long error_code, struct vm_area_struct *vma)
- 		return 1;
- 
- 	/* read, not present: */
--	if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
-+	if (unlikely(!vma_is_accessible(vma)))
- 		return 1;
- 
- 	return 0;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 52269e56c514..b0e53ef13ff1 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -541,6 +541,11 @@ static inline bool vma_is_anonymous(struct vm_area_struct *vma)
- 	return !vma->vm_ops;
- }
- 
-+static inline bool vma_is_accessible(struct vm_area_struct *vma)
-+{
-+	return vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC);
-+}
-+
- #ifdef CONFIG_SHMEM
- /*
-  * The vma_is_shmem is not inline because it is used only by slow
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index fe4e0d775375..6ce54d57dd09 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -2573,7 +2573,7 @@ static void task_numa_work(struct callback_head *work)
- 		 * Skip inaccessible VMAs to avoid any confusion between
- 		 * PROT_NONE and NUMA hinting ptes
- 		 */
--		if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
-+		if (!vma_is_accessible(vma))
- 			continue;
- 
- 		do {
-diff --git a/mm/gup.c b/mm/gup.c
-index 1b521e0ac1de..c8ffe2e61f03 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1171,7 +1171,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
- 	 * We want mlock to succeed for regions that have any permissions
- 	 * other than PROT_NONE.
+ 	/* Hugetlb memory check */
+-	if (vma->vm_flags & VM_HUGETLB) {
++	if (is_vm_hugetlb_page(vma)) {
+ 		if ((vma->vm_flags & VM_SHARED) && FILTER(HUGETLB_SHARED))
+ 			goto whole;
+ 		if (!(vma->vm_flags & VM_SHARED) && FILTER(HUGETLB_PRIVATE))
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index f391f6b500b4..d42c236d4965 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -398,7 +398,7 @@ tlb_update_vma_flags(struct mmu_gather *tlb, struct vm_area_struct *vma)
+ 	 * We rely on tlb_end_vma() to issue a flush, such that when we reset
+ 	 * these values the batch is empty.
  	 */
--	if (vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC))
-+	if (vma_is_accessible(vma))
- 		gup_flags |= FOLL_FORCE;
- 
- 	/*
-diff --git a/mm/memory.c b/mm/memory.c
-index 0bccc622e482..2f07747612b7 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3942,11 +3942,6 @@ static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf, pmd_t orig_pmd)
- 	return VM_FAULT_FALLBACK;
+-	tlb->vma_huge = !!(vma->vm_flags & VM_HUGETLB);
++	tlb->vma_huge = is_vm_hugetlb_page(vma);
+ 	tlb->vma_exec = !!(vma->vm_flags & VM_EXEC);
  }
  
--static inline bool vma_is_accessible(struct vm_area_struct *vma)
--{
--	return vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE);
--}
--
- static vm_fault_t create_huge_pud(struct vm_fault *vmf)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 977c641f78cf..91c1ad6ab8ea 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -649,8 +649,7 @@ static int queue_pages_test_walk(unsigned long start, unsigned long end,
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index e453589da97c..eb0ee3c5f322 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -28,6 +28,7 @@
+ #include <linux/export.h>
+ #include <linux/vmalloc.h>
+ #include <linux/hardirq.h>
++#include <linux/hugetlb_inline.h>
+ #include <linux/rculist.h>
+ #include <linux/uaccess.h>
+ #include <linux/syscalls.h>
+@@ -7693,7 +7694,7 @@ static void perf_event_mmap_event(struct perf_mmap_event *mmap_event)
+ 		flags |= MAP_EXECUTABLE;
+ 	if (vma->vm_flags & VM_LOCKED)
+ 		flags |= MAP_LOCKED;
+-	if (vma->vm_flags & VM_HUGETLB)
++	if (is_vm_hugetlb_page(vma))
+ 		flags |= MAP_HUGETLB;
  
- 	if (flags & MPOL_MF_LAZY) {
- 		/* Similar to task_numa_work, skip inaccessible VMAs */
--		if (!is_vm_hugetlb_page(vma) &&
--			(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)) &&
-+		if (!is_vm_hugetlb_page(vma) && vma_is_accessible(vma) &&
- 			!(vma->vm_flags & VM_MIXEDMAP))
- 			change_prot_numa(vma, start, endvma);
- 		return 1;
+ 	if (file) {
 -- 
 2.20.1
 
