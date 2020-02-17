@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A1B16144C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 15:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD49161454
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 15:15:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48LmDh09TDzDqfM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 01:13:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LmGt35QQzDqdG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 01:15:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,52 +19,50 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Lm933bc9zDqc7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 01:10:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Lm9s3sBkzDqjX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 01:11:13 +1100 (AEDT)
 Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01HE5RuM134777; Mon, 17 Feb 2020 09:10:17 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y6bp07ywf-1
+ 01HE5P5W134565; Mon, 17 Feb 2020 09:11:03 -0500
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y6bp0811d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2020 09:10:17 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01HEA8uk008753;
- Mon, 17 Feb 2020 14:10:16 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02dal.us.ibm.com with ESMTP id 2y68966pky-1
+ Mon, 17 Feb 2020 09:11:03 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01HEAmZ9004672;
+ Mon, 17 Feb 2020 14:11:02 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 2y6896esd3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Feb 2020 14:10:15 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01HEAEcS27263320
+ Mon, 17 Feb 2020 14:11:02 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01HEB18s46072196
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Feb 2020 14:10:14 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A667CBE054;
- Mon, 17 Feb 2020 14:10:14 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4AFB1BE051;
- Mon, 17 Feb 2020 14:10:13 +0000 (GMT)
+ Mon, 17 Feb 2020 14:11:01 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9195F112062;
+ Mon, 17 Feb 2020 14:11:01 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7306A112061;
+ Mon, 17 Feb 2020 14:11:00 +0000 (GMT)
 Received: from leobras.br.ibm.com (unknown [9.18.235.152])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 17 Feb 2020 14:10:13 +0000 (GMT)
-Message-ID: <423702075b0dcb129dca83ae3a98b090d58ad0e7.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/8xx: Fix clearing of bits 20-23 in ITLB miss
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Feb 2020 14:11:00 +0000 (GMT)
+Message-ID: <f863080dd219faa73bb64b05312012f74026c25c.camel@linux.ibm.com>
+Subject: Re: [PATCH] selftests/vm: Fix map_hugetlb length used for testing
+ read and write
 From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>
-Date: Mon, 17 Feb 2020 11:10:09 -0300
-In-Reply-To: <1d6a53ab-ea72-7452-ea5f-43dd70b223c9@c-s.fr>
-References: <4f70c2778163affce8508a210f65d140e84524b4.1581272050.git.christophe.leroy@c-s.fr>
- <546ce4737f308a4ba99a53f550de5b44abc06444.camel@linux.ibm.com>
- <1d6a53ab-ea72-7452-ea5f-43dd70b223c9@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Michael Ellerman
+ <mpe@ellerman.id.au>, Shuah Khan <shuah@kernel.org>
+Date: Mon, 17 Feb 2020 11:10:54 -0300
+In-Reply-To: <59cdcd821f794a9cbd8ab315b441a7ee2e43e431.camel@linux.ibm.com>
+References: <9a404a13c871c4bd0ba9ede68f69a1225180dd7e.1580978385.git.christophe.leroy@c-s.fr>
+ <59cdcd821f794a9cbd8ab315b441a7ee2e43e431.camel@linux.ibm.com>
 Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-VzmBVc8/yToR3dI4YbK+"
+ protocol="application/pgp-signature"; boundary="=-OhqSPoXv3B77dbBkpEwa"
 User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
@@ -88,91 +86,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---=-VzmBVc8/yToR3dI4YbK+
+--=-OhqSPoXv3B77dbBkpEwa
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2020-02-15 at 11:17 +0100, Christophe Leroy wrote:
+On Sat, 2020-02-15 at 03:49 -0300, Leonardo Bras wrote:
+> Hello Christophe, thank you for the patch.
 >=20
-> Le 15/02/2020 =C3=A0 07:28, Leonardo Bras a =C3=A9crit :
-> > On Sun, 2020-02-09 at 18:14 +0000, Christophe Leroy wrote:
-> > > In ITLB miss handled the line supposed to clear bits 20-23 on the
-> > > L2 ITLB entry is buggy and does indeed nothing, leading to undefined
-> > > value which could allow execution when it shouldn't.
-> > >=20
-> > > Properly do the clearing with the relevant instruction.
-> > >=20
-> > > Fixes: 74fabcadfd43 ("powerpc/8xx: don't use r12/SPRN_SPRG_SCRATCH2 i=
-n TLB Miss handlers")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> > > ---
-> > >   arch/powerpc/kernel/head_8xx.S | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/hea=
-d_8xx.S
-> > > index 9922306ae512..073a651787df 100644
-> > > --- a/arch/powerpc/kernel/head_8xx.S
-> > > +++ b/arch/powerpc/kernel/head_8xx.S
-> > > @@ -256,7 +256,7 @@ InstructionTLBMiss:
-> > >   	 * set.  All other Linux PTE bits control the behavior
-> > >   	 * of the MMU.
-> > >   	 */
-> > > -	rlwimi	r10, r10, 0, 0x0f00	/* Clear bits 20-23 */
-> > > +	rlwinm	r10, r10, 0, ~0x0f00	/* Clear bits 20-23 */
-> > >   	rlwimi	r10, r10, 4, 0x0400	/* Copy _PAGE_EXEC into bit 21 */
-> > >   	ori	r10, r10, RPN_PATTERN | 0x200 /* Set 22 and 24-27 */
-> > >   	mtspr	SPRN_MI_RPN, r10	/* Update TLB entry */
+> On Thu, 2020-02-06 at 08:42 +0000, Christophe Leroy wrote:
+> > Commit fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and
+> > page size in map_hugetlb") added the possibility to change the size
+> > of memory mapped for the test, but left the read and write test using
+> > the default value. This is unnoticed when mapping a length greater
+> > than the default one, but segfaults otherwise.
 > >=20
-> > Looks a valid change.
-> > rlwimi  r10, r10, 0, 0x0f00 means:
-> > r10 =3D ((r10 << 0) & 0x0f00) | (r10 & ~0x0f00) which ends up being
-> > r10 =3D r10
+> > Fix read_bytes() and write_bytes() by giving them the real length.
 > >=20
-> > On ISA, rlwinm is recommended for clearing high order bits.
-> > rlwinm  r10, r10, 0, ~0x0f00 means:
-> > r10 =3D (r10 << 0) & ~0x0f00
+> > Also fix the call to munmap().
 > >=20
-> > Which does exactly what the comments suggests.
+> > Fixes: fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and pa=
+ge size in map_hugetlb")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> > ---
+> >  tools/testing/selftests/vm/map_hugetlb.c | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
 > >=20
-> > FWIW:
-> > Reviwed-by: Leonardo Bras <leonardo@linux.ibm.com>
-> >=20
+> > diff --git a/tools/testing/selftests/vm/map_hugetlb.c b/tools/testing/s=
+elftests/vm/map_hugetlb.c
+> > index 5a2d7b8efc40..6af951900aa3 100644
+> > --- a/tools/testing/selftests/vm/map_hugetlb.c
+> > +++ b/tools/testing/selftests/vm/map_hugetlb.c
+> > @@ -45,20 +45,20 @@ static void check_bytes(char *addr)
+> >  	printf("First hex is %x\n", *((unsigned int *)addr));
+> >  }
+> > =20
+> > -static void write_bytes(char *addr)
+> > +static void write_bytes(char *addr, size_t length)
+> >  {
+> >  	unsigned long i;
+> > =20
+> > -	for (i =3D 0; i < LENGTH; i++)
+> > +	for (i =3D 0; i < length; i++)
+> >  		*(addr + i) =3D (char)i;
+> >  }
+> > =20
+> > -static int read_bytes(char *addr)
+> > +static int read_bytes(char *addr, size_t length)
+> >  {
+> >  	unsigned long i;
+> > =20
+> >  	check_bytes(addr);
+> > -	for (i =3D 0; i < LENGTH; i++)
+> > +	for (i =3D 0; i < length; i++)
+> >  		if (*(addr + i) !=3D (char)i) {
+> >  			printf("Mismatch at %lu\n", i);
+> >  			return 1;
+> > @@ -96,11 +96,11 @@ int main(int argc, char **argv)
+> > =20
+> >  	printf("Returned address is %p\n", addr);
+> >  	check_bytes(addr);
+> > -	write_bytes(addr);
+> > -	ret =3D read_bytes(addr);
+> > +	write_bytes(addr, length);
+> > +	ret =3D read_bytes(addr, length);
+> > =20
+> >  	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
+> > -	if (munmap(addr, LENGTH)) {
+> > +	if (munmap(addr, length)) {
+> >  		perror("munmap");
+> >  		exit(1);
+> >  	}
 >=20
-> I guess you mean
+> I agree with you, it's a needed fix.
 >=20
-> Reviewed-by: Leonardo Bras <leonardo@linux.ibm.com>
+> FWIW:
+> Reviwed-by: Leonardo Bras <leonardo@linux.ibm.com>
+Sorry, typo.
+Reviewed-by: Leonardo Bras <leonardo@linux.ibm.com>
 
-Yes, sorry for the typo.
-
---=-VzmBVc8/yToR3dI4YbK+
+--=-OhqSPoXv3B77dbBkpEwa
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5KnsEACgkQlQYWtz9S
-ttSWQw//Qk881kecmznRJws7Dniga+I79I0aWy8xbXeMV7u8p7eLeom2HeZydUo0
-Jg/DFMiNnoMj77138Ht07KdADYV8fdE59DW66YufBfEevltanJ6tS8Zj/MV0js5H
-H5OphYNon2NWw5fCRpYGRlQJi+BsM7c6s/fpVW0xsEWg6MvRekLSOCs/gtEwFWDn
-Rxj9jY7+gvDJyMYR59cMJH07F9Ob7Bbu4PSUM8YbPNwgFtjR49WSAGsV0VCfN9L8
-Kz+52aOj9m48kA2PG5XiejC56+Tp06vGbo4ODjZY/5+b+OcG9O5P9qM7x4TCPfL3
-BsJKBBbj4nyWUSCfYkHOSP3PenZ1g/ZUffUZA2WiDC/ia7UTG+4PWlnqchPg5kz7
-liFfO34RKPnZSjVKTjpxcRERu5azbc8LryKEW6QI4nb1Ol59JLK0HItnmPG+YW4d
-trrjOfrj/0jP6HI8HzGMDoEbMFD6lfuf81oNQV8p26U+3x02PK2dEfeilgb6QFMv
-BRvFzwj2GGuNI+vOIWm5DsdLin3KaqAFZ2CZGt/VYWH1AAil6umwsSAcQRz84tvW
-UblRqtrV5tUaA7aKzgvyuu/mSrF0URrzA75eWjneM4MljkY77cHIAZ6RpByJ/Iim
-OBUhPODqgdGdwC0R9YwRB5KX6NbEx6y/wmqsmsivWTYTecp73QM=
-=LUct
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5Knu4ACgkQlQYWtz9S
+ttRXyA//Yisq+PvM8Uzh/kxc8abgrggbW7RK8b4TqHbedTzzXA23kpqvXJZVXror
+n7okrTtwXUbUtsMNlus0plf4a3UFzm8rP4M6/PPBFUgb99D/dmtkohzVZ2Kyc8Yd
+FIMfsAHWS9mC7sVB6IIAjmz/79yl0Qvr7JUhMIIXUDDyfpSPNT21rDFT6JzCKz3o
+JGG6BMAUXBNAUNx7V8rYvLfFhHlnqw0in28YGk9JbW7/ew9nbUF1Ob+5ZXsw3uRo
+cSQ1ADKat8VB8suqG8/DxA3QZsgyN/okk/z0rRIpg6P4lH68iJz5drdfVo5Bhj6m
+wQEi89mU1eVX21BiipRq22kR6CMnO3EwzRW11mLUoQSBWs9V9LqYPJOaPXm4Mxu1
+cS8ZMrVuiiDo2KNCfg/0lof5GppL4Jpc4pQrYijkAv9LXJSs9g8AaN5x5d8KsIbG
+7V+ogOv9czfvpER5AXwuX0S5RbTCA79SEuAdG1Zx7qRAq+dQIrCGmIeSYUVb5V9U
+XwRBRby+2AtBF8YcYpwkXUlQ2AGMZvqZJsVJxMXjvUT5XeNhg9vGMnUiHbGSVJkt
+aQilurNKaO49W7hY2Lwu+1RvYwAraUSXS67oURD/eMMBmNLfQgyoQtkZ1eP+i9h+
+hGo9sYlOIGh7vnWAb8PD6dfBCYzkNA7Q75Tuu4hAM55I0+R3ZtM=
+=l342
 -----END PGP SIGNATURE-----
 
---=-VzmBVc8/yToR3dI4YbK+--
+--=-OhqSPoXv3B77dbBkpEwa--
 
