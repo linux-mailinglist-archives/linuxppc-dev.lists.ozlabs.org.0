@@ -2,39 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873731609CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 06:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B2D160A31
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 06:58:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48LX935L36zDqcJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 16:09:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LYFq5CMjzDqhR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 16:58:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48LX2z3w1tzDqVP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 16:04:26 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE0E81063;
- Sun, 16 Feb 2020 21:04:25 -0800 (PST)
-Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
- [10.162.16.95])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BC20F3F703;
- Sun, 16 Feb 2020 21:04:20 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] mm/vma: Replace all remaining open encodings with
- is_vm_hugetlb_page()
-Date: Mon, 17 Feb 2020 10:33:51 +0530
-Message-Id: <1581915833-21984-4-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com>
-References: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com>
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48LYD26ZXXzDqS3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 16:57:20 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 01H5vDtM005906;
+ Sun, 16 Feb 2020 23:57:14 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 01H5vCf8005905;
+ Sun, 16 Feb 2020 23:57:12 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Sun, 16 Feb 2020 23:57:12 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Neuling <mikey@neuling.org>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Treat unrecognized TM instructions
+ as illegal
+Message-ID: <20200217055712.GS22482@gate.crashing.org>
+References: <20200213151532.12559-1-gromero@linux.ibm.com>
+ <29b136e15c2f04f783b54ec98552d1a6009234db.camel@neuling.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <29b136e15c2f04f783b54ec98552d1a6009234db.camel@neuling.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,106 +53,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Nick Piggin <npiggin@gmail.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Will Deacon <will@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ Gustavo Romero <gromero@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This replaces all remaining open encodings with is_vm_hugetlb_page().
+On Mon, Feb 17, 2020 at 12:07:31PM +1100, Michael Neuling wrote:
+> On Thu, 2020-02-13 at 10:15 -0500, Gustavo Romero wrote:
+> > On P9 DD2.2 due to a CPU defect some TM instructions need to be emulated by
+> > KVM. This is handled at first by the hardware raising a softpatch interrupt
+> > when certain TM instructions that need KVM assistance are executed in the
+> > guest. Some TM instructions, although not defined in the Power ISA, might
+> > raise a softpatch interrupt. For instance, 'tresume.' instruction as
+> > defined in the ISA must have bit 31 set (1), but an instruction that
+> > matches 'tresume.' OP and XO opcodes but has bit 31 not set (0), like
+> > 0x7cfe9ddc, also raises a softpatch interrupt, for example, if a code
+> > like the following is executed in the guest it will raise a softpatch
+> > interrupt just like a 'tresume.' when the TM facility is enabled:
+> > 
+> > int main() { asm("tabort. 0; .long 0x7cfe9ddc;"); }
 
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Will Deacon <will@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nick Piggin <npiggin@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: kvm-ppc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/powerpc/kvm/e500_mmu_host.c | 2 +-
- fs/binfmt_elf.c                  | 2 +-
- include/asm-generic/tlb.h        | 2 +-
- kernel/events/core.c             | 3 ++-
- 4 files changed, 5 insertions(+), 4 deletions(-)
+> > and then treats the executed instruction as 'nop' whilst it should actually
+> > be treated as an illegal instruction since it's not defined by the ISA.
+> 
+> The ISA has this: 
+> 
+>    1.3.3 Reserved Fields, Reserved Values, and Reserved SPRs
+> 
+>    Reserved fields in instructions are ignored by the pro-
+>    cessor.
+> 
+> Hence the hardware will ignore reserved bits. For example executing your little
+> program on P8 just exits normally with 0x7cfe9ddc being executed as a NOP.
+> 
+> Hence, we should NOP this, not generate an illegal.
 
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index 425d13806645..3922575a1c31 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -422,7 +422,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 				break;
- 			}
- 		} else if (vma && hva >= vma->vm_start &&
--			   (vma->vm_flags & VM_HUGETLB)) {
-+			   (is_vm_hugetlb_page(vma))) {
- 			unsigned long psize = vma_kernel_pagesize(vma);
- 
- 			tsize = (gtlbe->mas1 & MAS1_TSIZE_MASK) >>
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index f4713ea76e82..6bc97ede10ba 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1317,7 +1317,7 @@ static unsigned long vma_dump_size(struct vm_area_struct *vma,
- 	}
- 
- 	/* Hugetlb memory check */
--	if (vma->vm_flags & VM_HUGETLB) {
-+	if (is_vm_hugetlb_page(vma)) {
- 		if ((vma->vm_flags & VM_SHARED) && FILTER(HUGETLB_SHARED))
- 			goto whole;
- 		if (!(vma->vm_flags & VM_SHARED) && FILTER(HUGETLB_PRIVATE))
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index f391f6b500b4..d42c236d4965 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -398,7 +398,7 @@ tlb_update_vma_flags(struct mmu_gather *tlb, struct vm_area_struct *vma)
- 	 * We rely on tlb_end_vma() to issue a flush, such that when we reset
- 	 * these values the batch is empty.
- 	 */
--	tlb->vma_huge = !!(vma->vm_flags & VM_HUGETLB);
-+	tlb->vma_huge = is_vm_hugetlb_page(vma);
- 	tlb->vma_exec = !!(vma->vm_flags & VM_EXEC);
- }
- 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e453589da97c..eb0ee3c5f322 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -28,6 +28,7 @@
- #include <linux/export.h>
- #include <linux/vmalloc.h>
- #include <linux/hardirq.h>
-+#include <linux/hugetlb_inline.h>
- #include <linux/rculist.h>
- #include <linux/uaccess.h>
- #include <linux/syscalls.h>
-@@ -7693,7 +7694,7 @@ static void perf_event_mmap_event(struct perf_mmap_event *mmap_event)
- 		flags |= MAP_EXECUTABLE;
- 	if (vma->vm_flags & VM_LOCKED)
- 		flags |= MAP_LOCKED;
--	if (vma->vm_flags & VM_HUGETLB)
-+	if (is_vm_hugetlb_page(vma))
- 		flags |= MAP_HUGETLB;
- 
- 	if (file) {
--- 
-2.20.1
+It is not a reserved bit.
 
+The IMC entry for it matches op1=011111 op2=1////01110 presumably, which
+catches all TM instructions and nothing else (bits 0..5 and bits 21..30).
+That does not look at bit 31, the softpatch handler has to deal with this.
+
+Some TM insns have bit 31 as 1 and some have it as /.  All instructions
+with a "." in the mnemonic have bit 31 is 1, all other have it reserved.
+The tables in appendices D, E, F show tend. and tsr. as having it
+reserved, which contradicts the individual instruction description (and
+does not make much sense).  (Only tcheck has /, everything else has 1;
+everything else has a mnemonic with a dot, and does write CR0 always).
+
+
+Segher
