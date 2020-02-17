@@ -1,88 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD221160DCA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 09:51:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Ld566tmQzDqdr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 19:51:38 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EB1160DF9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 10:05:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LdP52wDGzDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 20:05:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=WQfZxMMR; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Ld340R3zzDqc9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 19:49:50 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01H8nMlr083724
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 03:49:48 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y6af2r9vq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 03:49:48 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Mon, 17 Feb 2020 08:49:46 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 17 Feb 2020 08:49:42 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01H8mk9O48431508
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Feb 2020 08:48:46 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E48D6AE045;
- Mon, 17 Feb 2020 08:49:41 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8A6FAE051;
- Mon, 17 Feb 2020 08:49:41 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.20.186])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Feb 2020 08:49:41 +0000 (GMT)
-Subject: Re: [PATCH AUTOSEL 5.5 096/542] powerpc/powernv/ioda: Fix ref count
- for devices with their own PE
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20200214154854.6746-1-sashal@kernel.org>
- <20200214154854.6746-96-sashal@kernel.org>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Mon, 17 Feb 2020 09:49:41 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48LdLl4wH4zDqLF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 20:03:26 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48LdLZ49gmz9v1WW;
+ Mon, 17 Feb 2020 10:03:18 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=WQfZxMMR; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id TNmFgMAQgiDf; Mon, 17 Feb 2020 10:03:18 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48LdLZ2cPzz9v1WS;
+ Mon, 17 Feb 2020 10:03:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1581930198; bh=KojM6T89T5lJkXgtiN49huPDHZvGUWiBtyDFVCX7aps=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=WQfZxMMRFnD2XeNPwW0+oQfyZsVQ6sbwSLbc+cS7LvoRLNf/6QXg8SaXm3jB5A5Wd
+ POqn73bE6R8/F4vjlM1awcMRWfyOmPm0ybgRDSH5P7MHop3AwzgfJYuH2uE7Oeb4s1
+ vK6pGuTLBMdBN1Y3uEcCGe2HgK3BpCoGq/x7+2WA=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CB7B18B755;
+ Mon, 17 Feb 2020 10:03:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id YNxAztCy48Gr; Mon, 17 Feb 2020 10:03:22 +0100 (CET)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 882EC8B7A6;
+ Mon, 17 Feb 2020 10:03:22 +0100 (CET)
+Subject: Re: [PATCH] powerpc/kprobes: Fix trap address when trap happened in
+ real mode
+To: Masami Hiramatsu <mhiramat@kernel.org>
+References: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
+ <20200214225434.464ec467ad9094961abb8ddc@kernel.org>
+ <e09d3c42-542e-48c1-2f1e-cfe605b05bec@c-s.fr>
+ <20200216213411.824295a321d8fa979dedbbbe@kernel.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <baee8186-549a-f6cf-3619-884b6d708185@c-s.fr>
+Date: Mon, 17 Feb 2020 10:03:22 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200214154854.6746-96-sashal@kernel.org>
+In-Reply-To: <20200216213411.824295a321d8fa979dedbbbe@kernel.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20021708-0016-0000-0000-000002E78497
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021708-0017-0000-0000-0000334A92CE
-Message-Id: <0867167a-73b8-0735-78ce-0d984f7a80b5@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-17_04:2020-02-14,
- 2020-02-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=756 spamscore=0 clxscore=1031 impostorscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 suspectscore=0
- bulkscore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2002170079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,113 +81,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Paul Mackerras <paulus@samba.org>, stable@kernel.vger.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 14/02/2020 à 16:41, Sasha Levin a écrit :
-> From: Frederic Barrat <fbarrat@linux.ibm.com>
+Le 16/02/2020 à 13:34, Masami Hiramatsu a écrit :
+> On Sat, 15 Feb 2020 11:28:49 +0100
+> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
 > 
-> [ Upstream commit 05dd7da76986937fb288b4213b1fa10dbe0d1b33 ]
-
-
-Hi,
-
-Upstream commit 05dd7da76986937fb288b4213b1fa10dbe0d1b33 doesn't really 
-need to go to stable (any of 4.19, 5.4 and 5.5). While it's probably 
-safe, the patch replaces a refcount leak by another one, which makes 
-sense as part of the full series merged in 5.6-rc1, but isn't terribly 
-useful standalone on the current stable branches.
-
-   Fred
-
-
-
-> The pci_dn structure used to store a pointer to the struct pci_dev, so
-> taking a reference on the device was required. However, the pci_dev
-> pointer was later removed from the pci_dn structure, but the reference
-> was kept for the npu device.
-> See commit 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary
-> pcidev from pci_dn").
+>> Hi,
+>>
+>> Le 14/02/2020 à 14:54, Masami Hiramatsu a écrit :
+>>> Hi,
+>>>
+>>> On Fri, 14 Feb 2020 12:47:49 +0000 (UTC)
+>>> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>>>
+>>>> When a program check exception happens while MMU translation is
+>>>> disabled, following Oops happens in kprobe_handler() in the following
+>>>> test:
+>>>>
+>>>> 		} else if (*addr != BREAKPOINT_INSTRUCTION) {
+>>>
+>>> Thanks for the report and patch. I'm not so sure about powerpc implementation
+>>> but at where the MMU translation is disabled, can the handler work correctly?
+>>> (And where did you put the probe on?)
+>>>
+>>> Your fix may fix this Oops, but if the handler needs special care, it is an
+>>> option to blacklist such place (if possible).
+>>
+>> I guess that's another story. Here we are not talking about a place
+>> where kprobe has been illegitimately activated, but a place where there
+>> is a valid trap, which generated a valid 'program check exception'. And
+>> kprobe was off at that time.
 > 
-> We don't need to take a reference on the device when assigning the PE
-> as the struct pnv_ioda_pe is cleaned up at the same time as
-> the (physical) device is released. Doing so prevents the device from
-> being released, which is a problem for opencapi devices, since we want
-> to be able to remove them through PCI hotplug.
+> Ah, I got it. It is not a kprobe breakpoint, but to check that correctly,
+> it has to know the address where the breakpoint happens. OK.
 > 
-> Now the ugly part: nvlink npu devices are not meant to be
-> released. Because of the above, we've always leaked a reference and
-> simply removing it now is dangerous and would likely require more
-> work. There's currently no release device callback for nvlink devices
-> for example. So to be safe, this patch leaks a reference on the npu
-> device, but only for nvlink and not opencapi.
+>>
+>> As any 'program check exception' due to a trap (ie a BUG_ON, a WARN_ON,
+>> a debugger breakpoint, a perf breakpoint, etc...) calls
+>> kprobe_handler(), kprobe_handler() must be prepared to handle the case
+>> where the MMU translation is disabled, even if probes are not supposed
+>> to be set for functions running with MMU translation disabled.
 > 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link: https://lore.kernel.org/r/20191121134918.7155-2-fbarrat@linux.ibm.com
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   arch/powerpc/platforms/powernv/pci-ioda.c | 19 ++++++++++++-------
->   1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 4374836b033b4..67b836f102402 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1062,14 +1062,13 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->   		return NULL;
->   	}
->   
-> -	/* NOTE: We get only one ref to the pci_dev for the pdn, not for the
-> -	 * pointer in the PE data structure, both should be destroyed at the
-> -	 * same time. However, this needs to be looked at more closely again
-> -	 * once we actually start removing things (Hotplug, SR-IOV, ...)
-> +	/* NOTE: We don't get a reference for the pointer in the PE
-> +	 * data structure, both the device and PE structures should be
-> +	 * destroyed at the same time. However, removing nvlink
-> +	 * devices will need some work.
->   	 *
->   	 * At some point we want to remove the PDN completely anyways
->   	 */
-> -	pci_dev_get(dev);
->   	pdn->pe_number = pe->pe_number;
->   	pe->flags = PNV_IODA_PE_DEV;
->   	pe->pdev = dev;
-> @@ -1084,7 +1083,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->   		pnv_ioda_free_pe(pe);
->   		pdn->pe_number = IODA_INVALID_PE;
->   		pe->pdev = NULL;
-> -		pci_dev_put(dev);
->   		return NULL;
->   	}
->   
-> @@ -1205,6 +1203,14 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
->   	struct pci_controller *hose = pci_bus_to_host(npu_pdev->bus);
->   	struct pnv_phb *phb = hose->private_data;
->   
-> +	/*
-> +	 * Intentionally leak a reference on the npu device (for
-> +	 * nvlink only; this is not an opencapi path) to make sure it
-> +	 * never goes away, as it's been the case all along and some
-> +	 * work is needed otherwise.
-> +	 */
-> +	pci_dev_get(npu_pdev);
-> +
->   	/*
->   	 * Due to a hardware errata PE#0 on the NPU is reserved for
->   	 * error handling. This means we only have three PEs remaining
-> @@ -1228,7 +1234,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
->   			 */
->   			dev_info(&npu_pdev->dev,
->   				"Associating to existing PE %x\n", pe_num);
-> -			pci_dev_get(npu_pdev);
->   			npu_pdn = pci_get_pdn(npu_pdev);
->   			rid = npu_pdev->bus->number << 8 | npu_pdn->devfn;
->   			npu_pdn->pe_number = pe_num;
+> Can't we check the MMU is disabled there (as same as checking the exception
+> happened in user space or not)?
 > 
 
+What do you mean by 'there' ? At the entry of kprobe_handler() ?
+
+That's what my patch does, it checks whether MMU is disabled or not. If 
+it is, it converts the address to a virtual address.
+
+Do you mean kprobe_handler() should bail out early as it does when the 
+trap happens in user mode ? Of course we can do that, I don't know 
+enough about kprobe to know if kprobe_handler() should manage events 
+that happened in real-mode or just ignore them. But I tested adding an 
+event on a function that runs in real-mode, and it (now) works.
+
+So, what should we do really ?
+
+Christophe
