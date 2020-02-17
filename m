@@ -1,69 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C46C160856
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 03:52:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833CC160854
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 03:50:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48LT4N1SBXzDqfb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 13:50:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48LT6Q2QpdzDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 13:52:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sWSE0U/R; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=dSE9fj4j; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48LT2Q1xz9zDqck
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 13:48:45 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id s1so8047404pfh.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2020 18:48:45 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48LT2T2QsDzDqck
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 13:48:49 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id d9so8276197pgu.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2020 18:48:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zP8tBhIUwlLb+t78KQPeCGcT+HwTJH1VXfGEXiTBXd0=;
- b=sWSE0U/R4qMzmIjFjZJjNaKeAN8xoIYe+iuMjSf1rS6BeSoO2s1FaJ/AkDX5YSdjRh
- MznQS6Y00WUhdvVp7LWwyyi1xZEj8WiTg/EVQ9AWdMCzM7J5ZvAbYnb+1+eWQREAS5CR
- FkGqguikjc6GyLFZ41zNb4FYE5qHHsNwXn9L2cEFh02bAWfuemoEoCAVnkn68SYY7V1T
- pnIUpoz0CjSBBfQJPKTseieWVMXbsrN2S6FEIJPBLdakM8+NjfoVpKbDrUFe2GPORevu
- jEYNNYRmOyzAaLZt8/HY2Xh/3ezeXxk3z2GmWsZlv4szTbyqm+Y1VnpbwfMJagzo//QL
- V06g==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=bfN31QyEQ318P9jrNAVw/XcIMKnKFHouc6kwP9vybhY=;
+ b=dSE9fj4jSvv20UVihW0FPffedIHVrk+55J5JUWZorQDqPSzKgkvVwUtoNdpBG9F7Eb
+ h7xlZondo3K5e34WckXyoQr3tgMqvDG7NapN9g7hJclrbuOCXCcBUEjRD8YU3tksIE71
+ 7J8IGwnZTOzVXErnGvnGIR4EoSBoy364LzhWWzoA1PN/wwWpzgUNAC8olCxQQZ8DL5IF
+ 2hGbPW++iomZhT8qAToJDIwoQdHvDyAIvlh7n8oUemsgHOnZaLFcUf9L1Sh0p4ulvwgA
+ B+2xiBGOTc/RwSWN/sD/BhGX3M0XOd5UQ9NgKeEkcXTQPjehLNJJueNUAsP40RqzYlXT
+ WAEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zP8tBhIUwlLb+t78KQPeCGcT+HwTJH1VXfGEXiTBXd0=;
- b=TXwFbT9iDs59E3WViUF4ng7yH6IJ7VcsJX3Zl0G9DSe74qEbunhx/XqInTEyaS3Xv4
- aILm1ykAAnnr4FlUOgK3kEHMzR8qZTyJtSKUPBrz7nH/yDfTe4ZBuVe9Y2EsBA/BXMyD
- MHXMc8ch6AQ/HrYyK6TyC+jDWlcZTB7BXwij/8WJqf2DisOo5zw5KLtUz60umhiYH+W3
- fhD/lX1O6Q7OAiA71Gjld7mHz7pFvFQESJSSxa9lJn+f3Qc9O4ul8GjLHcuZGetUDhWU
- D8SMz+IJQoEoKpjRdN0xMQOwU4DDErrc/KwuiziDxqkeAsvd5W6pXedbYue7WwJeT3Aq
- 4YhQ==
-X-Gm-Message-State: APjAAAW67pOf5rTrDC64qSzwSfgLDmcbPSOzqBAaCXfnXoub+CVzyOZi
- AAlbh/WZUSxq89t9x4bV3wSeG/le
-X-Google-Smtp-Source: APXvYqyVdTBh+R1EBdgt3miVIQe4YXW1R8Iz5fUkXvQDu/oP+NbiCae4sD42CPlTdSJWMYfVV30mLA==
-X-Received: by 2002:a63:3689:: with SMTP id
- d131mr15453141pga.250.1581907723471; 
- Sun, 16 Feb 2020 18:48:43 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=bfN31QyEQ318P9jrNAVw/XcIMKnKFHouc6kwP9vybhY=;
+ b=tIn/ehV9nP6Im7SyQhnInHix4lw09cWT4FW8I1Wizg1FakIfYqChqGYY+TL3/h0XtV
+ FuXvjPK9Rj2UW1XNEb9SQUymClRhTER8ZYZTlHuGGvAUB8nTmzm3PaJshDtiTtGQE1aw
+ 2ZjLyLHWQ4+jvhMR2m9YPGZu1EFguTPIj+dijxvkI6WQrIjJnQOQfKZhKKHf2eXbBmyx
+ QtA7hZvktdmJ00XbMzg7fQRRwXdWKbIAkwuNx2u8uFdG6Kwg1OYYwSpjdhHzsmXT3pQD
+ mZndwO01/D8qFemramkr2JY4C3HmoOF13RiX9YzfW0o5u9/Db8EZKpjnSDsBs8TGhrY3
+ HEMQ==
+X-Gm-Message-State: APjAAAXXcZsa68gi+A5xTGMuf2Bi9wme1+r53gmRlwhFE/sExvIOawkw
+ D7ERbGqXyQYSWiaaAuQcIoFeYJSe
+X-Google-Smtp-Source: APXvYqxj6hx8QZzkewxwRiRnPukKQns8gHjO3F60vRYAotSPzZMpPt5t/E2bmUVg7asLPm119NsDBg==
+X-Received: by 2002:a63:78b:: with SMTP id 133mr15177678pgh.379.1581907725288; 
+ Sun, 16 Feb 2020 18:48:45 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id c3sm14641731pfj.159.2020.02.16.18.48.41
+ by smtp.gmail.com with ESMTPSA id c3sm14641731pfj.159.2020.02.16.18.48.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Feb 2020 18:48:43 -0800 (PST)
+ Sun, 16 Feb 2020 18:48:44 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/powernv: Treat an empty reboot string as default
-Date: Mon, 17 Feb 2020 13:48:32 +1100
-Message-Id: <20200217024833.30580-1-oohall@gmail.com>
+Subject: [PATCH 2/2] powerpc/powernv: Add explicit fast-reboot support
+Date: Mon, 17 Feb 2020 13:48:33 +1100
+Message-Id: <20200217024833.30580-2-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.1
+In-Reply-To: <20200217024833.30580-1-oohall@gmail.com>
+References: <20200217024833.30580-1-oohall@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,28 +83,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Treat an empty reboot cmd string the same as a NULL string. This squashes a
-spurious unsupported reboot message that sometimes gets out when using
-xmon.
+Add a way to manually invoke a fast-reboot rather than setting the NVRAM
+flag. The idea is to allow userspace to invoke a fast-reboot using the
+optional string argument to the reboot() system call, or using the xmon
+zr command so we don't need to leave around a persistent changes on
+a system to use the feature.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Companion skiboot patch:
+http://lists.ozlabs.org/pipermail/skiboot/2020-February/016420.html
+---
+ arch/powerpc/include/asm/opal-api.h    | 1 +
+ arch/powerpc/platforms/powernv/setup.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
+diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+index c1f25a7..1dffa3c 100644
+--- a/arch/powerpc/include/asm/opal-api.h
++++ b/arch/powerpc/include/asm/opal-api.h
+@@ -1067,6 +1067,7 @@ enum {
+ 	OPAL_REBOOT_PLATFORM_ERROR	= 1,
+ 	OPAL_REBOOT_FULL_IPL		= 2,
+ 	OPAL_REBOOT_MPIPL		= 3,
++	OPAL_REBOOT_FAST		= 4,
+ };
+ 
+ /* Argument to OPAL_PCI_TCE_KILL */
 diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 11fdae8..a8fe630 100644
+index a8fe630..3bc188d 100644
 --- a/arch/powerpc/platforms/powernv/setup.c
 +++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -229,7 +229,7 @@ static void  __noreturn pnv_restart(char *cmd)
- 	pnv_prepare_going_down();
+@@ -237,6 +237,8 @@ static void  __noreturn pnv_restart(char *cmd)
+ 			rc = opal_cec_reboot2(OPAL_REBOOT_MPIPL, NULL);
+ 		else if (strcmp(cmd, "error") == 0)
+ 			rc = opal_cec_reboot2(OPAL_REBOOT_PLATFORM_ERROR, NULL);
++		else if (strcmp(cmd, "fast") == 0)
++			rc = opal_cec_reboot2(OPAL_REBOOT_FAST, NULL);
+ 		else
+ 			rc = OPAL_UNSUPPORTED;
  
- 	do {
--		if (!cmd)
-+		if (!cmd || !strlen(cmd))
- 			rc = opal_cec_reboot();
- 		else if (strcmp(cmd, "full") == 0)
- 			rc = opal_cec_reboot2(OPAL_REBOOT_FULL_IPL, NULL);
 -- 
 2.9.5
 
