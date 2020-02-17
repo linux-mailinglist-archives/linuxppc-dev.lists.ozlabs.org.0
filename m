@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E2E161071
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 11:55:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Lgqw0k82zDqp7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 21:55:24 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AC8161177
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 12:55:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Lj946B9pzDqkb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2020 22:55:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,31 +18,31 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Lgp55qQ5zDqDf
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 21:53:49 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Lj6F19g5zDqBP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 22:52:52 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 206525] BUG: KASAN: stack-out-of-bounds in test_bit+0x30/0x44
  (kernel 5.6-rc1)
-Date: Mon, 17 Feb 2020 10:53:47 +0000
+Date: Mon, 17 Feb 2020 11:52:49 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
+X-Bugzilla-Product: Networking
+X-Bugzilla-Component: Other
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@c-s.fr
+X-Bugzilla-Who: erhard_f@mailbox.org
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-206525-206035-l5nBoWPqHc@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: component rep_platform product
+Message-ID: <bug-206525-206035-54gMc0cbZQ@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-206525-206035@https.bugzilla.kernel.org/>
 References: <bug-206525-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,9 +67,13 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D206525
 
---- Comment #5 from Christophe Leroy (christophe.leroy@c-s.fr) ---
-That's not a PPC32 bug but a Network bug affecting all 32 bits architecture=
-s.
+Erhard F. (erhard_f@mailbox.org) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+          Component|PPC-32                      |Other
+           Hardware|PPC-32                      |All
+            Product|Platform Specific/Hardware  |Networking
 
 --=20
 You are receiving this mail because:
