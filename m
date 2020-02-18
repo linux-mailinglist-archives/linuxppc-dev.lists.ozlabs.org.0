@@ -2,56 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB62161E42
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 01:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1806161EF0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 03:23:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48M2GK725BzDqlg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 11:46:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48M4Qc459kzDqWW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 13:23:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=1zuBOlja; dkim-atps=neutral
+ header.s=default header.b=PEjs99Kq; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48M2DY1RG1zDqXT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 11:44:29 +1100 (AEDT)
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48M4P04rCJzDqSV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 13:21:56 +1100 (AEDT)
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com
+ [209.85.208.177])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 50BF520718;
- Tue, 18 Feb 2020 00:44:24 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 16A5B21D7D
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 02:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1581986666;
- bh=GlF7tsNGHn7ate9mU1/VWHoZi1IO50fGecOk1KZoByA=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=1zuBOljaPmfo1ySuLtV3H4a7rdz65oBuqOnGS/aZED5i0lMSv8XDNvYvI58o7a9Ez
- jrvE6ApzevgE0DFQ17roXJZ55/Ywf89FVmEJSSThI6pPbPxIC71W7MCRQhhrIMDbw8
- 1Nfg+Fpx1BRNN39bZskt6JHvYcqn+ws123oWgZVI=
-Date: Tue, 18 Feb 2020 09:44:21 +0900
-From: Masami Hiramatsu <mhiramat@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/kprobes: Fix trap address when trap happened in
- real mode
-Message-Id: <20200218094421.6d402de389ce23a55a3ec084@kernel.org>
-In-Reply-To: <c6257b49-bf02-d30a-1e2e-99abba5955e6@c-s.fr>
-References: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
- <20200214225434.464ec467ad9094961abb8ddc@kernel.org>
- <e09d3c42-542e-48c1-2f1e-cfe605b05bec@c-s.fr>
- <20200216213411.824295a321d8fa979dedbbbe@kernel.org>
- <baee8186-549a-f6cf-3619-884b6d708185@c-s.fr>
- <20200217192735.5070f0925c4159ccffa4e465@kernel.org>
- <c6257b49-bf02-d30a-1e2e-99abba5955e6@c-s.fr>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ s=default; t=1581992514;
+ bh=UFm8ktdZhblu/2s0ozFeAb4+2Rlmv3TL7j0nOVximz0=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=PEjs99KqMCb92Wk1M7ayKtUXgPiXb6a6dacanXMhKN3X7z8L+Cz0w2BVaE9c0lCaZ
+ LyfwA8H6aLbB2uEYNoNrEedS7L6KUhhtxCx3d86P/WAoReitv9/CxEH8jK18jLmsZc
+ YnCh6IVgQrm1txL3nvx1nek6grRsjJ2XJXdnqhRM=
+Received: by mail-lj1-f177.google.com with SMTP id d10so21069028ljl.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2020 18:21:54 -0800 (PST)
+X-Gm-Message-State: APjAAAU6eEyNe0skdRlSmHGEVtBx2qDjmbvBI1rK90kPaR4xjksFzxq5
+ sG4QD9caBu1iZIF9mUb1SAPtSNFWrYTZVtenAw8=
+X-Google-Smtp-Source: APXvYqwLxeMgM+mSk0yU+FYSCGy3AfSLs0zCZ4mYg0byKooBHPWU4rt3UmuGmS6NBw9sW9r0FPIiyiQYYxAAvpvgI18=
+X-Received: by 2002:a2e:81c3:: with SMTP id s3mr11214674ljg.168.1581992512158; 
+ Mon, 17 Feb 2020 18:21:52 -0800 (PST)
+MIME-Version: 1.0
+References: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com>
+ <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Tue, 18 Feb 2020 10:21:40 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSj9aOhkNo5eZQD0a7vWJ1-6_CX4LSuhm54odQsxqV37Q@mail.gmail.com>
+Message-ID: <CAJF2gTSj9aOhkNo5eZQD0a7vWJ1-6_CX4LSuhm54odQsxqV37Q@mail.gmail.com>
+Subject: Re: [PATCH 2/5] mm/vma: Make vma_is_accessible() available for
+ general use
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,138 +65,229 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Paul Mackerras <paulus@samba.org>, stable@kernel.vger.org,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
+ Steven Rostedt <rostedt@goodmis.org>, linux-m68k@lists.linux-m68k.org,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Paul Burton <paulburton@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 Feb 2020 16:38:50 +0100
-Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+csky:
 
-> 
-> 
-> Le 17/02/2020 à 11:27, Masami Hiramatsu a écrit :
-> > On Mon, 17 Feb 2020 10:03:22 +0100
-> > Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> > 
-> >>
-> >>
-> >> Le 16/02/2020 à 13:34, Masami Hiramatsu a écrit :
-> >>> On Sat, 15 Feb 2020 11:28:49 +0100
-> >>> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> >>>
-> >>>> Hi,
-> >>>>
-> >>>> Le 14/02/2020 à 14:54, Masami Hiramatsu a écrit :
-> >>>>> Hi,
-> >>>>>
-> >>>>> On Fri, 14 Feb 2020 12:47:49 +0000 (UTC)
-> >>>>> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> >>>>>
-> >>>>>> When a program check exception happens while MMU translation is
-> >>>>>> disabled, following Oops happens in kprobe_handler() in the following
-> >>>>>> test:
-> >>>>>>
-> >>>>>> 		} else if (*addr != BREAKPOINT_INSTRUCTION) {
-> >>>>>
-> >>>>> Thanks for the report and patch. I'm not so sure about powerpc implementation
-> >>>>> but at where the MMU translation is disabled, can the handler work correctly?
-> >>>>> (And where did you put the probe on?)
-> >>>>>
-> >>>>> Your fix may fix this Oops, but if the handler needs special care, it is an
-> >>>>> option to blacklist such place (if possible).
-> >>>>
-> >>>> I guess that's another story. Here we are not talking about a place
-> >>>> where kprobe has been illegitimately activated, but a place where there
-> >>>> is a valid trap, which generated a valid 'program check exception'. And
-> >>>> kprobe was off at that time.
-> >>>
-> >>> Ah, I got it. It is not a kprobe breakpoint, but to check that correctly,
-> >>> it has to know the address where the breakpoint happens. OK.
-> >>>
-> >>>>
-> >>>> As any 'program check exception' due to a trap (ie a BUG_ON, a WARN_ON,
-> >>>> a debugger breakpoint, a perf breakpoint, etc...) calls
-> >>>> kprobe_handler(), kprobe_handler() must be prepared to handle the case
-> >>>> where the MMU translation is disabled, even if probes are not supposed
-> >>>> to be set for functions running with MMU translation disabled.
-> >>>
-> >>> Can't we check the MMU is disabled there (as same as checking the exception
-> >>> happened in user space or not)?
-> >>>
-> >>
-> >> What do you mean by 'there' ? At the entry of kprobe_handler() ?
-> >>
-> >> That's what my patch does, it checks whether MMU is disabled or not. If
-> >> it is, it converts the address to a virtual address.
-> >>
-> >> Do you mean kprobe_handler() should bail out early as it does when the
-> >> trap happens in user mode ?
-> > 
-> > Yes, that is what I meant.
-> > 
-> >> Of course we can do that, I don't know
-> >> enough about kprobe to know if kprobe_handler() should manage events
-> >> that happened in real-mode or just ignore them. But I tested adding an
-> >> event on a function that runs in real-mode, and it (now) works.
-> >>
-> >> So, what should we do really ?
-> > 
-> > I'm not sure how the powerpc kernel runs in real mode.
-> > But clearly, at least kprobe event can not handle that case because
-> > it tries to access memory by probe_kernel_read(). Unless that function
-> > correctly handles the address translation, I want to prohibit kprobes
-> > on such address.
-> > 
-> > So what I would like to see is, something like below.
-> > 
-> > diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> > index 2d27ec4feee4..4771be152416 100644
-> > --- a/arch/powerpc/kernel/kprobes.c
-> > +++ b/arch/powerpc/kernel/kprobes.c
-> > @@ -261,7 +261,7 @@ int kprobe_handler(struct pt_regs *regs)
-> >          unsigned int *addr = (unsigned int *)regs->nip;
-> >          struct kprobe_ctlblk *kcb;
-> >   
-> > -       if (user_mode(regs))
-> > +       if (user_mode(regs) || !(regs->msr & MSR_IR))
-> >                  return 0;
-> >   
-> >          /*
-> > 
-> > 
-> 
-> With this instead change of my patch, I get an Oops everytime a kprobe 
-> event occurs in real-mode.
-> 
-> This is because kprobe_handler() is now saying 'this trap doesn't belong 
-> to me' for a trap that has been installed by it.
+Acked-by: Guo Ren <guoren@kernel.org>
 
-Hmm, on powerpc, kprobes is allowed to probe on the code which runs
-in the real mode? I think we should also prohibit it by blacklisting.
-(It is easy to add blacklist by NOKPROBE_SYMBOL(func))
-Or, some parts are possble to run under both real mode and kernel mode?
 
-> 
-> So the 'program check' exception handler doesn't find the owner of the 
-> trap hence generate an Oops.
-> 
-> Even if we don't want kprobe() to proceed with the event entirely 
-> (allthough it works at least for simple events), I'd expect it to fail 
-> gracefully.
+On Mon, Feb 17, 2020 at 1:04 PM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> Lets move vma_is_accessible() helper to include/linux/mm.h which makes it
+> available for general use. While here, this replaces all remaining open
+> encodings for VMA access check with vma_is_accessible().
+>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paulburton@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/csky/mm/fault.c    | 2 +-
+>  arch/m68k/mm/fault.c    | 2 +-
+>  arch/mips/mm/fault.c    | 2 +-
+>  arch/powerpc/mm/fault.c | 2 +-
+>  arch/sh/mm/fault.c      | 2 +-
+>  arch/x86/mm/fault.c     | 2 +-
+>  include/linux/mm.h      | 5 +++++
+>  kernel/sched/fair.c     | 2 +-
+>  mm/gup.c                | 2 +-
+>  mm/memory.c             | 5 -----
+>  mm/mempolicy.c          | 3 +--
+>  11 files changed, 14 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
+> index f76618b630f9..4b3511b8298d 100644
+> --- a/arch/csky/mm/fault.c
+> +++ b/arch/csky/mm/fault.c
+> @@ -137,7 +137,7 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
+>                 if (!(vma->vm_flags & VM_WRITE))
+>                         goto bad_area;
+>         } else {
+> -               if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
+> +               if (!vma_is_accessible(vma))
+>                         goto bad_area;
+>         }
+>
+> diff --git a/arch/m68k/mm/fault.c b/arch/m68k/mm/fault.c
+> index e9b1d7585b43..d5131ec5d923 100644
+> --- a/arch/m68k/mm/fault.c
+> +++ b/arch/m68k/mm/fault.c
+> @@ -125,7 +125,7 @@ int do_page_fault(struct pt_regs *regs, unsigned long address,
+>                 case 1:         /* read, present */
+>                         goto acc_err;
+>                 case 0:         /* read, not present */
+> -                       if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
+> +                       if (!vma_is_accessible(vma))
+>                                 goto acc_err;
+>         }
+>
+> diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+> index 1e8d00793784..5b9f947bfa32 100644
+> --- a/arch/mips/mm/fault.c
+> +++ b/arch/mips/mm/fault.c
+> @@ -142,7 +142,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
+>                                 goto bad_area;
+>                         }
+>                 } else {
+> -                       if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
+> +                       if (!vma_is_accessible(vma))
+>                                 goto bad_area;
+>                 }
+>         }
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index 8db0507619e2..71a3658c516b 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -314,7 +314,7 @@ static bool access_error(bool is_write, bool is_exec,
+>                 return false;
+>         }
+>
+> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
+> +       if (unlikely(!vma_is_accessible(vma)))
+>                 return true;
+>         /*
+>          * We should ideally do the vma pkey access check here. But in the
+> diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
+> index 5f51456f4fc7..a8c4253f37d7 100644
+> --- a/arch/sh/mm/fault.c
+> +++ b/arch/sh/mm/fault.c
+> @@ -355,7 +355,7 @@ static inline int access_error(int error_code, struct vm_area_struct *vma)
+>                 return 1;
+>
+>         /* read, not present: */
+> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
+> +       if (unlikely(!vma_is_accessible(vma)))
+>                 return 1;
+>
+>         return 0;
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index fa4ea09593ab..c461eaab0306 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1200,7 +1200,7 @@ access_error(unsigned long error_code, struct vm_area_struct *vma)
+>                 return 1;
+>
+>         /* read, not present: */
+> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
+> +       if (unlikely(!vma_is_accessible(vma)))
+>                 return 1;
+>
+>         return 0;
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 52269e56c514..b0e53ef13ff1 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -541,6 +541,11 @@ static inline bool vma_is_anonymous(struct vm_area_struct *vma)
+>         return !vma->vm_ops;
+>  }
+>
+> +static inline bool vma_is_accessible(struct vm_area_struct *vma)
+> +{
+> +       return vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC);
+> +}
+> +
+>  #ifdef CONFIG_SHMEM
+>  /*
+>   * The vma_is_shmem is not inline because it is used only by slow
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index fe4e0d775375..6ce54d57dd09 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -2573,7 +2573,7 @@ static void task_numa_work(struct callback_head *work)
+>                  * Skip inaccessible VMAs to avoid any confusion between
+>                  * PROT_NONE and NUMA hinting ptes
+>                  */
+> -               if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
+> +               if (!vma_is_accessible(vma))
+>                         continue;
+>
+>                 do {
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 1b521e0ac1de..c8ffe2e61f03 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1171,7 +1171,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+>          * We want mlock to succeed for regions that have any permissions
+>          * other than PROT_NONE.
+>          */
+> -       if (vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC))
+> +       if (vma_is_accessible(vma))
+>                 gup_flags |= FOLL_FORCE;
+>
+>         /*
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 0bccc622e482..2f07747612b7 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3942,11 +3942,6 @@ static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf, pmd_t orig_pmd)
+>         return VM_FAULT_FALLBACK;
+>  }
+>
+> -static inline bool vma_is_accessible(struct vm_area_struct *vma)
+> -{
+> -       return vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE);
+> -}
+> -
+>  static vm_fault_t create_huge_pud(struct vm_fault *vmf)
+>  {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 977c641f78cf..91c1ad6ab8ea 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -649,8 +649,7 @@ static int queue_pages_test_walk(unsigned long start, unsigned long end,
+>
+>         if (flags & MPOL_MF_LAZY) {
+>                 /* Similar to task_numa_work, skip inaccessible VMAs */
+> -               if (!is_vm_hugetlb_page(vma) &&
+> -                       (vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)) &&
+> +               if (!is_vm_hugetlb_page(vma) && vma_is_accessible(vma) &&
+>                         !(vma->vm_flags & VM_MIXEDMAP))
+>                         change_prot_numa(vma, start, endvma);
+>                 return 1;
+> --
+> 2.20.1
+>
 
-Agreed. I thought it was easy to identify real mode code. But if it is
-hard, we should apply your first patch and also skip user handlers
-if we are in the real mode (and increment missed count).
-
-BTW, can the emulater handle the real mode code correctly?
-
-Thank you,
 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
