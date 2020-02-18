@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EC9162839
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 15:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDD7162842
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 15:35:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MNcg6WK4zDqlg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 01:33:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MNg25WtdzDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 01:35:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,53 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=RgJjMRyS; dkim-atps=neutral
+ header.s=mail header.b=I+yktMoT; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MNX21VQHzDql5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 01:29:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MNcD16NLzDqpg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 01:32:44 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48MNWx48GPz9txYj;
- Tue, 18 Feb 2020 15:29:01 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 48MNc638ycz9txYb;
+ Tue, 18 Feb 2020 15:32:38 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=RgJjMRyS; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=I+yktMoT; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id eGRpu0g-fSj8; Tue, 18 Feb 2020 15:29:01 +0100 (CET)
+ with ESMTP id dr-F18n6-o_M; Tue, 18 Feb 2020 15:32:38 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48MNWx2tswz9txYh;
- Tue, 18 Feb 2020 15:29:01 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48MNc61Yq2z9txYZ;
+ Tue, 18 Feb 2020 15:32:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1582036141; bh=d7GUGoU1ynn3txug03Ra44n3J3IR57bWnS/ge10FxlA=;
+ t=1582036358; bh=3VEYez6HqwEfvR0kBkYzC0ZrDx9hestW/3cZG9LWoFk=;
  h=From:Subject:To:Cc:Date:From;
- b=RgJjMRyStZKH6HWw9btz2AIHuu2957FuvSfPFDR2gHZCyDRZz7nctL1YPdKGQrQHs
- 8+ybFAKGR0bSGJ6+V+ntS2Ds/mENU4ONLBWxvoQZCOFD7khMpOr+j+ta8RSICGlp/q
- JqmGh9uJWCs2HyWYbt548to9xZ37k7hlynB+elBo=
+ b=I+yktMoTx+K38mEqWWWoawFIteBLHdBCoGXoSUD42IdLlff3WQbYH3rqKmnO559YB
+ QbPwAHA51RuHwDbQwPFjXVqAVEvjhrWdHUl59uLH9IX5riv4NPEBasygw2lvI5a8NR
+ +LCZjQytzOC4SCX+RZ72tqBM9fRteIumcfVwtHPk=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C41F98B814;
- Tue, 18 Feb 2020 15:29:02 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A1D018B814;
+ Tue, 18 Feb 2020 15:32:39 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1YjuvvOp3I3x; Tue, 18 Feb 2020 15:29:02 +0100 (CET)
+ with ESMTP id hS95FTImvrsn; Tue, 18 Feb 2020 15:32:39 +0100 (CET)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7AB468B80C;
- Tue, 18 Feb 2020 15:29:02 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CD7B8B80C;
+ Tue, 18 Feb 2020 15:32:39 +0100 (CET)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 2BCE565314; Tue, 18 Feb 2020 14:29:01 +0000 (UTC)
-Message-Id: <0cd6647dae57894f77ceb7d5a48d52fac6c10ca5.1582036047.git.christophe.leroy@c-s.fr>
+ id 1820065314; Tue, 18 Feb 2020 14:32:39 +0000 (UTC)
+Message-Id: <36954605360e5b26cad42709582c96117f7d2ce8.1582036238.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/kprobes: Fix trap address when trap happened in
- real mode
+Subject: [PATCH v2] powerpc/kprobes: Ignore traps that happened in real mode
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
  Larry Finger <Larry.Finger@lwfinger.net>,
  Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>,
  Masami Hiramatsu <mhiramat@kernel.org>
-Date: Tue, 18 Feb 2020 14:29:01 +0000 (UTC)
+Date: Tue, 18 Feb 2020 14:32:39 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,6 +129,8 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 ---
+Resending v2 with a more appropriate name
+
 v2: bailing out instead of converting real-time address to virtual and continuing.
 
 The bug might have existed even before that commit from Naveen.
