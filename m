@@ -1,59 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF4B162496
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 11:31:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MHFY2L9BzDqWl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 21:31:13 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B8016250B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 11:57:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MHqL6GqZzDqBd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 21:57:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=anEayyTA; dkim-atps=neutral
+ header.s=default header.b=nQZIkGPA; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MHCG0GQLzDqSB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 21:29:13 +1100 (AEDT)
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MHmv0RdCzDqWk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 21:54:54 +1100 (AEDT)
+Received: from hump (unknown [109.236.136.226])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C091C21D7D;
- Tue, 18 Feb 2020 10:29:08 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 58260207FD;
+ Tue, 18 Feb 2020 10:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1582021751;
- bh=8lfCo9JgbsUMnfmswTPY301UU9yeRlXDAewhFt3Z78E=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=anEayyTALTwnTzWa6RGz9cbR1szMeBbIJFKM3m+FB9jIG49YaxkA5yT1tXTvoiJnS
- LXse0O+midzMDa+GqvZpRL1qFuCR9+hjJ2SMhKf1ZXcgE4jSGwCHDP5vRMitmzZrTD
- zPEOqSN45Txc1VHcfXQh8oOoGEXj6IwqIUWBkFxI=
-Date: Tue, 18 Feb 2020 19:29:05 +0900
-From: Masami Hiramatsu <mhiramat@kernel.org>
+ s=default; t=1582023292;
+ bh=CMlZZWS7PO9lkPnhA08fc6Islr+OQCEeZuheLiBfVmU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nQZIkGPAmBAW2q8NANsj3kry2FjoyJoV6/tOeR6LNswBfh2J3GwBoJflFT5WH0M0E
+ dfZCuTZ+znP94xdsEPbHpuBFhjabZfi5XCWgerZeTyyA+r8h1bx3I9KPRweYB3ciYM
+ WYq+qWxM8vgm+Ut2efYgnUJmpLpvYONcSRjzEgV4=
+Date: Tue, 18 Feb 2020 12:54:40 +0200
+From: Mike Rapoport <rppt@kernel.org>
 To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/kprobes: Fix trap address when trap happened in
- real mode
-Message-Id: <20200218192905.a3ed969e8565901c4f69fa22@kernel.org>
-In-Reply-To: <c93c5346-d964-9167-c4dd-3123917344cf@c-s.fr>
-References: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
- <20200214225434.464ec467ad9094961abb8ddc@kernel.org>
- <e09d3c42-542e-48c1-2f1e-cfe605b05bec@c-s.fr>
- <20200216213411.824295a321d8fa979dedbbbe@kernel.org>
- <baee8186-549a-f6cf-3619-884b6d708185@c-s.fr>
- <20200217192735.5070f0925c4159ccffa4e465@kernel.org>
- <c6257b49-bf02-d30a-1e2e-99abba5955e6@c-s.fr>
- <20200218094421.6d402de389ce23a55a3ec084@kernel.org>
- <c93c5346-d964-9167-c4dd-3123917344cf@c-s.fr>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
+Message-ID: <20200218105440.GA1698@hump>
+References: <20200216081843.28670-1-rppt@kernel.org>
+ <20200216081843.28670-8-rppt@kernel.org>
+ <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,151 +58,295 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Paul Mackerras <paulus@samba.org>, stable@kernel.vger.org,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
+ linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ kvm-ppc@vger.kernel.org,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 18 Feb 2020 06:58:06 +0100
-Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-
-> >>>>
-> >>>> What do you mean by 'there' ? At the entry of kprobe_handler() ?
-> >>>>
-> >>>> That's what my patch does, it checks whether MMU is disabled or not. If
-> >>>> it is, it converts the address to a virtual address.
-> >>>>
-> >>>> Do you mean kprobe_handler() should bail out early as it does when the
-> >>>> trap happens in user mode ?
-> >>>
-> >>> Yes, that is what I meant.
-> >>>
-> >>>> Of course we can do that, I don't know
-> >>>> enough about kprobe to know if kprobe_handler() should manage events
-> >>>> that happened in real-mode or just ignore them. But I tested adding an
-> >>>> event on a function that runs in real-mode, and it (now) works.
-> >>>>
-> >>>> So, what should we do really ?
-> >>>
-> >>> I'm not sure how the powerpc kernel runs in real mode.
-> >>> But clearly, at least kprobe event can not handle that case because
-> >>> it tries to access memory by probe_kernel_read(). Unless that function
-> >>> correctly handles the address translation, I want to prohibit kprobes
-> >>> on such address.
-> >>>
-> >>> So what I would like to see is, something like below.
-> >>>
-> >>> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> >>> index 2d27ec4feee4..4771be152416 100644
-> >>> --- a/arch/powerpc/kernel/kprobes.c
-> >>> +++ b/arch/powerpc/kernel/kprobes.c
-> >>> @@ -261,7 +261,7 @@ int kprobe_handler(struct pt_regs *regs)
-> >>>           unsigned int *addr = (unsigned int *)regs->nip;
-> >>>           struct kprobe_ctlblk *kcb;
-> >>>    
-> >>> -       if (user_mode(regs))
-> >>> +       if (user_mode(regs) || !(regs->msr & MSR_IR))
-> >>>                   return 0;
-> >>>    
-> >>>           /*
-> >>>
-> >>>
-> >>
-> >> With this instead change of my patch, I get an Oops everytime a kprobe
-> >> event occurs in real-mode.
-> >>
-> >> This is because kprobe_handler() is now saying 'this trap doesn't belong
-> >> to me' for a trap that has been installed by it.
+On Sun, Feb 16, 2020 at 11:41:07AM +0100, Christophe Leroy wrote:
+> 
+> 
+> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
+> > From: Mike Rapoport <rppt@linux.ibm.com>
 > > 
-> > Hmm, on powerpc, kprobes is allowed to probe on the code which runs
-> > in the real mode? I think we should also prohibit it by blacklisting.
-> > (It is easy to add blacklist by NOKPROBE_SYMBOL(func))
+> > Implement primitives necessary for the 4th level folding, add walks of p4d
+> > level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
 > 
-> Yes, I see a lot of them tagged with _ASM_NOKPROBE_SYMBOL() on PPC64, 
-> but none on PPC32. I suppose that's missing and have to be added. 
-
-Ah, you are using PPC32. 
-
-> Nevertheless, if one symbol has been forgotten in the blacklist, I think 
-> it is a problem if it generate Oopses.
-
-There is a long history also on x86 to make a blacklist. Anyway, how did
-you get this error on PPC32? Somewhere would you like to probe and
-it is a real mode function? Or, it happened unexpectedly?
-
+> I don't think it is worth adding all this additionnals walks of p4d, this
+> patch could be limited to changes like:
 > 
-> > Or, some parts are possble to run under both real mode and kernel mode?
+> -		pud = pud_offset(pgd, gpa);
+> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
 > 
-> I don't think so, at least on PPC32
+> The additionnal walks should be added through another patch the day powerpc
+> need them.
 
-OK, that's a good news. Also, are there any independent section where such
-real mode functions are stored? (I can see start_real_trampolines in
-sections.h) If that kind of sections are defined, it is easy to make
-a blacklist in arch_populate_kprobe_blacklist(). See arch/arm64/kernel/probes/kprobes.c.
-
-
-> >> So the 'program check' exception handler doesn't find the owner of the
-> >> trap hence generate an Oops.
-> >>
-> >> Even if we don't want kprobe() to proceed with the event entirely
-> >> (allthough it works at least for simple events), I'd expect it to fail
-> >> gracefully.
-> > 
-> > Agreed. I thought it was easy to identify real mode code. But if it is
-> > hard, we should apply your first patch and also skip user handlers
-> > if we are in the real mode (and increment missed count).
-> 
-> user handlers are already skipped.
-
-Yes, if you don't put a kprobes on real mode code. However, if user
-(accidentally) puts a probe on real mode code, it might call a
-user handler?
-
-> 
-> What do you think about my latest proposal below ? If a trap is 
-> encoutered in real mode, if checks if the matching virtual address 
-> corresponds to a valid kprobe. If it is, it skips it. If not, it returns 
-> 0 to tell "it's no me". You are also talking about incrementing the 
-> missed count. Who do we do that ?
-
-I rather like your first patch. If there is a kprobes, we can not skip
-the instruction, because there is an instruction which must be executed.
-(or single-skipped, but I'm not sure the emulator works correctly on
-real mode)
-
-Thank you,
-
-> 
-> 
-> 
-> @@ -264,6 +265,13 @@ int kprobe_handler(struct pt_regs *regs)
->       if (user_mode(regs))
->           return 0;
-> 
-> +    if (!(regs->msr & MSR_IR)) {
-> +        if (!get_kprobe(phys_to_virt(regs->nip)))
-> +            return 0;
-> +        regs->nip += 4;
-> +        return 1;
-> +    }
-> +
->       /*
->        * We don't want to be preempted for the entire
->        * duration of kprobe processing
-> 
+Ok, I'll update the patch to reduce walking the p4d.
+ 
+> See below for more comments.
 > 
 > > 
-> > BTW, can the emulater handle the real mode code correctly?
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > Tested-by: Christophe Leroy <christophe.leroy@c-s.fr> # 8xx and 83xx
+> > ---
+
+...
+
+> > diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> > index 201a69e6a355..ddddbafff0ab 100644
+> > --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> > +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> > @@ -2,7 +2,7 @@
+> >   #ifndef _ASM_POWERPC_BOOK3S_64_PGTABLE_H_
+> >   #define _ASM_POWERPC_BOOK3S_64_PGTABLE_H_
+> > -#include <asm-generic/5level-fixup.h>
+> > +#include <asm-generic/pgtable-nop4d.h>
+> >   #ifndef __ASSEMBLY__
+> >   #include <linux/mmdebug.h>
+> > @@ -251,7 +251,7 @@ extern unsigned long __pmd_frag_size_shift;
+> >   /* Bits to mask out from a PUD to get to the PMD page */
+> >   #define PUD_MASKED_BITS		0xc0000000000000ffUL
+> >   /* Bits to mask out from a PGD to get to the PUD page */
+> > -#define PGD_MASKED_BITS		0xc0000000000000ffUL
+> > +#define P4D_MASKED_BITS		0xc0000000000000ffUL
+> >   /*
+> >    * Used as an indicator for rcu callback functions
+> > @@ -949,54 +949,60 @@ static inline bool pud_access_permitted(pud_t pud, bool write)
+> >   	return pte_access_permitted(pud_pte(pud), write);
+> >   }
+> > -#define pgd_write(pgd)		pte_write(pgd_pte(pgd))
+> > +#define __p4d_raw(x)	((p4d_t) { __pgd_raw(x) })
+> > +static inline __be64 p4d_raw(p4d_t x)
+> > +{
+> > +	return pgd_raw(x.pgd);
+> > +}
+> > +
 > 
-> I don't know, how do I test that ?
+> Shouldn't this be defined in asm/pgtable-be-types.h, just like other
+> __pxx_raw() ?
+
+Ideally yes, but this creates weird header file dependencies and untangling
+them would generate way too much churn.
+ 
+> > +#define p4d_write(p4d)		pte_write(p4d_pte(p4d))
+> > -static inline void pgd_clear(pgd_t *pgdp)
+> > +static inline void p4d_clear(p4d_t *p4dp)
+> >   {
+> > -	*pgdp = __pgd(0);
+> > +	*p4dp = __p4d(0);
+> >   }
+
+...
+
+> > @@ -573,9 +596,15 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+> >   	/* Traverse the guest's 2nd-level tree, allocate new levels needed */
+> >   	pgd = pgtable + pgd_index(gpa);
+> > -	pud = NULL;
+> > +	p4d = NULL;
+> >   	if (pgd_present(*pgd))
+> > -		pud = pud_offset(pgd, gpa);
+> > +		p4d = p4d_offset(pgd, gpa);
+> > +	else
+> > +		new_p4d = p4d_alloc_one(kvm->mm, gpa);
+> > +
+> > +	pud = NULL;
+> > +	if (p4d_present(*p4d))
+> > +		pud = pud_offset(p4d, gpa);
+> 
+> Is it worth adding all this new code ?
+> 
+> My understanding is that the series objective is to get rid of
+> __ARCH_HAS_5LEVEL_HACK, to to add support for 5 levels to an architecture
+> that not need it (at least for now).
+> If we want to add support for 5 levels, it can be done later in another
+> patch.
+> 
+> Here I think your change could be limited to:
+> 
+> -		pud = pud_offset(pgd, gpa);
+> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
+
+This won't work. Without __ARCH_USE_5LEVEL_HACK defined pgd_present() is
+hardwired to 1 and the actual check for the top level is performed with
+p4d_present(). The 'else' clause that allocates p4d will never be taken and
+it could be removed, but I prefer to keep it for consistency.
+ 
+> >   	else
+> >   		new_pud = pud_alloc_one(kvm->mm, gpa);
+> > @@ -597,12 +626,18 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+> >   	/* Now traverse again under the lock and change the tree */
+> >   	ret = -ENOMEM;
+> >   	if (pgd_none(*pgd)) {
+> > +		if (!new_p4d)
+> > +			goto out_unlock;
+> > +		pgd_populate(kvm->mm, pgd, new_p4d);
+> > +		new_p4d = NULL;
+> > +	}
+> > +	if (p4d_none(*p4d)) {
+> >   		if (!new_pud)
+> >   			goto out_unlock;
+> > -		pgd_populate(kvm->mm, pgd, new_pud);
+> > +		p4d_populate(kvm->mm, p4d, new_pud);
+> >   		new_pud = NULL;
+> >   	}
+> > -	pud = pud_offset(pgd, gpa);
+> > +	pud = pud_offset(p4d, gpa);
+> >   	if (pud_is_leaf(*pud)) {
+> >   		unsigned long hgpa = gpa & PUD_MASK;
+> > @@ -1220,6 +1255,7 @@ static ssize_t debugfs_radix_read(struct file *file, char __user *buf,
+> >   	pgd_t *pgt;
+> >   	struct kvm_nested_guest *nested;
+> >   	pgd_t pgd, *pgdp;
+> > +	p4d_t p4d, *p4dp;
+> >   	pud_t pud, *pudp;
+> >   	pmd_t pmd, *pmdp;
+> >   	pte_t *ptep;
+> > @@ -1298,7 +1334,14 @@ static ssize_t debugfs_radix_read(struct file *file, char __user *buf,
+> >   			continue;
+> >   		}
+> > -		pudp = pud_offset(&pgd, gpa);
+> > +		p4dp = p4d_offset(&pgd, gpa);
+> > +		p4d = READ_ONCE(*p4dp);
+> > +		if (!(p4d_val(p4d) & _PAGE_PRESENT)) {
+> > +			gpa = (gpa & P4D_MASK) + P4D_SIZE;
+> > +			continue;
+> > +		}
+> > +
+> > +		pudp = pud_offset(&p4d, gpa);
+> 
+> Same, here you are forcing a useless read with READ_ONCE().
+> 
+> Your change could be limited to
+> 
+> -		pudp = pud_offset(&pgd, gpa);
+> +		pudp = pud_offset(p4d_offset(&pgd, gpa), gpa);
+
+Here again the actual check must be done against p4d rather than pgd. We
+could skip READ_ONCE() for pgd, but since it is a debugfs method I don't
+think it is more important than code consistency.
+ 
+> This comment applies to many other places.
+
+I'll make another pass to see where we can take the shortcut and use 
+
+	pudp = pud_offset(p4d_offset(...))
+ 
+> >   		pud = READ_ONCE(*pudp);
+> >   		if (!(pud_val(pud) & _PAGE_PRESENT)) {
+> >   			gpa = (gpa & PUD_MASK) + PUD_SIZE;
+> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+> > index 3345f039a876..7a59f6863cec 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+> > @@ -107,13 +107,18 @@ static inline int unmap_patch_area(unsigned long addr)
+> >   	pte_t *ptep;
+> >   	pmd_t *pmdp;
+> >   	pud_t *pudp;
+> > +	p4d_t *p4dp;
+> >   	pgd_t *pgdp;
+> >   	pgdp = pgd_offset_k(addr);
+> >   	if (unlikely(!pgdp))
+> >   		return -EINVAL;
+> > -	pudp = pud_offset(pgdp, addr);
+> > +	p4dp = p4d_offset(pgdp, addr);
+> > +	if (unlikely(!p4dp))
+> > +		return -EINVAL;
+> > +
+> > +	pudp = pud_offset(p4dp, addr);
+> >   	if (unlikely(!pudp))
+> >   		return -EINVAL;
+> > diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+> > index 0a1c65a2c565..b2fc3e71165c 100644
+> > --- a/arch/powerpc/mm/book3s32/mmu.c
+> > +++ b/arch/powerpc/mm/book3s32/mmu.c
+> > @@ -312,7 +312,7 @@ void hash_preload(struct mm_struct *mm, unsigned long ea)
+> >   	if (!Hash)
+> >   		return;
+> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, ea), ea), ea);
+> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, ea), ea), ea), ea);
+> 
+> If we continue like this, in ten years this like is going to be many
+> kilometers long.
+> 
+> I think the above would be worth a generic helper.
+
+Agree. My plan was to first unify all the architectures and then start
+introducing the generic helpers, like e.g. pmd_offset_mm().
+ 
+> >   	if (!pmd_none(*pmd))
+> >   		add_hash_page(mm->context.id, ea, pmd_val(*pmd));
+> >   }
+> > diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
+> > index 2fcd321040ff..175bc33b41b7 100644
+> > --- a/arch/powerpc/mm/book3s32/tlb.c
+> > +++ b/arch/powerpc/mm/book3s32/tlb.c
+> > @@ -87,7 +87,7 @@ static void flush_range(struct mm_struct *mm, unsigned long start,
+> >   	if (start >= end)
+> >   		return;
+> >   	end = (end - 1) | ~PAGE_MASK;
+> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, start), start), start);
+> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, start), start), start), start);
+> >   	for (;;) {
+> >   		pmd_end = ((start + PGDIR_SIZE) & PGDIR_MASK) - 1;
+> >   		if (pmd_end > end)
+> > @@ -145,7 +145,7 @@ void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+> >   		return;
+> >   	}
+> >   	mm = (vmaddr < TASK_SIZE)? vma->vm_mm: &init_mm;
+> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, vmaddr), vmaddr), vmaddr);
+> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, vmaddr), vmaddr), vmaddr), vmaddr);
+> >   	if (!pmd_none(*pmd))
+> >   		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
+> >   }
+> > diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> > index 64733b9cb20a..9cd15937e88a 100644
+> > --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> > @@ -148,6 +148,7 @@ void hash__vmemmap_remove_mapping(unsigned long start,
+> >   int hash__map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
+> >   {
+> >   	pgd_t *pgdp;
+> > +	p4d_t *p4dp;
+> >   	pud_t *pudp;
+> >   	pmd_t *pmdp;
+> >   	pte_t *ptep;
+> > @@ -155,7 +156,8 @@ int hash__map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
+> >   	BUILD_BUG_ON(TASK_SIZE_USER64 > H_PGTABLE_RANGE);
+> >   	if (slab_is_available()) {
+> >   		pgdp = pgd_offset_k(ea);
+> > -		pudp = pud_alloc(&init_mm, pgdp, ea);
+> > +		p4dp = p4d_offset(pgdp, ea);
+> > +		pudp = pud_alloc(&init_mm, p4dp, ea);
+> 
+> Could be a single line, without a new var.
+> 
+> -		pudp = pud_alloc(&init_mm, pgdp, ea);
+> +		pudp = pud_alloc(&init_mm, p4d_offset(pgdp, ea), ea);
+> 
+> 
+> Same kind of comments as already done apply to the rest.
 > 
 > Christophe
 
-
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+Sincerely yours,
+Mike.
