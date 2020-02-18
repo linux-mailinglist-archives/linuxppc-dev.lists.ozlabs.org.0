@@ -2,39 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E35216309B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 20:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAED51633B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 22:02:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MWfG5QTQzDqLp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 06:49:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MYG37385zDqfK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 08:02:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=namei.org
- (client-ip=65.99.196.166; helo=namei.org; envelope-from=jmorris@namei.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=namei.org
-Received: from namei.org (namei.org [65.99.196.166])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=KO14cYls; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MWYT6KRDzDqLZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 06:45:49 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
- by namei.org (8.14.4/8.14.4) with ESMTP id 01IJiQMI016417;
- Tue, 18 Feb 2020 19:44:26 GMT
-Date: Wed, 19 Feb 2020 06:44:26 +1100 (AEDT)
-From: James Morris <jmorris@namei.org>
-To: Alexey Budankov <alexey.budankov@linux.intel.com>
-Subject: Re: [PATCH v7 10/12] drivers/oprofile: open access for CAP_PERFMON
- privileged process
-In-Reply-To: <046beedf-e074-58e2-579d-df535799169c@linux.intel.com>
-Message-ID: <alpine.LRH.2.21.2002190644070.10165@namei.org>
-References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com>
- <046beedf-e074-58e2-579d-df535799169c@linux.intel.com>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MYCT3R1zzDqbg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 08:00:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1582059617;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=R+5nH0RbYnRX8oS+gNkYUcbLgvJOnmEAnQ8QVqp5CYo=;
+ b=KO14cYlscttop84o0A898wfIp2xfQsg58xuVzQJlWhtzt3he+1js+sC9TzI9g0JyfrH8d5
+ Aznm4R+ki71v76tnstugN3Lh6I4EovDKA6tm1tkZ5/NLbfjqog0s92uxAilpEuFTwW/oY3
+ VcbN3ac0fdKnpvqTxNBMjC7z4vDoWsg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-53-tFGKheXRND-26PKBmDudDQ-1; Tue, 18 Feb 2020 16:00:13 -0500
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A7E2B18C8C39;
+ Tue, 18 Feb 2020 21:00:11 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com
+ (segfault.boston.devel.redhat.com [10.19.60.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EA9D438D;
+ Tue, 18 Feb 2020 21:00:10 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH] libnvdimm/bus: return the outvar 'cmd_rc' error code in
+ __nd_ioctl()
+References: <20200122155304.120733-1-vaibhav@linux.ibm.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Tue, 18 Feb 2020 16:00:09 -0500
+In-Reply-To: <20200122155304.120733-1-vaibhav@linux.ibm.com> (Vaibhav Jain's
+ message of "Wed, 22 Jan 2020 21:23:04 +0530")
+Message-ID: <x49r1yrboh2.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: tFGKheXRND-26PKBmDudDQ-1
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,44 +78,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-man@vger.kernel.org,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
- Alexei Starovoitov <ast@kernel.org>, Stephane Eranian <eranian@google.com>,
- Paul Mackerras <paulus@samba.org>, Jiri Olsa <jolsa@redhat.com>,
- Ingo Molnar <mingo@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Will Deacon <will@kernel.org>, Helge Deller <deller@gmx.de>,
- Igor Lubashev <ilubashe@akamai.com>, oprofile-list@lists.sf.net,
- Stephen Smalley <sds@tycho.nsa.gov>, Serge Hallyn <serge@hallyn.com>,
- "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 Feb 2020, Alexey Budankov wrote:
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-> For backward compatibility reasons access to the monitoring remains
-> open for CAP_SYS_ADMIN privileged processes but CAP_SYS_ADMIN usage
-> for secure monitoring is discouraged with respect to CAP_PERFMON
-> capability.
-> 
-> Signed-off-by: Alexey Budankov <alexey.budankov@linux.intel.com>
+> Presently the error code returned via out variable 'cmd_rc' from the
+> nvdimm-bus controller function is ignored when called from
+> __nd_ioctl() and never communicated back to user-space code that called
+> an ioctl on dimm/bus.
+>
+> This minor patch updates __nd_ioctl() to propagate the value of out
+> variable 'cmd_rc' back to user-space in case it reports an error.
+>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+>  drivers/nvdimm/bus.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+> index a8b515968569..5b687a27fdf2 100644
+> --- a/drivers/nvdimm/bus.c
+> +++ b/drivers/nvdimm/bus.c
+> @@ -1153,6 +1153,11 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bu=
+s, struct nvdimm *nvdimm,
+>  =09if (rc < 0)
+>  =09=09goto out_unlock;
+> =20
+> +=09if (cmd_rc < 0) {
+> +=09=09rc =3D cmd_rc;
+> +=09=09goto out_unlock;
+> +=09}
+> +
+>  =09if (!nvdimm && cmd =3D=3D ND_CMD_CLEAR_ERROR && cmd_rc >=3D 0) {
+>  =09=09struct nd_cmd_clear_error *clear_err =3D buf;
 
+Looks good to me.
 
-Reviewed-by: James Morris <jamorris@linux.microsoft.com>
-
-
--- 
-James Morris
-<jmorris@namei.org>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 
