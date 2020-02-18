@@ -2,60 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A451625DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 13:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00073162669
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 13:48:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MKCx21q0zDqDB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 22:59:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MLHW2NZ4zDqg6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 23:48:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
- [209.85.128.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=aWlnTD3n; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MK6s2G40zDqhC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 22:55:32 +1100 (AEDT)
-Received: by mail-wm1-f65.google.com with SMTP id m10so2038287wmc.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 03:55:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=PU0rlEqd+hj6PVfkEyqNzbK7/cpZu827/vl+/upqLt4=;
- b=Cyo9yQblnZiMpaI5RH7qNwJFqByyUmkdV+eA0axaCcX23e/KwJy/94DGsg/TEDEocT
- VcI14euX+oLQQ+KjUQLICJ55W2yqHTYhyeBu3ObHeR1eMa+zHZoWUX4COfw4tbGyg29N
- Pcv2g+9PkU1fC6AO5Bq+2h4IVhbc9pde9P1xlfQCR4TAzpvhirlnHyHBnaRtPsxAF27/
- oxlujK2G0aVvvKlnkJ4WaRFdsc5VgwJEIsm2h8TF4gWtoiKVdOXXoH1FGL5qT8xGJtkZ
- V591v5UH2YZ65Dt5fTUG0FDoiWb/E4V7Ti3sDXsOJd4BPhHy1KuO4H8BJzse7DPJwFJR
- f4Ng==
-X-Gm-Message-State: APjAAAXVceuYxUOsiEwwUj1qPLQn52nUX6wyEFXomT9UPYiGyLb73//N
- 2mMHwnVVvfRoIB2f/85Gt+8=
-X-Google-Smtp-Source: APXvYqzqsONanXYpROP2CPwt/PfCtYs1SfVIMM+IVOB512AIjL4OfaEPBLWybhwmqdgpeeWhGEqbhw==
-X-Received: by 2002:a1c:7ec5:: with SMTP id z188mr2811448wmc.52.1582026927075; 
- Tue, 18 Feb 2020 03:55:27 -0800 (PST)
-Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
- by smtp.gmail.com with ESMTPSA id t131sm3363783wmb.13.2020.02.18.03.55.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Feb 2020 03:55:26 -0800 (PST)
-Date: Tue, 18 Feb 2020 12:55:25 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
-Message-ID: <20200218115525.GD4151@dhcp22.suse.cz>
-References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
- <cf6be5f5-4bbc-0d34-fb64-33fd37bc48d9@virtuozzo.com>
- <0ba2a3c6-6593-2cee-1cef-983cd75f920f@virtuozzo.com>
- <F5A68B0C-AFDE-4C45-B0F3-12A5154204E6@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <F5A68B0C-AFDE-4C45-B0F3-12A5154204E6@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MKyX4C5XzDqXL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 23:33:24 +1100 (AEDT)
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5217720836;
+ Tue, 18 Feb 2020 12:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1582029201;
+ bh=p5Cg7dkaOL/TAP7UTqb1VuRqbfVQB0oiZv/kRkrlk/0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=aWlnTD3ngHGWit+WUQibOybAWTCa6KrOOwO2IOZComn3onYHL2f3hlybn60pMK2W2
+ m1ZtfcTNRjXCTbu7ZTw2SFkydP3x6D+xiRBCwpOxGvIT+YOh8HAtyBQ9KJ4gwMb/RA
+ NSbG43ehzUVWqqs7PWxiIRP/d/R42VxcCrQQPEfk=
+Date: Tue, 18 Feb 2020 21:33:17 +0900
+From: Masami Hiramatsu <mhiramat@kernel.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/kprobes: Fix trap address when trap happened in
+ real mode
+Message-Id: <20200218213317.533c78753cefb05bd42cc6ad@kernel.org>
+In-Reply-To: <2b3f664e-d4ad-edd3-5bed-a4492f4ed213@c-s.fr>
+References: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
+ <20200214225434.464ec467ad9094961abb8ddc@kernel.org>
+ <e09d3c42-542e-48c1-2f1e-cfe605b05bec@c-s.fr>
+ <20200216213411.824295a321d8fa979dedbbbe@kernel.org>
+ <baee8186-549a-f6cf-3619-884b6d708185@c-s.fr>
+ <20200217192735.5070f0925c4159ccffa4e465@kernel.org>
+ <c6257b49-bf02-d30a-1e2e-99abba5955e6@c-s.fr>
+ <20200218094421.6d402de389ce23a55a3ec084@kernel.org>
+ <c93c5346-d964-9167-c4dd-3123917344cf@c-s.fr>
+ <20200218192905.a3ed969e8565901c4f69fa22@kernel.org>
+ <2b3f664e-d4ad-edd3-5bed-a4492f4ed213@c-s.fr>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,96 +67,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kirill Tkhai <ktkhai@virtuozzo.com>, linuxppc-dev@lists.ozlabs.org,
- Linux-Next Mailing List <linux-next@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Paul Mackerras <paulus@samba.org>, stable@kernel.vger.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 18-02-20 17:10:47, Sachin Sant wrote:
-> 
-> >> could you please test your boot with original patch from here:
-> >> 
-> >> https://patchwork.kernel.org/patch/11360007/
-> > 
-> > After you tried the above patch instead of the problem patch,
-> > do one more test and apply the below on current linux-next.
-> > Please, say which of the patches makes your kernel bootable again.
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 63bb6a2aab81..7b9b48dcbc60 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -334,7 +334,7 @@ static int memcg_expand_one_shrinker_map(struct mem_cgroup *memcg,
-> > 		if (!old)
-> > 			return 0;
-> > 
-> > -		new = kvmalloc_node(sizeof(*new) + size, GFP_KERNEL, nid);
-> > +		new = kmalloc_node(sizeof(*new) + size, GFP_KERNEL, nid);
-> > 		if (!new)
-> > 			return -ENOMEM;
-> > 
-> > @@ -378,7 +378,7 @@ static int memcg_alloc_shrinker_maps(struct mem_cgroup *memcg)
-> > 	mutex_lock(&memcg_shrinker_map_mutex);
-> > 	size = memcg_shrinker_map_size;
-> > 	for_each_node(nid) {
-> > -		map = kvzalloc_node(sizeof(*map) + size, GFP_KERNEL, nid);
-> > +		map = kzalloc_node(sizeof(*map) + size, GFP_KERNEL, nid);
-> > 		if (!map) {
-> > 			memcg_free_shrinker_maps(memcg);
-> > 			ret = -ENOMEM;
-> 
-> With this incremental patch applied on top of current linux-next, machine fails to boot
+On Tue, 18 Feb 2020 12:04:41 +0100
+Christophe Leroy <christophe.leroy@c-s.fr> wrote:
 
-Your calltrace points to a standard system call path. I do not see any
-reason why that commit should cause any problems. Do you see the
-same when applying the patch you managed to bisect to on top of Linus
-tree? Just to rule out any other potential problems in linux-next?
-This all smells like a corrupted slab allocator. Which allocator do
-you use?
-
-> [    8.868433] BUG: Kernel NULL pointer dereference on read at 0x000073b0
-> [    8.868439] Faulting instruction address: 0xc0000000003d55f4
-> [    8.868444] Oops: Kernel access of bad area, sig: 11 [#1]
-> [    8.868449] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> [    8.868453] Modules linked in:
-> [    8.868458] CPU: 18 PID: 1 Comm: systemd Not tainted 5.6.0-rc2-next-20200218-autotest+ #4
-> [    8.868463] NIP:  c0000000003d55f4 LR: c0000000003d5b94 CTR: 0000000000000000
-> [    8.868468] REGS: c0000008b3783710 TRAP: 0300   Not tainted  (5.6.0-rc2-next-20200218-autotest+)
-> [    8.868474] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004844  XER: 00000000
-> [    8.868481] CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1 
-> [    8.868481] GPR00: c0000000003d5b94 c0000008b37839a0 c00000000155d400 c0000008b301f500 
-> [    8.868481] GPR04: 0000000000000dc0 0000000000000002 c0000000003fee38 c0000008bb298620 
-> [    8.868481] GPR08: 00000008ba1f0000 0000000000000001 0000000000000000 0000000000000000 
-> [    8.868481] GPR12: 0000000024004844 c00000001ec54200 0000000000000000 0000000000000000 
-> [    8.868481] GPR16: c0000008a1a60048 c000000001595898 c000000001750c18 0000000000000002 
-> [    8.868481] GPR20: c000000001750c28 c000000001624470 0000000fffffffe0 5deadbeef0000122 
-> [    8.868481] GPR24: 0000000000000001 0000000000000dc0 0000000000000002 c0000000003fee38 
-> [    8.868481] GPR28: c0000008b301f500 c0000008bb298620 0000000000000000 c00c000002286d00 
-> [    8.868529] NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
-> [    8.868534] LR [c0000000003d5b94] __slab_alloc+0x34/0x60
-> [    8.868538] Call Trace:
-> [    8.868541] [c0000008b37839a0] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
-> [    8.868547] [c0000008b3783a80] [c0000000003d5b94] __slab_alloc+0x34/0x60
-> [    8.868553] [c0000008b3783ab0] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
-> [    8.868559] [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
-> [    8.868565] [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
-> [    8.868571] [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
-> [    8.868577] [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
-> [    8.868583] [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
-> [    8.868589] [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
-> [    8.868594] [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
-> [    8.868601] [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
-> [    8.868605] Instruction dump:
-> [    8.868608] 7c421378 e95f0000 714a0001 4082fff0 4bffff64 60000000 60000000 faa10088 
-> [    8.868615] 3ea2000c 3ab57070 7b4a1f24 7d55502a <e94a73b0> 2faa0000 409e0394 3d02002a 
-> [    8.868623] ---[ end trace f9b8e3c36493f430 ]---
-> [    8.870690] 
-> [    9.870701] Kernel panic - not syncing: Fatal exception
+> >> Nevertheless, if one symbol has been forgotten in the blacklist, I think
+> >> it is a problem if it generate Oopses.
+> > 
+> > There is a long history also on x86 to make a blacklist. Anyway, how did
+> > you get this error on PPC32? Somewhere would you like to probe and
+> > it is a real mode function? Or, it happened unexpectedly?
 > 
-> Thanks
-> -Sachin
+> The first Oops I got was triggered by a WARN_ON() kind of trap in real 
+> mode. The trap exception handler called kprobe_handler() which tried to 
+> read the instruction at the trap address (which was a real-mode address) 
+> so it triggered a Bad Access Fault.
+> 
+> This was initially the purpose of my patch.
+
+OK, then filtering the trap reason in kprobe handler is a bit strange.
+It should be done in the previous stage (maybe in trap.c)
+Can we filter it by exception flag or only by checking the instruction
+which causes the exception, or needs get_kprobe()...?
+
+> After discussion with you, I started looking at what would be the effect 
+> of setting a kprobe event in a function which runs in real mode.
+
+If the kprobe single-stepping (or emulation) works in real mode, just
+ignore the kprobes pre/post_handlers and increment nmissed count.
+
+If that doesn't work, we have to call a BUG_ON, because we can not
+continue the code execution. And also, you have to find a way to make
+a blacklist for real mode code.
+
+> >>
+> >>> Or, some parts are possble to run under both real mode and kernel mode?
+> >>
+> >> I don't think so, at least on PPC32
+> > 
+> > OK, that's a good news. Also, are there any independent section where such
+> > real mode functions are stored? (I can see start_real_trampolines in
+> > sections.h) If that kind of sections are defined, it is easy to make
+> > a blacklist in arch_populate_kprobe_blacklist(). See arch/arm64/kernel/probes/kprobes.c.
+> 
+> Part of them are in .head.text, and this section is already blacklisted 
+> throught function arch_within_kprobe_blacklist()
+
+Then, those are OK.
+
+> 
+> But there are several other functions which are not there. For instance, 
+> many things within entry_32.S, and also things in hash_low.S
+> On PPC64 (ie in entry_64.S) they were explicitely blacklisted with 
+> _ASM_NOKPROBE_SYMBOL(). We have to do the same on PPC64
+
+Agreed. Some of such unstable state code must not be probed.
+
+> >>>> So the 'program check' exception handler doesn't find the owner of the
+> >>>> trap hence generate an Oops.
+> >>>>
+> >>>> Even if we don't want kprobe() to proceed with the event entirely
+> >>>> (allthough it works at least for simple events), I'd expect it to fail
+> >>>> gracefully.
+> >>>
+> >>> Agreed. I thought it was easy to identify real mode code. But if it is
+> >>> hard, we should apply your first patch and also skip user handlers
+> >>> if we are in the real mode (and increment missed count).
+> >>
+> >> user handlers are already skipped.
+> > 
+> > Yes, if you don't put a kprobes on real mode code. However, if user
+> > (accidentally) puts a probe on real mode code, it might call a
+> > user handler?
+> 
+> Are we talking about the same thing ?
+
+Ah, sorry about that. "user handler" here I meant was "kprobe pre/post_handler
+function defined by the user of kprobes".
+
+> 
+> Only kernel code can run in real mode, so the following code at the 
+> beginning of kprobe_handler() does the job ?
+> 
+> 	if (user_mode(regs))
+> 		return 0;
+
+Yes, you're right.
+
+> >> What do you think about my latest proposal below ? If a trap is
+> >> encoutered in real mode, if checks if the matching virtual address
+> >> corresponds to a valid kprobe. If it is, it skips it. If not, it returns
+> >> 0 to tell "it's no me". You are also talking about incrementing the
+> >> missed count. Who do we do that ?
+> > 
+> > I rather like your first patch. If there is a kprobes, we can not skip
+> > the instruction, because there is an instruction which must be executed.
+> > (or single-skipped, but I'm not sure the emulator works correctly on
+> > real mode)
+> 
+> Oops, yes of course.
+
+Thank you,
 
 -- 
-Michal Hocko
-SUSE Labs
+Masami Hiramatsu <mhiramat@kernel.org>
