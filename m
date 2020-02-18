@@ -2,56 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9578E16231B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 10:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1929162351
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 10:23:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MFW32clNzDqZT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 20:12:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MFlR1dNKzDqbs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 20:23:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org; envelope-from=mchehab@bombadil.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=in.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nasastry@in.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=h/D+gqw5; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=in.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MFSp5gbCzDqXS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 20:10:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=gtxCElNvSCXWFICx33F89B+eF/cQ+L9FjqnWYk2rKuI=; b=h/D+gqw5OmQpGOwUjnu/fi4+kH
- bT0h8EUVx9iIS8HNfPlJzJPk40KKUsFKNf009z67RPKZuDo+88sdToDM6wpb5+YlEa7V9G6OJvFol
- R8RQl98kwCpA4ooFYQSURvPloAPXb0/KOMWODRXhBfm93RtLstFP639AaaseMhA7rBw6OI8LTEr+J
- PXc4gR41BMqKLfnINKvS8pLmCqR3uXPMYK/daZvPEV9ynEWBeYzh1jVee6AgvUIOeV700uQ2EOPBg
- z3vWEhpNHMY0ljZor0m1CokA7zJdOq2gDEs8oPaHQ9a9htLoD+FYLhrx/s8ITQGSuGwynWgVTIITp
- vszoRJOw==;
-Received: from x2f7fb70.dyn.telefonica.de ([2.247.251.112]
- helo=bombadil.infradead.org)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1j3ytq-00047E-Oc; Tue, 18 Feb 2020 09:10:39 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92.3)
- (envelope-from <mchehab@bombadil.infradead.org>)
- id 1j3j8V-000foa-PM; Mon, 17 Feb 2020 17:20:43 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH v2 00/24] Manually convert  thermal,
- crypto and misc devices to ReST
-Date: Mon, 17 Feb 2020 17:20:18 +0100
-Message-Id: <cover.1581956285.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MF4B5XLSzDqX3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 19:52:52 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01I8oEMN061533
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 03:52:49 -0500
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com
+ [192.155.248.93])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2y6dp97dvs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 03:52:48 -0500
+Received: from localhost
+ by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+ for <linuxppc-dev@lists.ozlabs.org> from <nasastry@in.ibm.com>;
+ Tue, 18 Feb 2020 08:52:48 -0000
+Received: from us1a3-smtp03.a3.dal06.isc4sb.com (10.106.154.98)
+ by smtp.notes.na.collabserv.com (10.106.227.39) with
+ smtp.notes.na.collabserv.com ESMTP; Tue, 18 Feb 2020 08:52:43 -0000
+Received: from us1a3-mail120.a3.dal06.isc4sb.com ([10.146.45.191])
+ by us1a3-smtp03.a3.dal06.isc4sb.com
+ with ESMTP id 2020021808524348-221160 ;
+ Tue, 18 Feb 2020 08:52:43 +0000 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200214080606.26872-2-kjain@linux.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc/kernel/sysfs: Add new config option PMU_SYSFS
+ to enable PMU SPRs sysfs file creation
+To: "Kajol Jain" <kjain@linux.ibm.com>
+From: "Nageswara R Sastry" <nasastry@in.ibm.com>
+Date: Tue, 18 Feb 2020 14:22:41 +0530
+References: <20200214080606.26872-1-kjain@linux.ibm.com>
+ <20200214080606.26872-2-kjain@linux.ibm.com>
+X-KeepSent: 77C44664:8CD0A59C-65258512:00306110;
+ type=4; name=$KeepSent
+X-Mailer: IBM Notes Build V1001FP3_08092019 August 09, 2019
+X-LLNOutbound: False
+X-Disclaimed: 46379
+X-TNEFEvaluated: 1
+Content-type: multipart/alternative; 
+ Boundary="0__=EABB0F81DFA3E7808f9e8a93df938690918cEABB0F81DFA3E780"
+Content-Disposition: inline
+x-cbid: 20021808-8889-0000-0000-000001F1F378
+X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.417846; ST=0; TS=0; UL=0; ISC=; MB=0.004883
+X-IBM-SpamModules-Versions: BY=3.00012596; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000292; SDB=6.01335614; UDB=6.00711495; IPR=6.01117974; 
+ MB=3.00030856; MTD=3.00000008; XFM=3.00000015; UTC=2020-02-18 08:52:46
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2020-02-18 03:11:07 - 6.00011018
+x-cbparentid: 20021808-8890-0000-0000-00005F5E3455
+Message-Id: <OF77C44664.8CD0A59C-ON65258512.00306110-65258512.0030C501@notes.na.collabserv.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-18_01:2020-02-17,
+ 2020-02-18 signatures=0
+X-Proofpoint-Spam-Reason: safe
+X-Mailman-Approved-At: Tue, 18 Feb 2020 20:21:50 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,128 +85,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, linux-pci@vger.kernel.org,
- David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Javi Merino <javi.merino@kernel.org>,
- Will Deacon <will@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
- Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org,
- Amit Daniel Kachhap <amit.kachhap@gmail.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-crypto@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: anju@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Manually convert some files from thermal, crypto and misc-devices
-to ReST format.
+--0__=EABB0F81DFA3E7808f9e8a93df938690918cEABB0F81DFA3E780
+Content-Transfer-Encoding: quoted-printable
+Content-type: text/plain; charset=US-ASCII
 
-This patch is against linux-next 20200217 tag.
 
-v2: 
+"Kajol Jain" <kjain@linux.ibm.com> wrote on 14/02/2020 01:36:06 PM:
 
-- a small change at patch 2 to avoid uneeded whitespace changes;
-- added 13 new patches at the end
+> From: "Kajol Jain" <kjain@linux.ibm.com>
+> To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+> Cc: maddy@linux.vnet.ibm.com, anju@linux.vnet.ibm.com, Nageswara R
+> Sastry/India/IBM@IBMIN, kjain@linux.ibm.com
+> Date: 14/02/2020 01:36 PM
+> Subject: [PATCH 2/2] powerpc/kernel/sysfs: Add new config option
+> PMU=5FSYSFS to enable PMU SPRs sysfs file creation
+>
+> Many of the performance monitoring unit (PMU) SPRs are
+> exposed in the sysfs. This may not be a desirable since
+> "perf" API is the primary interface to program PMU and
+> collect counter data in the system. But that said, we
+> cant remove these sysfs files since we dont whether
+> anyone/anything is using them.
+>
+> So the patch adds a new CONFIG option 'CONFIG=5FPMU=5FSYSFS'
+> (user selectable) to be used in sysfs file creation for
+> PMU SPRs. New option by default is disabled, but can be
+> enabled if user needs it.
+>
+> Tested this patch behaviour in powernv and pseries machines.
+> Patch is also tested for pmac32=5Fdefconfig.
+>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 
-Mauro Carvalho Chehab (24):
-  docs: thermal: convert cpu-idle-cooling.rst to ReST
-  docs: crypto: convert asymmetric-keys.txt to ReST
-  docs: crypto: convert api-intro.txt to ReST format
-  docs: crypto: convert async-tx-api.txt to ReST format
-  docs: crypto: descore-readme.txt: convert to ReST format
-  docs: misc-devices/spear-pcie-gadget.txt: convert to ReST
-  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
-  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
-  docs: misc-devices/c2port.txt: convert to ReST format
-  docs: misc-devices/bh1770glc.txt: convert to ReST
-  docs: misc-devices/apds990x.txt: convert to ReST format
-  docs: pci: endpoint/function/binding/pci-test.txt convert to ReST
-  docs: arm64: convert perf.txt to ReST format
-  docs: cpu-freq: convert index.txt to ReST
-  docs: cpu-freq: convert amd-powernow.txt to ReST
-  docs: cpu-freq: convert core.txt to ReST
-  docs: cpu-freq: convert cpu-drivers.txt to ReST
-  docs: cpu-freq: convert cpufreq-nforce2.txt to ReST
-  docs: cpu-freq: convert cpufreq-stats.txt to ReST
-  docs: cpu-freq: convert pcc-cpufreq.txt to ReST
-  docs: powerpc: convert vcpudispatch_stats.txt to ReST
-  docs: sh: convert new-machine.txt to ReST
-  docs: sh: convert register-banks.txt to ReST
-  docs: trace: ring-buffer-design.txt: convert to ReST format
+Tested-by: Nageswara R Sastry <nasastry@in.ibm.com>
 
- .../endpoint/function/binding/pci-test.rst    |  26 +
- .../endpoint/function/binding/pci-test.txt    |  19 -
- Documentation/PCI/endpoint/index.rst          |   2 +
- Documentation/arm64/index.rst                 |   1 +
- Documentation/arm64/{perf.txt => perf.rst}    |   7 +-
- .../{amd-powernow.txt => amd-powernow.rst}    |  12 +-
- Documentation/cpu-freq/{core.txt => core.rst} |  65 +-
- .../{cpu-drivers.txt => cpu-drivers.rst}      | 129 ++-
- ...pufreq-nforce2.txt => cpufreq-nforce2.rst} |  18 +-
- .../{cpufreq-stats.txt => cpufreq-stats.rst}  | 121 +--
- Documentation/cpu-freq/index.rst              |  42 +
- Documentation/cpu-freq/index.txt              |  56 --
- .../{pcc-cpufreq.txt => pcc-cpufreq.rst}      |  86 +-
- .../crypto/{api-intro.txt => api-intro.rst}   | 186 ++--
- ...symmetric-keys.txt => asymmetric-keys.rst} |  91 +-
- .../{async-tx-api.txt => async-tx-api.rst}    | 253 +++---
- ...{descore-readme.txt => descore-readme.rst} | 152 +++-
- Documentation/crypto/index.rst                |   5 +
- .../driver-api/thermal/cpu-idle-cooling.rst   |  18 +-
- Documentation/driver-api/thermal/index.rst    |   1 +
- Documentation/index.rst                       |   1 +
- .../{ad525x_dpot.txt => ad525x_dpot.rst}      |  24 +-
- .../{apds990x.txt => apds990x.rst}            |  31 +-
- .../{bh1770glc.txt => bh1770glc.rst}          |  45 +-
- .../misc-devices/{c2port.txt => c2port.rst}   |  58 +-
- Documentation/misc-devices/index.rst          |   6 +
- .../misc-devices/pci-endpoint-test.rst        |  56 ++
- .../misc-devices/pci-endpoint-test.txt        |  41 -
- .../misc-devices/spear-pcie-gadget.rst        | 170 ++++
- .../misc-devices/spear-pcie-gadget.txt        | 130 ---
- Documentation/powerpc/index.rst               |   1 +
- ...patch_stats.txt => vcpudispatch_stats.rst} |  17 +-
- Documentation/sh/index.rst                    |   6 +
- .../sh/{new-machine.txt => new-machine.rst}   | 193 +++--
- ...{register-banks.txt => register-banks.rst} |  12 +-
- Documentation/trace/index.rst                 |   1 +
- ...ffer-design.txt => ring-buffer-design.rst} | 802 ++++++++++--------
- 37 files changed, 1603 insertions(+), 1281 deletions(-)
- create mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.rst
- delete mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.txt
- rename Documentation/arm64/{perf.txt => perf.rst} (95%)
- rename Documentation/cpu-freq/{amd-powernow.txt => amd-powernow.rst} (89%)
- rename Documentation/cpu-freq/{core.txt => core.rst} (69%)
- rename Documentation/cpu-freq/{cpu-drivers.txt => cpu-drivers.rst} (72%)
- rename Documentation/cpu-freq/{cpufreq-nforce2.txt => cpufreq-nforce2.rst} (55%)
- rename Documentation/cpu-freq/{cpufreq-stats.txt => cpufreq-stats.rst} (53%)
- create mode 100644 Documentation/cpu-freq/index.rst
- delete mode 100644 Documentation/cpu-freq/index.txt
- rename Documentation/cpu-freq/{pcc-cpufreq.txt => pcc-cpufreq.rst} (80%)
- rename Documentation/crypto/{api-intro.txt => api-intro.rst} (70%)
- rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
- rename Documentation/crypto/{async-tx-api.txt => async-tx-api.rst} (55%)
- rename Documentation/crypto/{descore-readme.txt => descore-readme.rst} (81%)
- rename Documentation/misc-devices/{ad525x_dpot.txt => ad525x_dpot.rst} (85%)
- rename Documentation/misc-devices/{apds990x.txt => apds990x.rst} (86%)
- rename Documentation/misc-devices/{bh1770glc.txt => bh1770glc.rst} (83%)
- rename Documentation/misc-devices/{c2port.txt => c2port.rst} (59%)
- create mode 100644 Documentation/misc-devices/pci-endpoint-test.rst
- delete mode 100644 Documentation/misc-devices/pci-endpoint-test.txt
- create mode 100644 Documentation/misc-devices/spear-pcie-gadget.rst
- delete mode 100644 Documentation/misc-devices/spear-pcie-gadget.txt
- rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
- rename Documentation/sh/{new-machine.txt => new-machine.rst} (73%)
- rename Documentation/sh/{register-banks.txt => register-banks.rst} (88%)
- rename Documentation/trace/{ring-buffer-design.txt => ring-buffer-design.rst} (55%)
+Tested on PowerVM, PowerNV machines with and with out CONFIG=5FPMU=5FSYSFS
+With CONFIG=5FPMU=5FSYSFS=3Dy
+    For online CPUs can see the SPR files namely mmcr*, pmc*
+With CONFIG=5FPMU=5FSYSFS=3Dn
+    Not seeing the SPR files
 
--- 
-2.24.1
 
+> ---
+>  arch/powerpc/kernel/sysfs.c            | 6 ++++++
+>  arch/powerpc/platforms/Kconfig.cputype | 6 ++++++
+>  2 files changed, 12 insertions(+)
+>
+> diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+> index 74da5eb..cd807e8 100644
+> --- a/arch/powerpc/kernel/sysfs.c
+> +++ b/arch/powerpc/kernel/sysfs.c
+> @@ -562,6 +562,7 @@ void ppc=5Fenable=5Fpmcs(void)
+>   * that are implemented on the current processor
+>   */
+>
+> +#ifdef CONFIG=5FPMU=5FSYSFS
+>  #if defined(CONFIG=5FPPC64) || defined(CONFIG=5FPPC=5FBOOK3S=5F32)
+>  #define HAS=5FPPC=5FPMC=5FCLASSIC   1
+>  #define HAS=5FPPC=5FPMC=5FIBM      1
+> @@ -575,6 +576,7 @@ void ppc=5Fenable=5Fpmcs(void)
+>  #ifdef CONFIG=5FPPC=5FBOOK3S=5F32
+>  #define HAS=5FPPC=5FPMC=5FG4      1
+>  #endif
+> +#endif /* CONFIG=5FPMU=5FSYSFS */
+>
+>  #if defined(CONFIG=5FPPC64) && defined(CONFIG=5FDEBUG=5FMISC)
+>  #define HAS=5FPPC=5FPA6T
+> @@ -812,8 +814,10 @@ static int register=5Fcpu=5Fonline(unsigned int cpu)
+>           device=5Fcreate=5Ffile(s, &pmc=5Fattrs[i]);
+>
+>  #ifdef CONFIG=5FPPC64
+> +#ifdef   CONFIG=5FPMU=5FSYSFS
+>     if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FMMCRA))
+>        device=5Fcreate=5Ffile(s, &dev=5Fattr=5Fmmcra);
+> +#endif /* CONFIG=5FPMU=5FSYSFS */
+>
+>     if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FPURR)) {
+>        if (!firmware=5Fhas=5Ffeature(FW=5FFEATURE=5FLPAR))
+> @@ -901,8 +905,10 @@ static int unregister=5Fcpu=5Fonline(unsigned int cp=
+u)
+>           device=5Fremove=5Ffile(s, &pmc=5Fattrs[i]);
+>
+>  #ifdef CONFIG=5FPPC64
+> +#ifdef CONFIG=5FPMU=5FSYSFS
+>     if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FMMCRA))
+>        device=5Fremove=5Ffile(s, &dev=5Fattr=5Fmmcra);
+> +#endif /* CONFIG=5FPMU=5FSYSFS */
+>
+>     if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FPURR))
+>        device=5Fremove=5Ffile(s, &dev=5Fattr=5Fpurr);
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/
+> platforms/Kconfig.cputype
+> index 8d7f9c3..e58b48d 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -417,6 +417,12 @@ config PPC=5FMM=5FSLICES
+>  config PPC=5FHAVE=5FPMU=5FSUPPORT
+>     bool
+>
+> +config PMU=5FSYSFS
+> +   bool "Create PMU SPRs sysfs file"
+> +   default n
+> +   help
+> +     This option enables sysfs file creation for PMU SPRs like
+> MMCR* and PMC*.
+> +
+>  config PPC=5FPERF=5FCTRS
+>     def=5Fbool y
+>     depends on PERF=5FEVENTS && PPC=5FHAVE=5FPMU=5FSUPPORT
+> --
+> 1.8.3.1
+>
+
+--0__=EABB0F81DFA3E7808f9e8a93df938690918cEABB0F81DFA3E780
+Content-Transfer-Encoding: quoted-printable
+Content-type: text/html; charset=US-ASCII
+Content-Disposition: inline
+
+<html><body><p><tt><font size=3D"2">&quot;Kajol Jain&quot; &lt;kjain@linux.=
+ibm.com&gt; wrote on 14/02/2020 01:36:06 PM:<br><br>&gt; From: &quot;Kajol =
+Jain&quot; &lt;kjain@linux.ibm.com&gt;</font></tt><br><tt><font size=3D"2">=
+&gt; To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au</font></tt><br><=
+tt><font size=3D"2">&gt; Cc: maddy@linux.vnet.ibm.com, anju@linux.vnet.ibm.=
+com, Nageswara R <br>&gt; Sastry/India/IBM@IBMIN, kjain@linux.ibm.com</font=
+></tt><br><tt><font size=3D"2">&gt; Date: 14/02/2020 01:36 PM</font></tt><b=
+r><tt><font size=3D"2">&gt; Subject: [PATCH 2/2] powerpc/kernel/sysfs: Add =
+new config option <br>&gt; PMU=5FSYSFS to enable PMU SPRs sysfs file creati=
+on</font></tt><br><tt><font size=3D"2">&gt; <br>&gt; Many of the performanc=
+e monitoring unit (PMU) SPRs are<br>&gt; exposed in the sysfs. This may not=
+ be a desirable since<br>&gt; &quot;perf&quot; API is the primary interface=
+ to program PMU and<br>&gt; collect counter data in the system. But that sa=
+id, we<br>&gt; cant remove these sysfs files since we dont whether<br>&gt; =
+anyone/anything is using them.<br>&gt; <br>&gt; So the patch adds a new CON=
+FIG option 'CONFIG=5FPMU=5FSYSFS'<br>&gt; (user selectable) to be used in s=
+ysfs file creation for<br>&gt; PMU SPRs. New option by default is disabled,=
+ but can be<br>&gt; enabled if user needs it.<br>&gt; <br>&gt; Tested this =
+patch behaviour in powernv and pseries machines.<br>&gt; Patch is also test=
+ed for pmac32=5Fdefconfig.<br>&gt; <br>&gt; Signed-off-by: Kajol Jain &lt;k=
+jain@linux.ibm.com&gt;</font></tt><br><br><tt><font size=3D"2">Tested-by: N=
+ageswara R Sastry &lt;nasastry@in.ibm.com&gt;<br><br>Tested on PowerVM, Pow=
+erNV machines with and with out CONFIG=5FPMU=5FSYSFS</font></tt><br><tt><fo=
+nt size=3D"2">With CONFIG=5FPMU=5FSYSFS=3Dy<br> &nbsp; &nbsp;For online CPU=
+s can see the SPR files namely mmcr*, pmc*<br>With CONFIG=5FPMU=5FSYSFS=3Dn=
+<br> &nbsp; &nbsp;Not seeing the SPR files<br></font></tt><br><tt><font siz=
+e=3D"2"><br>&gt; ---<br>&gt; &nbsp;arch/powerpc/kernel/sysfs.c &nbsp; &nbsp=
+; &nbsp; &nbsp; &nbsp; &nbsp;| 6 ++++++<br>&gt; &nbsp;arch/powerpc/platform=
+s/Kconfig.cputype | 6 ++++++<br>&gt; &nbsp;2 files changed, 12 insertions(+=
+)<br>&gt; <br>&gt; diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/=
+kernel/sysfs.c<br>&gt; index 74da5eb..cd807e8 100644<br>&gt; --- a/arch/pow=
+erpc/kernel/sysfs.c<br>&gt; +++ b/arch/powerpc/kernel/sysfs.c<br>&gt; @@ -5=
+62,6 +562,7 @@ void ppc=5Fenable=5Fpmcs(void)<br>&gt; &nbsp; * that are imp=
+lemented on the current processor<br>&gt; &nbsp; */<br>&gt; &nbsp;<br>&gt; =
++#ifdef CONFIG=5FPMU=5FSYSFS<br>&gt; &nbsp;#if defined(CONFIG=5FPPC64) || d=
+efined(CONFIG=5FPPC=5FBOOK3S=5F32)<br>&gt; &nbsp;#define HAS=5FPPC=5FPMC=5F=
+CLASSIC &nbsp; 1<br>&gt; &nbsp;#define HAS=5FPPC=5FPMC=5FIBM &nbsp; &nbsp; =
+&nbsp;1<br>&gt; @@ -575,6 +576,7 @@ void ppc=5Fenable=5Fpmcs(void)<br>&gt; =
+&nbsp;#ifdef CONFIG=5FPPC=5FBOOK3S=5F32<br>&gt; &nbsp;#define HAS=5FPPC=5FP=
+MC=5FG4 &nbsp; &nbsp; &nbsp;1<br>&gt; &nbsp;#endif<br>&gt; +#endif /* CONFI=
+G=5FPMU=5FSYSFS */<br>&gt; &nbsp;<br>&gt; &nbsp;#if defined(CONFIG=5FPPC64)=
+ &amp;&amp; defined(CONFIG=5FDEBUG=5FMISC)<br>&gt; &nbsp;#define HAS=5FPPC=
+=5FPA6T<br>&gt; @@ -812,8 +814,10 @@ static int register=5Fcpu=5Fonline(uns=
+igned int cpu)<br>&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; device=5Fcreate=
+=5Ffile(s, &amp;pmc=5Fattrs[i]);<br>&gt; &nbsp;<br>&gt; &nbsp;#ifdef CONFIG=
+=5FPPC64<br>&gt; +#ifdef &nbsp; CONFIG=5FPMU=5FSYSFS<br>&gt; &nbsp; &nbsp; =
+if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FMMCRA))<br>&gt; &nbsp; &nbsp; &nbsp; &n=
+bsp;device=5Fcreate=5Ffile(s, &amp;dev=5Fattr=5Fmmcra);<br>&gt; +#endif /* =
+CONFIG=5FPMU=5FSYSFS */<br>&gt; &nbsp;<br>&gt; &nbsp; &nbsp; if (cpu=5Fhas=
+=5Ffeature(CPU=5FFTR=5FPURR)) {<br>&gt; &nbsp; &nbsp; &nbsp; &nbsp;if (!fir=
+mware=5Fhas=5Ffeature(FW=5FFEATURE=5FLPAR))<br>&gt; @@ -901,8 +905,10 @@ st=
+atic int unregister=5Fcpu=5Fonline(unsigned int cpu)<br>&gt; &nbsp; &nbsp; =
+&nbsp; &nbsp; &nbsp; device=5Fremove=5Ffile(s, &amp;pmc=5Fattrs[i]);<br>&gt=
+; &nbsp;<br>&gt; &nbsp;#ifdef CONFIG=5FPPC64<br>&gt; +#ifdef CONFIG=5FPMU=
+=5FSYSFS<br>&gt; &nbsp; &nbsp; if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FMMCRA))<=
+br>&gt; &nbsp; &nbsp; &nbsp; &nbsp;device=5Fremove=5Ffile(s, &amp;dev=5Fatt=
+r=5Fmmcra);<br>&gt; +#endif /* CONFIG=5FPMU=5FSYSFS */<br>&gt; &nbsp;<br>&g=
+t; &nbsp; &nbsp; if (cpu=5Fhas=5Ffeature(CPU=5FFTR=5FPURR))<br>&gt; &nbsp; =
+&nbsp; &nbsp; &nbsp;device=5Fremove=5Ffile(s, &amp;dev=5Fattr=5Fpurr);<br>&=
+gt; diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/<br>=
+&gt; platforms/Kconfig.cputype<br>&gt; index 8d7f9c3..e58b48d 100644<br>&gt=
+; --- a/arch/powerpc/platforms/Kconfig.cputype<br>&gt; +++ b/arch/powerpc/p=
+latforms/Kconfig.cputype<br>&gt; @@ -417,6 +417,12 @@ config PPC=5FMM=5FSLI=
+CES<br>&gt; &nbsp;config PPC=5FHAVE=5FPMU=5FSUPPORT<br>&gt; &nbsp; &nbsp; b=
+ool<br>&gt; &nbsp;<br>&gt; +config PMU=5FSYSFS<br>&gt; + &nbsp; bool &quot;=
+Create PMU SPRs sysfs file&quot;<br>&gt; + &nbsp; default n<br>&gt; + &nbsp=
+; help<br>&gt; + &nbsp; &nbsp; This option enables sysfs file creation for =
+PMU SPRs like <br>&gt; MMCR* and PMC*.<br>&gt; +<br>&gt; &nbsp;config PPC=
+=5FPERF=5FCTRS<br>&gt; &nbsp; &nbsp; def=5Fbool y<br>&gt; &nbsp; &nbsp; dep=
+ends on PERF=5FEVENTS &amp;&amp; PPC=5FHAVE=5FPMU=5FSUPPORT<br>&gt; -- <br>=
+&gt; 1.8.3.1<br>&gt; <br></font></tt><BR>
+</body></html>
+
+--0__=EABB0F81DFA3E7808f9e8a93df938690918cEABB0F81DFA3E780--
 
