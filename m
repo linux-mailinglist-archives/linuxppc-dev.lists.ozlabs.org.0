@@ -2,82 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4531626CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 14:08:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1719B16279A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 15:02:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MLl73VgHzDqdG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 00:08:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MMxB56y0zDqkX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 01:02:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=BAOtrg4b; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MLTY0kjmzDqjG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 23:56:48 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01ICsDiH128494
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 07:56:46 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y6dntp7tn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 07:56:46 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.ibm.com>;
- Tue, 18 Feb 2020 12:56:45 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 18 Feb 2020 12:56:43 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01ICufsA27787356
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Feb 2020 12:56:41 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B46D54C04A;
- Tue, 18 Feb 2020 12:56:41 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE5AA4C044;
- Tue, 18 Feb 2020 12:56:40 +0000 (GMT)
-Received: from localhost.in.ibm.com (unknown [9.124.31.118])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 18 Feb 2020 12:56:40 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2 2/2] powerpc/perf: Check pmus_inuse flag in
- perf_event_print_debug()
-Date: Tue, 18 Feb 2020 18:26:31 +0530
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200218125631.19692-1-maddy@linux.ibm.com>
-References: <20200218125631.19692-1-maddy@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MMrJ5YFVzDqcT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 00:58:07 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48MMr85V3lzB09bJ;
+ Tue, 18 Feb 2020 14:58:00 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=BAOtrg4b; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id h_5M-mGxN3t7; Tue, 18 Feb 2020 14:58:00 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48MMr84Q52zB09bF;
+ Tue, 18 Feb 2020 14:58:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582034280; bh=jjEYydTmfEV0X1SMgXKSXhQJXM6uyjyVUc+wPBFARrA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=BAOtrg4bVyRJ71DuZiUZ3Z0v0KeHRP1O9NiMSg3rMWsK/OV3zXZ6gk1Dv+rVkOtLS
+ VkUgGrgh/kmVg/cefnAZitWtoUJZbRiySbZ4bu3+GEUMVE9g+Sr5HDHk2RB0868STV
+ LPojYYpEylAeu+7+R7iV2+ECBhA0agg8qeVlxQ30=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CAD588B813;
+ Tue, 18 Feb 2020 14:58:01 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id BkfGkmwtFnEj; Tue, 18 Feb 2020 14:58:01 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 015978B80C;
+ Tue, 18 Feb 2020 14:58:00 +0100 (CET)
+Subject: Re: [PATCH] powerpc/kprobes: Fix trap address when trap happened in
+ real mode
+To: Masami Hiramatsu <mhiramat@kernel.org>
+References: <b1451438f7148ad0e03306a1f1409f4ad1d6ec7c.1581684263.git.christophe.leroy@c-s.fr>
+ <20200214225434.464ec467ad9094961abb8ddc@kernel.org>
+ <e09d3c42-542e-48c1-2f1e-cfe605b05bec@c-s.fr>
+ <20200216213411.824295a321d8fa979dedbbbe@kernel.org>
+ <baee8186-549a-f6cf-3619-884b6d708185@c-s.fr>
+ <20200217192735.5070f0925c4159ccffa4e465@kernel.org>
+ <c6257b49-bf02-d30a-1e2e-99abba5955e6@c-s.fr>
+ <20200218094421.6d402de389ce23a55a3ec084@kernel.org>
+ <c93c5346-d964-9167-c4dd-3123917344cf@c-s.fr>
+ <20200218192905.a3ed969e8565901c4f69fa22@kernel.org>
+ <2b3f664e-d4ad-edd3-5bed-a4492f4ed213@c-s.fr>
+ <20200218213317.533c78753cefb05bd42cc6ad@kernel.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <e9cb17f4-b698-7d9b-d435-e715ee14c489@c-s.fr>
+Date: Tue, 18 Feb 2020 14:58:00 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <20200218213317.533c78753cefb05bd42cc6ad@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20021812-0020-0000-0000-000003AB472D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021812-0021-0000-0000-00002203425E
-Message-Id: <20200218125631.19692-2-maddy@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-18_02:2020-02-17,
- 2020-02-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=960 clxscore=1015
- malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
- adultscore=0 suspectscore=1 mlxscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002180103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,85 +89,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Paul Mackerras <paulus@samba.org>, stable@kernel.vger.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pmu_inuse flag is part of lppaca struct which notifies the hypervisor
-whether guest/partition is using PMUs. This provides a hint for
-save/restore of PMU registers. Currently perf_event_print_debug()
-does not check for pmu_inuse flag and it is not safe to use it to
-dump PMU SPRs in a CONFIG_PSERIES.
 
-Patch adds two things here. 1) An inline ppc_get_pmu_inuse() to get
-the pmu_inuse value and 2)check in perf_event_print_debug() before
-dumping the PMU SPRs.
 
-ppc_get_pmu_inuse() is based on ppc_set_pmu_inuse() and includes same
-CONFIG_ checks.
+Le 18/02/2020 à 13:33, Masami Hiramatsu a écrit :
+> On Tue, 18 Feb 2020 12:04:41 +0100
+> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+> 
+>>>> Nevertheless, if one symbol has been forgotten in the blacklist, I think
+>>>> it is a problem if it generate Oopses.
+>>>
+>>> There is a long history also on x86 to make a blacklist. Anyway, how did
+>>> you get this error on PPC32? Somewhere would you like to probe and
+>>> it is a real mode function? Or, it happened unexpectedly?
+>>
+>> The first Oops I got was triggered by a WARN_ON() kind of trap in real
+>> mode. The trap exception handler called kprobe_handler() which tried to
+>> read the instruction at the trap address (which was a real-mode address)
+>> so it triggered a Bad Access Fault.
+>>
+>> This was initially the purpose of my patch.
+> 
+> OK, then filtering the trap reason in kprobe handler is a bit strange.
+> It should be done in the previous stage (maybe in trap.c)
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Changelog v1:
-- Fixed pmac32_deconfig build break 
-- Fixed errors reported by checkpatch.pl
+See commit 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v5.6-rc2&id=6cc89bad60a673a24386f1ada83de8a068a78909
 
- arch/powerpc/include/asm/pmc.h  | 15 +++++++++++++++
- arch/powerpc/perf/core-book3s.c |  9 +++++++++
- 2 files changed, 24 insertions(+)
+> Can we filter it by exception flag or only by checking the instruction
+> which causes the exception, or needs get_kprobe()...?
 
-diff --git a/arch/powerpc/include/asm/pmc.h b/arch/powerpc/include/asm/pmc.h
-index c6bbe9778d3c..600c133b49cd 100644
---- a/arch/powerpc/include/asm/pmc.h
-+++ b/arch/powerpc/include/asm/pmc.h
-@@ -34,11 +34,26 @@ static inline void ppc_set_pmu_inuse(int inuse)
- #endif
- }
- 
-+static inline u8 ppc_get_pmu_inuse(void)
-+{
-+#if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
-+	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-+#ifdef CONFIG_PPC_PSERIES
-+		return get_lppaca()->pmcregs_in_use;
-+#endif
-+	}
-+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-+	return get_paca()->pmcregs_in_use;
-+#endif
-+#endif
-+}
-+
- extern void power4_enable_pmcs(void);
- 
- #else /* CONFIG_PPC64 */
- 
- static inline void ppc_set_pmu_inuse(int inuse) { }
-+static inline u8 ppc_get_pmu_inuse(void) { return 0; }
- 
- #endif
- 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 6e35bf9ff80a..61d4a290b336 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -808,6 +808,15 @@ void perf_event_print_debug(void)
- 	if (!ppmu->n_counter)
- 		return;
- 
-+	/*
-+	 * Check pmu_inuse flag. As per PAPR spec, hypersivor
-+	 * will save/restore the PMU regs only if pmu_inuse is
-+	 * set. If its not enable, values dumped from these SPRs
-+	 * may not be valid or useful.
-+	 */
-+	if (!ppc_get_pmu_inuse())
-+		return;
-+
- 	local_irq_save(flags);
- 
- 	pr_info("CPU: %d PMU registers, ppmu = %s n_counters = %d",
--- 
-2.21.1
+The trap instruction used by kprobe is also used for other purposes like 
+BUG_ON() or WARN_ON(), so needs get_kprobe()
 
+
+
+> 
+>> After discussion with you, I started looking at what would be the effect
+>> of setting a kprobe event in a function which runs in real mode.
+> 
+> If the kprobe single-stepping (or emulation) works in real mode, just
+> ignore the kprobes pre/post_handlers and increment nmissed count.
+> 
+> If that doesn't work, we have to call a BUG_ON, because we can not
+> continue the code execution. And also, you have to find a way to make
+> a blacklist for real mode code.
+
+Yes, it has to be done function by function (hoppefully there's not more 
+than a dozen).
+But I'd like something which can fails gracefully for the functions we 
+will forget to mark noprobe.
+
+But as a first step I'd really like a bug fix in 5.6 to avoid Oopsing in 
+kprobe_handler() at a non-kprobe trap.
+
+Christophe
