@@ -1,85 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C021634D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 22:25:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MYn003QTzDqgL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 08:25:56 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F4C163689
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 23:56:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MbnS6xJTzDqk9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 09:56:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=gromero@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=RoN26OTS; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MYkY5GdWzDqNn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 08:23:49 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01ILKSDH097838; Tue, 18 Feb 2020 16:23:45 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y6dnu41sv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Feb 2020 16:23:45 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01ILN8GD001767;
- Tue, 18 Feb 2020 21:23:44 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 2y6896mny0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Feb 2020 21:23:44 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01ILNiRk48234944
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Feb 2020 21:23:44 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1B74D112062;
- Tue, 18 Feb 2020 21:23:44 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 76F69112061;
- Tue, 18 Feb 2020 21:23:42 +0000 (GMT)
-Received: from oc6336877782.ibm.com (unknown [9.85.161.208])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 18 Feb 2020 21:23:42 +0000 (GMT)
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Treat unrecognized TM instructions
- as illegal
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- Michael Neuling <mikey@neuling.org>
-References: <20200213151532.12559-1-gromero@linux.ibm.com>
- <29b136e15c2f04f783b54ec98552d1a6009234db.camel@neuling.org>
- <20200217055712.GS22482@gate.crashing.org>
- <1752a0c735a455c5d3ca09209f5a52748c8f7116.camel@neuling.org>
- <20200217073743.GT22482@gate.crashing.org>
-From: Gustavo Romero <gromero@linux.vnet.ibm.com>
-Message-ID: <30664862-ede5-16c3-6215-ade0b660bb58@linux.vnet.ibm.com>
-Date: Tue, 18 Feb 2020 18:23:41 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Mblf1tfLzDqZk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 09:54:48 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id t6so8678615plj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 14:54:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=DLcO2DKWECMZLG1IHbpSAq+iosbKYeAAnLf8zJftE2I=;
+ b=RoN26OTSoD8xQPX8Ejb8azpPGaUfxPDvq/VvNyKPUXC02u6KESX4+KewWJ0C3B6BvY
+ Qe1m2IweSiLDlgWK90aBCD09mUr1arr5/A8ACf2W+VfYSIlOLRZM9GnqkYCH1Hk9Agoj
+ +PNGQbijasxynJv26p7N5IwUoW2ory/yMjEaGzcnvWGXZ9Ty/Y4qskG2oDvwhP9uGs4U
+ 7/Vzvi4mr8AnPcRhPfuz+jTCNtKEXjzqK2+uZ5DD5xXRui0DuhY8RuP2kRy9664Z9xkn
+ Ajfm5wDf5zrloWSVfa/c1AYPhfG8K/6YjkD/0dfA1novKrcoPB8Ky47OKjgh6sc2gsXF
+ GXwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=DLcO2DKWECMZLG1IHbpSAq+iosbKYeAAnLf8zJftE2I=;
+ b=FEs8Omu6OYi6vun2cxdOsTYPzb84jrWBJEZ53MpuQsa523dLXQ67F+0KjY+sTehSj3
+ /Irc7Qzi6N+stXCiv2Etbp3SE74SKgf3VJ9TZreawxk+5ElNl2aiT7ypiMe1mQChSYQJ
+ 8K2GAang9SghD4M/HCrutaUQ62IQcHGxsB98FrV1A036ykVU18qYwQN9gNvPDdeetgwO
+ uHmvkFXcLyIe9zXIQKaISubWkpbyJtMe274uHXH+wwG4mr4EapRJA3fhcL/kYCXxtHnh
+ 2/U/MVkElnWmdSz3ijgnxl5eeAQd7Apfir/u/c4MaTxW1DGX7tt9HKL7RzaYrdpl9XSu
+ NtjA==
+X-Gm-Message-State: APjAAAXt+W2x0uE/LiEshbXvVOlLRSBJX9a6P5OOxlbqdu9ExHEb6zO/
+ gIdBFTPBp9T6WmaA/DrYQ30=
+X-Google-Smtp-Source: APXvYqxKyKfvB6gUIxasXk+3gpb22DtW5pbbJzCinqep7l23wSdhHK6tbwkFTvHB8sVofima6J/cHw==
+X-Received: by 2002:a17:90a:cc16:: with SMTP id
+ b22mr5326984pju.65.1582066485149; 
+ Tue, 18 Feb 2020 14:54:45 -0800 (PST)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id i2sm4403pjs.21.2020.02.18.14.54.44
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 18 Feb 2020 14:54:45 -0800 (PST)
+Date: Tue, 18 Feb 2020 14:54:54 -0800
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 2/3] ASoC: dt-bindings: fsl_easrc: Add document for
+ EASRC
+Message-ID: <20200218225454.GA32720@Asurada-Nvidia.nvidia.com>
+References: <cover.1582007379.git.shengjiu.wang@nxp.com>
+ <a02af544c73914fe3a5ab2f35eb237ef68ee29e7.1582007379.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <20200217073743.GT22482@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-18_07:2020-02-18,
- 2020-02-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=598 clxscore=1015
- malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
- adultscore=0 suspectscore=0 mlxscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002180139
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a02af544c73914fe3a5ab2f35eb237ef68ee29e7.1582007379.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,52 +83,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
- Gustavo Romero <gromero@linux.ibm.com>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On 02/17/2020 04:37 AM, Segher Boessenkool wrote:
-> On Mon, Feb 17, 2020 at 05:23:07PM +1100, Michael Neuling wrote:
->>>> Hence, we should NOP this, not generate an illegal.
->>>
->>> It is not a reserved bit.
->>>
->>> The IMC entry for it matches op1=011111 op2=1////01110 presumably, which
->>> catches all TM instructions and nothing else (bits 0..5 and bits 21..30).
->>> That does not look at bit 31, the softpatch handler has to deal with this.
->>>
->>> Some TM insns have bit 31 as 1 and some have it as /.  All instructions
->>> with a "." in the mnemonic have bit 31 is 1, all other have it reserved.
->>> The tables in appendices D, E, F show tend. and tsr. as having it
->>> reserved, which contradicts the individual instruction description (and
->>> does not make much sense).  (Only tcheck has /, everything else has 1;
->>> everything else has a mnemonic with a dot, and does write CR0 always).
->>
->> Wow, interesting.
->>
->> P8 seems to be treating 31 as a reserved bit (with the table definition rather
->> than the individual instruction description). I'm inclined to match P8 even
->> though it's inconsistent with the dot mnemonic as you say.
+On Tue, Feb 18, 2020 at 02:39:36PM +0800, Shengjiu Wang wrote:
+> EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
+> IP module found on i.MX8MN.
 > 
-> "The POWER8 core ignores the state of reserved bits in the instructions
-> (denoted by “///” in the instruction definition) and executes the
-> instruction normally. Software should set these bits to ‘0’ per the
-> Power ISA." (p8 UM, 3.1.1.3; same in the p9 UM).
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,easrc.txt   | 57 +++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.txt b/Documentation/devicetree/bindings/sound/fsl,easrc.txt
+> new file mode 100644
+> index 000000000000..0e8153165e3b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.txt
+> @@ -0,0 +1,57 @@
+> +NXP Asynchronous Sample Rate Converter (ASRC) Controller
 
-For the records, I've sent a v2 addressing Mikey's comments:
+Missing "Enhanced", I guess.
 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-February/204502.html
+And "ASRC" => "EASRC"
 
-or
+> +The Asynchronous Sample Rate Converter (ASRC) converts the sampling rate of a
 
-https://marc.info/?l=kvm-ppc&m=158206045520038&w=2
+Ditto
 
-Thanks for the review.
+> +signal associated with an input clock into a signal associated with a different
+> +output clock. The driver currently works as a Front End of DPCM with other Back
+> +Ends Audio controller such as ESAI, SSI and SAI. It has four context to support
 
+"context" => "contexts"
 
-Best regards,
-Gustavo
+Btw, what's the definition of this "context"?
+
+And, is SSI still available on imx8mn?
