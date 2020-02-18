@@ -1,69 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDD7162842
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 15:35:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MNg25WtdzDqLf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 01:35:10 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7F81628B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 15:42:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MNqF33WKzDqBx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 01:42:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=I+yktMoT; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MNcD16NLzDqpg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 01:32:44 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48MNc638ycz9txYb;
- Tue, 18 Feb 2020 15:32:38 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=I+yktMoT; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id dr-F18n6-o_M; Tue, 18 Feb 2020 15:32:38 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48MNc61Yq2z9txYZ;
- Tue, 18 Feb 2020 15:32:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1582036358; bh=3VEYez6HqwEfvR0kBkYzC0ZrDx9hestW/3cZG9LWoFk=;
- h=From:Subject:To:Cc:Date:From;
- b=I+yktMoTx+K38mEqWWWoawFIteBLHdBCoGXoSUD42IdLlff3WQbYH3rqKmnO559YB
- QbPwAHA51RuHwDbQwPFjXVqAVEvjhrWdHUl59uLH9IX5riv4NPEBasygw2lvI5a8NR
- +LCZjQytzOC4SCX+RZ72tqBM9fRteIumcfVwtHPk=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A1D018B814;
- Tue, 18 Feb 2020 15:32:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hS95FTImvrsn; Tue, 18 Feb 2020 15:32:39 +0100 (CET)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CD7B8B80C;
- Tue, 18 Feb 2020 15:32:39 +0100 (CET)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 1820065314; Tue, 18 Feb 2020 14:32:39 +0000 (UTC)
-Message-Id: <36954605360e5b26cad42709582c96117f7d2ce8.1582036238.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/kprobes: Ignore traps that happened in real mode
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Larry Finger <Larry.Finger@lwfinger.net>,
- Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>,
- Masami Hiramatsu <mhiramat@kernel.org>
-Date: Tue, 18 Feb 2020 14:32:39 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MNmk2xbPzDqkJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 01:39:59 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01IEa5ZS014200
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 09:39:57 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2y85f3rw0c-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 09:39:57 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
+ Tue, 18 Feb 2020 14:39:54 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 18 Feb 2020 14:39:52 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 01IEcuUR40042880
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Feb 2020 14:38:56 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CDD54A4051;
+ Tue, 18 Feb 2020 14:39:51 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60FFEA4040;
+ Tue, 18 Feb 2020 14:39:51 +0000 (GMT)
+Received: from localhost (unknown [9.199.60.10])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Feb 2020 14:39:51 +0000 (GMT)
+Date: Tue, 18 Feb 2020 20:09:49 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/kprobes: Remove redundant code
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <642c8b4ca59e658be38d8dde00f994e183790a6a.1581687838.git.christophe.leroy@c-s.fr>
+In-Reply-To: <642c8b4ca59e658be38d8dde00f994e183790a6a.1581687838.git.christophe.leroy@c-s.fr>
+MIME-Version: 1.0
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20021814-0020-0000-0000-000003AB4FEB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20021814-0021-0000-0000-000022034BEA
+Message-Id: <1582036611.9hm2t8ijhz.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-18_02:2020-02-17,
+ 2020-02-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1011 spamscore=0 suspectscore=0 mlxlogscore=783
+ priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2002180114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,85 +91,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@kernel.vger.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a program check exception happens while MMU translation is
-disabled, following Oops happens in kprobe_handler() in the following
-code:
+Christophe Leroy wrote:
+> At the time being we have something like
+>=20
+> 	if (something) {
+> 		p =3D get();
+> 		if (p) {
+> 			if (something_wrong)
+> 				goto out;
+> 			...
+> 			return;
+> 		} else if (a !=3D b) {
+> 			if (some_error)
+> 				goto out;
+> 			...
+> 		}
+> 		goto out;
+> 	}
+> 	p =3D get();
+> 	if (!p) {
+> 		if (a !=3D b) {
+> 			if (some_error)
+> 				goto out;
+> 			...
+> 		}
+> 		goto out;
+> 	}
+>=20
+> This is similar to
+>=20
+> 	p =3D get();
+> 	if (something) {
+> 		if (p) {
+> 			if (something_wrong)
+> 				goto out;
+> 			...
+> 			return;
+> 		}
+> 	}
+> 	if (!p) {
+> 		if (a !=3D b) {
+> 			if (some_error)
+> 				goto out;
+> 			...
+> 		}
+> 		goto out;
+> 	}
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>  arch/powerpc/kernel/kprobes.c | 15 +--------------
+>  1 file changed, 1 insertion(+), 14 deletions(-)
 
-		} else if (*addr != BREAKPOINT_INSTRUCTION) {
+Good cleanup, thanks.
 
-[   33.098554] BUG: Unable to handle kernel data access on read at 0x0000e268
-[   33.105091] Faulting instruction address: 0xc000ec34
-[   33.110010] Oops: Kernel access of bad area, sig: 11 [#1]
-[   33.115348] BE PAGE_SIZE=16K PREEMPT CMPC885
-[   33.119540] Modules linked in:
-[   33.122591] CPU: 0 PID: 429 Comm: cat Not tainted 5.6.0-rc1-s3k-dev-00824-g84195dc6c58a #3267
-[   33.131005] NIP:  c000ec34 LR: c000ecd8 CTR: c019cab8
-[   33.136002] REGS: ca4d3b58 TRAP: 0300   Not tainted  (5.6.0-rc1-s3k-dev-00824-g84195dc6c58a)
-[   33.144324] MSR:  00001032 <ME,IR,DR,RI>  CR: 2a4d3c52  XER: 00000000
-[   33.150699] DAR: 0000e268 DSISR: c0000000
-[   33.150699] GPR00: c000b09c ca4d3c10 c66d0620 00000000 ca4d3c60 00000000 00009032 00000000
-[   33.150699] GPR08: 00020000 00000000 c087de44 c000afe0 c66d0ad0 100d3dd6 fffffff3 00000000
-[   33.150699] GPR16: 00000000 00000041 00000000 ca4d3d70 00000000 00000000 0000416d 00000000
-[   33.150699] GPR24: 00000004 c53b6128 00000000 0000e268 00000000 c07c0000 c07bb6fc ca4d3c60
-[   33.188015] NIP [c000ec34] kprobe_handler+0x128/0x290
-[   33.192989] LR [c000ecd8] kprobe_handler+0x1cc/0x290
-[   33.197854] Call Trace:
-[   33.200340] [ca4d3c30] [c000b09c] program_check_exception+0xbc/0x6fc
-[   33.206590] [ca4d3c50] [c000e43c] ret_from_except_full+0x0/0x4
-[   33.212392] --- interrupt: 700 at 0xe268
-[   33.270401] Instruction dump:
-[   33.273335] 913e0008 81220000 38600001 3929ffff 91220000 80010024 bb410008 7c0803a6
-[   33.280992] 38210020 4e800020 38600000 4e800020 <813b0000> 6d2a7fe0 2f8a0008 419e0154
-[   33.288841] ---[ end trace 5b9152d4cdadd06d ]---
+>=20
+> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.=
+c
+> index f8b848aa65bd..7a925eb76ec0 100644
+> --- a/arch/powerpc/kernel/kprobes.c
+> +++ b/arch/powerpc/kernel/kprobes.c
+> @@ -276,8 +276,8 @@ int kprobe_handler(struct pt_regs *regs)
+>  	kcb =3D get_kprobe_ctlblk();
+> =20
+>  	/* Check we're not actually recursing */
+> +	p =3D get_kprobe(addr);
+>  	if (kprobe_running()) {
+> -		p =3D get_kprobe(addr);
+>  		if (p) {
+>  			kprobe_opcode_t insn =3D *p->ainsn.insn;
+>  			if (kcb->kprobe_status =3D=3D KPROBE_HIT_SS &&
+> @@ -308,22 +308,9 @@ int kprobe_handler(struct pt_regs *regs)
+>  			}
+>  			prepare_singlestep(p, regs);
+>  			return 1;
+> -		} else if (*addr !=3D BREAKPOINT_INSTRUCTION) {
+> -			/* If trap variant, then it belongs not to us */
+> -			kprobe_opcode_t cur_insn =3D *addr;
+> -
+> -			if (is_trap(cur_insn))
+> -				goto no_kprobe;
+> -			/* The breakpoint instruction was removed by
+> -			 * another cpu right after we hit, no further
+> -			 * handling of this interrupt is appropriate
+> -			 */
+> -			ret =3D 1;
+>  		}
+> -		goto no_kprobe;
 
-kprobe is not prepared to handle events in real mode and functions
-running in real mode should have been blacklisted, so kprobe_handler()
-can safely bail out telling 'this trap is not mine' for any trap that
-happened while in real-mode.
+A minot nit -- removing the above goto makes a slight change to the=20
+logic. But, see my comments for the next patch.
 
-If the trap happened with MSR_IR cleared, return 0 immediately.
+- Naveen
 
-Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
-Fixes: 6cc89bad60a6 ("powerpc/kprobes: Invoke handlers directly")
-Cc: stable@vger.kernel.org
-Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
----
-Resending v2 with a more appropriate name
-
-v2: bailing out instead of converting real-time address to virtual and continuing.
-
-The bug might have existed even before that commit from Naveen.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/kprobes.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 2d27ec4feee4..673f349662e8 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -264,6 +264,9 @@ int kprobe_handler(struct pt_regs *regs)
- 	if (user_mode(regs))
- 		return 0;
- 
-+	if (!(regs->msr & MSR_IR))
-+		return 0;
-+
- 	/*
- 	 * We don't want to be preempted for the entire
- 	 * duration of kprobe processing
--- 
-2.25.0
+>  	}
+> =20
+> -	p =3D get_kprobe(addr);
+>  	if (!p) {
+>  		if (*addr !=3D BREAKPOINT_INSTRUCTION) {
+>  			/*
+> --=20
+> 2.25.0
+>=20
+>=20
 
