@@ -2,84 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EAE163720
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 00:26:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABFB163771
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 00:46:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48McRp10YJzDqdp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 10:26:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48McvC1gd5zDqgj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 10:46:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MLN23lb0zDqg4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 23:52:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=bdjuPCCo; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48MLN150MLz8sy8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 23:52:01 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48MLMz0H9dz9sSG; Tue, 18 Feb 2020 23:51:59 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=202.248.20.68;
- helo=condef-03.nifty.com; envelope-from=masahiroy@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=bdjuPCCo; 
- dkim-atps=neutral
-X-Greylist: delayed 345 seconds by postgrey-1.36 at bilbo;
- Tue, 18 Feb 2020 23:51:55 AEDT
-Received: from condef-03.nifty.com (condef-03.nifty.com [202.248.20.68])
- by ozlabs.org (Postfix) with ESMTP id 48MLMv72B1z9sRG
- for <linuxppc-dev@ozlabs.org>; Tue, 18 Feb 2020 23:51:55 +1100 (AEDT)
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-03.nifty.com
- with ESMTP id 01ICfWLl029602
- for <linuxppc-dev@ozlabs.org>; Tue, 18 Feb 2020 21:41:32 +0900
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com
- [209.85.222.51]) (authenticated)
- by conssluserg-04.nifty.com with ESMTP id 01ICf2n7028138
- for <linuxppc-dev@ozlabs.org>; Tue, 18 Feb 2020 21:41:03 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 01ICf2n7028138
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1582029663;
- bh=5WLyBNqBfdHbXYcVbM4zJouzFsvML+0yqJnzNVlR5y4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=bdjuPCCoRQrRKByanB4+c05cQY7zO0rPYRmM5kDyiwgJUB1y/K32drUDSu29u2/99
- nCx5sGqi+siuBCbe+uxYTpqMipVw6akIrFfOcOVKEQNfZbhSmhfBSsDjCvJEgRnE7J
- dpUOczs7kXzClHdHqj+vS/d7v2CQ6OFKmqblow3r8BppPW/zyEIafHObRBvNqBau63
- l6Mlwszu/rom6DeDRjAOM7X5MZRk5nZohB42avIvq0M9OzTzU7LLduDPWPU5B4Ls0p
- 1By3oiCKYnTXbHBf6KtTvTWhDhRBGrq+8cKFbHg/ZgFZTCgvdhrfYNZEmXmcGSfg6d
- rhJZtLf4gCnSw==
-X-Nifty-SrcIP: [209.85.222.51]
-Received: by mail-ua1-f51.google.com with SMTP id a33so7365378uad.11
- for <linuxppc-dev@ozlabs.org>; Tue, 18 Feb 2020 04:41:03 -0800 (PST)
-X-Gm-Message-State: APjAAAXPnBtiLeCjaOZV0fB714nzgm+pbW2BVCGmBaebFQKiSbWd0O+W
- WY+MK+Z6VHXPNIIhpoK/jHaIAUx2WdCBj3ws6ZU=
-X-Google-Smtp-Source: APXvYqyOx0VaGjr3MLtfBXvQBCzxhxw/amncW9F7TWzMdPNiNjJ9e1zJFUwPiaYkCDZuL7Ij/S4cVsEv1be0B4hehF0=
-X-Received: by 2002:ab0:45c7:: with SMTP id u65mr9743531uau.109.1582029661933; 
- Tue, 18 Feb 2020 04:41:01 -0800 (PST)
-MIME-Version: 1.0
-References: <20200218111842.1641-1-mpe@ellerman.id.au>
-In-Reply-To: <20200218111842.1641-1-mpe@ellerman.id.au>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 18 Feb 2020 21:40:26 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARM5nf4NhG=E7UZedDpm_Ndwa5zFCDF=XFM7gXBf5uVow@mail.gmail.com>
-Message-ID: <CAK7LNARM5nf4NhG=E7UZedDpm_Ndwa5zFCDF=XFM7gXBf5uVow@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/Makefile: Mark phony targets as PHONY
-To: Michael Ellerman <mpe@ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Mcrz3p4RzDqYK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 10:44:35 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01INeA49024789
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 18:44:32 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y89ab1q1q-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 18:44:31 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Tue, 18 Feb 2020 23:44:29 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 18 Feb 2020 23:44:21 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 01INiKuw32571890
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Feb 2020 23:44:21 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DE065A405B;
+ Tue, 18 Feb 2020 23:44:20 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B470A4054;
+ Tue, 18 Feb 2020 23:44:20 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Feb 2020 23:44:20 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A1042A00DF;
+ Wed, 19 Feb 2020 10:44:15 +1100 (AEDT)
+Subject: Re: [PATCH v2 05/27] powerpc: Map & release OpenCAPI LPC memory
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 19 Feb 2020 10:44:18 +1100
+In-Reply-To: <85e5a3d4-bac2-a8fc-8fc7-865be539dc3c@linux.ibm.com>
+References: <20191203034655.51561-1-alastair@au1.ibm.com>
+ <20191203034655.51561-6-alastair@au1.ibm.com>
+ <85e5a3d4-bac2-a8fc-8fc7-865be539dc3c@linux.ibm.com>
+Organization: IBM Australia
 Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Wed, 19 Feb 2020 10:24:45 +1100
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20021823-0016-0000-0000-000002E8165D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20021823-0017-0000-0000-0000334B2C77
+Message-Id: <91440c75bacf29ac7423e67b71199695ebf636d0.camel@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-18_08:2020-02-18,
+ 2020-02-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0
+ suspectscore=2 mlxlogscore=663 adultscore=0 impostorscore=0 clxscore=1015
+ mlxscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002180161
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,35 +97,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Keith Busch <keith.busch@intel.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 18, 2020 at 8:19 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Some of our phony targets are not marked as such. This can lead to
-> confusing errors, eg:
->
->   $ make clean
->   $ touch install
->   $ make install
->   make: 'install' is up to date.
->   $
->
-> Fix it by adding them to the PHONY variable which is marked phony in
-> the top-level Makefile. In arch/powerpc/boot/Makefile we do it
-> manually.
+On Fri, 2020-02-14 at 12:09 +0100, Frederic Barrat wrote:
+> 
+> Le 03/12/2019 à 04:46, Alastair D'Silva a écrit :
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > This patch adds platform support to map & release LPC memory.
+> > 
+> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > ---
+> >   arch/powerpc/include/asm/pnv-ocxl.h   |  2 ++
+> >   arch/powerpc/platforms/powernv/ocxl.c | 42
+> > +++++++++++++++++++++++++++
+> >   2 files changed, 44 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/include/asm/pnv-ocxl.h
+> > b/arch/powerpc/include/asm/pnv-ocxl.h
+> > index 7de82647e761..f8f8ffb48aa8 100644
+> > --- a/arch/powerpc/include/asm/pnv-ocxl.h
+> > +++ b/arch/powerpc/include/asm/pnv-ocxl.h
+> > @@ -32,5 +32,7 @@ extern int pnv_ocxl_spa_remove_pe_from_cache(void
+> > *platform_data, int pe_handle)
+> >   
+> >   extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
+> >   extern void pnv_ocxl_free_xive_irq(u32 irq);
+> > +extern u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64
+> > size);
+> > +extern void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev);
+> >   
+> >   #endif /* _ASM_PNV_OCXL_H */
+> > diff --git a/arch/powerpc/platforms/powernv/ocxl.c
+> > b/arch/powerpc/platforms/powernv/ocxl.c
+> > index 8c65aacda9c8..b56a48daf48c 100644
+> > --- a/arch/powerpc/platforms/powernv/ocxl.c
+> > +++ b/arch/powerpc/platforms/powernv/ocxl.c
+> > @@ -475,6 +475,48 @@ void pnv_ocxl_spa_release(void *platform_data)
+> >   }
+> >   EXPORT_SYMBOL_GPL(pnv_ocxl_spa_release);
+> >   
+> > +u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size)
+> > +{
+> > +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> > +	struct pnv_phb *phb = hose->private_data;
+> > +	u32 bdfn = pci_dev_id(pdev);
+> > +	__be64 base_addr_be64;
+> > +	u64 base_addr;
+> > +	int rc;
+> > +
+> > +	rc = opal_npu_mem_alloc(phb->opal_id, bdfn, size,
+> > &base_addr_be64);
+> > +	if (rc) {
+> > +		dev_warn(&pdev->dev,
+> > +			 "OPAL could not allocate LPC memory, rc=%d\n",
+> > rc);
+> > +		return 0;
+> > +	}
+> > +
+> > +	base_addr = be64_to_cpu(base_addr_be64);
+> > +
+> > +	rc = check_hotplug_memory_addressable(base_addr >> PAGE_SHIFT,
+> > +					      size >> PAGE_SHIFT);
+> 
+> check_hotplug_memory_addressable() is only declared if 
+> CONFIG_MEMORY_HOTPLUG_SPARSE is selected.
+> I think we also need a #ifdef here.
+> 
+
+Agreed. I think that since any actual use of the memory is going to be
+dependant on both hotplug & sparse, moving the ifdef to wrap the
+functions & declarations makes sense.
 
 
-You can do likewise in arch/powerpc/boot/Makefile
-because it is marked phony in scripts/Makefile.build
-
-
-
-
-
+>    Fred
+> 
+> 
+> > +	if (rc)
+> > +		return 0;
+> > +
+> > +	return base_addr;
+> > +}
+> > +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_setup);
+> > +
+> > +void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev)
+> > +{
+> > +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> > +	struct pnv_phb *phb = hose->private_data;
+> > +	u32 bdfn = pci_dev_id(pdev);
+> > +	int rc;
+> > +
+> > +	rc = opal_npu_mem_release(phb->opal_id, bdfn);
+> > +	if (rc)
+> > +		dev_warn(&pdev->dev,
+> > +			 "OPAL reported rc=%d when releasing LPC
+> > memory\n", rc);
+> > +}
+> > +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_release);
+> > +
+> > +
+> >   int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int
+> > pe_handle)
+> >   {
+> >   	struct spa_data *data = (struct spa_data *) platform_data;
+> > 
 -- 
-Best Regards
-Masahiro Yamada
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
+
