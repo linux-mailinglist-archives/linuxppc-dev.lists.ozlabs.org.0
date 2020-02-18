@@ -1,70 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76933163482
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 22:13:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MYV02VqHzDqDY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 08:12:56 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2BB1634A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 22:18:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MYbv1VzGzDq9b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 08:18:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::244;
- helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gromero@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Gb5Z8PlH; dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MYHN0ZXSzDqDY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 08:03:42 +1100 (AEDT)
-Received: by mail-oi1-x244.google.com with SMTP id v19so21565404oic.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 13:03:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uXoVPk6FZ9mk8ebm0RTbrhUVeu0ldQNyqrF7B4ZlAJA=;
- b=Gb5Z8PlHDjWJMmQNVcBojkdyBKcBiB1NeC31O40/pM1cl9s1q8B+ntc7IhLswUS0Jo
- vYF04tfHWKIhvJwr03VbGY8lJWHQj4gva5st2VuIw6OFpKKX0trwouVM1zqgbFNM4yZa
- Gwce0z7qDnGpCCNQAZTGu7HXG0iSPFIQc7dHW1IrXSH9qFWXDv7RccypWNewbkeDVJUK
- rc8xZ1QGrEOCLriBmAky7ZLnsvbkqAGuVXHt+ehHwrUPneT0VtiF5tgZTQ/tRqRMwl9x
- tEMy8pfgautLuC6+qpeGmin6UphGY/cLFt0whtSZPfZyGxsx9xf0Kkf5HkLU2T+9Z3Ec
- 9kgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=uXoVPk6FZ9mk8ebm0RTbrhUVeu0ldQNyqrF7B4ZlAJA=;
- b=iOv5ap/bynV1tDOT2O2qKIsfcAbqcWeN/y8I+RJFuW9Ybcp3/T8xY+dvkXW8rCJVzl
- 95T9KHs3gGm/xZcoe3oGmO420Q6n1mxMdBx/GLNdZ6C9k5N3UUFMF18nUxk2g9arb5Ve
- 704YZjs/htu4B7KeSy/FFoJ2TU0m7N7LiiiEkWEiPZpultq1ymAcmQqbU4+9mJ9LZCpr
- V4QloY4p3zpf4eahLGrwahfirJICX2DiNiLHvOHaaAr+Toqop1tGWktLHluOsMbJ4LTd
- EJ+Fxh+CzaxB3dW5WU8ev+4WZ9zh6Df77zUiYrfpwOUsRd6n1c+GBwh6tL0THuRV2x9g
- z8lw==
-X-Gm-Message-State: APjAAAVQgZa80bTgV6/55vmZa+2++Hmo06eWn3hI8iRy9mLh58MpRy9Z
- 5cy5hG2eaS6dzQ9ZFPkgcQVlLHIhzFlxNhgRMFvWGg==
-X-Google-Smtp-Source: APXvYqwJcarT38gaI5tYPX5esX/lkmHsUI9w2SbFK2zhB8wSEZI/8fsDx34f/gONLYMRT9XzKxZ1sSVhKi4qcNrIkX8=
-X-Received: by 2002:aca:3f54:: with SMTP id m81mr2442260oia.73.1582059818155; 
- Tue, 18 Feb 2020 13:03:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20200122155304.120733-1-vaibhav@linux.ibm.com>
- <x49r1yrboh2.fsf@segfault.boston.devel.redhat.com>
-In-Reply-To: <x49r1yrboh2.fsf@segfault.boston.devel.redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 18 Feb 2020 13:03:26 -0800
-Message-ID: <CAPcyv4gn1M87AnuzOEorihG1nmCiHDKL0Z4HfLbNbkeOcO3GPw@mail.gmail.com>
-Subject: Re: [PATCH] libnvdimm/bus: return the outvar 'cmd_rc' error code in
- __nd_ioctl()
-To: Jeff Moyer <jmoyer@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MYWM3LSCzDqDY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 08:14:07 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01IL4Ied032162; Tue, 18 Feb 2020 16:14:03 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y6dnu3t0w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Feb 2020 16:14:03 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01ILDg6a022029;
+ Tue, 18 Feb 2020 21:14:02 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 2y6896db6r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Feb 2020 21:14:02 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01ILE2wg51839430
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Feb 2020 21:14:02 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33D92112064;
+ Tue, 18 Feb 2020 21:14:02 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BE729112062;
+ Tue, 18 Feb 2020 21:14:01 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.41.166.54])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Feb 2020 21:14:01 +0000 (GMT)
+From: Gustavo Romero <gromero@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org, paulus@ozlabs.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Treat TM-related invalid form
+ instructions on P9 like the valid ones
+Date: Tue, 18 Feb 2020 16:13:24 -0500
+Message-Id: <20200218211324.23045-1-gromero@linux.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-18_06:2020-02-18,
+ 2020-02-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1011
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ adultscore=0 suspectscore=0 mlxscore=0 phishscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002180139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,49 +79,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org, gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 18, 2020 at 1:00 PM Jeff Moyer <jmoyer@redhat.com> wrote:
->
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->
-> > Presently the error code returned via out variable 'cmd_rc' from the
-> > nvdimm-bus controller function is ignored when called from
-> > __nd_ioctl() and never communicated back to user-space code that called
-> > an ioctl on dimm/bus.
-> >
-> > This minor patch updates __nd_ioctl() to propagate the value of out
-> > variable 'cmd_rc' back to user-space in case it reports an error.
-> >
-> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > ---
-> >  drivers/nvdimm/bus.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-> > index a8b515968569..5b687a27fdf2 100644
-> > --- a/drivers/nvdimm/bus.c
-> > +++ b/drivers/nvdimm/bus.c
-> > @@ -1153,6 +1153,11 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
-> >       if (rc < 0)
-> >               goto out_unlock;
-> >
-> > +     if (cmd_rc < 0) {
-> > +             rc = cmd_rc;
-> > +             goto out_unlock;
-> > +     }
-> > +
-> >       if (!nvdimm && cmd == ND_CMD_CLEAR_ERROR && cmd_rc >= 0) {
-> >               struct nd_cmd_clear_error *clear_err = buf;
->
-> Looks good to me.
->
-> Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+On P9 DD2.2 due to a CPU defect some TM instructions need to be emulated by
+KVM. This is handled at first by the hardware raising a softpatch interrupt
+when certain TM instructions that need KVM assistance are executed in the
+guest. Althought some TM instructions per Power ISA are invalid forms they
+can raise a softpatch interrupt too. For instance, 'tresume.' instruction
+as defined in the ISA must have bit 31 set (1), but an instruction that
+matches 'tresume.' PO and XO opcode fields but has bit 31 not set (0), like
+0x7cfe9ddc, also raises a softpatch interrupt. Similarly for 'treclaim.'
+and 'trechkpt.' instructions with bit 31 = 0, i.e. 0x7c00075c and
+0x7c0007dc, respectively. Hence, if a code like the following is executed
+in the guest it will raise a softpatch interrupt just like a 'tresume.'
+when the TM facility is enabled ('tabort. 0' in the example is used only
+to enable the TM facility):
 
-Applied.
+int main() { asm("tabort. 0; .long 0x7cfe9ddc;"); }
+
+Currently in such a case KVM throws a complete trace like:
+
+[345523.705984] WARNING: CPU: 24 PID: 64413 at arch/powerpc/kvm/book3s_hv_tm.c:211 kvmhv_p9_tm_emulation+0x68/0x620 [kvm_hv]
+[345523.705985] Modules linked in: kvm_hv(E) xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp ip6table_mangle ip6table_nat
+iptable_mangle iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ebtable_filter ebtables ip6table_filter
+ip6_tables iptable_filter bridge stp llc sch_fq_codel ipmi_powernv at24 vmx_crypto ipmi_devintf ipmi_msghandler
+ibmpowernv uio_pdrv_genirq kvm opal_prd uio leds_powernv ib_iser rdma_cm iw_cm ib_cm ib_core iscsi_tcp libiscsi_tcp
+libiscsi scsi_transport_iscsi ip_tables x_tables autofs4 btrfs blake2b_generic zstd_compress raid10 raid456
+async_raid6_recov async_memcpy async_pq async_xor async_tx libcrc32c xor raid6_pq raid1 raid0 multipath linear tg3
+crct10dif_vpmsum crc32c_vpmsum ipr [last unloaded: kvm_hv]
+[345523.706030] CPU: 24 PID: 64413 Comm: CPU 0/KVM Tainted: G        W   E     5.5.0+ #1
+[345523.706031] NIP:  c0080000072cb9c0 LR: c0080000072b5e80 CTR: c0080000085c7850
+[345523.706034] REGS: c000000399467680 TRAP: 0700   Tainted: G        W   E      (5.5.0+)
+[345523.706034] MSR:  900000010282b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE,TM[E]>  CR: 24022428  XER: 00000000
+[345523.706042] CFAR: c0080000072b5e7c IRQMASK: 0
+                GPR00: c0080000072b5e80 c000000399467910 c0080000072db500 c000000375ccc720
+                GPR04: c000000375ccc720 00000003fbec0000 0000a10395dda5a6 0000000000000000
+                GPR08: 000000007cfe9ddc 7cfe9ddc000005dc 7cfe9ddc7c0005dc c0080000072cd530
+                GPR12: c0080000085c7850 c0000003fffeb800 0000000000000001 00007dfb737f0000
+                GPR16: c0002001edcca558 0000000000000000 0000000000000000 0000000000000001
+                GPR20: c000000001b21258 c0002001edcca558 0000000000000018 0000000000000000
+                GPR24: 0000000001000000 ffffffffffffffff 0000000000000001 0000000000001500
+                GPR28: c0002001edcc4278 c00000037dd80000 800000050280f033 c000000375ccc720
+[345523.706062] NIP [c0080000072cb9c0] kvmhv_p9_tm_emulation+0x68/0x620 [kvm_hv]
+[345523.706065] LR [c0080000072b5e80] kvmppc_handle_exit_hv.isra.53+0x3e8/0x798 [kvm_hv]
+[345523.706066] Call Trace:
+[345523.706069] [c000000399467910] [c000000399467940] 0xc000000399467940 (unreliable)
+[345523.706071] [c000000399467950] [c000000399467980] 0xc000000399467980
+[345523.706075] [c0000003994679f0] [c0080000072bd1c4] kvmhv_run_single_vcpu+0xa1c/0xb80 [kvm_hv]
+[345523.706079] [c000000399467ac0] [c0080000072bd8e0] kvmppc_vcpu_run_hv+0x5b8/0xb00 [kvm_hv]
+[345523.706087] [c000000399467b90] [c0080000085c93cc] kvmppc_vcpu_run+0x34/0x48 [kvm]
+[345523.706095] [c000000399467bb0] [c0080000085c582c] kvm_arch_vcpu_ioctl_run+0x244/0x420 [kvm]
+[345523.706101] [c000000399467c40] [c0080000085b7498] kvm_vcpu_ioctl+0x3d0/0x7b0 [kvm]
+[345523.706105] [c000000399467db0] [c0000000004adf9c] ksys_ioctl+0x13c/0x170
+[345523.706107] [c000000399467e00] [c0000000004adff8] sys_ioctl+0x28/0x80
+[345523.706111] [c000000399467e20] [c00000000000b278] system_call+0x5c/0x68
+[345523.706112] Instruction dump:
+[345523.706114] 419e0390 7f8a4840 409d0048 6d497c00 2f89075d 419e021c 6d497c00 2f8907dd
+[345523.706119] 419e01c0 6d497c00 2f8905dd 419e00a4 <0fe00000> 38210040 38600000 ebc1fff0
+
+and then treats the executed instruction as a 'nop'.
+
+However the POWER9 User's Manual, in section "4.6.10 Book II Invalid
+Forms", informs that for TM instructions bit 31 is in fact ignored, thus
+for the TM-related invalid forms ignoring bit 31 and handling them like the
+valid forms is an acceptable way to handle them. POWER8 behaves the same
+way too.
+
+This commit changes the handling of the cases here described by treating
+the TM-related invalid forms that can generate a softpatch interrupt
+just like their valid forms (w/ bit 31 = 1) instead of as a 'nop' and by
+gently reporting any other unrecognized case to the host and treating it as
+illegal instruction instead of throwing a trace and treating it as a 'nop'.
+
+Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
+---
+ arch/powerpc/include/asm/kvm_asm.h |  3 +++
+ arch/powerpc/kvm/book3s_hv_tm.c    | 28 +++++++++++++++++++++++-----
+ 2 files changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kvm_asm.h b/arch/powerpc/include/asm/kvm_asm.h
+index 635fb154b33f..a3633560493b 100644
+--- a/arch/powerpc/include/asm/kvm_asm.h
++++ b/arch/powerpc/include/asm/kvm_asm.h
+@@ -150,4 +150,7 @@
+ 
+ #define KVM_INST_FETCH_FAILED	-1
+ 
++/* Extract PO and XOP opcode fields */
++#define PO_XOP_OPCODE_MASK 0xfc0007fe
++
+ #endif /* __POWERPC_KVM_ASM_H__ */
+diff --git a/arch/powerpc/kvm/book3s_hv_tm.c b/arch/powerpc/kvm/book3s_hv_tm.c
+index 0db937497169..cc90b8b82329 100644
+--- a/arch/powerpc/kvm/book3s_hv_tm.c
++++ b/arch/powerpc/kvm/book3s_hv_tm.c
+@@ -3,6 +3,8 @@
+  * Copyright 2017 Paul Mackerras, IBM Corp. <paulus@au1.ibm.com>
+  */
+ 
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
+ #include <linux/kvm_host.h>
+ 
+ #include <asm/kvm_ppc.h>
+@@ -44,7 +46,18 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 	u64 newmsr, bescr;
+ 	int ra, rs;
+ 
+-	switch (instr & 0xfc0007ff) {
++	/*
++	 * rfid, rfebb, and mtmsrd encode bit 31 = 0 since it's a reserved bit
++	 * in these instructions, so masking bit 31 out doesn't change these
++	 * instructions. For treclaim., tsr., and trechkpt. instructions if bit
++	 * 31 = 0 then they are per ISA invalid forms, however P9 UM, in section
++	 * 4.6.10 Book II Invalid Forms, informs specifically that ignoring bit
++	 * 31 is an acceptable way to handle these invalid forms that have
++	 * bit 31 = 0. Moreover, for emulation purposes both forms (w/ and wo/
++	 * bit 31 set) can generate a softpatch interrupt. Hence both forms
++	 * are handled below for these instructions so they behave the same way.
++	 */
++	switch (instr & PO_XOP_OPCODE_MASK) {
+ 	case PPC_INST_RFID:
+ 		/* XXX do we need to check for PR=0 here? */
+ 		newmsr = vcpu->arch.shregs.srr1;
+@@ -105,7 +118,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.shregs.msr = newmsr;
+ 		return RESUME_GUEST;
+ 
+-	case PPC_INST_TSR:
++	/* ignore bit 31, see comment above */
++	case (PPC_INST_TSR & PO_XOP_OPCODE_MASK):
+ 		/* check for PR=1 and arch 2.06 bit set in PCR */
+ 		if ((msr & MSR_PR) && (vcpu->arch.vcore->pcr & PCR_ARCH_206)) {
+ 			/* generate an illegal instruction interrupt */
+@@ -140,7 +154,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.shregs.msr = msr;
+ 		return RESUME_GUEST;
+ 
+-	case PPC_INST_TRECLAIM:
++	/* ignore bit 31, see comment above */
++	case (PPC_INST_TRECLAIM & PO_XOP_OPCODE_MASK):
+ 		/* check for TM disabled in the HFSCR or MSR */
+ 		if (!(vcpu->arch.hfscr & HFSCR_TM)) {
+ 			/* generate an illegal instruction interrupt */
+@@ -176,7 +191,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.shregs.msr &= ~MSR_TS_MASK;
+ 		return RESUME_GUEST;
+ 
+-	case PPC_INST_TRECHKPT:
++	/* ignore bit 31, see comment above */
++	case (PPC_INST_TRECHKPT & PO_XOP_OPCODE_MASK):
+ 		/* XXX do we need to check for PR=0 here? */
+ 		/* check for TM disabled in the HFSCR or MSR */
+ 		if (!(vcpu->arch.hfscr & HFSCR_TM)) {
+@@ -208,6 +224,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	/* What should we do here? We didn't recognize the instruction */
+-	WARN_ON_ONCE(1);
++	kvmppc_core_queue_program(vcpu, SRR1_PROGILL);
++	pr_warn_ratelimited("Unrecognized TM-related instruction %#x for emulation", instr);
++
+ 	return RESUME_GUEST;
+ }
+-- 
+2.17.1
+
