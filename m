@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F07163098
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 20:48:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MWcX6VzQzDqYj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 06:48:28 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E35216309B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 20:50:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MWfG5QTQzDqLp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 06:49:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,20 +18,20 @@ Authentication-Results: lists.ozlabs.org;
 Received: from namei.org (namei.org [65.99.196.166])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MWXz1DJ0zDqJN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 06:45:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MWYT6KRDzDqLZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 06:45:49 +1100 (AEDT)
 Received: from localhost (localhost [127.0.0.1])
- by namei.org (8.14.4/8.14.4) with ESMTP id 01IJhv9J016349;
- Tue, 18 Feb 2020 19:43:58 GMT
-Date: Wed, 19 Feb 2020 06:43:57 +1100 (AEDT)
+ by namei.org (8.14.4/8.14.4) with ESMTP id 01IJiQMI016417;
+ Tue, 18 Feb 2020 19:44:26 GMT
+Date: Wed, 19 Feb 2020 06:44:26 +1100 (AEDT)
 From: James Morris <jmorris@namei.org>
 To: Alexey Budankov <alexey.budankov@linux.intel.com>
-Subject: Re: [PATCH v7 09/12] drivers/perf: open access for CAP_PERFMON
+Subject: Re: [PATCH v7 10/12] drivers/oprofile: open access for CAP_PERFMON
  privileged process
-In-Reply-To: <48baecd5-a015-3dbf-f774-9f2caee13893@linux.intel.com>
-Message-ID: <alpine.LRH.2.21.2002190643390.10165@namei.org>
+In-Reply-To: <046beedf-e074-58e2-579d-df535799169c@linux.intel.com>
+Message-ID: <alpine.LRH.2.21.2002190644070.10165@namei.org>
 References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com>
- <48baecd5-a015-3dbf-f774-9f2caee13893@linux.intel.com>
+ <046beedf-e074-58e2-579d-df535799169c@linux.intel.com>
 User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
