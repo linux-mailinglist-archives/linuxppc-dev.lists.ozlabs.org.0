@@ -2,51 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B8016250B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 11:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EA4162580
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 12:28:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48MHqL6GqZzDqBd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 21:57:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MJWD2Q3LzDqCD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2020 22:28:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=virtuozzo.com (client-ip=185.231.240.75; helo=relay.sw.ru;
+ envelope-from=ktkhai@virtuozzo.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=nQZIkGPA; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=virtuozzo.com
+Received: from relay.sw.ru (relay.sw.ru [185.231.240.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48MHmv0RdCzDqWk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 21:54:54 +1100 (AEDT)
-Received: from hump (unknown [109.236.136.226])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 58260207FD;
- Tue, 18 Feb 2020 10:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1582023292;
- bh=CMlZZWS7PO9lkPnhA08fc6Islr+OQCEeZuheLiBfVmU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=nQZIkGPAmBAW2q8NANsj3kry2FjoyJoV6/tOeR6LNswBfh2J3GwBoJflFT5WH0M0E
- dfZCuTZ+znP94xdsEPbHpuBFhjabZfi5XCWgerZeTyyA+r8h1bx3I9KPRweYB3ciYM
- WYq+qWxM8vgm+Ut2efYgnUJmpLpvYONcSRjzEgV4=
-Date: Tue, 18 Feb 2020 12:54:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
-Message-ID: <20200218105440.GA1698@hump>
-References: <20200216081843.28670-1-rppt@kernel.org>
- <20200216081843.28670-8-rppt@kernel.org>
- <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48MJR10Kp4zDqCD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2020 22:24:27 +1100 (AEDT)
+Received: from dhcp-172-16-24-104.sw.ru ([172.16.24.104])
+ by relay.sw.ru with esmtp (Exim 4.92.3)
+ (envelope-from <ktkhai@virtuozzo.com>)
+ id 1j40Su-0003ZA-M2; Tue, 18 Feb 2020 13:50:56 +0300
+Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+From: Kirill Tkhai <ktkhai@virtuozzo.com>
+Message-ID: <cf6be5f5-4bbc-0d34-fb64-33fd37bc48d9@virtuozzo.com>
+Date: Tue, 18 Feb 2020 13:50:56 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr>
+In-Reply-To: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,295 +48,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
- linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
- Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- kvm-ppc@vger.kernel.org,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
- nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Feb 16, 2020 at 11:41:07AM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > Implement primitives necessary for the 4th level folding, add walks of p4d
-> > level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
-> 
-> I don't think it is worth adding all this additionnals walks of p4d, this
-> patch could be limited to changes like:
-> 
-> -		pud = pud_offset(pgd, gpa);
-> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
-> 
-> The additionnal walks should be added through another patch the day powerpc
-> need them.
+Hi, Sachin,
 
-Ok, I'll update the patch to reduce walking the p4d.
- 
-> See below for more comments.
+On 18.02.2020 13:45, Sachin Sant wrote:
+> Todays next fails to boot on a POWER9 PowerVM logical partition
+> with following trace:
 > 
-> > 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > Tested-by: Christophe Leroy <christophe.leroy@c-s.fr> # 8xx and 83xx
-> > ---
+> [    8.767660] random: systemd: uninitialized urandom read (16 bytes read)
+> [    8.768629] BUG: Kernel NULL pointer dereference on read at 0x000073b0
+> [    8.768635] Faulting instruction address: 0xc0000000003d55f4
+> [    8.768641] Oops: Kernel access of bad area, sig: 11 [#1]
+> [    8.768645] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> [    8.768650] Modules linked in:
+> [    8.768655] CPU: 19 PID: 1 Comm: systemd Not tainted 5.6.0-rc2-next-20200218-autotest #1
+> [    8.768660] NIP:  c0000000003d55f4 LR: c0000000003d5b94 CTR: 0000000000000000
+> [    8.768666] REGS: c0000008b37836d0 TRAP: 0300   Not tainted  (5.6.0-rc2-next-20200218-autotest)
+> [    8.768671] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004844  XER: 00000000
+> [    8.768679] CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1
+> [    8.768679] GPR00: c0000000003d5b94 c0000008b3783960 c00000000155d400 c0000008b301f500
+> [    8.768679] GPR04: 0000000000000dc0 0000000000000002 c0000000003443d8 c0000008bb398620
+> [    8.768679] GPR08: 00000008ba2f0000 0000000000000001 0000000000000000 0000000000000000
+> [    8.768679] GPR12: 0000000024004844 c00000001ec52a00 0000000000000000 0000000000000000
+> [    8.768679] GPR16: c0000008a1b20048 c000000001595898 c000000001750c18 0000000000000002
+> [    8.768679] GPR20: c000000001750c28 c000000001624470 0000000fffffffe0 5deadbeef0000122
+> [    8.768679] GPR24: 0000000000000001 0000000000000dc0 0000000000000002 c0000000003443d8
+> [    8.768679] GPR28: c0000008b301f500 c0000008bb398620 0000000000000000 c00c000002287180
+> [    8.768727] NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
+> [    8.768732] LR [c0000000003d5b94] __slab_alloc+0x34/0x60
+> [    8.768735] Call Trace:
+> [    8.768739] [c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
+> [    8.768745] [c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
+> [    8.768751] [c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
+> [    8.768757] [c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
+> [    8.768763] [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
+> [    8.768769] [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
+> [    8.768775] [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
+> [    8.768781] [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
+> [    8.768786] [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
+> [    8.768792] [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
+> [    8.768797] [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
+> [    8.768804] [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
+> [    8.768808] Instruction dump:
+> [    8.768811] 7c421378 e95f0000 714a0001 4082fff0 4bffff64 60000000 60000000 faa10088
+> [    8.768818] 3ea2000c 3ab57070 7b4a1f24 7d55502a <e94a73b0> 2faa0000 409e0394 3d02002a
+> [    8.768826] ---[ end trace 631af2cb73507891 ]---
+> [    8.770876]
+> [    9.770887] Kernel panic - not syncing: Fatal exception
+> 
+> Bisect reveals the problem was introduced in next-20200217 by following commit 
+> 
+> commit a75056fc1e7c 
+> mm/memcontrol.c: allocate shrinker_map on appropriate NUMA node
+> 
+> I can boot the kernel successfully if the patch is reverted. 
 
-...
 
-> > diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > index 201a69e6a355..ddddbafff0ab 100644
-> > --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > @@ -2,7 +2,7 @@
-> >   #ifndef _ASM_POWERPC_BOOK3S_64_PGTABLE_H_
-> >   #define _ASM_POWERPC_BOOK3S_64_PGTABLE_H_
-> > -#include <asm-generic/5level-fixup.h>
-> > +#include <asm-generic/pgtable-nop4d.h>
-> >   #ifndef __ASSEMBLY__
-> >   #include <linux/mmdebug.h>
-> > @@ -251,7 +251,7 @@ extern unsigned long __pmd_frag_size_shift;
-> >   /* Bits to mask out from a PUD to get to the PMD page */
-> >   #define PUD_MASKED_BITS		0xc0000000000000ffUL
-> >   /* Bits to mask out from a PGD to get to the PUD page */
-> > -#define PGD_MASKED_BITS		0xc0000000000000ffUL
-> > +#define P4D_MASKED_BITS		0xc0000000000000ffUL
-> >   /*
-> >    * Used as an indicator for rcu callback functions
-> > @@ -949,54 +949,60 @@ static inline bool pud_access_permitted(pud_t pud, bool write)
-> >   	return pte_access_permitted(pud_pte(pud), write);
-> >   }
-> > -#define pgd_write(pgd)		pte_write(pgd_pte(pgd))
-> > +#define __p4d_raw(x)	((p4d_t) { __pgd_raw(x) })
-> > +static inline __be64 p4d_raw(p4d_t x)
-> > +{
-> > +	return pgd_raw(x.pgd);
-> > +}
-> > +
-> 
-> Shouldn't this be defined in asm/pgtable-be-types.h, just like other
-> __pxx_raw() ?
+could you please test your boot with original patch from here:
 
-Ideally yes, but this creates weird header file dependencies and untangling
-them would generate way too much churn.
- 
-> > +#define p4d_write(p4d)		pte_write(p4d_pte(p4d))
-> > -static inline void pgd_clear(pgd_t *pgdp)
-> > +static inline void p4d_clear(p4d_t *p4dp)
-> >   {
-> > -	*pgdp = __pgd(0);
-> > +	*p4dp = __p4d(0);
-> >   }
+https://patchwork.kernel.org/patch/11360007/
 
-...
-
-> > @@ -573,9 +596,15 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
-> >   	/* Traverse the guest's 2nd-level tree, allocate new levels needed */
-> >   	pgd = pgtable + pgd_index(gpa);
-> > -	pud = NULL;
-> > +	p4d = NULL;
-> >   	if (pgd_present(*pgd))
-> > -		pud = pud_offset(pgd, gpa);
-> > +		p4d = p4d_offset(pgd, gpa);
-> > +	else
-> > +		new_p4d = p4d_alloc_one(kvm->mm, gpa);
-> > +
-> > +	pud = NULL;
-> > +	if (p4d_present(*p4d))
-> > +		pud = pud_offset(p4d, gpa);
-> 
-> Is it worth adding all this new code ?
-> 
-> My understanding is that the series objective is to get rid of
-> __ARCH_HAS_5LEVEL_HACK, to to add support for 5 levels to an architecture
-> that not need it (at least for now).
-> If we want to add support for 5 levels, it can be done later in another
-> patch.
-> 
-> Here I think your change could be limited to:
-> 
-> -		pud = pud_offset(pgd, gpa);
-> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
-
-This won't work. Without __ARCH_USE_5LEVEL_HACK defined pgd_present() is
-hardwired to 1 and the actual check for the top level is performed with
-p4d_present(). The 'else' clause that allocates p4d will never be taken and
-it could be removed, but I prefer to keep it for consistency.
- 
-> >   	else
-> >   		new_pud = pud_alloc_one(kvm->mm, gpa);
-> > @@ -597,12 +626,18 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
-> >   	/* Now traverse again under the lock and change the tree */
-> >   	ret = -ENOMEM;
-> >   	if (pgd_none(*pgd)) {
-> > +		if (!new_p4d)
-> > +			goto out_unlock;
-> > +		pgd_populate(kvm->mm, pgd, new_p4d);
-> > +		new_p4d = NULL;
-> > +	}
-> > +	if (p4d_none(*p4d)) {
-> >   		if (!new_pud)
-> >   			goto out_unlock;
-> > -		pgd_populate(kvm->mm, pgd, new_pud);
-> > +		p4d_populate(kvm->mm, p4d, new_pud);
-> >   		new_pud = NULL;
-> >   	}
-> > -	pud = pud_offset(pgd, gpa);
-> > +	pud = pud_offset(p4d, gpa);
-> >   	if (pud_is_leaf(*pud)) {
-> >   		unsigned long hgpa = gpa & PUD_MASK;
-> > @@ -1220,6 +1255,7 @@ static ssize_t debugfs_radix_read(struct file *file, char __user *buf,
-> >   	pgd_t *pgt;
-> >   	struct kvm_nested_guest *nested;
-> >   	pgd_t pgd, *pgdp;
-> > +	p4d_t p4d, *p4dp;
-> >   	pud_t pud, *pudp;
-> >   	pmd_t pmd, *pmdp;
-> >   	pte_t *ptep;
-> > @@ -1298,7 +1334,14 @@ static ssize_t debugfs_radix_read(struct file *file, char __user *buf,
-> >   			continue;
-> >   		}
-> > -		pudp = pud_offset(&pgd, gpa);
-> > +		p4dp = p4d_offset(&pgd, gpa);
-> > +		p4d = READ_ONCE(*p4dp);
-> > +		if (!(p4d_val(p4d) & _PAGE_PRESENT)) {
-> > +			gpa = (gpa & P4D_MASK) + P4D_SIZE;
-> > +			continue;
-> > +		}
-> > +
-> > +		pudp = pud_offset(&p4d, gpa);
-> 
-> Same, here you are forcing a useless read with READ_ONCE().
-> 
-> Your change could be limited to
-> 
-> -		pudp = pud_offset(&pgd, gpa);
-> +		pudp = pud_offset(p4d_offset(&pgd, gpa), gpa);
-
-Here again the actual check must be done against p4d rather than pgd. We
-could skip READ_ONCE() for pgd, but since it is a debugfs method I don't
-think it is more important than code consistency.
- 
-> This comment applies to many other places.
-
-I'll make another pass to see where we can take the shortcut and use 
-
-	pudp = pud_offset(p4d_offset(...))
- 
-> >   		pud = READ_ONCE(*pudp);
-> >   		if (!(pud_val(pud) & _PAGE_PRESENT)) {
-> >   			gpa = (gpa & PUD_MASK) + PUD_SIZE;
-> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-> > index 3345f039a876..7a59f6863cec 100644
-> > --- a/arch/powerpc/lib/code-patching.c
-> > +++ b/arch/powerpc/lib/code-patching.c
-> > @@ -107,13 +107,18 @@ static inline int unmap_patch_area(unsigned long addr)
-> >   	pte_t *ptep;
-> >   	pmd_t *pmdp;
-> >   	pud_t *pudp;
-> > +	p4d_t *p4dp;
-> >   	pgd_t *pgdp;
-> >   	pgdp = pgd_offset_k(addr);
-> >   	if (unlikely(!pgdp))
-> >   		return -EINVAL;
-> > -	pudp = pud_offset(pgdp, addr);
-> > +	p4dp = p4d_offset(pgdp, addr);
-> > +	if (unlikely(!p4dp))
-> > +		return -EINVAL;
-> > +
-> > +	pudp = pud_offset(p4dp, addr);
-> >   	if (unlikely(!pudp))
-> >   		return -EINVAL;
-> > diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-> > index 0a1c65a2c565..b2fc3e71165c 100644
-> > --- a/arch/powerpc/mm/book3s32/mmu.c
-> > +++ b/arch/powerpc/mm/book3s32/mmu.c
-> > @@ -312,7 +312,7 @@ void hash_preload(struct mm_struct *mm, unsigned long ea)
-> >   	if (!Hash)
-> >   		return;
-> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, ea), ea), ea);
-> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, ea), ea), ea), ea);
-> 
-> If we continue like this, in ten years this like is going to be many
-> kilometers long.
-> 
-> I think the above would be worth a generic helper.
-
-Agree. My plan was to first unify all the architectures and then start
-introducing the generic helpers, like e.g. pmd_offset_mm().
- 
-> >   	if (!pmd_none(*pmd))
-> >   		add_hash_page(mm->context.id, ea, pmd_val(*pmd));
-> >   }
-> > diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
-> > index 2fcd321040ff..175bc33b41b7 100644
-> > --- a/arch/powerpc/mm/book3s32/tlb.c
-> > +++ b/arch/powerpc/mm/book3s32/tlb.c
-> > @@ -87,7 +87,7 @@ static void flush_range(struct mm_struct *mm, unsigned long start,
-> >   	if (start >= end)
-> >   		return;
-> >   	end = (end - 1) | ~PAGE_MASK;
-> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, start), start), start);
-> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, start), start), start), start);
-> >   	for (;;) {
-> >   		pmd_end = ((start + PGDIR_SIZE) & PGDIR_MASK) - 1;
-> >   		if (pmd_end > end)
-> > @@ -145,7 +145,7 @@ void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
-> >   		return;
-> >   	}
-> >   	mm = (vmaddr < TASK_SIZE)? vma->vm_mm: &init_mm;
-> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, vmaddr), vmaddr), vmaddr);
-> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, vmaddr), vmaddr), vmaddr), vmaddr);
-> >   	if (!pmd_none(*pmd))
-> >   		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
-> >   }
-> > diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-> > index 64733b9cb20a..9cd15937e88a 100644
-> > --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-> > +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-> > @@ -148,6 +148,7 @@ void hash__vmemmap_remove_mapping(unsigned long start,
-> >   int hash__map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
-> >   {
-> >   	pgd_t *pgdp;
-> > +	p4d_t *p4dp;
-> >   	pud_t *pudp;
-> >   	pmd_t *pmdp;
-> >   	pte_t *ptep;
-> > @@ -155,7 +156,8 @@ int hash__map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
-> >   	BUILD_BUG_ON(TASK_SIZE_USER64 > H_PGTABLE_RANGE);
-> >   	if (slab_is_available()) {
-> >   		pgdp = pgd_offset_k(ea);
-> > -		pudp = pud_alloc(&init_mm, pgdp, ea);
-> > +		p4dp = p4d_offset(pgdp, ea);
-> > +		pudp = pud_alloc(&init_mm, p4dp, ea);
-> 
-> Could be a single line, without a new var.
-> 
-> -		pudp = pud_alloc(&init_mm, pgdp, ea);
-> +		pudp = pud_alloc(&init_mm, p4d_offset(pgdp, ea), ea);
-> 
-> 
-> Same kind of comments as already done apply to the rest.
-> 
-> Christophe
-
--- 
-Sincerely yours,
-Mike.
+?
