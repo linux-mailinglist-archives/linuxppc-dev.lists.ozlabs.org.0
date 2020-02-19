@@ -2,69 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678F81647FD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 16:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34097164890
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 16:28:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48N1Sl5tlZzDqZp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 02:13:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48N1p81cczzDqZp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 02:28:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::331;
- helo=mail-ot1-x331.google.com; envelope-from=radu.rendec@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=I0uJUohb; dkim-atps=neutral
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com
- [IPv6:2607:f8b0:4864:20::331])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=fdHtc56h; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48N1Qm6Y8dzDqT1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 02:11:42 +1100 (AEDT)
-Received: by mail-ot1-x331.google.com with SMTP id h9so412425otj.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2020 07:11:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=ztnuCSYTaaHjXeHBmYlvymRTRYgVQIwAyJ8lQvmRF6w=;
- b=I0uJUohb9fj/iaXYLvvdhgYfipgRPLhx1W4p/k4ior+oP7iWOSiO63bjgxBkwbhmnO
- I8kioC7mqcuzGXe7y8lQutWV2XegHdB4r+rlhwGXQLlkEtoAsj/3pgqwaDvcGPvPcBpr
- m9oIxH+H0dXUaFMYPz9h8fmX8f+J+mZ2H25+/LNsiJsFOZxl69gBdhkqG22sVsjTYPWq
- 5QcJ2CLkDyN+ru8RQUJ4Gw4HNvoVIv93R5JMRJIBE+UWOfKcv5TrjA+dfSvi87gBMxHC
- dwR40B/a4T+HOJpZXjt5sT0vBkyt47ZVHfyv77DzTzWfhGzAMZWz8Hp70KDLcdqTCkuP
- oiVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=ztnuCSYTaaHjXeHBmYlvymRTRYgVQIwAyJ8lQvmRF6w=;
- b=osaCI4rFSrV8p/lnWRSkwoogoY062zeVf1r38wCQvFbQxvLAvWS/8qZzjbo12kUqcW
- sIv3Y46cnUSaJP6khkIXxJYgbkXR+TuKgbHCTrsZeYagFrgj655WJ2Aib8isMnHjEDVh
- zQsylHLjuc8DCGLfpqi9Kkca4gBwIPkeoCAVTVvrM/FlnsbwsT5S1RFvm4zKXfF1Lbnw
- pjYo62NW8O7AcqEbKhZW6xY9/yheLdabVHINAHo/i7wCHgS8kg0kLVP3R5wv6kFrDeJv
- yA2LaoTArLKi3FMv5fZQ05ZEOlJ0mPhXmleIwIrJT5Gg3YLNsqgoD/7OHAsomiHp7a/z
- akHg==
-X-Gm-Message-State: APjAAAX5wNgRkgEKxeTn1WMPyPDImLGjNUrMoXcFjpz0Nqs5VgXtKjwM
- yH5Rlu2paadZnNqm0bXVOHeCnU2YAumGOSWSKcg=
-X-Google-Smtp-Source: APXvYqysnnRVKILD2kLZVSBYCYIDrKHYLtyUXzKP0ZgDb8qes5fQ1tCepb20TmmVtEqVPbmvTzU2xSrU7Xc0afqoINA=
-X-Received: by 2002:a05:6830:1049:: with SMTP id
- b9mr20924860otp.100.1582125099051; 
- Wed, 19 Feb 2020 07:11:39 -0800 (PST)
-MIME-Version: 1.0
-References: <CAD5jUk_8DAvneGjkQ7JOOuNeXaKU1g9E09+H8M5Eo=ttgthdgg@mail.gmail.com>
- <a0856192-804b-fe2a-ccb8-48b43b130696@c-s.fr>
-In-Reply-To: <a0856192-804b-fe2a-ccb8-48b43b130696@c-s.fr>
-From: Radu Rendec <radu.rendec@gmail.com>
-Date: Wed, 19 Feb 2020 10:11:27 -0500
-Message-ID: <CAD5jUk-WzPLYSAxDuWFa3fWcZpT97suySVDEBvUn7V+N01bzTw@mail.gmail.com>
-Subject: Re: MCE handler gets NIP wrong on MPC8378
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48N1m50PXWzDqVB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 02:26:42 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48N1lv0SrCz9tyQn;
+ Wed, 19 Feb 2020 16:26:35 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=fdHtc56h; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id jLL-SHKze0rm; Wed, 19 Feb 2020 16:26:34 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48N1lt58cNz9tyQm;
+ Wed, 19 Feb 2020 16:26:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582125994; bh=ANsJXuSKlChP4U6TweIOeXKVKq1C+AyTaodXPsf6gjo=;
+ h=From:Subject:To:Cc:Date:From;
+ b=fdHtc56hE7xsF0Gd2iEvJerODfV8CbFDWZQInllNwz+HtGQH1drVpJgPaYC4wc9Ac
+ oW0reD3L1o04zCu/1Q8TMy4gu1U9ezPTb6i/ugIWT8zdATcUKfipZdcyGoXAANoK2O
+ +5WpvIi9VHX23EFvaOEoMv3ClEa1sySld7fFhvmg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E4CF8B858;
+ Wed, 19 Feb 2020 16:26:36 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id KHUId65zjbJL; Wed, 19 Feb 2020 16:26:36 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 14B578B856;
+ Wed, 19 Feb 2020 16:26:36 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id A6EF765326; Wed, 19 Feb 2020 15:26:35 +0000 (UTC)
+Message-Id: <f7a1dfea2a4e20e9d19089c86cceb31d00df2b66.1582125960.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/kasan: Fix shadow memory protection with
+ CONFIG_KASAN_VMALLOC
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 19 Feb 2020 15:26:35 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,74 +74,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02/18/2020 at 1:08 PM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> Le 18/02/2020 =C3=A0 18:07, Radu Rendec a =C3=A9crit :
-> > The saved NIP seems to be broken inside machine_check_exception() on
-> > MPC8378, running Linux 4.9.191. The value is 0x900 most of the times,
-> > but I have seen other weird values.
-> >
-> > I've been able to track down the entry code to head_32.S (vector 0x200)=
-,
-> > but I'm not sure where/how the NIP value (where the exception occurred)
-> > is captured.
->
-> NIP value is supposed to come from SRR0, loaded in r12 in PROLOG_2 and
-> saved into _NIP(r11) in transfer_to_handler in entry_32.S
+With CONFIG_KASAN_VMALLOC, new page tables are created at the time
+shadow memory for vmalloc area in unmapped. If some parts of the
+page table still has entries to the zero page shadow memory, the
+entries are wrongly marked RW.
 
-Thank you so much for the information, it is extremely helpful!
+Make sure new page tables are populated with RO entries once
+kasan_remap_early_shadow_ro() has run.
 
-> Can something clobber r12 at some point ?
->
-> Maybe add the following at some place to trap when it happens ?
->
-> tweqi r12, 0x900
->
-> If you put it just after reading SRR0, and just before writing into
-> NIP(r11), you'll see if its wrong from the begining or if it is
-> overwriten later.
+Fixes: 3d4247fcc938 ("powerpc/32: Add support of KASAN_VMALLOC")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/mm/kasan/kasan_init_32.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-I did something even simpler: I added the following
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+index 16dd95bd0749..b533e7a8319d 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -30,11 +30,13 @@ static void __init kasan_populate_pte(pte_t *ptep, pgprot_t prot)
+ 		__set_pte_at(&init_mm, va, ptep, pfn_pte(PHYS_PFN(pa), prot), 0);
+ }
+ 
+-static int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_end)
++static int __init
++kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_end, bool is_late)
+ {
+ 	pmd_t *pmd;
+ 	unsigned long k_cur, k_next;
+ 	pte_t *new = NULL;
++	pgprot_t prot = is_late ? kasan_prot_ro() : PAGE_KERNEL;
+ 
+ 	pmd = pmd_offset(pud_offset(pgd_offset_k(k_start), k_start), k_start);
+ 
+@@ -48,7 +50,7 @@ static int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned
+ 
+ 		if (!new)
+ 			return -ENOMEM;
+-		kasan_populate_pte(new, PAGE_KERNEL);
++		kasan_populate_pte(new, prot);
+ 
+ 		smp_wmb(); /* See comment in __pte_alloc */
+ 
+@@ -71,7 +73,7 @@ static int __init kasan_init_region(void *start, size_t size)
+ 	int ret;
+ 	void *block;
+ 
+-	ret = kasan_init_shadow_page_tables(k_start, k_end);
++	ret = kasan_init_shadow_page_tables(k_start, k_end, false);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -121,7 +123,7 @@ static void __init kasan_unmap_early_shadow_vmalloc(void)
+ 	phys_addr_t pa = __pa(kasan_early_shadow_page);
+ 
+ 	if (!early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+-		int ret = kasan_init_shadow_page_tables(k_start, k_end);
++		int ret = kasan_init_shadow_page_tables(k_start, k_end, true);
+ 
+ 		if (ret)
+ 			panic("kasan: kasan_init_shadow_page_tables() failed");
+@@ -144,7 +146,8 @@ void __init kasan_mmu_init(void)
+ 	struct memblock_region *reg;
+ 
+ 	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+-		ret = kasan_init_shadow_page_tables(KASAN_SHADOW_START, KASAN_SHADOW_END);
++		ret = kasan_init_shadow_page_tables(KASAN_SHADOW_START, KASAN_SHADOW_END,
++						    false);
+ 
+ 		if (ret)
+ 			panic("kasan: kasan_init_shadow_page_tables() failed");
+-- 
+2.25.0
 
-        lis r12,0x1234
-
-... right after
-
-        mfspr r12,SPRN_SRR0
-
-... and now the NIP value I see in the crash dump is 0x12340000. This
-means r12 is not clobbered and most likely the NIP value I normally see
-is the actual SRR0 value.
-
-Just to be sure that SRR0 is not clobbered before it's even saved to r12
-(very unlikely though) I changed the code to save SRR0 to r8 at the very
-beginning of the handler (first instruction, at address 0x200) and then
-load r12 from r8 later. This of course clobbers r8, but it's good for
-testing. Now in the crash dump I see 0x900 in both NIP and r8.
-
-So I think I ruled out any problem in the Linux MCE handler. MPC8378 has
-an e300 core and I double checked with the e300 core reference manual
-(e300coreRM.pdf from NXP). I couldn't find anything weird there either.
-Quoting from the RM:
-
-| 5.5.2.1 Machine Check Interrupt Enabled (MSR[ME] =3D 1)
-|
-| When a machine check interrupt is taken, registers are updated as
-| shown in Table 5-14.
-|
-| Table 5-14. Machine Check Interrupt=E2=80=94Register Settings
-|
-| SRR0 Set to the address of the next instruction that would have been
-|      completed in the interrupted instruction stream. Neither this
-|      instruction nor any others beyond it will have been completed.
-|      All preceding instructions will have been completed.
-
-At this point I'm assuming a silicon bug, although I couldn't find
-anything interesting in the Errata provided by NXP.
-
-Best regards,
-Radu
