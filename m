@@ -1,53 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEF516458E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 14:30:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B08164515
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 14:13:20 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Myp44dK2zDqfb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 00:13:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48MzBK1FXMzDqC5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 00:30:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=CrDKTg0K; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Myht6LbBzDqcX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 00:08:46 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 01JD8ATq027345;
- Wed, 19 Feb 2020 07:08:10 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 01JD88xt027342;
- Wed, 19 Feb 2020 07:08:08 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 19 Feb 2020 07:08:08 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: Surprising code generated for vdso_read_begin()
-Message-ID: <20200219130808.GU22482@gate.crashing.org>
-References: <cover.1577111363.git.christophe.leroy@c-s.fr>
- <bd4557a7-9715-59aa-5d8e-488c5e516a98@c-s.fr>
- <20200109200733.GS3191@gate.crashing.org>
- <77a8bf25-6615-6c0a-56d4-eae7aa8a8f09@c-s.fr>
- <20200111113328.GX3191@gate.crashing.org>
- <CAK8P3a11wX1zJ+TAacDTkYsrzvfdVmNrcB6OC23aFvCxF57opQ@mail.gmail.com>
- <305fcee5-2e1b-ea4d-9a2a-a0e8034d40a8@c-s.fr>
- <CAK8P3a0SfCwP04CJPThCuDmngGhwtejN8Px_UQpSwi=s_ww=bw@mail.gmail.com>
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Mz3H6MY1zDqX6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 00:24:43 +1100 (AEDT)
+Received: from hump (unknown [147.67.241.226])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 02D8B24654;
+ Wed, 19 Feb 2020 13:24:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1582118681;
+ bh=WeK8iDiz+u7KGQl8xdyYvIuPvj8pRW13k3gZGmGmUOU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=CrDKTg0KsoKO1U07yyagx89/mJ6hieOjLuM/lo6w3mB9Y9R+aQAidXZSv/ywuM3au
+ r4bYkFE2ZGGFM/SSIBeOb3LJun+6yquvbVIUq2PH+U+U65CCtHToRoSUxXZ4LnlfNf
+ XO/4CZv966+4qxBk+L+tbRqcMNDfbzR2x3+83oH0=
+Date: Wed, 19 Feb 2020 14:24:20 +0100
+From: Mike Rapoport <rppt@kernel.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
+Message-ID: <20200219132420.GA5559@hump>
+References: <20200216081843.28670-1-rppt@kernel.org>
+ <20200216081843.28670-8-rppt@kernel.org>
+ <5b7c3929-5833-8ceb-85c8-a8e92e6a138e@c-s.fr>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a0SfCwP04CJPThCuDmngGhwtejN8Px_UQpSwi=s_ww=bw@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <5b7c3929-5833-8ceb-85c8-a8e92e6a138e@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,73 +58,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: the arch/x86 maintainers <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
+ linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ kvm-ppc@vger.kernel.org,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 19, 2020 at 10:52:16AM +0100, Arnd Bergmann wrote:
-> On Wed, Feb 19, 2020 at 9:45 AM Christophe Leroy
-> <christophe.leroy@c-s.fr> wrote:
-> > Le 16/02/2020 à 19:10, Arnd Bergmann a écrit :
-> > > On Sat, Jan 11, 2020 at 12:33 PM Segher Boessenkool
-> > > <segher@kernel.crashing.org> wrote:
-> > >>
-> > >> On Fri, Jan 10, 2020 at 07:45:44AM +0100, Christophe Leroy wrote:
-> > >>> Le 09/01/2020 à 21:07, Segher Boessenkool a écrit :
-> > >>>> It looks like the compiler did loop peeling.  What GCC version is this?
-> > >>>> Please try current trunk (to become GCC 10), or at least GCC 9?
-> > >>>
-> > >>> It is with GCC 5.5
-> > >>>
-> > >>> https://mirrors.edge.kernel.org/pub/tools/crosstool/ doesn't have more
-> > >>> recent than 8.1
-> > >>
-> > >> Arnd, can you update the tools?  We are at 8.3 and 9.2 now :-)  Or is
-> > >> this hard and/or painful to do?
-> > >
-> > > To follow up on this older thread, I have now uploaded 6.5, 7.5, 8.3 and 9.2
-> > > binaries, as well as a recent 10.0 snapshot.
-> > >
-> >
-> > Thanks Arnd,
-> >
-> > I have built the VDSO with 9.2, I get less performant result than with
-> > 8.2 (same performance as with 5.5).
-> >
-> > After a quick look, I see:
-> > - Irrelevant NOPs to align loops and stuff, allthough -mpcu=860 should
-> > avoid that.
-> > - A stack frame is set for saving r31 in __c_kernel_clock_gettime. GCC
-> > 8.1 don't need that, all VDSO functions are frameless with 8.1
+On Wed, Feb 19, 2020 at 01:07:55PM +0100, Christophe Leroy wrote:
 > 
-> If you think it should be fixed in gcc, maybe try to reproduce it in
-> https://godbolt.org/
+> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
+> > diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+> > index 206156255247..7bd4b81d5b5d 100644
+> > --- a/arch/powerpc/mm/ptdump/ptdump.c
+> > +++ b/arch/powerpc/mm/ptdump/ptdump.c
+> > @@ -277,9 +277,9 @@ static void walk_pmd(struct pg_state *st, pud_t *pud, unsigned long start)
+> >   	}
+> >   }
+> > -static void walk_pud(struct pg_state *st, pgd_t *pgd, unsigned long start)
+> > +static void walk_pud(struct pg_state *st, p4d_t *p4d, unsigned long start)
+> >   {
+> > -	pud_t *pud = pud_offset(pgd, 0);
+> > +	pud_t *pud = pud_offset(p4d, 0);
+> >   	unsigned long addr;
+> >   	unsigned int i;
+> > @@ -293,6 +293,22 @@ static void walk_pud(struct pg_state *st, pgd_t *pgd, unsigned long start)
+> >   	}
+> >   }
+> > +static void walk_p4d(struct pg_state *st, pgd_t *pgd, unsigned long start)
+> > +{
+> > +	p4d_t *p4d = p4d_offset(pgd, 0);
+> > +	unsigned long addr;
+> > +	unsigned int i;
+> > +
+> > +	for (i = 0; i < PTRS_PER_P4D; i++, p4d++) {
+> > +		addr = start + i * P4D_SIZE;
+> > +		if (!p4d_none(*p4d) && !p4d_is_leaf(*p4d))
+> > +			/* p4d exists */
+> > +			walk_pud(st, p4d, addr);
+> > +		else
+> > +			note_page(st, addr, 2, p4d_val(*p4d));
+> 
+> Level 2 is already used by walk_pud().
+> 
+> I think you have to increment the level used in walk_pud() and walk_pmd()
+> and walk_pte()
 
-(Feel free to skip this step; and don't put links to godbolt (or anything
-else external) in our bugzilla, please; such links go stale before you
-know it.)
+Thanks for catching this!
+I'll fix the numbers in the next version.
+ 
+> > +	}
+> > +}
+> > +
+> >   static void walk_pagetables(struct pg_state *st)
+> >   {
+> >   	unsigned int i;
+> > @@ -306,7 +322,7 @@ static void walk_pagetables(struct pg_state *st)
+> >   	for (i = pgd_index(addr); i < PTRS_PER_PGD; i++, pgd++, addr += PGDIR_SIZE) {
+> >   		if (!pgd_none(*pgd) && !pgd_is_leaf(*pgd))
+> >   			/* pgd exists */
+> > -			walk_pud(st, pgd, addr);
+> > +			walk_p4d(st, pgd, addr);
+> >   		else
+> >   			note_page(st, addr, 1, pgd_val(*pgd));
+> >   	}
+> 
+> Christophe
 
-> and open a gcc bug against that.
-
-Yes please :-)
-
-> Also, please try the gcc-10 snapshot, which has the highest chance
-> of getting fixes if it shows the same issue (or worse).
-
-If it is a regression, chances are it will be backported.  (But not to
-9.3, which is due in just a few weeks, just like 8.4).  If it is just a
-side effect of some other change, it will probably *not* be undone, not
-on trunk (GCC 10) either.  It depends.
-
-But sure, always test trunk if you can.
-
-
-Segher
+-- 
+Sincerely yours,
+Mike.
