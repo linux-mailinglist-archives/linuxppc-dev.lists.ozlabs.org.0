@@ -1,75 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95CB164D94
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 19:24:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48N5jN5LhTzDqSL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 05:24:40 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6B1164D9B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 19:26:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48N5lX4vgmzDq7d
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 05:26:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=krzk@kernel.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48N5BH0RFTzDqQn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 05:01:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=O8OazZxy; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48N5B44JDNz99Gj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 05:01:00 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48N5B41KYqz9sRl; Thu, 20 Feb 2020 05:01:00 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48N50g5jyKzDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 04:52:51 +1100 (AEDT)
-Received: from localhost.localdomain (unknown [194.230.155.125])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AB78B2467A;
- Wed, 19 Feb 2020 17:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1582134768;
- bh=p4+U61rOL8UqXw+zdGS8TsO+9JmLa5Y9WBdlRelZRu8=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=O8OazZxyMRidM7JJBXHHLPQaABxyydxjwKdDR5AfvFme3mNglX8t8m7XQbcjO7Q80
- fuLH1inydzj4U4OQuJz8BKePXKeLovvgITXtVLPQwS8S3JtPQlrzu0nrehc1XwUIv9
- FR3oL176lbNuZt7akF7YTj7Kw+33X2n8/AiGORiM=
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Henderson <rth@twiddle.net>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Matt Turner <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Jiri Slaby <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- "David S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>,
- Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
- linux-arch@vger.kernel.org
-Subject: [RESEND PATCH v2 9/9] ath5k: Constify ioreadX() iomem argument (as in
- generic implementation)
-Date: Wed, 19 Feb 2020 18:50:07 +0100
-Message-Id: <20200219175007.13627-10-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200219175007.13627-1-krzk@kernel.org>
-References: <20200219175007.13627-1-krzk@kernel.org>
+ by ozlabs.org (Postfix) with ESMTPS id 48N5B325S3z9sNg;
+ Thu, 20 Feb 2020 05:00:59 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01JHnFn0112134; Wed, 19 Feb 2020 13:00:56 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y8ubvqdad-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Feb 2020 13:00:56 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01JHtM0w026514;
+ Wed, 19 Feb 2020 18:00:55 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 2y6896nh6d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Feb 2020 18:00:55 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01JI0sxg49349046
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 Feb 2020 18:00:54 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C8C82AE060;
+ Wed, 19 Feb 2020 18:00:54 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35DF1AE062;
+ Wed, 19 Feb 2020 18:00:54 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.190])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Feb 2020 18:00:54 +0000 (GMT)
+Message-ID: <ae63d7b8028dea5a8ffd37977d2b48ba6ceff620.camel@linux.ibm.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Use RADIX_PTE_INDEX_SIZE in Radix
+ MMU code
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org
+Date: Wed, 19 Feb 2020 15:00:50 -0300
+In-Reply-To: <20200218043650.24410-1-mpe@ellerman.id.au>
+References: <20200218043650.24410-1-mpe@ellerman.id.au>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-WANm6kNd/+v1nI1QzPkC"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-19_04:2020-02-19,
+ 2020-02-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=2 mlxlogscore=999
+ clxscore=1015 malwarescore=0 adultscore=0 impostorscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002190136
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,65 +98,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ioreadX() helpers have inconsistent interface.  On some architectures
-void *__iomem address argument is a pointer to const, on some not.
 
-Implementations of ioreadX() do not modify the memory under the address
-so they can be converted to a "const" version for const-safety and
-consistency among architectures.
+--=-WANm6kNd/+v1nI1QzPkC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
----
- drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Hello Michael,
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index 2c9cec8b53d9..8bd01df369fb 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -138,18 +138,18 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 
- 	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
- 		/* Enable WMAC AHB arbitration */
--		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 		reg |= AR5K_AR2315_AHB_ARB_CTL_WLAN;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 
- 		/* Enable global WMAC swapping */
--		reg = ioread32((void __iomem *) AR5K_AR2315_BYTESWAP);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_BYTESWAP);
- 		reg |= AR5K_AR2315_BYTESWAP_WMAC;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_BYTESWAP);
- 	} else {
- 		/* Enable WMAC DMA access (assuming 5312 or 231x*/
- 		/* TODO: check other platforms */
--		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		reg = ioread32((const void __iomem *) AR5K_AR5312_ENABLE);
- 		if (to_platform_device(ah->dev)->id == 0)
- 			reg |= AR5K_AR5312_ENABLE_WLAN0;
- 		else
-@@ -202,12 +202,12 @@ static int ath_ahb_remove(struct platform_device *pdev)
- 
- 	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
- 		/* Disable WMAC AHB arbitration */
--		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 		reg &= ~AR5K_AR2315_AHB_ARB_CTL_WLAN;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 	} else {
- 		/*Stop DMA access */
--		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		reg = ioread32((const void __iomem *) AR5K_AR5312_ENABLE);
- 		if (to_platform_device(ah->dev)->id == 0)
- 			reg &= ~AR5K_AR5312_ENABLE_WLAN0;
- 		else
--- 
-2.17.1
+On Tue, 2020-02-18 at 15:36 +1100, Michael Ellerman wrote:
+> In kvmppc_unmap_free_pte() in book3s_64_mmu_radix.c, we use the
+> non-constant value PTE_INDEX_SIZE to clear a PTE page.
+>=20
+> We can instead use the constant RADIX_PTE_INDEX_SIZE, because we know
+> this code will only be running when the Radix MMU is active.
+>=20
+> Note that we already use RADIX_PTE_INDEX_SIZE for the allocation of
+> kvm_pte_cache.
+>=20
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/bo=
+ok3s_64_mmu_radix.c
+> index 803940d79b73..134fbc1f029f 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> @@ -425,7 +425,7 @@ static void kvmppc_unmap_free_pte(struct kvm *kvm, pt=
+e_t *pte, bool full,
+>  				  unsigned int lpid)
+>  {
+>  	if (full) {
+> -		memset(pte, 0, sizeof(long) << PTE_INDEX_SIZE);
+> +		memset(pte, 0, sizeof(long) << RADIX_PTE_INDEX_SIZE);
+>  	} else {
+>  		pte_t *p =3D pte;
+>  		unsigned long it;
+
+Looks fine to mee.=20
+
+For book3s_64, pgtable.h says:
+extern unsigned long __pte_index_size;
+#define PTE_INDEX_SIZE  __pte_index_size
+
+powerpc/mm/pgtable_64.c defines/export the variable:
+unsigned long __pte_index_size;
+EXPORT_SYMBOL(__pte_index_size);
+
+And book3s64/radix_pgtable.c set the value in radix__early_init_mmu().
+__pte_index_size =3D RADIX_PTE_INDEX_SIZE;
+
+So I think it's ok to use the value directly in book3s_64_mmu_radix.c.
+The include dependency looks fine for that to work.
+
+FWIW:
+Reviewed-by: Leonardo Bras <leonardo@linux.ibm.com>
+
+
+--=-WANm6kNd/+v1nI1QzPkC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5Nd9IACgkQlQYWtz9S
+ttQU/g/8C1JEQTzs3SKTcxD4d/Qnbo8koRKYz9F3wcsLsKgkMZaJPM4a/JtXQyEf
+uE/pBmy3zKvmwjlUuJQwnWwLqyxZYmf7lw479lqX+5I1oRC/lg7bwaLT2LuyNuJU
+yO25vj8yPUXkmWhFgGgbTV3bUz7w1i3jG7BoNf/HCZkABidpOzbrDrqxcMPat5u2
+tcKTd2yOEBuELStgJNEWu9uJkbqxB6K97ij6V5hUtqmop/8Ox6EyXrXDbp3N5pjM
+EATBxBUeZtnnuoyb5KxpDnhyE5U966+LWt+dDwWHborMCX6KeKlMPhms3OBieFj6
+eeqABl7DzTxnWE6swpmbx8j5YJczkvNfFz99gCZV8GrtT9VAKOv9Lqliv4bUJX/o
+U1DtQd4p6E11FhK++rF151IwM30CF7Up+8c6AvQBANhV0hHMmHOYnVSN1uU9DOdb
+Ux+/QAX0F//TSPCiqSxUSrYID2VKsjlt7VqLnwiVkO6CnwOWs2FHg7bIwrnQHFVn
+FISzAd9IjutTrDeCOMLSbs6djpWQ6g3SG/IwjD+tDbsrMGS/vYeGtu3s//qho2Ux
+X+cjxc7l8GEqNyV9WsWg6tWyBoPTJmK9to65LnbYZs6pcB3nc6Zmvjcj9x03fnCr
+0fqX2noHT5AmGQnta9dW2/2ZLkif3utCZ1/qX/0Vt9KE2PMqOQA=
+=gMeG
+-----END PGP SIGNATURE-----
+
+--=-WANm6kNd/+v1nI1QzPkC--
 
