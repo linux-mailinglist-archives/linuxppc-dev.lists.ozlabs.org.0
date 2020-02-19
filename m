@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237FB164D65
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 19:10:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48N5Ny6ssdzDq7d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 05:10:26 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B98ED164D8A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2020 19:21:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48N5d60k2szDq6q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 05:20:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,24 +16,24 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=nm1WAez1; dkim-atps=neutral
+ header.s=default header.b=mWeABfyO; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48N5086T67zDqVj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 04:52:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48N50Q0n7JzDq8B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 04:52:37 +1100 (AEDT)
 Received: from localhost.localdomain (unknown [194.230.155.125])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9ECE124671;
- Wed, 19 Feb 2020 17:52:10 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6BEF824672;
+ Wed, 19 Feb 2020 17:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1582134742;
- bh=9j4Wqmtnrm+aYUsHCZ4ooV/8lCGRX1ceFNDIpPGSnzM=;
+ s=default; t=1582134754;
+ bh=HDn1c+OCg4Fxwj0uJTYLgnTqOgR4bEcc2OImuEKXcQg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nm1WAez1jNKXLSvW7J07Tbu90KQFEkmZity4oGOnVRPXsXM+hDFW5K6Tinm5MRxB0
- WmxFTCqql9bAOnA8rju+Ll6+AjyoFTRt2mVhrLGPAW7sOr9jTILaKYuFP5x34AJbfm
- vB/5/wk1OU7xGWOO0ZojgLGfdpGedlnCP90LLVcU=
+ b=mWeABfyOQaHBfM1Tl4Rl2aedyBAE8jc2SywErFB4jyNFhmM9UdvOiGm3LE3U1nkFc
+ 873iQ9IusUp84dBz6YY/fHsHUBu//dBjjVwQQwc5Wp4QlJOHXM0h8vQp7TnxMb2yLh
+ vk6aSGDTtV8yJjISbJPkkW9wkktuJxNSCdZTdaOY=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -63,10 +63,10 @@ To: Richard Henderson <rth@twiddle.net>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
  linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
  linux-arch@vger.kernel.org
-Subject: [RESEND PATCH v2 7/9] drm/nouveau: Constify ioreadX() iomem argument
- (as in generic implementation)
-Date: Wed, 19 Feb 2020 18:50:05 +0100
-Message-Id: <20200219175007.13627-8-krzk@kernel.org>
+Subject: [RESEND PATCH v2 8/9] media: fsl-viu: Constify ioreadX() iomem
+ argument (as in generic implementation)
+Date: Wed, 19 Feb 2020 18:50:06 +0100
+Message-Id: <20200219175007.13627-9-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200219175007.13627-1-krzk@kernel.org>
 References: <20200219175007.13627-1-krzk@kernel.org>
@@ -95,22 +95,22 @@ consistency among architectures.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c | 2 +-
+ drivers/media/platform/fsl-viu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
-index 1b62ccc57aef..d95bdd65dbca 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -613,7 +613,7 @@ nouveau_bo_rd32(struct nouveau_bo *nvbo, unsigned index)
- 	mem += index;
+diff --git a/drivers/media/platform/fsl-viu.c b/drivers/media/platform/fsl-viu.c
+index 81a8faedbba6..991d9dc82749 100644
+--- a/drivers/media/platform/fsl-viu.c
++++ b/drivers/media/platform/fsl-viu.c
+@@ -34,7 +34,7 @@
+ /* Allow building this driver with COMPILE_TEST */
+ #if !defined(CONFIG_PPC) && !defined(CONFIG_MICROBLAZE)
+ #define out_be32(v, a)	iowrite32be(a, (void __iomem *)v)
+-#define in_be32(a)	ioread32be((void __iomem *)a)
++#define in_be32(a)	ioread32be((const void __iomem *)a)
+ #endif
  
- 	if (is_iomem)
--		return ioread32_native((void __force __iomem *)mem);
-+		return ioread32_native((const void __force __iomem *)mem);
- 	else
- 		return *mem;
- }
+ #define BUFFER_TIMEOUT		msecs_to_jiffies(500)  /* 0.5 seconds */
 -- 
 2.17.1
 
