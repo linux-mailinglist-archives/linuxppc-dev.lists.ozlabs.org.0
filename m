@@ -2,50 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED547165D33
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 13:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FC2165D73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 13:22:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48NYCC0576zDqK9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 23:03:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48NYd91MnCzDqQP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 23:22:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48NXxg0bFMzDqGh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:51:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=wdvs=4i=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qk6UDVK2; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48NXxf6MKSz9sR4; Thu, 20 Feb 2020 22:51:50 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 48NXxf4qptz9sSH; Thu, 20 Feb 2020 22:51:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1582199510;
- bh=+KZ5UNDD8klt0PNfIkxXpIjC4PXkIYNkPckrNNn5GXY=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qk6UDVK2AoE7k7ukk1YLMCz0/RsLhcwvociG6zVaR5VClj9ao3jWvbHn4NpMjOMsN
- 2Nhqe5MwTrtPPgMEjFcDOZYdVjCpJaYvBx8y62rHdZ3Q1texYNcmkpN6kzRZuZ53+e
- ODI/ztYS3GKjZ3GylqleTYcnU4ldP20XcbwdUkNhHRM68RHtd9+TW4qDtrqmUCoWv9
- XCF3U1arj5DPmVnNiFOqMwankzodSYhzrnDdXUQh7JPpCNFWnjFMmfSQNB3DCN7/Ou
- 76OZGUm5sNarZQFuvdCenuHveo/dtC7HPb1+O0CsGn37gqOxYM9YNGtUcBiSIvM8Ze
- 8HcqBRY4Ud3AA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v3 5/5] powerpc/irq: Use current_stack_pointer in do_IRQ()
-Date: Thu, 20 Feb 2020 22:51:41 +1100
-Message-Id: <20200220115141.2707-5-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200220115141.2707-1-mpe@ellerman.id.au>
-References: <20200220115141.2707-1-mpe@ellerman.id.au>
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48NYZ23zG2zDq83
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 23:19:54 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206525] BUG: KASAN: stack-out-of-bounds in test_bit+0x30/0x44
+ (kernel 5.6-rc1)
+Date: Thu, 20 Feb 2020 12:19:51 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Networking
+X-Bugzilla-Component: Other
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: nikolay@cumulusnetworks.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206525-206035-1pA2iMCn9I@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206525-206035@https.bugzilla.kernel.org/>
+References: <bug-206525-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,43 +65,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206525
 
-Until commit 7306e83ccf5c ("powerpc: Don't use CURRENT_THREAD_INFO to
-find the stack"), the current stack base address was obtained by
-calling current_thread_info(). That inline function was simply masking
-out the value of r1.
+--- Comment #6 from Nikolay Aleksandrov (nikolay@cumulusnetworks.com) ---
+Note that the bug wasn't introduced by my commit, but instead has been there
+since:
+ commit 4f520900522f
+ Author: Richard Guy Briggs <rgb@redhat.com>
+ Date:   Tue Apr 22 21:31:54 2014 -0400
 
-In that commit, it was changed to using current_stack_pointer() (since
-renamed current_stack_frame()), which is a heavier function as it is
-an outline assembly function which cannot be inlined and which reads
-the content of the stack at 0(r1).
+    netlink: have netlink per-protocol bind function return an error code.
 
-Convert to using current_stack_pointer for geting r1 and masking out
-its value to obtain the base address of the stack pointer as before.
+which moved the ngroups test_bit() to a local variable. My commit only expo=
+sed
+the bug since it added the 33rd group. I'm currently preparing a fix and wi=
+ll
+post it to netdev after verifying and testing it.
 
-Fixes: 7306e83ccf5c ("powerpc: Don't use CURRENT_THREAD_INFO to find the stack")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/a37e699e7ab897742c07b6838a08af33bc9217e3.1579849665.git.christophe.leroy@c-s.fr
----
- arch/powerpc/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 46d5852fb00a..1bed18b7229e 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -648,7 +648,7 @@ void do_IRQ(struct pt_regs *regs)
- 	void *cursp, *irqsp, *sirqsp;
- 
- 	/* Switch to the irq stack to handle this */
--	cursp = (void *)(current_stack_frame() & ~(THREAD_SIZE - 1));
-+	cursp = (void *)(current_stack_pointer & ~(THREAD_SIZE - 1));
- 	irqsp = hardirq_ctx[raw_smp_processor_id()];
- 	sirqsp = softirq_ctx[raw_smp_processor_id()];
- 
--- 
-2.21.1
-
-v3: s/get_sp()/current_stack_pointer/
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
