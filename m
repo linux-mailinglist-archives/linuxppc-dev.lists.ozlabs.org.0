@@ -2,70 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C859166040
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 15:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83801661CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 17:04:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Nd6X3WXwzDqWc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 01:59:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48NfYX3RTMzDqYb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 03:04:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32a;
+ helo=mail-ot1-x32a.google.com; envelope-from=radu.rendec@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=B/NYU5Ng; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=AMRJbC/T; dkim-atps=neutral
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com
+ [IPv6:2607:f8b0:4864:20::32a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Nd4h69tlzDqWW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:58:10 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Nd4Z0WPBz9v9FJ;
- Thu, 20 Feb 2020 15:58:06 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=B/NYU5Ng; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ffPZ90ywUBqr; Thu, 20 Feb 2020 15:58:06 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Nd4Y6LMNz9v9FH;
- Thu, 20 Feb 2020 15:58:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1582210685; bh=YKl2BkM+ZMJcivZiVdzoWT2DSPFZst5+HRjZAemkQK8=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=B/NYU5Ng+BidPgcdvM4af+d8Q+nkSCxcADtdLQtQnl/ZRujEK5hQyZkz2Hoi/OfHY
- mMGVDeentj8+7wntw6mmohRzphBRTj+IFwEiG1AxQndtNbFEtH1OtBk8JieIAvBXg6
- ntmtujtaLN5/171/lJnuEE56I/2o2ekHo4XHZLss=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4CC518B866;
- Thu, 20 Feb 2020 15:58:07 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 6Isdy_XdtjpC; Thu, 20 Feb 2020 15:58:07 +0100 (CET)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B6A8C8B876;
- Thu, 20 Feb 2020 15:58:06 +0100 (CET)
-Subject: Re: [PATCH] selftest/lkdtm: Don't pollute 'git status'
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Kees Cook <keescook@chromium.org>, Shuah Khan <skhan@linuxfoundation.org>
-References: <668b6ff463849ceee01f726fbf3e7110687575ec.1580976576.git.christophe.leroy@c-s.fr>
-Message-ID: <ca71e490-b4fa-bf53-7a60-b6954b9dd33e@c-s.fr>
-Date: Thu, 20 Feb 2020 14:58:06 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48NfWQ3BPczDqVb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 03:02:56 +1100 (AEDT)
+Received: by mail-ot1-x32a.google.com with SMTP id p8so4087367oth.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 08:02:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=k2cMxLsxICUBu85ROJYq+vy4aRufOWzp5RVY1tWx+Gg=;
+ b=AMRJbC/T1/Leer1KrHPcN5V90Kk498KpW25PuP4vu4vlWjnCVOS9Gdcy5JRUg1GC+V
+ o+pwQ7suDnTHPch4cCXI+nUcQZbzoUjfdBMUCoNEQi68q3nS0G3RETd0U9HfIzdJckp/
+ WHUT6XIYFMsFA+GvGZK456Xn5tAyAQsBRyhqe4CAeOHZYU2dXStEdCtd220dG72xYIpR
+ /omYqYS4liFexGiNOt5RW+uMv4VbIFY4ZxH1e+5HhZmJBpAIVVOC+84DymUVCmPARIYy
+ FYBP7XaTnU/ENK/oMm8tlGwBQBDntxWQCxAe44Ir0t9uUsgn/O8pNpvoVie6CbarrieN
+ DJAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=k2cMxLsxICUBu85ROJYq+vy4aRufOWzp5RVY1tWx+Gg=;
+ b=HBqsWtGDCwi02z8j61lpRbl+l+ybSEdAr/bQz9ffxqLcwjyjVXQ+kUAnMwL0lYvks2
+ 9V+hU+1vaKeLhfvCFCkLSCJuCtkZZPCe4zC2pH/f7RjcEyG/IFU3JuScgFsal4fUquZK
+ F007RIadCLJ/1QHMjwaFtZnkdPcPoVFrrM6GNdCQH7+Rqvf5dzISEkOVw+rYVpbYHI06
+ bpCYf+8sXs2IAkPW7M8FLYDCaQz1dLcH2Ajzx1I0zWMj/wdEhzWOjyE29Xt+v2ZSAGdT
+ 7f7/HtmDDa6HNs/ervtNJFbtOLkC10Ltq+4yfPCVEz7B6+W00DJxhRIfKBAm/EdIiXa4
+ u3RA==
+X-Gm-Message-State: APjAAAXgkXuKBDkcUHyHjvkgKWeHiFpwtVj6yLaCDi/gsxCER+iVHHVW
+ Ocl5J0bQhk+AYj5GwhXECeHJsClM+wfN5oLQgcJvSwhh
+X-Google-Smtp-Source: APXvYqz7rwjKzg+a00F+iHKWNObeDwc3IwZjZIKDs5sD6qsyiYj7ntimQcYKpDy3OKY9P6E4NBB1KEirLVww4r6oBYA=
+X-Received: by 2002:a05:6830:22ca:: with SMTP id
+ q10mr25858752otc.280.1582214572929; 
+ Thu, 20 Feb 2020 08:02:52 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <668b6ff463849ceee01f726fbf3e7110687575ec.1580976576.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAD5jUk_8DAvneGjkQ7JOOuNeXaKU1g9E09+H8M5Eo=ttgthdgg@mail.gmail.com>
+ <a0856192-804b-fe2a-ccb8-48b43b130696@c-s.fr>
+ <CAD5jUk-WzPLYSAxDuWFa3fWcZpT97suySVDEBvUn7V+N01bzTw@mail.gmail.com>
+ <CAD5jUk9sd6tRZHySwxD5XxEJR-Cf2NNRgN-Y1HJRnSRqQBJWgA@mail.gmail.com>
+ <20200219220829.Horde.I5UfTmHgQd92hm3jMgSMMA1@messagerie.si.c-s.fr>
+ <20200219222110.Horde.MNo_rRZ0LaYxBYa_bppgCw1@messagerie.si.c-s.fr>
+ <CAD5jUk-Wta-W26D7PUwi2__2GoDp9pOrKMiNCdu9TnWgMvy4GQ@mail.gmail.com>
+ <09e9a042-766c-d2e6-2300-cebc372cabde@c-s.fr>
+In-Reply-To: <09e9a042-766c-d2e6-2300-cebc372cabde@c-s.fr>
+From: Radu Rendec <radu.rendec@gmail.com>
+Date: Thu, 20 Feb 2020 11:02:41 -0500
+Message-ID: <CAD5jUk_L0tmy-2YwC9pZA=PXTeVLhq64emF3J5Vz=mVP_VHZ_w@mail.gmail.com>
+Subject: Re: MCE handler gets NIP wrong on MPC8378
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,125 +80,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ping
+On 02/20/2020 at 3:38 AM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+> On 02/19/2020 10:39 PM, Radu Rendec wrote:
+> > On 02/19/2020 at 4:21 PM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+> >>> Interesting.
+> >>>
+> >>> 0x900 is the adress of the timer interrupt.
+> >>>
+> >>> Would the MCE occur just after the timer interrupt ?
+> >
+> > I doubt that. I'm using a small test module to artificially trigger the
+> > MCE. Basically it's just this (the full code is in my original post):
+> >
+> >          bad_addr_base = ioremap(0xf0000000, 0x100);
+> >          x = ioread32(bad_addr_base);
+> >
+> > I find it hard to believe that every time I load the module the lwbrx
+> > instruction that triggers the MCE is executed exactly after the timer
+> > interrupt (or that the timer interrupt always occurs close to the lwbrx
+> > instruction).
+>
+> Can you try to see how much time there is between your read and the MCE ?
+> The below should allow it, you'll see first value in r13 and the other
+> in r14 (mce.c is your test code)
+>
+> Also provide the timebase frequency as reported in /proc/cpuinfo
 
-On 02/06/2020 08:11 AM, Christophe Leroy wrote:
-> Commit 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
-> added generation of lkdtm test scripts.
-> 
-> Ignore those generated scripts when performing 'git status'
-> 
-> Fixes: 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+I just ran a test: r13 is 0xda8e0f91 and r14 is 0xdaae0f9c.
 
-Without this, 'git status' now reports the following crap and real 
-problems are drowned in the middle, that's annoying.
+# cat /proc/cpuinfo
+processor       : 0
+cpu             : e300c4
+clock           : 800.000004MHz
+revision        : 1.1 (pvr 8086 1011)
+bogomips        : 200.00
+timebase        : 100000000
 
-On branch saf3000-5.6
-Untracked files:
-   (use "git add <file>..." to include in what will be committed)
-	tools/testing/selftests/lkdtm/ACCESS_NULL.sh
-	tools/testing/selftests/lkdtm/ACCESS_USERSPACE.sh
-	tools/testing/selftests/lkdtm/ATOMIC_TIMING.sh
-	tools/testing/selftests/lkdtm/BUG.sh
-	tools/testing/selftests/lkdtm/CFI_FORWARD_PROTO.sh
-	tools/testing/selftests/lkdtm/CORRUPT_LIST_ADD.sh
-	tools/testing/selftests/lkdtm/CORRUPT_LIST_DEL.sh
-	tools/testing/selftests/lkdtm/CORRUPT_STACK.sh
-	tools/testing/selftests/lkdtm/CORRUPT_STACK_STRONG.sh
-	tools/testing/selftests/lkdtm/CORRUPT_USER_DS.sh
-	tools/testing/selftests/lkdtm/DOUBLE_FAULT.sh
-	tools/testing/selftests/lkdtm/EXCEPTION.sh
-	tools/testing/selftests/lkdtm/EXEC_DATA.sh
-	tools/testing/selftests/lkdtm/EXEC_KMALLOC.sh
-	tools/testing/selftests/lkdtm/EXEC_NULL.sh
-	tools/testing/selftests/lkdtm/EXEC_RODATA.sh
-	tools/testing/selftests/lkdtm/EXEC_STACK.sh
-	tools/testing/selftests/lkdtm/EXEC_USERSPACE.sh
-	tools/testing/selftests/lkdtm/EXEC_VMALLOC.sh
-	tools/testing/selftests/lkdtm/EXHAUST_STACK.sh
-	tools/testing/selftests/lkdtm/HARDLOCKUP.sh
-	tools/testing/selftests/lkdtm/HUNG_TASK.sh
-	tools/testing/selftests/lkdtm/LOOP.sh
-	tools/testing/selftests/lkdtm/OVERWRITE_ALLOCATION.sh
-	tools/testing/selftests/lkdtm/PANIC.sh
-	tools/testing/selftests/lkdtm/READ_AFTER_FREE.sh
-	tools/testing/selftests/lkdtm/READ_BUDDY_AFTER_FREE.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_ADD_NOT_ZERO_OVERFLOW.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_ADD_NOT_ZERO_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_ADD_OVERFLOW.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_ADD_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_ADD_ZERO.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_DEC_AND_TEST_NEGATIVE.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_DEC_AND_TEST_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_DEC_NEGATIVE.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_DEC_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_DEC_ZERO.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_INC_NOT_ZERO_OVERFLOW.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_INC_NOT_ZERO_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_INC_OVERFLOW.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_INC_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_INC_ZERO.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_SUB_AND_TEST_NEGATIVE.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_SUB_AND_TEST_SATURATED.sh
-	tools/testing/selftests/lkdtm/REFCOUNT_TIMING.sh
-	tools/testing/selftests/lkdtm/SLAB_FREE_CROSS.sh
-	tools/testing/selftests/lkdtm/SLAB_FREE_DOUBLE.sh
-	tools/testing/selftests/lkdtm/SLAB_FREE_PAGE.sh
-	tools/testing/selftests/lkdtm/SOFTLOCKUP.sh
-	tools/testing/selftests/lkdtm/SPINLOCKUP.sh
-	tools/testing/selftests/lkdtm/STACKLEAK_ERASING.sh
-	tools/testing/selftests/lkdtm/STACK_GUARD_PAGE_LEADING.sh
-	tools/testing/selftests/lkdtm/STACK_GUARD_PAGE_TRAILING.sh
-	tools/testing/selftests/lkdtm/UNALIGNED_LOAD_STORE_WRITE.sh
-	tools/testing/selftests/lkdtm/UNSET_SMEP.sh
-	tools/testing/selftests/lkdtm/USERCOPY_HEAP_SIZE_FROM.sh
-	tools/testing/selftests/lkdtm/USERCOPY_HEAP_SIZE_TO.sh
-	tools/testing/selftests/lkdtm/USERCOPY_HEAP_WHITELIST_FROM.sh
-	tools/testing/selftests/lkdtm/USERCOPY_HEAP_WHITELIST_TO.sh
-	tools/testing/selftests/lkdtm/USERCOPY_KERNEL.sh
-	tools/testing/selftests/lkdtm/USERCOPY_KERNEL_DS.sh
-	tools/testing/selftests/lkdtm/USERCOPY_STACK_BEYOND.sh
-	tools/testing/selftests/lkdtm/USERCOPY_STACK_FRAME_FROM.sh
-	tools/testing/selftests/lkdtm/USERCOPY_STACK_FRAME_TO.sh
-	tools/testing/selftests/lkdtm/WARNING.sh
-	tools/testing/selftests/lkdtm/WARNING_MESSAGE.sh
-	tools/testing/selftests/lkdtm/WRITE_AFTER_FREE.sh
-	tools/testing/selftests/lkdtm/WRITE_BUDDY_AFTER_FREE.sh
-	tools/testing/selftests/lkdtm/WRITE_KERN.sh
-	tools/testing/selftests/lkdtm/WRITE_RO.sh
-	tools/testing/selftests/lkdtm/WRITE_RO_AFTER_INIT.sh
+The difference between r14 and r13 is 0x20000b. Assuming TB is
+incremented with 'timebase' frequency, that means 20.97 milliseconds
+(although the e300 manual says TB is "incremented once every four core
+input clock cycles").
 
-nothing added to commit but untracked files present (use "git add" to track)
+I repeated the test twice and the absolute values were of course very
+different, but r14-r13 was 0x20000c and 0x200011, so it seems to be
+quite consistent (within just a few clock cycles).
 
+Just for the fun of it, I repeated the test once more, but with
+interrupts disabled. The difference was 0x200014. FWIW, I disabled
+interrupts before sampling TB in r13.
 
-Thanks
-Christophe
+> And what's the reason given in the Oops message for the machine check ?
+> Is that "Caused by (from SRR1=49030): Transfer error ack signal" or
+> something else ?
 
+When interrupts are enabled:
+Caused by (from SRR1=41000): Transfer error ack signal
 
-> ---
->   .gitignore | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index b849a72d69d5..bb05dce58f8e 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -100,6 +100,10 @@ modules.order
->   /include/ksym/
->   /arch/*/include/generated/
->   
-> +# Generated lkdtm tests
-> +/tools/testing/selftests/lkdtm/*.sh
-> +!/tools/testing/selftests/lkdtm/run.sh
-> +
->   # stgit generated dirs
->   patches-*
->   
-> 
+When interrupts are disabled:
+Caused by (from SRR1=41030): Transfer error ack signal
+
+> >
+> >> Do you use the local bus monitoring driver ?
+> >
+> > I don't. In fact, I'm not even aware of it. What driver is that?
+>
+> CONFIG_FSL_LBC
+
+OK, it seems I'm actually using it. I haven't enabled it explicitly, but
+it's automatically pulled by CONFIG_MTD_NAND_FSL_ELBC as a prerequisite.
+
+I looked at the code in arch/powerpc/sysdev/fsl_lbc.c and it's quite
+small. Most of the code is in fsl_lbc_ctrl_irq, which I guess is
+supposed to print a message if/when the LBC catches an error. I've never
+seen any of those messages being printed.
+
+Best regards,
+Radu
