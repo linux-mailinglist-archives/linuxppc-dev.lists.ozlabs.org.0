@@ -1,70 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 844C7166B37
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 00:58:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A707B166ADF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 00:19:57 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48NrCZ5xrQzDqCV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 10:19:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Ns4649XVzDqfV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 10:58:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=Z/Zpxrbe; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Nr9w6vFTzDqXK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 10:18:28 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id t6so40112plj.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 15:18:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=qiIWn/AwNao12jLnO57Zy1eSMfhg2OcOJSkC6NTyoL4=;
- b=Z/ZpxrbeGyYr1O90OCAFhyo23J1bsbTFVT00brNeeTuwwwK96lwnqkLFD1L9OKp7Jr
- psjnCPGENnn4mnePs4ZwzgNh8eDSn+diPoIPMGegJueuimr7kxsidVFZopT24RcG5xDK
- SC/zMlsdynQs1IWQOwGc2ldMpWPCirlqrqHmY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=qiIWn/AwNao12jLnO57Zy1eSMfhg2OcOJSkC6NTyoL4=;
- b=flELod9yC3w51leHZKnsx/8TUHfF0hcM1Uebqc4wPy5QUMww7XhxwCy1YdVjTF9Ett
- epzUk8P1aKq3uHg7IzydYtuqG7Lq2Ete+4hHu8fUAFXM0XhCdAmSnncmAY4ePHjEBANE
- JU6aIIsfrYVv7Q1CylfKD7R/JK3nGN2Hxm7eKSsiGiU93zPNjYIATuHiNzSsS4yVHlfd
- f2Ri/pulTzAREMCMRx36SSKMBg8LE6Xh2tRd07wFxZZUkEJb10iFVC2NYTli0yl4eCSj
- tglHjm6zQM5lINdjljTYjpMkLodAEW+ZKdK6LvnzeGuzjEk+/ZO1zXlFDYRwjkk1DJrX
- cglA==
-X-Gm-Message-State: APjAAAU+y1I7/bawZoHxnY5IlS5Lh6vy3lry8elMJsfj1MKhGRjc4yqT
- Qkr8okU9VTffpIUQKKVY3mxI2w==
-X-Google-Smtp-Source: APXvYqzhEIa1OtXP4MAIV3zoNmbsVPWGunyaLyvhOtt9UX6ZeNPh9zWaBFlyVTh2FozX8mEGqu5nLQ==
-X-Received: by 2002:a17:90a:d807:: with SMTP id
- a7mr6562607pjv.15.1582240705082; 
- Thu, 20 Feb 2020 15:18:25 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id l69sm375799pgd.1.2020.02.20.15.18.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Feb 2020 15:18:24 -0800 (PST)
-Date: Thu, 20 Feb 2020 15:18:23 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] selftest/lkdtm: Don't pollute 'git status'
-Message-ID: <202002201518.AFD4C0C9FA@keescook>
-References: <668b6ff463849ceee01f726fbf3e7110687575ec.1580976576.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Ns2j0zKSzDqZB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 10:57:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=RZ2aMDVr; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48Ns2g4jDMz9sRR;
+ Fri, 21 Feb 2020 10:57:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1582243036;
+ bh=V8qEeao60i8XnCSQ/mKGsp0NMVZHYJxJle5OdSEx3II=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=RZ2aMDVrX8i/iS1ljA9sOWG2HUgEOjoBiDRuegXIohUL8qbfNXLIwpvvsc4wph+xk
+ BTbOdm/AhYgcDG6ApPG3SXGzX+mIGDIKNyrulqUhSq+BzuhF97ErKLeiDmvWCT5JS2
+ SRbOCgZrC+wHtMK6N9Wx9PZEslx1KPLWqtaq6aPrK+D7KVNsrc0l+ydRnhG1WHYbvk
+ e+XwsI8BS8Kpoc0np8DuQJZqWEwI98SnwBwFVjEUjvqx1SHMdH+sCf5zDEP7/r4iMZ
+ qDCw2/cs0APYl4vmdgbnYjTZ4ceA9P41BXOQCrdczMe9IOevQ3J5laPhOpdyUaDBbI
+ +OGUeF27l3adg==
+Date: Fri, 21 Feb 2020 10:57:15 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
+Message-ID: <20200221105715.35c1d2e8@canb.auug.org.au>
+In-Reply-To: <20200116113714.06208a73@canb.auug.org.au>
+References: <20200109183912.5fcb52aa@canb.auug.org.au>
+ <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
+ <20200114072522.3cd57195@canb.auug.org.au>
+ <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
+ <20200114173141.29564b25@canb.auug.org.au>
+ <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
+ <20200116064234.7a139623@canb.auug.org.au>
+ <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
+ <20200116113714.06208a73@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <668b6ff463849ceee01f726fbf3e7110687575ec.1580976576.git.christophe.leroy@c-s.fr>
+Content-Type: multipart/signed; boundary="Sig_/fJV_4rFg+0zr+QgBJ9k/618";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,49 +66,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+Cc: Timur Tabi <timur@kernel.org>, b08248@gmail.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.com>,
+ york sun <york.sun@nxp.com>,
+ PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
+ Scott Wood <swood@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 06, 2020 at 08:11:39AM +0000, Christophe Leroy wrote:
-> Commit 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
-> added generation of lkdtm test scripts.
-> 
-> Ignore those generated scripts when performing 'git status'
-> 
-> Fixes: 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+--Sig_/fJV_4rFg+0zr+QgBJ9k/618
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Ah! Yes, a very good idea. Thanks!
+Hi all,
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+On Thu, 16 Jan 2020 11:37:14 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> On Wed, 15 Jan 2020 14:01:35 -0600 Scott Wood <swood@redhat.com> wrote:
+> >
+> > On Thu, 2020-01-16 at 06:42 +1100, Stephen Rothwell wrote: =20
+> > > Hi Timur,
+> > >=20
+> > > On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrot=
+e:   =20
+> > > > On 1/14/20 12:31 AM, Stephen Rothwell wrote:   =20
+> > > > > +/**
+> > > > > + * ev_byte_channel_send - send characters to a byte stream
+> > > > > + * @handle: byte stream handle
+> > > > > + * @count: (input) num of chars to send, (output) num chars sent
+> > > > > + * @bp: pointer to chars to send
+> > > > > + *
+> > > > > + * Returns 0 for success, or an error code.
+> > > > > + */
+> > > > > +static unsigned int ev_byte_channel_send(unsigned int handle,
+> > > > > +	unsigned int *count, const char *bp)     =20
+> > > >=20
+> > > > Well, now you've moved this into the .c file and it is no longer=20
+> > > > available to other callers.  Anything wrong with keeping it in the =
+.h
+> > > > file?   =20
+> > >=20
+> > > There are currently no other callers - are there likely to be in the
+> > > future?  Even if there are, is it time critical enough that it needs =
+to
+> > > be inlined everywhere?   =20
+> >=20
+> > It's not performance critical and there aren't likely to be other users=
+ --
+> > just a matter of what's cleaner.  FWIW I'd rather see the original patc=
+h,
+> > that keeps the raw asm hcall stuff as simple wrappers in one place. =20
+>=20
+> And I don't mind either way :-)
+>=20
+> I just want to get rid of the warnings.
 
--Kees
+Any progress with this?
+--=20
+Cheers,
+Stephen Rothwell
 
-> ---
->  .gitignore | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index b849a72d69d5..bb05dce58f8e 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -100,6 +100,10 @@ modules.order
->  /include/ksym/
->  /arch/*/include/generated/
->  
-> +# Generated lkdtm tests
-> +/tools/testing/selftests/lkdtm/*.sh
-> +!/tools/testing/selftests/lkdtm/run.sh
-> +
->  # stgit generated dirs
->  patches-*
->  
-> -- 
-> 2.25.0
-> 
+--Sig_/fJV_4rFg+0zr+QgBJ9k/618
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
--- 
-Kees Cook
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl5PHNsACgkQAVBC80lX
+0Gyj2Af/dCsAs2UGM2273EmGGsqvmw4xDYxvpHm11P5XZdEIBhMwhor7NxikQ2nE
+FW9TeOrmLIcc3wA9UYkR+rtcaIFG6d7YHihRn/wkESF88eQrA+3mKbvmLDh4h/9G
+g24ChAtmBl16RcY+kK16NrCi4lx+Edj7xQFEXmnqH/E6TOHTMXjl5QomhR4zmStZ
+LdQFmgA31pJYhN0oOmNp2WMFMisz3kxqNSqL7g9JzL+nYIlYhg1rbOmS2+bXF+1R
+YI9hORIugB/Chox22mXW+TmWpatByLkNvInKjFidU4EVCaEcVdhvu0lw1tu3l9zD
+e7Ts66x+lv58WC/WQAi4qG67W2XjgA==
+=fxM6
+-----END PGP SIGNATURE-----
+
+--Sig_/fJV_4rFg+0zr+QgBJ9k/618--
