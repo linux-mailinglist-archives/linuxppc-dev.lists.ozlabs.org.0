@@ -1,66 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B1A166A49
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2020 23:22:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48NpxQ5jxzzDqhK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 09:22:34 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A707B166ADF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 00:19:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48NrCZ5xrQzDqCV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 10:19:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=alex.williamson@redhat.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=ExxJP6Bt; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=Z/Zpxrbe; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Npvt5r8jzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 09:21:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1582237270;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=obxVXBYRAmnOA1SZMlmZvsbkXpHvqTIQ+TOcUb8T0eE=;
- b=ExxJP6BtaG89KK/JdTc+ND1yzjYLOWOpUM4QB2DuBCBrET2IWLNSLO6T0a8M+wHroZXMJH
- CcoaYMXecVbwEqfmKTBajECS0hiT4dt+wUaQV7YbF+LSt8w66V4HxV4KTsJXxyp5VDuomB
- Gy89wiMsRybUV121nBm8N0sF+BdkW0c=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-404-otoHWshVPT-jZMjRZUw8mQ-1; Thu, 20 Feb 2020 13:19:46 -0500
-X-MC-Unique: otoHWshVPT-jZMjRZUw8mQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7F5E51005510;
- Thu, 20 Feb 2020 18:19:44 +0000 (UTC)
-Received: from w520.home (ovpn-116-28.phx2.redhat.com [10.3.116.28])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 43BA386E0D;
- Thu, 20 Feb 2020 18:19:43 +0000 (UTC)
-Date: Thu, 20 Feb 2020 11:19:42 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel 5/5] vfio/spapr_tce: Advertise and allow a huge
- DMA windows at 4GB
-Message-ID: <20200220111942.2b53414a@w520.home>
-In-Reply-To: <20200218073650.16149-6-aik@ozlabs.ru>
-References: <20200218073650.16149-1-aik@ozlabs.ru>
- <20200218073650.16149-6-aik@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Nr9w6vFTzDqXK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 10:18:28 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id t6so40112plj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 15:18:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=qiIWn/AwNao12jLnO57Zy1eSMfhg2OcOJSkC6NTyoL4=;
+ b=Z/ZpxrbeGyYr1O90OCAFhyo23J1bsbTFVT00brNeeTuwwwK96lwnqkLFD1L9OKp7Jr
+ psjnCPGENnn4mnePs4ZwzgNh8eDSn+diPoIPMGegJueuimr7kxsidVFZopT24RcG5xDK
+ SC/zMlsdynQs1IWQOwGc2ldMpWPCirlqrqHmY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=qiIWn/AwNao12jLnO57Zy1eSMfhg2OcOJSkC6NTyoL4=;
+ b=flELod9yC3w51leHZKnsx/8TUHfF0hcM1Uebqc4wPy5QUMww7XhxwCy1YdVjTF9Ett
+ epzUk8P1aKq3uHg7IzydYtuqG7Lq2Ete+4hHu8fUAFXM0XhCdAmSnncmAY4ePHjEBANE
+ JU6aIIsfrYVv7Q1CylfKD7R/JK3nGN2Hxm7eKSsiGiU93zPNjYIATuHiNzSsS4yVHlfd
+ f2Ri/pulTzAREMCMRx36SSKMBg8LE6Xh2tRd07wFxZZUkEJb10iFVC2NYTli0yl4eCSj
+ tglHjm6zQM5lINdjljTYjpMkLodAEW+ZKdK6LvnzeGuzjEk+/ZO1zXlFDYRwjkk1DJrX
+ cglA==
+X-Gm-Message-State: APjAAAU+y1I7/bawZoHxnY5IlS5Lh6vy3lry8elMJsfj1MKhGRjc4yqT
+ Qkr8okU9VTffpIUQKKVY3mxI2w==
+X-Google-Smtp-Source: APXvYqzhEIa1OtXP4MAIV3zoNmbsVPWGunyaLyvhOtt9UX6ZeNPh9zWaBFlyVTh2FozX8mEGqu5nLQ==
+X-Received: by 2002:a17:90a:d807:: with SMTP id
+ a7mr6562607pjv.15.1582240705082; 
+ Thu, 20 Feb 2020 15:18:25 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id l69sm375799pgd.1.2020.02.20.15.18.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Feb 2020 15:18:24 -0800 (PST)
+Date: Thu, 20 Feb 2020 15:18:23 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] selftest/lkdtm: Don't pollute 'git status'
+Message-ID: <202002201518.AFD4C0C9FA@keescook>
+References: <668b6ff463849ceee01f726fbf3e7110687575ec.1580976576.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <668b6ff463849ceee01f726fbf3e7110687575ec.1580976576.git.christophe.leroy@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,82 +76,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 18 Feb 2020 18:36:50 +1100
-Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+On Thu, Feb 06, 2020 at 08:11:39AM +0000, Christophe Leroy wrote:
+> Commit 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
+> added generation of lkdtm test scripts.
+> 
+> Ignore those generated scripts when performing 'git status'
+> 
+> Fixes: 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-> So far the only option for a big 64big DMA window was a window located
-> at 0x800.0000.0000.0000 (1<<59) which creates problems for devices
-> supporting smaller DMA masks.
-> 
-> This exploits a POWER9 PHB option to allow the second DMA window to map
-> at 0 and advertises it with a 4GB offset to avoid overlap with
-> the default 32bit window.
-> 
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Ah! Yes, a very good idea. Thanks!
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-Kees
+
 > ---
->  include/uapi/linux/vfio.h           |  2 ++
->  drivers/vfio/vfio_iommu_spapr_tce.c | 10 ++++++++--
->  2 files changed, 10 insertions(+), 2 deletions(-)
+>  .gitignore | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 9e843a147ead..c7f89d47335a 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -831,9 +831,11 @@ struct vfio_iommu_spapr_tce_info {
->  	__u32 argsz;
->  	__u32 flags;
->  #define VFIO_IOMMU_SPAPR_INFO_DDW	(1 << 0)	/* DDW supported */
-> +#define VFIO_IOMMU_SPAPR_INFO_DDW_START	(1 << 1)	/* DDW offset */
->  	__u32 dma32_window_start;	/* 32 bit window start (bytes) */
->  	__u32 dma32_window_size;	/* 32 bit window size (bytes) */
->  	struct vfio_iommu_spapr_tce_ddw_info ddw;
-> +	__u64 dma64_window_start;
->  };
+> diff --git a/.gitignore b/.gitignore
+> index b849a72d69d5..bb05dce58f8e 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -100,6 +100,10 @@ modules.order
+>  /include/ksym/
+>  /arch/*/include/generated/
 >  
->  #define VFIO_IOMMU_SPAPR_TCE_GET_INFO	_IO(VFIO_TYPE, VFIO_BASE + 12)
-> diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
-> index 16b3adc508db..4f22be3c4aa2 100644
-> --- a/drivers/vfio/vfio_iommu_spapr_tce.c
-> +++ b/drivers/vfio/vfio_iommu_spapr_tce.c
-> @@ -691,7 +691,7 @@ static long tce_iommu_create_window(struct tce_container *container,
->  	container->tables[num] = tbl;
->  
->  	/* Return start address assigned by platform in create_table() */
-> -	*start_addr = tbl->it_offset << tbl->it_page_shift;
-> +	*start_addr = tbl->it_dmaoff << tbl->it_page_shift;
->  
->  	return 0;
->  
-> @@ -842,7 +842,13 @@ static long tce_iommu_ioctl(void *iommu_data,
->  			info.ddw.levels = table_group->max_levels;
->  		}
->  
-> -		ddwsz = offsetofend(struct vfio_iommu_spapr_tce_info, ddw);
-> +		ddwsz = offsetofend(struct vfio_iommu_spapr_tce_info,
-> +				dma64_window_start);
-
-This breaks existing users, now they no longer get the ddw struct
-unless their argsz also includes the new dma64 window field.
-
+> +# Generated lkdtm tests
+> +/tools/testing/selftests/lkdtm/*.sh
+> +!/tools/testing/selftests/lkdtm/run.sh
 > +
-> +		if (info.argsz >= ddwsz) {
-> +			info.flags |= VFIO_IOMMU_SPAPR_INFO_DDW_START;
-> +			info.dma64_window_start = table_group->tce64_start;
-> +		}
-
-This is inconsistent with ddw where we set the flag regardless of
-argsz, but obviously only provide the field to the user if they've
-provided room for it.  Thanks,
-
-Alex
-
+>  # stgit generated dirs
+>  patches-*
 >  
->  		if (info.argsz >= ddwsz)
->  			minsz = ddwsz;
+> -- 
+> 2.25.0
+> 
 
+-- 
+Kees Cook
