@@ -1,60 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844C7166B37
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 00:58:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Ns4649XVzDqfV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 10:58:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E46166DCA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 04:35:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48NxtZ4zbszDqWW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 14:35:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Ns2j0zKSzDqZB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 10:57:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=RZ2aMDVr; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48Ns2g4jDMz9sRR;
- Fri, 21 Feb 2020 10:57:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1582243036;
- bh=V8qEeao60i8XnCSQ/mKGsp0NMVZHYJxJle5OdSEx3II=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=RZ2aMDVrX8i/iS1ljA9sOWG2HUgEOjoBiDRuegXIohUL8qbfNXLIwpvvsc4wph+xk
- BTbOdm/AhYgcDG6ApPG3SXGzX+mIGDIKNyrulqUhSq+BzuhF97ErKLeiDmvWCT5JS2
- SRbOCgZrC+wHtMK6N9Wx9PZEslx1KPLWqtaq6aPrK+D7KVNsrc0l+ydRnhG1WHYbvk
- e+XwsI8BS8Kpoc0np8DuQJZqWEwI98SnwBwFVjEUjvqx1SHMdH+sCf5zDEP7/r4iMZ
- qDCw2/cs0APYl4vmdgbnYjTZ4ceA9P41BXOQCrdczMe9IOevQ3J5laPhOpdyUaDBbI
- +OGUeF27l3adg==
-Date: Fri, 21 Feb 2020 10:57:15 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
-Message-ID: <20200221105715.35c1d2e8@canb.auug.org.au>
-In-Reply-To: <20200116113714.06208a73@canb.auug.org.au>
-References: <20200109183912.5fcb52aa@canb.auug.org.au>
- <CAOZdJXXiKgz=hOoiaTrxgbnwzyvp1Zfn3aCz+0__i17vyFngRg@mail.gmail.com>
- <20200114072522.3cd57195@canb.auug.org.au>
- <6ec4bc30-0526-672c-4261-3ad2cf69dd94@kernel.org>
- <20200114173141.29564b25@canb.auug.org.au>
- <1d8f8ee6-65ac-de6c-0e0b-c9bb499c0e02@kernel.org>
- <20200116064234.7a139623@canb.auug.org.au>
- <9f3311d12d418b87832ba5de1372bb76ffccbd45.camel@redhat.com>
- <20200116113714.06208a73@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48NxkG2Fw9zDqZF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 14:28:21 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01L3L0oU107891
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:28:20 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ya6e617rp-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:28:19 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Fri, 21 Feb 2020 03:28:16 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 21 Feb 2020 03:28:08 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01L3S7Xw51314800
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Feb 2020 03:28:07 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BADFCA405C;
+ Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1E1F6A4054;
+ Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 82291A0209;
+ Fri, 21 Feb 2020 14:28:02 +1100 (AEDT)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: alastair@d-silva.org
+Subject: [PATCH v3 00/27] Add support for OpenCAPI Persistent Memory devices
+Date: Fri, 21 Feb 2020 14:26:53 +1100
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/fJV_4rFg+0zr+QgBJ9k/618";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20022103-0020-0000-0000-000003AC220E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022103-0021-0000-0000-000022042A30
+Message-Id: <20200221032720.33893-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-20_19:2020-02-19,
+ 2020-02-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=1 phishscore=0 adultscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002210020
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,82 +91,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timur Tabi <timur@kernel.org>, b08248@gmail.com,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.com>,
- york sun <york.sun@nxp.com>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
- Scott Wood <swood@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/fJV_4rFg+0zr+QgBJ9k/618
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Alastair D'Silva <alastair@d-silva.org>
 
-Hi all,
+This series adds support for OpenCAPI Persistent Memory devices, exposing
+them as nvdimms so that we can make use of the existing infrastructure.
 
-On Thu, 16 Jan 2020 11:37:14 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> On Wed, 15 Jan 2020 14:01:35 -0600 Scott Wood <swood@redhat.com> wrote:
-> >
-> > On Thu, 2020-01-16 at 06:42 +1100, Stephen Rothwell wrote: =20
-> > > Hi Timur,
-> > >=20
-> > > On Wed, 15 Jan 2020 07:25:45 -0600 Timur Tabi <timur@kernel.org> wrot=
-e:   =20
-> > > > On 1/14/20 12:31 AM, Stephen Rothwell wrote:   =20
-> > > > > +/**
-> > > > > + * ev_byte_channel_send - send characters to a byte stream
-> > > > > + * @handle: byte stream handle
-> > > > > + * @count: (input) num of chars to send, (output) num chars sent
-> > > > > + * @bp: pointer to chars to send
-> > > > > + *
-> > > > > + * Returns 0 for success, or an error code.
-> > > > > + */
-> > > > > +static unsigned int ev_byte_channel_send(unsigned int handle,
-> > > > > +	unsigned int *count, const char *bp)     =20
-> > > >=20
-> > > > Well, now you've moved this into the .c file and it is no longer=20
-> > > > available to other callers.  Anything wrong with keeping it in the =
-.h
-> > > > file?   =20
-> > >=20
-> > > There are currently no other callers - are there likely to be in the
-> > > future?  Even if there are, is it time critical enough that it needs =
-to
-> > > be inlined everywhere?   =20
-> >=20
-> > It's not performance critical and there aren't likely to be other users=
- --
-> > just a matter of what's cleaner.  FWIW I'd rather see the original patc=
-h,
-> > that keeps the raw asm hcall stuff as simple wrappers in one place. =20
->=20
-> And I don't mind either way :-)
->=20
-> I just want to get rid of the warnings.
+Alastair D'Silva (27):
+  powerpc: Add OPAL calls for LPC memory alloc/release
+  mm/memory_hotplug: Allow check_hotplug_memory_addressable to be called
+    from drivers
+  powerpc: Map & release OpenCAPI LPC memory
+  ocxl: Remove unnecessary externs
+  ocxl: Address kernel doc errors & warnings
+  ocxl: Tally up the LPC memory on a link & allow it to be mapped
+  ocxl: Add functions to map/unmap LPC memory
+  ocxl: Emit a log message showing how much LPC memory was detected
+  ocxl: Save the device serial number in ocxl_fn
+  powerpc: Add driver for OpenCAPI Persistent Memory
+  powerpc: Enable the OpenCAPI Persistent Memory driver for
+    powernv_defconfig
+  powerpc/powernv/pmem: Add register addresses & status values to the
+    header
+  powerpc/powernv/pmem: Read the capability registers & wait for device
+    ready
+  powerpc/powernv/pmem: Add support for Admin commands
+  powerpc/powernv/pmem: Add support for near storage commands
+  powerpc/powernv/pmem: Register a character device for userspace to
+    interact with
+  powerpc/powernv/pmem: Implement the Read Error Log command
+  powerpc/powernv/pmem: Add controller dump IOCTLs
+  powerpc/powernv/pmem: Add an IOCTL to report controller statistics
+  powerpc/powernv/pmem: Forward events to userspace
+  powerpc/powernv/pmem: Add an IOCTL to request controller health & perf
+    data
+  powerpc/powernv/pmem: Implement the heartbeat command
+  powerpc/powernv/pmem: Add debug IOCTLs
+  powerpc/powernv/pmem: Expose SMART data via ndctl
+  powerpc/powernv/pmem: Expose the serial number in sysfs
+  powerpc/powernv/pmem: Expose the firmware version in sysfs
+  MAINTAINERS: Add myself & nvdimm/ocxl to ocxl
 
-Any progress with this?
---=20
-Cheers,
-Stephen Rothwell
+ MAINTAINERS                                   |    3 +
+ arch/powerpc/configs/powernv_defconfig        |    5 +
+ arch/powerpc/include/asm/opal-api.h           |    2 +
+ arch/powerpc/include/asm/opal.h               |    3 +
+ arch/powerpc/include/asm/pnv-ocxl.h           |   40 +-
+ arch/powerpc/platforms/powernv/Kconfig        |    3 +
+ arch/powerpc/platforms/powernv/Makefile       |    1 +
+ arch/powerpc/platforms/powernv/ocxl.c         |   43 +
+ arch/powerpc/platforms/powernv/opal-call.c    |    2 +
+ arch/powerpc/platforms/powernv/pmem/Kconfig   |   21 +
+ arch/powerpc/platforms/powernv/pmem/Makefile  |    7 +
+ arch/powerpc/platforms/powernv/pmem/ocxl.c    | 1991 +++++++++++++++++
+ .../platforms/powernv/pmem/ocxl_internal.c    |  213 ++
+ .../platforms/powernv/pmem/ocxl_internal.h    |  254 +++
+ .../platforms/powernv/pmem/ocxl_sysfs.c       |   46 +
+ drivers/misc/ocxl/config.c                    |   74 +-
+ drivers/misc/ocxl/core.c                      |   61 +
+ drivers/misc/ocxl/link.c                      |   53 +
+ drivers/misc/ocxl/ocxl_internal.h             |   45 +-
+ include/linux/memory_hotplug.h                |    5 +
+ include/misc/ocxl.h                           |  122 +-
+ include/uapi/linux/ndctl.h                    |    1 +
+ include/uapi/nvdimm/ocxl-pmem.h               |  127 ++
+ mm/memory_hotplug.c                           |    4 +-
+ 24 files changed, 3029 insertions(+), 97 deletions(-)
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/Kconfig
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/Makefile
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl.c
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_internal.c
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_sysfs.c
+ create mode 100644 include/uapi/nvdimm/ocxl-pmem.h
 
---Sig_/fJV_4rFg+0zr+QgBJ9k/618
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+-- 
+2.24.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl5PHNsACgkQAVBC80lX
-0Gyj2Af/dCsAs2UGM2273EmGGsqvmw4xDYxvpHm11P5XZdEIBhMwhor7NxikQ2nE
-FW9TeOrmLIcc3wA9UYkR+rtcaIFG6d7YHihRn/wkESF88eQrA+3mKbvmLDh4h/9G
-g24ChAtmBl16RcY+kK16NrCi4lx+Edj7xQFEXmnqH/E6TOHTMXjl5QomhR4zmStZ
-LdQFmgA31pJYhN0oOmNp2WMFMisz3kxqNSqL7g9JzL+nYIlYhg1rbOmS2+bXF+1R
-YI9hORIugB/Chox22mXW+TmWpatByLkNvInKjFidU4EVCaEcVdhvu0lw1tu3l9zD
-e7Ts66x+lv58WC/WQAi4qG67W2XjgA==
-=fxM6
------END PGP SIGNATURE-----
-
---Sig_/fJV_4rFg+0zr+QgBJ9k/618--
