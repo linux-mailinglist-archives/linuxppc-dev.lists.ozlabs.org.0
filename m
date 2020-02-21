@@ -1,82 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA331686FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 19:51:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45F016863B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 19:17:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48PKS52jhczDqnM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Feb 2020 05:17:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48PLCk2t2GzDqxX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Feb 2020 05:51:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=deltatee.com (client-ip=207.54.116.67; helo=ale.deltatee.com;
+ envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48PKKT1Q4bzDqTk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2020 05:11:41 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01LI4prY069425; Fri, 21 Feb 2020 13:11:35 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ya6e6uxxu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Feb 2020 13:11:35 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01LI4uZS069932;
- Fri, 21 Feb 2020 13:11:35 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ya6e6uxxa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Feb 2020 13:11:34 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01LIAALs014932;
- Fri, 21 Feb 2020 18:11:34 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2y6897vqax-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Feb 2020 18:11:34 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01LIBXkJ11403976
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Feb 2020 18:11:33 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D810B2066;
- Fri, 21 Feb 2020 18:11:33 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 17D34B2064;
- Fri, 21 Feb 2020 18:11:33 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.160])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 21 Feb 2020 18:11:32 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Scott Cheloha <cheloha@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/drmem: cache LMBs in xarray to accelerate lookup
-In-Reply-To: <20200128221113.17158-1-cheloha@linux.ibm.com>
-References: <20200128221113.17158-1-cheloha@linux.ibm.com>
-Date: Fri, 21 Feb 2020 12:11:32 -0600
-Message-ID: <8736b3u7xn.fsf@linux.ibm.com>
+ dmarc=none (p=none dis=none) header.from=deltatee.com
+Received: from ale.deltatee.com (ale.deltatee.com [207.54.116.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48PL8x4wNGzDqlK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2020 05:49:21 +1100 (AEDT)
+Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
+ by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
+ id 1j5CzA-00057k-6t; Fri, 21 Feb 2020 11:25:14 -0700
+Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
+ (envelope-from <gunthorp@deltatee.com>)
+ id 1j5Cz2-0007NZ-VO; Fri, 21 Feb 2020 11:25:05 -0700
+From: Logan Gunthorpe <logang@deltatee.com>
+To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+ Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@kernel.org>,
+ David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Date: Fri, 21 Feb 2020 11:24:56 -0700
+Message-Id: <20200221182503.28317-1-logang@deltatee.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-21_06:2020-02-21,
- 2020-02-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=1 phishscore=0 adultscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002210138
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 172.16.1.31
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-mm@kvack.org, dan.j.williams@intel.com, akpm@linux-foundation.org,
+ hch@lst.de, catalin.marinas@arm.com, benh@kernel.crashing.org,
+ tglx@linutronix.de, david@redhat.com, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, mhocko@kernel.org, will@kernel.org,
+ luto@kernel.org, peterz@infradead.org, ebadger@gigaio.com, logang@deltatee.com
+X-SA-Exim-Mail-From: gunthorp@deltatee.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-8.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE,MYRULES_NO_TEXT autolearn=ham autolearn_force=no
+ version=3.4.2
+Subject: [PATCH v3 0/7] Allow setting caching mode in arch_add_memory() for
+ P2PDMA
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,150 +71,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Fontenont <ndfont@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Cc: Eric Badger <ebadger@gigaio.com>, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Scott, I've owed you a follow-up on this for a couple weeks, sorry.
+Hi,
 
-Beyond the issue of whether to remove the drmem_info->lmbs array, there
-are some other things to address.
+This is v3 of the patchset which cleans up a number of minor issues
+from the feedback of v2 and rebases onto v5.6-rc2. Additional feedback
+is welcome.
 
-Scott Cheloha <cheloha@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-> index 3d76e1c388c2..a37cbe794cdd 100644
-> --- a/arch/powerpc/include/asm/drmem.h
-> +++ b/arch/powerpc/include/asm/drmem.h
-> @@ -88,6 +88,9 @@ static inline bool drmem_lmb_reserved(struct drmem_lmb *lmb)
->  	return lmb->flags & DRMEM_LMB_RESERVED;
->  }
->  
-> +struct drmem_lmb *drmem_find_lmb_by_base_addr(unsigned long);
-> +struct drmem_lmb *drmem_find_lmb_by_drc_index(unsigned long);
+Thanks,
 
-Need identifiers for the function arguments here. checkpatch warns about
-this. Also drc_index conventionally is handled as u32 in this code.
+Logan
+
+--
+
+Changes in v3:
+ * Rebased onto v5.6-rc2
+ * Rename mhp_modifiers to mhp_params per David with an updated kernel
+   doc per Dan
+ * Drop support for s390 per David seeing it does not support
+   ZONE_DEVICE yet and there was a potential problem with huge pages.
+ * Added WARN_ON_ONCE in cases where arches recieve non PAGE_KERNEL
+   parameters
+ * Collected David and Micheal's Reviewed-By and Acked-by Tags
+
+Changes in v2:
+ * Rebased onto v5.5-rc5
+ * Renamed mhp_restrictions to mhp_modifiers and added the pgprot field
+   to that structure instead of using an argument for
+   arch_add_memory().
+ * Add patch to drop the unused flags field in mhp_restrictions
+
+A git branch is available here:
+
+https://github.com/sbates130272/linux-p2pmem remap_pages_cache_v3
+
+--
+
+Currently, the page tables created using memremap_pages() are always
+created with the PAGE_KERNEL cacheing mode. However, the P2PDMA code
+is creating pages for PCI BAR memory which should never be accessed
+through the cache and instead use either WC or UC. This still works in
+most cases, on x86, because the MTRR registers typically override the
+caching settings in the page tables for all of the IO memory to be
+UC-. However, this tends not to work so well on other arches or
+some rare x86 machines that have firmware which does not setup the
+MTRR registers in this way.
+
+Instead of this, this series proposes a change to arch_add_memory()
+to take the pgprot required by the mapping which allows us to
+explicitly set pagetable entries for P2PDMA memory to WC.
+
+This changes is pretty routine for most of the arches: x86_64, s390, arm64
+and powerpc simply need to thread the pgprot through to where the page
+tables are setup. x86_32 unfortunately sets up the page tables at boot so
+must use _set_memory_prot() to change their caching mode. ia64 and sh
+don't appear to have an easy way to change the page tables so, for now
+at least, we just return -EINVAL on such mappings and thus they will
+not support P2PDMA memory until the work for this is done.
+
+--
+
+Logan Gunthorpe (7):
+  mm/memory_hotplug: Drop the flags field from struct mhp_restrictions
+  mm/memory_hotplug: Rename mhp_restrictions to mhp_params
+  x86/mm: Thread pgprot_t through init_memory_mapping()
+  x86/mm: Introduce _set_memory_prot()
+  powerpc/mm: Thread pgprot_t through create_section_mapping()
+  mm/memory_hotplug: Add pgprot_t to mhp_params
+  mm/memremap: Set caching mode for PCI P2PDMA memory to WC
+
+ arch/arm64/mm/mmu.c                        |  7 ++--
+ arch/ia64/mm/init.c                        |  7 ++--
+ arch/powerpc/include/asm/book3s/64/hash.h  |  3 +-
+ arch/powerpc/include/asm/book3s/64/radix.h |  3 +-
+ arch/powerpc/include/asm/sparsemem.h       |  3 +-
+ arch/powerpc/mm/book3s64/hash_utils.c      |  5 +--
+ arch/powerpc/mm/book3s64/pgtable.c         |  7 ++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c   | 18 ++++++----
+ arch/powerpc/mm/mem.c                      | 10 +++---
+ arch/s390/mm/init.c                        |  9 +++--
+ arch/sh/mm/init.c                          |  7 ++--
+ arch/x86/include/asm/page_types.h          |  3 --
+ arch/x86/include/asm/pgtable.h             |  3 ++
+ arch/x86/include/asm/set_memory.h          |  1 +
+ arch/x86/kernel/amd_gart_64.c              |  3 +-
+ arch/x86/mm/init.c                         |  9 ++---
+ arch/x86/mm/init_32.c                      | 12 +++++--
+ arch/x86/mm/init_64.c                      | 40 ++++++++++++----------
+ arch/x86/mm/mm_internal.h                  |  3 +-
+ arch/x86/mm/pat/set_memory.c               |  7 ++++
+ arch/x86/platform/uv/bios_uv.c             |  3 +-
+ include/linux/memory_hotplug.h             | 20 +++++------
+ mm/memory_hotplug.c                        | 11 +++---
+ mm/memremap.c                              | 17 +++++----
+ 24 files changed, 130 insertions(+), 81 deletions(-)
 
 
-> +struct drmem_lmb *drmem_find_lmb_by_base_addr(unsigned long base_addr)
-> +{
-> +	return xa_load(&drmem_lmb_base_addr, base_addr);
-> +}
-> +
-> +struct drmem_lmb *drmem_find_lmb_by_drc_index(unsigned long drc_index)
-> +{
-> +	return xa_load(&drmem_lmb_drc_index, drc_index);
-> +}
-> +
-> +static int drmem_lmb_cache_for_lookup(struct drmem_lmb *lmb)
-
-This is called only from __init functions, so it should be __init as well.
-
-
-> +{
-> +	void *ret;
-> +
-> +	ret = xa_store(&drmem_lmb_base_addr, lmb->base_addr, lmb,  GFP_KERNEL);
-> +	if (xa_err(ret))
-> +		return xa_err(ret);
-> +
-> +	ret = xa_store(&drmem_lmb_drc_index, lmb->drc_index, lmb, GFP_KERNEL);
-> +	if (xa_err(ret))
-> +		return xa_err(ret);
-> +
-> +	return 0;
-> +}
-> +
->  static u32 drmem_lmb_flags(struct drmem_lmb *lmb)
->  {
->  	/*
-> @@ -364,6 +392,8 @@ static void __init init_drmem_v1_lmbs(const __be32 *prop)
->  
->  	for_each_drmem_lmb(lmb) {
->  		read_drconf_v1_cell(lmb, &prop);
-> +		if (drmem_lmb_cache_for_lookup(lmb) != 0)
-> +			return;
->  		lmb_set_nid(lmb);
->  	}
-
-Failing to record an lmb in the caches shouldn't be cause for silently
-aborting this initialization. Future lookups against the caches (should
-the system even boot) may fail, but the drmem_lmbs will still be
-initialized correctly.
-
-I'd say just ignore (or perhaps log once) xa_store() failures as long as
-this code only runs at boot.
-
-
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 50d68d21ddcc..23684d44549f 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -958,27 +958,21 @@ early_param("topology_updates", early_topology_updates);
->  static int hot_add_drconf_scn_to_nid(unsigned long scn_addr)
->  {
->  	struct drmem_lmb *lmb;
-> -	unsigned long lmb_size;
-> -	int nid = NUMA_NO_NODE;
-> -
-> -	lmb_size = drmem_lmb_size();
-> -
-> -	for_each_drmem_lmb(lmb) {
-> -		/* skip this block if it is reserved or not assigned to
-> -		 * this partition */
-> -		if ((lmb->flags & DRCONF_MEM_RESERVED)
-> -		    || !(lmb->flags & DRCONF_MEM_ASSIGNED))
-> -			continue;
->  
-> -		if ((scn_addr < lmb->base_addr)
-> -		    || (scn_addr >= (lmb->base_addr + lmb_size)))
-> -			continue;
-> +	lmb = drmem_find_lmb_by_base_addr(scn_addr);
-> +	if (lmb == NULL)
-> +		return NUMA_NO_NODE;
->  
-> -		nid = of_drconf_to_nid_single(lmb);
-> -		break;
-> -	}
-> +	/*
-> +	 * We can't use it if it is reserved or not assigned to
-> +	 * this partition.
-> +	 */
-> +	if (lmb->flags & DRCONF_MEM_RESERVED)
-> +		return NUMA_NO_NODE;
-> +	if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
-> +		return NUMA_NO_NODE;
->  
-> -	return nid;
-> +	return of_drconf_to_nid_single(lmb);
->  }
->  
->  /*
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index c126b94d1943..29bd19831a9a 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -222,17 +222,10 @@ static int get_lmb_range(u32 drc_index, int n_lmbs,
->  			 struct drmem_lmb **start_lmb,
->  			 struct drmem_lmb **end_lmb)
->  {
-> -	struct drmem_lmb *lmb, *start, *end;
-> +	struct drmem_lmb *start, *end;
->  	struct drmem_lmb *last_lmb;
->  
-> -	start = NULL;
-> -	for_each_drmem_lmb(lmb) {
-> -		if (lmb->drc_index == drc_index) {
-> -			start = lmb;
-> -			break;
-> -		}
-> -	}
-> -
-> +	start = drmem_find_lmb_by_drc_index(drc_index);
->  	if (!start)
->  		return -EINVAL;
-
-The changes to hot_add_drconf_scn_to_nid() and get_lmb_range() look
-correct to me.
+base-commit: 11a48a5a18c63fd7621bb050228cebf13566e4d8
+--
+2.20.1
