@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2463166E69
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 05:20:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30EB7166E2A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 05:00:06 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48NyQn2cl9zDqFG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 15:00:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Nysx0hxVzDqnM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 15:20:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,69 +19,66 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48NxkK35D7zDqZX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 14:28:25 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01L3KH67104674
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:28:22 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Nxy12PMvzDqP6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 14:38:33 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01L3ZolY125404
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:38:29 -0500
 Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y8ubqh1k8-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y93kgmpqk-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:28:22 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2020 22:38:29 -0500
 Received: from localhost
  by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Fri, 21 Feb 2020 03:28:19 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ Fri, 21 Feb 2020 03:28:16 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
  by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 21 Feb 2020 03:28:11 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01L3SA5u32702822
+ Fri, 21 Feb 2020 03:28:08 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01L3S89x51314814
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Feb 2020 03:28:10 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B08311C04A;
- Fri, 21 Feb 2020 03:28:10 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3EB4C11C058;
- Fri, 21 Feb 2020 03:28:10 +0000 (GMT)
+ Fri, 21 Feb 2020 03:28:08 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE38F52052;
+ Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 21 Feb 2020 03:28:10 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 45FC35204E;
+ Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
 Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
  (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 418CAA03EA;
- Fri, 21 Feb 2020 14:28:04 +1100 (AEDT)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A59CDA027A;
+ Fri, 21 Feb 2020 14:28:02 +1100 (AEDT)
 From: "Alastair D'Silva" <alastair@au1.ibm.com>
 To: alastair@d-silva.org
-Subject: [PATCH v3 27/27] MAINTAINERS: Add myself & nvdimm/ocxl to ocxl
-Date: Fri, 21 Feb 2020 14:27:20 +1100
+Subject: [PATCH v3 03/27] powerpc: Map & release OpenCAPI LPC memory
+Date: Fri, 21 Feb 2020 14:26:56 +1100
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200221032720.33893-1-alastair@au1.ibm.com>
 References: <20200221032720.33893-1-alastair@au1.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20022103-4275-0000-0000-000003A3FE64
+x-cbid: 20022103-4275-0000-0000-000003A3FE60
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022103-4276-0000-0000-000038B80C7A
-Message-Id: <20200221032720.33893-28-alastair@au1.ibm.com>
+x-cbparentid: 20022103-4276-0000-0000-000038B80C78
+Message-Id: <20200221032720.33893-4-alastair@au1.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-20_19:2020-02-19,
  2020-02-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- priorityscore=1501 suspectscore=1 spamscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=538 lowpriorityscore=0 malwarescore=0 phishscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002210020
+ bulkscore=0 spamscore=0
+ clxscore=1015 phishscore=0 mlxlogscore=480 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=3 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002210021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,38 +116,82 @@ Sender: "Linuxppc-dev"
 
 From: Alastair D'Silva <alastair@d-silva.org>
 
-The OpenCAPI Persistent Memory driver will be maintained as part ofi
-the ppc tree.
-
-I'm also adding myself as an author of the driver & contributor to
-the generic ocxl driver.
+This patch adds platform support to map & release LPC memory.
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/pnv-ocxl.h   |  4 +++
+ arch/powerpc/platforms/powernv/ocxl.c | 43 +++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f8670989ec91..3fb9a9f576a7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12064,13 +12064,16 @@ F:	tools/objtool/
- OCXL (Open Coherent Accelerator Processor Interface OpenCAPI) DRIVER
- M:	Frederic Barrat <fbarrat@linux.ibm.com>
- M:	Andrew Donnellan <ajd@linux.ibm.com>
-+M:	Alastair D'Silva <alastair@d-silva.org>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Supported
- F:	arch/powerpc/platforms/powernv/ocxl.c
-+F:	arch/powerpc/platforms/powernv/pmem/*
- F:	arch/powerpc/include/asm/pnv-ocxl.h
- F:	drivers/misc/ocxl/
- F:	include/misc/ocxl*
- F:	include/uapi/misc/ocxl.h
-+F:	include/uapi/nvdimm/ocxl-pmem.h
- F:	Documentation/userspace-api/accelerators/ocxl.rst
+diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
+index 7de82647e761..0b2a6707e555 100644
+--- a/arch/powerpc/include/asm/pnv-ocxl.h
++++ b/arch/powerpc/include/asm/pnv-ocxl.h
+@@ -32,5 +32,9 @@ extern int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
  
- OMAP AUDIO SUPPORT
+ extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
+ extern void pnv_ocxl_free_xive_irq(u32 irq);
++#ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
++u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size);
++void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev);
++#endif
+ 
+ #endif /* _ASM_PNV_OCXL_H */
+diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
+index 8c65aacda9c8..f2edbcc67361 100644
+--- a/arch/powerpc/platforms/powernv/ocxl.c
++++ b/arch/powerpc/platforms/powernv/ocxl.c
+@@ -475,6 +475,49 @@ void pnv_ocxl_spa_release(void *platform_data)
+ }
+ EXPORT_SYMBOL_GPL(pnv_ocxl_spa_release);
+ 
++#ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
++u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size)
++{
++	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
++	struct pnv_phb *phb = hose->private_data;
++	u32 bdfn = pci_dev_id(pdev);
++	__be64 base_addr_be64;
++	u64 base_addr;
++	int rc;
++
++	rc = opal_npu_mem_alloc(phb->opal_id, bdfn, size, &base_addr_be64);
++	if (rc) {
++		dev_warn(&pdev->dev,
++			 "OPAL could not allocate LPC memory, rc=%d\n", rc);
++		return 0;
++	}
++
++	base_addr = be64_to_cpu(base_addr_be64);
++
++	rc = check_hotplug_memory_addressable(base_addr >> PAGE_SHIFT,
++					      size >> PAGE_SHIFT);
++	if (rc)
++		return 0;
++
++	return base_addr;
++}
++EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_setup);
++
++void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev)
++{
++	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
++	struct pnv_phb *phb = hose->private_data;
++	u32 bdfn = pci_dev_id(pdev);
++	int rc;
++
++	rc = opal_npu_mem_release(phb->opal_id, bdfn);
++	if (rc)
++		dev_warn(&pdev->dev,
++			 "OPAL reported rc=%d when releasing LPC memory\n", rc);
++}
++EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_release);
++#endif
++
+ int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
+ {
+ 	struct spa_data *data = (struct spa_data *) platform_data;
 -- 
 2.24.1
 
