@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCD6168504
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 18:32:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48PJSN63jRzDqpf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Feb 2020 04:32:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D08168517
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 18:35:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48PJWz3cRKzDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Feb 2020 04:35:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,51 +19,51 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48PJQM0l9SzDqNS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2020 04:30:50 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48PJQN2yp4zDqNS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2020 04:30:52 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01LHQUsK011002; Fri, 21 Feb 2020 12:30:45 -0500
+ 01LHRBnm162980; Fri, 21 Feb 2020 12:30:47 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y9tkd86gm-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y8ubyanyy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 Feb 2020 12:30:46 -0500
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01LHRfKM164248;
+ Fri, 21 Feb 2020 12:30:45 -0500
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y8ubyany9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 21 Feb 2020 12:30:45 -0500
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01LHRZrg013596;
- Fri, 21 Feb 2020 12:30:44 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y9tkd86g8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Feb 2020 12:30:44 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01LHUFuS029092;
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01LHUIrl017325;
  Fri, 21 Feb 2020 17:30:44 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 2y68976n03-1
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 2y68976n8y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 21 Feb 2020 17:30:44 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01LHUhx74719466
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01LHUiPJ48562490
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Feb 2020 17:30:43 GMT
+ Fri, 21 Feb 2020 17:30:44 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 518B6B2070;
+ by IMSVA (Postfix) with ESMTP id 2BF41B2066;
+ Fri, 21 Feb 2020 17:30:44 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76031B2073;
  Fri, 21 Feb 2020 17:30:43 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B772CB2068;
- Fri, 21 Feb 2020 17:30:42 +0000 (GMT)
 Received: from rascal.austin.ibm.com (unknown [9.41.179.32])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 21 Feb 2020 17:30:42 +0000 (GMT)
+ Fri, 21 Feb 2020 17:30:43 +0000 (GMT)
 From: Scott Cheloha <cheloha@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 1/2] powerpc/drmem: accelerate memory_add_physaddr_to_nid()
- with LMB xarray
-Date: Fri, 21 Feb 2020 11:29:01 -0600
-Message-Id: <20200221172901.1596249-2-cheloha@linux.ibm.com>
+Subject: [PATCH v2 2/2] pseries/hotplug-memory: leverage xarray API to
+ simplify code
+Date: Fri, 21 Feb 2020 11:29:02 -0600
+Message-Id: <20200221172901.1596249-3-cheloha@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200128221113.17158-1-cheloha@linux.ibm.com>
 References: <20200128221113.17158-1-cheloha@linux.ibm.com>
@@ -74,10 +74,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-21_06:2020-02-21,
  2020-02-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0 adultscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 malwarescore=0 adultscore=0 impostorscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2002210132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -98,173 +98,661 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On PowerPC, memory_add_physaddr_to_nid() uses a linear search to find
-an LMB matching the given address.  This scales very poorly when there
-are many LMBs.  The poor scaling cripples drmem_init() during boot:
-lmb_set_nid(), which calls memory_add_physaddr_to_nid(), is called for
-each LMB.
+The xarray API has entry marking (xa_set_mark/xa_clear_mark) and a
+range-based iterator (xa_for_each_range), so there is no need for the
+pseries hotplug code to maintain its own implementation of these
+features.
 
-If we index each LMB in an xarray by its base address we can achieve
-O(log n) search during memory_add_physaddr_to_nid(), which scales much
-better.
+This patch introduces an xarray of drmem_lmb structures indexed by
+each LMB's DRC index (drmem_lmb.drc_index).  The xarray is protected
+by the hotplug lock.  LMBs are indexed into the xarray during
+drmem_init() and accessed during hotplug operations.
 
-For example, in the lab we have a 64TB P9 machine with 256MB LMBs.
-So, suring drmem_init() we instantiate 249854 LMBs.  On a vanilla
-kernel it completes drmem_init() in ~35 seconds with a soft lockup
-trace.  On the patched kernel it completes drmem_init() in ~0.5
-seconds.
+Custom LMB search, iteration, and marking code is replaced with xarray
+equivalents.  The result is more compact.  The code ought to run
+faster, too: several linear searches have been replaced with xa_load(),
+which runs in sub-linear time.
 
-Before:
-[   53.721639] drmem: initializing drmem v2
-[   80.604346] watchdog: BUG: soft lockup - CPU#65 stuck for 23s! [swapper/0:1]
-[   80.604377] Modules linked in:
-[   80.604389] CPU: 65 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc2+ #4
-[   80.604397] NIP:  c0000000000a4980 LR: c0000000000a4940 CTR: 0000000000000000
-[   80.604407] REGS: c0002dbff8493830 TRAP: 0901   Not tainted  (5.6.0-rc2+)
-[   80.604412] MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 44000248  XER: 0000000d
-[   80.604431] CFAR: c0000000000a4a38 IRQMASK: 0
-[   80.604431] GPR00: c0000000000a4940 c0002dbff8493ac0 c000000001904400 c0003cfffffede30
-[   80.604431] GPR04: 0000000000000000 c000000000f4095a 000000000000002f 0000000010000000
-[   80.604431] GPR08: c0000bf7ecdb7fb8 c0000bf7ecc2d3c8 0000000000000008 c00c0002fdfb2001
-[   80.604431] GPR12: 0000000000000000 c00000001e8ec200
-[   80.604477] NIP [c0000000000a4980] hot_add_scn_to_nid+0xa0/0x3e0
-[   80.604486] LR [c0000000000a4940] hot_add_scn_to_nid+0x60/0x3e0
-[   80.604492] Call Trace:
-[   80.604498] [c0002dbff8493ac0] [c0000000000a4940] hot_add_scn_to_nid+0x60/0x3e0 (unreliable)
-[   80.604509] [c0002dbff8493b20] [c000000000087c10] memory_add_physaddr_to_nid+0x20/0x60
-[   80.604521] [c0002dbff8493b40] [c0000000010d4880] drmem_init+0x25c/0x2f0
-[   80.604530] [c0002dbff8493c10] [c000000000010154] do_one_initcall+0x64/0x2c0
-[   80.604540] [c0002dbff8493ce0] [c0000000010c4aa0] kernel_init_freeable+0x2d8/0x3a0
-[   80.604550] [c0002dbff8493db0] [c000000000010824] kernel_init+0x2c/0x148
-[   80.604560] [c0002dbff8493e20] [c00000000000b648] ret_from_kernel_thread+0x5c/0x74
-[   80.604567] Instruction dump:
-[   80.604574] 392918e8 e9490000 e90a000a e92a0000 80ea000c 1d080018 3908ffe8 7d094214
-[   80.604586] 7fa94040 419d00dc e9490010 714a0088 <2faa0008> 409e00ac e9490000 7fbe5040
-[   89.047390] drmem: 249854 LMB(s)
-
-After:
-[   53.424702] drmem: initializing drmem v2
-[   53.898813] drmem: 249854 LMB(s)
-
-lmb_set_nid() is called from dlpar_lmb_add() so this patch will also
-improve memory hot-add speeds on big machines.
+The array of LMBs, drmem_info.lmbs[], is kept to preserve the ordering
+of LMBs read from the firmware in drmem_init() during firmware writes
+in drmem_update_dt().
 
 Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
 ---
- arch/powerpc/include/asm/drmem.h |  1 +
- arch/powerpc/mm/drmem.c          | 24 ++++++++++++++++++++++++
- arch/powerpc/mm/numa.c           | 29 ++++++++++-------------------
- 3 files changed, 35 insertions(+), 19 deletions(-)
+ arch/powerpc/include/asm/drmem.h              |  26 +--
+ arch/powerpc/mm/drmem.c                       |  38 ++--
+ .../platforms/pseries/hotplug-memory.c        | 207 ++++++------------
+ 3 files changed, 92 insertions(+), 179 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-index 3d76e1c388c2..90a5a9ad872b 100644
+index 90a5a9ad872b..97e07eec7eda 100644
 --- a/arch/powerpc/include/asm/drmem.h
 +++ b/arch/powerpc/include/asm/drmem.h
-@@ -88,6 +88,7 @@ static inline bool drmem_lmb_reserved(struct drmem_lmb *lmb)
- 	return lmb->flags & DRMEM_LMB_RESERVED;
+@@ -26,13 +26,8 @@ struct drmem_lmb_info {
+ 
+ extern struct drmem_lmb_info *drmem_info;
+ 
+-#define for_each_drmem_lmb_in_range(lmb, start, end)		\
+-	for ((lmb) = (start); (lmb) <= (end); (lmb)++)
+-
+-#define for_each_drmem_lmb(lmb)					\
+-	for_each_drmem_lmb_in_range((lmb),			\
+-		&drmem_info->lmbs[0],				\
+-		&drmem_info->lmbs[drmem_info->n_lmbs - 1])
++struct xarray;
++extern struct xarray *drmem_lmb_xa;
+ 
+ /*
+  * The of_drconf_cell_v1 struct defines the layout of the LMB data
+@@ -71,23 +66,6 @@ static inline u32 drmem_lmb_size(void)
+ 	return drmem_info->lmb_size;
  }
  
-+struct drmem_lmb *drmem_find_lmb_by_base_addr(u64 base_addr);
+-#define DRMEM_LMB_RESERVED	0x80000000
+-
+-static inline void drmem_mark_lmb_reserved(struct drmem_lmb *lmb)
+-{
+-	lmb->flags |= DRMEM_LMB_RESERVED;
+-}
+-
+-static inline void drmem_remove_lmb_reservation(struct drmem_lmb *lmb)
+-{
+-	lmb->flags &= ~DRMEM_LMB_RESERVED;
+-}
+-
+-static inline bool drmem_lmb_reserved(struct drmem_lmb *lmb)
+-{
+-	return lmb->flags & DRMEM_LMB_RESERVED;
+-}
+-
+ struct drmem_lmb *drmem_find_lmb_by_base_addr(u64 base_addr);
  u64 drmem_lmb_memory_max(void);
  void __init walk_drmem_lmbs(struct device_node *dn,
- 			void (*func)(struct drmem_lmb *, const __be32 **));
 diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-index 44bfbdae920c..62cbe79e3860 100644
+index 62cbe79e3860..013ab2689bd8 100644
 --- a/arch/powerpc/mm/drmem.c
 +++ b/arch/powerpc/mm/drmem.c
-@@ -11,12 +11,31 @@
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/memblock.h>
-+#include <linux/xarray.h>
- #include <asm/prom.h>
+@@ -16,6 +16,8 @@
  #include <asm/drmem.h>
  
-+static DEFINE_XARRAY(drmem_lmb_xa_base_addr);
+ static DEFINE_XARRAY(drmem_lmb_xa_base_addr);
++static DEFINE_XARRAY(drmem_lmb_xa_drc_index);
++struct xarray *drmem_lmb_xa = &drmem_lmb_xa_drc_index;
  static struct drmem_lmb_info __drmem_info;
  struct drmem_lmb_info *drmem_info = &__drmem_info;
  
-+static int drmem_cache_lmb_for_lookup(struct drmem_lmb *lmb)
-+{
-+	void *ret;
-+
-+	ret = xa_store(&drmem_lmb_xa_base_addr, lmb->base_addr, lmb,
+@@ -27,6 +29,10 @@ static int drmem_cache_lmb_for_lookup(struct drmem_lmb *lmb)
+ 		       GFP_KERNEL);
+ 	if (xa_is_err(ret))
+ 		return xa_err(ret);
++	ret = xa_store(&drmem_lmb_xa_drc_index, lmb->drc_index, lmb,
 +		       GFP_KERNEL);
 +	if (xa_is_err(ret))
 +		return xa_err(ret);
-+
-+	return 0;
-+}
-+
-+struct drmem_lmb *drmem_find_lmb_by_base_addr(u64 base_addr)
-+{
-+	return xa_load(&drmem_lmb_xa_base_addr, base_addr);
-+}
-+
- u64 drmem_lmb_memory_max(void)
- {
- 	struct drmem_lmb *last_lmb;
-@@ -364,6 +383,8 @@ static void __init init_drmem_v1_lmbs(const __be32 *prop)
  
- 	for_each_drmem_lmb(lmb) {
- 		read_drconf_v1_cell(lmb, &prop);
-+		if (drmem_cache_lmb_for_lookup(lmb) != 0)
-+			return;
- 		lmb_set_nid(lmb);
- 	}
+ 	return 0;
  }
-@@ -411,6 +432,9 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
- 			lmb->aa_index = dr_cell.aa_index;
- 			lmb->flags = dr_cell.flags;
+@@ -44,15 +50,6 @@ u64 drmem_lmb_memory_max(void)
+ 	return last_lmb->base_addr + drmem_lmb_size();
+ }
  
-+			if (drmem_cache_lmb_for_lookup(lmb) != 0)
-+				return;
-+
- 			lmb_set_nid(lmb);
- 		}
+-static u32 drmem_lmb_flags(struct drmem_lmb *lmb)
+-{
+-	/*
+-	 * Return the value of the lmb flags field minus the reserved
+-	 * bit used internally for hotplug processing.
+-	 */
+-	return lmb->flags & ~DRMEM_LMB_RESERVED;
+-}
+-
+ static struct property *clone_property(struct property *prop, u32 prop_sz)
+ {
+ 	struct property *new_prop;
+@@ -84,6 +81,7 @@ static int drmem_update_dt_v1(struct device_node *memory,
+ 	struct of_drconf_cell_v1 *dr_cell;
+ 	struct drmem_lmb *lmb;
+ 	u32 *p;
++	int i;
+ 
+ 	new_prop = clone_property(prop, prop->length);
+ 	if (!new_prop)
+@@ -94,11 +92,12 @@ static int drmem_update_dt_v1(struct device_node *memory,
+ 
+ 	dr_cell = (struct of_drconf_cell_v1 *)p;
+ 
+-	for_each_drmem_lmb(lmb) {
++	for (i = 0; i < drmem_info->n_lmbs; i++) {
++		lmb = &drmem_info->lmbs[i];
+ 		dr_cell->base_addr = cpu_to_be64(lmb->base_addr);
+ 		dr_cell->drc_index = cpu_to_be32(lmb->drc_index);
+ 		dr_cell->aa_index = cpu_to_be32(lmb->aa_index);
+-		dr_cell->flags = cpu_to_be32(drmem_lmb_flags(lmb));
++		dr_cell->flags = cpu_to_be32(lmb->flags);
+ 
+ 		dr_cell++;
  	}
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 3c7dec70cda0..0fd7963a991e 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -958,27 +958,18 @@ early_param("topology_updates", early_topology_updates);
- static int hot_add_drconf_scn_to_nid(unsigned long scn_addr)
+@@ -113,7 +112,7 @@ static void init_drconf_v2_cell(struct of_drconf_cell_v2 *dr_cell,
+ 	dr_cell->base_addr = cpu_to_be64(lmb->base_addr);
+ 	dr_cell->drc_index = cpu_to_be32(lmb->drc_index);
+ 	dr_cell->aa_index = cpu_to_be32(lmb->aa_index);
+-	dr_cell->flags = cpu_to_be32(drmem_lmb_flags(lmb));
++	dr_cell->flags = cpu_to_be32(lmb->flags);
+ }
+ 
+ static int drmem_update_dt_v2(struct device_node *memory,
+@@ -124,11 +123,13 @@ static int drmem_update_dt_v2(struct device_node *memory,
+ 	struct drmem_lmb *lmb, *prev_lmb;
+ 	u32 lmb_sets, prop_sz, seq_lmbs;
+ 	u32 *p;
++	int i;
+ 
+ 	/* First pass, determine how many LMB sets are needed. */
+ 	lmb_sets = 0;
+ 	prev_lmb = NULL;
+-	for_each_drmem_lmb(lmb) {
++	for (i = 0; i < drmem_info->n_lmbs; i++) {
++		lmb = &drmem_info->lmbs[i];
+ 		if (!prev_lmb) {
+ 			prev_lmb = lmb;
+ 			lmb_sets++;
+@@ -136,7 +137,7 @@ static int drmem_update_dt_v2(struct device_node *memory,
+ 		}
+ 
+ 		if (prev_lmb->aa_index != lmb->aa_index ||
+-		    drmem_lmb_flags(prev_lmb) != drmem_lmb_flags(lmb))
++		    prev_lmb->flags != lmb->flags)
+ 			lmb_sets++;
+ 
+ 		prev_lmb = lmb;
+@@ -155,7 +156,8 @@ static int drmem_update_dt_v2(struct device_node *memory,
+ 	/* Second pass, populate the LMB set data */
+ 	prev_lmb = NULL;
+ 	seq_lmbs = 0;
+-	for_each_drmem_lmb(lmb) {
++	for (i = 0; i < drmem_info->n_lmbs; i++) {
++		lmb = &drmem_info->lmbs[i];
+ 		if (prev_lmb == NULL) {
+ 			/* Start of first LMB set */
+ 			prev_lmb = lmb;
+@@ -165,7 +167,7 @@ static int drmem_update_dt_v2(struct device_node *memory,
+ 		}
+ 
+ 		if (prev_lmb->aa_index != lmb->aa_index ||
+-		    drmem_lmb_flags(prev_lmb) != drmem_lmb_flags(lmb)) {
++		    prev_lmb->flags != lmb->flags) {
+ 			/* end of one set, start of another */
+ 			dr_cell->seq_lmbs = cpu_to_be32(seq_lmbs);
+ 			dr_cell++;
+@@ -371,6 +373,7 @@ void __init walk_drmem_lmbs(struct device_node *dn,
+ static void __init init_drmem_v1_lmbs(const __be32 *prop)
  {
  	struct drmem_lmb *lmb;
--	unsigned long lmb_size;
--	int nid = NUMA_NO_NODE;
--
--	lmb_size = drmem_lmb_size();
--
++	int i;
+ 
+ 	drmem_info->n_lmbs = of_read_number(prop++, 1);
+ 	if (drmem_info->n_lmbs == 0)
+@@ -381,7 +384,8 @@ static void __init init_drmem_v1_lmbs(const __be32 *prop)
+ 	if (!drmem_info->lmbs)
+ 		return;
+ 
 -	for_each_drmem_lmb(lmb) {
--		/* skip this block if it is reserved or not assigned to
--		 * this partition */
--		if ((lmb->flags & DRCONF_MEM_RESERVED)
--		    || !(lmb->flags & DRCONF_MEM_ASSIGNED))
--			continue;
--
--		if ((scn_addr < lmb->base_addr)
--		    || (scn_addr >= (lmb->base_addr + lmb_size)))
--			continue;
++	for (i = 0; i < drmem_info->n_lmbs; i++) {
++		lmb = &drmem_info->lmbs[i];
+ 		read_drconf_v1_cell(lmb, &prop);
+ 		if (drmem_cache_lmb_for_lookup(lmb) != 0)
+ 			return;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index a4d40a3ceea3..61d4c3c1e0fd 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -13,6 +13,7 @@
+ #include <linux/memory.h>
+ #include <linux/memory_hotplug.h>
+ #include <linux/slab.h>
++#include <linux/xarray.h>
  
--		nid = of_drconf_to_nid_single(lmb);
--		break;
--	}
-+	lmb = drmem_find_lmb_by_base_addr(scn_addr);
-+	if (lmb == NULL)
-+		return NUMA_NO_NODE;
-+	
-+	/* can't use this block if it is reserved or not assigned to
-+	 * this partition */
-+	if ((lmb->flags & DRCONF_MEM_RESERVED)
-+	    || !(lmb->flags & DRCONF_MEM_ASSIGNED))
-+		return NUMA_NO_NODE;
- 
--	return nid;
-+	return of_drconf_to_nid_single(lmb);
+ #include <asm/firmware.h>
+ #include <asm/machdep.h>
+@@ -218,35 +219,6 @@ static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
+ 	return mem_block;
  }
  
- /*
+-static int get_lmb_range(u32 drc_index, int n_lmbs,
+-			 struct drmem_lmb **start_lmb,
+-			 struct drmem_lmb **end_lmb)
+-{
+-	struct drmem_lmb *lmb, *start, *end;
+-	struct drmem_lmb *last_lmb;
+-
+-	start = NULL;
+-	for_each_drmem_lmb(lmb) {
+-		if (lmb->drc_index == drc_index) {
+-			start = lmb;
+-			break;
+-		}
+-	}
+-
+-	if (!start)
+-		return -EINVAL;
+-
+-	end = &start[n_lmbs - 1];
+-
+-	last_lmb = &drmem_info->lmbs[drmem_info->n_lmbs - 1];
+-	if (end > last_lmb)
+-		return -EINVAL;
+-
+-	*start_lmb = start;
+-	*end_lmb = end;
+-	return 0;
+-}
+-
+ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
+ {
+ 	struct memory_block *mem_block;
+@@ -403,6 +375,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ {
+ 	struct drmem_lmb *lmb;
++	unsigned long index;
+ 	int lmbs_removed = 0;
+ 	int lmbs_available = 0;
+ 	int rc;
+@@ -413,7 +386,7 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ 		return -EINVAL;
+ 
+ 	/* Validate that there are enough LMBs to satisfy the request */
+-	for_each_drmem_lmb(lmb) {
++	xa_for_each(drmem_lmb_xa, index, lmb) {
+ 		if (lmb_is_removable(lmb))
+ 			lmbs_available++;
+ 
+@@ -427,7 +400,7 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ 		return -EINVAL;
+ 	}
+ 
+-	for_each_drmem_lmb(lmb) {
++	xa_for_each(drmem_lmb_xa, index, lmb) {
+ 		rc = dlpar_remove_lmb(lmb);
+ 		if (rc)
+ 			continue;
+@@ -435,7 +408,7 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ 		/* Mark this lmb so we can add it later if all of the
+ 		 * requested LMBs cannot be removed.
+ 		 */
+-		drmem_mark_lmb_reserved(lmb);
++		xa_set_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 
+ 		lmbs_removed++;
+ 		if (lmbs_removed == lmbs_to_remove)
+@@ -445,29 +418,23 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ 	if (lmbs_removed != lmbs_to_remove) {
+ 		pr_err("Memory hot-remove failed, adding LMB's back\n");
+ 
+-		for_each_drmem_lmb(lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			rc = dlpar_add_lmb(lmb);
+ 			if (rc)
+ 				pr_err("Failed to add LMB back, drc index %x\n",
+ 				       lmb->drc_index);
+ 
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 
+ 		rc = -EINVAL;
+ 	} else {
+-		for_each_drmem_lmb(lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			dlpar_release_drc(lmb->drc_index);
+ 			pr_info("Memory at %llx was hot-removed\n",
+ 				lmb->base_addr);
+ 
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 		rc = 0;
+ 	}
+@@ -478,25 +445,19 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ static int dlpar_memory_remove_by_index(u32 drc_index)
+ {
+ 	struct drmem_lmb *lmb;
+-	int lmb_found;
+ 	int rc;
+ 
+ 	pr_info("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+ 
+-	lmb_found = 0;
+-	for_each_drmem_lmb(lmb) {
+-		if (lmb->drc_index == drc_index) {
+-			lmb_found = 1;
+-			rc = dlpar_remove_lmb(lmb);
+-			if (!rc)
+-				dlpar_release_drc(lmb->drc_index);
+-
+-			break;
+-		}
++	lmb = xa_load(drmem_lmb_xa, drc_index);
++	if (lmb == NULL) {
++		pr_info("cannot hot-remove LMB %x: not found\n", drc_index);
++		return -EINVAL;
+ 	}
+ 
+-	if (!lmb_found)
+-		rc = -EINVAL;
++	rc = dlpar_remove_lmb(lmb);
++	if (!rc)
++		dlpar_release_drc(lmb->drc_index);
+ 
+ 	if (rc)
+ 		pr_info("Failed to hot-remove memory at %llx\n",
+@@ -510,27 +471,22 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ static int dlpar_memory_readd_by_index(u32 drc_index)
+ {
+ 	struct drmem_lmb *lmb;
+-	int lmb_found;
+ 	int rc;
+ 
+ 	pr_info("Attempting to update LMB, drc index %x\n", drc_index);
+ 
+-	lmb_found = 0;
+-	for_each_drmem_lmb(lmb) {
+-		if (lmb->drc_index == drc_index) {
+-			lmb_found = 1;
+-			rc = dlpar_remove_lmb(lmb);
+-			if (!rc) {
+-				rc = dlpar_add_lmb(lmb);
+-				if (rc)
+-					dlpar_release_drc(lmb->drc_index);
+-			}
+-			break;
+-		}
++	lmb = xa_load(drmem_lmb_xa, drc_index);
++	if (lmb == NULL) {
++		pr_info("cannot update LMB %x: not found\n", drc_index);
++		return -EINVAL;
+ 	}
+ 
+-	if (!lmb_found)
+-		rc = -EINVAL;
++	rc = dlpar_remove_lmb(lmb);
++	if (!rc) {
++		rc = dlpar_add_lmb(lmb);
++		if (rc)
++			dlpar_release_drc(lmb->drc_index);
++	}
+ 
+ 	if (rc)
+ 		pr_info("Failed to update memory at %llx\n",
+@@ -543,22 +499,21 @@ static int dlpar_memory_readd_by_index(u32 drc_index)
+ 
+ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ {
+-	struct drmem_lmb *lmb, *start_lmb, *end_lmb;
++	struct drmem_lmb *lmb;
++	unsigned long first, index, last;
+ 	int lmbs_available = 0;
+ 	int rc;
+ 
+ 	pr_info("Attempting to hot-remove %u LMB(s) at %x\n",
+ 		lmbs_to_remove, drc_index);
+ 
+-	if (lmbs_to_remove == 0)
+-		return -EINVAL;
+-
+-	rc = get_lmb_range(drc_index, lmbs_to_remove, &start_lmb, &end_lmb);
+-	if (rc)
++	if (lmbs_to_remove == 0 || drc_index > U32_MAX - lmbs_to_remove)
+ 		return -EINVAL;
++	first = drc_index;
++	last = drc_index + lmbs_to_remove - 1;
+ 
+ 	/* Validate that there are enough LMBs to satisfy the request */
+-	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
++	xa_for_each_range(drmem_lmb_xa, index, lmb, first, last) {
+ 		if (lmb->flags & DRCONF_MEM_RESERVED)
+ 			break;
+ 
+@@ -568,7 +523,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ 	if (lmbs_available < lmbs_to_remove)
+ 		return -EINVAL;
+ 
+-	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
++	xa_for_each_range(drmem_lmb_xa, index, lmb, first, last) {
+ 		if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
+ 			continue;
+ 
+@@ -576,35 +531,29 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ 		if (rc)
+ 			break;
+ 
+-		drmem_mark_lmb_reserved(lmb);
++		xa_set_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 	}
+ 
+ 	if (rc) {
+ 		pr_err("Memory indexed-count-remove failed, adding any removed LMBs\n");
+ 
+ 
+-		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			rc = dlpar_add_lmb(lmb);
+ 			if (rc)
+ 				pr_err("Failed to add LMB, drc index %x\n",
+ 				       lmb->drc_index);
+ 
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 		rc = -EINVAL;
+ 	} else {
+-		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			dlpar_release_drc(lmb->drc_index);
+ 			pr_info("Memory at %llx (drc index %x) was hot-removed\n",
+ 				lmb->base_addr, lmb->drc_index);
+ 
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 	}
+ 
+@@ -687,6 +636,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ {
+ 	struct drmem_lmb *lmb;
++	unsigned long index;
+ 	int lmbs_available = 0;
+ 	int lmbs_added = 0;
+ 	int rc;
+@@ -697,7 +647,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 		return -EINVAL;
+ 
+ 	/* Validate that there are enough LMBs to satisfy the request */
+-	for_each_drmem_lmb(lmb) {
++	xa_for_each(drmem_lmb_xa, index, lmb) {
+ 		if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
+ 			lmbs_available++;
+ 
+@@ -708,7 +658,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 	if (lmbs_available < lmbs_to_add)
+ 		return -EINVAL;
+ 
+-	for_each_drmem_lmb(lmb) {
++	xa_for_each(drmem_lmb_xa, index, lmb) {
+ 		if (lmb->flags & DRCONF_MEM_ASSIGNED)
+ 			continue;
+ 
+@@ -725,7 +675,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 		/* Mark this lmb so we can remove it later if all of the
+ 		 * requested LMBs cannot be added.
+ 		 */
+-		drmem_mark_lmb_reserved(lmb);
++		xa_set_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 
+ 		lmbs_added++;
+ 		if (lmbs_added == lmbs_to_add)
+@@ -735,10 +685,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 	if (lmbs_added != lmbs_to_add) {
+ 		pr_err("Memory hot-add failed, removing any added LMBs\n");
+ 
+-		for_each_drmem_lmb(lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			rc = dlpar_remove_lmb(lmb);
+ 			if (rc)
+ 				pr_err("Failed to remove LMB, drc index %x\n",
+@@ -746,17 +693,14 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 			else
+ 				dlpar_release_drc(lmb->drc_index);
+ 
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 		rc = -EINVAL;
+ 	} else {
+-		for_each_drmem_lmb(lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			pr_info("Memory at %llx (drc index %x) was hot-added\n",
+ 				lmb->base_addr, lmb->drc_index);
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 		rc = 0;
+ 	}
+@@ -767,27 +711,22 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ static int dlpar_memory_add_by_index(u32 drc_index)
+ {
+ 	struct drmem_lmb *lmb;
+-	int rc, lmb_found;
++	int rc;
+ 
+ 	pr_info("Attempting to hot-add LMB, drc index %x\n", drc_index);
+ 
+-	lmb_found = 0;
+-	for_each_drmem_lmb(lmb) {
+-		if (lmb->drc_index == drc_index) {
+-			lmb_found = 1;
+-			rc = dlpar_acquire_drc(lmb->drc_index);
+-			if (!rc) {
+-				rc = dlpar_add_lmb(lmb);
+-				if (rc)
+-					dlpar_release_drc(lmb->drc_index);
+-			}
+-
+-			break;
+-		}
++	lmb = xa_load(drmem_lmb_xa, drc_index);
++	if (lmb == NULL) {
++		pr_info("cannot hot-add LMB %x: not found\n", drc_index);
++		return -EINVAL;
+ 	}
+ 
+-	if (!lmb_found)
+-		rc = -EINVAL;
++	rc = dlpar_acquire_drc(lmb->drc_index);
++	if (!rc) {
++		rc = dlpar_add_lmb(lmb);
++		if (rc)
++			dlpar_release_drc(lmb->drc_index);
++	}
+ 
+ 	if (rc)
+ 		pr_info("Failed to hot-add memory, drc index %x\n", drc_index);
+@@ -800,22 +739,21 @@ static int dlpar_memory_add_by_index(u32 drc_index)
+ 
+ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ {
+-	struct drmem_lmb *lmb, *start_lmb, *end_lmb;
++	struct drmem_lmb *lmb;
++	unsigned long first, index, last;
+ 	int lmbs_available = 0;
+ 	int rc;
+ 
+ 	pr_info("Attempting to hot-add %u LMB(s) at index %x\n",
+ 		lmbs_to_add, drc_index);
+ 
+-	if (lmbs_to_add == 0)
+-		return -EINVAL;
+-
+-	rc = get_lmb_range(drc_index, lmbs_to_add, &start_lmb, &end_lmb);
+-	if (rc)
++	if (lmbs_to_add == 0 || drc_index > U32_MAX - lmbs_to_add)
+ 		return -EINVAL;
++	first = drc_index;
++	last = drc_index + lmbs_to_add - 1;
+ 
+ 	/* Validate that the LMBs in this range are not reserved */
+-	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
++	xa_for_each_range(drmem_lmb_xa, index, lmb, first, last) {
+ 		if (lmb->flags & DRCONF_MEM_RESERVED)
+ 			break;
+ 
+@@ -825,7 +763,7 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ 	if (lmbs_available < lmbs_to_add)
+ 		return -EINVAL;
+ 
+-	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
++	xa_for_each_range(drmem_lmb_xa, index, lmb, first, last) {
+ 		if (lmb->flags & DRCONF_MEM_ASSIGNED)
+ 			continue;
+ 
+@@ -839,16 +777,12 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ 			break;
+ 		}
+ 
+-		drmem_mark_lmb_reserved(lmb);
++		xa_set_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 	}
+ 
+ 	if (rc) {
+ 		pr_err("Memory indexed-count-add failed, removing any added LMBs\n");
+-
+-		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			rc = dlpar_remove_lmb(lmb);
+ 			if (rc)
+ 				pr_err("Failed to remove LMB, drc index %x\n",
+@@ -856,17 +790,14 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ 			else
+ 				dlpar_release_drc(lmb->drc_index);
+ 
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 		rc = -EINVAL;
+ 	} else {
+-		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++		xa_for_each_marked(drmem_lmb_xa, index, lmb, XA_MARK_0) {
+ 			pr_info("Memory at %llx (drc index %x) was hot-added\n",
+ 				lmb->base_addr, lmb->drc_index);
+-			drmem_remove_lmb_reservation(lmb);
++			xa_clear_mark(drmem_lmb_xa, index, XA_MARK_0);
+ 		}
+ 	}
+ 
 -- 
 2.24.1
 
