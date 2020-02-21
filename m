@@ -1,17 +1,17 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA79166FFC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 08:07:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90522166FA0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 07:23:23 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48P1c85tFxzDrFm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 17:23:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48P2ZZ4BPzzDqgw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 18:07:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,64 +19,74 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48P1LF4cV9zDqWW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 17:11:17 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48P2Xj13kXzDqfV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 18:05:24 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01L6AFak042524
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:11:15 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y8ubxmu8t-1
+ 01L6xi9v021667
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 02:05:21 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y93kgrc0m-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:11:15 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 02:05:21 -0500
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Fri, 21 Feb 2020 06:11:12 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Fri, 21 Feb 2020 07:05:18 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 21 Feb 2020 06:11:06 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01L6A8nk45089236
+ Fri, 21 Feb 2020 07:05:11 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 01L73sKE30474618
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Feb 2020 06:10:08 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8383B52054;
- Fri, 21 Feb 2020 06:11:04 +0000 (GMT)
-Received: from localhost.in.ibm.com (unknown [9.124.31.35])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9FAE25204E;
- Fri, 21 Feb 2020 06:11:00 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- suka@us.ibm.com
-Subject: [PATCH v2 8/8] perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip
- level metric events
-Date: Fri, 21 Feb 2020 11:40:22 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20200221061022.3047-1-kjain@linux.ibm.com>
-References: <20200221061022.3047-1-kjain@linux.ibm.com>
+ Fri, 21 Feb 2020 07:03:54 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D05DEA4060;
+ Fri, 21 Feb 2020 07:03:54 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7A3D6A4054;
+ Fri, 21 Feb 2020 07:03:54 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 21 Feb 2020 07:03:54 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CB416A0209;
+ Fri, 21 Feb 2020 18:03:49 +1100 (AEDT)
+Subject: Re: [PATCH v3 02/27] mm/memory_hotplug: Allow
+ check_hotplug_memory_addressable to be called from drivers
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-3-alastair@au1.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 21 Feb 2020 18:03:52 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200221032720.33893-3-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 20022106-0008-0000-0000-00000354FF2D
+x-cbid: 20022107-0016-0000-0000-000002E8DB94
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022106-0009-0000-0000-00004A761112
-Message-Id: <20200221061022.3047-9-kjain@linux.ibm.com>
+x-cbparentid: 20022107-0017-0000-0000-0000334BFAE1
+Message-Id: <664afdb0-4dac-e8e5-c1bf-ca31d7de599b@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-21_01:2020-02-19,
  2020-02-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- clxscore=1015 malwarescore=0 adultscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002210043
+ bulkscore=0 spamscore=0
+ clxscore=1015 phishscore=0 mlxlogscore=653 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002210049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,65 +98,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com,
- tglx@linutronix.de, jmario@redhat.com, peterz@infradead.org,
- gregkh@linuxfoundation.org, mpetlan@redhat.com,
- alexander.shishkin@linux.intel.com, linux-perf-users@vger.kernel.org,
- ak@linux.intel.com, yao.jin@linux.intel.com, anju@linux.vnet.ibm.com,
- mamatha4@linux.vnet.ibm.com, kjain@linux.ibm.com, jolsa@kernel.org,
- namhyung@kernel.org, mingo@kernel.org, kan.liang@linux.intel.com
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hv_24×7 feature in IBM® POWER9™ processor-based servers provide the
-facility to continuously collect large numbers of hardware performance
-metrics efficiently and accurately.
-This patch adds hv_24x7  metric file for different Socket/chip
-resources.
+On 21/2/20 2:26 pm, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> When setting up OpenCAPI connected persistent memory, the range check may
+> not be performed until quite late (or perhaps not at all, if the user does
+> not establish a DAX device).
+> 
+> This patch makes the range check callable so we can perform the check while
+> probing the OpenCAPI SCM device.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 
-Result:
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-power9 platform:
 
-command:# ./perf stat --metric-only -M Memory_RD_BW_Chip -C 0
-           -I 1000 sleep 1
-
-time MB       Memory_RD_BW_Chip_0 MB   Memory_RD_BW_Chip_1 MB
-1.000192635                      0.4                      0.0
-1.001695883                      0.0                      0.0
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- .../arch/powerpc/power9/nest_metrics.json     | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
- create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-new file mode 100644
-index 000000000000..ac38f5540ac6
---- /dev/null
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-@@ -0,0 +1,19 @@
-+[
-+    {
-+        "MetricExpr": "(hv_24x7@PM_MCS01_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_RD_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT23\\,chip\\=?@)",
-+        "MetricName": "Memory_RD_BW_Chip",
-+        "MetricGroup": "Memory_BW",
-+        "ScaleUnit": "1.6e-2MB"
-+    },
-+    {
-+    "MetricExpr": "(hv_24x7@PM_MCS01_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_WR_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT23\\,chip\\=?@ )",
-+        "MetricName": "Memory_WR_BW_Chip",
-+        "MetricGroup": "Memory_BW",
-+        "ScaleUnit": "1.6e-2MB"
-+    },
-+    {
-+    "MetricExpr": "(hv_24x7@PM_PB_CYC\\,chip\\=?@ )",
-+        "MetricName": "PowerBUS_Frequency",
-+        "ScaleUnit": "2.5e-7GHz"
-+    }
-+]
 -- 
-2.18.1
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
