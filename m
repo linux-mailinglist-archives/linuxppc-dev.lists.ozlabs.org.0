@@ -2,89 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39A1166F73
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 07:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DD7166F7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 07:12:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48P1HY5wVCzDqnK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 17:08:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48P1MB4cBszDqWN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 17:12:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48P1G4294DzDqWN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 17:07:39 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01L63hDx009831
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:07:37 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2y93kgqjc4-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48P1Kb57lRzDqSd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 17:10:43 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01L68DXF189484
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:10:41 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2y92xf5cr9-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:07:37 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:10:41 -0500
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Fri, 21 Feb 2020 06:07:34 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
+ Fri, 21 Feb 2020 06:10:39 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 21 Feb 2020 06:07:26 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01L65EUA45089158
+ Fri, 21 Feb 2020 06:10:33 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01L6AVGu48365704
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Feb 2020 06:05:14 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F3E04C04E;
- Fri, 21 Feb 2020 06:06:10 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 28CB64C04A;
- Fri, 21 Feb 2020 06:06:10 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 21 Feb 2020 06:06:10 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6ECA0A0209;
- Fri, 21 Feb 2020 17:06:05 +1100 (AEDT)
-Subject: Re: [PATCH v3 04/27] ocxl: Remove unnecessary externs
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-5-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 21 Feb 2020 17:06:07 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ Fri, 21 Feb 2020 06:10:31 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 84D2652050;
+ Fri, 21 Feb 2020 06:10:31 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.124.31.35])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A77665204E;
+ Fri, 21 Feb 2020 06:10:27 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ suka@us.ibm.com
+Subject: [PATCH v2 0/8] powerpc/perf: Add json file metric support for the
+ hv_24x7 socket/chip level events
+Date: Fri, 21 Feb 2020 11:40:14 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-5-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20022106-0016-0000-0000-000002E8D837
+x-cbid: 20022106-0020-0000-0000-000003AC2B58
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022106-0017-0000-0000-0000334BF766
-Message-Id: <6254550d-0803-1f2d-7507-84670c26fe34@linux.ibm.com>
+x-cbparentid: 20022106-0021-0000-0000-0000220433F2
+Message-Id: <20200221061022.3047-1-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-21_01:2020-02-19,
  2020-02-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- clxscore=1015 phishscore=0 mlxlogscore=645 impostorscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2002210042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,41 +86,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: mark.rutland@arm.com, ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com,
+ tglx@linutronix.de, jmario@redhat.com, peterz@infradead.org,
+ gregkh@linuxfoundation.org, mpetlan@redhat.com,
+ alexander.shishkin@linux.intel.com, linux-perf-users@vger.kernel.org,
+ ak@linux.intel.com, yao.jin@linux.intel.com, anju@linux.vnet.ibm.com,
+ mamatha4@linux.vnet.ibm.com, kjain@linux.ibm.com, jolsa@kernel.org,
+ namhyung@kernel.org, mingo@kernel.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/2/20 2:26 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> Function declarations don't need externs, remove the existing ones
-> so they are consistent with newer code
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+The hv_24×7 feature in IBM® POWER9™ processor-based servers provide the
+facility to continuously collect large numbers of hardware performance
+metrics efficiently and accurately.
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+First patch of the patchset fix inconsistent results we are getting when
+we run multiple 24x7 events.
 
+Patchset adds json file metric support for the hv_24x7 socket/chip level
+events. "hv_24x7" pmu interface events needs system dependent parameter
+like socket/chip/core. For example, hv_24x7 chip level events needs
+specific chip-id to which the data is requested should be added as part
+of pmu events.
+
+So to enable JSON file support to "hv_24x7" interface, patchset expose
+total number of sockets and chips per-socket details in sysfs
+files (sockets, chips) under "/sys/devices/hv_24x7/interface/".
+
+To get sockets and number of chips per sockets, patchset adds a rtas call
+with token "PROCESSOR_MODULE_INFO" to get these details. Patchset also
+handles partition migration case to re-init these system depended
+parameters by adding proper calls in post_mobility_fixup() (mobility.c).
+
+Patch 6 & 8 of the patchset handles perf tool plumbing needed to replace
+the "?" character in the metric expression to proper value and hv_24x7
+json metric file for different Socket/chip resources.
+
+Patch set also enable Hz/hz prinitg for --metric-only option to print
+metric data for bus frequency.
+
+Changelog:
+
+v1 -> v2
+- Rename hv-24x7 metric json file as nest_metrics.json
+
+Kajol Jain (8):
+  powerpc/perf/hv-24x7: Fix inconsistent output values incase multiple
+    hv-24x7 events run
+  powerpc/hv-24x7: Add rtas call in hv-24x7 driver to get processor
+    details
+  powerpc/hv-24x7: Add sysfs files inside hv-24x7 device to show
+    processor details
+  Documentation/ABI: Add ABI documentation for chips and sockets
+  powerpc/hv-24x7: Update post_mobility_fixup() to handle migration
+  perf/tools: Enhance JSON/metric infrastructure to handle "?"
+  tools/perf: Enable Hz/hz prinitg for --metric-only option
+  perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip level metric
+    events
+
+ .../sysfs-bus-event_source-devices-hv_24x7    |  14 +++
+ arch/powerpc/perf/hv-24x7.c                   |  96 ++++++++++++++-
+ arch/powerpc/platforms/pseries/mobility.c     |  12 ++
+ arch/powerpc/platforms/pseries/pseries.h      |   3 +
+ tools/perf/arch/powerpc/util/header.c         |  40 +++++++
+ .../arch/powerpc/power9/nest_metrics.json     |  19 +++
+ tools/perf/util/expr.h                        |   1 +
+ tools/perf/util/expr.y                        |  17 ++-
+ tools/perf/util/metricgroup.c                 | 112 +++++++++++-------
+ tools/perf/util/metricgroup.h                 |   1 +
+ tools/perf/util/stat-display.c                |   2 -
+ tools/perf/util/stat-shadow.c                 |   5 +
+ 12 files changed, 277 insertions(+), 45 deletions(-)
+ create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
 
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.18.1
 
