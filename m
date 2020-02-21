@@ -1,80 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2499166F93
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 07:16:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674EE166F87
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 07:15:10 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48P1Qf5kVgzDqyh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 17:15:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48P1SL6XtkzDqvT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2020 17:16:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48P1Km159vzDqWv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 17:10:51 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01L69LQv108473
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:10:50 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2y9ytr7tb5-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48P1Kr1n8VzDqWW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 17:10:56 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01L6A34Y023691
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:10:53 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2y93kgqmvj-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:10:49 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2020 01:10:53 -0500
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Fri, 21 Feb 2020 06:10:47 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Fri, 21 Feb 2020 06:10:51 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 21 Feb 2020 06:10:41 -0000
+ Fri, 21 Feb 2020 06:10:45 -0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01L6Adog46137448
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 01L69l1n39321888
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Feb 2020 06:10:39 GMT
+ Fri, 21 Feb 2020 06:09:48 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C78BD5204F;
- Fri, 21 Feb 2020 06:10:39 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E0BF552054;
+ Fri, 21 Feb 2020 06:10:43 +0000 (GMT)
 Received: from localhost.in.ibm.com (unknown [9.124.31.35])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E7B6C5204E;
- Fri, 21 Feb 2020 06:10:35 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0E2345204F;
+ Fri, 21 Feb 2020 06:10:39 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
  suka@us.ibm.com
-Subject: [PATCH v2 2/8] powerpc/hv-24x7: Add rtas call in hv-24x7 driver to
- get processor details
-Date: Fri, 21 Feb 2020 11:40:16 +0530
+Subject: [PATCH v2 3/8] powerpc/hv-24x7: Add sysfs files inside hv-24x7 device
+ to show processor details
+Date: Fri, 21 Feb 2020 11:40:17 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20200221061022.3047-1-kjain@linux.ibm.com>
 References: <20200221061022.3047-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20022106-4275-0000-0000-000003A407F3
+x-cbid: 20022106-0012-0000-0000-00000388DB34
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022106-4276-0000-0000-000038B81644
-Message-Id: <20200221061022.3047-3-kjain@linux.ibm.com>
+x-cbparentid: 20022106-0013-0000-0000-000021C5740C
+Message-Id: <20200221061022.3047-4-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-21_01:2020-02-19,
  2020-02-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 impostorscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 spamscore=0
+ clxscore=1015 phishscore=0 mlxlogscore=999 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2002210043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -98,135 +98,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For hv_24x7 socket/chip level events, specific chip-id to which
-the data requested should be added as part of pmu events.
-But number of chips/socket in the system details are not exposed.
-
-Patch implements read_sys_info_pseries() to get system
-parameter values like number of sockets and chips per socket.
-Rtas_call with token "PROCESSOR_MODULE_INFO"
-is used to get these values.
-
-Sub-sequent patch exports these values via sysfs.
-
-Patch also make these parameters default to 1.
+To expose the system dependent parameter like total number of
+sockets and numbers of chips per socket, patch adds two sysfs files.
+"sockets" and "chips" are added to /sys/devices/hv_24x7/interface/
+of the "hv_24x7" pmu.
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- arch/powerpc/perf/hv-24x7.c              | 72 ++++++++++++++++++++++++
- arch/powerpc/platforms/pseries/pseries.h |  3 +
- 2 files changed, 75 insertions(+)
+ arch/powerpc/perf/hv-24x7.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 6dbbf70232aa..4248a9d1e2ed 100644
+index 4248a9d1e2ed..9e486ec7269f 100644
 --- a/arch/powerpc/perf/hv-24x7.c
 +++ b/arch/powerpc/perf/hv-24x7.c
-@@ -20,6 +20,11 @@
- #include <asm/io.h>
- #include <linux/byteorder/generic.h>
- 
-+#ifdef CONFIG_PPC_RTAS
-+#include <asm/rtas.h>
-+#include <../../platforms/pseries/pseries.h>
-+#endif
-+
- #include "hv-24x7.h"
- #include "hv-24x7-catalog.h"
- #include "hv-common.h"
-@@ -57,6 +62,69 @@ static bool is_physical_domain(unsigned domain)
- 	}
+@@ -454,6 +454,20 @@ static ssize_t device_show_string(struct device *dev,
+ 	return sprintf(buf, "%s\n", (char *)d->var);
  }
  
 +#ifdef CONFIG_PPC_RTAS
-+#define PROCESSOR_MODULE_INFO   43
-+#define PROCESSOR_MAX_LENGTH	(8 * 1024)
-+
-+static int strbe16toh(const char *buf, int offset)
++static ssize_t sockets_show(struct device *dev,
++			    struct device_attribute *attr, char *buf)
 +{
-+	return (buf[offset] << 8) + buf[offset + 1];
++	return sprintf(buf, "%d\n", physsockets);
 +}
 +
-+static u32		physsockets;	/* Physical sockets */
-+static u32		physchips;	/* Physical chips */
-+
-+/*
-+ * Function read_sys_info_pseries() make a rtas_call which require
-+ * data buffer of size 8K. As standard 'rtas_data_buf' is of size
-+ * 4K, we are adding new local buffer 'rtas_local_data_buf'.
-+ */
-+char rtas_local_data_buf[PROCESSOR_MAX_LENGTH] __cacheline_aligned;
-+
-+/*
-+ * read_sys_info_pseries()
-+ * Retrieve the number of sockets and chips per socket details
-+ * through the get-system-parameter rtas call.
-+ */
-+void read_sys_info_pseries(void)
++static ssize_t chips_show(struct device *dev, struct device_attribute *attr,
++			  char *buf)
 +{
-+	int call_status, len, ntypes;
-+
-+	/*
-+	 * Making system parameter: chips and sockets default to 1.
-+	 */
-+	physsockets = 1;
-+	physchips = 1;
-+	memset(rtas_local_data_buf, 0, PROCESSOR_MAX_LENGTH);
-+	spin_lock(&rtas_data_buf_lock);
-+
-+	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
-+				NULL,
-+				PROCESSOR_MODULE_INFO,
-+				__pa(rtas_local_data_buf),
-+				PROCESSOR_MAX_LENGTH);
-+
-+	spin_unlock(&rtas_data_buf_lock);
-+
-+	if (call_status != 0) {
-+		pr_info("%s %s Error calling get-system-parameter (0x%x)\n",
-+			__FILE__, __func__, call_status);
-+	} else {
-+		rtas_local_data_buf[PROCESSOR_MAX_LENGTH - 1] = '\0';
-+		len = strbe16toh(rtas_local_data_buf, 0);
-+		if (len < 6)
-+			return;
-+
-+		ntypes = strbe16toh(rtas_local_data_buf, 2);
-+
-+		if (!ntypes)
-+			return;
-+		physsockets = strbe16toh(rtas_local_data_buf, 4);
-+		physchips = strbe16toh(rtas_local_data_buf, 6);
-+	}
++	return sprintf(buf, "%d\n", physchips);
 +}
-+#endif /* CONFIG_PPC_RTAS */
++#endif
 +
- /* Domains for which more than one result element are returned for each event. */
- static bool domain_needs_aggregation(unsigned int domain)
+ static struct attribute *device_str_attr_create_(char *name, char *str)
  {
-@@ -1615,6 +1683,10 @@ static int hv_24x7_init(void)
- 	if (r)
- 		return r;
- 
+ 	struct dev_ext_attribute *attr = kzalloc(sizeof(*attr), GFP_KERNEL);
+@@ -1100,6 +1114,10 @@ PAGE_0_ATTR(catalog_len, "%lld\n",
+ 		(unsigned long long)be32_to_cpu(page_0->length) * 4096);
+ static BIN_ATTR_RO(catalog, 0/* real length varies */);
+ static DEVICE_ATTR_RO(domains);
 +#ifdef CONFIG_PPC_RTAS
-+	read_sys_info_pseries();
++static DEVICE_ATTR_RO(sockets);
++static DEVICE_ATTR_RO(chips);
 +#endif
-+
- 	return 0;
- }
  
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-index 13fa370a87e4..1727559ce304 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -19,6 +19,9 @@ extern void request_event_sources_irqs(struct device_node *np,
- struct pt_regs;
- 
- extern int pSeries_system_reset_exception(struct pt_regs *regs);
+ static struct bin_attribute *if_bin_attrs[] = {
+ 	&bin_attr_catalog,
+@@ -1110,6 +1128,10 @@ static struct attribute *if_attrs[] = {
+ 	&dev_attr_catalog_len.attr,
+ 	&dev_attr_catalog_version.attr,
+ 	&dev_attr_domains.attr,
 +#ifdef CONFIG_PPC_RTAS
-+extern void read_sys_info_pseries(void);
++	&dev_attr_sockets.attr,
++	&dev_attr_chips.attr,
 +#endif
- extern int pSeries_machine_check_exception(struct pt_regs *regs);
- extern long pseries_machine_check_realmode(struct pt_regs *regs);
+ 	NULL,
+ };
  
 -- 
 2.18.1
