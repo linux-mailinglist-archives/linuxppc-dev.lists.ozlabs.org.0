@@ -2,65 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA3816A8BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 15:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F04E16A9F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 16:23:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48R4cm5zPhzDqVR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 01:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48R5Rs5wRxzDqWt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 02:23:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.208.66; helo=mail-ed1-f66.google.com;
- envelope-from=k.kozlowski.k@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=joe.lawrence@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com
- [209.85.208.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=cbxcd3HP; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48R4Zw3s3fzDqMx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 01:44:22 +1100 (AEDT)
-Received: by mail-ed1-f66.google.com with SMTP id r18so12183653edl.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 06:44:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=9BiQIzqw1g4Lc7fCMo41b2Sms1ZkrHji7czRtN4yRpY=;
- b=hsdftQS6Lnl9R6n8mXB0GnzAK7/Yt6Nzg5eXgWzzsVOhH0M7uZbbZ6Hdru1T4wUOnf
- h9H0vd6agDEn6RHNrtSkwonrIwV/m0RUx+/5B8W8vmnTeqHuMB0wsrN8VL9ldYRjL2jC
- bEFBtdBwYn1AYh5A15F2D1/JDiosew4V7+xcLKD9PS0qaq3puQu/DYibavpafhjfeniq
- ef7Vf6rd67FLz/GeSqsVpJLMyww1XSNzS8C5QEzgKwMiVyEgfvA+KrCjbDvEJa1WC/mw
- 6NoKEPNSiPceJd0d54fkh/6HExpu6yV9WhpsJUufFjTOAZwlXYIzs54SRUMLpCX2ySAw
- TEqw==
-X-Gm-Message-State: APjAAAX1VOj0Dwyit/PUoSuoiW244n2nZEbruD+6gwr5ZT8CCFyZ5tOd
- W73OXMkF3rkB2jZuGyFA94g=
-X-Google-Smtp-Source: APXvYqzwji2Ykgei/T3ukpc15pByx2S09B2SSkaAFB5FVLPyRnARm/VtcP3TWvca57zCxPIFcvsdrw==
-X-Received: by 2002:a17:906:5604:: with SMTP id
- f4mr47998768ejq.255.1582555459077; 
- Mon, 24 Feb 2020 06:44:19 -0800 (PST)
-Received: from pi3 ([194.230.155.125])
- by smtp.googlemail.com with ESMTPSA id a10sm961255edt.50.2020.02.24.06.44.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Feb 2020 06:44:17 -0800 (PST)
-Date: Mon, 24 Feb 2020 15:44:13 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [RESEND PATCH v2 9/9] ath5k: Constify ioreadX() iomem argument
- (as in generic implementation)
-Message-ID: <20200224144413.GA2054@pi3>
-References: <20200219175007.13627-1-krzk@kernel.org>
- <20200219175007.13627-10-krzk@kernel.org>
- <518a9023-f802-17b3-fca5-582400bc34ae@gmail.com>
- <20200224124744.GA1949@pi3>
- <CAMuHMdVev0PLF=8bD3nHrhcU9UgM-DAgdQpXi09PgvAxdbt24A@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48R5PR3mY0zDqTd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 02:21:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1582557670;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jEBsfrvOwKqUt5ZlukWoSu1qTBe+MspkyGGBOY4qAmA=;
+ b=cbxcd3HPa/j63N53QKO0tXr9i7n6FXnTscHtve0/M9QcpAvqqDEaNdT1Pciz6xAgjJkVK8
+ P3Sn/z84vaO8iFRrsdboYQcyeep4WYm8hTxuZaqj0pDPFbT8lt6O6f+QGiYXTY/AgCrbz/
+ N/K8asGXB8MwGuYPyfWkRqiuEsRdW3E=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-301-I169pOMwMSyikq1rKcQ8lg-1; Mon, 24 Feb 2020 10:21:02 -0500
+X-MC-Unique: I169pOMwMSyikq1rKcQ8lg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 480DCA0CC2;
+ Mon, 24 Feb 2020 15:21:01 +0000 (UTC)
+Received: from [10.18.17.119] (dhcp-17-119.bos.redhat.com [10.18.17.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AC87B5C114;
+ Mon, 24 Feb 2020 15:21:00 +0000 (UTC)
+Subject: Re: vdso function descriptors (VDS64_HAS_DESCRIPTORS)?
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Segher Boessenkool <segher@kernel.crashing.org>
+References: <20200217160852.GA9557@redhat.com>
+ <20200223000715.GW22482@gate.crashing.org>
+ <587a0a1765ba1264b92044f7b1f9937eb40731f1.camel@kernel.crashing.org>
+From: Joe Lawrence <joe.lawrence@redhat.com>
+Message-ID: <885be270-7af8-490d-302c-270a6db94ffe@redhat.com>
+Date: Mon, 24 Feb 2020 10:20:59 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAMuHMdVev0PLF=8bD3nHrhcU9UgM-DAgdQpXi09PgvAxdbt24A@mail.gmail.com>
+In-Reply-To: <587a0a1765ba1264b92044f7b1f9937eb40731f1.camel@kernel.crashing.org>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,100 +78,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "Michael S. Tsirkin" <mst@redhat.com>, David Airlie <airlied@linux.ie>,
- Jason Wang <jasowang@redhat.com>,
- DRI Development <dri-devel@lists.freedesktop.org>,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- netdev <netdev@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- Linux-Arch <linux-arch@vger.kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Alexey Brodkin <abrodkin@synopsys.com>, Ben Skeggs <bskeggs@redhat.com>,
- nouveau@lists.freedesktop.org, Dave Airlie <airlied@redhat.com>,
- Matt Turner <mattst88@gmail.com>, arcml <linux-snps-arc@lists.infradead.org>,
- Nick Kossifidis <mickflemm@gmail.com>, Allen Hubbe <allenbh@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, alpha <linux-alpha@vger.kernel.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Thomas Gleixner <tglx@linutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- Richard Henderson <rth@twiddle.net>,
- Parisc List <linux-parisc@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
- linux-wireless <linux-wireless@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Jon Mason <jdmason@kudzu.us>, linux-ntb@googlegroups.com,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Media Mailing List <linux-media@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 24, 2020 at 01:54:00PM +0100, Geert Uytterhoeven wrote:
-> Hi Krzysztof,
->=20
-> On Mon, Feb 24, 2020 at 1:47 PM Krzysztof Kozlowski <krzk@kernel.org> wro=
-te:
-> > On Thu, Feb 20, 2020 at 10:48:33AM +0100, Jiri Slaby wrote:
-> > > On 19. 02. 20, 18:50, Krzysztof Kozlowski wrote:
-> > > > The ioreadX() helpers have inconsistent interface.  On some archite=
-ctures
-> > > > void *__iomem address argument is a pointer to const, on some not.
-> > > >
-> > > > Implementations of ioreadX() do not modify the memory under the add=
-ress
-> > > > so they can be converted to a "const" version for const-safety and
-> > > > consistency among architectures.
-> > > >
-> > > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > > > Acked-by: Kalle Valo <kvalo@codeaurora.org>
-> > > > ---
-> > > >  drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
-> > > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wir=
-eless/ath/ath5k/ahb.c
-> > > > index 2c9cec8b53d9..8bd01df369fb 100644
-> > > > --- a/drivers/net/wireless/ath/ath5k/ahb.c
-> > > > +++ b/drivers/net/wireless/ath/ath5k/ahb.c
-> > > > @@ -138,18 +138,18 @@ static int ath_ahb_probe(struct platform_devi=
-ce *pdev)
-> > > >
-> > > >     if (bcfg->devid >=3D AR5K_SREV_AR2315_R6) {
-> > > >             /* Enable WMAC AHB arbitration */
-> > > > -           reg =3D ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_C=
-TL);
-> > > > +           reg =3D ioread32((const void __iomem *) AR5K_AR2315_AHB=
-_ARB_CTL);
-> > >
-> > > While I understand why the parameter of ioread32 should be const, I
-> > > don't see a reason for these casts on the users' side. What does it
-> > > bring except longer code to read?
-> >
-> > Because the argument is an int:
-> >
-> > drivers/net/wireless/ath/ath5k/ahb.c: In function =E2=80=98ath_ahb_prob=
-e=E2=80=99:
-> > drivers/net/wireless/ath/ath5k/ahb.c:141:18: warning: passing argument =
-1 of =E2=80=98ioread32=E2=80=99 makes pointer from integer without a cast [=
--Wint-conversion]
-> >    reg =3D ioread32(AR5K_AR2315_AHB_ARB_CTL);
->=20
-> That's an argument for keeping the cast to "void __iomem *", not for
-> adding the "const", right?
+On 2/24/20 5:17 AM, Benjamin Herrenschmidt wrote:
+> On Sat, 2020-02-22 at 18:07 -0600, Segher Boessenkool wrote:
+>>>
+>>> so I don't believe they are ever used by default -- in this case
+>>> V_FUNCTION_BEGIN doesn't add to the .opd section with .name, .TOC base,
+>>> etc.
+>>>
+>>> Manually setting VDS64_HAS_DESCRIPTORS results in a vdso64.so in which
+>>> binutils tools like readelf properly report functions with symbol type
+>>> FUNC instead of NOTYPE.
+>>>
+>>> Are there pieces of the build/etc toolchain unprepared for function
+>>> descriptors?  I'm just trying to figure out why the code defaults to
+>>> unsetting them.
+>>
+>> Because direct calls are faster than indirect calls?  Ben might have a
+>> fuller explanation, cc:ing him.
+> 
+> I don't remember why :-) I think I didn't want to mess with the OPD
+> fixup in glibc back then.
+> 
 
-Yes, correct. Maybe I misunderstood the question... The const on the
-other hand does not have to be in the cast. It is merely for making it
-consistent with interface. It is not required. I also mentioned it in
-the cover letter:
-"PAtches 5-9 are optional cleanup, without actual impact"
+Does it make sense to just drop the unused VDS64_HAS_DESCRIPTORS code then?
 
-Feel free to ignore this one if it is not worth the effort.
-
-Best regards,
-Krzysztof
+-- Joe
 
