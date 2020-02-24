@@ -1,55 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E63316A468
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 11:55:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E99716A461
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 11:53:38 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48QzSb3jM7zDqWv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 21:53:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48QzVq2jNZzDqRy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 21:55:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QzQm0PwZzDqJk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 21:52:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48QzT41F7RzDqJk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 21:54:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KqIfyeCv; 
+ header.a=rsa-sha256 header.s=201909 header.b=sBs1S4Fp; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48QzQl4qKTz9sPk;
- Mon, 24 Feb 2020 21:51:59 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48QzT36SWzz9sP7;
+ Mon, 24 Feb 2020 21:53:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1582541519;
- bh=jc2MOo4RJ+14VTJRINC5R+uCJeUGpDuWdaViTSLxAg8=;
+ s=201909; t=1582541640;
+ bh=k0BqyixTJoNetYX9suYhia4s7kCRC36DzGPHDhr3mo4=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KqIfyeCv06Ng6IOFtBDJhgtKs/rQ0w+PVXFoe1SU4w047OD4BN3Mt570rHTfyP98U
- Lm9GqEpNTCUdr4ZPwIcy2vVw1vN35bBLGv5O6kgC1MKGv3QliImvPz6OsR0vnQBvDF
- WkCTd7Rcz5Xh4rsMiS4y76e8sPSUGFbmJNkyjHYF6oBKdFSHXnt01cjROXwoFTNCh4
- uJXLjwatNBiKj5V7Uk2PHCuHmstaMnkNVQneJ6/9yl8kQwlfrRjDJoRW06Q6g4qBzR
- U0nbuhunDdiF8w/1E/xLkOLN52i4jTzCI4k0n0G4WaWQJLqO0b+f4p5RGnXVhwBWFb
- BLcecUyA2GJ5w==
+ b=sBs1S4FpxMEXaNkDN3F4/M+KmkKLxfXttli0RCvqhL7K0iXzNvYnQOLL8hpByXajJ
+ elAusZETQUdwRNVzw/k2kVnAsF3uY5Sezbek1ohH3yEgcD5fSzgQHMRPxzpx1itG9W
+ 0WnCODRM2k/kHQs/waNxhsn/FBVaFepVm+oZB4561D4dI5IaArWHx3wMynGgdSDSrR
+ tF8MtVXpq8amG8WM9LJG4w9E+FeQiNHYU8HJp+gZuhXs6BFYL+hYRIfqnjDwJ+2dFi
+ dQx4daUIcze42+VBgCFd0n4iIHcjLo0cCH1J5fc0WDsJuihqZdLoIbBtveQJ8QOQsU
+ Ali8Himjep26Q==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, mikey@neuling.org
-Subject: Re: [RFC PATCH v2 04/12] powerpc/ptrace: split out VSX related
- functions.
-In-Reply-To: <920fe735d5f3dd882331b36a895bb756bd415fe7.1561735587.git.christophe.leroy@c-s.fr>
+ Michael Neuling <mikey@neuling.org>
+Subject: Re: [RFC PATCH v2 00/12] Reduce ifdef mess in ptrace
+In-Reply-To: <5b5d8f61-c9aa-1afd-6001-44a17f00c1a6@c-s.fr>
 References: <cover.1561735587.git.christophe.leroy@c-s.fr>
- <920fe735d5f3dd882331b36a895bb756bd415fe7.1561735587.git.christophe.leroy@c-s.fr>
-Date: Mon, 24 Feb 2020 21:51:59 +1100
-Message-ID: <875zfw1cmo.fsf@mpe.ellerman.id.au>
+ <f62b0f67-c418-3734-0b07-65aea7537a78@c-s.fr>
+ <7b86733f81c7e15d81ab14b98c8998011ed54880.camel@neuling.org>
+ <5b5d8f61-c9aa-1afd-6001-44a17f00c1a6@c-s.fr>
+Date: Mon, 24 Feb 2020 21:54:00 +1100
+Message-ID: <8736b01cjb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,58 +62,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace-novsx.c b/arch/powerpc/kernel/ptrace/ptrace-novsx.c
-> new file mode 100644
-> index 000000000000..55fbbb4aa9d7
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/ptrace/ptrace-novsx.c
-> @@ -0,0 +1,83 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/sched.h>
-> +#include <linux/mm.h>
-> +#include <linux/smp.h>
-> +#include <linux/errno.h>
-> +#include <linux/ptrace.h>
-> +#include <linux/regset.h>
-> +#include <linux/tracehook.h>
-> +#include <linux/elf.h>
-> +#include <linux/user.h>
-> +#include <linux/security.h>
-> +#include <linux/signal.h>
-> +#include <linux/seccomp.h>
-> +#include <linux/audit.h>
-> +#include <trace/syscall.h>
-> +#include <linux/hw_breakpoint.h>
-> +#include <linux/perf_event.h>
-> +#include <linux/context_tracking.h>
-> +#include <linux/nospec.h>
-> +
-> +#include <linux/uaccess.h>
-> +#include <linux/pkeys.h>
-> +#include <asm/page.h>
-> +#include <asm/pgtable.h>
-> +#include <asm/switch_to.h>
-> +#include <asm/tm.h>
-> +#include <asm/asm-prototypes.h>
-> +#include <asm/debug.h>
-> +#include <asm/hw_breakpoint.h>
+> Le 24/02/2020 =C3=A0 03:15, Michael Neuling a =C3=A9crit=C2=A0:
+>> Christophe,
+>>> Le 28/06/2019 =C3=A0 17:47, Christophe Leroy a =C3=A9crit :
+>>>> The purpose of this series is to reduce the amount of #ifdefs
+>>>> in ptrace.c
+>>>
+>>> Any feedback on this series which aims at fixing the issue you opened at
+>>> https://github.com/linuxppc/issues/issues/128 ?
+>>=20
+>> Yeah, sorry my bad. You did all the hard work and I ignored it.
+>>=20
+>> I like the approach and is a long the lines I was thinking. Putting it i=
+n a
+>> ptrace subdir, splitting out adv_debug_regs, TM, SPE, Alitivec, VSX.
+>> ppc_gethwdinfo() looks a lot nicer now too (that was some of the worst o=
+f it).
+>>=20
+>> I've not gone through it with a fine tooth comb though. There is (rightl=
+y) a lot
+>> of code moved around which could have introduced some issues.
+>>=20
+>> It applies on v5.2 but are you planning on updating it to a newer base?
+>>=20
+>
+> As you noticed there is a lot of code moved around, and rebasing=20
+> produces a lot of conflicts. So I didn't want to spend hours to rebase=20
+> and rebase without being sure it was the right approach.
+>
+> Now that I got a positive feedback I'll consider rebasing it, hopping=20
+> that Michael will pick it up.
 
-I suspect we probably don't need all those headers anymore. But I guess
-we'll clean them up in future, as it's very tedious work to trim the list.
-
-> +
-> +#include <kernel/ptrace/ptrace-decl.h>
-
-It's preferable to use:
-
-#include "ptrace-decl.h"
+I would love to.
 
 cheers
