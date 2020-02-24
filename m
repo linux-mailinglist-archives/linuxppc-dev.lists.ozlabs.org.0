@@ -1,91 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60004169CE2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 05:06:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AD6169C95
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 04:18:37 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48QnMZ2fXnzDqQX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 14:18:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48QpR63pZmzDqLs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 15:06:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QnKl1ppszDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 14:16:59 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48QpPL0K7YzDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 15:05:09 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01O3E1iM111298
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 22:16:56 -0500
+ 01O3xXaI009926
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 23:05:06 -0500
 Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yayaya3kv-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yax43wqdh-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 22:16:56 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 23:05:06 -0500
 Received: from localhost
  by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Mon, 24 Feb 2020 03:16:54 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Mon, 24 Feb 2020 04:05:05 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
  by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 24 Feb 2020 03:16:52 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01O3Ftn943581920
+ Mon, 24 Feb 2020 04:05:03 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 01O452UJ45089200
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2020 03:15:55 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C6BC4203F;
- Mon, 24 Feb 2020 03:16:51 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 366FD42045;
- Mon, 24 Feb 2020 03:16:51 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 24 Feb 2020 03:16:51 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 44C04A00E5;
- Mon, 24 Feb 2020 14:16:46 +1100 (AEDT)
-Subject: Re: [PATCH 2/2] powerpc/powernv: Add explicit fast-reboot support
-To: "Oliver O'Halloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200217024833.30580-1-oohall@gmail.com>
- <20200217024833.30580-2-oohall@gmail.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Mon, 24 Feb 2020 14:16:49 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ Mon, 24 Feb 2020 04:05:02 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF163A405F;
+ Mon, 24 Feb 2020 04:05:02 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 71B35A4054;
+ Mon, 24 Feb 2020 04:05:02 +0000 (GMT)
+Received: from localhost (unknown [9.199.59.203])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Feb 2020 04:05:02 +0000 (GMT)
+Date: Mon, 24 Feb 2020 09:33:15 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc: Include .BTF section
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20200220113132.857132-1-naveen.n.rao@linux.vnet.ibm.com>
+ <8736b0j090.fsf@mpe.ellerman.id.au>
+In-Reply-To: <8736b0j090.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200217024833.30580-2-oohall@gmail.com>
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-x-cbid: 20022403-0008-0000-0000-00000355C6F1
+x-cbid: 20022404-0008-0000-0000-00000355C90E
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022403-0009-0000-0000-00004A76DDD4
-Message-Id: <2d716929-7731-33d8-eaa9-ceb7e031469a@linux.ibm.com>
+x-cbparentid: 20022404-0009-0000-0000-00004A76E007
+Message-Id: <1582516561.ya4ydk7t7x.naveen@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-23_07:2020-02-21,
  2020-02-23 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- bulkscore=0 mlxlogscore=999 clxscore=1015 suspectscore=0 spamscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002240026
+ lowpriorityscore=0
+ adultscore=0 mlxlogscore=723 suspectscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002240033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,26 +90,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17/2/20 1:48 pm, Oliver O'Halloran wrote:
-> Add a way to manually invoke a fast-reboot rather than setting the NVRAM
-> flag. The idea is to allow userspace to invoke a fast-reboot using the
-> optional string argument to the reboot() system call, or using the xmon
-> zr command so we don't need to leave around a persistent changes on
-> a system to use the feature.
-> 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Michael Ellerman wrote:
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>> Selecting CONFIG_DEBUG_INFO_BTF results in the below warning from ld:
+>>   ld: warning: orphan section `.BTF' from `.btf.vmlinux.bin.o' being pla=
+ced in section `.BTF'
+>>
+>> Include .BTF section in vmlinux explicitly to fix the same.
+>=20
+> I don't see any other architectures doing this in their linker script.
+> Why are we special?
 
-Both this and the previous patch have passed snowpatch with no warnings, 
-and don't seem to have any obvious issues.
+I think this is due to commit 83a092cf95f28 ("powerpc: Link warning for=20
+orphan sections"):
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3D83a092cf95f28
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+If your question was why I didn't include the .BTF section in .data,=20
+it's because libbpf seems to expect the .BTF section to be separate.
 
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+- Naveen
+
+PS: I also see a linker warning for '.gnu.hash' if I enable=20
+CONFIG_RELOCATABLE, but I couldn't decipher what that was for, and if it=20
+should be retained.
 
