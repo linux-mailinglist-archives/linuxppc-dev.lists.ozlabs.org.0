@@ -1,86 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A07216A0F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 10:01:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA36916A242
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 10:28:11 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48QxYy73S9zDqWW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 20:28:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Qwyw4K8rzDqLW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 20:01:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=T94v3JSl; 
- dkim-atps=neutral
-X-Greylist: delayed 10062 seconds by postgrey-1.36 at bilbo;
- Mon, 24 Feb 2020 20:23:51 AEDT
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
+ [209.85.221.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QxT40f0czDqVq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 20:23:51 +1100 (AEDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01O6ZCQB148301;
- Mon, 24 Feb 2020 06:35:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=qvvE/QeaFeeWvi/ZddnrDx5vkFAlwi415cDHF7+KM3Q=;
- b=T94v3JSljCelxXlRsVLe9P13vnGTez4Pmixsn20wAhCZGBwBYR+iOXCiP6SH3RlxdRlA
- 3pkUrkI+xBYuSn6yF08lfauBBShUfIW4PuQPoVad9kb9qlcqUcRZV3RtZuFumrgiS/bZ
- cr4z0BoxeqG65NviRh0/muLrZvJeOeTL8Vr5Qp3UieerOSYeMLgEtIQWLpLmWFLM2QG8
- AR8NOstuLywh+PpJectwnUQOqb4TXpc6KMKD1rlXVcx1lOCHUoufXeIvTpMxhpyK4cTr
- fSO4z4eoEdsoGpXYbWatayLl+LiGNet61SR2ll4lgymBvIS8FWcUIXPCU2X+BMPSQKtN gw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by userp2120.oracle.com with ESMTP id 2yavxrd616-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2020 06:35:51 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01O6W4U5038129;
- Mon, 24 Feb 2020 06:35:51 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3030.oracle.com with ESMTP id 2ybdsfvyb1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2020 06:35:51 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01O6Ze0E008125;
- Mon, 24 Feb 2020 06:35:40 GMT
-Received: from kadam (/129.205.23.165) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Sun, 23 Feb 2020 22:35:39 -0800
-Date: Mon, 24 Feb 2020 09:35:29 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Colin King <colin.king@canonical.com>
-Subject: Re: [PATCH][next] soc: fsl: dpio: fix dereference of pointer p
- before null check
-Message-ID: <20200224063529.GA3286@kadam>
-References: <20200221231143.30131-1-colin.king@canonical.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Qwvc4D1yzDqMK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 19:58:20 +1100 (AEDT)
+Received: by mail-wr1-f67.google.com with SMTP id y17so552548wrn.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 00:58:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=H2Cct5hWHL+uQC/bm8Prlx7dsjSsRBh79w87Fgtt9TA=;
+ b=KYWdSHi9hOPgub3hyElUhEWTlwoVxeG8EXIUIC3LK/yExodCi8xovMiGYFyt8jTpa9
+ ccboMsplpJd0kDoY6zIHjJKH2WjozzPIWSeSqhVc+YCHNczGqS1qf9cgZFFw6QRMfwNa
+ BrxIhiWMO3mMGw+nO4wRRWSuqAbmN9JR/VANkyqgAEtVfpEK4/MWREJBjflTaVkIJ8TX
+ xO/qL+V0WiJMtfWbuT1HtUbImfoVjjgomQ5w1Kgx6Eu0e7qwZhJ50un0iNcVZZpLvOLc
+ ZhLUlXthfwEI+YiMd2wWsIId0v55+a/AErffMnYUX06oMfJ8/HfkuA0JqpOFcg2V5qsZ
+ maOg==
+X-Gm-Message-State: APjAAAXCV1Na8Kmzx5Ri5lrAWLKGTCUdcp3x5tV5/lAj0zDZzI8Sp7vG
+ HBJYUqfdhYPg7/gbPPN4Rr8=
+X-Google-Smtp-Source: APXvYqwI6GLQ96fHtBV39r/Kowb15Ks1F1Wur7CqhfRydMNy5c7m6Bj+2tsJRhgk5dCrnqTmrDx97w==
+X-Received: by 2002:a5d:5263:: with SMTP id l3mr64736786wrc.405.1582534694073; 
+ Mon, 24 Feb 2020 00:58:14 -0800 (PST)
+Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
+ by smtp.gmail.com with ESMTPSA id z133sm17730879wmb.7.2020.02.24.00.58.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Feb 2020 00:58:13 -0800 (PST)
+Date: Mon, 24 Feb 2020 09:58:12 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Christopher Lameter <cl@linux.com>
+Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
+Message-ID: <20200224085812.GB22443@dhcp22.suse.cz>
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+ <cf6be5f5-4bbc-0d34-fb64-33fd37bc48d9@virtuozzo.com>
+ <0ba2a3c6-6593-2cee-1cef-983cd75f920f@virtuozzo.com>
+ <F5A68B0C-AFDE-4C45-B0F3-12A5154204E6@linux.vnet.ibm.com>
+ <20200218115525.GD4151@dhcp22.suse.cz>
+ <D6F45EDD-9F2E-4593-B630-55E5BD7DE915@linux.vnet.ibm.com>
+ <20200218142620.GF4151@dhcp22.suse.cz>
+ <35EE65CF-40E3-4870-AEBC-D326977176DA@linux.vnet.ibm.com>
+ <20200218152441.GH4151@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200221231143.30131-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- suspectscore=0 spamscore=0
- malwarescore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002240056
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0
- lowpriorityscore=0
- spamscore=0 clxscore=1011 suspectscore=0 bulkscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002240056
+In-Reply-To: <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,38 +73,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Roy Pledge <Roy.Pledge@nxp.com>,
- kernel-janitors@vger.kernel.org, Youri Querry <youri.querry_1@nxp.com>,
- Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 21, 2020 at 11:11:43PM +0000, Colin King wrote:
-> ---
->  drivers/soc/fsl/dpio/qbman-portal.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+On Sat 22-02-20 03:38:11, Cristopher Lameter wrote:
+> On Tue, 18 Feb 2020, Michal Hocko wrote:
 > 
-> diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
-> index 740ee0d19582..d1f49caa5b13 100644
-> --- a/drivers/soc/fsl/dpio/qbman-portal.c
-> +++ b/drivers/soc/fsl/dpio/qbman-portal.c
-> @@ -249,10 +249,11 @@ struct qbman_swp *qbman_swp_init(const struct qbman_swp_desc *d)
->  	u32 mask_size;
->  	u32 eqcr_pi;
->  
-> -	spin_lock_init(&p->access_spinlock);
-> -
->  	if (!p)
->  		return NULL;
-> +
-> +	spin_lock_init(&p->access_spinlock);
+> > Anyway, I do not think it is expected that kmalloc_node just blows up
+> > on those nodes. The page allocator simply falls back to the closest
+> > node. Something for kmalloc maintainers I believe.
+> 
+> That is the case for an unconstrained allocation. kmalloc_node means that
+> you want memory from that node. And If there is no such node then it is an
+> error.
 
-Allocations in the declaration blog are not super common in the kernel,
-but they're more bug prone.  Generally, it's not beautiful to call a
-function which can fail in the allocation block.
+Hmm, nasty. Is there any reason why kmalloc_node behaves differently
+from the page allocator?
 
-regards,
-dan carpenter
+> > A short summary. kmalloc_node blows up when trying to allocate from a
+> > memory less node.
+> 
+> Use kmalloc instead? And set a memory allocation policy?
 
+The current code (memcg_expand_one_shrinker_map resp. memcg_alloc_shrinker_maps)
+already use kvmalloc. Kirill's patch wanted to make those data structure
+on the respective node and kvmalloc_node sounded like the right thing to
+do. It comes as a surprise that the kernel simply blows up on a memory
+less node rather than falling back to a close node gracefully. I suspect
+this already happens when the target node is out of memory, right?
+
+How would a memory allocation policy help in this case btw.?
+
+-- 
+Michal Hocko
+SUSE Labs
