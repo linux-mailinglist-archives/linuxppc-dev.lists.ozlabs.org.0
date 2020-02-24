@@ -1,117 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DBD16A3E4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 11:29:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE28416A249
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 10:29:52 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Qxby0GBpzDqFC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 20:29:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48QywY0y7XzDqWw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 21:29:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhsharma@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=hLSSeo/b; 
+ header.s=mimecast20190719 header.b=QmcedYlA; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QxX25TBGzDqKv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 20:26:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48QytQ2NFqzDqNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 21:27:24 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1582536383;
+ s=mimecast20190719; t=1582540042;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KUCOF29KOAZJfBYTZTmxlhi9QLH0dnFOTdpSULpaiUE=;
- b=hLSSeo/bgWquhsL1GA+4yiYaJ7iNvki8tOjm+xAmnNi88Im8OKiGYoJ1rWvrBBKFw4jpUs
- sJLkBdShTU6OrufOLL0DIlrEMN2M5ZCC4xgVm5HjCYE//zehsAgDRwaEL3aOXWHKouzU+0
- 6wKJpsewASRcxoAGg0rJNyqfTRzKmw8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-83-Y3bnuID5PIas-s_Qbj27dA-1; Mon, 24 Feb 2020 04:26:21 -0500
-X-MC-Unique: Y3bnuID5PIas-s_Qbj27dA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CD943107ACC9;
- Mon, 24 Feb 2020 09:26:17 +0000 (UTC)
-Received: from [10.36.118.8] (unknown [10.36.118.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9603E5C21B;
- Mon, 24 Feb 2020 09:26:11 +0000 (UTC)
-Subject: Re: [PATCH v3 6/7] mm/memory_hotplug: Add pgprot_t to mhp_params
-To: Logan Gunthorpe <logang@deltatee.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-mm@kvack.org, Dan Williams <dan.j.williams@intel.com>,
- Michal Hocko <mhocko@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20200221182503.28317-1-logang@deltatee.com>
- <20200221182503.28317-7-logang@deltatee.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <09de85e5-4e66-2d36-2d1c-65f7d341b7f0@redhat.com>
-Date: Mon, 24 Feb 2020 10:26:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ in-reply-to:in-reply-to:references:references;
+ bh=CjqxRZHSo8X8I7NzxQEu+Tymmt/ghwg/SLEiDBOhiic=;
+ b=QmcedYlAV+SmriSISCI5Z83KHbhzO9Z/gE5+5vvx3vsO/MD7tebpzrhFSo+0sSWihfO8kG
+ IfpoMcptnzz3RZmR6/H4jZQNuHRWo5jZNWRardBOvm733PUW7bVvOPxjd2zbLLDlgRYljf
+ OgwQi8I+BKMRaamQmS3yMctu0Ff9O4E=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-373-0bmVWB6xP5enjg8IMIvioA-1; Mon, 24 Feb 2020 01:25:49 -0500
+X-MC-Unique: 0bmVWB6xP5enjg8IMIvioA-1
+Received: by mail-wr1-f72.google.com with SMTP id d15so5113445wru.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 22:25:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dckTTjxyBibi0/eHSJpegNMnKv/ZFpoC0SMhoS98gYQ=;
+ b=gvo/nd1luGOkjH2IcvgXk128fmo0Kf4JC2ZdUqhfLY200XvkqZSmV612/X1EGLG+Ys
+ B5yDe/2kiEqS6Al5MMUZsDihy+AR4y83Yv3zXAocW5GSMs0kHWK5dLzdsOwWe2zdtkT5
+ AEwyNnfrvO88zKY83+pJ8lMzLvRhaZF38QqMlbn+TfHfh0844DWBrNV36qI/qmSIQCUj
+ zPtHCuK1YMykUQOPHc2H8THtg9YRcuulfIwavkGiAHMCP8CokUpyyW7lYIqa0r3Ak6oz
+ deiXsNR5IVsOl5kxBv8Rnv9sMWKUJAg70iXKLqzSb+hatWRLStHaVBiji8aytQiyZzdz
+ Z5qw==
+X-Gm-Message-State: APjAAAUEnGOxYzS+tl6OC55mRnhNv3LYHgfkRIV0CHx0cdCRpsD2XQu9
+ c/Vr1/tccHy8idYOmH60HOe3Nv5zs3YYSDW8TAC1SZXhWnaOGPIizc0rw9Lz694k1BKALNp1CP7
+ pHkrwgevidsO2JcDkuOP/tauzyg4DafjHlfsp4A0AVg==
+X-Received: by 2002:a1c:6755:: with SMTP id b82mr20610978wmc.126.1582525547929; 
+ Sun, 23 Feb 2020 22:25:47 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyxA5kdvYr5b57CvBHEyg7SYwjy39EA3KJkD+2t/YLueVtODgOYqrVfSMUaLHTeag8+AJUU1fdINXjmJPOfgzU=
+X-Received: by 2002:a1c:6755:: with SMTP id b82mr20610946wmc.126.1582525547617; 
+ Sun, 23 Feb 2020 22:25:47 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200221182503.28317-7-logang@deltatee.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
+ <1575057559-25496-3-git-send-email-bhsharma@redhat.com>
+ <63d6e63c-7218-d2dd-8767-4464be83603f@arm.com>
+ <af0fd2b0-99db-9d58-bc8d-0dd9d640b1eb@redhat.com>
+ <f791e777-781c-86ce-7619-1de3fe3e7b90@arm.com>
+ <351975548.1986001.1578682810951.JavaMail.zimbra@redhat.com>
+ <04287d60-e99e-631b-c134-d6dc39e6a193@redhat.com>
+ <974f3601-25f8-f4e6-43a8-ff4275e9c174@arm.com>
+In-Reply-To: <974f3601-25f8-f4e6-43a8-ff4275e9c174@arm.com>
+From: Bhupesh Sharma <bhsharma@redhat.com>
+Date: Mon, 24 Feb 2020 11:55:35 +0530
+Message-ID: <CACi5LpOK6Q3ud3M3zakexLJNOtHy9TODHyYSHVwE3JHVakKzqA@mail.gmail.com>
+Subject: Re: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ in
+ vmcoreinfo
+To: Amit Kachhap <amit.kachhap@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,64 +91,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Badger <ebadger@gigaio.com>, Peter Zijlstra <peterz@infradead.org>,
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org,
+ Will Deacon <will@kernel.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
  Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@suse.com>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ kexec mailing list <kexec@lists.infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Kazuhito Hagio <k-hagio@ab.jp.nec.com>, James Morse <james.morse@arm.com>,
+ Dave Anderson <anderson@redhat.com>, bhupesh linux <bhupesh.linux@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21.02.20 19:25, Logan Gunthorpe wrote:
-> devm_memremap_pages() is currently used by the PCI P2PDMA code to create
-> struct page mappings for IO memory. At present, these mappings are created
-> with PAGE_KERNEL which implies setting the PAT bits to be WB. However, on
-> x86, an mtrr register will typically override this and force the cache
-> type to be UC-. In the case firmware doesn't set this register it is
-> effectively WB and will typically result in a machine check exception
-> when it's accessed.
-> 
-> Other arches are not currently likely to function correctly seeing they
-> don't have any MTRR registers to fall back on.
-> 
-> To solve this, provide a way to specify the pgprot value explicitly to
-> arch_add_memory().
-> 
-> Of the arches that support MEMORY_HOTPLUG: x86_64, and arm64 need a simple
-> change to pass the pgprot_t down to their respective functions which set
-> up the page tables. For x86_32, set the page tables explicitly using
-> _set_memory_prot() (seeing they are already mapped). For ia64, s390 and
-> sh, reject anything but PAGE_KERNEL settings -- this should be fine,
-> for now, seeing these architectures don't support ZONE_DEVICE.
-> 
-> A check in __add_pages() is also added to ensure the pgprot parameter was
-> set for all arches.
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
+Hi Amit,
 
-[...]
+On Fri, Feb 21, 2020 at 2:36 PM Amit Kachhap <amit.kachhap@arm.com> wrote:
+>
+> Hi Bhupesh,
+>
+> On 1/13/20 5:44 PM, Bhupesh Sharma wrote:
+> > Hi James,
+> >
+> > On 01/11/2020 12:30 AM, Dave Anderson wrote:
+> >>
+> >> ----- Original Message -----
+> >>> Hi Bhupesh,
+> >>>
+> >>> On 25/12/2019 19:01, Bhupesh Sharma wrote:
+> >>>> On 12/12/2019 04:02 PM, James Morse wrote:
+> >>>>> On 29/11/2019 19:59, Bhupesh Sharma wrote:
+> >>>>>> vabits_actual variable on arm64 indicates the actual VA space size=
+,
+> >>>>>> and allows a single binary to support both 48-bit and 52-bit VA
+> >>>>>> spaces.
+> >>>>>>
+> >>>>>> If the ARMv8.2-LVA optional feature is present, and we are running
+> >>>>>> with a 64KB page size; then it is possible to use 52-bits of addre=
+ss
+> >>>>>> space for both userspace and kernel addresses. However, any kernel
+> >>>>>> binary that supports 52-bit must also be able to fall back to 48-b=
+it
+> >>>>>> at early boot time if the hardware feature is not present.
+> >>>>>>
+> >>>>>> Since TCR_EL1.T1SZ indicates the size offset of the memory region
+> >>>>>> addressed by TTBR1_EL1 (and hence can be used for determining the
+> >>>>>> vabits_actual value) it makes more sense to export the same in
+> >>>>>> vmcoreinfo rather than vabits_actual variable, as the name of the
+> >>>>>> variable can change in future kernel versions, but the architectur=
+al
+> >>>>>> constructs like TCR_EL1.T1SZ can be used better to indicate intend=
+ed
+> >>>>>> specific fields to user-space.
+> >>>>>>
+> >>>>>> User-space utilities like makedumpfile and crash-utility, need to
+> >>>>>> read/write this value from/to vmcoreinfo
+> >>>>>
+> >>>>> (write?)
+> >>>>
+> >>>> Yes, also write so that the vmcoreinfo from an (crashing) arm64
+> >>>> system can
+> >>>> be used for
+> >>>> analysis of the root-cause of panic/crash on say an x86_64 host usin=
+g
+> >>>> utilities like
+> >>>> crash-utility/gdb.
+> >>>
+> >>> I read this as as "User-space [...] needs to write to vmcoreinfo".
+> >
+> > That's correct. But for writing to vmcore dump in the kdump kernel, we
+> > need to read the symbols from the vmcoreinfo in the primary kernel.
+> >
+> >>>>>> for determining if a virtual address lies in the linear map range.
+> >>>>>
+> >>>>> I think this is a fragile example. The debugger shouldn't need to k=
+now
+> >>>>> this.
+> >>>>
+> >>>> Well that the current user-space utility design, so I am not sure we
+> >>>> can
+> >>>> tweak that too much.
+> >>>>
+> >>>>>> The user-space computation for determining whether an address lies=
+ in
+> >>>>>> the linear map range is the same as we have in kernel-space:
+> >>>>>>
+> >>>>>>     #define __is_lm_address(addr)    (!(((u64)addr) &
+> >>>>>> BIT(vabits_actual -
+> >>>>>>     1)))
+> >>>>>
+> >>>>> This was changed with 14c127c957c1 ("arm64: mm: Flip kernel VA
+> >>>>> space"). If
+> >>>>> user-space
+> >>>>> tools rely on 'knowing' the kernel memory layout, they must have to
+> >>>>> constantly be fixed
+> >>>>> and updated. This is a poor argument for adding this to something t=
+hat
+> >>>>> ends up as ABI.
+> >>>>
+> >>>> See above. The user-space has to rely on some ABI/guaranteed
+> >>>> hardware-symbols which can be
+> >>>> used for 'determining' the kernel memory layout.
+> >>>
+> >>> I disagree. Everything and anything in the kernel will change. The
+> >>> ABI rules apply to
+> >>> stuff exposed via syscalls and kernel filesystems. It does not apply
+> >>> to kernel internals,
+> >>> like the memory layout we used yesterday. 14c127c957c1 is a case in
+> >>> point.
+> >>>
+> >>> A debugger trying to rely on this sort of thing would have to play
+> >>> catchup whenever it
+> >>> changes.
+> >>
+> >> Exactly.  That's the whole point.
+> >>
+> >> The crash utility and makedumpfile are not in the same league as other
+> >> user-space tools.
+> >> They have always had to "play catchup" precisely because they depend
+> >> upon kernel internals,
+> >> which constantly change.
+> >
+> > I agree with you and DaveA here. Software user-space debuggers are
+> > dependent on kernel internals (which can change from time-to-time) and
+> > will have to play catch-up (which has been the case since the very star=
+t).
+> >
+> > Unfortunately we don't have any clear ABI for software debugging tools =
+-
+> > may be something to look for in future.
+> >
+> > A case in point is gdb/kgdb, which still needs to run with KASLR
+> > turned-off (nokaslr) for debugging, as it confuses gdb which resolve
+> > kernel symbol address from symbol table of vmlinux. But we can
+> > work-around the same in makedumpfile/crash by reading the 'kaslr_offset=
+'
+> > value. And I have several users telling me now they cannot use gdb on
+> > KASLR enabled kernel to debug panics, but can makedumpfile + crash
+> > combination to achieve the same.
+> >
+> > So, we should be looking to fix these utilities which are broken since
+> > the 52-bit changes for arm64. Accordingly, I will try to send the v6
+> > soon while incorporating the comments posted on the v5.
+>
+> Any update on the next v6 version. Since this patch series is fixing the
+> current broken kdump so need this series to add some more fields in
+> vmcoreinfo for Pointer Authentication work.
 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index c5df1b3dada0..30d6c1b8847e 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -56,9 +56,11 @@ enum {
->  /*
->   * Extended parameters for memory hotplug:
->   * altmap: alternative allocator for memmap array (optional)
-> + * pgprot: page protection flags to apply to newly added page tables (required)
+Sorry for the delay. I was caught up in some other urgent arm64
+user-space issues.
+I am preparing the v6 now and hopefully will be able to post it out
+for review later today.
 
-s/added/created/?
-
-
-
--- 
 Thanks,
-
-David / dhildenb
+Bhupesh
 
