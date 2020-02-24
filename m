@@ -2,72 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4864B16A0E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 09:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA36916A242
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 10:28:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48QwwT30JHzDqVV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 19:59:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48QxYy73S9zDqWW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 20:28:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=176.9.125.105; helo=ssl.serverraum.org;
- envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=walle.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=Ta29z0+G; 
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=T94v3JSl; 
  dkim-atps=neutral
-X-Greylist: delayed 2532 seconds by postgrey-1.36 at bilbo;
- Mon, 24 Feb 2020 19:53:38 AEDT
-Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QwpB4MlYzDqSj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 19:53:38 +1100 (AEDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+X-Greylist: delayed 10062 seconds by postgrey-1.36 at bilbo;
+ Mon, 24 Feb 2020 20:23:51 AEDT
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id B794923059;
- Mon, 24 Feb 2020 09:53:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1582534414;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yGHRW3l5rCA287QCNNdGXSdyqq9QPHkLJ+IpgLfP+T0=;
- b=Ta29z0+G9GOKfOY5pEnNbXDdYrHts1jhuNXUK+UU5pGYZYKRousrquA57hOniFUq4neRJv
- CWF0Ds23phwNWukPNrMpGKwE0OE5mmUIhqM0t2PymJhANWOk8Jh/P/Ff1ecxm+VF0nYmBQ
- +xZno6FiY9P/UzW4OQIkZlENAnPp3wU=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48QxT40f0czDqVq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 20:23:51 +1100 (AEDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01O6ZCQB148301;
+ Mon, 24 Feb 2020 06:35:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=qvvE/QeaFeeWvi/ZddnrDx5vkFAlwi415cDHF7+KM3Q=;
+ b=T94v3JSljCelxXlRsVLe9P13vnGTez4Pmixsn20wAhCZGBwBYR+iOXCiP6SH3RlxdRlA
+ 3pkUrkI+xBYuSn6yF08lfauBBShUfIW4PuQPoVad9kb9qlcqUcRZV3RtZuFumrgiS/bZ
+ cr4z0BoxeqG65NviRh0/muLrZvJeOeTL8Vr5Qp3UieerOSYeMLgEtIQWLpLmWFLM2QG8
+ AR8NOstuLywh+PpJectwnUQOqb4TXpc6KMKD1rlXVcx1lOCHUoufXeIvTpMxhpyK4cTr
+ fSO4z4eoEdsoGpXYbWatayLl+LiGNet61SR2ll4lgymBvIS8FWcUIXPCU2X+BMPSQKtN gw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+ by userp2120.oracle.com with ESMTP id 2yavxrd616-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Feb 2020 06:35:51 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+ by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01O6W4U5038129;
+ Mon, 24 Feb 2020 06:35:51 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by userp3030.oracle.com with ESMTP id 2ybdsfvyb1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Feb 2020 06:35:51 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01O6Ze0E008125;
+ Mon, 24 Feb 2020 06:35:40 GMT
+Received: from kadam (/129.205.23.165) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Sun, 23 Feb 2020 22:35:39 -0800
+Date: Mon, 24 Feb 2020 09:35:29 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Colin King <colin.king@canonical.com>
+Subject: Re: [PATCH][next] soc: fsl: dpio: fix dereference of pointer p
+ before null check
+Message-ID: <20200224063529.GA3286@kadam>
+References: <20200221231143.30131-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 24 Feb 2020 09:53:34 +0100
-From: Michael Walle <michael@walle.cc>
-To: Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v6 2/3] arm64: dts: ls1028a: Add PCIe controller DT nodes
-In-Reply-To: <20200224084307.GD27688@dragon>
-References: <20190902034319.14026-2-xiaowei.bao@nxp.com>
- <20200224081105.13878-1-michael@walle.cc> <20200224084307.GD27688@dragon>
-Message-ID: <a3aeabddc82ca86e3dca9c26081a0077@walle.cc>
-X-Sender: michael@walle.cc
-User-Agent: Roundcube Webmail/1.3.10
-X-Spamd-Bar: +
-X-Spam-Level: *
-X-Rspamd-Server: web
-X-Spam-Status: No, score=1.40
-X-Spam-Score: 1.40
-X-Rspamd-Queue-Id: B794923059
-X-Spamd-Result: default: False [1.40 / 15.00]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- TAGGED_RCPT(0.00)[dt]; MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[]; RCPT_COUNT_TWELVE(0.00)[16];
- NEURAL_HAM(-0.00)[-0.572]; RCVD_COUNT_ZERO(0.00)[0];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- MID_RHS_MATCH_FROM(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200221231143.30131-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540
+ signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ suspectscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002240056
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9540
+ signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0
+ lowpriorityscore=0
+ spamscore=0 clxscore=1011 suspectscore=0 bulkscore=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002240056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,43 +92,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, lorenzo.pieralisi@arm.com,
- xiaowei.bao@nxp.com, roy.zang@nxp.com, linux-pci@vger.kernel.org,
- Zhiqiang.Hou@nxp.com, linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
- minghuan.Lian@nxp.com, robh+dt@kernel.org, mingkai.hu@nxp.com,
- bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org,
+Cc: linux-kernel@vger.kernel.org, Roy Pledge <Roy.Pledge@nxp.com>,
+ kernel-janitors@vger.kernel.org, Youri Querry <youri.querry_1@nxp.com>,
+ Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
  linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Shawn, all,
-
-Am 2020-02-24 09:43, schrieb Shawn Guo:
-> On Mon, Feb 24, 2020 at 09:11:05AM +0100, Michael Walle wrote:
->> Hi Xiaowei, Hi Shawn,
->> 
->> > LS1028a implements 2 PCIe 3.0 controllers.
->> 
->> Patch 1/3 and 3/3 are in Linus' tree but nobody seems to care about 
->> this patch
->> anymore :(
->> 
->> This doesn't work well with the IOMMU, because the iommu-map property 
->> is
->> missing. The bootloader needs the &smmu phandle to fixup the entry. 
->> See
->> below.
->> 
->> Shawn, will you add this patch to your tree once its fixed, 
->> considering it
->> just adds the device tree node for the LS1028A?
+On Fri, Feb 21, 2020 at 11:11:43PM +0000, Colin King wrote:
+> ---
+>  drivers/soc/fsl/dpio/qbman-portal.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> The patch/thread is a bit aged.  You may want to send an updated patch
-> for discussion.
+> diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+> index 740ee0d19582..d1f49caa5b13 100644
+> --- a/drivers/soc/fsl/dpio/qbman-portal.c
+> +++ b/drivers/soc/fsl/dpio/qbman-portal.c
+> @@ -249,10 +249,11 @@ struct qbman_swp *qbman_swp_init(const struct qbman_swp_desc *d)
+>  	u32 mask_size;
+>  	u32 eqcr_pi;
+>  
+> -	spin_lock_init(&p->access_spinlock);
+> -
+>  	if (!p)
+>  		return NULL;
+> +
+> +	spin_lock_init(&p->access_spinlock);
 
-So should I just pick up the patch add my two fixes and send it again? 
-What about
-the Signed-off-by tags? Leave them? Replace them? Add mine?
+Allocations in the declaration blog are not super common in the kernel,
+but they're more bug prone.  Generally, it's not beautiful to call a
+function which can fail in the allocation block.
 
--michael
+regards,
+dan carpenter
+
