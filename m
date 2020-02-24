@@ -1,71 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7767169ED3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 07:53:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Qt7R0lpCzDqW9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 17:53:23 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084ED169FE4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 09:20:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Qw3s1jTRzDqVq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 19:20:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
- helo=mail-il1-x142.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
+ helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=r+VFg7nl; dkim-atps=neutral
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
+ dmarc=none (p=none dis=none) header.from=walle.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
+ header.s=mail2016061301 header.b=m9o9jxnJ; 
+ dkim-atps=neutral
+X-Greylist: delayed 432 seconds by postgrey-1.36 at bilbo;
+ Mon, 24 Feb 2020 19:18:50 AEDT
+Received: from ssl.serverraum.org (ssl.serverraum.org
+ [IPv6:2a01:4f8:151:8464::1:2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Qt5f3KnQzDqSs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 17:51:48 +1100 (AEDT)
-Received: by mail-il1-x142.google.com with SMTP id s85so6804900ill.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 22:51:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=t9K0w7u9UlRucKDFse4Bnnz0TkvNHleyC4BCsa1RzrM=;
- b=r+VFg7nlYKjyz4ZE6FQLUysVX5WdvVgRm6WOY41svQjomwf0VXKN3PmH633+9Q2lI7
- rsia25DTZrqeYZUzqIELM0ZPs9xk9RrR1zjvbYreOc8hFnT5pfTuk8+8G3Z3+v2ZKC0g
- 3+Uda6+pEZA47fwhjkuOGRiku+Z0p1HVHFqY54Xx1Th+9vhrJ/qnxiXHBlAOCapn0INg
- RIE2UbkfnEyHpOODwAIrese+8kda1BNJDaAH9nXkUn/5vKE97Jm60mZbshpHsb7scDjj
- jyhU99uHJmzK+BJhulAarPgiDvpWVdszTMddDibKFZjPLLrV/FmHpUdCY0G0wQkUeVCh
- oz1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=t9K0w7u9UlRucKDFse4Bnnz0TkvNHleyC4BCsa1RzrM=;
- b=QyzzGxErrzgBJgQhqJSppFnw65DXdmMQKN9D1/bZOLjybXvWbJXRr2O/Gsk1DixyNL
- JCUXHGBIYIysFcZ4VORWEp82DUEOs7FrD5/LtE68sQy10KHOvc0HgEskPj0Q1ViTZp2i
- 72XbNorEPWwMj5Ffq2PY2ITGt7ToTc43Cahlj7lnFV+2hb2Dg2/J21OCxR1il7mXzhbV
- D5tYRSJfQIieaCtysmJAWIbeVNb5+IfMIUMyfWpQdAXunD2jkzV7FfxAdyIzQB1jLAz6
- 9OWBIHJKjGCCOOjaNg7ub0MN/9U2gyTnGcuomvh/evh1/D1fCVk3S2MOMhg6odBz+73b
- Hhow==
-X-Gm-Message-State: APjAAAU5jVDGqelwfvO/BJoY7idrRsjk7uJjyx3y6C7NX+nKWnIVp2Z0
- Lmg+LWcDZgtH8nCM5LeAm7wO4cmhZ6vEOd1OWjs=
-X-Google-Smtp-Source: APXvYqx+mUK6hh9BaSPGa0Msc1oHfQvPgztYvcYPrv+S9n6RraKbcSZyrnA+OcHji1IbgLT+tKjr35qmWcvjk1TYbOw=
-X-Received: by 2002:a92:d7c1:: with SMTP id g1mr59552764ilq.192.1582527104859; 
- Sun, 23 Feb 2020 22:51:44 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Qw223HxSzDqNf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 19:18:50 +1100 (AEDT)
+Received: from mwalle01.sab.local. (unknown [213.135.10.150])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by ssl.serverraum.org (Postfix) with ESMTPSA id 7C5B122ED5;
+ Mon, 24 Feb 2020 09:11:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
+ s=mail2016061301; t=1582531878;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uunZrjy3s12DlnbMOTQxFCthmdhavGDhtf/Hy0AGfm4=;
+ b=m9o9jxnJg36uapNHQq8CiIPZZ86tRsoXEi2xbTjK5WeVWxg1a1X3z/QkoZVdwrQgymsIsx
+ YNvAOcuus8KyqKkUNvDDZQrM8CyYSbKuSUyS/Tq+PQ5SNfwbAA0dVxjM3YQkUOmp16v8SO
+ pBdHRGdFQ157gdiJUdjz9ZF7weMgNA8=
+From: Michael Walle <michael@walle.cc>
+To: xiaowei.bao@nxp.com
+Subject: Re: [PATCH v6 2/3] arm64: dts: ls1028a: Add PCIe controller DT nodes
+Date: Mon, 24 Feb 2020 09:11:05 +0100
+Message-Id: <20200224081105.13878-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190902034319.14026-2-xiaowei.bao@nxp.com>
+References: <20190902034319.14026-2-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <CAPcyv4j2hut1YDrotC=QkcM+S0SZwpd9_4hD2aChn+cKD+62oA@mail.gmail.com>
- <240fbefc6275ac0a6f2aa68715b3b73b0e7a8310.camel@au1.ibm.com>
- <20200224043750.GM24185@bombadil.infradead.org>
- <83034494d5c3da1fa63b172e844f85d0fec7910a.camel@au1.ibm.com>
-In-Reply-To: <83034494d5c3da1fa63b172e844f85d0fec7910a.camel@au1.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Mon, 24 Feb 2020 17:51:33 +1100
-Message-ID: <CAOSf1CHYEJf02EV0kYMk+D9s=4PiTXSM1eFcRGYe7XJrHvtAtA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/27] Add support for OpenCAPI Persistent Memory
- devices
-To: "Alastair D'Silva" <alastair@au1.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: ++++++
+X-Spam-Level: ******
+X-Rspamd-Server: web
+X-Spam-Status: Yes, score=6.40
+X-Spam-Score: 6.40
+X-Rspamd-Queue-Id: 7C5B122ED5
+X-Spamd-Result: default: False [6.40 / 15.00]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[dt];
+ MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
+ NEURAL_SPAM(0.00)[0.765]; DKIM_SIGNED(0.00)[];
+ DBL_PROHIBIT(0.00)[0.51.225.64:email,0.53.103.224:email];
+ RCPT_COUNT_TWELVE(0.00)[17]; MID_CONTAINS_FROM(1.00)[];
+ RCVD_COUNT_ZERO(0.00)[0]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+];
+ ASN(0.00)[asn:12941, ipnet:213.135.0.0/19, country:DE];
+ SUSPICIOUS_RECIPS(1.50)[]
+X-Spam: Yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,64 +82,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Matthew Wilcox <willy@infradead.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, lorenzo.pieralisi@arm.com,
+ roy.zang@nxp.com, linux-pci@vger.kernel.org, Zhiqiang.Hou@nxp.com,
+ linux-kernel@vger.kernel.org, leoyang.li@nxp.com, minghuan.Lian@nxp.com,
+ Michael Walle <michael@walle.cc>, robh+dt@kernel.org, mingkai.hu@nxp.com,
+ bhelgaas@google.com, shawnguo@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 24, 2020 at 3:43 PM Alastair D'Silva <alastair@au1.ibm.com> wrote:
->
-> On Sun, 2020-02-23 at 20:37 -0800, Matthew Wilcox wrote:
-> > On Mon, Feb 24, 2020 at 03:34:07PM +1100, Alastair D'Silva wrote:
-> > > V3:
-> > >   - Rebase against next/next-20200220
-> > >   - Move driver to arch/powerpc/platforms/powernv, we now expect
-> > > this
-> > >     driver to go upstream via the powerpc tree
-> >
-> > That's rather the opposite direction of normal; mostly drivers live
-> > under
-> > drivers/ and not in arch/.  It's easier for drivers to get overlooked
-> > when doing tree-wide changes if they're hiding.
->
-> This is true, however, given that it was not all that desirable to have
-> it under drivers/nvdimm, it's sister driver (for the same hardware) is
-> also under arch, and that we don't expect this driver to be used on any
-> platform other than powernv, we think this was the most reasonable
-> place to put it.
+Hi Xiaowei, Hi Shawn,
 
-Historically powernv specific platform drivers go in their respective
-subsystem trees rather than in arch/ and I'd prefer we kept it that
-way. When I added the papr_scm driver I put it in the pseries platform
-directory because most of the pseries paravirt code lives there for
-some reason; I don't know why. Luckily for me that followed the same
-model that Dan used when he put the NFIT driver in drivers/acpi/ and
-the libnvdimm core in drivers/nvdimm/ so we didn't have anything to
-argue about. However, as Matthew pointed out, it is at odds with how
-most subsystems operate. Is there any particular reason we're doing
-things this way or should we think about moving libnvdimm users to
-drivers/nvdimm/?
+> LS1028a implements 2 PCIe 3.0 controllers.
 
-Oliver
+Patch 1/3 and 3/3 are in Linus' tree but nobody seems to care about this patch
+anymore :(
+
+This doesn't work well with the IOMMU, because the iommu-map property is
+missing. The bootloader needs the &smmu phandle to fixup the entry. See
+below.
+
+Shawn, will you add this patch to your tree once its fixed, considering it
+just adds the device tree node for the LS1028A?
+
+> 
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> ---
+> v2:
+>  - Fix up the legacy INTx allocate failed issue.
+> v3:
+>  - No change.
+> v4:
+>  - Remove the num-lanes property.
+> v5:
+>  - Add the num-viewport property.
+> v6:
+>  - move num-viewport to 8.
+> 
+>  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 52 ++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> index 72b9a75..c043b1d 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+> @@ -625,6 +625,58 @@
+>  			};
+>  		};
+>  
+> +		pcie@3400000 {
+> +			compatible = "fsl,ls1028a-pcie";
+> +			reg = <0x00 0x03400000 0x0 0x00100000   /* controller registers */
+> +			       0x80 0x00000000 0x0 0x00002000>; /* configuration space */
+> +			reg-names = "regs", "config";
+> +			interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>, /* PME interrupt */
+> +				     <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>; /* aer interrupt */
+> +			interrupt-names = "pme", "aer";
+> +			#address-cells = <3>;
+> +			#size-cells = <2>;
+> +			device_type = "pci";
+> +			dma-coherent;
+> +			num-viewport = <8>;
+> +			bus-range = <0x0 0xff>;
+> +			ranges = <0x81000000 0x0 0x00000000 0x80 0x00010000 0x0 0x00010000   /* downstream I/O */
+> +				  0x82000000 0x0 0x40000000 0x80 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+> +			msi-parent = <&its>;
+iommu-map = <0 &smmu 0 0>; /* fixed up by bootloader */
+
+> +			#interrupt-cells = <1>;
+> +			interrupt-map-mask = <0 0 0 7>;
+> +			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
+> +					<0000 0 0 2 &gic 0 0 GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
+> +					<0000 0 0 3 &gic 0 0 GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
+> +					<0000 0 0 4 &gic 0 0 GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
+> +			status = "disabled";
+> +		};
+> +
+> +		pcie@3500000 {
+> +			compatible = "fsl,ls1028a-pcie";
+> +			reg = <0x00 0x03500000 0x0 0x00100000   /* controller registers */
+> +			       0x88 0x00000000 0x0 0x00002000>; /* configuration space */
+> +			reg-names = "regs", "config";
+> +			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "pme", "aer";
+> +			#address-cells = <3>;
+> +			#size-cells = <2>;
+> +			device_type = "pci";
+> +			dma-coherent;
+> +			num-viewport = <8>;
+> +			bus-range = <0x0 0xff>;
+> +			ranges = <0x81000000 0x0 0x00000000 0x88 0x00010000 0x0 0x00010000   /* downstream I/O */
+> +				  0x82000000 0x0 0x40000000 0x88 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
+> +			msi-parent = <&its>;
+likewise
+
+
+With these two fixes:
+
+Tested-by: Michael Walle <michael@walle.cc>
+
+-michael
+
+> +			#interrupt-cells = <1>;
+> +			interrupt-map-mask = <0 0 0 7>;
+> +			interrupt-map = <0000 0 0 1 &gic 0 0 GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
+> +					<0000 0 0 2 &gic 0 0 GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
+> +					<0000 0 0 3 &gic 0 0 GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
+> +					<0000 0 0 4 &gic 0 0 GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+> +			status = "disabled";
+> +		};
+> +
+>  		pcie@1f0000000 { /* Integrated Endpoint Root Complex */
+>  			compatible = "pci-host-ecam-generic";
+>  			reg = <0x01 0xf0000000 0x0 0x100000>;
+> -- 
+> 2.9.5
+> 
+> 
