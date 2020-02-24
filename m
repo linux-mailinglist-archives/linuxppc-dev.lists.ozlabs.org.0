@@ -2,92 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B060169D22
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 05:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAA9169D46
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 05:57:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48QqH01nwxzDqQZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 15:44:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48QqY55dCPzDqQZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 15:56:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QqF90pfmzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 15:43:08 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48QqW91XLRzDqFS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 15:55:16 +1100 (AEDT)
 Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01O4gB2S020340
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 23:43:06 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yb008tmg2-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Feb 2020 23:43:06 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Mon, 24 Feb 2020 04:43:03 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 24 Feb 2020 04:42:57 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01O4guim46072208
+ 01O4oL2W050797; Sun, 23 Feb 2020 23:55:10 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yb008tudv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 23 Feb 2020 23:55:10 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01O4pL9W005423;
+ Mon, 24 Feb 2020 04:55:09 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 2yaux6cqjr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Feb 2020 04:55:09 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01O4t9rY45023654
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2020 04:42:56 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1CA284C05A;
- Mon, 24 Feb 2020 04:42:56 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B721D4C040;
- Mon, 24 Feb 2020 04:42:55 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 24 Feb 2020 04:42:55 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 12D96A00E5;
- Mon, 24 Feb 2020 15:42:51 +1100 (AEDT)
-Subject: Re: [PATCH v3 00/27] Add support for OpenCAPI Persistent Memory
- devices
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Matthew Wilcox <willy@infradead.org>
-Date: Mon, 24 Feb 2020 15:42:54 +1100
-In-Reply-To: <20200224043750.GM24185@bombadil.infradead.org>
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <CAPcyv4j2hut1YDrotC=QkcM+S0SZwpd9_4hD2aChn+cKD+62oA@mail.gmail.com>
- <240fbefc6275ac0a6f2aa68715b3b73b0e7a8310.camel@au1.ibm.com>
- <20200224043750.GM24185@bombadil.infradead.org>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ Mon, 24 Feb 2020 04:55:09 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1847FB2064;
+ Mon, 24 Feb 2020 04:55:09 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CDCB5B205F;
+ Mon, 24 Feb 2020 04:55:08 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.35.26])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Feb 2020 04:55:08 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 39DCC2E3231; Mon, 24 Feb 2020 10:25:06 +0530 (IST)
+Date: Mon, 24 Feb 2020 10:25:06 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2 1/5] powerpc: Move idle_loop_prolog()/epilog()
+ functions to header file
+Message-ID: <20200224045506.GA12846@in.ibm.com>
+References: <1582262314-8319-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1582262314-8319-2-git-send-email-ego@linux.vnet.ibm.com>
+ <87lfowt22z.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87lfowt22z.fsf@linux.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-TM-AS-GCONF: 00
-x-cbid: 20022404-0008-0000-0000-00000355CAB3
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022404-0009-0000-0000-00004A76E1C2
-Message-Id: <83034494d5c3da1fa63b172e844f85d0fec7910a.camel@au1.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-23_07:2020-02-21,
  2020-02-23 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  bulkscore=0
  priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
- suspectscore=0 adultscore=0 phishscore=0 mlxlogscore=678 malwarescore=0
+ suspectscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
  mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002240039
+ engine=8.12.0-2001150001 definitions=main-2002240040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,55 +88,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2020-02-23 at 20:37 -0800, Matthew Wilcox wrote:
-> On Mon, Feb 24, 2020 at 03:34:07PM +1100, Alastair D'Silva wrote:
-> > V3:
-> >   - Rebase against next/next-20200220
-> >   - Move driver to arch/powerpc/platforms/powernv, we now expect
-> > this
-> >     driver to go upstream via the powerpc tree
+Hello Nathan,
+
+On Fri, Feb 21, 2020 at 09:03:16AM -0600, Nathan Lynch wrote:
+> "Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
 > 
-> That's rather the opposite direction of normal; mostly drivers live
-> under
-> drivers/ and not in arch/.  It's easier for drivers to get overlooked
-> when doing tree-wide changes if they're hiding.
+> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+> >
+> > Currently prior to entering an idle state on a Linux Guest, the
+> > pseries cpuidle driver implement an idle_loop_prolog() and
+> > idle_loop_epilog() functions which ensure that idle_purr is correctly
+> > computed, and the hypervisor is informed that the CPU cycles have been
+> > donated.
+> >
+> > These prolog and epilog functions are also required in the default
+> > idle call, i.e pseries_lpar_idle(). Hence move these accessor
+> > functions to a common header file and call them from
+> > pseries_lpar_idle(). Since the existing header files such as
+> > asm/processor.h have enough clutter, create a new header file
+> > asm/idle.h.
+> >
+> > Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> > ---
+> >  arch/powerpc/include/asm/idle.h        | 27 +++++++++++++++++++++++++++
+> >  arch/powerpc/platforms/pseries/setup.c |  7 +++++--
+> >  drivers/cpuidle/cpuidle-pseries.c      | 24 +-----------------------
+> >  3 files changed, 33 insertions(+), 25 deletions(-)
+> >  create mode 100644 arch/powerpc/include/asm/idle.h
+> >
+> > diff --git a/arch/powerpc/include/asm/idle.h b/arch/powerpc/include/asm/idle.h
+> > new file mode 100644
+> > index 0000000..f32a7d8
+> > --- /dev/null
+> > +++ b/arch/powerpc/include/asm/idle.h
+> > @@ -0,0 +1,27 @@
+> > +#ifndef _ASM_POWERPC_IDLE_H
+> > +#define _ASM_POWERPC_IDLE_H
+> > +#include <asm/runlatch.h>
+> > +
+> > +static inline void idle_loop_prolog(unsigned long *in_purr)
+> > +{
+> > +	ppc64_runlatch_off();
+> > +	*in_purr = mfspr(SPRN_PURR);
+> > +	/*
+> > +	 * Indicate to the HV that we are idle. Now would be
+> > +	 * a good time to find other work to dispatch.
+> > +	 */
+> > +	get_lppaca()->idle = 1;
+> > +}
+> > +
+> > +static inline void idle_loop_epilog(unsigned long in_purr)
+> > +{
+> > +	u64 wait_cycles;
+> > +
+> > +	wait_cycles = be64_to_cpu(get_lppaca()->wait_state_cycles);
+> > +	wait_cycles += mfspr(SPRN_PURR) - in_purr;
+> > +	get_lppaca()->wait_state_cycles = cpu_to_be64(wait_cycles);
+> > +	get_lppaca()->idle = 0;
+> > +
+> > +	ppc64_runlatch_on();
+> > +}
+> > +#endif
+> 
+> Looks fine and correct as a cleanup, but asm/include/idle.h and
+> idle_loop_prolog, idle_loop_epilog, strike me as too generic for
+> pseries-specific code.
 
-This is true, however, given that it was not all that desirable to have
-it under drivers/nvdimm, it's sister driver (for the same hardware) is
-also under arch, and that we don't expect this driver to be used on any
-platform other than powernv, we think this was the most reasonable
-place to put it.
+Should it be prefixed with pseries , i.e pseries_idle_prolog()
+and pseries_idle_epilog() ?
 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+Also, I am planning another round of cleanup to move all the
+idle-related declaration from asm/include/processor.h to
+asm/include/idle.h
+
 
