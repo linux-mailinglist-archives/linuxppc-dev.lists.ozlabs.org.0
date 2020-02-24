@@ -1,38 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19F01699D0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Feb 2020 20:35:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Qb5h1ly6zDqG9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 06:35:52 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36942169B36
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 01:31:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Qjfb3YhzzDqLv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 11:31:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=qais.yousef@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48QZz45gVZzDq9y
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 06:30:07 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E3A331B;
- Sun, 23 Feb 2020 11:30:06 -0800 (PST)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com
- [10.1.195.21])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D4843F6CF;
- Sun, 23 Feb 2020 11:30:04 -0800 (PST)
-From: Qais Yousef <qais.yousef@arm.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH v3 08/15] powerpc: Replace cpu_up/down with add/remove_cpu
-Date: Sun, 23 Feb 2020 19:29:35 +0000
-Message-Id: <20200223192942.18420-9-qais.yousef@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200223192942.18420-1-qais.yousef@arm.com>
-References: <20200223192942.18420-1-qais.yousef@arm.com>
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Qjcv74YWzDqLn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 11:29:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=MAa2CVzD; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48Qjcs6qCRz9sP7;
+ Mon, 24 Feb 2020 11:29:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1582504189;
+ bh=fq+U1JY4Bj/ArorQIFPhS/G3I5kh+b9vUKRbrQLIob0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=MAa2CVzDDOKwqeN9B/Jpad6SeBdowjHp0QC00NB5la1JJSn4J4Vvz1oWJifK8LfHC
+ G+aiy1/5+x6q9mwGSFrjVfnBEAxd5f5P+Ch1KyBeV1JVIPjcQIAeKNyUjUlikHKsi1
+ v18u0mH+jxffHs6hu4EkNnaRf8/8x7jhQFxXCDXU5her/qTyOz8dDkBpdH8kkm+a51
+ jUjEeS5Ji/Smz8bC3MXaFLRpkd5K3FAA+4weYZ1RDq7tPbpOqRwXBnQt9aZ133SZ9L
+ 44t4BLrHiLZVUpQEdsbZKaGgD/fECpkSxcwo6HBB92/RX/plmOcq8SWo3ecp0PzD1V
+ jbJM7J+Lz2YVg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc: Include .BTF section
+In-Reply-To: <20200220113132.857132-1-naveen.n.rao@linux.vnet.ibm.com>
+References: <20200220113132.857132-1-naveen.n.rao@linux.vnet.ibm.com>
+Date: Mon, 24 Feb 2020 11:29:47 +1100
+Message-ID: <8736b0j090.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,60 +57,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Paul E . McKenney" <paulmck@kernel.org>, Ram Pai <linuxram@us.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Enrico Weigelt <info@metux.net>, Qais Yousef <qais.yousef@arm.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The core device API performs extra housekeeping bits that are missing
-from directly calling cpu_up/down.
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Selecting CONFIG_DEBUG_INFO_BTF results in the below warning from ld:
+>   ld: warning: orphan section `.BTF' from `.btf.vmlinux.bin.o' being placed in section `.BTF'
+>
+> Include .BTF section in vmlinux explicitly to fix the same.
 
-See commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
-serialization during LPM") for an example description of what might go
-wrong.
+I don't see any other architectures doing this in their linker script.
+Why are we special?
 
-This also prepares to make cpu_up/down a private interface for anything
-but the cpu subsystem.
+cheers
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Qais Yousef <qais.yousef@arm.com>
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC: Paul Mackerras <paulus@samba.org>
-CC: Michael Ellerman <mpe@ellerman.id.au>
-CC: Enrico Weigelt <info@metux.net>
-CC: Ram Pai <linuxram@us.ibm.com>
-CC: Nicholas Piggin <npiggin@gmail.com>
-CC: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-CC: Christophe Leroy <christophe.leroy@c-s.fr>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: linuxppc-dev@lists.ozlabs.org
-CC: linux-kernel@vger.kernel.org
----
-
-Michael, this now uses add_cpu() which you should be CCed on. I wasn't sure if
-I can keep your Ack or remove it in this case. Please let me know if you need
-more clarification.
-
- arch/powerpc/kexec/core_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 04a7cba58eff..b4184092172a 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -212,7 +212,7 @@ static void wake_offline_cpus(void)
- 		if (!cpu_online(cpu)) {
- 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
- 			       cpu);
--			WARN_ON(cpu_up(cpu));
-+			WARN_ON(add_cpu(cpu));
- 		}
- 	}
- }
--- 
-2.17.1
-
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+> index b4c89a1acebb..a32d478a7f41 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -303,6 +303,12 @@ SECTIONS
+>  		*(.branch_lt)
+>  	}
+>  
+> +#ifdef CONFIG_DEBUG_INFO_BTF
+> +	.BTF : AT(ADDR(.BTF) - LOAD_OFFSET) {
+> +		*(.BTF)
+> +	}
+> +#endif
+> +
+>  	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
+>  		__start_opd = .;
+>  		KEEP(*(.opd))
+> -- 
+> 2.24.1
