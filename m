@@ -2,108 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D6A16A472
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 11:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA43F16A3F0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 11:32:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48QzYY5rm5zDqSr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 21:57:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Qz0818vLzDqX9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2020 21:32:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=cern.ch
- (client-ip=40.107.21.68; helo=eur05-vi1-obe.outbound.protection.outlook.com;
- envelope-from=federico.vaga@cern.ch; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cern.ch
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cern.onmicrosoft.com header.i=@cern.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-cern-onmicrosoft-com header.b=treHLM/w;
- dkim-atps=neutral
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- (mail-vi1eur05on2068.outbound.protection.outlook.com [40.107.21.68])
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=76.164.61.194; helo=kernel.crashing.org;
+ envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+X-Greylist: delayed 771 seconds by postgrey-1.36 at bilbo;
+ Mon, 24 Feb 2020 21:30:28 AEDT
+Received: from kernel.crashing.org (kernel.crashing.org [76.164.61.194])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48QxXW0svczDqFH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 20:26:49 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eLhB7iH5YDJQd/UPqkLrfmxKIxhuOEeRo6o8Gcea5ND0iEi6k7xi2hbTiBGcZD6y9L8ZIeZ7GxgbKqzuCARa7/dxorkh2FV0tXrKJ8Ra3ueH2QOrhQR2BVB9ND61nTS6hiqe52Hw857jN0gmuASJvbtl52mlJGUcpB2VhpnKZ3Dqw7UEFFnx46aiueqYaDFc9MbpOdSY7X8GibnhUFK14SWvLTiaNrgW0TRlPxoyU6EH2PvLqam6QUHSR+kw1fqJbcKG+OWGwxp35cemaWPZDxuu4U7JyGfSybZXsBGdp7BbXCLhaHHQ+/HKYILfLsUnsj5/tYpZ96zDQo9S5zqmXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tmGwAKElI2u+A0z/EETBIou5ic5kIe13D9NL0wb7U2M=;
- b=CGZrT9/zeWLslICwnV47CvnyCi4tEwQUvjqq4frvluTbtOh5IsXbUWZuRHjfuSArjnFQ7V8qGqVtI2g+xSErDkkqpOSMvLUpueUfM/Y9a9cvMUxhhRbsXuIIRghZMWr0aoiTyBh0F+ZkCM8+Y3hBx6wkGKIKjlk/4z7TKSRnyf7C+/w9hY+f31izRZKM57PBovCQDJhle01mAgeJWMacphqeZc477gRYs6vLNoJsWtMM5xovPP/PM0OZc9LqnyZrXo8PTjlcKfMmfh2jHrdSdSA+MTMjrhYqLuJajloIZjDMLL7d3s9hytgzdiyLTjnyRxL1AizGgpggJZlBlsKWag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 188.184.36.50) smtp.rcpttodomain=kernel.org smtp.mailfrom=cern.ch;
- dmarc=bestguesspass action=none header.from=cern.ch; dkim=none (message not
- signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cern.onmicrosoft.com; 
- s=selector2-cern-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tmGwAKElI2u+A0z/EETBIou5ic5kIe13D9NL0wb7U2M=;
- b=treHLM/wuTE3F8KbK3ygj/ORGGmbE9HBEQqYgWyAmRwvSPW5jnP+JZ60wkplYx3/8FOYO8MRW3svCyvPlLsPYQKPlKNIaLUHO55uV6xCD9MQs9BFPL7WD+jRjhSKWoD25d/Kj3n/1EbzSGqtTHjsNsdj0qDL4wKrkQGEOj305CA=
-Received: from AM0PR06CA0026.eurprd06.prod.outlook.com (2603:10a6:208:ab::39)
- by HE1PR0601MB2617.eurprd06.prod.outlook.com (2603:10a6:3:4c::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.22; Mon, 24 Feb
- 2020 09:26:42 +0000
-Received: from VE1EUR02FT030.eop-EUR02.prod.protection.outlook.com
- (2a01:111:f400:7e06::205) by AM0PR06CA0026.outlook.office365.com
- (2603:10a6:208:ab::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.18 via Frontend
- Transport; Mon, 24 Feb 2020 09:26:42 +0000
-Authentication-Results: spf=pass (sender IP is 188.184.36.50)
- smtp.mailfrom=cern.ch; kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=bestguesspass action=none
- header.from=cern.ch;
-Received-SPF: Pass (protection.outlook.com: domain of cern.ch designates
- 188.184.36.50 as permitted sender) receiver=protection.outlook.com;
- client-ip=188.184.36.50; helo=cernmxgwlb4.cern.ch;
-Received: from cernmxgwlb4.cern.ch (188.184.36.50) by
- VE1EUR02FT030.mail.protection.outlook.com (10.152.12.127) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.2750.18 via Frontend Transport; Mon, 24 Feb 2020 09:26:41 +0000
-Received: from cernfe04.cern.ch (188.184.36.41) by cernmxgwlb4.cern.ch
- (188.184.36.50) with Microsoft SMTP Server (TLS) id 14.3.487.0; Mon, 24 Feb
- 2020 10:26:40 +0100
-Received: from pcbe13614.localnet (2001:1458:202:121::100:40) by smtp.cern.ch
- (2001:1458:201:66::100:14) with Microsoft SMTP Server (TLS) id
- 14.3.487.0; Mon, 24 Feb 2020 10:26:38 +0100
-From: Federico Vaga <federico.vaga@cern.ch>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 3/7] docs: fix broken references to text files
-Date: Mon, 24 Feb 2020 10:26:39 +0100
-Message-ID: <3929512.qvrp2sLpzG@pcbe13614>
-In-Reply-To: <5cfeed6df208b74913312a1c97235ee615180f91.1582361737.git.mchehab+huawei@kernel.org>
-References: <cover.1582361737.git.mchehab+huawei@kernel.org>
- <5cfeed6df208b74913312a1c97235ee615180f91.1582361737.git.mchehab+huawei@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Originating-IP: [2001:1458:202:121::100:40]
-X-EOPAttributedMessage: 0
-X-Forefront-Antispam-Report: CIP:188.184.36.50; IPV:; CTRY:CH; EFV:NLI;
- SFV:NSPM;
- SFS:(10009020)(376002)(39860400002)(136003)(346002)(396003)(199004)(189003)(186003)(9686003)(16526019)(33716001)(26005)(2906002)(478600001)(9576002)(426003)(8676002)(44832011)(3450700001)(336012)(246002)(53546011)(8936002)(7416002)(4326008)(86362001)(7636002)(356004)(70206006)(316002)(54906003)(70586007)(5660300002)(39026012);
- DIR:OUT; SFP:1101; SCL:1; SRVR:HE1PR0601MB2617; H:cernmxgwlb4.cern.ch; FPR:;
- SPF:Pass; LANG:en; PTR:cernmx11.cern.ch; A:1; MX:1; 
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 07a24c03-738e-4624-7506-08d7b90ba88c
-X-MS-TrafficTypeDiagnostic: HE1PR0601MB2617:
-X-Microsoft-Antispam-PRVS: <HE1PR0601MB2617DD6A6BADE420AB7F4408EFEC0@HE1PR0601MB2617.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2803;
-X-Forefront-PRVS: 032334F434
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0qIX6XFVupoujn6tnMIXACZrhD5q3UXodzvYwqyh0hsK1Lsu+/pJ+LkIjl/NeexA/acueRAQl6tWpe3CFd900UWE/3Dp2zl9mkWVMfYl1qYpVkPmqLAGWnMEDEKi64JQPs3cOzEfTL3WjHbAxZ5gqNC3mLax0dvKusUdgcmqXKLya466pUHPmvk05PkmAw4VpLa35W1pVnc1avg4zQD+W+XccjzAi6cB/jeg95xVwyZEdY7wigcHbjHbZjeUw5bGbym667i307aOvjm5Vli7k+a11ZX1tZ2pjiiBWvLEYzJaJJQ2pSEH9ApQf6ZUYQ5f7TlyJmnEtMyipzP+fXgRIINxHtYghfwKLsQ7Fb2NPkqtE2mY/QN0LGNAE519BJMKJ2V6htEDDIZVXfSjSq9NkQg4un3jbv63EjF6kc6RkQ3fn2TRPhmkbiqtoHaEDIQdUEz7oStS5w1dmTB8Bw7vHuPaRBQq1lv0uJabtpvDjKCWQdNtDjiBIr3Z5wRpVLzv
-X-OriginatorOrg: cern.ch
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2020 09:26:41.7248 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07a24c03-738e-4624-7506-08d7b90ba88c
-X-MS-Exchange-CrossTenant-Id: c80d3499-4a40-4a8c-986e-abce017d6b19
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=c80d3499-4a40-4a8c-986e-abce017d6b19; Ip=[188.184.36.50];
- Helo=[cernmxgwlb4.cern.ch]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0601MB2617
-X-Mailman-Approved-At: Mon, 24 Feb 2020 21:56:16 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Qyxw0L3hzDqPl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 21:30:27 +1100 (AEDT)
+Received: from localhost (gate.crashing.org [63.228.1.57])
+ (authenticated bits=0)
+ by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 01OAHKrN026076
+ (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 24 Feb 2020 04:17:27 -0600
+Message-ID: <587a0a1765ba1264b92044f7b1f9937eb40731f1.camel@kernel.crashing.org>
+Subject: Re: vdso function descriptors (VDS64_HAS_DESCRIPTORS)?
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>, Joe Lawrence
+ <joe.lawrence@redhat.com>
+Date: Mon, 24 Feb 2020 21:17:19 +1100
+In-Reply-To: <20200223000715.GW22482@gate.crashing.org>
+References: <20200217160852.GA9557@redhat.com>
+ <20200223000715.GW22482@gate.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,50 +52,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: federico.vaga@cern.ch
-Cc: linux-arch@vger.kernel.org, linux-nfs@vger.kernel.org, kvm@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org, Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-unionfs@vger.kernel.org, kvm-ppc@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Saturday, February 22, 2020 10:00:03 AM CET Mauro Carvalho Chehab wrote:
-> Several references got broken due to txt to ReST conversion.
->=20
-> Several of them can be automatically fixed with:
->=20
-> 	scripts/documentation-file-ref-check --fix
->=20
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
+On Sat, 2020-02-22 at 18:07 -0600, Segher Boessenkool wrote:
+> > 
+> > so I don't believe they are ever used by default -- in this case
+> > V_FUNCTION_BEGIN doesn't add to the .opd section with .name, .TOC base,
+> > etc.
+> > 
+> > Manually setting VDS64_HAS_DESCRIPTORS results in a vdso64.so in which
+> > binutils tools like readelf properly report functions with symbol type
+> > FUNC instead of NOTYPE.
+> > 
+> > Are there pieces of the build/etc toolchain unprepared for function
+> > descriptors?  I'm just trying to figure out why the code defaults to
+> > unsetting them.
+> 
+> Because direct calls are faster than indirect calls?  Ben might have a
+> fuller explanation, cc:ing him.
 
+I don't remember why :-) I think I didn't want to mess with the OPD
+fixup in glibc back then.
 
->  26) If any ioctl's are added by the patch, then also update
-> -    ``Documentation/ioctl/ioctl-number.rst``.
-> +    ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
->=20
->  27) If your modified source code depends on or uses any of the kernel
->      APIs or features that are related to the following ``Kconfig`` symbo=
-ls,
-> diff --git a/Documentation/translations/it_IT/process/submit-checklist.rst
-> b/Documentation/translations/it_IT/process/submit-checklist.rst index
-> 995ee69fab11..3e575502690f 100644
-> --- a/Documentation/translations/it_IT/process/submit-checklist.rst
-> +++ b/Documentation/translations/it_IT/process/submit-checklist.rst
-> @@ -117,7 +117,7 @@ sottomissione delle patch, in particolare
->      sorgenti che ne spieghi la logica: cosa fanno e perch=E9.
->=20
->  25) Se la patch aggiunge nuove chiamate ioctl, allora aggiornate
-> -    ``Documentation/ioctl/ioctl-number.rst``.
-> +    ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
-
-
-Acked-By: Federico Vaga <federico.vaga@vaga.pv.it>
-
+Ben.
 
 
