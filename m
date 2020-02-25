@@ -1,86 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CD216ECEA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 18:44:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096E516EC10
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 18:05:16 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Rlfw6XsHzDqWG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 04:05:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RmWf3KtxzDqHZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 04:43:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=mQaQM1JR; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RldG0WfWzDqNJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:03:45 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01PGxgDM058204
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 12:03:43 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yb12cbjpy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 12:03:43 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Tue, 25 Feb 2020 17:03:40 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 25 Feb 2020 17:03:34 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01PH3WpP42926282
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Feb 2020 17:03:33 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0A1D4204B;
- Tue, 25 Feb 2020 17:03:32 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A651C42045;
- Tue, 25 Feb 2020 17:03:31 +0000 (GMT)
-Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 Feb 2020 17:03:31 +0000 (GMT)
-Subject: Re: [PATCH v3 08/27] ocxl: Emit a log message showing how much LPC
- memory was detected
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-9-alastair@au1.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 25 Feb 2020 18:03:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RmQs54s7zDqMy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:49 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id y8so59299pll.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 09:39:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=8ZdWI+TfNWYqALdnoy4sjYz/YQ5S48Y8aUruQjgOKbk=;
+ b=mQaQM1JRpAGmFV5OKz0lMKqN/ciw0R/xhQV/iSV1NYS6NAjiSDvLU1lqlvq9QHjeKS
+ JWs0K+0/1V2E2Ame7k9pom2KEidi/dzqMYLm13tbdx+/CCReZFuCZV1+zHpXwKh3uzKb
+ ye+VSgkAnQoJMETLmQqx0A839W+2NpbLs6DyfBhF2qUj0H1Qh4WU6p95HAZ4P3LtUsRZ
+ cJrnHfWlUkBNG+aiJKfBnSRY2qER60X8DMm+ns9ZvyVApC4wzKRm4Kdo4LmTUicqz7pN
+ TODI+J+GnDBadcd55/hsf7izGeV0jCsqVtVjXS2qmPq97KpJtqyLq8mUMTncgGX5ofb7
+ I+mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=8ZdWI+TfNWYqALdnoy4sjYz/YQ5S48Y8aUruQjgOKbk=;
+ b=F1xe1p3XSqWRCQ0y5PRwcamaFxMyxqTkC7vzyFylNcF3Fa2DTZ0YgoE8rySzmEOLvn
+ 1nNZhfk4EiewNje7UAjpJ2YgbbHWsDzcbOP1gSR5WzA2g+LyqhI+duXBREIyjlDAMkcO
+ CkPsjvxvLa37A+YWM7yPXI8xatbetBVpBKplZUoveYJVSleaUIIU/EFfQE8jBooZj5EB
+ TgXrTawF3MPeK6P5vtZngJW3UJZfr4S4cecKqiywp/FOG4OAV9Z965B3DB9Y03x0qwkq
+ kWpKrRD4NX1fm4Qpz+pZPFisT76ZtlEKxaBLes9MPnh2w/ly2/TsOKMu9o8a6pFEjGpD
+ fF1Q==
+X-Gm-Message-State: APjAAAXl8Tllrk63YdAll8DV6/y2BtbhIm8KaqdHZDEkOjAe9Xx/vxdw
+ SnRHrg4Z4yhscSXRbtaUniT7vwcu
+X-Google-Smtp-Source: APXvYqyCdszmU0jSzjnfSzUwsC5PDRuIkvT6a/O3AIkrcnrhjR7kqZnCwo+oXQxOpn9vhc+9J3/SMw==
+X-Received: by 2002:a17:90a:d807:: with SMTP id a7mr90432pjv.15.1582652385204; 
+ Tue, 25 Feb 2020 09:39:45 -0800 (PST)
+Received: from bobo.ibm.com ([61.68.187.74])
+ by smtp.gmail.com with ESMTPSA id z63sm14791480pgd.12.2020.02.25.09.39.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Feb 2020 09:39:43 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 00/32] powerpc/64: interrupts and syscalls series
+Date: Wed, 26 Feb 2020 03:35:09 +1000
+Message-Id: <20200225173541.1549955-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-9-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022517-0008-0000-0000-0000035657A1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022517-0009-0000-0000-00004A7773F7
-Message-Id: <f83b0a0f-116e-8e27-00a0-0c3e3ecb7600@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-25_06:2020-02-25,
- 2020-02-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- adultscore=0 malwarescore=0 impostorscore=0 phishscore=0 mlxlogscore=838
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002250126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,62 +76,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Michal Suchanek <msuchanek@suse.de>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is a long overdue update of the series, with fixes from me Michal
+and Michael. Does not include Michal's syscall compat series.
 
+Patches 1-22 are changes to low level 64s interrupt entry assembly
+which has been posted before, no change except adding patch 21 and
+fixing patch 22 to reconcile irq state in the soft-nmi handler to
+avoid preempt warnings.
 
-Le 21/02/2020 à 04:27, Alastair D'Silva a écrit :
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> This patch emits a message showing how much LPC memory & special purpose
-> memory was detected on an OCXL device.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
+Patches 23-26 are to turn system call entry/exit code into C. Bunch
+of irq and preempt and TM warnings and bugs caught by selftests etc
+fixed, plus a few peripheral patches added (sstep and zeroing regs).
 
+Patches 27-29 are to turn interrupt exit code into C. This had a bit
+more change, most significantly a change to how interrupt exit soft
+irq replay works.
 
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Patches 30-32 are for scv system call support. Lot of changes here
+to turn it into something a bit better than RFC quality. Discussion
+about ABI seems to be settling and not very controversial.
 
+Thanks,
+Nick
 
+Nicholas Piggin (32):
+  powerpc/64s/exception: Introduce INT_DEFINE parameter block for code
+    generation
+  powerpc/64s/exception: Add GEN_COMMON macro that uses INT_DEFINE
+    parameters
+  powerpc/64s/exception: Add GEN_KVM macro that uses INT_DEFINE
+    parameters
+  powerpc/64s/exception: Expand EXC_COMMON and EXC_COMMON_ASYNC macros
+  powerpc/64s/exception: Move all interrupt handlers to new style code
+    gen macros
+  powerpc/64s/exception: Remove old INT_ENTRY macro
+  powerpc/64s/exception: Remove old INT_COMMON macro
+  powerpc/64s/exception: Remove old INT_KVM_HANDLER
+  powerpc/64s/exception: Add ISIDE option
+  powerpc/64s/exception: move real->virt switch into the common handler
+  powerpc/64s/exception: move soft-mask test to common code
+  powerpc/64s/exception: move KVM test to common code
+  powerpc/64s/exception: remove confusing IEARLY option
+  powerpc/64s/exception: remove the SPR saving patch code macros
+  powerpc/64s/exception: trim unused arguments from KVMTEST macro
+  powerpc/64s/exception: hdecrementer avoid touching the stack
+  powerpc/64s/exception: re-inline some handlers
+  powerpc/64s/exception: Clean up SRR specifiers
+  powerpc/64s/exception: add more comments for interrupt handlers
+  powerpc/64s/exception: only test KVM in SRR interrupts when PR KVM is
+    supported
+  powerpc/64s/exception: sreset interrupts reconcile fix
+  powerpc/64s/exception: soft nmi interrupt should not use
+    ret_from_except
+  powerpc/64: system call remove non-volatile GPR save optimisation
+  powerpc/64: sstep ifdef the deprecated fast endian switch syscall
+  powerpc/64: system call implement entry/exit logic in C
+  powerpc/64: system call zero volatile registers when returning
+  powerpc/64: implement soft interrupt replay in C
+  powerpc/64s: interrupt implement exit logic in C
+  powerpc/64s/exception: remove lite interrupt return
+  powerpc/64: system call reconcile interrupts
+  powerpc/64s/exception: treat NIA below __end_interrupts as soft-masked
+  powerpc/64s: system call support for scv/rfscv instructions
 
->   drivers/misc/ocxl/config.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-> index a62e3d7db2bf..701ae6216abf 100644
-> --- a/drivers/misc/ocxl/config.c
-> +++ b/drivers/misc/ocxl/config.c
-> @@ -568,6 +568,10 @@ static int read_afu_lpc_memory_info(struct pci_dev *dev,
->   		afu->special_purpose_mem_size =
->   			total_mem_size - lpc_mem_size;
->   	}
-> +
-> +	dev_info(&dev->dev, "Probed LPC memory of %#llx bytes and special purpose memory of %#llx bytes\n",
-> +		afu->lpc_mem_size, afu->special_purpose_mem_size);
-> +
->   	return 0;
->   }
->   
-> 
+ Documentation/powerpc/syscall64-abi.rst       |   42 +-
+ arch/powerpc/include/asm/asm-prototypes.h     |   17 +-
+ .../powerpc/include/asm/book3s/64/kup-radix.h |   24 +-
+ arch/powerpc/include/asm/cputime.h            |   29 +
+ arch/powerpc/include/asm/exception-64s.h      |   10 +-
+ arch/powerpc/include/asm/head-64.h            |    2 +-
+ arch/powerpc/include/asm/hw_irq.h             |    6 +-
+ arch/powerpc/include/asm/ppc_asm.h            |    2 +
+ arch/powerpc/include/asm/processor.h          |    2 +-
+ arch/powerpc/include/asm/ptrace.h             |    3 +
+ arch/powerpc/include/asm/setup.h              |    4 +-
+ arch/powerpc/include/asm/signal.h             |    3 +
+ arch/powerpc/include/asm/switch_to.h          |   11 +
+ arch/powerpc/include/asm/time.h               |    4 +-
+ arch/powerpc/kernel/Makefile                  |    3 +-
+ arch/powerpc/kernel/cpu_setup_power.S         |    2 +-
+ arch/powerpc/kernel/cputable.c                |    3 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c             |    1 +
+ arch/powerpc/kernel/entry_64.S                | 1017 +++-----
+ arch/powerpc/kernel/exceptions-64e.S          |  287 ++-
+ arch/powerpc/kernel/exceptions-64s.S          | 2168 ++++++++++++-----
+ arch/powerpc/kernel/irq.c                     |  183 +-
+ arch/powerpc/kernel/process.c                 |   89 +-
+ arch/powerpc/kernel/setup_64.c                |    5 +-
+ arch/powerpc/kernel/signal.h                  |    2 -
+ arch/powerpc/kernel/syscall_64.c              |  379 +++
+ arch/powerpc/kernel/syscalls/syscall.tbl      |   22 +-
+ arch/powerpc/kernel/systbl.S                  |    9 +-
+ arch/powerpc/kernel/time.c                    |    9 -
+ arch/powerpc/kernel/vector.S                  |    2 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S       |   11 -
+ arch/powerpc/kvm/book3s_segment.S             |    7 -
+ arch/powerpc/lib/sstep.c                      |    5 +-
+ arch/powerpc/platforms/pseries/setup.c        |    8 +-
+ 34 files changed, 2769 insertions(+), 1602 deletions(-)
+ create mode 100644 arch/powerpc/kernel/syscall_64.c
+
+-- 
+2.23.0
 
