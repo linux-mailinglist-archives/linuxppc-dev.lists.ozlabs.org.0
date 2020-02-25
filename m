@@ -2,104 +2,138 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2202216C2B1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 14:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79FC216C3CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 15:25:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RgHM3Qq3zDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 00:47:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Rh634lnzzDqDq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 01:24:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.7.40; helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=horia.geanta@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=TLIAC/JH; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=embeddedor.com (client-ip=192.185.145.178;
+ helo=gateway32.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=embeddedor.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=embeddedor.com header.i=@embeddedor.com
+ header.a=rsa-sha256 header.s=default header.b=VeeT7ifC; 
  dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70040.outbound.protection.outlook.com [40.107.7.40])
+X-Greylist: delayed 1303 seconds by postgrey-1.36 at bilbo;
+ Wed, 26 Feb 2020 01:23:25 AEDT
+Received: from gateway32.websitewelcome.com (gateway32.websitewelcome.com
+ [192.185.145.178])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RgCz4Md1zDqR5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 00:45:00 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TGQ4YwpoT+zf94MKstC3KeEWdOCHS2a2zj7N882hpAG4FAKos+qjLpMXO/uxYgsWskxtK8XR0ijKxQ7mrYdgQxa4W3AFjGFgygnvUSPDPj1rocSFg4MkWj0v8qbdKiZ9BZwm5fnuOt+nJbhnN+CckOc4f2xOLsGb7bn+JcIMuvQ9K63aonDXm9f67xpgBG3JtEn4CElNZSXaisRQazzE9r5ry6wbCmUEeZ6EvZnpveMYnk0i4Jz1dP4EvWeBg3iT/qThRU9GjQMAEnhjLze79CVMKrb0+JZx1W53uzIc4QMnMaWexOwR7nC+PyAfEyqpc/z9FF1PCOLFLeXcjFOheQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i02Gvs00UALHbLKEyTnrqagS3h2ysWHjsbaSrv/I6CU=;
- b=KUKnaEqY8vh7od4PfsPpTAqteTBFRZYLuxA4hMkWwuYT7R8YBByyorZkRP/rrn8t22kdRKFrdqAsr1Jj5ooWxT9Aw/rTNW79mvKsY0MZbKO0Ue57zOHRj/Dx4GOF+36uS7Lc+Ya5BN8ZXXyKtFu99NZDg7lgidNtf3xt9tjmam9YvUMFVBTrm2d+6MxesdG87Xr+J4Psj0cV1sTp3pXgBrOQRPEJxTd1UZgp1bTS9u2FKlOjuCpOqW5b9S962L1uLYEfGbPCJjh8QzGDeHcmgPRkMrOZIgrbi6WpE2D8i3PsRf7u3nSw++qqQmGpoWne2lLKjddTuJFkqkTgrl6LNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i02Gvs00UALHbLKEyTnrqagS3h2ysWHjsbaSrv/I6CU=;
- b=TLIAC/JH8R1wk8XOSoXcuJeLAWi7iKWz8f67JeEVJoxVBBdbgc/WtWIAuoWDPZVoGITOonYQnc4PdK0FIaC4l75Pe58uwsJzSTLXbqIY0JbcwRPivmZyIIuMQ/MLmLbSSnz20fpDBCx+N08OSSVNP61Ow2XllAPx1A1Ez0bgqcI=
-Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com (52.134.3.153) by
- VI1PR0402MB3357.eurprd04.prod.outlook.com (52.134.7.10) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2750.21; Tue, 25 Feb 2020 13:44:53 +0000
-Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com
- ([fe80::85e9:f844:f8b0:27d]) by VI1PR0402MB3485.eurprd04.prod.outlook.com
- ([fe80::85e9:f844:f8b0:27d%7]) with mapi id 15.20.2750.021; Tue, 25 Feb 2020
- 13:44:53 +0000
-From: Horia Geanta <horia.geanta@nxp.com>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Aymen Sghaier
- <aymen.sghaier@nxp.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David S.
- Miller" <davem@davemloft.net>, Atul Gupta <atul.gupta@chelsio.com>, Matthias
- Brugger <matthias.bgg@gmail.com>, =?utf-8?B?QnJlbm8gTGVpdMOjbw==?=
- <leitao@debian.org>, Nayna Jain <nayna@linux.ibm.com>, Paulo Flabiano Smorigo
- <pfsmorigo@gmail.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Rh4F43v9zDqDq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 01:23:25 +1100 (AEDT)
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+ by gateway32.websitewelcome.com (Postfix) with ESMTP id CC34062C09D
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 08:01:39 -0600 (CST)
+Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
+ id 6amJjq9328vkB6amJjlVRj; Tue, 25 Feb 2020 08:01:39 -0600
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=vMBlVPzaIiSjManqY0KCJvaCyM1jD85Wg0xf6rY5fno=; b=VeeT7ifCi+xO7jV1VQHyzhT9Cx
+ jmcPu7R0Z9o+ePr+bK4oZp/KhqSZ/BzZrZILU0Go0NN66poiMvC2h0t1LKPI2jGafSWM+UJZG08Ju
+ YgTDYRHJxEN6H/BQXI9qAnmj9pQrs8r5axg+0cA9yaBVJq2H8SpTfy0hJYdc05wfc/dJUJ7C4/tXl
+ Y5fL+t6liOoWenNtRFz3vT5fkluk/6Mk/+iUMavq3g2dCqimGh3e46jE/ee7JTgVljconreRfbuwO
+ +lWMlzfDoa5MoRma/YBF7bpg8BH85Us5n+i4uX+xOK+wCfUA61GW4foeWnoG8Qrenv2v2zji+Z89/
+ +zgeSEOQ==;
+Received: from [201.162.241.105] (port=21897 helo=[192.168.43.131])
+ by gator4166.hostgator.com with esmtpsa
+ (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128) (Exim 4.92)
+ (envelope-from <gustavo@embeddedor.com>)
+ id 1j6amI-001OnG-Kx; Tue, 25 Feb 2020 08:01:38 -0600
 Subject: Re: [PATCH] crypto: Replace zero-length array with flexible-array
  member
-Thread-Topic: [PATCH] crypto: Replace zero-length array with flexible-array
- member
-Thread-Index: AQHV6y4EbuWdz4bmOUu9w0eHD4o4iA==
-Date: Tue, 25 Feb 2020 13:44:53 +0000
-Message-ID: <VI1PR0402MB3485175AB5B3092409DC26AA98ED0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+To: Horia Geanta <horia.geanta@nxp.com>, Aymen Sghaier
+ <aymen.sghaier@nxp.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Atul Gupta
+ <atul.gupta@chelsio.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ =?UTF-8?Q?Breno_Leit=c3=a3o?= <leitao@debian.org>,
+ Nayna Jain <nayna@linux.ibm.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
 References: <20200224162100.GA25697@embeddedor>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=horia.geanta@nxp.com; 
-x-originating-ip: [212.146.100.6]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 3278bee4-f6f6-40bb-9fb5-08d7b9f8e4bd
-x-ms-traffictypediagnostic: VI1PR0402MB3357:|VI1PR0402MB3357:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0402MB33576059C21239CFCE01684E98ED0@VI1PR0402MB3357.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4941;
-x-forefront-prvs: 0324C2C0E2
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(396003)(39860400002)(376002)(366004)(346002)(136003)(189003)(199004)(91956017)(186003)(4326008)(76116006)(64756008)(8936002)(9686003)(5660300002)(7416002)(66476007)(66556008)(55016002)(66446008)(66946007)(86362001)(966005)(54906003)(81156014)(44832011)(8676002)(26005)(71200400001)(316002)(110136005)(2906002)(7696005)(33656002)(52536014)(81166006)(6506007)(53546011)(478600001)(921003)(1121003);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0402MB3357;
- H:VI1PR0402MB3485.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: eGBh3U1U8SeTeduMEOUHubGsQitpIcAGCzS9wF6beNbm5lrBN5n/Q/nSAQDs0eVyz6+kmtLfWqM4MQ4+5HlwTQWflJYPb60C2Za8i8hvS26je+/NXXOKAw4vOiipXajB4eLUDbixHLtzTYkgTTQpk5grfGoAjL95CSho8+iU5XLOYu8im1UYe+3HIHfq7RQBh0YMIaTbZXhACKxUPB0gmRVr2aqLjKRHe/msK2Hl0PdzOvyErM8wwpAJsICEgOHoEYIMOvY2efIBkvMUFO/6wA41cSHrxwrpLxWmS/0W0FCW150LOXvq5Bap7Q4xVaZnuwQ9iDMmzjT81RrR6l+raAuModTs7lXAuJZZtsVPSAK1xJ2BKREQOR0QcHGZ31pgvlVsFTphfu8edrxtOttO/LVq+KZtGzbw4y8dS+5lJqRQ3FOsXHnS1C4Nbxqaaqy+fXJnPxz6QygSnjwMMDjn9bhgNyAD0Ja9nn/aa9TnUxtOMoA8xM/DF7laZ4RgQybe6ihoZM7ErjMjNIsUkmyhm+535qzkWKw9cJOLO1Js38nim4IE40Gupyy1q+l/dstqdjUMeaoD1VA15lZWgByfgQ==
-x-ms-exchange-antispam-messagedata: 5SOQ4RyOhwy5Ttw8Pn/7KmEhGTrVn6ez7LtqYxhKP5oxXokLM+5r16WHQk5x/h1RBvykXTtUriwmlKqLybiJEz76RRuMHVekJgWfdMHR1G4oe8Ht5rrjUzxephQHVaZ8ycyhN09a3aiDurpD6QfqfA==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <VI1PR0402MB3485175AB5B3092409DC26AA98ED0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ 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
+ VtSixD1uOgytAP7RWS474w==
+Message-ID: <1d4ae159-f45b-e12d-1fa1-e7671f76fefc@embeddedor.com>
+Date: Tue, 25 Feb 2020 08:00:58 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3278bee4-f6f6-40bb-9fb5-08d7b9f8e4bd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Feb 2020 13:44:53.5925 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: nERPuxWiJAjXwWMbSxQSUqPw19o1m2lxSt9eRWo+jBi05Wv+TFiqRNDtIDxP7jcg3jUhwhkmgxm01Pur2MKz1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3357
+In-Reply-To: <VI1PR0402MB3485175AB5B3092409DC26AA98ED0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.ozlabs.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.162.241.105
+X-Source-L: No
+X-Exim-ID: 1j6amI-001OnG-Kx
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.43.131]) [201.162.241.105]:21897
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 51
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,30 +154,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gMi8yNC8yMDIwIDY6MTggUE0sIEd1c3Rhdm8gQS4gUi4gU2lsdmEgd3JvdGU6Cj4gVGhlIGN1
-cnJlbnQgY29kZWJhc2UgbWFrZXMgdXNlIG9mIHRoZSB6ZXJvLWxlbmd0aCBhcnJheSBsYW5ndWFn
-ZQo+IGV4dGVuc2lvbiB0byB0aGUgQzkwIHN0YW5kYXJkLCBidXQgdGhlIHByZWZlcnJlZCBtZWNo
-YW5pc20gdG8gZGVjbGFyZQo+IHZhcmlhYmxlLWxlbmd0aCB0eXBlcyBzdWNoIGFzIHRoZXNlIG9u
-ZXMgaXMgYSBmbGV4aWJsZSBhcnJheSBtZW1iZXJbMV1bMl0sCj4gaW50cm9kdWNlZCBpbiBDOTk6
-Cj4gCj4gc3RydWN0IGZvbyB7Cj4gICAgICAgICBpbnQgc3R1ZmY7Cj4gICAgICAgICBzdHJ1Y3Qg
-Ym9vIGFycmF5W107Cj4gfTsKPiAKPiBCeSBtYWtpbmcgdXNlIG9mIHRoZSBtZWNoYW5pc20gYWJv
-dmUsIHdlIHdpbGwgZ2V0IGEgY29tcGlsZXIgd2FybmluZwo+IGluIGNhc2UgdGhlIGZsZXhpYmxl
-IGFycmF5IGRvZXMgbm90IG9jY3VyIGxhc3QgaW4gdGhlIHN0cnVjdHVyZSwgd2hpY2gKPiB3aWxs
-IGhlbHAgdXMgcHJldmVudCBzb21lIGtpbmQgb2YgdW5kZWZpbmVkIGJlaGF2aW9yIGJ1Z3MgZnJv
-bSBiZWluZwo+IGluYWR2ZXJ0ZW50bHkgaW50cm9kdWNlZFszXSB0byB0aGUgY29kZWJhc2UgZnJv
-bSBub3cgb24uCj4gCj4gQWxzbywgbm90aWNlIHRoYXQsIGR5bmFtaWMgbWVtb3J5IGFsbG9jYXRp
-b25zIHdvbid0IGJlIGFmZmVjdGVkIGJ5Cj4gdGhpcyBjaGFuZ2U6Cj4gCj4gIkZsZXhpYmxlIGFy
-cmF5IG1lbWJlcnMgaGF2ZSBpbmNvbXBsZXRlIHR5cGUsIGFuZCBzbyB0aGUgc2l6ZW9mIG9wZXJh
-dG9yCj4gbWF5IG5vdCBiZSBhcHBsaWVkLiBBcyBhIHF1aXJrIG9mIHRoZSBvcmlnaW5hbCBpbXBs
-ZW1lbnRhdGlvbiBvZgo+IHplcm8tbGVuZ3RoIGFycmF5cywgc2l6ZW9mIGV2YWx1YXRlcyB0byB6
-ZXJvLiJbMV0KPiAKPiBUaGlzIGlzc3VlIHdhcyBmb3VuZCB3aXRoIHRoZSBoZWxwIG9mIENvY2Np
-bmVsbGUuCj4gCj4gWzFdIGh0dHBzOi8vZ2NjLmdudS5vcmcvb25saW5lZG9jcy9nY2MvWmVyby1M
-ZW5ndGguaHRtbAo+IFsyXSBodHRwczovL2dpdGh1Yi5jb20vS1NQUC9saW51eC9pc3N1ZXMvMjEK
-PiBbM10gY29tbWl0IDc2NDk3NzMyOTMyZiAoImN4Z2IzL2wydDogRml4IHVuZGVmaW5lZCBiZWhh
-dmlvdXIiKQo+IAo+IFNpZ25lZC1vZmYtYnk6IEd1c3Rhdm8gQS4gUi4gU2lsdmEgPGd1c3Rhdm9A
-ZW1iZWRkZWRvci5jb20+ClJldmlld2VkLWJ5OiBIb3JpYSBHZWFudMSDIDxob3JpYS5nZWFudGFA
-bnhwLmNvbT4KCmZvciBjYWFtIGRyaXZlcjoKCj4gIGRyaXZlcnMvY3J5cHRvL2NhYW0vY2FhbWFs
-Zy5jICAgICAgICAgICAgICB8IDIgKy0KPiAgZHJpdmVycy9jcnlwdG8vY2FhbS9jYWFtYWxnX3Fp
-LmMgICAgICAgICAgIHwgNCArKy0tCj4gIGRyaXZlcnMvY3J5cHRvL2NhYW0vY2FhbWFsZ19xaTIu
-aCAgICAgICAgICB8IDYgKysrLS0tCj4gIGRyaXZlcnMvY3J5cHRvL2NhYW0vY2FhbWhhc2guYyAg
-ICAgICAgICAgICB8IDIgKy0KClRoYW5rcywKSG9yaWEK
+
+
+On 2/25/20 07:44, Horia Geanta wrote:
+> On 2/24/2020 6:18 PM, Gustavo A. R. Silva wrote:
+>> The current codebase makes use of the zero-length array language
+>> extension to the C90 standard, but the preferred mechanism to declare
+>> variable-length types such as these ones is a flexible array member[1][2],
+>> introduced in C99:
+>>
+>> struct foo {
+>>         int stuff;
+>>         struct boo array[];
+>> };
+>>
+>> By making use of the mechanism above, we will get a compiler warning
+>> in case the flexible array does not occur last in the structure, which
+>> will help us prevent some kind of undefined behavior bugs from being
+>> inadvertently introduced[3] to the codebase from now on.
+>>
+>> Also, notice that, dynamic memory allocations won't be affected by
+>> this change:
+>>
+>> "Flexible array members have incomplete type, and so the sizeof operator
+>> may not be applied. As a quirk of the original implementation of
+>> zero-length arrays, sizeof evaluates to zero."[1]
+>>
+>> This issue was found with the help of Coccinelle.
+>>
+>> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+>> [2] https://github.com/KSPP/linux/issues/21
+>> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+>>
+>> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
+> 
+
+Thank you, Horia.
+--
+Gustavo
+
+> for caam driver:
+> 
+>>  drivers/crypto/caam/caamalg.c              | 2 +-
+>>  drivers/crypto/caam/caamalg_qi.c           | 4 ++--
+>>  drivers/crypto/caam/caamalg_qi2.h          | 6 +++---
+>>  drivers/crypto/caam/caamhash.c             | 2 +-
+> 
+> Thanks,
+> Horia
+> 
