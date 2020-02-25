@@ -2,48 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6516116B7F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 04:15:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C50CF16B99A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 07:23:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RPF35SlyzDqTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 14:15:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RTPw5GsjzDqWZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 17:23:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RPCJ6bgzzDqS2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 14:13:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=abdhalee@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=QE6jVcOm; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48RPCJ5SZJz9sPK; Tue, 25 Feb 2020 14:13:32 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 48RPCJ4p4Sz9sQt; Tue, 25 Feb 2020 14:13:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1582600412;
- bh=6n7fBGk5fVx/DZJXvJgd1jCLEzrUCRAMHQ1Oo6snhsY=;
- h=From:To:Subject:Date:From;
- b=QE6jVcOmtKKokKTjGyB3VAONxZBbN/hnH2pFTFOponVa7Fe7KzHRV9jf3FlmlYhIK
- SptCfzRJuDv1tPDeDQAd/B/q0wN5glv01E1x2XeFGgbtGtc+haRj2P/gbv9DKQvekf
- CWuSlN2u9fNkSxaykCAdm5ggAQcvcnkpO+v/U1eCkTqee7XU9P7wt7Tleu/5X1Aueo
- mzuXD63nw11DeHjlLd+s5uv9ZXnZ3ZnDvIryhIjcbro4VcKAbrlqO8fgUDlN9+mjOi
- kXzKkjNvsFA8zrD1XdJ/brNVd1/eiZidMLWdJjeruaEk7b3nZXsP0CZTKE/9tTzvVY
- vIozOGTFKB2Sg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/64s: Fix section mismatch warnings from boot code
-Date: Tue, 25 Feb 2020 14:13:28 +1100
-Message-Id: <20200225031328.14676-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RTMy18gHzDqSS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 17:21:14 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01P6L0ji120016; Tue, 25 Feb 2020 01:21:04 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yb1as8a5v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Feb 2020 01:21:04 -0500
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01P6L3rZ120513;
+ Tue, 25 Feb 2020 01:21:03 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yb1as8a26-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Feb 2020 01:21:03 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01P6JqV9018607;
+ Tue, 25 Feb 2020 06:20:48 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 2yaux6r3jx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Feb 2020 06:20:48 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01P6Kmev49414562
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 25 Feb 2020 06:20:48 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 21836B205F;
+ Tue, 25 Feb 2020 06:20:48 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85627B2065;
+ Tue, 25 Feb 2020 06:20:44 +0000 (GMT)
+Received: from [9.109.247.196] (unknown [9.109.247.196])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 25 Feb 2020 06:20:44 +0000 (GMT)
+Message-ID: <1582611644.19645.6.camel@abdul.in.ibm.com>
+Subject: Re: [linux-next/mainline][bisected 3acac06][ppc] Oops when
+ unloading mpt3sas driver
+From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+To: Christoph Hellwig <hch@infradead.org>
+Date: Tue, 25 Feb 2020 11:50:44 +0530
+In-Reply-To: <1579265473.17382.5.camel@abdul>
+References: <1578489498.29952.11.camel@abdul>
+ <1578560245.30409.0.camel@abdul.in.ibm.com>
+ <20200109142218.GA16477@infradead.org>
+ <1578980874.11996.3.camel@abdul.in.ibm.com>
+ <20200116174443.GA30158@infradead.org> <1579265473.17382.5.camel@abdul>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-25_01:2020-02-21,
+ 2020-02-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ priorityscore=1501 mlxlogscore=918 malwarescore=0 mlxscore=0 adultscore=0
+ phishscore=0 bulkscore=0 clxscore=1011 impostorscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002250050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,117 +95,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: sachinp <sachinp@linux.vnet.ibm.com>,
+ Chaitra P B <chaitra.basappa@broadcom.com>,
+ linux-scsi <linux-scsi@vger.kernel.org>, MPT-FusionLinux.pdl@broadcom.com,
+ manvanth <manvanth@linux.vnet.ibm.com>,
+ Sathya Prakash <sathya.prakash@broadcom.com>, jcmvbkbc@gmail.com,
+ iommu@lists.linux-foundation.org, linux-next <linux-next@vger.kernel.org>,
+ Oliver <oohall@gmail.com>, "aneesh.kumar" <aneesh.kumar@linux.vnet.ibm.com>,
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+ Brian King <brking@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We currently have two section mismatch warnings:
+On Fri, 2020-01-17 at 18:21 +0530, Abdul Haleem wrote:
+> On Thu, 2020-01-16 at 09:44 -0800, Christoph Hellwig wrote:
+> > Hi Abdul,
+> > 
+> > I think the problem is that mpt3sas has some convoluted logic to do
+> > some DMA allocations with a 32-bit coherent mask, and then switches
+> > to a 63 or 64 bit mask, which is not supported by the DMA API.
+> > 
+> > Can you try the patch below?
+> 
+> Thank you Christoph, with the given patch applied the bug is not seen.
+> 
+> rmmod of mpt3sas driver is successful, no kernel Oops
+> 
+> Reported-and-tested-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
 
-  The function __boot_from_prom() references
-  the function __init prom_init().
+Hi Christoph,
 
-  The function start_here_common() references
-  the function __init start_kernel().
+I see the patch is under discussion, will this be merged upstream any
+time soon ? as boot is broken on our machines with out your patch.
 
-The warnings are correct, we do have branches from non-init code into
-init code, which is freed after boot. But we don't expect to ever
-execute any of that early boot code after boot, if we did that would
-be a bug. In particular calling into OF after boot would be fatal
-because OF is no longer resident.
-
-So for now fix the warnings by marking the relevant functions as
-__REF, which puts them in the ".ref.text" section.
-
-This causes some reordering of the functions in the final link:
-
-  @@ -217,10 +217,9 @@
-   c00000000000b088 t generic_secondary_common_init
-   c00000000000b124 t __mmu_off
-   c00000000000b14c t __start_initialization_multiplatform
-  -c00000000000b1ac t __boot_from_prom
-  -c00000000000b1ec t __after_prom_start
-  -c00000000000b260 t p_end
-  -c00000000000b27c T copy_and_flush
-  +c00000000000b1ac t __after_prom_start
-  +c00000000000b220 t p_end
-  +c00000000000b23c T copy_and_flush
-   c00000000000b300 T __secondary_start
-   c00000000000b300 t copy_to_here
-   c00000000000b344 t start_secondary_prolog
-  @@ -228,8 +227,9 @@
-   c00000000000b36c t enable_64b_mode
-   c00000000000b388 T relative_toc
-   c00000000000b3a8 t p_toc
-  -c00000000000b3b0 t start_here_common
-  -c00000000000b3d0 t start_here_multiplatform
-  +c00000000000b3b0 t __boot_from_prom
-  +c00000000000b3f0 t start_here_multiplatform
-  +c00000000000b480 t start_here_common
-   c00000000000b880 T system_call_common
-   c00000000000b974 t system_call
-   c00000000000b9dc t system_call_exit
-
-In particular __boot_from_prom moves after copy_to_here, which means
-it's not copied to zero in the first stage of copy of the kernel to
-zero.
-
-But that's OK, because we only call __boot_from_prom before we do the
-copy, so it makes no difference when it's copied. The call sequence
-is:
-  __start
-  -> __start_initialization_multiplatform
-     -> __boot_from_prom
-        -> __start
-           -> __start_initialization_multiplatform
-              -> __after_prom_start
-                 -> copy_and_flush
-                 -> copy_and_flush (relocated to 0)
-                    -> start_here_multiplatform
-                       -> early_setup
-
-Reported-by: Mauricio Faria de Oliveira <mauricfo@linux.ibm.com>
-Reported-by: Roman Bolshakov <r.bolshakov@yadro.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/head_64.S | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index ad79fddb974d..ddfbd02140d9 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -537,6 +537,7 @@ _GLOBAL(generic_secondary_smp_init)
- 	b	__after_prom_start
- #endif /* CONFIG_PPC_BOOK3E */
- 
-+__REF
- __boot_from_prom:
- #ifdef CONFIG_PPC_OF_BOOT_TRAMPOLINE
- 	/* Save parameters */
-@@ -574,6 +575,7 @@ _GLOBAL(generic_secondary_smp_init)
- 	/* We never return. We also hit that trap if trying to boot
- 	 * from OF while CONFIG_PPC_OF_BOOT_TRAMPOLINE isn't selected */
- 	trap
-+	.previous
- 
- __after_prom_start:
- #ifdef CONFIG_RELOCATABLE
-@@ -977,7 +979,6 @@ __REF
- 	RFI
- 	b	.	/* prevent speculative execution */
- 
--	.previous
- 	/* This is where all platforms converge execution */
- 
- start_here_common:
-@@ -1001,6 +1002,7 @@ __REF
- 	/* Not reached */
- 	trap
- 	EMIT_BUG_ENTRY 0b, __FILE__, __LINE__, 0
-+	.previous
- 
- /*
-  * We put a few things here that have to be page-aligned.
 -- 
-2.21.1
+Regard's
+
+Abdul Haleem
+IBM Linux Technology Centre
+
+
 
