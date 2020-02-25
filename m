@@ -1,89 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F356D16B6B2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 01:29:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RKYY2zNNzDqQM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 11:29:05 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C326316B6BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 01:31:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RKcg1HKwzDqDN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 11:31:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=fVyxcSFf; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RKWq2z42zDq6l
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:27:35 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lixom.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lixom-net.20150623.gappssmtp.com
- header.i=@lixom-net.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=BQCQ10WE; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48RKWn5Hk3z8t5h
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:27:33 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48RKWn42dSz9sSR; Tue, 25 Feb 2020 11:27:33 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lixom.net
- (client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com;
- envelope-from=olof@lixom.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lixom.net
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lixom-net.20150623.gappssmtp.com
- header.i=@lixom-net.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=BQCQ10WE; dkim-atps=neutral
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
- [IPv6:2607:f8b0:4864:20::144])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48RKWn3gKCz9sS9
- for <linuxppc-dev@ozlabs.org>; Tue, 25 Feb 2020 11:27:33 +1100 (AEDT)
-Received: by mail-il1-x144.google.com with SMTP id t17so9291885ilm.13
- for <linuxppc-dev@ozlabs.org>; Mon, 24 Feb 2020 16:27:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=lixom-net.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=SQsmpamnEC+1G39fOnv3AHWet4T1m/yewhekPzkg6oM=;
- b=BQCQ10WEVUabUm+celhXtz0JdV/fkLvArkq4WsPhiiiAA43MY858di0FZp521E3XTa
- 5gqYAYDSdEkYN7SnEs4kyHgKuDAokjOrwg8sDzoyGx+kRiRQoeYPAVL27o3UY1SptQ6P
- pawfnNYmAT74vVjX3bw3QxdpPYAKa7PertS4SDxi5/4YRqLx4WUWY4Ylh1MJTe0qeGqM
- r7Zso+I/9Be7mulc84it+ioN3JpDc0n0Kd2afVxxvFbzx11l8++ZB3RGjGPJCEOH5hAH
- GLMKZmfBiPVmTF/1Gi+sS0w11tan1GNl6HxPE8SWZpwc/YwfxcOn9Pqvsn0bWAq+BB1q
- KTHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=SQsmpamnEC+1G39fOnv3AHWet4T1m/yewhekPzkg6oM=;
- b=s/Mpb7xBFh+ZYzr/YN5BtCjkAI2kDfbXKAEHS5qB6ZHtrAB222I84nyPfVnIWYO3v3
- e5epoNRu3kD0pCjQnoTXGfMykcha2+reFUHNDa93w4sx67zzgCaacCnZFg3NunAUujEW
- 7Y2XV2rDiARZTfXKOVzY1IE4+1mmVUKNMQnznlHpw0365T4pQIoTT1Y53w8YNfjh6GcB
- 0IzT0vYKQ5nuEw/lsPZrES1NqLg5Lx/iG6yIf9iorgWrDBbgJDMk0hEiwJepQiVBWjES
- 82IKevRB+CuRK/IwKKbIxt+3xBY99hGpDzAnvNxQqGAkEmTjW4zI2Sg5yHIeVqBUorNy
- TCPg==
-X-Gm-Message-State: APjAAAWmtCG6ZTSEeXJyAsfC32E17Z22HctZ1DpiyVy/JRxEu3EbOuQU
- a+3DqBzj/1MPCFrBvQkOJ+unaeuN10yZqSyQA33R7w==
-X-Google-Smtp-Source: APXvYqywoJznArA+B42fE3qotZLbAO/lZwwwFgSnCIFaKH0Kz32B3tEXhjaA2SpvadNI/Y+gQm5xbMlQ4ziEB+Eb1ho=
-X-Received: by 2002:a92:db49:: with SMTP id w9mr59714964ilq.277.1582590446536; 
- Mon, 24 Feb 2020 16:27:26 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RKZd0cNczDq6l
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:30:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=JVU4gdBDiIRvc9V2bP234i33D7WlgF36h67W5FUswC8=; b=fVyxcSFfRUcoaq6hF+R6vxlzKy
+ YedSkscc6BX4kjz5eD1kKWvrnCmlFfk6nB6lyc5kZss7sZ32tBJXOGFmCMp1vQDouTTFnUAZ4Ea/L
+ 7gjUS6vT7+2+BugsI3ja5cMQV2GJQ/mbDldWA9WNVmK4yuuMdLi4Bs6ZkfJ9ZV68ny45i6k7Q02bh
+ lgnPi4deJ6V5uwM+4qc27c0FaNCpqapbI3AY65u33Db2bAaoBKh5lGi6hhlOkwWq1S8qPq4uZ4S4o
+ jx+G6dcBv54eIohv/5avVqvPSWNXXsrGpIOUSSpO2Cg0UvSAlAb/q4t0Xkz8F3HC4wADJPiwT0eH3
+ q29y/3Sw==;
+Received: from 96-90-213-161-static.hfc.comcastbusiness.net ([96.90.213.161]
+ helo=[10.11.45.55])
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j6O6o-0005VU-Dn; Tue, 25 Feb 2020 00:29:58 +0000
+Subject: Re: [PATCH][next] toshiba: Replace zero-length array with
+ flexible-array member
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Ishizaki Kou <kou.ishizaki@toshiba.co.jp>
+References: <20200224163252.GA28066@embeddedor>
+From: Geoff Levand <geoff@infradead.org>
+Message-ID: <1989d527-06ad-832b-19c0-d8cabc6509e9@infradead.org>
+Date: Mon, 24 Feb 2020 16:29:57 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <20200224233146.23734-1-mpe@ellerman.id.au>
- <20200224233146.23734-3-mpe@ellerman.id.au>
-In-Reply-To: <20200224233146.23734-3-mpe@ellerman.id.au>
-From: Olof Johansson <olof@lixom.net>
-Date: Mon, 24 Feb 2020 16:27:15 -0800
-Message-ID: <CAOesGMhHSYHvAXAH-kBxxGhd05Q0bbxDa9dyuw7oKTH96PTi0w@mail.gmail.com>
-Subject: Re: [PATCH 3/8] powerpc: Remove PA SEMI MAINTAINERS entries
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200224163252.GA28066@embeddedor>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,23 +69,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 24, 2020 at 3:31 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
-:
->
-> The PA SEMI entries have been orphaned for 3 =C2=BD years, so fold them
-> into the main POWERPC entry. The result of get_maintainer.pl is more
-> or less unchanged.
->
-> Cc: Olof Johansson <olof@lixom.net>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+On 2/24/20 8:32 AM, Gustavo A. R. Silva wrote:
+> The current codebase makes use of the zero-length array language
+> extension to the C90 standard, but the preferred mechanism to declare
+> variable-length types such as these ones is a flexible array member[1][2],
+> introduced in C99:
 
-Acked-by: Olof Johansson <olof@lixom.net>
+Seems fine.
 
-
--Olof
+Acked-by: Geoff Levand <geoff@infradead.org>
