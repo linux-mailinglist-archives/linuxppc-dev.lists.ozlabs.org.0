@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D2516EE79
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 19:57:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7013016EE6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 19:55:16 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Rp5s3qc6zDqHY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:55:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Rp8C5K4wzDqM4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:57:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ptFWbvsw; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20161025 header.b=fsAI/r+o; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RmSS6D7zzDqN8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RmSS6b4VzDqNF
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:41:12 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id d5so1568854pjz.5
+Received: by mail-pl1-x643.google.com with SMTP id u3so70967plr.9
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 09:41:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=JDQ0qwTwP3IIhGf/Q1dUeM9VWkRP0b28DAl8kXSHU+A=;
- b=ptFWbvsw2+i6CUlrrJN5VIPP4PNQJoaczYe/wY5Uk/ni8zgvNn4Yu8W77/L6gCEyWe
- do/RWfkeVrklvzBQkXR9Mk7EbzV2SidwuZ04qzECGvGsZPyAoC4/MdhydmCzj1ksK85r
- m+qovsCA8/gl1FKNz9HGALJsBW/y06ijIATE2VEhwNa3s4XbBQ51d6pR9+PyLB0h8Ioy
- r+ivwKrmTzuSxSS4P9l7A3ra9oFB+ETOBoB4bG6dwYQJFg28dXOUZOI7suwMe5oxSFz6
- ImJmltVhPmm4fCiR88oW6CSS4FU6LZVkNZIBS6PgsC5u5nMBmtpjX0T2XCNd87EAouui
- EP8A==
+ bh=vWepFUgEQ4UaKQeouKc6txpn4qd+XJreu0m8EI2BA2s=;
+ b=fsAI/r+odhEAIN19QcL4+t+NDlP9Cx5FXb2Kxu6tMva84fq0s8Unj8fVMspAddbyua
+ u1weozOZ/P+kWWMIa1Yfpn7s/8KAD9geFvBV95qBOoL0nXWrSP+OE+1hhnK4CTeh8hfy
+ 8ikRRypMS5Gh2l4PAzCEJLSJUZyKNBZ/h/9NpS8whA+suA0Q9mX3MrwwGOzhAYZk4/+l
+ n5+lBUWeWDYYDbm+SyJpQzqp5yG65kfGPNmkesfguCpIGkW2rmiTuIa1NDuVDV84SVNq
+ ZPL4aeAMMQvYMDX4MsfOWXNJxmvJVKl1Vw0bWkNVIuS40IZfyjlp3NMO2t1mnqFE6PV9
+ QZfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=JDQ0qwTwP3IIhGf/Q1dUeM9VWkRP0b28DAl8kXSHU+A=;
- b=QpBbCT+eoYZYezSvjL/4Bq4CPjXuJTt5UjjAvadFcrZEL/y7AgkporbpY9JJu3Y4Cw
- GwDVF67hW4RkEhnN8gTpturOati7FpypMAGJMEtO6UjcfsQwj1oxjPHgwzTKt/g7L8Ve
- Bk/wpQNNnFQnB9mxvSAKjnyaccXMlWRK8YEH+vmyYW42J2wBVpQL09GoE02B04mC14RP
- NbkYGDGQKKYREEboEgxsoURzB72vmNL2f3bsJ+LvKzCKwXasqnUCJ6RnB++6+3khEEH4
- HwvDRXaDDoSA9YanRYegVg1P7pey2rFPFxI0L54++mtw4nMngDrmFDnaRPoV9+ARA42d
- NW1A==
-X-Gm-Message-State: APjAAAXkUEQlkeLYpD6eTg/pvWU/bsURAV42p6ldyEN/jgY1KdSLz79T
- b9aGZTBCAyJLdgUkr0fCZfYu6PJ7
-X-Google-Smtp-Source: APXvYqwDhhHskDpIeM8QpcVe8wAOe63zfYe+Gq0jY/GmR7UcS6Tz0tq5FPmTUDSUq5pNRL1KHs136g==
-X-Received: by 2002:a17:902:45:: with SMTP id
- 63mr57157137pla.109.1582652467717; 
- Tue, 25 Feb 2020 09:41:07 -0800 (PST)
+ bh=vWepFUgEQ4UaKQeouKc6txpn4qd+XJreu0m8EI2BA2s=;
+ b=ssLYS7LHw1yi4hBxaIuiEkLjbG8OdpLKuWzpOrLH644cfIrv+6py4prCTOgZXzCsUC
+ DTbujZTg4N22HsVipIwnER3EaSVFDxSv+1BWF7yaOIJ4jxGM8FC45iKF3N64ckX7jYKZ
+ 67ngh70BgHLWv8PelYmUuKme5JuWEFA2wJhswimBZm+qu5jMaaDsKnU+Yg9MVzWLKqXA
+ XPMitZqtIoBzqeCDj4fh4y3+aA2Jg7f0IdpcsB9RBtbnD7rrbGryQj4+KwMzPztxOE8G
+ 9/i3a857j1MO0tERXqXy/mTnAn4YiCSi0y8A3/s9N99nUgR0fHj86SG4tKMLe2Mb0WB9
+ a1ag==
+X-Gm-Message-State: APjAAAWviQgIF4htM5TSzQlRY0MZp/Yy8ujqo193ITvPv0Br4yiwySuy
+ MnxtwJYbcs0bCHYAdP9fPNCRG2Ua
+X-Google-Smtp-Source: APXvYqwT/ikUdl17yVpig9B58Q1Xx61qY4UH36h2OM8ET/sfv4ZPe+T4kDiFMWoM0P1+rVaHwhhnwA==
+X-Received: by 2002:a17:902:bc86:: with SMTP id
+ bb6mr550453plb.140.1582652470307; 
+ Tue, 25 Feb 2020 09:41:10 -0800 (PST)
 Received: from bobo.ibm.com ([61.68.187.74])
- by smtp.gmail.com with ESMTPSA id z63sm14791480pgd.12.2020.02.25.09.41.05
+ by smtp.gmail.com with ESMTPSA id z63sm14791480pgd.12.2020.02.25.09.41.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2020 09:41:07 -0800 (PST)
+ Tue, 25 Feb 2020 09:41:09 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 29/32] powerpc/64s/exception: remove lite interrupt return
-Date: Wed, 26 Feb 2020 03:35:38 +1000
-Message-Id: <20200225173541.1549955-30-npiggin@gmail.com>
+Subject: [PATCH v3 30/32] powerpc/64: system call reconcile interrupts
+Date: Wed, 26 Feb 2020 03:35:39 +1000
+Message-Id: <20200225173541.1549955-31-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200225173541.1549955-1-npiggin@gmail.com>
 References: <20200225173541.1549955-1-npiggin@gmail.com>
@@ -84,160 +84,103 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The difference between lite and regular returns is that the lite case
-restores all NVGPRs, whereas lite skips that. This is quite clumsy
-though, most interrupts want the NVGPRs saved for debugging, not to
-modify in the caller, so the NVGPRs restore is not necessary most of
-the time. Restore NVGPRs explicitly for one case that requires it,
-and move everything else over to avoiding the restore unless the
-interrupt return demands it (e.g., handling a signal).
+This reconciles interrupts in the system call case like all other
+interrupts. This allows system_call_common to be shared with the
+scv system call implementation in a subsequent patch.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-v3:
-- Add a copule of missing restore cases for instruction emulation
-
- arch/powerpc/kernel/entry_64.S       |  6 ------
- arch/powerpc/kernel/exceptions-64s.S | 24 ++++++++++++++----------
- 2 files changed, 14 insertions(+), 16 deletions(-)
+ arch/powerpc/kernel/entry_64.S   | 11 +++++++++++
+ arch/powerpc/kernel/syscall_64.c | 28 +++++++++++++---------------
+ 2 files changed, 24 insertions(+), 15 deletions(-)
 
 diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index e13eac968dfc..6d5464f83c05 100644
+index 6d5464f83c05..8406812c9734 100644
 --- a/arch/powerpc/kernel/entry_64.S
 +++ b/arch/powerpc/kernel/entry_64.S
-@@ -471,12 +471,6 @@ _ASM_NOKPROBE_SYMBOL(fast_interrupt_return)
- 	.globl interrupt_return
- interrupt_return:
- _ASM_NOKPROBE_SYMBOL(interrupt_return)
--	REST_NVGPRS(r1)
--
--	.balign IFETCH_ALIGN_BYTES
--	.globl interrupt_return_lite
--interrupt_return_lite:
--_ASM_NOKPROBE_SYMBOL(interrupt_return_lite)
- 	ld	r4,_MSR(r1)
- 	andi.	r0,r4,MSR_PR
- 	beq	.Lkernel_interrupt_return
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index d635fd4e40ea..b53e452cbca0 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1513,7 +1513,7 @@ EXC_COMMON_BEGIN(hardware_interrupt_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
--	b	interrupt_return_lite
-+	b	interrupt_return
+@@ -113,6 +113,17 @@ END_BTB_FLUSH_SECTION
+ 	ld	r11,exception_marker@toc(r2)
+ 	std	r11,-16(r10)		/* "regshere" marker */
  
- 	GEN_KVM hardware_interrupt
++	/*
++	 * RECONCILE_IRQ_STATE without calling trace_hardirqs_off(), which
++	 * would clobber syscall parameters. Also we always enter with IRQs
++	 * enabled and nothing pending. system_call_exception() will call
++	 * trace_hardirqs_off().
++	 */
++	li	r11,IRQS_ALL_DISABLED
++	li	r12,PACA_IRQ_HARD_DIS
++	stb	r11,PACAIRQSOFTMASK(r13)
++	stb	r12,PACAIRQHAPPENED(r13)
++
+ 	/* Calling convention has r9 = orig r0, r10 = regs */
+ 	mr	r9,r0
+ 	bl	system_call_exception
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index 08e0bebbd3b6..32601a572ff0 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -19,13 +19,19 @@ extern void __noreturn tabort_syscall(unsigned long nip, unsigned long msr);
  
-@@ -1541,6 +1541,7 @@ EXC_COMMON_BEGIN(alignment_common)
- 	GEN_COMMON alignment
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	alignment_exception
-+	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
- 	b	interrupt_return
+ typedef long (*syscall_fn)(long, long, long, long, long, long);
  
- 	GEN_KVM alignment
-@@ -1604,6 +1605,7 @@ EXC_COMMON_BEGIN(program_check_common)
- 3:
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	program_check_exception
-+	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
- 	b	interrupt_return
+-/* Has to run notrace because it is entered "unreconciled" */
+-notrace long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8,
+-			   unsigned long r0, struct pt_regs *regs)
++/* Has to run notrace because it is entered not completely "reconciled" */
++notrace long system_call_exception(long r3, long r4, long r5,
++				   long r6, long r7, long r8,
++				   unsigned long r0, struct pt_regs *regs)
+ {
+ 	unsigned long ti_flags;
+ 	syscall_fn f;
  
- 	GEN_KVM program_check
-@@ -1700,7 +1702,7 @@ EXC_COMMON_BEGIN(decrementer_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	timer_interrupt
--	b	interrupt_return_lite
-+	b	interrupt_return
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
++
++	trace_hardirqs_off(); /* finish reconciling */
++
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S))
+ 		BUG_ON(!(regs->msr & MSR_RI));
+ 	BUG_ON(!(regs->msr & MSR_PR));
+@@ -33,8 +39,10 @@ notrace long system_call_exception(long r3, long r4, long r5, long r6, long r7,
+ 	BUG_ON(regs->softe != IRQS_ENABLED);
  
- 	GEN_KVM decrementer
+ 	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+-	    unlikely(regs->msr & MSR_TS_T))
++	    unlikely(regs->msr & MSR_TS_T)) {
++		local_irq_enable();
+ 		tabort_syscall(regs->nip, regs->msr);
++	}
  
-@@ -1791,7 +1793,7 @@ EXC_COMMON_BEGIN(doorbell_super_common)
- #else
- 	bl	unknown_exception
- #endif
--	b	interrupt_return_lite
-+	b	interrupt_return
+ 	account_cpu_user_entry();
  
- 	GEN_KVM doorbell_super
+@@ -50,16 +58,6 @@ notrace long system_call_exception(long r3, long r4, long r5, long r6, long r7,
  
-@@ -2060,6 +2062,7 @@ EXC_COMMON_BEGIN(emulation_assist_common)
- 	GEN_COMMON emulation_assist
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	emulation_assist_interrupt
-+	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
- 	b	interrupt_return
+ 	kuap_check_amr();
  
- 	GEN_KVM emulation_assist
-@@ -2176,7 +2179,7 @@ EXC_COMMON_BEGIN(h_doorbell_common)
- #else
- 	bl	unknown_exception
- #endif
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM h_doorbell
- 
-@@ -2206,7 +2209,7 @@ EXC_COMMON_BEGIN(h_virt_irq_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM h_virt_irq
- 
-@@ -2253,7 +2256,7 @@ EXC_COMMON_BEGIN(performance_monitor_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	performance_monitor_exception
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM performance_monitor
- 
-@@ -2650,6 +2653,7 @@ EXC_COMMON_BEGIN(altivec_assist_common)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- #ifdef CONFIG_ALTIVEC
- 	bl	altivec_assist_exception
-+	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
- #else
- 	bl	unknown_exception
- #endif
-@@ -3038,7 +3042,7 @@ do_hash_page:
-         cmpdi	r3,0			/* see if __hash_page succeeded */
- 
- 	/* Success */
--	beq	interrupt_return_lite	/* Return from exception on success */
-+	beq	interrupt_return	/* Return from exception on success */
- 
- 	/* Error */
- 	blt-	13f
-@@ -3055,7 +3059,7 @@ handle_page_fault:
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_page_fault
- 	cmpdi	r3,0
--	beq+	interrupt_return_lite
-+	beq+	interrupt_return
- 	mr	r5,r3
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	ld	r4,_DAR(r1)
-@@ -3070,9 +3074,9 @@ handle_dabr_fault:
- 	bl      do_break
+-	/*
+-	 * A syscall should always be called with interrupts enabled
+-	 * so we just unconditionally hard-enable here. When some kind
+-	 * of irq tracing is used, we additionally check that condition
+-	 * is correct
+-	 */
+-	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
+-		WARN_ON(irq_soft_mask_return() != IRQS_ENABLED);
+-		WARN_ON(local_paca->irq_happened);
+-	}
  	/*
- 	 * do_break() may have changed the NV GPRS while handling a breakpoint.
--	 * If so, we need to restore them with their updated values. Don't use
--	 * interrupt_return_lite here.
-+	 * If so, we need to restore them with their updated values.
+ 	 * This is not required for the syscall exit path, but makes the
+ 	 * stack frame look nicer. If this was initialised in the first stack
+@@ -68,7 +66,7 @@ notrace long system_call_exception(long r3, long r4, long r5, long r6, long r7,
  	 */
-+	REST_NVGPRS(r1)
- 	b       interrupt_return
+ 	regs->softe = IRQS_ENABLED;
  
+-	__hard_irq_enable();
++	local_irq_enable();
  
+ 	ti_flags = current_thread_info()->flags;
+ 	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
 -- 
 2.23.0
 
