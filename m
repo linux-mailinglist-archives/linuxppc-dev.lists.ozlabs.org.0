@@ -2,185 +2,154 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2BF16B6D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 01:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A17FE16B743
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 02:39:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RKqJ6WSjzDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 11:41:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RM7G5q0czDqVN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 12:39:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=adXHdFRn; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RKnZ6g3wzDqQF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:39:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-armh-onmicrosoft-com header.b=R2j6qUcM;
- dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com
- header.i=@armh.onmicrosoft.com header.a=rsa-sha256
- header.s=selector2-armh-onmicrosoft-com header.b=R2j6qUcM; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48RKnZ2g7Jz8t9F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:39:30 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48RKnZ21gXz9sRR; Tue, 25 Feb 2020 11:39:30 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=40.107.4.89; helo=eur03-db5-obe.outbound.protection.outlook.com;
- envelope-from=grant.likely@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-armh-onmicrosoft-com header.b=R2j6qUcM;
- dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com
- header.i=@armh.onmicrosoft.com header.a=rsa-sha256
- header.s=selector2-armh-onmicrosoft-com header.b=R2j6qUcM; 
- dkim-atps=neutral
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr40089.outbound.protection.outlook.com [40.107.4.89])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48RKnY1g01z9sRQ
- for <linuxppc-dev@ozlabs.org>; Tue, 25 Feb 2020 11:39:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com; 
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H3NOB/oZeeetW1pmjFZnlfC533thLSUdkCelsVC5aAo=;
- b=R2j6qUcM72ABB03oxouQBhgmdkb/midr42iGNKjRgd6BxKl+jRrH1nb+nMrtQ2Ok8J6e1DOu2OM7G4LIyM7RLs97T1ibhsI/IzBCaTIJMvxkcs9CzGW3Vrw16QuU35FR2Rrka+1eM/0jt6HhLqqA4sUsgz2mdILJ+dukqN47R9Q=
-Received: from VI1PR08CA0225.eurprd08.prod.outlook.com (2603:10a6:802:15::34)
- by AM0PR08MB4322.eurprd08.prod.outlook.com (2603:10a6:208:148::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.22; Tue, 25 Feb
- 2020 00:39:22 +0000
-Received: from DB5EUR03FT051.eop-EUR03.prod.protection.outlook.com
- (2a01:111:f400:7e0a::208) by VI1PR08CA0225.outlook.office365.com
- (2603:10a6:802:15::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.17 via Frontend
- Transport; Tue, 25 Feb 2020 00:39:21 +0000
-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; ozlabs.org; dkim=pass (signature was verified)
- header.d=armh.onmicrosoft.com;ozlabs.org; dmarc=bestguesspass action=none
- header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- DB5EUR03FT051.mail.protection.outlook.com (10.152.21.19) with
- Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2750.17 via Frontend Transport; Tue, 25 Feb 2020 00:39:21 +0000
-Received: ("Tessian outbound 846b976b3941:v42");
- Tue, 25 Feb 2020 00:39:21 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 3e85e8f10d8c1dcb
-X-CR-MTA-TID: 64aa7808
-Received: from 9f612cb00746.1
- by 64aa7808-outbound-1.mta.getcheckrecipient.com id
- CBB851E2-A004-4632-A2DB-36C11BC61D5B.1; 
- Tue, 25 Feb 2020 00:39:16 +0000
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 9f612cb00746.1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
- Tue, 25 Feb 2020 00:39:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EWRGmk5pgAzoT2D6oQR2ObL7lhSvXoF4rCAYLJrKFlzQp7WQyPNcTHR9Qy3r+ENvkXjTdR4/1a5C0WQfL3cIlMRYyVyKG1pasxegWAcdnbPVvnAay1/7Gzhx1E2vcKX1hEjNYd91KMzf6odIsfUEmyMzB8/2dTaNnU+rCyohTgfvEuqw/7hXGs8HRSkZu4YNeZUMkZFZ2NnaEWRq1BzaVXLMKvFTgKYv2kDoTFlJ9EqAx5xrRtRqfQD5rzKDmxXOC/ax84nEG3KdvzxAm7uxArjYYBKa+MNJUKdAiyAWluEc0wxFUkwI9tA0c+STMDdAH1xixEUoWd0yOXo1JhYBFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H3NOB/oZeeetW1pmjFZnlfC533thLSUdkCelsVC5aAo=;
- b=FTp+nazjD4d6uBLQa4D1yI6XpHZXT2DPE/uyp0a2lZ5cwpgEqmt0j8WHzgDk84Vm0+QdA90Y8Bx2oNIJxOZWctXzPcaubrRSFX3HtCUXmTq4aSwhuIhbxr5ILB66oBPQdJ8lHeApaKNno6b7M+z2YaEtQc2HVXqUmG1WTBHEBsYD11HzPcg0BxkjKzJT9f+qP5k4BRVl/HbMkboHHGFypSeJUGt1NByMXi2dxasJiFwLvT+JY5kQ0x6hsNVdxOuEcb+SC5epn3hyjs0miPbvs/uCDWrfKf7l8CvS5A6s9dvIlKMMnK5xndtmvXrID2ch4eIDINmc3LSALRYFv2brgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com; 
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H3NOB/oZeeetW1pmjFZnlfC533thLSUdkCelsVC5aAo=;
- b=R2j6qUcM72ABB03oxouQBhgmdkb/midr42iGNKjRgd6BxKl+jRrH1nb+nMrtQ2Ok8J6e1DOu2OM7G4LIyM7RLs97T1ibhsI/IzBCaTIJMvxkcs9CzGW3Vrw16QuU35FR2Rrka+1eM/0jt6HhLqqA4sUsgz2mdILJ+dukqN47R9Q=
-Authentication-Results-Original: spf=none (sender IP is )
- smtp.mailfrom=Grant.Likely@arm.com; 
-Received: from DB8PR08MB4010.eurprd08.prod.outlook.com (20.179.10.207) by
- DB8PR08MB4060.eurprd08.prod.outlook.com (20.179.9.223) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2750.21; Tue, 25 Feb 2020 00:39:14 +0000
-Received: from DB8PR08MB4010.eurprd08.prod.outlook.com
- ([fe80::69dd:a09c:8012:998d]) by DB8PR08MB4010.eurprd08.prod.outlook.com
- ([fe80::69dd:a09c:8012:998d%4]) with mapi id 15.20.2750.021; Tue, 25 Feb 2020
- 00:39:14 +0000
-Subject: Re: [PATCH 5/8] powerpc: Drop XILINX MAINTAINERS entry
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20200224233146.23734-1-mpe@ellerman.id.au>
- <20200224233146.23734-5-mpe@ellerman.id.au>
-From: Grant Likely <grant.likely@arm.com>
-Message-ID: <2b9756b4-815d-c05d-e9ce-fc372172fd53@arm.com>
-Date: Tue, 25 Feb 2020 00:39:12 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RM5c4GnZzDqBN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 12:38:25 +1100 (AEDT)
+Received: by mail-pj1-x1042.google.com with SMTP id j17so563914pjz.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 17:38:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=bNXrPNCLkK1GkQSOrCHsGDfBUEejY4Xpahc449OIW5k=;
+ b=adXHdFRn0rF9dyTUlCz9ozskfW1KdkBEUlGuoL+x6L2aM7cbw7zAvtMhRJvGdH/RT6
+ z+c69YIdd0UQWQjhZVtb5bv04cFk/g2+VEMHtJr3PZD0tEJ2T+rrFRWMJP26+dgZCsmt
+ 4GGYHX08/2RpfDX3m/MwQgM9QIfxH85WxYcuabI9hL25UOTNULXb7fZy2a7FevDOvRyH
+ joPzvbJWUtHoeccJn2jm/b6t89hwYOr6WTst4yVwAkipNhUmbqINzhiyv4jrwD9T5XW4
+ GS3ja2+i01RLfsuyKObdPRs+hDAC8WQH/bQ+C9UIu3drPj/Z2qfXdBJs38a3A7laYVnE
+ F4Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=bNXrPNCLkK1GkQSOrCHsGDfBUEejY4Xpahc449OIW5k=;
+ b=Llkd70FgB5osfLotw1DK3SrF6oTNHEXqlVEpiH1dUrV01gdj93Ef4ziWV4pgDrhfZ6
+ YcTkLUS9Ed+guqATOZ4R4EsXvrucm/1EYgHu0NY1fNcmORYxCUWjRgvq8VtFJHxnoyhK
+ R/0ql67BF2NWnZ5RWOxk0mFnKNAJdNFtbQip1yARgNxzVwaYPsyDCU229PJzhaU3HHPy
+ skyx8a2mS6HENp1LUmpDXCP/cyaRTIahL0RLeThrZFfKF46QCfA4X90tbH29t1wkzz0R
+ AVpx9IV/bcKkT4PkErvjbpat21X0XZXHosWZzt5/nNtW2vAhmfZLvfRt5Wmsv/JdAGnA
+ zWqw==
+X-Gm-Message-State: APjAAAVX8x9aL1bfNK9xtXUQKagD94Y326Eo7lSuG3d4X3ERUP+DM8ra
+ 8I+FaH/Xo9iJnVENINcSMKniMH8eOvw=
+X-Google-Smtp-Source: APXvYqzKDo5VyKYU76whwY+/NTy1n53SQq8r43Alq1Iaq1HIKSviUj7So9+5TuA9Kwd1t6F7yp/YLw==
+X-Received: by 2002:a17:90b:3004:: with SMTP id
+ hg4mr2290019pjb.52.1582594701494; 
+ Mon, 24 Feb 2020 17:38:21 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id b4sm14809786pfd.18.2020.02.24.17.38.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Feb 2020 17:38:20 -0800 (PST)
+Subject: Re: [PATCH 1/2] powerpc/powernv: Treat an empty reboot string as
+ default
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <20200217024833.30580-1-oohall@gmail.com>
+ <767d85e7-7d8f-4a88-b16e-a4d69fb51343@ozlabs.ru>
+ <20200224100442.GE22482@gate.crashing.org>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <2d0fdc56-bb83-ae82-9bdf-d8c0e117ea69@ozlabs.ru>
+Date: Tue, 25 Feb 2020 12:38:16 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-In-Reply-To: <20200224233146.23734-5-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+In-Reply-To: <20200224100442.GE22482@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0333.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a4::33) To DB8PR08MB4010.eurprd08.prod.outlook.com
- (2603:10a6:10:ab::15)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.16.147] (92.40.175.36) by
- LO2P265CA0333.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:a4::33) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2750.18 via Frontend Transport; Tue, 25 Feb 2020 00:39:13 +0000
-X-Originating-IP: [92.40.175.36]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 7ea64fcb-5118-470e-cacf-08d7b98b27b5
-X-MS-TrafficTypeDiagnostic: DB8PR08MB4060:|AM0PR08MB4322:
-X-Microsoft-Antispam-PRVS: <AM0PR08MB43227B83ADE1D564AC6FAF8E95ED0@AM0PR08MB4322.eurprd08.prod.outlook.com>
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:2582;OLM:2582;
-X-Forefront-PRVS: 0324C2C0E2
-X-Forefront-Antispam-Report-Untrusted: SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(396003)(376002)(39860400002)(346002)(366004)(189003)(199004)(2906002)(81156014)(8936002)(5660300002)(16576012)(8676002)(31686004)(81166006)(6486002)(31696002)(26005)(36756003)(52116002)(186003)(316002)(86362001)(66946007)(44832011)(4744005)(2616005)(956004)(4326008)(478600001)(55236004)(66556008)(53546011)(66476007)(16526019);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB8PR08MB4060;
- H:DB8PR08MB4010.eurprd08.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-Received-SPF: None (protection.outlook.com: arm.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: kA5D6Y3yX82rJtNHzmIke0MahlR61B7XnmZqYJBAFc5MGjHn58UbXn2bNtlVrRmV5AxQwzpl8NDEc/DMGzH7sMg1E5C5zE/mjUeyTkEKbw3ePLUSZRLNhTQfqs5g6MwQiskzdtg65B5kqGt9WOqJTkrtHsOD6QafF0S5998T/ETNRDLR9ZkRODDmcwerLFTD8NDhZtBKvsyFTQc8M7dYFqhvbLEvSC+fr1xqK9j0uRfOh4imemYPnGq7fXz2cTu21epwXmUR8eYw9Gx3kyu30YxerR1AwASc6x0vjNy5VxMwEYyOqHeBJUhKl/F/5+SxkH9jAp+aLNw7KQZPbaGiEBv+plfaSGmeR5w6jMLL6OirRW5oC2Usu7qvE683s/lxABWGO3bSoxoVPZdQH2GQsfrknNKc+DeGJW2dqN2xt54c6Lq3QUhqa+QxkCmIWgxn
-X-MS-Exchange-AntiSpam-MessageData: q9WdC2RT+UIuY1aecowofi7KxajyDnwyFi9d25mZb1IeuufDnAT2ztx3VmZwwctJz2VGt1RlQZE1njT4TGUAS7m0n8DN0d9tuQagDyUPKqejdX+WAzYZhYsPFlRzDKfYA+FMTgmjoeKUvcen1soSBg==
-X-MS-Exchange-Transport-Forked: True
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB4060
-Original-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Grant.Likely@arm.com; 
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: DB5EUR03FT051.eop-EUR03.prod.protection.outlook.com
-X-Forefront-Antispam-Report: CIP:63.35.35.123; IPV:CAL; SCL:-1; CTRY:IE;
- EFV:NLI; SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(376002)(346002)(39860400002)(396003)(189003)(199004)(2616005)(8936002)(956004)(6486002)(26005)(186003)(36756003)(8676002)(16526019)(356004)(31696002)(336012)(53546011)(70586007)(4744005)(5660300002)(16576012)(44832011)(31686004)(316002)(2906002)(81166006)(4326008)(81156014)(478600001)(86362001)(26826003)(70206006);
- DIR:OUT; SFP:1101; SCL:1; SRVR:AM0PR08MB4322;
- H:64aa7808-outbound-1.mta.getcheckrecipient.com; FPR:; SPF:Pass; LANG:en;
- PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com; MX:1; A:1; 
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 01672665-4f9b-4290-3d5b-08d7b98b2380
-X-Forefront-PRVS: 0324C2C0E2
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ifbuAzXzJh13K505RHFpFYWvBqWA5UJe/SOKBVWjOlBRN+O0lmpRBJgNC6vqBYZzOaOG1hi/b2HGmLfj1ET8g/lMh08+Fcn3E7TzxNEsSPB1eRYlWq0+I4O7x4E7GYOKsmP7PR1Pdmh4BRQnVmdj7CXgb+83dH4ZKzfo/Cws6LMwllDPkdA3NdjZKhys4NAulFZp85sZd9/kv9AV7bBfyYtmMqrzHSMzGO3jsdRDhwTXCND3qAUl1K7rbk8iOQasJu0Y8QJt2PZ4QxpOryNgKsKrIqLO6nPqvGGUWPLAw2qb4QCHEg+rsL47fO0mhkHUZvoWCGpAuqrn4j8amfQqoTfpRW2VLQ+weoFEhJNIlwrXu7jwfrWayd5Rrs7Nc5DWm6YpIHkG8XxGs+0b1XX8dlDzMuvfN5U3j8tGi9XIb+Zv0UOMOSD9JxGNW/YaXqef
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2020 00:39:21.3972 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ea64fcb-5118-470e-cacf-08d7b98b27b5
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d; Ip=[63.35.35.123];
- Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB4322
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -192,40 +161,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nd <nd@arm.com>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 24/02/2020 23:31, Michael Ellerman wrote:
-> This has been orphaned for ~7 years, remove it.
+On 24/02/2020 21:04, Segher Boessenkool wrote:
+> On Mon, Feb 24, 2020 at 01:32:28PM +1100, Alexey Kardashevskiy wrote:
+>> On 17/02/2020 13:48, Oliver O'Halloran wrote:
+>>> Treat an empty reboot cmd string the same as a NULL string. This squashes a
+>>> spurious unsupported reboot message that sometimes gets out when using
+>>> xmon.
 > 
-> Cc: Grant Likely <grant.likely@arm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>> -		if (!cmd)
+>>> +		if (!cmd || !strlen(cmd))
+>>
+>> nit: this does not matter here in practice but
+>>
+>> if (!cmd || cmd[0] == '\0')
+>>
+>> is faster (you do not care about the length anyway) and safer (@cmd can
+>> potentially be endless) ;)
+> 
+> No it isn't, this compiles to identical machine code.  (I tested with
+> GCC 9, and going back until 4.6 -- the generated code becomes
+> progressively worse (unrelated to this code, fwiw), but identical for
+> both cases all the time).
 
-Acked-by: Grant Likely <grant.likely@arm.com>
+oh cool, I did not think gcc is that smart.
 
-> ---
->   MAINTAINERS | 6 ------
->   1 file changed, 6 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 939da2ac08db..d5db5cac5a39 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9668,12 +9668,6 @@ L:	linuxppc-dev@lists.ozlabs.org
->   S:	Maintained
->   F:	arch/powerpc/platforms/8xx/
->   
-> -LINUX FOR POWERPC EMBEDDED XILINX VIRTEX
-> -L:	linuxppc-dev@lists.ozlabs.org
-> -S:	Orphan
-> -F:	arch/powerpc/*/*virtex*
-> -F:	arch/powerpc/*/*/*virtex*
-> -
->   LINUX KERNEL DUMP TEST MODULE (LKDTM)
->   M:	Kees Cook <keescook@chromium.org>
->   S:	Maintained
-> 
+
+
+-- 
+Alexey
