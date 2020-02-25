@@ -1,92 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6516116B7F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 04:15:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4389816B7E4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 04:03:14 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RNzF6JnwzDqX2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 14:03:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RPF35SlyzDqTm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 14:15:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RNxD5Nr6zDqVC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 14:01:20 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01P2xWbR046335
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 22:01:18 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yb1ph5yxw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2020 22:01:17 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 25 Feb 2020 03:01:15 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 25 Feb 2020 03:01:07 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01P309eR46596410
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Feb 2020 03:00:09 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 013E811C090;
- Tue, 25 Feb 2020 03:01:06 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99F2A11C08A;
- Tue, 25 Feb 2020 03:01:05 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 Feb 2020 03:01:05 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E66F5A01C4;
- Tue, 25 Feb 2020 14:01:00 +1100 (AEDT)
-Subject: Re: [PATCH v3 11/27] powerpc: Enable the OpenCAPI Persistent Memory
- driver for powernv_defconfig
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-12-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 25 Feb 2020 14:01:04 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RPCJ6bgzzDqS2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 14:13:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QE6jVcOm; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 48RPCJ5SZJz9sPK; Tue, 25 Feb 2020 14:13:32 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 48RPCJ4p4Sz9sQt; Tue, 25 Feb 2020 14:13:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1582600412;
+ bh=6n7fBGk5fVx/DZJXvJgd1jCLEzrUCRAMHQ1Oo6snhsY=;
+ h=From:To:Subject:Date:From;
+ b=QE6jVcOmtKKokKTjGyB3VAONxZBbN/hnH2pFTFOponVa7Fe7KzHRV9jf3FlmlYhIK
+ SptCfzRJuDv1tPDeDQAd/B/q0wN5glv01E1x2XeFGgbtGtc+haRj2P/gbv9DKQvekf
+ CWuSlN2u9fNkSxaykCAdm5ggAQcvcnkpO+v/U1eCkTqee7XU9P7wt7Tleu/5X1Aueo
+ mzuXD63nw11DeHjlLd+s5uv9ZXnZ3ZnDvIryhIjcbro4VcKAbrlqO8fgUDlN9+mjOi
+ kXzKkjNvsFA8zrD1XdJ/brNVd1/eiZidMLWdJjeruaEk7b3nZXsP0CZTKE/9tTzvVY
+ vIozOGTFKB2Sg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/64s: Fix section mismatch warnings from boot code
+Date: Tue, 25 Feb 2020 14:13:28 +1100
+Message-Id: <20200225031328.14676-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-12-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022503-0008-0000-0000-000003561BCC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022503-0009-0000-0000-00004A7735F3
-Message-Id: <35378a44-88d4-1dcb-f8ff-82465813c3de@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-24_12:2020-02-21,
- 2020-02-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=684
- clxscore=1015 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 malwarescore=0 phishscore=0 impostorscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002250023
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,49 +55,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> This patch enables the OpenCAPI Persistent Memory driver, as well
-> as DAX support, for the 'powernv' platform.
+We currently have two section mismatch warnings:
 
-defconfig, not platform
+  The function __boot_from_prom() references
+  the function __init prom_init().
 
-> 
-> DAX is not a strict requirement for the functioning of the driver, but it
-> is likely that a user will want to create a DAX device on top of their
-> persistent memory device.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+  The function start_here_common() references
+  the function __init start_kernel().
 
-Otherwise
+The warnings are correct, we do have branches from non-init code into
+init code, which is freed after boot. But we don't expect to ever
+execute any of that early boot code after boot, if we did that would
+be a bug. In particular calling into OF after boot would be fatal
+because OF is no longer resident.
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+So for now fix the warnings by marking the relevant functions as
+__REF, which puts them in the ".ref.text" section.
 
+This causes some reordering of the functions in the final link:
+
+  @@ -217,10 +217,9 @@
+   c00000000000b088 t generic_secondary_common_init
+   c00000000000b124 t __mmu_off
+   c00000000000b14c t __start_initialization_multiplatform
+  -c00000000000b1ac t __boot_from_prom
+  -c00000000000b1ec t __after_prom_start
+  -c00000000000b260 t p_end
+  -c00000000000b27c T copy_and_flush
+  +c00000000000b1ac t __after_prom_start
+  +c00000000000b220 t p_end
+  +c00000000000b23c T copy_and_flush
+   c00000000000b300 T __secondary_start
+   c00000000000b300 t copy_to_here
+   c00000000000b344 t start_secondary_prolog
+  @@ -228,8 +227,9 @@
+   c00000000000b36c t enable_64b_mode
+   c00000000000b388 T relative_toc
+   c00000000000b3a8 t p_toc
+  -c00000000000b3b0 t start_here_common
+  -c00000000000b3d0 t start_here_multiplatform
+  +c00000000000b3b0 t __boot_from_prom
+  +c00000000000b3f0 t start_here_multiplatform
+  +c00000000000b480 t start_here_common
+   c00000000000b880 T system_call_common
+   c00000000000b974 t system_call
+   c00000000000b9dc t system_call_exit
+
+In particular __boot_from_prom moves after copy_to_here, which means
+it's not copied to zero in the first stage of copy of the kernel to
+zero.
+
+But that's OK, because we only call __boot_from_prom before we do the
+copy, so it makes no difference when it's copied. The call sequence
+is:
+  __start
+  -> __start_initialization_multiplatform
+     -> __boot_from_prom
+        -> __start
+           -> __start_initialization_multiplatform
+              -> __after_prom_start
+                 -> copy_and_flush
+                 -> copy_and_flush (relocated to 0)
+                    -> start_here_multiplatform
+                       -> early_setup
+
+Reported-by: Mauricio Faria de Oliveira <mauricfo@linux.ibm.com>
+Reported-by: Roman Bolshakov <r.bolshakov@yadro.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/head_64.S | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index ad79fddb974d..ddfbd02140d9 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -537,6 +537,7 @@ _GLOBAL(generic_secondary_smp_init)
+ 	b	__after_prom_start
+ #endif /* CONFIG_PPC_BOOK3E */
+ 
++__REF
+ __boot_from_prom:
+ #ifdef CONFIG_PPC_OF_BOOT_TRAMPOLINE
+ 	/* Save parameters */
+@@ -574,6 +575,7 @@ _GLOBAL(generic_secondary_smp_init)
+ 	/* We never return. We also hit that trap if trying to boot
+ 	 * from OF while CONFIG_PPC_OF_BOOT_TRAMPOLINE isn't selected */
+ 	trap
++	.previous
+ 
+ __after_prom_start:
+ #ifdef CONFIG_RELOCATABLE
+@@ -977,7 +979,6 @@ __REF
+ 	RFI
+ 	b	.	/* prevent speculative execution */
+ 
+-	.previous
+ 	/* This is where all platforms converge execution */
+ 
+ start_here_common:
+@@ -1001,6 +1002,7 @@ __REF
+ 	/* Not reached */
+ 	trap
+ 	EMIT_BUG_ENTRY 0b, __FILE__, __LINE__, 0
++	.previous
+ 
+ /*
+  * We put a few things here that have to be page-aligned.
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.21.1
 
