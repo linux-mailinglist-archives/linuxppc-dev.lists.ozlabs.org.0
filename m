@@ -2,71 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B1A16EE82
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 19:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C006016EE92
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 20:05:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RpBJ5RvqzDqbl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:59:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RpKH4rJYzDqKD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 06:05:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=the-dreams.de (client-ip=88.99.104.3; helo=pokefinder.org;
+ envelope-from=wsa@the-dreams.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=WutpSeRp; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RmSW6sVjzDqN1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:41:15 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id a6so85249plm.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 09:41:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=KU9VKTOgXYDrAa8kjzX5dVBgeXvu9j/CjilNchUpeRU=;
- b=WutpSeRpzEsYOF319e5VeHfe8TLrKrayN9O9C86V8H68rjVrrVlmeVeZp1+ugXncnr
- a1odh1/JkuJheYzrdcu2Boi2M2fLlQ+dNieaytYfxJe/L1iuQVTULyOXKXKcb24IEHDE
- TJ9+8jMjKvsfIew22kGJ/u+q4fc9lIvAoFptmpJ3DypteU3+UNuGPcTzJEkaTd7kj9Z5
- uwtfKWzH9SUf9jf465+ONQGhybFiOPbuY4z4fzdrzM0YU70BYAw1A3ThHxZNVayd0q6O
- e7ykzEzCpp+a1m6vGzYUMBrIARBZDw01WQEYgao0pzQh3raW8Q0cjpuQuLZ6WA1rq7GU
- i5XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=KU9VKTOgXYDrAa8kjzX5dVBgeXvu9j/CjilNchUpeRU=;
- b=XXPE4YK2yLaEACCztBJghQDt1CLwT5gAyLMfKvTujZXA8Sv67fDPoML77QYGP6NBr5
- juFMj2+wyFyoxBy5HQ84W/HxCbyjZs79DfX8A/8wpfIGl1Paa74AdbVOR3pekansIGXF
- 00aHKSQPqgoQMPtuVvNR3mc7rCDuHTooUURTx0sT2QqA41UdOgYLl7hDRJ4K40YyrpJm
- DTD6A7RmykyZCWYgIEAjhJ3ln1w/Dn4DlnNUSjaNxiBf60OtnHm8IEhvbkY0guYjdKYk
- v+KGCFmROfZiYllw2juFfjuT5Whi+lrwdDZydmycYknSH93O3DLirtEVAmtNqqO40s+R
- XEdQ==
-X-Gm-Message-State: APjAAAWi0GEt92IPU9JCVRZ9UTc0TtGdqzphFguJJ11DduuUZm7oHMEk
- vqDAbsvKXhaIzkMPEptRdERIGxHT
-X-Google-Smtp-Source: APXvYqwhqCj66AVJIHfZXy+DIXZ6dYFSd+EfcReHQBRK0LD/ufEMB4LXShe9eLQczJwI/vg/o1XCIA==
-X-Received: by 2002:a17:90a:b386:: with SMTP id
- e6mr106812pjr.106.1582652472937; 
- Tue, 25 Feb 2020 09:41:12 -0800 (PST)
-Received: from bobo.ibm.com ([61.68.187.74])
- by smtp.gmail.com with ESMTPSA id z63sm14791480pgd.12.2020.02.25.09.41.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2020 09:41:12 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+ dmarc=none (p=none dis=none) header.from=the-dreams.de
+Received: from pokefinder.org (sauhun.de [88.99.104.3])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48Rmhr5srszDqHH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:51:56 +1100 (AEDT)
+Received: from localhost (p5486CE6D.dip0.t-ipconnect.de [84.134.206.109])
+ by pokefinder.org (Postfix) with ESMTPSA id C91092C08C2;
+ Tue, 25 Feb 2020 15:12:33 +0100 (CET)
+From: Wolfram Sang <wsa@the-dreams.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 31/32] powerpc/64s/exception: treat NIA below
- __end_interrupts as soft-masked
-Date: Wed, 26 Feb 2020 03:35:40 +1000
-Message-Id: <20200225173541.1549955-32-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200225173541.1549955-1-npiggin@gmail.com>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
+Subject: [PATCH] macintosh: therm_windtunnel: fix regression when
+ instantiating devices
+Date: Tue, 25 Feb 2020 15:12:29 +0100
+Message-Id: <20200225141229.5424-1-wsa@the-dreams.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,86 +40,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Suchanek <msuchanek@suse.de>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Erhard Furtner <erhard_f@mailbox.org>, Wolfram Sang <wsa@the-dreams.de>,
+ Mathieu Malaterre <malat@debian.org>, debian-powerpc@lists.debian.org,
+ linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The scv instruction causes an interrupt which can enter the kernel with
-MSR[EE]=1, thus allowing interrupts to hit at any time. These must not
-be taken as normal interrupts, because they come from MSR[PR]=0 context,
-and yet the kernel stack is not yet set up and r13 is not set to the
-PACA).
+Removing attach_adapter from this driver caused a regression for at
+least some machines. Those machines had the sensors described in their
+DT, too, so they didn't need manual creation of the sensor devices. The
+old code worked, though, because manual creation came first. Creation of
+DT devices then failed later and caused error logs, but the sensors
+worked nonetheless because of the manually created devices.
 
-Treat this as a soft-masked interrupt regardless of the soft masked
-state. This does not affect behaviour yet, because currently all
-interrupts are taken with MSR[EE]=0.
+When removing attach_adaper, manual creation now comes later and loses
+the race. The sensor devices were already registered via DT, yet with
+another binding, so the driver could not be bound to it.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+This fix refactors the code to remove the race and only manually creates
+devices if there are no DT nodes present. Also, the DT binding is updated
+to match both, the DT and manually created devices. Because we don't
+know which device creation will be used at runtime, the code to start
+the kthread is moved to do_probe() which will be called by both methods.
+
+Fixes: 3e7bed52719d ("macintosh: therm_windtunnel: drop using attach_adapter")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=201723
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Tested-by: Erhard Furtner <erhard_f@mailbox.org>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index b53e452cbca0..7a6be3f32973 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -494,8 +494,24 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+I suggest this stable-tag: # v4.19+
+
+Adding the Debian-PPC List to reach further people maybe willing to
+test.
+
+This patch does not depend on "[PATCH RESEND] macintosh: convert to
+i2c_new_scanned_device". In fact, this one here should go in first as
+5.6 material. I will rebase and resend the i2c_new_scanned_device()
+conversion on top of this regression fix.
+
+I can also take this via I2C if easier.
+
+ drivers/macintosh/therm_windtunnel.c | 52 +++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
+index 8c744578122a..a0d87ed9da69 100644
+--- a/drivers/macintosh/therm_windtunnel.c
++++ b/drivers/macintosh/therm_windtunnel.c
+@@ -300,9 +300,11 @@ static int control_loop(void *dummy)
+ /*	i2c probing and setup						*/
+ /************************************************************************/
  
- .macro __GEN_COMMON_BODY name
- 	.if IMASK
-+		.if ! ISTACK
-+		.error "No support for masked interrupt to use custom stack"
-+		.endif
+-static int
+-do_attach( struct i2c_adapter *adapter )
++static void do_attach(struct i2c_adapter *adapter)
+ {
++	struct i2c_board_info info = { };
++	struct device_node *np;
 +
-+		/* If coming from user, skip soft-mask tests. */
-+		andi.	r10,r12,MSR_PR
-+		bne	2f
-+
-+		/* Kernel code running below __end_interrupts is implicitly
-+		 * soft-masked */
-+		LOAD_HANDLER(r10, __end_interrupts)
-+		cmpd	r11,r10
-+		li	r10,IMASK
-+		blt-	1f
-+
-+		/* Test the soft mask state against our interrupt's bit */
- 		lbz	r10,PACAIRQSOFTMASK(r13)
--		andi.	r10,r10,IMASK
-+1:		andi.	r10,r10,IMASK
- 		/* Associate vector numbers with bits in paca->irq_happened */
- 		.if IVEC == 0x500 || IVEC == 0xea0
- 		li	r10,PACA_IRQ_EE
-@@ -526,7 +542,7 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+ 	/* scan 0x48-0x4f (DS1775) and 0x2c-2x2f (ADM1030) */
+ 	static const unsigned short scan_ds1775[] = {
+ 		0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
+@@ -313,25 +315,24 @@ do_attach( struct i2c_adapter *adapter )
+ 		I2C_CLIENT_END
+ 	};
  
- 	.if ISTACK
- 	andi.	r10,r12,MSR_PR		/* See if coming from user	*/
--	mr	r10,r1			/* Save r1			*/
-+2:	mr	r10,r1			/* Save r1			*/
- 	subi	r1,r1,INT_FRAME_SIZE	/* alloc frame on kernel stack	*/
- 	beq-	100f
- 	ld	r1,PACAKSAVE(r13)	/* kernel stack to use		*/
-@@ -2791,7 +2807,8 @@ masked_interrupt:
- 	ld	r10,PACA_EXGEN+EX_R10(r13)
- 	ld	r11,PACA_EXGEN+EX_R11(r13)
- 	ld	r12,PACA_EXGEN+EX_R12(r13)
--	/* returns to kernel where r13 must be set up, so don't restore it */
-+	ld	r13,PACA_EXGEN+EX_R13(r13)
-+	/* May return to masked low address where r13 is not set up */
- 	.if \hsrr
- 	HRFI_TO_KERNEL
- 	.else
-@@ -2950,6 +2967,10 @@ EXC_COMMON_BEGIN(ppc64_runlatch_on_trampoline)
+-	if( strncmp(adapter->name, "uni-n", 5) )
+-		return 0;
+-
+-	if( !x.running ) {
+-		struct i2c_board_info info;
++	if (x.running || strncmp(adapter->name, "uni-n", 5))
++		return;
  
- USE_FIXED_SECTION(virt_trampolines)
- 	/*
-+	 * All code below __end_interrupts is treated as soft-masked. If
-+	 * any code runs here with MSR[EE]=1, it must then cope with pending
-+	 * soft interrupt being raised (i.e., by ensuring it is replayed).
-+	 *
- 	 * The __end_interrupts marker must be past the out-of-line (OOL)
- 	 * handlers, so that they are copied to real address 0x100 when running
- 	 * a relocatable kernel. This ensures they can be reached from the short
+-		memset(&info, 0, sizeof(struct i2c_board_info));
+-		strlcpy(info.type, "therm_ds1775", I2C_NAME_SIZE);
++	np = of_find_compatible_node(adapter->dev.of_node, NULL, "MAC,ds1775");
++	if (np) {
++		of_node_put(np);
++	} else {
++		strlcpy(info.type, "MAC,ds1775", I2C_NAME_SIZE);
+ 		i2c_new_probed_device(adapter, &info, scan_ds1775, NULL);
++	}
+ 
+-		strlcpy(info.type, "therm_adm1030", I2C_NAME_SIZE);
++	np = of_find_compatible_node(adapter->dev.of_node, NULL, "MAC,adm1030");
++	if (np) {
++		of_node_put(np);
++	} else {
++		strlcpy(info.type, "MAC,adm1030", I2C_NAME_SIZE);
+ 		i2c_new_probed_device(adapter, &info, scan_adm1030, NULL);
+-
+-		if( x.thermostat && x.fan ) {
+-			x.running = 1;
+-			x.poll_task = kthread_run(control_loop, NULL, "g4fand");
+-		}
+ 	}
+-	return 0;
+ }
+ 
+ static int
+@@ -404,8 +405,8 @@ attach_thermostat( struct i2c_client *cl )
+ enum chip { ds1775, adm1030 };
+ 
+ static const struct i2c_device_id therm_windtunnel_id[] = {
+-	{ "therm_ds1775", ds1775 },
+-	{ "therm_adm1030", adm1030 },
++	{ "MAC,ds1775", ds1775 },
++	{ "MAC,adm1030", adm1030 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, therm_windtunnel_id);
+@@ -414,6 +415,7 @@ static int
+ do_probe(struct i2c_client *cl, const struct i2c_device_id *id)
+ {
+ 	struct i2c_adapter *adapter = cl->adapter;
++	int ret = 0;
+ 
+ 	if( !i2c_check_functionality(adapter, I2C_FUNC_SMBUS_WORD_DATA
+ 				     | I2C_FUNC_SMBUS_WRITE_BYTE) )
+@@ -421,11 +423,19 @@ do_probe(struct i2c_client *cl, const struct i2c_device_id *id)
+ 
+ 	switch (id->driver_data) {
+ 	case adm1030:
+-		return attach_fan( cl );
++		ret = attach_fan(cl);
++		break;
+ 	case ds1775:
+-		return attach_thermostat(cl);
++		ret = attach_thermostat(cl);
++		break;
+ 	}
+-	return 0;
++
++	if (!x.running && x.thermostat && x.fan) {
++		x.running = 1;
++		x.poll_task = kthread_run(control_loop, NULL, "g4fand");
++	}
++
++	return ret;
+ }
+ 
+ static struct i2c_driver g4fan_driver = {
 -- 
-2.23.0
+2.20.1
 
