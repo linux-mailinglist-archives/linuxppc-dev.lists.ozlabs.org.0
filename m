@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB33016ECFA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 18:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53B416ED02
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 18:49:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Rmbk43qDzDqPj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 04:47:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Rmdn6jMKzDqQ6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 04:49:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
+ helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tUC0ntEX; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=b3jQlYvn; dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RmQx1vflzDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:53 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id y1so73415plp.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 09:39:53 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RmR019nSzDqN3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:56 +1100 (AEDT)
+Received: by mail-pf1-x42e.google.com with SMTP id s1so7553274pfh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 09:39:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=WIv+LS/akqZMgPR5DVcmCCTF3xXGxr3KhR71hrtGe8I=;
- b=tUC0ntEXmi/+CrKieBOu7l2ExTwKfpbOrZmM9b1AXvaoxpbHD4hIobfWGZvQkdwfnp
- /ryWv/3aexuq2WzGN3G1HZ9nV1EvbzGfwfvtEBEsKg2CIDt/qyo7NgtkH6gYSATIZadi
- DrVFZRm4QpngYrImssrouOd3urhJgZj77qRo5XmPoXQDGTARsnssWEa+KfO9IP76+syA
- pnDWgzBRwdcciEjSOu529giIrqitE6dGOkW6lbe9IK8YSp7BKO4Wk0SX6h36oTOIEmmi
- Qo8y6O/Oey1ufPkGGm+90l/wBKRG/6rWQwc6vofIcKr8MHrSjPGwFhkhG+pD03etb8yV
- 0ieA==
+ bh=9zblclroSNaQ8iAYHiv9YE4d0hDAja3tdnbYU47UA7o=;
+ b=b3jQlYvnbwbHvhyIdwxuRj88RCbcwKy2lcUIpvKlk5CoSUuYAiOFZHDl34TUfE10t3
+ KxefqzNdIHIEMhf1worqdbNyYyPiqVbQT0sE6qsio0iutGev34AmQQ9BRfja7VyNVGq+
+ 23VVjtAvRe1vdvISQsQ59+2F4U2c/oP5Q3AXipW9WUGpCnZSO/RGWfs8Nh/ZYEKLx7ph
+ GvY30H22CeF78JmF2kakJh5+7kwMo5xAa7QXoIrXV4KkTrm4sfHZVbQDpsqZZk2W5ogu
+ NTJDTn6GDAtlaIUyydZoXKOltiuKixFUJEkQOnBs7tRdt1WN9ScJDBCDjJzxhZgNHPsG
+ wNJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=WIv+LS/akqZMgPR5DVcmCCTF3xXGxr3KhR71hrtGe8I=;
- b=j/YEsSf1udeY8c53ZHJuz5tx0hRoH0ds8N2lr5pKkzqjaldVSdbYiUyqHzTqP3D/Ii
- 0LqNJpjHl3a2SIJRR7wS60wSvmZgr0mmthGT3b4B+S6I0WSwROW8RROZioAIXs/wYRgD
- 55fxq6V3ecP+q+u5oaeikESyMuqCoD/jNI1Hq16YzkHr2nbyVz8BrgcNRXD95bQuQwur
- CAoqieQt/GBDusNeS/gEzD+QHmzvos9HWd0ib6L/VKfod1noP2MfRVIIiIXzDTjxgeuf
- UOpXohcveqwHDSUiWOc+XW6rndiYU/Is2A0srhHVBr1mX480SCvj96YzcNqZCcoZpKkk
- RtgQ==
-X-Gm-Message-State: APjAAAUJQPkl5cNSLIaV2uhtoTDseR3FuWWXdy6suou5gA12lhDFGjzi
- eLzOGhC0ROlurbnPhpGAZmZ8PdW8
-X-Google-Smtp-Source: APXvYqzWe3ZBpV1eNb5kR6hkpr+GK+2GesxHzg/SS3o0U9QhTrrxaqm9Mlb0hS8sD3dWYhomni4FyA==
-X-Received: by 2002:a17:90a:2486:: with SMTP id i6mr90464pje.9.1582652390649; 
- Tue, 25 Feb 2020 09:39:50 -0800 (PST)
+ bh=9zblclroSNaQ8iAYHiv9YE4d0hDAja3tdnbYU47UA7o=;
+ b=hBj23r5klGMzvGmU6Ey20YC7h3YKnHi3L8oQaXIE+70gRt87f/8jmtHn+/M3RuAoaJ
+ uRMAQeAX13mJzc5VWd46kwDUbxf0hOOh01z4WcawmltEiPy0KtyB7NcyPORJbJSDU6+9
+ 0L9X1/hTJ3TxIL7tvJbguMx1dK9H1zXyFdvW4uZhsCP2/aR1r64axobWXOS+tohGQOF3
+ ENNVh1kOiQXslIq78GvOW6NSY8GqqIHVZlHXPwpnL2bD1mYJT5vPEox3wvfmEDDwp/Hm
+ fT7E8f/rm4t3dnFyMGj7eVO2etCNDMNgOIQgNROn/nSBy2dywqzl6U0r23glOvdmUt2j
+ 15MA==
+X-Gm-Message-State: APjAAAX3X4yke8toa9QjDR5UUSxckZdW26PCBQz2koA794y9qLRvllkz
+ 1HC2G5u/Nw0mpXNtGt4qo48LSDmo
+X-Google-Smtp-Source: APXvYqxB6gK2l90uiauKV2IL5Cj4HKL3AWcsKHyMD7udc+Z98I49hLGOhMJ1JekJqW5+FH6VsKFsmQ==
+X-Received: by 2002:a63:f447:: with SMTP id p7mr34456644pgk.326.1582652393340; 
+ Tue, 25 Feb 2020 09:39:53 -0800 (PST)
 Received: from bobo.ibm.com ([61.68.187.74])
- by smtp.gmail.com with ESMTPSA id z63sm14791480pgd.12.2020.02.25.09.39.48
+ by smtp.gmail.com with ESMTPSA id z63sm14791480pgd.12.2020.02.25.09.39.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2020 09:39:50 -0800 (PST)
+ Tue, 25 Feb 2020 09:39:52 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 02/32] powerpc/64s/exception: Add GEN_COMMON macro that
- uses INT_DEFINE parameters
-Date: Wed, 26 Feb 2020 03:35:11 +1000
-Message-Id: <20200225173541.1549955-3-npiggin@gmail.com>
+Subject: [PATCH v3 03/32] powerpc/64s/exception: Add GEN_KVM macro that uses
+ INT_DEFINE parameters
+Date: Wed, 26 Feb 2020 03:35:12 +1000
+Message-Id: <20200225173541.1549955-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200225173541.1549955-1-npiggin@gmail.com>
 References: <20200225173541.1549955-1-npiggin@gmail.com>
@@ -88,65 +88,60 @@ No generated code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 1b942c98bc05..f3f2ec88b3d8 100644
+index f3f2ec88b3d8..da3c22eea72d 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -206,6 +206,9 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+@@ -204,6 +204,7 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ #define ISET_RI		.L_ISET_RI_\name\()
+ #define IEARLY		.L_IEARLY_\name\()
  #define IMASK		.L_IMASK_\name\()
++#define IKVM_SKIP	.L_IKVM_SKIP_\name\()
  #define IKVM_REAL	.L_IKVM_REAL_\name\()
  #define IKVM_VIRT	.L_IKVM_VIRT_\name\()
-+#define ISTACK		.L_ISTACK_\name\()
-+#define IRECONCILE	.L_IRECONCILE_\name\()
-+#define IKUAP		.L_IKUAP_\name\()
- 
- #define INT_DEFINE_BEGIN(n)						\
- .macro int_define_ ## n name
-@@ -246,6 +249,15 @@ do_define_int n
- 	.ifndef IKVM_VIRT
- 		IKVM_VIRT=0
+ #define ISTACK		.L_ISTACK_\name\()
+@@ -243,6 +244,9 @@ do_define_int n
+ 	.ifndef IMASK
+ 		IMASK=0
  	.endif
-+	.ifndef ISTACK
-+		ISTACK=1
++	.ifndef IKVM_SKIP
++		IKVM_SKIP=0
 +	.endif
-+	.ifndef IRECONCILE
-+		IRECONCILE=1
-+	.endif
-+	.ifndef IKUAP
-+		IKUAP=1
-+	.endif
+ 	.ifndef IKVM_REAL
+ 		IKVM_REAL=0
+ 	.endif
+@@ -265,6 +269,10 @@ do_define_int n
+ 	KVM_HANDLER \vec, \hsrr, \area, \skip
  .endm
  
- .macro INT_KVM_HANDLER name, vec, hsrr, area, skip
-@@ -670,6 +682,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66)
- 	.endif
- .endm
- 
-+.macro GEN_COMMON name
-+	INT_COMMON IVEC, IAREA, ISTACK, IKUAP, IRECONCILE, IDAR, IDSISR
++.macro GEN_KVM name
++	KVM_HANDLER IVEC, IHSRR, IAREA, IKVM_SKIP
 +.endm
 +
+ #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
  /*
-  * Restore all registers including H/SRR0/1 saved in a stack frame of a
-  * standard exception.
-@@ -1221,13 +1237,7 @@ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
+@@ -1226,6 +1234,7 @@ INT_DEFINE_BEGIN(data_access)
+ 	IVEC=0x300
+ 	IDAR=1
+ 	IDSISR=1
++	IKVM_SKIP=1
+ 	IKVM_REAL=1
+ INT_DEFINE_END(data_access)
+ 
+@@ -1235,7 +1244,8 @@ EXC_REAL_END(data_access, 0x300, 0x80)
+ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
+ 	GEN_INT_ENTRY data_access, virt=1
  EXC_VIRT_END(data_access, 0x4300, 0x80)
- INT_KVM_HANDLER data_access, 0x300, EXC_STD, PACA_EXGEN, 1
+-INT_KVM_HANDLER data_access, 0x300, EXC_STD, PACA_EXGEN, 1
++TRAMP_KVM_BEGIN(data_access_kvm)
++	GEN_KVM data_access
  EXC_COMMON_BEGIN(data_access_common)
--	/*
--	 * Here r13 points to the paca, r9 contains the saved CR,
--	 * SRR0 and SRR1 are saved in r11 and r12,
--	 * r9 - r13 are saved in paca->exgen.
--	 * EX_DAR and EX_DSISR have saved DAR/DSISR
--	 */
--	INT_COMMON 0x300, PACA_EXGEN, 1, 1, 1, 1, 1
-+	GEN_COMMON data_access
+ 	GEN_COMMON data_access
  	ld	r4,_DAR(r1)
- 	ld	r5,_DSISR(r1)
- BEGIN_MMU_FTR_SECTION
 -- 
 2.23.0
 
