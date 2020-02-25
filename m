@@ -1,90 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F97E16BA3C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 08:06:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RVMf2h9vzDqVF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 18:06:06 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B00916BB7A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 09:05:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RWhN3xpFzDqVv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 19:05:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=kDWNGF9v; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RVKP5w8dzDqTD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 18:04:09 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01P6xGQD104378
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 02:04:06 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yb1b86ssh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 02:04:06 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 25 Feb 2020 07:04:03 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 25 Feb 2020 07:04:01 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01P734Mb46792962
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Feb 2020 07:03:04 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE98C11C07A;
- Tue, 25 Feb 2020 07:04:00 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63E4211C06C;
- Tue, 25 Feb 2020 07:04:00 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 Feb 2020 07:04:00 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id F0A37A01C4;
- Tue, 25 Feb 2020 18:03:54 +1100 (AEDT)
-Subject: Re: [PATCH 1/2] cpufreq/powernv: Fix use-after-free
-To: "Oliver O'Halloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200206062622.28235-1-oohall@gmail.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 25 Feb 2020 18:03:58 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RWfV3s48zDqSm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 19:04:02 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id 2so6733593pfg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 00:04:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=3UwgyNGegYf+ShQWoRWvT/NL7ARqm4MqRGArNYI3who=;
+ b=kDWNGF9vw5evEFnyTn5rudlI/14OO67KtZuSmNARz8zTE4vVP7Hhc6JwfRZjCo85Z2
+ tvgyuCBpwge1k7uxAL3cVdZdd0QGzOONoXlY+5TvHTzrZZoIbbnkxtUVyXYv0RR+Vity
+ fOXvHDB3esTtnVmpSpmzuRqas5eMJ9vZFO4fAMfsF60iMsVd/vW2Bzs8+2d+xXASD2zh
+ SUjAI5xrrtkyJAoK+q4wao8cymtP54e+xRZfxO+DeDmxIwT0qBTqrTWjbSlS9EpolcvA
+ HhiiBRfm4FTS4F09uPw+SswFfyUOtYA5VfsHVt5vnwZO3TjYll5qx31WeHyUw/SVquMa
+ Xd9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=3UwgyNGegYf+ShQWoRWvT/NL7ARqm4MqRGArNYI3who=;
+ b=F8VBFW0fa12egaL83S13xjP4cfU92kTO7UooN1NA2qF92cRZK4sqXqRq4OL+TXaHyV
+ L5vqxW9OV5NpsY2HQDoioTUyYsBBUnPGuPwRpYkF577/D5iWx6hngCBKREX1g13KMHOW
+ vzKPXLfqxqRW7fnhfQVotI5yRdf929W+8K1Vn830FBFUhcgh6fTyE6fPY7tmoRQjKjh8
+ ot9LGdcD+3KCkKAf4lGr50g0jjODZ3N/qKh4XV9orGJDEfR6f2dj0KwOywDrnY9s13V+
+ x5IIujHi075bnwjMeQsohJeibr590gF6dJ5ksjs29uWVuSe6xH6JYJUmCG6pfEoL2NUH
+ 3KUQ==
+X-Gm-Message-State: APjAAAVNIMwl1UDt6kumasG1qgBxcgU24qTLwSBl/BZ0LBwTB8uZggQ0
+ Cos1ao75vkBMrlULGhLJK0Q=
+X-Google-Smtp-Source: APXvYqwMRtQpYwUBTrb0+cvHPd0eiLB/R3rhnLG6W+uGQXS+JAd8tDieKTnw2v05Noa4gwMj4BMhpg==
+X-Received: by 2002:a63:d344:: with SMTP id u4mr35777777pgi.153.1582617838655; 
+ Tue, 25 Feb 2020 00:03:58 -0800 (PST)
+Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
+ by smtp.gmail.com with ESMTPSA id
+ b18sm15964609pfd.63.2020.02.25.00.03.57
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 25 Feb 2020 00:03:58 -0800 (PST)
+Date: Tue, 25 Feb 2020 00:03:50 -0800
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: "S.j. Wang" <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 3/3] ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and
+ platform drivers
+Message-ID: <20200225080350.GA11332@Asurada>
+References: <VE1PR04MB6479BCA376502F6F1251602BE3EC0@VE1PR04MB6479.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <20200206062622.28235-1-oohall@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022507-0008-0000-0000-000003562951
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022507-0009-0000-0000-00004A7743E5
-Message-Id: <33e1d358-caa4-ddbc-895e-4c7a6c282e91@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-25_01:2020-02-21,
- 2020-02-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- malwarescore=0 phishscore=0 mlxlogscore=735 lowpriorityscore=0 bulkscore=0
- adultscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002250057
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VE1PR04MB6479BCA376502F6F1251602BE3EC0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,30 +81,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>, "perex@perex.cz" <perex@perex.cz>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/2/20 5:26 pm, Oliver O'Halloran wrote:
-> The cpufreq driver has a use-after-free that we can hit if:
+On Mon, Feb 24, 2020 at 08:53:25AM +0000, S.j. Wang wrote:
+> Hi
 > 
-> a) There's an OCC message pending when the notifier is registered, and
-> b) The cpufreq driver fails to register with the core.
+> > >
+> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > ---
+> > >  sound/soc/fsl/Kconfig           |   10 +
+> > >  sound/soc/fsl/Makefile          |    2 +
+> > >  sound/soc/fsl/fsl_asrc_common.h |    1 +
+> > >  sound/soc/fsl/fsl_easrc.c       | 2265 +++++++++++++++++++++++++++++++
+> > >  sound/soc/fsl/fsl_easrc.h       |  668 +++++++++
+> > >  sound/soc/fsl/fsl_easrc_dma.c   |  440 ++++++
+> > 
+> > I see a 90% similarity between fsl_asrc_dma and fsl_easrc_dma files.
+> > Would it be possible reuse the existing code? Could share structures from
+> > my point of view, just like it reuses "enum asrc_pair_index", I know
+> > differentiating "pair" and "context" is a big point here though.
+> > 
+> > A possible quick solution for that, off the top of my head, could be:
+> > 
+> > 1) in fsl_asrc_common.h
+> > 
+> >         struct fsl_asrc {
+> >                 ....
+> >         };
+> > 
+> >         struct fsl_asrc_pair {
+> >                 ....
+> >         };
+> > 
+> > 2) in fsl_easrc.h
+> > 
+> >         /* Renaming shared structures */
+> >         #define fsl_easrc fsl_asrc
+> >         #define fsl_easrc_context fsl_asrc_pair
+> > 
+> > May be a good idea to see if others have some opinion too.
+> > 
 > 
-> When a) occurs the notifier schedules a workqueue item to handle the
-> message. The backing work_struct is located on chips[].throttle and when b)
-> happens we clean up by freeing the array. Once we get to the (now free)
-> queued item and the kernel crashes.
+> We need to modify the fsl_asrc and fsl_asrc_pair, let them
+> To be used by both driver,  also we need to put the specific
+> Definition for each module to same struct, right?
+
+Yea. A merged structure if that doesn't look that bad. I see most
+of the fields in struct fsl_asrc are being reused by in fsl_easrc.
+
+> > 
+> > > +static const struct regmap_config fsl_easrc_regmap_config = {
+> > > +     .readable_reg = fsl_easrc_readable_reg,
+> > > +     .volatile_reg = fsl_easrc_volatile_reg,
+> > > +     .writeable_reg = fsl_easrc_writeable_reg,
+> > 
+> > Can we use regmap_range and regmap_access_table?
+> > 
 > 
-> Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
-> Fixes: c5e29ea ("cpufreq: powernv: Fix bugs in powernv_cpufreq_{init/exit}")
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> Can the regmap_range support discontinuous registers?  The
+> reg_stride = 4.
 
-This sounds like it needs to go to stable.
-
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+I think it does. Giving an example here:
+https://github.com/torvalds/linux/blob/master/drivers/mfd/da9063-i2c.c
