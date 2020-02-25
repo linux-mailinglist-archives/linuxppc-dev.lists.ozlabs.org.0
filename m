@@ -2,98 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528BA16B60B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 00:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F356D16B6B2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 01:29:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RJkG3WvgzDqGJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 10:51:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RKYY2zNNzDqQM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2020 11:29:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RJWX3yrDzDqDV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 10:42:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RKWq2z42zDq6l
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:27:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
+ dmarc=none (p=none dis=none) header.from=lixom.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lixom-net.20150623.gappssmtp.com
+ header.i=@lixom-net.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=BQCQ10WE; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48RKWn5Hk3z8t5h
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 11:27:33 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 48RJWX2BqNz9sQx; Tue, 25 Feb 2020 10:42:16 +1100 (AEDT)
+ id 48RKWn42dSz9sSR; Tue, 25 Feb 2020 11:27:33 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=popple.id.au
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alistair@popple.id.au; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=lixom.net
+ (client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com;
+ envelope-from=olof@lixom.net; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lixom.net
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lixom-net.20150623.gappssmtp.com
+ header.i=@lixom-net.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=BQCQ10WE; dkim-atps=neutral
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
+ [IPv6:2607:f8b0:4864:20::144])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48RJWW4HFcz9sRG
- for <linuxppc-dev@ozlabs.org>; Tue, 25 Feb 2020 10:42:14 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01ONdAof145255
- for <linuxppc-dev@ozlabs.org>; Mon, 24 Feb 2020 18:42:13 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yaygpbm8d-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 24 Feb 2020 18:42:13 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <alistair@popple.id.au>;
- Mon, 24 Feb 2020 23:42:11 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 24 Feb 2020 23:42:08 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01ONg7rI60293124
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Feb 2020 23:42:07 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 24306A4051;
- Mon, 24 Feb 2020 23:42:07 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4259A4040;
- Mon, 24 Feb 2020 23:42:06 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 24 Feb 2020 23:42:06 +0000 (GMT)
-Received: from townsend.localnet (unknown [9.102.63.14])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id F36A4A01C4;
- Tue, 25 Feb 2020 10:42:01 +1100 (AEDT)
-From: Alistair Popple <alistair@popple.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 4/8] powerpc: Mark 4xx as Orphan in MAINTAINERS
-Date: Tue, 25 Feb 2020 10:42:05 +1100
-In-Reply-To: <20200224233146.23734-4-mpe@ellerman.id.au>
-References: <20200224233146.23734-1-mpe@ellerman.id.au>
- <20200224233146.23734-4-mpe@ellerman.id.au>
+ by ozlabs.org (Postfix) with ESMTPS id 48RKWn3gKCz9sS9
+ for <linuxppc-dev@ozlabs.org>; Tue, 25 Feb 2020 11:27:33 +1100 (AEDT)
+Received: by mail-il1-x144.google.com with SMTP id t17so9291885ilm.13
+ for <linuxppc-dev@ozlabs.org>; Mon, 24 Feb 2020 16:27:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=lixom-net.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=SQsmpamnEC+1G39fOnv3AHWet4T1m/yewhekPzkg6oM=;
+ b=BQCQ10WEVUabUm+celhXtz0JdV/fkLvArkq4WsPhiiiAA43MY858di0FZp521E3XTa
+ 5gqYAYDSdEkYN7SnEs4kyHgKuDAokjOrwg8sDzoyGx+kRiRQoeYPAVL27o3UY1SptQ6P
+ pawfnNYmAT74vVjX3bw3QxdpPYAKa7PertS4SDxi5/4YRqLx4WUWY4Ylh1MJTe0qeGqM
+ r7Zso+I/9Be7mulc84it+ioN3JpDc0n0Kd2afVxxvFbzx11l8++ZB3RGjGPJCEOH5hAH
+ GLMKZmfBiPVmTF/1Gi+sS0w11tan1GNl6HxPE8SWZpwc/YwfxcOn9Pqvsn0bWAq+BB1q
+ KTHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=SQsmpamnEC+1G39fOnv3AHWet4T1m/yewhekPzkg6oM=;
+ b=s/Mpb7xBFh+ZYzr/YN5BtCjkAI2kDfbXKAEHS5qB6ZHtrAB222I84nyPfVnIWYO3v3
+ e5epoNRu3kD0pCjQnoTXGfMykcha2+reFUHNDa93w4sx67zzgCaacCnZFg3NunAUujEW
+ 7Y2XV2rDiARZTfXKOVzY1IE4+1mmVUKNMQnznlHpw0365T4pQIoTT1Y53w8YNfjh6GcB
+ 0IzT0vYKQ5nuEw/lsPZrES1NqLg5Lx/iG6yIf9iorgWrDBbgJDMk0hEiwJepQiVBWjES
+ 82IKevRB+CuRK/IwKKbIxt+3xBY99hGpDzAnvNxQqGAkEmTjW4zI2Sg5yHIeVqBUorNy
+ TCPg==
+X-Gm-Message-State: APjAAAWmtCG6ZTSEeXJyAsfC32E17Z22HctZ1DpiyVy/JRxEu3EbOuQU
+ a+3DqBzj/1MPCFrBvQkOJ+unaeuN10yZqSyQA33R7w==
+X-Google-Smtp-Source: APXvYqywoJznArA+B42fE3qotZLbAO/lZwwwFgSnCIFaKH0Kz32B3tEXhjaA2SpvadNI/Y+gQm5xbMlQ4ziEB+Eb1ho=
+X-Received: by 2002:a92:db49:: with SMTP id w9mr59714964ilq.277.1582590446536; 
+ Mon, 24 Feb 2020 16:27:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-TM-AS-GCONF: 00
-x-cbid: 20022423-0012-0000-0000-00000389EE01
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022423-0013-0000-0000-000021C68ED4
-Message-Id: <1582588767.8Bspa7yJx7@townsend>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-24_12:2020-02-21,
- 2020-02-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=2
- bulkscore=0 malwarescore=0 adultscore=0 priorityscore=1501 spamscore=0
- phishscore=0 clxscore=1034 impostorscore=0 mlxlogscore=702
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002240177
+References: <20200224233146.23734-1-mpe@ellerman.id.au>
+ <20200224233146.23734-3-mpe@ellerman.id.au>
+In-Reply-To: <20200224233146.23734-3-mpe@ellerman.id.au>
+From: Olof Johansson <olof@lixom.net>
+Date: Mon, 24 Feb 2020 16:27:15 -0800
+Message-ID: <CAOesGMhHSYHvAXAH-kBxxGhd05Q0bbxDa9dyuw7oKTH96PTi0w@mail.gmail.com>
+Subject: Re: [PATCH 3/8] powerpc: Remove PA SEMI MAINTAINERS entries
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,40 +95,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@ozlabs.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Acked-by: Alistair Popple <alistair@popple.id.au>
-
-On Tuesday, 25 February 2020 10:31:42 AM AEDT Michael Ellerman wrote:
-> The 4xx platforms are no longer maintained.
-> 
-> Cc: Alistair Popple <alistair@popple.id.au>
-> Cc: Matt Porter <mporter@kernel.crashing.org>
+On Mon, Feb 24, 2020 at 3:31 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
+:
+>
+> The PA SEMI entries have been orphaned for 3 =C2=BD years, so fold them
+> into the main POWERPC entry. The result of get_maintainer.pl is more
+> or less unchanged.
+>
+> Cc: Olof Johansson <olof@lixom.net>
 > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  MAINTAINERS | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5c4f37c41188..939da2ac08db 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9645,11 +9645,8 @@ F:	arch/powerpc/platforms/512x/
->  F:	arch/powerpc/platforms/52xx/
-> 
->  LINUX FOR POWERPC EMBEDDED PPC4XX
-> -M:	Alistair Popple <alistair@popple.id.au>
-> -M:	Matt Porter <mporter@kernel.crashing.org>
-> -W:	http://www.penguinppc.org/
->  L:	linuxppc-dev@lists.ozlabs.org
-> -S:	Maintained
-> +S:	Orphan
->  F:	arch/powerpc/platforms/40x/
->  F:	arch/powerpc/platforms/44x/
+
+Acked-by: Olof Johansson <olof@lixom.net>
 
 
-
-
+-Olof
