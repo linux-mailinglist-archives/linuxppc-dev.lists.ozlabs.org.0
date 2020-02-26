@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26E316F66A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9495516F670
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:27:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S2lW6g1CzDqg1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:25:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S2nk3H5RzDqfs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:27:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lD6sjSAX; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20161025 header.b=q3Jsef18; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S2NL2jVVzDqNr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:08:34 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id z12so636362pgl.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 20:08:34 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S2NN6jtTzDqcc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:08:36 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id r77so616047pgr.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 20:08:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=f3EId3jMgeXmLg/m1MUXwlRZoUMxmv84+0RbLeDKFr8=;
- b=lD6sjSAXWeGd7DP9H/U/DYA5HQdTIxwDX3g+CjJ5WsMN4ch4IET/lIp2NiCoTrkiup
- P42XnW/1lAAcvmXtGH2SCMzJBMlvnr9GIvHHnAdkw0cVFjBlJoF531+ADoPKTC38HAgJ
- KhrrervAVSGI4SG1U1UEhTC9JdgsCD+8p563Slb8KSsb3h2D3xA1/R+Ah0vNfE7o5x5z
- YSs6BfcArMAqSwwnsZSWDXDzJTULvCLCc/Vq/dxNvoVm+oKfnOPSMnEJqBy8E/YgV9BI
- wb8HKrrkFQh+dHv+s+cOSJpNlnDkfR4STqZ16gy51I0rU7X0lBT0gMSm3V90IRBFDyEQ
- XtOg==
+ bh=U6WL9Y/MTZo3dWx1aWHSwPME6m+tIQJX3bqtQMSqhek=;
+ b=q3Jsef18HDij0wjkTzfcCJNemWBgaAV/oo559gfI6J428X7tyqUJxBcwzaRAhRgF1w
+ uV5zkvE5ICgA5Y9+0eTt0146PQJE+tK2fWr+kMvx6CLct/DY3t5Iau/9IaxidBeYnjbj
+ BS324rxxuX8cT3C3ler799k5pt388LRWTcLvkz367X4j99giw3kB5sYXaK3oAoSHiDkw
+ uxLUP1+8ibf6b/4TbqMT1L/kVB/ICdUgYplxTPrS9jHLzFTNaB1adLTTP0sav2bU2FA1
+ lXYWKnE82lw2IR/0IJRq1Ybw4yj98C85xnFa7ArQyZOLOI9uOVjqxbtZ/pg1iECJjsPR
+ vLNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=f3EId3jMgeXmLg/m1MUXwlRZoUMxmv84+0RbLeDKFr8=;
- b=C8A5Q6M+dr6rJiK46YbfaDkQwa4Te+3ohcemZnlA7A/38AuaKZ/VdY3gWVaaOZom+H
- WdivnEr4mx3Y09ITqo3PE4morLw6vt+IvwHlcHw0og5SEOD47TQ7JWiAf9Y4RPI/kWaS
- 6AatmKpTvKXCD9py5ja7pNNHk+JPVT+Nla6neLZjh3nAoKhrlK9HZhoF6shKCHS9322G
- uhdc9mqowDo1djVaztQyerGZSwG+qWo3vgl/t50hQQNaMAny4DyJFW8VvpbUeJivb4QW
- U/kpfVn0di6UpGeCnq4QQMiAvFpbyz/z3Y9r5DD5BBle7YbHFKVvSeUvW4uMJOEbJcZg
- MrBw==
-X-Gm-Message-State: APjAAAV2OqEJbUN5XbNXsob1NZw02omynXBJ2KR5pHtmcTiS7/DeotgA
- pfj8OKckiFV/1cHfrmsBN5pMtES7fPM=
-X-Google-Smtp-Source: APXvYqxh9QJu9K+nO2zxPk/vncEwx/o+0+pGbPMMBxlkPtQH7dwpUHhOUYMCJD9yUpVc9kPOoPOILQ==
-X-Received: by 2002:a63:4103:: with SMTP id o3mr1630527pga.199.1582690111716; 
- Tue, 25 Feb 2020 20:08:31 -0800 (PST)
+ bh=U6WL9Y/MTZo3dWx1aWHSwPME6m+tIQJX3bqtQMSqhek=;
+ b=Z7oNIEL/Ooj3lhRKMKFYsnmAqn0m1fzjLTrhCjOQi/rLQW1K75IMaFLf3OkcgXsFGZ
+ qekviTBWz9KK62QxkznMU41e0sZ5R9b/yPrqONXN4gQ9QfYB7ayVL9waMlOp3mYeQxmO
+ jQt+2kJJyvAGSMPN4r+W2sgSKfEvncYq+droUghYGXcKdJektujCPCvqlmuL8dawyEod
+ xXEkGbaZTnxGVow3I2ca3Ly0ctG8xaPPunGPsUkBupPSmHBC2WK3iTkXV+zeakiF4R/b
+ 7/83lxL4hrHrP6S/9RUT5rF0qw6mw5igm9TqX+5h0+k/DaJjhhB5VOQZ2ASKvfPE3S/j
+ AyUw==
+X-Gm-Message-State: APjAAAXBDP0XQDH+n6zjER+KHzqDL6QWLgm2EFE6MgK1n96VQhPFbG0Y
+ PYvMqig+08hgKLWcTXEerz2l8Ko3A7k=
+X-Google-Smtp-Source: APXvYqwL+y0CJxWv/vIF6mdr2pEtIuDec3mR9ZVLl921PExns0U9HicPH0P/i3G5u0rJF8p5v1/aZQ==
+X-Received: by 2002:a62:f94d:: with SMTP id g13mr2171598pfm.60.1582690114922; 
+ Tue, 25 Feb 2020 20:08:34 -0800 (PST)
 Received: from tee480.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id d4sm604681pjg.19.2020.02.25.20.08.28
+ by smtp.gmail.com with ESMTPSA id d4sm604681pjg.19.2020.02.25.20.08.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2020 20:08:31 -0800 (PST)
+ Tue, 25 Feb 2020 20:08:34 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 07/14] powerpc/traps: Check for prefixed instructions in
- facility_unavailable_exception()
-Date: Wed, 26 Feb 2020 15:07:09 +1100
-Message-Id: <20200226040716.32395-8-jniethe5@gmail.com>
+Subject: [PATCH v3 08/14] powerpc/xmon: Remove store_inst() for
+ patch_instruction()
+Date: Wed, 26 Feb 2020 15:07:10 +1100
+Message-Id: <20200226040716.32395-9-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200226040716.32395-1-jniethe5@gmail.com>
 References: <20200226040716.32395-1-jniethe5@gmail.com>
@@ -82,33 +82,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If prefixed instructions are made unavailable by the [H]FSCR, attempting
-to use them will cause a facility unavailable exception. Add "PREFIX" to
-the facility_strings[].
-
-Currently there are no prefixed instructions that are actually emulated
-by emulate_instruction() within facility_unavailable_exception().
-However, when caused by a prefixed instructions the SRR1 PREFIXED bit is
-set. Prepare for dealing with emulated prefixed instructions by checking
-for this bit.
+For modifying instructions in xmon, patch_instruction() can serve the
+same role that store_inst() is performing with the advantage of not
+being specific to xmon. In some places patch_instruction() is already
+being using followed by store_inst(). In these cases just remove the
+store_inst(). Otherwise replace store_inst() with patch_instruction().
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/kernel/traps.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/xmon/xmon.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index d80b82fc1ae3..cd8b3043c268 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1739,6 +1739,7 @@ void facility_unavailable_exception(struct pt_regs *regs)
- 		[FSCR_TAR_LG] = "TAR",
- 		[FSCR_MSGP_LG] = "MSGP",
- 		[FSCR_SCV_LG] = "SCV",
-+		[FSCR_PREFIX_LG] = "PREFIX",
- 	};
- 	char *facility = "unknown";
- 	u64 value;
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 897e512c6379..a673cf55641c 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -325,11 +325,6 @@ static inline void sync(void)
+ 	asm volatile("sync; isync");
+ }
+ 
+-static inline void store_inst(void *p)
+-{
+-	asm volatile ("dcbst 0,%0; sync; icbi 0,%0; isync" : : "r" (p));
+-}
+-
+ static inline void cflush(void *p)
+ {
+ 	asm volatile ("dcbf 0,%0; icbi 0,%0" : : "r" (p));
+@@ -882,8 +877,7 @@ static struct bpt *new_breakpoint(unsigned long a)
+ 	for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
+ 		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
+ 			bp->address = a;
+-			bp->instr[1] = bpinstr;
+-			store_inst(&bp->instr[1]);
++			patch_instruction(&bp->instr[1], bpinstr);
+ 			return bp;
+ 		}
+ 	}
+@@ -913,7 +907,7 @@ static void insert_bpts(void)
+ 			bp->enabled = 0;
+ 			continue;
+ 		}
+-		store_inst(&bp->instr[0]);
++		patch_instruction(&bp->instr[0], bp->instr[0]);
+ 		if (bp->enabled & BP_CIABR)
+ 			continue;
+ 		if (patch_instruction((unsigned int *)bp->address,
+@@ -923,7 +917,6 @@ static void insert_bpts(void)
+ 			bp->enabled &= ~BP_TRAP;
+ 			continue;
+ 		}
+-		store_inst((void *)bp->address);
+ 	}
+ }
+ 
+@@ -958,8 +951,6 @@ static void remove_bpts(void)
+ 			(unsigned int *)bp->address, bp->instr[0]) != 0)
+ 			printf("Couldn't remove breakpoint at %lx\n",
+ 			       bp->address);
+-		else
+-			store_inst((void *)bp->address);
+ 	}
+ }
+ 
 -- 
 2.17.1
 
