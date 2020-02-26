@@ -2,54 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6677616FD0B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EB916FD6E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:25:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SCnD3dN1zDqkC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 22:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SD3m4YmbzDqfK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 22:24:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=+jiy=4o=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=dcbZx4t5; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SChc6Fn4zDqR0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:08:16 +1100 (AEDT)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
- big-endian PowerKVM load
-Date: Wed, 26 Feb 2020 11:08:14 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: npiggin@gmail.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-206669-206035-oC93mPdDmN@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
-References: <bug-206669-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SCzS5CqbzDqVc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:21:08 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48SCzM1tTVz9tyML;
+ Wed, 26 Feb 2020 12:21:03 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=dcbZx4t5; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id J7zfGGKBixz2; Wed, 26 Feb 2020 12:21:03 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48SCzL6n6pz9tyLT;
+ Wed, 26 Feb 2020 12:21:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582716063; bh=u+44lvk1l0rvN0rVt0XeRLZF9pAnZ+SeTYsCRW90jUs=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=dcbZx4t5T2TqZBsmJqeETgOslZL/sjGjY3jtgZjyAkWRnWp+cZWdaA9+1CVcQnyrg
+ EAK/r3fzS6yjM9r4KrQXdxQ3U95U+v+IizkroXw9QSoxVs+Y7bA5gjhV+iBVeI3LhD
+ 1eV+B927JsHKM6Lu+qpoDnmZLHfscXCGj3HKorDY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 166CF8B844;
+ Wed, 26 Feb 2020 12:21:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HTbfYZhVV_tY; Wed, 26 Feb 2020 12:21:03 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B0DBC8B776;
+ Wed, 26 Feb 2020 12:21:01 +0100 (CET)
+Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
+To: Mike Rapoport <rppt@kernel.org>
+References: <20200216081843.28670-1-rppt@kernel.org>
+ <20200216081843.28670-8-rppt@kernel.org>
+ <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr> <20200218105440.GA1698@hump>
+ <20200226091315.GA11803@hump> <f881f732-729b-a098-f520-b30e44dc10c8@c-s.fr>
+ <20200226105615.GB11803@hump>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <7a008227-433c-73d7-b01a-1c6c7c66f04e@c-s.fr>
+Date: Wed, 26 Feb 2020 12:20:49 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <20200226105615.GB11803@hump>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,82 +81,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
+ linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ kvm-ppc@vger.kernel.org,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 
---- Comment #5 from npiggin@gmail.com ---
-bugzilla-daemon@bugzilla.kernel.org's on February 26, 2020 8:28 pm:
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
->=20
-> --- Comment #4 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.=
-de)
-> ---
-> (In reply to npiggin from comment #3)
->> Do you have tracing / ftrace enabled in the host kernel for any
->> reason? Turning that off might let the oops message get printed.
->=20
-> Seems that this is the case in the Debian kernel, yes:
->=20
-> root@watson:~# grep -i ftrace /boot/config-5.4.0-0.bpo.3-powerpc64le=20
-> CONFIG_KPROBES_ON_FTRACE=3Dy
-> CONFIG_HAVE_KPROBES_ON_FTRACE=3Dy
-> CONFIG_HAVE_DYNAMIC_FTRACE=3Dy
-> CONFIG_HAVE_DYNAMIC_FTRACE_WITH_REGS=3Dy
-> CONFIG_HAVE_FTRACE_MCOUNT_RECORD=3Dy
-> CONFIG_FTRACE=3Dy
-> CONFIG_FTRACE_SYSCALLS=3Dy
-> CONFIG_DYNAMIC_FTRACE=3Dy
-> CONFIG_DYNAMIC_FTRACE_WITH_REGS=3Dy
-> CONFIG_FTRACE_MCOUNT_RECORD=3Dy
-> # CONFIG_FTRACE_STARTUP_TEST is not set
-> root@watson:~#
->=20
-> Do you have the kernel command option at hand which disables ftrace on the
-> command line? Is it just ftrace=3Doff?
 
-Hmm, not sure, Documentation/admin-guide/kernel-parameters.txt seems
-to say that wouldn't work.
-
-I thought it might only be going down that path if you have already done
-some tracing. Perhaps ensure /sys/kernel/debug/tracing/tracing_on is set
-to 0, and then `echo 1 > /sys/kernel/debug/tracing/free_buffer` before
-you start the test.
-
->> > FWIW, the kernel image comes from this Debian package:
->> >=20
->> >>
->> >>
->> >>
+Le 26/02/2020 à 11:56, Mike Rapoport a écrit :
+> On Wed, Feb 26, 2020 at 10:46:13AM +0100, Christophe Leroy wrote:
 >>
->> http://snapshot.debian.org/archive/debian/20200211T210433Z/pool/main/l/l=
-inux/linux-image-5.4.0-0.bpo.3-powerpc64le_5.4.13-1%7Ebpo10%2B1_ppc64el.deb
->>=20
->> Okay. Any chance you could test an upstream kernel?=20
->=20
-> Sure, absolutely. Any preference on the version number?
+>>
+>> Le 26/02/2020 à 10:13, Mike Rapoport a écrit :
+>>> On Tue, Feb 18, 2020 at 12:54:40PM +0200, Mike Rapoport wrote:
+>>>> On Sun, Feb 16, 2020 at 11:41:07AM +0100, Christophe Leroy wrote:
+>>>>>
+>>>>>
+>>>>> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
+>>>>>> From: Mike Rapoport <rppt@linux.ibm.com>
+>>>>>>
+>>>>>> Implement primitives necessary for the 4th level folding, add walks of p4d
+>>>>>> level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
+>>>>>
+>>>>> I don't think it is worth adding all this additionnals walks of p4d, this
+>>>>> patch could be limited to changes like:
+>>>>>
+>>>>> -		pud = pud_offset(pgd, gpa);
+>>>>> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
+>>>>>
+>>>>> The additionnal walks should be added through another patch the day powerpc
+>>>>> need them.
+>>>>
+>>>> Ok, I'll update the patch to reduce walking the p4d.
+>>>
+>>> Here's what I have with more direct acceses from pgd to pud.
+>>
+>> I went quickly through. This looks promising.
+>>
+>> Do we need the walk_p4d() in arch/powerpc/mm/ptdump/hashpagetable.c ?
+>> Can't we just do
+>>
+>> @@ -445,7 +459,7 @@ static void walk_pagetables(struct pg_state *st)
+>>   		addr = KERN_VIRT_START + i * PGDIR_SIZE;
+>>   		if (!pgd_none(*pgd))
+>>   			/* pgd exists */
+>> -			walk_pud(st, pgd, addr);
+>> +			walk_pud(st, p4d_offset(pgd, addr), addr);
+> 
+> We can do
+> 
+> 	addr = KERN_VIRT_START + i * PGDIR_SIZE;
+> 	p4d = p4d_offset(pgd, addr);
+> 	if (!p4d_none(*pgd))
+> 		walk_pud()
+> 
+> But I don't think this is really essential. Again, we are trading off code
+> consistency vs line count. I don't think line count is that important.
 
-Current head if you're feeling lucky, but v5.5 if not. But you can
-give the ftrace test a try with the debian kernel first if you've got
-it ready to go.
+Ok.
 
->> Don't bother testing that after the above -- panic_on_oops happens
->> after oops_begin(), so it won't help unfortunately.
->=20
-> Okay.
->=20
->> Attmepting to get into xmon might though, if you boot with xmon=3Don.
->> Try that if tracing wasn't enabled, or disabling it doesn't help.
->=20
-> Okay. I will try to disable ftrace first, then retrigger the crash.
-
-Cool
-
-Thanks,
-Nick
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Christophe
