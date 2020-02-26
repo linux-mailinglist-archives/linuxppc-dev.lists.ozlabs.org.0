@@ -2,86 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E6D1709E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 21:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF0A170A05
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 21:53:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SSLY5T4WzDqlL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 07:38:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SShK48kszDqlK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 07:53:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.67; helo=mail-wm1-f67.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
+ [209.85.128.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SSJQ6RftzDqkd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 07:36:32 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01QKQ5X3011966
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:36:29 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydxrd24e0-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:36:29 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
- Wed, 26 Feb 2020 20:36:27 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 20:36:23 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01QKaLJj47448484
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Feb 2020 20:36:21 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F3B642042;
- Wed, 26 Feb 2020 20:36:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62F7D42047;
- Wed, 26 Feb 2020 20:36:20 +0000 (GMT)
-Received: from dhcp-9-31-102-24.watson.ibm.com (unknown [9.31.102.24])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Feb 2020 20:36:20 +0000 (GMT)
-Subject: Re: [PATCH] ima: add a new CONFIG for loading arch-specific policies
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, Nayna Jain
- <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-efi@vger.kernel.org,
- linux-s390@vger.kernel.org
-Date: Wed, 26 Feb 2020 15:36:19 -0500
-In-Reply-To: <94fe39a9-db9e-211d-d9b7-4cfe1a270e6f@linux.microsoft.com>
-References: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
- <94fe39a9-db9e-211d-d9b7-4cfe1a270e6f@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022620-4275-0000-0000-000003A5C3E1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022620-4276-0000-0000-000038B9E0AE
-Message-Id: <1582749379.10443.246.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-26_07:2020-02-26,
- 2020-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0
- malwarescore=0 clxscore=1011 mlxlogscore=881 impostorscore=0 adultscore=0
- spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=3
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260122
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SSfZ1pZgzDqfB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 07:52:21 +1100 (AEDT)
+Received: by mail-wm1-f67.google.com with SMTP id c84so808647wme.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 12:52:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=WJFduaxlSsHHS4gNp/foxgTH7UCDLpFZpZFWJkHONbI=;
+ b=E6oJ2WETqFaNQ6fl9ZFRHIpW6hi4Edth1iIuSjsjvB7hnbrEOQWxj1pgTUdSqZ3TR8
+ oQvXvDEjxJO1viA0IsZgycdWTkNyG7WAKOMdOkJieu8Tm/+WtqtNt6uCdDk9/nZEJs2O
+ oyvC6wsmyp37o0rNL/PpamjlJc92189yNoxjQqAVxTLs64YwaqiwOIRfp426QXtEC9Ix
+ EDmOyqKs9VdXdp96eh6YdO5pdyz/hv5nysbFJkT4mnI9vVK09GiuqK6UWg8+t1bBMbIx
+ Iw8Ic8CP2SLQLD9fVdVPIpcu2OADOxikXyvW0lBDJjStl2M5HhuEMHppcFu3tlyUztWr
+ qptQ==
+X-Gm-Message-State: APjAAAXdwU6hmfUe773qd0yfyNOK9IZ+x+xwlIPZRDmmyFl1py2hQ2i/
+ C6Q06YNYYqh0bEzV4E0jts4=
+X-Google-Smtp-Source: APXvYqynGzzZnLeuN+i15owlhUBU+X4Bq1UMtWfOYs19d9h4lZGatMicrImoFFdMiGhIL206VIuNpg==
+X-Received: by 2002:a1c:e483:: with SMTP id b125mr707978wmh.187.1582750337898; 
+ Wed, 26 Feb 2020 12:52:17 -0800 (PST)
+Received: from localhost (ip-37-188-190-100.eurotel.cz. [37.188.190.100])
+ by smtp.gmail.com with ESMTPSA id l8sm4487632wmj.2.2020.02.26.12.52.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Feb 2020 12:52:17 -0800 (PST)
+Date: Wed, 26 Feb 2020 21:52:15 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: David Rientjes <rientjes@google.com>
+Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
+Message-ID: <20200226205215.GW3771@dhcp22.suse.cz>
+References: <20200218142620.GF4151@dhcp22.suse.cz>
+ <35EE65CF-40E3-4870-AEBC-D326977176DA@linux.vnet.ibm.com>
+ <20200218152441.GH4151@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
+ <20200224085812.GB22443@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
+ <20200226184152.GQ3771@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002261843200.8915@www.lameter.com>
+ <20200226190147.GR3771@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002261228060.208847@chino.kir.corp.google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2002261228060.208847@chino.kir.corp.google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,36 +73,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Philipp Rudo <prudo@linux.ibm.com>, Ard Biesheuvel <ardb@kernel.org>,
- linux-kernel@vger.kernel.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-02-26 at 11:21 -0800, Lakshmi Ramasubramanian wrote:
-> Hi Nayna,
+On Wed 26-02-20 12:31:56, David Rientjes wrote:
+> On Wed, 26 Feb 2020, Michal Hocko wrote:
 > 
-> > +
-> > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > +	bool
-> > +	depends on IMA
-> > +	depends on IMA_ARCH_POLICY
-> > +	default n
-> > +	help
-> > +	   This option is selected by architectures to enable secure and/or
-> > +	   trusted boot based on IMA runtime policies.
+> > On Wed 26-02-20 18:44:13, Cristopher Lameter wrote:
+> > > On Wed, 26 Feb 2020, Michal Hocko wrote:
+> > > 
+> > > > Besides that kmalloc_node shouldn't really have an implicit GFP_THISNODE
+> > > > semantic right? At least I do not see anything like that documented
+> > > > anywhere.
+> > > 
+> > > Kmalloc_node does not support memory policies etc. Only kmalloc does.
+> > > kmalloc_node is mostly used by subsystems that have determined the active
+> > > nodes and want a targeted allocation on those nodes.
+> >  
+> > I am sorry but I have hard time to follow your responses here. They open
+> > more questions than they answer for me. The primary point here is that
+> > kmalloc_node on a memory less node blows up and panics the kernel. I
+> > strongly believe this is a bug. We cannot really make all callers of
+> > kmalloc_node and co. to be hotplug aware.
+> > 
+> > Another question is the semantic of kmalloc_node when the node cannot
+> > satisfy the request. I have always thought that the allocation would
+> > simply fall back to any other node unless __GFP_THISNODE is explicitly
+> > specified.
 > > 
 > 
-> Why is the default for this new config "n"?
-> Is there any reason to not turn on this config if both IMA and 
-> IMA_ARCH_POLICY are set to y?
+> Am I right in classifying this as a trade-off between an 
+> unlikely(!node_state(nid, N_MEMORY)) directly in kmalloc_node() vs fixing 
+> up a caller passing a memoryless nid?
 
-Good catch.  Having "IMA_SECURE_AND_OR_TRUSTED_BOOT" depend on
-"IMA_ARCH_POLICY" doesn't make sense.  "IMA_ARCH_POLICY" needs to be
-selected.
+The thing is that any check for node online/populated followed by the
+allocation is inherently racy without using memory hotplug locking
+around that and I am pretty sure this is a step into a wrong direction.
 
-thanks,
+Is there any problem to initialize slub internal data structures for all
+possible nodes? This wouldn't require any checks into hot paths.
 
-Mimi
-
+-- 
+Michal Hocko
+SUSE Labs
