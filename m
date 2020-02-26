@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7356116F671
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1795616F677
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:30:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S2qW14VfzDq8v
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:28:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S2sY6YjSzDqZl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:30:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=iljQkqOv; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=p31kqs2X; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S2NT2WmhzDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:08:41 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id e9so702514pjr.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 20:08:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S2NY0S0QzDqML
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:08:44 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id e9so702580pjr.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 20:08:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=/Kv0KMoYBv98pHJyIRWtVhxLJiinGCIHEypQRvqFJQg=;
- b=iljQkqOv4MsgpQ0AWaPY9XoSf4RZTB8lHUEBaoeFhmPbFHUUwNMx6b3fBzvrKRlUIR
- 3jmlzRU1tuslB2ec4pAEbr+N+1IAnrmwS/cV2d2taLve3JizDVgVb8unaV5Qgl6gCYLy
- 1hBqbpeOBc7LssJgcA0KhIJ1xRBxTpl0LRLZ2r3Ufs3KMVNJy5G/yXRBEJFctTqPI3s6
- ucsYyAp5n4u/jNCIPMUw8H3KML1jd4/7zIxC98r8O17AJhhsZFKylkMbo2NrmgVtxVEy
- CXCBXj7x81NglKTrRdOdV//Aub3iTfartL1qBA8AJfvTFi+GslZuT5dfioVz/roY6kRE
- Ah/Q==
+ bh=jvldIg9ukp/2Y7zI/KLEZznacWyhfTDJLdK7YEaLLXI=;
+ b=p31kqs2XsnfXt3o1gpQApNriF4o9ZI379rslX6FouaUD37HB0Cxbf+r6thpvs1V/nv
+ sDKxWklILdYIBfheTnuniSFPAjjt8NWUKNruml6xXIVKfKlhWGuKvZnoLl9cRaD2QN/9
+ bVCU+GEYSPjlTUM8/1LhDK+SMZXKyMuCSplkgiWWo7ccnm8e1MYINbSBW/BJ+NGWw5Tf
+ +Wk31Uv2JWAeCxMjWFbTBis/16v/PmY/6xiRyHV02fqpaxfiuI/Ypq0kMYK2csIdYTma
+ 2B8lqfAqqlOea7Z9FwjPU9p0EPHP0Nk+/kJR3nDKYCvj1xnJHrVtHhs/qq4PZjb5nQYC
+ 4D2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=/Kv0KMoYBv98pHJyIRWtVhxLJiinGCIHEypQRvqFJQg=;
- b=Kcf47+sDI4I7aws4UnjtFlrTvsTTKEUQSkWlE8jRqGjtK9A7VEfHG+kOhza0dQTKdH
- vqucwXzZxq/WIT/ovuO1N0A8Q3av13OpiT4OHo7RAEK6cgefPIJ0mN/z6w7Ku69uMuWZ
- QU8X1RCzOprJ80ngNRv3fh2xbzyiW09uWtaG73Fjdu/FYVz5u6Oo7rGkTZy6v0jwZLY+
- JyxkS14eIz3MFlX2fl8TUDTYAG6oZfFi+mV6Il4g7/Y6JxiZE+z4ENMl3gM93TsGxLd2
- v7sgnXPoy8OAXeVxjGdxvRdVso6npC3m5h1rVI9I9SrXbPDfc2tB0jxi4DPdYCo5K0Yl
- fxVw==
-X-Gm-Message-State: APjAAAVxmUwXO+XPEFxWjoZC3H19riMJk000DzkiIpUiIx5suky0o6lO
- VS4+x8BUlJN8BtdCic3+KH7n8St7jmQ=
-X-Google-Smtp-Source: APXvYqzaQahQk5YCqNFJKGiGUKkBgIFc98H4e8TareFUPYfALme/83Tvko4R3t8px+vC5WrMTZncoA==
-X-Received: by 2002:a17:902:8303:: with SMTP id
- bd3mr2030489plb.171.1582690118114; 
- Tue, 25 Feb 2020 20:08:38 -0800 (PST)
+ bh=jvldIg9ukp/2Y7zI/KLEZznacWyhfTDJLdK7YEaLLXI=;
+ b=iAr+NqUUy1oQf/3TU30KhbMhgLA9YNo9uwnDqqghj6vw1tqFEt8nFLDSf9mC2GQ/SI
+ fiigj0yjZKmUMEW6Jden6SBBdR1qFPyv7ufukUDv6OXt7+/4329ny85tSneIIt3TSD9K
+ q0U/mLsfXR0bFUr9hYca7gb/EmmtiRL9VWR3mcSW2ZcYiS5DXPlGMqiJhp2TtA6rqe/l
+ R6izjQOo7l3lgOSo5gnUhWLSN3hm0KJAiRyeF+IKXAfJ3GtwB2vpbwoQVDL1M8qcfnhj
+ DQ+oU0vt+QIRcpvr1Nv/CuYzOtQ+EgV7H72ypD/SV9EVzE3jlv11CyGGwII95UYfBYp2
+ 03eg==
+X-Gm-Message-State: APjAAAWmTI4Ukd78rfr35qj9NJWE9qDrc1frro2E3S/jQN2M+EVO7gTz
+ loyK4SsSsagrZQvDSFyguaynzKEdy9w=
+X-Google-Smtp-Source: APXvYqwF4uUYUxWwh9YOo/FG223R7ZGSPhVciM86GC9yFrvJB7oHHAWg2yRhln9IGby16/ca3j65zw==
+X-Received: by 2002:a17:902:b110:: with SMTP id
+ q16mr1913007plr.289.1582690122204; 
+ Tue, 25 Feb 2020 20:08:42 -0800 (PST)
 Received: from tee480.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id d4sm604681pjg.19.2020.02.25.20.08.35
+ by smtp.gmail.com with ESMTPSA id d4sm604681pjg.19.2020.02.25.20.08.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2020 20:08:37 -0800 (PST)
+ Tue, 25 Feb 2020 20:08:41 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 09/14] powerpc/xmon: Add initial support for prefixed
- instructions
-Date: Wed, 26 Feb 2020 15:07:11 +1100
-Message-Id: <20200226040716.32395-10-jniethe5@gmail.com>
+Subject: [PATCH v3 10/14] powerpc/xmon: Dump prefixed instructions
+Date: Wed, 26 Feb 2020 15:07:12 +1100
+Message-Id: <20200226040716.32395-11-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200226040716.32395-1-jniethe5@gmail.com>
 References: <20200226040716.32395-1-jniethe5@gmail.com>
@@ -83,215 +82,98 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A prefixed instruction is composed of a word prefix and a word suffix.
-It does not make sense to be able to have a breakpoint on the suffix of
-a prefixed instruction, so make this impossible.
-
-When leaving xmon_core() we check to see if we are currently at a
-breakpoint. If this is the case, the breakpoint needs to be proceeded
-from. Initially emulate_step() is tried, but if this fails then we need
-to execute the saved instruction out of line. The NIP is set to the
-address of bpt::instr[] for the current breakpoint.  bpt::instr[]
-contains the instruction replaced by the breakpoint, followed by a trap
-instruction.  After bpt::instr[0] is executed and we hit the trap we
-enter back into xmon_bpt(). We know that if we got here and the offset
-indicates we are at bpt::instr[1] then we have just executed out of line
-so we can put the NIP back to the instruction after the breakpoint
-location and continue on.
-
-Adding prefixed instructions complicates this as the bpt::instr[1] needs
-to be used to hold the suffix. To deal with this make bpt::instr[] big
-enough for three word instructions.  bpt::instr[2] contains the trap,
-and in the case of word instructions pad bpt::instr[1] with a noop.
-
-No support for disassembling prefixed instructions.
+Currently when xmon is dumping instructions it reads a word at a time
+and then prints that instruction (either as a hex number or by
+disassembling it). For prefixed instructions it would be nice to show
+its prefix and suffix as together. Use read_instr() so that if a prefix
+is encountered its suffix is loaded too. Then print these in the form:
+    prefix:suffix
+Xmon uses the disassembly routines from GNU binutils. These currently do
+not support prefixed instructions so we will not disassemble the
+prefixed instructions yet.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
 v2: Rename sufx to suffix
-v3: - Just directly use PPC_INST_NOP
-    - Typo: plac -> place
-    - Rename read_inst() to mread_inst(). Do not have it call mread().
+v3: Simplify generic_inst_dump()
 ---
- arch/powerpc/xmon/xmon.c | 90 ++++++++++++++++++++++++++++++++++------
- 1 file changed, 78 insertions(+), 12 deletions(-)
+ arch/powerpc/xmon/xmon.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
 diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index a673cf55641c..a73a35aa4a75 100644
+index a73a35aa4a75..bf304189e33a 100644
 --- a/arch/powerpc/xmon/xmon.c
 +++ b/arch/powerpc/xmon/xmon.c
-@@ -97,7 +97,8 @@ static long *xmon_fault_jmp[NR_CPUS];
- /* Breakpoint stuff */
- struct bpt {
- 	unsigned long	address;
--	unsigned int	instr[2];
-+	/* Prefixed instructions can not cross 64-byte boundaries */
-+	unsigned int	instr[3] __aligned(64);
- 	atomic_t	ref_count;
- 	int		enabled;
- 	unsigned long	pad;
-@@ -120,6 +121,7 @@ static unsigned bpinstr = 0x7fe00008;	/* trap */
- static int cmds(struct pt_regs *);
- static int mread(unsigned long, void *, int);
- static int mwrite(unsigned long, void *, int);
-+static int mread_instr(unsigned long, unsigned int *, unsigned int *);
- static int handle_fault(struct pt_regs *);
- static void byterev(unsigned char *, int);
- static void memex(void);
-@@ -701,7 +703,7 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 		bp = at_breakpoint(regs->nip);
- 		if (bp != NULL) {
- 			int stepped = emulate_step(regs, bp->instr[0],
--						   PPC_NO_SUFFIX);
-+						   bp->instr[1]);
- 			if (stepped == 0) {
- 				regs->nip = (unsigned long) &bp->instr[0];
- 				atomic_inc(&bp->ref_count);
-@@ -756,8 +758,8 @@ static int xmon_bpt(struct pt_regs *regs)
- 
- 	/* Are we at the trap at bp->instr[1] for some bp? */
- 	bp = in_breakpoint_table(regs->nip, &offset);
--	if (bp != NULL && offset == 4) {
--		regs->nip = bp->address + 4;
-+	if (bp != NULL && (offset == 4 || offset == 8)) {
-+		regs->nip = bp->address + offset;
- 		atomic_dec(&bp->ref_count);
- 		return 1;
+@@ -2900,6 +2900,21 @@ prdump(unsigned long adrs, long ndump)
  	}
-@@ -858,8 +860,9 @@ static struct bpt *in_breakpoint_table(unsigned long nip, unsigned long *offp)
- 	if (off >= sizeof(bpts))
- 		return NULL;
- 	off %= sizeof(struct bpt);
--	if (off != offsetof(struct bpt, instr[0])
--	    && off != offsetof(struct bpt, instr[1]))
-+	if (off != offsetof(struct bpt, instr[0]) &&
-+	    off != offsetof(struct bpt, instr[1]) &&
-+	    off != offsetof(struct bpt, instr[2]))
- 		return NULL;
- 	*offp = off - offsetof(struct bpt, instr[0]);
- 	return (struct bpt *) (nip - off);
-@@ -876,8 +879,16 @@ static struct bpt *new_breakpoint(unsigned long a)
- 
- 	for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
- 		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
-+			/*
-+			 * Prefixed instructions are two words, but regular
-+			 * instructions are only one. Use a nop to pad out the
-+			 * regular instructions so that we can place the trap
-+			 * at the same place. For prefixed instructions the nop
-+			 * will get overwritten during insert_bpts().
-+			 */
- 			bp->address = a;
--			patch_instruction(&bp->instr[1], bpinstr);
-+			patch_instruction(&bp->instr[1], PPC_INST_NOP);
-+			patch_instruction(&bp->instr[2], bpinstr);
- 			return bp;
- 		}
- 	}
-@@ -889,13 +900,15 @@ static struct bpt *new_breakpoint(unsigned long a)
- static void insert_bpts(void)
- {
- 	int i;
--	struct bpt *bp;
-+	unsigned int prefix;
-+	struct bpt *bp, *bp2;
- 
- 	bp = bpts;
- 	for (i = 0; i < NBPTS; ++i, ++bp) {
- 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) == 0)
- 			continue;
--		if (mread(bp->address, &bp->instr[0], 4) != 4) {
-+		if (!mread_instr(bp->address, &bp->instr[0],
-+				 &bp->instr[1])) {
- 			printf("Couldn't read instruction at %lx, "
- 			       "disabling breakpoint there\n", bp->address);
- 			bp->enabled = 0;
-@@ -907,7 +920,34 @@ static void insert_bpts(void)
- 			bp->enabled = 0;
- 			continue;
- 		}
-+		/*
-+		 * Check the address is not a suffix by looking for a prefix in
-+		 * front of it.
-+		 */
-+		if ((mread(bp->address - 4, &prefix, 4) == 4) &&
-+		    IS_PREFIX(prefix)) {
-+			printf("Breakpoint at %lx is on the second word of a "
-+			       "prefixed instruction, disabling it\n",
-+			       bp->address);
-+			bp->enabled = 0;
-+			continue;
-+		}
-+		/*
-+		 * We might still be a suffix - if the prefix has already been
-+		 * replaced by a breakpoint we won't catch it with the above
-+		 * test.
-+		 */
-+		bp2 = at_breakpoint(bp->address - 4);
-+		if (bp2 && IS_PREFIX(bp2->instr[0])) {
-+			printf("Breakpoint at %lx is on the second word of a "
-+			       "prefixed instruction, disabling it\n",
-+			       bp->address);
-+			bp->enabled = 0;
-+			continue;
-+		}
- 		patch_instruction(&bp->instr[0], bp->instr[0]);
-+		if (IS_PREFIX(bp->instr[0]))
-+			patch_instruction(&bp->instr[1], bp->instr[1]);
- 		if (bp->enabled & BP_CIABR)
- 			continue;
- 		if (patch_instruction((unsigned int *)bp->address,
-@@ -1155,14 +1195,14 @@ static int do_step(struct pt_regs *regs)
-  */
- static int do_step(struct pt_regs *regs)
- {
--	unsigned int instr;
-+	unsigned int instr, suffix;
- 	int stepped;
- 
- 	force_enable_xmon();
- 	/* check we are in 64-bit kernel mode, translation enabled */
- 	if ((regs->msr & (MSR_64BIT|MSR_PR|MSR_IR)) == (MSR_64BIT|MSR_IR)) {
--		if (mread(regs->nip, &instr, 4) == 4) {
--			stepped = emulate_step(regs, instr, PPC_NO_SUFFIX);
-+		if (mread_instr(regs->nip, &instr, &suffix)) {
-+			stepped = emulate_step(regs, instr, suffix);
- 			if (stepped < 0) {
- 				printf("Couldn't single-step %s instruction\n",
- 				       (IS_RFID(instr)? "rfid": "mtmsrd"));
-@@ -2121,6 +2161,32 @@ mwrite(unsigned long adrs, void *buf, int size)
- 	return n;
  }
  
-+static int
-+mread_instr(unsigned long adrs, unsigned int *instr,
-+	    unsigned int *suffix)
++static bool instrs_are_equal(unsigned long insta, unsigned long suffixa,
++			     unsigned long instb, unsigned long suffixb)
 +{
-+	int n;
++	if (insta != instb)
++		return false;
 +
-+	n = 0;
-+	if (setjmp(bus_error_jmp) == 0) {
-+		catch_memory_errors = 1;
-+		sync();
-+		*instr = *(unsigned int *)adrs;
-+		sync();
-+		if (!IS_PREFIX(*instr)) {
-+			n = 4;
-+		} else {
-+			*suffix = *(unsigned int *)(adrs + 4);
-+			n = 8;
-+		}
-+		sync();
-+		/* wait a little while to see if we get a machine check */
-+		__delay(200);
-+	}
-+	catch_memory_errors = 0;
-+	return n;
++	if (!IS_PREFIX(insta) && !IS_PREFIX(instb))
++		return true;
++
++	if (IS_PREFIX(insta) && IS_PREFIX(instb))
++		return suffixa == suffixb;
++
++	return false;
 +}
 +
- static int fault_type;
- static int fault_except;
- static char *fault_chars[] = { "--", "**", "##" };
+ typedef int (*instruction_dump_func)(unsigned long inst, unsigned long addr);
+ 
+ static int
+@@ -2908,12 +2923,11 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
+ {
+ 	int nr, dotted;
+ 	unsigned long first_adr;
+-	unsigned int inst, last_inst = 0;
+-	unsigned char val[4];
++	unsigned int inst, suffix, last_inst = 0, last_suffix = 0;
+ 
+ 	dotted = 0;
+-	for (first_adr = adr; count > 0; --count, adr += 4) {
+-		nr = mread(adr, val, 4);
++	for (first_adr = adr; count > 0; --count, adr += nr) {
++		nr = mread_instr(adr, &inst, &suffix);
+ 		if (nr == 0) {
+ 			if (praddr) {
+ 				const char *x = fault_chars[fault_type];
+@@ -2921,8 +2935,9 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
+ 			}
+ 			break;
+ 		}
+-		inst = GETWORD(val);
+-		if (adr > first_adr && inst == last_inst) {
++		if (adr > first_adr && instrs_are_equal(inst, suffix,
++							last_inst,
++							last_suffix)) {
+ 			if (!dotted) {
+ 				printf(" ...\n");
+ 				dotted = 1;
+@@ -2931,10 +2946,17 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
+ 		}
+ 		dotted = 0;
+ 		last_inst = inst;
+-		if (praddr)
++		last_suffix = suffix;
++		if (praddr) {
+ 			printf(REG"  %.8x", adr, inst);
++			if (IS_PREFIX(inst))
++				printf(":%.8x", suffix);
++		}
+ 		printf("\t");
+-		dump_func(inst, adr);
++		if (IS_PREFIX(inst))
++			printf("%.8x:%.8x", inst, suffix);
++		else
++			dump_func(inst, adr);
+ 		printf("\n");
+ 	}
+ 	return adr - first_adr;
 -- 
 2.17.1
 
