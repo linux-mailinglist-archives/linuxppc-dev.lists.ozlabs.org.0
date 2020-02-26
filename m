@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303F616F803
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 07:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3020B16F815
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 07:37:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S5dj5kbhzDqmX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 17:35:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S5hc1TnTzDqhN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 17:37:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,64 +17,63 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=bJ+ybytN; 
+ header.s=fm1 header.b=He3FAu92; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=YYhTw7Ip; 
+ header.a=rsa-sha256 header.s=fm2 header.b=G3n/pQ/W; 
  dkim-atps=neutral
 Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com
  [64.147.123.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S5PZ6r3fzDqZV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:24:50 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S5Pg2SggzDqZT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:24:55 +1100 (AEDT)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id 6C402544;
- Wed, 26 Feb 2020 01:24:48 -0500 (EST)
+ by mailout.west.internal (Postfix) with ESMTP id C5081675;
+ Wed, 26 Feb 2020 01:24:51 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Wed, 26 Feb 2020 01:24:49 -0500
+ by compute6.internal (MEProxy); Wed, 26 Feb 2020 01:24:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm1; bh=fIQUcfHh7QuR4
- 38tK6lJLzDWB37n7jovUl45LUEKMUk=; b=bJ+ybytNw+AgsIL1M9PUKtLkAJyNb
- 9EX+LPSQZRzQ3mSfNnh0E7cWyUb2vkxMxDKd7Cp/MrQC+aWIIdAqzK3KLBVhFsdp
- RfA8ZKKrDLYocx6DJxMoCIyEEdc7pNfISq5Bkj+T5ZCSevMCjP2GQpJNpLcg5U1g
- qeIfln0dxE8Pf/pCuzmCxK75gN6EEk+lLDyqwx69koesDTleXnxhpZ6zPJwdvQnY
- tIQlI12ZS8gTyXEheLg/hxpvD2NUq1J7mi6kTIy4LpZ1vnEg6djs3KWui7gFAD4S
- VWJmVC8jMasiZLRjcQ9P3labbHrtN9LMUGMVBDtmHxQ6PQnmbPGMLXXqw==
+ :mime-version:content-transfer-encoding; s=fm1; bh=EgHYFloF896Dk
+ NrEkKKfNC70JzHBIsSmfxjTHg9bncU=; b=He3FAu92Y6kUd8qbIADbJRUDOG09K
+ v/3qD9x9+KvVdEziWeMvugqKmDMWENt+OhJAN8kDuwot4qodVveBdZCakbj5QmfQ
+ qgym5y63jC2giexilzxwHvKa5KeTyS+0Bh0AFk7at0hv34rAq3fGibjrAau5cW7D
+ JPSef00uaPb+A+HcDuVyNaGEPKGAluz5RF4YnXakPLBBNfA2Yyl8/L0Fx7YNXeUz
+ XNoy3tmfauHfG5kqJ+5vLe67A3OL6dxkdXV8sKjcOocgAAuA3w/jyJXYzTVNRgsg
+ /aPsc4XgPgF4asfhiwj2OmX4pqvuM2OWDKy4oDxKCANLz3o3eJaJFolQg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:subject:to
  :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=fIQUcfHh7QuR438tK6lJLzDWB37n7jovUl45LUEKMUk=; b=YYhTw7Ip
- +MaYW2FOuBQoC0hwu15yFBuvVQ/M5BeX84WMuaEO7wim1oZIqKZxHaTTeBIbQZDa
- ABxkvXeJEp19sWyBOU59+5m5ukB8WPwglRp2/GmAEao5IvH/6l8WoEtVeKDe4qKY
- gwLWlcdIx4OWndHPd7o4InICAttG2a8TyH+2uNgSbpUz1ci2MD23Y440Dha7Adgo
- BR0O4iHa4rMD9jcp25HwdRsNLDhiM7A9p6wQ5ahAJv9YFPXXORNDpaCFTj2La05H
- 3SWadYy5Cof3CHAiXHD/CnOufhPXlUnlPAr4RESi0eFfjyFYMyZey6W9FLie43By
- CB6kNaOz+2hCSw==
-X-ME-Sender: <xms:Lw9WXorGNM58Q6lt7qGajM6EnKN0448xBnweSySu_76CvrzTzQkYCw>
+ fm2; bh=EgHYFloF896DkNrEkKKfNC70JzHBIsSmfxjTHg9bncU=; b=G3n/pQ/W
+ 6GGrsLWYxRruhN+zX2Fv3o0b9gRQZysAYsMT9AHBVWy18cxTaFodVUoIppOKaEq7
+ YGFgqoZ0MSH1Y31mANWOsu0kb+VvK9LNaPPxajY6bQm53D9eJ1SgQyQi3IT57rx/
+ RxAcTRqo5QCEuBNJfR6L9kPON1LLb0fYfgoT7TZKB9gffyUZb/HVFfMhGbQANf7c
+ ckYa5ASipadrrJk6V8nyvVX7e86uIkxbQiNJDBmNVijhqQqY0bSdhPWzsvd4CMM4
+ rjDQURCF0fBV8n5p1mFZsqavORmi2Pg2B637n69B9gQHkdjTvvvzmNiaUnY61p0x
+ MXzYEswoWvk1HQ==
+X-ME-Sender: <xms:Mw9WXgl8wMrleq-eNtULZNb1eDXytYXRPGJolfrTVlCF0JXSTExEOw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrleefgdeljecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculdduhedmnecujfgurhephffvufffkffojghfggfgsedtkeertdertddt
+ hrlhcuvffnffculddutddmnecujfgurhephffvufffkffojghfggfgsedtkeertdertddt
  necuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhushhsvg
  hllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecuvehluhhsthgvrhfuihii
- vgepfeenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrd
+ vgepheenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrd
  gttg
-X-ME-Proxy: <xmx:Lw9WXqRKkns6ewi7zPXMVs_CBnMaovIMJ4VelXmNEAmymrVr_O1OtQ>
- <xmx:Lw9WXvW2MLOLt6Xsmplr-_jKef7lnqEJn9CPwpEEur_QodkwBWWrQQ>
- <xmx:Lw9WXuRUet_5axeQu1Qzde_ncxsTUN_Wj_y9Exg-AGdYW0LkT58MNw>
- <xmx:MA9WXpMv7yQUHzQqWjn00uD2UZ6RldZvVLVwVGqJf7cs2eedmkP_ag>
+X-ME-Proxy: <xmx:Mw9WXjPp4lT9GfAXt7lppeGsV3R_KqusbJXmQbiXFEMV7ZbXoxPk3g>
+ <xmx:Mw9WXhd1C4AJ4JARkIpYdL5hu_OSbt4wnPBJfGIWfCqOYTO8tBTVEQ>
+ <xmx:Mw9WXlF8E-kIq_bUpbQ4xgtz_7_eomjh80MRXftcPDQyNXPPcAFE0A>
+ <xmx:Mw9WXl2UtkMU16Cz3aT8w1fOxugwHXOX6g6XHbztRxDDodVXJ4qZzg>
 Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 86C193060F09;
- Wed, 26 Feb 2020 01:24:44 -0500 (EST)
+ by mail.messagingengine.com (Postfix) with ESMTPA id 1AA573060FCB;
+ Wed, 26 Feb 2020 01:24:47 -0500 (EST)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 5/8] powerpc/configs: Enable STRICT_MODULE_RWX in
- skiroot_defconfig
-Date: Wed, 26 Feb 2020 17:24:00 +1100
-Message-Id: <20200226062403.63790-6-ruscur@russell.cc>
+Subject: [PATCH v4 6/8] powerpc/mm: implement set_memory_attr()
+Date: Wed, 26 Feb 2020 17:24:01 +1100
+Message-Id: <20200226062403.63790-7-ruscur@russell.cc>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200226062403.63790-1-ruscur@russell.cc>
 References: <20200226062403.63790-1-ruscur@russell.cc>
@@ -91,35 +90,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com,
- Joel Stanley <joel@joel.id.au>, npiggin@gmail.com, joel@jms.id.au,
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ kbuild test robot <lkp@intel.com>, joel@jms.id.au,
  Russell Currey <ruscur@russell.cc>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-skiroot_defconfig is the only powerpc defconfig with STRICT_KERNEL_RWX
-enabled, and if you want memory protection for kernel text you'd want it
-for modules too, so enable STRICT_MODULE_RWX there.
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Acked-by: Joel Stanley <joel@joel.id.au>
+In addition to the set_memory_xx() functions which allows to change
+the memory attributes of not (yet) used memory regions, implement a
+set_memory_attr() function to:
+- set the final memory protection after init on currently used
+kernel regions.
+- enable/disable kernel memory regions in the scope of DEBUG_PAGEALLOC.
+
+Unlike the set_memory_xx() which can act in three step as the regions
+are unused, this function must modify 'on the fly' as the kernel is
+executing from them. At the moment only PPC32 will use it and changing
+page attributes on the fly is not an issue.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reported-by: kbuild test robot <lkp@intel.com>
+[ruscur: cast "data" to unsigned long instead of int]
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
- arch/powerpc/configs/skiroot_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+v4: Cast "data" to unsigned long instead of int
 
-diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
-index 1b6bdad36b13..66d20dbe67b7 100644
---- a/arch/powerpc/configs/skiroot_defconfig
-+++ b/arch/powerpc/configs/skiroot_defconfig
-@@ -51,6 +51,7 @@ CONFIG_CMDLINE="console=tty0 console=hvc0 ipr.fast_reboot=1 quiet"
- # CONFIG_PPC_MEM_KEYS is not set
- CONFIG_JUMP_LABEL=y
- CONFIG_STRICT_KERNEL_RWX=y
-+CONFIG_STRICT_MODULE_RWX=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_SIG_FORCE=y
+ arch/powerpc/include/asm/set_memory.h |  2 ++
+ arch/powerpc/mm/pageattr.c            | 33 +++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+index 64011ea444b4..b040094f7920 100644
+--- a/arch/powerpc/include/asm/set_memory.h
++++ b/arch/powerpc/include/asm/set_memory.h
+@@ -29,4 +29,6 @@ static inline int set_memory_x(unsigned long addr, int numpages)
+ 	return change_memory_attr(addr, numpages, SET_MEMORY_X);
+ }
+ 
++int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot);
++
+ #endif
+diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+index 2b573768a7f7..ee6b5e3b7604 100644
+--- a/arch/powerpc/mm/pageattr.c
++++ b/arch/powerpc/mm/pageattr.c
+@@ -72,3 +72,36 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
+ 
+ 	return apply_to_page_range(&init_mm, start, sz, change_page_attr, (void *)action);
+ }
++
++/*
++ * Set the attributes of a page:
++ *
++ * This function is used by PPC32 at the end of init to set final kernel memory
++ * protection. It includes changing the maping of the page it is executing from
++ * and data pages it is using.
++ */
++static int set_page_attr(pte_t *ptep, unsigned long addr, void *data)
++{
++	pgprot_t prot = __pgprot((unsigned long)data);
++
++	spin_lock(&init_mm.page_table_lock);
++
++	set_pte_at(&init_mm, addr, ptep, pte_modify(*ptep, prot));
++	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
++
++	spin_unlock(&init_mm.page_table_lock);
++
++	return 0;
++}
++
++int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot)
++{
++	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
++	unsigned long sz = numpages * PAGE_SIZE;
++
++	if (!numpages)
++		return 0;
++
++	return apply_to_page_range(&init_mm, start, sz, set_page_attr,
++				   (void *)pgprot_val(prot));
++}
 -- 
 2.25.1
 
