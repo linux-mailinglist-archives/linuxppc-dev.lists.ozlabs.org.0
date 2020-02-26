@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FF516F839
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 07:50:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AED16F838
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 07:49:18 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S5xl1lfLzDqZX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 17:49:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S5zc1rstzDqlQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 17:50:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,63 +17,63 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=qKVARIbw; 
+ header.s=fm1 header.b=Io3bN9kK; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=Iu1I3Rd3; 
+ header.a=rsa-sha256 header.s=fm2 header.b=gng90mzG; 
  dkim-atps=neutral
 Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com
  [64.147.123.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S5fs6DYVzDqVn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:36:21 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S5fx0pnWzDqlQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:36:25 +1100 (AEDT)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id 36240611;
- Wed, 26 Feb 2020 01:36:18 -0500 (EST)
+ by mailout.west.internal (Postfix) with ESMTP id B6F4D676;
+ Wed, 26 Feb 2020 01:36:21 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Wed, 26 Feb 2020 01:36:19 -0500
+ by compute6.internal (MEProxy); Wed, 26 Feb 2020 01:36:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm1; bh=MN4A9pGwx4Xvy
- IA4PshSsOurx0y3KhuXjclcGJOa81k=; b=qKVARIbw0x5eCtrFuPUmoTHDzqDSp
- OJ5CJFklLKBigUnz/imTW09g/D6q2fWBJuMRuc1miBVr8eKhgzldeyS/7Be78HJ8
- 4qog7c3SyUW79p03ALOvGxSWJuSviPWjrtxBD3N7OsTNlaUCQ9JxlB9uc6w505Ph
- 3tgr/2eO2Thd10y3I9igdLZn68PkXZQgvh5NvbJjASmvS3z5OTwt/giKlWT92r5s
- +aRgkCIRNtGmD4ddHe7RtOUbvYazG/8MvDB7xTzkHS698Bbl9zvgdNyp8zuzlGs/
- YAupSLZ1DAyFy4KWLlfu+W+2RFCoxxokG/yL8F4jZvMgMR6hortGf2EgA==
+ :mime-version:content-transfer-encoding; s=fm1; bh=N5bnzgbs5sk/h
+ cpbVb2U9rRYKHzeu3F1EjOu4dcDwjg=; b=Io3bN9kKEzvN1pUBaP9wuM0r35HNI
+ vUu581Tvh+XFWThFq+UCML6MWlbmN+ekbDdpgIIzRpwqoFfMv+mkr1Zg897AF69I
+ e2HPPAvF0JnHAnriyWm6l+tzZl3lbxB1JDXxHIwWSZtHaF+hjQYMm4Ugq37ANmQ1
+ 92haw7os4aDdqoMudjV+TOqY751FD3XefRvmOkyZJKBt5CAWId/oD42tYOa0wcNf
+ P28sezk2OFkRkAr1rKxGUPZ0cKZM85lZ+IUBaAeTQM8GbmegdWE3sqtwZzKjenyy
+ 4TJWT6+4CnzyznEYrpqHD/8iiPUewFH9PLJ3sMT4cpEy3oi3TLlQCsjqw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:subject:to
  :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=MN4A9pGwx4XvyIA4PshSsOurx0y3KhuXjclcGJOa81k=; b=Iu1I3Rd3
- LmpHdXYQgtkHsifnH0JPCkR5ClZqM3K9WyO8wATLuhwemGQMm4F66fmIdvIx76DW
- 2Qj1qOdkwLfWKtNO859Ub0zdytm2OThaNFMYAdHpmQrj9MMRO+ufnMRFv8sR9/5R
- TdglbX7PLJOOQy+A3pezziOKjeLw1/bq+FOxrZw+ayUuqJjaRKb33X8BF/T1Rj2S
- d+Hk8uNXqj+9PspCFtgz5VenEImJS0rj5c2TA7Uo47Ly3Y6o3E8E0XiTPxf0ITbL
- +QKmBkfAXaCZXuwcZWjpSxUJ8Ga/W0PaaH0ZKO8vIMMTkePUygC1yXONps8qvx0y
- /SRbdR6y+W5DTw==
-X-ME-Sender: <xms:4RFWXmYup2zcI3yatIANKt8DciA1UtlDG3arGg1G5EJE5-CodKbDcQ>
+ fm2; bh=N5bnzgbs5sk/hcpbVb2U9rRYKHzeu3F1EjOu4dcDwjg=; b=gng90mzG
+ I3eXynh3NWTmVsc4O3wRkejMdGkJDlw4O6kHpV2MXiG8fpenxPZas8XXrR5C97jz
+ jUPwS8SsSOyIH1YvjmPD1UeKGmsEgdGm/FGKoN1Reae6ICx7UXBTN70nieXnEw2y
+ e629tgReOsmiqX0H2RaWfHGDhhBjKnaQp7OencwTthBtYwWS/MwcnrN9Q44RP1fD
+ Z4XLB2KUdQTV6XXtktEHp/iYJt+OBLks/IiEviZkDBgh1TlfrWNLojIvFkVguqjJ
+ ZGxv9Qrn3ZkV/0JFypJLWjikLuPhgvvhuse7dxKhWOgXsB2QFqvPxfUNGWqWndbi
+ QmZmkjRBC1giXQ==
+X-ME-Sender: <xms:5RFWXvJtTyg9M-1YbYXOTeMQqEgifSHFrslFEyf5D3TtwsbB_emyoQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrleefgdelkecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculddutddmnecujfgurhephffvufffkffojghfggfgsedtkeertdertddt
- necuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhushhsvg
- hllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecuvehluhhsthgvrhfuihii
- vgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrd
- gttg
-X-ME-Proxy: <xmx:4RFWXs2JDd4tCVhkBjOucjkf7Cf0V4JFYLK3Y_svmE2pCq4Y3dtw-Q>
- <xmx:4RFWXn-eoBO9NZZfSThJxdqXUYMgJiw1NabUmU1pNCbwnOYK7IrOoA>
- <xmx:4RFWXl7DmuVaOCOWUhs95RiEG_t3SJP6US9YgnII1s3gb6ZxdxvL4Q>
- <xmx:4RFWXmmH2qFut3eB0SXaJ82N_nVu-MpVewOCCOg8UtuLOJIbTp1Bcw>
+ uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
+ ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
+ hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvd
+ druddtnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehmrghilhhfrhhomhep
+ rhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:5RFWXq_3AdwO5-i8yf-C8ESpB9zH2Y3VIHJ2_WeXg6VLd6K33yn6-A>
+ <xmx:5RFWXjFI9vLt_kXuKWWvPj268i9xl0cPHmoWHqJ6w_g0qipkmVo89g>
+ <xmx:5RFWXiMbqe1AH0pOw7lbOAJl5d2ydTuA5CIT7xdzk8cmsMKMQqqtjw>
+ <xmx:5RFWXsP8P30Fe2eT1utjFz_SUxhxmsFnRfxTRDaEboTZj8YgJ7SsBw>
 Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 791C93060FE0;
- Wed, 26 Feb 2020 01:36:14 -0500 (EST)
+ by mail.messagingengine.com (Postfix) with ESMTPA id 09A6930610DB;
+ Wed, 26 Feb 2020 01:36:17 -0500 (EST)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 2/8] powerpc/kprobes: Mark newly allocated probes as RO
-Date: Wed, 26 Feb 2020 17:35:45 +1100
-Message-Id: <20200226063551.65363-3-ruscur@russell.cc>
+Subject: [PATCH v5 3/8] powerpc/mm/ptdump: debugfs handler for W+X checks at
+ runtime
+Date: Wed, 26 Feb 2020 17:35:46 +1100
+Message-Id: <20200226063551.65363-4-ruscur@russell.cc>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200226063551.65363-1-ruscur@russell.cc>
 References: <20200226063551.65363-1-ruscur@russell.cc>
@@ -97,72 +97,85 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+Very rudimentary, just
 
-With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will be one
-W+X page at boot by default.  This can be tested with
-CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking the
-kernel log during boot.
+	echo 1 > [debugfs]/check_wx_pages
 
-powerpc doesn't implement its own alloc() for kprobes like other
-architectures do, but we couldn't immediately mark RO anyway since we do
-a memcpy to the page we allocate later.  After that, nothing should be
-allowed to modify the page, and write permissions are removed well
-before the kprobe is armed.
+and check the kernel log.  Useful for testing strict module RWX.
 
-The memcpy() would fail if >1 probes were allocated, so use
-patch_instruction() instead which is safe for RO.
+Updated the Kconfig entry to reflect this.
 
-Reviewed-by: Daniel Axtens <dja@axtens.net>
+Also fixed a typo.
+
 Signed-off-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/kprobes.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ arch/powerpc/Kconfig.debug      |  6 ++++--
+ arch/powerpc/mm/ptdump/ptdump.c | 21 ++++++++++++++++++++-
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 2d27ec4feee4..bfab91ded234 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -24,6 +24,8 @@
- #include <asm/sstep.h>
- #include <asm/sections.h>
- #include <linux/uaccess.h>
-+#include <linux/set_memory.h>
-+#include <linux/vmalloc.h>
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 0b063830eea8..e37960ef68c6 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -370,7 +370,7 @@ config PPC_PTDUMP
+ 	  If you are unsure, say N.
  
- DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
- DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
-@@ -102,6 +104,16 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
- 	return addr;
+ config PPC_DEBUG_WX
+-	bool "Warn on W+X mappings at boot"
++	bool "Warn on W+X mappings at boot & enable manual checks at runtime"
+ 	depends on PPC_PTDUMP && STRICT_KERNEL_RWX
+ 	help
+ 	  Generate a warning if any W+X mappings are found at boot.
+@@ -384,7 +384,9 @@ config PPC_DEBUG_WX
+ 	  of other unfixed kernel bugs easier.
+ 
+ 	  There is no runtime or memory usage effect of this option
+-	  once the kernel has booted up - it's a one time check.
++	  once the kernel has booted up, it only automatically checks once.
++
++	  Enables the "check_wx_pages" debugfs entry for checking at runtime.
+ 
+ 	  If in doubt, say "Y".
+ 
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 206156255247..a15e19a3b14e 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -4,7 +4,7 @@
+  *
+  * This traverses the kernel pagetables and dumps the
+  * information about the used sections of memory to
+- * /sys/kernel/debug/kernel_pagetables.
++ * /sys/kernel/debug/kernel_page_tables.
+  *
+  * Derived from the arm64 implementation:
+  * Copyright (c) 2014, The Linux Foundation, Laura Abbott.
+@@ -413,6 +413,25 @@ void ptdump_check_wx(void)
+ 	else
+ 		pr_info("Checked W+X mappings: passed, no W+X pages found\n");
  }
- 
-+void *alloc_insn_page(void)
++
++static int check_wx_debugfs_set(void *data, u64 val)
 +{
-+	void *page = vmalloc_exec(PAGE_SIZE);
++	if (val != 1ULL)
++		return -EINVAL;
 +
-+	if (page)
-+		set_memory_ro((unsigned long)page, 1);
++	ptdump_check_wx();
 +
-+	return page;
++	return 0;
 +}
 +
- int arch_prepare_kprobe(struct kprobe *p)
- {
- 	int ret = 0;
-@@ -124,11 +136,8 @@ int arch_prepare_kprobe(struct kprobe *p)
- 	}
++DEFINE_SIMPLE_ATTRIBUTE(check_wx_fops, NULL, check_wx_debugfs_set, "%llu\n");
++
++static int ptdump_check_wx_init(void)
++{
++	return debugfs_create_file("check_wx_pages", 0200, NULL,
++				   NULL, &check_wx_fops) ? 0 : -ENOMEM;
++}
++device_initcall(ptdump_check_wx_init);
+ #endif
  
- 	if (!ret) {
--		memcpy(p->ainsn.insn, p->addr,
--				MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
-+		patch_instruction(p->ainsn.insn, *p->addr);
- 		p->opcode = *p->addr;
--		flush_icache_range((unsigned long)p->ainsn.insn,
--			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
- 	}
- 
- 	p->ainsn.boostable = 0;
+ static int ptdump_init(void)
 -- 
 2.25.1
 
