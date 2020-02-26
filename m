@@ -2,91 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D0E16F842
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 07:58:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BED16F84A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 08:01:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S6832L3lzDqjX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 17:58:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S6D14KzJzDqxh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:01:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.27;
+ helo=wnew2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=fzJATGDo; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=qRtBUCWh; 
+ dkim-atps=neutral
+X-Greylist: delayed 298 seconds by postgrey-1.36 at bilbo;
+ Wed, 26 Feb 2020 17:41:31 AEDT
+Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com
+ [64.147.123.27])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S5jY0zlszDqhR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:38:40 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01Q6YJXH091299
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 01:38:38 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ydcng2mwy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 01:38:38 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 26 Feb 2020 06:38:36 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 06:38:32 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01Q6cVmq35979592
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Feb 2020 06:38:31 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4BDA24C044;
- Wed, 26 Feb 2020 06:38:31 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 014B64C050;
- Wed, 26 Feb 2020 06:38:31 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Feb 2020 06:38:30 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 52577A00F1;
- Wed, 26 Feb 2020 17:38:26 +1100 (AEDT)
-Subject: Re: [PATCH v5 8/8] powerpc/mm: Disable set_memory() routines when
- strict RWX isn't enabled
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S5mq62QCzDqmq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:41:31 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailnew.west.internal (Postfix) with ESMTP id DE560475;
+ Wed, 26 Feb 2020 01:36:32 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Wed, 26 Feb 2020 01:36:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding; s=fm1; bh=kp8u9qL5i5T1m
+ QUU2K/sNa+O6ICOZSqNmkNONM8HCIA=; b=fzJATGDokN1+R+MlmNqqa13I3oLTq
+ OkzLJ7lhs5ghIs1tFaMk0ljnYHBPpfoygjxDUDw97FJBJJSPGdkoQN8W2VqM3MF+
+ OINrLWpgpgBYy6LmdnpU0fz49+qlnDJAgq3BVz1PjdFt0mFr6gl31d4t1O70PZXC
+ Tfcv5P5ApNbE3EIoNF+udZYV9TNFgdgir2EdR0/Lj6dDWBNpP1j7h71LArZRnoRY
+ G33RK5MNlC9z4HFpa+S/CoUSbd1I4PxoxawB8SZM8eBDi3N7kSOHRLTkSdli3Qb2
+ N5biH5UpTcG3FRdM/laciMGA4S6wgpZ8fLoNPYW/WnlWd6+LkAjFiU6Qw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :in-reply-to:message-id:mime-version:references:subject:to
+ :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; bh=kp8u9qL5i5T1mQUU2K/sNa+O6ICOZSqNmkNONM8HCIA=; b=qRtBUCWh
+ 6sRn7gRUKt9JnHKqRL1rmrGS6E2TgS5qT0MvRFBnqqPnneowNTCpNcHbDyaVfpxx
+ uRB+jwq8dM+q/20vhRIHcOBN6IQfk35vxx6WBqw8LJyV9GX2sC0ohsgEjbcqs2E0
+ mjdw3YEnBaLh1RpKYLeKXX7Y3E34Xx9WyMmrH84Sw8fGftD+BxNm5wjcHD+5IOVc
+ oICmk7iNicWKTfSOubPkNyItxPx4j5RPkwgNB/wHCVUkXcWvF/iDu/fugQFHUOh8
+ 5R/oXt6+S6RjwZ/ZK+C4LOFGXZm8Bv8L5n7A83gjCyY75katBdLbGCqeKtNrm8Fz
+ QJa5Qi4B2JI1tw==
+X-ME-Sender: <xms:8BFWXh-14232arNZb80RwQozkVJEQgPpZX3bPHtrLfDAOTGEeb7vcw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrleefgdelkecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculddutddmnecujfgurhephffvufffkffojghfggfgsedtkeertdertddt
+ necuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhushhsvg
+ hllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecuvehluhhsthgvrhfuihii
+ vgepheenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrd
+ gttg
+X-ME-Proxy: <xmx:8BFWXmN_qLxEeTlILR3cGdlJaZbu378a6u9S6OLG00QNmw0wLKBlNw>
+ <xmx:8BFWXgsZ3RjlblJzAEmdfA8hfAEcDF5hrAUajFRipE9nxdksNqsbXA>
+ <xmx:8BFWXg3BaG2cXgkoPtj8XvK9gG7p2V_Lv_fKBmTO9d_7hIxwLpX4Ig>
+ <xmx:8BFWXrdwf5Y7SRUCpXhobxrqsFZ7EoUO8LtYQl9N7e0FPtzvsypxb-rYWF8>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id E365030610DB;
+ Wed, 26 Feb 2020 01:36:28 -0500 (EST)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v5 6/8] powerpc/mm: implement set_memory_attr()
+Date: Wed, 26 Feb 2020 17:35:49 +1100
+Message-Id: <20200226063551.65363-7-ruscur@russell.cc>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200226063551.65363-1-ruscur@russell.cc>
 References: <20200226063551.65363-1-ruscur@russell.cc>
- <20200226063551.65363-9-ruscur@russell.cc>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Wed, 26 Feb 2020 17:38:29 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200226063551.65363-9-ruscur@russell.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022606-0008-0000-0000-000003567CAB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022606-0009-0000-0000-00004A779A5A
-Message-Id: <c560b6bb-1a42-bf50-5122-7912771e1481@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-26_01:2020-02-25,
- 2020-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 spamscore=0 suspectscore=0 impostorscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=923
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260047
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,30 +92,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-hardening@lists.openwall.com, jniethe5@gmail.com, npiggin@gmail.com,
- joel@jms.id.au, dja@axtens.net
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, jniethe5@gmail.com,
+ Russell Currey <ruscur@russell.cc>, npiggin@gmail.com,
+ kbuild test robot <lkp@intel.com>, joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 26/2/20 5:35 pm, Russell Currey wrote:
-> There are a couple of reasons that the set_memory() functions are
-> problematic when STRICT_KERNEL_RWX isn't enabled:
-> 
->   - The linear mapping is a different size and apply_to_page_range()
-> 	may modify a giant section, breaking everything
->   - patch_instruction() doesn't know to work around a page being marked
->   	RO, and will subsequently crash
-> 
-> The latter can be replicated by building a kernel with the set_memory()
-> patches but with STRICT_KERNEL_RWX off and running ftracetest.
-> 
-> Reported-by: Jordan Niethe <jniethe5@gmail.com>
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Can we squash this in earlier in the series for the sake of bisectability?
+In addition to the set_memory_xx() functions which allows to change
+the memory attributes of not (yet) used memory regions, implement a
+set_memory_attr() function to:
+- set the final memory protection after init on currently used
+kernel regions.
+- enable/disable kernel memory regions in the scope of DEBUG_PAGEALLOC.
 
+Unlike the set_memory_xx() which can act in three step as the regions
+are unused, this function must modify 'on the fly' as the kernel is
+executing from them. At the moment only PPC32 will use it and changing
+page attributes on the fly is not an issue.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reported-by: kbuild test robot <lkp@intel.com>
+[ruscur: cast "data" to unsigned long instead of int]
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+---
+v4: cast "data" to unsigned long instead of int
+
+ arch/powerpc/include/asm/set_memory.h |  2 ++
+ arch/powerpc/mm/pageattr.c            | 33 +++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+index 64011ea444b4..b040094f7920 100644
+--- a/arch/powerpc/include/asm/set_memory.h
++++ b/arch/powerpc/include/asm/set_memory.h
+@@ -29,4 +29,6 @@ static inline int set_memory_x(unsigned long addr, int numpages)
+ 	return change_memory_attr(addr, numpages, SET_MEMORY_X);
+ }
+ 
++int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot);
++
+ #endif
+diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+index 2b573768a7f7..ee6b5e3b7604 100644
+--- a/arch/powerpc/mm/pageattr.c
++++ b/arch/powerpc/mm/pageattr.c
+@@ -72,3 +72,36 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
+ 
+ 	return apply_to_page_range(&init_mm, start, sz, change_page_attr, (void *)action);
+ }
++
++/*
++ * Set the attributes of a page:
++ *
++ * This function is used by PPC32 at the end of init to set final kernel memory
++ * protection. It includes changing the maping of the page it is executing from
++ * and data pages it is using.
++ */
++static int set_page_attr(pte_t *ptep, unsigned long addr, void *data)
++{
++	pgprot_t prot = __pgprot((unsigned long)data);
++
++	spin_lock(&init_mm.page_table_lock);
++
++	set_pte_at(&init_mm, addr, ptep, pte_modify(*ptep, prot));
++	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
++
++	spin_unlock(&init_mm.page_table_lock);
++
++	return 0;
++}
++
++int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot)
++{
++	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
++	unsigned long sz = numpages * PAGE_SIZE;
++
++	if (!numpages)
++		return 0;
++
++	return apply_to_page_range(&init_mm, start, sz, set_page_attr,
++				   (void *)pgprot_val(prot));
++}
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.25.1
 
