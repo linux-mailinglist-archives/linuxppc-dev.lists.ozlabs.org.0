@@ -1,75 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D7E16FCF9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:10:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SCkf219bzDqgC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 22:10:02 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6677616FD0B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:12:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SCnD3dN1zDqkC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 22:12:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=+jiy=4o=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RRCArEfU; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SChc4Dp9zDqNb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:08:15 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id y5so1277779pfb.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 03:08:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
- :message-id:content-transfer-encoding;
- bh=V+STn4/8h+0difuP3W5zfDidG8Dc47ssZYZdnW6nmnM=;
- b=RRCArEfUpautWlME1gGMXjTP9v5kM6rF5K2r/EnfjRSfHiRThn4YFzQVC2eCGZZWKU
- +ff2f2siPSDO6Xzm0yTXjIuF9XAauNLqoxJlqmmdtWC9hwVWodHfkBiMzMGidIcTtZTL
- HoAye5cygIhhAzOFrf4sT/QxByvtrz07Ei6dE6QzJTXd+dlk30fdzY2dIeVk4jfYBGJ0
- kZMVevnZIAhcdXyzGm+ekzOkj1EUmDVsBo4b0djohsH3kfA9MFEPN0sN3vwWPZIu5FYE
- HqeUZh9P809onwsBng79ioAvjYgn86OOOH+655i91F31WdguSwOLCPCmq3hrU/1D9eBA
- oqdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=V+STn4/8h+0difuP3W5zfDidG8Dc47ssZYZdnW6nmnM=;
- b=NdcD7GdAL2fvwFDjVLtCu+dp4kUC1z23zu+N7jAGeyXID5dkxxQI7/+WG5gTqptIxD
- 6LEqYkq22HT7vJShi1BAP5Ppi5rNTqLN0QwFW8jcBo5ps2KvdAQ4WgudLSkND1qlVhye
- xQSY/JrOBLKFbAiLpxga0AfA++9V2J/9V20S3oD5Lozk0hvaWfeA3Wk2NKFpKeZRU9+W
- v9jWuczwf5bhcbHPUf45g9QmGycEDpDGaf3h8SYGzMejCxoxvDA60NCxvRX/jglsDMNK
- tl+a93LWytrCEvwvjyhpv6KsHJ0Oaof7GOgwS8kSOuEp8LXxByfQOIo+oW+VNFZrUP4r
- euUw==
-X-Gm-Message-State: APjAAAVb+KFzlw2PiAinDChtqX3bh/CeMz1sXvq8r0YLuhgmxe0ZIyZp
- YPaMLYbtKg3U2UGfFyR8q53yHydz
-X-Google-Smtp-Source: APXvYqywgheofKrY1NuGGV+y8PUfzEOGP6oiLdulwDTi2reYnpB5s19iQkyN5D5EaOwtRHQoAfQJRQ==
-X-Received: by 2002:a63:7f5c:: with SMTP id p28mr3447754pgn.212.1582715292357; 
- Wed, 26 Feb 2020 03:08:12 -0800 (PST)
-Received: from localhost ([61.68.187.74])
- by smtp.gmail.com with ESMTPSA id l15sm2422099pgi.31.2020.02.26.03.08.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Feb 2020 03:08:11 -0800 (PST)
-Date: Wed, 26 Feb 2020 21:03:51 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SChc6Fn4zDqR0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:08:16 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
  big-endian PowerKVM load
-To: bugzilla-daemon@bugzilla.kernel.org, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 26 Feb 2020 11:08:14 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: npiggin@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206669-206035-oC93mPdDmN@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
 References: <bug-206669-206035@https.bugzilla.kernel.org/>
- <bug-206669-206035-ZVCbFl0u4b@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206669-206035-ZVCbFl0u4b@https.bugzilla.kernel.org/>
-MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1582714660.bopln5sr51.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,11 +65,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
+
+--- Comment #5 from npiggin@gmail.com ---
 bugzilla-daemon@bugzilla.kernel.org's on February 26, 2020 8:28 pm:
 > https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 >=20
 > --- Comment #4 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.=
-de) ---
+de)
+> ---
 > (In reply to npiggin from comment #3)
 >> Do you have tracing / ftrace enabled in the host kernel for any
 >> reason? Turning that off might let the oops message get printed.
@@ -110,8 +94,7 @@ de) ---
 > # CONFIG_FTRACE_STARTUP_TEST is not set
 > root@watson:~#
 >=20
-> Do you have the kernel command option at hand which disables ftrace on th=
-e
+> Do you have the kernel command option at hand which disables ftrace on the
 > command line? Is it just ftrace=3Doff?
 
 Hmm, not sure, Documentation/admin-guide/kernel-parameters.txt seems
@@ -127,6 +110,7 @@ you start the test.
 >> >>
 >> >>
 >> >>
+>>
 >> http://snapshot.debian.org/archive/debian/20200211T210433Z/pool/main/l/l=
 inux/linux-image-5.4.0-0.bpo.3-powerpc64le_5.4.13-1%7Ebpo10%2B1_ppc64el.deb
 >>=20
@@ -152,4 +136,7 @@ Cool
 
 Thanks,
 Nick
-=
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
