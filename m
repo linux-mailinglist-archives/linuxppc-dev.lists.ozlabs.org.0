@@ -2,50 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8D516F5C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 03:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AB716F5DE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 03:57:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S0c75K4MzDqLt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 13:48:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S0pD2jTFzDqNH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 13:57:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Moy0oe77; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S0YL41MZzDqSr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 13:46:14 +1100 (AEDT)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id EFB8B26D42309F11D23E;
- Wed, 26 Feb 2020 10:46:10 +0800 (CST)
-Received: from [127.0.0.1] (10.173.221.195) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0;
- Wed, 26 Feb 2020 10:46:02 +0800
-Subject: Re: [PATCH v3 6/6] powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst
- to kaslr-booke.rst and add 64bit part
-To: Christophe Leroy <christophe.leroy@c-s.fr>, <mpe@ellerman.id.au>,
- <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
- <oss@buserror.net>
-References: <20200206025825.22934-1-yanaijie@huawei.com>
- <20200206025825.22934-7-yanaijie@huawei.com>
- <77c4a404-3ce5-5090-bbff-aaca71507146@c-s.fr>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <1b1c7659-2eb0-81ab-78e1-061c1e300986@huawei.com>
-Date: Wed, 26 Feb 2020 10:46:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S0mP6pK4zDqKT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 13:55:47 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id r67so627940pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 18:55:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=bfSVMJ6Zntz6A9BJaM12dNm4EQGGybEoHbVncbTsUMA=;
+ b=Moy0oe77F1nP33WomY+/yVeQF9YOUm9A+K2Dmya3vWO3y1gDf7kXx+ARQoGIqJsbcn
+ sPDlocDXHhiYZjO+XyXUp5tQV8BJw2C7x+2ghY8gYyPWFQ7qduGfKCkjbgpdinZcGNjB
+ WxhCMHnCKG0c8t5hywtULwpBqj4C0bP6PHBAoxnZH9WUICVJuyrYV1mqj2wAShGjfCs6
+ tIJzuV4Fe3jr6nyPLQ/HjFbLHYzt3rgUTWbLX8hMswIRiB57T3uJgkHbl/XIWiXtE5Fv
+ PNehsU30K6Pj2wGG2X6MPSgieuIgHYhU1Oya8m/3JHtMlRpQXMzTlhwP7/IXW+Pi/+xR
+ gauw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=bfSVMJ6Zntz6A9BJaM12dNm4EQGGybEoHbVncbTsUMA=;
+ b=rrE6ChQmfkfDCTaEA4uVVQ1/1N/OebfSAIPFG10FkkzsbbOAFzvJCsAxgkef1TC9Yu
+ 0ASP91O7ctqtWslxaYC5U+LV2jlzefoX8tkbiLL0qoHWleK0HTJfMurJqLmJk4QsX4OZ
+ AFboARMT4aSTVqBlDmFmlXodzU4mGsu52dPu4p+S+hjCHMvcjgX/9A/DfSLmiPm4O7Fl
+ LYDMaXW520FORcw9yro9nUNibjMYjZyj5YqozLsWGm4eMAvot/hX2bIxq8b3qvdjHOwm
+ NPWEfNflibyOTIK+0wILUUlCRkdKKkU0GZV+oj68FhuT8836TzWCyCxoe6j6/Ko+uBc0
+ lgBQ==
+X-Gm-Message-State: APjAAAXCxN3W25e/6i+AMJDja5Qc2Q41Hlhuactr7hMnMF2pwwIOSiiy
+ fFlsTk0Gkeq3gH4H1AAtvrI=
+X-Google-Smtp-Source: APXvYqxX5rlyRMCuaRBBYuYMduxdjpm5x24xmrS5n9R3CJux7Jc4o6x9N7kxgP+pNGY/fDI9hDV73g==
+X-Received: by 2002:a17:902:9f88:: with SMTP id
+ g8mr1790693plq.100.1582685743306; 
+ Tue, 25 Feb 2020 18:55:43 -0800 (PST)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id l13sm444798pjq.23.2020.02.25.18.55.42
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 25 Feb 2020 18:55:43 -0800 (PST)
+Date: Tue, 25 Feb 2020 18:55:40 -0800
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: Re: [PATCH v2 3/3] ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and
+ platform drivers
+Message-ID: <20200226025540.GA22445@Asurada-Nvidia.nvidia.com>
+References: <VE1PR04MB6479BCA376502F6F1251602BE3EC0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+ <20200225080350.GA11332@Asurada>
+ <CAA+D8AMFzDs8uXiR-N8harRVmhC+3i8p9HdO2CgxOCX8WVfXAw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <77c4a404-3ce5-5090-bbff-aaca71507146@c-s.fr>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.221.195]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA+D8AMFzDs8uXiR-N8harRVmhC+3i8p9HdO2CgxOCX8WVfXAw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,44 +84,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>, "S.j. Wang" <shengjiu.wang@nxp.com>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-在 2020/2/20 21:50, Christophe Leroy 写道:
+On Wed, Feb 26, 2020 at 09:51:39AM +0800, Shengjiu Wang wrote:
+> > > > > +static const struct regmap_config fsl_easrc_regmap_config = {
+> > > > > +     .readable_reg = fsl_easrc_readable_reg,
+> > > > > +     .volatile_reg = fsl_easrc_volatile_reg,
+> > > > > +     .writeable_reg = fsl_easrc_writeable_reg,
+> > > >
+> > > > Can we use regmap_range and regmap_access_table?
+> > > >
+> > >
+> > > Can the regmap_range support discontinuous registers?  The
+> > > reg_stride = 4.
+> >
+> > I think it does. Giving an example here:
+> > https://github.com/torvalds/linux/blob/master/drivers/mfd/da9063-i2c.c
 > 
+> The register in this i2c driver are continuous,  from 0x00, 0x01, 0x02...
 > 
-> Le 06/02/2020 à 03:58, Jason Yan a écrit :
->> Now we support both 32 and 64 bit KASLR for fsl booke. Add document for
->> 64 bit part and rename kaslr-booke32.rst to kaslr-booke.rst.
->>
->> Signed-off-by: Jason Yan <yanaijie@huawei.com>
->> Cc: Scott Wood <oss@buserror.net>
->> Cc: Diana Craciun <diana.craciun@nxp.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Nicholas Piggin <npiggin@gmail.com>
->> Cc: Kees Cook <keescook@chromium.org>
->> ---
->>   .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 ++++++++++++++++---
->>   1 file changed, 31 insertions(+), 4 deletions(-)
->>   rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} 
->> (59%)
-> 
-> Also update Documentation/powerpc/index.rst ?
-> 
+> But our case is 0x00, 0x04, 0x08, does it work?
 
-Oh yes, thanks for reminding me of this.
-
-Thanks,
-Jason
-
-> Christophe
-> 
-> .
-
+Ah...I see your point now. I am not very sure -- have only used
+in I2C drivers. You can ignore if it doesn't likely work for us.
