@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8086516F885
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 08:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2123D16F88E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 08:31:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S6pm6whXzDqNx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:28:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S6sr689MzDqXs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:30:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=+jiy=4o=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=cs0L8wZs; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S6mp38ztzDq6N
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 18:26:34 +1100 (AEDT)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
- big-endian PowerKVM load
-Date: Wed, 26 Feb 2020 07:26:31 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: glaubitz@physik.fu-berlin.de
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-206669-206035-j2X3hiFswk@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
-References: <bug-206669-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S6r34VNdzDqJB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 18:29:23 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48S6qz2wrNz9txkm;
+ Wed, 26 Feb 2020 08:29:19 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=cs0L8wZs; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id j9_mpiIHAS2l; Wed, 26 Feb 2020 08:29:19 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48S6qz1kTfz9txkl;
+ Wed, 26 Feb 2020 08:29:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582702159; bh=a8SYvzvnlOIBi57mqwe6Lh2gVEDqxoLQIno02IN+QIQ=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=cs0L8wZsiYQVCfe7j0+wjVQwXQAry4k+c6dHNTKJL+uvvVDyNX0TilLfnWlFglYz+
+ lUh13DUEJ68FXEhx65kq3/rUOiK031uQY+4z1FsZ262j6yP8wLJoHoqMkv08Llka8g
+ ZDndOONLrHGyTKh4LqV+DeiQ3BHdzBoOzkIxxxHw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B3DD8B835;
+ Wed, 26 Feb 2020 08:29:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ef64PH4e5mef; Wed, 26 Feb 2020 08:29:20 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8EEC18B776;
+ Wed, 26 Feb 2020 08:29:19 +0100 (CET)
+Subject: Re: [PATCH v5 8/8] powerpc/mm: Disable set_memory() routines when
+ strict RWX isn't enabled
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+References: <20200226063551.65363-1-ruscur@russell.cc>
+ <20200226063551.65363-9-ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <0c858bb2-9be8-ff77-d5ec-7f74700cdb85@c-s.fr>
+Date: Wed, 26 Feb 2020 08:29:11 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <20200226063551.65363-9-ruscur@russell.cc>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,86 +79,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, jniethe5@gmail.com,
+ npiggin@gmail.com, joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 
---- Comment #2 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.de=
-) ---
-(In reply to npiggin from comment #1)
-> Thanks for the report, we need to get more data about the first BUG if=20
-> we can. What function in your vmlinux contains address=20
-> 0xc00000000017a778? (use nm or objdump etc)
 
-Seems to be t select_task_rq_fair:
+Le 26/02/2020 à 07:35, Russell Currey a écrit :
+> There are a couple of reasons that the set_memory() functions are
+> problematic when STRICT_KERNEL_RWX isn't enabled:
+> 
+>   - The linear mapping is a different size and apply_to_page_range()
+> 	may modify a giant section, breaking everything
+>   - patch_instruction() doesn't know to work around a page being marked
+>   	RO, and will subsequently crash
+> 
+> The latter can be replicated by building a kernel with the set_memory()
+> patches but with STRICT_KERNEL_RWX off and running ftracetest.
 
-root@watson:/boot# nm vmlinux-5.4.0-0.bpo.3-powerpc64le |grep -C5 c00000000=
-017a
-c000000000448550 T select_estimate_accuracy
-c000000000170d20 t select_fallback_rq
-c000000000e4c940 D select_idle_mask
-c000000000179f10 t select_idle_sibling
-c00000000018fd80 t select_task_rq_dl
-c00000000017a640 t select_task_rq_fair
-c000000000177f50 t select_task_rq_idle
-c00000000018c9e0 t select_task_rq_rt
-c00000000019c800 t select_task_rq_stop
-c000000000927710 t selem_alloc.isra.6
-c000000000926e50 t selem_link_map
-root@watson:/boot#
+I agree with Andrew, those changes should go into patch 1.
 
-> Is that the first message you
-> get,
-> No warnings or anything else earlier in the dmesg?
+> 
+> Reported-by: Jordan Niethe <jniethe5@gmail.com>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> ---
+> v5: Apply to both set_memory_attr() and change_memory_attr()
 
-Correct. You can see the login prompt of the host VM watson directly after
-booting up.
+See my comments of v4, additional comments below
 
-> Also 0xc0000000002659a0 would be interesting.
+> v4: New
+> 
+>   arch/powerpc/mm/pageattr.c | 22 ++++++++++++++++------
+>   1 file changed, 16 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> index ee6b5e3b7604..49b8e2e0581d 100644
+> --- a/arch/powerpc/mm/pageattr.c
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -64,13 +64,18 @@ static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+>   
+>   int change_memory_attr(unsigned long addr, int numpages, long action)
+>   {
+> -	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
+> -	unsigned long sz = numpages * PAGE_SIZE;
+> +	unsigned long start, size;
+> +
+> +	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+> +		return 0;
+>   
+>   	if (!numpages)
+>   		return 0;
+>   
+> -	return apply_to_page_range(&init_mm, start, sz, change_page_attr, (void *)action);
+> +	start = ALIGN_DOWN(addr, PAGE_SIZE);
+> +	size = numpages * PAGE_SIZE;
+> +
+> +	return apply_to_page_range(&init_mm, start, size, change_page_attr, (void *)action);
 
-Looks like that's ring_buffer_record_off:
+You don't need to move start and sz initialisation, neither you need to 
+change the name of sz to size.
 
-root@watson:/boot# nm vmlinux-5.4.0-0.bpo.3-powerpc64le |grep -C5
-c0000000002659
-c0000000002667e0 T ring_buffer_read_finish
-c00000000026b4b0 T ring_buffer_read_page
-c000000000265e10 T ring_buffer_read_prepare
-c000000000265ef0 T ring_buffer_read_prepare_sync
-c000000000269ae0 T ring_buffer_read_start
-c000000000265950 T ring_buffer_record_disable
-c000000000266070 T ring_buffer_record_disable_cpu
-c000000000265970 T ring_buffer_record_enable
-c0000000002660c0 T ring_buffer_record_enable_cpu
-c00000000026d470 T ring_buffer_record_is_on
-c00000000026d480 T ring_buffer_record_is_set_on
-c000000000265990 T ring_buffer_record_off
-c000000000265a10 T ring_buffer_record_on
-c000000000266da0 T ring_buffer_reset
-c000000000266a90 T ring_buffer_reset_cpu
-c000000000267cd0 T ring_buffer_resize
-c00000000026d400 T ring_buffer_set_clock
-root@watson:/boot#
+If you want to rename sz to size, do it in the initial patch, but take 
+care of the length of the lines. IIRC I used a short name to have the 
+line fit on a single line with no more than 90 chars.
 
-FWIW, the kernel image comes from this Debian package:
+Christophe
 
->
-> http://snapshot.debian.org/archive/debian/20200211T210433Z/pool/main/l/li=
-nux/linux-image-5.4.0-0.bpo.3-powerpc64le_5.4.13-1%7Ebpo10%2B1_ppc64el.deb
-
-> When reproducing, do you ever get a clean trace of the first bug?
-
-I have logged everything that showed in the console during and after the cr=
-ash.
-After that, the machine no longer responds and has to be hard-resetted.
-
-> Could you try setting /proc/sys/kernel/panic_on_oops and reproducing?
-
-I will try that.
-
-Anything to be considered for the kernel running inside the big-endian VM?
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+>   }
+>   
+>   /*
+> @@ -96,12 +101,17 @@ static int set_page_attr(pte_t *ptep, unsigned long addr, void *data)
+>   
+>   int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot)
+>   {
+> -	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
+> -	unsigned long sz = numpages * PAGE_SIZE;
+> +	unsigned long start, size;
+> +
+> +	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+> +		return 0;
+>   
+>   	if (!numpages)
+>   		return 0;
+>   
+> -	return apply_to_page_range(&init_mm, start, sz, set_page_attr,
+> +	start = ALIGN_DOWN(addr, PAGE_SIZE);
+> +	size = numpages * PAGE_SIZE;
+> +
+> +	return apply_to_page_range(&init_mm, start, size, set_page_attr,
+>   				   (void *)pgprot_val(prot));
+>   }
+> 
