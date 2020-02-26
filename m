@@ -2,78 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55CE170900
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 20:38:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABA01709E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 21:40:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SR0l4sN0zDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 06:37:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SSNW47fXzDqcW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 07:40:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=rientjes@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=B/fXCr6w; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SQz20DBfzDqdx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 06:36:28 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01QJAFjO021620
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 14:10:24 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcnttwme-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 14:10:23 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <nayna@linux.ibm.com>;
- Wed, 26 Feb 2020 19:10:18 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 19:10:15 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01QJAEhm53674226
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Feb 2020 19:10:14 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0150C11C04C;
- Wed, 26 Feb 2020 19:10:14 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71B3111C058;
- Wed, 26 Feb 2020 19:10:11 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.160.92.140])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Feb 2020 19:10:11 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: [PATCH] ima: add a new CONFIG for loading arch-specific policies
-Date: Wed, 26 Feb 2020 14:10:07 -0500
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-x-cbid: 20022619-0008-0000-0000-00000356B53E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022619-0009-0000-0000-00004A77D515
-Message-Id: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-26_07:2020-02-26,
- 2020-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011
- malwarescore=0 spamscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2002260119
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SSKv4DxGzDqkq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 07:37:54 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id 84so361131pfy.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 12:37:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references
+ :user-agent:mime-version;
+ bh=DssbOlJH2ojyRkFsMNLMtEa2IE6NcEhC6tj2pM0TkDM=;
+ b=B/fXCr6w3ivZpRP0pR+ozKOqWQvhe6K8mFugjyi/3NVPUnSSbw/wVhwJsUli4Q+dF+
+ L5/WNNUpOcOx3CI0iIyW9ZlSNS6bJuaqssvO7ZIeD/4+ox8oxkbFLR0XWw9ny0M3zhSK
+ Ro75VvE9ZNSS01fcyA+/Qa+AitVSAgDxp3zLCXpQh7i4IpkcDVH/ih64W+sj+VkSssm6
+ tDoMyWI/Or4x8R+wyZtq2FT7/I/9OyLQrKgeW9dOonIrcEqBfrMRCg3sjcFw6ipYvsCa
+ y+0Wwj5whNgmkCWMJ44BcOhxYlFXH8OfppLc3w0VRP5auV79ev7OTpH2HpLgzPkImL4V
+ VMzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+ :references:user-agent:mime-version;
+ bh=DssbOlJH2ojyRkFsMNLMtEa2IE6NcEhC6tj2pM0TkDM=;
+ b=edFU1IXJOC//l18IhVgPO8VvPtxqPuoAWDFW9IlZNO/VdWwWeGYOsexJs+fVrGwcHN
+ qilJ+OrTBEbRYta+HZ0KP579eRX+Kq9yJU9V9VggR9k+utl5Z4oDKOJxfuNHNg5Ztv3c
+ YTx6QxYi7nie5UnJvcXKogMMp6aPspMYZ/5CzOn6fvHdoYqQoKwCOPZcSBolFdCdxJ7f
+ ioB3+CJviicWuAZc2yPi26LBnW/TTN2+xoJSpDX8ULiZdyoGBL+s+NJVIL+zJU2vX901
+ DB/Tz/fs+NjKQ7bqgYKw2KZgjeqxI5/mwgVp6KwQ7J4dWKo8jBmLOJMgQcwCnivK0S+o
+ R2ng==
+X-Gm-Message-State: APjAAAVEJ3xCwdkEmYQqvpg+dbXZZEWlaL5JeTyuzxB3cVm8pFEtFPVB
+ KtjV/53zunQ4QFKMwZMrTXYO0eMRkVM=
+X-Google-Smtp-Source: APXvYqwUhhH/H/dJXiwpB9VALVveANSXhbGFW4yfoypzGwSX+IMDJUTEIJMx841VFbdu+dVCnzJ26w==
+X-Received: by 2002:a63:4d6:: with SMTP id 205mr604982pge.10.1582749118188;
+ Wed, 26 Feb 2020 12:31:58 -0800 (PST)
+Received: from [2620:15c:17:3:3a5:23a7:5e32:4598]
+ ([2620:15c:17:3:3a5:23a7:5e32:4598])
+ by smtp.gmail.com with ESMTPSA id k24sm541444pgm.61.2020.02.26.12.31.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Feb 2020 12:31:57 -0800 (PST)
+Date: Wed, 26 Feb 2020 12:31:56 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
+In-Reply-To: <20200226190147.GR3771@dhcp22.suse.cz>
+Message-ID: <alpine.DEB.2.21.2002261228060.208847@chino.kir.corp.google.com>
+References: <20200218115525.GD4151@dhcp22.suse.cz>
+ <D6F45EDD-9F2E-4593-B630-55E5BD7DE915@linux.vnet.ibm.com>
+ <20200218142620.GF4151@dhcp22.suse.cz>
+ <35EE65CF-40E3-4870-AEBC-D326977176DA@linux.vnet.ibm.com>
+ <20200218152441.GH4151@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
+ <20200224085812.GB22443@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
+ <20200226184152.GQ3771@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002261843200.8915@www.lameter.com>
+ <20200226190147.GR3771@dhcp22.suse.cz>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,108 +90,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
- zohar@linux.ibm.com, Philipp Rudo <prudo@linux.ibm.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Every time a new architecture defines the IMA architecture specific
-functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
-include file needs to be updated. To avoid this "noise", this patch
-defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
-the different architectures to select it.
+On Wed, 26 Feb 2020, Michal Hocko wrote:
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Philipp Rudo <prudo@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/Kconfig           | 2 +-
- arch/s390/Kconfig              | 1 +
- arch/x86/Kconfig               | 1 +
- include/linux/ima.h            | 3 +--
- security/integrity/ima/Kconfig | 9 +++++++++
- 5 files changed, 13 insertions(+), 3 deletions(-)
+> On Wed 26-02-20 18:44:13, Cristopher Lameter wrote:
+> > On Wed, 26 Feb 2020, Michal Hocko wrote:
+> > 
+> > > Besides that kmalloc_node shouldn't really have an implicit GFP_THISNODE
+> > > semantic right? At least I do not see anything like that documented
+> > > anywhere.
+> > 
+> > Kmalloc_node does not support memory policies etc. Only kmalloc does.
+> > kmalloc_node is mostly used by subsystems that have determined the active
+> > nodes and want a targeted allocation on those nodes.
+>  
+> I am sorry but I have hard time to follow your responses here. They open
+> more questions than they answer for me. The primary point here is that
+> kmalloc_node on a memory less node blows up and panics the kernel. I
+> strongly believe this is a bug. We cannot really make all callers of
+> kmalloc_node and co. to be hotplug aware.
+> 
+> Another question is the semantic of kmalloc_node when the node cannot
+> satisfy the request. I have always thought that the allocation would
+> simply fall back to any other node unless __GFP_THISNODE is explicitly
+> specified.
+> 
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 497b7d0b2d7e..b8ce1b995633 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -246,6 +246,7 @@ config PPC
- 	select SYSCTL_EXCEPTION_TRACE
- 	select THREAD_INFO_IN_TASK
- 	select VIRT_TO_BUS			if !PPC64
-+	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if PPC_SECURE_BOOT
- 	#
- 	# Please keep this list sorted alphabetically.
- 	#
-@@ -978,7 +979,6 @@ config PPC_SECURE_BOOT
- 	prompt "Enable secure boot support"
- 	bool
- 	depends on PPC_POWERNV
--	depends on IMA_ARCH_POLICY
- 	help
- 	  Systems with firmware secure boot enabled need to define security
- 	  policies to extend secure boot to the OS. This config allows a user
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 8abe77536d9d..90ff3633ade6 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -195,6 +195,7 @@ config S390
- 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
- 	select SWIOTLB
- 	select GENERIC_ALLOCATOR
-+	select IMA_SECURE_AND_OR_TRUSTED_BOOT
- 
- 
- config SCHED_OMIT_FRAME_POINTER
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index beea77046f9b..cafa66313fe2 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -230,6 +230,7 @@ config X86
- 	select VIRT_TO_BUS
- 	select X86_FEATURE_NAMES		if PROC_FS
- 	select PROC_PID_ARCH_STATUS		if PROC_FS
-+	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI
- 
- config INSTRUCTION_DECODER
- 	def_bool y
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 1659217e9b60..aefe758f4466 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
- extern void ima_add_kexec_buffer(struct kimage *image);
- #endif
- 
--#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
--	|| defined(CONFIG_PPC_SECURE_BOOT)
-+#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
- extern bool arch_ima_get_secureboot(void);
- extern const char * const *arch_get_ima_policy(void);
- #else
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 3f3ee4e2eb0d..d17972aa413a 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
- 	depends on IMA_MEASURE_ASYMMETRIC_KEYS
- 	depends on SYSTEM_TRUSTED_KEYRING
- 	default y
-+
-+config IMA_SECURE_AND_OR_TRUSTED_BOOT
-+	bool
-+	depends on IMA
-+	depends on IMA_ARCH_POLICY
-+	default n
-+	help
-+	   This option is selected by architectures to enable secure and/or
-+	   trusted boot based on IMA runtime policies.
--- 
-2.18.1
+Am I right in classifying this as a trade-off between an 
+unlikely(!node_state(nid, N_MEMORY)) directly in kmalloc_node() vs fixing 
+up a caller passing a memoryless nid?
 
+Seems like we wouldn't want to penalize kmalloc_node() for making such a 
+check for 99.99% of allocators that don't need it and would rather do a 
+node_to_mem_node(nid) or numa_mem_id() in the caller?
