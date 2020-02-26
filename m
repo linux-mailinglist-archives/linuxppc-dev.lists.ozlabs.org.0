@@ -2,44 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8003170660
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:44:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 343A51707AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 19:27:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SNTK3xf0zDqdR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 04:44:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SPRL5kX0zDqX8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 05:27:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
- receiver=<UNKNOWN>)
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
+ envelope-from=cl@linux.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from gentwo.org (gentwo.org [3.19.106.255])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SNPV6Bz0zDqTQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 04:40:46 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 75EEDAE85;
- Wed, 26 Feb 2020 17:40:42 +0000 (UTC)
-Subject: Re: [PATCH V2 3/4] mm/vma: Replace all remaining open encodings with
- is_vm_hugetlb_page()
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <1582520593-30704-1-git-send-email-anshuman.khandual@arm.com>
- <1582520593-30704-4-git-send-email-anshuman.khandual@arm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <79d454cb-9b7e-4fc2-6381-3da93f17ddc1@suse.cz>
-Date: Wed, 26 Feb 2020 18:40:41 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SPP76lMpzDqhS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 05:25:31 +1100 (AEDT)
+Received: by gentwo.org (Postfix, from userid 1002)
+ id 5726E3EC05; Wed, 26 Feb 2020 18:25:28 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by gentwo.org (Postfix) with ESMTP id 5630E3EC04;
+ Wed, 26 Feb 2020 18:25:28 +0000 (UTC)
+Date: Wed, 26 Feb 2020 18:25:28 +0000 (UTC)
+From: Christopher Lameter <cl@linux.com>
+X-X-Sender: cl@www.lameter.com
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
+In-Reply-To: <20200224085812.GB22443@dhcp22.suse.cz>
+Message-ID: <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+ <cf6be5f5-4bbc-0d34-fb64-33fd37bc48d9@virtuozzo.com>
+ <0ba2a3c6-6593-2cee-1cef-983cd75f920f@virtuozzo.com>
+ <F5A68B0C-AFDE-4C45-B0F3-12A5154204E6@linux.vnet.ibm.com>
+ <20200218115525.GD4151@dhcp22.suse.cz>
+ <D6F45EDD-9F2E-4593-B630-55E5BD7DE915@linux.vnet.ibm.com>
+ <20200218142620.GF4151@dhcp22.suse.cz>
+ <35EE65CF-40E3-4870-AEBC-D326977176DA@linux.vnet.ibm.com>
+ <20200218152441.GH4151@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
+ <20200224085812.GB22443@dhcp22.suse.cz>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <1582520593-30704-4-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,41 +58,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, linux-arch@vger.kernel.org,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/24/20 6:03 AM, Anshuman Khandual wrote:
-> This replaces all remaining open encodings with is_vm_hugetlb_page().
-> 
-> Cc: Paul Mackerras <paulus@ozlabs.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Nick Piggin <npiggin@gmail.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-> Cc: kvm-ppc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+On Mon, 24 Feb 2020, Michal Hocko wrote:
 
-Meh, why is there _page in the function's name... but too many users to bother
-changing it now, I guess.
+> Hmm, nasty. Is there any reason why kmalloc_node behaves differently
+> from the page allocator?
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz
+The page allocator will do the same thing if you pass GFP_THISNODE and
+insist on allocating memory from a node that does not exist.
+
+
+> > > A short summary. kmalloc_node blows up when trying to allocate from a
+> > > memory less node.
+> >
+> > Use kmalloc instead? And set a memory allocation policy?
+>
+> The current code (memcg_expand_one_shrinker_map resp. memcg_alloc_shrinker_maps)
+> already use kvmalloc. Kirill's patch wanted to make those data structure
+> on the respective node and kvmalloc_node sounded like the right thing to
+> do. It comes as a surprise that the kernel simply blows up on a memory
+> less node rather than falling back to a close node gracefully. I suspect
+> this already happens when the target node is out of memory, right?
+
+No. If the target node is out of memory then direct reclaim is going to be
+invovked.
+
+> How would a memory allocation policy help in this case btw.?
+
+It would allow fallback to other nodes.
+
+
