@@ -1,76 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAF816FE18
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:44:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SDVR4zFMzDqXb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 22:44:31 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C5516FE78
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:58:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SDpd59zdzDqbw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 22:58:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=DwCb2jHi; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=ITfJOU+D; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SDRS20kKzDqLp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:41:55 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id d6so1185490pgn.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 03:41:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=NeBw3VBM+IhvwK7nQS2pIV0wLar2ew+Dn3ZrifxSb3w=;
- b=DwCb2jHiIF6k9rytrB2L53ZjX8KjqTutzOYWiNUhgbS0VTaokDm8wEk2vZYslWLuF6
- 4BPHH5gozmIu+JoxS6QvbPgYZ8KV15LiFSpdbRDejExHH37i1VfhOSrF9tCtYtKnHGCI
- w0R+/1azZ3zL74apPsEHQEScw6LjX9rFo+OuY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=NeBw3VBM+IhvwK7nQS2pIV0wLar2ew+Dn3ZrifxSb3w=;
- b=IINSaP/MMeimBF3FRXV0xQqKmGre0Wsah0KNtjixS5SfNX4V9HCG9SxPlzGxCYnkwt
- dohG/tSNG+2u5IJU3On1iT7qDEtYU/adUMAqHd5vAVm1+xRdQsDyx5IDLkWjEq7ahYoY
- sNvcLVlHQgv+z2NCzBU7BHmb5eO2ItmyL4SIdpUcQcLEhf2TUtUzmigp9O6Oz+DUq1ar
- u2TBgJYHqgsIdy+KMwy0FzLn+oKHw8b8YZ5/4xU286gJqAtc2TT1FyCC5RVdPZ6Q9KGn
- juUd5pb4GEuLmyp3VBJnEoNmstkoTDkh7ZbIs3TQQuHAcZVjpGVQra1SxQbWF3cNr9Xt
- pt/w==
-X-Gm-Message-State: APjAAAUfo96Z3FDFOPoIbQhxAJXBejTx3zUa5wE+PX7m4tVIu5pCcAPb
- FBhgdDsClBuid1ytbzhepVZcDEkjYdY=
-X-Google-Smtp-Source: APXvYqyZDXGi8Jx0vIO+r7pha7ZqjrJpvwulRNLLFa5vUudgiuyp7On5VUItqhPPtPOC3IEZTojfFQ==
-X-Received: by 2002:a63:790f:: with SMTP id u15mr3433708pgc.172.1582717310865; 
- Wed, 26 Feb 2020 03:41:50 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-5952-947b-051c-ea5f.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:5952:947b:51c:ea5f])
- by smtp.gmail.com with ESMTPSA id a9sm2666805pfo.35.2020.02.26.03.41.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Feb 2020 03:41:49 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
- keescook@chromium.org, kernel-hardening@lists.openwall.com, oss@buserror.net
-Subject: Re: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
-In-Reply-To: <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
-References: <20200206025825.22934-1-yanaijie@huawei.com>
- <87tv3drf79.fsf@dja-thinkpad.axtens.net>
- <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
-Date: Wed, 26 Feb 2020 22:41:46 +1100
-Message-ID: <87r1yhr2x1.fsf@dja-thinkpad.axtens.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SDjJ1P3FzDqbx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:53:55 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48SDjC5F4kz9txV9;
+ Wed, 26 Feb 2020 12:53:51 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ITfJOU+D; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id OwR_qDdNUJIu; Wed, 26 Feb 2020 12:53:51 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48SDjC4BLXz9txV6;
+ Wed, 26 Feb 2020 12:53:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582718031; bh=ZoTxt/rU2ic1yhcjEwy71g5KNmfHylnPrX34Fztg4go=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=ITfJOU+D/5xMJbRS6eVLSxhNb+MMeSdpqWmGaqokgNPuME9WbqVcFOnrQfoBVSjN2
+ 1R4Jrd1l+35VIFnqsyiOMCoT50lyrxGYrenGO+dUin0IO3NlK5yYjYGz2eQ1IwfVvv
+ 5drw7TmQwA73g2JwF2bVnM7pfE6aGnbxSLrAults=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D4B4A8B846;
+ Wed, 26 Feb 2020 12:53:52 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 8xNqlMQHKHvo; Wed, 26 Feb 2020 12:53:52 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A29B88B776;
+ Wed, 26 Feb 2020 12:53:52 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 7BEC865400; Wed, 26 Feb 2020 11:53:52 +0000 (UTC)
+Message-Id: <6276df0be87a4329c2bb46b3b0f02059ae9e70e6.1582717645.git.christophe.leroy@c-s.fr>
+In-Reply-To: <cover.1582717645.git.christophe.leroy@c-s.fr>
+References: <cover.1582717645.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v3 02/13] powerpc/ptrace: remove unused header includes
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ mikey@neuling.org
+Date: Wed, 26 Feb 2020 11:53:52 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,128 +75,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jason Yan <yanaijie@huawei.com> writes:
+Remove unused header includes in ptrace.c and ptrace32.c
 
-> Hi Daniel,
->
-> =E5=9C=A8 2020/2/26 15:16, Daniel Axtens =E5=86=99=E9=81=93:
->> Hi Jason,
->>=20
->>> This is a try to implement KASLR for Freescale BookE64 which is based on
->>> my earlier implementation for Freescale BookE32:
->>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D131718
->>>
->>> The implementation for Freescale BookE64 is similar as BookE32. One
->>> difference is that Freescale BookE64 set up a TLB mapping of 1G during
->>> booting. Another difference is that ppc64 needs the kernel to be
->>> 64K-aligned. So we can randomize the kernel in this 1G mapping and make
->>> it 64K-aligned. This can save some code to creat another TLB map at
->>> early boot. The disadvantage is that we only have about 1G/64K =3D 16384
->>> slots to put the kernel in.
->>>
->>>      KERNELBASE
->>>
->>>            64K                     |--> kernel <--|
->>>             |                      |              |
->>>          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->>>          |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
->>>          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->>>          |                         |                        1G
->>>          |----->   offset    <-----|
->>>
->>>                                kernstart_virt_addr
->>>
->>> I'm not sure if the slot numbers is enough or the design has any
->>> defects. If you have some better ideas, I would be happy to hear that.
->>>
->>> Thank you all.
->>>
->>=20
->> Are you making any attempt to hide kernel address leaks in this series?
->
-> Yes.
->
->> I've just been looking at the stackdump code just now, and it directly
->> prints link registers and stack pointers, which is probably enough to
->> determine the kernel base address:
->>=20
->>                    SPs:               LRs:             %pS pointer
->> [    0.424506] [c0000000de403970] [c000000001fc0458] dump_stack+0xfc/0x1=
-54 (unreliable)
->> [    0.424593] [c0000000de4039c0] [c000000000267eec] panic+0x258/0x5ac
->> [    0.424659] [c0000000de403a60] [c0000000024d7a00] mount_block_root+0x=
-634/0x7c0
->> [    0.424734] [c0000000de403be0] [c0000000024d8100] prepare_namespace+0=
-x1ec/0x23c
->> [    0.424811] [c0000000de403c60] [c0000000024d7010] kernel_init_freeabl=
-e+0x804/0x880
->>=20
->> git grep \\\"REG\\\" arch/powerpc shows a few other uses like this, all
->> in process.c or in xmon.
->>=20
->
-> Thanks for reminding this.
->
->> Maybe replacing the REG format string in KASLR mode would be sufficient?
->>=20
->
-> Most archs have removed the address printing when dumping stack. Do we=20
-> really have to print this?
->
-> If we have to do this, maybe we can use "%pK" so that they will be=20
-> hidden from unprivileged users.
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/kernel/ptrace/ptrace.c   | 19 ++-----------------
+ arch/powerpc/kernel/ptrace/ptrace32.c | 11 -----------
+ 2 files changed, 2 insertions(+), 28 deletions(-)
 
-I suspect that you will find it easier to convince people to accept a
-change to %pK than removal :)
+diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
+index 25c0424e8868..7ed54dbb2d7e 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace.c
++++ b/arch/powerpc/kernel/ptrace/ptrace.c
+@@ -15,35 +15,20 @@
+  * this archive for more details.
+  */
+ 
+-#include <linux/kernel.h>
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <linux/smp.h>
+-#include <linux/errno.h>
+-#include <linux/ptrace.h>
+ #include <linux/regset.h>
+ #include <linux/tracehook.h>
+ #include <linux/elf.h>
+-#include <linux/user.h>
+-#include <linux/security.h>
+-#include <linux/signal.h>
+-#include <linux/seccomp.h>
+ #include <linux/audit.h>
+-#include <trace/syscall.h>
+ #include <linux/hw_breakpoint.h>
+-#include <linux/perf_event.h>
+ #include <linux/context_tracking.h>
+ #include <linux/nospec.h>
+-
+-#include <linux/uaccess.h>
++#include <linux/syscalls.h>
+ #include <linux/pkeys.h>
+-#include <asm/page.h>
+-#include <asm/pgtable.h>
++
+ #include <asm/switch_to.h>
+ #include <asm/tm.h>
+ #include <asm/asm-prototypes.h>
+ #include <asm/debug.h>
+-#include <asm/hw_breakpoint.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/syscalls.h>
+diff --git a/arch/powerpc/kernel/ptrace/ptrace32.c b/arch/powerpc/kernel/ptrace/ptrace32.c
+index f37eb53de1a1..7976ddf29c0e 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace32.c
++++ b/arch/powerpc/kernel/ptrace/ptrace32.c
+@@ -17,21 +17,10 @@
+  * this archive for more details.
+  */
+ 
+-#include <linux/kernel.h>
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <linux/smp.h>
+-#include <linux/errno.h>
+ #include <linux/ptrace.h>
+ #include <linux/regset.h>
+-#include <linux/user.h>
+-#include <linux/security.h>
+-#include <linux/signal.h>
+ #include <linux/compat.h>
+ 
+-#include <linux/uaccess.h>
+-#include <asm/page.h>
+-#include <asm/pgtable.h>
+ #include <asm/switch_to.h>
+ 
+ /*
+-- 
+2.25.0
 
-BTW, I have a T4240RDB so I might be able to test this series at some
-point - do I need an updated bootloader to pass in a random seed, or is
-the kernel able to get enough randomness by itself? (Sorry if this is
-explained elsewhere in the series, I have only skimmed it lightly!)
-
-Regards,
-Daniel
->
-> Thanks,
-> Jason
->
->> Regards,
->> Daniel
->>=20
->>=20
->>> v2->v3:
->>>    Fix build error when KASLR is disabled.
->>> v1->v2:
->>>    Add __kaslr_offset for the secondary cpu boot up.
->>>
->>> Jason Yan (6):
->>>    powerpc/fsl_booke/kaslr: refactor kaslr_legal_offset() and
->>>      kaslr_early_init()
->>>    powerpc/fsl_booke/64: introduce reloc_kernel_entry() helper
->>>    powerpc/fsl_booke/64: implement KASLR for fsl_booke64
->>>    powerpc/fsl_booke/64: do not clear the BSS for the second pass
->>>    powerpc/fsl_booke/64: clear the original kernel if randomized
->>>    powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to kaslr-booke.rst
->>>      and add 64bit part
->>>
->>>   .../{kaslr-booke32.rst =3D> kaslr-booke.rst}    | 35 +++++++--
->>>   arch/powerpc/Kconfig                          |  2 +-
->>>   arch/powerpc/kernel/exceptions-64e.S          | 23 ++++++
->>>   arch/powerpc/kernel/head_64.S                 | 14 ++++
->>>   arch/powerpc/kernel/setup_64.c                |  4 +-
->>>   arch/powerpc/mm/mmu_decl.h                    | 19 ++---
->>>   arch/powerpc/mm/nohash/kaslr_booke.c          | 71 +++++++++++++------
->>>   7 files changed, 132 insertions(+), 36 deletions(-)
->>>   rename Documentation/powerpc/{kaslr-booke32.rst =3D> kaslr-booke.rst}=
- (59%)
->>>
->>> --=20
->>> 2.17.2
->>=20
->> .
->>=20
