@@ -1,97 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189C616F552
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 02:53:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8ADE16F467
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 01:37:31 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Rxhn0SX3zDqPm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 11:37:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RzNc3YmGzDqdS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:53:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=tb0I8cSF; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Rxfh1Zx7zDqLV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 11:35:40 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01Q0ZVGI061145
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 19:35:38 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcp42d3h-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 19:35:38 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Wed, 26 Feb 2020 00:35:34 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 00:35:28 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01Q0ZRs843254056
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Feb 2020 00:35:27 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6BA844C04E;
- Wed, 26 Feb 2020 00:35:27 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE81D4C044;
- Wed, 26 Feb 2020 00:35:26 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Feb 2020 00:35:26 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 138A1A00F1;
- Wed, 26 Feb 2020 11:35:22 +1100 (AEDT)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 26 Feb 2020 11:35:25 +1100
-In-Reply-To: <CAPcyv4g_762vho=L21BuO=97zr9Cq14np88bnFieiYN25BvJtA@mail.gmail.com>
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <CAPcyv4j2hut1YDrotC=QkcM+S0SZwpd9_4hD2aChn+cKD+62oA@mail.gmail.com>
- <240fbefc6275ac0a6f2aa68715b3b73b0e7a8310.camel@au1.ibm.com>
- <20200224043750.GM24185@bombadil.infradead.org>
- <83034494d5c3da1fa63b172e844f85d0fec7910a.camel@au1.ibm.com>
- <CAOSf1CHYEJf02EV0kYMk+D9s=4PiTXSM1eFcRGYe7XJrHvtAtA@mail.gmail.com>
- <b981f4e6cc308a617e7944e3ce23009e804cfdbf.camel@au1.ibm.com>
- <CAPcyv4g_762vho=L21BuO=97zr9Cq14np88bnFieiYN25BvJtA@mail.gmail.com>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RzLj0kGfzDqRx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 12:51:54 +1100 (AEDT)
+Received: by mail-qk1-x744.google.com with SMTP id u124so1145443qkh.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 17:51:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ExNh/gghsj1ImBILJ0ozb3ysT/hRkbhT4G0voLUZVgI=;
+ b=tb0I8cSFTYgT7uR05Z3XcyQJudBEyylDCJtGYxlyf+qKYaSVvQWf55BjyB0khyCpLk
+ URIaKz8zV1v01cmlqTYofRQsyBn8Q5Xt2rQEalI+Bp/hZVGA+FiZ+yRld1QP6kbZoWGJ
+ 7Gj0IK6HUXHNGltU2GzHzrFP3clFdNNN+0OktaNn9k/nST5HQ3mzbSEIY+czvohawaQD
+ MAhSbkhjjugNTm+rbJ245lRRzWZKczZJpSiFeufw6NQb6WrEVegjDueb6bBFi4UeBGyu
+ c6Jc6g0+n6samzd3DBCYRm9UKYyRa0j4nQ79StvG/C232fibx7lajHhp71iMwm8podbN
+ axzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ExNh/gghsj1ImBILJ0ozb3ysT/hRkbhT4G0voLUZVgI=;
+ b=IRwI6stqULgsR0RtAaQUBh0UTuboj6NBDjXTcVzd1UnnHH94Y7wioWffEIJSEJNMav
+ eqcLrPnhz0j4XQIW4bzDojDKYSlhq+zpRzb+4nYkOcN9nDOsWdIpHjFzCujjtMLMouaT
+ nJzYKNtiveNNnSI2jgloaAspl6FTRj+oTdjmC7v+Gvlo6AaebjuNp7jv58XX8wnlMiLi
+ tCB4urNbE77kflKBUcmnW5XvoASAWfKh78K6dnq761d2aN5EY2tyB8ISlNqQBEPEDgqx
+ pkToCsxeEga3eKIHhJ4jmPdeXkLCuoiCOAzr1NzFCyVgmVo3xXqub9223XcA2Ni/61bx
+ Ik7A==
+X-Gm-Message-State: APjAAAWQDEBnJIXb3MHDDN4dkTwa7w/VU+MXscckGEfSx6QVqB6n7A4E
+ ui29r0m19ed31SOUiLBoRbL1UtetTAcHCazRbow=
+X-Google-Smtp-Source: APXvYqyynmPK9+Rdbdj6+s+AmVwrzFwMwUtQnyhXObjLlWE28j9mHJIWKxFk9yjPuy5ceKsGuAuF/TUUtksL5KcdvEY=
+X-Received: by 2002:a37:5c9:: with SMTP id 192mr2480838qkf.103.1582681910840; 
+ Tue, 25 Feb 2020 17:51:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022600-0012-0000-0000-0000038A44FB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022600-0013-0000-0000-000021C6E901
-Message-Id: <0e605b595cd03ef34c41a0b3d2304d7fb3ed7690.camel@au1.ibm.com>
-Subject: RE: [PATCH v3 00/27] Add support for OpenCAPI Persistent Memory
- devices
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-25_09:2020-02-25,
- 2020-02-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- adultscore=0 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260001
+References: <VE1PR04MB6479BCA376502F6F1251602BE3EC0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+ <20200225080350.GA11332@Asurada>
+In-Reply-To: <20200225080350.GA11332@Asurada>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 26 Feb 2020 09:51:39 +0800
+Message-ID: <CAA+D8AMFzDs8uXiR-N8harRVmhC+3i8p9HdO2CgxOCX8WVfXAw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and
+ platform drivers
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,123 +74,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Rob Herring <robh@kernel.org>,
- Dave Jiang <dave.jiang@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Matthew Wilcox <willy@infradead.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
- Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>, "S.j. Wang" <shengjiu.wang@nxp.com>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-02-25 at 16:32 -0800, Dan Williams wrote:
-> On Tue, Feb 25, 2020 at 4:14 PM Alastair D'Silva <
-> alastair@au1.ibm.com> wrote:
-> > On Mon, 2020-02-24 at 17:51 +1100, Oliver O'Halloran wrote:
-> > > On Mon, Feb 24, 2020 at 3:43 PM Alastair D'Silva <
-> > > alastair@au1.ibm.com> wrote:
-> > > > On Sun, 2020-02-23 at 20:37 -0800, Matthew Wilcox wrote:
-> > > > > On Mon, Feb 24, 2020 at 03:34:07PM +1100, Alastair D'Silva
-> > > > > wrote:
-> > > > > > V3:
-> > > > > >   - Rebase against next/next-20200220
-> > > > > >   - Move driver to arch/powerpc/platforms/powernv, we now
-> > > > > > expect
-> > > > > > this
-> > > > > >     driver to go upstream via the powerpc tree
-> > > > > 
-> > > > > That's rather the opposite direction of normal; mostly
-> > > > > drivers
-> > > > > live
-> > > > > under
-> > > > > drivers/ and not in arch/.  It's easier for drivers to get
-> > > > > overlooked
-> > > > > when doing tree-wide changes if they're hiding.
-> > > > 
-> > > > This is true, however, given that it was not all that desirable
-> > > > to
-> > > > have
-> > > > it under drivers/nvdimm, it's sister driver (for the same
-> > > > hardware)
-> > > > is
-> > > > also under arch, and that we don't expect this driver to be
-> > > > used on
-> > > > any
-> > > > platform other than powernv, we think this was the most
-> > > > reasonable
-> > > > place to put it.
-> > > 
-> > > Historically powernv specific platform drivers go in their
-> > > respective
-> > > subsystem trees rather than in arch/ and I'd prefer we kept it
-> > > that
-> > > way. When I added the papr_scm driver I put it in the pseries
-> > > platform
-> > > directory because most of the pseries paravirt code lives there
-> > > for
-> > > some reason; I don't know why. Luckily for me that followed the
-> > > same
-> > > model that Dan used when he put the NFIT driver in drivers/acpi/
-> > > and
-> > > the libnvdimm core in drivers/nvdimm/ so we didn't have anything
-> > > to
-> > > argue about. However, as Matthew pointed out, it is at odds with
-> > > how
-> > > most subsystems operate. Is there any particular reason we're
-> > > doing
-> > > things this way or should we think about moving libnvdimm users
-> > > to
-> > > drivers/nvdimm/?
-> > > 
-> > > Oliver
-> > 
-> > I'm not too fussed where it ends up, as long as it ends up
-> > somewhere :)
-> > 
-> > From what I can tell, the issue is that we have both
-> > "infrastructure"
-> > drivers, and end-device drivers. To me, it feels like
-> > drivers/nvdimm
-> > should contain both, and I think this feels like the right
-> > approach.
-> > 
-> > I could move it back to drivers/nvdimm/ocxl, but I felt that it was
-> > only tolerated there, not desired. This could be cleared up with a
-> > response from Dan Williams, and if it is indeed dersired, this is
-> > my
-> > preferred location.
-> 
-> Apologies if I gave the impression it was only tolerated. I'm ok with
-> drivers/nvdimm/ocxl/, and to the larger point I'd also be ok with a
-> drivers/{acpi => nvdimm}/nfit and {arch/powerpc/platforms/pseries =>
-> drivers/nvdimm}/papr_scm.c move as well to keep all the consumers of
-> the nvdimm related code together with the core.
+On Tue, Feb 25, 2020 at 4:05 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+>
+> On Mon, Feb 24, 2020 at 08:53:25AM +0000, S.j. Wang wrote:
+> > Hi
+> >
+> > > >
+> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > > ---
+> > > >  sound/soc/fsl/Kconfig           |   10 +
+> > > >  sound/soc/fsl/Makefile          |    2 +
+> > > >  sound/soc/fsl/fsl_asrc_common.h |    1 +
+> > > >  sound/soc/fsl/fsl_easrc.c       | 2265 +++++++++++++++++++++++++++++++
+> > > >  sound/soc/fsl/fsl_easrc.h       |  668 +++++++++
+> > > >  sound/soc/fsl/fsl_easrc_dma.c   |  440 ++++++
+> > >
+> > > I see a 90% similarity between fsl_asrc_dma and fsl_easrc_dma files.
+> > > Would it be possible reuse the existing code? Could share structures from
+> > > my point of view, just like it reuses "enum asrc_pair_index", I know
+> > > differentiating "pair" and "context" is a big point here though.
+> > >
+> > > A possible quick solution for that, off the top of my head, could be:
+> > >
+> > > 1) in fsl_asrc_common.h
+> > >
+> > >         struct fsl_asrc {
+> > >                 ....
+> > >         };
+> > >
+> > >         struct fsl_asrc_pair {
+> > >                 ....
+> > >         };
+> > >
+> > > 2) in fsl_easrc.h
+> > >
+> > >         /* Renaming shared structures */
+> > >         #define fsl_easrc fsl_asrc
+> > >         #define fsl_easrc_context fsl_asrc_pair
+> > >
+> > > May be a good idea to see if others have some opinion too.
+> > >
+> >
+> > We need to modify the fsl_asrc and fsl_asrc_pair, let them
+> > To be used by both driver,  also we need to put the specific
+> > Definition for each module to same struct, right?
+>
+> Yea. A merged structure if that doesn't look that bad. I see most
+> of the fields in struct fsl_asrc are being reused by in fsl_easrc.
+>
+> > >
+> > > > +static const struct regmap_config fsl_easrc_regmap_config = {
+> > > > +     .readable_reg = fsl_easrc_readable_reg,
+> > > > +     .volatile_reg = fsl_easrc_volatile_reg,
+> > > > +     .writeable_reg = fsl_easrc_writeable_reg,
+> > >
+> > > Can we use regmap_range and regmap_access_table?
+> > >
+> >
+> > Can the regmap_range support discontinuous registers?  The
+> > reg_stride = 4.
+>
+> I think it does. Giving an example here:
+> https://github.com/torvalds/linux/blob/master/drivers/mfd/da9063-i2c.c
 
-Great, thanks for clarifying, text is so imprecise when it comes to
-nuance :)
+The register in this i2c driver are continuous,  from 0x00, 0x01, 0x02...
 
-I'll move ti back to drivers/nvdimm/ocxl then.
+But our case is 0x00, 0x04, 0x08, does it work?
 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
-
+best regards
+wang shengjiu
