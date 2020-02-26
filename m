@@ -1,86 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BED16F84A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 08:01:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S6D14KzJzDqxh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:01:37 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E7316F84B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 08:03:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S6GL5tjnzDqyB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:03:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.27;
- helo=wnew2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=fzJATGDo; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=qRtBUCWh; 
- dkim-atps=neutral
-X-Greylist: delayed 298 seconds by postgrey-1.36 at bilbo;
- Wed, 26 Feb 2020 17:41:31 AEDT
-Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com
- [64.147.123.27])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=NqCM7Mw+; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S5mq62QCzDqmq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:41:31 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailnew.west.internal (Postfix) with ESMTP id DE560475;
- Wed, 26 Feb 2020 01:36:32 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Wed, 26 Feb 2020 01:36:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm1; bh=kp8u9qL5i5T1m
- QUU2K/sNa+O6ICOZSqNmkNONM8HCIA=; b=fzJATGDokN1+R+MlmNqqa13I3oLTq
- OkzLJ7lhs5ghIs1tFaMk0ljnYHBPpfoygjxDUDw97FJBJJSPGdkoQN8W2VqM3MF+
- OINrLWpgpgBYy6LmdnpU0fz49+qlnDJAgq3BVz1PjdFt0mFr6gl31d4t1O70PZXC
- Tfcv5P5ApNbE3EIoNF+udZYV9TNFgdgir2EdR0/Lj6dDWBNpP1j7h71LArZRnoRY
- G33RK5MNlC9z4HFpa+S/CoUSbd1I4PxoxawB8SZM8eBDi3N7kSOHRLTkSdli3Qb2
- N5biH5UpTcG3FRdM/laciMGA4S6wgpZ8fLoNPYW/WnlWd6+LkAjFiU6Qw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=kp8u9qL5i5T1mQUU2K/sNa+O6ICOZSqNmkNONM8HCIA=; b=qRtBUCWh
- 6sRn7gRUKt9JnHKqRL1rmrGS6E2TgS5qT0MvRFBnqqPnneowNTCpNcHbDyaVfpxx
- uRB+jwq8dM+q/20vhRIHcOBN6IQfk35vxx6WBqw8LJyV9GX2sC0ohsgEjbcqs2E0
- mjdw3YEnBaLh1RpKYLeKXX7Y3E34Xx9WyMmrH84Sw8fGftD+BxNm5wjcHD+5IOVc
- oICmk7iNicWKTfSOubPkNyItxPx4j5RPkwgNB/wHCVUkXcWvF/iDu/fugQFHUOh8
- 5R/oXt6+S6RjwZ/ZK+C4LOFGXZm8Bv8L5n7A83gjCyY75katBdLbGCqeKtNrm8Fz
- QJa5Qi4B2JI1tw==
-X-ME-Sender: <xms:8BFWXh-14232arNZb80RwQozkVJEQgPpZX3bPHtrLfDAOTGEeb7vcw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrleefgdelkecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculddutddmnecujfgurhephffvufffkffojghfggfgsedtkeertdertddt
- necuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhushhsvg
- hllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecuvehluhhsthgvrhfuihii
- vgepheenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrd
- gttg
-X-ME-Proxy: <xmx:8BFWXmN_qLxEeTlILR3cGdlJaZbu378a6u9S6OLG00QNmw0wLKBlNw>
- <xmx:8BFWXgsZ3RjlblJzAEmdfA8hfAEcDF5hrAUajFRipE9nxdksNqsbXA>
- <xmx:8BFWXg3BaG2cXgkoPtj8XvK9gG7p2V_Lv_fKBmTO9d_7hIxwLpX4Ig>
- <xmx:8BFWXrdwf5Y7SRUCpXhobxrqsFZ7EoUO8LtYQl9N7e0FPtzvsypxb-rYWF8>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id E365030610DB;
- Wed, 26 Feb 2020 01:36:28 -0500 (EST)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 6/8] powerpc/mm: implement set_memory_attr()
-Date: Wed, 26 Feb 2020 17:35:49 +1100
-Message-Id: <20200226063551.65363-7-ruscur@russell.cc>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200226063551.65363-1-ruscur@russell.cc>
-References: <20200226063551.65363-1-ruscur@russell.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S5z16LRPzDqcN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 17:50:21 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id u12so814035pgb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 22:50:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=Dyi3LDVfYP/T9T0L+kYKwVivO3oe5wJ8DGKkzikRHUg=;
+ b=NqCM7Mw+e1JGqrmQO3fBOB2Yfs8bbYBd1zrNxSlZryJ6oEfe14reMzO2jiLaXTRG/2
+ yQhRzSIjhjm2utXWpzNwAcR9NC7uln2MZ97Mn37T8lpWde1c7lMbbb3W7g2uZeLKbpq8
+ ieJF4vizVJeWkuFgdPKnY+dEKbsZ1BPZTmIodFdrMAxLOhXBea7K0lnsF21ndVXjoQX/
+ J6pvmAH5v+yy6in4Q9bBLljYVS5sGZIazk1Pj0k/ggSh76lKQdOLzoseEQJeAnH5e+eh
+ N39YXhMKFjOUeCDe54uK9G/dknSftVg3YSIGgmii2zBLeVVMZDzcYVn/yUpapci8yoJm
+ ylEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=Dyi3LDVfYP/T9T0L+kYKwVivO3oe5wJ8DGKkzikRHUg=;
+ b=At9KNOEb6n7wCQbLR7w2oheP80X96h1SJEwspgGxsaKcst/SeM99iuffiWKVSoklj6
+ nh4pmv82JG7dn2oD0Myw1mSdUIhBdN7D6IEQVpbdQoFdBu2PIbtmcap2aZxBD4CZ0rZx
+ om+eLt2ozzkfBInoyEzybT2yFns0up/yH124lu/zrjAYtFBKIK/vMp6KmPzNCIda4Xqe
+ 7AJIzwlxe51B/es+R2pbzfurXS0Z91QUZb8ie/2HE9MYLybpf3oLZF+Uw8OEphXXkxQo
+ pkCJ//aSYuv+2wt6HDtvoU6+wYZwpzYpbP4kXwE+m/EgaLFu3Zdc4jaYGS/auSfpjO5v
+ SutA==
+X-Gm-Message-State: APjAAAVm/tZrO1sBRhKi9CRZ4KLnNchAz7qF14Y8fCkDfywg36nC4fjb
+ Ygrs8y/rww+IZrwTSggA/pw=
+X-Google-Smtp-Source: APXvYqwglkAUIcYT4TeCdk0f0hTPYrBC5RX6JKqPq/KmEKOJNmRL4TDYdcZbnZvRV1YCCwMnNQpfuw==
+X-Received: by 2002:a63:be09:: with SMTP id l9mr2353259pgf.439.1582699816227; 
+ Tue, 25 Feb 2020 22:50:16 -0800 (PST)
+Received: from localhost ([61.68.187.74])
+ by smtp.gmail.com with ESMTPSA id k9sm1268109pjo.19.2020.02.25.22.50.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Feb 2020 22:50:15 -0800 (PST)
+Date: Wed, 26 Feb 2020 16:46:05 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 01/14] powerpc: Enable Prefixed Instructions
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200226040716.32395-1-jniethe5@gmail.com>
+ <20200226040716.32395-2-jniethe5@gmail.com>
+In-Reply-To: <20200226040716.32395-2-jniethe5@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1582698829.pxzksoow7n.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,90 +80,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, jniethe5@gmail.com,
- Russell Currey <ruscur@russell.cc>, npiggin@gmail.com,
- kbuild test robot <lkp@intel.com>, joel@jms.id.au, dja@axtens.net
+Cc: alistair@popple.id.au, dja@axtens.net, bala24@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+Jordan Niethe's on February 26, 2020 2:07 pm:
+> From: Alistair Popple <alistair@popple.id.au>
+>=20
+> Prefix instructions have their own FSCR bit which needs to enabled via
+> a CPU feature. The kernel will save the FSCR for problem state but it
+> needs to be enabled initially.
+>=20
+> Signed-off-by: Alistair Popple <alistair@popple.id.au>
+> ---
+>  arch/powerpc/include/asm/reg.h    |  3 +++
+>  arch/powerpc/kernel/dt_cpu_ftrs.c | 23 +++++++++++++++++++++++
+>  2 files changed, 26 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
+g.h
+> index 1aa46dff0957..c7758c2ccc5f 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -397,6 +397,7 @@
+>  #define SPRN_RWMR	0x375	/* Region-Weighting Mode Register */
+> =20
+>  /* HFSCR and FSCR bit numbers are the same */
+> +#define FSCR_PREFIX_LG	13	/* Enable Prefix Instructions */
+>  #define FSCR_SCV_LG	12	/* Enable System Call Vectored */
+>  #define FSCR_MSGP_LG	10	/* Enable MSGP */
+>  #define FSCR_TAR_LG	8	/* Enable Target Address Register */
+> @@ -408,11 +409,13 @@
+>  #define FSCR_VECVSX_LG	1	/* Enable VMX/VSX  */
+>  #define FSCR_FP_LG	0	/* Enable Floating Point */
+>  #define SPRN_FSCR	0x099	/* Facility Status & Control Register */
+> +#define   FSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
 
-In addition to the set_memory_xx() functions which allows to change
-the memory attributes of not (yet) used memory regions, implement a
-set_memory_attr() function to:
-- set the final memory protection after init on currently used
-kernel regions.
-- enable/disable kernel memory regions in the scope of DEBUG_PAGEALLOC.
+When you add a new FSCR, there's a couple more things to do, check
+out traps.c.
 
-Unlike the set_memory_xx() which can act in three step as the regions
-are unused, this function must modify 'on the fly' as the kernel is
-executing from them. At the moment only PPC32 will use it and changing
-page attributes on the fly is not an issue.
+>  #define   FSCR_SCV	__MASK(FSCR_SCV_LG)
+>  #define   FSCR_TAR	__MASK(FSCR_TAR_LG)
+>  #define   FSCR_EBB	__MASK(FSCR_EBB_LG)
+>  #define   FSCR_DSCR	__MASK(FSCR_DSCR_LG)
+>  #define SPRN_HFSCR	0xbe	/* HV=3D1 Facility Status & Control Register */
+> +#define   HFSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
+>  #define   HFSCR_MSGP	__MASK(FSCR_MSGP_LG)
+>  #define   HFSCR_TAR	__MASK(FSCR_TAR_LG)
+>  #define   HFSCR_EBB	__MASK(FSCR_EBB_LG)
+> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_c=
+pu_ftrs.c
+> index 182b4047c1ef..396f2c6c588e 100644
+> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> @@ -553,6 +553,28 @@ static int __init feat_enable_large_ci(struct dt_cpu=
+_feature *f)
+>  	return 1;
+>  }
+> =20
+> +static int __init feat_enable_prefix(struct dt_cpu_feature *f)
+> +{
+> +	u64 fscr, hfscr;
+> +
+> +	if (f->usable_privilege & USABLE_HV) {
+> +		hfscr =3D mfspr(SPRN_HFSCR);
+> +		hfscr |=3D HFSCR_PREFIX;
+> +		mtspr(SPRN_HFSCR, hfscr);
+> +	}
+> +
+> +	if (f->usable_privilege & USABLE_OS) {
+> +		fscr =3D mfspr(SPRN_FSCR);
+> +		fscr |=3D FSCR_PREFIX;
+> +		mtspr(SPRN_FSCR, fscr);
+> +
+> +		if (f->usable_privilege & USABLE_PR)
+> +			current->thread.fscr |=3D FSCR_PREFIX;
+> +	}
+> +
+> +	return 1;
+> +}
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Reported-by: kbuild test robot <lkp@intel.com>
-[ruscur: cast "data" to unsigned long instead of int]
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
-v4: cast "data" to unsigned long instead of int
+It would be good to be able to just use the default feature matching
+for this, if possible? Do we not do the right thing with=20
+init_thread.fscr?
 
- arch/powerpc/include/asm/set_memory.h |  2 ++
- arch/powerpc/mm/pageattr.c            | 33 +++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-index 64011ea444b4..b040094f7920 100644
---- a/arch/powerpc/include/asm/set_memory.h
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -29,4 +29,6 @@ static inline int set_memory_x(unsigned long addr, int numpages)
- 	return change_memory_attr(addr, numpages, SET_MEMORY_X);
- }
- 
-+int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot);
-+
- #endif
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-index 2b573768a7f7..ee6b5e3b7604 100644
---- a/arch/powerpc/mm/pageattr.c
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -72,3 +72,36 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
- 
- 	return apply_to_page_range(&init_mm, start, sz, change_page_attr, (void *)action);
- }
-+
-+/*
-+ * Set the attributes of a page:
-+ *
-+ * This function is used by PPC32 at the end of init to set final kernel memory
-+ * protection. It includes changing the maping of the page it is executing from
-+ * and data pages it is using.
-+ */
-+static int set_page_attr(pte_t *ptep, unsigned long addr, void *data)
-+{
-+	pgprot_t prot = __pgprot((unsigned long)data);
-+
-+	spin_lock(&init_mm.page_table_lock);
-+
-+	set_pte_at(&init_mm, addr, ptep, pte_modify(*ptep, prot));
-+	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+
-+	spin_unlock(&init_mm.page_table_lock);
-+
-+	return 0;
-+}
-+
-+int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot)
-+{
-+	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-+	unsigned long sz = numpages * PAGE_SIZE;
-+
-+	if (!numpages)
-+		return 0;
-+
-+	return apply_to_page_range(&init_mm, start, sz, set_page_attr,
-+				   (void *)pgprot_val(prot));
-+}
--- 
-2.25.1
+> +
+>  struct dt_cpu_feature_match {
+>  	const char *name;
+>  	int (*enable)(struct dt_cpu_feature *f);
+> @@ -626,6 +648,7 @@ static struct dt_cpu_feature_match __initdata
+>  	{"vector-binary128", feat_enable, 0},
+>  	{"vector-binary16", feat_enable, 0},
+>  	{"wait-v3", feat_enable, 0},
+> +	{"prefix-instructions", feat_enable_prefix, 0},
 
+That's reasonable to make that a feature, will it specify a minimum
+base set of prefix instructions or just that prefix instructions
+with the prefix/suffix arrangement exist?
+
+You may not need "-instructions" on the end, none of the other=20
+instructions do.
+
+I would maybe just hold off upstreaming the dt_cpu_ftrs changes for
+a bit. We have to do a pass over new CPU feature device tree, and
+some compatibility questions have come up recently.
+
+If you wouldn't mind just adding the new [H]FSCR bits and faults
+upstream for now, that would be good.
+
+Thanks,
+Nick
+=
