@@ -1,70 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9217A16F68D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:42:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD5B16F68A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:39:56 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S34Q4j8hzDqMt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:39:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S37c4qwVzDqGb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:42:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZnQdTzFJ; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S2Np2slZzDqdp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:08:58 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id ep11so696670pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 20:08:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=4APAJa04OqQvBuPh8qOA4vaLQx6bRHVlMgJ4rnMsd4U=;
- b=ZnQdTzFJxbVBw9H3jSJFBpP+s2Bx6MDuTiooWwm8Q4T4sc9YRvMuo9uZNQsh6Bye0E
- cRydNe/yQ3VrPRzJnku5ZWGGbBunvT66+5Z2H8whdyIEJ8tbXhrXHncBrbMo5ftoN4Sw
- qVwD4C0rUN4B9B7JptYgD2roWsFc/isfKRWfnAfyyZjc0W3ayq6knGTwRcHDyTukJich
- u1fgKLIW6tbZdUJ8su67HG+KBYwDWccZetQ6PCkgK7Evr5/YJv9vb7eyitfm7IhBL00u
- 1dylLIr0LEI41ujC0Uag4Lhzx2G1+7/c1Va/h+eHNYPsSYbW2/3P4D6G5megCJPcqhFY
- XLpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=4APAJa04OqQvBuPh8qOA4vaLQx6bRHVlMgJ4rnMsd4U=;
- b=JhJOncpm7H7Lkk1gfSlLPTXK6YDjKJ3cbupzyShT5ESWQ7M1uov3NEwJ3OYolDXqSG
- Cz+9maMVtZejTa+udOAqPQdWvggabDjK9ZVIWcsEmI1SpMqxeEwGIUn8cxA1Q/fcoWOl
- +9TFk6yfIwMBwgzEk3MzbJ0bIrCB4ABYiQS0wLVE+hed2hSByPBAcOZhNHz7lLEMHWw2
- J/JJlDdOQsQrKEo+dvwH3PERyAC2/9v8pG43XhXCszkbvU6r6sjYtkyVBK/DrmKOKaiD
- fmwvg0Z868XtTJ/gPYP/Fb9+3+YWtYdFWtwrBYnql3cd9klfzvdfnd9xxR4/d1L0k3/L
- jlQQ==
-X-Gm-Message-State: APjAAAWfKf7dqT/fpbgkGobA4uiGexr9BvilbDV8ge0ulLtoLmKnVHKc
- rNt54ddF8Z85NbF80sIGj5u2kAD3xSs=
-X-Google-Smtp-Source: APXvYqzGRe3f+WlV86ZyehZjcScEY73zzQNiG8Z6bYhAIk9SloPUPvjA3Ot0/nO+n0jxr9KxQ+OBAg==
-X-Received: by 2002:a17:902:41:: with SMTP id 59mr2059519pla.39.1582690135667; 
- Tue, 25 Feb 2020 20:08:55 -0800 (PST)
-Received: from tee480.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id d4sm604681pjg.19.2020.02.25.20.08.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Feb 2020 20:08:55 -0800 (PST)
-From: Jordan Niethe <jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S34M2Xf2zDqSd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:39:46 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01Q4ZiQX095092
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 23:39:44 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ydh90ru0w-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 23:39:44 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Wed, 26 Feb 2020 04:39:41 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 26 Feb 2020 04:39:39 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01Q4dcT652560012
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C5C1442041
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 725E04203F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C4D6AA00F1;
+ Wed, 26 Feb 2020 15:39:33 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 14/14] powerpc: Add prefix support to
- mce_find_instr_ea_and_pfn()
-Date: Wed, 26 Feb 2020 15:07:16 +1100
-Message-Id: <20200226040716.32395-15-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200226040716.32395-1-jniethe5@gmail.com>
-References: <20200226040716.32395-1-jniethe5@gmail.com>
+Subject: [PATCH] ocxl: Fix misleading comment
+Date: Wed, 26 Feb 2020 15:39:23 +1100
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20022604-0008-0000-0000-000003567631
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022604-0009-0000-0000-00004A7793A7
+Message-Id: <20200226043923.5481-1-ajd@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-25_09:2020-02-25,
+ 2020-02-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0
+ malwarescore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=860 adultscore=0 bulkscore=0 mlxscore=0 suspectscore=3
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002260033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,47 +91,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, bala24@linux.ibm.com,
- Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mce_find_instr_ea_and_pfn analyses an instruction to determine the
-effective address that caused the machine check. Update this to load and
-pass the suffix to analyse_instr for prefixed instructions.
+In ocxl_context_free() we note that the AFU reference we're releasing was
+taken in "ocxl_context_init", a function that doesn't actually exist.
 
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
-v2: - Rename sufx to suffix
----
- arch/powerpc/kernel/mce_power.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Fix it to say ocxl_context_alloc() instead, which I expect was what was
+intended.
 
-diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
-index 824eda536f5d..091bab4a5464 100644
---- a/arch/powerpc/kernel/mce_power.c
-+++ b/arch/powerpc/kernel/mce_power.c
-@@ -365,7 +365,7 @@ static int mce_find_instr_ea_and_phys(struct pt_regs *regs, uint64_t *addr,
- 	 * in real-mode is tricky and can lead to recursive
- 	 * faults
- 	 */
--	int instr;
-+	int instr, suffix = 0;
- 	unsigned long pfn, instr_addr;
- 	struct instruction_op op;
- 	struct pt_regs tmp = *regs;
-@@ -374,7 +374,9 @@ static int mce_find_instr_ea_and_phys(struct pt_regs *regs, uint64_t *addr,
- 	if (pfn != ULONG_MAX) {
- 		instr_addr = (pfn << PAGE_SHIFT) + (regs->nip & ~PAGE_MASK);
- 		instr = *(unsigned int *)(instr_addr);
--		if (!analyse_instr(&op, &tmp, instr, PPC_NO_SUFFIX)) {
-+		if (IS_PREFIX(instr))
-+			suffix = *(unsigned int *)(instr_addr + 4);
-+		if (!analyse_instr(&op, &tmp, instr, suffix)) {
- 			pfn = addr_to_pfn(regs, op.ea);
- 			*addr = op.ea;
- 			*phys_addr = (pfn << PAGE_SHIFT);
+Fixes: 5ef3166e8a32 ("ocxl: Driver code for 'generic' opencapi devices")
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ drivers/misc/ocxl/context.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+index de8a66b9d76b..c21f65a5c762 100644
+--- a/drivers/misc/ocxl/context.c
++++ b/drivers/misc/ocxl/context.c
+@@ -287,7 +287,7 @@ void ocxl_context_free(struct ocxl_context *ctx)
+ 
+ 	ocxl_afu_irq_free_all(ctx);
+ 	idr_destroy(&ctx->irq_idr);
+-	/* reference to the AFU taken in ocxl_context_init */
++	/* reference to the AFU taken in ocxl_context_alloc() */
+ 	ocxl_afu_put(ctx->afu);
+ 	kfree(ctx);
+ }
 -- 
-2.17.1
+2.20.1
 
