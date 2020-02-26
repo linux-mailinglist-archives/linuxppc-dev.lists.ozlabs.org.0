@@ -1,76 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95F016FF56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 13:51:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SFzW0N83zDqBH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 23:51:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B18816FF59
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 13:53:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SG224J8mzDqkL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 23:53:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=kNbLyoSC; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Vo8zTNll; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SDzw3scgzDqP5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 23:06:36 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48SDzq5Z9mz9txW2;
- Wed, 26 Feb 2020 13:06:31 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=kNbLyoSC; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id q2WOI2UxJZVp; Wed, 26 Feb 2020 13:06:31 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48SDzq4WvRz9txVB;
- Wed, 26 Feb 2020 13:06:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1582718791; bh=c8Yt1n514JUBCOQI8K1Iwqa23w30mCl6+9N4bJ38+Hg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=kNbLyoSCp2Ltuz7qDC8CBgShOpBF8Awf8dOfICPGOIUAg4M+NIiEaQwVYjvDr9Mvh
- KVC94sHpRDPJMN5MuOdHg1sWgwGdXYPZGarBcTmDE8ZdNP3oKXmA680G5I0fMTBJZL
- OLz5wpGkVQ1clphazcc2iqm9QSS/4/BNMtCex/1g=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A88388B845;
- Wed, 26 Feb 2020 13:06:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eXlx6v64ng-r; Wed, 26 Feb 2020 13:06:32 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 227B98B776;
- Wed, 26 Feb 2020 13:06:32 +0100 (CET)
-Subject: Re: [RFC PATCH v2 02/12] powerpc/ptrace: drop unnecessary #ifdefs
- CONFIG_PPC64
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, mikey@neuling.org
-References: <cover.1561735587.git.christophe.leroy@c-s.fr>
- <34af3942cd27f6b5365caae772fb8e0af44763d5.1561735587.git.christophe.leroy@c-s.fr>
- <878sks1csl.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <66e65eec-ce09-4e7e-aa71-38d19b3d4fee@c-s.fr>
-Date: Wed, 26 Feb 2020 13:06:33 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SFYH4TbRzDqRd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 23:32:03 +1100 (AEDT)
+Received: by mail-qk1-x743.google.com with SMTP id u124so2370449qkh.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:32:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=0MRsXhRp3E6rh2+qvZmIeFVHR93AAhtRNYB0tmbFEVY=;
+ b=Vo8zTNllfC4o6nND7kLPoDV7V03+PGLD04JqV7MNWSx0oObQWxHlaEfGIBrdyHaRvJ
+ ww2vSmC4bRv8i6hcU8VBeY2YhfMDKdaS6MfQUPq1T7fZxrXW5NTcxlG8C521XtoJJQOx
+ AlBGmyqtGt3YFgb2TnObOZnHZNWjm9XEp7X9sF25doQduHp62/V02ifg2v+zkJGjLGie
+ X240XCgFRjloBM3RFAwEtFylPsHPRhwNYVxOXI3L4Uz4qTKOe116ebQmBoaKfuWsL/+e
+ cjoSbJV9c9LPLH4pAIgZn619ZEH4FQ8oRR3Ud3Vo+NF1ywIf8ZBsAIOqEb9XriCWX05L
+ N/Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=0MRsXhRp3E6rh2+qvZmIeFVHR93AAhtRNYB0tmbFEVY=;
+ b=fMRGUjHlxYM8pUatsJ5RMGkYJ8x8QmMWnTx2FGlazmU5hZEjW2uztUR8PRxYgCDbhs
+ Ei+s02SZCb5dTLCZir+2Gwfm7Hrbt1D5/8pcAUff4rVunEHzX+U+BlHE05Qaf9qXg5vp
+ ONuS8A/HCTKpnWzJuNHhWurA8Cz3D/VqLIoPEODHjZ8a92aHT/cGBgVMTinlR/4qChQi
+ iw4cjeKgCF5EmJA51yGGttKPsznc2WCju54J23z/WJyYQEbBkefRo3YjmDDkcRT/1uG2
+ q7QbvgGpwWFsf8Zd67SsvyLJpW5rxrolu/S7TXbuJxHxjxs9W9IPVUDBB47oRiAomXpG
+ 8Y3Q==
+X-Gm-Message-State: APjAAAUPoiXp438WoQBYcuj1pX2PLVw57fTTfVyO04fDHJX2+OemfWi4
+ yYagXeiL5JHJ9RBqexAOjxnbTAFP/G3ipfzJp5E=
+X-Google-Smtp-Source: APXvYqzT0QOBpKRKbC4kcg/YNxuLy3cnTrGuXc9LH9ek2oNBn/hVko38x0Hlgj0xhIw5szgawcSuZNLgT142188LFQs=
+X-Received: by 2002:a37:a8c3:: with SMTP id r186mr5306087qke.37.1582720319288; 
+ Wed, 26 Feb 2020 04:31:59 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <878sks1csl.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <cover.1582007379.git.shengjiu.wang@nxp.com>
+ <a02af544c73914fe3a5ab2f35eb237ef68ee29e7.1582007379.git.shengjiu.wang@nxp.com>
+ <20200219203706.GA25618@bogus>
+In-Reply-To: <20200219203706.GA25618@bogus>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 26 Feb 2020 20:31:48 +0800
+Message-ID: <CAA+D8AMrHHZ3U66z+jroZqLK8pnn7xF0A9MCzxAqdqDfUHxf2A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] ASoC: dt-bindings: fsl_easrc: Add document for
+ EASRC
+To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,123 +75,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi
 
+On Thu, Feb 20, 2020 at 4:38 AM Rob Herring <robh@kernel.org> wrote:
+>
+> On Tue, Feb 18, 2020 at 02:39:36PM +0800, Shengjiu Wang wrote:
+> > EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
+> > IP module found on i.MX8MN.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  .../devicetree/bindings/sound/fsl,easrc.txt   | 57 +++++++++++++++++++
+> >  1 file changed, 57 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.txt
+>
+> Bindings are now in DT schema format. See
+> Documentation/devicetree/writing-schema.rst.
+>
+Thanks, will switch to .yaml format.
 
-Le 24/02/2020 à 11:48, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> Drop a bunch of #ifdefs CONFIG_PPC64 that are not vital.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/include/asm/ptrace.h      |  9 ++++-----
->>   arch/powerpc/include/uapi/asm/ptrace.h | 12 ++++--------
->>   arch/powerpc/kernel/ptrace/ptrace.c    | 24 +++---------------------
->>   3 files changed, 11 insertions(+), 34 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
->> index faa5a338ac5a..1506a9c61d50 100644
->> --- a/arch/powerpc/include/asm/ptrace.h
->> +++ b/arch/powerpc/include/asm/ptrace.h
->> @@ -36,11 +36,10 @@ struct pt_regs
->>   			unsigned long link;
->>   			unsigned long xer;
->>   			unsigned long ccr;
->> -#ifdef CONFIG_PPC64
->> -			unsigned long softe;
->> -#else
->> -			unsigned long mq;
->> -#endif
->> +			union {
->> +				unsigned long softe;
->> +				unsigned long mq;
->> +			};
->>   			unsigned long trap;
->>   			unsigned long dar;
->>   			unsigned long dsisr;
->> diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
->> index f5f1ccc740fc..37d7befbb8dc 100644
->> --- a/arch/powerpc/include/uapi/asm/ptrace.h
->> +++ b/arch/powerpc/include/uapi/asm/ptrace.h
->> @@ -43,12 +43,11 @@ struct pt_regs
->>   	unsigned long link;
->>   	unsigned long xer;
->>   	unsigned long ccr;
->> -#ifdef __powerpc64__
->> -	unsigned long softe;		/* Soft enabled/disabled */
->> -#else
->> -	unsigned long mq;		/* 601 only (not used at present) */
->> +	union {
->> +		unsigned long softe;	/* Soft enabled/disabled */
->> +		unsigned long mq;	/* 601 only (not used at present) */
->>   					/* Used on APUS to hold IPL value. */
->> -#endif
->> +	};
-> 
-> As Andreas pointed out this is not safe as this is a uapi header.
-
-Ok, dropped
-
-> 
->>   	unsigned long trap;		/* Reason for being here */
->>   	/* N.B. for critical exceptions on 4xx, the dar and dsisr
->>   	   fields are overloaded to hold srr0 and srr1. */
->> @@ -105,11 +104,8 @@ struct pt_regs
->>   #define PT_LNK	36
->>   #define PT_XER	37
->>   #define PT_CCR	38
->> -#ifndef __powerpc64__
->>   #define PT_MQ	39
->> -#else
->>   #define PT_SOFTE 39
->> -#endif
-> 
-> I'd also rather leave that as it is.
-> 
-> There's a slim chance it could break some code that already has either
-> of those defined.
-> 
-> If you need them both defined to make other code work in the kernel
-> that's fine, in the kernel header we can do:
-> 
-> // Ensure these are always defined inside the kernel to avoid #ifdefs
-> #ifdef CONFIG_PPC64
-> #define PT_MQ	39
-> #else
-> #define PT_SOFTE 39
-> #endif
-
-Ok.
-
-Only the PT_SOFTE is missing, I added the following in the relevant case:
-
-#define PT_SOFTE PT_MQ
-
-> 
-> 
->>   #define PT_TRAP	40
->>   #define PT_DAR	41
->>   #define PT_DSISR 42
->> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
->> index 684b0b315c32..0afb223c4d57 100644
->> --- a/arch/powerpc/kernel/ptrace/ptrace.c
->> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
->> @@ -113,11 +113,8 @@ static const struct pt_regs_offset regoffset_table[] = {
->>   	REG_OFFSET_NAME(link),
->>   	REG_OFFSET_NAME(xer),
->>   	REG_OFFSET_NAME(ccr),
->> -#ifdef CONFIG_PPC64
->>   	REG_OFFSET_NAME(softe),
->> -#else
->>   	REG_OFFSET_NAME(mq),
->> -#endif
-> 
-> Pretty sure that will cause breakage. The offset is ABI.
-
-Ok, dropped
-
-Christophe
+best regards
+wang shengjiu
