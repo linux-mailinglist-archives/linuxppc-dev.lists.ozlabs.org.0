@@ -2,71 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF5E170CC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 00:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01D9170CCF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 00:54:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SXbj5r2KzDqpB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 10:50:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SXhk1XJGzDqs3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 10:54:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=p/9RYB8k; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=GOBc69kz; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SXYy3KpXzDqR0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 10:48:36 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id gv17so337030pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:48:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=UW09MiMy2GaFwFAJ/K3zl0bfOBctGn1N/5oBnyfXBBo=;
- b=p/9RYB8kgMB0e8z5IDwOgAal1bA5SLd2SFKLv25Ung8/p0BhAB86euEgkobREoxfmp
- yKqg6pDpBKuUpdrEwTr9vEVyrfSL+cXkHm3hBTYBDohCfSV3uahMaoXMOOdshJ4aR+Fu
- V1toxermAqGtoIKM5MGgcSal+/esLdjYKwiLE=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SXg83KHhzDqbh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 10:53:05 +1100 (AEDT)
+Received: by mail-ot1-x341.google.com with SMTP id r16so1244474otd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:53:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=/reQHu4oXoI3nFgr5YiBaaoUtCPf0kmkkCGZobp7ogQ=;
+ b=GOBc69kzvKAYIDgSiDtmfD2LeZKT41+DREuPP3AdsynOYTdkObHIwdm9ocA987vcAr
+ 41s0+ndDfLOV6PobIdF5y5VejtLO82MfJWsiWNzJBWW7fI5yChTwO6BrKqPq+0mzlbDW
+ vpGzRvBIv40SsN2WUDZT0zigTQcpGgt6ryPnvMKN0/Vw9NVx8xYPXA2rF/FKj7E11xj1
+ EppoWMjMJOm3ZXShMkyAyCxcewo+kPSHHwD4KYectnpSuZjibvujMh3LpcWSPTBEszZM
+ 95tKODZZQ2UXo3ihuKpeeKCcR1uZB4irGdI9m4Gtrbz8UoHYHJxGKcWxAhBpMr+PzLEk
+ gL0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=UW09MiMy2GaFwFAJ/K3zl0bfOBctGn1N/5oBnyfXBBo=;
- b=mJB3DZmQCEDdwkZ9W725bZ6rURsIpS+yRZjaT9Cy77RlWujQCHyMyhig/5jlgB1vuW
- o9Vv05XSCelz3b10Zw0p7mEDHWsmRt6FpWCbTY4P0XSqJMM623N+tCI26d4q2+Au8iCa
- tfUwVrn+se9eIHrzKiWAt6QeHxFUDyRkiwkteS9gPUFRy4YpxCzw2YSlexp3cATLwQH1
- /r2B5ovQlpoOGKLJmSQbh6qpxEdHIQZhY+5O5AFbouGfri+WjcuDQ3Au/4ZtSy0UzQdB
- Hm9t7dtTr+fgTQTeyNY8nlqc+DnVIngr5lKYKjeOg95xJVZ3oFkhDX+NOX7pBT/yxasP
- Q/cw==
-X-Gm-Message-State: APjAAAXuBZN+ZIzvEDywHXGWmTGSN3oOWt1lsNM/qqKK8KhbEtystri/
- ZStyzeyxWOkYeuj2OlZfbw0POg==
-X-Google-Smtp-Source: APXvYqwO0geOgUQ2VFTz4udUkoL6gA+i5YLlDwNbhBkmZKUuVfAD8LuxK/3KK4B4kuG2YBBwmhPS2w==
-X-Received: by 2002:a17:902:ba93:: with SMTP id
- k19mr1782695pls.197.1582760911494; 
- Wed, 26 Feb 2020 15:48:31 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-5952-947b-051c-ea5f.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:5952:947b:51c:ea5f])
- by smtp.gmail.com with ESMTPSA id f127sm4475804pfa.112.2020.02.26.15.48.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Feb 2020 15:48:30 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com
-Subject: Re: [PATCH v2 0/3] Fix some incompatibilites between KASAN and
- FORTIFY_SOURCE
-In-Reply-To: <20200116062625.32692-1-dja@axtens.net>
-References: <20200116062625.32692-1-dja@axtens.net>
-Date: Thu, 27 Feb 2020 10:48:26 +1100
-Message-ID: <87o8tkrjud.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/reQHu4oXoI3nFgr5YiBaaoUtCPf0kmkkCGZobp7ogQ=;
+ b=e1ZaThUTC/8EP5q2KV1qqMqI/gfCpexO6A2L9Fc0OjsUWZ0NdRlorKhRj1C2hsjAFh
+ p5pkV+CBpyvVShrbWeAPLRK17r5TP560Y+tnoYymx/A7CW/Yyo6ioyWO6pCqWCWD+IGB
+ 0HkP3NClZGViiNW3aO6bH6gpn4eZIGZ/ans0HpaNhcnHzaKtz4F8szOAezfOM2enpB8t
+ +As7CY+Ls+4IAjTyZ8bckzIbewC997fjwrgn14lStBEDJnu82NDqDmAcBbR6xk4vBVyJ
+ FSMxPrC6zivTYOFzo6CvXyWf5o/q24mHEPw14EkKldv8/zxcp7mZOFaucjruAv+xRx9Y
+ 6PYA==
+X-Gm-Message-State: APjAAAX2k22qm1muZaqCPHBG6cC+SFP53272Lql7pJy14QTQumMgX+R3
+ nfa9/ebI3XcNrmCSDa7tA5Oc3AFYR8b80qFWl1c=
+X-Google-Smtp-Source: APXvYqyFKXO7LN+6pKs8whW9i1Cnc3fvNSxx5S3BZ3HBQhLXGjzFi8oUmjzqEAjvsel4j0Yqsf8CKC6VzWQB3N/0ZPo=
+X-Received: by 2002:a9d:aea:: with SMTP id 97mr1095792otq.51.1582761182552;
+ Wed, 26 Feb 2020 15:53:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200226040716.32395-1-jniethe5@gmail.com>
+ <20200226040716.32395-8-jniethe5@gmail.com>
+ <1582699744.9jdw100hst.astroid@bobo.none>
+In-Reply-To: <1582699744.9jdw100hst.astroid@bobo.none>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 27 Feb 2020 10:52:51 +1100
+Message-ID: <CACzsE9qmF+mpPQzL7HN5jOdjCtTJbqWvQQfnOxXkpJMs-fQxRg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/14] powerpc/traps: Check for prefixed instructions
+ in facility_unavailable_exception()
+To: Nicholas Piggin <npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,58 +75,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-xtensa@linux-xtensa.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- dvyukov@google.com
+Cc: Alistair Popple <alistair@popple.id.au>, Daniel Axtens <dja@axtens.net>,
+ linuxppc-dev@lists.ozlabs.org, Balamuruhan S <bala24@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-
-> 3 KASAN self-tests fail on a kernel with both KASAN and FORTIFY_SOURCE:
-> memchr, memcmp and strlen. I have observed this on x86 and powerpc.
+On Wed, Feb 26, 2020 at 5:53 PM Nicholas Piggin <npiggin@gmail.com> wrote:
 >
-> When FORTIFY_SOURCE is on, a number of functions are replaced with
-> fortified versions, which attempt to check the sizes of the
-> operands. However, these functions often directly invoke __builtin_foo()
-> once they have performed the fortify check.
+> Jordan Niethe's on February 26, 2020 2:07 pm:
+> > If prefixed instructions are made unavailable by the [H]FSCR, attempting
+> > to use them will cause a facility unavailable exception. Add "PREFIX" to
+> > the facility_strings[].
+> >
+> > Currently there are no prefixed instructions that are actually emulated
+> > by emulate_instruction() within facility_unavailable_exception().
+> > However, when caused by a prefixed instructions the SRR1 PREFIXED bit is
+> > set. Prepare for dealing with emulated prefixed instructions by checking
+> > for this bit.
+> >
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 >
-> This breaks things in 2 ways:
+> Oh you've got it here, I would just squash this together with the first
+> patch.
+Sure, I'll put them together. When you mentioned a couple more things
+to do in traps.c, was it just this? Or is there still more to be done
+adding an FSCR?
 >
->  - the three function calls are technically dead code, and can be
->    eliminated. When __builtin_ versions are used, the compiler can detect
->    this.
->
->  - Using __builtins may bypass KASAN checks if the compiler decides to
->    inline it's own implementation as sequence of instructions, rather than
->    emit a function call that goes out to a KASAN-instrumented
->    implementation.
->
-> The patches address each reason in turn. Finally, test_memcmp used a
-> stack array without explicit initialisation, which can sometimes break
-> too, so fix that up.
-
-Hi all,
-
-It doesn't look like this has been picked up yet. Is there anything I
-can do to help things along?
-
-Regards,
-Daniel
-
->
-> v2: - some cleanups, don't mess with arch code as I missed some wrinkles.
->     - add stack array init (patch 3)
->
-> Daniel Axtens (3):
->   kasan: stop tests being eliminated as dead code with FORTIFY_SOURCE
->   string.h: fix incompatibility between FORTIFY_SOURCE and KASAN
->   kasan: initialise array in kasan_memcmp test
->
->  include/linux/string.h | 60 +++++++++++++++++++++++++++++++++---------
->  lib/test_kasan.c       | 32 +++++++++++++---------
->  2 files changed, 68 insertions(+), 24 deletions(-)
->
-> -- 
-> 2.20.1
+> Thanks,
+> Nick
