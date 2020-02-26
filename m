@@ -1,89 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C676816F461
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 01:34:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAD216F454
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 01:31:35 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RxYv3ZG5zDqMx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 11:31:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RxdG6PrSzDqNT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 11:34:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=1rFC1q7e; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RxWb0wVpzDqMx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 11:29:30 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01Q0KuWg035662
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 19:29:28 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcnt290j-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 19:29:28 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Wed, 26 Feb 2020 00:29:25 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 00:29:19 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01Q0TI8544302718
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Feb 2020 00:29:18 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1F6735204F;
- Wed, 26 Feb 2020 00:29:18 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 73E275204E;
- Wed, 26 Feb 2020 00:29:17 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C7E00A00F1;
- Wed, 26 Feb 2020 11:29:12 +1100 (AEDT)
-Subject: Re: [PATCH v3 06/27] ocxl: Tally up the LPC memory on a link &
- allow it to be mapped
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Wed, 26 Feb 2020 11:29:16 +1100
-In-Reply-To: <4c8f704b-5607-5ca0-c00e-01e412117f6b@linux.ibm.com>
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-7-alastair@au1.ibm.com>
- <4c8f704b-5607-5ca0-c00e-01e412117f6b@linux.ibm.com>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RxbM3yHPzDqLV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 11:32:45 +1100 (AEDT)
+Received: by mail-ot1-x342.google.com with SMTP id b3so1350246otp.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 16:32:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=f70455Z6ta/EJCB61dHVpdnNh4osTmAbssLK2ZDouI8=;
+ b=1rFC1q7eiqEoo/Ct8CLTc8uB6k3LoZ19oRJxA++l0zQgLc/UuThtXzQMgIWfj0sABp
+ Tu/rBPamdN1eVJvSLzs32HeQA4BVe2YUCQ1Tn2metD9qEWM0OzwmfiMBaESZbeWmVueY
+ 31XvzUzGzkYQ+M5LGVFUZzc+9QGaHPlVPsaxO62G1PTIwMacG1h2AXJ7RsfUhr9pAPYS
+ pAFjp6krJgYzuaxPTz+vUaSvelbdMaNAu5U4sM+5GFJ8T583/KnVxZ7l59pGq8Zx1N55
+ /0KS/3htbv5/xl4ByvCEOahacZfCCi1uloIgUD+0kK2IgnIpjShkvcodpT/EheCpFi3J
+ eEMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=f70455Z6ta/EJCB61dHVpdnNh4osTmAbssLK2ZDouI8=;
+ b=Lef82tUUnUci0jdxRHDamp7wP1NKwTQ19HX01617jm285IV5mI7A7KGQmYsFIojxzt
+ HJodwbcxu3eNiHYeltUfsnSAzoRoESUJXMTZcg7TasbTA7GZJBccNgce/S425gtXyJO3
+ 5l+hKokvVn00kMVUAiOhnfSkd3WtawwEFHUTzJP0erfdOoKA6FTTeW0gdR7Dj9/MDHNX
+ OwzltEvJzAWFiWjejwd7/blOULm7kIV3ZPVYXowDGlShBgK2bPv8aCMvnl5NS3cQ5lkD
+ aLD61UreN7n0tQWCRTyIaOT6fv2OsZOMs7YX2oDVbSMt8O5EZSv7IIJMZfzTh4okLjGg
+ Ig6Q==
+X-Gm-Message-State: APjAAAXYVUzLpToCM1BpSS+ATBnZJ4/w8oYPbmGI7YBqsFnTTeaSYDo3
+ vMhEuh00fpZc22lof4L+MQk2JnY91GMEmnlFldkMHQ==
+X-Google-Smtp-Source: APXvYqyAsJnZlWJOpclJB6h8LyKxIkm6H51Qk8MIk/UhPC9KtK1RQif8usKO+skdYm0o9lQhxq1Hc5Wd2TvdmbQAZxU=
+X-Received: by 2002:a9d:64d8:: with SMTP id n24mr886741otl.71.1582677162325;
+ Tue, 25 Feb 2020 16:32:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022600-0028-0000-0000-000003DDFA10
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022600-0029-0000-0000-000024A31410
-Message-Id: <7833545b1c276ac62651c598af27728b8cacabed.camel@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-25_09:2020-02-25,
- 2020-02-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=2 spamscore=0
- bulkscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 mlxscore=0 impostorscore=0 phishscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260000
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <CAPcyv4j2hut1YDrotC=QkcM+S0SZwpd9_4hD2aChn+cKD+62oA@mail.gmail.com>
+ <240fbefc6275ac0a6f2aa68715b3b73b0e7a8310.camel@au1.ibm.com>
+ <20200224043750.GM24185@bombadil.infradead.org>
+ <83034494d5c3da1fa63b172e844f85d0fec7910a.camel@au1.ibm.com>
+ <CAOSf1CHYEJf02EV0kYMk+D9s=4PiTXSM1eFcRGYe7XJrHvtAtA@mail.gmail.com>
+ <b981f4e6cc308a617e7944e3ce23009e804cfdbf.camel@au1.ibm.com>
+In-Reply-To: <b981f4e6cc308a617e7944e3ce23009e804cfdbf.camel@au1.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 25 Feb 2020 16:32:31 -0800
+Message-ID: <CAPcyv4g_762vho=L21BuO=97zr9Cq14np88bnFieiYN25BvJtA@mail.gmail.com>
+Subject: Re: [PATCH v3 00/27] Add support for OpenCAPI Persistent Memory
+ devices
+To: "Alastair D'Silva" <alastair@au1.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,225 +84,88 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Rob Herring <robh@kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Matthew Wilcox <willy@infradead.org>,
  Anju T Sudhakar <anju@linux.vnet.ibm.com>,
  Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
  Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
  Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-02-25 at 17:30 +0100, Frederic Barrat wrote:
-> 
-> Le 21/02/2020 à 04:26, Alastair D'Silva a écrit :
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> > 
-> > Tally up the LPC memory on an OpenCAPI link & allow it to be mapped
-> > 
-> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > ---
-> >   drivers/misc/ocxl/core.c          | 10 ++++++
-> >   drivers/misc/ocxl/link.c          | 53
-> > +++++++++++++++++++++++++++++++
-> >   drivers/misc/ocxl/ocxl_internal.h | 33 +++++++++++++++++++
-> >   3 files changed, 96 insertions(+)
-> > 
-> > diff --git a/drivers/misc/ocxl/core.c b/drivers/misc/ocxl/core.c
-> > index b7a09b21ab36..2531c6cf19a0 100644
-> > --- a/drivers/misc/ocxl/core.c
-> > +++ b/drivers/misc/ocxl/core.c
-> > @@ -230,8 +230,18 @@ static int configure_afu(struct ocxl_afu *afu,
-> > u8 afu_idx, struct pci_dev *dev)
-> >   	if (rc)
-> >   		goto err_free_pasid;
-> >   
-> > +	if (afu->config.lpc_mem_size || afu-
-> > >config.special_purpose_mem_size) {
-> > +		rc = ocxl_link_add_lpc_mem(afu->fn->link, afu-
-> > >config.lpc_mem_offset,
-> > +					   afu->config.lpc_mem_size +
-> > +					   afu-
-> > >config.special_purpose_mem_size);
-> > +		if (rc)
-> > +			goto err_free_mmio;
-> > +	}
-> > +
-> >   	return 0;
-> >   
-> > +err_free_mmio:
-> > +	unmap_mmio_areas(afu);
-> >   err_free_pasid:
-> >   	reclaim_afu_pasid(afu);
-> >   err_free_actag:
-> > diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> > index 58d111afd9f6..1e039cc5ebe5 100644
-> > --- a/drivers/misc/ocxl/link.c
-> > +++ b/drivers/misc/ocxl/link.c
-> > @@ -84,6 +84,11 @@ struct ocxl_link {
-> >   	int dev;
-> >   	atomic_t irq_available;
-> >   	struct spa *spa;
-> > +	struct mutex lpc_mem_lock; /* protects lpc_mem & lpc_mem_sz */
-> > +	u64 lpc_mem_sz; /* Total amount of LPC memory presented on the
-> > link */
-> > +	u64 lpc_mem;
-> > +	int lpc_consumers;
-> > +
-> >   	void *platform_data;
-> >   };
-> >   static struct list_head links_list = LIST_HEAD_INIT(links_list);
-> > @@ -396,6 +401,8 @@ static int alloc_link(struct pci_dev *dev, int
-> > PE_mask, struct ocxl_link **out_l
-> >   	if (rc)
-> >   		goto err_spa;
-> >   
-> > +	mutex_init(&link->lpc_mem_lock);
-> > +
-> >   	/* platform specific hook */
-> >   	rc = pnv_ocxl_spa_setup(dev, link->spa->spa_mem, PE_mask,
-> >   				&link->platform_data);
-> > @@ -711,3 +718,49 @@ void ocxl_link_free_irq(void *link_handle, int
-> > hw_irq)
-> >   	atomic_inc(&link->irq_available);
-> >   }
-> >   EXPORT_SYMBOL_GPL(ocxl_link_free_irq);
-> > +
-> > +int ocxl_link_add_lpc_mem(void *link_handle, u64 offset, u64 size)
-> > +{
-> > +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> > +
-> > +	// Check for overflow
-> > +	if (offset > (offset + size))
-> > +		return -EINVAL;
-> > +
-> > +	mutex_lock(&link->lpc_mem_lock);
-> > +	link->lpc_mem_sz = max(link->lpc_mem_sz, offset + size);
-> > +
-> > +	mutex_unlock(&link->lpc_mem_lock);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +u64 ocxl_link_lpc_map(void *link_handle, struct pci_dev *pdev)
-> > +{
-> > +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> > +
-> > +	mutex_lock(&link->lpc_mem_lock);
-> > +
-> > +	if(!link->lpc_mem)
-> > +		link->lpc_mem = pnv_ocxl_platform_lpc_setup(pdev, link-
-> > >lpc_mem_sz);
-> > +
-> > +	if(link->lpc_mem)
-> > +		link->lpc_consumers++;
-> > +	mutex_unlock(&link->lpc_mem_lock);
-> > +
-> > +	return link->lpc_mem;
-> > +}
-> > +
-> > +void ocxl_link_lpc_release(void *link_handle, struct pci_dev
-> > *pdev)
-> > +{
-> > +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> > +
-> > +	mutex_lock(&link->lpc_mem_lock);
-> > +	WARN_ON(--link->lpc_consumers < 0);
-> 
-> Here, we always decrement the lpc_consumers count. However, it was
-> only 
-> incremented if the mapping was setup correctly in opal.
-> 
-> We could arguably claim that ocxl_link_lpc_release() should only be 
-> called if ocxl_link_lpc_map() succeeded, but it would make error
-> path 
-> handling easier if we only decrement the lpc_consumers count if 
-> link->lpc_mem is set. So that we can just call
-> ocxl_link_lpc_release() 
-> in error paths without having to worry about triggering the WARN_ON
-> message.
-> 
->    Fred
-> 
-> 
+On Tue, Feb 25, 2020 at 4:14 PM Alastair D'Silva <alastair@au1.ibm.com> wrote:
+>
+> On Mon, 2020-02-24 at 17:51 +1100, Oliver O'Halloran wrote:
+> > On Mon, Feb 24, 2020 at 3:43 PM Alastair D'Silva <
+> > alastair@au1.ibm.com> wrote:
+> > > On Sun, 2020-02-23 at 20:37 -0800, Matthew Wilcox wrote:
+> > > > On Mon, Feb 24, 2020 at 03:34:07PM +1100, Alastair D'Silva wrote:
+> > > > > V3:
+> > > > >   - Rebase against next/next-20200220
+> > > > >   - Move driver to arch/powerpc/platforms/powernv, we now
+> > > > > expect
+> > > > > this
+> > > > >     driver to go upstream via the powerpc tree
+> > > >
+> > > > That's rather the opposite direction of normal; mostly drivers
+> > > > live
+> > > > under
+> > > > drivers/ and not in arch/.  It's easier for drivers to get
+> > > > overlooked
+> > > > when doing tree-wide changes if they're hiding.
+> > >
+> > > This is true, however, given that it was not all that desirable to
+> > > have
+> > > it under drivers/nvdimm, it's sister driver (for the same hardware)
+> > > is
+> > > also under arch, and that we don't expect this driver to be used on
+> > > any
+> > > platform other than powernv, we think this was the most reasonable
+> > > place to put it.
+> >
+> > Historically powernv specific platform drivers go in their respective
+> > subsystem trees rather than in arch/ and I'd prefer we kept it that
+> > way. When I added the papr_scm driver I put it in the pseries
+> > platform
+> > directory because most of the pseries paravirt code lives there for
+> > some reason; I don't know why. Luckily for me that followed the same
+> > model that Dan used when he put the NFIT driver in drivers/acpi/ and
+> > the libnvdimm core in drivers/nvdimm/ so we didn't have anything to
+> > argue about. However, as Matthew pointed out, it is at odds with how
+> > most subsystems operate. Is there any particular reason we're doing
+> > things this way or should we think about moving libnvdimm users to
+> > drivers/nvdimm/?
+> >
+> > Oliver
+>
+>
+> I'm not too fussed where it ends up, as long as it ends up somewhere :)
+>
+> From what I can tell, the issue is that we have both "infrastructure"
+> drivers, and end-device drivers. To me, it feels like drivers/nvdimm
+> should contain both, and I think this feels like the right approach.
+>
+> I could move it back to drivers/nvdimm/ocxl, but I felt that it was
+> only tolerated there, not desired. This could be cleared up with a
+> response from Dan Williams, and if it is indeed dersired, this is my
+> preferred location.
 
-Ok, this makes sense.
-
-> 
-> > +	if (link->lpc_consumers == 0) {
-> > +		pnv_ocxl_platform_lpc_release(pdev);
-> > +		link->lpc_mem = 0;
-> > +	}
-> > +
-> > +	mutex_unlock(&link->lpc_mem_lock);
-> > +}
-> > diff --git a/drivers/misc/ocxl/ocxl_internal.h
-> > b/drivers/misc/ocxl/ocxl_internal.h
-> > index 198e4e4bc51d..d0c8c4838f42 100644
-> > --- a/drivers/misc/ocxl/ocxl_internal.h
-> > +++ b/drivers/misc/ocxl/ocxl_internal.h
-> > @@ -142,4 +142,37 @@ int ocxl_irq_offset_to_id(struct ocxl_context
-> > *ctx, u64 offset);
-> >   u64 ocxl_irq_id_to_offset(struct ocxl_context *ctx, int irq_id);
-> >   void ocxl_afu_irq_free_all(struct ocxl_context *ctx);
-> >   
-> > +/**
-> > + * ocxl_link_add_lpc_mem() - Increment the amount of memory
-> > required by an OpenCAPI link
-> > + *
-> > + * @link_handle: The OpenCAPI link handle
-> > + * @offset: The offset of the memory to add
-> > + * @size: The amount of memory to increment by
-> > + *
-> > + * Returns 0 on success, negative on overflow
-> > + */
-> > +int ocxl_link_add_lpc_mem(void *link_handle, u64 offset, u64
-> > size);
-> > +
-> > +/**
-> > + * ocxl_link_lpc_map() - Map the LPC memory for an OpenCAPI device
-> > + * Since LPC memory belongs to a link, the whole LPC memory
-> > available
-> > + * on the link must be mapped in order to make it accessible to a
-> > device.
-> > + * @link_handle: The OpenCAPI link handle
-> > + * @pdev: A device that is on the link
-> > + *
-> > + * Returns the address of the mapped LPC memory, or 0 on error
-> > + */
-> > +u64 ocxl_link_lpc_map(void *link_handle, struct pci_dev *pdev);
-> > +
-> > +/**
-> > + * ocxl_link_lpc_release() - Release the LPC memory device for an
-> > OpenCAPI device
-> > + *
-> > + * Offlines LPC memory on an OpenCAPI link for a device. If this
-> > is the
-> > + * last device on the link to release the memory, unmap it from
-> > the link.
-> > + *
-> > + * @link_handle: The OpenCAPI link handle
-> > + * @pdev: A device that is on the link
-> > + */
-> > +void ocxl_link_lpc_release(void *link_handle, struct pci_dev
-> > *pdev);
-> > +
-> >   #endif /* _OCXL_INTERNAL_H_ */
-> > 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
-
+Apologies if I gave the impression it was only tolerated. I'm ok with
+drivers/nvdimm/ocxl/, and to the larger point I'd also be ok with a
+drivers/{acpi => nvdimm}/nfit and {arch/powerpc/platforms/pseries =>
+drivers/nvdimm}/papr_scm.c move as well to keep all the consumers of
+the nvdimm related code together with the core.
