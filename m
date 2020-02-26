@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292421702BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 16:38:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5641E1702AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 16:36:31 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SKf36bljzDqkR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 02:36:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SKhF5WS5zDqWn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 02:38:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SKZt72MXzDqjl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 02:33:42 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SKbZ2RH4zDqkd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 02:34:18 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206527] Kernel 5.6-rc1 w. CONFIG_VMAP_STACK=y + CONFIG_KASAN=y
- fails to boot on a PowerMac G4 3,6
-Date: Wed, 26 Feb 2020 15:33:39 +0000
+Subject: [Bug 206501] Kernel 5.6-rc1 fails to boot on a PowerMac G4 3,6 with
+ CONFIG_VMAP_STACK=y: Oops! Machine check, sig: 7  [#1]
+Date: Wed, 26 Feb 2020 15:34:14 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -42,9 +42,9 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-206527-206035-1f1yFDYe1L@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206527-206035@https.bugzilla.kernel.org/>
-References: <bug-206527-206035@https.bugzilla.kernel.org/>
+Message-ID: <bug-206501-206035-V48I3iJOAX@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206501-206035@https.bugzilla.kernel.org/>
+References: <bug-206501-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -65,7 +65,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206527
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206501
 
 Erhard F. (erhard_f@mailbox.org) changed:
 
@@ -74,7 +74,7 @@ Erhard F. (erhard_f@mailbox.org) changed:
              Status|NEW                         |RESOLVED
          Resolution|---                         |CODE_FIX
 
---- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
+--- Comment #11 from Erhard F. (erhard_f@mailbox.org) ---
 Fix landed in 5.6-rc3, works now as expected. Thanks!
 
 --=20
