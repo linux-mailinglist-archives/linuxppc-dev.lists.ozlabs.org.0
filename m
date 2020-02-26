@@ -2,84 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9217A16F68D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:42:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 944ED16F6A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 05:52:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S37c4qwVzDqGb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:42:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S3MX53xGzDqXw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 15:52:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S34M2Xf2zDqSd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:39:46 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01Q4ZiQX095092
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 23:39:44 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydh90ru0w-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 23:39:44 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 26 Feb 2020 04:39:41 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 04:39:39 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01Q4dcT652560012
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C5C1442041
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 725E04203F
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 04:39:38 +0000 (GMT)
-Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C4D6AA00F1;
- Wed, 26 Feb 2020 15:39:33 +1100 (AEDT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] ocxl: Fix misleading comment
-Date: Wed, 26 Feb 2020 15:39:23 +1100
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022604-0008-0000-0000-000003567631
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022604-0009-0000-0000-00004A7793A7
-Message-Id: <20200226043923.5481-1-ajd@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-25_09:2020-02-25,
- 2020-02-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0
- malwarescore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- mlxlogscore=860 adultscore=0 bulkscore=0 mlxscore=0 suspectscore=3
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260033
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48S3Kd2pgyzDqKr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:51:14 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAEB81FB;
+ Tue, 25 Feb 2020 20:51:11 -0800 (PST)
+Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
+ [10.162.16.42])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3426C3FA00;
+ Tue, 25 Feb 2020 20:51:07 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH 0/3] mm/vma: some more minor changes
+Date: Wed, 26 Feb 2020 10:20:55 +0530
+Message-Id: <1582692658-3294-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,37 +42,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In ocxl_context_free() we note that the AFU reference we're releasing was
-taken in "ocxl_context_init", a function that doesn't actually exist.
+The motivation here is to consolidate VMA flags and helpers in generic
+memory header and reduce code duplication when ever applicable. If there
+are other possible similar instances which might be missing here, please
+do let me me know. I will be happy to incorporate them.
 
-Fix it to say ocxl_context_alloc() instead, which I expect was what was
-intended.
+This series is based on v5.6-rc3. This series has been build tested on
+multiple platforms but boot tested only on arm64 and x86.
 
-Fixes: 5ef3166e8a32 ("ocxl: Driver code for 'generic' opencapi devices")
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- drivers/misc/ocxl/context.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
 
-diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
-index de8a66b9d76b..c21f65a5c762 100644
---- a/drivers/misc/ocxl/context.c
-+++ b/drivers/misc/ocxl/context.c
-@@ -287,7 +287,7 @@ void ocxl_context_free(struct ocxl_context *ctx)
- 
- 	ocxl_afu_irq_free_all(ctx);
- 	idr_destroy(&ctx->irq_idr);
--	/* reference to the AFU taken in ocxl_context_init */
-+	/* reference to the AFU taken in ocxl_context_alloc() */
- 	ocxl_afu_put(ctx->afu);
- 	kfree(ctx);
- }
+Anshuman Khandual (3):
+  mm/vma: Move VM_NO_KHUGEPAGED into generic header
+  mm/vma: Make vma_is_foreign() available for general use
+  mm/vma: Make is_vma_temporary_stack() available for general use
+
+ arch/powerpc/mm/book3s64/pkeys.c   | 12 ------------
+ arch/x86/include/asm/mmu_context.h | 15 ---------------
+ include/linux/huge_mm.h            |  2 --
+ include/linux/mm.h                 | 28 +++++++++++++++++++++++++++-
+ mm/khugepaged.c                    |  2 --
+ mm/rmap.c                          | 14 --------------
+ 6 files changed, 27 insertions(+), 46 deletions(-)
+
 -- 
 2.20.1
 
