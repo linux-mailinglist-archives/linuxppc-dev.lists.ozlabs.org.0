@@ -1,41 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFC21707E9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 19:44:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343A51707AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 19:27:30 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SPRL5kX0zDqX8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 05:27:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SPq95v2JzDqlZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 05:44:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
- envelope-from=cl@linux.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-Received: from gentwo.org (gentwo.org [3.19.106.255])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
+ [209.85.128.66])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SPP76lMpzDqhS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 05:25:31 +1100 (AEDT)
-Received: by gentwo.org (Postfix, from userid 1002)
- id 5726E3EC05; Wed, 26 Feb 2020 18:25:28 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by gentwo.org (Postfix) with ESMTP id 5630E3EC04;
- Wed, 26 Feb 2020 18:25:28 +0000 (UTC)
-Date: Wed, 26 Feb 2020 18:25:28 +0000 (UTC)
-From: Christopher Lameter <cl@linux.com>
-X-X-Sender: cl@www.lameter.com
-To: Michal Hocko <mhocko@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SPm75gx0zDqZT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 05:41:59 +1100 (AEDT)
+Received: by mail-wm1-f66.google.com with SMTP id z12so369431wmi.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 10:41:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=wgiZ1ng+EHQCRGEhYXEQoZQ67xno4JfWUO2p/Jhkjg0=;
+ b=M0n1ym/mqs6oLt+0bRrAJCpccWOys8MwFmNmJ4zvgpUWsT9g3H+O5cxK7NWePnzcIn
+ iiijfy1uqJITBXPI9OQk09A9AtQiYAL7EqQsX7+pnJpmPzYn9uYQL4Np2swCSvzo2UYS
+ V9dnz1leCs/fWjhfzCz+QKhshG1DgGDvqVCvvvZi4wSVYnzbruNGBMd96ceM18QDR5fr
+ jILHPmSdNIoVXjqHOP47yerKXQIFJnFB1MNwXhxbefuRrP3dsUbLoMrgbPak7uKHF0Ev
+ nEQNws2OPa8xu8k58QRgBOnOZ4nL1vB2dKd+gzCgfFNW4v4Q/5IVX4pN6a9I2ck8sTxK
+ 3xhw==
+X-Gm-Message-State: APjAAAV47VWxMMBWPC1DCI8UNu3dnfDGdcCD+jxzk7EbXsyh9fpwbbts
+ j52bYwTOxsfnjK9bqcsvDAI=
+X-Google-Smtp-Source: APXvYqwuw36jus9Ar7ixop4LA8bXmICEPCDIDDxHUl3/gyhnkSyoVJV/RDfl7iA236b+UdMJ2aBtuw==
+X-Received: by 2002:a1c:dd87:: with SMTP id u129mr217096wmg.111.1582742514271; 
+ Wed, 26 Feb 2020 10:41:54 -0800 (PST)
+Received: from localhost (ip-37-188-190-100.eurotel.cz. [37.188.190.100])
+ by smtp.gmail.com with ESMTPSA id j11sm4003459wmi.3.2020.02.26.10.41.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Feb 2020 10:41:53 -0800 (PST)
+Date: Wed, 26 Feb 2020 19:41:52 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Christopher Lameter <cl@linux.com>
 Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
-In-Reply-To: <20200224085812.GB22443@dhcp22.suse.cz>
-Message-ID: <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
-References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
- <cf6be5f5-4bbc-0d34-fb64-33fd37bc48d9@virtuozzo.com>
- <0ba2a3c6-6593-2cee-1cef-983cd75f920f@virtuozzo.com>
+Message-ID: <20200226184152.GQ3771@dhcp22.suse.cz>
+References: <0ba2a3c6-6593-2cee-1cef-983cd75f920f@virtuozzo.com>
  <F5A68B0C-AFDE-4C45-B0F3-12A5154204E6@linux.vnet.ibm.com>
  <20200218115525.GD4151@dhcp22.suse.cz>
  <D6F45EDD-9F2E-4593-B630-55E5BD7DE915@linux.vnet.ibm.com>
@@ -44,9 +57,11 @@ References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
  <20200218152441.GH4151@dhcp22.suse.cz>
  <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
  <20200224085812.GB22443@dhcp22.suse.cz>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+ <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,32 +82,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 24 Feb 2020, Michal Hocko wrote:
+On Wed 26-02-20 18:25:28, Cristopher Lameter wrote:
+> On Mon, 24 Feb 2020, Michal Hocko wrote:
+> 
+> > Hmm, nasty. Is there any reason why kmalloc_node behaves differently
+> > from the page allocator?
+> 
+> The page allocator will do the same thing if you pass GFP_THISNODE and
+> insist on allocating memory from a node that does not exist.
 
-> Hmm, nasty. Is there any reason why kmalloc_node behaves differently
-> from the page allocator?
+I do not think that the page allocator would blow up even with
+GFP_THISNODE. The allocation would just fail on memory less node.
 
-The page allocator will do the same thing if you pass GFP_THISNODE and
-insist on allocating memory from a node that does not exist.
+Besides that kmalloc_node shouldn't really have an implicit GFP_THISNODE
+semantic right? At least I do not see anything like that documented
+anywhere.
 
-
-> > > A short summary. kmalloc_node blows up when trying to allocate from a
-> > > memory less node.
-> >
-> > Use kmalloc instead? And set a memory allocation policy?
->
-> The current code (memcg_expand_one_shrinker_map resp. memcg_alloc_shrinker_maps)
-> already use kvmalloc. Kirill's patch wanted to make those data structure
-> on the respective node and kvmalloc_node sounded like the right thing to
-> do. It comes as a surprise that the kernel simply blows up on a memory
-> less node rather than falling back to a close node gracefully. I suspect
-> this already happens when the target node is out of memory, right?
-
-No. If the target node is out of memory then direct reclaim is going to be
-invovked.
-
-> How would a memory allocation policy help in this case btw.?
-
-It would allow fallback to other nodes.
-
-
+-- 
+Michal Hocko
+SUSE Labs
