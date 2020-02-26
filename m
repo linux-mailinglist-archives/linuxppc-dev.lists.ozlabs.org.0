@@ -1,68 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189C616F552
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 02:53:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48RzNc3YmGzDqdS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 12:53:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3E316F58A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 03:13:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48RzqR47SbzDqKD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 13:13:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tb0I8cSF; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48RzLj0kGfzDqRx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 12:51:54 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id u124so1145443qkh.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 17:51:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ExNh/gghsj1ImBILJ0ozb3ysT/hRkbhT4G0voLUZVgI=;
- b=tb0I8cSFTYgT7uR05Z3XcyQJudBEyylDCJtGYxlyf+qKYaSVvQWf55BjyB0khyCpLk
- URIaKz8zV1v01cmlqTYofRQsyBn8Q5Xt2rQEalI+Bp/hZVGA+FiZ+yRld1QP6kbZoWGJ
- 7Gj0IK6HUXHNGltU2GzHzrFP3clFdNNN+0OktaNn9k/nST5HQ3mzbSEIY+czvohawaQD
- MAhSbkhjjugNTm+rbJ245lRRzWZKczZJpSiFeufw6NQb6WrEVegjDueb6bBFi4UeBGyu
- c6Jc6g0+n6samzd3DBCYRm9UKYyRa0j4nQ79StvG/C232fibx7lajHhp71iMwm8podbN
- axzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ExNh/gghsj1ImBILJ0ozb3ysT/hRkbhT4G0voLUZVgI=;
- b=IRwI6stqULgsR0RtAaQUBh0UTuboj6NBDjXTcVzd1UnnHH94Y7wioWffEIJSEJNMav
- eqcLrPnhz0j4XQIW4bzDojDKYSlhq+zpRzb+4nYkOcN9nDOsWdIpHjFzCujjtMLMouaT
- nJzYKNtiveNNnSI2jgloaAspl6FTRj+oTdjmC7v+Gvlo6AaebjuNp7jv58XX8wnlMiLi
- tCB4urNbE77kflKBUcmnW5XvoASAWfKh78K6dnq761d2aN5EY2tyB8ISlNqQBEPEDgqx
- pkToCsxeEga3eKIHhJ4jmPdeXkLCuoiCOAzr1NzFCyVgmVo3xXqub9223XcA2Ni/61bx
- Ik7A==
-X-Gm-Message-State: APjAAAWQDEBnJIXb3MHDDN4dkTwa7w/VU+MXscckGEfSx6QVqB6n7A4E
- ui29r0m19ed31SOUiLBoRbL1UtetTAcHCazRbow=
-X-Google-Smtp-Source: APXvYqyynmPK9+Rdbdj6+s+AmVwrzFwMwUtQnyhXObjLlWE28j9mHJIWKxFk9yjPuy5ceKsGuAuF/TUUtksL5KcdvEY=
-X-Received: by 2002:a37:5c9:: with SMTP id 192mr2480838qkf.103.1582681910840; 
- Tue, 25 Feb 2020 17:51:50 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48RznQ4RV2zDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 13:11:34 +1100 (AEDT)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 57653B096422AAF2A1D2;
+ Wed, 26 Feb 2020 10:11:27 +0800 (CST)
+Received: from [127.0.0.1] (10.173.221.195) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0;
+ Wed, 26 Feb 2020 10:11:17 +0800
+Subject: Re: [PATCH v3 1/6] powerpc/fsl_booke/kaslr: refactor
+ kaslr_legal_offset() and kaslr_early_init()
+To: Christophe Leroy <christophe.leroy@c-s.fr>, <mpe@ellerman.id.au>,
+ <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
+ <oss@buserror.net>
+References: <20200206025825.22934-1-yanaijie@huawei.com>
+ <20200206025825.22934-2-yanaijie@huawei.com>
+ <6c0b0720-6998-f43a-a2b6-0632d4df1126@c-s.fr>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <f80cce40-804e-12a3-7429-74923a3cb7f7@huawei.com>
+Date: Wed, 26 Feb 2020 10:11:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-References: <VE1PR04MB6479BCA376502F6F1251602BE3EC0@VE1PR04MB6479.eurprd04.prod.outlook.com>
- <20200225080350.GA11332@Asurada>
-In-Reply-To: <20200225080350.GA11332@Asurada>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 26 Feb 2020 09:51:39 +0800
-Message-ID: <CAA+D8AMFzDs8uXiR-N8harRVmhC+3i8p9HdO2CgxOCX8WVfXAw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and
- platform drivers
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <6c0b0720-6998-f43a-a2b6-0632d4df1126@c-s.fr>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.221.195]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,87 +57,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>, "S.j. Wang" <shengjiu.wang@nxp.com>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 25, 2020 at 4:05 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Mon, Feb 24, 2020 at 08:53:25AM +0000, S.j. Wang wrote:
-> > Hi
-> >
-> > > >
-> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > ---
-> > > >  sound/soc/fsl/Kconfig           |   10 +
-> > > >  sound/soc/fsl/Makefile          |    2 +
-> > > >  sound/soc/fsl/fsl_asrc_common.h |    1 +
-> > > >  sound/soc/fsl/fsl_easrc.c       | 2265 +++++++++++++++++++++++++++++++
-> > > >  sound/soc/fsl/fsl_easrc.h       |  668 +++++++++
-> > > >  sound/soc/fsl/fsl_easrc_dma.c   |  440 ++++++
-> > >
-> > > I see a 90% similarity between fsl_asrc_dma and fsl_easrc_dma files.
-> > > Would it be possible reuse the existing code? Could share structures from
-> > > my point of view, just like it reuses "enum asrc_pair_index", I know
-> > > differentiating "pair" and "context" is a big point here though.
-> > >
-> > > A possible quick solution for that, off the top of my head, could be:
-> > >
-> > > 1) in fsl_asrc_common.h
-> > >
-> > >         struct fsl_asrc {
-> > >                 ....
-> > >         };
-> > >
-> > >         struct fsl_asrc_pair {
-> > >                 ....
-> > >         };
-> > >
-> > > 2) in fsl_easrc.h
-> > >
-> > >         /* Renaming shared structures */
-> > >         #define fsl_easrc fsl_asrc
-> > >         #define fsl_easrc_context fsl_asrc_pair
-> > >
-> > > May be a good idea to see if others have some opinion too.
-> > >
-> >
-> > We need to modify the fsl_asrc and fsl_asrc_pair, let them
-> > To be used by both driver,  also we need to put the specific
-> > Definition for each module to same struct, right?
->
-> Yea. A merged structure if that doesn't look that bad. I see most
-> of the fields in struct fsl_asrc are being reused by in fsl_easrc.
->
-> > >
-> > > > +static const struct regmap_config fsl_easrc_regmap_config = {
-> > > > +     .readable_reg = fsl_easrc_readable_reg,
-> > > > +     .volatile_reg = fsl_easrc_volatile_reg,
-> > > > +     .writeable_reg = fsl_easrc_writeable_reg,
-> > >
-> > > Can we use regmap_range and regmap_access_table?
-> > >
-> >
-> > Can the regmap_range support discontinuous registers?  The
-> > reg_stride = 4.
->
-> I think it does. Giving an example here:
-> https://github.com/torvalds/linux/blob/master/drivers/mfd/da9063-i2c.c
 
-The register in this i2c driver are continuous,  from 0x00, 0x01, 0x02...
 
-But our case is 0x00, 0x04, 0x08, does it work?
+在 2020/2/20 21:40, Christophe Leroy 写道:
+> 
+> 
+> Le 06/02/2020 à 03:58, Jason Yan a écrit :
+>> Some code refactor in kaslr_legal_offset() and kaslr_early_init(). No
+>> functional change. This is a preparation for KASLR fsl_booke64.
+>>
+>> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+>> Cc: Scott Wood <oss@buserror.net>
+>> Cc: Diana Craciun <diana.craciun@nxp.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Kees Cook <keescook@chromium.org>
+>> ---
+>>   arch/powerpc/mm/nohash/kaslr_booke.c | 40 ++++++++++++++--------------
+>>   1 file changed, 20 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c 
+>> b/arch/powerpc/mm/nohash/kaslr_booke.c
+>> index 4a75f2d9bf0e..07b036e98353 100644
+>> --- a/arch/powerpc/mm/nohash/kaslr_booke.c
+>> +++ b/arch/powerpc/mm/nohash/kaslr_booke.c
+>> @@ -25,6 +25,7 @@ struct regions {
+>>       unsigned long pa_start;
+>>       unsigned long pa_end;
+>>       unsigned long kernel_size;
+>> +    unsigned long linear_sz;
+>>       unsigned long dtb_start;
+>>       unsigned long dtb_end;
+>>       unsigned long initrd_start;
+>> @@ -260,11 +261,23 @@ static __init void get_cell_sizes(const void 
+>> *fdt, int node, int *addr_cells,
+>>           *size_cells = fdt32_to_cpu(*prop);
+>>   }
+>> -static unsigned long __init kaslr_legal_offset(void *dt_ptr, unsigned 
+>> long index,
+>> -                           unsigned long offset)
+>> +static unsigned long __init kaslr_legal_offset(void *dt_ptr, unsigned 
+>> long random)
+>>   {
+>>       unsigned long koffset = 0;
+>>       unsigned long start;
+>> +    unsigned long index;
+>> +    unsigned long offset;
+>> +
+>> +    /*
+>> +     * Decide which 64M we want to start
+>> +     * Only use the low 8 bits of the random seed
+>> +     */
+>> +    index = random & 0xFF;
+>> +    index %= regions.linear_sz / SZ_64M;
+>> +
+>> +    /* Decide offset inside 64M */
+>> +    offset = random % (SZ_64M - regions.kernel_size);
+>> +    offset = round_down(offset, SZ_16K);
+>>       while ((long)index >= 0) {
+>>           offset = memstart_addr + index * SZ_64M + offset;
+>> @@ -289,10 +302,9 @@ static inline __init bool kaslr_disabled(void)
+>>   static unsigned long __init kaslr_choose_location(void *dt_ptr, 
+>> phys_addr_t size,
+>>                             unsigned long kernel_sz)
+>>   {
+>> -    unsigned long offset, random;
+>> +    unsigned long random;
+>>       unsigned long ram, linear_sz;
+>>       u64 seed;
+>> -    unsigned long index;
+>>       kaslr_get_cmdline(dt_ptr);
+>>       if (kaslr_disabled())
+>> @@ -333,22 +345,12 @@ static unsigned long __init 
+>> kaslr_choose_location(void *dt_ptr, phys_addr_t size
+>>       regions.dtb_start = __pa(dt_ptr);
+>>       regions.dtb_end = __pa(dt_ptr) + fdt_totalsize(dt_ptr);
+>>       regions.kernel_size = kernel_sz;
+>> +    regions.linear_sz = linear_sz;
+>>       get_initrd_range(dt_ptr);
+>>       get_crash_kernel(dt_ptr, ram);
+>> -    /*
+>> -     * Decide which 64M we want to start
+>> -     * Only use the low 8 bits of the random seed
+>> -     */
+>> -    index = random & 0xFF;
+>> -    index %= linear_sz / SZ_64M;
+>> -
+>> -    /* Decide offset inside 64M */
+>> -    offset = random % (SZ_64M - kernel_sz);
+>> -    offset = round_down(offset, SZ_16K);
+>> -
+>> -    return kaslr_legal_offset(dt_ptr, index, offset);
+>> +    return kaslr_legal_offset(dt_ptr, random);
+>>   }
+>>   /*
+>> @@ -358,8 +360,6 @@ static unsigned long __init 
+>> kaslr_choose_location(void *dt_ptr, phys_addr_t size
+>>    */
+>>   notrace void __init kaslr_early_init(void *dt_ptr, phys_addr_t size)
+>>   {
+>> -    unsigned long tlb_virt;
+>> -    phys_addr_t tlb_phys;
+>>       unsigned long offset;
+>>       unsigned long kernel_sz;
+>> @@ -375,8 +375,8 @@ notrace void __init kaslr_early_init(void *dt_ptr, 
+>> phys_addr_t size)
+>>       is_second_reloc = 1;
+>>       if (offset >= SZ_64M) {
+>> -        tlb_virt = round_down(kernstart_virt_addr, SZ_64M);
+>> -        tlb_phys = round_down(kernstart_addr, SZ_64M);
+>> +        unsigned long tlb_virt = round_down(kernstart_virt_addr, 
+>> SZ_64M);
+>> +        phys_addr_t tlb_phys = round_down(kernstart_addr, SZ_64M);
+> 
+> That looks like cleanup unrelated to the patch itself.
 
-best regards
-wang shengjiu
+Hi, Christophe
+
+These two variables is only for the booke32 code, so I moved the
+definition here so that I can save a "#ifdef CONFIG_PPC32" for them.
+
+Thanks,
+Jason
+
+> 
+>>           /* Create kernel map to relocate in */
+>>           create_kaslr_tlb_entry(1, tlb_virt, tlb_phys);
+>>
+> 
+> Christophe
+> 
+> .
+
