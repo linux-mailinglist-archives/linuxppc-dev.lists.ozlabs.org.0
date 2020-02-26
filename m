@@ -1,85 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187AE16F973
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 09:17:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2438816F8A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 08:41:37 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S76600xJzDqf9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 18:41:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S7v620kHzDqSl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 19:17:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=DbxB/3sj; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S74D4FrnzDqYn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 18:39:56 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01Q7OSel132883
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 02:39:53 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ydcp8483t-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 02:39:52 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Wed, 26 Feb 2020 07:39:51 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Feb 2020 07:39:49 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01Q7coR437945622
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Feb 2020 07:38:50 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A16E4C062;
- Wed, 26 Feb 2020 07:39:47 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 76FED4C044;
- Wed, 26 Feb 2020 07:39:47 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.31.96])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Feb 2020 07:39:47 +0000 (GMT)
-Subject: Re: [PATCH] ocxl: Fix misleading comment
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200226043923.5481-1-ajd@linux.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Wed, 26 Feb 2020 08:39:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S7rq60mSzDqd2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 19:15:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1582704903;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WFgUQiNzkzgN6VquyalFIhDC0rlucVistzhUDzvUUjA=;
+ b=DbxB/3sjn4Rvd3170wmfuDI+RTZZvUntYq8rde9EXgGFGzg9IAOyCZogmVfCMSreu0nsND
+ 4P0PaidF2Nlv1rmhVoS0IbokhAdl/SFZlhi7AiX6mFDD4IGPxE6qBInno+FiQ7ZAjrbsqK
+ pfxzFETNXhjO+CDqJkiEFw7i3L3ac7g=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-87-OOn8uuyqPlm_O9Mx6ZgGOw-1; Wed, 26 Feb 2020 03:14:58 -0500
+X-MC-Unique: OOn8uuyqPlm_O9Mx6ZgGOw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 492B51882CD2;
+ Wed, 26 Feb 2020 08:14:53 +0000 (UTC)
+Received: from localhost (ovpn-12-39.pek2.redhat.com [10.72.12.39])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5A2FF90514;
+ Wed, 26 Feb 2020 08:14:50 +0000 (UTC)
+Date: Wed, 26 Feb 2020 16:14:47 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Alastair D'Silva <alastair@au1.ibm.com>
+Subject: Re: [PATCH v3 04/27] ocxl: Remove unnecessary externs
+Message-ID: <20200226081447.GH4937@MiWiFi-R3L-srv>
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-5-alastair@au1.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200226043923.5481-1-ajd@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022607-0016-0000-0000-000002EA58A9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022607-0017-0000-0000-0000334D86DA
-Message-Id: <d2a8b11a-44d0-24ca-0f3a-da773b6c2c1f@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-26_01:2020-02-25,
- 2020-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 mlxlogscore=999 suspectscore=2 priorityscore=1501
- mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015 malwarescore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002260055
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200221032720.33893-5-alastair@au1.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,50 +70,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>, alastair@d-silva.org,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 26/02/2020 à 05:39, Andrew Donnellan a écrit :
-> In ocxl_context_free() we note that the AFU reference we're releasing was
-> taken in "ocxl_context_init", a function that doesn't actually exist.
+On 02/21/20 at 02:26pm, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> Fix it to say ocxl_context_alloc() instead, which I expect was what was
-> intended.
+> Function declarations don't need externs, remove the existing ones
+> so they are consistent with newer code
 > 
-> Fixes: 5ef3166e8a32 ("ocxl: Driver code for 'generic' opencapi devices")
-> Cc: Frederic Barrat <fbarrat@linux.ibm.com>
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 > ---
-
-
-
-ocxl_context_init() used to exist. It was renamed to 
-ocxl_context_alloc() for good reasons as part of later work. So it 
-should really be:
-Fixes: b9721d275cc2 ("ocxl: Allow external drivers to use OpenCAPI 
-contexts")
-
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-
->   drivers/misc/ocxl/context.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/powerpc/include/asm/pnv-ocxl.h | 32 ++++++++++++++---------------
+>  include/misc/ocxl.h                 |  6 +++---
+>  2 files changed, 18 insertions(+), 20 deletions(-)
 > 
-> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
-> index de8a66b9d76b..c21f65a5c762 100644
-> --- a/drivers/misc/ocxl/context.c
-> +++ b/drivers/misc/ocxl/context.c
-> @@ -287,7 +287,7 @@ void ocxl_context_free(struct ocxl_context *ctx)
->   
->   	ocxl_afu_irq_free_all(ctx);
->   	idr_destroy(&ctx->irq_idr);
-> -	/* reference to the AFU taken in ocxl_context_init */
-> +	/* reference to the AFU taken in ocxl_context_alloc() */
->   	ocxl_afu_put(ctx->afu);
->   	kfree(ctx);
->   }
-> 
+> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
+> index 0b2a6707e555..b23c99bc0c84 100644
+> --- a/arch/powerpc/include/asm/pnv-ocxl.h
+> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
+> @@ -9,29 +9,27 @@
+>  #define PNV_OCXL_TL_BITS_PER_RATE       4
+>  #define PNV_OCXL_TL_RATE_BUF_SIZE       ((PNV_OCXL_TL_MAX_TEMPLATE+1) * PNV_OCXL_TL_BITS_PER_RATE / 8)
+>  
+> -extern int pnv_ocxl_get_actag(struct pci_dev *dev, u16 *base, u16 *enabled,
+> -			u16 *supported);
+
+It works w or w/o extern when declare functions. Searching 'extern'
+under include can find so many functions with 'extern' adding. Do we
+have a explicit standard if we should add or remove 'exter' in function
+declaration?
+
+I have no objection to this patch, just want to make clear so that I can
+handle it w/o confusion.
+
+Thanks
+Baoquan
 
