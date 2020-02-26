@@ -2,77 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AB716F5DE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 03:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F28016F623
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 04:35:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48S0pD2jTFzDqNH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 13:57:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48S1f82SZvzDqbt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2020 14:35:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Moy0oe77; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48S0mP6pK4zDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 13:55:47 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id r67so627940pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2020 18:55:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=bfSVMJ6Zntz6A9BJaM12dNm4EQGGybEoHbVncbTsUMA=;
- b=Moy0oe77F1nP33WomY+/yVeQF9YOUm9A+K2Dmya3vWO3y1gDf7kXx+ARQoGIqJsbcn
- sPDlocDXHhiYZjO+XyXUp5tQV8BJw2C7x+2ghY8gYyPWFQ7qduGfKCkjbgpdinZcGNjB
- WxhCMHnCKG0c8t5hywtULwpBqj4C0bP6PHBAoxnZH9WUICVJuyrYV1mqj2wAShGjfCs6
- tIJzuV4Fe3jr6nyPLQ/HjFbLHYzt3rgUTWbLX8hMswIRiB57T3uJgkHbl/XIWiXtE5Fv
- PNehsU30K6Pj2wGG2X6MPSgieuIgHYhU1Oya8m/3JHtMlRpQXMzTlhwP7/IXW+Pi/+xR
- gauw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=bfSVMJ6Zntz6A9BJaM12dNm4EQGGybEoHbVncbTsUMA=;
- b=rrE6ChQmfkfDCTaEA4uVVQ1/1N/OebfSAIPFG10FkkzsbbOAFzvJCsAxgkef1TC9Yu
- 0ASP91O7ctqtWslxaYC5U+LV2jlzefoX8tkbiLL0qoHWleK0HTJfMurJqLmJk4QsX4OZ
- AFboARMT4aSTVqBlDmFmlXodzU4mGsu52dPu4p+S+hjCHMvcjgX/9A/DfSLmiPm4O7Fl
- LYDMaXW520FORcw9yro9nUNibjMYjZyj5YqozLsWGm4eMAvot/hX2bIxq8b3qvdjHOwm
- NPWEfNflibyOTIK+0wILUUlCRkdKKkU0GZV+oj68FhuT8836TzWCyCxoe6j6/Ko+uBc0
- lgBQ==
-X-Gm-Message-State: APjAAAXCxN3W25e/6i+AMJDja5Qc2Q41Hlhuactr7hMnMF2pwwIOSiiy
- fFlsTk0Gkeq3gH4H1AAtvrI=
-X-Google-Smtp-Source: APXvYqxX5rlyRMCuaRBBYuYMduxdjpm5x24xmrS5n9R3CJux7Jc4o6x9N7kxgP+pNGY/fDI9hDV73g==
-X-Received: by 2002:a17:902:9f88:: with SMTP id
- g8mr1790693plq.100.1582685743306; 
- Tue, 25 Feb 2020 18:55:43 -0800 (PST)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id l13sm444798pjq.23.2020.02.25.18.55.42
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 25 Feb 2020 18:55:43 -0800 (PST)
-Date: Tue, 25 Feb 2020 18:55:40 -0800
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH v2 3/3] ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and
- platform drivers
-Message-ID: <20200226025540.GA22445@Asurada-Nvidia.nvidia.com>
-References: <VE1PR04MB6479BCA376502F6F1251602BE3EC0@VE1PR04MB6479.eurprd04.prod.outlook.com>
- <20200225080350.GA11332@Asurada>
- <CAA+D8AMFzDs8uXiR-N8harRVmhC+3i8p9HdO2CgxOCX8WVfXAw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48S1cQ39hRzDqbk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 14:33:54 +1100 (AEDT)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id B6A2E6E4F79A98A08336;
+ Wed, 26 Feb 2020 11:33:47 +0800 (CST)
+Received: from [127.0.0.1] (10.173.221.195) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0;
+ Wed, 26 Feb 2020 11:33:38 +0800
+Subject: Re: [PATCH v3 3/6] powerpc/fsl_booke/64: implement KASLR for
+ fsl_booke64
+From: Jason Yan <yanaijie@huawei.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, <mpe@ellerman.id.au>,
+ <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
+ <oss@buserror.net>
+References: <20200206025825.22934-1-yanaijie@huawei.com>
+ <20200206025825.22934-4-yanaijie@huawei.com>
+ <41b9f1ca-c6fd-291a-2c96-2a0e8a754ec4@c-s.fr>
+ <dbe0b316-40a2-7da4-c26b-e59efa555400@huawei.com>
+Message-ID: <d3647cce-ece3-d302-f541-b02b1f2b5e9e@huawei.com>
+Date: Wed, 26 Feb 2020 11:33:37 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA+D8AMFzDs8uXiR-N8harRVmhC+3i8p9HdO2CgxOCX8WVfXAw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <dbe0b316-40a2-7da4-c26b-e59efa555400@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.221.195]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,39 +58,374 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>, "S.j. Wang" <shengjiu.wang@nxp.com>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 26, 2020 at 09:51:39AM +0800, Shengjiu Wang wrote:
-> > > > > +static const struct regmap_config fsl_easrc_regmap_config = {
-> > > > > +     .readable_reg = fsl_easrc_readable_reg,
-> > > > > +     .volatile_reg = fsl_easrc_volatile_reg,
-> > > > > +     .writeable_reg = fsl_easrc_writeable_reg,
-> > > >
-> > > > Can we use regmap_range and regmap_access_table?
-> > > >
-> > >
-> > > Can the regmap_range support discontinuous registers?  The
-> > > reg_stride = 4.
-> >
-> > I think it does. Giving an example here:
-> > https://github.com/torvalds/linux/blob/master/drivers/mfd/da9063-i2c.c
-> 
-> The register in this i2c driver are continuous,  from 0x00, 0x01, 0x02...
-> 
-> But our case is 0x00, 0x04, 0x08, does it work?
 
-Ah...I see your point now. I am not very sure -- have only used
-in I2C drivers. You can ignore if it doesn't likely work for us.
+
+在 2020/2/26 10:40, Jason Yan 写道:
+> 
+> 
+> 在 2020/2/20 21:48, Christophe Leroy 写道:
+>>
+>>
+>> Le 06/02/2020 à 03:58, Jason Yan a écrit :
+>>> The implementation for Freescale BookE64 is similar as BookE32. One
+>>> difference is that Freescale BookE64 set up a TLB mapping of 1G during
+>>> booting. Another difference is that ppc64 needs the kernel to be
+>>> 64K-aligned. So we can randomize the kernel in this 1G mapping and make
+>>> it 64K-aligned. This can save some code to creat another TLB map at
+>>> early boot. The disadvantage is that we only have about 1G/64K = 16384
+>>> slots to put the kernel in.
+>>>
+>>> To support secondary cpu boot up, a variable __kaslr_offset was added in
+>>> first_256B section. This can help secondary cpu get the kaslr offset
+>>> before the 1:1 mapping has been setup.
+>>>
+>>> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+>>> Cc: Scott Wood <oss@buserror.net>
+>>> Cc: Diana Craciun <diana.craciun@nxp.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>> Cc: Paul Mackerras <paulus@samba.org>
+>>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>>> Cc: Kees Cook <keescook@chromium.org>
+>>> ---
+>>>   arch/powerpc/Kconfig                 |  2 +-
+>>>   arch/powerpc/kernel/exceptions-64e.S | 10 +++++++++
+>>>   arch/powerpc/kernel/head_64.S        |  7 ++++++
+>>>   arch/powerpc/kernel/setup_64.c       |  4 +++-
+>>>   arch/powerpc/mm/mmu_decl.h           | 16 +++++++-------
+>>>   arch/powerpc/mm/nohash/kaslr_booke.c | 33 +++++++++++++++++++++++++---
+>>>   6 files changed, 59 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>> index c150a9d49343..754aeb96bb1c 100644
+>>> --- a/arch/powerpc/Kconfig
+>>> +++ b/arch/powerpc/Kconfig
+>>> @@ -568,7 +568,7 @@ config RELOCATABLE
+>>>   config RANDOMIZE_BASE
+>>>       bool "Randomize the address of the kernel image"
+>>> -    depends on (FSL_BOOKE && FLATMEM && PPC32)
+>>> +    depends on (PPC_FSL_BOOK3E && FLATMEM)
+>>>       depends on RELOCATABLE
+>>>       help
+>>>         Randomizes the virtual address at which the kernel image is
+>>> diff --git a/arch/powerpc/kernel/exceptions-64e.S 
+>>> b/arch/powerpc/kernel/exceptions-64e.S
+>>> index 1b9b174bee86..c1c05b8684ca 100644
+>>> --- a/arch/powerpc/kernel/exceptions-64e.S
+>>> +++ b/arch/powerpc/kernel/exceptions-64e.S
+>>> @@ -1378,6 +1378,7 @@ skpinv:    addi    r6,r6,1                /* 
+>>> Increment */
+>>>   1:    mflr    r6
+>>>       addi    r6,r6,(2f - 1b)
+>>>       tovirt(r6,r6)
+>>> +    add    r6,r6,r19
+>>>       lis    r7,MSR_KERNEL@h
+>>>       ori    r7,r7,MSR_KERNEL@l
+>>>       mtspr    SPRN_SRR0,r6
+>>> @@ -1400,6 +1401,7 @@ skpinv:    addi    r6,r6,1                /* 
+>>> Increment */
+>>>       /* We translate LR and return */
+>>>       tovirt(r8,r8)
+>>> +    add    r8,r8,r19
+>>>       mtlr    r8
+>>>       blr
+>>> @@ -1528,6 +1530,7 @@ a2_tlbinit_code_end:
+>>>    */
+>>>   _GLOBAL(start_initialization_book3e)
+>>>       mflr    r28
+>>> +    li    r19, 0
+>>>       /* First, we need to setup some initial TLBs to map the kernel
+>>>        * text, data and bss at PAGE_OFFSET. We don't have a real mode
+>>> @@ -1570,6 +1573,12 @@ _GLOBAL(book3e_secondary_core_init)
+>>>       cmplwi    r4,0
+>>>       bne    2f
+>>> +    li    r19, 0
+>>> +#ifdef CONFIG_RANDOMIZE_BASE
+>>> +    LOAD_REG_ADDR_PIC(r19, __kaslr_offset)
+>>> +    lwz    r19,0(r19)
+>>> +    rlwinm  r19,r19,0,0,5
+>>> +#endif
+>>>       /* Setup TLB for this core */
+>>>       bl    initial_tlb_book3e
+>>> @@ -1602,6 +1611,7 @@ _GLOBAL(book3e_secondary_core_init)
+>>>       lis    r3,PAGE_OFFSET@highest
+>>>       sldi    r3,r3,32
+>>>       or    r28,r28,r3
+>>> +    add    r28,r28,r19
+>>>   1:    mtlr    r28
+>>>       blr
+>>> diff --git a/arch/powerpc/kernel/head_64.S 
+>>> b/arch/powerpc/kernel/head_64.S
+>>> index ad79fddb974d..744624140fb8 100644
+>>> --- a/arch/powerpc/kernel/head_64.S
+>>> +++ b/arch/powerpc/kernel/head_64.S
+>>> @@ -104,6 +104,13 @@ __secondary_hold_acknowledge:
+>>>       .8byte    0x0
+>>>   #ifdef CONFIG_RELOCATABLE
+>>> +#ifdef CONFIG_RANDOMIZE_BASE
+>>> +    . = 0x58
+>>> +    .globl    __kaslr_offset
+>>> +__kaslr_offset:
+>>> +DEFINE_FIXED_SYMBOL(__kaslr_offset)
+>>> +    .long    0
+>>> +#endif
+>>>       /* This flag is set to 1 by a loader if the kernel should run
+>>>        * at the loaded address instead of the linked address.  This
+>>>        * is used by kexec-tools to keep the the kdump kernel in the
+>>> diff --git a/arch/powerpc/kernel/setup_64.c 
+>>> b/arch/powerpc/kernel/setup_64.c
+>>> index 6104917a282d..a16b970a8d1a 100644
+>>> --- a/arch/powerpc/kernel/setup_64.c
+>>> +++ b/arch/powerpc/kernel/setup_64.c
+>>> @@ -66,7 +66,7 @@
+>>>   #include <asm/feature-fixups.h>
+>>>   #include <asm/kup.h>
+>>>   #include <asm/early_ioremap.h>
+>>> -
+>>
+>> Why remove this new line which clearly separates things in asm/ and 
+>> things in local dir ?
+> 
+> Sorry to break this. I will add the new line back.
+> 
+>>
+>>> +#include <mm/mmu_decl.h>
+>>>   #include "setup.h"
+>>>   int spinning_secondaries;
+>>> @@ -300,6 +300,8 @@ void __init early_setup(unsigned long dt_ptr)
+>>>       /* Enable early debugging if any specified (see udbg.h) */
+>>>       udbg_early_init();
+>>> +    kaslr_early_init(__va(dt_ptr), 0);
+>>> +
+>>>       udbg_printf(" -> %s(), dt_ptr: 0x%lx\n", __func__, dt_ptr);
+>>>       /*
+>>> diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
+>>> index 3e1c85c7d10b..bbd721d1e3d7 100644
+>>> --- a/arch/powerpc/mm/mmu_decl.h
+>>> +++ b/arch/powerpc/mm/mmu_decl.h
+>>> @@ -147,14 +147,6 @@ void reloc_kernel_entry(void *fdt, long addr);
+>>>   extern void loadcam_entry(unsigned int index);
+>>>   extern void loadcam_multi(int first_idx, int num, int tmp_idx);
+>>> -#ifdef CONFIG_RANDOMIZE_BASE
+>>> -void kaslr_early_init(void *dt_ptr, phys_addr_t size);
+>>> -void kaslr_late_init(void);
+>>> -#else
+>>> -static inline void kaslr_early_init(void *dt_ptr, phys_addr_t size) {}
+>>> -static inline void kaslr_late_init(void) {}
+>>> -#endif
+>>> -
+>>>   struct tlbcam {
+>>>       u32    MAS0;
+>>>       u32    MAS1;
+>>> @@ -164,6 +156,14 @@ struct tlbcam {
+>>>   };
+>>>   #endif
+>>> +#ifdef CONFIG_RANDOMIZE_BASE
+>>> +void kaslr_early_init(void *dt_ptr, phys_addr_t size);
+>>> +void kaslr_late_init(void);
+>>> +#else
+>>> +static inline void kaslr_early_init(void *dt_ptr, phys_addr_t size) {}
+>>> +static inline void kaslr_late_init(void) {}
+>>> +#endif
+>>> +
+>>>   #if defined(CONFIG_PPC_BOOK3S_32) || defined(CONFIG_FSL_BOOKE) || 
+>>> defined(CONFIG_PPC_8xx)
+>>>   /* 6xx have BATS */
+>>>   /* FSL_BOOKE have TLBCAM */
+>>> diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c 
+>>> b/arch/powerpc/mm/nohash/kaslr_booke.c
+>>> index 07b036e98353..c6f5c1db1394 100644
+>>> --- a/arch/powerpc/mm/nohash/kaslr_booke.c
+>>> +++ b/arch/powerpc/mm/nohash/kaslr_booke.c
+>>> @@ -231,7 +231,7 @@ static __init unsigned long 
+>>> get_usable_address(const void *fdt,
+>>>       unsigned long pa;
+>>>       unsigned long pa_end;
+>>> -    for (pa = offset; (long)pa > (long)start; pa -= SZ_16K) {
+>>> +    for (pa = offset; (long)pa > (long)start; pa -= SZ_64K) {
+>>
+>> Doesn't this modify the behaviour for PPC32 too ?
+> 
+> Oh, yes. I will fix this.
+> 
+>>
+>>>           pa_end = pa + regions.kernel_size;
+>>>           if (overlaps_region(fdt, pa, pa_end))
+>>>               continue;
+>>> @@ -265,14 +265,14 @@ static unsigned long __init 
+>>> kaslr_legal_offset(void *dt_ptr, unsigned long rando
+>>>   {
+>>>       unsigned long koffset = 0;
+>>>       unsigned long start;
+>>> -    unsigned long index;
+>>>       unsigned long offset;
+>>> +#ifdef CONFIG_PPC32
+>>
+>> Can we use
+>>
+>> if (IS_ENABLED(CONFIG_PPC32)) {
+>>      /* 32 bits stuff */
+>> } else {
+>>      /* 64 bits stuff */
+>> }
+> 
+> Thansk for the suggestion. I will consider to use IS_ENABLED() instead.
+> 
+>>
+>>>       /*
+>>>        * Decide which 64M we want to start
+>>>        * Only use the low 8 bits of the random seed
+>>>        */
+>>> -    index = random & 0xFF;
+>>> +    unsigned long index = random & 0xFF;
+>>
+>> That's not good in terms of readability, index declaration should 
+>> remain at the top of the function, should be possible if using 
+>> IS_ENABLED() instead
+> 
+> I'm wondering how to declare a variable inside a code block such as if 
+> (IS_ENABLED(CONFIG_PPC32)) at the top of the function and use the 
+> variable in another if (IS_ENABLED(CONFIG_PPC32)). Is there any good idea?
+> 
+
+Hi Christophe,
+
+When using a standard C if/else, all code compiled for PPC32 and PPC64, 
+but this will bring some build error because not all variables both 
+defined for PPC32 and PPC64.
+
+[yanaijie@138 linux]$ sh ppc64build.sh
+   CALL    scripts/atomic/check-atomics.sh
+   CALL    scripts/checksyscalls.sh
+   CHK     include/generated/compile.h
+   CC      arch/powerpc/mm/nohash/kaslr_booke.o
+arch/powerpc/mm/nohash/kaslr_booke.c: In function 'kaslr_choose_location':
+arch/powerpc/mm/nohash/kaslr_booke.c:341:30: error: 
+'CONFIG_LOWMEM_CAM_NUM' undeclared (first use in this function); did you 
+mean 'CONFIG_FLATMEM_MANUAL'?
+    ram = map_mem_in_cams(ram, CONFIG_LOWMEM_CAM_NUM, true);
+                               ^~~~~~~~~~~~~~~~~~~~~
+                               CONFIG_FLATMEM_MANUAL
+arch/powerpc/mm/nohash/kaslr_booke.c:341:30: note: each undeclared 
+identifier is reported only once for each function it appears in
+arch/powerpc/mm/nohash/kaslr_booke.c: In function 'kaslr_early_init':
+arch/powerpc/mm/nohash/kaslr_booke.c:404:3: error: 'is_second_reloc' 
+undeclared (first use in this function); did you mean '__cond_lock'?
+    is_second_reloc = 1;
+    ^~~~~~~~~~~~~~~
+    __cond_lock
+arch/powerpc/mm/nohash/kaslr_booke.c:411:4: error: implicit declaration 
+of function 'create_kaslr_tlb_entry'; did you mean 'reloc_kernel_entry'? 
+[-Werror=implicit-function-declaration]
+     create_kaslr_tlb_entry(1, tlb_virt, tlb_phys);
+     ^~~~~~~~~~~~~~~~~~~~~~
+     reloc_kernel_entry
+cc1: all warnings being treated as errors
+make[3]: *** [scripts/Makefile.build:268: 
+arch/powerpc/mm/nohash/kaslr_booke.o] Error 1
+make[2]: *** [scripts/Makefile.build:505: arch/powerpc/mm/nohash] Error 2
+make[1]: *** [scripts/Makefile.build:505: arch/powerpc/mm] Error 2
+make: *** [Makefile:1681: arch/powerpc] Error 2
+
+Thanks,
+Jason
+
+>>
+>>>       index %= regions.linear_sz / SZ_64M;
+>>>       /* Decide offset inside 64M */
+>>> @@ -287,6 +287,15 @@ static unsigned long __init 
+>>> kaslr_legal_offset(void *dt_ptr, unsigned long rando
+>>>               break;
+>>>           index--;
+>>>       }
+>>> +#else
+>>> +    /* Decide kernel offset inside 1G */
+>>> +    offset = random % (SZ_1G - regions.kernel_size);
+>>> +    offset = round_down(offset, SZ_64K);
+>>> +
+>>> +    start = memstart_addr;
+>>> +    offset = memstart_addr + offset;
+>>> +    koffset = get_usable_address(dt_ptr, start, offset);
+>>> +#endif
+>>>       if (koffset != 0)
+>>>           koffset -= memstart_addr;
+>>> @@ -325,6 +334,7 @@ static unsigned long __init 
+>>> kaslr_choose_location(void *dt_ptr, phys_addr_t size
+>>>       else
+>>>           pr_warn("KASLR: No safe seed for randomizing the kernel 
+>>> base.\n");
+>>> +#ifdef CONFIG_PPC32
+>>>       ram = min_t(phys_addr_t, __max_low_memory, size);
+>>>       ram = map_mem_in_cams(ram, CONFIG_LOWMEM_CAM_NUM, true);
+>>>       linear_sz = min_t(unsigned long, ram, SZ_512M);
+>>> @@ -332,6 +342,7 @@ static unsigned long __init 
+>>> kaslr_choose_location(void *dt_ptr, phys_addr_t size
+>>>       /* If the linear size is smaller than 64M, do not randmize */
+>>>       if (linear_sz < SZ_64M)
+>>>           return 0;
+>>> +#endif
+>>>       /* check for a reserved-memory node and record its cell sizes */
+>>>       regions.reserved_mem = fdt_path_offset(dt_ptr, 
+>>> "/reserved-memory");
+>>> @@ -363,6 +374,17 @@ notrace void __init kaslr_early_init(void 
+>>> *dt_ptr, phys_addr_t size)
+>>>       unsigned long offset;
+>>>       unsigned long kernel_sz;
+>>> +#ifdef CONFIG_PPC64
+>>
+>> Same, can we use a standard C if/else sequence with 
+>> IS_ENABLED(CONFIG_PPC64) ?
+> 
+> OK, I will try to do this if I can deal with the declaration of 
+> variables in different if/else sequence.
+> 
+> Thanks,
+> Jason
+> 
+> 
+>>
+>>> +    unsigned int *__kaslr_offset = (unsigned int *)(KERNELBASE + 0x58);
+>>> +    unsigned int *__run_at_load = (unsigned int *)(KERNELBASE + 0x5c);
+>>> +
+>>> +    if (*__run_at_load == 1)
+>>> +        return;
+>>> +
+>>> +    /* Setup flat device-tree pointer */
+>>> +    initial_boot_params = dt_ptr;
+>>> +#endif
+>>> +
+>>>       kernel_sz = (unsigned long)_end - (unsigned long)_stext;
+>>>       offset = kaslr_choose_location(dt_ptr, size, kernel_sz);
+>>> @@ -372,6 +394,7 @@ notrace void __init kaslr_early_init(void 
+>>> *dt_ptr, phys_addr_t size)
+>>>       kernstart_virt_addr += offset;
+>>>       kernstart_addr += offset;
+>>> +#ifdef CONFIG_PPC32
+>>>       is_second_reloc = 1;
+>>>       if (offset >= SZ_64M) {
+>>> @@ -381,6 +404,10 @@ notrace void __init kaslr_early_init(void 
+>>> *dt_ptr, phys_addr_t size)
+>>>           /* Create kernel map to relocate in */
+>>>           create_kaslr_tlb_entry(1, tlb_virt, tlb_phys);
+>>>       }
+>>> +#else
+>>> +    *__kaslr_offset = kernstart_virt_addr - KERNELBASE;
+>>> +    *__run_at_load = 1;
+>>> +#endif
+>>>       /* Copy the kernel to it's new location and run */
+>>>       memcpy((void *)kernstart_virt_addr, (void *)_stext, kernel_sz);
+>>>
+>>
+>> Christophe
+>>
+>> .
+> 
+> 
+> .
+
