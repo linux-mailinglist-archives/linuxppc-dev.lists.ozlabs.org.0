@@ -1,68 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7E5171014
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 06:18:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60935171002
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 06:12:44 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Sgls4xc7zDqq3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 16:12:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SgtF0K5RzDqbs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 16:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=H4jCUaLf; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SgjS2SSfzDqr6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 16:10:35 +1100 (AEDT)
-Received: by mail-qt1-x843.google.com with SMTP id l16so1415502qtq.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 21:10:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=pivyxHSyqwryDPI9Gp60bBQcqgh4EowGAu7KJlQgz8E=;
- b=H4jCUaLfJYUfLLqA3eJUJTu4b5XveFIshSWzC8Y9ln+QPHPxLUrzmrpESy/4akroJp
- Z1nDx07X+MlLtNHzVPHE0eRY5Ki3r78WV31qoXhY51kbpvG/tDwciXC480UedUkCVCLI
- CfSE9KcQk9zWNnCwGGaiXi0+XGAOA+cUPGSLF1Kl8WM911mYZ5WBeZjtQ4p7/trNAmiG
- lee0S5ks436Q82ah/K+yp4MxHyjN4E9/4sbSeYHC8ECGGPVvAIYYtbLsEKwL6P41B1Jg
- 5juA7vU9RxBBlarCdwpP1F6wZhIcVRvZZ8LOzUBwNwcutzQsS1no+Zbav7A+e8MY9XBO
- f9ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=pivyxHSyqwryDPI9Gp60bBQcqgh4EowGAu7KJlQgz8E=;
- b=bSyUyrpXk4Ss4jcP8WDNcWW16yAyd/ubvcJ+x7Yvwfajz9BBv4Kw8Xue++N1fa6cvG
- MGjis5TCXni84PhtrdV3WgRHdKEW3bkZw+z2NmKg85VqVtRTcP1Ytxgm4ULWWq3ZO4K/
- QACdeXGV+ZgXlmclny135ZYiW5nLHK8qciwzprMgTNB+kgl3C4tVE3ZAFT0K+vVJESFg
- dcaE1HUowrF5eQt/xKvZxDikvqLso/gv2N+H45H2IcGPjcyDOtGXSANFSEv4RZnKGj/+
- XwYPQeuTyRiU2VAj1P4jGfvdRXkcHqL1vt/glxXb/Ye0qEdltSbkDxegnslhBPUBUkcP
- imYw==
-X-Gm-Message-State: APjAAAVD9uRheS7xilkg5uwp/1OB6wQZQ6YqieuZhIywwf7LyqNeV8v6
- FjNYJqtA2SCVCy0XHHdhkHUCtYjM9rHXe/rLPrU=
-X-Google-Smtp-Source: APXvYqycq8WwBFtqjVUYzXazfM0rpHuJEyxghtCnM5oaWtr3OyjFzAOxbLU+lLoU9oiDrDjLlu176P4wnMzSmLHlnG0=
-X-Received: by 2002:ac8:5298:: with SMTP id s24mr2831317qtn.54.1582780230751; 
- Wed, 26 Feb 2020 21:10:30 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1582770784.git.shengjiu.wang@nxp.com>
- <ffd5ff2fd0e8ad03a97f6a640630cff767d73fa7.1582770784.git.shengjiu.wang@nxp.com>
- <20200227034121.GA20540@Asurada-Nvidia.nvidia.com>
-In-Reply-To: <20200227034121.GA20540@Asurada-Nvidia.nvidia.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 27 Feb 2020 13:10:19 +0800
-Message-ID: <CAA+D8AMzqpC35_CR2dCG6a_h4FzvZ6orXkPSYh_1o1d8hv+BMg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] ASoC: fsl_asrc: Change asrc_width to asrc_format
-To: Nicolin Chen <nicoleotsuka@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SgrH0RXNzDqLW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 16:16:30 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01R5DkAP080790
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 00:16:28 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcp5h4mv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 00:16:27 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Thu, 27 Feb 2020 05:16:25 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 27 Feb 2020 05:16:17 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01R5GHo053215344
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 27 Feb 2020 05:16:17 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE2ACA4062;
+ Thu, 27 Feb 2020 05:16:16 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 43AC8A405F;
+ Thu, 27 Feb 2020 05:16:16 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 27 Feb 2020 05:16:16 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 84109A01C0;
+ Thu, 27 Feb 2020 16:16:11 +1100 (AEDT)
+Subject: Re: [PATCH v3 12/27] powerpc/powernv/pmem: Add register addresses &
+ status values to the header
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Thu, 27 Feb 2020 16:16:14 +1100
+In-Reply-To: <e335ed2d-7381-e95c-a6b5-0efe60746cf4@linux.ibm.com>
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-13-alastair@au1.ibm.com>
+ <e335ed2d-7381-e95c-a6b5-0efe60746cf4@linux.ibm.com>
+Organization: IBM Australia
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20022705-4275-0000-0000-000003A5DB49
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022705-4276-0000-0000-000038BA0FCC
+Message-Id: <4ebbea9273ab5c44ad653690ae4c49e4d431ae05.camel@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-26_09:2020-02-26,
+ 2020-02-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002270039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,51 +98,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 27, 2020 at 11:43 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Thu, Feb 27, 2020 at 10:41:55AM +0800, Shengjiu Wang wrote:
-> > asrc_format is more inteligent variable, which is align
-> > with the alsa definition snd_pcm_format_t.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/fsl_asrc.c     | 23 +++++++++++------------
-> >  sound/soc/fsl/fsl_asrc.h     |  4 ++--
-> >  sound/soc/fsl/fsl_asrc_dma.c |  2 +-
-> >  3 files changed, 14 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> > index 0dcebc24c312..2b6a1643573c 100644
-> > --- a/sound/soc/fsl/fsl_asrc.c
-> > +++ b/sound/soc/fsl/fsl_asrc.c
->
-> > @@ -600,11 +599,6 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
-> >
-> >       pair->config = &config;
-> >
-> > -     if (asrc_priv->asrc_width == 16)
-> > -             format = SNDRV_PCM_FORMAT_S16_LE;
-> > -     else
-> > -             format = SNDRV_PCM_FORMAT_S24_LE;
->
-> It feels better to me that we have format settings in hw_params().
->
-> Why not let fsl_easrc align with this? Any reason that I'm missing?
+On Thu, 2020-02-27 at 16:08 +1100, Andrew Donnellan wrote:
+> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > These values have been taken from the device specifications.
+> > 
+> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> 
+> I've compared these values against the internal version of the
+> device 
+> specifications that I have access to, and they appear to match.
+> 
+> A few minor comments below, otherwise:
+> 
+> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> 
+> > +#define GLOBAL_MMIO_HCI_ACRW				BIT_ULL
+> > (0)
+> > +#define GLOBAL_MMIO_HCI_NSCRW				BIT_ULL
+> > (1)
+> > +#define GLOBAL_MMIO_HCI_AFU_RESET			BIT_ULL(2)
+> > +#define GLOBAL_MMIO_HCI_FW_DEBUG			BIT_ULL(3)
+> > +#define GLOBAL_MMIO_HCI_CONTROLLER_DUMP			BIT_ULL
+> > (4)
+> > +#define GLOBAL_MMIO_HCI_CONTROLLER_DUMP_COLLECTED	BIT_ULL(5)
+> > +#define GLOBAL_MMIO_HCI_REQ_HEALTH_PERF			BIT_ULL
+> > (6)
+> 
+> The labelling of some of these bits deviates from the standard 
+> abbreviations in the spec, which is fine I guess as these names are
+> more 
+> descriptive, but maybe add a brief comment with the original
+> abbreviation?
+> 
 
-because the asrc_width is not formal,  in the future we can direct
-input the format from the dts. format involve the info about width.
+Ok
 
-best regards
-wang shengjiu
+> > +
+> > +#define ADMIN_COMMAND_HEARTBEAT		0x00u
+> > +#define ADMIN_COMMAND_SHUTDOWN		0x01u
+> > +#define ADMIN_COMMAND_FW_UPDATE		0x02u
+> > +#define ADMIN_COMMAND_FW_DEBUG		0x03u
+> > +#define ADMIN_COMMAND_ERRLOG		0x04u
+> > +#define ADMIN_COMMAND_SMART		0x05u
+> > +#define ADMIN_COMMAND_CONTROLLER_STATS	0x06u
+> > +#define ADMIN_COMMAND_CONTROLLER_DUMP	0x07u
+> > +#define ADMIN_COMMAND_CMD_CAPS		0x08u
+> > +#define ADMIN_COMMAND_MAX		0x08u
+> > +
+> > +#define STATUS_SUCCESS		0x00
+> > +#define STATUS_MEM_UNAVAILABLE	0x20
+> 
+> There's also a "blocked on account of background task" code, 0x21.
+> 
+
+Ok
+
+> > +#define STATUS_BAD_OPCODE	0x50
+> > +#define STATUS_BAD_REQUEST_PARM	0x51
+> > +#define STATUS_BAD_DATA_PARM	0x52
+> > +#define STATUS_DEBUG_BLOCKED	0x70
+> > +#define STATUS_FAIL		0xFF
+> > +
+> > +#define STATUS_FW_UPDATE_BLOCKED 0x21
+> > +#define STATUS_FW_ARG_INVALID	0x51
+> > +#define STATUS_FW_INVALID	0x52
+> 
+> These status codes seem, from the specification, to correspond to
+> the 
+> generic error codes above, so perhaps they're not needed.
+> 
+
+These will be used in warn_status_fw_update() later, but I'll alias
+them to make it clear that they are shadowing values
+
+-- 
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
+
