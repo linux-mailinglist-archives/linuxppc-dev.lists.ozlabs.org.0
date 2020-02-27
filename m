@@ -2,78 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B774172559
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F221C17257C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:48:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48T0TC4cSmzDr42
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 04:46:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48T0XP3qXXzDr3G
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 04:48:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::743;
- helo=mail-qk1-x743.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
- header.s=google header.b=h0ccKzey; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=WrLlidHp; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48T0Pv6YzBzDr2N
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 04:43:15 +1100 (AEDT)
-Received: by mail-qk1-x743.google.com with SMTP id e16so160825qkl.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 09:43:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48T0Ss16qxzDr2h
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 04:45:48 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id 6so77801pgk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 09:45:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=oCjJQPxZpDAddCTP2fyq9zy2cQ1xSVL89kL40WfyDFw=;
- b=h0ccKzeyP3flPLgjKffvX6NEZ8a/uwNV100LizRKN14n3zedm2cahPgJEhxnAi/Eux
- SoJyZIMb4T7nlpMiSIVzl4rMs2X4TuO582QZ1v3uBlvSIJKL/2eHq1X0Q3RguRMqGiyD
- jIHlP2hMNaMnlwbC+BJKvF6YRP2s83wQLQnu6HWuvl9gBkHIXEKgRfF2bx2kqxfLtaoi
- NHPp/iB678wthxbg1SayDlPMTRa2+OyRd0c8slMZFoj0NWbnumSUHITUyCw6JAjfKy0s
- /ZPnh7hQIi+kffDRK1XYwUv4XEf8RRXfY3Aofqotene7stHVy6OiSQWIReq879CDmrtM
- 2sgQ==
+ bh=aavjJ+Z/Os0zHnsfY4LhrQa/kjKKVPycfJnfRrQ9Zao=;
+ b=WrLlidHpJQHENIo9YAPAEQekykxM5HD2YXi3IVdH2pDlg6yOsqQeAnBHuInus8IGYC
+ T+Llicheka6t83Av1G7fnGQK8N8t/+ARqHcr7lEyinMjtYM47yBrjkl2uEcRsEZ4vjUz
+ pAjZPbsFEKwx29NM8eVxoOKBbOhAa5Ss0rhJpdsluzAbqfyGiQnGG/Zp0NAiBrgbAbt0
+ jfF0riqJcV8+RHgdQPpeLHStGSeazOIOy4Dlp0oY3js8i23wr6q2uHDBiIWHOaJsg9t8
+ 1ZOC6VPeEyYaQraK7qW+s5OLWdodWJnu6yrWH8xyJEc1DQGF4Yy9unxmzfeJW8N2YDjq
+ /lIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=oCjJQPxZpDAddCTP2fyq9zy2cQ1xSVL89kL40WfyDFw=;
- b=GTwX3mKNKjwUmfPEHSlz8wUohf4XIvqDsLAFSEELIJ8ySNFL+DJ5zw16joOrARUGue
- MZvWbhq6yN19J6aj00Eh2WkKiTCK/3EZFtMR/ynZo9J2J+y2RD1CfbT1phcCg15B/ZpC
- uBseoKPCqcOHsM55KYNjq6fdmxIVqxcUcEvBXt+2IG9etFU2IVDjjHliTpisof52zdiF
- HhOSGoM+euVT5VTDWywP4CoC4qbMU7VvYzXgzLJgCz98xmvh7qCcvUkaDbpiCKXKFZ5H
- nFOp/iXsgJeNfKnJ6imhaiVWwIztTzK8NO82/Y8NFA5C3iFZwY30J/OOJw/idCXz+/eE
- kAFQ==
-X-Gm-Message-State: APjAAAUOkZeQcWrvW9izihVH+5ONcrhjd7ezd6Q/2pT7qC8wjfy24Ubm
- zDQgpGfbfl+AgP7tj0a7ONzH0g==
-X-Google-Smtp-Source: APXvYqz1bAJmZgA8/8aWp40ku++Grc84lutv6gcjfJ4VE4iLl6cxS/fnpq6F9eLVrs8dckDJaWVR0g==
-X-Received: by 2002:a05:620a:2185:: with SMTP id g5mr445502qka.4.1582825391979; 
- Thu, 27 Feb 2020 09:43:11 -0800 (PST)
-Received: from ziepe.ca
- (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.68.57.212])
- by smtp.gmail.com with ESMTPSA id k23sm3317124qtq.89.2020.02.27.09.43.11
+ bh=aavjJ+Z/Os0zHnsfY4LhrQa/kjKKVPycfJnfRrQ9Zao=;
+ b=bQgaPKpfmCxiF/O2Vu1xR8GRfaEAKGiIdsftdJf+mRe9bf1dl81ynmhR6Gocbx+D8M
+ e6no18UwOo4oKHd8RyMVNAROza+/c9mWbySQdry8qzup8ktaSSAKauNG7oZXWT/aJVCS
+ Kd6KrZCDFile1vdErm9IvNJNSZOAXisCPF2n3XVd+I4QFYN/Vya/XUQ/M1a0z2tG3pRf
+ oBT2OQ8Li8kQWi71NB5bEfXGkiOXEeQMwd6b68Gi9kTbwcgMD4CXz2ZpO6+lGq+KVKTG
+ 2bOOszZCkcwkeGkGjVuvHpBY5921ASQCGvOVa9HQn+PfkJKvMUNhbuszfWPoBV+0IQdn
+ EStA==
+X-Gm-Message-State: APjAAAWeD1Hy58sf/cbCgHIhhb5MYu5gWY6uuG5k2hH2+4ofdOfDBGEw
+ 7auC5/F9XaxMKGXrDqfpLOY=
+X-Google-Smtp-Source: APXvYqxLesXxb5FW6sTnMiGiGe5CN/UVKj1bBr36Rl2QBzPtHaPhoQYlUWdpilUa7ohjuvvcuvc2jw==
+X-Received: by 2002:a62:7c96:: with SMTP id x144mr114879pfc.7.1582825543344;
+ Thu, 27 Feb 2020 09:45:43 -0800 (PST)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id m16sm7712623pfh.60.2020.02.27.09.45.42
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 27 Feb 2020 09:43:11 -0800 (PST)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
- (envelope-from <jgg@ziepe.ca>)
- id 1j7NBn-0003iZ-2v; Thu, 27 Feb 2020 13:43:11 -0400
-Date: Thu, 27 Feb 2020 13:43:11 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Logan Gunthorpe <logang@deltatee.com>
-Subject: Re: [PATCH v3 0/7] Allow setting caching mode in arch_add_memory()
- for P2PDMA
-Message-ID: <20200227174311.GL31668@ziepe.ca>
-References: <20200221182503.28317-1-logang@deltatee.com>
- <20200227171704.GK31668@ziepe.ca>
- <e8781f85-3fc7-b9ce-c751-606803cbdc77@deltatee.com>
+ Thu, 27 Feb 2020 09:45:43 -0800 (PST)
+Date: Thu, 27 Feb 2020 09:45:41 -0800
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: Re: [PATCH v3 1/4] ASoC: fsl_asrc: Change asrc_width to asrc_format
+Message-ID: <20200227174540.GA17040@Asurada-Nvidia.nvidia.com>
+References: <cover.1582770784.git.shengjiu.wang@nxp.com>
+ <ffd5ff2fd0e8ad03a97f6a640630cff767d73fa7.1582770784.git.shengjiu.wang@nxp.com>
+ <20200227034121.GA20540@Asurada-Nvidia.nvidia.com>
+ <CAA+D8AMzqpC35_CR2dCG6a_h4FzvZ6orXkPSYh_1o1d8hv+BMg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e8781f85-3fc7-b9ce-c751-606803cbdc77@deltatee.com>
+In-Reply-To: <CAA+D8AMzqpC35_CR2dCG6a_h4FzvZ6orXkPSYh_1o1d8hv+BMg@mail.gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,50 +83,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
- David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Dan Williams <dan.j.williams@intel.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Michal Hocko <mhocko@kernel.org>, linux-arm-kernel@lists.infradead.org,
- Eric Badger <ebadger@gigaio.com>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 27, 2020 at 10:21:50AM -0700, Logan Gunthorpe wrote:
+On Thu, Feb 27, 2020 at 01:10:19PM +0800, Shengjiu Wang wrote:
+> On Thu, Feb 27, 2020 at 11:43 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+> >
+> > On Thu, Feb 27, 2020 at 10:41:55AM +0800, Shengjiu Wang wrote:
+> > > asrc_format is more inteligent variable, which is align
+> > > with the alsa definition snd_pcm_format_t.
+> > >
+> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > ---
+> > >  sound/soc/fsl/fsl_asrc.c     | 23 +++++++++++------------
+> > >  sound/soc/fsl/fsl_asrc.h     |  4 ++--
+> > >  sound/soc/fsl/fsl_asrc_dma.c |  2 +-
+> > >  3 files changed, 14 insertions(+), 15 deletions(-)
+> > >
+> > > diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> > > index 0dcebc24c312..2b6a1643573c 100644
+> > > --- a/sound/soc/fsl/fsl_asrc.c
+> > > +++ b/sound/soc/fsl/fsl_asrc.c
+> >
+> > > @@ -600,11 +599,6 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+> > >
+> > >       pair->config = &config;
+> > >
+> > > -     if (asrc_priv->asrc_width == 16)
+> > > -             format = SNDRV_PCM_FORMAT_S16_LE;
+> > > -     else
+> > > -             format = SNDRV_PCM_FORMAT_S24_LE;
+> >
+> > It feels better to me that we have format settings in hw_params().
+> >
+> > Why not let fsl_easrc align with this? Any reason that I'm missing?
 > 
-> 
-> On 2020-02-27 10:17 a.m., Jason Gunthorpe wrote:
-> >> Instead of this, this series proposes a change to arch_add_memory()
-> >> to take the pgprot required by the mapping which allows us to
-> >> explicitly set pagetable entries for P2PDMA memory to WC.
-> > 
-> > Is there a particular reason why WC was selected here? I thought for
-> > the p2pdma cases there was no kernel user that touched the memory?
-> 
-> Yes, that's correct. I choose WC here because the existing users are
-> registering memory blocks without side effects which fit the WC
-> semantics well.
+> because the asrc_width is not formal,  in the future we can direct
 
-Hm, AFAIK WC memory is not compatible with the spinlocks/mutexs/etc in
-Linux, so while it is true the memory has no side effects, there would
-be surprising concurrency risks if anything in the kernel tried to
-write to it.
+Hmm..that's our DT binding. And I don't feel it is a problem
+to be ASoC irrelative.
 
-Not compatible means the locks don't contain stores to WC memory the
-way you would expect. AFAIK on many CPUs extra barriers are required
-to keep WC stores ordered, the same way ARM already has extra barriers
-to keep UC stores ordered with locking..
+> input the format from the dts. format involve the info about width.
 
-The spinlocks are defined to contain UC stores though.
-
-If there is no actual need today for WC I would suggest using UC as
-the default.
-
-Jason
+Is there such any formal ASoC binding? I don't see those PCM
+formats under include/dt-bindings/ folder. How are we going
+to involve those formats in DT?
