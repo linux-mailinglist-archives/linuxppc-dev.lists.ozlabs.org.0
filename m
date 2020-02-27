@@ -1,92 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B992170F58
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 05:05:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4165E170F46
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 05:00:01 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Sf7y01HMzDqY0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 14:59:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SfGk5Fp3zDqs2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 15:05:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=hEshnkY+; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Sf675q9RzDqLW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 14:58:23 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01R3nWrO045123
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:58:21 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydkf9wr5r-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 22:58:21 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Thu, 27 Feb 2020 03:58:18 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 27 Feb 2020 03:58:11 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01R3wALj52625594
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 27 Feb 2020 03:58:10 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 077E311C04C;
- Thu, 27 Feb 2020 03:58:10 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9FA8611C04A;
- Thu, 27 Feb 2020 03:58:09 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 27 Feb 2020 03:58:09 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SfDY09YLzDqsZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 15:03:56 +1100 (AEDT)
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
+ [73.231.172.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E04FFA01C0;
- Thu, 27 Feb 2020 14:58:04 +1100 (AEDT)
-Subject: Re: [PATCH v3 13/27] powerpc/powernv/pmem: Read the capability
- registers & wait for device ready
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Thu, 27 Feb 2020 14:58:08 +1100
-In-Reply-To: <c6ce554a-62b4-2675-9ec3-1ded8eaacfc4@linux.ibm.com>
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-14-alastair@au1.ibm.com>
- <c6ce554a-62b4-2675-9ec3-1ded8eaacfc4@linux.ibm.com>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022703-0008-0000-0000-00000356CCA2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022703-0009-0000-0000-00004A77ED75
-Message-Id: <e411d83af90e776a817f7638871f2257cacffcd0.camel@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-26_09:2020-02-26,
- 2020-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxlogscore=999
- suspectscore=0 malwarescore=0 mlxscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 bulkscore=0 adultscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002270025
+ by mail.kernel.org (Postfix) with ESMTPSA id D80E124685;
+ Thu, 27 Feb 2020 04:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1582776234;
+ bh=dlJV6X0I7IrGWbU/KtcbtANr08nwFCVTfE1alETj44U=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=hEshnkY+tvGit0cKDfeluAySLkQ4Xled8zmc5jvOITOHKbmYgwRCgZhr11yYlZCaI
+ QkeZdgAbSbrNzA3JROFuXOzJ0V7vmn3oqMn/+vctVVCl4wtBE8lv4P5PYNPqJ5zhBr
+ 6sL43sJMfYsduFtDrJ6WJ+ZOQLAYvoMayLwJqBKk=
+Date: Wed, 26 Feb 2020 20:03:53 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
+ table helpers
+Message-Id: <20200226200353.ea5c8ec2efacfb1192f3f3f4@linux-foundation.org>
+In-Reply-To: <52db1e9b-83b3-c41f-ef03-0f43e2159a83@arm.com>
+References: <1581909460-19148-1-git-send-email-anshuman.khandual@arm.com>
+ <1582726182.7365.123.camel@lca.pw>
+ <1582726340.7365.124.camel@lca.pw>
+ <eb154054-68ab-a659-065b-f4f7dcbb8671@c-s.fr>
+ <52db1e9b-83b3-c41f-ef03-0f43e2159a83@arm.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,62 +63,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Morse <james.morse@arm.com>,
+ linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Qian Cai <cai@lca.pw>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Borislav Petkov <bp@alien8.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-02-27 at 14:54 +1100, Andrew Donnellan wrote:
-> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> > +/**
-> > + * read_device_metadata() - Retrieve config information from the
-> > AFU and save it for future use
-> > + * @ocxlpmem: the device metadata
-> > + * Return: 0 on success, negative on failure
-> > + */
-> > +static int read_device_metadata(struct ocxlpmem *ocxlpmem)
-> > +{
-> > +	u64 val;
-> > +	int rc;
-> > +
-> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-> > GLOBAL_MMIO_CCAP0,
-> > +				     OCXL_LITTLE_ENDIAN, &val);
-> > +	if (rc)
-> > +		return rc;
-> > +
-> > +	ocxlpmem->scm_revision = val & 0xFFFF;
-> > +	ocxlpmem->read_latency = (val >> 32) & 0xFF;
-> 
-> This field is 16 bits in the spec, so the mask should be 0xFFFF I
-> think?
-> 
+On Thu, 27 Feb 2020 08:04:05 +0530 Anshuman Khandual <anshuman.khandual@arm=
+.com> wrote:
 
-You're right, I'll fix it.
+> > Must be something wrong with the following in debug_vm_pgtable()
+> >=20
+> > =A0=A0=A0=A0paddr =3D __pa(&start_kernel);
+> >=20
+> > Is there any explaination why start_kernel() is not in linear memory on=
+ ARM64 ?
+>=20
+>=20
+> Cc: + James Morse <james.morse@arm.com>
+>=20
+> This warning gets exposed with DEBUG_VIRTUAL due to __pa() on a kernel sy=
+mbol
+> i.e 'start_kernel' which might be outside the linear map. This happens du=
+e to
+> kernel mapping position randomization with KASLR. Adding James here in ca=
+se he
+> might like to add more.
+>=20
+> __pa_symbol() should have been used instead, for accessing the physical a=
+ddress
+> here. On arm64 __pa() does check for linear address with __is_lm_address(=
+) and
+> switch accordingly if it is a kernel text symbol. Nevertheless, its much =
+better
+> to use __pa_symbol() here rather than __pa().
+>=20
+> Rather than respining the patch once more, will just send a fix replacing=
+ this
+> helper __pa() with __pa_symbol() for Andrew to pick up as this patch is a=
+lready
+> part of linux-next (next-20200226). But can definitely respin if that wil=
+l be
+> preferred.
 
-> Maybe we should generalise the EXTRACT_BITS macro we use in ocxl :)
-> 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+I didn't see this fix?  I assume it's this?  If so, are we sure it's OK to =
+be
+added to -next without testing??
+
+
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm-debug-add-tests-validating-architecture-page-table-helpers-fix
+
+A warning gets exposed with DEBUG_VIRTUAL due to __pa() on a kernel symbol
+i.e 'start_kernel' which might be outside the linear map.  This happens
+due to kernel mapping position randomization with KASLR.
+
+__pa_symbol() should have been used instead, for accessing the physical
+address here.  On arm64 __pa() does check for linear address with
+__is_lm_address() and switch accordingly if it is a kernel text symbol.=20
+Nevertheless, its much better to use __pa_symbol() here rather than
+__pa().
+
+Reported-by: Qian Cai <cai@lca.pw>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/debug_vm_pgtable.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/debug_vm_pgtable.c~mm-debug-add-tests-validating-architecture-page=
+-table-helpers-fix
++++ a/mm/debug_vm_pgtable.c
+@@ -331,7 +331,7 @@ void __init debug_vm_pgtable(void)
+ 	 * helps avoid large memory block allocations to be used for mapping
+ 	 * at higher page table levels.
+ 	 */
+-	paddr =3D __pa(&start_kernel);
++	paddr =3D __pa_symbol(&start_kernel);
+=20
+ 	pte_aligned =3D (paddr & PAGE_MASK) >> PAGE_SHIFT;
+ 	pmd_aligned =3D (paddr & PMD_MASK) >> PAGE_SHIFT;
+_
 
