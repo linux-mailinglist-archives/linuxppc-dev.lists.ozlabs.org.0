@@ -1,58 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022F5172B9C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 23:41:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12F2172AF8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 23:17:43 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48T6VY2lx0zDr7K
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 09:17:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48T7200wMQzDrBx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 09:41:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48T6Sx3ydBzDr13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 09:16:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=ovus=4p=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=FQ+Ch8yW; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48T6Sw6TCWz9sNg;
- Fri, 28 Feb 2020 09:16:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1582841777;
- bh=C0sQUbJcUy3SCxluJOVutQ4Q/pprgmEge+rCNcrvXlw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=FQ+Ch8yWcGWV3+pKERY7iAIiROMwV+lINicwcODo5g+5qp73grrdmzJPe3+NXh+7r
- 0gB1l5PijcsfeopK9gvtr2ju3aY1x16Am0t12VIEg6gG57lUa+SykMgWF0xPI66mnj
- 5WGmRjOlGY54euU0vvGvYGv3wRAoTWTzr4ChBPu1L5+ywoT10GVX+IVvPYOjCvPMva
- ujZLPsqpDJjD7TkwVSos3+XQieM/mtqnINm/fwqhpXhYfUwueYx3li1IgOlkdhM8SS
- szoooUY/aS5MaO1U9a4+lHcDzxPuWrzSjKuH6uTvC2pEOmTlh/klsqVlelMi/1F7ta
- dJLGiMUJQiI+w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, mikey@neuling.org,
- Russell Currey <ruscur@russell.cc>
-Subject: Re: [PATCH v4 13/13] powerpc/ptrace: move ptrace_triggered() into
- hw_breakpoint.c
-In-Reply-To: <4e528bf2-2b53-ae93-cdcc-0c80953f40f2@c-s.fr>
-References: <cover.1582803998.git.christophe.leroy@c-s.fr>
- <d45c91cf5f83424b8f3989b7ead28c50d8d765a9.1582803998.git.christophe.leroy@c-s.fr>
- <4e528bf2-2b53-ae93-cdcc-0c80953f40f2@c-s.fr>
-Date: Fri, 28 Feb 2020 09:16:16 +1100
-Message-ID: <87pndz1xsf.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48T70G5pBCzDr6v
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 09:39:58 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
+Date: Thu, 27 Feb 2020 22:39:55 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206203-206035-xI49AZSvPL@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
+References: <bug-206203-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,53 +60,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Russel,
->
-> Le 27/02/2020 =C3=A0 12:49, Christophe Leroy a =C3=A9crit=C2=A0:
->> ptrace_triggered() is declared in asm/hw_breakpoint.h and
->> only needed when CONFIG_HW_BREAKPOINT is set, so move it
->> into hw_breakpoint.c
->
-> My series v4 is definitely buggy (I included ptrace_decl.h instead=20
-> instead of ptrace-decl.h), how can Snowpatch say build succeeded=20
-> (https://patchwork.ozlabs.org/patch/1245807/) ?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206203
 
-Which links to:
-  https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/15895//art=
-ifact/linux/report.txt
+--- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
+(In reply to mpe from comment #6)
+> Can you attach the /sys/kernel/debug/kmemleak output please.
+>=20
+> cheers
+I already did:
+"kmemleak output (kernel 5.6-rc3, PowerMac G5 11,2) (91.35 KB, text/plain)"
 
-The actual build log of which is:
-  https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/15895/arti=
-fact/linux/build_new.log
-
-Which contains:
-  scripts/Makefile.build:267: recipe for target 'arch/powerpc/kernel/ptrace=
-/ptrace-altivec.o' failed
-  make[3]: *** [arch/powerpc/kernel/ptrace/ptrace-altivec.o] Error 1
-  make[3]: *** Waiting for unfinished jobs....
-  scripts/Makefile.build:505: recipe for target 'arch/powerpc/kernel/ptrace=
-' failed
-  make[2]: *** [arch/powerpc/kernel/ptrace] Error 2
-  make[2]: *** Waiting for unfinished jobs....
-  scripts/Makefile.build:505: recipe for target 'arch/powerpc/kernel' failed
-  make[1]: *** [arch/powerpc/kernel] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  Makefile:1681: recipe for target 'arch/powerpc' failed
-  make: *** [arch/powerpc] Error 2
-  make: *** Waiting for unfinished jobs....
-
-Same for ppc64le:
-  https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/15896/arti=
-fact/linux/build_new.log
-
-
-So it seems like snowpatch always reports the build as succeeded even
-when it fails.
-
-cheers
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
