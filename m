@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC5317247F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:05:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SzZk0yTZzDr7b
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 04:05:50 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7200917248D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:08:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Szdh6BnLzDr8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 04:08:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::241;
- helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=KPfzjDQt; dkim-atps=neutral
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=qQ2TAJnS; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SzW3037SzDr13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 04:02:38 +1100 (AEDT)
-Received: by mail-oi1-x241.google.com with SMTP id q81so4052773oig.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 09:02:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=V/jADGYHp0JHjLbfNvifObEsHN9b9nWgTjEodPO7hm0=;
- b=KPfzjDQtTnijJToFyDXktoC2udwyOzB0B5n85vP7uYekSEu8BkMpLT/ZI8CK3gNjgz
- S4lijftXsqXG4e0UvQY/lM0ScFXNOzHZ8nfP6HW//fgk3or+XDKKdQ3oUsEwbm9kjbSt
- YvZJdY2AqXxidZDU2pvSxjgcEExZaJPMc5a8U6aBVjmcc0vMBekyiq3voRqtqk0KSPAx
- RFvfSk+LlSSPZbVx4Jl7Nqwk1QcuKaWmy4niKZ4SeXt+CXOmgUmLp6ojW6ui9knkVAbw
- O56thY8gft/GhQJUltLLBZzs0iZAZiPm7sIaskKsb2nHEkfDNZ+AvKn6WunU3y1NY3xL
- bvFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=V/jADGYHp0JHjLbfNvifObEsHN9b9nWgTjEodPO7hm0=;
- b=NZfYAOU3HigkvBdcxgn1UTe5p8uYL2lZ/kMfBw3IVdl5Bcvjj5fRGnNNBml1NF/kvq
- fKeMIj6X2VJow7i9mrsHJZUC0Qi9miV+5BsVwod6EaAh+1//HaZkm7tiaP1iryjWwQoo
- eClEjJ3CoYmiDzdCtLMJ65n69KOQMNUItrfS+oyvOw9N4tgxj4nfgQ3D+P5FBsTgeGlN
- rzB3KIUvdBH7mrqjJlufk7i8jpmNJEbIqvwZoIwe+8kChbPVZoUndaHiBOgf9JQw9S7+
- zrMBrLtDQ4O/qh2ujcDBAKRLWJvoXsFoLd0zaMXjuozKUFvNX7M+pa9104qJ9bXOesR5
- 8Ihg==
-X-Gm-Message-State: APjAAAVWX/zMfQH/Nl0jX1/SS9VR6q4u6UTzFEI0aRwMm1FZW9HZDhHo
- Cxxu/v1Cnmc/9Bn/bEW4DfH8bUj0nSX5sLiynJZVNw==
-X-Google-Smtp-Source: APXvYqypU1i0qqgWCthMIeErQC/uy0wM3eA252xRldHq9XOYpqruxDhwC/BTw+uhQHICN4k+v1Tc+9XvQsy7JvHRZsw=
-X-Received: by 2002:aca:aa0e:: with SMTP id t14mr4256386oie.149.1582822956078; 
- Thu, 27 Feb 2020 09:02:36 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SzXH2rmYzDr13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 04:03:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48SzXB3jH9z9tyX0;
+ Thu, 27 Feb 2020 18:03:38 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=qQ2TAJnS; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id lT4opiy4Qpqi; Thu, 27 Feb 2020 18:03:38 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48SzXB28lmz9tyWv;
+ Thu, 27 Feb 2020 18:03:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582823018; bh=ivG0NenvQkR8PkrDU2mBpZ9HGooYM3SCFz7DbVUGfzY=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=qQ2TAJnSG5rWsee88j6nad+tuJ9WtixEjEin3eXlX7opv2cv4hq6hZXkvm5CACMiz
+ LVQrY7R8aSu+JuZ1LAiykc8H95XuwDKbOiBPLQrTBRTecf2/Mzv2lkuzxnkm96QnDW
+ q5FMafTk76Ro//h6tgtJQwVa+No5DSBj82q9iu40=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DCF7C8B880;
+ Thu, 27 Feb 2020 18:03:39 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id fKAvznOpv8mR; Thu, 27 Feb 2020 18:03:39 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 82BF18B799;
+ Thu, 27 Feb 2020 18:03:38 +0100 (CET)
+Subject: Re: [PATCH] selftests/vm: Fix map_hugetlb length used for testing
+ read and write
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+To: Shuah Khan <shuah@kernel.org>
+References: <9a404a13c871c4bd0ba9ede68f69a1225180dd7e.1580978385.git.christophe.leroy@c-s.fr>
+Message-ID: <797ec84e-7257-d97a-5c13-9a9d9f1f650a@c-s.fr>
+Date: Thu, 27 Feb 2020 18:03:20 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-16-alastair@au1.ibm.com>
-In-Reply-To: <20200221032720.33893-16-alastair@au1.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 27 Feb 2020 09:02:25 -0800
-Message-ID: <CAPcyv4jiXZrTNTOb8aY8nehVBphCOKbtDKK9ouddiHnEZSYW3A@mail.gmail.com>
-Subject: Re: [PATCH v3 15/27] powerpc/powernv/pmem: Add support for near
- storage commands
-To: "Alastair D'Silva" <alastair@au1.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <9a404a13c871c4bd0ba9ede68f69a1225180dd7e.1580978385.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,37 +78,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Rob Herring <robh@kernel.org>,
- Dave Jiang <dave.jiang@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, alastair@d-silva.org,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
- Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 20, 2020 at 7:28 PM Alastair D'Silva <alastair@au1.ibm.com> wrote:
->
-> From: Alastair D'Silva <alastair@d-silva.org>
->
-> Similar to the previous patch, this adds support for near storage commands.
+Shuah,
 
-Similar comment as the last patch. This changelog does not give the
-reviewer any frame of reference to review the patch.
+Le 06/02/2020 à 09:42, Christophe Leroy a écrit :
+> Commit fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and
+> page size in map_hugetlb") added the possibility to change the size
+> of memory mapped for the test, but left the read and write test using
+> the default value. This is unnoticed when mapping a length greater
+> than the default one, but segfaults otherwise.
+> 
+> Fix read_bytes() and write_bytes() by giving them the real length.
+> 
+> Also fix the call to munmap().
+> 
+> Fixes: fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and page size in map_hugetlb")
+> Cc: stable@vger.kernel.org
+
+Can you also consider this one for next rc ?
+
+Thanks
+Christophe
+
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>   tools/testing/selftests/vm/map_hugetlb.c | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/vm/map_hugetlb.c b/tools/testing/selftests/vm/map_hugetlb.c
+> index 5a2d7b8efc40..6af951900aa3 100644
+> --- a/tools/testing/selftests/vm/map_hugetlb.c
+> +++ b/tools/testing/selftests/vm/map_hugetlb.c
+> @@ -45,20 +45,20 @@ static void check_bytes(char *addr)
+>   	printf("First hex is %x\n", *((unsigned int *)addr));
+>   }
+>   
+> -static void write_bytes(char *addr)
+> +static void write_bytes(char *addr, size_t length)
+>   {
+>   	unsigned long i;
+>   
+> -	for (i = 0; i < LENGTH; i++)
+> +	for (i = 0; i < length; i++)
+>   		*(addr + i) = (char)i;
+>   }
+>   
+> -static int read_bytes(char *addr)
+> +static int read_bytes(char *addr, size_t length)
+>   {
+>   	unsigned long i;
+>   
+>   	check_bytes(addr);
+> -	for (i = 0; i < LENGTH; i++)
+> +	for (i = 0; i < length; i++)
+>   		if (*(addr + i) != (char)i) {
+>   			printf("Mismatch at %lu\n", i);
+>   			return 1;
+> @@ -96,11 +96,11 @@ int main(int argc, char **argv)
+>   
+>   	printf("Returned address is %p\n", addr);
+>   	check_bytes(addr);
+> -	write_bytes(addr);
+> -	ret = read_bytes(addr);
+> +	write_bytes(addr, length);
+> +	ret = read_bytes(addr, length);
+>   
+>   	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
+> -	if (munmap(addr, LENGTH)) {
+> +	if (munmap(addr, length)) {
+>   		perror("munmap");
+>   		exit(1);
+>   	}
+> 
