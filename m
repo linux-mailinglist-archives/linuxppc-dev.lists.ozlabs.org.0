@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CAF170D14
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 01:13:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891F5170CD9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 00:57:12 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SXlm5Nt2zDqhF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 10:57:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SY711NZYzDqcX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 11:13:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
+ helo=mail-ot1-x343.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cOvFbn4v; dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
+ header.s=20161025 header.b=TjZyKbZP; dkim-atps=neutral
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SXjZ0WZ3zDqR0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 10:55:13 +1100 (AEDT)
-Received: by mail-oi1-x242.google.com with SMTP id c16so1465297oic.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 15:55:13 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SY4x6mS7zDqbX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 11:12:01 +1100 (AEDT)
+Received: by mail-ot1-x343.google.com with SMTP id r16so1282298otd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 16:12:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=sYJqqXKw2CCJkhBonhnPl1NW2iZrp7qAkX2+wgE0jT0=;
- b=cOvFbn4v7jxdN+z2vxj5M/vGwIGzD6aL4Hv5Hji/N/MHDcp1keW1IBctOPWDtXXRHY
- 5UEQASjnw7F5amJzsFXikFXxPRj+rOiszUyyLNZ6/sll66arikI91bB0HrqFKVCm7mHQ
- 40CkGXCKPjvPVCaW0OQ4XPyvHg8+8TCB1tpGawS4xziXfUHPHvONS/q2RKZa7x5/AFAi
- PsftAYLCWjbvf9G6C5YthHkr7wISVbPd/mgfkvfp/+D8GRLFinQTGhXM0JbJNsuKvQg2
- jg8N51OFWa236/cUEyj9UNv9uZTraF/7awKyF/MGHBxG3dfxnnDxephSmBxKPZjVyxwm
- VaWw==
+ :cc; bh=GG41VFyljAHzmcXQMPBqwXFLPXUtQme2hcXPLyG9+Lk=;
+ b=TjZyKbZPzE7FtFYISK3r+4iNzCNQ2qSZsuF65roiaqst3bfffxV+o/fN9TUQpD4D+1
+ /dBzpu6oiIVqEPNAwVu8IjhsIykZKoB26Wg81LeTb49k3r0MMk9VP/dKDkfioFXSCI0u
+ 18Xv3nbsHUHET1mxPI52KHx2zJw9fEchhe/rwi1ue+gLyKRXVYyz1CWE13zikIaIDSXo
+ X/Et98NdQUd3tSraBLelEP/U6+EnhlV9BhRHexBCiQkVmVJ5O4eudNx7/J2owKzZmaBT
+ AQQB6hCH5RNEbEpVDgRewheoW7EQHxhKfONTu3XnW7t9eRMaaTgttYewJfSpqzGpwW2f
+ 0v7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=sYJqqXKw2CCJkhBonhnPl1NW2iZrp7qAkX2+wgE0jT0=;
- b=RoJqB0SsH/ytcunvB/kYrKH5MK3QUcqKhw6etaVk4Z/UdlXB9CfXI9JA0NIwf6togD
- /ORWCB8dUm5ymS/nSfz19tYP9AFkN0EdcBLaKt/5F4V87xDKhzzMC4N3YyI0ucKeGKKn
- ptQaPsLXUYxNkfJ/UoZBomLwZR7LIAdnKyL7xa5cQnII9Kk/vKDiXug/9ywDm67HjJZO
- 0bGvstPNhb0vJS2Y5002ImW4fO17roNmiG2MV5B656rVPLbBuTGYDuD4n2BLTxOEl6AS
- hQA9G1oECmUa9U36pe9hHfzP0FKTGZ1zntp5vwjLnMSe8oVNn94pkEp4+UjODakDWSDN
- 2Nyg==
-X-Gm-Message-State: APjAAAXSsEWQ7pVu6UEWpHQMEQEnbopk0Cf09xseOX7DtXjzlMjnFBPw
- ozVw4JY3QJTF3qE5rdLbRUheskfio7UyFcs5tDw=
-X-Google-Smtp-Source: APXvYqzheQYdWqHS8DOEyZoT5hV2Un6txzHwcD/tg2AaemR8ZlAwW+epCqJAiA1wSOLl8/Tv5l5+G7sb5s0GbcXPGSM=
-X-Received: by 2002:a05:6808:218:: with SMTP id
- l24mr1196030oie.108.1582761310213; 
- Wed, 26 Feb 2020 15:55:10 -0800 (PST)
+ bh=GG41VFyljAHzmcXQMPBqwXFLPXUtQme2hcXPLyG9+Lk=;
+ b=eaFuQh5fyK7BhNzMaJoRIISCSdpNNwSoCJ4ZewozN3/lM4KLLzrxl9qczq+DFKMwqm
+ z3nUoyXZcca8OWjF/S0jtEimR+bFoxO1+yj5B7sN5seLkULgGsurxAeV7GDr15ayhIEk
+ 2wsJg2Qfz2IRrPzi/6PjxaGtd2iZ/jdjLcunznqKgfidfO05MFnuTp2PjH1uNMWotoQJ
+ RA+NpnECeLEs8NzKginPb0xrITLlTAhz7SQIiMQ73+3EBMYZUy8JejnzQZYhscm05wQ8
+ BFOPr3+H9mqD4Y96vaKP3M/df5U+uwGttX3bjIUZ/BGFxmBGAcCQSMva4l94IaTYYHpt
+ q5Qw==
+X-Gm-Message-State: APjAAAU20XZAZjdg89fpUcWT09wu7qorDECcekDV2hmtruazwsBu9WjY
+ 31TgRO9THr8/u4OsSojtW2oydjtBS4n32LE7ZSI=
+X-Google-Smtp-Source: APXvYqxDzD34LJ4jih2YWeTT8TMRzR7hYvFbY6RoHMuFlAcAJzhQ4pLDGVIs1ehk+kv++ISgonO9SH5PD344YO0MmoI=
+X-Received: by 2002:a9d:5e18:: with SMTP id d24mr1194384oti.155.1582762318234; 
+ Wed, 26 Feb 2020 16:11:58 -0800 (PST)
 MIME-Version: 1.0
 References: <20200226040716.32395-1-jniethe5@gmail.com>
- <20200226040716.32395-9-jniethe5@gmail.com>
- <1582699938.333f3hx0ka.astroid@bobo.none>
-In-Reply-To: <1582699938.333f3hx0ka.astroid@bobo.none>
+ <20200226040716.32395-10-jniethe5@gmail.com>
+ <1582700457.bqyiezlzr9.astroid@bobo.none>
+In-Reply-To: <1582700457.bqyiezlzr9.astroid@bobo.none>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 27 Feb 2020 10:54:59 +1100
-Message-ID: <CACzsE9qiRGEGHdk5sv3V043RsF31tF=EgzH7O0SaUV=p3ojrtQ@mail.gmail.com>
-Subject: Re: [PATCH v3 08/14] powerpc/xmon: Remove store_inst() for
- patch_instruction()
+Date: Thu, 27 Feb 2020 11:11:47 +1100
+Message-ID: <CACzsE9p4siTRgCnC6GPSn+89SnPr5CTTBk5+LOfS8BX+1OmMZg@mail.gmail.com>
+Subject: Re: [PATCH v3 09/14] powerpc/xmon: Add initial support for prefixed
+ instructions
 To: Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,59 +81,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 26, 2020 at 6:04 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+On Wed, Feb 26, 2020 at 6:10 PM Nicholas Piggin <npiggin@gmail.com> wrote:
 >
 > Jordan Niethe's on February 26, 2020 2:07 pm:
-> > For modifying instructions in xmon, patch_instruction() can serve the
-> > same role that store_inst() is performing with the advantage of not
-> > being specific to xmon. In some places patch_instruction() is already
-> > being using followed by store_inst(). In these cases just remove the
-> > store_inst(). Otherwise replace store_inst() with patch_instruction().
+> > A prefixed instruction is composed of a word prefix and a word suffix.
+> > It does not make sense to be able to have a breakpoint on the suffix of
+> > a prefixed instruction, so make this impossible.
+> >
+> > When leaving xmon_core() we check to see if we are currently at a
+> > breakpoint. If this is the case, the breakpoint needs to be proceeded
+> > from. Initially emulate_step() is tried, but if this fails then we need
+> > to execute the saved instruction out of line. The NIP is set to the
+> > address of bpt::instr[] for the current breakpoint.  bpt::instr[]
+> > contains the instruction replaced by the breakpoint, followed by a trap
+> > instruction.  After bpt::instr[0] is executed and we hit the trap we
+> > enter back into xmon_bpt(). We know that if we got here and the offset
+> > indicates we are at bpt::instr[1] then we have just executed out of line
+> > so we can put the NIP back to the instruction after the breakpoint
+> > location and continue on.
+> >
+> > Adding prefixed instructions complicates this as the bpt::instr[1] needs
+> > to be used to hold the suffix. To deal with this make bpt::instr[] big
+> > enough for three word instructions.  bpt::instr[2] contains the trap,
+> > and in the case of word instructions pad bpt::instr[1] with a noop.
+> >
+> > No support for disassembling prefixed instructions.
 > >
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> >  arch/powerpc/xmon/xmon.c | 13 ++-----------
-> >  1 file changed, 2 insertions(+), 11 deletions(-)
+> > v2: Rename sufx to suffix
+> > v3: - Just directly use PPC_INST_NOP
+> >     - Typo: plac -> place
+> >     - Rename read_inst() to mread_inst(). Do not have it call mread().
+> > ---
+> >  arch/powerpc/xmon/xmon.c | 90 ++++++++++++++++++++++++++++++++++------
+> >  1 file changed, 78 insertions(+), 12 deletions(-)
 > >
 > > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> > index 897e512c6379..a673cf55641c 100644
+> > index a673cf55641c..a73a35aa4a75 100644
 > > --- a/arch/powerpc/xmon/xmon.c
 > > +++ b/arch/powerpc/xmon/xmon.c
-> > @@ -325,11 +325,6 @@ static inline void sync(void)
-> >       asm volatile("sync; isync");
-> >  }
-> >
-> > -static inline void store_inst(void *p)
-> > -{
-> > -     asm volatile ("dcbst 0,%0; sync; icbi 0,%0; isync" : : "r" (p));
-> > -}
-> > -
-> >  static inline void cflush(void *p)
-> >  {
-> >       asm volatile ("dcbf 0,%0; icbi 0,%0" : : "r" (p));
-> > @@ -882,8 +877,7 @@ static struct bpt *new_breakpoint(unsigned long a)
-> >       for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
-> >               if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
-> >                       bp->address = a;
-> > -                     bp->instr[1] = bpinstr;
-> > -                     store_inst(&bp->instr[1]);
-> > +                     patch_instruction(&bp->instr[1], bpinstr);
-> >                       return bp;
-> >               }
-> >       }
-> > @@ -913,7 +907,7 @@ static void insert_bpts(void)
-> >                       bp->enabled = 0;
-> >                       continue;
-> >               }
-> > -             store_inst(&bp->instr[0]);
-> > +             patch_instruction(&bp->instr[0], bp->instr[0]);
+> > @@ -97,7 +97,8 @@ static long *xmon_fault_jmp[NR_CPUS];
+> >  /* Breakpoint stuff */
+> >  struct bpt {
+> >       unsigned long   address;
+> > -     unsigned int    instr[2];
+> > +     /* Prefixed instructions can not cross 64-byte boundaries */
+> > +     unsigned int    instr[3] __aligned(64);
 >
-> Hmm that's a bit weird. Can you read instructions into a local variable
-> first, do the checks on them, then patch them into their execution
-> location?
-I agree it is weird, local variables would be better.
+> This is pretty wild, I didn't realize xmon executes breakpoints out
+> of line like this.
 >
-> Otherwise, good cleanup.
+> IMO the break point entries here should correspond with a range of
+> reserved bytes in .text so we patch instructions into normal executable
+> pages rather than .data.
+Would it make sense to use vmalloc_exec() and use that like we are
+going to do in kprobes()?
+>
+> Anyway that's for patch.
 >
 > Thanks,
 > Nick
