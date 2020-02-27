@@ -1,69 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98386170D94
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 02:00:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SZ9K2w5DzDqq8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 12:00:53 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C342E170DCB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 02:25:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SZjf1PxczDqs1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 12:25:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::344;
- helo=mail-ot1-x344.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FHqihkE4; dkim-atps=neutral
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SZ6x2lGvzDqlQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 11:58:48 +1100 (AEDT)
-Received: by mail-ot1-x344.google.com with SMTP id r16so1368797otd.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2020 16:58:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=1YVQK7nzOCWA7WAK6oORj2UW5pxlHLZetEbaMq7XrwE=;
- b=FHqihkE4qn2zZvqeGjBrKQssOhUxXl5sg2pJLO7f10Fr7lUazI46UM/Yx9xeANxWtb
- ZJr3x0jeQSCUmvpz6m8jYLVC9Hu2pAxvcx6YlE+o3GPJ3KcmxI/G/ailA9QOZ2Gccef2
- L6RAf/hhgVrR8AtIslOVclE0A1Xv96V/n0h7E55JPM5ospUZwreSgrpUM41JG1/HmHwn
- lRlrLkLBz/REBgaxm65nrfgw2q71RbPZTXD35DBnnQ7Hmbk+R88rH0Wv42RVHdV2BpRm
- NVFMoGXoQYPqlDpWUZ5keAzoA61k+EL/n/ENZFehoPILNkm2jPmiUSWkUT1kgzQQczQi
- sykg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=1YVQK7nzOCWA7WAK6oORj2UW5pxlHLZetEbaMq7XrwE=;
- b=gbvl1xLqga0uoWm2QAYfLGXPGtTsKlz2DM70VYfSDRC4C+MMnAEw+wLadQkgOqOq7C
- WLMqtJFp1anmXAQrrSOELlvgvP6iQcYZZEqUrRoLxMaxMA1VAg9o0CaV4jGMsq/0d4V/
- 0HF29fjkdLNmFOFIqhc4IrQBl+Obj0coL5ukCzz89le3OQjMKgkkmmQPwnfwjubeaZY/
- pxNTCyQW4eTdiLNkiCFuJZtWQfmfGO64s4B95xP1zXpyEfK6RPOTsd9ctN2Fqy0HvkrM
- hTWEkA8TORHQJAmuk+4dLqvX4z2vmvx45dG1eFHWUTqsqBqedwO9qcn1WHvqFWNW9VLe
- /jVw==
-X-Gm-Message-State: APjAAAXABKy0P/ePZIW8rJ1jtODeyBKk9PbWujzxV0banMtcGCUtC+XD
- oG1m7V86xU9vvh57XLkkjJs5IpB9jAGuBvZZz8c=
-X-Google-Smtp-Source: APXvYqxYUCWJ7Bu1HGlKiUKxaqY4E0XQH4rPCz+JHnmcTXPbkICEjE+1mlYp29M7/ffXujcXlaIvuu6/wNgA7oO1Few=
-X-Received: by 2002:a9d:5e18:: with SMTP id d24mr1339039oti.155.1582765125318; 
- Wed, 26 Feb 2020 16:58:45 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SZh03hNCzDqjW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 12:24:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VCVWhoqS; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48SZgy2Mknz9sPK;
+ Thu, 27 Feb 2020 12:23:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1582766640;
+ bh=ICKPxzO9BqqJCVG6Gu46DTjkkmB7acV1gCLgWsJ9g0A=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VCVWhoqSjYQGm2w8skc37LmZ5O7VoEaNHMdXiLJO4cgw8EIYvcQFNW3QwBA/dyYb/
+ A8yvVC1S28Io0S7y64BaTjuAC8rA485sMmeEyhEXG4m4CJlp3v8JYknpJFGeDtNdCg
+ wOsDnEtdSvXhMQ/g5RLT2xhmr8ctEZ/9Lp7IN8tUsL9vBs/HdG2caCYieCHgR9ca3R
+ cGsl27Gvmwb4CD4WVUHcBRGLYFDP4QTbr2T+se5Ln/PsZ5/pmWXXq/QrelUxKvb0Q6
+ GqbUXq+xi5UN2YGfPhgQNQSpJJAshUqUF2FJPM614ldtCzqaOakmmRiN6vh4by0QAS
+ hEALnU+yJNOdA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Wolfram Sang <wsa@the-dreams.de>, linuxppc-dev@lists.ozlabs.org 
+Subject: Re: [PATCH] macintosh: therm_windtunnel: fix regression when
+ instantiating devices
+In-Reply-To: <20200225141229.5424-1-wsa@the-dreams.de>
+References: <20200225141229.5424-1-wsa@the-dreams.de>
+Date: Thu, 27 Feb 2020 12:23:57 +1100
+Message-ID: <87imjsu8k2.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200226040716.32395-1-jniethe5@gmail.com>
- <20200226040716.32395-12-jniethe5@gmail.com>
- <1582700856.cbydlhx2wj.astroid@bobo.none>
-In-Reply-To: <1582700856.cbydlhx2wj.astroid@bobo.none>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 27 Feb 2020 11:58:34 +1100
-Message-ID: <CACzsE9r+dKAgmTPsWtzPTnjmVskG_BO5G3=0V_Qm_6pu-_ZRFg@mail.gmail.com>
-Subject: Re: [PATCH v3 11/14] powerpc/kprobes: Support kprobes on prefixed
- instructions
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,148 +58,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>, Daniel Axtens <dja@axtens.net>,
- linuxppc-dev@lists.ozlabs.org, Balamuruhan S <bala24@linux.ibm.com>
+Cc: Mathieu Malaterre <malat@debian.org>, Erhard Furtner <erhard_f@mailbox.org>,
+ debian-powerpc@lists.debian.org, linux-i2c@vger.kernel.org,
+ Wolfram Sang <wsa@the-dreams.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 26, 2020 at 6:18 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+Wolfram Sang <wsa@the-dreams.de> writes:
+> Removing attach_adapter from this driver caused a regression for at
+> least some machines. Those machines had the sensors described in their
+> DT, too, so they didn't need manual creation of the sensor devices. The
+> old code worked, though, because manual creation came first. Creation of
+> DT devices then failed later and caused error logs, but the sensors
+> worked nonetheless because of the manually created devices.
 >
-> Jordan Niethe's on February 26, 2020 2:07 pm:
-> > @@ -136,11 +148,14 @@ int arch_prepare_kprobe(struct kprobe *p)
-> >       }
-> >
-> >       if (!ret) {
-> > -             patch_instruction(p->ainsn.insn, *p->addr);
-> > +             patch_instruction(&p->ainsn.insn[0], p->addr[0]);
-> > +             if (IS_PREFIX(insn))
-> > +                     patch_instruction(&p->ainsn.insn[1], p->addr[1]);
-> >               p->opcode = *p->addr;
+> When removing attach_adaper, manual creation now comes later and loses
+> the race. The sensor devices were already registered via DT, yet with
+> another binding, so the driver could not be bound to it.
 >
-> Not to single out this hunk or this patch even, but what do you reckon
-> about adding an instruction data type, and then use that in all these
-> call sites rather than adding the extra arg or doing the extra copy
-> manually in each place depending on prefix?
+> This fix refactors the code to remove the race and only manually creates
+> devices if there are no DT nodes present. Also, the DT binding is updated
+> to match both, the DT and manually created devices. Because we don't
+> know which device creation will be used at runtime, the code to start
+> the kthread is moved to do_probe() which will be called by both methods.
 >
-> instrs_are_equal, get_user_instr, analyse_instr, patch_instruction,
-> etc., would all take this new instr. Places that open code a memory
-> access like your MCE change need some accessor
+> Fixes: 3e7bed52719d ("macintosh: therm_windtunnel: drop using attach_adapter")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=201723
+> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+> Tested-by: Erhard Furtner <erhard_f@mailbox.org>
+> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+> ---
 >
->                instr = *(unsigned int *)(instr_addr);
-> -               if (!analyse_instr(&op, &tmp, instr, PPC_NO_SUFFIX)) {
-> +               if (IS_PREFIX(instr))
-> +                       suffix = *(unsigned int *)(instr_addr + 4);
->
-> Becomes
->                read_instr(instr_addr, &instr);
->                if (!analyse_instr(&op, &tmp, instr)) ...
->
-> etc.
-Daniel Axtens also talked about this and my reasons not to do so were
-pretty unconvincing, so I started trying something like this. One
-thing I have been wondering is how pervasive should the new type be.
-Below is data type I have started using, which I think works
-reasonably for replacing unsigned ints everywhere (like within
-code-patching.c). In a few architecture independent places such as
-uprobes which want to do ==, etc the union type does not work so well.
-I will have the next revision of the series start using a type.
+> I suggest this stable-tag: # v4.19+
 
-diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-new file mode 100644
-index 000000000000..50adb3dbdeb4
---- /dev/null
-+++ b/arch/powerpc/include/asm/inst.h
-@@ -0,0 +1,87 @@
-+
-+#ifndef _ASM_INST_H
-+#define _ASM_INST_H
-+
-+#ifdef __powerpc64__
-+
-+/* 64  bit Instruction */
-+
-+typedef struct {
-+    unsigned int prefix;
-+    unsigned int suffix;
-+} __packed ppc_prefixed_inst;
-+
-+typedef union ppc_inst {
-+    unsigned int w;
-+    ppc_prefixed_inst p;
-+} ppc_inst;
-+
-+#define PPC_INST_IS_PREFIXED(inst) (((inst).w >> 26) == 1)
-+#define PPC_INST_LEN(inst) (PPC_INST_IS_PREFIXED((inst)) ?
-sizeof((inst).p) : sizeof((inst).w))
-+
-+#define PPC_INST_NEW_WORD(x) ((ppc_inst) { .w = (x) })
-+#define PPC_INST_NEW_WORD_PAD(x) ((ppc_inst) { .p.prefix = (x),
-.p.suffix = (0x60000000) })
-+#define PPC_INST_NEW_PREFIXED(x, y) ((ppc_inst) { .p.prefix = (x),
-.p.suffix = (y) })
-+
-+#define PPC_INST_WORD(x) ((x).w)
-+#define PPC_INST_PREFIX(x) (x.p.prefix)
-+#define PPC_INST_SUFFIX(x) (x.p.suffix)
-+#define PPC_INST_EMPTY(x) (PPC_INST_WORD(x) == 0)
-+
-+#define DEREF_PPC_INST_PTR(ptr)                \
-+({                            \
-+    ppc_inst __inst;                \
-+    __inst.w = *(unsigned int *)(ptr);        \
-+    if (PPC_INST_IS_PREFIXED(__inst))        \
-+        __inst.p = *(ppc_prefixed_inst *)(ptr);    \
-+    __inst;                        \
-+})
-+
-+#define PPC_INST_NEXT(ptr) ((ptr) += PPC_INST_LEN(DEREF_PPC_INST_PTR((ptr))))
-+#define PPC_INST_PREV(ptr) ((ptr) -= PPC_INST_LEN(DEREF_PPC_INST_PTR((ptr))))
-+
-+#define PPC_INST_EQ(x, y)                \
-+({                            \
-+    long pic_ret = 0;                \
-+    pic_ret = (PPC_INST_PREFIX(x) == PPC_INST_PREFIX(y));    \
-+    if (pic_ret) {                    \
-+        if (PPC_INST_IS_PREFIXED(x) && PPC_INST_IS_PREFIXED(y)) {    \
-+            pic_ret = (PPC_INST_SUFFIX(x) == PPC_INST_SUFFIX(y));    \
-+        } else {                \
-+            pic_ret = 0;            \
-+        }                    \
-+    }                        \
-+    pic_ret;                    \
-+})
-+
-+#else /* !__powerpc64__ */
-+
-+/* 32 bit Instruction */
-+
-+typedef unsigned int ppc_inst;
-+
-+#define PPC_INST_IS_PREFIXED(inst) (0)
-+#define PPC_INST_LEN(inst) (4)
-+
-+#define PPC_INST_NEW_WORD(x) (x)
-+#define PPC_INST_NEW_WORD_PAD(x) (x)
-+#define PPC_INST_NEW_PREFIXED(x, y) (x)
-+
-+#define PPC_INST_WORD(x) (x)
-+#define PPC_INST_PREFIX(x) (x)
-+#define PPC_INST_SUFFIX(x) (0)
-+#define PPC_INST_EMPTY(x) (PPC_INST_WORD(x) == 0)
-+
-+#define DEREF_PPC_INST_PTR(ptr)    (*ptr)
-+
-+#define PPC_INST_NEXT(ptr) ((ptr) += 4)
-+#define PPC_INST_PREV(ptr) ((ptr) -= 4)
-+
-+#define PPC_INST_EQ(x, y) ((x) == (y))
-+
-+#endif /* __powerpc64__ */
-+
-+
-+#endif /* _ASM_INST_H */
+Looks right to me.
 
+> Adding the Debian-PPC List to reach further people maybe willing to
+> test.
 >
-> Thanks,
-> Nick
+> This patch does not depend on "[PATCH RESEND] macintosh: convert to
+> i2c_new_scanned_device". In fact, this one here should go in first as
+> 5.6 material. I will rebase and resend the i2c_new_scanned_device()
+> conversion on top of this regression fix.
+>
+> I can also take this via I2C if easier.
+
+I think that would be best, it's more I2C related than powerpc arch
+stuff that I could review.
+
+I don't have a machine setup to test this easily, but Erhard has been
+doing a good job of testing things so I'm happy for you to take it with
+his Tested-by.
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+cheers
