@@ -2,45 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082D0170E7E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 03:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FF4170EB8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 03:50:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ScH83ZkdzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 13:36:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ScbT6lLPzDqsC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 13:50:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48ScF94tfTzDqWg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 13:34:19 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A9D9F1FB;
- Wed, 26 Feb 2020 18:34:15 -0800 (PST)
-Received: from [10.163.1.119] (unknown [10.163.1.119])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D8323F819;
- Wed, 26 Feb 2020 18:34:06 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
- table helpers
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>,
- linux-mm@kvack.org
-References: <1581909460-19148-1-git-send-email-anshuman.khandual@arm.com>
- <1582726182.7365.123.camel@lca.pw> <1582726340.7365.124.camel@lca.pw>
- <eb154054-68ab-a659-065b-f4f7dcbb8671@c-s.fr>
-Message-ID: <52db1e9b-83b3-c41f-ef03-0f43e2159a83@arm.com>
-Date: Thu, 27 Feb 2020 08:04:05 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <eb154054-68ab-a659-065b-f4f7dcbb8671@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ScY34G4zzDqMl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 13:48:05 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 21D861A017C;
+ Thu, 27 Feb 2020 03:48:01 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EF8DE1A15E1;
+ Thu, 27 Feb 2020 03:47:53 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 0C964402AD;
+ Thu, 27 Feb 2020 10:47:44 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, robh+dt@kernel.org,
+ mark.rutland@arm.com, devicetree@vger.kernel.org
+Subject: [PATCH v3 0/4] ASoC: Add new module driver for new ASRC
+Date: Thu, 27 Feb 2020 10:41:54 +0800
+Message-Id: <cover.1582770784.git.shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,67 +52,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, x86@kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- James Morse <james.morse@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02/26/2020 08:14 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 26/02/2020 à 15:12, Qian Cai a écrit :
->> On Wed, 2020-02-26 at 09:09 -0500, Qian Cai wrote:
->>> On Mon, 2020-02-17 at 08:47 +0530, Anshuman Khandual wrote:
->>>
->>> How useful is this that straightly crash the powerpc?
->>
->> And then generate warnings on arm64,
->>
->> [  146.634626][    T1] debug_vm_pgtable: debug_vm_pgtable: Validating
->> architecture page table helpers
->> [  146.643995][    T1] ------------[ cut here ]------------
->> [  146.649350][    T1] virt_to_phys used for non-linear address:
->> (____ptrval____) (start_kernel+0x0/0x580)
-> 
-> Must be something wrong with the following in debug_vm_pgtable()
-> 
->     paddr = __pa(&start_kernel);
-> 
-> Is there any explaination why start_kernel() is not in linear memory on ARM64 ?
+Add new module driver for new ASRC in i.MX8MN
 
+Shengjiu Wang (4):
+  ASoC: fsl_asrc: Change asrc_width to asrc_format
+  ASoC: fsl_asrc: Move common definition to fsl_asrc_common
+  ASoC: dt-bindings: fsl_easrc: Add document for EASRC
+  ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and platform drivers
 
-Cc: + James Morse <james.morse@arm.com>
+changes in v3
+- add new commit "ASoC: fsl_asrc: Change asrc_width to asrc_format"
+- modify binding doc to yaml format
+- remove fsl_easrc_dma.c, make fsl_asrc_dma.c useable for easrc.
 
-This warning gets exposed with DEBUG_VIRTUAL due to __pa() on a kernel symbol
-i.e 'start_kernel' which might be outside the linear map. This happens due to
-kernel mapping position randomization with KASLR. Adding James here in case he
-might like to add more.
+changes in v2
+- change i.MX815 to i.MX8MN
+- Add changes in Kconfig and Makefile
 
-__pa_symbol() should have been used instead, for accessing the physical address
-here. On arm64 __pa() does check for linear address with __is_lm_address() and
-switch accordingly if it is a kernel text symbol. Nevertheless, its much better
-to use __pa_symbol() here rather than __pa().
+ .../devicetree/bindings/sound/fsl,easrc.yaml  |   96 +
+ sound/soc/fsl/Kconfig                         |   11 +
+ sound/soc/fsl/Makefile                        |    2 +
+ sound/soc/fsl/fsl_asrc.c                      |  104 +-
+ sound/soc/fsl/fsl_asrc.h                      |   74 +-
+ sound/soc/fsl/fsl_asrc_common.h               |  105 +
+ sound/soc/fsl/fsl_asrc_dma.c                  |   27 +-
+ sound/soc/fsl/fsl_easrc.c                     | 2119 +++++++++++++++++
+ sound/soc/fsl/fsl_easrc.h                     |  651 +++++
+ 9 files changed, 3067 insertions(+), 122 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+ create mode 100644 sound/soc/fsl/fsl_asrc_common.h
+ create mode 100644 sound/soc/fsl/fsl_easrc.c
+ create mode 100644 sound/soc/fsl/fsl_easrc.h
 
-Rather than respining the patch once more, will just send a fix replacing this
-helper __pa() with __pa_symbol() for Andrew to pick up as this patch is already
-part of linux-next (next-20200226). But can definitely respin if that will be
-preferred.
+-- 
+2.21.0
 
-Thanks Qian for catching this.
-
-> 
-> Christophe
-> 
