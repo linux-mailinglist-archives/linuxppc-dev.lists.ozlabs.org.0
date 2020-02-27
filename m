@@ -2,52 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5DB17230C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 17:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53851172322
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 17:22:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SyYJ31WbzDqZC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 03:19:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SydB5RDdzDr2N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 03:22:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=YDIG629t; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SyV96YQNzDqXf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 03:16:48 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 56680B198;
- Thu, 27 Feb 2020 16:16:43 +0000 (UTC)
-Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>
-References: <D6F45EDD-9F2E-4593-B630-55E5BD7DE915@linux.vnet.ibm.com>
- <20200218142620.GF4151@dhcp22.suse.cz>
- <35EE65CF-40E3-4870-AEBC-D326977176DA@linux.vnet.ibm.com>
- <20200218152441.GH4151@dhcp22.suse.cz>
- <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
- <20200224085812.GB22443@dhcp22.suse.cz>
- <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
- <20200226184152.GQ3771@dhcp22.suse.cz>
- <c412ee69-80f9-b013-67d4-3b0a2f6aff7f@suse.cz>
- <dd450314-d428-6776-af07-f92c04c7b967@suse.cz>
- <20200227121214.GE3771@dhcp22.suse.cz>
- <52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <9a86f865-50b5-7483-9257-dbb08fecd62b@suse.cz>
-Date: Thu, 27 Feb 2020 17:16:41 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SyWG65t1zDr1Z
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 03:17:46 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id h8so1700801pgs.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 08:17:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=vtq0s3tQnCqURKTOAldGkoKbYrI0rQodXXv9xIVTT3Y=;
+ b=YDIG629tX7x9Pmb6sOmczh6ju+bZ3q+dGbK7sBRcVdlqc0F739Ir2LJfcrSO7KrD8p
+ calXeJ+GMbO9XewuL7HizNgGs/JA+ljTxX/tVQ9yMZ5GWuvmuwGMBVduj+CIScUSXBtj
+ UyGuooe9zEJNdNmNz1GrIjjcFKI0T/Zrkmnkk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=vtq0s3tQnCqURKTOAldGkoKbYrI0rQodXXv9xIVTT3Y=;
+ b=FMKBxqg19MDkkKphoWOaHwykCAcfqGPEXWhVEgxftwx/GD0nEh8GK6VlkBDi+8x39C
+ nbnw/SgXC4AvV5N3E3+JW138sjk4N/gNWc6nvBeJ4A2UHOPQG+T5Ki7y0HDm26qer7f4
+ ZBBypJIrF3V93EiYj0FVnUePTX+ud+NAK1mbtrRCfR3z0fh941Bj0gR1J7z6KkNEviaZ
+ sh9ASfzRlJBA906IcnxsfNqlnzVg1V8UMIFIK5SXiOIa9GbV8LJyLJ4ZXma+lDRtOLGI
+ unfFFG11gLfNx9k7b/1C7Du8RKtjooJiW9OFLcrmWPlnI1k+DK7jQwcz0JUSuTFlrzgM
+ pisg==
+X-Gm-Message-State: APjAAAVc56BB9alP1mBW/MZuBAXmw7baVfA09QIEmpBlfMIgx38teku7
+ /1GwNFkXQ8Se48aKOg4zS7ZRdA==
+X-Google-Smtp-Source: APXvYqwJAwotmy024gEz2pgQK+lDCNvJc7X5WXUKZHZ3LEAhFZZwS2O/ca0qkaW45CWAD2FYKcCGrw==
+X-Received: by 2002:aa7:9f90:: with SMTP id z16mr4879847pfr.161.1582820262963; 
+ Thu, 27 Feb 2020 08:17:42 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id z30sm7726657pff.131.2020.02.27.08.17.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Feb 2020 08:17:42 -0800 (PST)
+Date: Thu, 27 Feb 2020 08:17:41 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] selftest/lkdtm: Use local .gitignore
+Message-ID: <202002270817.1C32C98@keescook>
+References: <e4ba4f716599d1d66c8bc60489f4b05764ea8470.1582812034.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4ba4f716599d1d66c8bc60489f4b05764ea8470.1582812034.git.christophe.leroy@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,64 +75,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pekka Enberg <penberg@kernel.org>,
- Linux-Next Mailing List <linux-next@vger.kernel.org>,
- David Rientjes <rientjes@google.com>, Christopher Lameter <cl@linux.com>,
- linuxppc-dev@lists.ozlabs.org, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Kirill Tkhai <ktkhai@virtuozzo.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/27/20 5:00 PM, Sachin Sant wrote:
+On Thu, Feb 27, 2020 at 02:07:10PM +0000, Christophe Leroy wrote:
+> Commit 68ca0fd272da ("selftest/lkdtm: Don't pollute 'git status'")
+> introduced patterns for git to ignore files generated in
+> tools/testing/selftests/lkdtm/
 > 
+> Use local .gitignore file instead of using the root one.
 > 
->> On 27-Feb-2020, at 5:42 PM, Michal Hocko <mhocko@kernel.org> wrote:
->> 
->> A very good hint indeed. I would do this
->> diff --git a/include/linux/topology.h b/include/linux/topology.h
->> index eb2fe6edd73c..d9f1b6737e4d 100644
->> --- a/include/linux/topology.h
->> +++ b/include/linux/topology.h
->> @@ -137,6 +137,8 @@ static inline void set_numa_mem(int node)
->> {
->> 	this_cpu_write(_numa_mem_, node);
->> 	_node_numa_mem_[numa_node_id()] = node;
->> +	pr_info("%s %d -> %d\n", __FUNCTION__, numa_node_id(), node);
->> +	dump_stack();
->> }
->> #endif
->> 
->> Btw. it would be also helpful to get
->> `faddr2line ___slab_alloc+0x334' from your kernel Sachin.
+> Fixes: 68ca0fd272da ("selftest/lkdtm: Don't pollute 'git status'")
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+Yeah, that's better. Thanks!
+
+Acked-by: Kees Cook <keescook@chromium.org>
+
+-Kees
+
+> ---
+>  .gitignore                               | 4 ----
+>  tools/testing/selftests/lkdtm/.gitignore | 2 ++
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+>  create mode 100644 tools/testing/selftests/lkdtm/.gitignore
 > 
-> [linux-next]# ./scripts/faddr2line ./vmlinux ___slab_alloc+0x334 
-> ___slab_alloc+0x334/0x760:
-> new_slab_objects at mm/slub.c:2478
-> (inlined by) ___slab_alloc at mm/slub.c:2628
-> [linux-next]# 
-
-Hmm that doesn't look relevant, but that address was marked as unreliable, no?
-Don't we actually need this one?
-
-[    8.768727] NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
-
-> I have also attached boot log with a kernel that include about change.
-> I see the following o/p during boot:
-> 
-> [    0.005269] set_numa_mem 1 -> 1
-
-So there's no "set_numa_mem 0 -> X", specifically not
-"set_numa_mem 0 -> 1" which I would have expected. That seems to confirm my
-suspicion that the arch code doesn't set up the memoryless node 0 properly.
-
-> [    0.005270] CPU: 12 PID: 0 Comm: swapper/12 Not tainted 5.6.0-rc3-next-20200227-autotest+ #6
-> [    0.005271] Call Trace:
-> [    0.005272] [c0000008b37dfe80] [c000000000b5d948] dump_stack+0xbc/0x104 (unreliable)
-> [    0.005274] [c0000008b37dfec0] [c000000000059320] start_secondary+0x600/0x6e0
-> [    0.005277] [c0000008b37dff90] [c00000000000ac54] start_secondary_prolog+0x10/0x14
-> 
-> Thanks
-> -Sachin
+> diff --git a/.gitignore b/.gitignore
+> index bb05dce58f8e..b849a72d69d5 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -100,10 +100,6 @@ modules.order
+>  /include/ksym/
+>  /arch/*/include/generated/
+>  
+> -# Generated lkdtm tests
+> -/tools/testing/selftests/lkdtm/*.sh
+> -!/tools/testing/selftests/lkdtm/run.sh
+> -
+>  # stgit generated dirs
+>  patches-*
+>  
+> diff --git a/tools/testing/selftests/lkdtm/.gitignore b/tools/testing/selftests/lkdtm/.gitignore
+> new file mode 100644
+> index 000000000000..f26212605b6b
+> --- /dev/null
+> +++ b/tools/testing/selftests/lkdtm/.gitignore
+> @@ -0,0 +1,2 @@
+> +*.sh
+> +!run.sh
+> -- 
+> 2.25.0
 > 
 
+-- 
+Kees Cook
