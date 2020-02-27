@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D1617112D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 07:59:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Sk6W4RLszDqvR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 17:58:59 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC4C171134
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 08:00:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Sk8b50VGzDqvj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:00:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Sk446nwZzDqXG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 17:56:52 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Sk470WKpzDqXG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 17:56:54 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01R6qUpQ000713; Thu, 27 Feb 2020 01:56:46 -0500
+ 01R6sgmA038160; Thu, 27 Feb 2020 01:56:49 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydhhny8du-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ydq6x2anw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2020 01:56:46 -0500
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01R6qgQk001189;
- Thu, 27 Feb 2020 01:56:45 -0500
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydhhny8dr-1
+ Thu, 27 Feb 2020 01:56:49 -0500
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01R6sqwk038621;
+ Thu, 27 Feb 2020 01:56:49 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ydq6x2anh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2020 01:56:45 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01R6o48P024965;
- Thu, 27 Feb 2020 06:56:45 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03wdc.us.ibm.com with ESMTP id 2ydcmku9qv-1
+ Thu, 27 Feb 2020 01:56:48 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01R6ukGE022814;
+ Thu, 27 Feb 2020 06:56:47 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 2ydcmkk918-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2020 06:56:45 +0000
+ Thu, 27 Feb 2020 06:56:47 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
  [9.57.199.106])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01R6uiqB14681014
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01R6ulJh46989766
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 27 Feb 2020 06:56:44 GMT
+ Thu, 27 Feb 2020 06:56:47 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99FD328059;
- Thu, 27 Feb 2020 06:56:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 60AAD2805A;
+ Thu, 27 Feb 2020 06:56:47 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 60A252805A;
- Thu, 27 Feb 2020 06:56:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4030728058;
+ Thu, 27 Feb 2020 06:56:45 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.204.201.20])
  by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 27 Feb 2020 06:56:42 +0000 (GMT)
+ Thu, 27 Feb 2020 06:56:44 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au,
  kirill@shutemov.name
-Subject: [RFC PATCH 00/21] Avoid IPI while updating page table entries.
-Date: Thu, 27 Feb 2020 12:25:59 +0530
-Message-Id: <20200227065620.50804-1-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 01/21] powerpc/pkeys: Avoid using lockless page table walk
+Date: Thu, 27 Feb 2020 12:26:00 +0530
+Message-Id: <20200227065620.50804-2-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200227065620.50804-1-aneesh.kumar@linux.ibm.com>
+References: <20200227065620.50804-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -72,11 +74,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-27_01:2020-02-26,
  2020-02-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 phishscore=0
- bulkscore=0 suspectscore=2 clxscore=1011 adultscore=0 lowpriorityscore=0
- mlxscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002270053
+ bulkscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=999 clxscore=1015 mlxscore=0 adultscore=0 impostorscore=0
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2002270054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,139 +96,202 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Problem Summary:
-Slow termination of KVM guest with large guest RAM config due to a large number
-of IPIs that were caused by clearing level 1 PTE entries (THP) entries.
-This is shown in the stack trace below.
+Fetch pkey from vma instead of linux page table. Also document the fact that in
+some cases the pkey returned in siginfo won't be the same as the one we took
+keyfault on. Even with linux page table walk, we can end up in a similar scenario.
 
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/mmu.h        |  9 ---
+ arch/powerpc/mm/book3s64/hash_utils.c | 24 --------
+ arch/powerpc/mm/fault.c               | 83 +++++++++++++++++++--------
+ 3 files changed, 60 insertions(+), 56 deletions(-)
 
-- qemu-system-ppc  [kernel.vmlinux]            [k] smp_call_function_many
-   - smp_call_function_many
-      - 36.09% smp_call_function_many
-           serialize_against_pte_lookup 
-           radix__pmdp_huge_get_and_clear
-           zap_huge_pmd
-           unmap_page_range
-           unmap_vmas
-           unmap_region
-           __do_munmap
-           __vm_munmap
-           sys_munmap
-          system_call 
-           __munmap
-           qemu_ram_munmap
-           qemu_anon_ram_free
-           reclaim_ramblock
-           call_rcu_thread
-           qemu_thread_start 
-           start_thread
-           __clone
-
-Why we need to do IPI when clearing PMD entries:
-This was added as part of commit: 13bd817bb884 ("powerpc/thp: Serialize pmd clear against a linux page table walk")
-
-serialize_against_pte_lookup makes sure that all parallel lockless page table
-walk completes before we convert a PMD pte entry to regular pmd entry.
-We end up doing that conversion in the below scenarios
-
-1) __split_huge_zero_page_pmd
-2) do_huge_pmd_wp_page_fallback
-3) MADV_DONTNEED running parallel to page faults.
-
-local_irq_disable and lockless page table walk:
-
-The lockless page table walk work with the assumption that we can dereference
-the page table contents without holding a lock. For this to work, we need to
-make sure we read the page table contents atomically and page table pages are
-not going to be freed/released while we are walking the
-table pages. We can achieve by using a rcu based freeing for page table pages or
-if the architecture implements broadcast tlbie, we can block the IPI as we walk the
-page table pages.
-
-To support both the above framework, lockless page table walk is done with
-irq disabled instead of rcu_read_lock()
-
-We do have two interface for lockless page table walk, gup fast and __find_linux_pte.
-This patch series makes __find_linux_pte table walk safe against the conversion of PMD PTE
-to regular PMD. 
-
-gup fast:
-
-gup fast is already safe against THP split because kernel now differentiate between a pmd
-split and a compound page split. gup fast can run parallel to a pmd split and we prevent
-a parallel gup fast to a hugepage split, by freezing the page refcount and failing the
-speculative page ref increment.
-
-
-Similar to how gup is safe against parallel pmd split, this patch series updates the
-__find_linux_pte callers to be safe against a parallel pmd split. We do that by enforcing
-the following rules.
-
-1) Don't reload the pte value, because that can be updated in parallel.
-2) Code should be able to work with a stale PTE value and not the recent one. ie,
-the pte value that we are looking at may not be the latest value in the page table.
-3) Before looking at pte value check for _PAGE_PTE bit. We now do this as part of pte_present()
-check.
-
-NOTE: I am still looking for details w.r.t corruption fixed by 
-Commit: 33258a1db165 ("powerpc/64s: Fix THP PMD collapse serialisation")
-Understanding that is important to make sure this series is not creating a regression around that.
-
-
-Aneesh Kumar K.V (21):
-  powerpc/pkeys: Avoid using lockless page table walk
-  powerpc/pkeys: Check vma before returning key fault error to the user
-  powerpc/mm/hash64: use _PAGE_PTE when checking for pte_present
-  powerpc/hash64: Restrict page table lookup using init_mm with
-    __flush_hash_table_range
-  powerpc/book3s64/hash: Use the pte_t address from the caller
-  powerpc/book3s/hash64/devmap: Use H_PAGE_THP_HUGE when setting up
-    level huge devmap pte entries
-  powerpc/mce: Don't reload pte val in addr_to_pfn
-  powerpc/perf/callchain: Use __get_user_pages_fast in
-    read_user_stack_slow
-  powerpc/kvm/book3s: switch from raw_spin_*lock to arch_spin_lock.
-  powerpc/kvm/book3s: Add helper to walk partition scoped linux page
-    table.
-  powerpc/kvm/nested: Add helper to walk nested shadow linux page table.
-  powerpc/kvm/book3s: Use kvm helpers to walk shadow or secondary table
-  powerpc/kvm/book3s: Add helper for host page table walk
-  powerpc/kvm/book3s: Use find_kvm_host_pte in page fault handler
-  powerpc/kvm/book3s: Use find_kvm_host_pte in h_enter
-  powerpc/kvm/book3s: use find_kvm_host_pte in pute_tce functions
-  powerpc/kvm/book3s: Avoid using rmap to protect parallel page table
-    update.
-  powerpc/kvm/book3s: use find_kvm_host_pte in
-    kvmppc_book3s_instantiate_page
-  powerpc/kvm/book3s: Use find_kvm_host_pte in kvmppc_get_hpa
-  powerpc/kvm/book3s: Use pte_present instead of opencoding
-    _PAGE_PRESENT check
-  powerpc/mm/book3s64: Avoid sending IPI on clearing PMD
-
- arch/powerpc/include/asm/book3s/64/hash-4k.h  |  6 ++
- arch/powerpc/include/asm/book3s/64/hash-64k.h |  8 +-
- arch/powerpc/include/asm/book3s/64/pgtable.h  | 19 +++--
- arch/powerpc/include/asm/book3s/64/radix.h    |  5 ++
- .../include/asm/book3s/64/tlbflush-hash.h     |  3 +-
- arch/powerpc/include/asm/kvm_book3s.h         |  2 +-
- arch/powerpc/include/asm/kvm_book3s_64.h      | 34 ++++++++-
- arch/powerpc/include/asm/mmu.h                |  9 ---
- arch/powerpc/kernel/mce_power.c               | 14 ++--
- arch/powerpc/kernel/pci_64.c                  |  2 +-
- arch/powerpc/kvm/book3s_64_mmu_hv.c           | 12 ++-
- arch/powerpc/kvm/book3s_64_mmu_radix.c        | 40 +++++-----
- arch/powerpc/kvm/book3s_64_vio_hv.c           | 64 ++++++++--------
- arch/powerpc/kvm/book3s_hv_nested.c           | 37 ++++++---
- arch/powerpc/kvm/book3s_hv_rm_mmu.c           | 58 +++++---------
- arch/powerpc/mm/book3s64/hash_pgtable.c       | 11 ---
- arch/powerpc/mm/book3s64/hash_tlb.c           | 16 +---
- arch/powerpc/mm/book3s64/hash_utils.c         | 62 ++++-----------
- arch/powerpc/mm/book3s64/pgtable.c            |  8 --
- arch/powerpc/mm/book3s64/radix_pgtable.c      | 20 ++---
- arch/powerpc/mm/fault.c                       | 75 +++++++++++++------
- arch/powerpc/perf/callchain.c                 | 53 ++++++-------
- 22 files changed, 274 insertions(+), 284 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index 0699cfeeb8c9..cf2a08bfd5cd 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -291,15 +291,6 @@ static inline bool early_radix_enabled(void)
+ }
+ #endif
+ 
+-#ifdef CONFIG_PPC_MEM_KEYS
+-extern u16 get_mm_addr_key(struct mm_struct *mm, unsigned long address);
+-#else
+-static inline u16 get_mm_addr_key(struct mm_struct *mm, unsigned long address)
+-{
+-	return 0;
+-}
+-#endif /* CONFIG_PPC_MEM_KEYS */
+-
+ #ifdef CONFIG_STRICT_KERNEL_RWX
+ static inline bool strict_kernel_rwx_enabled(void)
+ {
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 523d4d39d11e..8530ddbba56f 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1670,30 +1670,6 @@ void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+ 	hash_preload(vma->vm_mm, address, is_exec, trap);
+ }
+ 
+-#ifdef CONFIG_PPC_MEM_KEYS
+-/*
+- * Return the protection key associated with the given address and the
+- * mm_struct.
+- */
+-u16 get_mm_addr_key(struct mm_struct *mm, unsigned long address)
+-{
+-	pte_t *ptep;
+-	u16 pkey = 0;
+-	unsigned long flags;
+-
+-	if (!mm || !mm->pgd)
+-		return 0;
+-
+-	local_irq_save(flags);
+-	ptep = find_linux_pte(mm->pgd, address, NULL, NULL);
+-	if (ptep)
+-		pkey = pte_to_pkey_bits(pte_val(READ_ONCE(*ptep)));
+-	local_irq_restore(flags);
+-
+-	return pkey;
+-}
+-#endif /* CONFIG_PPC_MEM_KEYS */
+-
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ static inline void tm_flush_hash_page(int local)
+ {
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 8db0507619e2..ab99ffa7d946 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -118,9 +118,34 @@ static noinline int bad_area(struct pt_regs *regs, unsigned long address)
+ 	return __bad_area(regs, address, SEGV_MAPERR);
+ }
+ 
+-static int bad_key_fault_exception(struct pt_regs *regs, unsigned long address,
+-				    int pkey)
++#ifdef CONFIG_PPC_MEM_KEYS
++static noinline int bad_access_pkey(struct pt_regs *regs, unsigned long address,
++				    struct vm_area_struct *vma)
+ {
++	struct mm_struct *mm = current->mm;
++	int pkey;
++
++	/*
++	 * We don't try to fetch the pkey from page table because reading
++	 * page table without locking doesn't guarantee stable pte value.
++	 * Hence the pkey value that we return to userspace can be different
++	 * from the pkey that actually caused access error.
++	 *
++	 * It does *not* guarantee that the VMA we find here
++	 * was the one that we faulted on.
++	 *
++	 * 1. T1   : mprotect_key(foo, PAGE_SIZE, pkey=4);
++	 * 2. T1   : set AMR to deny access to pkey=4, touches, page
++	 * 3. T1   : faults...
++	 * 4.    T2: mprotect_key(foo, PAGE_SIZE, pkey=5);
++	 * 5. T1   : enters fault handler, takes mmap_sem, etc...
++	 * 6. T1   : reaches here, sees vma_pkey(vma)=5, when we really
++	 *	     faulted on a pte with its pkey=4.
++	 */
++	pkey = vma_pkey(vma);
++
++	up_read(&mm->mmap_sem);
++
+ 	/*
+ 	 * If we are in kernel mode, bail out with a SEGV, this will
+ 	 * be caught by the assembly which will restore the non-volatile
+@@ -133,6 +158,7 @@ static int bad_key_fault_exception(struct pt_regs *regs, unsigned long address,
+ 
+ 	return 0;
+ }
++#endif
+ 
+ static noinline int bad_access(struct pt_regs *regs, unsigned long address)
+ {
+@@ -289,8 +315,31 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
+ 	return false;
+ }
+ 
+-static bool access_error(bool is_write, bool is_exec,
+-			 struct vm_area_struct *vma)
++#ifdef CONFIG_PPC_MEM_KEYS
++static bool access_pkey_error(bool is_write, bool is_exec, bool is_pkey,
++			      struct vm_area_struct *vma)
++{
++	/*
++	 * Read or write was blocked by protection keys.  This is
++	 * always an unconditional error and can never result in
++	 * a follow-up action to resolve the fault, like a COW.
++	 */
++	if (is_pkey)
++		return true;
++
++	/*
++	 * Make sure to check the VMA so that we do not perform
++	 * faults just to hit a pkey fault as soon as we fill in a
++	 * page. Only called for current mm, hence foreign == 0
++	 */
++	if (!arch_vma_access_permitted(vma, is_write, is_exec, 0))
++		return true;
++
++	return false;
++}
++#endif
++
++static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma)
+ {
+ 	/*
+ 	 * Allow execution from readable areas if the MMU does not
+@@ -483,10 +532,6 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+ 
+-	if (error_code & DSISR_KEYFAULT)
+-		return bad_key_fault_exception(regs, address,
+-					       get_mm_addr_key(mm, address));
+-
+ 	/*
+ 	 * We want to do this outside mmap_sem, because reading code around nip
+ 	 * can result in fault, which will cause a deadlock when called with
+@@ -555,6 +600,13 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 		return bad_area(regs, address);
+ 
+ good_area:
++
++#ifdef CONFIG_PPC_MEM_KEYS
++	if (unlikely(access_pkey_error(is_write, is_exec,
++				       (error_code & DSISR_KEYFAULT), vma)))
++		return bad_access_pkey(regs, address, vma);
++#endif /* CONFIG_PPC_MEM_KEYS */
++
+ 	if (unlikely(access_error(is_write, is_exec, vma)))
+ 		return bad_access(regs, address);
+ 
+@@ -565,21 +617,6 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	 */
+ 	fault = handle_mm_fault(vma, address, flags);
+ 
+-#ifdef CONFIG_PPC_MEM_KEYS
+-	/*
+-	 * we skipped checking for access error due to key earlier.
+-	 * Check that using handle_mm_fault error return.
+-	 */
+-	if (unlikely(fault & VM_FAULT_SIGSEGV) &&
+-		!arch_vma_access_permitted(vma, is_write, is_exec, 0)) {
+-
+-		int pkey = vma_pkey(vma);
+-
+-		up_read(&mm->mmap_sem);
+-		return bad_key_fault_exception(regs, address, pkey);
+-	}
+-#endif /* CONFIG_PPC_MEM_KEYS */
+-
+ 	major |= fault & VM_FAULT_MAJOR;
+ 
+ 	/*
 -- 
 2.24.1
 
