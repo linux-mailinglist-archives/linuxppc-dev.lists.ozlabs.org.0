@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A72171144
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 08:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABDE171149
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 08:12:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SkM81vy8zDqvP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:09:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SkPj17QGzDqwv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:12:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Sk4L1qVKzDqlB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 17:57:06 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Sk4Q3WrrzDqkL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 17:57:10 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01R6t6EZ119531; Thu, 27 Feb 2020 01:57:02 -0500
+ 01R6sB1x115937; Thu, 27 Feb 2020 01:57:04 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcnubnjk-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ydxrdh19y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2020 01:57:02 -0500
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01R6u5Cl122001;
- Thu, 27 Feb 2020 01:57:01 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcnubnj0-1
+ Thu, 27 Feb 2020 01:57:04 -0500
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01R6ubXM121641;
+ Thu, 27 Feb 2020 01:57:03 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ydxrdh19f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2020 01:57:01 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01R6unkh027021;
- Thu, 27 Feb 2020 06:57:00 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma03dal.us.ibm.com with ESMTP id 2ydcmkx2vr-1
+ Thu, 27 Feb 2020 01:57:03 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01R6ukgX026933;
+ Thu, 27 Feb 2020 06:57:03 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 2ydcmku9dk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Feb 2020 06:57:00 +0000
+ Thu, 27 Feb 2020 06:57:03 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
  [9.57.199.106])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01R6v0Cm43188666
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01R6v2Xm53674328
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 27 Feb 2020 06:57:00 GMT
+ Thu, 27 Feb 2020 06:57:02 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F19012805C;
- Thu, 27 Feb 2020 06:56:59 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9EB0B28059;
+ Thu, 27 Feb 2020 06:57:02 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD9EC28058;
- Thu, 27 Feb 2020 06:56:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9335B2805C;
+ Thu, 27 Feb 2020 06:57:00 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.204.201.20])
  by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 27 Feb 2020 06:56:57 +0000 (GMT)
+ Thu, 27 Feb 2020 06:57:00 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au,
  kirill@shutemov.name
-Subject: [RFC PATCH 06/21] powerpc/book3s/hash64/devmap: Use H_PAGE_THP_HUGE
- when setting up level huge devmap pte entries
-Date: Thu, 27 Feb 2020 12:26:05 +0530
-Message-Id: <20200227065620.50804-7-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 07/21] powerpc/mce: Don't reload pte val in addr_to_pfn
+Date: Thu, 27 Feb 2020 12:26:06 +0530
+Message-Id: <20200227065620.50804-8-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200227065620.50804-1-aneesh.kumar@linux.ibm.com>
 References: <20200227065620.50804-1-aneesh.kumar@linux.ibm.com>
@@ -75,11 +74,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-27_01:2020-02-26,
  2020-02-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
- malwarescore=0 spamscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2002270054
+ bulkscore=0 phishscore=0
+ malwarescore=0 clxscore=1015 mlxlogscore=746 impostorscore=0 adultscore=0
+ spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002270054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,97 +96,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-H_PAGE_THP_HUGE is used to differentiate between a THP hugepage and hugetlb
-hugepage entries. The difference is w.r.t how we handle hash fault on these
-address. THP address enables MPSS in segments. We want to manage devmap hugepage
-entries similar to THP pt entries. Hence use H_PAGE_THP_HUGE for devmap huge pte
-entries.
+A lockless page table walk should be safe against parallel THP collapse, THP
+split and madvise(MADV_DONTNEED)/parallel fault. This patch makes sure kernel
+won't reload the pteval when checking for different conditions. The patch also added
+a check for pte_present to make sure the kernel is indeed operating
+on a PTE and not a pointer to level 0 table page.
 
-With current code while handling hash pte fault, we do set is_thp = true when
-finding devmap pte huge pte entries. Hence this patch is not fixing any bugs.
+The pfn value we find here can be different from the actual pfn on which
+machine check happened. This can happen if we raced with a parallel update
+of the page table. In such a scenario we end up isolating a wrong pfn. But that
+doesn't have any other side effect.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/hash-4k.h  | 6 ++++++
- arch/powerpc/include/asm/book3s/64/hash-64k.h | 8 +++++++-
- arch/powerpc/include/asm/book3s/64/pgtable.h  | 4 +++-
- arch/powerpc/include/asm/book3s/64/radix.h    | 5 +++++
- 4 files changed, 21 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/mce_power.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-index 8fd8599c9395..3f9ae3585ab9 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-@@ -156,6 +156,12 @@ extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
- extern int hash__has_transparent_hugepage(void);
- #endif
- 
-+static inline pmd_t hash__pmd_mkdevmap(pmd_t pmd)
-+{
-+	BUG();
-+	return pmd;
-+}
-+
- #endif /* !__ASSEMBLY__ */
- 
- #endif /* _ASM_POWERPC_BOOK3S_64_HASH_4K_H */
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
-index d1d9177d9ebd..0729c034e56f 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
-@@ -246,7 +246,7 @@ static inline void mark_hpte_slot_valid(unsigned char *hpte_slot_array,
+diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
+index 1cbf7f1a4e3d..c1580fcf95ea 100644
+--- a/arch/powerpc/kernel/mce_power.c
++++ b/arch/powerpc/kernel/mce_power.c
+@@ -27,7 +27,7 @@
   */
- static inline int hash__pmd_trans_huge(pmd_t pmd)
+ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
  {
--	return !!((pmd_val(pmd) & (_PAGE_PTE | H_PAGE_THP_HUGE)) ==
-+	return !!((pmd_val(pmd) & (_PAGE_PTE | H_PAGE_THP_HUGE | _PAGE_DEVMAP)) ==
- 		  (_PAGE_PTE | H_PAGE_THP_HUGE));
- }
+-	pte_t *ptep;
++	pte_t *ptep, pte;
+ 	unsigned int shift;
+ 	unsigned long pfn, flags;
+ 	struct mm_struct *mm;
+@@ -39,19 +39,23 @@ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
  
-@@ -272,6 +272,12 @@ extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 				       unsigned long addr, pmd_t *pmdp);
- extern int hash__has_transparent_hugepage(void);
- #endif /*  CONFIG_TRANSPARENT_HUGEPAGE */
-+
-+static inline pmd_t hash__pmd_mkdevmap(pmd_t pmd)
-+{
-+	return __pmd(pmd_val(pmd) | (_PAGE_PTE | H_PAGE_THP_HUGE | _PAGE_DEVMAP));
-+}
-+
- #endif	/* __ASSEMBLY__ */
+ 	local_irq_save(flags);
+ 	ptep = __find_linux_pte(mm->pgd, addr, NULL, &shift);
++	if (!ptep) {
++		pfn = ULONG_MAX;
++		goto out;
++	}
++	pte = READ_ONCE(*ptep);
  
- #endif /* _ASM_POWERPC_BOOK3S_64_HASH_64K_H */
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 89eb7b350df8..03521a8b0292 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1308,7 +1308,9 @@ extern void serialize_against_pte_lookup(struct mm_struct *mm);
+-	if (!ptep || pte_special(*ptep)) {
++	if (!pte_present(pte) || pte_special(pte)) {
+ 		pfn = ULONG_MAX;
+ 		goto out;
+ 	}
  
- static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- {
--	return __pmd(pmd_val(pmd) | (_PAGE_PTE | _PAGE_DEVMAP));
-+	if (radix_enabled())
-+		return radix__pmd_mkdevmap(pmd);
-+	return hash__pmd_mkdevmap(pmd);
- }
- 
- static inline int pmd_devmap(pmd_t pmd)
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index d97db3ad9aae..a1c60d5b50af 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -263,6 +263,11 @@ static inline int radix__has_transparent_hugepage(void)
- }
- #endif
- 
-+static inline pmd_t radix__pmd_mkdevmap(pmd_t pmd)
-+{
-+	return __pmd(pmd_val(pmd) | (_PAGE_PTE | _PAGE_DEVMAP));
-+}
-+
- extern int __meminit radix__vmemmap_create_mapping(unsigned long start,
- 					     unsigned long page_size,
- 					     unsigned long phys);
+ 	if (shift <= PAGE_SHIFT)
+-		pfn = pte_pfn(*ptep);
++		pfn = pte_pfn(pte);
+ 	else {
+ 		unsigned long rpnmask = (1ul << shift) - PAGE_SIZE;
+-		pfn = pte_pfn(__pte(pte_val(*ptep) | (addr & rpnmask)));
++		pfn = pte_pfn(__pte(pte_val(pte) | (addr & rpnmask)));
+ 	}
+-
+ out:
+ 	local_irq_restore(flags);
+ 	return pfn;
 -- 
 2.24.1
 
