@@ -1,47 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D883170FF0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 06:03:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF58170FEF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 06:01:41 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48SgW56td5zDqtW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 16:01:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48SgY70l6RzDqpk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 16:03:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SgSs558szDqnT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48SgSs5YnMzDqnV
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 15:59:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=U+3vRKRG; 
+ header.a=rsa-sha256 header.s=201909 header.b=WC51/Frf; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 48SgSs2Qdbz9sPK; Thu, 27 Feb 2020 15:59:41 +1100 (AEDT)
+ id 48SgSs4RSyz9sRf; Thu, 27 Feb 2020 15:59:41 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48SgSs1lsJz9sR4; Thu, 27 Feb 2020 15:59:41 +1100 (AEDT)
+ id 48SgSs3c6jz9sS3; Thu, 27 Feb 2020 15:59:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
  s=201909; t=1582779581;
- bh=gzZcvjGtb+RMOgkmaZCJtDC240VazkRG8nq5VBFy4fU=;
- h=From:To:Cc:Subject:Date:From;
- b=U+3vRKRGFu+jrAGsUsnGf73G/h0nI4glOUKHPerTb7Gk49K3F0g6DSObGFKOGictY
- LC4QMiCm7IBsfz5iEeMkauLt2tqpsB5clZEGhuuclrZtkuj7rxNF7Nu4g4kufRXyg8
- XOQDRw+Ms7S25emTLBYVvL3var3MlEGSNVsOmgNXEWjUNwAdyNZcIPWtX9/hrR4ah7
- Zib8CxtG33R/Q1G0APk3+qVUcZpJK2tbl4chSM+UKNnFNPxd4r+A0a9hLYG1UGS8uk
- mTjuaXr0xyyGJzZMYjb+ZixYxKulUZmCEp0pHytSh/1y1ZQ3zi//DlBQEOGhxnQF/J
- hrLr4EwSNgsGw==
+ bh=yA88Kw5i796MQbUhVKxw2dqknHcTX0KrdGz31AUT5ww=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=WC51/FrfzEN2UxL/T0ymfsac1piENwXoDJ2mfleh4FJApwlg2Gnjkjaa9I5YqXVlP
+ gQ0GCF4mvHR4bFtKVCuif3sVigsCxfIf/UOj8U2KITQteMKnhCHQK5Xv83wblJM/PS
+ sIgDLt+Mrufyaim1CVjXRjQsJW3MUawsXf+rGx6rHABRZEQGd4geOF4p/UDXiM9eB3
+ 2mhvcVvVOxods5YnX0h0KA+LDblpMACw6HfHwtl/Ji3ZOcjsGeciQtPy+M4MD5d6i/
+ CttNvfv0F8iTRxw7nf5NaWwz3Y0TZDf48rdBhCL6fOefMRC5rLu23pM/RTWa8NEKmP
+ cgQV4NsVU+s6A==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 1/2] powerpc/vmlinux.lds: Explicitly retain .gnu.hash
-Date: Thu, 27 Feb 2020 15:59:32 +1100
-Message-Id: <20200227045933.22967-1-mpe@ellerman.id.au>
+Subject: [PATCH 2/2] powerpc/vmlinux.lds: Discard .interp section
+Date: Thu, 27 Feb 2020 15:59:33 +1100
+Message-Id: <20200227045933.22967-2-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.21.1
+In-Reply-To: <20200227045933.22967-1-mpe@ellerman.id.au>
+References: <20200227045933.22967-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,40 +62,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Relocatable kernel builds produce a warning about .gnu.hash being an
-orphan section:
+The .interp section specifies which "interpreter", ie. dynamic loader,
+the kernel requests. But that doesn't make any sense, the kernel is
+not a regular binary that is run with an interpreter.
 
-  ld: warning: orphan section `.gnu.hash' from `linker stubs' being placed in section `.gnu.hash'
+The content seems to be some default value, this file doesn't even
+exist on my system:
+  00000000  2f 75 73 72 2f 6c 69 62  2f 6c 64 2e 73 6f 2e 31  |/usr/lib/ld.so.1|
 
-If we try to discard it the build fails:
+So the section serves no useful purpose and consumes a small amount of
+space.
 
-  ld -EL -m elf64lppc -pie --orphan-handling=warn --build-id -o
-    .tmp_vmlinux1 -T ./arch/powerpc/kernel/vmlinux.lds --whole-archive
-    arch/powerpc/kernel/head_64.o arch/powerpc/kernel/entry_64.o
-    ...
-    sound/built-in.a net/built-in.a virt/built-in.a --no-whole-archive
-    --start-group lib/lib.a --end-group
-  ld: could not find section .gnu.hash
-
-So add an entry to explicitly retain it, as we do for .hash.
+Also Alan Modra says we "likely could discard" it, so do so.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/vmlinux.lds.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index b4c89a1acebb..31a0f201fb6f 100644
+index 31a0f201fb6f..619ffbaf72ad 100644
 --- a/arch/powerpc/kernel/vmlinux.lds.S
 +++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -256,6 +256,7 @@ SECTIONS
- 		*(.dynamic)
+@@ -257,7 +257,6 @@ SECTIONS
  	}
  	.hash : AT(ADDR(.hash) - LOAD_OFFSET) { *(.hash) }
-+	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
- 	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
+ 	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
+-	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
  	.rela.dyn : AT(ADDR(.rela.dyn) - LOAD_OFFSET)
  	{
+ 		__rela_dyn_start = .;
+@@ -370,5 +369,6 @@ SECTIONS
+ 		*(.gnu.version*)
+ 		*(.gnu.attributes)
+ 		*(.eh_frame)
++		*(.interp)
+ 	}
+ }
 -- 
 2.21.1
 
