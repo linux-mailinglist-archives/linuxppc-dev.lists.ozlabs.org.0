@@ -1,75 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF7C1724DA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:18:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281121724B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2020 18:11:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Szj92MkzzDr6l
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 04:11:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Szsq0tYbzDqw8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 04:18:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::f44;
+ helo=mail-qv1-xf44.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=wR2VozWe; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
+ header.s=google header.b=dth2WWWZ; dkim-atps=neutral
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
+ [IPv6:2607:f8b0:4864:20::f44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48SzgG3WRwzDqrW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 04:09:46 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Szg86mjrz9tyl9;
- Thu, 27 Feb 2020 18:09:40 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=wR2VozWe; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id sWRTNANo0VvI; Thu, 27 Feb 2020 18:09:40 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Szg85cnNz9tyl6;
- Thu, 27 Feb 2020 18:09:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1582823380; bh=FcXtMozaz5aKjR+MsTQyybTO/Ns9vbTusP0TC2E6/Rc=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=wR2VozWeQBdMWkmwLMTgbQha488lPIfS8dqydiYIMk0CxSwz4qFGTKE/7UFBGBAnV
- IvaNU5MzUmAnCSmvKoWvANls5L8e6TnpWVZNMd96+Ty+THmb62qEG/gAjyt5/APY+P
- UW+vQh0rV6A8qEbCbqtzd6QAtLVyhTz67sRrwubo=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6C2528B880;
- Thu, 27 Feb 2020 18:09:42 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fDbqYkuli0hU; Thu, 27 Feb 2020 18:09:42 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 803598B799;
- Thu, 27 Feb 2020 18:09:40 +0100 (CET)
-Subject: Re: [PATCH v4 13/13] powerpc/ptrace: move ptrace_triggered() into
- hw_breakpoint.c
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- mikey@neuling.org, Russell Currey <ruscur@russell.cc>
-References: <cover.1582803998.git.christophe.leroy@c-s.fr>
- <d45c91cf5f83424b8f3989b7ead28c50d8d765a9.1582803998.git.christophe.leroy@c-s.fr>
-Message-ID: <4e528bf2-2b53-ae93-cdcc-0c80953f40f2@c-s.fr>
-Date: Thu, 27 Feb 2020 18:09:20 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Szqs2Kh8zDqsW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 04:17:09 +1100 (AEDT)
+Received: by mail-qv1-xf44.google.com with SMTP id dc14so1892218qvb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 09:17:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=ARo9Rla66Kxeu/Z2V78mx/ehDWu077QNPWdzDFxfOJY=;
+ b=dth2WWWZKp9HGsnWrcnEGnyDwu2blK8iDXb8vLMtoeR2VaMJ3fz37+cGHyNAha/rWV
+ dK1sGTg22oiYuz24KPwTF2AS2YzOdqQyu6b+TiUBCYZk9V0zbua+mDMo3YTMUSvN9nIT
+ EMJKHUaXkpfsveCsIHveNriBa6Vtjb0vFsMy7lGIqEqrtAiZ99Xs/sQZQxUbkx1mzgHf
+ AVJsII2Jxg233IpQwYAVVL3i04SYIDZ8pS2nl8aTFh1Sh2y4snmhOeu+kOn7LsejaKvN
+ 5rYQfvFElRSnuNIftRZI411+PoKrYCAMkJ59tu4Fy8L8tWs1KfJP0Uu0uqOwYZUWVb/k
+ btJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=ARo9Rla66Kxeu/Z2V78mx/ehDWu077QNPWdzDFxfOJY=;
+ b=eTYCXhHEMEk2mtdH1f1zc1rPKIfECmI/ylOUiMqtinhyi34gYe44mdz++RKdk7+3UV
+ rMsknaszk6xbF+EiYDDh6z5+74yNYB1OlO2f0Ne2gMvcS1YMLQ3bBlDcQEXystsbOVSU
+ fT7+c1JwXQYv6ohq9JIvF3fQR44h+8lFouS8PQom4Se++QFyK3GCYBbi/rJHJsPaItrI
+ MbEOmfA6M82HKAtKMWW6tf+2Nn5WpiuFCxO+LxdNbRKRrSFBxFOMMT+1Hx8DiKmgS3Hl
+ RFKyxe6btRDOO5Tq30GdsI7vxgUO1n3QBxEC+v+lt2PBneA+df0Y1ldL7JWXojGBeoXq
+ 9xrA==
+X-Gm-Message-State: APjAAAXZC1gYQksEH1VtTGnowwYMbT8/nF4hZmix7AJYjF4HUbaBs4x+
+ 77chCvcY8Uf4Jyw01nt45zF56A==
+X-Google-Smtp-Source: APXvYqzIGS93ngPFOoj3vliIAB10vgE4M/ehyQsI06gG80887mNylpBqlEfVijkpuc5v919Oz9PGMQ==
+X-Received: by 2002:ad4:5429:: with SMTP id g9mr757799qvt.134.1582823826213;
+ Thu, 27 Feb 2020 09:17:06 -0800 (PST)
+Received: from ziepe.ca
+ (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [142.68.57.212])
+ by smtp.gmail.com with ESMTPSA id x14sm3375572qkf.99.2020.02.27.09.17.05
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 27 Feb 2020 09:17:05 -0800 (PST)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+ (envelope-from <jgg@ziepe.ca>)
+ id 1j7MmW-0003YD-SC; Thu, 27 Feb 2020 13:17:04 -0400
+Date: Thu, 27 Feb 2020 13:17:04 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Logan Gunthorpe <logang@deltatee.com>
+Subject: Re: [PATCH v3 0/7] Allow setting caching mode in arch_add_memory()
+ for P2PDMA
+Message-ID: <20200227171704.GK31668@ziepe.ca>
+References: <20200221182503.28317-1-logang@deltatee.com>
 MIME-Version: 1.0
-In-Reply-To: <d45c91cf5f83424b8f3989b7ead28c50d8d765a9.1582803998.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200221182503.28317-1-logang@deltatee.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,96 +84,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Michal Hocko <mhocko@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ Eric Badger <ebadger@gigaio.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Russel,
-
-Le 27/02/2020 à 12:49, Christophe Leroy a écrit :
-> ptrace_triggered() is declared in asm/hw_breakpoint.h and
-> only needed when CONFIG_HW_BREAKPOINT is set, so move it
-> into hw_breakpoint.c
-
-My series v4 is definitely buggy (I included ptrace_decl.h instead 
-instead of ptrace-decl.h), how can Snowpatch say build succeeded 
-(https://patchwork.ozlabs.org/patch/1245807/) ?
-
-It fails at least on pmac32_defconfig and ppc64_defconfig, see:
-
-http://kisskb.ellerman.id.au/kisskb/head/d45c91cf5f83424b8f3989b7ead28c50d8d765a9/
-
-Christophe
-
+On Fri, Feb 21, 2020 at 11:24:56AM -0700, Logan Gunthorpe wrote:
+> Hi,
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
-> v4: removing inclusing of hw_breakpoint.h now. Previously it was done too early.
-> ---
->   arch/powerpc/kernel/hw_breakpoint.c | 16 ++++++++++++++++
->   arch/powerpc/kernel/ptrace/ptrace.c | 19 -------------------
->   2 files changed, 16 insertions(+), 19 deletions(-)
+> This is v3 of the patchset which cleans up a number of minor issues
+> from the feedback of v2 and rebases onto v5.6-rc2. Additional feedback
+> is welcome.
 > 
-> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-> index 2462cd7c565c..2c0be9d941cf 100644
-> --- a/arch/powerpc/kernel/hw_breakpoint.c
-> +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> @@ -427,3 +427,19 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
->   {
->   	/* TODO */
->   }
-> +
-> +void ptrace_triggered(struct perf_event *bp,
-> +		      struct perf_sample_data *data, struct pt_regs *regs)
-> +{
-> +	struct perf_event_attr attr;
-> +
-> +	/*
-> +	 * Disable the breakpoint request here since ptrace has defined a
-> +	 * one-shot behaviour for breakpoint exceptions in PPC64.
-> +	 * The SIGTRAP signal is generated automatically for us in do_dabr().
-> +	 * We don't have to do anything about that here
-> +	 */
-> +	attr = bp->attr;
-> +	attr.disabled = true;
-> +	modify_user_hw_breakpoint(bp, &attr);
-> +}
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-> index a44f6e5e05ff..f6e51be47c6e 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> @@ -18,7 +18,6 @@
->   #include <linux/regset.h>
->   #include <linux/tracehook.h>
->   #include <linux/audit.h>
-> -#include <linux/hw_breakpoint.h>
->   #include <linux/context_tracking.h>
->   #include <linux/syscalls.h>
->   
-> @@ -31,24 +30,6 @@
->   
->   #include "ptrace-decl.h"
->   
-> -#ifdef CONFIG_HAVE_HW_BREAKPOINT
-> -void ptrace_triggered(struct perf_event *bp,
-> -		      struct perf_sample_data *data, struct pt_regs *regs)
-> -{
-> -	struct perf_event_attr attr;
-> -
-> -	/*
-> -	 * Disable the breakpoint request here since ptrace has defined a
-> -	 * one-shot behaviour for breakpoint exceptions in PPC64.
-> -	 * The SIGTRAP signal is generated automatically for us in do_dabr().
-> -	 * We don't have to do anything about that here
-> -	 */
-> -	attr = bp->attr;
-> -	attr.disabled = true;
-> -	modify_user_hw_breakpoint(bp, &attr);
-> -}
-> -#endif /* CONFIG_HAVE_HW_BREAKPOINT */
-> -
->   /*
->    * Called by kernel/ptrace.c when detaching..
->    *
+> Thanks,
 > 
+> Logan
+> 
+> --
+> 
+> Changes in v3:
+>  * Rebased onto v5.6-rc2
+>  * Rename mhp_modifiers to mhp_params per David with an updated kernel
+>    doc per Dan
+>  * Drop support for s390 per David seeing it does not support
+>    ZONE_DEVICE yet and there was a potential problem with huge pages.
+>  * Added WARN_ON_ONCE in cases where arches recieve non PAGE_KERNEL
+>    parameters
+>  * Collected David and Micheal's Reviewed-By and Acked-by Tags
+> 
+> Changes in v2:
+>  * Rebased onto v5.5-rc5
+>  * Renamed mhp_restrictions to mhp_modifiers and added the pgprot field
+>    to that structure instead of using an argument for
+>    arch_add_memory().
+>  * Add patch to drop the unused flags field in mhp_restrictions
+> 
+> A git branch is available here:
+> 
+> https://github.com/sbates130272/linux-p2pmem remap_pages_cache_v3
+> 
+> --
+> 
+> Currently, the page tables created using memremap_pages() are always
+> created with the PAGE_KERNEL cacheing mode. However, the P2PDMA code
+> is creating pages for PCI BAR memory which should never be accessed
+> through the cache and instead use either WC or UC. This still works in
+> most cases, on x86, because the MTRR registers typically override the
+> caching settings in the page tables for all of the IO memory to be
+> UC-. However, this tends not to work so well on other arches or
+> some rare x86 machines that have firmware which does not setup the
+> MTRR registers in this way.
+> 
+> Instead of this, this series proposes a change to arch_add_memory()
+> to take the pgprot required by the mapping which allows us to
+> explicitly set pagetable entries for P2PDMA memory to WC.
+
+Is there a particular reason why WC was selected here? I thought for
+the p2pdma cases there was no kernel user that touched the memory?
+
+I definitely forsee devices where we want UC instead.
+
+Even so, the whole idea looks like the right direction to me.
+
+Jason
