@@ -1,42 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57663173899
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 14:44:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE57173613
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 12:32:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TS8233MbzDrMc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 22:32:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TW3Y1m6FzDrP4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 00:44:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=ubuntu.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48TS5F1PMjzDqfb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 22:30:18 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0491F4B2;
- Fri, 28 Feb 2020 03:30:15 -0800 (PST)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com
- [10.1.196.255])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD2883F73B;
- Fri, 28 Feb 2020 03:30:12 -0800 (PST)
-Date: Fri, 28 Feb 2020 11:30:10 +0000
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v4 00/11] Add the multiple PF support for DWC and
- Layerscape
-Message-ID: <20200228113010.GB4064@e121166-lin.cambridge.arm.com>
-References: <20190924021849.3185-1-xiaowei.bao@nxp.com>
+ dmarc=none (p=none dis=none) header.from=ubuntu.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TW193jTkzDrMS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 00:42:03 +1100 (AEDT)
+Received: from ip5f5bf7ec.dynamic.kabel-deutschland.de ([95.91.247.236]
+ helo=wittgenstein) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <christian.brauner@ubuntu.com>)
+ id 1j7fts-0002rn-Jc; Fri, 28 Feb 2020 13:41:56 +0000
+Date: Fri, 28 Feb 2020 14:41:55 +0100
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Christian Kellner <christian@kellner.me>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] selftests: pidfd: Add pidfd_fdinfo_test in .gitignore
+Message-ID: <20200228134155.2rzxeqwrlofmtre4@wittgenstein>
+References: <966567c7dbaa26a06730d796354f8a086c0ee288.1582847778.git.christophe.leroy@c-s.fr>
+ <DB631DFB-DF8B-4B95-AC50-74F1ED733CAE@ubuntu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190924021849.3185-1-xiaowei.bao@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <DB631DFB-DF8B-4B95-AC50-74F1ED733CAE@ubuntu.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,51 +50,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, roy.zang@nxp.com, devicetree@vger.kernel.org,
- jingoohan1@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, kishon@ti.com, minghuan.Lian@nxp.com,
- robh+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- gustavo.pimentel@synopsys.com, leoyang.li@nxp.com, shawnguo@kernel.org,
- mingkai.hu@nxp.com, Andrew Murray <amurray@thegoodpenguin.co.uk>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 24, 2019 at 10:18:38AM +0800, Xiaowei Bao wrote:
-> Add the PCIe EP multiple PF support for DWC and Layerscape, add
-> the doorbell MSIX function for DWC, use list to manage the PF of
-> one PCIe controller, and refactor the Layerscape EP driver due to
-> some platforms difference.
+On Fri, Feb 28, 2020 at 01:18:44AM +0100, Christian Brauner wrote:
+> On February 28, 2020 1:00:08 AM GMT+01:00, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+> >The commit identified below added pidfd_fdinfo_test
+> >but failed to add it to .gitignore
+> >
+> >Fixes: 2def297ec7fb ("pidfd: add tests for NSpid info in fdinfo")
+> >Cc: stable@vger.kernel.org
+> >Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> >---
+> > tools/testing/selftests/pidfd/.gitignore | 1 +
+> > 1 file changed, 1 insertion(+)
+> >
+> >diff --git a/tools/testing/selftests/pidfd/.gitignore
+> >b/tools/testing/selftests/pidfd/.gitignore
+> >index 3a779c084d96..39559d723c41 100644
+> >--- a/tools/testing/selftests/pidfd/.gitignore
+> >+++ b/tools/testing/selftests/pidfd/.gitignore
+> >@@ -2,4 +2,5 @@ pidfd_open_test
+> > pidfd_poll_test
+> > pidfd_test
+> > pidfd_wait
+> >+pidfd_fdinfo_test
+> > pidfd_getfd_test
 > 
-> Xiaowei Bao (11):
->   PCI: designware-ep: Add multiple PFs support for DWC
->   PCI: designware-ep: Add the doorbell mode of MSI-X in EP mode
->   PCI: designware-ep: Move the function of getting MSI capability
->     forward
->   PCI: designware-ep: Modify MSI and MSIX CAP way of finding
->   dt-bindings: pci: layerscape-pci: add compatible strings for ls1088a
->     and ls2088a
->   PCI: layerscape: Fix some format issue of the code
->   PCI: layerscape: Modify the way of getting capability with different
->     PEX
->   PCI: layerscape: Modify the MSIX to the doorbell mode
->   PCI: layerscape: Add EP mode support for ls1088a and ls2088a
->   arm64: dts: layerscape: Add PCIe EP node for ls1088a
->   misc: pci_endpoint_test: Add LS1088a in pci_device_id table
+> Thanks for spotting this.
+> I'll pick this up along with other fixes I have waiting.
 > 
->  .../devicetree/bindings/pci/layerscape-pci.txt     |   2 +
->  arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi     |  31 +++
->  drivers/misc/pci_endpoint_test.c                   |   2 +
->  drivers/pci/controller/dwc/pci-layerscape-ep.c     | 100 ++++++--
->  drivers/pci/controller/dwc/pcie-designware-ep.c    | 255 +++++++++++++++++----
->  drivers/pci/controller/dwc/pcie-designware.c       |  59 +++--
->  drivers/pci/controller/dwc/pcie-designware.h       |  48 +++-
->  7 files changed, 404 insertions(+), 93 deletions(-)
+> Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
 
-Hi,
-
-are you resending this patchset ? I would also like Andrew and Kishon to
-have a look and ACK relevant code before merging it.
-
-Thanks,
-Lorenzo
+Applied, thanks!
+Christian
