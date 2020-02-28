@@ -2,48 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82984174087
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 20:48:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43623174185
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 22:32:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Tg8H0MQfzDqQX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 06:48:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TjSS2XxMzDrPH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 08:32:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=TVJSEuyI; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=FOSXg/gD; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Tg3s20bDzDr7M
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 06:44:57 +1100 (AEDT)
-Received: from localhost (unknown [137.135.114.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 78EAF246AE;
- Fri, 28 Feb 2020 19:44:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1582919095;
- bh=19bgiYDwUKdyb3b9go1fL43n9b0ixNXBNp6DFDeAe/M=;
- h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
- b=TVJSEuyIIojQ7JKoDr/C6jf5vi72rlYAfUFVMc2UR70xBbueQ7ggzTfvH0RM6aYzx
- TM0sZsD4HX90SPeiyw3Qki0IWiXuAD7sJ3MiBSOH0JSVz1TnaAHeOlwDiN7vgytbfT
- iIC5Yi4q7Op2jHwr3hw42K72FQFhAPJxxEt3sz0Q=
-Date: Fri, 28 Feb 2020 19:44:54 +0000
-From: Sasha Levin <sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] selftests: powerpc: Add tlbie_test in .gitignore
-In-Reply-To: <259f9c06ed4563c4fa4fa8ffa652347278d769e7.1582847784.git.christophe.leroy@c-s.fr>
-References: <259f9c06ed4563c4fa4fa8ffa652347278d769e7.1582847784.git.christophe.leroy@c-s.fr>
-Message-Id: <20200228194455.78EAF246AE@mail.kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TjQl1zWdzDrDl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 08:31:19 +1100 (AEDT)
+Received: by mail-ot1-x341.google.com with SMTP id b3so3975760otp.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 13:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=E57qmAYxRULljTteoL9BnNM233t9xRFNSPdb4qSFmz4=;
+ b=FOSXg/gDLnMTvsFKrROzrWHQkymULqZ4VWWSzkxbCpGWafrvoL1DbhvWHkNA1awmFJ
+ mqZ4yc3Xu7lUtGU0lnzzTMrQrhjDoBb0aAi0O834VNv0Xx2wr1FRPluT436M+3L6Uu3P
+ OeEfO9GHrkLM+a5+P9XzccUiCN5lVGpuO1RMFe6qheaZSXTBuWXwalcRrw3HRO/r9ITu
+ dbpQvHayrSz63xS3XZJvxFAo9ni5zPDlHcVTL49HtS1LUdDaUyRpVgHEgZqSQiaYscIw
+ 1HyAUUJ1ehUcyfKMFiPZLd4BrozyOvRYXTSs34KN1qjk4Mke8taeKrGC90q2MJWKZrKw
+ q4mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=E57qmAYxRULljTteoL9BnNM233t9xRFNSPdb4qSFmz4=;
+ b=kBvSTcCOF3+yu5HJdtAd9VOwecS39yJH68n5J86J993zyN3yy/swN75GCPeFwjf1E/
+ t07ZJF/B6HPHSwpWky1L0122SJrf+h6HgvSOjxjVlCrwrYU3tJLqI8aPA0wCoNvXKMyK
+ 4fygr2zwwCtHON6YZCA5ySDDybqXD1kEKy8RgQGj5gG8aLHcY5A50kJhOuNJ1/kcwJiH
+ sYFgRh5RrKmoImMFvezMYXDkDEjQ1nOtMdajRW0NtBz6Y1RwSdLI8HmB62ebLFMcCZLj
+ 1r0+8K+dJEbnJ4Uqk9u6KELrHV44Pm4Jv5xnbDPkH1mkPCpsgYe7L2uLzfu0K63IfzSw
+ Um2g==
+X-Gm-Message-State: APjAAAUZEV5y1rJqfH2KGVwjSUEFn+sYLysjGHoxWJab0qL7OhP2Ad/H
+ c14mKj6+TmXAWMT5RKsnnQ7bkfFnS2fdQnzRe17H6Q==
+X-Google-Smtp-Source: APXvYqw3lx5wUMOoXp5Dz6+9E6dRQ6P4Q87wBR0C2ISCuvp93d5At8nQ1nTZ6ODRu1fC1blNWg8tMcQbt7eE8AgCHRU=
+X-Received: by 2002:a9d:64d8:: with SMTP id n24mr4607004otl.71.1582925476085; 
+ Fri, 28 Feb 2020 13:31:16 -0800 (PST)
+MIME-Version: 1.0
+References: <20200221182503.28317-1-logang@deltatee.com>
+ <20200221182503.28317-2-logang@deltatee.com>
+In-Reply-To: <20200221182503.28317-2-logang@deltatee.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 28 Feb 2020 13:31:05 -0800
+Message-ID: <CAPcyv4gFiCBN_Bz5eZrWXV0PEaWhwdHDkgEW7e5z0xZkp6a83w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] mm/memory_hotplug: Drop the flags field from
+ struct mhp_restrictions
+To: Logan Gunthorpe <logang@deltatee.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,45 +76,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, Linux-sh <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
+ Linux MM <linux-mm@kvack.org>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-s390 <linux-s390@vger.kernel.org>,
+ David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Michal Hocko <mhocko@kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Eric Badger <ebadger@gigaio.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Fri, Feb 21, 2020 at 10:25 AM Logan Gunthorpe <logang@deltatee.com> wrote:
+>
+> This variable is not used anywhere and should therefore be removed
+> from the structure.
+>
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 
-[This is an automated email]
-
-This commit has been processed because it contains a "Fixes:" tag
-fixing commit: 93cad5f78995 ("selftests/powerpc: Add test case for tlbie vs mtpidr ordering issue").
-
-The bot has tested the following trees: v5.5.6, v5.4.22, v4.19.106, v4.14.171.
-
-v5.5.6: Failed to apply! Possible dependencies:
-    5eb7cfb3a2b1 ("selftests/powerpc: Add a test of bad (out-of-range) accesses")
-
-v5.4.22: Failed to apply! Possible dependencies:
-    5eb7cfb3a2b1 ("selftests/powerpc: Add a test of bad (out-of-range) accesses")
-
-v4.19.106: Failed to apply! Possible dependencies:
-    16391bfc8623 ("selftests/powerpc: Add test of fork with mapping above 512TB")
-    5eb7cfb3a2b1 ("selftests/powerpc: Add a test of bad (out-of-range) accesses")
-    7b570361f6f6 ("selftests/powerpc: Add missing newline at end of file")
-    b7683fc66eba ("selftests/powerpc: Add a test of wild bctr")
-
-v4.14.171: Failed to apply! Possible dependencies:
-    16391bfc8623 ("selftests/powerpc: Add test of fork with mapping above 512TB")
-    5eb7cfb3a2b1 ("selftests/powerpc: Add a test of bad (out-of-range) accesses")
-    6ed361586b32 ("selftests/powerpc: Add a test of SEGV error behaviour")
-    7b570361f6f6 ("selftests/powerpc: Add missing newline at end of file")
-    b7683fc66eba ("selftests/powerpc: Add a test of wild bctr")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
