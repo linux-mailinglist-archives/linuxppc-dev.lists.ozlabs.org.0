@@ -1,71 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4297173180
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 08:01:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AF9173177
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:58:45 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TL3k4h5KzDqCl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:58:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TL6f0ZV2zDrCT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 18:01:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f43;
- helo=mail-qv1-xf43.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f42;
+ helo=mail-qv1-xf42.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZKbwFGtP; dkim-atps=neutral
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com
- [IPv6:2607:f8b0:4864:20::f43])
+ header.s=20161025 header.b=b7Eu1OiV; dkim-atps=neutral
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com
+ [IPv6:2607:f8b0:4864:20::f42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48TL1q4S9VzDq77
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:57:02 +1100 (AEDT)
-Received: by mail-qv1-xf43.google.com with SMTP id dc14so874702qvb.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 22:57:02 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TL4n5pxMzDq77
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:59:37 +1100 (AEDT)
+Received: by mail-qv1-xf42.google.com with SMTP id ff2so896376qvb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 22:59:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=y01M/2zdHCZcq/LUwDdnQfmblvhfbJOn2D+Py6njg7g=;
- b=ZKbwFGtPtc2xfkSIQh1fpVq2oIEcHMYmuGCZgeHsYFzw6OrDBybr7dn68Ya6Haf12t
- 4vU4ZDPCwz/A8AuWJON2bqbmPVLFJP7BgcWM/moPEl4FAinQuPpI2DYx5geA/nHXcA/K
- GCDXCScmwy7+mQHcGNMyA+STiUkaz0BwlCl9ctxf18xxXTukTMCg1p3eTCbkojg8fo5k
- 0u0DUmmXRhcOvC2VPcUHs5w//ck4/LHiObI0OVIM6hCI1rX3b0oZ2yD65ima+PxeIIro
- tAlElbsYlY52UiaPrnpoIHCLHKFUAo6+jaGrKFymTy8slT8vP8vyeNYbNA2YVZRtN6c0
- W2kw==
+ :cc; bh=c6hyoD8zfmHfdvTYAWzSR1LNa/TqLChPyCgM+JY7rNU=;
+ b=b7Eu1OiVC2aJps+SPPzuhzjoMER1rqPqa/VvZX29dIM7lR539TlgLa+v3GMZHBRQAZ
+ eKx85GB9ht9NaHJX6T/qVdHk4UDIucXgAZ6/aTIRLJejLwfsNbAR9Vmt7SJ502TZP55S
+ vEcKJZJKg3jJMQS7ipLyZjqQ8/4Lu6AuWQH60NG0cRLgtElo+6LZM3G144uugbn3JbGw
+ aN1TMFE54ow0CXGU/EKnklzGqnXqBKBifIDgNq9Kwdebmqj94szrMo2DFayQGYxP6Nqi
+ QjRJlEYjd9OZA88814HnrlYzMwEvul1UBw6wj8PovvjrQe6Y5v7z18EmT/zb+a0ydbDW
+ DuLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=y01M/2zdHCZcq/LUwDdnQfmblvhfbJOn2D+Py6njg7g=;
- b=PcKceJooT1YkMh98KzaE935yJ+O8FWNOeiEnEGnNCVs7PDqwLkIWE4eTmLStbRJRkh
- h6e/yLcQbbb9aggdGqvpkMQe4eWvgexZmVBW2tamo8/ObSXXDHuTNuj8ovdjE6RANteB
- IHWu9R9kijPPaO1s38oOe73wY3nRq41u2qNw/Dmah+vJJdeWlWY/4kRPXr6EihHXRfzz
- 4KscSDYUqfjxgBvffRFh5te8RGKyugaCHpBv/ga/Y0XWGDmg93iNb2FG0BTOBO+pDgT2
- MneDYr2ePRRk8PBb4OJiANoEI0Z5DybHQT9d1xom2NKu3q5kYpeoosR5Vl+368PcXY1Y
- 8Dgg==
-X-Gm-Message-State: APjAAAVAo0gOMVYYc5x7BoaWhbUQtNLrhlToBCjD4+6Y6wxkSsRO8ol5
- YRz9srToR644TNj6nnix2BfKMAJZrvb+iTLC6jk=
-X-Google-Smtp-Source: APXvYqzj5j0vPNWa4F9PJfSQ8lKIGPn+N9t3wsMNUwuluF4E14JSjeMvx2/NNDaPp5uF+vkPGCMI5QJ3InE97/22PGw=
-X-Received: by 2002:a05:6214:a46:: with SMTP id
- ee6mr2639365qvb.32.1582873018570; 
- Thu, 27 Feb 2020 22:56:58 -0800 (PST)
+ bh=c6hyoD8zfmHfdvTYAWzSR1LNa/TqLChPyCgM+JY7rNU=;
+ b=dnFcEHdo7zbV7KQzPIyNh8IULHjLU81S7Uj1V36HOuL3jMgJZfBLR81r8di1fy1c4O
+ dsxU111P/D6RH2osMKpPaRWBoPuMBYNGWe+fbYaydoq7pniypjOcAm1fmq3yAm+tfn+T
+ jyJhB2UsnWenj5qAUcQWVBq0IsEG1WO76se28aHAAR5r///ZyvtODeoqgs3CSiuARLmh
+ lQrO6T+bEdpwSNUd7xpGkyXnr8O7krMfyGOQnAWxnyIOzQbmujwuBQHxqOZ+3NnKtrNl
+ TRlojF29pAl9CEzeOdeXpZ0OaCvshIUwPujHLdhIu1PX+Ht4gVAydLJFufAQuyFJjMyu
+ w3Vg==
+X-Gm-Message-State: APjAAAUs1BDh7Zp/fkqNAibTCbmzhhUZbqaqRGZaR7CxvQ/KMm5jR4nG
+ ClujfJ1jZhrPSIU1upDTSH91No2YdyHrVRG80fs=
+X-Google-Smtp-Source: APXvYqx4Mglpr2YgBhx2B/bWVdjJWIXLSKGQv1V/Zpmwn53wJsLruUiOcUOlVokZfkaeflXerQVi8nrguOcbktfRu5Y=
+X-Received: by 2002:ad4:52eb:: with SMTP id p11mr2292548qvu.211.1582873174403; 
+ Thu, 27 Feb 2020 22:59:34 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1582770784.git.shengjiu.wang@nxp.com>
- <ffd5ff2fd0e8ad03a97f6a640630cff767d73fa7.1582770784.git.shengjiu.wang@nxp.com>
- <20200227034121.GA20540@Asurada-Nvidia.nvidia.com>
- <CAA+D8AMzqpC35_CR2dCG6a_h4FzvZ6orXkPSYh_1o1d8hv+BMg@mail.gmail.com>
- <20200227174540.GA17040@Asurada-Nvidia.nvidia.com>
- <CAA+D8AM6t79cPoNmt-8HbGwTSM9bfXSW8g76HtkCF7eauL_Xmw@mail.gmail.com>
- <20200228063958.GA473@NICOLINC-LT.nvidia.com>
-In-Reply-To: <20200228063958.GA473@NICOLINC-LT.nvidia.com>
+ <d9aebf5ef9a92623db10dc537161b3ecdb1d8b18.1582770784.git.shengjiu.wang@nxp.com>
+ <20200227183926.GA456@NICOLINC-LT.nvidia.com>
+In-Reply-To: <20200227183926.GA456@NICOLINC-LT.nvidia.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 28 Feb 2020 14:56:47 +0800
-Message-ID: <CAA+D8AMAV=d8FDL4wmUaAx7h7ZBaTZyKJcwXqkA+oWDLLF6oYw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] ASoC: fsl_asrc: Change asrc_width to asrc_format
+Date: Fri, 28 Feb 2020 14:59:23 +0800
+Message-ID: <CAA+D8ANFN9irpX25VnKYDm3cfU16ht7bcB4-zjDOyHMj8NM9Qw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] ASoC: fsl_asrc: Move common definition to
+ fsl_asrc_common
 To: Nicolin Chen <nicoleotsuka@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,82 +87,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 28, 2020 at 2:40 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+On Fri, Feb 28, 2020 at 2:41 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
 >
-> On Fri, Feb 28, 2020 at 10:54:02AM +0800, Shengjiu Wang wrote:
-> > Hi
+> On Thu, Feb 27, 2020 at 10:41:56AM +0800, Shengjiu Wang wrote:
+> > There is a new ASRC included in i.MX serial platform, there
+> > are some common definition can be shared with each other.
+> > So move the common definition to a separate header file.
 > >
-> > On Fri, Feb 28, 2020 at 1:45 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
-> > >
-> > > On Thu, Feb 27, 2020 at 01:10:19PM +0800, Shengjiu Wang wrote:
-> > > > On Thu, Feb 27, 2020 at 11:43 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
-> > > > >
-> > > > > On Thu, Feb 27, 2020 at 10:41:55AM +0800, Shengjiu Wang wrote:
-> > > > > > asrc_format is more inteligent variable, which is align
-> > > > > > with the alsa definition snd_pcm_format_t.
-> > > > > >
-> > > > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > > > ---
-> > > > > >  sound/soc/fsl/fsl_asrc.c     | 23 +++++++++++------------
-> > > > > >  sound/soc/fsl/fsl_asrc.h     |  4 ++--
-> > > > > >  sound/soc/fsl/fsl_asrc_dma.c |  2 +-
-> > > > > >  3 files changed, 14 insertions(+), 15 deletions(-)
-> > > > > >
-> > > > > > diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> > > > > > index 0dcebc24c312..2b6a1643573c 100644
-> > > > > > --- a/sound/soc/fsl/fsl_asrc.c
-> > > > > > +++ b/sound/soc/fsl/fsl_asrc.c
-> > > > >
-> > > > > > @@ -600,11 +599,6 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
-> > > > > >
-> > > > > >       pair->config = &config;
-> > > > > >
-> > > > > > -     if (asrc_priv->asrc_width == 16)
-> > > > > > -             format = SNDRV_PCM_FORMAT_S16_LE;
-> > > > > > -     else
-> > > > > > -             format = SNDRV_PCM_FORMAT_S24_LE;
-> > > > >
-> > > > > It feels better to me that we have format settings in hw_params().
-> > > > >
-> > > > > Why not let fsl_easrc align with this? Any reason that I'm missing?
-> > > >
-> > > > because the asrc_width is not formal,  in the future we can direct
-> > >
-> > > Hmm..that's our DT binding. And I don't feel it is a problem
-> > > to be ASoC irrelative.
-> > >
-> > > > input the format from the dts. format involve the info about width.
-> > >
-> > > Is there such any formal ASoC binding? I don't see those PCM
-> > > formats under include/dt-bindings/ folder. How are we going
-> > > to involve those formats in DT?
-> >
-> > There is no formal binding of this case.
-> >
-> > I think it is not good to convert width to format, because, for example
+> > And add fsl_asrc_pair_internal and fsl_asrc_internal for
+> > the variable specific for the module, which can be used
+> > internally.
 >
-> The thing is that fsl_easrc does the conversion too... It just
-> does in the probe instead of hw_params(), and then copies them
-> in the hw_params(). So I don't see obvious benefit by doing so.
+> I think we can just call it "priv", instead of "internal", since
+> it's passed by the "void *private" pointer.
 >
-> > width = 24,  there is two option, we can select format S24_LE,  or
-> > format S24_3LE,  width is ambiguous for selecting.
-> >
-> > In EASRC, it support other two 24bit format U24_LE, U24_3LE .
+> And it'd be nicer to have an extra preparational patch to rename
+> existing "struct fsl_asrc *asrc_priv" to "struct fsl_asrc *asrc".
 >
-> I understood the reason here, but am not seeing the necessity,
-> at this point.
+> Something like:
+> struct fsl_asrc *asrc = yyyy;
+> struct fsl_asrc_pair *pair = xxxx;
+> struct fsl_asrc_priv *asrc_priv = asrc->private;
+> struct fsl_asrc_pair_priv *pair_priv = pair->private;
 >
-> > if we use the format in DT, then it is clear for usage in driver.
+> Thanks
+> ------
 >
-> I think this is the thing that we should address first. If we
-> have such a binding being added with the new fsl_easrc driver,
-> I'd love to see the old driver aligning with the new one.
->
-> Otherwise, we can keep the old way, and change it when the new
-> binding is ready.
-
-ok,  I will change the binding this time in next version.
+ok, will change it.
 
 best regards
 wang shengjiu
