@@ -2,16 +2,16 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A30F1730C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:07:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8758B1730DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:15:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TJwH1YfjzDrJD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:07:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TK5x30lLzDqxQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:15:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,65 +19,74 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48TJtn2mslzDqpG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:05:53 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01S64NUd029316; Fri, 28 Feb 2020 01:05:39 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yepxjj11j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Feb 2020 01:05:39 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01S61pwT008934;
- Fri, 28 Feb 2020 06:05:38 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03dal.us.ibm.com with ESMTP id 2yepv2js52-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Feb 2020 06:05:38 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01S65aR459572596
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TK3B52BszDqtj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:13:10 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01S6ATFZ065734
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:13:08 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yepxa9xwb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:13:07 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Fri, 28 Feb 2020 06:13:05 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 28 Feb 2020 06:12:56 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01S6CteC40304740
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Feb 2020 06:05:37 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7FFDBE054;
- Fri, 28 Feb 2020 06:05:36 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ED8D2BE053;
- Fri, 28 Feb 2020 06:05:32 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.85.198.107])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 28 Feb 2020 06:05:32 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Leonardo Bras <leonardo@linux.ibm.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Thomas Gleixner <tglx@linutronix.de>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, mdroth@linux.vnet.ibm.com
-Subject: [PATCH 1/1] powerpc/kernel: Enables memory hot-remove after reboot on
- pseries guests
-Date: Fri, 28 Feb 2020 03:04:39 -0300
-Message-Id: <20200228060439.52749-1-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.24.1
+ Fri, 28 Feb 2020 06:12:56 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E084DAE053;
+ Fri, 28 Feb 2020 06:12:55 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89E4BAE051;
+ Fri, 28 Feb 2020 06:12:55 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 28 Feb 2020 06:12:55 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 025AAA01F5;
+ Fri, 28 Feb 2020 17:12:50 +1100 (AEDT)
+Subject: Re: [PATCH v3 21/27] powerpc/powernv/pmem: Add an IOCTL to request
+ controller health & perf data
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-22-alastair@au1.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 28 Feb 2020 17:12:53 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200221032720.33893-22-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
+x-cbid: 20022806-4275-0000-0000-000003A63B3C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022806-4276-0000-0000-000038BAB55A
+Message-Id: <fdc5faec-d03d-3cba-4a9c-add7e522ad13@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-28_01:2020-02-26,
  2020-02-28 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- impostorscore=0 priorityscore=1501 spamscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501
+ mlxlogscore=675 spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002280053
+ definitions=main-2002280054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,63 +98,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While providing guests, it's desirable to resize it's memory on demand.
+On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> When health & performance data is requested from the controller,
+> it responds with an error log containing the requested information.
+> 
+> This patch allows the request to me issued via an IOCTL.
 
-By now, it's possible to do so by creating a guest with a small base
-memory, hot-plugging all the rest, and using 'movable_node' kernel
-command-line parameter, which puts all hot-plugged memory in
-ZONE_MOVABLE, allowing it to be removed whenever needed.
+A better explanation would be good - this IOCTL triggers a request to 
+the controller to collect controller health/perf data, and the 
+controller will later respond with an error log that can be picked up 
+via the error log IOCTL that you've defined earlier.
 
-But there is an issue regarding guest reboot:
-If memory is hot-plugged, and then the guest is rebooted, all hot-plugged
-memory goes to ZONE_NORMAL, which offers no guaranteed hot-removal.
-It usually prevents this memory to be hot-removed from the guest.
 
-It's possible to use device-tree information to fix that behavior, as
-it stores flags for LMB ranges on ibm,dynamic-memory-vN.
-It involves marking each memblock with the correct flags as hotpluggable
-memory, which mm/memblock.c puts in ZONE_MOVABLE during boot if
-'movable_node' is passed.
-
-For base memory, qemu assigns these flags for it's LMBs:
-(DRCONF_MEM_AI_INVALID | DRCONF_MEM_RESERVED)
-For hot-plugged memory, it assigns (DRCONF_MEM_ASSIGNED).
-
-While guest kernel reads the device-tree, early_init_drmem_lmb() is
-called for every added LMBs, doing nothing for base memory, and adding
-memblocks for hot-plugged memory. Skipping base memory happens here:
-
-if ((lmb->flags & DRCONF_MEM_RESERVED) ||
-    !(lmb->flags & DRCONF_MEM_ASSIGNED))
-	return;
-
-Marking memblocks added by this function as hotplugable memory
-is enough to get the desirable behavior, and should cause no change
-if 'movable_node' parameter is not passed to kernel.
-
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
----
- arch/powerpc/kernel/prom.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6620f37abe73..f4d14c67bf53 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -518,6 +518,8 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- 		DBG("Adding: %llx -> %llx\n", base, size);
- 		if (validate_mem_limit(base, &size))
- 			memblock_add(base, size);
-+
-+		early_init_dt_mark_hotplug_memory_arch(base, size);
- 	} while (--rngs);
- }
- #endif /* CONFIG_PPC_PSERIES */
 -- 
-2.24.1
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
