@@ -2,91 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8758B1730DF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:15:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A026D1730F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:22:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TK5x30lLzDqxQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:15:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TKFQ4K9vzDr2m
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:22:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48TK3B52BszDqtj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:13:10 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TKCm1RNSzDr1g
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:20:35 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01S6ATFZ065734
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:13:08 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yepxa9xwb-1
+ 01S6JXtR039625
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:20:33 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yepwthvt3-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:13:07 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:20:33 -0500
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Fri, 28 Feb 2020 06:13:05 -0000
+ Fri, 28 Feb 2020 06:20:30 -0000
 Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 28 Feb 2020 06:12:56 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
+ Fri, 28 Feb 2020 06:20:23 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
  by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01S6CteC40304740
+ 01S6KMwO53673986
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Feb 2020 06:12:56 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E084DAE053;
- Fri, 28 Feb 2020 06:12:55 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89E4BAE051;
- Fri, 28 Feb 2020 06:12:55 +0000 (GMT)
+ Fri, 28 Feb 2020 06:20:22 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3BA5952057;
+ Fri, 28 Feb 2020 06:20:22 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 28 Feb 2020 06:12:55 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D8CA552052;
+ Fri, 28 Feb 2020 06:20:21 +0000 (GMT)
 Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
  (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 025AAA01F5;
- Fri, 28 Feb 2020 17:12:50 +1100 (AEDT)
-Subject: Re: [PATCH v3 21/27] powerpc/powernv/pmem: Add an IOCTL to request
- controller health & perf data
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2775FA01F5;
+ Fri, 28 Feb 2020 17:20:17 +1100 (AEDT)
+Subject: Re: [PATCH v3 22/27] powerpc/powernv/pmem: Implement the heartbeat
+ command
 To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
 References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-22-alastair@au1.ibm.com>
+ <20200221032720.33893-23-alastair@au1.ibm.com>
 From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 28 Feb 2020 17:12:53 +1100
+Date: Fri, 28 Feb 2020 17:20:20 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-22-alastair@au1.ibm.com>
+In-Reply-To: <20200221032720.33893-23-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 20022806-4275-0000-0000-000003A63B3C
+x-cbid: 20022806-0008-0000-0000-000003573257
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022806-4276-0000-0000-000038BAB55A
-Message-Id: <fdc5faec-d03d-3cba-4a9c-add7e522ad13@linux.ibm.com>
+x-cbparentid: 20022806-0009-0000-0000-00004A785670
+Message-Id: <3a3c8ee0-144f-ec76-9bad-f154b804551d@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-28_01:2020-02-26,
  2020-02-28 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- mlxlogscore=675 spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002280054
+ malwarescore=0
+ mlxlogscore=805 adultscore=0 mlxscore=0 suspectscore=0 clxscore=1015
+ bulkscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002280054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,16 +121,16 @@ Sender: "Linuxppc-dev"
 On 21/2/20 2:27 pm, Alastair D'Silva wrote:
 > From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> When health & performance data is requested from the controller,
-> it responds with an error log containing the requested information.
+> The heartbeat admin command is a simple admin command that exercises
+> the communication mechanisms within the controller.
 > 
-> This patch allows the request to me issued via an IOCTL.
+> This patch issues a heartbeat command to the card during init to ensure
+> we can communicate with the card's controller.
+>  > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 
-A better explanation would be good - this IOCTL triggers a request to 
-the controller to collect controller health/perf data, and the 
-controller will later respond with an error log that can be picked up 
-via the error log IOCTL that you've defined earlier.
+Looks okay.
 
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 -- 
 Andrew Donnellan              OzLabs, ADL Canberra
