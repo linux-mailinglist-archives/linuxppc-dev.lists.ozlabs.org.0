@@ -1,75 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0C317300B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 05:51:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48THDX1dSCzDrGv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 15:51:08 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296EB173013
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 05:56:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48THLL2nBKzDrFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 15:56:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pFWtCafE; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=atM5fLxZ; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48THBd0WnDzDrCt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 15:49:28 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id j7so749091plt.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 20:49:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48THJV2CSWzDrCt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 15:54:33 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id z12so865379pgl.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 20:54:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=feIZem0x3q8sV1Os/LGaE2gLfI8cGD8u8Tige16duIY=;
- b=pFWtCafEZiR+cYriuahKky4BndUETp2+uKoGUvdPOTqYrIE2dfENmARDnASSvULVHA
- 7LbGwg3x4S4MBR5+EPkwJwQcyce91geEyVAL+xj1b4D9peOz33k8/8eBhsbMh+IoOMeq
- LnExOODOSWYz7evxoAHYwD8sXk5BKBWHZ7WrdurcQRkBPsMt0WWZjjgNgwr8l0Jk47sL
- vuYeL7LzvRWuGoJyhPMfmmxtLsqd9EfQbQfddxKOPG0v9qzzpZ5NuHvEMTcY9+w5yR2J
- 3odDkiZQ0JldiRawN4Umdes0iX5xGpULjCDixAmyxf/b5eToW32/pbw+hsWAVHi8TJKK
- hBcA==
+ bh=wdhrq7tBhVRtvcclECyLgIThzaLGg3RltcPQVabRvAU=;
+ b=atM5fLxZPGX0VjBDgp4PpIn5rr6dGj2XyByEfmG61MuWdfXrshdCA0hY/1rVmxt36C
+ 8loI1gsHCw1tmNR2/H6WeCiDPt5d9i+1+LRShED6Blcx1AUn08+UGuW/Xq6SobfCNfsL
+ vJLpAkkavTVLVgYx9lCd76ed88AKQgGtf0uXHNKtMrL04OytI9e0E+XOv7WUQg6KERZW
+ Y4a3naRG9RxEZfBEzCzUc17LvsBqqT/ve/I8Lv4Cukdw4AABL4UkFzYZv5vbFsbyB+rY
+ rMNDzK0MkB8KPCkYVUp54yBOMZRMVoB5EzqGznHdhbm4gFR/Hrw7pQ9pRmFsR3Zrljl6
+ uG/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=feIZem0x3q8sV1Os/LGaE2gLfI8cGD8u8Tige16duIY=;
- b=ukIBg/l+rRH/zp0luKIyJug6O2Z7BlO8KixgNuDADGQXFAalpcWhE5lRcvDRDPEVB8
- b5iidin7/zaYX9K3ux5Bl3ym29HUAUb5PWpebA8DNaMQPmk3otFF6AWUGgzYm85IQpge
- kaRlB8/skMFYcC5zxTith/wjobAg7NaAS4S8uxJPRMsuF0whH1y/i6lHFjbFG/hO1yIb
- gQCq12v+xDG6kQ7Fx2ks6k1KfHMqLL3+R9qkjKtKAHQBMzkgjWHFiqQhgMIeG9cojLhu
- hJ1uf3e0Tyummb0FiTn+HS3YZXppUSCmgz+YcdrUp7htrFsOYYcGHHsAkZbDd0z08k6s
- k64g==
-X-Gm-Message-State: APjAAAU3Es4nNGLM1WOT1XGziYs6B+P/wi45XvkIkhbXv3dAwrVS9zZ/
- OD6FtHjJJEXNdTbiouNLkGM=
-X-Google-Smtp-Source: APXvYqx4pte272cdDix+xONo1y2wEjrN+3MS3h592/8rZ+yauPv/GJfKt1XhN4hlnTpNASyh0wyhJA==
-X-Received: by 2002:a17:90a:ead8:: with SMTP id
- ev24mr2596375pjb.91.1582865364894; 
- Thu, 27 Feb 2020 20:49:24 -0800 (PST)
+ bh=wdhrq7tBhVRtvcclECyLgIThzaLGg3RltcPQVabRvAU=;
+ b=hXP9AUwDUOrlBzqSMeB3Sg+TPOnAre4S9V/0K1ECGe8bLOMjZ6YLjN64qI/CAt42PX
+ Alyfd578wcE2JYEY/erNmgjTsFRPvnsW3lCIC8Pym8A9bsegQad5JyZtCNyL0Nnpkwoi
+ m07wGcB1BYUyTkxjWxGQRDC6IP6XA04dDUy4iv4Y3abCk6A9kWsSDdN2zHme407ujxoh
+ eOdTQQDE0Ud8+rN/foPOvILFOncGrzMgA21k0gJ2556BfS0QTIvw7GwKDpZxZavGEUQI
+ yv4tJ1Q/+JxteHWlJ0nGJ9qrfKepyXThh1uT42ZneDi9UI3HoZBXqDXqEZUBlUbTVwjV
+ nj2w==
+X-Gm-Message-State: APjAAAUav3wz0/r5FRYfUy3GxOhVSwtitNj9JcNCo+4by6y1F/wJfBlP
+ dqFj0elAmLY0CCuIyRJ82Tw=
+X-Google-Smtp-Source: APXvYqzhEKPOAWUYm/II8AirLITF6sZdAlXrfODcnZuhdJaeudo635Skt+Hlm3as/JOvp8Q+wLDU0w==
+X-Received: by 2002:aa7:9556:: with SMTP id w22mr2623505pfq.198.1582865670625; 
+ Thu, 27 Feb 2020 20:54:30 -0800 (PST)
 Received: from localhost (193-116-109-34.tpgi.com.au. [193.116.109.34])
- by smtp.gmail.com with ESMTPSA id 23sm8926604pfh.28.2020.02.27.20.49.23
+ by smtp.gmail.com with ESMTPSA id c19sm9780700pfc.144.2020.02.27.20.54.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Feb 2020 20:49:24 -0800 (PST)
-Date: Fri, 28 Feb 2020 14:48:33 +1000
+ Thu, 27 Feb 2020 20:54:30 -0800 (PST)
+Date: Fri, 28 Feb 2020 14:53:38 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 01/14] powerpc: Enable Prefixed Instructions
+Subject: Re: [PATCH v3 11/14] powerpc/kprobes: Support kprobes on prefixed
+ instructions
 To: Jordan Niethe <jniethe5@gmail.com>
 References: <20200226040716.32395-1-jniethe5@gmail.com>
- <20200226040716.32395-2-jniethe5@gmail.com>
- <1582698829.pxzksoow7n.astroid@bobo.none>
- <CACzsE9oQSnEsbD=ftCOd51cPRrDyvv4EHY-1pn+DUUO=AVyTGg@mail.gmail.com>
-In-Reply-To: <CACzsE9oQSnEsbD=ftCOd51cPRrDyvv4EHY-1pn+DUUO=AVyTGg@mail.gmail.com>
+ <20200226040716.32395-12-jniethe5@gmail.com>
+ <1582700856.cbydlhx2wj.astroid@bobo.none>
+ <CACzsE9r+dKAgmTPsWtzPTnjmVskG_BO5G3=0V_Qm_6pu-_ZRFg@mail.gmail.com>
+ <1582853017.uien0qdstw.astroid@bobo.none>
+ <CACzsE9oyVoukqHZHkSbEoWBmotksqORKJNOuFz_4J4ExMUeijw@mail.gmail.com>
+In-Reply-To: <CACzsE9oyVoukqHZHkSbEoWBmotksqORKJNOuFz_4J4ExMUeijw@mail.gmail.com>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1582864874.q013n2u3v1.astroid@bobo.none>
+Message-Id: <1582865322.01nj96i6g1.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,138 +91,172 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe's on February 28, 2020 12:52 pm:
-> On Wed, Feb 26, 2020 at 5:50 PM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
+Jordan Niethe's on February 28, 2020 1:23 pm:
+> On Fri, Feb 28, 2020 at 12:48 PM Nicholas Piggin <npiggin@gmail.com> wrot=
+e:
 >>
->> Jordan Niethe's on February 26, 2020 2:07 pm:
->> > From: Alistair Popple <alistair@popple.id.au>
->> >
->> > Prefix instructions have their own FSCR bit which needs to enabled via
->> > a CPU feature. The kernel will save the FSCR for problem state but it
->> > needs to be enabled initially.
->> >
->> > Signed-off-by: Alistair Popple <alistair@popple.id.au>
->> > ---
->> >  arch/powerpc/include/asm/reg.h    |  3 +++
->> >  arch/powerpc/kernel/dt_cpu_ftrs.c | 23 +++++++++++++++++++++++
->> >  2 files changed, 26 insertions(+)
->> >
->> > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm=
-/reg.h
->> > index 1aa46dff0957..c7758c2ccc5f 100644
->> > --- a/arch/powerpc/include/asm/reg.h
->> > +++ b/arch/powerpc/include/asm/reg.h
->> > @@ -397,6 +397,7 @@
->> >  #define SPRN_RWMR    0x375   /* Region-Weighting Mode Register */
->> >
->> >  /* HFSCR and FSCR bit numbers are the same */
->> > +#define FSCR_PREFIX_LG       13      /* Enable Prefix Instructions */
->> >  #define FSCR_SCV_LG  12      /* Enable System Call Vectored */
->> >  #define FSCR_MSGP_LG 10      /* Enable MSGP */
->> >  #define FSCR_TAR_LG  8       /* Enable Target Address Register */
->> > @@ -408,11 +409,13 @@
->> >  #define FSCR_VECVSX_LG       1       /* Enable VMX/VSX  */
->> >  #define FSCR_FP_LG   0       /* Enable Floating Point */
->> >  #define SPRN_FSCR    0x099   /* Facility Status & Control Register */
->> > +#define   FSCR_PREFIX        __MASK(FSCR_PREFIX_LG)
+>> Jordan Niethe's on February 27, 2020 10:58 am:
+>> > On Wed, Feb 26, 2020 at 6:18 PM Nicholas Piggin <npiggin@gmail.com> wr=
+ote:
+>> >>
+>> >> Jordan Niethe's on February 26, 2020 2:07 pm:
+>> >> > @@ -136,11 +148,14 @@ int arch_prepare_kprobe(struct kprobe *p)
+>> >> >       }
+>> >> >
+>> >> >       if (!ret) {
+>> >> > -             patch_instruction(p->ainsn.insn, *p->addr);
+>> >> > +             patch_instruction(&p->ainsn.insn[0], p->addr[0]);
+>> >> > +             if (IS_PREFIX(insn))
+>> >> > +                     patch_instruction(&p->ainsn.insn[1], p->addr[=
+1]);
+>> >> >               p->opcode =3D *p->addr;
+>> >>
+>> >> Not to single out this hunk or this patch even, but what do you recko=
+n
+>> >> about adding an instruction data type, and then use that in all these
+>> >> call sites rather than adding the extra arg or doing the extra copy
+>> >> manually in each place depending on prefix?
+>> >>
+>> >> instrs_are_equal, get_user_instr, analyse_instr, patch_instruction,
+>> >> etc., would all take this new instr. Places that open code a memory
+>> >> access like your MCE change need some accessor
+>> >>
+>> >>                instr =3D *(unsigned int *)(instr_addr);
+>> >> -               if (!analyse_instr(&op, &tmp, instr, PPC_NO_SUFFIX)) =
+{
+>> >> +               if (IS_PREFIX(instr))
+>> >> +                       suffix =3D *(unsigned int *)(instr_addr + 4);
+>> >>
+>> >> Becomes
+>> >>                read_instr(instr_addr, &instr);
+>> >>                if (!analyse_instr(&op, &tmp, instr)) ...
+>> >>
+>> >> etc.
+>> > Daniel Axtens also talked about this and my reasons not to do so were
+>> > pretty unconvincing, so I started trying something like this. One
 >>
->> When you add a new FSCR, there's a couple more things to do, check
->> out traps.c.
+>> Okay.
 >>
->> >  #define   FSCR_SCV   __MASK(FSCR_SCV_LG)
->> >  #define   FSCR_TAR   __MASK(FSCR_TAR_LG)
->> >  #define   FSCR_EBB   __MASK(FSCR_EBB_LG)
->> >  #define   FSCR_DSCR  __MASK(FSCR_DSCR_LG)
->> >  #define SPRN_HFSCR   0xbe    /* HV=3D1 Facility Status & Control Regi=
-ster */
->> > +#define   HFSCR_PREFIX       __MASK(FSCR_PREFIX_LG)
->> >  #define   HFSCR_MSGP __MASK(FSCR_MSGP_LG)
->> >  #define   HFSCR_TAR  __MASK(FSCR_TAR_LG)
->> >  #define   HFSCR_EBB  __MASK(FSCR_EBB_LG)
->> > diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/d=
-t_cpu_ftrs.c
->> > index 182b4047c1ef..396f2c6c588e 100644
->> > --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
->> > +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
->> > @@ -553,6 +553,28 @@ static int __init feat_enable_large_ci(struct dt_=
-cpu_feature *f)
->> >       return 1;
->> >  }
+>> > thing I have been wondering is how pervasive should the new type be.
+>>
+>> I wouldn't mind it being quite pervasive. We have to be careful not
+>> to copy it directly to/from memory now, but if we have accessors to
+>> do all that with, I think it should be okay.
+>>
+>> > Below is data type I have started using, which I think works
+>> > reasonably for replacing unsigned ints everywhere (like within
+>> > code-patching.c). In a few architecture independent places such as
+>> > uprobes which want to do =3D=3D, etc the union type does not work so w=
+ell.
+>>
+>> There will be some places you have to make the boundary. I would start
+>> by just making it a powerpc thing, but possibly there is or could be
+>> some generic helpers. How does something like x86 cope with this?
+>=20
+> One of the places I was thinking of was is_swbp_insn() in
+> kernel/events/uprobes.c. The problem was I wanted to typedef
+> uprobe_opcode_t as ppc_insn type which was probably the wrong thing to
+> do. x86 typedef's it as u8 (size of the trap they use). So we probably
+> can do the same thing and just keep it as a u32.
+
+Sounds good.
+
+>> > I will have the next revision of the series start using a type.
+>>
+>> Thanks for doing that.
+>>
 >> >
->> > +static int __init feat_enable_prefix(struct dt_cpu_feature *f)
->> > +{
->> > +     u64 fscr, hfscr;
+>> > diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/as=
+m/inst.h
+>> > new file mode 100644
+>> > index 000000000000..50adb3dbdeb4
+>> > --- /dev/null
+>> > +++ b/arch/powerpc/include/asm/inst.h
+>> > @@ -0,0 +1,87 @@
 >> > +
->> > +     if (f->usable_privilege & USABLE_HV) {
->> > +             hfscr =3D mfspr(SPRN_HFSCR);
->> > +             hfscr |=3D HFSCR_PREFIX;
->> > +             mtspr(SPRN_HFSCR, hfscr);
->> > +     }
+>> > +#ifndef _ASM_INST_H
+>> > +#define _ASM_INST_H
 >> > +
->> > +     if (f->usable_privilege & USABLE_OS) {
->> > +             fscr =3D mfspr(SPRN_FSCR);
->> > +             fscr |=3D FSCR_PREFIX;
->> > +             mtspr(SPRN_FSCR, fscr);
+>> > +#ifdef __powerpc64__
 >> > +
->> > +             if (f->usable_privilege & USABLE_PR)
->> > +                     current->thread.fscr |=3D FSCR_PREFIX;
->> > +     }
+>> > +/* 64  bit Instruction */
 >> > +
->> > +     return 1;
->> > +}
+>> > +typedef struct {
+>> > +    unsigned int prefix;
+>> > +    unsigned int suffix;
 >>
->> It would be good to be able to just use the default feature matching
->> for this, if possible? Do we not do the right thing with
->> init_thread.fscr?
-> The default feature matching do you mean feat_enable()?
-> I just tested using that again, within feat_enable() I can print and
-> see that the [h]fscr gets the bits set for enabling prefixed
-> instructions. However once I get to the shell and start xmon, the fscr
-> bit for prefixed instructions can be seen to be unset. What we are
-> doing in feat_enable_prefix() avoids that problem. So it seems maybe
-> something is not quite right with the init_thread.fscr. I will look
-> into further.
-
-Okay it probably gets overwritten somewhere.
-
-But hmm, the dt_cpu_ftrs parsing should be picking those up and setting
-them by default I would think (or maybe not because you don't expect
-FSCR bit if OS support is not required).
-
-All the other FSCR bits are done similarly to this AFAIKS:
-
- https://patchwork.ozlabs.org/patch/1244476/
-
-I would do that for now rather than digging into it too far, but we
-should look at cleaning that up and doing something more like what
-you have here.
-
->> >  struct dt_cpu_feature_match {
->> >       const char *name;
->> >       int (*enable)(struct dt_cpu_feature *f);
->> > @@ -626,6 +648,7 @@ static struct dt_cpu_feature_match __initdata
->> >       {"vector-binary128", feat_enable, 0},
->> >       {"vector-binary16", feat_enable, 0},
->> >       {"wait-v3", feat_enable, 0},
->> > +     {"prefix-instructions", feat_enable_prefix, 0},
+>> u32?
+> Sure.
 >>
->> That's reasonable to make that a feature, will it specify a minimum
->> base set of prefix instructions or just that prefix instructions
->> with the prefix/suffix arrangement exist?
-> This was just going to be that they exist.
+>> > +} __packed ppc_prefixed_inst;
+>> > +
+>> > +typedef union ppc_inst {
+>> > +    unsigned int w;
+>> > +    ppc_prefixed_inst p;
+>> > +} ppc_inst;
 >>
->> You may not need "-instructions" on the end, none of the other
->> instructions do.
-> Good point.
+>> I'd make it a struct and use nameless structs/unions inside it (with
+>> appropriate packed annotation):
+> Yeah that will be nicer.
 >>
->> I would maybe just hold off upstreaming the dt_cpu_ftrs changes for
->> a bit. We have to do a pass over new CPU feature device tree, and
->> some compatibility questions have come up recently.
+>> struct ppc_inst {
+>>     union {
+>>         struct {
+>>             u32 word;
+>>             u32 pad;
+>>         };
+>>         struct {
+>>             u32 prefix;
+>>             u32 suffix;
+>>         };
+>>     };
+>> };
 >>
->> If you wouldn't mind just adding the new [H]FSCR bits and faults
->> upstream for now, that would be good.
-> No problem.
+>> > +
+>> > +#define PPC_INST_IS_PREFIXED(inst) (((inst).w >> 26) =3D=3D 1)
+>> > +#define PPC_INST_LEN(inst) (PPC_INST_IS_PREFIXED((inst)) ?
+>> > sizeof((inst).p) : sizeof((inst).w))
+>>
+>> Good accessors, I'd make them all C inline functions and lower case.
+> Will change.
+>>
+>> > +
+>> > +#define PPC_INST_NEW_WORD(x) ((ppc_inst) { .w =3D (x) })
+>> > +#define PPC_INST_NEW_WORD_PAD(x) ((ppc_inst) { .p.prefix =3D (x),
+>> > .p.suffix =3D (0x60000000) })
+>> > +#define PPC_INST_NEW_PREFIXED(x, y) ((ppc_inst) { .p.prefix =3D (x),
+>> > .p.suffix =3D (y) })
+>>
+>> If these are widely used, I'd make them a bit shorter
+>>
+>> #define PPC_INST(x)
+>> #define PPC_INST_PREFIXED(x)
+> Good idea, they do end up used quite widely.
+>>
+>> I'd also set padding to something invalid 0 or 0xffffffff for the first
+>> case, and have your accessors check that rather than carrying around
+>> another type of ppc_inst (prefixed, padded, non-padded).
+>>
+>> > +
+>> > +#define PPC_INST_WORD(x) ((x).w)
+>> > +#define PPC_INST_PREFIX(x) (x.p.prefix)
+>> > +#define PPC_INST_SUFFIX(x) (x.p.suffix)
+>> > +#define PPC_INST_EMPTY(x) (PPC_INST_WORD(x) =3D=3D 0)
+>>
+>> I'd avoid simple accessors like this completely. If they have any use
+>> it would be to ensure you don't try to use prefix/suffix on a
+>> non-prefixed instruction for example. If you want to do that I'd use
+>> inline functions for it.
+> What I was thinking with these macros was that they would let us keep
+> the instruction type as a simple u32 on 32 bit ppc. Is it worth trying
+> to do that?
+
+Hmm, it might be. On the other hand if ppc32 can use the same
+struct ppc_insn struct it might help share code without too many
+macros.
+
+I guess it's up to Christophe and Michael and you I won't complain
+any more (so long as they're lower case and inlines where possible :))
 
 Thanks,
 Nick
