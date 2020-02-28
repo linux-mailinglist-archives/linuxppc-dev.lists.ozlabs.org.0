@@ -2,91 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8A41730F9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3659817310B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:32:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TKMV1C2HzDr6q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:27:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TKTj63rCzDrJD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:32:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+X-Greylist: delayed 2008 seconds by postgrey-1.36 at bilbo;
+ Fri, 28 Feb 2020 17:31:15 AEDT
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48TKKl3Qj1zDq63
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:25:47 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01S6JtIG129416
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:25:45 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yepx4aeyq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:25:44 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Fri, 28 Feb 2020 06:25:42 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 28 Feb 2020 06:25:34 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 01S6PX1C45678894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Feb 2020 06:25:33 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D415AA4060;
- Fri, 28 Feb 2020 06:25:33 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7E03DA405F;
- Fri, 28 Feb 2020 06:25:33 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 28 Feb 2020 06:25:33 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 615D0A01F5;
- Fri, 28 Feb 2020 17:25:28 +1100 (AEDT)
-Subject: Re: [PATCH v3 25/27] powerpc/powernv/pmem: Expose the serial number
- in sysfs
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-26-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 28 Feb 2020 17:25:31 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-26-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20022806-0012-0000-0000-0000038B0AC9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022806-0013-0000-0000-000021C7B631
-Message-Id: <96687fbf-38ab-13ff-ca19-ccb67bbc4405@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-02-28_01:2020-02-26,
- 2020-02-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=822 malwarescore=0
- impostorscore=0 clxscore=1015 mlxscore=0 adultscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002280054
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TKS33sXhzDr6l
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:31:15 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1j7YaJ-0001Y7-1g; Thu, 27 Feb 2020 23:53:15 -0600
+Message-ID: <e8cd8f287934954cfa07dcf76ac73492e2d49a5b.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Jason Yan <yanaijie@huawei.com>, Daniel Axtens <dja@axtens.net>, 
+ mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, 
+ christophe.leroy@c-s.fr, benh@kernel.crashing.org, paulus@samba.org, 
+ npiggin@gmail.com, keescook@chromium.org,
+ kernel-hardening@lists.openwall.com
+Date: Thu, 27 Feb 2020 23:53:13 -0600
+In-Reply-To: <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
+References: <20200206025825.22934-1-yanaijie@huawei.com>
+ <87tv3drf79.fsf@dja-thinkpad.axtens.net>
+ <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: yanaijie@huawei.com, dja@axtens.net, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ keescook@chromium.org, kernel-hardening@lists.openwall.com,
+ linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+Subject: Re: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,47 +71,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> +int ocxlpmem_sysfs_add(struct ocxlpmem *ocxlpmem)
-> +{
-> +	int i, rc;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(attrs); i++) {
-> +		rc = device_create_file(&ocxlpmem->dev, &attrs[i]);
-> +		if (rc) {
-> +			for (; --i >= 0;)
-> +				device_remove_file(&ocxlpmem->dev, &attrs[i]);
+On Wed, 2020-02-26 at 16:18 +0800, Jason Yan wrote:
+> Hi Daniel,
+> 
+> 在 2020/2/26 15:16, Daniel Axtens 写道:
+> > Hi Jason,
+> > 
+> > > This is a try to implement KASLR for Freescale BookE64 which is based on
+> > > my earlier implementation for Freescale BookE32:
+> > > https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=131718
+> > > 
+> > > The implementation for Freescale BookE64 is similar as BookE32. One
+> > > difference is that Freescale BookE64 set up a TLB mapping of 1G during
+> > > booting. Another difference is that ppc64 needs the kernel to be
+> > > 64K-aligned. So we can randomize the kernel in this 1G mapping and make
+> > > it 64K-aligned. This can save some code to creat another TLB map at
+> > > early boot. The disadvantage is that we only have about 1G/64K = 16384
+> > > slots to put the kernel in.
+> > > 
+> > >      KERNELBASE
+> > > 
+> > >            64K                     |--> kernel <--|
+> > >             |                      |              |
+> > >          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
+> > >          |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
+> > >          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
+> > >          |                         |                        1G
+> > >          |----->   offset    <-----|
+> > > 
+> > >                                kernstart_virt_addr
+> > > 
+> > > I'm not sure if the slot numbers is enough or the design has any
+> > > defects. If you have some better ideas, I would be happy to hear that.
+> > > 
+> > > Thank you all.
+> > > 
+> > 
+> > Are you making any attempt to hide kernel address leaks in this series?
+> 
+> Yes.
+> 
+> > I've just been looking at the stackdump code just now, and it directly
+> > prints link registers and stack pointers, which is probably enough to
+> > determine the kernel base address:
+> > 
+> >                    SPs:               LRs:             %pS pointer
+> > [    0.424506] [c0000000de403970] [c000000001fc0458] dump_stack+0xfc/0x154
+> > (unreliable)
+> > [    0.424593] [c0000000de4039c0] [c000000000267eec] panic+0x258/0x5ac
+> > [    0.424659] [c0000000de403a60] [c0000000024d7a00]
+> > mount_block_root+0x634/0x7c0
+> > [    0.424734] [c0000000de403be0] [c0000000024d8100]
+> > prepare_namespace+0x1ec/0x23c
+> > [    0.424811] [c0000000de403c60] [c0000000024d7010]
+> > kernel_init_freeable+0x804/0x880
+> > 
+> > git grep \\\"REG\\\" arch/powerpc shows a few other uses like this, all
+> > in process.c or in xmon.
+> > 
+> 
+> Thanks for reminding this.
+> 
+> > Maybe replacing the REG format string in KASLR mode would be sufficient?
+> > 
+> 
+> Most archs have removed the address printing when dumping stack. Do we 
+> really have to print this?
+> 
+> If we have to do this, maybe we can use "%pK" so that they will be 
+> hidden from unprivileged users.
 
-I'd rather avoid weird for loop constructs if possible.
+I've found the addresses to be useful, especially if I had a way to dump the
+stack data itself.  Wouldn't the register dump also be likely to give away the
+addresses?
 
-Is it actually dangerous to call device_remove_file() on an attr that 
-hasn't been added? If not then I'd rather define an err: label and loop 
-over the whole array there.
+I don't see any debug setting for %pK (or %p) to always print the actual
+address (closest is kptr_restrict=1 but that only works in certain
+contexts)... from looking at the code it seems it hashes even if kaslr is
+entirely disabled?  Or am I missing something?
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+-Scott
+
 
