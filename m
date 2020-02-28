@@ -2,50 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A5B173157
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F402173160
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:51:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TKsQ5vybzDqjY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:49:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TKvw5yvtzDrLX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:51:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=ejCtIt1p; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48TKqJ1sYZzDrBk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:47:55 +1100 (AEDT)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id B753A221C4D03AAD032B;
- Fri, 28 Feb 2020 14:47:38 +0800 (CST)
-Received: from [127.0.0.1] (10.173.221.195) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0;
- Fri, 28 Feb 2020 14:47:29 +0800
-Subject: Re: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
-To: Scott Wood <oss@buserror.net>, Daniel Axtens <dja@axtens.net>,
- <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-References: <20200206025825.22934-1-yanaijie@huawei.com>
- <87tv3drf79.fsf@dja-thinkpad.axtens.net>
- <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
- <e8cd8f287934954cfa07dcf76ac73492e2d49a5b.camel@buserror.net>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <dd8db870-b607-3f74-d3bc-a8d9f33f9852@huawei.com>
-Date: Fri, 28 Feb 2020 14:47:28 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TKqX4KdyzDrDZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:48:07 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48TKqP4kR7z9tyP0;
+ Fri, 28 Feb 2020 07:48:01 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ejCtIt1p; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6jR401TOlRIA; Fri, 28 Feb 2020 07:48:01 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48TKqP3BC8z9tyNy;
+ Fri, 28 Feb 2020 07:48:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1582872481; bh=Cohq9MVvU03XQUeGGqMuaEGuP4J4N2k2xbofXFWhiRw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ejCtIt1pd0JhHvXUzC8ZeqbHtAetHvxWh/WRA+/9D97XkCsZNfkoa5oSlOPs4ad/Z
+ oNQbAQr7i6AfI0th7MHnXfnLXuZB26+Smf/qM+RVTIc0d5uN6K4h3rLubVFQUtwSgT
+ SrEUoF1y1EqtDX5qO3hBiLDlNFbdc6uyV9ewJl8M=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 467B48B884;
+ Fri, 28 Feb 2020 07:48:02 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id fft1qqTPHigN; Fri, 28 Feb 2020 07:48:02 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ABD0F8B768;
+ Fri, 28 Feb 2020 07:48:01 +0100 (CET)
+Subject: Re: [PATCH 1/3] powerpc/of: split out new_property() for reusing
+To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <1582869192-9284-1-git-send-email-kernelfans@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <f0f00d96-80a9-dd40-e1ed-204ad1cb954a@c-s.fr>
+Date: Fri, 28 Feb 2020 07:47:59 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <e8cd8f287934954cfa07dcf76ac73492e2d49a5b.camel@buserror.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <1582869192-9284-1-git-send-email-kernelfans@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.221.195]
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,106 +77,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ kexec@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-在 2020/2/28 13:53, Scott Wood 写道:
-> On Wed, 2020-02-26 at 16:18 +0800, Jason Yan wrote:
->> Hi Daniel,
->>
->> 在 2020/2/26 15:16, Daniel Axtens 写道:
->>> Hi Jason,
->>>
->>>> This is a try to implement KASLR for Freescale BookE64 which is based on
->>>> my earlier implementation for Freescale BookE32:
->>>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=131718
->>>>
->>>> The implementation for Freescale BookE64 is similar as BookE32. One
->>>> difference is that Freescale BookE64 set up a TLB mapping of 1G during
->>>> booting. Another difference is that ppc64 needs the kernel to be
->>>> 64K-aligned. So we can randomize the kernel in this 1G mapping and make
->>>> it 64K-aligned. This can save some code to creat another TLB map at
->>>> early boot. The disadvantage is that we only have about 1G/64K = 16384
->>>> slots to put the kernel in.
->>>>
->>>>       KERNELBASE
->>>>
->>>>             64K                     |--> kernel <--|
->>>>              |                      |              |
->>>>           +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->>>>           |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
->>>>           +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->>>>           |                         |                        1G
->>>>           |----->   offset    <-----|
->>>>
->>>>                                 kernstart_virt_addr
->>>>
->>>> I'm not sure if the slot numbers is enough or the design has any
->>>> defects. If you have some better ideas, I would be happy to hear that.
->>>>
->>>> Thank you all.
->>>>
->>>
->>> Are you making any attempt to hide kernel address leaks in this series?
->>
->> Yes.
->>
->>> I've just been looking at the stackdump code just now, and it directly
->>> prints link registers and stack pointers, which is probably enough to
->>> determine the kernel base address:
->>>
->>>                     SPs:               LRs:             %pS pointer
->>> [    0.424506] [c0000000de403970] [c000000001fc0458] dump_stack+0xfc/0x154
->>> (unreliable)
->>> [    0.424593] [c0000000de4039c0] [c000000000267eec] panic+0x258/0x5ac
->>> [    0.424659] [c0000000de403a60] [c0000000024d7a00]
->>> mount_block_root+0x634/0x7c0
->>> [    0.424734] [c0000000de403be0] [c0000000024d8100]
->>> prepare_namespace+0x1ec/0x23c
->>> [    0.424811] [c0000000de403c60] [c0000000024d7010]
->>> kernel_init_freeable+0x804/0x880
->>>
->>> git grep \\\"REG\\\" arch/powerpc shows a few other uses like this, all
->>> in process.c or in xmon.
->>>
->>
->> Thanks for reminding this.
->>
->>> Maybe replacing the REG format string in KASLR mode would be sufficient?
->>>
->>
->> Most archs have removed the address printing when dumping stack. Do we
->> really have to print this?
->>
->> If we have to do this, maybe we can use "%pK" so that they will be
->> hidden from unprivileged users.
+Le 28/02/2020 à 06:53, Pingfan Liu a écrit :
+> Since new_property() is used in several calling sites, splitting it out for
+> reusing.
 > 
-> I've found the addresses to be useful, especially if I had a way to dump the
-> stack data itself.  Wouldn't the register dump also be likely to give away the
-> addresses?
+> To ease the review, although the split out part has coding style issue,
+> keeping it untouched and fixed in next patch.
 
-If we have to print the address, then kptr_restrict and dmesg_restrict
-must be set properly so that unprivileged users cannot see them.
+The moved function fits in one screen. I don't think it is worth 
+splitting out for coding style that applies on the new lines only. You 
+can squash the two patches, it will still be easy to review.
 
 > 
-> I don't see any debug setting for %pK (or %p) to always print the actual
-> address (closest is kptr_restrict=1 but that only works in certain
-> contexts)... from looking at the code it seems it hashes even if kaslr is
-> entirely disabled?  Or am I missing something?
+> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> To: linuxppc-dev@lists.ozlabs.org
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: kexec@lists.infradead.org
+> ---
+>   arch/powerpc/include/asm/prom.h           |  2 ++
+>   arch/powerpc/kernel/Makefile              |  2 +-
+>   arch/powerpc/kernel/of_property.c         | 32 +++++++++++++++++++++++++++++++
+>   arch/powerpc/mm/drmem.c                   | 26 -------------------------
+>   arch/powerpc/platforms/pseries/reconfig.c | 26 -------------------------
+>   5 files changed, 35 insertions(+), 53 deletions(-)
+>   create mode 100644 arch/powerpc/kernel/of_property.c
+> 
+> diff --git a/arch/powerpc/include/asm/prom.h b/arch/powerpc/include/asm/prom.h
+> index 94e3fd5..02f7b1b 100644
+> --- a/arch/powerpc/include/asm/prom.h
+> +++ b/arch/powerpc/include/asm/prom.h
+> @@ -90,6 +90,8 @@ struct of_drc_info {
+>   extern int of_read_drc_info_cell(struct property **prop,
+>   			const __be32 **curval, struct of_drc_info *data);
+>   
+> +extern struct property *new_property(const char *name, const int length,
+> +		const unsigned char *value, struct property *last);
+
+Don't add useless 'extern' keyword.
+
+>   
+>   /*
+>    * There are two methods for telling firmware what our capabilities are.
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index 157b014..23375fd 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -47,7 +47,7 @@ obj-y				:= cputable.o ptrace.o syscalls.o \
+>   				   signal.o sysfs.o cacheinfo.o time.o \
+>   				   prom.o traps.o setup-common.o \
+>   				   udbg.o misc.o io.o misc_$(BITS).o \
+> -				   of_platform.o prom_parse.o
+> +				   of_platform.o prom_parse.o of_property.o
+>   obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
+>   				   signal_64.o ptrace32.o \
+>   				   paca.o nvram_64.o firmware.o note.o
+> diff --git a/arch/powerpc/kernel/of_property.c b/arch/powerpc/kernel/of_property.c
+> new file mode 100644
+> index 0000000..e56c832
+> --- /dev/null
+> +++ b/arch/powerpc/kernel/of_property.c
+> @@ -0,0 +1,32 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/of.h>
+> +#include <linux/string.h>
+> +#include <linux/kernel.h>
+> +#include <linux/slab.h>
+> +
+> +struct property *new_property(const char *name, const int length,
+> +				     const unsigned char *value, struct property *last)
+> +{
+> +	struct property *new = kzalloc(sizeof(*new), GFP_KERNEL);
+> +
+> +	if (!new)
+> +		return NULL;
+> +
+> +	if (!(new->name = kstrdup(name, GFP_KERNEL)))
+> +		goto cleanup;
+> +	if (!(new->value = kmalloc(length + 1, GFP_KERNEL)))
+> +		goto cleanup;
+> +
+> +	memcpy(new->value, value, length);
+> +	*(((char *)new->value) + length) = 0;
+> +	new->length = length;
+> +	new->next = last;
+> +	return new;
+> +
+> +cleanup:
+> +	kfree(new->name);
+> +	kfree(new->value);
+> +	kfree(new);
+> +	return NULL;
+> +}
+> +
+> diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+> index 85b088a..888227e 100644
+> --- a/arch/powerpc/mm/drmem.c
+> +++ b/arch/powerpc/mm/drmem.c
+> @@ -99,32 +99,6 @@ static void init_drconf_v2_cell(struct of_drconf_cell_v2 *dr_cell,
+>   
+>   extern int test_hotplug;
+>   
+> -static struct property *new_property(const char *name, const int length,
+> -				     const unsigned char *value, struct property *last)
+> -{
+> -	struct property *new = kzalloc(sizeof(*new), GFP_KERNEL);
+> -
+> -	if (!new)
+> -		return NULL;
+> -
+> -	if (!(new->name = kstrdup(name, GFP_KERNEL)))
+> -		goto cleanup;
+> -	if (!(new->value = kmalloc(length + 1, GFP_KERNEL)))
+> -		goto cleanup;
+> -
+> -	memcpy(new->value, value, length);
+> -	*(((char *)new->value) + length) = 0;
+> -	new->length = length;
+> -	new->next = last;
+> -	return new;
+> -
+> -cleanup:
+> -	kfree(new->name);
+> -	kfree(new->value);
+> -	kfree(new);
+> -	return NULL;
+> -}
+> -
+>   static int drmem_update_dt_v2(struct device_node *memory,
+>   			      struct property *prop)
+>   {
+> diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
+> index 7f7369f..8e5a2ba 100644
+> --- a/arch/powerpc/platforms/pseries/reconfig.c
+> +++ b/arch/powerpc/platforms/pseries/reconfig.c
+> @@ -165,32 +165,6 @@ static char * parse_next_property(char *buf, char *end, char **name, int *length
+>   	return tmp;
+>   }
+>   
+> -static struct property *new_property(const char *name, const int length,
+> -				     const unsigned char *value, struct property *last)
+> -{
+> -	struct property *new = kzalloc(sizeof(*new), GFP_KERNEL);
+> -
+> -	if (!new)
+> -		return NULL;
+> -
+> -	if (!(new->name = kstrdup(name, GFP_KERNEL)))
+> -		goto cleanup;
+> -	if (!(new->value = kmalloc(length + 1, GFP_KERNEL)))
+> -		goto cleanup;
+> -
+> -	memcpy(new->value, value, length);
+> -	*(((char *)new->value) + length) = 0;
+> -	new->length = length;
+> -	new->next = last;
+> -	return new;
+> -
+> -cleanup:
+> -	kfree(new->name);
+> -	kfree(new->value);
+> -	kfree(new);
+> -	return NULL;
+> -}
+> -
+>   static int do_add_node(char *buf, size_t bufsize)
+>   {
+>   	char *path, *end, *name;
 > 
 
-Yes, %pK (or %p) always hashes whether kaslr is disabled or not. So if
-we want the real value of the address, we cannot use it. But if you only
-want to distinguish if two pointers are the same, it's ok.
-
-> -Scott
-> 
-> 
-> 
-> .
-> 
-
+Christophe
