@@ -2,70 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B6C1730B7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AAC1730BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 07:05:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48TJmb1wC1zDrLv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:00:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48TJsq2VWzzDqvT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2020 17:05:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=kernelfans@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CoxK1KT9; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48TJgD4vRzzDrFp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 16:55:52 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id q4so813631pls.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2020 21:55:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=L8rGUYxhbypjgSuuIwwUeSExzDpL04oqm+fwGUs0R9U=;
- b=CoxK1KT9bOnSWt7BQrt75JH8qlI42ZG3ynJfTwsJ8hCmNHdFuFQZSSo9Zsoj1Yf9pP
- rS4lxpNkwnLyaUT7XALzYuoo3qYeCbNy+1EfFBEYOmOx30d95+TfRP3A0Y/EJ2tdKjgD
- 5iVxXAK6MSTXT2oZg9jKz7imssMhL174KPDECBPlo8payhOpWvudvGvh6MMtwV3L7CiH
- fOpNQVjfakykF/Mr1dexK0M3nMj7kiW031L9GGCvJrR+STvt1ldyXrB5sJHw1kowGxr7
- omNTsNZY1IxdK1uI0oj7al70eoMYdalx6h67jcloiv89j9+cn/d/H0s8+lioW5JThhbL
- 9hUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=L8rGUYxhbypjgSuuIwwUeSExzDpL04oqm+fwGUs0R9U=;
- b=HllwUZkf6Fy9tFS9B6t5alGRU4n2r66wzg4Q4xm5THfBHYB410LDsJj4wJ6dv7tJEZ
- c3W3cxdrHG/ZIKSdiB6hu3DU9/idUpOhKWhjHM3EWt/RzWS4id4vCg9Dkk72japjtFqD
- 3KMszcZPIZpYWcJQhpCkC+e2staLIbvAZf185ycyvKFhfGk7QTGIgWcg+HF34AoNDRt+
- e5AZS3o8Gij07JgI/bhslkziG4zFYkxMjxV4gfx00HRqGwrevsC/XsFc9FaXgjFKpuBf
- iQml04q7Bnek6VN9iNHDvuD1bYYt4WugZ88ijVpcU2Vd90WeHcd9+ulSVr6ytNQy6nsu
- LvQw==
-X-Gm-Message-State: APjAAAVKcrmtESM38pZzPTfxylVmoBFf6+Nniv8h5mhJGTOScfmchvSf
- a/Oz5OowGb+r+NCrl/XRuv9Ujqc=
-X-Google-Smtp-Source: APXvYqzwcXYAp67+/xKPPogA1TY3PSVtYXrYxv0yFYHgKcieO9TGH6hdxAOH4xIdhwPLO43S1+o6ow==
-X-Received: by 2002:a17:902:db83:: with SMTP id
- m3mr2633318pld.166.1582869350518; 
- Thu, 27 Feb 2020 21:55:50 -0800 (PST)
-Received: from mylaptop.redhat.com ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id h4sm4350370pgq.20.2020.02.27.21.55.46
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 27 Feb 2020 21:55:50 -0800 (PST)
-From: Pingfan Liu <kernelfans@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] pseries/scm: buffer pmem's bound addr in dt for kexec
- kernel
-Date: Fri, 28 Feb 2020 13:53:12 +0800
-Message-Id: <1582869192-9284-3-git-send-email-kernelfans@gmail.com>
-X-Mailer: git-send-email 2.7.5
-In-Reply-To: <1582869192-9284-1-git-send-email-kernelfans@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48TJrB57dtzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 17:03:38 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01S5xRlE004454
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:03:36 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yepx51qs7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2020 01:03:35 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Fri, 28 Feb 2020 06:03:33 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 28 Feb 2020 06:03:30 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01S63TG347841522
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 Feb 2020 06:03:29 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9D60DAE04D;
+ Fri, 28 Feb 2020 06:03:29 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 49BBAAE053;
+ Fri, 28 Feb 2020 06:03:29 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 28 Feb 2020 06:03:29 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8E06DA01F5;
+ Fri, 28 Feb 2020 17:03:24 +1100 (AEDT)
+Subject: Re: [PATCH 1/3] powerpc/of: split out new_property() for reusing
+To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <1582869192-9284-1-git-send-email-kernelfans@gmail.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 28 Feb 2020 17:03:27 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+In-Reply-To: <1582869192-9284-1-git-send-email-kernelfans@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20022806-4275-0000-0000-000003A63AAF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022806-4276-0000-0000-000038BAB469
+Message-Id: <44745496-9d30-45cb-b67c-0ca283c4c90d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-28_01:2020-02-26,
+ 2020-02-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 clxscore=1015 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002280052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,95 +96,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, Pingfan Liu <kernelfans@gmail.com>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ kexec@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
  Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
  Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At present, plpar_hcall(H_SCM_BIND_MEM, ...) takes a very long time, so
-if dumping to fsdax, it will take a very long time.
+On 28/2/20 4:53 pm, Pingfan Liu wrote:
+> Since new_property() is used in several calling sites, splitting it out for
+> reusing.
+> 
+> To ease the review, although the split out part has coding style issue,
+> keeping it untouched and fixed in next patch.
+> 
+> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> To: linuxppc-dev@lists.ozlabs.org
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: kexec@lists.infradead.org
 
-Take a closer look, during the papr_scm initialization, the only
-configuration is through drc_pmem_bind()-> plpar_hcall(H_SCM_BIND_MEM,
-...), which helps to set up the bound address.
+Which tree does this apply to? I don't see a new_property() in mm/drmem.c...
 
-On pseries, for kexec -l/-p kernel, there is no reset of hardware, and this
-step can be stepped around to save times.  So the pmem bound address can be
-passed to the 2nd kernel through a dynamic added property "bound-addr" in
-dt node 'ibm,pmemory'.
-
-Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Oliver O'Halloran <oohall@gmail.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: kexec@lists.infradead.org
----
-note: I can not find such a pseries machine, and not finish it yet.
----
- arch/powerpc/platforms/pseries/papr_scm.c | 32 +++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index c2ef320..555e746 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -382,7 +382,7 @@ static int papr_scm_probe(struct platform_device *pdev)
- {
- 	struct device_node *dn = pdev->dev.of_node;
- 	u32 drc_index, metadata_size;
--	u64 blocks, block_size;
-+	u64 blocks, block_size, bound_addr = 0;
- 	struct papr_scm_priv *p;
- 	const char *uuid_str;
- 	u64 uuid[2];
-@@ -439,17 +439,29 @@ static int papr_scm_probe(struct platform_device *pdev)
- 	p->metadata_size = metadata_size;
- 	p->pdev = pdev;
- 
--	/* request the hypervisor to bind this region to somewhere in memory */
--	rc = drc_pmem_bind(p);
-+	of_property_read_u64(dn, "bound-addr", &bound_addr);
-+	if (bound_addr)
-+		p->bound_addr = bound_addr;
-+	else {
-+		struct property *property;
-+		u64 big;
- 
--	/* If phyp says drc memory still bound then force unbound and retry */
--	if (rc == H_OVERLAP)
--		rc = drc_pmem_query_n_bind(p);
-+		/* request the hypervisor to bind this region to somewhere in memory */
-+		rc = drc_pmem_bind(p);
- 
--	if (rc != H_SUCCESS) {
--		dev_err(&p->pdev->dev, "bind err: %d\n", rc);
--		rc = -ENXIO;
--		goto err;
-+		/* If phyp says drc memory still bound then force unbound and retry */
-+		if (rc == H_OVERLAP)
-+			rc = drc_pmem_query_n_bind(p);
-+
-+		if (rc != H_SUCCESS) {
-+			dev_err(&p->pdev->dev, "bind err: %d\n", rc);
-+			rc = -ENXIO;
-+			goto err;
-+		}
-+		big = cpu_to_be64(p->bound_addr);
-+		property = new_property("bound-addr", sizeof(u64), &big,
-+			NULL);
-+		of_add_property(dn, property);
- 	}
- 
- 	/* setup the resource for the newly bound range */
 -- 
-2.7.5
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
