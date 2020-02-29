@@ -2,82 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166A51745FD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 10:55:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D534174601
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 10:57:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48V1xg4fW1zDrK5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 20:55:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48V1zp0GcrzDr6P
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 20:57:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48V1gB1pMXzDr55
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 20:43:18 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48V1gH0dmwzDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 20:43:22 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 01T9duvG097717
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 04:43:16 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yfncag7f2-1
+ 01T9d4cV147095
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 04:43:21 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmu1rvth-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 04:43:16 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 04:43:20 -0500
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Sat, 29 Feb 2020 09:43:13 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Sat, 29 Feb 2020 09:43:18 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 29 Feb 2020 09:43:07 -0000
+ Sat, 29 Feb 2020 09:43:13 -0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 01T9h51j62914740
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01T9hBBN42270970
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 29 Feb 2020 09:43:05 GMT
+ Sat, 29 Feb 2020 09:43:11 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 926794C046;
+ by IMSVA (Postfix) with ESMTP id CDB5E4C040;
+ Sat, 29 Feb 2020 09:43:11 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F3E954C044;
  Sat, 29 Feb 2020 09:43:05 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 55C804C040;
- Sat, 29 Feb 2020 09:42:59 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.53.249])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat, 29 Feb 2020 09:42:59 +0000 (GMT)
+ Sat, 29 Feb 2020 09:43:05 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
  sukadev@linux.vnet.ibm.com
-Subject: [PATCH v3 7/8] tools/perf: Enable Hz/hz prinitg for --metric-only
- option
-Date: Sat, 29 Feb 2020 15:11:58 +0530
+Subject: [PATCH v3 8/8] perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip
+ level metric events
+Date: Sat, 29 Feb 2020 15:11:59 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20200229094159.25573-1-kjain@linux.ibm.com>
 References: <20200229094159.25573-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20022909-0012-0000-0000-0000038B6569
+x-cbid: 20022909-0020-0000-0000-000003AEB421
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022909-0013-0000-0000-000021C81418
-Message-Id: <20200229094159.25573-8-kjain@linux.ibm.com>
+x-cbparentid: 20022909-0021-0000-0000-00002206DA15
+Message-Id: <20200229094159.25573-9-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-02-29_02:2020-02-28,
  2020-02-29 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 bulkscore=0 clxscore=1015
- impostorscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ suspectscore=0 spamscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
+ bulkscore=0 mlxscore=0 impostorscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2002290074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,29 +103,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 54b5091606c18 ("perf stat: Implement --metric-only mode")
-added function 'valid_only_metric()' which drops "Hz" or "hz",
-if it is part of "ScaleUnit". This patch enable it since hv_24x7
-supports couple of frequency events.
+The hv_24×7 feature in IBM® POWER9™ processor-based servers provide the
+facility to continuously collect large numbers of hardware performance
+metrics efficiently and accurately.
+This patch adds hv_24x7  metric file for different Socket/chip
+resources.
+
+Result:
+
+power9 platform:
+
+command:# ./perf stat --metric-only -M Memory_RD_BW_Chip -C 0 -I 1000
+
+     1.000096188                      0.9                      0.3
+     2.000285720                      0.5                      0.1
+     3.000424990                      0.4                      0.1
+
+command:# ./perf stat --metric-only -M PowerBUS_Frequency -C 0 -I 1000
+
+     1.000097981                        2.3                        2.3
+     2.000291713                        2.3                        2.3
+     3.000421719                        2.3                        2.3
+     4.000550912                        2.3                        2.3
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- tools/perf/util/stat-display.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../arch/powerpc/power9/nest_metrics.json     | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+ create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index bc31fccc0057..22dcdfbb9e10 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -236,8 +236,6 @@ static bool valid_only_metric(const char *unit)
- 	if (!unit)
- 		return false;
- 	if (strstr(unit, "/sec") ||
--	    strstr(unit, "hz") ||
--	    strstr(unit, "Hz") ||
- 	    strstr(unit, "CPUs utilized"))
- 		return false;
- 	return true;
+diff --git a/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
+new file mode 100644
+index 000000000000..ac38f5540ac6
+--- /dev/null
++++ b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
+@@ -0,0 +1,19 @@
++[
++    {
++        "MetricExpr": "(hv_24x7@PM_MCS01_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_RD_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT23\\,chip\\=?@)",
++        "MetricName": "Memory_RD_BW_Chip",
++        "MetricGroup": "Memory_BW",
++        "ScaleUnit": "1.6e-2MB"
++    },
++    {
++    "MetricExpr": "(hv_24x7@PM_MCS01_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_WR_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT23\\,chip\\=?@ )",
++        "MetricName": "Memory_WR_BW_Chip",
++        "MetricGroup": "Memory_BW",
++        "ScaleUnit": "1.6e-2MB"
++    },
++    {
++    "MetricExpr": "(hv_24x7@PM_PB_CYC\\,chip\\=?@ )",
++        "MetricName": "PowerBUS_Frequency",
++        "ScaleUnit": "2.5e-7GHz"
++    }
++]
 -- 
 2.21.0
 
