@@ -2,69 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6C11749DE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 23:49:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FF41749E1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 23:53:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48VM6C0mdbzDrC8
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 09:49:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48VMBh1LM2zDrBh
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 09:53:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::344;
- helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=09+H6QEX; dkim-atps=neutral
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48VM4d5WH9zDr8C
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 09:48:01 +1100 (AEDT)
-Received: by mail-ot1-x344.google.com with SMTP id g96so6095925otb.13
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 14:48:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=8rTAnPPQPQ2zDwIh6KNULPqO4A3SBF/aTaf3+a0KIRA=;
- b=09+H6QEX0IFkK+L3p4GHO6Y0ATs+adHreQcu1bdLJyN+n2Vgctq6CmsN235zfYz7cz
- Zjowwp86NseHUm8hZsO+r0jOlHoaSUrXGunU/rqFwsJ1s7n5AN8EwU8Ta7ZV68MEDMoy
- cYFY629qtjE7k7S8TFWxiMwDorJu8ZM8TrjzCM6bvmFSocUCibA7lH7EUmIS6yLAffHg
- Ym9Ff+mKB4LVR21VHWSFek6dY5HD72PiWKRZfpQCH7KVSONiX3j+r8BDKOrr5WjC/edI
- 3j/m/eKnMAevYsWQnEm1mQYYcl4k+knJqW8Hze1OVUGbNTe30vZzkPj3LXSahhmiaB5B
- dHBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=8rTAnPPQPQ2zDwIh6KNULPqO4A3SBF/aTaf3+a0KIRA=;
- b=KZpnPQD3yy42tegcUMym9pWFO/99TZC5uUQznxMsRqHer9wX656CkVL/zgEpTP+ZGZ
- S+gZvxDZi5FIleBxaFWoBpkZq9BOWY7JeIIzqNdu4oIX1xC+KqztDq3st8WnNixlXHqg
- yXb9GfW9eHYphvZeFjqN4I0a44JB38AC50LAsQICq4AQ7VecPqTALPzzT8+6molMHCSC
- SN6uJ9m8mw0S5dzy8If8cXthXpYDgcIv8o4CkLDlVDdEQbpepTfkSKn8Ikn0N0iX9BPf
- o6zjoG9dY95CiWscOaJvU4s49dl1kYx7Ue01S0Hv/ZOscchc6ubmAWFbs/cvYipqmE2y
- 7EQw==
-X-Gm-Message-State: APjAAAV+7opTJiftfqTUIR9tqdW5qNtOpo/2uvMZdkRKmcgOyQZoChCw
- h+TIjo65OGTM8n0p+oY3GR3gBPLv202tJCshinaoXQ==
-X-Google-Smtp-Source: APXvYqwSzpqJpUKxRtH4EHX0XgauIJ4nXMymmXz192v5Aj+PoXy5ct4ECYTcjg/oqiVXoujFwDEj//qBNgc38LEqyHw=
-X-Received: by 2002:a9d:5d09:: with SMTP id b9mr8013603oti.207.1583016478029; 
- Sat, 29 Feb 2020 14:47:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48VM965tB7zDrB1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 09:51:54 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 01TMoXDu101206
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 17:51:51 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmq86q55-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 17:51:51 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Sat, 29 Feb 2020 22:51:49 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sat, 29 Feb 2020 22:51:47 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 01TMpj7M57344000
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 29 Feb 2020 22:51:45 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B39852054;
+ Sat, 29 Feb 2020 22:51:45 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.85.192.224])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 8B5285204E;
+ Sat, 29 Feb 2020 22:51:43 +0000 (GMT)
+Date: Sat, 29 Feb 2020 14:51:40 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
+ <1e28fb80-7bae-8d80-1a72-f616af030aab@kaod.org>
 MIME-Version: 1.0
-References: <20200221182503.28317-1-logang@deltatee.com>
- <20200221182503.28317-8-logang@deltatee.com>
-In-Reply-To: <20200221182503.28317-8-logang@deltatee.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 29 Feb 2020 14:47:47 -0800
-Message-ID: <CAPcyv4gNi3sesGnujShStoF8bi8kYg+MQkqhQRCT_1+wex5wbw@mail.gmail.com>
-Subject: Re: [PATCH v3 7/7] mm/memremap: Set caching mode for PCI P2PDMA
- memory to WC
-To: Logan Gunthorpe <logang@deltatee.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1e28fb80-7bae-8d80-1a72-f616af030aab@kaod.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 20022922-0012-0000-0000-0000038B8C85
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022922-0013-0000-0000-000021C83BEC
+Message-Id: <20200229225140.GA5618@oc0525413822.ibm.com>
+Subject: RE: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-02-29_09:2020-02-28,
+ 2020-02-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002290177
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,68 +88,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Linux-sh <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
- Linux MM <linux-mm@kvack.org>, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-s390 <linux-s390@vger.kernel.org>,
- David Hildenbrand <david@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Michal Hocko <mhocko@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Eric Badger <ebadger@gigaio.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org,
+ kvm-ppc@vger.kernel.org, clg@fr.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 21, 2020 at 10:25 AM Logan Gunthorpe <logang@deltatee.com> wrote:
->
-> PCI BAR IO memory should never be mapped as WB, however prior to this
-> the PAT bits were set WB and it was typically overridden by MTRR
-> registers set by the firmware.
->
-> Set PCI P2PDMA memory to be WC (writecombining) as the only current
-> user (the NVMe CMB) was originally mapped WC before the P2PDMA code
-> replaced the mapping with devm_memremap_pages().
+On Sat, Feb 29, 2020 at 09:27:54AM +0100, Cédric Le Goater wrote:
+> On 2/29/20 8:54 AM, Ram Pai wrote:
+> > XIVE is not correctly enabled for Secure VM in the KVM Hypervisor yet.
+> > 
+> > Hence Secure VM, must always default to XICS interrupt controller.
+> 
+> have you tried XIVE emulation 'kernel-irqchip=off' ? 
 
-Will the change to UC regress this existing use case?
+yes and it hangs. I think that option, continues to enable some variant
+of XIVE in the VM.  There are some known deficiencies between KVM
+and the ultravisor negotiation, resulting in a hang in the SVM.
 
->
-> Future use-cases may need to generalize this by adding flags to
-> select the caching type, as some P2PDMA cases will not want WC.
-> However, those use-cases are not upstream yet and this can be changed
-> when they arrive.
->
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-> ---
->  mm/memremap.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 06742372a203..8d141c3e3364 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -190,7 +190,10 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
->                 }
->                 break;
->         case MEMORY_DEVICE_DEVDAX:
-> +               need_devmap_managed = false;
-> +               break;
->         case MEMORY_DEVICE_PCI_P2PDMA:
-> +               params.pgprot = pgprot_writecombine(params.pgprot);
+> 
+> > If XIVE is requested through kernel command line option "xive=on",
+> > override and turn it off.
+> 
+> This is incorrect. It is negotiated through CAS depending on the FW
+> capabilities and the KVM capabilities.
 
-Approach looks good to me, modulo Jason's comment that this should be
-UC. Upcoming DAX changes will want to pass this via pgmap, but as you
-say this can wait for this changes to arrive.
+Yes I understand, qemu/KVM have predetermined a set of capabilties that
+it can offer to the VM.  The kernel within the VM has a list of
+capabilties it needs to operate correctly.  So both negotiate and
+determine something mutually ammicable.
 
-After change to UC:
+Here I am talking about the list of capabilities that the kernel is
+trying to determine, it needs to operate correctly.  "xive=on" is one of
+those capabilities the kernel is told by the VM-adminstrator, to enable.
+Unfortunately if the VM-administrtor blindly requests to enable it, the
+kernel must override it, if it knows that will be switching the VM into
+a SVM soon. No point negotiating a capability with Qemu; through CAS,
+if it knows it cannot handle that capability.
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> 
+> > If XIVE is the only supported platform interrupt controller; specified
+> > through qemu option "ic-mode=xive", simply abort. Otherwise default to
+> > XICS.
+> 
+> 
+> I don't think it is a good approach to downgrade the guest kernel 
+> capabilities this way. 
+> 
+> PAPR has specified the CAS negotiation process for this purpose. It 
+> comes in two parts under KVM. First the KVM hypervisor advertises or 
+> not a capability to QEMU. The second is the CAS negotiation process 
+> between QEMU and the guest OS.
+
+Unfortunately, this is not viable.  At the time the hypervisor
+advertises its capabilities to qemu, the hypervisor has no idea whether
+that VM will switch into a SVM or not.  The decision to switch into a
+SVM is taken by the kernel running in the VM. This happens much later,
+after the hypervisor has already conveyed its capabilties to the qemu, and
+qemu has than instantiated the VM.
+
+As a result, CAS in prom_init is the only place where this negotiation
+can take place.
+
+> 
+> The SVM specifications might not be complete yet and if some features 
+> are incompatible, I think we should modify the capabilities advertised 
+> by the hypervisor : no XIVE in case of SVM. QEMU will automatically 
+> use the fallback path and emulate the XIVE device, same as setting 
+> 'kernel-irqchip=off'. 
+
+As mentioned above, this would be an excellent approach, if the
+Hypervisor was aware of the VM's intent to switch into a SVM.  Neither
+the hypervisor knows, nor the qemu.  Only the kernel running within the
+VM knows about it.
+
+
+Do you still think, my approach is wrong?
+RP
+
