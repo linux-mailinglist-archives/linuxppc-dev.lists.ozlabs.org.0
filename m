@@ -1,47 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE066174A08
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 00:19:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48VMmW01wSzDrHy
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 10:19:07 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C9E174A24
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 00:30:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48VN1Z2d7fzDr4D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 10:30:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48VN040Fj3zDqjk
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 10:29:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48VN0340TVz8t5m
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 10:29:07 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48VN033jSRz9sSN; Sun,  1 Mar 2020 10:29:07 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=buserror.net
  (client-ip=165.227.176.147; helo=baldur.buserror.net;
  envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
+Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=buserror.net
+X-Greylist: delayed 1846 seconds by postgrey-1.36 at bilbo;
+ Sun, 01 Mar 2020 10:29:07 AEDT
 Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48VMl21vySzDqB2
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 10:17:49 +1100 (AEDT)
+ by ozlabs.org (Postfix) with ESMTPS id 48VN031Bfhz9sSR
+ for <linuxppc-dev@ozlabs.org>; Sun,  1 Mar 2020 10:29:06 +1100 (AEDT)
 Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
  by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1j8BMa-0002MK-90; Sat, 29 Feb 2020 17:17:40 -0600
-Message-ID: <4b8581f5fd497b3fb1e5232510cd57c1e7ccb92d.camel@buserror.net>
+ id 1j8B1i-0002GE-9Q; Sat, 29 Feb 2020 16:56:06 -0600
+Message-ID: <79d6c3104e4fbb9b38150d2f8d336daa2f13a844.camel@buserror.net>
 From: Scott Wood <oss@buserror.net>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- galak@kernel.crashing.org, benh@kernel.crashing.org, paulus@samba.org, 
- mpe@ellerman.id.au
-Date: Sat, 29 Feb 2020 17:17:39 -0600
-In-Reply-To: <20200208140920.7652-1-christophe.jaillet@wanadoo.fr>
-References: <20200208140920.7652-1-christophe.jaillet@wanadoo.fr>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+Date: Sat, 29 Feb 2020 16:56:05 -0600
+In-Reply-To: <20200224233146.23734-8-mpe@ellerman.id.au>
+References: <20200224233146.23734-1-mpe@ellerman.id.au>
+ <20200224233146.23734-8-mpe@ellerman.id.au>
 Organization: Red Hat
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: christophe.jaillet@wanadoo.fr, galak@kernel.crashing.org,
- benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
+X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, linuxppc-dev@ozlabs.org,
+ linux-kernel@vger.kernel.org, galak@kernel.crashing.org
 X-SA-Exim-Mail-From: oss@buserror.net
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
 X-Spam-Level: 
@@ -52,8 +65,7 @@ X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
  *      [score: 0.0000]
  * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
  *      this recipient and sender
-Subject: Re: [PATCH 2/2] powerpc/83xx: Add some error handling in
- 'quirk_mpc8360e_qe_enet10()'
+Subject: Re: [PATCH 8/8] powerpc: Update 83xx/85xx MAINTAINERS entry
 X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
 X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,52 +79,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2020-02-08 at 15:09 +0100, Christophe JAILLET wrote:
-> In some error handling path, we should call "of_node_put(np_par)" or
-> some resource may be leaking in case of error.
+On Tue, 2020-02-25 at 10:31 +1100, Michael Ellerman wrote:
+> Scott said he was still maintaining this "sort of", so change the
+> status to Odd Fixes.
 > 
-> Fixes: 8159df72d43e ("83xx: add support for the kmeter1 board.")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Kumar has long ago moved on to greener pastures.
+> 
+> Remove the dead penguinppc.org link.
+> 
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Kumar Gala <galak@kernel.crashing.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
->  arch/powerpc/platforms/83xx/km83xx.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  MAINTAINERS | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index febffee28d00..2e917116ef6a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9650,11 +9650,9 @@ F:	arch/powerpc/platforms/44x/
+>  
+>  LINUX FOR POWERPC EMBEDDED PPC83XX AND PPC85XX
+>  M:	Scott Wood <oss@buserror.net>
+> -M:	Kumar Gala <galak@kernel.crashing.org>
+> -W:	http://www.penguinppc.org/
+>  L:	linuxppc-dev@lists.ozlabs.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git
+> -S:	Maintained
+> +S:	Odd fixes
 
-Both patches:
 Acked-by: Scott Wood <oss@buserror.net>
 
+-Scott
 
-> diff --git a/arch/powerpc/platforms/83xx/km83xx.c
-> b/arch/powerpc/platforms/83xx/km83xx.c
-> index 306be75faec7..bcdc2c203ec9 100644
-> --- a/arch/powerpc/platforms/83xx/km83xx.c
-> +++ b/arch/powerpc/platforms/83xx/km83xx.c
-> @@ -60,10 +60,12 @@ static void quirk_mpc8360e_qe_enet10(void)
->  	ret = of_address_to_resource(np_par, 0, &res);
->  	if (ret) {
->  		pr_warn("%s couldn't map par_io registers\n", __func__);
-> -		return;
-> +		goto out;
->  	}
->  
->  	base = ioremap(res.start, resource_size(&res));
-> +	if (!base)
-> +		goto out;
->  
->  	/*
->  	 * set output delay adjustments to default values according
-> @@ -111,6 +113,7 @@ static void quirk_mpc8360e_qe_enet10(void)
->  		setbits32((base + 0xac), 0x0000c000);
->  	}
->  	iounmap(base);
-> +out:
->  	of_node_put(np_par);
->  }
->  
 
