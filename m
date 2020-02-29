@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D421748A9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 19:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 421F7174966
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Feb 2020 21:46:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48VFHV4p0VzDrB4
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 05:27:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48VJNT055gzDrCD
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 07:46:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=TYpFojaF; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48VF5L5kL3zDr9B
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 05:18:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=denx.de
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48VF5G6rwkz8t1l
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 05:18:10 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48VF5F2ZPRz9sRp; Sun,  1 Mar 2020 05:18:09 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=denx.de
- (client-ip=212.18.0.10; helo=mail-out.m-online.net;
- envelope-from=agust@denx.de; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=denx.de
-X-Greylist: delayed 559 seconds by postgrey-1.36 at bilbo;
- Sun, 01 Mar 2020 05:18:07 AEDT
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48VF5C69dpz9sRL
- for <linuxppc-dev@ozlabs.org>; Sun,  1 Mar 2020 05:18:04 +1100 (AEDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 48VDtD2wlqz1rfPg;
- Sat, 29 Feb 2020 19:08:35 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 48VDtC6Sd5z1qql9;
- Sat, 29 Feb 2020 19:08:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id ZgJXLnzSXOOR; Sat, 29 Feb 2020 19:08:35 +0100 (CET)
-X-Auth-Info: uOJgOoUGSWhnpYpJZ6Ce4sZpFOhSnb7o1YTun+Kg6Kk=
-Received: from crub (pD95F11D0.dip0.t-ipconnect.de [217.95.17.208])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Sat, 29 Feb 2020 19:08:35 +0100 (CET)
-Date: Sat, 29 Feb 2020 19:08:30 +0100
-From: Anatolij Gustschin <agust@denx.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 6/8] powerpc: Update MPC5XXX MAINTAINERS entry
-Message-ID: <20200229190830.52eebda0@crub>
-In-Reply-To: <20200224233146.23734-6-mpe@ellerman.id.au>
-References: <20200224233146.23734-1-mpe@ellerman.id.au>
- <20200224233146.23734-6-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48VJLd01WtzDrBq
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 07:44:49 +1100 (AEDT)
+Received: by mail-ot1-x342.google.com with SMTP id r16so6007415otd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Feb 2020 12:44:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=rqrrnhnAhDxDR8DToJ03L+juASOs6Wy8PQ3rH1ycKSY=;
+ b=TYpFojaFQdUqaHBll6wgyaBq0JuxhRQyFCiHl2aCihv5uMBc1KFDLDDeMczLWyt8tD
+ qnLbcLplw+2WoNzbCgJnxTLzJUgibDfZbhT9vNbt0/enEuXTff8alC+u6o+URMJGyNJ6
+ ou1NISRDvkqJtex7bh+3kcVgLSIao7pALFZD+un2PFXr3PJS3k+VeI1R+qVg2jI4wJXw
+ L5hTOFFVEbsKWNM3uV0YKQ+t9u+eM/SZ1W/MR2NG+K24z72IjJI5pZ4CTLDqOY2K4PT1
+ nii7SoL/cAdaHD/p50gusTVN3y7GcODdwr9wZ2TLWb8bhxiKX9kOGosaY8MhItMZJRCE
+ nAQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=rqrrnhnAhDxDR8DToJ03L+juASOs6Wy8PQ3rH1ycKSY=;
+ b=V3NgtKPuArT14wISszBxmXmabIFU2VLvPJdYAwPQ+wVKUq/tJ1Bx8aLUQRIblBz0Ew
+ RBY+YW+NFL0dI62BOkpC2tXwNYQkqjtQVbk5rkhO/ZXMFN/mSmnjriLUVOsmOuL0ZUGe
+ e/JA0nGGGGYpS4BANvgVViM1qPcx5xIlf4duBQ98ZlsZb/5FonK2Y+j3wcG++XX0kmLv
+ P0ZkAw1ajsuokW8leNfNXYABMgzHj9Kp66eTEVxCLORzTWfRuAszJ2XFrR96DVVpvsbw
+ LE8Q+E97+XgIl81iHdFmvaDOyWmLDSRLu6cSMHf7AFm8ITYZp0z20oMmvAEQTTeR9yRQ
+ xjUQ==
+X-Gm-Message-State: APjAAAUDSwUhzcI9NO9RRD1Yop5Obpu/brRJxG6o/Ei4mvwZ+UUouStN
+ 8v2C+UE/8BUtTSZOv+sZyZXdee+TtOm61EIGrHtk7g==
+X-Google-Smtp-Source: APXvYqwuD7hXgqDuHa7bNKr2aGN5ZsRtxcfrMKKpE5k3aRoSjSLBCzEO28z30FjlnmPqDSMCgEWPc3EsieveZxFwGeE=
+X-Received: by 2002:a05:6830:134c:: with SMTP id
+ r12mr7849308otq.126.1583009084306; 
+ Sat, 29 Feb 2020 12:44:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20200221182503.28317-1-logang@deltatee.com>
+ <20200221182503.28317-3-logang@deltatee.com>
+In-Reply-To: <20200221182503.28317-3-logang@deltatee.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sat, 29 Feb 2020 12:44:29 -0800
+Message-ID: <CAPcyv4hLvciwxSnsQRye9SuB-sy9fm+_6CwZSuHifkmbWQs-+g@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] mm/memory_hotplug: Rename mhp_restrictions to
+ mhp_params
+To: Logan Gunthorpe <logang@deltatee.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,22 +77,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, Linux-sh <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
+ Linux MM <linux-mm@kvack.org>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-s390 <linux-s390@vger.kernel.org>,
+ David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Michal Hocko <mhocko@kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Eric Badger <ebadger@gigaio.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 25 Feb 2020 10:31:44 +1100
-Michael Ellerman mpe@ellerman.id.au wrote:
-
->It's several years since the last commit from Anatolij, so mark
->MPC5XXX as "Odd Fixes" rather than "Maintained".
+On Fri, Feb 21, 2020 at 10:25 AM Logan Gunthorpe <logang@deltatee.com> wrote:
 >
->Also the git link no longer works so remove it.
+> The mhp_restrictions struct really doesn't specify anything resembling
+> a restriction anymore so rename it to be mhp_params as it is a list
+> of extended parameters.
 >
->Cc: Anatolij Gustschin <agust@denx.de>
->Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
 
-Acked-by: Anatolij Gustschin <agust@denx.de>
+Tests ok, and looks good to me:
 
-
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
