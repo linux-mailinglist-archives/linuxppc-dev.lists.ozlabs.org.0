@@ -2,72 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C9E174A24
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 00:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55636174B7D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 06:32:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48VN1Z2d7fzDr4D
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 10:30:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48VX3R6MPZzDr8r
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Mar 2020 16:32:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48VN040Fj3zDqjk
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 10:29:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48VN0340TVz8t5m
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 10:29:07 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48VN033jSRz9sSN; Sun,  1 Mar 2020 10:29:07 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-X-Greylist: delayed 1846 seconds by postgrey-1.36 at bilbo;
- Sun, 01 Mar 2020 10:29:07 AEDT
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48VN031Bfhz9sSR
- for <linuxppc-dev@ozlabs.org>; Sun,  1 Mar 2020 10:29:06 +1100 (AEDT)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1j8B1i-0002GE-9Q; Sat, 29 Feb 2020 16:56:06 -0600
-Message-ID: <79d6c3104e4fbb9b38150d2f8d336daa2f13a844.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-Date: Sat, 29 Feb 2020 16:56:05 -0600
-In-Reply-To: <20200224233146.23734-8-mpe@ellerman.id.au>
-References: <20200224233146.23734-1-mpe@ellerman.id.au>
- <20200224233146.23734-8-mpe@ellerman.id.au>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, linuxppc-dev@ozlabs.org,
- linux-kernel@vger.kernel.org, galak@kernel.crashing.org
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH 8/8] powerpc: Update 83xx/85xx MAINTAINERS entry
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48VX1D0mbvzDr80
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Mar 2020 16:30:37 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E2F8C200A2E;
+ Sun,  1 Mar 2020 06:30:33 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A1F7C200A2D;
+ Sun,  1 Mar 2020 06:30:24 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 813FD40294;
+ Sun,  1 Mar 2020 13:30:13 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, robh+dt@kernel.org,
+ mark.rutland@arm.com, devicetree@vger.kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, linux-imx@nxp.com,
+ linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/8] ASoC: Add new module driver for new ASRC
+Date: Sun,  1 Mar 2020 13:24:11 +0800
+Message-Id: <cover.1583039752.git.shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,43 +54,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-02-25 at 10:31 +1100, Michael Ellerman wrote:
-> Scott said he was still maintaining this "sort of", so change the
-> status to Odd Fixes.
-> 
-> Kumar has long ago moved on to greener pastures.
-> 
-> Remove the dead penguinppc.org link.
-> 
-> Cc: Scott Wood <oss@buserror.net>
-> Cc: Kumar Gala <galak@kernel.crashing.org>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  MAINTAINERS | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index febffee28d00..2e917116ef6a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9650,11 +9650,9 @@ F:	arch/powerpc/platforms/44x/
->  
->  LINUX FOR POWERPC EMBEDDED PPC83XX AND PPC85XX
->  M:	Scott Wood <oss@buserror.net>
-> -M:	Kumar Gala <galak@kernel.crashing.org>
-> -W:	http://www.penguinppc.org/
->  L:	linuxppc-dev@lists.ozlabs.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git
-> -S:	Maintained
-> +S:	Odd fixes
+Add new module driver for new ASRC in i.MX8MN, several commits
+are added for change DT binding asrc-width to asrc-format
 
-Acked-by: Scott Wood <oss@buserror.net>
+Shengjiu Wang (8):
+  ASoC: dt-bindings: fsl_asrc: Change asrc-width to asrc-format
+  ARM: dts: imx6qdl: Change asrc-width to asrc-format
+  ASoC: fsl-asoc-card: Change asrc-width to asrc-format
+  ASoC: fsl_asrc: Change asrc_width to asrc_format
+  ASoC: fsl_asrc: rename asrc_priv to asrc
+  ASoC: fsl_asrc: Move common definition to fsl_asrc_common
+  ASoC: dt-bindings: fsl_easrc: Add document for EASRC
+  ASoC: fsl_easrc: Add EASRC ASoC CPU DAI and platform drivers
 
--Scott
+changes in v4
+- Add several commit for changing DT binding asrc-width to asrc-format
+- rename asrc_priv to asrc
 
+changes in v3
+- add new commit "ASoC: fsl_asrc: Change asrc_width to asrc_format"
+- modify binding doc to yaml format
+- remove fsl_easrc_dma.c, make fsl_asrc_dma.c useable for easrc.
+
+changes in v2
+- change i.MX815 to i.MX8MN
+- Add changes in Kconfig and Makefile
+
+ .../devicetree/bindings/sound/fsl,asrc.txt    |    4 +-
+ .../devicetree/bindings/sound/fsl,easrc.yaml  |   96 +
+ arch/arm/boot/dts/imx6qdl.dtsi                |    2 +-
+ sound/soc/fsl/Kconfig                         |   11 +
+ sound/soc/fsl/Makefile                        |    2 +
+ sound/soc/fsl/fsl-asoc-card.c                 |    9 +-
+ sound/soc/fsl/fsl_asrc.c                      |  282 +--
+ sound/soc/fsl/fsl_asrc.h                      |   74 +-
+ sound/soc/fsl/fsl_asrc_common.h               |  105 +
+ sound/soc/fsl/fsl_asrc_dma.c                  |   54 +-
+ sound/soc/fsl/fsl_easrc.c                     | 2111 +++++++++++++++++
+ sound/soc/fsl/fsl_easrc.h                     |  651 +++++
+ 12 files changed, 3169 insertions(+), 232 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+ create mode 100644 sound/soc/fsl/fsl_asrc_common.h
+ create mode 100644 sound/soc/fsl/fsl_easrc.c
+ create mode 100644 sound/soc/fsl/fsl_easrc.h
+
+-- 
+2.21.0
 
