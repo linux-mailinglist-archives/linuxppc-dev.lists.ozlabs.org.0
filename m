@@ -2,58 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D951317574C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 10:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 725AA1757AF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 10:53:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WFTM1kSzzDqg9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 20:39:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WFnn0nX3zDqfS
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 20:53:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=vivo.com (client-ip=123.58.177.126;
+ helo=m177126.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m177126.mail.qiye.163.com (m177126.mail.qiye.163.com
+ [123.58.177.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WFRc0mPRzDqcR
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 20:37:29 +1100 (AEDT)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id E5EA9B8A6EB8FF894F17;
- Mon,  2 Mar 2020 17:37:21 +0800 (CST)
-Received: from [127.0.0.1] (10.173.221.195) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0;
- Mon, 2 Mar 2020 17:37:11 +0800
-Subject: Re: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
-To: Scott Wood <oss@buserror.net>, Daniel Axtens <dja@axtens.net>,
- <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>, <me@tobin.cc>
-References: <20200206025825.22934-1-yanaijie@huawei.com>
- <87tv3drf79.fsf@dja-thinkpad.axtens.net>
- <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
- <e8cd8f287934954cfa07dcf76ac73492e2d49a5b.camel@buserror.net>
- <dd8db870-b607-3f74-d3bc-a8d9f33f9852@huawei.com>
- <4c0e7fec63dbc7b91fa6c24692c73c256c131f51.camel@buserror.net>
- <188971ed-f1c4-39b3-c07e-89cc593d88d7@huawei.com>
- <530c49dfd97c811dc53ffc78c594d7133f7eb1e9.camel@buserror.net>
- <35e6c660-3896-bdb8-45f3-c1504aa2171f@huawei.com>
- <31b5966ba579ef246176a7d8ad18c2c02788dd27.camel@buserror.net>
- <17658c2b-9eb8-cee9-e9a2-93d316a401b1@huawei.com>
- <7f608c18250c509ff091990d4bb460846fae11a0.camel@buserror.net>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <9b1d1d42-ecc9-8d0d-b616-849b0b368d67@huawei.com>
-Date: Mon, 2 Mar 2020 17:37:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WFm92NNRzDqXK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 20:51:51 +1100 (AEDT)
+Received: from vivo.com (wm-5 [127.0.0.1])
+ by m177126.mail.qiye.163.com (Hmail) with ESMTP id BF86B182DD1;
+ Mon,  2 Mar 2020 17:51:40 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AKwA*ABoCIJ9vbaCjM1qLqoO.3.1583142700761.Hmail.wenhu.wang@vivo.com>
+To: Scott Wood <oss@buserror.net>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtlIEZTTF84NVhYX0NBQ0hFX1NSQU0gY29uZmlndXJhYmxl?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.227
+In-Reply-To: <2a7cf26aa11adf43ec4f29ab733afc695039633c.camel@buserror.net>
 MIME-Version: 1.0
-In-Reply-To: <7f608c18250c509ff091990d4bb460846fae11a0.camel@buserror.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.221.195]
-X-CFilter-Loop: Reflected
+Received: from wenhu.wang@vivo.com( [58.251.74.227) ] by ajax-webmail (
+ [127.0.0.1] ) ; Mon, 2 Mar 2020 17:51:40 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Mon, 2 Mar 2020 17:51:40 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVMSU1CQkJMTkJNTE9LTFlXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhNTktKSEhOS0pLN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6MAw6UTo5FDgyMUINGRo4ETZKCjcKFDRVSFVKTkNISk9JTEtJQkhMVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlMWVdZCAFZQUpLTEJCNwY+
+X-HM-Tid: 0a709aa886fa6458kursbf86b182dd1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,101 +55,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: Rai Harninder <harninder.rai@nxp.com>, trivial@kernel.org,
+ linux-kernel@vger.kernel.org, wangwenhu <wenhu.pku@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-在 2020/3/2 16:47, Scott Wood 写道:
-> On Mon, 2020-03-02 at 15:12 +0800, Jason Yan wrote:
->>
->> 在 2020/3/2 11:24, Scott Wood 写道:
->>> On Mon, 2020-03-02 at 10:17 +0800, Jason Yan wrote:
->>>>
->>>> 在 2020/3/1 6:54, Scott Wood 写道:
->>>>> On Sat, 2020-02-29 at 15:27 +0800, Jason Yan wrote:
->>>>>>
->>>>>> Turnning to %p may not be a good idea in this situation. So
->>>>>> for the REG logs printed when dumping stack, we can disable it when
->>>>>> KASLR is open. For the REG logs in other places like show_regs(),
->>>>>> only
->>>>>> privileged can trigger it, and they are not combind with a symbol,
->>>>>> so
->>>>>> I think it's ok to keep them.
->>>>>>
->>>>>> diff --git a/arch/powerpc/kernel/process.c
->>>>>> b/arch/powerpc/kernel/process.c
->>>>>> index fad50db9dcf2..659c51f0739a 100644
->>>>>> --- a/arch/powerpc/kernel/process.c
->>>>>> +++ b/arch/powerpc/kernel/process.c
->>>>>> @@ -2068,7 +2068,10 @@ void show_stack(struct task_struct *tsk,
->>>>>> unsigned
->>>>>> long *stack)
->>>>>>                     newsp = stack[0];
->>>>>>                     ip = stack[STACK_FRAME_LR_SAVE];
->>>>>>                     if (!firstframe || ip != lr) {
->>>>>> -                       printk("["REG"] ["REG"] %pS", sp, ip, (void
->>>>>> *)ip);
->>>>>> +                       if (IS_ENABLED(CONFIG_RANDOMIZE_BASE))
->>>>>> +                               printk("%pS", (void *)ip);
->>>>>> +                       else
->>>>>> +                               printk("["REG"] ["REG"] %pS", sp,
->>>>>> ip,
->>>>>> (void *)ip);
->>>>>
->>>>> This doesn't deal with "nokaslr" on the kernel command line.  It also
->>>>> doesn't
->>>>> seem like something that every callsite should have to opencode,
->>>>> versus
->>>>> having
->>>>> an appropriate format specifier behaves as I described above (and I
->>>>> still
->>>>> don't see why that format specifier should not be "%p").
->>>>>
->>>>
->>>> Actually I still do not understand why we should print the raw value
->>>> here. When KALLSYMS is enabled we have symbol name  and  offset like
->>>> put_cred_rcu+0x108/0x110, and when KALLSYMS is disabled we have the raw
->>>> address.
->>>
->>> I'm more concerned about the stack address for wading through a raw stack
->>> dump
->>> (to find function call arguments, etc).  The return address does help
->>> confirm
->>> that I'm on the right stack frame though, and also makes looking up a line
->>> number slightly easier than having to look up a symbol address and then
->>> add
->>> the offset (at least for non-module addresses).
->>>
->>> As a random aside, the mismatch between Linux printing a hex offset and
->>> GDB
->>> using decimal in disassembly is annoying...
->>>
->>
->> OK, I will send a RFC patch to add a new format specifier such as "%pk"
->> or change the exsiting "%pK" to print raw value of addresses when KASLR
->> is disabled and print hash value of addresses when KASLR is enabled.
->> Let's see what the printk guys would say :)
-> 
-> I'm not sure that a new format specifier is needed versus changing the
-> behavior of "%p", and "%pK" definitely doesn't seem suitable given that it's
-> intended to be more restricted than "%p" (see commit ef0010a30935de4).  The
-> question is whether there is a legitimate reason to hash in the absence of
-> kaslr.
-> 
-
-The problem is that if we change the behavior of "%p", we have to turn
-all exsiting "%p" to "%pK". Hashing is still reasonable when there is no
-kaslr because some architectures support randomize at build time such as 
-arm64.
-
-
-> -Scott
-> 
-> 
-> 
-> .
-> 
-
+5Y+R5Lu25Lq677yaU2NvdHQgV29vZCA8b3NzQGJ1c2Vycm9yLm5ldD4K5Y+R6YCB5pel5pyf77ya
+MjAyMC0wMy0wMiAxNjo1ODo1MgrmlLbku7bkurrvvJoi546L5paH6JmOIiA8d2VuaHUud2FuZ0B2
+aXZvLmNvbT4K5oqE6YCB5Lq677yad2FuZ3dlbmh1IDx3ZW5odS5wa3VAZ21haWwuY29tPixLdW1h
+ciBHYWxhIDxnYWxha0BrZXJuZWwuY3Jhc2hpbmcub3JnPixCZW5qYW1pbiBIZXJyZW5zY2htaWR0
+IDxiZW5oQGtlcm5lbC5jcmFzaGluZy5vcmc+LFBhdWwgTWFja2VycmFzIDxwYXVsdXNAc2FtYmEu
+b3JnPixNaWNoYWVsIEVsbGVybWFuIDxtcGVAZWxsZXJtYW4uaWQuYXU+LGxpbnV4cHBjLWRldkBs
+aXN0cy5vemxhYnMub3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcsdHJpdmlhbEBrZXJu
+ZWwub3JnLFJhaSBIYXJuaW5kZXIgPGhhcm5pbmRlci5yYWlAbnhwLmNvbT4K5Li76aKY77yaUmU6
+IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtlIEZTTF84NVhYX0NBQ0hFX1NSQU0gY29uZmln
+dXJhYmxlPk9uIE1vbiwgMjAyMC0wMy0wMiBhdCAxMjo0MiArMDgwMCwg546L5paH6JmOIHdyb3Rl
+Ogo+PiDlj5Hku7bkurrvvJpTY290dCBXb29kIDxvc3NAYnVzZXJyb3IubmV0Pgo+PiDlj5HpgIHm
+l6XmnJ/vvJoyMDIwLTAzLTAxIDA3OjEyOjU4Cj4+IOaUtuS7tuS6uu+8miLnjovmlofomY4iIDx3
+ZW5odS53YW5nQHZpdm8uY29tPgo+PiDmioTpgIHkurrvvJp3YW5nd2VuaHUgPHdlbmh1LnBrdUBn
+bWFpbC5jb20+LEt1bWFyIEdhbGEgPGdhbGFrQGtlcm5lbC5jcmFzaGluZy5vcmc+LEIKPj4gZW5q
+YW1pbiBIZXJyZW5zY2htaWR0IDxiZW5oQGtlcm5lbC5jcmFzaGluZy5vcmc+LFBhdWwgTWFja2Vy
+cmFzIDwKPj4gcGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFu
+LmlkLmF1PiwKPj4gbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcsbGludXgta2VybmVsQHZn
+ZXIua2VybmVsLm9yZywKPj4gdHJpdmlhbEBrZXJuZWwub3JnLFJhaSBIYXJuaW5kZXIgPGhhcm5p
+bmRlci5yYWlAbnhwLmNvbT4KPj4g5Li76aKY77yaUmU6IFJlOiBbUEFUQ0hdIHBvd2VycGMvS2Nv
+bmZpZzogTWFrZSBGU0xfODVYWF9DQUNIRV9TUkFNIGNvbmZpZ3VyYWJsZT5Pbgo+PiBUdWUsIDIw
+MjAtMDEtMjEgYXQgMTQ6MzggKzA4MDAsIOeOi+aWh+iZjiB3cm90ZToKPj4gPiA+IOWPkeS7tuS6
+uu+8mlNjb3R0IFdvb2QgPG9zc0BidXNlcnJvci5uZXQ+Cj4+ID4gPiDlj5HpgIHml6XmnJ/vvJoy
+MDIwLTAxLTIxIDEzOjQ5OjU5Cj4+ID4gPiDmlLbku7bkurrvvJoi546L5paH6JmOIiA8d2VuaHUu
+d2FuZ0B2aXZvLmNvbT4KPj4gPiA+IOaKhOmAgeS6uu+8mndhbmd3ZW5odSA8d2VuaHUucGt1QGdt
+YWlsLmNvbT4sS3VtYXIgR2FsYSA8Cj4+ID4gPiBnYWxha0BrZXJuZWwuY3Jhc2hpbmcub3JnPixC
+Cj4+ID4gPiBlbmphbWluIEhlcnJlbnNjaG1pZHQgPGJlbmhAa2VybmVsLmNyYXNoaW5nLm9yZz4s
+UGF1bCBNYWNrZXJyYXMgPAo+PiA+ID4gcGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBFbGxlcm1h
+biA8bXBlQGVsbGVybWFuLmlkLmF1PiwKPj4gPiA+IGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMu
+b3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcsCj4+ID4gPiB0cml2aWFsQGtlcm5lbC5v
+cmcsUmFpIEhhcm5pbmRlciA8aGFybmluZGVyLnJhaUBueHAuY29tPgo+PiA+ID4g5Li76aKY77ya
+UmU6IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtlIEZTTF84NVhYX0NBQ0hFX1NSQU0gY29u
+ZmlndXJhYmxlPk9uCj4+ID4gPiBUdWUsIDIwMjAtMDEtMjEgYXQgMTM6MjAgKzA4MDAsIOeOi+aW
+h+iZjiB3cm90ZToKPj4gPiA+ID4gPiBGcm9tOiBTY290dCBXb29kIDxvc3NAYnVzZXJyb3IubmV0
+Pgo+PiA+ID4gPiA+IERhdGU6IDIwMjAtMDEtMjEgMTE6MjU6MjUKPj4gPiA+ID4gPiBUbzogIHdh
+bmd3ZW5odSA8d2VuaHUucGt1QGdtYWlsLmNvbT4sS3VtYXIgR2FsYSA8Cj4+ID4gPiA+ID4gZ2Fs
+YWtAa2VybmVsLmNyYXNoaW5nLm9yZz4sCj4+ID4gPiA+ID4gQmVuamFtaW4gSGVycmVuc2NobWlk
+dCA8YmVuaEBrZXJuZWwuY3Jhc2hpbmcub3JnPixQYXVsIE1hY2tlcnJhcyA8Cj4+ID4gPiA+ID4g
+cGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PiwK
+Pj4gPiA+ID4gPiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyxsaW51eC1rZXJuZWxAdmdl
+ci5rZXJuZWwub3JnCj4+ID4gPiA+ID4gQ2M6ICB0cml2aWFsQGtlcm5lbC5vcmcsd2VuaHUud2Fu
+Z0B2aXZvLmNvbSxSYWkgSGFybmluZGVyIDwKPj4gPiA+ID4gPiBoYXJuaW5kZXIucmFpQG54cC5j
+b20+Cj4+ID4gPiA+ID4gU3ViamVjdDogUmU6IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtl
+IEZTTF84NVhYX0NBQ0hFX1NSQU0KPj4gPiA+ID4gPiBjb25maWd1cmFibGU+T24gTW9uLCAyMDIw
+LTAxLTIwIGF0IDA2OjQzIC0wODAwLCB3YW5nd2VuaHUgd3JvdGU6Cj4+ID4gPiA+ID4gPiA+IEZy
+b206IHdhbmd3ZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KPj4gPiA+ID4gPiA+ID4gCj4+ID4g
+PiA+ID4gPiA+IFdoZW4gZ2VuZXJhdGluZyAuY29uZmlnIGZpbGUgd2l0aCBtZW51Y29uZmlnIG9u
+IEZyZWVzY2FsZSBCT09LRQo+PiA+ID4gPiA+ID4gPiBTT0MsIEZTTF84NVhYX0NBQ0hFX1NSQU0g
+aXMgbm90IGNvbmZpZ3VyYWJsZSBmb3IgdGhlIGxhY2sgb2YKPj4gPiA+ID4gPiA+ID4gZGVzY3Jp
+cHRpb24gaW4gdGhlIEtjb25maWcgZmllbGQsIHdoaWNoIG1ha2VzIGl0IGltcG9zc2libGUKPj4g
+PiA+ID4gPiA+ID4gdG8gc3VwcG9ydCBMMkNhY2hlLVNyYW0gZHJpdmVyLiBBZGQgYSBkZXNjcmlw
+dGlvbiB0byBtYWtlIGl0Cj4+ID4gPiA+ID4gPiA+IGNvbmZpZ3VyYWJsZS4KPj4gPiA+ID4gPiA+
+ID4gCj4+ID4gPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IHdhbmd3ZW5odSA8d2VuaHUud2FuZ0B2
+aXZvLmNvbT4KPj4gPiA+ID4gPiA+IAo+PiA+ID4gPiA+ID4gVGhlIGludGVudCB3YXMgdGhhdCBk
+cml2ZXJzIHVzaW5nIHRoZSBTUkFNIEFQSSB3b3VsZCBzZWxlY3QgdGhlCj4+ID4gPiA+ID4gPiBz
+eW1ib2wuICBXaGF0Cj4+ID4gPiA+ID4gPiBpcyB0aGUgdXNlIGNhc2UgZm9yIHNlbGVjdGluZyBp
+dCBtYW51YWxseT8KPj4gPiA+ID4gPiA+IAo+PiA+ID4gPiA+IAo+PiA+ID4gPiA+IFdpdGggYSBy
+ZXBvc2l0b3J5IG9mIG11bHRpcGxlIHByb2R1Y3RzKG1lYW5pbmcgZGlmZmVyZW50IGRlZmNvbmZp
+Z3MpCj4+ID4gPiA+ID4gYW5kCj4+ID4gPiA+ID4gbXVsdGlwbGUKPj4gPiA+ID4gPiBkZXZlbG9w
+ZXJzLCB0aGUgS2NvbmZpZ3Mgb2YgdGhlIEtlcm5lbCBTb3VyY2UgVHJlZSBjaGFuZ2UKPj4gPiA+
+ID4gPiBmcmVxdWVudGx5LiBTbwo+PiA+ID4gPiA+IHRoZQo+PiA+ID4gPiA+ICJtYWtlIG1lbnVj
+b25maWciCj4+ID4gPiA+ID4gcHJvY2VzcyBpcyBuZWVkZWQgZm9yIGRlZmNvbmZpZ3MnIHJlLWdl
+bmVyYXRpbmcgb3IgdXBkYXRpbmcgZm9yIHRoZQo+PiA+ID4gPiA+IGNvbXBsZXhpdHkgb2YgZGVw
+ZW5kZW5jaWVzCj4+ID4gPiA+ID4gYmV0d2VlbiBkaWZmZXJlbnQgZmVhdHVyZXMgZGVmaW5lZCBp
+biB0aGUgS2NvbmZpZ3MuCj4+ID4gPiA+IAo+PiA+ID4gPiBUaGF0IGRvZXNuJ3QgYW5zd2VyIG15
+IHF1ZXN0aW9uIG9mIGhvdyB0aGUgU1JBTSBjb2RlIHdvdWxkIGJlIHVzZWZ1bAo+PiA+ID4gPiBv
+dGhlcgo+PiA+ID4gPiB0aGFuIHRvIHNvbWUgb3RoZXIgZHJpdmVyIHRoYXQgdXNlcyB0aGUgQVBJ
+ICh3aGljaCB3b3VsZCB1c2UKPj4gPiA+ID4gInNlbGVjdCIpLiAgVGhlcmUKPj4gPiA+ID4gaXMg
+bm8gdXNlcnNwYWNlIEFQSS4gIFlvdSBjb3VsZCB1c2UgdGhlIGtlcm5lbCBjb21tYW5kIGxpbmUg
+dG8KPj4gPiA+ID4gY29uZmlndXJlCj4+ID4gPiA+IHRoZQo+PiA+ID4gPiBTUkFNIGJ1dCB5b3Ug
+bmVlZCB0byBnZXQgdGhlIGFkZHJlc3Mgb2YgaXQgZm9yIGl0IHRvIGJlIHVzZWZ1bC4KPj4gPiA+
+ID4gCj4+ID4gPiAKPj4gPiA+IExpa2UgeW91J3ZlIGFza2VkIGJlbG93LCB2aWEgL2Rldi9tZW0g
+b3IgZGlyZWN0IGNhbGxpbmcgd2l0aGluIHRoZQo+PiA+ID4gS2VybmVsLgo+PiA+ID4gQW5kIHRo
+ZXkgYXJlIG5vdCBzdWJtaXR0ZWQgeWVzLCB1bmRlciBkZXZlbG9wbWVudC4KPj4gPiAKPj4gPiBJ
+ZiB0aGV5IGFyZSBjYWxsaW5nIHdpdGhpbiB0aGUga2VybmVsLCB0aGVuIHdoYXRldmVyIGRyaXZl
+ciB0aGF0IGlzIHNob3VsZAo+PiA+IHNlbGVjdCBGU0xfODVYWF9DQUNIRV9TUkFNLiAgRGlyZWN0
+bHkgYWNjZXNzaW5nIC9kZXYvbWVtIHdpdGhvdXQgYW55IHdheQo+PiA+IGZvcgo+PiA+IHRoZSBr
+ZXJuZWwgdG8gYWR2ZXJ0aXNlIHdoZXJlIGl0IGlzIG9yIHdoaWNoIHBhcnRzIG9mIFNSQU0gYXJl
+IGF2YWlsYWJsZQo+PiA+IGZvcgo+PiA+IHVzZSBzb3VuZHMgbGlrZSBhIGJhZCBpZGVhLgo+PiA+
+IAo+PiAKPj4gWWVzLCBkZWZpbml0ZWx5LiBTbyBsaWtlIHdlIGVuYWJsZSB0aGUgbW91bGRlIHdo
+aWNoIHNob3VsZCBzZWxldCAKPj4gRlNMXzg1WFhfQ0FDSEVfU1JBTSB0byBidWlsZCB2bWxpbnV4
+LCBGU0xfODVYWF9DQUNIRV9TUkFNIAo+PiBjb3VsZCBub3QgYmUgc2VsZXRlZCBiZWNhdXNlIG9m
+IHRoZSBLY29uZmlnIGRlZmluaXRpb24gcHJvYmxlbSAKPj4gd2hpY2ggSSBhbSB0cnlpbmcgdG8g
+Zml4IG5vdy4gIFNvIHdvdWxkIHlvdSBwbGVhc2UgbWVyZ2UgdGhlIHBhdGNoIAo+PiBmb3IgdGhl
+IGNvbnZlbmllbmNlIG9mIGxhdGVyIHdvcmtzIGRlcGVuZGluZyBvbiB0aGUgZHJpdmVyLgo+Cj5T
+b3JyeSwgSSBkb24ndCB0aGluayBpdCdzIHNvbWV0aGluZyB0aGF0IHNob3VsZCBiZSBlbmFibGVk
+IGJ5IGl0c2VsZiB3aXRoCj5ub3RoaW5nIHVzaW5nIHRoZSBhbGxvY2F0b3JzLiAgU3VwcG9zZSB3
+ZSB0b29rIHRoaXMgcGF0Y2gsIGFuZCBwZW9wbGUgZW5hYmxlZAo+aXQgYW5kIGFjY2Vzc2VkIGl0
+IHZpYSAvZGV2L21lbS4gIFRoZW4gc3VwcG9zZSBhIGRyaXZlciBpcyBwYXRjaGVkIHRvIGFsbG9j
+YXRlCj5zb21lIHNyYW0gYW5kIHVzZSBpdC4gIFRoZXknZCBiZSBzdGVwcGluZyBvbiBlYWNoIG90
+aGVycycgdG9lcyB1bmRldGVjdGVkLgo+ClJpZ2h0LCBhbmQgbWF5YmUgaSBkaWQgbm90IGV4cGxh
+aW4gaXQgY2xlYXI6IEkgbWVhbiB0aGF0IHdlIGFyZSBkZXZlbG9waW5nCm1vZHVsZXMgYm90aCBp
+biBrZXJuZWwgd2hpY2ggY2FsbCB0aGUgaW50ZXJmYWNlcyBvZiBGU0xfODVYWF9DQUNIRV9TUkFN
+IApkaXJlY3RseSwgYW5kIGluIHVzZXIgc3BhY2Ugd2hpY2ggaXMgYSBmdXJ0aGVyIGNvbnNpZGVy
+YXRpb24gdXBvbiB0aGUgd29yawp3ZSBoYXZlIGRvbmUuIENhdXNlIHdlIGhhdmUgbm90IGV4cG9y
+dGVkIHRoZSBjb2RlIHVuZGVyIGRldmVsb3BpbmcsIGl0IApzZWVtcyBsaWtlIHRoYXQgbm90aGlu
+ZyB1c2VzIEZTTF84NVhYX0NBQ0hFX1NSQU0uCgo+SWYgeW91IHdhbnQgdG8gZXhwb3NlIGl0IHRv
+IHVzZXJzcGFjZSwgYWRkIGNvZGUgdGhhdCBhbGxvY2F0ZXMgc29tZSBvciBhbGwgb2YKPnRoZSBz
+cmFtIGFuZCBtYWtlIGl0IHNvbWV0aGluZyB1c2Vyc3BhY2UgY2FuIG1tYXAuICBPciwgaWYgbm90
+aGluZydzIGdvaW5nIHRvCj51c2UgdGhlbSwgcmVtb3ZlIHRoZSBhbGxvY2F0b3JzIGFuZCBleHBv
+cnQgdGhlIGVudGlyZSB0aGluZyB0byB1c2Vyc3BhY2UKPihhZ2FpbiB2aWEgYW4gc3JhbS1zcGVj
+aWZpYyBtYXBwYWJsZSByYXRoZXIgdGhhbiAvZGV2L21lbSkuCgpBcyBmb3IgL2Rldi9tZW0sIGl0
+IHdhcyBvbmUgb2Ygb3VyIGNob2ljZXMgZXZlciBidXQgbm93IGEgdXNlci1zcGFjZSAKZHJpdmVy
+IGlzIHByZWZlcnJlZCBmb3IgZnVydGhlciBjb25zaWRlcmF0aW9uLiBCdXQgY3VycmVudGx5LCB0
+aGUgZnVuY3Rpb25hbGl0eSAKdGhhdCBkaXJlY3RseSBjYWxscyB0aGUgaW5zdGVyZmFjZXMgb2Yg
+RlNMXzg1WFhfQ0FDSEVfU1JBTSBoYXZlIGJlZW4gCnVuZGVyIGRldmVsb3BpbmcgZm9yIGNvdXBs
+ZXMgb2YgZGF5cyBhbmQgd291bGQgYmUgZXhwb3J0ZWQgaW4gdGhlIGZ1dHVyZS4gClRoZXkgd291
+bGQgYmUgdXNlZCBvbiBody1wbGF0Zm9ybXMgbGlrZSBQUENlNTAwLgoKSnVzdCBzb21lIHRpbWUg
+aXQgdGFrZXMuIAoKRG8geW91IG1lYW4gdGhlIGV4cG9ydGluZyBpcyBhIHByZS1jb25kaXRpb24/
+IElmIG5vdCwgdGhlIG1lcmdlIHdvdWxkIApkbyBhIGZhdm9yIGZvciB0aGUgY29udmVuaWVuY2Uu
+CgpXZW5odQogCj4KPi1TY290dAo+Cj4KDQoNCg==
