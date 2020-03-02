@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6527C17535C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 06:35:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 295FF17535E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 06:37:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48W84H4CrMzDqZL
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:35:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48W86K3srvzDqgV
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:37:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,62 +19,62 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48W7r35xsRzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 16:24:51 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48W7r60r0NzDqYn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 16:24:53 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0225OgWa039449
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 00:24:48 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yfhs35yc6-1
+ 0225OINV042160
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 00:24:52 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yfmyq9m1p-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 00:24:47 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 00:24:51 -0500
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Mon, 2 Mar 2020 05:24:45 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Mon, 2 Mar 2020 05:24:49 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 2 Mar 2020 05:24:40 -0000
+ Mon, 2 Mar 2020 05:24:44 -0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0225Od3R54591644
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0225Ogi438994036
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Mar 2020 05:24:39 GMT
+ Mon, 2 Mar 2020 05:24:42 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9A8752050;
- Mon,  2 Mar 2020 05:24:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 753985204F;
+ Mon,  2 Mar 2020 05:24:42 +0000 (GMT)
 Received: from bangoria.in.ibm.com (unknown [9.124.31.175])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 84A805204E;
- Mon,  2 Mar 2020 05:24:35 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1F9A252050;
+ Mon,  2 Mar 2020 05:24:38 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC 06/11] perf hists: Make a room for hazard info in struct
- hist_entry
-Date: Mon,  2 Mar 2020 10:53:50 +0530
+Subject: [RFC 07/11] perf hazard: Functions to convert generic hazard data to
+ arch specific string
+Date: Mon,  2 Mar 2020 10:53:51 +0530
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
 References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20030205-0012-0000-0000-0000038C0D81
+x-cbid: 20030205-0028-0000-0000-000003DFC476
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030205-0013-0000-0000-000021C8BF05
-Message-Id: <20200302052355.36365-7-ravi.bangoria@linux.ibm.com>
+x-cbparentid: 20030205-0029-0000-0000-000024A4EBF6
+Message-Id: <20200302052355.36365-8-ravi.bangoria@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-02_01:2020-02-28,
  2020-03-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0
- suspectscore=2 clxscore=1015 bulkscore=0 adultscore=0 mlxscore=0
- priorityscore=1501 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2003020039
+ mlxscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=999 malwarescore=0 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003020039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,244 +99,391 @@ Sender: "Linuxppc-dev"
 
 From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 
-To enable hazard mode with perf report (followup patch) we need to
-have cpu pipeline hazard data available in hist_entry. Add hazard
-info into struct hist_entry. Also add hazard_info as parameter to
-hists__add_entry().
+Kernel provides pipeline hazard data in struct perf_pipeline_haz_data
+format. Add code to convert this data into meaningful string which can
+be shown in perf report (followup patch).
+
+Introduce tools/perf/utils/hazard directory which will contains arch
+specific directories. Under arch specific directory, add arch specific
+logic that will be called by generic code. This directory structure is
+introduced to enable cross-arch reporting.
 
 Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- tools/perf/builtin-annotate.c |  2 +-
- tools/perf/builtin-c2c.c      |  4 ++--
- tools/perf/builtin-diff.c     |  6 +++---
- tools/perf/tests/hists_link.c |  4 ++--
- tools/perf/util/hist.c        | 22 +++++++++++++++-------
- tools/perf/util/hist.h        |  2 ++
- tools/perf/util/sort.h        |  1 +
- 7 files changed, 26 insertions(+), 15 deletions(-)
+ tools/perf/util/Build                         |   2 +
+ tools/perf/util/hazard.c                      |  51 +++++++
+ tools/perf/util/hazard.h                      |  14 ++
+ tools/perf/util/hazard/Build                  |   1 +
+ .../util/hazard/powerpc/perf_pipeline_haz.h   |  80 ++++++++++
+ .../perf/util/hazard/powerpc/powerpc_hazard.c | 142 ++++++++++++++++++
+ .../perf/util/hazard/powerpc/powerpc_hazard.h |  14 ++
+ 7 files changed, 304 insertions(+)
+ create mode 100644 tools/perf/util/hazard.c
+ create mode 100644 tools/perf/util/hazard.h
+ create mode 100644 tools/perf/util/hazard/Build
+ create mode 100644 tools/perf/util/hazard/powerpc/perf_pipeline_haz.h
+ create mode 100644 tools/perf/util/hazard/powerpc/powerpc_hazard.c
+ create mode 100644 tools/perf/util/hazard/powerpc/powerpc_hazard.h
 
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index 6c0a0412502e..78552a9428a6 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -249,7 +249,7 @@ static int perf_evsel__add_sample(struct evsel *evsel,
- 	if (ann->has_br_stack && has_annotation(ann))
- 		return process_branch_callback(evsel, sample, al, ann, machine);
+diff --git a/tools/perf/util/Build b/tools/perf/util/Build
+index 07da6c790b63..f5e1b7d79b6d 100644
+--- a/tools/perf/util/Build
++++ b/tools/perf/util/Build
+@@ -118,6 +118,7 @@ perf-y += parse-regs-options.o
+ perf-y += term.o
+ perf-y += help-unknown-cmd.o
+ perf-y += mem-events.o
++perf-y += hazard.o
+ perf-y += vsprintf.o
+ perf-y += units.o
+ perf-y += time-utils.o
+@@ -153,6 +154,7 @@ perf-$(CONFIG_LIBUNWIND_AARCH64)  += libunwind/arm64.o
+ perf-$(CONFIG_LIBBABELTRACE) += data-convert-bt.o
  
--	he = hists__add_entry(hists, al, NULL, NULL, NULL, sample, true);
-+	he = hists__add_entry(hists, al, NULL, NULL, NULL, NULL, sample, true);
- 	if (he == NULL)
- 		return -ENOMEM;
+ perf-y += scripting-engines/
++perf-y += hazard/
  
-diff --git a/tools/perf/builtin-c2c.c b/tools/perf/builtin-c2c.c
-index 246ac0b4d54f..2a1cb5cda6d9 100644
---- a/tools/perf/builtin-c2c.c
-+++ b/tools/perf/builtin-c2c.c
-@@ -292,7 +292,7 @@ static int process_sample_event(struct perf_tool *tool __maybe_unused,
- 	c2c_decode_stats(&stats, mi);
- 
- 	he = hists__add_entry_ops(&c2c_hists->hists, &c2c_entry_ops,
--				  &al, NULL, NULL, mi,
-+				  &al, NULL, NULL, mi, NULL,
- 				  sample, true);
- 	if (he == NULL)
- 		goto free_mi;
-@@ -326,7 +326,7 @@ static int process_sample_event(struct perf_tool *tool __maybe_unused,
- 			goto free_mi;
- 
- 		he = hists__add_entry_ops(&c2c_hists->hists, &c2c_entry_ops,
--					  &al, NULL, NULL, mi,
-+					  &al, NULL, NULL, mi, NULL,
- 					  sample, true);
- 		if (he == NULL)
- 			goto free_mi;
-diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
-index f8b6ae557d8b..e32e91f89a18 100644
---- a/tools/perf/builtin-diff.c
-+++ b/tools/perf/builtin-diff.c
-@@ -412,15 +412,15 @@ static int diff__process_sample_event(struct perf_tool *tool,
- 	}
- 
- 	if (compute != COMPUTE_CYCLES) {
--		if (!hists__add_entry(hists, &al, NULL, NULL, NULL, sample,
--				      true)) {
-+		if (!hists__add_entry(hists, &al, NULL, NULL, NULL, NULL,
-+				      sample, true)) {
- 			pr_warning("problem incrementing symbol period, "
- 				   "skipping event\n");
- 			goto out_put;
- 		}
- 	} else {
- 		if (!hists__add_entry_ops(hists, &block_hist_ops, &al, NULL,
--					  NULL, NULL, sample, true)) {
-+					  NULL, NULL, NULL, sample, true)) {
- 			pr_warning("problem incrementing symbol period, "
- 				   "skipping event\n");
- 			goto out_put;
-diff --git a/tools/perf/tests/hists_link.c b/tools/perf/tests/hists_link.c
-index a024d3f3a412..112a90818d2e 100644
---- a/tools/perf/tests/hists_link.c
-+++ b/tools/perf/tests/hists_link.c
-@@ -86,7 +86,7 @@ static int add_hist_entries(struct evlist *evlist, struct machine *machine)
- 			if (machine__resolve(machine, &al, &sample) < 0)
- 				goto out;
- 
--			he = hists__add_entry(hists, &al, NULL,
-+			he = hists__add_entry(hists, &al, NULL, NULL,
- 						NULL, NULL, &sample, true);
- 			if (he == NULL) {
- 				addr_location__put(&al);
-@@ -105,7 +105,7 @@ static int add_hist_entries(struct evlist *evlist, struct machine *machine)
- 			if (machine__resolve(machine, &al, &sample) < 0)
- 				goto out;
- 
--			he = hists__add_entry(hists, &al, NULL,
-+			he = hists__add_entry(hists, &al, NULL, NULL,
- 						NULL, NULL, &sample, true);
- 			if (he == NULL) {
- 				addr_location__put(&al);
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index ca5a8f4d007e..6d23efaa52c8 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -604,6 +604,7 @@ static struct hist_entry *hists__findnew_entry(struct hists *hists,
- 			 * and will not be used anymore.
- 			 */
- 			mem_info__zput(entry->mem_info);
-+			zfree(&entry->haz_data);
- 
- 			block_info__zput(entry->block_info);
- 
-@@ -678,6 +679,7 @@ __hists__add_entry(struct hists *hists,
- 		   struct symbol *sym_parent,
- 		   struct branch_info *bi,
- 		   struct mem_info *mi,
-+		   struct perf_pipeline_haz_data *haz_data,
- 		   struct block_info *block_info,
- 		   struct perf_sample *sample,
- 		   bool sample_self,
-@@ -712,6 +714,7 @@ __hists__add_entry(struct hists *hists,
- 		.hists	= hists,
- 		.branch_info = bi,
- 		.mem_info = mi,
-+		.haz_data = haz_data,
- 		.block_info = block_info,
- 		.transaction = sample->transaction,
- 		.raw_data = sample->raw_data,
-@@ -732,10 +735,11 @@ struct hist_entry *hists__add_entry(struct hists *hists,
- 				    struct symbol *sym_parent,
- 				    struct branch_info *bi,
- 				    struct mem_info *mi,
-+				    struct perf_pipeline_haz_data *haz_data,
- 				    struct perf_sample *sample,
- 				    bool sample_self)
- {
--	return __hists__add_entry(hists, al, sym_parent, bi, mi, NULL,
-+	return __hists__add_entry(hists, al, sym_parent, bi, mi, haz_data, NULL,
- 				  sample, sample_self, NULL);
- }
- 
-@@ -745,10 +749,11 @@ struct hist_entry *hists__add_entry_ops(struct hists *hists,
- 					struct symbol *sym_parent,
- 					struct branch_info *bi,
- 					struct mem_info *mi,
-+					struct perf_pipeline_haz_data *haz_data,
- 					struct perf_sample *sample,
- 					bool sample_self)
- {
--	return __hists__add_entry(hists, al, sym_parent, bi, mi, NULL,
-+	return __hists__add_entry(hists, al, sym_parent, bi, mi, haz_data, NULL,
- 				  sample, sample_self, ops);
- }
- 
-@@ -823,7 +828,7 @@ iter_add_single_mem_entry(struct hist_entry_iter *iter, struct addr_location *al
- 	sample->period = cost;
- 
- 	he = hists__add_entry(hists, al, iter->parent, NULL, mi,
--			      sample, true);
-+			      NULL, sample, true);
- 	if (!he)
- 		return -ENOMEM;
- 
-@@ -926,7 +931,7 @@ iter_add_next_branch_entry(struct hist_entry_iter *iter, struct addr_location *a
- 	sample->weight = bi->flags.cycles ? bi->flags.cycles : 1;
- 
- 	he = hists__add_entry(hists, al, iter->parent, &bi[i], NULL,
--			      sample, true);
-+			      NULL, sample, true);
- 	if (he == NULL)
- 		return -ENOMEM;
- 
-@@ -963,7 +968,7 @@ iter_add_single_normal_entry(struct hist_entry_iter *iter, struct addr_location
- 	struct hist_entry *he;
- 
- 	he = hists__add_entry(evsel__hists(evsel), al, iter->parent, NULL, NULL,
--			      sample, true);
-+			      NULL, sample, true);
- 	if (he == NULL)
- 		return -ENOMEM;
- 
-@@ -1024,7 +1029,7 @@ iter_add_single_cumulative_entry(struct hist_entry_iter *iter,
- 	int err = 0;
- 
- 	he = hists__add_entry(hists, al, iter->parent, NULL, NULL,
--			      sample, true);
-+			      NULL, sample, true);
- 	if (he == NULL)
- 		return -ENOMEM;
- 
-@@ -1101,7 +1106,7 @@ iter_add_next_cumulative_entry(struct hist_entry_iter *iter,
- 	}
- 
- 	he = hists__add_entry(evsel__hists(evsel), al, iter->parent, NULL, NULL,
--			      sample, false);
-+			      NULL, sample, false);
- 	if (he == NULL)
- 		return -ENOMEM;
- 
-@@ -1268,6 +1273,9 @@ void hist_entry__delete(struct hist_entry *he)
- 		mem_info__zput(he->mem_info);
- 	}
- 
-+	if (he->haz_data)
-+		zfree(&he->haz_data);
+ perf-$(CONFIG_ZLIB) += zlib.o
+ perf-$(CONFIG_LZMA) += lzma.o
+diff --git a/tools/perf/util/hazard.c b/tools/perf/util/hazard.c
+new file mode 100644
+index 000000000000..db235b26b266
+--- /dev/null
++++ b/tools/perf/util/hazard.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <string.h>
++#include "hazard/powerpc/powerpc_hazard.h"
 +
- 	if (he->block_info)
- 		block_info__zput(he->block_info);
- 
-diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-index 0aa63aeb58ec..a4d12a503126 100644
---- a/tools/perf/util/hist.h
-+++ b/tools/perf/util/hist.h
-@@ -139,6 +139,7 @@ struct hist_entry *hists__add_entry(struct hists *hists,
- 				    struct symbol *parent,
- 				    struct branch_info *bi,
- 				    struct mem_info *mi,
-+				    struct perf_pipeline_haz_data *haz_data,
- 				    struct perf_sample *sample,
- 				    bool sample_self);
- 
-@@ -148,6 +149,7 @@ struct hist_entry *hists__add_entry_ops(struct hists *hists,
- 					struct symbol *sym_parent,
- 					struct branch_info *bi,
- 					struct mem_info *mi,
-+					struct perf_pipeline_haz_data *haz_data,
- 					struct perf_sample *sample,
- 					bool sample_self);
- 
-diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
-index 6c862d62d052..55eb65fd593f 100644
---- a/tools/perf/util/sort.h
-+++ b/tools/perf/util/sort.h
-@@ -139,6 +139,7 @@ struct hist_entry {
- 	long			time;
- 	struct hists		*hists;
- 	struct mem_info		*mem_info;
-+	struct perf_pipeline_haz_data *haz_data;
- 	struct block_info	*block_info;
- 	void			*raw_data;
- 	u32			raw_size;
++const char *perf_haz__itype_str(u8 itype, const char *arch)
++{
++	if (!strncmp(arch, "powerpc", strlen("powerpc")))
++		return powerpc__haz__itype_str(itype);
++
++	return "-";
++}
++
++const char *perf_haz__icache_str(u8 icache, const char *arch)
++{
++	if (!strncmp(arch, "powerpc", strlen("powerpc")))
++		return powerpc__haz__icache_str(icache);
++
++	return "-";
++}
++
++const char *perf_haz__hstage_str(u8 hstage, const char *arch)
++{
++	if (!strncmp(arch, "powerpc", strlen("powerpc")))
++		return powerpc__haz__hstage_str(hstage);
++
++	return "-";
++}
++
++const char *perf_haz__hreason_str(u8 hstage, u8 hreason, const char *arch)
++{
++	if (!strncmp(arch, "powerpc", strlen("powerpc")))
++		return powerpc__haz__hreason_str(hstage, hreason);
++
++	return "-";
++}
++
++const char *perf_haz__sstage_str(u8 sstage, const char *arch)
++{
++	if (!strncmp(arch, "powerpc", strlen("powerpc")))
++		return powerpc__haz__sstage_str(sstage);
++
++	return "-";
++}
++
++const char *perf_haz__sreason_str(u8 sstage, u8 sreason, const char *arch)
++{
++	if (!strncmp(arch, "powerpc", strlen("powerpc")))
++		return powerpc__haz__sreason_str(sstage, sreason);
++
++	return "-";
++}
+diff --git a/tools/perf/util/hazard.h b/tools/perf/util/hazard.h
+new file mode 100644
+index 000000000000..eab4190e056a
+--- /dev/null
++++ b/tools/perf/util/hazard.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __PERF_HAZARD_H
++#define __PERF_HAZARD_H
++
++#include "sort.h"
++
++const char *perf_haz__itype_str(u8 itype, const char *arch);
++const char *perf_haz__icache_str(u8 icache, const char *arch);
++const char *perf_haz__hstage_str(u8 hstage, const char *arch);
++const char *perf_haz__hreason_str(u8 hstage, u8 hreason, const char *arch);
++const char *perf_haz__sstage_str(u8 sstage, const char *arch);
++const char *perf_haz__sreason_str(u8 sstage, u8 sreason, const char *arch);
++
++#endif /* __PERF_HAZARD_H */
+diff --git a/tools/perf/util/hazard/Build b/tools/perf/util/hazard/Build
+new file mode 100644
+index 000000000000..314c5e316383
+--- /dev/null
++++ b/tools/perf/util/hazard/Build
+@@ -0,0 +1 @@
++perf-y += powerpc/powerpc_hazard.o
+diff --git a/tools/perf/util/hazard/powerpc/perf_pipeline_haz.h b/tools/perf/util/hazard/powerpc/perf_pipeline_haz.h
+new file mode 100644
+index 000000000000..de8857ec31dd
+--- /dev/null
++++ b/tools/perf/util/hazard/powerpc/perf_pipeline_haz.h
+@@ -0,0 +1,80 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef _UAPI_ASM_POWERPC_PERF_PIPELINE_HAZ_H
++#define _UAPI_ASM_POWERPC_PERF_PIPELINE_HAZ_H
++
++enum perf_inst_type {
++	PERF_HAZ__ITYPE_LOAD = 1,
++	PERF_HAZ__ITYPE_STORE,
++	PERF_HAZ__ITYPE_BRANCH,
++	PERF_HAZ__ITYPE_FP,
++	PERF_HAZ__ITYPE_FX,
++	PERF_HAZ__ITYPE_CR_OR_SC,
++};
++
++enum perf_inst_cache {
++	PERF_HAZ__ICACHE_L1_HIT = 1,
++	PERF_HAZ__ICACHE_L2_HIT,
++	PERF_HAZ__ICACHE_L3_HIT,
++	PERF_HAZ__ICACHE_L3_MISS,
++};
++
++enum perf_pipeline_stage {
++	PERF_HAZ__PIPE_STAGE_IFU = 1,
++	PERF_HAZ__PIPE_STAGE_IDU,
++	PERF_HAZ__PIPE_STAGE_ISU,
++	PERF_HAZ__PIPE_STAGE_LSU,
++	PERF_HAZ__PIPE_STAGE_BRU,
++	PERF_HAZ__PIPE_STAGE_FXU,
++	PERF_HAZ__PIPE_STAGE_FPU,
++	PERF_HAZ__PIPE_STAGE_VSU,
++	PERF_HAZ__PIPE_STAGE_OTHER,
++};
++
++enum perf_haz_bru_reason {
++	PERF_HAZ__HAZ_BRU_MPRED_DIR = 1,
++	PERF_HAZ__HAZ_BRU_MPRED_TA,
++};
++
++enum perf_haz_isu_reason {
++	PERF_HAZ__HAZ_ISU_SRC = 1,
++	PERF_HAZ__HAZ_ISU_COL = 1,
++};
++
++enum perf_haz_lsu_reason {
++	PERF_HAZ__HAZ_LSU_ERAT_MISS = 1,
++	PERF_HAZ__HAZ_LSU_LMQ,
++	PERF_HAZ__HAZ_LSU_LHS,
++	PERF_HAZ__HAZ_LSU_MPRED,
++	PERF_HAZ__HAZ_DERAT_MISS,
++	PERF_HAZ__HAZ_LSU_LMQ_DERAT_MISS,
++	PERF_HAZ__HAZ_LSU_LHS_DERAT_MISS,
++	PERF_HAZ__HAZ_LSU_MPRED_DERAT_MISS,
++};
++
++enum perf_stall_lsu_reason {
++	PERF_HAZ__STALL_LSU_DCACHE_MISS = 1,
++	PERF_HAZ__STALL_LSU_LD_FIN,
++	PERF_HAZ__STALL_LSU_ST_FWD,
++	PERF_HAZ__STALL_LSU_ST,
++};
++
++enum perf_stall_fxu_reason {
++	PERF_HAZ__STALL_FXU_MC = 1,
++	PERF_HAZ__STALL_FXU_FC,
++};
++
++enum perf_stall_bru_reason {
++	PERF_HAZ__STALL_BRU_FIN_MPRED = 1,
++	PERF_HAZ__STALL_BRU_FC,
++};
++
++enum perf_stall_vsu_reason {
++	PERF_HAZ__STALL_VSU_MC = 1,
++	PERF_HAZ__STALL_VSU_FC,
++};
++
++enum perf_stall_other_reason {
++	PERF_HAZ__STALL_NTC,
++};
++
++#endif /* _UAPI_ASM_POWERPC_PERF_PIPELINE_HAZ_H */
+diff --git a/tools/perf/util/hazard/powerpc/powerpc_hazard.c b/tools/perf/util/hazard/powerpc/powerpc_hazard.c
+new file mode 100644
+index 000000000000..dcb95b769367
+--- /dev/null
++++ b/tools/perf/util/hazard/powerpc/powerpc_hazard.c
+@@ -0,0 +1,142 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <stddef.h>
++#include "hazard.h"
++#include "powerpc_hazard.h"
++#include "perf_pipeline_haz.h"
++
++static const char *haz_inst_type[] = {
++	"-",
++	"Load",
++	"Store",
++	"Branch",
++	"Floating Point",
++	"Fixed point",
++	"Condition Register/System Call",
++};
++
++const char *powerpc__haz__itype_str(u8 itype)
++{
++	return haz_inst_type[itype];
++}
++
++static const char *haz_inst_cache[] = {
++	"-",
++	"L1 hit",
++	"L2 hit",
++	"L3 hit",
++	"L3 Miss"
++};
++
++const char *powerpc__haz__icache_str(u8 icache)
++{
++	return haz_inst_cache[icache];
++}
++
++static const char *pipeline_stages[] = {
++	"-",
++	"IFU",
++	"IDU",
++	"ISU",
++	"LSU",
++	"BRU",
++	"FXU",
++	"FPU",
++	"VSU",
++};
++
++const char *powerpc__haz__hstage_str(u8 hstage)
++{
++	return pipeline_stages[hstage];
++}
++
++static const char *haz_bru_reason[] = {
++	"-",
++	"Direction",
++	"Target Address",
++};
++
++static const char *haz_isu_reason[] = {
++	"-",
++	"Source Unavailable",
++	"Resource Collision",
++};
++
++static const char *haz_lsu_reason[] = {
++	"-",
++	"ERAT Miss",
++	"LMQ Full",
++	"Load Hit Store",
++	"Mispredict",
++	"DERAT Miss",
++	"LMQ Full, DERAT Miss",
++	"Load Hit Store, DERAT Miss",
++	"Mispredict, DERAT Miss",
++};
++
++const char *powerpc__haz__hreason_str(u8 hstage, u8 hreason)
++{
++	switch (hstage) {
++	case PERF_HAZ__PIPE_STAGE_BRU:
++		return haz_bru_reason[hreason];
++	case PERF_HAZ__PIPE_STAGE_LSU:
++		return haz_lsu_reason[hreason];
++	case PERF_HAZ__PIPE_STAGE_ISU:
++		return haz_isu_reason[hreason];
++	default:
++		return "-";
++	}
++}
++
++const char *powerpc__haz__sstage_str(u8 sstage)
++{
++	return pipeline_stages[sstage];
++}
++
++static const char *stall_lsu_reason[] = {
++	"-",
++	"Dcache_miss",
++	"Load fin",
++	"Store fwd",
++	"Store",
++};
++
++static const char *stall_fxu_reason[] = {
++	"-",
++	"Multi cycle",
++	"Fixed cycle",
++};
++
++static const char *stall_bru_reason[] = {
++	"-",
++	"Finish Mispredict",
++	"Fixed cycle",
++};
++
++static const char *stall_vsu_reason[] = {
++	"-",
++	"Multi cycle",
++	"Fixed cycle",
++};
++
++static const char *stall_other_reason[] = {
++	"-",
++	"Marked fin before NTC",
++};
++
++const char *powerpc__haz__sreason_str(u8 sstage, u8 sreason)
++{
++	switch (sstage) {
++	case PERF_HAZ__PIPE_STAGE_LSU:
++		return stall_lsu_reason[sreason];
++	case PERF_HAZ__PIPE_STAGE_FXU:
++		return stall_fxu_reason[sreason];
++	case PERF_HAZ__PIPE_STAGE_BRU:
++		return stall_bru_reason[sreason];
++	case PERF_HAZ__PIPE_STAGE_VSU:
++		return stall_vsu_reason[sreason];
++	case PERF_HAZ__PIPE_STAGE_OTHER:
++		return stall_other_reason[sreason];
++	default:
++		return "-";
++	}
++}
+diff --git a/tools/perf/util/hazard/powerpc/powerpc_hazard.h b/tools/perf/util/hazard/powerpc/powerpc_hazard.h
+new file mode 100644
+index 000000000000..f13f8f3cd10d
+--- /dev/null
++++ b/tools/perf/util/hazard/powerpc/powerpc_hazard.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __PERF_POWERPC_HAZARD_H
++#define __PERF_POWERPC_HAZARD_H
++
++#include "hazard.h"
++
++const char *powerpc__haz__itype_str(u8 itype);
++const char *powerpc__haz__icache_str(u8 icache);
++const char *powerpc__haz__hstage_str(u8 hstage);
++const char *powerpc__haz__hreason_str(u8 hstage, u8 hreason);
++const char *powerpc__haz__sstage_str(u8 sstage);
++const char *powerpc__haz__sreason_str(u8 sstage, u8 sreason);
++
++#endif /* __PERF_POWERPC_HAZARD_H */
 -- 
 2.21.1
 
