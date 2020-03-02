@@ -2,48 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725AA1757AF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 10:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0A11757C9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 10:57:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WFnn0nX3zDqfS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 20:53:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WFtj5h4vzDqj4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 20:57:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=123.58.177.126;
- helo=m177126.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m177126.mail.qiye.163.com (m177126.mail.qiye.163.com
- [123.58.177.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WFm92NNRzDqXK
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 20:51:51 +1100 (AEDT)
-Received: from vivo.com (wm-5 [127.0.0.1])
- by m177126.mail.qiye.163.com (Hmail) with ESMTP id BF86B182DD1;
- Mon,  2 Mar 2020 17:51:40 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AKwA*ABoCIJ9vbaCjM1qLqoO.3.1583142700761.Hmail.wenhu.wang@vivo.com>
-To: Scott Wood <oss@buserror.net>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtlIEZTTF84NVhYX0NBQ0hFX1NSQU0gY29uZmlndXJhYmxl?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.227
-In-Reply-To: <2a7cf26aa11adf43ec4f29ab733afc695039633c.camel@buserror.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WFrR6xY4zDqXl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 20:55:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=L3pFQ9NLTXNxgalOAVVXDxBAPiPNjQ1YAk86r0HAYHg=; b=ZUf3riTbabd9Lifttnyb2Ado8j
+ 5jUbZCdBR+/ICa6BGmWdfGfrLsiyFLzHa4aBs+APAk8ONw0vofiUBw05W3v6aeQ07Tz0n58nX4Y8n
+ 3Mi75pAdtRLMlYmDbnSKcnyroP2XkIz1uHgoxEKbjFjf0BZy9Ni5gV9epsacPOW050FnMeIDlglht
+ W/IKVoyHwMKSIR3FLL1v19WMNqu6+f2XaRx4apI0wdItmdLvBZ7/yq69MMzN1zulnlI69cgoXxKVE
+ RFpuyK6/WquHujE+6aw78k6EQMS6kF9wUH5k/8wj6cv8EBftvl/Y4k+5FdmELmI/EcgdS9mq1q0PP
+ xNoLvMlg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1j8hnC-0006ER-IT; Mon, 02 Mar 2020 09:55:18 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7B9093012C3;
+ Mon,  2 Mar 2020 10:53:18 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id E82B0202A4098; Mon,  2 Mar 2020 10:55:15 +0100 (CET)
+Date: Mon, 2 Mar 2020 10:55:15 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [RFC 02/11] perf/core: Data structure to present hazard data
+Message-ID: <20200302095515.GR18400@hirez.programming.kicks-ass.net>
+References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
+ <20200302052355.36365-3-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.227) ] by ajax-webmail (
- [127.0.0.1] ) ; Mon, 2 Mar 2020 17:51:40 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Mon, 2 Mar 2020 17:51:40 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVMSU1CQkJMTkJNTE9LTFlXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhNTktKSEhOS0pLN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6MAw6UTo5FDgyMUINGRo4ETZKCjcKFDRVSFVKTkNISk9JTEtJQkhMVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlMWVdZCAFZQUpLTEJCNwY+
-X-HM-Tid: 0a709aa886fa6458kursbf86b182dd1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200302052355.36365-3-ravi.bangoria@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,120 +67,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rai Harninder <harninder.rai@nxp.com>, trivial@kernel.org,
- linux-kernel@vger.kernel.org, wangwenhu <wenhu.pku@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, ak@linux.intel.com, maddy@linux.ibm.com,
+ alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
+ eranian@google.com, adrian.hunter@intel.com, robert.richter@amd.com,
+ yao.jin@linux.intel.com, mingo@redhat.com, paulus@samba.org, acme@kernel.org,
+ namhyung@kernel.org, kim.phillips@amd.com, linuxppc-dev@lists.ozlabs.org,
+ alexey.budankov@linux.intel.com, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-5Y+R5Lu25Lq677yaU2NvdHQgV29vZCA8b3NzQGJ1c2Vycm9yLm5ldD4K5Y+R6YCB5pel5pyf77ya
-MjAyMC0wMy0wMiAxNjo1ODo1MgrmlLbku7bkurrvvJoi546L5paH6JmOIiA8d2VuaHUud2FuZ0B2
-aXZvLmNvbT4K5oqE6YCB5Lq677yad2FuZ3dlbmh1IDx3ZW5odS5wa3VAZ21haWwuY29tPixLdW1h
-ciBHYWxhIDxnYWxha0BrZXJuZWwuY3Jhc2hpbmcub3JnPixCZW5qYW1pbiBIZXJyZW5zY2htaWR0
-IDxiZW5oQGtlcm5lbC5jcmFzaGluZy5vcmc+LFBhdWwgTWFja2VycmFzIDxwYXVsdXNAc2FtYmEu
-b3JnPixNaWNoYWVsIEVsbGVybWFuIDxtcGVAZWxsZXJtYW4uaWQuYXU+LGxpbnV4cHBjLWRldkBs
-aXN0cy5vemxhYnMub3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcsdHJpdmlhbEBrZXJu
-ZWwub3JnLFJhaSBIYXJuaW5kZXIgPGhhcm5pbmRlci5yYWlAbnhwLmNvbT4K5Li76aKY77yaUmU6
-IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtlIEZTTF84NVhYX0NBQ0hFX1NSQU0gY29uZmln
-dXJhYmxlPk9uIE1vbiwgMjAyMC0wMy0wMiBhdCAxMjo0MiArMDgwMCwg546L5paH6JmOIHdyb3Rl
-Ogo+PiDlj5Hku7bkurrvvJpTY290dCBXb29kIDxvc3NAYnVzZXJyb3IubmV0Pgo+PiDlj5HpgIHm
-l6XmnJ/vvJoyMDIwLTAzLTAxIDA3OjEyOjU4Cj4+IOaUtuS7tuS6uu+8miLnjovmlofomY4iIDx3
-ZW5odS53YW5nQHZpdm8uY29tPgo+PiDmioTpgIHkurrvvJp3YW5nd2VuaHUgPHdlbmh1LnBrdUBn
-bWFpbC5jb20+LEt1bWFyIEdhbGEgPGdhbGFrQGtlcm5lbC5jcmFzaGluZy5vcmc+LEIKPj4gZW5q
-YW1pbiBIZXJyZW5zY2htaWR0IDxiZW5oQGtlcm5lbC5jcmFzaGluZy5vcmc+LFBhdWwgTWFja2Vy
-cmFzIDwKPj4gcGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFu
-LmlkLmF1PiwKPj4gbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcsbGludXgta2VybmVsQHZn
-ZXIua2VybmVsLm9yZywKPj4gdHJpdmlhbEBrZXJuZWwub3JnLFJhaSBIYXJuaW5kZXIgPGhhcm5p
-bmRlci5yYWlAbnhwLmNvbT4KPj4g5Li76aKY77yaUmU6IFJlOiBbUEFUQ0hdIHBvd2VycGMvS2Nv
-bmZpZzogTWFrZSBGU0xfODVYWF9DQUNIRV9TUkFNIGNvbmZpZ3VyYWJsZT5Pbgo+PiBUdWUsIDIw
-MjAtMDEtMjEgYXQgMTQ6MzggKzA4MDAsIOeOi+aWh+iZjiB3cm90ZToKPj4gPiA+IOWPkeS7tuS6
-uu+8mlNjb3R0IFdvb2QgPG9zc0BidXNlcnJvci5uZXQ+Cj4+ID4gPiDlj5HpgIHml6XmnJ/vvJoy
-MDIwLTAxLTIxIDEzOjQ5OjU5Cj4+ID4gPiDmlLbku7bkurrvvJoi546L5paH6JmOIiA8d2VuaHUu
-d2FuZ0B2aXZvLmNvbT4KPj4gPiA+IOaKhOmAgeS6uu+8mndhbmd3ZW5odSA8d2VuaHUucGt1QGdt
-YWlsLmNvbT4sS3VtYXIgR2FsYSA8Cj4+ID4gPiBnYWxha0BrZXJuZWwuY3Jhc2hpbmcub3JnPixC
-Cj4+ID4gPiBlbmphbWluIEhlcnJlbnNjaG1pZHQgPGJlbmhAa2VybmVsLmNyYXNoaW5nLm9yZz4s
-UGF1bCBNYWNrZXJyYXMgPAo+PiA+ID4gcGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBFbGxlcm1h
-biA8bXBlQGVsbGVybWFuLmlkLmF1PiwKPj4gPiA+IGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMu
-b3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcsCj4+ID4gPiB0cml2aWFsQGtlcm5lbC5v
-cmcsUmFpIEhhcm5pbmRlciA8aGFybmluZGVyLnJhaUBueHAuY29tPgo+PiA+ID4g5Li76aKY77ya
-UmU6IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtlIEZTTF84NVhYX0NBQ0hFX1NSQU0gY29u
-ZmlndXJhYmxlPk9uCj4+ID4gPiBUdWUsIDIwMjAtMDEtMjEgYXQgMTM6MjAgKzA4MDAsIOeOi+aW
-h+iZjiB3cm90ZToKPj4gPiA+ID4gPiBGcm9tOiBTY290dCBXb29kIDxvc3NAYnVzZXJyb3IubmV0
-Pgo+PiA+ID4gPiA+IERhdGU6IDIwMjAtMDEtMjEgMTE6MjU6MjUKPj4gPiA+ID4gPiBUbzogIHdh
-bmd3ZW5odSA8d2VuaHUucGt1QGdtYWlsLmNvbT4sS3VtYXIgR2FsYSA8Cj4+ID4gPiA+ID4gZ2Fs
-YWtAa2VybmVsLmNyYXNoaW5nLm9yZz4sCj4+ID4gPiA+ID4gQmVuamFtaW4gSGVycmVuc2NobWlk
-dCA8YmVuaEBrZXJuZWwuY3Jhc2hpbmcub3JnPixQYXVsIE1hY2tlcnJhcyA8Cj4+ID4gPiA+ID4g
-cGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PiwK
-Pj4gPiA+ID4gPiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyxsaW51eC1rZXJuZWxAdmdl
-ci5rZXJuZWwub3JnCj4+ID4gPiA+ID4gQ2M6ICB0cml2aWFsQGtlcm5lbC5vcmcsd2VuaHUud2Fu
-Z0B2aXZvLmNvbSxSYWkgSGFybmluZGVyIDwKPj4gPiA+ID4gPiBoYXJuaW5kZXIucmFpQG54cC5j
-b20+Cj4+ID4gPiA+ID4gU3ViamVjdDogUmU6IFtQQVRDSF0gcG93ZXJwYy9LY29uZmlnOiBNYWtl
-IEZTTF84NVhYX0NBQ0hFX1NSQU0KPj4gPiA+ID4gPiBjb25maWd1cmFibGU+T24gTW9uLCAyMDIw
-LTAxLTIwIGF0IDA2OjQzIC0wODAwLCB3YW5nd2VuaHUgd3JvdGU6Cj4+ID4gPiA+ID4gPiA+IEZy
-b206IHdhbmd3ZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KPj4gPiA+ID4gPiA+ID4gCj4+ID4g
-PiA+ID4gPiA+IFdoZW4gZ2VuZXJhdGluZyAuY29uZmlnIGZpbGUgd2l0aCBtZW51Y29uZmlnIG9u
-IEZyZWVzY2FsZSBCT09LRQo+PiA+ID4gPiA+ID4gPiBTT0MsIEZTTF84NVhYX0NBQ0hFX1NSQU0g
-aXMgbm90IGNvbmZpZ3VyYWJsZSBmb3IgdGhlIGxhY2sgb2YKPj4gPiA+ID4gPiA+ID4gZGVzY3Jp
-cHRpb24gaW4gdGhlIEtjb25maWcgZmllbGQsIHdoaWNoIG1ha2VzIGl0IGltcG9zc2libGUKPj4g
-PiA+ID4gPiA+ID4gdG8gc3VwcG9ydCBMMkNhY2hlLVNyYW0gZHJpdmVyLiBBZGQgYSBkZXNjcmlw
-dGlvbiB0byBtYWtlIGl0Cj4+ID4gPiA+ID4gPiA+IGNvbmZpZ3VyYWJsZS4KPj4gPiA+ID4gPiA+
-ID4gCj4+ID4gPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IHdhbmd3ZW5odSA8d2VuaHUud2FuZ0B2
-aXZvLmNvbT4KPj4gPiA+ID4gPiA+IAo+PiA+ID4gPiA+ID4gVGhlIGludGVudCB3YXMgdGhhdCBk
-cml2ZXJzIHVzaW5nIHRoZSBTUkFNIEFQSSB3b3VsZCBzZWxlY3QgdGhlCj4+ID4gPiA+ID4gPiBz
-eW1ib2wuICBXaGF0Cj4+ID4gPiA+ID4gPiBpcyB0aGUgdXNlIGNhc2UgZm9yIHNlbGVjdGluZyBp
-dCBtYW51YWxseT8KPj4gPiA+ID4gPiA+IAo+PiA+ID4gPiA+IAo+PiA+ID4gPiA+IFdpdGggYSBy
-ZXBvc2l0b3J5IG9mIG11bHRpcGxlIHByb2R1Y3RzKG1lYW5pbmcgZGlmZmVyZW50IGRlZmNvbmZp
-Z3MpCj4+ID4gPiA+ID4gYW5kCj4+ID4gPiA+ID4gbXVsdGlwbGUKPj4gPiA+ID4gPiBkZXZlbG9w
-ZXJzLCB0aGUgS2NvbmZpZ3Mgb2YgdGhlIEtlcm5lbCBTb3VyY2UgVHJlZSBjaGFuZ2UKPj4gPiA+
-ID4gPiBmcmVxdWVudGx5LiBTbwo+PiA+ID4gPiA+IHRoZQo+PiA+ID4gPiA+ICJtYWtlIG1lbnVj
-b25maWciCj4+ID4gPiA+ID4gcHJvY2VzcyBpcyBuZWVkZWQgZm9yIGRlZmNvbmZpZ3MnIHJlLWdl
-bmVyYXRpbmcgb3IgdXBkYXRpbmcgZm9yIHRoZQo+PiA+ID4gPiA+IGNvbXBsZXhpdHkgb2YgZGVw
-ZW5kZW5jaWVzCj4+ID4gPiA+ID4gYmV0d2VlbiBkaWZmZXJlbnQgZmVhdHVyZXMgZGVmaW5lZCBp
-biB0aGUgS2NvbmZpZ3MuCj4+ID4gPiA+IAo+PiA+ID4gPiBUaGF0IGRvZXNuJ3QgYW5zd2VyIG15
-IHF1ZXN0aW9uIG9mIGhvdyB0aGUgU1JBTSBjb2RlIHdvdWxkIGJlIHVzZWZ1bAo+PiA+ID4gPiBv
-dGhlcgo+PiA+ID4gPiB0aGFuIHRvIHNvbWUgb3RoZXIgZHJpdmVyIHRoYXQgdXNlcyB0aGUgQVBJ
-ICh3aGljaCB3b3VsZCB1c2UKPj4gPiA+ID4gInNlbGVjdCIpLiAgVGhlcmUKPj4gPiA+ID4gaXMg
-bm8gdXNlcnNwYWNlIEFQSS4gIFlvdSBjb3VsZCB1c2UgdGhlIGtlcm5lbCBjb21tYW5kIGxpbmUg
-dG8KPj4gPiA+ID4gY29uZmlndXJlCj4+ID4gPiA+IHRoZQo+PiA+ID4gPiBTUkFNIGJ1dCB5b3Ug
-bmVlZCB0byBnZXQgdGhlIGFkZHJlc3Mgb2YgaXQgZm9yIGl0IHRvIGJlIHVzZWZ1bC4KPj4gPiA+
-ID4gCj4+ID4gPiAKPj4gPiA+IExpa2UgeW91J3ZlIGFza2VkIGJlbG93LCB2aWEgL2Rldi9tZW0g
-b3IgZGlyZWN0IGNhbGxpbmcgd2l0aGluIHRoZQo+PiA+ID4gS2VybmVsLgo+PiA+ID4gQW5kIHRo
-ZXkgYXJlIG5vdCBzdWJtaXR0ZWQgeWVzLCB1bmRlciBkZXZlbG9wbWVudC4KPj4gPiAKPj4gPiBJ
-ZiB0aGV5IGFyZSBjYWxsaW5nIHdpdGhpbiB0aGUga2VybmVsLCB0aGVuIHdoYXRldmVyIGRyaXZl
-ciB0aGF0IGlzIHNob3VsZAo+PiA+IHNlbGVjdCBGU0xfODVYWF9DQUNIRV9TUkFNLiAgRGlyZWN0
-bHkgYWNjZXNzaW5nIC9kZXYvbWVtIHdpdGhvdXQgYW55IHdheQo+PiA+IGZvcgo+PiA+IHRoZSBr
-ZXJuZWwgdG8gYWR2ZXJ0aXNlIHdoZXJlIGl0IGlzIG9yIHdoaWNoIHBhcnRzIG9mIFNSQU0gYXJl
-IGF2YWlsYWJsZQo+PiA+IGZvcgo+PiA+IHVzZSBzb3VuZHMgbGlrZSBhIGJhZCBpZGVhLgo+PiA+
-IAo+PiAKPj4gWWVzLCBkZWZpbml0ZWx5LiBTbyBsaWtlIHdlIGVuYWJsZSB0aGUgbW91bGRlIHdo
-aWNoIHNob3VsZCBzZWxldCAKPj4gRlNMXzg1WFhfQ0FDSEVfU1JBTSB0byBidWlsZCB2bWxpbnV4
-LCBGU0xfODVYWF9DQUNIRV9TUkFNIAo+PiBjb3VsZCBub3QgYmUgc2VsZXRlZCBiZWNhdXNlIG9m
-IHRoZSBLY29uZmlnIGRlZmluaXRpb24gcHJvYmxlbSAKPj4gd2hpY2ggSSBhbSB0cnlpbmcgdG8g
-Zml4IG5vdy4gIFNvIHdvdWxkIHlvdSBwbGVhc2UgbWVyZ2UgdGhlIHBhdGNoIAo+PiBmb3IgdGhl
-IGNvbnZlbmllbmNlIG9mIGxhdGVyIHdvcmtzIGRlcGVuZGluZyBvbiB0aGUgZHJpdmVyLgo+Cj5T
-b3JyeSwgSSBkb24ndCB0aGluayBpdCdzIHNvbWV0aGluZyB0aGF0IHNob3VsZCBiZSBlbmFibGVk
-IGJ5IGl0c2VsZiB3aXRoCj5ub3RoaW5nIHVzaW5nIHRoZSBhbGxvY2F0b3JzLiAgU3VwcG9zZSB3
-ZSB0b29rIHRoaXMgcGF0Y2gsIGFuZCBwZW9wbGUgZW5hYmxlZAo+aXQgYW5kIGFjY2Vzc2VkIGl0
-IHZpYSAvZGV2L21lbS4gIFRoZW4gc3VwcG9zZSBhIGRyaXZlciBpcyBwYXRjaGVkIHRvIGFsbG9j
-YXRlCj5zb21lIHNyYW0gYW5kIHVzZSBpdC4gIFRoZXknZCBiZSBzdGVwcGluZyBvbiBlYWNoIG90
-aGVycycgdG9lcyB1bmRldGVjdGVkLgo+ClJpZ2h0LCBhbmQgbWF5YmUgaSBkaWQgbm90IGV4cGxh
-aW4gaXQgY2xlYXI6IEkgbWVhbiB0aGF0IHdlIGFyZSBkZXZlbG9waW5nCm1vZHVsZXMgYm90aCBp
-biBrZXJuZWwgd2hpY2ggY2FsbCB0aGUgaW50ZXJmYWNlcyBvZiBGU0xfODVYWF9DQUNIRV9TUkFN
-IApkaXJlY3RseSwgYW5kIGluIHVzZXIgc3BhY2Ugd2hpY2ggaXMgYSBmdXJ0aGVyIGNvbnNpZGVy
-YXRpb24gdXBvbiB0aGUgd29yawp3ZSBoYXZlIGRvbmUuIENhdXNlIHdlIGhhdmUgbm90IGV4cG9y
-dGVkIHRoZSBjb2RlIHVuZGVyIGRldmVsb3BpbmcsIGl0IApzZWVtcyBsaWtlIHRoYXQgbm90aGlu
-ZyB1c2VzIEZTTF84NVhYX0NBQ0hFX1NSQU0uCgo+SWYgeW91IHdhbnQgdG8gZXhwb3NlIGl0IHRv
-IHVzZXJzcGFjZSwgYWRkIGNvZGUgdGhhdCBhbGxvY2F0ZXMgc29tZSBvciBhbGwgb2YKPnRoZSBz
-cmFtIGFuZCBtYWtlIGl0IHNvbWV0aGluZyB1c2Vyc3BhY2UgY2FuIG1tYXAuICBPciwgaWYgbm90
-aGluZydzIGdvaW5nIHRvCj51c2UgdGhlbSwgcmVtb3ZlIHRoZSBhbGxvY2F0b3JzIGFuZCBleHBv
-cnQgdGhlIGVudGlyZSB0aGluZyB0byB1c2Vyc3BhY2UKPihhZ2FpbiB2aWEgYW4gc3JhbS1zcGVj
-aWZpYyBtYXBwYWJsZSByYXRoZXIgdGhhbiAvZGV2L21lbSkuCgpBcyBmb3IgL2Rldi9tZW0sIGl0
-IHdhcyBvbmUgb2Ygb3VyIGNob2ljZXMgZXZlciBidXQgbm93IGEgdXNlci1zcGFjZSAKZHJpdmVy
-IGlzIHByZWZlcnJlZCBmb3IgZnVydGhlciBjb25zaWRlcmF0aW9uLiBCdXQgY3VycmVudGx5LCB0
-aGUgZnVuY3Rpb25hbGl0eSAKdGhhdCBkaXJlY3RseSBjYWxscyB0aGUgaW5zdGVyZmFjZXMgb2Yg
-RlNMXzg1WFhfQ0FDSEVfU1JBTSBoYXZlIGJlZW4gCnVuZGVyIGRldmVsb3BpbmcgZm9yIGNvdXBs
-ZXMgb2YgZGF5cyBhbmQgd291bGQgYmUgZXhwb3J0ZWQgaW4gdGhlIGZ1dHVyZS4gClRoZXkgd291
-bGQgYmUgdXNlZCBvbiBody1wbGF0Zm9ybXMgbGlrZSBQUENlNTAwLgoKSnVzdCBzb21lIHRpbWUg
-aXQgdGFrZXMuIAoKRG8geW91IG1lYW4gdGhlIGV4cG9ydGluZyBpcyBhIHByZS1jb25kaXRpb24/
-IElmIG5vdCwgdGhlIG1lcmdlIHdvdWxkIApkbyBhIGZhdm9yIGZvciB0aGUgY29udmVuaWVuY2Uu
-CgpXZW5odQogCj4KPi1TY290dAo+Cj4KDQoNCg==
+On Mon, Mar 02, 2020 at 10:53:46AM +0530, Ravi Bangoria wrote:
+> From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> 
+> Introduce new perf sample_type PERF_SAMPLE_PIPELINE_HAZ to request kernel
+> to provide cpu pipeline hazard data. Also, introduce arch independent
+> structure 'perf_pipeline_haz_data' to pass hazard data to userspace. This
+> is generic structure and arch specific data needs to be converted to this
+> format.
+> 
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> ---
+>  include/linux/perf_event.h            |  7 ++++++
+>  include/uapi/linux/perf_event.h       | 32 ++++++++++++++++++++++++++-
+>  kernel/events/core.c                  |  6 +++++
+>  tools/include/uapi/linux/perf_event.h | 32 ++++++++++++++++++++++++++-
+>  4 files changed, 75 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+> index 547773f5894e..d5b606e3c57d 100644
+> --- a/include/linux/perf_event.h
+> +++ b/include/linux/perf_event.h
+> @@ -1001,6 +1001,7 @@ struct perf_sample_data {
+>  	u64				stack_user_size;
+>  
+>  	u64				phys_addr;
+> +	struct perf_pipeline_haz_data	pipeline_haz;
+>  } ____cacheline_aligned;
+>  
+>  /* default value for data source */
+> @@ -1021,6 +1022,12 @@ static inline void perf_sample_data_init(struct perf_sample_data *data,
+>  	data->weight = 0;
+>  	data->data_src.val = PERF_MEM_NA;
+>  	data->txn = 0;
+> +	data->pipeline_haz.itype = PERF_HAZ__ITYPE_NA;
+> +	data->pipeline_haz.icache = PERF_HAZ__ICACHE_NA;
+> +	data->pipeline_haz.hazard_stage = PERF_HAZ__PIPE_STAGE_NA;
+> +	data->pipeline_haz.hazard_reason = PERF_HAZ__HREASON_NA;
+> +	data->pipeline_haz.stall_stage = PERF_HAZ__PIPE_STAGE_NA;
+> +	data->pipeline_haz.stall_reason = PERF_HAZ__SREASON_NA;
+>  }
+
+NAK, Don't touch anything outside of the first cacheline here.
