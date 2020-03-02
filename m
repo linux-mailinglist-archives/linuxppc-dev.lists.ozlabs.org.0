@@ -2,56 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D6B175450
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 08:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6A4175483
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 08:37:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WBGg4cGqzDqQf
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 18:14:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WBn05KRGzDqbY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 18:37:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WBDt1TmgzDqWQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 18:12:56 +1100 (AEDT)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id C6DC3895D5107159B6EA;
- Mon,  2 Mar 2020 15:12:47 +0800 (CST)
-Received: from [127.0.0.1] (10.173.221.195) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0;
- Mon, 2 Mar 2020 15:12:40 +0800
-Subject: Re: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
-To: Scott Wood <oss@buserror.net>, Daniel Axtens <dja@axtens.net>,
- <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>, <me@tobin.cc>
-References: <20200206025825.22934-1-yanaijie@huawei.com>
- <87tv3drf79.fsf@dja-thinkpad.axtens.net>
- <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
- <e8cd8f287934954cfa07dcf76ac73492e2d49a5b.camel@buserror.net>
- <dd8db870-b607-3f74-d3bc-a8d9f33f9852@huawei.com>
- <4c0e7fec63dbc7b91fa6c24692c73c256c131f51.camel@buserror.net>
- <188971ed-f1c4-39b3-c07e-89cc593d88d7@huawei.com>
- <530c49dfd97c811dc53ffc78c594d7133f7eb1e9.camel@buserror.net>
- <35e6c660-3896-bdb8-45f3-c1504aa2171f@huawei.com>
- <31b5966ba579ef246176a7d8ad18c2c02788dd27.camel@buserror.net>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <17658c2b-9eb8-cee9-e9a2-93d316a401b1@huawei.com>
-Date: Mon, 2 Mar 2020 15:12:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WBl112XBzDqYV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 18:35:40 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0227Y94a112365
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 02:35:39 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfn0667yq-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 02:35:38 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Mon, 2 Mar 2020 07:35:36 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 2 Mar 2020 07:35:28 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0227ZRU642860844
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 2 Mar 2020 07:35:27 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 64329A404D;
+ Mon,  2 Mar 2020 07:35:27 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0D5A7A4051;
+ Mon,  2 Mar 2020 07:35:27 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  2 Mar 2020 07:35:27 +0000 (GMT)
+Received: from [9.102.43.192] (unknown [9.102.43.192])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 760FCA00BE;
+ Mon,  2 Mar 2020 18:35:18 +1100 (AEDT)
+Subject: Re: [PATCH v3 26/27] powerpc/powernv/pmem: Expose the firmware
+ version in sysfs
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-27-alastair@au1.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Mon, 2 Mar 2020 18:35:20 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <31b5966ba579ef246176a7d8ad18c2c02788dd27.camel@buserror.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.221.195]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200221032720.33893-27-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030207-0008-0000-0000-0000035840C9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030207-0009-0000-0000-00004A796B51
+Message-Id: <2253010d-c7ad-347b-4668-d5f1a95d3f1e@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-02_01:2020-02-28,
+ 2020-03-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=645
+ impostorscore=0 adultscore=0 spamscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2003020058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,76 +98,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> This information will be used by ndctl in userspace to help users identify
+> the device.
 
+You should include the information from the subject line in the body of 
+the commit message too.
 
-在 2020/3/2 11:24, Scott Wood 写道:
-> On Mon, 2020-03-02 at 10:17 +0800, Jason Yan wrote:
->>
->> 在 2020/3/1 6:54, Scott Wood 写道:
->>> On Sat, 2020-02-29 at 15:27 +0800, Jason Yan wrote:
->>>>
->>>> Turnning to %p may not be a good idea in this situation. So
->>>> for the REG logs printed when dumping stack, we can disable it when
->>>> KASLR is open. For the REG logs in other places like show_regs(), only
->>>> privileged can trigger it, and they are not combind with a symbol, so
->>>> I think it's ok to keep them.
->>>>
->>>> diff --git a/arch/powerpc/kernel/process.c
->>>> b/arch/powerpc/kernel/process.c
->>>> index fad50db9dcf2..659c51f0739a 100644
->>>> --- a/arch/powerpc/kernel/process.c
->>>> +++ b/arch/powerpc/kernel/process.c
->>>> @@ -2068,7 +2068,10 @@ void show_stack(struct task_struct *tsk, unsigned
->>>> long *stack)
->>>>                    newsp = stack[0];
->>>>                    ip = stack[STACK_FRAME_LR_SAVE];
->>>>                    if (!firstframe || ip != lr) {
->>>> -                       printk("["REG"] ["REG"] %pS", sp, ip, (void
->>>> *)ip);
->>>> +                       if (IS_ENABLED(CONFIG_RANDOMIZE_BASE))
->>>> +                               printk("%pS", (void *)ip);
->>>> +                       else
->>>> +                               printk("["REG"] ["REG"] %pS", sp, ip,
->>>> (void *)ip);
->>>
->>> This doesn't deal with "nokaslr" on the kernel command line.  It also
->>> doesn't
->>> seem like something that every callsite should have to opencode, versus
->>> having
->>> an appropriate format specifier behaves as I described above (and I still
->>> don't see why that format specifier should not be "%p").
->>>
->>
->> Actually I still do not understand why we should print the raw value
->> here. When KALLSYMS is enabled we have symbol name  and  offset like
->> put_cred_rcu+0x108/0x110, and when KALLSYMS is disabled we have the raw
->> address.
-> 
-> I'm more concerned about the stack address for wading through a raw stack dump
-> (to find function call arguments, etc).  The return address does help confirm
-> that I'm on the right stack frame though, and also makes looking up a line
-> number slightly easier than having to look up a symbol address and then add
-> the offset (at least for non-module addresses).
-> 
-> As a random aside, the mismatch between Linux printing a hex offset and GDB
-> using decimal in disassembly is annoying...
-> 
+I think this patch could probably be squashed in with the last one.
 
-OK, I will send a RFC patch to add a new format specifier such as "%pk" 
-or change the exsiting "%pK" to print raw value of addresses when KASLR 
-is disabled and print hash value of addresses when KASLR is enabled. 
-Let's see what the printk guys would say :)
-
-
-> -Scott
-> 
-> 
-> 
-> .
-> 
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
