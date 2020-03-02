@@ -1,42 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D435D175DC0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 15:59:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WNZv6mzNzDqdZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 01:59:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B63B175DC4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:01:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WNcx513VzDqcS
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 02:01:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48WNTZ6HKHzDqWK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 01:54:41 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B595FEC;
- Mon,  2 Mar 2020 06:54:40 -0800 (PST)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
- [10.121.207.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EB523F534;
- Mon,  2 Mar 2020 06:54:37 -0800 (PST)
-Date: Mon, 2 Mar 2020 14:54:35 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [RFC 02/11] perf/core: Data structure to present hazard data
-Message-ID: <20200302145434.GE56497@lakrids.cambridge.arm.com>
-References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
- <20200302052355.36365-3-ravi.bangoria@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200302052355.36365-3-ravi.bangoria@linux.ibm.com>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WNXR3CbPzDqWT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 01:57:11 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 022EtFR1078397
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 09:57:08 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfnbev8ty-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 09:57:08 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
+ Mon, 2 Mar 2020 14:57:06 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 2 Mar 2020 14:57:01 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 022Ev0Pt23396720
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 2 Mar 2020 14:57:00 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A225AE051;
+ Mon,  2 Mar 2020 14:57:00 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 08EFBAE053;
+ Mon,  2 Mar 2020 14:56:59 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.229.179])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  2 Mar 2020 14:56:58 +0000 (GMT)
+Subject: Re: [PATCH] ima: add a new CONFIG for loading arch-specific policies
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 02 Mar 2020 09:56:58 -0500
+In-Reply-To: <CAKv+Gu_E9O05xB7i2Y8KiMJUjtZoq54GxSbHnyTFePcF6fqQNA@mail.gmail.com>
+References: <1582744207-25969-1-git-send-email-nayna@linux.ibm.com>
+ <1583160524.8544.91.camel@linux.ibm.com>
+ <CAKv+Gu_E9O05xB7i2Y8KiMJUjtZoq54GxSbHnyTFePcF6fqQNA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030214-0020-0000-0000-000003AF9FA8
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030214-0021-0000-0000-00002207CB39
+Message-Id: <1583161018.8544.96.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-02_05:2020-03-02,
+ 2020-03-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 mlxlogscore=999
+ clxscore=1015 priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003020110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,213 +91,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ak@linux.intel.com, maddy@linux.ibm.com, peterz@infradead.org,
- jolsa@redhat.com, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- linux-kernel@vger.kernel.org, eranian@google.com, adrian.hunter@intel.com,
- alexander.shishkin@linux.intel.com, yao.jin@linux.intel.com, mingo@redhat.com,
- paulus@samba.org, acme@kernel.org, robert.richter@amd.com, namhyung@kernel.org,
- kim.phillips@amd.com, linuxppc-dev@lists.ozlabs.org,
- alexey.budankov@linux.intel.com, kan.liang@linux.intel.com
+Cc: linux-s390 <linux-s390@vger.kernel.org>,
+ linux-efi <linux-efi@vger.kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Philipp Rudo <prudo@linux.ibm.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 02, 2020 at 10:53:46AM +0530, Ravi Bangoria wrote:
-> From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+On Mon, 2020-03-02 at 15:52 +0100, Ard Biesheuvel wrote:
+> On Mon, 2 Mar 2020 at 15:48, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >
+> > On Wed, 2020-02-26 at 14:10 -0500, Nayna Jain wrote:
+> > > Every time a new architecture defines the IMA architecture specific
+> > > functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
+> > > include file needs to be updated. To avoid this "noise", this patch
+> > > defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
+> > > the different architectures to select it.
+> > >
+> > > Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> > > Cc: Ard Biesheuvel <ardb@kernel.org>
+> > > Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > Cc: Philipp Rudo <prudo@linux.ibm.com>
+> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > > ---
+> > >  arch/powerpc/Kconfig           | 2 +-
+> > >  arch/s390/Kconfig              | 1 +
+> > >  arch/x86/Kconfig               | 1 +
+> > >  include/linux/ima.h            | 3 +--
+> > >  security/integrity/ima/Kconfig | 9 +++++++++
+> > >  5 files changed, 13 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > > index 497b7d0b2d7e..b8ce1b995633 100644
+> > > --- a/arch/powerpc/Kconfig
+> > > +++ b/arch/powerpc/Kconfig
+> > > @@ -246,6 +246,7 @@ config PPC
+> > >       select SYSCTL_EXCEPTION_TRACE
+> > >       select THREAD_INFO_IN_TASK
+> > >       select VIRT_TO_BUS                      if !PPC64
+> > > +     select IMA_SECURE_AND_OR_TRUSTED_BOOT   if PPC_SECURE_BOOT
+> > >       #
+> > >       # Please keep this list sorted alphabetically.
+> > >       #
+> > > @@ -978,7 +979,6 @@ config PPC_SECURE_BOOT
+> > >       prompt "Enable secure boot support"
+> > >       bool
+> > >       depends on PPC_POWERNV
+> > > -     depends on IMA_ARCH_POLICY
+> > >       help
+> > >         Systems with firmware secure boot enabled need to define security
+> > >         policies to extend secure boot to the OS. This config allows a user
+> > > diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+> > > index 8abe77536d9d..90ff3633ade6 100644
+> > > --- a/arch/s390/Kconfig
+> > > +++ b/arch/s390/Kconfig
+> > > @@ -195,6 +195,7 @@ config S390
+> > >       select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+> > >       select SWIOTLB
+> > >       select GENERIC_ALLOCATOR
+> > > +     select IMA_SECURE_AND_OR_TRUSTED_BOOT
+> > >
+> > >
+> > >  config SCHED_OMIT_FRAME_POINTER
+> > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > > index beea77046f9b..cafa66313fe2 100644
+> > > --- a/arch/x86/Kconfig
+> > > +++ b/arch/x86/Kconfig
+> > > @@ -230,6 +230,7 @@ config X86
+> > >       select VIRT_TO_BUS
+> > >       select X86_FEATURE_NAMES                if PROC_FS
+> > >       select PROC_PID_ARCH_STATUS             if PROC_FS
+> > > +     select IMA_SECURE_AND_OR_TRUSTED_BOOT   if EFI
+> >
+> > Not everyone is interested in enabling IMA or requiring IMA runtime
+> > policies.  With this patch, enabling IMA_ARCH_POLICY is therefore
+> > still left up to the person building the kernel.  As a result, I'm
+> > seeing the following warning, which is kind of cool.
+> >
+> > WARNING: unmet direct dependencies detected for
+> > IMA_SECURE_AND_OR_TRUSTED_BOOT
+> >   Depends on [n]: INTEGRITY [=y] && IMA [=y] && IMA_ARCH_POLICY [=n]
+> >   Selected by [y]:
+> >   - X86 [=y] && EFI [=y]
+> >
+> > Ard, Michael, Martin, just making sure this type of warning is
+> > acceptable before upstreaming this patch.  I would appreciate your
+> > tags.
+> >
 > 
-> Introduce new perf sample_type PERF_SAMPLE_PIPELINE_HAZ to request kernel
-> to provide cpu pipeline hazard data. Also, introduce arch independent
-> structure 'perf_pipeline_haz_data' to pass hazard data to userspace. This
-> is generic structure and arch specific data needs to be converted to this
-> format.
+> Ehm, no, warnings like these are not really acceptable. It means there
+> is an inconsistency in the way the Kconfig dependencies are defined.
 > 
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->  include/linux/perf_event.h            |  7 ++++++
->  include/uapi/linux/perf_event.h       | 32 ++++++++++++++++++++++++++-
->  kernel/events/core.c                  |  6 +++++
->  tools/include/uapi/linux/perf_event.h | 32 ++++++++++++++++++++++++++-
->  4 files changed, 75 insertions(+), 2 deletions(-)
+> Does this help:
 > 
-> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-> index 547773f5894e..d5b606e3c57d 100644
-> --- a/include/linux/perf_event.h
-> +++ b/include/linux/perf_event.h
-> @@ -1001,6 +1001,7 @@ struct perf_sample_data {
->  	u64				stack_user_size;
->  
->  	u64				phys_addr;
-> +	struct perf_pipeline_haz_data	pipeline_haz;
->  } ____cacheline_aligned;
-
-I don't think you can add this here, see below.
-
->  /* default value for data source */
-> @@ -1021,6 +1022,12 @@ static inline void perf_sample_data_init(struct perf_sample_data *data,
->  	data->weight = 0;
->  	data->data_src.val = PERF_MEM_NA;
->  	data->txn = 0;
-> +	data->pipeline_haz.itype = PERF_HAZ__ITYPE_NA;
-> +	data->pipeline_haz.icache = PERF_HAZ__ICACHE_NA;
-> +	data->pipeline_haz.hazard_stage = PERF_HAZ__PIPE_STAGE_NA;
-> +	data->pipeline_haz.hazard_reason = PERF_HAZ__HREASON_NA;
-> +	data->pipeline_haz.stall_stage = PERF_HAZ__PIPE_STAGE_NA;
-> +	data->pipeline_haz.stall_reason = PERF_HAZ__SREASON_NA;
->  }
->  
->  extern void perf_output_sample(struct perf_output_handle *handle,
-> diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-> index 377d794d3105..ff252618ca93 100644
-> --- a/include/uapi/linux/perf_event.h
-> +++ b/include/uapi/linux/perf_event.h
-> @@ -142,8 +142,9 @@ enum perf_event_sample_format {
->  	PERF_SAMPLE_REGS_INTR			= 1U << 18,
->  	PERF_SAMPLE_PHYS_ADDR			= 1U << 19,
->  	PERF_SAMPLE_AUX				= 1U << 20,
-> +	PERF_SAMPLE_PIPELINE_HAZ		= 1U << 21,
->  
-> -	PERF_SAMPLE_MAX = 1U << 21,		/* non-ABI */
-> +	PERF_SAMPLE_MAX = 1U << 22,		/* non-ABI */
->  
->  	__PERF_SAMPLE_CALLCHAIN_EARLY		= 1ULL << 63, /* non-ABI; internal use */
->  };
-> @@ -870,6 +871,13 @@ enum perf_event_type {
->  	 *	{ u64			phys_addr;} && PERF_SAMPLE_PHYS_ADDR
->  	 *	{ u64			size;
->  	 *	  char			data[size]; } && PERF_SAMPLE_AUX
-> +	 *	{ u8			itype;
-> +	 *	  u8			icache;
-> +	 *	  u8			hazard_stage;
-> +	 *	  u8			hazard_reason;
-> +	 *	  u8			stall_stage;
-> +	 *	  u8			stall_reason;
-> +	 *	  u16			pad;} && PERF_SAMPLE_PIPELINE_HAZ
->  	 * };
-
-The existing comment shows the aux data *immediately* after ther
-phys_addr field, where you've placed struct perf_pipeline_haz_data.
-
-If adding to struct perf_sample_data is fine, this needs to come before
-the aux data in this comment. If adding to struct perf_sample_data is
-not fine. struct perf_pipeline_haz_data cannot live there.
-
-I suspect the latter is true, but you're getting away with it because
-you're not using both PERF_SAMPLE_AUX and PERF_SAMPLE_PIPELINE_HAZ
-simultaneously.
-
-Thanks,
-Mark.
-
->  	 */
->  	PERF_RECORD_SAMPLE			= 9,
-> @@ -1185,4 +1193,26 @@ struct perf_branch_entry {
->  		reserved:40;
->  };
->  
-> +struct perf_pipeline_haz_data {
-> +	/* Instruction/Opcode type: Load, Store, Branch .... */
-> +	__u8	itype;
-> +	/* Instruction Cache source */
-> +	__u8	icache;
-> +	/* Instruction suffered hazard in pipeline stage */
-> +	__u8	hazard_stage;
-> +	/* Hazard reason */
-> +	__u8	hazard_reason;
-> +	/* Instruction suffered stall in pipeline stage */
-> +	__u8	stall_stage;
-> +	/* Stall reason */
-> +	__u8	stall_reason;
-> +	__u16	pad;
-> +};
-> +
-> +#define PERF_HAZ__ITYPE_NA	0x0
-> +#define PERF_HAZ__ICACHE_NA	0x0
-> +#define PERF_HAZ__PIPE_STAGE_NA	0x0
-> +#define PERF_HAZ__HREASON_NA	0x0
-> +#define PERF_HAZ__SREASON_NA	0x0
-> +
->  #endif /* _UAPI_LINUX_PERF_EVENT_H */
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index e453589da97c..d00037c77ccf 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -1754,6 +1754,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
->  	if (sample_type & PERF_SAMPLE_PHYS_ADDR)
->  		size += sizeof(data->phys_addr);
->  
-> +	if (sample_type & PERF_SAMPLE_PIPELINE_HAZ)
-> +		size += sizeof(data->pipeline_haz);
-> +
->  	event->header_size = size;
->  }
->  
-> @@ -6712,6 +6715,9 @@ void perf_output_sample(struct perf_output_handle *handle,
->  			perf_aux_sample_output(event, handle, data);
->  	}
->  
-> +	if (sample_type & PERF_SAMPLE_PIPELINE_HAZ)
-> +		perf_output_put(handle, data->pipeline_haz);
-> +
->  	if (!event->attr.watermark) {
->  		int wakeup_events = event->attr.wakeup_events;
->  
-> diff --git a/tools/include/uapi/linux/perf_event.h b/tools/include/uapi/linux/perf_event.h
-> index 377d794d3105..ff252618ca93 100644
-> --- a/tools/include/uapi/linux/perf_event.h
-> +++ b/tools/include/uapi/linux/perf_event.h
-> @@ -142,8 +142,9 @@ enum perf_event_sample_format {
->  	PERF_SAMPLE_REGS_INTR			= 1U << 18,
->  	PERF_SAMPLE_PHYS_ADDR			= 1U << 19,
->  	PERF_SAMPLE_AUX				= 1U << 20,
-> +	PERF_SAMPLE_PIPELINE_HAZ		= 1U << 21,
->  
-> -	PERF_SAMPLE_MAX = 1U << 21,		/* non-ABI */
-> +	PERF_SAMPLE_MAX = 1U << 22,		/* non-ABI */
->  
->  	__PERF_SAMPLE_CALLCHAIN_EARLY		= 1ULL << 63, /* non-ABI; internal use */
->  };
-> @@ -870,6 +871,13 @@ enum perf_event_type {
->  	 *	{ u64			phys_addr;} && PERF_SAMPLE_PHYS_ADDR
->  	 *	{ u64			size;
->  	 *	  char			data[size]; } && PERF_SAMPLE_AUX
-> +	 *	{ u8			itype;
-> +	 *	  u8			icache;
-> +	 *	  u8			hazard_stage;
-> +	 *	  u8			hazard_reason;
-> +	 *	  u8			stall_stage;
-> +	 *	  u8			stall_reason;
-> +	 *	  u16			pad;} && PERF_SAMPLE_PIPELINE_HAZ
->  	 * };
->  	 */
->  	PERF_RECORD_SAMPLE			= 9,
-> @@ -1185,4 +1193,26 @@ struct perf_branch_entry {
->  		reserved:40;
->  };
->  
-> +struct perf_pipeline_haz_data {
-> +	/* Instruction/Opcode type: Load, Store, Branch .... */
-> +	__u8	itype;
-> +	/* Instruction Cache source */
-> +	__u8	icache;
-> +	/* Instruction suffered hazard in pipeline stage */
-> +	__u8	hazard_stage;
-> +	/* Hazard reason */
-> +	__u8	hazard_reason;
-> +	/* Instruction suffered stall in pipeline stage */
-> +	__u8	stall_stage;
-> +	/* Stall reason */
-> +	__u8	stall_reason;
-> +	__u16	pad;
-> +};
-> +
-> +#define PERF_HAZ__ITYPE_NA	0x0
-> +#define PERF_HAZ__ICACHE_NA	0x0
-> +#define PERF_HAZ__PIPE_STAGE_NA	0x0
-> +#define PERF_HAZ__HREASON_NA	0x0
-> +#define PERF_HAZ__SREASON_NA	0x0
-> +
->  #endif /* _UAPI_LINUX_PERF_EVENT_H */
-> -- 
-> 2.21.1
+>   select IMA_SECURE_AND_OR_TRUSTED_BOOT   if EFI && IMA_ARCH_POLICY
 > 
+> ?
+
+Yes, that's fine for x86.  Michael, Martin, do you want something
+similar or would you prefer actually selecting IMA_ARCH_POLICY?
+
+Mimi
+
