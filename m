@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672AE175B6A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 14:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9091F175B6C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 14:20:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WLKl4scPzDqbD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 00:17:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WLNP5g41zDqZp
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 00:20:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WLDH3PC8zDqY0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 00:13:02 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WLJ33HqwzDqS2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 00:16:19 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 199471] [Bisected][Regression] windfarm_pm* no longer gets
- automatically loaded when CONFIG_I2C_POWERMAC=y is set
-Date: Mon, 02 Mar 2020 13:13:00 +0000
+Subject: [Bug 201723] [Bisected][Regression] THERM_WINDTUNNEL not working any
+ longer in kernel 4.19.x (PowerMac G4 MDD)
+Date: Mon, 02 Mar 2020 13:16:16 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
+X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: wsa@the-dreams.de
-X-Bugzilla-Status: ASSIGNED
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status cf_regression
-Message-ID: <bug-199471-206035-aCfUw2icsx@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-199471-206035@https.bugzilla.kernel.org/>
-References: <bug-199471-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-201723-206035-mpiRenIsne@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-201723-206035@https.bugzilla.kernel.org/>
+References: <bug-201723-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -65,32 +65,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D199471
+https://bugzilla.kernel.org/show_bug.cgi?id=3D201723
 
 Wolfram Sang (wsa@the-dreams.de) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
-             Status|NEEDINFO                    |ASSIGNED
-         Regression|No                          |Yes
+             Status|ASSIGNED                    |RESOLVED
+         Resolution|---                         |CODE_FIX
 
---- Comment #15 from Wolfram Sang (wsa@the-dreams.de) ---
-"I guess so 'cause if I build i2c_powermac as a module and manually modprobe
-it, all the relevant windfarm modules get pulled in. But not before."
+--- Comment #7 from Wolfram Sang (wsa@the-dreams.de) ---
+Commited as 38b17afb0ebb ("macintosh: therm_windtunnel: fix regression when
+instantiating devices") and available upstream since v5.6-rc4.
 
-Maybe there is a module dependency I overlooked so far, but at least there =
-is
-no code loading the pm72 module from i2c-powermac.
-
-However, the bisect is very valuable and very likely the commit is the culp=
-rit.
-I was suspecting something changed the MODINFO, so loading fails, but I mis=
-sed
-this commit, so far. Also, it took me two approaches until I understood all=
- the
-behaviour involved. Macintosh drivers are still confusing.
-
-I will cook up a patch to test later today to see if I was right.
+Thanks for everyone helping, especially Erhard, of course!
 
 --=20
 You are receiving this mail because:
