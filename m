@@ -2,101 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3FC175898
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 11:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8AE1758B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 11:54:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WGyz3NkWzDqZw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 21:46:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WH8M6ClDzDqTY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 21:54:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oss.nxp.com (client-ip=40.107.22.70;
- helo=eur05-am6-obe.outbound.protection.outlook.com;
- envelope-from=madalin.bucur@oss.nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=jDtSUxyL;
- dkim-atps=neutral
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com
- (mail-am6eur05on2070.outbound.protection.outlook.com [40.107.22.70])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WGx76ZTdzDqVN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 21:44:38 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SiPHcyD8HQ5+9cBz6ZQuIOySbwaXzY0Ix0CbDkOf2O0VlJ6bVNHkeAJf1JOjOCdQDzDBjKmmACiuiNZGrSMzLHcyKlPGvsmFVpgHqnfUB7daovbjw1FZDXawseKgUXHfQDGAkQvvm1ltf0o/T7F+4bIa9PTagA+Acjc1WAjbNVesRk8AeGe4cSrKnD1pqGleHiMelTci199wA6x3N7lLHIOdXX+M4FeayZhDN2tEZ40LIFEDmXR8xy2jsCO/Ghhaj74Z3+y+6OM1UN1I0wZbNR0mdAILTUXC07ocbHe77viDeJT2dV4w0MeiCsD5kiVz8ShrhqbQen6GBm+QdMU95w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i19Gyo9zdPDbUpVac+USJNhVJXQ7kv/H3uBdvzIJk5U=;
- b=dTQh9nXmFazmui9ktdxa7XqCTBpO1oPvKLoh32lzrJRiqznnqTMxdD3breWfkvZAt/DJMFlC8k4DQiOs97DRVV0Is7KJPbb/V6cmfIaUxoc34KmiJwfT+K9JcAkZ2y1q7Lce068f0xc120h3gkUdruU6sCm4946uKe3g3RSSExSsCIOl2cLb29K+yQ2xEijt4OE9oEFZ11j0oFN9L7B+YoKc6Z7Oz9tQu5KkmbQNXNEqOzKGeDx6htwrTNLqFf4nRXIJL5mBjyNudoTSxtNvaQuSIhPTiTxFYl26Vlfpgn0DmWeXIcGvQ8cSaid0KET6zxLbK3URTeRt/oIineoMIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i19Gyo9zdPDbUpVac+USJNhVJXQ7kv/H3uBdvzIJk5U=;
- b=jDtSUxyLJ1T/nSKc5SnGphwfdIv04xEQYIhyZAieCDkjSVu4avZ+7fDXqW42QTfS6bLdUpZiTz5+HVFStb8i8BoWIpjPV8ZjY8zrngMPxk3gsicVYZ3M0Pj6jaX8epbw/Vw0bS68qseU5wo15gm3nI2bUUVYCMOYtCx/WmDIVNQ=
-Received: from DB8PR04MB6985.eurprd04.prod.outlook.com (52.133.243.85) by
- DB8PR04MB6380.eurprd04.prod.outlook.com (20.179.250.210) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2772.18; Mon, 2 Mar 2020 10:44:21 +0000
-Received: from DB8PR04MB6985.eurprd04.prod.outlook.com
- ([fe80::a523:58cc:b584:2c2]) by DB8PR04MB6985.eurprd04.prod.outlook.com
- ([fe80::a523:58cc:b584:2c2%6]) with mapi id 15.20.2772.019; Mon, 2 Mar 2020
- 10:44:21 +0000
-From: "Madalin Bucur (OSS)" <madalin.bucur@oss.nxp.com>
-To: Leon Romanovsky <leon@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Subject: RE: [PATCH net-next 00/23] Clean driver, module and FW versions
-Thread-Topic: [PATCH net-next 00/23] Clean driver, module and FW versions
-Thread-Index: AQHV79gGLajbVRrRzEeosW+ba548fKg1H1/g
-Date: Mon, 2 Mar 2020 10:44:21 +0000
-Message-ID: <DB8PR04MB698571C6348FBF9D51DE018DECE70@DB8PR04MB6985.eurprd04.prod.outlook.com>
-References: <20200301144457.119795-1-leon@kernel.org>
-In-Reply-To: <20200301144457.119795-1-leon@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=madalin.bucur@oss.nxp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [212.146.100.6]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: bb505941-7643-483f-5adc-08d7be96aae6
-x-ms-traffictypediagnostic: DB8PR04MB6380:|DB8PR04MB6380:
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB8PR04MB638064D1DAA8DA13A2E49950ADE70@DB8PR04MB6380.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2150;
-x-forefront-prvs: 033054F29A
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(39860400002)(376002)(346002)(396003)(136003)(366004)(189003)(199004)(9686003)(86362001)(4326008)(81166006)(8936002)(55016002)(316002)(64756008)(66446008)(66556008)(33656002)(7696005)(54906003)(8676002)(110136005)(81156014)(478600001)(5660300002)(26005)(71200400001)(66476007)(186003)(7406005)(4744005)(2906002)(66946007)(7416002)(6506007)(76116006)(53546011)(52536014);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB8PR04MB6380;
- H:DB8PR04MB6985.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:0; 
-received-spf: None (protection.outlook.com: oss.nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QrPc99ZY5064gqQ6AIXHXVTQJm2CKrq99dD2UICK08+58obONfNjMqmRqrxuya/4NxIYJy0QcAIfdKqndIwr7vipCUx/EtWw0JgQY2aTBIvQlKX93aNKr1twF34owknPji5VZT3HlYddCBr4n4yuU4pmuxhq8PCbsemU5NSRWGSRGqHyQZDCRkOmn2MD3g80qaEWy9LFtOpfoKzguZiMrDxRXkoYhSRslrwzeQPJi6agi+xwgBXYbTLBT3nyij9c5VSTFJ/7ZQOy3F8cFDz7mZAOdPRFsBTEz/Nnu+1mFCOb42Y96QWMA3Tc5XuyKgihdS9/gI705dmJKuwkZHB2F5z/0dP55cunHkqSbcOGWNP9no+AhJ6R1bFZRPcA/olI7Uwvv1gtDjILnnBtK1DwltRN5x+Z3zN8q+xESjkZ2RLC/TB3pacxuKrekhZjwHww
-x-ms-exchange-antispam-messagedata: h+5CI3t39wq9lfwB0uAYJIlsk5YUICPyeeSZMJ0MIx1de/Hl7x2+x/3cxdfB0k8BT4uwES3wA00EgR5BBjPFK/Li05dTVhE51wXkkWuLQQ+CdkwOP1LiESrZ5sd1XCmhGRNb56sAiwSZhEbdgDjfAw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WH5L4G9szDqHY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 21:51:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=WRPVw0MY; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48WH5J5J6mz9sSb;
+ Mon,  2 Mar 2020 21:51:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1583146309;
+ bh=b16uewG1Ij2M7fZzm8YX4KBgHz05Ojayzf65tUSrteo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=WRPVw0MYXwNvewO+4MvrFWaQWlL9dS4BusnrqtmZQRlGB+6kh6XdQbJ/NkeAkZ62e
+ rlG+sfqNrJSwQZkKVb1KYy++Hwq3hKemJCshjrf8Ul5gYnrEvmiUMs9rYyRGr4zZMO
+ QYD1e9yH1usGu4q46IOfyy79zR4/gTgA/r7v70iHo0En1K88RvIPnU7aEw/XfgBxCC
+ yTIV7VGmeV35zMHdeCXfeOCtivsGQeFeUJxLuVxvoQzZY9HqbT+f46YCgXrabWIDX/
+ ObdNVmIgrcAwBbyKsB4NpkWSMMnJzuTnrqCohNz/LkiwWjnmvAN98GsRzO/41qd6rl
+ t+SkcBlfdgzHA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [GIT PULL] Second batch of KVM changes for Linux 5.6-rc4 (or rc5)
+In-Reply-To: <CAHk-=wiin_LkqP2Cm5iPc5snUXYqZVoMFawZ-rjhZnawven8SA@mail.gmail.com>
+References: <1583089390-36084-1-git-send-email-pbonzini@redhat.com>
+ <CAHk-=wiin_LkqP2Cm5iPc5snUXYqZVoMFawZ-rjhZnawven8SA@mail.gmail.com>
+Date: Mon, 02 Mar 2020 21:51:44 +1100
+Message-ID: <87pndvrpvj.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb505941-7643-483f-5adc-08d7be96aae6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 10:44:21.6624 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IQ4ydzGmV/RjYd4vmk31OMGbYk57CA1HCBTpNmvgbRZSnt/EsM0AoOqJn7gkEqFdtSLTDjP8puZ20P93tbtSqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6380
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,57 +59,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ajit Khaparde <ajit.khaparde@broadcom.com>,
- Denis Kirjanov <kda@linux-powerpc.org>,
- Prashant Sreedharan <prashant@broadcom.com>,
- Govindarajulu Varadarajan <_govind@gmx.com>,
- Somnath Kotur <somnath.kotur@broadcom.com>,
- Vishal Kulkarni <vishal@chelsio.com>,
- "GR-everest-linux-l2@marvell.com" <GR-everest-linux-l2@marvell.com>,
- Casey Leedom <leedom@chelsio.com>, Doug Berger <opendmb@gmail.com>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- Linus Walleij <linus.walleij@linaro.org>, Sunil Goutham <sgoutham@marvell.com>,
- Parvi Kaustubhi <pkaustub@cisco.com>, Ariel Elior <aelior@marvell.com>,
- Hans Ulli Kroll <ulli.kroll@googlemail.com>,
- Satanand Burla <sburla@marvell.com>, Felix Manlunas <fmanlunas@marvell.com>,
- Leon Romanovsky <leonro@mellanox.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Sathya Perla <sathya.perla@broadcom.com>,
- Michael Chan <michael.chan@broadcom.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Raghu Vatsavayi <rvatsavayi@caviumnetworks.com>,
- "GR-Linux-NIC-Dev@marvell.com" <GR-Linux-NIC-Dev@marvell.com>,
- Andy Duan <fugang.duan@nxp.com>,
- Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Siva Reddy Kallam <siva.kallam@broadcom.com>, Rasesh Mody <rmody@marvell.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Hartley Sweeten <hsweeten@visionengravers.com>,
- Robert Richter <rrichter@marvell.com>, Derek Chickles <dchickles@marvell.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Sudarsana Kalluru <skalluru@marvell.com>,
- Christian Benvenuti <benve@cisco.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ KVM list <kvm@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> -----Original Message-----
-> From: David Miller <davem@davemloft.net>
-> Sent: Monday, March 2, 2020 5:02 AM
-> To: leon@kernel.org
-> Subject: Re: [PATCH net-next 00/23] Clean driver, module and FW versions
->=20
-> From: Leon Romanovsky <leon@kernel.org>
-> Date: Sun,  1 Mar 2020 16:44:33 +0200
->=20
-> > This is second batch of the series which removes various static
-> > versions in favour of globaly defined Linux kernel version.
->=20
-> This generally looks fine to me but I'll let it sit for a few days so
-> that others can review.
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> On Sun, Mar 1, 2020 at 1:03 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>>
+>> Paolo Bonzini (4):
+>>       KVM: allow disabling -Werror
+>
+> Honestly, this is just badly done.
+>
+> You've basically made it enable -Werror only for very random
+> configurations - and apparently the one you test.
+>
+> Doing things like COMPILE_TEST disables it, but so does not having
+> EXPERT enabled.
+>
+> So it looks entirely ad-hoc and makes very little sense. At least the
+> "with KASAN, disable this" part makes sense, since that's a known
+> source or warnings. But everything else looks very random.
+>
+> I've merged this, but I wonder why you couldn't just do what I
+> suggested originally?
+>
+> Seriously, if you script your build tests, and don't even look at the
+> results, then you might as well use
+>
+>    make KCFLAGS=-Werror
+>
+> instead of having this kind of completely random option that has
+> almost no logic to it at all.
+>
+> And if you depend entirely on random build infrastructure like the
+> 0day bot etc, this likely _is_ going to break when it starts using a
+> new gcc version, or when it starts testing using clang, or whatever.
+> So then we end up with another odd random situation where now kvm (and
+> only kvm) will fail those builds just because they are automated.
+>
+> Yes, as I said in that original thread, I'd love to do -Werror in
+> general, at which point it wouldn't be some random ad-hoc kvm special
+> case for some random option. But the "now it causes problems for
+> random compiler versions" is a real issue again - but at least it
+> wouldn't be a random kernel subsystem that happens to trigger it, it
+> would be a _generic_ issue, and we'd have everybody involved when a
+> compiler change introduces a new warning.
+>
+> I've pulled this for now, but I really think it's a horrible hack, and
+> it's just done entirely wrong.
+>
+> Adding the powerpc people, since they have more history with their
+> somewhat less hacky one. Except that one automatically gets disabled
+> by "make allmodconfig" and friends, which is also kind of pointless.
+>
+> Michael, what tends to be the triggers for people using
+> PPC_DISABLE_WERROR? Do you have reports for it?
 
-Reviewed drivers/net/ethernet/freescale changes, thank you!
+My memory is that we have had very few reports of it actually causing
+problems. But I don't have hard data to back that up.
 
-Reviewed-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
+It has tripped up the Clang folks, but that's partly because they're
+building clang HEAD, and also because ~zero powerpc kernel developers
+are building regularly with clang. I'm trying to fix the latter ...
+
+
+The thing that makes me disable -Werror (enable PPC_DISABLE_WERROR) most
+often is bisecting back to before fixes for my current compiler were
+merged.
+
+For example with GCC 8 if you go back before ~4.18 you hit the warning
+fixed by bee20031772a ("disable -Wattribute-alias warning for
+SYSCALL_DEFINEx()").
+
+And then building with GCC head sometimes requires disabling -Werror
+because of some new warning, sometimes valid sometimes not.
+
+I think we could mostly avoid those problems by having the option only
+on by default for known compiler versions.
+
+eg:
+
+config WERROR
+	bool "Build with -Werror"
+	default CC_IS_GCC && (GCC_VERSION >= 70000 && GCC_VERSION <= 90000)
+
+And we could bump the upper version up once each new GCC version has had
+any problems ironed out.
+
+> Could we have a _generic_ option that just gets enabled by default,
+> except it gets disabled by _known_ issues (like KASAN).
+
+Right now I don't think we could have a generic option that's enabled by
+default, there's too many warnings floating around on minor arches and
+in odd configurations.
+
+But we could have a generic option that signifies the desire to build
+with -Werror where possible, and then each arch/subsystem/etc could use
+that config option to enable -Werror in stages.
+
+Then after a release or three we could change the option to globally
+enable -Werror and opt-out any areas that are still problematic.
+
+It's also possible to use -Wno-error to turn certain warnings back into
+warnings even when -Werror is set, so that's another way we could
+incrementally attack the problem.
+
+
+It'd also be nice if we could do:
+
+ $ make WERROR=0
+
+Or something similarly obvious to turn off the WERROR option. That way
+users don't even have to edit their .config manually, they just rerun
+make with WERROR=0 and it works.
+
+
+> Being disabled for "make allmodconfig" is kind of against one of the
+> _points_ of "the build should be warning-free".
+
+True, it was just the conservative choice to disable it for allmod/yes.
+We should probably revisit that these days.
+
+cheers
