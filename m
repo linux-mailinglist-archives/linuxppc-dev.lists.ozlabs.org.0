@@ -1,79 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D90176431
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 20:42:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WVsl5848zDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 06:42:35 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C72D517643D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 20:47:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WVzh3n9RzDqfC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 06:47:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=namei.org
+ (client-ip=65.99.196.166; helo=namei.org; envelope-from=jmorris@namei.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=dWCEq9Tb; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=namei.org
+Received: from namei.org (namei.org [65.99.196.166])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WVqm0NVqzDqQy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 06:40:51 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id m9so912605qke.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 11:40:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Fpur9odzhdIzgZKAdXT5OufUWZiXDywyFJGHnsjLJuo=;
- b=dWCEq9TbdtlIn4IlSjT7wsgDMqKSoAKLzae3C569gQfG+p+Vk79gjYDp0p50OXn9hR
- Xm7x5cNfSGrA7pZOqbIyHB6YbB5olZ4ep8KMLse+bohRCUq99hLzFTyhfizQ0g1MVv9z
- PDB5fH+ahTLkKU8vUdes9sSXGelGjiIZoAKN6HTkKzUfig+h5pTHRYeWb9NP7s3wdS9t
- Tt4WNgQv8yFdtznernPNmQzDX+ip0C+UgbaM/+RzUP5kH1SCJgpVi8ZPrt/2QDdNj0Vc
- NTeqpeeYYjJCxNEWEDDoAqM078dLwnuNGGPGzRM4Bt0EmoCaK9xyew4usRNSVcQzIQqy
- 2SAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Fpur9odzhdIzgZKAdXT5OufUWZiXDywyFJGHnsjLJuo=;
- b=UhfNMl31XszR/LljOE42mDn5qn9ldkll0fRGUr1ulSJluQbvCNPQbJzLY3l00Df00g
- 4rv7zar1bvM53gfYNMR2UXkWp7PyVgXSyYKiLP3X5LVY78IqCqUQgVFpAGpIM3MeQYif
- 8F4sAxu2GKneY5BkqWIWvak4Q/fs+IUUQ5rnCGMAnItWp2ucci1LR8pIKilw2rC0WYlj
- oQnsZ3+bZllKNWfepDXHkH1UNZx9C14I+rU5paIE2ME8A67mxMIBAfn416w7XtXw5wha
- o1xKJTlqlnOPkIpnoR/bHRIJdd/mE2Iulx5fg4WeKBHdjTxhTNcosht2yc8Nw74fXTOH
- cREg==
-X-Gm-Message-State: ANhLgQ0npRjbr9bhvpZnonUMC6f+dNgHUXWY8G1KgvvUklGNPCKxw3Z1
- cMQDCkoYDKeTCUVrXegTi0FLEA==
-X-Google-Smtp-Source: ADFU+vvIre6Pknx1npljKo6V/87YN9X3Pm++i6mQcGcNAIn71bgolvXPcuZTIRGu9NVtwEvKfxAUQw==
-X-Received: by 2002:ae9:f205:: with SMTP id m5mr857097qkg.152.1583178047563;
- Mon, 02 Mar 2020 11:40:47 -0800 (PST)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id s139sm6748558qke.70.2020.03.02.11.40.42
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 02 Mar 2020 11:40:46 -0800 (PST)
-Message-ID: <1583178042.7365.146.camel@lca.pw>
-Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
- table helpers
-From: Qian Cai <cai@lca.pw>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Anshuman Khandual
- <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Date: Mon, 02 Mar 2020 14:40:42 -0500
-In-Reply-To: <1582732318.7365.129.camel@lca.pw>
-References: <1581909460-19148-1-git-send-email-anshuman.khandual@arm.com>
- <1582726182.7365.123.camel@lca.pw>
- <7c707b7f-ce3d-993b-8042-44fdc1ed28bf@c-s.fr>
- <1582732318.7365.129.camel@lca.pw>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WVyC166VzDqWk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 06:46:25 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+ by namei.org (8.14.4/8.14.4) with ESMTP id 022JiQle012020;
+ Mon, 2 Mar 2020 19:44:26 GMT
+Date: Mon, 2 Mar 2020 11:44:26 -0800 (PST)
+From: James Morris <jmorris@namei.org>
+To: Serge Hallyn <serge@hallyn.com>
+Subject: Re: [Intel-gfx] [PATCH v7 00/12] Introduce CAP_PERFMON to secure
+ system performance monitoring and observability
+In-Reply-To: <20200302001913.GA21145@sl>
+Message-ID: <alpine.LRH.2.21.2003021144060.11016@namei.org>
+References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com>
+ <3ae0bed5-204e-de81-7647-5f0d8106cd67@linux.intel.com>
+ <20200302001913.GA21145@sl>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,125 +47,275 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, x86@kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-man@vger.kernel.org,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Stephane Eranian <eranian@google.com>,
+ Paul Mackerras <paulus@samba.org>, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Jiri Olsa <jolsa@redhat.com>,
+ Alexey Budankov <alexey.budankov@linux.intel.com>,
+ Igor Lubashev <ilubashe@akamai.com>, oprofile-list@lists.sf.net,
+ Stephen Smalley <sds@tycho.nsa.gov>,
+ "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Helge Deller <deller@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-02-26 at 10:51 -0500, Qian Cai wrote:
-> On Wed, 2020-02-26 at 15:45 +0100, Christophe Leroy wrote:
-> > 
-> > Le 26/02/2020 à 15:09, Qian Cai a écrit :
-> > > On Mon, 2020-02-17 at 08:47 +0530, Anshuman Khandual wrote:
-> > > > This adds tests which will validate architecture page table helpers and
-> > > > other accessors in their compliance with expected generic MM semantics.
-> > > > This will help various architectures in validating changes to existing
-> > > > page table helpers or addition of new ones.
-> > > > 
-> > > > This test covers basic page table entry transformations including but not
-> > > > limited to old, young, dirty, clean, write, write protect etc at various
-> > > > level along with populating intermediate entries with next page table page
-> > > > and validating them.
-> > > > 
-> > > > Test page table pages are allocated from system memory with required size
-> > > > and alignments. The mapped pfns at page table levels are derived from a
-> > > > real pfn representing a valid kernel text symbol. This test gets called
-> > > > inside kernel_init() right after async_synchronize_full().
-> > > > 
-> > > > This test gets built and run when CONFIG_DEBUG_VM_PGTABLE is selected. Any
-> > > > architecture, which is willing to subscribe this test will need to select
-> > > > ARCH_HAS_DEBUG_VM_PGTABLE. For now this is limited to arc, arm64, x86, s390
-> > > > and ppc32 platforms where the test is known to build and run successfully.
-> > > > Going forward, other architectures too can subscribe the test after fixing
-> > > > any build or runtime problems with their page table helpers. Meanwhile for
-> > > > better platform coverage, the test can also be enabled with CONFIG_EXPERT
-> > > > even without ARCH_HAS_DEBUG_VM_PGTABLE.
-> > > > 
-> > > > Folks interested in making sure that a given platform's page table helpers
-> > > > conform to expected generic MM semantics should enable the above config
-> > > > which will just trigger this test during boot. Any non conformity here will
-> > > > be reported as an warning which would need to be fixed. This test will help
-> > > > catch any changes to the agreed upon semantics expected from generic MM and
-> > > > enable platforms to accommodate it thereafter.
-> > > 
-> > > How useful is this that straightly crash the powerpc?
-> > > 
-> > > [   23.263425][    T1] debug_vm_pgtable: debug_vm_pgtable: Validating
-> > > architecture page table helpers
-> > > [   23.263625][    T1] ------------[ cut here ]------------
-> > > [   23.263649][    T1] kernel BUG at arch/powerpc/mm/pgtable.c:274!
-> > 
-> > The problem on PPC64 is known and has to be investigated and fixed.
+On Sun, 1 Mar 2020, Serge Hallyn wrote:
+
+> Thanks, this looks good to me, in keeping with the CAP_SYSLOG break.
 > 
-> It might be interesting to hear what powerpc64 maintainers would say about it
-> and if it is actually worth "fixing" in the arch code, but that BUG_ON() was
-> there since 2009 and had not been exposed until this patch comes alone?
+> Acked-by: Serge E. Hallyn <serge@hallyn.com>
+> 
+> for the set.
+> 
+> James/Ingo/Peter, if noone has remaining objections, whose branch
+> should these go in through?
+> 
+> thanks,
 
-This patch below makes it works on powerpc64 in order to dodge the BUG_ON()s in 
-assert_pte_locked() triggered by pte_clear_tests().
+I was assuming via the perf tree, but I am happy to take them.
 
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 96dd7d574cef..50b385233971 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -55,6 +55,8 @@
- #define RANDOM_ORVALUE	GENMASK(BITS_PER_LONG - 1, S390_MASK_BITS)
- #define RANDOM_NZVALUE	GENMASK(7, 0)
- 
-+unsigned long vaddr;
-+
- static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
- {
- 	pte_t pte = pfn_pte(pfn, prot);
-@@ -256,7 +258,7 @@ static void __init pte_clear_tests(struct mm_struct *mm,
-pte_t *ptep)
- 
- 	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
- 	WRITE_ONCE(*ptep, pte);
--	pte_clear(mm, 0, ptep);
-+	pte_clear(mm, vaddr, ptep);
- 	pte = READ_ONCE(*ptep);
- 	WARN_ON(!pte_none(pte));
- }
-@@ -310,8 +312,9 @@ void __init debug_vm_pgtable(void)
- 	pgtable_t saved_ptep;
- 	pgprot_t prot;
- 	phys_addr_t paddr;
--	unsigned long vaddr, pte_aligned, pmd_aligned;
-+	unsigned long pte_aligned, pmd_aligned;
- 	unsigned long pud_aligned, p4d_aligned, pgd_aligned;
-+	spinlock_t *ptl;
- 
- 	pr_info("Validating architecture page table helpers\n");
- 	prot = vm_get_page_prot(VMFLAGS);
-@@ -344,7 +347,7 @@ void __init debug_vm_pgtable(void)
- 	p4dp = p4d_alloc(mm, pgdp, vaddr);
- 	pudp = pud_alloc(mm, p4dp, vaddr);
- 	pmdp = pmd_alloc(mm, pudp, vaddr);
--	ptep = pte_alloc_map(mm, pmdp, vaddr);
-+	ptep = pte_alloc_map_lock(mm, pmdp, vaddr, &ptl);
- 
- 	/*
- 	 * Save all the page table page addresses as the page table
-@@ -370,7 +373,7 @@ void __init debug_vm_pgtable(void)
- 	p4d_clear_tests(mm, p4dp);
- 	pgd_clear_tests(mm, pgdp);
- 
--	pte_unmap(ptep);
-+	pte_unmap_unlock(ptep, ptl);
- 
- 	pmd_populate_tests(mm, pmdp, saved_ptep);
- 	pud_populate_tests(mm, pudp, saved_pmdp);
+> -serge
+> 
+> On Tue, Feb 25, 2020 at 12:55:54PM +0300, Alexey Budankov wrote:
+> > 
+> > Hi,
+> > 
+> > Is there anything else I could do in order to move the changes forward
+> > or is something still missing from this patch set?
+> > Could you please share you mind?
+> > 
+> > Thanks,
+> > Alexey
+> > 
+> > On 17.02.2020 11:02, Alexey Budankov wrote:
+> > > 
+> > > Currently access to perf_events, i915_perf and other performance
+> > > monitoring and observability subsystems of the kernel is open only for
+> > > a privileged process [1] with CAP_SYS_ADMIN capability enabled in the
+> > > process effective set [2].
+> > > 
+> > > This patch set introduces CAP_PERFMON capability designed to secure
+> > > system performance monitoring and observability operations so that
+> > > CAP_PERFMON would assist CAP_SYS_ADMIN capability in its governing role
+> > > for performance monitoring and observability subsystems of the kernel.
+> > > 
+> > > CAP_PERFMON intends to harden system security and integrity during
+> > > performance monitoring and observability operations by decreasing attack
+> > > surface that is available to a CAP_SYS_ADMIN privileged process [2].
+> > > Providing the access to performance monitoring and observability
+> > > operations under CAP_PERFMON capability singly, without the rest of
+> > > CAP_SYS_ADMIN credentials, excludes chances to misuse the credentials
+> > > and makes the operation more secure. Thus, CAP_PERFMON implements the
+> > > principal of least privilege for performance monitoring and
+> > > observability operations (POSIX IEEE 1003.1e: 2.2.2.39 principle of
+> > > least privilege: A security design principle that states that a process
+> > > or program be granted only those privileges (e.g., capabilities)
+> > > necessary to accomplish its legitimate function, and only for the time
+> > > that such privileges are actually required)
+> > > 
+> > > CAP_PERFMON intends to meet the demand to secure system performance
+> > > monitoring and observability operations for adoption in security
+> > > sensitive, restricted, multiuser production environments (e.g. HPC
+> > > clusters, cloud and virtual compute environments), where root or
+> > > CAP_SYS_ADMIN credentials are not available to mass users of a system,
+> > > and securely unblock accessibility of system performance monitoring and
+> > > observability operations beyond root and CAP_SYS_ADMIN use cases.
+> > > 
+> > > CAP_PERFMON intends to take over CAP_SYS_ADMIN credentials related to
+> > > system performance monitoring and observability operations and balance
+> > > amount of CAP_SYS_ADMIN credentials following the recommendations in
+> > > the capabilities man page [2] for CAP_SYS_ADMIN: "Note: this capability
+> > > is overloaded; see Notes to kernel developers, below." For backward
+> > > compatibility reasons access to system performance monitoring and
+> > > observability subsystems of the kernel remains open for CAP_SYS_ADMIN
+> > > privileged processes but CAP_SYS_ADMIN capability usage for secure
+> > > system performance monitoring and observability operations is
+> > > discouraged with respect to the designed CAP_PERFMON capability.
+> > > 
+> > > Possible alternative solution to this system security hardening,
+> > > capabilities balancing task of making performance monitoring and
+> > > observability operations more secure and accessible could be to use
+> > > the existing CAP_SYS_PTRACE capability to govern system performance
+> > > monitoring and observability subsystems. However CAP_SYS_PTRACE
+> > > capability still provides users with more credentials than are
+> > > required for secure performance monitoring and observability
+> > > operations and this excess is avoided by the designed CAP_PERFMON.
+> > > 
+> > > Although software running under CAP_PERFMON can not ensure avoidance of
+> > > related hardware issues, the software can still mitigate those issues
+> > > following the official hardware issues mitigation procedure [3]. The
+> > > bugs in the software itself can be fixed following the standard kernel
+> > > development process [4] to maintain and harden security of system
+> > > performance monitoring and observability operations. Finally, the patch
+> > > set is shaped in the way that simplifies backtracking procedure of
+> > > possible induced issues [5] as much as possible.
+> > > 
+> > > The patch set is for tip perf/core repository:
+> > > git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip perf/core
+> > > sha1: fdb64822443ec9fb8c3a74b598a74790ae8d2e22
+> > > 
+> > > ---
+> > > Changes in v7:
+> > > - updated and extended kernel.rst and perf-security.rst documentation 
+> > >   files with the information about CAP_PERFMON capability and its use cases
+> > > - documented the case of double audit logging of CAP_PERFMON and CAP_SYS_ADMIN
+> > >   capabilities on a SELinux enabled system
+> > > Changes in v6:
+> > > - avoided noaudit checks in perfmon_capable() to explicitly advertise
+> > >   CAP_PERFMON usage thru audit logs to secure system performance
+> > >   monitoring and observability
+> > > Changes in v5:
+> > > - renamed CAP_SYS_PERFMON to CAP_PERFMON
+> > > - extended perfmon_capable() with noaudit checks
+> > > Changes in v4:
+> > > - converted perfmon_capable() into an inline function
+> > > - made perf_events kprobes, uprobes, hw breakpoints and namespaces data
+> > >   available to CAP_SYS_PERFMON privileged processes
+> > > - applied perfmon_capable() to drivers/perf and drivers/oprofile
+> > > - extended __cmd_ftrace() with support of CAP_SYS_PERFMON
+> > > Changes in v3:
+> > > - implemented perfmon_capable() macros aggregating required capabilities
+> > >   checks
+> > > Changes in v2:
+> > > - made perf_events trace points available to CAP_SYS_PERFMON privileged
+> > >   processes
+> > > - made perf_event_paranoid_check() treat CAP_SYS_PERFMON equally to
+> > >   CAP_SYS_ADMIN
+> > > - applied CAP_SYS_PERFMON to i915_perf, bpf_trace, powerpc and parisc
+> > >   system performance monitoring and observability related subsystems
+> > > 
+> > > ---
+> > > Alexey Budankov (12):
+> > >   capabilities: introduce CAP_PERFMON to kernel and user space
+> > >   perf/core: open access to the core for CAP_PERFMON privileged process
+> > >   perf/core: open access to probes for CAP_PERFMON privileged process
+> > >   perf tool: extend Perf tool with CAP_PERFMON capability support
+> > >   drm/i915/perf: open access for CAP_PERFMON privileged process
+> > >   trace/bpf_trace: open access for CAP_PERFMON privileged process
+> > >   powerpc/perf: open access for CAP_PERFMON privileged process
+> > >   parisc/perf: open access for CAP_PERFMON privileged process
+> > >   drivers/perf: open access for CAP_PERFMON privileged process
+> > >   drivers/oprofile: open access for CAP_PERFMON privileged process
+> > >   doc/admin-guide: update perf-security.rst with CAP_PERFMON information
+> > >   doc/admin-guide: update kernel.rst with CAP_PERFMON information
+> > > 
+> > >  Documentation/admin-guide/perf-security.rst | 65 +++++++++++++--------
+> > >  Documentation/admin-guide/sysctl/kernel.rst | 16 +++--
+> > >  arch/parisc/kernel/perf.c                   |  2 +-
+> > >  arch/powerpc/perf/imc-pmu.c                 |  4 +-
+> > >  drivers/gpu/drm/i915/i915_perf.c            | 13 ++---
+> > >  drivers/oprofile/event_buffer.c             |  2 +-
+> > >  drivers/perf/arm_spe_pmu.c                  |  4 +-
+> > >  include/linux/capability.h                  |  4 ++
+> > >  include/linux/perf_event.h                  |  6 +-
+> > >  include/uapi/linux/capability.h             |  8 ++-
+> > >  kernel/events/core.c                        |  6 +-
+> > >  kernel/trace/bpf_trace.c                    |  2 +-
+> > >  security/selinux/include/classmap.h         |  4 +-
+> > >  tools/perf/builtin-ftrace.c                 |  5 +-
+> > >  tools/perf/design.txt                       |  3 +-
+> > >  tools/perf/util/cap.h                       |  4 ++
+> > >  tools/perf/util/evsel.c                     | 10 ++--
+> > >  tools/perf/util/util.c                      |  1 +
+> > >  18 files changed, 98 insertions(+), 61 deletions(-)
+> > > 
+> > > ---
+> > > Validation (Intel Skylake, 8 cores, Fedora 29, 5.5.0-rc3+, x86_64):
+> > > 
+> > > libcap library [6], [7], [8] and Perf tool can be used to apply
+> > > CAP_PERFMON capability for secure system performance monitoring and
+> > > observability beyond the scope permitted by the system wide
+> > > perf_event_paranoid kernel setting [9] and below are the steps for
+> > > evaluation:
+> > > 
+> > >   - patch, build and boot the kernel
+> > >   - patch, build Perf tool e.g. to /home/user/perf
+> > >   ...
+> > >   # git clone git://git.kernel.org/pub/scm/libs/libcap/libcap.git libcap
+> > >   # pushd libcap
+> > >   # patch libcap/include/uapi/linux/capabilities.h with [PATCH 1]
+> > >   # make
+> > >   # pushd progs
+> > >   # ./setcap "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
+> > >   # ./setcap -v "cap_perfmon,cap_sys_ptrace,cap_syslog=ep" /home/user/perf
+> > >   /home/user/perf: OK
+> > >   # ./getcap /home/user/perf
+> > >   /home/user/perf = cap_sys_ptrace,cap_syslog,cap_perfmon+ep
+> > >   # echo 2 > /proc/sys/kernel/perf_event_paranoid
+> > >   # cat /proc/sys/kernel/perf_event_paranoid 
+> > >   2
+> > >   ...
+> > >   $ /home/user/perf top
+> > >     ... works as expected ...
+> > >   $ cat /proc/`pidof perf`/status
+> > >   Name:	perf
+> > >   Umask:	0002
+> > >   State:	S (sleeping)
+> > >   Tgid:	2958
+> > >   Ngid:	0
+> > >   Pid:	2958
+> > >   PPid:	9847
+> > >   TracerPid:	0
+> > >   Uid:	500	500	500	500
+> > >   Gid:	500	500	500	500
+> > >   FDSize:	256
+> > >   ...
+> > >   CapInh:	0000000000000000
+> > >   CapPrm:	0000004400080000
+> > >   CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
+> > >                                      cap_perfmon,cap_sys_ptrace,cap_syslog
+> > >   CapBnd:	0000007fffffffff
+> > >   CapAmb:	0000000000000000
+> > >   NoNewPrivs:	0
+> > >   Seccomp:	0
+> > >   Speculation_Store_Bypass:	thread vulnerable
+> > >   Cpus_allowed:	ff
+> > >   Cpus_allowed_list:	0-7
+> > >   ...
+> > > 
+> > > Usage of cap_perfmon effectively avoids unused credentials excess:
+> > > 
+> > > - with cap_sys_admin:
+> > >   CapEff:	0000007fffffffff => 01111111 11111111 11111111 11111111 11111111
+> > > 
+> > > - with cap_perfmon:
+> > >   CapEff:	0000004400080000 => 01000100 00000000 00001000 00000000 00000000
+> > >                                     38   34               19
+> > >                                perfmon   syslog           sys_ptrace
+> > > 
+> > > ---
+> > > [1] https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html
+> > > [2] http://man7.org/linux/man-pages/man7/capabilities.7.html
+> > > [3] https://www.kernel.org/doc/html/latest/process/embargoed-hardware-issues.html
+> > > [4] https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
+> > > [5] https://www.kernel.org/doc/html/latest/process/management-style.html#decisions
+> > > [6] http://man7.org/linux/man-pages/man8/setcap.8.html
+> > > [7] https://git.kernel.org/pub/scm/libs/libcap/libcap.git
+> > > [8] https://sites.google.com/site/fullycapable/, posix_1003.1e-990310.pdf
+> > > [9] http://man7.org/linux/man-pages/man2/perf_event_open.2.html
+> > > 
+> > _______________________________________________
+> > Intel-gfx mailing list
+> > Intel-gfx@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+> 
+
+-- 
+James Morris
+<jmorris@namei.org>
+
