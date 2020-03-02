@@ -2,78 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295FF17535E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 06:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AABD175363
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 06:39:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48W86K3srvzDqgV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:37:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48W88S6GsvzDqgV
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:39:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48W7r60r0NzDqYn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 16:24:53 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0225OINV042160
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 00:24:52 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yfmyq9m1p-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48W7rB3p8dzDqWX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 16:24:58 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0225JYEM001195
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 00:24:56 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmwut6tv-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 00:24:51 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 00:24:55 -0500
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Mon, 2 Mar 2020 05:24:49 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Mon, 2 Mar 2020 05:24:53 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 2 Mar 2020 05:24:44 -0000
+ Mon, 2 Mar 2020 05:24:47 -0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0225Ogi438994036
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0225OkBl54788284
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Mar 2020 05:24:42 GMT
+ Mon, 2 Mar 2020 05:24:46 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 753985204F;
- Mon,  2 Mar 2020 05:24:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1566B52050;
+ Mon,  2 Mar 2020 05:24:46 +0000 (GMT)
 Received: from bangoria.in.ibm.com (unknown [9.124.31.175])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1F9A252050;
- Mon,  2 Mar 2020 05:24:38 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B02C752054;
+ Mon,  2 Mar 2020 05:24:42 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC 07/11] perf hazard: Functions to convert generic hazard data to
- arch specific string
-Date: Mon,  2 Mar 2020 10:53:51 +0530
+Subject: [RFC 08/11] perf report: Enable hazard mode
+Date: Mon,  2 Mar 2020 10:53:52 +0530
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
 References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20030205-0028-0000-0000-000003DFC476
+x-cbid: 20030205-0008-0000-0000-000003583694
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030205-0029-0000-0000-000024A4EBF6
-Message-Id: <20200302052355.36365-8-ravi.bangoria@linux.ibm.com>
+x-cbparentid: 20030205-0009-0000-0000-00004A7960BC
+Message-Id: <20200302052355.36365-9-ravi.bangoria@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-02_01:2020-02-28,
- 2020-03-02 signatures=0
+ definitions=2020-03-01_09:2020-02-28,
+ 2020-03-01 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015
- priorityscore=1501 mlxlogscore=999 malwarescore=0 impostorscore=0
- suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 phishscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999
+ clxscore=1015 suspectscore=2 malwarescore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2003020039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,391 +98,597 @@ Sender: "Linuxppc-dev"
 
 From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 
-Kernel provides pipeline hazard data in struct perf_pipeline_haz_data
-format. Add code to convert this data into meaningful string which can
-be shown in perf report (followup patch).
+Introduce --hazard with perf report to show perf report with hazard
+data. Hazard mode columns are Instruction Type, Hazard Stage, Hazard
+Reason, Stall Stage, Stall Reason and Icache access. Default sort
+order is sym, dso, inst type, hazard stage, hazard reason, stall
+stage, stall reason, inst cache.
 
-Introduce tools/perf/utils/hazard directory which will contains arch
-specific directories. Under arch specific directory, add arch specific
-logic that will be called by generic code. This directory structure is
-introduced to enable cross-arch reporting.
+Sample o/p on IBM PowerPC machine:
+
+  Overhead  Symbol          Shared  Instruction Type  Hazard Stage   Hazard Reason         Stall Stage   Stall Reason  ICache access
+    36.58%  [.] thread_run  ebizzy  Load              LSU            Mispredict            LSU           Load fin      L1 hit
+     9.46%  [.] thread_run  ebizzy  Load              LSU            Mispredict            LSU           Dcache_miss   L1 hit
+     1.76%  [.] thread_run  ebizzy  Fixed point       -              -                     -             -             L1 hit
+     1.31%  [.] thread_run  ebizzy  Load              LSU            ERAT Miss             LSU           Load fin      L1 hit
+     1.27%  [.] thread_run  ebizzy  Load              LSU            Mispredict            -             -             L1 hit
+     1.16%  [.] thread_run  ebizzy  Fixed point       -              -                     FXU           Fixed cycle   L1 hit
+     0.50%  [.] thread_run  ebizzy  Fixed point       ISU            Source Unavailable    FXU           Fixed cycle   L1 hit
+     0.30%  [.] thread_run  ebizzy  Load              LSU            LMQ Full, DERAT Miss  LSU           Load fin      L1 hit
+     0.24%  [.] thread_run  ebizzy  Load              LSU            ERAT Miss             -             -             L1 hit
+     0.08%  [.] thread_run  ebizzy  -                 -              -                     BRU           Fixed cycle   L1 hit
+     0.05%  [.] thread_run  ebizzy  Branch            -              -                     BRU           Fixed cycle   L1 hit
+     0.04%  [.] thread_run  ebizzy  Fixed point       ISU            Source Unavailable    -             -             L1 hit
 
 Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- tools/perf/util/Build                         |   2 +
- tools/perf/util/hazard.c                      |  51 +++++++
- tools/perf/util/hazard.h                      |  14 ++
- tools/perf/util/hazard/Build                  |   1 +
- .../util/hazard/powerpc/perf_pipeline_haz.h   |  80 ++++++++++
- .../perf/util/hazard/powerpc/powerpc_hazard.c | 142 ++++++++++++++++++
- .../perf/util/hazard/powerpc/powerpc_hazard.h |  14 ++
- 7 files changed, 304 insertions(+)
- create mode 100644 tools/perf/util/hazard.c
- create mode 100644 tools/perf/util/hazard.h
- create mode 100644 tools/perf/util/hazard/Build
- create mode 100644 tools/perf/util/hazard/powerpc/perf_pipeline_haz.h
- create mode 100644 tools/perf/util/hazard/powerpc/powerpc_hazard.c
- create mode 100644 tools/perf/util/hazard/powerpc/powerpc_hazard.h
+ tools/perf/builtin-report.c |  28 +++++
+ tools/perf/util/hist.c      |  77 ++++++++++++
+ tools/perf/util/hist.h      |   7 ++
+ tools/perf/util/sort.c      | 230 ++++++++++++++++++++++++++++++++++++
+ tools/perf/util/sort.h      |  22 ++++
+ 5 files changed, 364 insertions(+)
 
-diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-index 07da6c790b63..f5e1b7d79b6d 100644
---- a/tools/perf/util/Build
-+++ b/tools/perf/util/Build
-@@ -118,6 +118,7 @@ perf-y += parse-regs-options.o
- perf-y += term.o
- perf-y += help-unknown-cmd.o
- perf-y += mem-events.o
-+perf-y += hazard.o
- perf-y += vsprintf.o
- perf-y += units.o
- perf-y += time-utils.o
-@@ -153,6 +154,7 @@ perf-$(CONFIG_LIBUNWIND_AARCH64)  += libunwind/arm64.o
- perf-$(CONFIG_LIBBABELTRACE) += data-convert-bt.o
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 72a12b69f120..a47542a12da1 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -77,6 +77,7 @@ struct report {
+ 	bool			show_threads;
+ 	bool			inverted_callchain;
+ 	bool			mem_mode;
++	bool			hazard;
+ 	bool			stats_mode;
+ 	bool			tasks_mode;
+ 	bool			mmaps_mode;
+@@ -285,6 +286,8 @@ static int process_sample_event(struct perf_tool *tool,
+ 		iter.ops = &hist_iter_branch;
+ 	} else if (rep->mem_mode) {
+ 		iter.ops = &hist_iter_mem;
++	} else if (rep->hazard) {
++		iter.ops = &hist_iter_haz;
+ 	} else if (symbol_conf.cumulate_callchain) {
+ 		iter.ops = &hist_iter_cumulative;
+ 	} else {
+@@ -396,6 +399,14 @@ static int report__setup_sample_type(struct report *rep)
+ 		}
+ 	}
  
- perf-y += scripting-engines/
-+perf-y += hazard/
++	if (sort__mode == SORT_MODE__HAZARD) {
++		if (!is_pipe && !(sample_type & PERF_SAMPLE_PIPELINE_HAZ)) {
++			ui__error("Selected --hazard but no hazard data. "
++				  "Did you call perf record without --hazard?\n");
++			return -1;
++		}
++	}
++
+ 	if (symbol_conf.use_callchain || symbol_conf.cumulate_callchain) {
+ 		if ((sample_type & PERF_SAMPLE_REGS_USER) &&
+ 		    (sample_type & PERF_SAMPLE_STACK_USER)) {
+@@ -484,6 +495,9 @@ static size_t hists__fprintf_nr_sample_events(struct hists *hists, struct report
+ 	if (rep->mem_mode) {
+ 		ret += fprintf(fp, "\n# Total weight : %" PRIu64, nr_events);
+ 		ret += fprintf(fp, "\n# Sort order   : %s", sort_order ? : default_mem_sort_order);
++	} else if (rep->hazard) {
++		ret += fprintf(fp, "\n# Event count (approx.): %" PRIu64, nr_events);
++		ret += fprintf(fp, "\n# Sort order: %s", sort_order ? : default_haz_sort_order);
+ 	} else
+ 		ret += fprintf(fp, "\n# Event count (approx.): %" PRIu64, nr_events);
  
- perf-$(CONFIG_ZLIB) += zlib.o
- perf-$(CONFIG_LZMA) += lzma.o
-diff --git a/tools/perf/util/hazard.c b/tools/perf/util/hazard.c
-new file mode 100644
-index 000000000000..db235b26b266
---- /dev/null
-+++ b/tools/perf/util/hazard.c
-@@ -0,0 +1,51 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <string.h>
-+#include "hazard/powerpc/powerpc_hazard.h"
-+
-+const char *perf_haz__itype_str(u8 itype, const char *arch)
-+{
-+	if (!strncmp(arch, "powerpc", strlen("powerpc")))
-+		return powerpc__haz__itype_str(itype);
-+
-+	return "-";
-+}
-+
-+const char *perf_haz__icache_str(u8 icache, const char *arch)
-+{
-+	if (!strncmp(arch, "powerpc", strlen("powerpc")))
-+		return powerpc__haz__icache_str(icache);
-+
-+	return "-";
-+}
-+
-+const char *perf_haz__hstage_str(u8 hstage, const char *arch)
-+{
-+	if (!strncmp(arch, "powerpc", strlen("powerpc")))
-+		return powerpc__haz__hstage_str(hstage);
-+
-+	return "-";
-+}
-+
-+const char *perf_haz__hreason_str(u8 hstage, u8 hreason, const char *arch)
-+{
-+	if (!strncmp(arch, "powerpc", strlen("powerpc")))
-+		return powerpc__haz__hreason_str(hstage, hreason);
-+
-+	return "-";
-+}
-+
-+const char *perf_haz__sstage_str(u8 sstage, const char *arch)
-+{
-+	if (!strncmp(arch, "powerpc", strlen("powerpc")))
-+		return powerpc__haz__sstage_str(sstage);
-+
-+	return "-";
-+}
-+
-+const char *perf_haz__sreason_str(u8 sstage, u8 sreason, const char *arch)
-+{
-+	if (!strncmp(arch, "powerpc", strlen("powerpc")))
-+		return powerpc__haz__sreason_str(sstage, sreason);
-+
-+	return "-";
-+}
-diff --git a/tools/perf/util/hazard.h b/tools/perf/util/hazard.h
-new file mode 100644
-index 000000000000..eab4190e056a
---- /dev/null
-+++ b/tools/perf/util/hazard.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __PERF_HAZARD_H
-+#define __PERF_HAZARD_H
-+
-+#include "sort.h"
-+
-+const char *perf_haz__itype_str(u8 itype, const char *arch);
-+const char *perf_haz__icache_str(u8 icache, const char *arch);
-+const char *perf_haz__hstage_str(u8 hstage, const char *arch);
-+const char *perf_haz__hreason_str(u8 hstage, u8 hreason, const char *arch);
-+const char *perf_haz__sstage_str(u8 sstage, const char *arch);
-+const char *perf_haz__sreason_str(u8 sstage, u8 sreason, const char *arch);
-+
-+#endif /* __PERF_HAZARD_H */
-diff --git a/tools/perf/util/hazard/Build b/tools/perf/util/hazard/Build
-new file mode 100644
-index 000000000000..314c5e316383
---- /dev/null
-+++ b/tools/perf/util/hazard/Build
-@@ -0,0 +1 @@
-+perf-y += powerpc/powerpc_hazard.o
-diff --git a/tools/perf/util/hazard/powerpc/perf_pipeline_haz.h b/tools/perf/util/hazard/powerpc/perf_pipeline_haz.h
-new file mode 100644
-index 000000000000..de8857ec31dd
---- /dev/null
-+++ b/tools/perf/util/hazard/powerpc/perf_pipeline_haz.h
-@@ -0,0 +1,80 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_ASM_POWERPC_PERF_PIPELINE_HAZ_H
-+#define _UAPI_ASM_POWERPC_PERF_PIPELINE_HAZ_H
-+
-+enum perf_inst_type {
-+	PERF_HAZ__ITYPE_LOAD = 1,
-+	PERF_HAZ__ITYPE_STORE,
-+	PERF_HAZ__ITYPE_BRANCH,
-+	PERF_HAZ__ITYPE_FP,
-+	PERF_HAZ__ITYPE_FX,
-+	PERF_HAZ__ITYPE_CR_OR_SC,
-+};
-+
-+enum perf_inst_cache {
-+	PERF_HAZ__ICACHE_L1_HIT = 1,
-+	PERF_HAZ__ICACHE_L2_HIT,
-+	PERF_HAZ__ICACHE_L3_HIT,
-+	PERF_HAZ__ICACHE_L3_MISS,
-+};
-+
-+enum perf_pipeline_stage {
-+	PERF_HAZ__PIPE_STAGE_IFU = 1,
-+	PERF_HAZ__PIPE_STAGE_IDU,
-+	PERF_HAZ__PIPE_STAGE_ISU,
-+	PERF_HAZ__PIPE_STAGE_LSU,
-+	PERF_HAZ__PIPE_STAGE_BRU,
-+	PERF_HAZ__PIPE_STAGE_FXU,
-+	PERF_HAZ__PIPE_STAGE_FPU,
-+	PERF_HAZ__PIPE_STAGE_VSU,
-+	PERF_HAZ__PIPE_STAGE_OTHER,
-+};
-+
-+enum perf_haz_bru_reason {
-+	PERF_HAZ__HAZ_BRU_MPRED_DIR = 1,
-+	PERF_HAZ__HAZ_BRU_MPRED_TA,
-+};
-+
-+enum perf_haz_isu_reason {
-+	PERF_HAZ__HAZ_ISU_SRC = 1,
-+	PERF_HAZ__HAZ_ISU_COL = 1,
-+};
-+
-+enum perf_haz_lsu_reason {
-+	PERF_HAZ__HAZ_LSU_ERAT_MISS = 1,
-+	PERF_HAZ__HAZ_LSU_LMQ,
-+	PERF_HAZ__HAZ_LSU_LHS,
-+	PERF_HAZ__HAZ_LSU_MPRED,
-+	PERF_HAZ__HAZ_DERAT_MISS,
-+	PERF_HAZ__HAZ_LSU_LMQ_DERAT_MISS,
-+	PERF_HAZ__HAZ_LSU_LHS_DERAT_MISS,
-+	PERF_HAZ__HAZ_LSU_MPRED_DERAT_MISS,
-+};
-+
-+enum perf_stall_lsu_reason {
-+	PERF_HAZ__STALL_LSU_DCACHE_MISS = 1,
-+	PERF_HAZ__STALL_LSU_LD_FIN,
-+	PERF_HAZ__STALL_LSU_ST_FWD,
-+	PERF_HAZ__STALL_LSU_ST,
-+};
-+
-+enum perf_stall_fxu_reason {
-+	PERF_HAZ__STALL_FXU_MC = 1,
-+	PERF_HAZ__STALL_FXU_FC,
-+};
-+
-+enum perf_stall_bru_reason {
-+	PERF_HAZ__STALL_BRU_FIN_MPRED = 1,
-+	PERF_HAZ__STALL_BRU_FC,
-+};
-+
-+enum perf_stall_vsu_reason {
-+	PERF_HAZ__STALL_VSU_MC = 1,
-+	PERF_HAZ__STALL_VSU_FC,
-+};
-+
-+enum perf_stall_other_reason {
-+	PERF_HAZ__STALL_NTC,
-+};
-+
-+#endif /* _UAPI_ASM_POWERPC_PERF_PIPELINE_HAZ_H */
-diff --git a/tools/perf/util/hazard/powerpc/powerpc_hazard.c b/tools/perf/util/hazard/powerpc/powerpc_hazard.c
-new file mode 100644
-index 000000000000..dcb95b769367
---- /dev/null
-+++ b/tools/perf/util/hazard/powerpc/powerpc_hazard.c
-@@ -0,0 +1,142 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <stddef.h>
-+#include "hazard.h"
-+#include "powerpc_hazard.h"
-+#include "perf_pipeline_haz.h"
-+
-+static const char *haz_inst_type[] = {
-+	"-",
-+	"Load",
-+	"Store",
-+	"Branch",
-+	"Floating Point",
-+	"Fixed point",
-+	"Condition Register/System Call",
-+};
-+
-+const char *powerpc__haz__itype_str(u8 itype)
-+{
-+	return haz_inst_type[itype];
-+}
-+
-+static const char *haz_inst_cache[] = {
-+	"-",
-+	"L1 hit",
-+	"L2 hit",
-+	"L3 hit",
-+	"L3 Miss"
-+};
-+
-+const char *powerpc__haz__icache_str(u8 icache)
-+{
-+	return haz_inst_cache[icache];
-+}
-+
-+static const char *pipeline_stages[] = {
-+	"-",
-+	"IFU",
-+	"IDU",
-+	"ISU",
-+	"LSU",
-+	"BRU",
-+	"FXU",
-+	"FPU",
-+	"VSU",
-+};
-+
-+const char *powerpc__haz__hstage_str(u8 hstage)
-+{
-+	return pipeline_stages[hstage];
-+}
-+
-+static const char *haz_bru_reason[] = {
-+	"-",
-+	"Direction",
-+	"Target Address",
-+};
-+
-+static const char *haz_isu_reason[] = {
-+	"-",
-+	"Source Unavailable",
-+	"Resource Collision",
-+};
-+
-+static const char *haz_lsu_reason[] = {
-+	"-",
-+	"ERAT Miss",
-+	"LMQ Full",
-+	"Load Hit Store",
-+	"Mispredict",
-+	"DERAT Miss",
-+	"LMQ Full, DERAT Miss",
-+	"Load Hit Store, DERAT Miss",
-+	"Mispredict, DERAT Miss",
-+};
-+
-+const char *powerpc__haz__hreason_str(u8 hstage, u8 hreason)
-+{
-+	switch (hstage) {
-+	case PERF_HAZ__PIPE_STAGE_BRU:
-+		return haz_bru_reason[hreason];
-+	case PERF_HAZ__PIPE_STAGE_LSU:
-+		return haz_lsu_reason[hreason];
-+	case PERF_HAZ__PIPE_STAGE_ISU:
-+		return haz_isu_reason[hreason];
-+	default:
-+		return "-";
+@@ -1228,6 +1242,7 @@ int cmd_report(int argc, const char **argv)
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+ 	OPT_BOOLEAN(0, "mem-mode", &report.mem_mode, "mem access profile"),
++	OPT_BOOLEAN(0, "hazard", &report.hazard, "Processor pipeline hazard and stalls"),
+ 	OPT_INTEGER(0, "samples", &symbol_conf.res_sample,
+ 		    "Number of samples to save per histogram entry for individual browsing"),
+ 	OPT_CALLBACK(0, "percent-limit", &report, "percent",
+@@ -1394,6 +1409,19 @@ int cmd_report(int argc, const char **argv)
+ 		symbol_conf.cumulate_callchain = false;
+ 	}
+ 
++	if (report.hazard) {
++		if (sort__mode == SORT_MODE__BRANCH) {
++			pr_err("branch and hazard incompatible\n");
++			goto error;
++		}
++		if (sort__mode == SORT_MODE__MEMORY) {
++			pr_err("mem-mode and hazard incompatible\n");
++			goto error;
++		}
++		sort__mode = SORT_MODE__HAZARD;
++		symbol_conf.cumulate_callchain = false;
 +	}
-+}
 +
-+const char *powerpc__haz__sstage_str(u8 sstage)
+ 	if (symbol_conf.report_hierarchy) {
+ 		/* disable incompatible options */
+ 		symbol_conf.cumulate_callchain = false;
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index 6d23efaa52c8..d690d08b0f64 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -203,6 +203,12 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
+ 	hists__new_col_len(hists, HISTC_MEM_LVL, 21 + 3);
+ 	hists__new_col_len(hists, HISTC_LOCAL_WEIGHT, 12);
+ 	hists__new_col_len(hists, HISTC_GLOBAL_WEIGHT, 12);
++	hists__new_col_len(hists, HISTC_HAZ_ITYPE, 31);
++	hists__new_col_len(hists, HISTC_HAZ_ICACHE, 14);
++	hists__new_col_len(hists, HISTC_HAZ_HSTAGE, 13);
++	hists__new_col_len(hists, HISTC_HAZ_HREASON, 27);
++	hists__new_col_len(hists, HISTC_HAZ_SSTAGE, 12);
++	hists__new_col_len(hists, HISTC_HAZ_SREASON, 22);
+ 	if (symbol_conf.nanosecs)
+ 		hists__new_col_len(hists, HISTC_TIME, 16);
+ 	else
+@@ -864,6 +870,69 @@ iter_finish_mem_entry(struct hist_entry_iter *iter,
+ 	return err;
+ }
+ 
++static int iter_prepare_haz_entry(struct hist_entry_iter *iter,
++				  struct addr_location *al __maybe_unused)
 +{
-+	return pipeline_stages[sstage];
-+}
++	struct perf_sample *sample = iter->sample;
++	struct perf_pipeline_haz_data *haz_data;
 +
-+static const char *stall_lsu_reason[] = {
-+	"-",
-+	"Dcache_miss",
-+	"Load fin",
-+	"Store fwd",
-+	"Store",
-+};
-+
-+static const char *stall_fxu_reason[] = {
-+	"-",
-+	"Multi cycle",
-+	"Fixed cycle",
-+};
-+
-+static const char *stall_bru_reason[] = {
-+	"-",
-+	"Finish Mispredict",
-+	"Fixed cycle",
-+};
-+
-+static const char *stall_vsu_reason[] = {
-+	"-",
-+	"Multi cycle",
-+	"Fixed cycle",
-+};
-+
-+static const char *stall_other_reason[] = {
-+	"-",
-+	"Marked fin before NTC",
-+};
-+
-+const char *powerpc__haz__sreason_str(u8 sstage, u8 sreason)
-+{
-+	switch (sstage) {
-+	case PERF_HAZ__PIPE_STAGE_LSU:
-+		return stall_lsu_reason[sreason];
-+	case PERF_HAZ__PIPE_STAGE_FXU:
-+		return stall_fxu_reason[sreason];
-+	case PERF_HAZ__PIPE_STAGE_BRU:
-+		return stall_bru_reason[sreason];
-+	case PERF_HAZ__PIPE_STAGE_VSU:
-+		return stall_vsu_reason[sreason];
-+	case PERF_HAZ__PIPE_STAGE_OTHER:
-+		return stall_other_reason[sreason];
-+	default:
-+		return "-";
++	if (!sample->pipeline_haz) {
++		iter->priv = NULL;
++		return 0;
 +	}
++
++	haz_data = zalloc(sizeof(*haz_data));
++	if (!haz_data)
++		return -ENOMEM;
++
++	memcpy(haz_data, sample->pipeline_haz, sizeof(*haz_data));
++	iter->priv = haz_data;
++	return 0;
 +}
-diff --git a/tools/perf/util/hazard/powerpc/powerpc_hazard.h b/tools/perf/util/hazard/powerpc/powerpc_hazard.h
-new file mode 100644
-index 000000000000..f13f8f3cd10d
---- /dev/null
-+++ b/tools/perf/util/hazard/powerpc/powerpc_hazard.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __PERF_POWERPC_HAZARD_H
-+#define __PERF_POWERPC_HAZARD_H
 +
++static int iter_add_single_haz_entry(struct hist_entry_iter *iter,
++				     struct addr_location *al __maybe_unused)
++{
++	struct perf_pipeline_haz_data *haz_data = iter->priv;
++	struct hists *hists = evsel__hists(iter->evsel);
++	struct perf_sample *sample = iter->sample;
++	struct hist_entry *he;
++
++	he = hists__add_entry(hists, al, iter->parent, NULL, NULL, haz_data,
++			      sample, true);
++	if (!he)
++		return -ENOMEM;
++
++	iter->he = he;
++	return 0;
++}
++
++static int iter_finish_haz_entry(struct hist_entry_iter *iter,
++				 struct addr_location *al __maybe_unused)
++{
++	struct evsel *evsel = iter->evsel;
++	struct hists *hists = evsel__hists(evsel);
++	struct hist_entry *he = iter->he;
++	int err = -EINVAL;
++
++	if (he == NULL)
++		goto out;
++
++	hists__inc_nr_samples(hists, he->filtered);
++
++	err = hist_entry__append_callchain(he, iter->sample);
++
++out:
++	/*
++	 * We don't need to free iter->priv (perf_pipeline_haz_data) here since
++	 * the hazard info was either already freed in hists__findnew_entry() or
++	 * passed to a new hist entry by hist_entry__new().
++	 */
++	iter->priv = NULL;
++	iter->he = NULL;
++	return err;
++}
++
+ static int
+ iter_prepare_branch_entry(struct hist_entry_iter *iter, struct addr_location *al)
+ {
+@@ -1128,6 +1197,14 @@ iter_finish_cumulative_entry(struct hist_entry_iter *iter,
+ 	return 0;
+ }
+ 
++const struct hist_iter_ops hist_iter_haz = {
++	.prepare_entry		= iter_prepare_haz_entry,
++	.add_single_entry	= iter_add_single_haz_entry,
++	.next_entry		= iter_next_nop_entry,
++	.add_next_entry		= iter_add_next_nop_entry,
++	.finish_entry		= iter_finish_haz_entry,
++};
++
+ const struct hist_iter_ops hist_iter_mem = {
+ 	.prepare_entry 		= iter_prepare_mem_entry,
+ 	.add_single_entry 	= iter_add_single_mem_entry,
+diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
+index a4d12a503126..063d65985a11 100644
+--- a/tools/perf/util/hist.h
++++ b/tools/perf/util/hist.h
+@@ -69,6 +69,12 @@ enum hist_column {
+ 	HISTC_SYM_SIZE,
+ 	HISTC_DSO_SIZE,
+ 	HISTC_SYMBOL_IPC,
++	HISTC_HAZ_ITYPE,
++	HISTC_HAZ_ICACHE,
++	HISTC_HAZ_HSTAGE,
++	HISTC_HAZ_HREASON,
++	HISTC_HAZ_SSTAGE,
++	HISTC_HAZ_SREASON,
+ 	HISTC_NR_COLS, /* Last entry */
+ };
+ 
+@@ -132,6 +138,7 @@ struct hist_entry_iter {
+ extern const struct hist_iter_ops hist_iter_normal;
+ extern const struct hist_iter_ops hist_iter_branch;
+ extern const struct hist_iter_ops hist_iter_mem;
++extern const struct hist_iter_ops hist_iter_haz;
+ extern const struct hist_iter_ops hist_iter_cumulative;
+ 
+ struct hist_entry *hists__add_entry(struct hists *hists,
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index ab0cfd790ad0..b6d47e7160af 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -23,6 +23,7 @@
+ #include "strbuf.h"
+ #include <traceevent/event-parse.h>
+ #include "mem-events.h"
 +#include "hazard.h"
+ #include "annotate.h"
+ #include "time-utils.h"
+ #include <linux/kernel.h>
+@@ -34,6 +35,7 @@ const char	*parent_pattern = default_parent_pattern;
+ const char	*default_sort_order = "comm,dso,symbol";
+ const char	default_branch_sort_order[] = "comm,dso_from,symbol_from,symbol_to,cycles";
+ const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked";
++const char	default_haz_sort_order[] = "sym,dso,itype,hstage,hreason,sstage,sreason,icache";
+ const char	default_top_sort_order[] = "dso,symbol";
+ const char	default_diff_sort_order[] = "dso,symbol";
+ const char	default_tracepoint_sort_order[] = "trace";
+@@ -1377,6 +1379,190 @@ struct sort_entry sort_mem_dcacheline = {
+ 	.se_width_idx	= HISTC_MEM_DCACHELINE,
+ };
+ 
++static int64_t sort__itype_cmp(struct hist_entry *l, struct hist_entry *r)
++{
++	u8 itype_l, itype_r;
 +
-+const char *powerpc__haz__itype_str(u8 itype);
-+const char *powerpc__haz__icache_str(u8 icache);
-+const char *powerpc__haz__hstage_str(u8 hstage);
-+const char *powerpc__haz__hreason_str(u8 hstage, u8 hreason);
-+const char *powerpc__haz__sstage_str(u8 sstage);
-+const char *powerpc__haz__sreason_str(u8 sstage, u8 sreason);
++	itype_l = l->haz_data ? l->haz_data->itype : PERF_HAZ__ITYPE_NA;
++	itype_r = r->haz_data ? r->haz_data->itype : PERF_HAZ__ITYPE_NA;
 +
-+#endif /* __PERF_POWERPC_HAZARD_H */
++	return (int64_t)(itype_r - itype_l);
++}
++
++static int hist_entry__itype_snprintf(struct hist_entry *he, char *bf,
++				       size_t size, unsigned int width)
++{
++	const char *arch;
++	const char *itype = "-";
++
++	arch = hist_entry__get_arch(he);
++	if (he->haz_data)
++		itype = perf_haz__itype_str(he->haz_data->itype, arch);
++
++	return repsep_snprintf(bf, size, "%-*s", width, itype);
++}
++
++struct sort_entry sort_haz_inst_type = {
++	.se_header	= "Instruction Type",
++	.se_cmp		= sort__itype_cmp,
++	.se_snprintf	= hist_entry__itype_snprintf,
++	.se_width_idx	= HISTC_HAZ_ITYPE,
++};
++
++static int64_t sort__icache_cmp(struct hist_entry *l, struct hist_entry *r)
++{
++	u8 icache_l, icache_r;
++
++	icache_l = l->haz_data ? l->haz_data->icache : PERF_HAZ__ICACHE_NA;
++	icache_r = r->haz_data ? r->haz_data->icache : PERF_HAZ__ICACHE_NA;
++
++	return (int64_t)(icache_r - icache_l);
++}
++
++static int hist_entry__icache_snprintf(struct hist_entry *he, char *bf,
++					size_t size, unsigned int width)
++{
++	const char *arch;
++	const char *icache = "-";
++
++	arch = hist_entry__get_arch(he);
++	if (he->haz_data)
++		icache = perf_haz__icache_str(he->haz_data->icache, arch);
++
++	return repsep_snprintf(bf, size, "%-*s", width, icache);
++}
++
++struct sort_entry sort_haz_inst_cache = {
++	.se_header      = "ICache access",
++	.se_cmp         = sort__icache_cmp,
++	.se_snprintf    = hist_entry__icache_snprintf,
++	.se_width_idx   = HISTC_HAZ_ICACHE,
++};
++
++static int64_t sort__hstage_cmp(struct hist_entry *l, struct hist_entry *r)
++{
++	u8 hstage_l, hstage_r;
++
++	hstage_l = l->haz_data ? l->haz_data->hazard_stage : PERF_HAZ__PIPE_STAGE_NA;
++	hstage_r = r->haz_data ? r->haz_data->hazard_stage : PERF_HAZ__PIPE_STAGE_NA;
++
++	return (int64_t)(hstage_r - hstage_l);
++}
++
++static int hist_entry__hstage_snprintf(struct hist_entry *he, char *bf,
++					size_t size, unsigned int width)
++{
++	const char *arch;
++	const char *hstage = "-";
++
++	arch = hist_entry__get_arch(he);
++	if (he->haz_data)
++		hstage = perf_haz__hstage_str(he->haz_data->hazard_stage, arch);
++
++	return repsep_snprintf(bf, size, "%-*s", width, hstage);
++}
++
++struct sort_entry sort_haz_hazard_stage = {
++	.se_header      = "Hazard Stage",
++	.se_cmp         = sort__hstage_cmp,
++	.se_snprintf    = hist_entry__hstage_snprintf,
++	.se_width_idx   = HISTC_HAZ_HSTAGE,
++};
++
++static int64_t sort__hreason_cmp(struct hist_entry *l, struct hist_entry *r)
++{
++	u8 hreason_l, hreason_r;
++
++	hreason_l = l->haz_data ? l->haz_data->hazard_reason : PERF_HAZ__HREASON_NA;
++	hreason_r = r->haz_data ? r->haz_data->hazard_reason : PERF_HAZ__HREASON_NA;
++
++	return (int64_t)(hreason_r - hreason_l);
++}
++
++static int hist_entry__hreason_snprintf(struct hist_entry *he, char *bf,
++					 size_t size, unsigned int width)
++{
++	const char *arch;
++	const char *hreason = "-";
++
++	arch = hist_entry__get_arch(he);
++	if (he->haz_data) {
++		hreason = perf_haz__hreason_str(he->haz_data->hazard_stage,
++					he->haz_data->hazard_reason, arch);
++	}
++
++	return repsep_snprintf(bf, size, "%-*s", width, hreason);
++}
++
++struct sort_entry sort_haz_hazard_reason = {
++	.se_header      = "Hazard Reason",
++	.se_cmp         = sort__hreason_cmp,
++	.se_snprintf    = hist_entry__hreason_snprintf,
++	.se_width_idx   = HISTC_HAZ_HREASON,
++};
++
++static int64_t sort__sstage_cmp(struct hist_entry *l, struct hist_entry *r)
++{
++	u8 sstage_l, sstage_r;
++
++	sstage_l = l->haz_data ? l->haz_data->stall_stage : PERF_HAZ__PIPE_STAGE_NA;
++	sstage_r = r->haz_data ? r->haz_data->stall_stage : PERF_HAZ__PIPE_STAGE_NA;
++
++	return (int64_t)(sstage_r - sstage_l);
++}
++
++static int hist_entry__sstage_snprintf(struct hist_entry *he, char *bf,
++					size_t size, unsigned int width)
++{
++	const char *arch;
++	const char *sstage = "-";
++
++	arch = hist_entry__get_arch(he);
++	if (he->haz_data)
++		sstage = perf_haz__sstage_str(he->haz_data->stall_stage, arch);
++
++	return repsep_snprintf(bf, size, "%-*s", width, sstage);
++}
++
++struct sort_entry sort_haz_stall_stage = {
++	.se_header      = "Stall Stage",
++	.se_cmp         = sort__sstage_cmp,
++	.se_snprintf    = hist_entry__sstage_snprintf,
++	.se_width_idx   = HISTC_HAZ_SSTAGE,
++};
++
++static int64_t sort__sreason_cmp(struct hist_entry *l, struct hist_entry *r)
++{
++	u8 sreason_l, sreason_r;
++
++	sreason_l = l->haz_data ? l->haz_data->stall_reason : PERF_HAZ__SREASON_NA;
++	sreason_r = r->haz_data ? r->haz_data->stall_reason : PERF_HAZ__SREASON_NA;
++
++	return (int64_t)(sreason_r - sreason_l);
++}
++
++static int hist_entry__sreason_snprintf(struct hist_entry *he, char *bf,
++					     size_t size, unsigned int width)
++{
++	const char *arch;
++	const char *sreason = "-";
++
++	arch = hist_entry__get_arch(he);
++	if (he->haz_data) {
++		sreason = perf_haz__sreason_str(he->haz_data->stall_stage,
++					he->haz_data->stall_reason, arch);
++	}
++
++	return repsep_snprintf(bf, size, "%-*s", width, sreason);
++}
++
++struct sort_entry sort_haz_stall_reason = {
++	.se_header      = "Stall Reason",
++	.se_cmp         = sort__sreason_cmp,
++	.se_snprintf    = hist_entry__sreason_snprintf,
++	.se_width_idx   = HISTC_HAZ_SREASON,
++};
++
+ static int64_t
+ sort__phys_daddr_cmp(struct hist_entry *left, struct hist_entry *right)
+ {
+@@ -1699,6 +1885,19 @@ static struct sort_dimension memory_sort_dimensions[] = {
+ 
+ #undef DIM
+ 
++#define DIM(d, n, func) [d - __SORT_HAZARD_MODE] = { .name = n, .entry = &(func) }
++
++static struct sort_dimension hazard_sort_dimensions[] = {
++       DIM(SORT_HAZ_ITYPE, "itype", sort_haz_inst_type),
++       DIM(SORT_HAZ_ICACHE, "icache", sort_haz_inst_cache),
++       DIM(SORT_HAZ_HSTAGE, "hstage", sort_haz_hazard_stage),
++       DIM(SORT_HAZ_HREASON, "hreason", sort_haz_hazard_reason),
++       DIM(SORT_HAZ_SSTAGE, "sstage", sort_haz_stall_stage),
++       DIM(SORT_HAZ_SREASON, "sreason", sort_haz_stall_reason),
++};
++
++#undef DIM
++
+ struct hpp_dimension {
+ 	const char		*name;
+ 	struct perf_hpp_fmt	*fmt;
+@@ -2643,6 +2842,19 @@ int sort_dimension__add(struct perf_hpp_list *list, const char *tok,
+ 		return 0;
+ 	}
+ 
++	for (i = 0; i < ARRAY_SIZE(hazard_sort_dimensions); i++) {
++		struct sort_dimension *sd = &hazard_sort_dimensions[i];
++
++		if (strncasecmp(tok, sd->name, strlen(tok)))
++			continue;
++
++		if (sort__mode != SORT_MODE__HAZARD)
++			return -EINVAL;
++
++		__sort_dimension__add(sd, list, level);
++		return 0;
++	}
++
+ 	if (!add_dynamic_entry(evlist, tok, level))
+ 		return 0;
+ 
+@@ -2705,6 +2917,7 @@ static const char *get_default_sort_order(struct evlist *evlist)
+ 		default_top_sort_order,
+ 		default_diff_sort_order,
+ 		default_tracepoint_sort_order,
++		default_haz_sort_order,
+ 	};
+ 	bool use_trace = true;
+ 	struct evsel *evsel;
+@@ -2976,6 +3189,18 @@ int output_field_add(struct perf_hpp_list *list, char *tok)
+ 		return __sort_dimension__add_output(list, sd);
+ 	}
+ 
++	for (i = 0; i < ARRAY_SIZE(hazard_sort_dimensions); i++) {
++		struct sort_dimension *sd = &hazard_sort_dimensions[i];
++
++		if (strncasecmp(tok, sd->name, strlen(tok)))
++			continue;
++
++		if (sort__mode != SORT_MODE__HAZARD)
++			return -EINVAL;
++
++		return __sort_dimension__add_output(list, sd);
++	}
++
+ 	return -ESRCH;
+ }
+ 
+@@ -3014,6 +3239,9 @@ void reset_dimensions(void)
+ 
+ 	for (i = 0; i < ARRAY_SIZE(memory_sort_dimensions); i++)
+ 		memory_sort_dimensions[i].taken = 0;
++
++	for (i = 0; i < ARRAY_SIZE(hazard_sort_dimensions); i++)
++		hazard_sort_dimensions[i].taken = 0;
+ }
+ 
+ bool is_strict_order(const char *order)
+@@ -3148,6 +3376,8 @@ const char *sort_help(const char *prefix)
+ 			    ARRAY_SIZE(bstack_sort_dimensions), &len);
+ 	add_sort_string(&sb, memory_sort_dimensions,
+ 			    ARRAY_SIZE(memory_sort_dimensions), &len);
++	add_sort_string(&sb, hazard_sort_dimensions,
++			    ARRAY_SIZE(hazard_sort_dimensions), &len);
+ 	s = strbuf_detach(&sb, NULL);
+ 	strbuf_release(&sb);
+ 	return s;
+diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
+index 55eb65fd593f..3c18ece0aa4f 100644
+--- a/tools/perf/util/sort.h
++++ b/tools/perf/util/sort.h
+@@ -12,6 +12,7 @@
+ #include "hist.h"
+ #include "stat.h"
+ #include "spark.h"
++#include "env.h"
+ 
+ struct option;
+ struct thread;
+@@ -36,6 +37,7 @@ extern struct sort_entry sort_sym_to;
+ extern struct sort_entry sort_srcline;
+ extern enum sort_type sort__first_dimension;
+ extern const char default_mem_sort_order[];
++extern const char default_haz_sort_order[];
+ 
+ struct res_sample {
+ 	u64 time;
+@@ -199,6 +201,16 @@ static inline float hist_entry__get_percent_limit(struct hist_entry *he)
+ 	return period * 100.0 / total_period;
+ }
+ 
++static inline struct perf_env *hist_entry__env(struct hist_entry *he)
++{
++	return perf_evsel__env(hists_to_evsel(he->hists));
++}
++
++static inline const char *hist_entry__get_arch(struct hist_entry *he)
++{
++	return perf_env__arch(hist_entry__env(he));
++}
++
+ enum sort_mode {
+ 	SORT_MODE__NORMAL,
+ 	SORT_MODE__BRANCH,
+@@ -206,6 +218,7 @@ enum sort_mode {
+ 	SORT_MODE__TOP,
+ 	SORT_MODE__DIFF,
+ 	SORT_MODE__TRACEPOINT,
++	SORT_MODE__HAZARD,
+ };
+ 
+ enum sort_type {
+@@ -254,6 +267,15 @@ enum sort_type {
+ 	SORT_MEM_DCACHELINE,
+ 	SORT_MEM_IADDR_SYMBOL,
+ 	SORT_MEM_PHYS_DADDR,
++
++	/* hazard mode specific sort keys */
++	__SORT_HAZARD_MODE,
++	SORT_HAZ_ITYPE = __SORT_HAZARD_MODE,
++	SORT_HAZ_ICACHE,
++	SORT_HAZ_HSTAGE,
++	SORT_HAZ_HREASON,
++	SORT_HAZ_SSTAGE,
++	SORT_HAZ_SREASON,
+ };
+ 
+ /*
 -- 
 2.21.1
 
