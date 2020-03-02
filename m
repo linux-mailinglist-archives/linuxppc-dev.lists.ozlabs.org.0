@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33811175358
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 06:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABDC17536C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 06:46:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48W80M31gtzDqfr
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:32:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48W8K84XWCzDqYL
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:46:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,60 +19,61 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48W7qw5ZqHzDqWS
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 16:24:44 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48W7rN35y7zDqWS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 16:25:08 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0225OKTu145721
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 00:24:42 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yfncc1puh-1
+ 0225P5ci157190
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Mar 2020 00:25:05 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfm50uj8v-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 00:24:42 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 00:25:05 -0500
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Mon, 2 Mar 2020 05:24:40 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Mon, 2 Mar 2020 05:24:43 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 2 Mar 2020 05:24:33 -0000
+ Mon, 2 Mar 2020 05:24:36 -0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0225OVSB54067362
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0225OZ6D65798146
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Mar 2020 05:24:31 GMT
+ Mon, 2 Mar 2020 05:24:35 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A4C035204F;
- Mon,  2 Mar 2020 05:24:31 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4A8AC52050;
+ Mon,  2 Mar 2020 05:24:35 +0000 (GMT)
 Received: from bangoria.in.ibm.com (unknown [9.124.31.175])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 583F452054;
- Mon,  2 Mar 2020 05:24:28 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E85DD5204E;
+ Mon,  2 Mar 2020 05:24:31 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC 04/11] powerpc/perf: Arch support to expose Hazard data
-Date: Mon,  2 Mar 2020 10:53:48 +0530
+Subject: [RFC 05/11] perf tools: Enable record and script to record and show
+ hazard data
+Date: Mon,  2 Mar 2020 10:53:49 +0530
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
 References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20030205-0008-0000-0000-000003583690
+x-cbid: 20030205-0020-0000-0000-000003AF5D27
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030205-0009-0000-0000-00004A7960B7
-Message-Id: <20200302052355.36365-5-ravi.bangoria@linux.ibm.com>
+x-cbparentid: 20030205-0021-0000-0000-000022078662
+Message-Id: <20200302052355.36365-6-ravi.bangoria@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-01_09:2020-02-28,
- 2020-03-01 signatures=0
+ definitions=2020-03-02_01:2020-02-28,
+ 2020-03-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 bulkscore=0 clxscore=1015
- impostorscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ clxscore=1015 bulkscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2003020039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -98,279 +99,157 @@ Sender: "Linuxppc-dev"
 
 From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 
-SIER register on PowerPC hw pmu provides cpu pipeline hazard information.
-Add logic to convert this arch specific data into perf_pipeline_haz_data
-structure.
+Introduce new perf record option "--hazard" to capture cpu pipeline
+hazard data. Also enable perf script -D to dump raw values of it.
+Sample o/p:
+
+  $ ./perf record -e r4010e --hazard -- ls
+  $ ./perf script -D
+  ... PERF_RECORD_SAMPLE(IP, 0x2): ...
+  hazard information:
+  Inst Type 0x1
+  Inst Cache 0x1
+  Hazard Stage 0x4
+  Hazard Reason 0x3
+  Stall Stage 0x4
+  Stall Reason 0x2
 
 Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- arch/powerpc/include/asm/perf_event_server.h |   2 +
- arch/powerpc/perf/core-book3s.c              |   4 +
- arch/powerpc/perf/isa207-common.c            | 157 +++++++++++++++++++
- arch/powerpc/perf/isa207-common.h            |  12 ++
- arch/powerpc/perf/power8-pmu.c               |   1 +
- arch/powerpc/perf/power9-pmu.c               |   1 +
- 6 files changed, 177 insertions(+)
+ tools/perf/Documentation/perf-record.txt  |  3 +++
+ tools/perf/builtin-record.c               |  1 +
+ tools/perf/util/event.h                   |  1 +
+ tools/perf/util/evsel.c                   | 10 ++++++++++
+ tools/perf/util/perf_event_attr_fprintf.c |  1 +
+ tools/perf/util/record.h                  |  1 +
+ tools/perf/util/session.c                 | 16 ++++++++++++++++
+ 7 files changed, 33 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
-index 3e9703f44c7c..9b8f90439ff2 100644
---- a/arch/powerpc/include/asm/perf_event_server.h
-+++ b/arch/powerpc/include/asm/perf_event_server.h
-@@ -37,6 +37,8 @@ struct power_pmu {
- 	void		(*get_mem_data_src)(union perf_mem_data_src *dsrc,
- 				u32 flags, struct pt_regs *regs);
- 	void		(*get_mem_weight)(u64 *weight);
-+	void		(*get_phazard_data)(struct perf_pipeline_haz_data *phaz,
-+				u32 flags, struct pt_regs *regs);
- 	unsigned long	group_constraint_mask;
- 	unsigned long	group_constraint_val;
- 	u64             (*bhrb_filter_map)(u64 branch_sample_type);
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 3086055bf681..fcbb4acc3a03 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2096,6 +2096,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 						ppmu->get_mem_weight)
- 			ppmu->get_mem_weight(&data.weight);
+diff --git a/tools/perf/Documentation/perf-record.txt b/tools/perf/Documentation/perf-record.txt
+index b23a4012a606..e7bd1b6938ce 100644
+--- a/tools/perf/Documentation/perf-record.txt
++++ b/tools/perf/Documentation/perf-record.txt
+@@ -283,6 +283,9 @@ OPTIONS
+ --phys-data::
+ 	Record the sample physical addresses.
  
-+		if (event->attr.sample_type & PERF_SAMPLE_PIPELINE_HAZ &&
-+						ppmu->get_phazard_data)
-+			ppmu->get_phazard_data(&data.pipeline_haz, ppmu->flags, regs);
++--hazard::
++	Record processor pipeline hazard and stall information.
 +
- 		if (perf_event_overflow(event, &data, regs))
- 			power_pmu_stop(event, 0);
+ -T::
+ --timestamp::
+ 	Record the sample timestamps. Use it with 'perf report -D' to see the
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index 4c301466101b..6bd32d7bc4e9 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -2301,6 +2301,7 @@ static struct option __record_options[] = {
+ 	OPT_BOOLEAN('s', "stat", &record.opts.inherit_stat,
+ 		    "per thread counts"),
+ 	OPT_BOOLEAN('d', "data", &record.opts.sample_address, "Record the sample addresses"),
++	OPT_BOOLEAN(0, "hazard", &record.opts.hazard, "Record processor pipeline hazard and stall information"),
+ 	OPT_BOOLEAN(0, "phys-data", &record.opts.sample_phys_addr,
+ 		    "Record the sample physical addresses"),
+ 	OPT_BOOLEAN(0, "sample-cpu", &record.opts.sample_cpu, "Record the sample cpu"),
+diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
+index 85223159737c..ff0f03253a95 100644
+--- a/tools/perf/util/event.h
++++ b/tools/perf/util/event.h
+@@ -148,6 +148,7 @@ struct perf_sample {
+ 	struct stack_dump user_stack;
+ 	struct sample_read read;
+ 	struct aux_sample aux_sample;
++	struct perf_pipeline_haz_data *pipeline_haz;
+ };
+ 
+ #define PERF_MEM_DATA_SRC_NONE \
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index c8dc4450884c..e37ed7929c2c 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -1080,6 +1080,9 @@ void perf_evsel__config(struct evsel *evsel, struct record_opts *opts,
+ 	if (opts->sample_phys_addr)
+ 		perf_evsel__set_sample_bit(evsel, PHYS_ADDR);
+ 
++	if (opts->hazard)
++		perf_evsel__set_sample_bit(evsel, PIPELINE_HAZ);
++
+ 	if (opts->no_buffering) {
+ 		attr->watermark = 0;
+ 		attr->wakeup_events = 1;
+@@ -2265,6 +2268,13 @@ int perf_evsel__parse_sample(struct evsel *evsel, union perf_event *event,
+ 		array = (void *)array + sz;
  	}
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 07026bbd292b..03dafde7cace 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -239,6 +239,163 @@ void isa207_get_mem_weight(u64 *weight)
- 		*weight = mantissa << (2 * exp);
+ 
++	if (type & PERF_SAMPLE_PIPELINE_HAZ) {
++		sz = sizeof(struct perf_pipeline_haz_data);
++		OVERFLOW_CHECK(array, sz, max_size);
++		data->pipeline_haz = (struct perf_pipeline_haz_data *)array;
++		array = (void *)array + sz;
++	}
++
+ 	return 0;
  }
  
-+static __u8 get_inst_type(u64 sier)
-+{
-+	switch (SIER_TYPE(sier)) {
-+	case 1:
-+		return PERF_HAZ__ITYPE_LOAD;
-+	case 2:
-+		return PERF_HAZ__ITYPE_STORE;
-+	case 3:
-+		return PERF_HAZ__ITYPE_BRANCH;
-+	case 4:
-+		return PERF_HAZ__ITYPE_FP;
-+	case 5:
-+		return PERF_HAZ__ITYPE_FX;
-+	case 6:
-+		return PERF_HAZ__ITYPE_CR_OR_SC;
-+	}
-+	return PERF_HAZ__ITYPE_NA;
-+}
-+
-+static __u8 get_inst_cache(u64 sier)
-+{
-+	switch (SIER_ICACHE(sier)) {
-+	case 1:
-+		return PERF_HAZ__ICACHE_L1_HIT;
-+	case 2:
-+		return PERF_HAZ__ICACHE_L2_HIT;
-+	case 3:
-+		return PERF_HAZ__ICACHE_L3_HIT;
-+	case 4:
-+		return PERF_HAZ__ICACHE_L3_MISS;
-+	}
-+	return PERF_HAZ__ICACHE_NA;
-+}
-+
-+static void get_hazard_data(u64 sier, struct perf_pipeline_haz_data *haz)
-+{
-+	if (SIER_MPRED(sier)) {
-+		haz->hazard_stage = PERF_HAZ__PIPE_STAGE_BRU;
-+
-+		switch (SIER_MPRED_TYPE(sier)) {
-+		case 1:
-+			haz->hazard_reason = PERF_HAZ__HAZ_BRU_MPRED_DIR;
-+			return;
-+		case 2:
-+			haz->hazard_reason = PERF_HAZ__HAZ_BRU_MPRED_TA;
-+			return;
-+		}
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_300) &&
-+	    (SIER_TYPE(sier) == 1 || SIER_TYPE(sier) == 2)) {
-+		haz->hazard_stage = PERF_HAZ__PIPE_STAGE_LSU;
-+		haz->hazard_reason = PERF_HAZ__HAZ_DERAT_MISS;
-+		return;
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
-+	    (SIER_TYPE(sier) == 1 || SIER_TYPE(sier) == 2)) {
-+		int derat_miss = SIER_DERAT_MISS(sier);
-+
-+		haz->hazard_stage = PERF_HAZ__PIPE_STAGE_LSU;
-+
-+		switch (p8_SIER_REJ_LSU_REASON(sier)) {
-+		case 0:
-+			haz->hazard_reason = PERF_HAZ__HAZ_LSU_ERAT_MISS;
-+			return;
-+		case 1:
-+			haz->hazard_reason = (derat_miss) ?
-+					     PERF_HAZ__HAZ_LSU_LMQ_DERAT_MISS :
-+					     PERF_HAZ__HAZ_LSU_LMQ;
-+			return;
-+		case 2:
-+			haz->hazard_reason = (derat_miss) ?
-+					     PERF_HAZ__HAZ_LSU_LHS_DERAT_MISS :
-+					     PERF_HAZ__HAZ_LSU_LHS;
-+			return;
-+		case 3:
-+			haz->hazard_reason = (derat_miss) ?
-+					     PERF_HAZ__HAZ_LSU_MPRED_DERAT_MISS :
-+					     PERF_HAZ__HAZ_LSU_MPRED;
-+			return;
-+		}
-+
-+		if (derat_miss)
-+			haz->hazard_reason = PERF_HAZ__HAZ_DERAT_MISS;
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_207S) && p8_SIER_REJ_ISU(sier)) {
-+		haz->hazard_stage = PERF_HAZ__PIPE_STAGE_ISU;
-+
-+		if (p8_SIER_REJ_ISU_SRC(sier))
-+			haz->hazard_reason = PERF_HAZ__HAZ_ISU_SRC;
-+		if (p8_SIER_REJ_ISU_COL(sier))
-+			haz->hazard_reason = PERF_HAZ__HAZ_ISU_COL;
-+	}
-+}
-+
-+static void get_stall_data(u64 sier, struct perf_pipeline_haz_data *haz)
-+{
-+	switch (SIER_FIN_STALL_REASON(sier)) {
-+	case 1:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_OTHER;
-+		haz->stall_reason = PERF_HAZ__STALL_NTC;
-+		break;
-+	case 4:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_LSU;
-+		haz->stall_reason = PERF_HAZ__STALL_LSU_DCACHE_MISS;
-+		break;
-+	case 5:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_LSU;
-+		haz->stall_reason = PERF_HAZ__STALL_LSU_LD_FIN;
-+		break;
-+	case 6:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_LSU;
-+		haz->stall_reason = PERF_HAZ__STALL_LSU_ST_FWD;
-+		break;
-+	case 7:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_LSU;
-+		haz->stall_reason = PERF_HAZ__STALL_LSU_ST;
-+		break;
-+	case 8:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_FXU;
-+		haz->stall_reason = PERF_HAZ__STALL_FXU_MC;
-+		break;
-+	case 9:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_BRU;
-+		haz->stall_reason = PERF_HAZ__STALL_BRU_FIN_MPRED;
-+		break;
-+	case 10:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_VSU;
-+		haz->stall_reason = PERF_HAZ__STALL_VSU_MC;
-+		break;
-+	case 12:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_FXU;
-+		haz->stall_reason = PERF_HAZ__STALL_FXU_FC;
-+		break;
-+	case 13:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_VSU;
-+		haz->stall_reason = PERF_HAZ__STALL_VSU_FC;
-+		break;
-+	case 14:
-+		haz->stall_stage = PERF_HAZ__PIPE_STAGE_BRU;
-+		haz->stall_reason = PERF_HAZ__STALL_BRU_FC;
-+	}
-+}
-+
-+void isa207_get_phazard_data(struct perf_pipeline_haz_data *haz, u32 flags,
-+			     struct pt_regs *regs)
-+{
-+	u64 sier = mfspr(SPRN_SIER);
-+
-+	haz->itype = get_inst_type(sier);
-+	haz->icache = get_inst_cache(sier);
-+	get_hazard_data(sier, haz);
-+	get_stall_data(sier, haz);
-+}
-+
- int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
- {
- 	unsigned int unit, pmc, cache, ebb;
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 7027eb9f3e40..125e0e44aeea 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -12,6 +12,7 @@
- #include <linux/perf_event.h>
- #include <asm/firmware.h>
- #include <asm/cputable.h>
-+#include <asm/perf_pipeline_haz.h>
+diff --git a/tools/perf/util/perf_event_attr_fprintf.c b/tools/perf/util/perf_event_attr_fprintf.c
+index 651203126c71..d97e755c886b 100644
+--- a/tools/perf/util/perf_event_attr_fprintf.c
++++ b/tools/perf/util/perf_event_attr_fprintf.c
+@@ -35,6 +35,7 @@ static void __p_sample_type(char *buf, size_t size, u64 value)
+ 		bit_name(BRANCH_STACK), bit_name(REGS_USER), bit_name(STACK_USER),
+ 		bit_name(IDENTIFIER), bit_name(REGS_INTR), bit_name(DATA_SRC),
+ 		bit_name(WEIGHT), bit_name(PHYS_ADDR), bit_name(AUX),
++		bit_name(PIPELINE_HAZ),
+ 		{ .name = NULL, }
+ 	};
+ #undef bit_name
+diff --git a/tools/perf/util/record.h b/tools/perf/util/record.h
+index 5421fd2ad383..f1678a0bc8ce 100644
+--- a/tools/perf/util/record.h
++++ b/tools/perf/util/record.h
+@@ -67,6 +67,7 @@ struct record_opts {
+ 	int	      affinity;
+ 	int	      mmap_flush;
+ 	unsigned int  comp_level;
++	bool	      hazard;
+ };
  
- #define EVENT_EBB_MASK		1ull
- #define EVENT_EBB_SHIFT		PERF_EVENT_CONFIG_EBB_SHIFT
-@@ -202,8 +203,17 @@
- #define MAX_ALT				2
- #define MAX_PMU_COUNTERS		6
+ extern const char * const *record_usage;
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index d0d7d25b23e3..834ca7df2349 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1153,6 +1153,19 @@ static void stack_user__printf(struct stack_dump *dump)
+ 	       dump->size, dump->offset);
+ }
  
-+#define SIER_FIN_STALL_REASON(sier)	(((sier) >> (63 -  6)) & 0xfull)
- #define SIER_DATA_SRC(sier)		(((sier) >> (63 - 10)) & 0x7ull)
-+#define p8_SIER_REJ_ISU_SRC(sier)	(((sier) >> (63 - 32)) & 0x1ull)
-+#define p8_SIER_REJ_ISU_COL(sier)	(((sier) >> (63 - 33)) & 0x1ull)
-+#define p8_SIER_REJ_ISU(sier)		(((sier) >> (63 - 33)) & 0x3ull)
-+#define p8_SIER_REJ_LSU_REASON(sier)	(((sier) >> (63 - 36)) & 0x3ull)
- #define SIER_TYPE(sier)			(((sier) >> (63 - 48)) & 0x7ull)
-+#define SIER_ICACHE(sier)		(((sier) >> (63 - 51)) & 0x7ull)
-+#define SIER_MPRED(sier)		(((sier) >> (63 - 53)) & 0x1ull)
-+#define SIER_MPRED_TYPE(sier)		(((sier) >> (63 - 55)) & 0x3ull)
-+#define SIER_DERAT_MISS(sier)		(((sier) >> (63 - 56)) & 0x1ull)
- #define SIER_LDST(sier)			(((sier) >> (63 - 62)) & 0x7ull)
++static void pipeline_hazard__printf(struct perf_sample *sample)
++{
++	struct perf_pipeline_haz_data *haz = sample->pipeline_haz;
++
++	printf("... hazard information:\n");
++	printf(".... Inst Type 0x%" PRIx32 "\n", haz->itype);
++	printf(".... Inst Cache 0x%" PRIx32 "\n", haz->icache);
++	printf(".... Hazard Stage 0x%" PRIx32 "\n", haz->hazard_stage);
++	printf(".... Hazard Reason 0x%" PRIx32 "\n", haz->hazard_reason);
++	printf(".... Stall Stage 0x%" PRIx32 "\n", haz->stall_stage);
++	printf(".... Stall Reason 0x%" PRIx32 "\n", haz->stall_reason);
++}
++
+ static void perf_evlist__print_tstamp(struct evlist *evlist,
+ 				       union perf_event *event,
+ 				       struct perf_sample *sample)
+@@ -1251,6 +1264,9 @@ static void dump_sample(struct evsel *evsel, union perf_event *event,
+ 	if (sample_type & PERF_SAMPLE_STACK_USER)
+ 		stack_user__printf(&sample->user_stack);
  
- #define P(a, b)				PERF_MEM_S(a, b)
-@@ -220,5 +230,7 @@ int isa207_get_alternatives(u64 event, u64 alt[], int size, unsigned int flags,
- void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
- 							struct pt_regs *regs);
- void isa207_get_mem_weight(u64 *weight);
-+void isa207_get_phazard_data(struct perf_pipeline_haz_data *haz, u32 flags,
-+			     struct pt_regs *regs);
++	if (sample_type & PERF_SAMPLE_PIPELINE_HAZ)
++		pipeline_hazard__printf(sample);
++
+ 	if (sample_type & PERF_SAMPLE_WEIGHT)
+ 		printf("... weight: %" PRIu64 "\n", sample->weight);
  
- #endif
-diff --git a/arch/powerpc/perf/power8-pmu.c b/arch/powerpc/perf/power8-pmu.c
-index 3a5fcc20ff31..dc407329ba94 100644
---- a/arch/powerpc/perf/power8-pmu.c
-+++ b/arch/powerpc/perf/power8-pmu.c
-@@ -370,6 +370,7 @@ static struct power_pmu power8_pmu = {
- 	.get_mem_data_src	= isa207_get_mem_data_src,
- 	.get_mem_weight		= isa207_get_mem_weight,
- 	.disable_pmc		= isa207_disable_pmc,
-+	.get_phazard_data	= isa207_get_phazard_data,
- 	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S,
- 	.n_generic		= ARRAY_SIZE(power8_generic_events),
- 	.generic_events		= power8_generic_events,
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index 08c3ef796198..84f663d8df13 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -428,6 +428,7 @@ static struct power_pmu power9_pmu = {
- 	.get_mem_data_src	= isa207_get_mem_data_src,
- 	.get_mem_weight		= isa207_get_mem_weight,
- 	.disable_pmc		= isa207_disable_pmc,
-+	.get_phazard_data	= isa207_get_phazard_data,
- 	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S,
- 	.n_generic		= ARRAY_SIZE(power9_generic_events),
- 	.generic_events		= power9_generic_events,
 -- 
 2.21.1
 
