@@ -1,71 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8BB1751C1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 03:19:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863A1175170
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 02:08:05 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48W27j3cBSzDqxQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 12:08:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48W3k96lFgzDqwV
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 13:19:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rhR93sV7; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48W25j3HtXzDqlc
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 12:06:17 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id i13so4720495pfe.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Mar 2020 17:06:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=3n6Mg05RsiWbegkZ8ne7xswmXHbsiqnCeIaB9X/zSk0=;
- b=rhR93sV7XTZMopqdSO7ACjn2L7yzbt3oASDnp6lzpGrNZQ0szvkoH7GqNN2skfon5c
- c2tPC2+REbKdWKmTeRG8JSpiuJWWPRO5aWVwPZcPijeyQul7r/8KtHxSj0YTz3TJnGxp
- XQlb75DtdPPn8tC7Wpn8zgA5ugcQ07FKHeLQCvBNW/hU79bpPqS7/1aFySdg8fpbzTGT
- oMg/bBBR2dJ6JeB/w0FuHz7WRg4lHJ/ByJ7P1hJKK0JyK5Ji5nbqEMhpZG1xHeCEEmWm
- iGqlFwDHJfm61cgE/CBvTZtcwOFlnnFl013Hhvu1W20txaEsKoCAxWpio103rhskwiRT
- spdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=3n6Mg05RsiWbegkZ8ne7xswmXHbsiqnCeIaB9X/zSk0=;
- b=W8MJSN2NCY6oK14dQueth5pWXi+9WlefLRL1bO36+Q2Lv7R4/We4jQSdWSNkFGPZbi
- 4shBWW6iy3kOb+znpqu/3k/rZ5Or68/Sg6VH5z7DaIk+Uz7knzhBD4hkBazCeWMFVAlG
- kEQAdI3Z+LGTgU8/OlwrpCHOMB9yjfk78mWIoW3lkgbGt58u2GW2Nl62Q3AOgNJQr+sa
- CSZUAXLTB6/sPdKutMTlCoiPaSEj/AsF77KmH208UpKMN09sADI6MY99d45aMFDGjDMl
- O84JS+Tg5SHBtRzhp+PwnxccPIkAxAP++T43rb+asqL28Xi+7+zYphObJP0f7ZsvatKN
- YVaA==
-X-Gm-Message-State: APjAAAUy22FWt6bhSDELWXl7XVUIsL7xmhGGqp0o9awrMHAC1hNM1BpL
- d4kYE8aubWC/Ebf8eMsEnFsvRGZZ
-X-Google-Smtp-Source: APXvYqx4WNv7F1V9qmjMjqEV5/nwDgeleZLF4NYc0z9m4M35WKkj9olJz9k0/ucRc9e1iWfONSrpWg==
-X-Received: by 2002:aa7:84c6:: with SMTP id x6mr14928207pfn.181.1583111174107; 
- Sun, 01 Mar 2020 17:06:14 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (193-116-117-248.tpgi.com.au.
- [193.116.117.248])
- by smtp.gmail.com with ESMTPSA id f124sm2176274pfg.9.2020.03.01.17.06.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Mar 2020 17:06:13 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s/radix: Fix !SMP build
-Date: Mon,  2 Mar 2020 11:04:10 +1000
-Message-Id: <20200302010410.2957362-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48W3hB3NclzDqSH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 13:17:44 +1100 (AEDT)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 489E9EE228E2F0D26E70;
+ Mon,  2 Mar 2020 10:17:36 +0800 (CST)
+Received: from [127.0.0.1] (10.173.221.195) by DGGEMS406-HUB.china.huawei.com
+ (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0;
+ Mon, 2 Mar 2020 10:17:29 +0800
+Subject: Re: [PATCH v3 0/6] implement KASLR for powerpc/fsl_booke/64
+To: Scott Wood <oss@buserror.net>, Daniel Axtens <dja@axtens.net>,
+ <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
+ <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>, <me@tobin.cc>
+References: <20200206025825.22934-1-yanaijie@huawei.com>
+ <87tv3drf79.fsf@dja-thinkpad.axtens.net>
+ <8171d326-5138-4f5c-cff6-ad3ee606f0c2@huawei.com>
+ <e8cd8f287934954cfa07dcf76ac73492e2d49a5b.camel@buserror.net>
+ <dd8db870-b607-3f74-d3bc-a8d9f33f9852@huawei.com>
+ <4c0e7fec63dbc7b91fa6c24692c73c256c131f51.camel@buserror.net>
+ <188971ed-f1c4-39b3-c07e-89cc593d88d7@huawei.com>
+ <530c49dfd97c811dc53ffc78c594d7133f7eb1e9.camel@buserror.net>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <35e6c660-3896-bdb8-45f3-c1504aa2171f@huawei.com>
+Date: Mon, 2 Mar 2020 10:17:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
+In-Reply-To: <530c49dfd97c811dc53ffc78c594d7133f7eb1e9.camel@buserror.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.221.195]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,54 +61,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 1 +
- arch/powerpc/mm/book3s64/radix_tlb.c     | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index dd1bea45325c..2a9a0cd79490 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -26,6 +26,7 @@
- #include <asm/firmware.h>
- #include <asm/powernv.h>
- #include <asm/sections.h>
-+#include <asm/smp.h>
- #include <asm/trace.h>
- #include <asm/uaccess.h>
- #include <asm/ultravisor.h>
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 03f43c924e00..758ade2c2b6e 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -587,6 +587,11 @@ void radix__local_flush_all_mm(struct mm_struct *mm)
- 	preempt_enable();
- }
- EXPORT_SYMBOL(radix__local_flush_all_mm);
-+
-+static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
-+{
-+	radix__local_flush_all_mm(mm);
-+}
- #endif /* CONFIG_SMP */
- 
- void radix__local_flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
-@@ -777,7 +782,7 @@ void radix__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
- EXPORT_SYMBOL(radix__flush_tlb_page);
- 
- #else /* CONFIG_SMP */
--#define radix__flush_all_mm radix__local_flush_all_mm
-+static inline void exit_flush_lazy_tlbs(struct mm_struct *mm) { }
- #endif /* CONFIG_SMP */
- 
- static void do_tlbiel_kernel(void *info)
--- 
-2.23.0
+
+在 2020/3/1 6:54, Scott Wood 写道:
+> On Sat, 2020-02-29 at 15:27 +0800, Jason Yan wrote:
+>>
+>> 在 2020/2/29 12:28, Scott Wood 写道:
+>>> On Fri, 2020-02-28 at 14:47 +0800, Jason Yan wrote:
+>>>>
+>>>> 在 2020/2/28 13:53, Scott Wood 写道:
+>>>>>
+>>>>> I don't see any debug setting for %pK (or %p) to always print the
+>>>>> actual
+>>>>> address (closest is kptr_restrict=1 but that only works in certain
+>>>>> contexts)... from looking at the code it seems it hashes even if kaslr
+>>>>> is
+>>>>> entirely disabled?  Or am I missing something?
+>>>>>
+>>>>
+>>>> Yes, %pK (or %p) always hashes whether kaslr is disabled or not. So if
+>>>> we want the real value of the address, we cannot use it. But if you only
+>>>> want to distinguish if two pointers are the same, it's ok.
+>>>
+>>> Am I the only one that finds this a bit crazy?  If you want to lock a
+>>> system
+>>> down then fine, but why wage war on debugging even when there's no
+>>> randomization going on?  Comparing two pointers for equality is not always
+>>> adequate.
+>>>
+>>
+>> AFAIK, %p hashing is only exist because of many legacy address printings
+>> and force who really want the raw values to switch to %px or even %lx.
+>> It's not the opposite of debugging. Raw address printing is not
+>> forbidden, only people need to estimate the risk of adrdress leaks.
+> 
+> Yes, but I don't see any format specifier to switch to that will hash in a
+> randomized production environment, but not in a debug or other non-randomized
+> environment which seems like the ideal default for most debug output.
+> 
+
+Sorry I have no idea why there is no format specifier considered for 
+switching of randomized or non-randomized environment. May they think 
+that raw address should not leak in non-randomized environment too. May 
+be Kees or Tobin can answer this question.
+
+Kees? Tobin?
+
+>>
+>> Turnning to %p may not be a good idea in this situation. So
+>> for the REG logs printed when dumping stack, we can disable it when
+>> KASLR is open. For the REG logs in other places like show_regs(), only
+>> privileged can trigger it, and they are not combind with a symbol, so
+>> I think it's ok to keep them.
+>>
+>> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+>> index fad50db9dcf2..659c51f0739a 100644
+>> --- a/arch/powerpc/kernel/process.c
+>> +++ b/arch/powerpc/kernel/process.c
+>> @@ -2068,7 +2068,10 @@ void show_stack(struct task_struct *tsk, unsigned
+>> long *stack)
+>>                   newsp = stack[0];
+>>                   ip = stack[STACK_FRAME_LR_SAVE];
+>>                   if (!firstframe || ip != lr) {
+>> -                       printk("["REG"] ["REG"] %pS", sp, ip, (void *)ip);
+>> +                       if (IS_ENABLED(CONFIG_RANDOMIZE_BASE))
+>> +                               printk("%pS", (void *)ip);
+>> +                       else
+>> +                               printk("["REG"] ["REG"] %pS", sp, ip,
+>> (void *)ip);
+> 
+> This doesn't deal with "nokaslr" on the kernel command line.  It also doesn't
+> seem like something that every callsite should have to opencode, versus having
+> an appropriate format specifier behaves as I described above (and I still
+> don't see why that format specifier should not be "%p").
+> 
+
+Actually I still do not understand why we should print the raw value 
+here. When KALLSYMS is enabled we have symbol name  and  offset like 
+put_cred_rcu+0x108/0x110, and when KALLSYMS is disabled we have the raw 
+address.
+
+> -Scott
+> 
+> 
+> 
+> .
+> 
 
