@@ -2,45 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A33175E26
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17365175EB9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 16:53:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WP9y3KBJzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 02:26:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WPn52pkfzDqd9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 02:53:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=178.33.107.29; helo=15.mo5.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 27601 seconds by postgrey-1.36 at bilbo;
+ Tue, 03 Mar 2020 02:51:48 AEDT
+Received: from 15.mo5.mail-out.ovh.net (15.mo5.mail-out.ovh.net
+ [178.33.107.29])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WP7g20lYzDqWJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 02:24:08 +1100 (AEDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2020 07:24:05 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,507,1574150400"; d="scan'208";a="233401558"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 02 Mar 2020 07:24:04 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1j8mvL-000GeM-VX; Mon, 02 Mar 2020 23:24:03 +0800
-Date: Mon, 02 Mar 2020 23:23:17 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- cb0cc635c7a9fa8a3a0f75d4d896721819c63add
-Message-ID: <5e5d24e5.RNNQ/ybeAvVkGODl%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WPlS5H6YzDqRW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 02:51:44 +1100 (AEDT)
+Received: from player695.ha.ovh.net (unknown [10.108.54.9])
+ by mo5.mail-out.ovh.net (Postfix) with ESMTP id 09E10271161
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 08:35:06 +0100 (CET)
+Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
+ (Authenticated sender: clg@kaod.org)
+ by player695.ha.ovh.net (Postfix) with ESMTPSA id B103DFD08FC4;
+ Mon,  2 Mar 2020 07:34:51 +0000 (UTC)
+Subject: Re: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
+To: Ram Pai <linuxram@us.ibm.com>
+References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
+ <1e28fb80-7bae-8d80-1a72-f616af030aab@kaod.org>
+ <20200229225140.GA5618@oc0525413822.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <d1ff5c06-f0a9-981e-53bc-0030c3312d55@kaod.org>
+Date: Mon, 2 Mar 2020 08:34:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200229225140.GA5618@oc0525413822.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 13198361662201170918
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedruddtfedgudduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheileehrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,373 +59,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org,
+ kvm-ppc@vger.kernel.org, clg@fr.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: cb0cc635c7a9fa8a3a0f75d4d896721819c63add  powerpc: Include .BTF section
+On 2/29/20 11:51 PM, Ram Pai wrote:
+> On Sat, Feb 29, 2020 at 09:27:54AM +0100, Cédric Le Goater wrote:
+>> On 2/29/20 8:54 AM, Ram Pai wrote:
+>>> XIVE is not correctly enabled for Secure VM in the KVM Hypervisor yet.
+>>>
+>>> Hence Secure VM, must always default to XICS interrupt controller.
+>>
+>> have you tried XIVE emulation 'kernel-irqchip=off' ? 
+> 
+> yes and it hangs. I think that option, continues to enable some variant
+> of XIVE in the VM. 
 
-elapsed time: 4704m
+HW is not involved, KVM is not involved anymore and all is emulated at 
+the QEMU level in user space. What is the issue ? 
 
-configs tested: 350
-configs skipped: 154
+> There are some known deficiencies between KVM
+> and the ultravisor negotiation, resulting in a hang in the SVM.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+That is something else to investigate. feature/capability negotiation
+is the core of the hypervisor stack : 
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-mips                      fuloong2e_defconfig
-i386                             allyesconfig
-ia64                                defconfig
-powerpc                             defconfig
-i386                              allnoconfig
-powerpc                       ppc64_defconfig
-openrisc                    or1ksim_defconfig
-xtensa                       common_defconfig
-ia64                             alldefconfig
-h8300                     edosk2674_defconfig
-s390                              allnoconfig
-sparc                               defconfig
-nds32                             allnoconfig
-s390                             alldefconfig
-s390                       zfcpdump_defconfig
-mips                              allnoconfig
-mips                             allmodconfig
-s390                             allmodconfig
-arc                              allyesconfig
-mips                      malta_kvm_defconfig
-m68k                           sun3_defconfig
-xtensa                          iss_defconfig
-i386                             alldefconfig
-ia64                              allnoconfig
-h8300                       h8s-sim_defconfig
-m68k                       m5475evb_defconfig
-nios2                         3c120_defconfig
-m68k                          multi_defconfig
-powerpc                           allnoconfig
-sparc64                           allnoconfig
-openrisc                 simple_smp_defconfig
-sh                                allnoconfig
-s390                                defconfig
-alpha                               defconfig
-parisc                            allnoconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-h8300                    h8300h-sim_defconfig
-m68k                             allmodconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allyesconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-x86_64               randconfig-a001-20200228
-x86_64               randconfig-a002-20200228
-x86_64               randconfig-a003-20200228
-i386                 randconfig-a001-20200228
-i386                 randconfig-a002-20200228
-i386                 randconfig-a003-20200228
-x86_64               randconfig-a001-20200229
-x86_64               randconfig-a002-20200229
-x86_64               randconfig-a003-20200229
-i386                 randconfig-a001-20200229
-i386                 randconfig-a002-20200229
-i386                 randconfig-a003-20200229
-x86_64               randconfig-a001-20200301
-x86_64               randconfig-a002-20200301
-x86_64               randconfig-a003-20200301
-i386                 randconfig-a001-20200301
-i386                 randconfig-a002-20200301
-i386                 randconfig-a003-20200301
-x86_64               randconfig-a001-20200302
-x86_64               randconfig-a002-20200302
-x86_64               randconfig-a003-20200302
-i386                 randconfig-a001-20200302
-i386                 randconfig-a002-20200302
-i386                 randconfig-a003-20200302
-alpha                randconfig-a001-20200228
-m68k                 randconfig-a001-20200228
-mips                 randconfig-a001-20200228
-nds32                randconfig-a001-20200228
-parisc               randconfig-a001-20200228
-riscv                randconfig-a001-20200228
-alpha                randconfig-a001-20200302
-parisc               randconfig-a001-20200302
-alpha                randconfig-a001-20200229
-m68k                 randconfig-a001-20200229
-nds32                randconfig-a001-20200229
-parisc               randconfig-a001-20200229
-riscv                randconfig-a001-20200229
-m68k                 randconfig-a001-20200302
-mips                 randconfig-a001-20200302
-nds32                randconfig-a001-20200302
-riscv                randconfig-a001-20200302
-c6x                  randconfig-a001-20200229
-h8300                randconfig-a001-20200229
-microblaze           randconfig-a001-20200229
-nios2                randconfig-a001-20200229
-sparc64              randconfig-a001-20200229
-c6x                  randconfig-a001-20200228
-h8300                randconfig-a001-20200228
-microblaze           randconfig-a001-20200228
-nios2                randconfig-a001-20200228
-sparc64              randconfig-a001-20200228
-c6x                  randconfig-a001-20200302
-microblaze           randconfig-a001-20200302
-csky                 randconfig-a001-20200228
-openrisc             randconfig-a001-20200228
-s390                 randconfig-a001-20200228
-sh                   randconfig-a001-20200228
-xtensa               randconfig-a001-20200228
-csky                 randconfig-a001-20200302
-s390                 randconfig-a001-20200302
-sh                   randconfig-a001-20200302
-csky                 randconfig-a001-20200229
-openrisc             randconfig-a001-20200229
-s390                 randconfig-a001-20200229
-xtensa               randconfig-a001-20200229
-xtensa               randconfig-a001-20200302
-x86_64               randconfig-b001-20200228
-x86_64               randconfig-b002-20200228
-x86_64               randconfig-b003-20200228
-i386                 randconfig-b001-20200228
-i386                 randconfig-b002-20200228
-i386                 randconfig-b003-20200228
-x86_64               randconfig-b001-20200301
-x86_64               randconfig-b002-20200301
-x86_64               randconfig-b003-20200301
-i386                 randconfig-b001-20200301
-i386                 randconfig-b002-20200301
-i386                 randconfig-b003-20200301
-x86_64               randconfig-b001-20200229
-x86_64               randconfig-b002-20200229
-x86_64               randconfig-b003-20200229
-i386                 randconfig-b001-20200229
-i386                 randconfig-b002-20200229
-i386                 randconfig-b003-20200229
-x86_64               randconfig-b001-20200302
-x86_64               randconfig-b002-20200302
-x86_64               randconfig-b003-20200302
-i386                 randconfig-b001-20200302
-i386                 randconfig-b002-20200302
-i386                 randconfig-b003-20200302
-x86_64               randconfig-c001-20200228
-x86_64               randconfig-c002-20200228
-x86_64               randconfig-c003-20200228
-i386                 randconfig-c001-20200228
-i386                 randconfig-c002-20200228
-i386                 randconfig-c003-20200228
-x86_64               randconfig-c001-20200301
-x86_64               randconfig-c002-20200301
-x86_64               randconfig-c003-20200301
-i386                 randconfig-c001-20200301
-i386                 randconfig-c002-20200301
-i386                 randconfig-c003-20200301
-x86_64               randconfig-c001-20200229
-x86_64               randconfig-c002-20200229
-x86_64               randconfig-c003-20200229
-i386                 randconfig-c001-20200229
-i386                 randconfig-c002-20200229
-i386                 randconfig-c003-20200229
-x86_64               randconfig-c001-20200302
-x86_64               randconfig-c002-20200302
-x86_64               randconfig-c003-20200302
-i386                 randconfig-c001-20200302
-i386                 randconfig-c002-20200302
-i386                 randconfig-c003-20200302
-x86_64               randconfig-d001-20200228
-x86_64               randconfig-d002-20200228
-x86_64               randconfig-d003-20200228
-i386                 randconfig-d001-20200228
-i386                 randconfig-d002-20200228
-i386                 randconfig-d003-20200228
-x86_64               randconfig-d001-20200301
-x86_64               randconfig-d002-20200301
-x86_64               randconfig-d003-20200301
-i386                 randconfig-d001-20200301
-i386                 randconfig-d002-20200301
-i386                 randconfig-d003-20200301
-x86_64               randconfig-d001-20200229
-x86_64               randconfig-d002-20200229
-x86_64               randconfig-d003-20200229
-i386                 randconfig-d001-20200229
-i386                 randconfig-d002-20200229
-i386                 randconfig-d003-20200229
-x86_64               randconfig-d001-20200302
-x86_64               randconfig-d002-20200302
-x86_64               randconfig-d003-20200302
-i386                 randconfig-d001-20200302
-i386                 randconfig-d002-20200302
-i386                 randconfig-d003-20200302
-x86_64               randconfig-e001-20200301
-x86_64               randconfig-e002-20200301
-x86_64               randconfig-e003-20200301
-i386                 randconfig-e001-20200301
-i386                 randconfig-e002-20200301
-i386                 randconfig-e003-20200301
-x86_64               randconfig-e001-20200228
-x86_64               randconfig-e002-20200228
-x86_64               randconfig-e003-20200228
-i386                 randconfig-e001-20200228
-i386                 randconfig-e002-20200228
-i386                 randconfig-e003-20200228
-x86_64               randconfig-e001-20200229
-x86_64               randconfig-e002-20200229
-x86_64               randconfig-e003-20200229
-i386                 randconfig-e001-20200229
-i386                 randconfig-e002-20200229
-i386                 randconfig-e003-20200229
-x86_64               randconfig-e001-20200302
-x86_64               randconfig-e002-20200302
-x86_64               randconfig-e003-20200302
-i386                 randconfig-e003-20200302
-i386                 randconfig-e001-20200302
-i386                 randconfig-e002-20200302
-x86_64               randconfig-f001-20200228
-x86_64               randconfig-f002-20200228
-x86_64               randconfig-f003-20200228
-i386                 randconfig-f001-20200228
-i386                 randconfig-f002-20200228
-i386                 randconfig-f003-20200228
-x86_64               randconfig-f001-20200229
-x86_64               randconfig-f002-20200229
-x86_64               randconfig-f003-20200229
-i386                 randconfig-f001-20200229
-i386                 randconfig-f002-20200229
-i386                 randconfig-f003-20200229
-x86_64               randconfig-f001-20200301
-x86_64               randconfig-f002-20200301
-x86_64               randconfig-f003-20200301
-i386                 randconfig-f001-20200301
-i386                 randconfig-f002-20200301
-i386                 randconfig-f003-20200301
-x86_64               randconfig-f001-20200302
-x86_64               randconfig-f002-20200302
-x86_64               randconfig-f003-20200302
-i386                 randconfig-f001-20200302
-i386                 randconfig-f002-20200302
-i386                 randconfig-f003-20200302
-x86_64               randconfig-g001-20200228
-x86_64               randconfig-g002-20200228
-x86_64               randconfig-g003-20200228
-i386                 randconfig-g001-20200228
-i386                 randconfig-g002-20200228
-i386                 randconfig-g003-20200228
-x86_64               randconfig-g001-20200229
-x86_64               randconfig-g002-20200229
-x86_64               randconfig-g003-20200229
-i386                 randconfig-g001-20200229
-i386                 randconfig-g002-20200229
-i386                 randconfig-g003-20200229
-i386                 randconfig-g002-20200302
-i386                 randconfig-g003-20200302
-x86_64               randconfig-g001-20200302
-x86_64               randconfig-g002-20200302
-x86_64               randconfig-g003-20200302
-i386                 randconfig-g001-20200302
-x86_64               randconfig-g001-20200301
-x86_64               randconfig-g002-20200301
-x86_64               randconfig-g003-20200301
-i386                 randconfig-g001-20200301
-i386                 randconfig-g002-20200301
-i386                 randconfig-g003-20200301
-x86_64               randconfig-h001-20200228
-x86_64               randconfig-h002-20200228
-x86_64               randconfig-h003-20200228
-i386                 randconfig-h001-20200228
-i386                 randconfig-h002-20200228
-i386                 randconfig-h003-20200228
-x86_64               randconfig-h001-20200301
-x86_64               randconfig-h002-20200301
-x86_64               randconfig-h003-20200301
-i386                 randconfig-h001-20200301
-i386                 randconfig-h002-20200301
-i386                 randconfig-h003-20200301
-x86_64               randconfig-h001-20200302
-x86_64               randconfig-h002-20200302
-x86_64               randconfig-h003-20200302
-i386                 randconfig-h001-20200302
-i386                 randconfig-h002-20200302
-i386                 randconfig-h003-20200302
-x86_64               randconfig-h001-20200229
-x86_64               randconfig-h002-20200229
-x86_64               randconfig-h003-20200229
-i386                 randconfig-h001-20200229
-i386                 randconfig-h002-20200229
-i386                 randconfig-h003-20200229
-arc                  randconfig-a001-20200228
-arm                  randconfig-a001-20200228
-arm64                randconfig-a001-20200228
-ia64                 randconfig-a001-20200228
-powerpc              randconfig-a001-20200228
-sparc                randconfig-a001-20200228
-arc                  randconfig-a001-20200229
-arm                  randconfig-a001-20200229
-arm64                randconfig-a001-20200229
-ia64                 randconfig-a001-20200229
-powerpc              randconfig-a001-20200229
-sparc                randconfig-a001-20200229
-arc                  randconfig-a001-20200301
-arm                  randconfig-a001-20200301
-arm64                randconfig-a001-20200301
-ia64                 randconfig-a001-20200301
-powerpc              randconfig-a001-20200301
-sparc                randconfig-a001-20200301
-arm64                randconfig-a001-20200302
-ia64                 randconfig-a001-20200302
-powerpc              randconfig-a001-20200302
-arc                  randconfig-a001-20200302
-arm                  randconfig-a001-20200302
-sparc                randconfig-a001-20200302
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-sh                               allmodconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc64                          allmodconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
+    OPAL <-> PowerNV <-> KVM <-> QEMU <-> guest OS
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>>> If XIVE is requested through kernel command line option "xive=on",
+>>> override and turn it off.
+>>
+>> This is incorrect. It is negotiated through CAS depending on the FW
+>> capabilities and the KVM capabilities.
+> 
+> Yes I understand, qemu/KVM have predetermined a set of capabilties that
+> it can offer to the VM.  The kernel within the VM has a list of
+> capabilties it needs to operate correctly.  So both negotiate and
+> determine something mutually ammicable.
+> 
+> Here I am talking about the list of capabilities that the kernel is
+> trying to determine, it needs to operate correctly.  "xive=on" is one of
+> those capabilities the kernel is told by the VM-adminstrator, to enable.
+
+XIVE is not a kernel capability. It's platform support and the default
+for P9 is the native exploitation mode which makes full use of the P9
+interrupt controller. For non XIVE aware kernels, the hypervisor emulates
+the legacy interface on top of XIVE. 
+
+"xive=off" was introduced for distro testing. It skips the negotiation 
+process of the XIVE native exploitation mode on the guest. But it's not
+a negotiation setting. It's a chicken switch.
+
+> Unfortunately if the VM-administrtor blindly requests to enable it, the
+> kernel must override it, if it knows that will be switching the VM into
+> a SVM soon. No point negotiating a capability with Qemu; through CAS,
+> if it knows it cannot handle that capability.
+
+I don't understand. Are you talking about SVM or XIVE ? 
+
+>>> If XIVE is the only supported platform interrupt controller; specified
+>>> through qemu option "ic-mode=xive", simply abort. Otherwise default to
+>>> XICS.
+>>
+>>
+>> I don't think it is a good approach to downgrade the guest kernel 
+>> capabilities this way. 
+>>
+>> PAPR has specified the CAS negotiation process for this purpose. It 
+>> comes in two parts under KVM. First the KVM hypervisor advertises or 
+>> not a capability to QEMU. The second is the CAS negotiation process 
+>> between QEMU and the guest OS.
+> 
+> Unfortunately, this is not viable.  At the time the hypervisor
+> advertises its capabilities to qemu, the hypervisor has no idea whether
+> that VM will switch into a SVM or not. 
+
+OK, but the hypervisor knows if it can handle 'SVM' guests or not and,
+if not, there is no point in advertising a 'SVM' capability to the guest. 
+
+> The decision to switch into a> SVM is taken by the kernel running in the VM. This happens much later,
+> after the hypervisor has already conveyed its capabilties to the qemu, and
+> qemu has than instantiated the VM.
+
+So you don't have negotiation with the hypervisor ? How does the guest
+knows the hypervisor platform can handle SVMs ? try and see if it fails ?
+If so, it seems quite broken to me.
+ 
+> As a result, CAS in prom_init is the only place where this negotiation
+> can take place.
+
+Euh. I don't follow. This is indeed where CAS is performed and so it's 
+*the* place to check that the hypervisor has 'SVM' support ? 
+
+>> The SVM specifications might not be complete yet and if some features 
+>> are incompatible, I think we should modify the capabilities advertised 
+>> by the hypervisor : no XIVE in case of SVM. QEMU will automatically 
+>> use the fallback path and emulate the XIVE device, same as setting 
+>> 'kernel-irqchip=off'. 
+> 
+> As mentioned above, this would be an excellent approach, if the
+> Hypervisor was aware of the VM's intent to switch into a SVM. Neither
+> the hypervisor knows, nor the qemu.  Only the kernel running within the
+> VM knows about it.
+
+
+The hypervisor (KVM/QEMU) never knows what are the guest OS capabilities
+or its intents. That is why there is a negotiation process. 
+
+I would do :
+
+ * OPAL FW advertises 'SVM' support to the Linux PowerNV (through DT) 
+ * KVM advertises 'SVM' support to QEMU (extend KVM ioctls)
+ * QEMU advertises 'SVM' support to guest OS (through CAS or DT) 
+ * Guest OS should not try to use SVM it is not supported. 
+
+If the passthrough of HW pages is not supported by Ultravisor, KVM 
+should not advertised XIVE to QEMU which would then use fallback mode.
+
+If emulated XIVE or XICS is not supported by SVM guests, then we have
+a problem and we need to understand why ! :) 
+
+And if XIVE is still a problem, then the guest could change the CAS 
+request and remove XIVE when SVM is being set. I suppose that we have 
+all this information before CAS. Do we ? 
+
+It should be a runtime choice taking into account the full software 
+stack rather than a compile choice at the bottom which would impact
+all other options. This is not acceptable IMHO.
+
+Cheers,
+
+C.
