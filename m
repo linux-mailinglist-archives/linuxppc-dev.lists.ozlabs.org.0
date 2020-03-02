@@ -1,77 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36EC1753F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 07:41:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48W9Xg724czDqrF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 17:41:39 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5EB17541C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 07:50:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48W9kW4HtvzDqhl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Mar 2020 17:50:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=oSz5S7kY; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48W9Th0LpQzDqf6
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 17:39:03 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48W9TV4TMwz9v0wq;
- Mon,  2 Mar 2020 07:38:54 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=oSz5S7kY; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7EtWmBgG6SHY; Mon,  2 Mar 2020 07:38:54 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48W9TV3Nwbz9v0wj;
- Mon,  2 Mar 2020 07:38:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1583131134; bh=N5Zqhy9GX98vBukvVYdHhi3AGA4xgTdqzzXq0Yk+kDc=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=oSz5S7kYIpq/S2GkRvO3/u1ec0jd0jGZ6JphG6qdC3YLxcAjB8Yw7m4bINUjkYJq9
- ansn60dqfjQ2jB3DYikKqHP0jRkiHE4zFkbufuPGle+GYJZinjIVjbCowO2RsYki9A
- hv47Y7d15aosDKuaZJwAMbf51gErEhkoZ32AxjIw=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 027E88B7BC;
- Mon,  2 Mar 2020 07:38:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id cnGJxBH8ofD8; Mon,  2 Mar 2020 07:38:58 +0100 (CET)
-Received: from [172.25.230.100] (unknown [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BEE338B776;
- Mon,  2 Mar 2020 07:38:58 +0100 (CET)
-Subject: Re: [PATCH] powerpc/sysdev: fix compile errors
-To: WANG Wenhu <wenhu.wang@vivo.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Kate Stewart <kstewart@linuxfoundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Allison Randal <allison@lohutok.net>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20200302053801.26027-1-wenhu.wang@vivo.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <62251ec1-dd42-6522-dcb2-613838cd5504@c-s.fr>
-Date: Mon, 2 Mar 2020 07:38:53 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20200302053801.26027-1-wenhu.wang@vivo.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48W9h534d4zDqZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Mar 2020 17:48:02 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D730AFEC;
+ Sun,  1 Mar 2020 22:47:58 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.1.119])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7EB443F6CF;
+ Sun,  1 Mar 2020 22:51:45 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [RFC 0/3] mm/vma: some new flags and helpers
+Date: Mon,  2 Mar 2020 12:17:43 +0530
+Message-Id: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,50 +41,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wenhu.pku@gmail.com, trivial@kernel.org
+Cc: uclinux-h8-devel@lists.sourceforge.jp, linux-s390@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ linux-parisc@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-hexagon@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-sh@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+ nios2-dev@lists.rocketboards.org, linux-riscv@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The motivation here is to consolidate VMA flag combinations commonly used
+across platforms and reduce code duplication while making it uncluttered
+in general.
 
+This first introduces a default VM_DATA_DEFAULT_FLAGS which platforms can
+easily fall back on without requiring to define any similar data flag
+combinations as they currently do. This also adds some more common data
+flag combinations which are generally used when the platforms decide to
+override the default.
 
-Le 02/03/2020 à 06:37, WANG Wenhu a écrit :
-> Include linux/io.h into fsl_85xx_cache_sram.c to fix the
-> implicit-declaration compile errors when building Cache-Sram.
-> 
-> arch/powerpc/sysdev/fsl_85xx_cache_sram.c: In function ‘instantiate_cache_sram’:
-> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:26: error: implicit declaration of function ‘ioremap_coherent’; did you mean ‘bitmap_complement’? [-Werror=implicit-function-declaration]
->    cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
->                            ^~~~~~~~~~~~~~~~
->                            bitmap_complement
-> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:24: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
->    cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
->                          ^
-> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:123:2: error: implicit declaration of function ‘iounmap’; did you mean ‘roundup’? [-Werror=implicit-function-declaration]
->    iounmap(cache_sram->base_virt);
->    ^~~~~~~
->    roundup
-> cc1: all warnings being treated as errors
-> 
-> Fixed: commit 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
-> Signed-off-by: WANG Wenhu <wenhu.wang@vivo.com>
+The second patch consolidates VM_READ, VM_WRITE, VM_EXEC as VM_ACCESS_FLAGS
+extending the existing VMA accessibility concept via vma_is_accessibility().
+VM_ACCESS_FLAGS replaces many other instances which used check all three
+VMA access flags simultaneously.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+While here, this also adds some more special VMA flag based helpers which
+wraps around similar checks at various places thus improving readability.
+This series intentionally limits these new helpers which are applicable 
+only for special purpose VM flags than the more common ones like VM_READ,
+VM_WRITE, VM_EXEC, VM_SHARED etc just to limit code churn. But if there is
+common agreement that every flag should have it's own wrapper here, we can
+do that as well. Otherwise if this patch seems really unnecessary with much
+code churn, will be happy to drop it.
 
-> ---
->   arch/powerpc/sysdev/fsl_85xx_cache_sram.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
-> index f6c665dac725..be3aef4229d7 100644
-> --- a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
-> +++ b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
-> @@ -17,6 +17,7 @@
->   #include <linux/of_platform.h>
->   #include <asm/pgtable.h>
->   #include <asm/fsl_85xx_cache_sram.h>
-> +#include <linux/io.h>
->   
->   #include "fsl_85xx_cache_ctlr.h"
->   
-> 
+Reviews, comments, suggestions and concerns welcome. Thank you.
+
+This series is based on v5.6-r4 after applying these patches.
+
+1. https://patchwork.kernel.org/cover/11399319/
+2. https://patchwork.kernel.org/patch/11399379/
+
+This series is build tested across multiple architectures but boot tested
+only on arm64 and x86 platforms.
+
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-c6x-dev@linux-c6x.org
+Cc: uclinux-h8-devel@lists.sourceforge.jp
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: nios2-dev@lists.rocketboards.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-mm@kvack.org
+
+Anshuman Khandual (3):
+  mm/vma: Define a default value for VM_DATA_DEFAULT_FLAGS
+  mm/vma: Introduce VM_ACCESS_FLAGS
+  mm/vma: Introduce some more VMA flag wrappers
+
+ arch/alpha/include/asm/page.h        |  3 --
+ arch/arc/include/asm/page.h          |  2 +-
+ arch/arm/include/asm/page.h          |  4 +-
+ arch/arm/mm/fault.c                  |  2 +-
+ arch/arm64/include/asm/page.h        |  4 +-
+ arch/arm64/mm/fault.c                |  2 +-
+ arch/c6x/include/asm/page.h          |  5 +--
+ arch/c6x/include/asm/processor.h     |  2 +-
+ arch/csky/include/asm/page.h         |  3 --
+ arch/h8300/include/asm/page.h        |  2 -
+ arch/hexagon/include/asm/page.h      |  3 +-
+ arch/ia64/include/asm/page.h         |  5 +--
+ arch/m68k/include/asm/page.h         |  3 --
+ arch/microblaze/include/asm/page.h   |  2 -
+ arch/mips/include/asm/page.h         |  5 +--
+ arch/nds32/include/asm/page.h        |  3 --
+ arch/nds32/mm/fault.c                |  2 +-
+ arch/nios2/include/asm/page.h        |  3 +-
+ arch/nios2/include/asm/processor.h   |  2 +-
+ arch/openrisc/include/asm/page.h     |  5 ---
+ arch/parisc/include/asm/page.h       |  3 --
+ arch/powerpc/include/asm/page.h      |  9 +----
+ arch/powerpc/include/asm/page_64.h   |  7 +---
+ arch/powerpc/mm/book3s64/pkeys.c     |  2 +-
+ arch/riscv/include/asm/page.h        |  3 +-
+ arch/s390/include/asm/page.h         |  3 +-
+ arch/s390/mm/fault.c                 |  2 +-
+ arch/sh/include/asm/page.h           |  3 --
+ arch/sh/include/asm/processor_64.h   |  2 +-
+ arch/sparc/include/asm/mman.h        |  2 +-
+ arch/sparc/include/asm/page_32.h     |  3 --
+ arch/sparc/include/asm/page_64.h     |  3 --
+ arch/unicore32/include/asm/page.h    |  3 --
+ arch/unicore32/mm/fault.c            |  2 +-
+ arch/x86/include/asm/page_types.h    |  4 +-
+ arch/x86/mm/pkeys.c                  |  2 +-
+ arch/x86/um/asm/vm-flags.h           | 10 +----
+ arch/xtensa/include/asm/page.h       |  3 --
+ drivers/staging/gasket/gasket_core.c |  2 +-
+ fs/binfmt_elf.c                      |  2 +-
+ fs/proc/task_mmu.c                   | 14 +++----
+ include/linux/huge_mm.h              |  4 +-
+ include/linux/mm.h                   | 58 +++++++++++++++++++++++++++-
+ kernel/events/core.c                 |  2 +-
+ kernel/events/uprobes.c              |  2 +-
+ mm/gup.c                             |  2 +-
+ mm/huge_memory.c                     |  6 +--
+ mm/hugetlb.c                         |  4 +-
+ mm/ksm.c                             |  8 ++--
+ mm/madvise.c                         |  4 +-
+ mm/memory.c                          |  4 +-
+ mm/migrate.c                         |  4 +-
+ mm/mlock.c                           |  4 +-
+ mm/mmap.c                            | 20 +++++-----
+ mm/mprotect.c                        |  9 ++---
+ mm/mremap.c                          |  4 +-
+ mm/msync.c                           |  3 +-
+ mm/rmap.c                            |  6 +--
+ mm/shmem.c                           |  8 ++--
+ 59 files changed, 140 insertions(+), 158 deletions(-)
+
+-- 
+2.20.1
+
