@@ -2,70 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5DB176A2E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 02:47:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5F0176A30
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 02:48:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Wfyd0r5GzDqcY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 12:47:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Wg0D6f24zDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 12:48:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=robherring2@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JIXF1t91; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Wfwk6sPCzDqY0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 12:45:42 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id i13so624960pfe.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 17:45:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=PrunASePBAvcfeoGZx+hRUCdv8EJUOACRvB1OJkcpSo=;
- b=JIXF1t91jLQqNGFdlpWuEDPEfb5nf3A7OcFWse1qMUWwdKdDlrGKT2DN/ITnLTBWYt
- KtQuzgOoyT6tktdq/HhmcpXOJCXiZ40DUUU9Z5NczimH3161Nd8g4KUdKuwcZP8vmHPA
- lrcafaa2DEsRfhCUghcxI0o9alDl9VYrCpSONfpdIVe7L1c//UAl9w4nEoeyjLFcpd7x
- s0+B0HBhQIdb4vYn0UpLZNs2ROdqZFj/BMHN+zhEcex7S/gx/84k3ekLFhvT0dLecMF1
- bdtYV4XLBp7L3s0ecvYSFrTKI8PXxEXHzzxzJxZYDtmBDAPk5cDW7w2vaagyDvwds6OB
- rv4w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Wfxy3J8vzDqcM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 12:46:46 +1100 (AEDT)
+Received: by mail-oi1-f193.google.com with SMTP id a22so1319636oid.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 17:46:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=PrunASePBAvcfeoGZx+hRUCdv8EJUOACRvB1OJkcpSo=;
- b=TO85vUqoOm7kRwjHZ2Z4jKx66xlNZwsg43Pl8kqMT5TJxE8E6UfC8AIELEaFAMZGOU
- Ar5iTYb/BDA5hrMZv+kPpSSp1FUem4G0IxFCABWRZKcr4IDeUvf8ecVpS5Hq9j+mEE+p
- 8i9cDUIHQ2ZgJq4IgJiF5Li0hNMT9kiZjEZea89drT1pLCpALz1XJUBkjXI/p3/tTZcn
- wOngUy1XsPTQ/n1PNQ91AD9ReZZh8DE1arHHwLHKO5j4LERndBkJMB+Tk2c8/jHZfDL0
- d33CuoVHv7gX5HwPMWlasCnUdeSmcXcBypWKhqTCNYJ7WIy5eztVc0JtUu0q57TIT/Xv
- dcdw==
-X-Gm-Message-State: ANhLgQ3HxMM3xVlELOhfucAKfM/G/WbWp/dm1wvvCtWMHYTxjZESgEHq
- 8yvAZ96dsiuRCKEJAJ0rq/lO1WJ3
-X-Google-Smtp-Source: ADFU+vs1MCS75goWMP76lPhZS85Ghf7sjqRWnU0+iM1drX+XOYlz7chnResCc90Dy2EAmR/m+rjuaw==
-X-Received: by 2002:a63:67c5:: with SMTP id b188mr1749628pgc.111.1583199936750; 
- Mon, 02 Mar 2020 17:45:36 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (193-116-117-248.tpgi.com.au.
- [193.116.117.248])
- by smtp.gmail.com with ESMTPSA id j126sm14208630pfb.129.2020.03.02.17.45.34
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=0fZprhK1W/+54HzE9JKB5hhmjgGt264/Y236IBMlW68=;
+ b=dgQbsi2oQ1h/oI4Gs+UnvQPh/QADbDVWPBJSSybH2dMLmazkFQBpS0oGxGdb1iDIzm
+ yswVfph8U/ukLJ3FSN13vgKdhjsJRuDZA4K0JxiGy6xh+c+TqknCucnJmusUl0EgDWEF
+ 2jd23YvtpB2CbfRPUEZs1foTo+Kge9jl9lorzCNraiklLtXuO6dZxLO+vv+KP9amkykj
+ PUv7J85Dggh4UdGRtIZwrGCcRXIO+no5LP7I2Q+HIqjNeTLJL5b2EqakYsBh1BFQbXAm
+ rkAJ+3q0W1bGhVH+P3YM6M+oGMdrzHsbTZL/DJkFoouxd7L0TCF7e6uPc+sCo/jYv38t
+ J2Sg==
+X-Gm-Message-State: ANhLgQ3sVsE+AGVRhU2sznavheHpI6EtH0MiwSpP30EN2NDVk2ZGTj5k
+ 5ZoUBOj/aNm4QckIv+o7ZA==
+X-Google-Smtp-Source: ADFU+vtMKankA5j2TyBMep5zxakZ/gSxHjO96dpd6H9OgS/zdaStVrFVHEAotLCrZcCrix4ZjMErJQ==
+X-Received: by 2002:aca:bfc2:: with SMTP id p185mr936911oif.57.1583200002745; 
+ Mon, 02 Mar 2020 17:46:42 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net.
+ [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id m19sm7258226otn.47.2020.03.02.17.46.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Mar 2020 17:45:36 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: BE option to use ELFv2 ABI for big endian kernels
-Date: Tue,  3 Mar 2020 11:45:27 +1000
-Message-Id: <20200303014527.39377-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ Mon, 02 Mar 2020 17:46:42 -0800 (PST)
+Received: (nullmailer pid 467 invoked by uid 1000);
+ Tue, 03 Mar 2020 01:46:40 -0000
+Date: Mon, 2 Mar 2020 19:46:40 -0600
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v4 7/8] ASoC: dt-bindings: fsl_easrc: Add document for
+ EASRC
+Message-ID: <20200303014640.GA26270@bogus>
+References: <cover.1583039752.git.shengjiu.wang@nxp.com>
+ <2aa0b446c3e2af59e3472d8f7706298691ec4a5c.1583039752.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2aa0b446c3e2af59e3472d8f7706298691ec4a5c.1583039752.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,193 +71,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, tiwai@suse.com,
+ lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com,
+ broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de,
+ festevam@gmail.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide an option to use ELFv2 ABI for big endian builds. This works on
-GCC and clang (since 2014). it is is not officially supported by the GNU
-toolchain, but it can give some useful advantages of the ELFv2 ABI for
-BE (e.g., less stack usage). Some distros build BE ELFv2 userspace.
+On Sun, Mar 01, 2020 at 01:24:18PM +0800, Shengjiu Wang wrote:
+> EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
+> IP module found on i.MX8MN.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,easrc.yaml  | 96 +++++++++++++++++++
+>  1 file changed, 96 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> new file mode 100644
+> index 000000000000..500af8f0c8f0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> @@ -0,0 +1,96 @@
+> +# SPDX-License-Identifier: GPL-2.0
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/Kconfig            | 19 +++++++++++++++++++
- arch/powerpc/Makefile           | 15 ++++++++++-----
- arch/powerpc/boot/Makefile      |  4 ++++
- drivers/crypto/vmx/Makefile     |  4 ++++
- drivers/crypto/vmx/aesp8-ppc.pl |  2 +-
- drivers/crypto/vmx/ppc-xlate.pl | 11 +++++++----
- 6 files changed, 45 insertions(+), 10 deletions(-)
+Dual license new bindings:
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 497b7d0b2d7e..31dd921a5145 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -146,6 +146,7 @@ config PPC
- 	select ARCH_WEAK_RELEASE_ACQUIRE
- 	select BINFMT_ELF
- 	select BUILDTIME_TABLE_SORT
-+	select BUILD_ELF_V2			if PPC64 && CPU_LITTLE_ENDIAN
- 	select CLONE_BACKWARDS
- 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
- 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
-@@ -538,6 +539,24 @@ config KEXEC_FILE
- config ARCH_HAS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 
-+config BUILD_ELF_V2
-+	bool
-+
-+config BUILD_BIG_ENDIAN_ELF_V2
-+	bool "Build big-endian kernel using ELFv2 ABI (EXPERIMENTAL)"
-+	depends on PPC64 && CPU_BIG_ENDIAN && EXPERT
-+	default n
-+	select BUILD_ELF_V2
-+	help
-+	  This builds the kernel image using the ELFv2 ABI, which has a
-+	  reduced stack overhead and faster function calls. This does not
-+	  affect the userspace ABIs.
-+
-+	  ELFv2 is the standard ABI for little-endian, but for big-endian
-+	  this is an experimental option that is not well tested (kernel and
-+	  toolchain). This requires gcc 4.9 or newer and binutils 2.24 or
-+	  newer.
-+
- config RELOCATABLE
- 	bool "Build a relocatable kernel"
- 	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index f35730548e42..ae8036a0b169 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -92,10 +92,14 @@ endif
- 
- ifdef CONFIG_PPC64
- ifndef CONFIG_CC_IS_CLANG
--cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
--cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
--aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
--aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
-+ifdef CONFIG_BUILD_ELF_V2
-+cflags-y				+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
-+aflags-y				+= $(call cc-option,-mabi=elfv2)
-+else
-+cflags-y				+= $(call cc-option,-mabi=elfv1)
-+cflags-y				+= $(call cc-option,-mcall-aixdesc)
-+aflags-y				+= $(call cc-option,-mabi=elfv1)
-+endif
- endif
- endif
- 
-@@ -144,7 +148,7 @@ endif
- 
- CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
- ifndef CONFIG_CC_IS_CLANG
--ifdef CONFIG_CPU_LITTLE_ENDIAN
-+ifdef CONFIG_BUILD_ELF_V2
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
- AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
- else
-@@ -153,6 +157,7 @@ CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
- AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
- endif
- endif
-+
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
- 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 0556bf4fc9e9..137ff20b13f8 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -41,6 +41,10 @@ endif
- 
- BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
- 
-+ifdef CONFIG_BUILD_ELF_V2
-+BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
-+endif
-+
- ifdef CONFIG_CPU_BIG_ENDIAN
- BOOTCFLAGS	+= -mbig-endian
- else
-diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
-index 709670d2b553..8d79514eb474 100644
---- a/drivers/crypto/vmx/Makefile
-+++ b/drivers/crypto/vmx/Makefile
-@@ -5,8 +5,12 @@ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes
- ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
- override flavour := linux-ppc64le
- else
-+ifdef CONFIG_BUILD_ELF_V2
-+override flavour := linux-ppc64v2
-+else
- override flavour := linux-ppc64
- endif
-+endif
- 
- quiet_cmd_perl = PERL $@
-       cmd_perl = $(PERL) $(<) $(flavour) > $(@)
-diff --git a/drivers/crypto/vmx/aesp8-ppc.pl b/drivers/crypto/vmx/aesp8-ppc.pl
-index db874367b602..6733a68f12ed 100644
---- a/drivers/crypto/vmx/aesp8-ppc.pl
-+++ b/drivers/crypto/vmx/aesp8-ppc.pl
-@@ -100,7 +100,7 @@ if ($flavour =~ /64/) {
- 	$SHL	="slwi";
- } else { die "nonsense $flavour"; }
- 
--$LITTLE_ENDIAN = ($flavour=~/le$/) ? $SIZE_T : 0;
-+$LITTLE_ENDIAN = ($flavour=~/ppc64le/) ? $SIZE_T : 0;
- 
- $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
- ( $xlate="${dir}ppc-xlate.pl" and -f $xlate ) or
-diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
-index 36db2ef09e5b..5f9963ae100e 100644
---- a/drivers/crypto/vmx/ppc-xlate.pl
-+++ b/drivers/crypto/vmx/ppc-xlate.pl
-@@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
- 
- my %GLOBALS;
- my $dotinlocallabels=($flavour=~/linux/)?1:0;
-+my $abielfv2=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64v2/))?1:0;
-+my $dotfunctions=($abielfv2=~1)?0:1;
- 
- ################################################################
- # directives which need special treatment on different platforms
-@@ -38,9 +40,10 @@ my $globl = sub {
-     $$global = $name;
-     $ret;
- };
-+
- my $text = sub {
-     my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
--    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
-+    $ret = ".abiversion	2\n".$ret	if ($abielfv2);
-     $ret;
- };
- my $machine = sub {
-@@ -56,8 +59,8 @@ my $size = sub {
-     if ($flavour =~ /linux/)
-     {	shift;
- 	my $name = shift; $name =~ s|^[\.\_]||;
--	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
--	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
-+	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
-+	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
- 	$ret;
-     }
-     else
-@@ -142,7 +145,7 @@ my $vmr = sub {
- 
- # Some ABIs specify vrsave, special-purpose register #256, as reserved
- # for system use.
--my $no_vrsave = ($flavour =~ /linux-ppc64le/);
-+my $no_vrsave = ($abielfv2);
- my $mtspr = sub {
-     my ($f,$idx,$ra) = @_;
-     if ($idx == 256 && $no_vrsave) {
--- 
-2.23.0
+(GPL-2.0-only OR BSD-2-Clause)
 
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/fsl,easrc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP Asynchronous Sample Rate Converter (ASRC) Controller
+> +
+> +maintainers:
+> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: "^easrc@.*"
+> +
+> +  compatible:
+> +    oneOf:
+> +      - items:
+
+You can drop oneOf and items here.
+
+> +        - enum:
+> +          - fsl,imx8mn-easrc
+
+Blank line between properties please.
+
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: Peripheral clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: mem
+> +
+> +  dmas:
+> +    maxItems: 8
+> +
+> +  dma-names:
+> +    oneOf:
+
+Drop oneOf as there is only one.
+
+> +      - items:
+> +          - const: ctx0_rx
+> +          - const: ctx0_tx
+> +          - const: ctx1_rx
+> +          - const: ctx1_tx
+> +          - const: ctx2_rx
+> +          - const: ctx2_tx
+> +          - const: ctx3_rx
+> +          - const: ctx3_tx
+> +
+> +  fsl,easrc-ram-script-name:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description: The coefficient table for the filters
+
+Need to define the exact string(s).
+
+> +
+> +  fsl,asrc-rate:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Defines a mutual sample rate used by DPCM Back Ends
+
+Constraints?
+
+> +
+> +  fsl,asrc-format:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Defines a mutual sample format used by DPCM Back Ends
+
+Constraints?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - dmas
+> +  - dma-name
+
+dma-names
+
+> +  - fsl,easrc-ram-script-name
+> +  - fsl,asrc-rate
+> +  - fsl,asrc-format
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8mn-clock.h>
+> +
+> +    easrc: easrc@300C0000 {
+> +           compatible = "fsl,imx8mn-easrc";
+> +           reg = <0x0 0x300C0000 0x0 0x10000>;
+> +           interrupts = <0x0 122 0x4>;
+> +           clocks = <&clk IMX8MN_CLK_ASRC_ROOT>;
+> +           clock-names = "mem";
+> +           dmas = <&sdma2 16 23 0> , <&sdma2 17 23 0>,
+> +                  <&sdma2 18 23 0> , <&sdma2 19 23 0>,
+> +                  <&sdma2 20 23 0> , <&sdma2 21 23 0>,
+> +                  <&sdma2 22 23 0> , <&sdma2 23 23 0>;
+> +           dma-names = "ctx0_rx", "ctx0_tx",
+> +                       "ctx1_rx", "ctx1_tx",
+> +                       "ctx2_rx", "ctx2_tx",
+> +                       "ctx3_rx", "ctx3_tx";
+> +           fsl,easrc-ram-script-name = "imx/easrc/easrc-imx8mn.bin";
+> +           fsl,asrc-rate  = <8000>;
+> +           fsl,asrc-format = <2>;
+> +           status = "disabled";
+
+Don't show status in examples.
+
+> +    };
+> -- 
+> 2.21.0
+> 
