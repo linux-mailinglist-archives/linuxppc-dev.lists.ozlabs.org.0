@@ -1,86 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB12177D69
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 18:27:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17F2177CBB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 18:04:12 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48X3JT17cLzDqYS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 04:04:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48X3px421NzDqZQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 04:27:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48X3GQ17pHzDqVn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 04:02:21 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 023GoXmq008544
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Mar 2020 12:02:19 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmu5e4xq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2020 12:02:18 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Tue, 3 Mar 2020 17:02:17 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Mar 2020 17:02:13 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 023H1Dv340042968
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Mar 2020 17:01:13 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7ED2611C054;
- Tue,  3 Mar 2020 17:02:11 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D611E11C04A;
- Tue,  3 Mar 2020 17:02:08 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.197.107])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  3 Mar 2020 17:02:08 +0000 (GMT)
-Date: Tue, 3 Mar 2020 09:02:05 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
- <20200302233240.GB35885@umbus.fritz.box>
- <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48X3n30KgZzDqBh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 04:25:26 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id BED26ACB8;
+ Tue,  3 Mar 2020 17:25:16 +0000 (UTC)
+Subject: Re: [RFC 1/3] mm/vma: Define a default value for VM_DATA_DEFAULT_FLAGS
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+References: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
+ <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <b243be54-7b5e-c6e9-fb68-46369d7d7aa4@suse.cz>
+Date: Tue, 3 Mar 2020 18:25:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 20030317-0028-0000-0000-000003E08E03
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030317-0029-0000-0000-000024A5BB26
-Message-Id: <20200303170205.GA5416@oc0525413822.ibm.com>
-Subject: RE: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-03_05:2020-03-03,
- 2020-03-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=0 spamscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 impostorscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003030116
+In-Reply-To: <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,129 +49,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org,
- kvm-ppc@vger.kernel.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+ Brian Cain <bcain@codeaurora.org>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
+ Mark Salter <msalter@redhat.com>, Paul Burton <paulburton@kernel.org>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-alpha@vger.kernel.org,
+ nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 03, 2020 at 07:50:08AM +0100, Cédric Le Goater wrote:
-> On 3/3/20 12:32 AM, David Gibson wrote:
-> > On Fri, Feb 28, 2020 at 11:54:04PM -0800, Ram Pai wrote:
-> >> XIVE is not correctly enabled for Secure VM in the KVM Hypervisor yet.
-> >>
-> >> Hence Secure VM, must always default to XICS interrupt controller.
-> >>
-> >> If XIVE is requested through kernel command line option "xive=on",
-> >> override and turn it off.
-> >>
-> >> If XIVE is the only supported platform interrupt controller; specified
-> >> through qemu option "ic-mode=xive", simply abort. Otherwise default to
-> >> XICS.
-> > 
-> > Uh... the discussion thread here seems to have gotten oddly off
-> > track.  
+On 3/2/20 7:47 AM, Anshuman Khandual wrote:
+> There are many platforms with exact same value for VM_DATA_DEFAULT_FLAGS
+> This creates a default value for VM_DATA_DEFAULT_FLAGS in line with the
+> existing VM_STACK_DEFAULT_FLAGS. While here, also define some more macros
+> with standard VMA access flag combinations that are used frequently across
+> many platforms. Apart from simplification, this reduces code duplication
+> as well.
 > 
-> There seem to be multiple issues. It is difficult to have a clear status.
+> Cc: Richard Henderson <rth@twiddle.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Mark Salter <msalter@redhat.com>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Brian Cain <bcain@codeaurora.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: Michal Simek <monstr@monstr.eu>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paulburton@kernel.org>
+> Cc: Nick Hu <nickhu@andestech.com>
+> Cc: Ley Foon Tan <ley.foon.tan@intel.com>
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Guan Xuetao <gxt@pku.edu.cn>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jeff Dike <jdike@addtoit.com>
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-alpha@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-c6x-dev@linux-c6x.org
+> Cc: uclinux-h8-devel@lists.sourceforge.jp
+> Cc: linux-hexagon@vger.kernel.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: nios2-dev@lists.rocketboards.org
+> Cc: openrisc@lists.librecores.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-um@lists.infradead.org
+> Cc: linux-xtensa@linux-xtensa.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+
+Nit:
+
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index b0e53ef13ff1..7a764ae6ab68 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -342,6 +342,21 @@ extern unsigned int kobjsize(const void *objp);
+>  /* Bits set in the VMA until the stack is in its final location */
+>  #define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
+>  
+> +#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
+> +
+> +/* Common data flag combinations */
+> +#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+> +#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
+> +				 VM_MAYWRITE | VM_MAYEXEC)
+> +#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
+> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+> +
+> +#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
+> +#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
+> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+
+Should you use VM_DATA_FLAGS_EXEC here? Yeah one more macro to expand, but it's
+right above this.
+
+> +#endif
+> +
+>  #ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
+>  #define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
+>  #endif
 > 
-> > So, to try to clean up some misunderstandings on both sides:
-> > 
-> >   1) The guest is the main thing that knows that it will be in secure
-> >      mode, so it's reasonable for it to conditionally use XIVE based
-> >      on that
-> 
-> FW support is required AFAIUI.
-> >   2) The mechanism by which we do it here isn't quite right.  Here the
-> >      guest is checking itself that the host only allows XIVE, but we
-> >      can't do XIVE and is panic()ing.  Instead, in the SVM case we
-> >      should force support->xive to false, and send that in the CAS
-> >      request to the host.  We expect the host to just terminate
-> >      us because of the mismatch, but this will interact better with
-> >      host side options setting policy for panic states and the like.
-> >      Essentially an SVM kernel should behave like an old kernel with
-> >      no XIVE support at all, at least w.r.t. the CAS irq mode flags.
-> 
-> Yes. XIVE shouldn't be requested by the guest.
-
-	Ok.
-
-> This is the last option 
-> I proposed but I thought there was some negotiation with the hypervisor
-> which is not the case. 
-> 
-> >   3) Although there are means by which the hypervisor can kind of know
-> >      a guest is in secure mode, there's not really an "svm=on" option
-> >      on the host side.  For the most part secure mode is based on
-> >      discussion directly between the guest and the ultravisor with
-> >      almost no hypervisor intervention.
-> 
-> Is there a negotiation with the ultravisor ? 
-
-	The VM has no negotiation with the ultravisor w.r.t CAS.
-
-> 
-> >   4) I'm guessing the problem with XIVE in SVM mode is that XIVE needs
-> >      to write to event queues in guest memory, which would have to be
-> >      explicitly shared for secure mode.  That's true whether it's KVM
-> >      or qemu accessing the guest memory, so kernel_irqchip=on/off is
-> >      entirely irrelevant.
-> 
-> This problem should be already fixed.
-> The XIVE event queues are shared 
- 	
-Yes i have a patch for the guest kernel that shares the event 
-queue page with the hypervisor. This is done using the
-UV_SHARE_PAGE ultracall. This patch is not sent out to any any mailing
-lists yet. However the patch by itself does not solve the xive problem
-for secure VM.
-
-> and the remaining problem with XIVE is the KVM page fault handler 
-> populating the TIMA and ESB pages. Ultravisor doesn't seem to support
-> this feature and this breaks interrupt management in the guest. 
-
-Yes. This is the bigger issue that needs to be fixed. When the secure guest
-accesses the page associated with the xive memslot, a page fault is
-generated, which the ultravisor reflects to the hypervisor. Hypervisor
-seems to be mapping Hardware-page to that GPA. Unforatunately it is not
-informing the ultravisor of that map.  I am trying to understand the
-root cause. But since I am not sure what more issues I might run into
-after chasing down that issue, I figured its better to disable xive
-support in SVM in the interim.
-
-**** BTW: I figured, I dont need this intermin patch to disable xive for
-secure VM.  Just doing "svm=on xive=off" on the kernel command line is
-sufficient for now. *****
-
-
-> 
-> But, kernel_irqchip=off should work out of the box. It seems it doesn't. 
-> Something to investigate.
-
-Dont know why. 
-
-Does this option, disable the chip from interrupting the
-guest directly; instead mediates the interrupt through the hypervisor?
-
-> 
-> > 
-> >   5) All the above said, having to use XICS is pretty crappy.  You
-> >      should really get working on XIVE support for secure VMs.
-> 
-> Yes. 
-
-and yes too.
-
-
-Summary:  I am dropping this patch for now.
-
-> 
-> Thanks,
-> 
-> C.
-
--- 
-Ram Pai
 
