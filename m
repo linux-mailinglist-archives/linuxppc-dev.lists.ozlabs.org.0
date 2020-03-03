@@ -2,45 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0219176842
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 00:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E8C176A09
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 02:29:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Wc1C0DtSzDqjW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 10:34:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WfZ94TNzzDqZG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 12:29:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=buAZSDJA; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WbzQ2GpMzDqTX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 10:32:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=fOL3ol6d; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 48WbzQ1TRmz9sSM; Tue,  3 Mar 2020 10:32:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1583191970;
- bh=MFn7h1ABzuznlHRfe/7NuiIWmZMsu94D60+9MIMCwEI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=fOL3ol6ddTUTQSICV7waezwPEvUm2UllHgl8WQF1pmp5+23sFbJnLJMgmxPApIF9T
- EGrWW5i6K8fQjOLvpntWIqZstzEJmJpJ5GdM1czCDb5vYGpsjhCxX6me/kokDBYORR
- rOiab3IvCclFKoKSNZQfC/9cd0Fns1mJugqGK97E=
-Date: Tue, 3 Mar 2020 10:32:40 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
-Message-ID: <20200302233240.GB35885@umbus.fritz.box>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48WfXK2jMJzDqXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 12:28:01 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id m7so525268pjs.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2020 17:28:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ZVj2X/81WCTpFsIK2e8dqnIoQY3Y8oBDa4zdgXAM5a4=;
+ b=buAZSDJAbWamKExrpVAVltCzA//Efs87pEt632H0VfIfloJPHjzQ9ac6hSOBCs/ode
+ Fo0Yfdes9v6ChA+w7Cbe/XLCcZoTEpvYtVyv7SW1P+fPaKxagRW3UL3jGlBEVoxCZPfF
+ tsy9ILpVI+N4jj9Iv6CbDO6ujl2pMktmnnez/c9ageHjR5UKrgl8sdDtMuPPBvdvfdvb
+ O7U3d6vcLisH5TTo0kaoMkdK1y1AGVQQgkn6GpNOvLrK6Rl1iFCdIxdkYp1LHRKabqwr
+ bzCOLnY5kCXgytgG7grqPhPq7SJVERp3HLsw+Eard/0DVX0wETFg+f5NHEHZklv0Tdrq
+ WJJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ZVj2X/81WCTpFsIK2e8dqnIoQY3Y8oBDa4zdgXAM5a4=;
+ b=EiA3/0my4h6rD2zU5C6LhKmjeJgvxRFtyovnV/xzynZ0FqKUT23twAAme7YlAHsYfE
+ 9k4HvzVRM9CT3zy1w7CR+6lup/gBiVGBBByrvTnxktdrZvEQDHLMz5zNiCQn4kUHR6O5
+ YNRQhcEA577siVFtAzuA5HYU4b3VYsnGC+Lwk+1xQlrp1/rvgzGvyxcJleKAmVCk1hVI
+ FUdXZqhOkWc8ZyfQSakeoqiP1vvIjfC0ILrVyfFQJFngLkJi0I7RqEK0eoq5IcUAdFon
+ iffP9Gz01cBlNsiF9fJUOibcCYYI/5NZewltzcODxAeV1MRml5F0OEqvlnZa6rn9bHH1
+ gRAQ==
+X-Gm-Message-State: ANhLgQ1b0CCcC3O6ShzhoT1DB4cruQJVaODRudwgIqBvGt2gIJ/FolNd
+ K5jttMCsNquGfcCM02yc6QlbHzAb
+X-Google-Smtp-Source: ADFU+vswYhO704DVICorzZ6A+LQuqDJrinCp8y0Gvd7f81xVCOXOmoJyF1s/slaK2WVNmFMCUqIMPg==
+X-Received: by 2002:a17:90a:9416:: with SMTP id
+ r22mr1432734pjo.2.1583198877133; 
+ Mon, 02 Mar 2020 17:27:57 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (193-116-117-248.tpgi.com.au.
+ [193.116.117.248])
+ by smtp.gmail.com with ESMTPSA id md5sm349141pjb.0.2020.03.02.17.27.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Mar 2020 17:27:56 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/build: vdso linker warning for orphan sections
+Date: Tue,  3 Mar 2020 11:27:48 +1000
+Message-Id: <20200303012748.4190929-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="dc+cDN39EJAMEtIO"
-Content-Disposition: inline
-In-Reply-To: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,87 +78,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org,
- kvm-ppc@vger.kernel.org, clg@fr.ibm.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/vdso32/Makefile     | 2 +-
+ arch/powerpc/kernel/vdso32/vdso32.lds.S | 1 +
+ arch/powerpc/kernel/vdso64/Makefile     | 2 +-
+ arch/powerpc/kernel/vdso64/vdso64.lds.S | 3 ++-
+ 4 files changed, 5 insertions(+), 3 deletions(-)
 
---dc+cDN39EJAMEtIO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso32/Makefile
+index e147bbdc12cd..87ab1152d5ce 100644
+--- a/arch/powerpc/kernel/vdso32/Makefile
++++ b/arch/powerpc/kernel/vdso32/Makefile
+@@ -50,7 +50,7 @@ $(obj-vdso32): %.o: %.S FORCE
+ 
+ # actual build commands
+ quiet_cmd_vdso32ld = VDSO32L $@
+-      cmd_vdso32ld = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^)
++      cmd_vdso32ld = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ $(call cc-ldoption, -Wl$(comma)--orphan-handling=warn) -Wl,-T$(filter %.lds,$^) $(filter %.o,$^)
+ quiet_cmd_vdso32as = VDSO32A $@
+       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) -c -o $@ $<
+ 
+diff --git a/arch/powerpc/kernel/vdso32/vdso32.lds.S b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+index 5206c2eb2a1d..4c985467a668 100644
+--- a/arch/powerpc/kernel/vdso32/vdso32.lds.S
++++ b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+@@ -111,6 +111,7 @@ SECTIONS
+ 		*(.note.GNU-stack)
+ 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+ 		*(.bss .sbss .dynbss .dynsbss)
++		*(.glink .iplt .plt .rela*)
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
+index 32ebb3522ea1..38c317f25141 100644
+--- a/arch/powerpc/kernel/vdso64/Makefile
++++ b/arch/powerpc/kernel/vdso64/Makefile
+@@ -34,7 +34,7 @@ $(obj)/%.so: $(obj)/%.so.dbg FORCE
+ 
+ # actual build commands
+ quiet_cmd_vdso64ld = VDSO64L $@
+-      cmd_vdso64ld = $(CC) $(c_flags) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^)
++      cmd_vdso64ld = $(CC) $(c_flags) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) $(call cc-ldoption, -Wl$(comma)--orphan-handling=warn)
+ 
+ # install commands for the unstripped file
+ quiet_cmd_vdso_install = INSTALL $@
+diff --git a/arch/powerpc/kernel/vdso64/vdso64.lds.S b/arch/powerpc/kernel/vdso64/vdso64.lds.S
+index 256fb9720298..4e3a8d4ee614 100644
+--- a/arch/powerpc/kernel/vdso64/vdso64.lds.S
++++ b/arch/powerpc/kernel/vdso64/vdso64.lds.S
+@@ -30,7 +30,7 @@ SECTIONS
+ 	. = ALIGN(16);
+ 	.text		: {
+ 		*(.text .stub .text.* .gnu.linkonce.t.* __ftr_alt_*)
+-		*(.sfpr .glink)
++		*(.sfpr)
+ 	}						:text
+ 	PROVIDE(__etext = .);
+ 	PROVIDE(_etext = .);
+@@ -111,6 +111,7 @@ SECTIONS
+ 		*(.branch_lt)
+ 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+ 		*(.bss .sbss .dynbss .dynsbss)
++		*(.glink .iplt .plt .rela*)
+ 	}
+ }
+ 
+-- 
+2.23.0
 
-On Fri, Feb 28, 2020 at 11:54:04PM -0800, Ram Pai wrote:
-> XIVE is not correctly enabled for Secure VM in the KVM Hypervisor yet.
->=20
-> Hence Secure VM, must always default to XICS interrupt controller.
->=20
-> If XIVE is requested through kernel command line option "xive=3Don",
-> override and turn it off.
->=20
-> If XIVE is the only supported platform interrupt controller; specified
-> through qemu option "ic-mode=3Dxive", simply abort. Otherwise default to
-> XICS.
-
-Uh... the discussion thread here seems to have gotten oddly off
-track.  So, to try to clean up some misunderstandings on both sides:
-
-  1) The guest is the main thing that knows that it will be in secure
-     mode, so it's reasonable for it to conditionally use XIVE based
-     on that.
-
-  2) The mechanism by which we do it here isn't quite right.  Here the
-     guest is checking itself that the host only allows XIVE, but we
-     can't do XIVE and is panic()ing.  Instead, in the SVM case we
-     should force support->xive to false, and send that in the CAS
-     request to the host.  We expect the host to just terminate
-     us because of the mismatch, but this will interact better with
-     host side options setting policy for panic states and the like.
-     Essentially an SVM kernel should behave like an old kernel with
-     no XIVE support at all, at least w.r.t. the CAS irq mode flags.
-
-  3) Although there are means by which the hypervisor can kind of know
-     a guest is in secure mode, there's not really an "svm=3Don" option
-     on the host side.  For the most part secure mode is based on
-     discussion directly between the guest and the ultravisor with
-     almost no hypervisor intervention.
-
-  4) I'm guessing the problem with XIVE in SVM mode is that XIVE needs
-     to write to event queues in guest memory, which would have to be
-     explicitly shared for secure mode.  That's true whether it's KVM
-     or qemu accessing the guest memory, so kernel_irqchip=3Don/off is
-     entirely irrelevant.
-
-  5) All the above said, having to use XICS is pretty crappy.  You
-     should really get working on XIVE support for secure VMs.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---dc+cDN39EJAMEtIO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5dl5UACgkQbDjKyiDZ
-s5IdcBAAk8vR8o1rRAjpvuUwpmjQOgcIcmrKGPlv5xb7XV0NBMn05dyd95rvqdv1
-ZkIRVlg7kPGIJJbdMifIHRGHasB7bpcVdWU8h4gJ2isjoy7ddVMFUSn5RJ76cahl
-4GSpJn67kVtOngTmg6yYEOWZeZU8E/OC3iFM+r2dbprxrxKZg+cVQllNQyEo6tDe
-3EMQKsUt1VJs36Y63HRqsWyivzUmmeiqZESWo0fgCJAnaa5C1i76GHJRL5ZS/dcs
-keyDoa3A2sBnpqUZtN6hzMSkAwooh78h+vsL/utKzbL/8TUY6Us8Da7dJlpp0D+h
-vCfRG8UTlVhBSDK7tEC6EhOou1eEKnwC4h1FJ4yyZxw98ukeAGcLruJ0t7O9YwK2
-2sZnKzorYTOAetlRa8wXlXZttR0BaPz2V5/KrpMeIgq+lXiM2x7jNjHCjbVOo9Qw
-KqUJtopeTBXVbzJIWhNhWr4rZLhXZIg2cJzBqMVV0smDCCMiBO8/zb3NZe7WN3OW
-Yp+RxrT3+vhRiHPpb4TD3R2725DulVglB7dRU0TBuZWBLrfkSpspSa6zgEEDEnz6
-VhVaWSrD6d3pti2c5GS7zKfyATueCpq1A2wJS54k9jJl/y26rmDAz/ky4haIMBvW
-NL8d7pt+PlIXwi0ZF0NHr8mr5XE4gf3Qt1MNPpkRo5yaLoEK8YA=
-=FpzO
------END PGP SIGNATURE-----
-
---dc+cDN39EJAMEtIO--
