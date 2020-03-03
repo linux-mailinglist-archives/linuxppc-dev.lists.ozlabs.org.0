@@ -2,52 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9591178322
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 20:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D63F9178379
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 20:56:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48X6Vj2zslzDqTL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 06:28:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48X7740g0FzDqTd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 06:56:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.48.182; helo=7.mo2.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=the-dreams.de (client-ip=88.99.104.3; helo=pokefinder.org;
+ envelope-from=wsa@the-dreams.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 7.mo2.mail-out.ovh.net (7.mo2.mail-out.ovh.net [188.165.48.182])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48X6Qg2vWczDqS2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 06:24:40 +1100 (AEDT)
-Received: from player799.ha.ovh.net (unknown [10.110.171.96])
- by mo2.mail-out.ovh.net (Postfix) with ESMTP id 622741CCE0D
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 20:18:35 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player799.ha.ovh.net (Postfix) with ESMTPSA id E981A1008C8C7;
- Tue,  3 Mar 2020 19:18:18 +0000 (UTC)
-Subject: Re: [EXTERNAL] Re: [RFC PATCH v1] powerpc/prom_init: disable XIVE in
- Secure VM.
-To: Greg Kurz <groug@kaod.org>, Ram Pai <linuxram@us.ibm.com>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
- <20200302233240.GB35885@umbus.fritz.box>
- <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
- <20200303170205.GA5416@oc0525413822.ibm.com>
- <20200303184520.632be270@bahia.home>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <a1570b0d-c443-3140-31f0-bddd9f31f54b@kaod.org>
-Date: Tue, 3 Mar 2020 20:18:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ dmarc=none (p=none dis=none) header.from=the-dreams.de
+Received: from pokefinder.org (sauhun.de [88.99.104.3])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48X75959kYzDqP4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 06:54:35 +1100 (AEDT)
+Received: from localhost (p54B3308A.dip0.t-ipconnect.de [84.179.48.138])
+ by pokefinder.org (Postfix) with ESMTPSA id B92872C0872;
+ Tue,  3 Mar 2020 20:54:31 +0100 (CET)
+Date: Tue, 3 Mar 2020 20:54:31 +0100
+From: Wolfram Sang <wsa@the-dreams.de>
+To: Andreas Schwab <schwab@linux-m68k.org>
+Subject: Re: [PATCH] macintosh: windfarm: fix MODINFO regression
+Message-ID: <20200303195431.GB6555@ninjato>
+References: <20200303125046.5157-1-wsa@the-dreams.de>
+ <87d09tw9is.fsf@igel.home>
 MIME-Version: 1.0
-In-Reply-To: <20200303184520.632be270@bahia.home>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 12505088792497195963
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedruddtiedguddviecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeelledrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="cmJC7u66zC7hs+87"
+Content-Disposition: inline
+In-Reply-To: <87d09tw9is.fsf@igel.home>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,28 +44,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, kvm-ppc@vger.kernel.org,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, David Gibson <david@gibson.dropbear.id.au>
+Cc: Erhard Furtner <erhard_f@mailbox.org>, Mathieu Malaterre <malat@debian.org>,
+ debian-powerpc@lists.debian.org, linux-i2c@vger.kernel.org,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> **** BTW: I figured, I dont need this intermin patch to disable xive for
->> secure VM.  Just doing "svm=on xive=off" on the kernel command line is
->> sufficient for now. *****
->>
-> 
-> No it is not. If the hypervisor doesn't propose XIVE (ie. ic-mode=xive
-> on the QEMU command line), the kernel simply ignores "xive=off".
 
-If I am correct, with the option ic-mode=xive, the hypervisor will 
-propose only 'xive' in OV5 and not both 'xive' and 'xics'. But the
-result is the same because xive can not be turned off and "xive=off" 
-is ignored.
+--cmJC7u66zC7hs+87
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Anyway, it's not the most common case of usage of the QEMU command
-like. I think it's OK to use "xive=off" on the kernel command line 
-for now.
 
-C.
+> > sound/aoa/codecs/onyx.c
+> > sound/aoa/codecs/tas.c
+>=20
+> These are loaded explicitly via request_module (as snd-aoa-codec-%s).
+
+Good to know, thanks!
+
+
+--cmJC7u66zC7hs+87
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl5etfcACgkQFA3kzBSg
+Kbayzw//YsWK4+DusvCfptElHxJY7dRalfYF/ddNNzqZ4WXLEEVSPsXY96IS27PB
+hEoC0lrIxcW6bIlAzZAIFmeJtx5zD+REfK/nPqrynsGg7o0yAxBSqsqDRD72+rVZ
+DRzdKcSaUqDEb/5ndSpmBtHQ/MAt/mro/hOVkcICGIlxL5UdeahE9Ls3ktXtAVYc
+rZ6b+1ImdKgwvJ3rKvsap1rnZPnhlMYxLkWgem+D8wD1bdana+lS4FjD5R3QqE89
+0FC/e3vCzwq1t034V1ivywroTcL+UJF3u07BAZjaWh/l0v6Cnw7HMAXdqN8uISLi
+NmU4ZSArp4+haD+eJQsWZkhxTP4Swvo2WHDzjv9QS74L/yb0SuXs2pz1Ppg1nVpN
+taKu+IAbVZPEP7Ndz7CoX/1/cC+TfhiA1V9M1jM+olZL7lBLWDIrLhjzbzTSESb4
+23zTtX7JQ/XwKyCSVHiDO4YJaalRiItmaZfTZB619TlhzqKQ1iH+wuD5mXEi3l2H
+M1gGZmaAKtBZzL9JOwsoEOtltr9xPEnrWaw8r42kVyLx2iUcPyg+XP3ijDJyuebv
+YKiL3GxAqF45tJsjBt5CfosxRW1eofmnP3Bx980Ibxpzv4xxQvq5PgYQ5yJ3Ue+l
+Aeo+yd9rWUPIzpRhngwYPetzRSjN3Jr7NwWe5VMI7bR+8EV0yn4=
+=QPwo
+-----END PGP SIGNATURE-----
+
+--cmJC7u66zC7hs+87--
