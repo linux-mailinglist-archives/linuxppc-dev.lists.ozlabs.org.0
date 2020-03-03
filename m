@@ -2,53 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75441772E2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 10:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4CE17731C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 10:52:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WscX70rTzDqWm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 20:47:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Wsjv2d9kzDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 20:52:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+ [209.85.221.66])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WsZF5FmpzDqTL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 20:45:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=FvTeVOpG; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48WsZD4YDzz9sRN;
- Tue,  3 Mar 2020 20:45:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1583228724;
- bh=Wo5bQeKUPhAri+IWkOD5PZEI0f97+gdXT92XXJeUOaY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=FvTeVOpG1HL369swVAGKwuZdqRj3BH9QUPT5UA/ZR7E5xAuX9Esj/AXStB1Ufwp/o
- QjA2R3+CuKGBGHH3MqixMIW38v3h0eUpP5sxQQWxA0p6yPZdapZMWwxaXwGjaWVSHt
- zK0R/sxz/ci+xcCJvVi3zbBt0Rrv0T/jAZ7jt1PXRDPS3OHKqT7hY/Rl0cxnygArbk
- zv2DhYTyCO9oVaS+AhI3jBya3LfjhHJw2ZG/CuvBjZ3gAJ2zpo00YD2XR3nIFgpgJr
- ot9rVNJKqYM69dM4qti8YMpiXwlagy+JcXiObIoaRe3hmrALaOVbi2xxlyDej5Ppmp
- pZb/DytQtWifA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 2/6] powerpc: kvm: no need to check return value of
- debugfs_create functions
-In-Reply-To: <20200303085039.GA1323622@kroah.com>
-References: <20200209105901.1620958-1-gregkh@linuxfoundation.org>
- <20200209105901.1620958-2-gregkh@linuxfoundation.org>
- <87imjlswxc.fsf@mpe.ellerman.id.au> <20200303085039.GA1323622@kroah.com>
-Date: Tue, 03 Mar 2020 20:45:23 +1100
-Message-ID: <87d09tsrf0.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Wsgl1lmRzDqJC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 20:50:10 +1100 (AEDT)
+Received: by mail-wr1-f66.google.com with SMTP id h9so2513136wrr.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2020 01:50:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=Y99FbCmw9OnfxHbqxZIXhqJVIqMSByuY8qfyzjJA6uY=;
+ b=oKcasIlj5EuE0q+QwdxNlbvcbCJEV3b4O/t4tCvFwQ3Luh5iAD1yQjbbQqMP4UDMxO
+ oKx5Iit9EMQLNyL4DbT635Q2GOErWJNgiy4kp8dkA7F+ZWZL44LoG4NlfgxYAJILAFrC
+ e4gmZIt2HTNQH+vxiWPrmXN2l8ZTI4EDIB6lkapF4gmjE91/AW/i8fU7vBQM8vaDikP0
+ ve11Pkn45RKMbfYmn5QQ3p+dGUEZP8ePxPW7uBIRhIdADqBUfpD370DE4lZiFpuJDji7
+ 7PJawvlLUQO3QYIRGeHYKfloqrJNhgyKkhh2+0Op5+HxwZHzwsVT87NoMBMhjIxEklbi
+ yaEQ==
+X-Gm-Message-State: ANhLgQ2paW43aD6+8+nvdyLjlW1I99rf2T3zAHAu7zavCDUzLSZlYVPc
+ /5bcgnO+eB0nE8sKaxdfL3o=
+X-Google-Smtp-Source: ADFU+vuwthCqGkSbyuUa0Z+cIz/BhBDMexJ+IcEdZ4dQctXNHctdxSNdlijFijlYre1w0hRSFX3F9Q==
+X-Received: by 2002:a5d:4a10:: with SMTP id m16mr4435706wrq.333.1583229006583; 
+ Tue, 03 Mar 2020 01:50:06 -0800 (PST)
+Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
+ by smtp.gmail.com with ESMTPSA id u8sm3096766wmm.15.2020.03.03.01.50.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Mar 2020 01:50:05 -0800 (PST)
+Date: Tue, 3 Mar 2020 10:50:05 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Logan Gunthorpe <logang@deltatee.com>
+Subject: Re: [PATCH v3 1/7] mm/memory_hotplug: Drop the flags field from
+ struct mhp_restrictions
+Message-ID: <20200303095005.GE4380@dhcp22.suse.cz>
+References: <20200221182503.28317-1-logang@deltatee.com>
+ <20200221182503.28317-2-logang@deltatee.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200221182503.28317-2-logang@deltatee.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,82 +66,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, platform-driver-x86@vger.kernel.org,
+ linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Eric Badger <ebadger@gigaio.com>,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> On Tue, Mar 03, 2020 at 06:46:23PM +1100, Michael Ellerman wrote:
->> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
->> > When calling debugfs functions, there is no need to ever check the
->> > return value.  The function can work or not, but the code logic should
->> > never do something different based on this.
->> 
->> Except it does need to do something different, if the file was created
->> it needs to be removed in the remove path.
->> 
->> > diff --git a/arch/powerpc/kvm/timing.c b/arch/powerpc/kvm/timing.c
->> > index bfe4f106cffc..8e4791c6f2af 100644
->> > --- a/arch/powerpc/kvm/timing.c
->> > +++ b/arch/powerpc/kvm/timing.c
->> > @@ -207,19 +207,12 @@ static const struct file_operations kvmppc_exit_timing_fops = {
->> >  void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id)
->> >  {
->> >  	static char dbg_fname[50];
->> > -	struct dentry *debugfs_file;
->> >  
->> >  	snprintf(dbg_fname, sizeof(dbg_fname), "vm%u_vcpu%u_timing",
->> >  		 current->pid, id);
->> > -	debugfs_file = debugfs_create_file(dbg_fname, 0666,
->> > -					kvm_debugfs_dir, vcpu,
->> > -					&kvmppc_exit_timing_fops);
->> > -
->> > -	if (!debugfs_file) {
->> > -		printk(KERN_ERR"%s: error creating debugfs file %s\n",
->> > -			__func__, dbg_fname);
->> > -		return;
->> > -	}
->> > +	debugfs_create_file(dbg_fname, 0666, kvm_debugfs_dir, vcpu,
->> > +			    &kvmppc_exit_timing_fops);
->> > +
->> >  
->> >  	vcpu->arch.debugfs_exit_timing = debugfs_file;
->
-> Ugh, you are right, how did I miss that?  How is 0-day missing this?
-> It's been in my tree for a long time, odd.
+On Fri 21-02-20 11:24:57, Logan Gunthorpe wrote:
+> This variable is not used anywhere and should therefore be removed
+> from the structure.
+> 
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 
-This code isn't enabled by default, or in any defconfig. So it's only
-allmodconfig that would trip it, I guess 0-day isn't doing powerpc
-allmodconfig builds.
+Acked-by: Michal Hocko <mhocko@suse.com>
 
->> I squashed this in, which seems to work:
-...
->>  
->>  void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu)
->>  {
->> -       if (vcpu->arch.debugfs_exit_timing) {
->> +       if (!IS_ERR_OR_NULL(vcpu->arch.debugfs_exit_timing)) {
->>                 debugfs_remove(vcpu->arch.debugfs_exit_timing);
->>                 vcpu->arch.debugfs_exit_timing = NULL;
->>         }
->
-> No, this can just be:
-> 	debugfs_remove(vcpu->arch.debugfs_exit_timing);
->
-> No need to check anything, just call it and the debugfs code can handle
-> it just fine.
+> ---
+>  include/linux/memory_hotplug.h | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f4d59155f3d4..69ff3037528d 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -55,11 +55,9 @@ enum {
+>  
+>  /*
+>   * Restrictions for the memory hotplug:
+> - * flags:  MHP_ flags
+>   * altmap: alternative allocator for memmap array
+>   */
+>  struct mhp_restrictions {
+> -	unsigned long flags;
+>  	struct vmem_altmap *altmap;
+>  };
+>  
+> -- 
+> 2.20.1
 
-Oh duh, of course, I should have checked.
-
-I'd still like to NULL out the debugfs_exit_timing member, so I'll do:
-
-void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu)
-{
-	debugfs_remove(vcpu->arch.debugfs_exit_timing);
-	vcpu->arch.debugfs_exit_timing = NULL;
-}
-
-
-cheers
+-- 
+Michal Hocko
+SUSE Labs
