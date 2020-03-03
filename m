@@ -2,75 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C32176F0E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 07:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF61176F26
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 07:12:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Wmbz5BQlzDqXf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 17:01:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Wmrw4s0gzDqW0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 17:12:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=sXKIwD1R; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WmZ14k2CzDqBs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 16:59:51 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48WmYt2NC7z9tyyX;
- Tue,  3 Mar 2020 06:59:46 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=sXKIwD1R; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id UVZtmD4b7vsp; Tue,  3 Mar 2020 06:59:46 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48WmYt108kz9tyyS;
- Tue,  3 Mar 2020 06:59:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1583215186; bh=ocYA26gERwg/bGzKOX6R9AQoOaFWREyAef/Kd9zo+5s=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=sXKIwD1RD3BLfW6HS5aTsLH2zDt5HeqokUB+K7FsxVkoJhvVgR9r7Ff79VBf3fPhg
- IjF4WeUvoHflMO8+N2ifkTwV8WIp6KloKV0XCSvcbUBFZYWyK3co0cvATpqgmD7E3m
- B5ViAb14Ei63PR4Qy3/Ndcwn06LEcho6L0JaXjUc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D1E5C8B79A;
- Tue,  3 Mar 2020 06:59:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id b_l-0DSpkXO5; Tue,  3 Mar 2020 06:59:46 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 081278B755;
- Tue,  3 Mar 2020 06:59:44 +0100 (CET)
-Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
- table helpers
-To: Qian Cai <cai@lca.pw>, Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-mm@kvack.org
-References: <1581909460-19148-1-git-send-email-anshuman.khandual@arm.com>
- <1582726182.7365.123.camel@lca.pw>
- <7c707b7f-ce3d-993b-8042-44fdc1ed28bf@c-s.fr>
- <1582732318.7365.129.camel@lca.pw> <1583178042.7365.146.camel@lca.pw>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <6757aa1d-7951-69ef-de93-50a7b7b172e0@c-s.fr>
-Date: Tue, 3 Mar 2020 06:59:39 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Wmq505bRzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 17:11:12 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02365sZw026791
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Mar 2020 01:11:09 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yfhs4j33s-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2020 01:11:08 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 3 Mar 2020 06:11:06 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 3 Mar 2020 06:10:59 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0236AwXB26017888
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Mar 2020 06:10:58 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 37ED242045;
+ Tue,  3 Mar 2020 06:10:58 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CC7E14203F;
+ Tue,  3 Mar 2020 06:10:57 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  3 Mar 2020 06:10:57 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C45C3A024B;
+ Tue,  3 Mar 2020 17:10:52 +1100 (AEDT)
+Subject: Re: [PATCH v3 03/27] powerpc: Map & release OpenCAPI LPC memory
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-4-alastair@au1.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Tue, 3 Mar 2020 17:10:56 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <1583178042.7365.146.camel@lca.pw>
+In-Reply-To: <20200221032720.33893-4-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030306-0020-0000-0000-000003AFE2AD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030306-0021-0000-0000-00002208104D
+Message-Id: <33ff636c-6b85-ed0d-275b-3e8697b5316f@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-03_01:2020-03-02,
+ 2020-03-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ lowpriorityscore=0 mlxlogscore=577 malwarescore=0 impostorscore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 adultscore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2003030047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,138 +97,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, x86@kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 02/03/2020 à 20:40, Qian Cai a écrit :
-> On Wed, 2020-02-26 at 10:51 -0500, Qian Cai wrote:
->> On Wed, 2020-02-26 at 15:45 +0100, Christophe Leroy wrote:
->>>
->>> Le 26/02/2020 à 15:09, Qian Cai a écrit :
->>>> On Mon, 2020-02-17 at 08:47 +0530, Anshuman Khandual wrote:
->>>>> This adds tests which will validate architecture page table helpers and
->>>>> other accessors in their compliance with expected generic MM semantics.
->>>>> This will help various architectures in validating changes to existing
->>>>> page table helpers or addition of new ones.
->>>>>
->>>>> This test covers basic page table entry transformations including but not
->>>>> limited to old, young, dirty, clean, write, write protect etc at various
->>>>> level along with populating intermediate entries with next page table page
->>>>> and validating them.
->>>>>
->>>>> Test page table pages are allocated from system memory with required size
->>>>> and alignments. The mapped pfns at page table levels are derived from a
->>>>> real pfn representing a valid kernel text symbol. This test gets called
->>>>> inside kernel_init() right after async_synchronize_full().
->>>>>
->>>>> This test gets built and run when CONFIG_DEBUG_VM_PGTABLE is selected. Any
->>>>> architecture, which is willing to subscribe this test will need to select
->>>>> ARCH_HAS_DEBUG_VM_PGTABLE. For now this is limited to arc, arm64, x86, s390
->>>>> and ppc32 platforms where the test is known to build and run successfully.
->>>>> Going forward, other architectures too can subscribe the test after fixing
->>>>> any build or runtime problems with their page table helpers. Meanwhile for
->>>>> better platform coverage, the test can also be enabled with CONFIG_EXPERT
->>>>> even without ARCH_HAS_DEBUG_VM_PGTABLE.
->>>>>
->>>>> Folks interested in making sure that a given platform's page table helpers
->>>>> conform to expected generic MM semantics should enable the above config
->>>>> which will just trigger this test during boot. Any non conformity here will
->>>>> be reported as an warning which would need to be fixed. This test will help
->>>>> catch any changes to the agreed upon semantics expected from generic MM and
->>>>> enable platforms to accommodate it thereafter.
->>>>
->>>> How useful is this that straightly crash the powerpc?
->>>>
->>>> [   23.263425][    T1] debug_vm_pgtable: debug_vm_pgtable: Validating
->>>> architecture page table helpers
->>>> [   23.263625][    T1] ------------[ cut here ]------------
->>>> [   23.263649][    T1] kernel BUG at arch/powerpc/mm/pgtable.c:274!
->>>
->>> The problem on PPC64 is known and has to be investigated and fixed.
->>
->> It might be interesting to hear what powerpc64 maintainers would say about it
->> and if it is actually worth "fixing" in the arch code, but that BUG_ON() was
->> there since 2009 and had not been exposed until this patch comes alone?
-> 
-> This patch below makes it works on powerpc64 in order to dodge the BUG_ON()s in
-> assert_pte_locked() triggered by pte_clear_tests().
-> 
-> 
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 96dd7d574cef..50b385233971 100644
-> --- a/mm/debug_vm_pgtable.c
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -55,6 +55,8 @@
->   #define RANDOM_ORVALUE	GENMASK(BITS_PER_LONG - 1, S390_MASK_BITS)
->   #define RANDOM_NZVALUE	GENMASK(7, 0)
->   
-> +unsigned long vaddr;
+On 21/2/20 2:26 pm, Alastair D'Silva wrote:> +#ifdef 
+CONFIG_MEMORY_HOTPLUG_SPARSE
+> +u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size)
+> +{
+> +	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> +	struct pnv_phb *phb = hose->private_data;
+> +	u32 bdfn = pci_dev_id(pdev);
+> +	__be64 base_addr_be64;
+> +	u64 base_addr;
+> +	int rc;
 > +
+> +	rc = opal_npu_mem_alloc(phb->opal_id, bdfn, size, &base_addr_be64);
 
-Can we avoid global var ?
+Sparse warning:
 
->   static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
->   {
->   	pte_t pte = pfn_pte(pfn, prot);
-> @@ -256,7 +258,7 @@ static void __init pte_clear_tests(struct mm_struct *mm,
-> pte_t *ptep)
->   
->   	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
->   	WRITE_ONCE(*ptep, pte);
-> -	pte_clear(mm, 0, ptep);
-> +	pte_clear(mm, vaddr, ptep);
->   	pte = READ_ONCE(*ptep);
->   	WARN_ON(!pte_none(pte));
->   }
-> @@ -310,8 +312,9 @@ void __init debug_vm_pgtable(void)
->   	pgtable_t saved_ptep;
->   	pgprot_t prot;
->   	phys_addr_t paddr;
-> -	unsigned long vaddr, pte_aligned, pmd_aligned;
+https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/15776//artifact/linux/report.txt
 
-Can we pass local vaddr to pte_clear_tests() instead of making it a 
-global var ?
+I think in patch 1 we need to change a uint64_t to a __be64.
 
-> +	unsigned long pte_aligned, pmd_aligned;
->   	unsigned long pud_aligned, p4d_aligned, pgd_aligned;
-> +	spinlock_t *ptl;
->   
->   	pr_info("Validating architecture page table helpers\n");
->   	prot = vm_get_page_prot(VMFLAGS);
-> @@ -344,7 +347,7 @@ void __init debug_vm_pgtable(void)
->   	p4dp = p4d_alloc(mm, pgdp, vaddr);
->   	pudp = pud_alloc(mm, p4dp, vaddr);
->   	pmdp = pmd_alloc(mm, pudp, vaddr);
-> -	ptep = pte_alloc_map(mm, pmdp, vaddr);
-> +	ptep = pte_alloc_map_lock(mm, pmdp, vaddr, &ptl);
->   
->   	/*
->   	 * Save all the page table page addresses as the page table
-> @@ -370,7 +373,7 @@ void __init debug_vm_pgtable(void)
->   	p4d_clear_tests(mm, p4dp);
->   	pgd_clear_tests(mm, pgdp);
->   
-> -	pte_unmap(ptep);
-> +	pte_unmap_unlock(ptep, ptl);
->   
->   	pmd_populate_tests(mm, pmdp, saved_ptep);
->   	pud_populate_tests(mm, pudp, saved_pmdp);
-> 
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
-Christophe
