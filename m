@@ -1,54 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB13177195
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 09:52:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48WrPY1KYnzDqZ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 19:52:49 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D6A17721E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 10:14:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48WrtC3QxhzDqSc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Mar 2020 20:14:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=eEDuts2C; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+X-Greylist: delayed 949 seconds by postgrey-1.36 at bilbo;
+ Tue, 03 Mar 2020 20:12:24 AEDT
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48WrMB5kPnzDqC0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 19:50:44 +1100 (AEDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E5FA920873;
- Tue,  3 Mar 2020 08:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1583225442;
- bh=eR6LH6mxRiiMpd/1mg6HONvlCCBV3PmOyYycLqHqkdw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=eEDuts2CyWKxUkuRazmkCwT4hZjsAxqrHnv14Uf/LNboVoyo0q8uTK5wcmrqOiCfz
- d64lQUTg3g5FM9OQUp2chBDAGhbLXbHoANW6G9t4HWgZx/OQxWiIuJky8Iqwupvt4Q
- ex517U3FK6IIxONywHvdH+C/N1tSRCy/KDMqPNys=
-Date: Tue, 3 Mar 2020 09:50:39 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 2/6] powerpc: kvm: no need to check return value of
- debugfs_create functions
-Message-ID: <20200303085039.GA1323622@kroah.com>
-References: <20200209105901.1620958-1-gregkh@linuxfoundation.org>
- <20200209105901.1620958-2-gregkh@linuxfoundation.org>
- <87imjlswxc.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Wrr852QTzDqSc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Mar 2020 20:12:20 +1100 (AEDT)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 8FD36214148A0B4E2E5F;
+ Tue,  3 Mar 2020 16:56:26 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Tue, 3 Mar 2020
+ 16:56:16 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <benh@kernel.crashing.org>, <paulus@samba.org>, <mpe@ellerman.id.au>,
+ <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 -next] powerpc/pmac/smp: drop unnecessary volatile qualifier
+Date: Tue, 3 Mar 2020 16:56:04 +0800
+Message-ID: <20200303085604.24952-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+In-Reply-To: <20191225114943.17216-1-yuehaibing@huawei.com>
+References: <20191225114943.17216-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87imjlswxc.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,108 +51,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 03, 2020 at 06:46:23PM +1100, Michael Ellerman wrote:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> > When calling debugfs functions, there is no need to ever check the
-> > return value.  The function can work or not, but the code logic should
-> > never do something different based on this.
-> 
-> Except it does need to do something different, if the file was created
-> it needs to be removed in the remove path.
-> 
-> > diff --git a/arch/powerpc/kvm/timing.c b/arch/powerpc/kvm/timing.c
-> > index bfe4f106cffc..8e4791c6f2af 100644
-> > --- a/arch/powerpc/kvm/timing.c
-> > +++ b/arch/powerpc/kvm/timing.c
-> > @@ -207,19 +207,12 @@ static const struct file_operations kvmppc_exit_timing_fops = {
-> >  void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id)
-> >  {
-> >  	static char dbg_fname[50];
-> > -	struct dentry *debugfs_file;
-> >  
-> >  	snprintf(dbg_fname, sizeof(dbg_fname), "vm%u_vcpu%u_timing",
-> >  		 current->pid, id);
-> > -	debugfs_file = debugfs_create_file(dbg_fname, 0666,
-> > -					kvm_debugfs_dir, vcpu,
-> > -					&kvmppc_exit_timing_fops);
-> > -
-> > -	if (!debugfs_file) {
-> > -		printk(KERN_ERR"%s: error creating debugfs file %s\n",
-> > -			__func__, dbg_fname);
-> > -		return;
-> > -	}
-> > +	debugfs_create_file(dbg_fname, 0666, kvm_debugfs_dir, vcpu,
-> > +			    &kvmppc_exit_timing_fops);
-> > +
-> >  
-> >  	vcpu->arch.debugfs_exit_timing = debugfs_file;
+core99_l2_cache/core99_l3_cache no need to mark as volatile,
+just remove it.
 
-Ugh, you are right, how did I miss that?  How is 0-day missing this?
-It's been in my tree for a long time, odd.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+v2: remove 'volatile' qualifier
+---
+ arch/powerpc/platforms/powermac/smp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> >  }
-> 
-> This doesn't build:
-> 
->     arch/powerpc/kvm/timing.c:217:35: error: 'debugfs_file' undeclared (first use in this function); did you mean 'debugfs_file_put'?
-> 
-> We can't just drop the assignment, we need the dentry to do the removal:
-> 
-> void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu)
-> {
-> 	if (vcpu->arch.debugfs_exit_timing) {
-> 		debugfs_remove(vcpu->arch.debugfs_exit_timing);
-> 		vcpu->arch.debugfs_exit_timing = NULL;
-> 	}
-> }
-> 
-> 
-> I squashed this in, which seems to work:
-> 
-> diff --git a/arch/powerpc/kvm/timing.c b/arch/powerpc/kvm/timing.c
-> index 8e4791c6f2af..5b7a66f86bd5 100644
-> --- a/arch/powerpc/kvm/timing.c
-> +++ b/arch/powerpc/kvm/timing.c
-> @@ -207,19 +207,19 @@ static const struct file_operations kvmppc_exit_timing_fops = {
->  void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id)
->  {
->         static char dbg_fname[50];
-> +       struct dentry *debugfs_file;
->  
->         snprintf(dbg_fname, sizeof(dbg_fname), "vm%u_vcpu%u_timing",
->                  current->pid, id);
-> -       debugfs_create_file(dbg_fname, 0666, kvm_debugfs_dir, vcpu,
-> -                           &kvmppc_exit_timing_fops);
-> -
-> +       debugfs_file = debugfs_create_file(dbg_fname, 0666, kvm_debugfs_dir,
-> +                                          vcpu, &kvmppc_exit_timing_fops);
->  
->         vcpu->arch.debugfs_exit_timing = debugfs_file;
+diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
+index f95fbde..69ad567 100644
+--- a/arch/powerpc/platforms/powermac/smp.c
++++ b/arch/powerpc/platforms/powermac/smp.c
+@@ -661,8 +661,8 @@ static void smp_core99_gpio_tb_freeze(int freeze)
+ #endif /* !CONFIG_PPC64 */
+ 
+ /* L2 and L3 cache settings to pass from CPU0 to CPU1 on G4 cpus */
+-volatile static long int core99_l2_cache;
+-volatile static long int core99_l3_cache;
++static long core99_l2_cache;
++static long core99_l3_cache;
+ 
+ static void core99_init_caches(int cpu)
+ {
+-- 
+2.7.4
 
-That works, yes.
 
->  }
->  
->  void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu)
->  {
-> -       if (vcpu->arch.debugfs_exit_timing) {
-> +       if (!IS_ERR_OR_NULL(vcpu->arch.debugfs_exit_timing)) {
->                 debugfs_remove(vcpu->arch.debugfs_exit_timing);
->                 vcpu->arch.debugfs_exit_timing = NULL;
->         }
-
-No, this can just be:
-	debugfs_remove(vcpu->arch.debugfs_exit_timing);
-
-No need to check anything, just call it and the debugfs code can handle
-it just fine.
-
-thanks,
-
-greg k-h
