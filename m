@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACC1178CE3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 09:55:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D47178CE0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 09:53:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XSNG4P5mzDqSN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 19:53:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XSQ91Hc2zDqNp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 19:55:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=kernelfans@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=kernelfans@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HLHhE6NC; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20161025 header.b=Bs+piawu; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XSJH1XxGzDqLj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 19:50:23 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id j20so319485pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 00:50:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XSJQ3DBvzDqW7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 19:50:30 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id n7so633989pfn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 00:50:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=PbAG5DVp5Gwe/RZZ9j0NJf7u8QaXPmkMnI7g6z3JMC8=;
- b=HLHhE6NC/N2Num6RVigdOSImGbpk3nmwnQlk2QXjsRlmsQbb7rVGbhzCI79qMc4DOQ
- rglDWly5IB+23fcbexPX5ZL/YTlmfbbs0sQSBT3OtGGzbht8FSMM/0N/jKJBz9IR6Mft
- QZiGG/6CHHCAh8aYaS72EewgvnynAyu5BPYZDafkeOuc+QMZS0/LtA1iOQ6YeJwVlAHB
- +TiQ9oCTYHs/jq9NXolGDxQS6ceNp8BSNoKnxWJ/fmMznvgIF+RHwT80CAOmxw9UzcdG
- kdZXUjK3rCYnuVdHEIxSa3jEVbJoYDLQiBU3aS/swGU618NlhmvsGn1+N1/4xCKFStsW
- LVcw==
+ bh=TiIql+hW6vhy0nku7tSxH1zd1ke9Ma9eE04Z6saZ0pI=;
+ b=Bs+piawutlma6+60B2UgAJv10zwf7Erndy8kh5SNp+Gf7/k9vbgZ/T94ITGhbxCZip
+ vytj8bE59j/lzS8CxKPckuGDcJo0VDvDuQrLCkX3IEQclOuPfHByyeqontuS222iowv0
+ TK+ewVwE8m1+dn1G+npFk169BQ5+UR2OxvbFVoA4GVUc4kpDeZpCgVRcaP6ISN6BS/5w
+ Wty0RppaocpgFv6woqCYIVNo8u0rVVDUm9WkXNWivt/HlLTYq1mGVg3bpJhgTcn69G5C
+ Cc8Bd/5vECbIh3vpcRLxttQToYsdKA0q7WxDG3Gz4PI1zwgWdS6gGeJS2DJTX92tPKMN
+ OW3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=PbAG5DVp5Gwe/RZZ9j0NJf7u8QaXPmkMnI7g6z3JMC8=;
- b=Q8IPrUvkLbgWulQJw1b20IRYjKSoS80AEAa7MNCbXd+InIJzqMmWw7+lXm+jjBVYkV
- BhhQW9KNcl62x1AmY9kvDpePazlI0gKFhPrftpsACi0lh+4IxQnKiKPKMjQIx29WirrJ
- H3nfnI8XDjTJ9U++nSVmUywvBEryN2YcQC/0RxAfwUr4DPbrbcfnb8Rzu4ZVWB+WOxDc
- zZqb8a96mPqA2n+PLQuCwBQZ/sxvK7oj9CoYv90hJxZ0Qxn3WrvBUr5dD4iNjPr8mVOs
- zQdIlgolqf7rBAMJliN9SyoHqtnngVeze1kuHxYd2eX79Wq8/TQgGRM3lP335z3ZwG2Y
- Cjtg==
-X-Gm-Message-State: ANhLgQ3CMZuOa5FOGq8XrB6g7EDi85C+AlRdkkX84OUCk3zzlpxa8l9v
- +xXy8HYLQt8RZDUR2vLAbLtL+hY=
-X-Google-Smtp-Source: ADFU+vv8xfB2TdqzoYxkWVhmod8311VaLoqVkmOG18qZwQFEIHdrRlKPnLs8enDR1iEXS04WBJve/A==
-X-Received: by 2002:a17:902:14d:: with SMTP id
- 71mr2053516plb.162.1583311820610; 
- Wed, 04 Mar 2020 00:50:20 -0800 (PST)
+ bh=TiIql+hW6vhy0nku7tSxH1zd1ke9Ma9eE04Z6saZ0pI=;
+ b=SOcaEcz8HKe0y52oYu/bUgo7aTqY6eaMk3xhxQ2nIo3WIWo5Q056NXBaUrj/e+YuKo
+ GxTJeGd8Ve78vhF/qJOe/tc8y8QBpxNNoWp8ZUu8RooA5QsegW8AB2f1S+PUoU3b8iUN
+ PaD63Sz6yucYQwtc+yNnSRT5d1XViD6F/MYql1ezdC5l2MNFYV9OBxyUMg9htr+o4Kjt
+ 9Zo3Bkc9UhNLg5NQSLPZnbq4K0ILLRKXw51y4hdVzCInBHJRA0/Ol2XU/RC2XfHHUYh3
+ HfEjuVMTMKqFVW8dEVz4xz34BnhS9QVKe8siwZ9Po0JGw06z/84QvZLvlNt7aQ7dw/xp
+ NeYw==
+X-Gm-Message-State: ANhLgQ0QUs8FtxqLlKWFhrvclEZ1dd8n6oQC4S90tjM8eN5U0PUSBA68
+ Lwzs07HIcAomHlEsfsQ8JGRUafM=
+X-Google-Smtp-Source: ADFU+vth/c3FMVXP227g9RnMbHBW7Dm4LTTbiytp5WE1VmF47AAiylu4k1WqHrEUK9kBj5dgmHDpWA==
+X-Received: by 2002:a62:6807:: with SMTP id d7mr2043056pfc.230.1583311827109; 
+ Wed, 04 Mar 2020 00:50:27 -0800 (PST)
 Received: from mylaptop.redhat.com ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id v123sm463085pfb.85.2020.03.04.00.50.15
+ by smtp.gmail.com with ESMTPSA id v123sm463085pfb.85.2020.03.04.00.50.20
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 04 Mar 2020 00:50:20 -0800 (PST)
+ Wed, 04 Mar 2020 00:50:26 -0800 (PST)
 From: Pingfan Liu <kernelfans@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv3 1/2] powerpc/of: split out new_property() for reusing
-Date: Wed,  4 Mar 2020 16:47:29 +0800
-Message-Id: <1583311651-29310-2-git-send-email-kernelfans@gmail.com>
+Subject: [PATCHv3 2/2] pseries/scm: buffer pmem's bound addr in dt for kexec
+ kernel
+Date: Wed,  4 Mar 2020 16:47:30 +0800
+Message-Id: <1583311651-29310-3-git-send-email-kernelfans@gmail.com>
 X-Mailer: git-send-email 2.7.5
 In-Reply-To: <1583311651-29310-1-git-send-email-kernelfans@gmail.com>
 References: <1582882895-3142-1-git-send-email-kernelfans@gmail.com>
@@ -87,10 +87,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Splitting out new_property() for coming reusing and moving it to
-of_helpers.c.
+At present, plpar_hcall(H_SCM_BIND_MEM, ...) takes a very long time, so
+if dumping to fsdax, it will take a very long time.
 
-Also do some coding style cleanup.
+Take a closer look, during the papr_scm initialization, the only
+configuration is through drc_pmem_bind()-> plpar_hcall(H_SCM_BIND_MEM,
+...), which helps to set up the bound address.
+
+On pseries, for kexec -l/-p kernel, there is no reset of hardware, and this
+step can be stepped around to save times.  So the pmem bound address can be
+passed to the 2nd kernel through a dynamic added property "bound-addr" in
+dt node 'ibm,pmemory'.
 
 Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
@@ -107,101 +114,98 @@ Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Frank Rowand <frowand.list@gmail.com>
 Cc: kexec@lists.infradead.org
 ---
- arch/powerpc/platforms/pseries/of_helpers.c | 28 ++++++++++++++++++++++++++++
- arch/powerpc/platforms/pseries/of_helpers.h |  3 +++
- arch/powerpc/platforms/pseries/reconfig.c   | 26 --------------------------
- 3 files changed, 31 insertions(+), 26 deletions(-)
+note: This patch has not been tested since I can not get such a pseries with pmem.
+      Please kindly to give some suggestion, thanks.
+---
+ arch/powerpc/platforms/pseries/of_helpers.c |  1 +
+ arch/powerpc/platforms/pseries/papr_scm.c   | 33 ++++++++++++++++++++---------
+ drivers/of/base.c                           |  1 +
+ 3 files changed, 25 insertions(+), 10 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/of_helpers.c b/arch/powerpc/platforms/pseries/of_helpers.c
-index 66dfd82..1022e0f 100644
+index 1022e0f..2c7bab4 100644
 --- a/arch/powerpc/platforms/pseries/of_helpers.c
 +++ b/arch/powerpc/platforms/pseries/of_helpers.c
-@@ -7,6 +7,34 @@
+@@ -34,6 +34,7 @@ struct property *new_property(const char *name, const int length,
+ 	kfree(new);
+ 	return NULL;
+ }
++EXPORT_SYMBOL(new_property);
  
- #include "of_helpers.h"
- 
-+struct property *new_property(const char *name, const int length,
-+		const unsigned char *value, struct property *last)
-+{
-+	struct property *new = kzalloc(sizeof(*new), GFP_KERNEL);
-+
-+	if (!new)
-+		return NULL;
-+
-+	new->name = kstrdup(name, GFP_KERNEL);
-+	if (!new->name)
-+		goto cleanup;
-+	new->value = kmalloc(length + 1, GFP_KERNEL);
-+	if (!new->value)
-+		goto cleanup;
-+
-+	memcpy(new->value, value, length);
-+	*(((char *)new->value) + length) = 0;
-+	new->length = length;
-+	new->next = last;
-+	return new;
-+
-+cleanup:
-+	kfree(new->name);
-+	kfree(new->value);
-+	kfree(new);
-+	return NULL;
-+}
-+
  /**
   * pseries_of_derive_parent - basically like dirname(1)
-  * @path:  the full_name of a node to be added to the tree
-diff --git a/arch/powerpc/platforms/pseries/of_helpers.h b/arch/powerpc/platforms/pseries/of_helpers.h
-index decad65..34add82 100644
---- a/arch/powerpc/platforms/pseries/of_helpers.h
-+++ b/arch/powerpc/platforms/pseries/of_helpers.h
-@@ -4,6 +4,9 @@
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 0b4467e..54ae903 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -14,6 +14,7 @@
+ #include <linux/delay.h>
  
- #include <linux/of.h>
+ #include <asm/plpar_wrappers.h>
++#include "of_helpers.h"
  
-+struct property *new_property(const char *name, const int length,
-+		const unsigned char *value, struct property *last);
-+
- struct device_node *pseries_of_derive_parent(const char *path);
+ #define BIND_ANY_ADDR (~0ul)
  
- #endif /* _PSERIES_OF_HELPERS_H */
-diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
-index 7f7369f..8e5a2ba 100644
---- a/arch/powerpc/platforms/pseries/reconfig.c
-+++ b/arch/powerpc/platforms/pseries/reconfig.c
-@@ -165,32 +165,6 @@ static char * parse_next_property(char *buf, char *end, char **name, int *length
- 	return tmp;
- }
- 
--static struct property *new_property(const char *name, const int length,
--				     const unsigned char *value, struct property *last)
--{
--	struct property *new = kzalloc(sizeof(*new), GFP_KERNEL);
--
--	if (!new)
--		return NULL;
--
--	if (!(new->name = kstrdup(name, GFP_KERNEL)))
--		goto cleanup;
--	if (!(new->value = kmalloc(length + 1, GFP_KERNEL)))
--		goto cleanup;
--
--	memcpy(new->value, value, length);
--	*(((char *)new->value) + length) = 0;
--	new->length = length;
--	new->next = last;
--	return new;
--
--cleanup:
--	kfree(new->name);
--	kfree(new->value);
--	kfree(new);
--	return NULL;
--}
--
- static int do_add_node(char *buf, size_t bufsize)
+@@ -383,7 +384,7 @@ static int papr_scm_probe(struct platform_device *pdev)
  {
- 	char *path, *end, *name;
+ 	struct device_node *dn = pdev->dev.of_node;
+ 	u32 drc_index, metadata_size;
+-	u64 blocks, block_size;
++	u64 blocks, block_size, bound_addr = 0;
+ 	struct papr_scm_priv *p;
+ 	const char *uuid_str;
+ 	u64 uuid[2];
+@@ -440,17 +441,29 @@ static int papr_scm_probe(struct platform_device *pdev)
+ 	p->metadata_size = metadata_size;
+ 	p->pdev = pdev;
+ 
+-	/* request the hypervisor to bind this region to somewhere in memory */
+-	rc = drc_pmem_bind(p);
++	of_property_read_u64(dn, "bound-addr", &bound_addr);
++	if (bound_addr) {
++		p->bound_addr = bound_addr;
++	} else {
++		struct property *property;
++		u64 big;
+ 
+-	/* If phyp says drc memory still bound then force unbound and retry */
+-	if (rc == H_OVERLAP)
+-		rc = drc_pmem_query_n_bind(p);
++		/* request the hypervisor to bind this region to somewhere in memory */
++		rc = drc_pmem_bind(p);
+ 
+-	if (rc != H_SUCCESS) {
+-		dev_err(&p->pdev->dev, "bind err: %d\n", rc);
+-		rc = -ENXIO;
+-		goto err;
++		/* If phyp says drc memory still bound then force unbound and retry */
++		if (rc == H_OVERLAP)
++			rc = drc_pmem_query_n_bind(p);
++
++		if (rc != H_SUCCESS) {
++			dev_err(&p->pdev->dev, "bind err: %d\n", rc);
++			rc = -ENXIO;
++			goto err;
++		}
++		big = cpu_to_be64(p->bound_addr);
++		property = new_property("bound-addr", sizeof(u64), (const unsigned char *)&big,
++			NULL);
++		of_add_property(dn, property);
+ 	}
+ 
+ 	/* setup the resource for the newly bound range */
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ae03b12..602d2a9 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1817,6 +1817,7 @@ int of_add_property(struct device_node *np, struct property *prop)
+ 
+ 	return rc;
+ }
++EXPORT_SYMBOL_GPL(of_add_property);
+ 
+ int __of_remove_property(struct device_node *np, struct property *prop)
+ {
 -- 
 2.7.5
 
