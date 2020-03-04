@@ -2,74 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9971793AA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 16:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FA11793BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 16:39:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XdLB3ZXHzDqW9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 02:37:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XdNj5GrYzDqWy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 02:39:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=hansenpartnership.com (client-ip=66.63.167.143;
- helo=bedivere.hansenpartnership.com;
- envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=HansenPartnership.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com
- header.a=rsa-sha256 header.s=20151216 header.b=FQKMY/tg; 
- dkim=pass (1024-bit key) header.d=hansenpartnership.com
- header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216
- header.b=FQKMY/tg; dkim-atps=neutral
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com
- [66.63.167.143])
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XdHw5gnvzDqSN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 02:35:39 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
- by bedivere.hansenpartnership.com (Postfix) with ESMTP id BB8D68EE11D;
- Wed,  4 Mar 2020 07:35:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
- s=20151216; t=1583336135;
- bh=yvUo8IjzRxclOUjv2L0BqatO0ZoZ57dg6J4dJmfyKiE=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=FQKMY/tgJYu79uu/Ab1FOmQPT/juFlN89GT+e2FMpLZ8cqHx1ddwMw2iKV4d/5zZy
- 0TqIUW+PmiFiMBkPi8i1o+M9tTlJoTA2jWGZZl877fmTR0miZrpGDWaEbOVlk1rBdv
- Dy2XC5ARK0cSRzxALmpMKLJon41wBtUk0gNzmOI0=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new,
- port 10024)
- with ESMTP id f31uS89INl0f; Wed,  4 Mar 2020 07:35:35 -0800 (PST)
-Received: from jarvis.ext.hansenpartnership.com
- (jarvis.ext.hansenpartnership.com [153.66.160.226])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C59938EE0FC;
- Wed,  4 Mar 2020 07:35:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
- s=20151216; t=1583336135;
- bh=yvUo8IjzRxclOUjv2L0BqatO0ZoZ57dg6J4dJmfyKiE=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=FQKMY/tgJYu79uu/Ab1FOmQPT/juFlN89GT+e2FMpLZ8cqHx1ddwMw2iKV4d/5zZy
- 0TqIUW+PmiFiMBkPi8i1o+M9tTlJoTA2jWGZZl877fmTR0miZrpGDWaEbOVlk1rBdv
- Dy2XC5ARK0cSRzxALmpMKLJon41wBtUk0gNzmOI0=
-Message-ID: <1583336133.3284.1.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2] ima: add a new CONFIG for loading arch-specific
- policies
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Mimi Zohar <zohar@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, 
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
-Date: Wed, 04 Mar 2020 07:35:33 -0800
-In-Reply-To: <1583325309.6264.23.camel@linux.ibm.com>
-References: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
- <1583307813.3907.4.camel@HansenPartnership.com>
- <1583325309.6264.23.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XdLH2zl6zDqYS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 02:37:43 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 024FaFeJ100482
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 10:37:41 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmg2n78a-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 10:37:39 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Wed, 4 Mar 2020 15:37:37 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Mar 2020 15:37:34 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 024FbWbl49610874
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Mar 2020 15:37:32 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2BBA14C04A;
+ Wed,  4 Mar 2020 15:37:32 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DDBB04C050;
+ Wed,  4 Mar 2020 15:37:29 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.80.197.107])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed,  4 Mar 2020 15:37:29 +0000 (GMT)
+Date: Wed, 4 Mar 2020 07:37:27 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: Greg Kurz <groug@kaod.org>
+References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
+ <20200302233240.GB35885@umbus.fritz.box>
+ <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
+ <20200303170205.GA5416@oc0525413822.ibm.com>
+ <20200303184520.632be270@bahia.home>
+ <20200303185645.GB5416@oc0525413822.ibm.com>
+ <20200304115948.7b2dfe10@bahia.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200304115948.7b2dfe10@bahia.home>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 20030415-0016-0000-0000-000002ED290B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030415-0017-0000-0000-000033507844
+Message-Id: <20200304153727.GH5416@oc0525413822.ibm.com>
+Subject: RE: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-04_05:2020-03-04,
+ 2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,49 +95,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Philipp Rudo <prudo@linux.ibm.com>, Ard Biesheuvel <ardb@kernel.org>,
- linux-kernel@vger.kernel.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: aik@ozlabs.ru, andmike@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-03-04 at 07:35 -0500, Mimi Zohar wrote:
-> On Tue, 2020-03-03 at 23:43 -0800, James Bottomley wrote:
-> > On Tue, 2020-03-03 at 21:33 -0500, Nayna Jain wrote:
-> > > diff --git a/security/integrity/ima/Kconfig
-> > > b/security/integrity/ima/Kconfig
-> > > index 3f3ee4e2eb0d..d17972aa413a 100644
-> > > --- a/security/integrity/ima/Kconfig
-> > > +++ b/security/integrity/ima/Kconfig
-> > > @@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
-> > >  	depends on IMA_MEASURE_ASYMMETRIC_KEYS
-> > >  	depends on SYSTEM_TRUSTED_KEYRING
-> > >  	default y
-> > > +
-> > > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > > +	bool
-> > > +	depends on IMA
-> > > +	depends on IMA_ARCH_POLICY
-> > > +	default n
-> > 
-> > You can't do this: a symbol designed to be selected can't depend on
-> > other symbols because Kconfig doesn't see the dependencies during
-> > select.  We even have a doc for this now:
-> > 
-> > Documentation/kbuild/Kconfig.select-break
+On Wed, Mar 04, 2020 at 11:59:48AM +0100, Greg Kurz wrote:
+> On Tue, 3 Mar 2020 10:56:45 -0800
+> Ram Pai <linuxram@us.ibm.com> wrote:
 > 
-> The document is discussing a circular dependency, where C selects B.
->  IMA_SECURE_AND_OR_TRUSTED_BOOT is not selecting anything, but is
-> being selected.  All of the Kconfig's are now dependent on
-> IMA_ARCH_POLICY being enabled before selecting
-> IMA_SECURE_AND_OR_TRUSTED_BOOT.
+> > On Tue, Mar 03, 2020 at 06:45:20PM +0100, Greg Kurz wrote:
+....snip.
+> > > 
+> > > This patch would allow at least to answer Cedric's question about
+> > > kernel_irqchip=off, since this looks like the only thing needed
+> > > to make it work.
+> > 
+> > hmm.. I am not sure. Are you saying
+> > (a) patch the guest kernel to share the event queue page
+> > (b) run the qemu with "kernel_irqchip=off"
+> > (c) and the guest kernel with "svm=on"
+> > 
+> > and it should all work?
+> > 
 > 
-> As Ard pointed out, both IMA and IMA_ARCH_POLICY are not needed, as
-> IMA_ARCH_POLICY is already dependent on IMA.
+> Yes.
 
-Then removing them is fine, if they're not necessary ... you just can't
- select a symbol with dependencies because the two Kconfig mechanisms
-don't mix.
+Ok. 
 
-James
+(1) applied the patch which shares the EQ-page with the hypervisor.
+(2) set "kernel_irqchip=off"
+(3) set "ic-mode=xive"
+(4) set "svm=on" on the kernel command line.
+(5) no changes to the hypervisor and ultravisor.
+
+And Boom it works!.   So you were right.
+
+
+I am sending out the patch for (1) above ASAP.
+
+Thanks,
+RP
 
