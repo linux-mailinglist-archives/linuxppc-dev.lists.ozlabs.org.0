@@ -2,67 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523EB17872F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 01:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D7E1787B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 02:41:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XFdZ11vlzDqW5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 11:49:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XGnZ0JvjzDqW5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 12:41:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=afzal.mohd.ma@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qxWoJ3qi; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=lfmxv2Lc; dkim-atps=neutral
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XFbf4C1wzDqQs
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 11:47:56 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id p7so205982pli.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2020 16:47:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=FSpmSt4o41NJS1G8psQcEgs7afs+Iy6AdJ2Os7mzKNs=;
- b=qxWoJ3qi1PX737B47a21RzUIKpJ744UTkaWbP4gQZxoacL8PR2VEFlZqHx6f0swIAV
- wgaJ54HDbR7GuyC324375KLhsP5u9jo5TpU9JCWYK1bCY0WQZ0BgU7nynQiYk4UMRuWR
- VVkhXibzijdwpIuWmYkOcq89RIVCRp6Dh61Q79YFwtS4VUeB5vnnpVve7HuM2FyDJp9e
- m6pWtouxVutUpY3YkKiwc6ZIHlmozM4Bf79SGCNW79msxGH4jxHuFhe1lG5E/FN9JsY3
- ci9mOr3R8tMQ/vxoQ3qL1yHJyslTqIVQQalvYPkas0wD9Ivz5xjDsvD/LBcNnSIrrrrX
- chtg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XGlR1j25zDqK1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 12:39:46 +1100 (AEDT)
+Received: by mail-qk1-x741.google.com with SMTP id e16so91545qkl.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2020 17:39:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=VaNbOLyzmQNnvtlkcyDsArVlyCa7d+ljBldNpwYQ4ho=;
+ b=lfmxv2LcqLbBm4XJ6xDonFCZq3QMrZUIVP65HeyOyxQq5A7HRGnUCJ9pKfJvQr/Jc3
+ XR/h7DWyTDNQGo6WFJCrbopTdj1GP0U/AXcOsn2hLSgTMx+xp98XjFGdY/QZRRR97pEC
+ WpZf5JWZqWHCQdeXv34ztOKAd4+eja57iLQ74MOdsuOcmgbHtD0msJnh8QSlyu8cCBPu
+ qv0iSh0nNRjub9z4TTu26qmJVNwt5VK614hukVu3dFodFmkD0WK+OqYrmxeU0ZjSlxL+
+ fw0tC567UtZ4kWMb+2HUfhZnc367rg6s9jdP1MvozAu4PzNqPtWX5XVD8Sauehd5M8eP
+ 5HEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=FSpmSt4o41NJS1G8psQcEgs7afs+Iy6AdJ2Os7mzKNs=;
- b=pjeGHmvgXKrnU/ON15BtM5gF02yqnIuTxCZCnV7iQYZTWaHq52nS7BmCXoC0QAs+g0
- KPzORsFhcFo+hWk5uJbwXP604+/zoFd1vhNghAmaZCpyZ09DcqFGc04w0RU9gYvGnnuF
- Y27ap2fHAEIZJVj9fYzbhwrecWcC3GU3GYTYGi2NvgxsAvl1zBfvpdtcvBTTO7Hj3pBZ
- Ej4+oLDXEOzEdgSLvddxTsMa43/ytYfidWIv1iGQmESPtF2nWqMuXz9jkWzrE8KjdX+0
- 0KaNKwoGwu78Lqiljf3l3/B3Ml1/zhx4F5TKlYFZpC5mU73gntGD3wezuzM0n23G6VAH
- YqdA==
-X-Gm-Message-State: ANhLgQ37I43Qf6SGsvMQ4EAidDp7PFhPwR2azJEyXgpze3SNy/uI5eaA
- npNPFvQuXsWMT3VWqIVFSjvtE8UD
-X-Google-Smtp-Source: ADFU+vtZMGSOMoQrnKgA1ePmEqc7Q15cHe+zNhsGQkHyACV10Y4v0P7VvpaWXIsu2YrWGqzQOSyGnw==
-X-Received: by 2002:a17:902:bf08:: with SMTP id
- bi8mr531595plb.305.1583282872439; 
- Tue, 03 Mar 2020 16:47:52 -0800 (PST)
-Received: from localhost.localdomain ([106.51.232.35])
- by smtp.gmail.com with ESMTPSA id w2sm17756292pfb.138.2020.03.03.16.47.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Mar 2020 16:47:51 -0800 (PST)
-From: afzal mohammed <afzal.mohd.ma@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] powerpc: Replace setup_irq() by request_irq()
-Date: Wed,  4 Mar 2020 06:17:45 +0530
-Message-Id: <20200304004746.4557-1-afzal.mohd.ma@gmail.com>
-X-Mailer: git-send-email 2.18.0
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=VaNbOLyzmQNnvtlkcyDsArVlyCa7d+ljBldNpwYQ4ho=;
+ b=FSzemq9q4grMnr2bcotLvkePlAdBmfwwdtM3BQZJj+N7XrAFOUKfIeHvSEI1hzVUgV
+ YmMVAaEl6UvDDDnw1C2fas1lEKGzqvEW14GBstBbYNaeu6tSb5NiZ4gVotXU6/MTFRAL
+ JsxGlJqTsePp/IjBdhF2kbxkQ4kwZDmVucf83Kim4auj91t2y5KYb2j+cXYnngO9lvNr
+ 5ZwcajIci77pbHEAclr4TfRxFr3T0okgyC90NiTsDW91ykamEPJ6rSOovu5bXqQs6ziG
+ kD/Np+xAvyrF0NGx5MKDUd7dfGfLTW3dFYWEvLTMO4q0CzUHAvCkwpRr6doBIidsf/dC
+ 3vOQ==
+X-Gm-Message-State: ANhLgQ20RwDbK70zuyaExwEbndW0DrkUxTqdaA81CIaatUBVkzfiHuGh
+ iZ4xbO9JSdWtLU4WbqzfRN7sHQ==
+X-Google-Smtp-Source: ADFU+vt5v/whjVO7wXGbNMXm3Bz4Z/MSLla2que4as5Zf29YNXyjAw7GVBlUuRczlXwt7hyWvndyfw==
+X-Received: by 2002:a37:e317:: with SMTP id y23mr774828qki.431.1583285983342; 
+ Tue, 03 Mar 2020 17:39:43 -0800 (PST)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id x19sm13105844qtm.47.2020.03.03.17.39.40
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 03 Mar 2020 17:39:42 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
+Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
+ table helpers
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <e8516497-f1b9-b222-e219-73b68880ac75@arm.com>
+Date: Tue, 3 Mar 2020 20:39:39 -0500
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <12260F9A-695D-40F8-932F-61D86D77D441@lca.pw>
+References: <1581909460-19148-1-git-send-email-anshuman.khandual@arm.com>
+ <1582726182.7365.123.camel@lca.pw>
+ <7c707b7f-ce3d-993b-8042-44fdc1ed28bf@c-s.fr>
+ <1582732318.7365.129.camel@lca.pw> <1583178042.7365.146.camel@lca.pw>
+ <e8516497-f1b9-b222-e219-73b68880ac75@arm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+X-Mailer: Apple Mail (2.3608.60.0.2.5)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,258 +86,270 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
- afzal mohammed <afzal.mohd.ma@gmail.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ the arch/x86 maintainers <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-request_irq() is preferred over setup_irq(). Invocations of setup_irq()
-occur after memory allocators are ready.
 
-Per tglx[1], setup_irq() existed in olden days when allocators were not
-ready by the time early interrupts were initialized.
+> Below is slightly modified version of your change above and should =
+still
+> prevent the bug on powerpc. Will it be possible for you to re-test =
+this
+> ? Once confirmed, will send a patch enabling this test on powerpc64
+> keeping your authorship. Thank you.
 
-Hence replace setup_irq() by request_irq().
+This works fine on radix MMU but I decided to go a bit future to test =
+hash
+MMU. The kernel will stuck here below. I did confirm that =
+pte_alloc_map_lock()
+was successful, so I don=E2=80=99t understand hash MMU well enough to =
+tell why
+it could still take an interrupt at pte_clear_tests() even before we =
+calls
+pte_unmap_unlock()?
 
-[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+[   33.881515][    T1] ok 8 - property-entry
+[   33.883653][    T1] debug_vm_pgtable: debug_vm_pgtable: Validating
+architecture page table helpers
+[   60.418885][    C8] watchdog: BUG: soft lockup - CPU#8 stuck for 23s!
+[swapper/0:1]
+[   60.418913][    C8] Modules linked in:
+[   60.418927][    C8] irq event stamp: 2896762
+[   60.418945][    C8] hardirqs last  enabled at (2896761): =
+[<c00000000000dec8>]
+fast_exc_return_irq+0x28/0x34
+[   60.418960][    C8] hardirqs last disabled at (2896762): =
+[<c00000000000924c>]
+decrementer_common+0x10c/0x130
+[   60.418985][    C8] softirqs last  enabled at (2896760): =
+[<c0000000009a1bf0>]
+__do_softirq+0x640/0x8c8
+[   60.419009][    C8] softirqs last disabled at (2896753): =
+[<c000000000113cbc>]
+irq_exit+0x16c/0x1d0
+[   60.419024][    C8] CPU: 8 PID: 1 Comm: swapper/0 Not tainted =
+5.6.0-rc4-next-
+20200303+ #7
+[   60.419055][    C8] NIP:  c00000000103dc14 LR: c00000000103db0c CTR:
+0000000000000000
+[   60.419076][    C8] REGS: c00000003dd4fa30 TRAP: 0901   Not tainted  =
+(5.6.0-
+rc4-next-20200303+)
+[   60.419107][    C8] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  =
+CR:
+42000222  XER: 00000000
+[   60.419134][    C8] CFAR: c00000000103dc1c IRQMASK: 0=20
+[   60.419134][    C8] GPR00: c00000000103db0c c00000003dd4fcc0 =
+c000000001657d00
+05210001000000c0=20
+[   60.419134][    C8] GPR04: 8000000000000105 000000000000000a =
+00000000f4d9864c
+0000000000000001=20
+[   60.419134][    C8] GPR08: 0000000000000000 ffffffffffffffff =
+0000000000000001
+00000000000a0000=20
+[   60.419134][    C8] GPR12: 0000000000000000 c000001fffff9880=20
+[   60.419220][    C8] NIP [c00000000103dc14] =
+debug_vm_pgtable+0x7a8/0xbb4
+hash__pte_update at arch/powerpc/include/asm/book3s/64/hash.h:159
+(inlined by) pte_update at =
+arch/powerpc/include/asm/book3s/64/pgtable.h:359
+(inlined by) pte_clear at =
+arch/powerpc/include/asm/book3s/64/pgtable.h:477
+(inlined by) pte_clear_tests at mm/debug_vm_pgtable.c:259
+(inlined by) debug_vm_pgtable at mm/debug_vm_pgtable.c:368
+[   60.419241][    C8] LR [c00000000103db0c] =
+debug_vm_pgtable+0x6a0/0xbb4
+pmd_basic_tests at mm/debug_vm_pgtable.c:74
+(inlined by) debug_vm_pgtable at mm/debug_vm_pgtable.c:363
+[   60.419260][    C8] Call Trace:
+[   60.419278][    C8] [c00000003dd4fcc0] [c00000000103d994]
+debug_vm_pgtable+0x528/0xbb4 (unreliable)
+[   60.419302][    C8] [c00000003dd4fdb0] [c000000000010eac]
+kernel_init+0x30/0x194
+[   60.419325][    C8] [c00000003dd4fe20] [c00000000000b748]
+ret_from_kernel_thread+0x5c/0x74
+[   60.419363][    C8] Instruction dump:
+[   60.419382][    C8] 7d075078 7ce74b78 7ce0f9ad 40c2fff0 7e449378 =
+7fc3f378
+4b03531d 60000000=20
+[   60.419416][    C8] 48000080 3920ffff 39400001 39000000 <7e00f8a8> =
+7e075039
+40c2fff8 7e074878=20
+[   98.908889][    C8] rcu: INFO: rcu_sched self-detected stall on CPU
+[   98.908933][    C8] rcu:         8-....: (6500 ticks this GP)
+idle=3D522/1/0x4000000000000002 softirq=3D132/132 fqs=3D3250=20
+[   98.908963][    C8]         (t=3D6501 jiffies g=3D-719 q=3D510)
+[   98.908984][    C8] NMI backtrace for cpu 8
+[   98.909012][    C8] CPU: 8 PID: 1 Comm: swapper/0 Tainted:
+G             L    5.6.0-rc4-next-20200303+ #7
+[   98.909025][    C8] Call Trace:
+[   98.909046][    C8] [c00000003dd4f360] [c000000000970fe0]
+dump_stack+0xf4/0x164 (unreliable)
+[   98.909070][    C8] [c00000003dd4f3b0] [c00000000097dcf4]
+nmi_cpu_backtrace+0x1b4/0x1e0
+[   98.909084][    C8] [c00000003dd4f450] [c00000000097df48]
+nmi_trigger_cpumask_backtrace+0x228/0x2c0
+[   98.909118][    C8] [c00000003dd4f500] [c000000000057bf8]
+arch_trigger_cpumask_backtrace+0x28/0x40
+[   98.909152][    C8] [c00000003dd4f520] [c000000000202dd4]
+rcu_dump_cpu_stacks+0x1c4/0x234
+[   98.909184][    C8] [c00000003dd4f5a0] [c000000000201634]
+rcu_sched_clock_irq+0xd54/0x1130
+[   98.909207][    C8] [c00000003dd4f6c0] [c000000000217068]
+update_process_times+0x48/0xb0
+[   98.909239][    C8] [c00000003dd4f6f0] [c0000000002358b4]
+tick_sched_handle+0x34/0xb0
+[   98.909262][    C8] [c00000003dd4f720] [c0000000002361d8]
+tick_sched_timer+0x68/0xe0
+[   98.909284][    C8] [c00000003dd4f760] [c000000000219768]
+__hrtimer_run_queues+0x528/0xa60
+[   98.909306][    C8] [c00000003dd4f880] [c00000000021ab58]
+hrtimer_interrupt+0x128/0x330
+[   98.909329][    C8] [c00000003dd4f930] [c00000000002e1b4]
+timer_interrupt+0x264/0x680
+[   98.909352][    C8] [c00000003dd4f9c0] [c000000000009264]
+decrementer_common+0x124/0x130
+[   98.909366][    C8] --- interrupt: 901 at =
+debug_vm_pgtable+0x7a8/0xbb4
+[   98.909366][    C8]     LR =3D debug_vm_pgtable+0x6a0/0xbb4
+[   98.909402][    C8] [c00000003dd4fcc0] [c00000000103d994]
+debug_vm_pgtable+0x528/0xbb4 (unreliable)
+[   98.909435][    C8] [c00000003dd4fdb0] [c000000000010eac]
+kernel_init+0x30/0x194
+[   98.909467][    C8] [c00000003dd4fe20] [c00000000000b748]
+ret_from_kernel_thread+0x5c/0x74
+[  124.418885][    C8] watchdog: BUG: soft lockup - CPU#8 stuck for 22s!
+[swapper/0:1]
+[  124.418914][    C8] Modules linked in:
+[  124.418926][    C8] irq event stamp: 2937938
+[  124.418940][    C8] hardirqs last  enabled at (2937937): =
+[<c00000000000dec8>]
+fast_exc_return_irq+0x28/0x34
+[  124.418964][    C8] hardirqs last disabled at (2937938): =
+[<c00000000000924c>]
+decrementer_common+0x10c/0x130
+[  124.418980][    C8] softirqs last  enabled at (2937936): =
+[<c0000000009a1bf0>]
+__do_softirq+0x640/0x8c8
+[  124.419013][    C8] softirqs last disabled at (2937929): =
+[<c000000000113cbc>]
+irq_exit+0x16c/0x1d0
+[  124.419036][    C8] CPU: 8 PID: 1 Comm: swapper/0 Tainted:
+G             L    5.6.0-rc4-next-20200303+ #7
+[  124.419059][    C8] NIP:  c00000000103dc14 LR: c00000000103db0c CTR:
+0000000000000000
+[  124.419080][    C8] REGS: c00000003dd4fa30 TRAP: 0901   Tainted:
+G             L     (5.6.0-rc4-next-20200303+)
+[  124.419103][    C8] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  =
+CR:
+42000222  XER: 00000000
+[  124.419121][    C8] CFAR: c00000000103dc1c IRQMASK: 0=20
+[  124.419121][    C8] GPR00: c00000000103db0c c00000003dd4fcc0 =
+c000000001657d00
+05210001000000c0=20
+[  124.419121][    C8] GPR04: 8000000000000105 000000000000000a =
+00000000f4d9864c
+0000000000000001=20
+[  124.419121][    C8] GPR08: 0000000000000000 ffffffffffffffff =
+0000000000000001
+00000000000a0000=20
+[  124.419121][    C8] GPR12: 0000000000000000 c000001fffff9880=20
+[  124.419234][    C8] NIP [c00000000103dc14] =
+debug_vm_pgtable+0x7a8/0xbb4
+[  124.419254][    C8] LR [c00000000103db0c] =
+debug_vm_pgtable+0x6a0/0xbb4
+[  124.419274][    C8] Call Trace:
+[  124.419291][    C8] [c00000003dd4fcc0] [c00000000103d994]
+debug_vm_pgtable+0x528/0xbb4 (unreliable)
+[  124.419324][    C8] [c00000003dd4fdb0] [c000000000010eac]
+kernel_init+0x30/0x194
+[  124.419347][    C8] [c00000003dd4fe20] [c00000000000b748]
+ret_from_kernel_thread+0x5c/0x74
+[  124.419359][    C8] Instruction dump:
+[  124.419378][    C8] 7d075078 7ce74b78 7ce0f9ad 40c2fff0 7e449378 =
+7fc3f378
+4b03531d 60000000=20
+[  124.419412][    C8] 48000080 3920ffff 39400001 39000000 <7e00f8a8> =
+7e075039
+40c2fff8 7e074878
 
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
----
-Hi powerpc maintainers,
-
-if okay w/ this change, please consider taking it thr' your tree, else please
-let me know.
-
-Regards
-afzal
-
-Link to v2 & v1,
-[v2] https://lkml.kernel.org/r/cover.1582471508.git.afzal.mohd.ma@gmail.com
-[v1] https://lkml.kernel.org/r/cover.1581478323.git.afzal.mohd.ma@gmail.com
-
-v3:
- * Split out from tree wide series, as Thomas suggested to get it thr'
-	respective maintainers
- * Modify pr_err displayed in case of error
- * Re-arrange code & choose pr_err args as required to improve readability
- * Remove irrelevant parts from commit message & improve
- 
-v2:
- * Replace pr_err("request_irq() on %s failed" by
-           pr_err("%s: request_irq() failed"
- * Commit message massage
-
- arch/powerpc/platforms/85xx/mpc85xx_cds.c | 10 +++-----
- arch/powerpc/platforms/8xx/cpm1.c         |  9 ++-----
- arch/powerpc/platforms/8xx/m8xx_setup.c   |  9 ++-----
- arch/powerpc/platforms/chrp/setup.c       | 14 ++++-------
- arch/powerpc/platforms/powermac/pic.c     | 29 +++++++++--------------
- arch/powerpc/platforms/powermac/smp.c     | 12 ++++------
- 6 files changed, 28 insertions(+), 55 deletions(-)
-
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx_cds.c b/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-index 6b1436abe9b1..1c5598877d70 100644
---- a/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-+++ b/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-@@ -218,12 +218,6 @@ static irqreturn_t mpc85xx_8259_cascade_action(int irq, void *dev_id)
- {
- 	return IRQ_HANDLED;
- }
--
--static struct irqaction mpc85xxcds_8259_irqaction = {
--	.handler = mpc85xx_8259_cascade_action,
--	.flags = IRQF_SHARED | IRQF_NO_THREAD,
--	.name = "8259 cascade",
--};
- #endif /* PPC_I8259 */
- #endif /* CONFIG_PCI */
- 
-@@ -271,7 +265,9 @@ static int mpc85xx_cds_8259_attach(void)
- 	 *  disabled when the last user of the shared IRQ line frees their
- 	 *  interrupt.
- 	 */
--	if ((ret = setup_irq(cascade_irq, &mpc85xxcds_8259_irqaction))) {
-+	ret = request_irq(cascade_irq, mpc85xx_8259_cascade_action,
-+			  IRQF_SHARED | IRQF_NO_THREAD, "8259 cascade", NULL);
-+	if (ret) {
- 		printk(KERN_ERR "Failed to setup cascade interrupt\n");
- 		return ret;
- 	}
-diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
-index a43ee7d1ff85..4db4ca2e1222 100644
---- a/arch/powerpc/platforms/8xx/cpm1.c
-+++ b/arch/powerpc/platforms/8xx/cpm1.c
-@@ -120,12 +120,6 @@ static irqreturn_t cpm_error_interrupt(int irq, void *dev)
- 	return IRQ_HANDLED;
- }
- 
--static struct irqaction cpm_error_irqaction = {
--	.handler = cpm_error_interrupt,
--	.flags = IRQF_NO_THREAD,
--	.name = "error",
--};
--
- static const struct irq_domain_ops cpm_pic_host_ops = {
- 	.map = cpm_pic_host_map,
- };
-@@ -187,7 +181,8 @@ unsigned int __init cpm_pic_init(void)
- 	if (!eirq)
- 		goto end;
- 
--	if (setup_irq(eirq, &cpm_error_irqaction))
-+	if (request_irq(eirq, cpm_error_interrupt, IRQF_NO_THREAD, "error",
-+			NULL))
- 		printk(KERN_ERR "Could not allocate CPM error IRQ!");
- 
- 	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
-diff --git a/arch/powerpc/platforms/8xx/m8xx_setup.c b/arch/powerpc/platforms/8xx/m8xx_setup.c
-index f1c805c8adbc..df4d57d07f9a 100644
---- a/arch/powerpc/platforms/8xx/m8xx_setup.c
-+++ b/arch/powerpc/platforms/8xx/m8xx_setup.c
-@@ -39,12 +39,6 @@ static irqreturn_t timebase_interrupt(int irq, void *dev)
- 	return IRQ_HANDLED;
- }
- 
--static struct irqaction tbint_irqaction = {
--	.handler = timebase_interrupt,
--	.flags = IRQF_NO_THREAD,
--	.name = "tbint",
--};
--
- /* per-board overridable init_internal_rtc() function. */
- void __init __attribute__ ((weak))
- init_internal_rtc(void)
-@@ -157,7 +151,8 @@ void __init mpc8xx_calibrate_decr(void)
- 					(TBSCR_TBF | TBSCR_TBE));
- 	immr_unmap(sys_tmr2);
- 
--	if (setup_irq(virq, &tbint_irqaction))
-+	if (request_irq(virq, timebase_interrupt, IRQF_NO_THREAD, "tbint",
-+			NULL))
- 		panic("Could not allocate timer IRQ!");
- }
- 
-diff --git a/arch/powerpc/platforms/chrp/setup.c b/arch/powerpc/platforms/chrp/setup.c
-index fcf6f2342ef4..8328cd5817b0 100644
---- a/arch/powerpc/platforms/chrp/setup.c
-+++ b/arch/powerpc/platforms/chrp/setup.c
-@@ -451,13 +451,6 @@ static void __init chrp_find_openpic(void)
- 	of_node_put(np);
- }
- 
--#if defined(CONFIG_VT) && defined(CONFIG_INPUT_ADBHID) && defined(CONFIG_XMON)
--static struct irqaction xmon_irqaction = {
--	.handler = xmon_irq,
--	.name = "XMON break",
--};
--#endif
--
- static void __init chrp_find_8259(void)
- {
- 	struct device_node *np, *pic = NULL;
-@@ -541,8 +534,11 @@ static void __init chrp_init_IRQ(void)
- 		if (of_node_is_type(kbd->parent, "adb"))
- 			break;
- 	of_node_put(kbd);
--	if (kbd)
--		setup_irq(HYDRA_INT_ADB_NMI, &xmon_irqaction);
-+	if (kbd) {
-+		if (request_irq(HYDRA_INT_ADB_NMI, xmon_irq, 0, "XMON break",
-+				NULL))
-+			pr_err("Failed to register XMON break interrupt\n");
-+	}
- #endif
- }
- 
-diff --git a/arch/powerpc/platforms/powermac/pic.c b/arch/powerpc/platforms/powermac/pic.c
-index 2e969073473d..4921bccf0376 100644
---- a/arch/powerpc/platforms/powermac/pic.c
-+++ b/arch/powerpc/platforms/powermac/pic.c
-@@ -250,20 +250,6 @@ static unsigned int pmac_pic_get_irq(void)
- 	return irq_linear_revmap(pmac_pic_host, irq);
- }
- 
--#ifdef CONFIG_XMON
--static struct irqaction xmon_action = {
--	.handler	= xmon_irq,
--	.flags		= IRQF_NO_THREAD,
--	.name		= "NMI - XMON"
--};
--#endif
--
--static struct irqaction gatwick_cascade_action = {
--	.handler	= gatwick_action,
--	.flags		= IRQF_NO_THREAD,
--	.name		= "cascade",
--};
--
- static int pmac_pic_host_match(struct irq_domain *h, struct device_node *node,
- 			       enum irq_domain_bus_token bus_token)
- {
-@@ -384,12 +370,17 @@ static void __init pmac_pic_probe_oldstyle(void)
- 		out_le32(&pmac_irq_hw[i]->enable, 0);
- 
- 	/* Hookup cascade irq */
--	if (slave && pmac_irq_cascade)
--		setup_irq(pmac_irq_cascade, &gatwick_cascade_action);
-+	if (slave && pmac_irq_cascade) {
-+		if (request_irq(pmac_irq_cascade, gatwick_action,
-+				IRQF_NO_THREAD, "cascade", NULL))
-+			pr_err("Failed to register cascade interrupt\n");
-+	}
- 
- 	printk(KERN_INFO "irq: System has %d possible interrupts\n", max_irqs);
- #ifdef CONFIG_XMON
--	setup_irq(irq_create_mapping(NULL, 20), &xmon_action);
-+	i = irq_create_mapping(NULL, 20);
-+	if (request_irq(i, xmon_irq, IRQF_NO_THREAD, "NMI - XMON", NULL))
-+		pr_err("Failed to register NMI-XMON interrupt\n");
- #endif
- }
- 
-@@ -441,7 +432,9 @@ static void __init pmac_pic_setup_mpic_nmi(struct mpic *mpic)
- 		nmi_irq = irq_of_parse_and_map(pswitch, 0);
- 		if (nmi_irq) {
- 			mpic_irq_set_priority(nmi_irq, 9);
--			setup_irq(nmi_irq, &xmon_action);
-+			if (request_irq(nmi_irq, xmon_irq, IRQF_NO_THREAD,
-+					"NMI - XMON", NULL))
-+				pr_err("Failed to register NMI-XMON interrupt\n");
- 		}
- 		of_node_put(pswitch);
- 	}
-diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
-index f95fbdee6efe..c55bf474ed4e 100644
---- a/arch/powerpc/platforms/powermac/smp.c
-+++ b/arch/powerpc/platforms/powermac/smp.c
-@@ -399,21 +399,19 @@ static int __init smp_psurge_kick_cpu(int nr)
- 	return 0;
- }
- 
--static struct irqaction psurge_irqaction = {
--	.handler = psurge_ipi_intr,
--	.flags = IRQF_PERCPU | IRQF_NO_THREAD,
--	.name = "primary IPI",
--};
--
- static void __init smp_psurge_setup_cpu(int cpu_nr)
- {
-+	unsigned long flags = IRQF_PERCPU | IRQF_NO_THREAD;
-+	int irq;
-+
- 	if (cpu_nr != 0 || !psurge_start)
- 		return;
- 
- 	/* reset the entry point so if we get another intr we won't
- 	 * try to startup again */
- 	out_be32(psurge_start, 0x100);
--	if (setup_irq(irq_create_mapping(NULL, 30), &psurge_irqaction))
-+	irq = irq_create_mapping(NULL, 30);
-+	if (request_irq(irq, psurge_ipi_intr, flags, "primary IPI", NULL))
- 		printk(KERN_ERR "Couldn't get primary IPI interrupt");
- }
- 
--- 
-2.25.1
+>=20
+> mm/debug_vm_pgtable.c | 12 +++++++-----
+> 1 file changed, 7 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 96dd7d574cef..c310f52c2b80 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -250,13 +250,14 @@ static void __init pgd_populate_tests(struct =
+mm_struct *mm, pgd_t *pgdp,
+> }
+> #endif
+>=20
+> -static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep)
+> +static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
+> +                                  unsigned long vaddr)
+> {
+>        pte_t pte =3D READ_ONCE(*ptep);
+>=20
+>        pte =3D __pte(pte_val(pte) | RANDOM_ORVALUE);
+>        WRITE_ONCE(*ptep, pte);
+> -       pte_clear(mm, 0, ptep);
+> +       pte_clear(mm, vaddr, ptep);
+>        pte =3D READ_ONCE(*ptep);
+>        WARN_ON(!pte_none(pte));
+> }
+> @@ -302,6 +303,7 @@ static unsigned long __init get_random_vaddr(void)
+> void __init debug_vm_pgtable(void)
+> {
+>        struct mm_struct *mm;
+> +       spinlock_t *uninitialized_var(ptl);
+>        pgd_t *pgdp;
+>        p4d_t *p4dp, *saved_p4dp;
+>        pud_t *pudp, *saved_pudp;
+> @@ -344,7 +346,7 @@ void __init debug_vm_pgtable(void)
+>        p4dp =3D p4d_alloc(mm, pgdp, vaddr);
+>        pudp =3D pud_alloc(mm, p4dp, vaddr);
+>        pmdp =3D pmd_alloc(mm, pudp, vaddr);
+> -       ptep =3D pte_alloc_map(mm, pmdp, vaddr);
+> +       ptep =3D pte_alloc_map_lock(mm, pmdp, vaddr, &ptl);
+>=20
+>        /*
+>         * Save all the page table page addresses as the page table
+> @@ -364,13 +366,13 @@ void __init debug_vm_pgtable(void)
+>        p4d_basic_tests(p4d_aligned, prot);
+>        pgd_basic_tests(pgd_aligned, prot);
+>=20
+> -       pte_clear_tests(mm, ptep);
+> +       pte_clear_tests(mm, ptep, vaddr);
+>        pmd_clear_tests(mm, pmdp);
+>        pud_clear_tests(mm, pudp);
+>        p4d_clear_tests(mm, p4dp);
+>        pgd_clear_tests(mm, pgdp);
+>=20
+> -       pte_unmap(ptep);
+> +       pte_unmap_unlock(ptep, ptl);
+>=20
+>        pmd_populate_tests(mm, pmdp, saved_ptep);
+>        pud_populate_tests(mm, pudp, saved_pmdp);
+> --=20
+> 2.20.1
 
