@@ -2,76 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6756178AEB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 07:51:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C9B178AFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 07:55:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XPfZ6pX5zDqY0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 17:51:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XPlQ6LDFzDqWH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 17:55:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=TjnV6xMQ; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XPcP3g69zDqVK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 17:49:07 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48XPcF5vVkz9v0st;
- Wed,  4 Mar 2020 07:49:01 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=TjnV6xMQ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id dW39OVxTZgd8; Wed,  4 Mar 2020 07:49:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48XPcF4ZcKz9v0ss;
- Wed,  4 Mar 2020 07:49:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1583304541; bh=wrQNL9rvesEDlWoNS4tGcfPvGhYnLZNAbgZHq9fGbnE=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=TjnV6xMQKz2IO1bGDE4HAZJMFDjYTtnjTtNNjZEsh1GJH/DNUiegOPbfzQzRdUJdq
- mfbcsqR6vxFcKaMgtar20QBjEJl5cDZGZqEWM5VabMwt/qfmG0b/5ARzKJJU0pQlpP
- HX98Thi1AQonukArlC4ShOrxhDCLgoABIqbXgKFo=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 784788B826;
- Wed,  4 Mar 2020 07:49:02 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id oPUcSMTN_Vcy; Wed,  4 Mar 2020 07:49:02 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A1098B820;
- Wed,  4 Mar 2020 07:49:02 +0100 (CET)
-Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
- table helpers
-To: Qian Cai <cai@lca.pw>, Anshuman Khandual <anshuman.khandual@arm.com>
-References: <1581909460-19148-1-git-send-email-anshuman.khandual@arm.com>
- <1582726182.7365.123.camel@lca.pw>
- <7c707b7f-ce3d-993b-8042-44fdc1ed28bf@c-s.fr>
- <1582732318.7365.129.camel@lca.pw> <1583178042.7365.146.camel@lca.pw>
- <e8516497-f1b9-b222-e219-73b68880ac75@arm.com>
- <12260F9A-695D-40F8-932F-61D86D77D441@lca.pw>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <c022e863-0807-fab1-cd41-3c320381f448@c-s.fr>
-Date: Wed, 4 Mar 2020 07:48:54 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XPjf5CgSzDqJP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 17:53:42 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0246rZtu086676
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 01:53:40 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yhyxqcmrk-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 01:53:40 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Wed, 4 Mar 2020 06:53:19 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Mar 2020 06:53:12 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0246qDVG43975134
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Mar 2020 06:52:13 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C3E04C059;
+ Wed,  4 Mar 2020 06:53:11 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CE9434C04A;
+ Wed,  4 Mar 2020 06:53:10 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 06:53:10 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A6CBDA023A;
+ Wed,  4 Mar 2020 17:53:05 +1100 (AEDT)
+Subject: Re: [PATCH v3 18/27] powerpc/powernv/pmem: Add controller dump IOCTLs
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-19-alastair@au1.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Wed, 4 Mar 2020 17:53:09 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <12260F9A-695D-40F8-932F-61D86D77D441@lca.pw>
+In-Reply-To: <20200221032720.33893-19-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030406-0012-0000-0000-0000038CFCD6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030406-0013-0000-0000-000021C9B5FE
+Message-Id: <7fc5ee46-d849-11f1-d0ad-429a8c87d7eb@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-03_08:2020-03-03,
+ 2020-03-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ malwarescore=0 mlxlogscore=937 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 adultscore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,51 +97,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- the arch/x86 maintainers <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> +static int ioctl_controller_dump_data(struct ocxlpmem *ocxlpmem,
+> +		struct ioctl_ocxl_pmem_controller_dump_data __user *uarg)
+> +{
+> +	struct ioctl_ocxl_pmem_controller_dump_data args;
+> +	u16 i;
+> +	u64 val;
+> +	int rc;
+> +
+> +	if (copy_from_user(&args, uarg, sizeof(args)))
+> +		return -EFAULT;
+> +
+> +	if (args.buf_size % 8)
+> +		return -EINVAL;
+> +
+> +	if (args.buf_size > ocxlpmem->admin_command.data_size)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&ocxlpmem->admin_command.lock);
+> +
+> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_CONTROLLER_DUMP);
+> +	if (rc)
+> +		goto out;
+> +
+> +	val = ((u64)args.offset) << 32;
+> +	val |= args.buf_size;
+> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> +				      ocxlpmem->admin_command.request_offset + 0x08,
+> +				      OCXL_LITTLE_ENDIAN, val);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_execute(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_complete_timeout(ocxlpmem,
+> +					    ADMIN_COMMAND_CONTROLLER_DUMP);
+> +	if (rc < 0) {
+> +		dev_warn(&ocxlpmem->dev, "Controller dump timed out\n");
+> +		goto out;
+> +	}
+> +
+> +	rc = admin_response(ocxlpmem);
+> +	if (rc < 0)
+> +		goto out;
+> +	if (rc != STATUS_SUCCESS) {
+> +		warn_status(ocxlpmem,
+> +			    "Unexpected status from retrieve error log",
+
+Controller dump
+
+> +			    rc);
+> +		goto out;
+> +	}
+> +
+> +	for (i = 0; i < args.buf_size; i += 8) {
+> +		u64 val;
+> +
+> +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> +					     ocxlpmem->admin_command.data_offset + i,
+> +					     OCXL_HOST_ENDIAN, &val);
+
+Is a controller dump something where we want to do endian swapping?
+
+Any reason we're not doing the usual check of the data identifier, 
+additional data length etc?
+
+> +		if (rc)
+> +			goto out;
+> +
+> +		if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
+> +			rc = -EFAULT;
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	if (copy_to_user(uarg, &args, sizeof(args))) {
+> +		rc = -EFAULT;
+> +		goto out;
+> +	}
+> +
+> +	rc = admin_response_handled(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +out:
+> +	mutex_unlock(&ocxlpmem->admin_command.lock);
+> +	return rc;
+> +}
+> +
+> +int request_controller_dump(struct ocxlpmem *ocxlpmem)
+> +{
+> +	int rc;
+> +	u64 busy = 1;
+> +
+> +	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHIC,
+> +				    OCXL_LITTLE_ENDIAN,
+> +				    GLOBAL_MMIO_CHI_CDA);
+
+This return code is ignored
+
+> +
+> +
+> +	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
+> +				    OCXL_LITTLE_ENDIAN,
+> +				    GLOBAL_MMIO_HCI_CONTROLLER_DUMP);
+> +	if (rc)
+> +		return rc;
+> +
+> +	while (busy) {
+> +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> +					     GLOBAL_MMIO_HCI,
+> +					     OCXL_LITTLE_ENDIAN, &busy);
+> +		if (rc)
+> +			return rc;
+> +
+> +		busy &= GLOBAL_MMIO_HCI_CONTROLLER_DUMP;
+> +		cond_resched();
+> +	}
+> +
+> +	return 0;
+> +}
 
 
-Le 04/03/2020 à 02:39, Qian Cai a écrit :
-> 
->> Below is slightly modified version of your change above and should still
->> prevent the bug on powerpc. Will it be possible for you to re-test this
->> ? Once confirmed, will send a patch enabling this test on powerpc64
->> keeping your authorship. Thank you.
-> 
-> This works fine on radix MMU but I decided to go a bit future to test hash
-> MMU. The kernel will stuck here below. I did confirm that pte_alloc_map_lock()
-> was successful, so I don’t understand hash MMU well enough to tell why
-> it could still take an interrupt at pte_clear_tests() even before we calls
-> pte_unmap_unlock()?
-
-AFAIU, you are not taking an interrupt here. You are stuck in the 
-pte_update(), most likely due to nested locks. Try with LOCKDEP ?
-
-Christophe
-
-> 
-> [   33.881515][    T1] ok 8 - property-entry
-> [   33.883653][    T1] debug_vm_pgtable: debug_vm_pgtable: Validating
-> architecture page table helpers
-> [   60.418885][    C8] watchdog: BUG: soft lockup - CPU#8 stuck for 23s!
-> [swapper/0:1]
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
