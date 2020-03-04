@@ -1,75 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27648179094
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 13:46:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6339178F93
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 12:31:27 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XWt46yfrzDqY0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:31:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XYY2072xzDqcl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 23:46:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=qUya1I+I; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=hansenpartnership.com (client-ip=66.63.167.143;
+ helo=bedivere.hansenpartnership.com;
+ envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=HansenPartnership.com
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com
+ [66.63.167.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XWqs12pVzDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 22:29:28 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id e11so1167161qkg.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 03:29:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=Jx+iSwpjH1MMUgtvqiqrwQ2sYugCQ9UmLyXay35eB1Q=;
- b=qUya1I+ID7bIC0Bkj4Q0zp0EdHdSdO6ykJWvMXw4HKDFjWyXV8ds3Bs9MArm+vdQdc
- RpunjqglWR6mGJe2Lv7g9advYS1SvRo9LA3gCW5QqI/AMIgsHiHRUFAsdYeij2rtzyTk
- sNSh4wHESGW+6lSzw7OKW4psbfNeqxjoimBZufpM/BoHmrYBRoQNs3Xc2GtPgWnsfXPf
- igl3aC/5VPWbzpP3KfCNQ0wpC8Mh4VlwHq19u+9gw6f3Ulw8FCMZG8YCqNbscon2aj4Z
- WYfZ5PGzedI3tG7vyVtTX+unDExTi5VMHoWYOeG+xlDzhECpmkCqkM7aufo6LUVMsIwj
- NApA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=Jx+iSwpjH1MMUgtvqiqrwQ2sYugCQ9UmLyXay35eB1Q=;
- b=c0XNH1hQecxTTCs6df4fSvLh1WXKEWntahqjUvtR4/Q6KFG5SYOqrIBCsWn58+FALp
- cxZYJkjWeoI+wbVBQzzga3M9VB9xt/9B5T9oykGrA/CMVxXzqXwVFuallDNPQOzA+W1c
- X4Lgabz8MwzAPRiRDjcaARM7yH/uIjOoe6nPsIiXb5sXdYM4SJVIdWJwyONBXK2zdCDT
- QfSXxPtV36AnaJwRqFT86p7RYz+dQF1dZ+8zbKWqRz6Y29V35rgwcDChxWxkFotRk1/f
- WjmnokPuskIfRAd+y5IemJcI1Ju93YxVh6WUIFadN6zBnjIu+5o2b4EoXe+VMXNv38/P
- 4wrg==
-X-Gm-Message-State: ANhLgQ2Yg6EjuIK+DQQ9Kze2uVd5PVaPeRZAC0tZ+s0QpbcalLEX1v1f
- XtxuuLQj8fxnRhsK0iN1EbMpoQ==
-X-Google-Smtp-Source: ADFU+vsraAELUldtqJkt+JLHLEkp9XWZWryntOEccYsrwg70reKk2W+439zfYVSLClVswo3lxz5LLw==
-X-Received: by 2002:a37:6115:: with SMTP id v21mr2464683qkb.105.1583321365177; 
- Wed, 04 Mar 2020 03:29:25 -0800 (PST)
-Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id u48sm85943qtc.79.2020.03.04.03.29.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Mar 2020 03:29:24 -0800 (PST)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From: Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
- table helpers
-Date: Wed, 4 Mar 2020 06:29:23 -0500
-Message-Id: <11F41980-97CF-411F-8120-41287DC1A382@lca.pw>
-References: <c022e863-0807-fab1-cd41-3c320381f448@c-s.fr>
-In-Reply-To: <c022e863-0807-fab1-cd41-3c320381f448@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-X-Mailer: iPhone Mail (17D50)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XYTj2k5szDqbW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 23:43:51 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+ by bedivere.hansenpartnership.com (Postfix) with ESMTP id B623A8EE11D;
+ Tue,  3 Mar 2020 23:44:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+ s=20151216; t=1583307858;
+ bh=8uR8mzo3ltrlZW4Iy67OY4i5Mkl1pL+LoHi/DArj9yI=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=FXwFo9WtUBe1E+akI7D7r62eQ9xSh2tXEFTpGpR5Bg7OwBS7unm4lNRNING1j3Qgv
+ aTwtlf82y3cSCjx68gpun+Bvzh6C6Dn+tQ3ITcfwd2pDzCWeNKYSd+Mf/5aWMtVZYn
+ k+jzSV4zIshUwLhoXBLbA+jqN9EdOz2j5wwbPaes=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new,
+ port 10024)
+ with ESMTP id EY0tNWdSnX5c; Tue,  3 Mar 2020 23:44:18 -0800 (PST)
+Received: from jarvis.ext.hansenpartnership.com
+ (jarvis.ext.hansenpartnership.com [153.66.160.226])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 00B778EE10C;
+ Tue,  3 Mar 2020 23:44:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+ s=20151216; t=1583307858;
+ bh=8uR8mzo3ltrlZW4Iy67OY4i5Mkl1pL+LoHi/DArj9yI=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=FXwFo9WtUBe1E+akI7D7r62eQ9xSh2tXEFTpGpR5Bg7OwBS7unm4lNRNING1j3Qgv
+ aTwtlf82y3cSCjx68gpun+Bvzh6C6Dn+tQ3ITcfwd2pDzCWeNKYSd+Mf/5aWMtVZYn
+ k+jzSV4zIshUwLhoXBLbA+jqN9EdOz2j5wwbPaes=
+Message-ID: <1583307813.3907.4.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2] ima: add a new CONFIG for loading arch-specific
+ policies
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-efi@vger.kernel.org, 
+ linux-s390@vger.kernel.org
+Date: Tue, 03 Mar 2020 23:43:33 -0800
+In-Reply-To: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
+References: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,35 +73,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- the arch/x86 maintainers <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <Anshuman.Khandual@arm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Philipp Rudo <prudo@linux.ibm.com>, Ard Biesheuvel <ardb@kernel.org>,
+ zohar@linux.ibm.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 2020-03-03 at 21:33 -0500, Nayna Jain wrote:
+> Every time a new architecture defines the IMA architecture specific
+> functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the
+> IMA
+> include file needs to be updated. To avoid this "noise", this patch
+> defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option,
+> allowing
+> the different architectures to select it.
+> 
+> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Philipp Rudo <prudo@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+> v2:
+> * Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and
+> Michael for
+> discussing the fix.
+> 
+>  arch/powerpc/Kconfig           | 1 +
+>  arch/s390/Kconfig              | 1 +
+>  arch/x86/Kconfig               | 1 +
+>  include/linux/ima.h            | 3 +--
+>  security/integrity/ima/Kconfig | 9 +++++++++
+>  5 files changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 497b7d0b2d7e..a5cfde432983 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
+>  	bool
+>  	depends on PPC_POWERNV
+>  	depends on IMA_ARCH_POLICY
+> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT
+>  	help
+>  	  Systems with firmware secure boot enabled need to define
+> security
+>  	  policies to extend secure boot to the OS. This config
+> allows a user
+> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+> index 8abe77536d9d..4a502fbcb800 100644
+> --- a/arch/s390/Kconfig
+> +++ b/arch/s390/Kconfig
+> @@ -195,6 +195,7 @@ config S390
+>  	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+>  	select SWIOTLB
+>  	select GENERIC_ALLOCATOR
+> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
+>  
+>  
+>  config SCHED_OMIT_FRAME_POINTER
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index beea77046f9b..7f5bfaf0cbd2 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -230,6 +230,7 @@ config X86
+>  	select VIRT_TO_BUS
+>  	select X86_FEATURE_NAMES		if PROC_FS
+>  	select PROC_PID_ARCH_STATUS		if PROC_FS
+> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI &&
+> IMA_ARCH_POLICY
+>  
+>  config INSTRUCTION_DECODER
+>  	def_bool y
+> diff --git a/include/linux/ima.h b/include/linux/ima.h
+> index 1659217e9b60..aefe758f4466 100644
+> --- a/include/linux/ima.h
+> +++ b/include/linux/ima.h
+> @@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int
+> size);
+>  extern void ima_add_kexec_buffer(struct kimage *image);
+>  #endif
+>  
+> -#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) ||
+> defined(CONFIG_S390) \
+> -	|| defined(CONFIG_PPC_SECURE_BOOT)
+> +#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+>  extern bool arch_ima_get_secureboot(void);
+>  extern const char * const *arch_get_ima_policy(void);
+>  #else
+> diff --git a/security/integrity/ima/Kconfig
+> b/security/integrity/ima/Kconfig
+> index 3f3ee4e2eb0d..d17972aa413a 100644
+> --- a/security/integrity/ima/Kconfig
+> +++ b/security/integrity/ima/Kconfig
+> @@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+>  	depends on IMA_MEASURE_ASYMMETRIC_KEYS
+>  	depends on SYSTEM_TRUSTED_KEYRING
+>  	default y
+> +
+> +config IMA_SECURE_AND_OR_TRUSTED_BOOT
+> +	bool
+> +	depends on IMA
+> +	depends on IMA_ARCH_POLICY
+> +	default n
 
+You can't do this: a symbol designed to be selected can't depend on
+other symbols because Kconfig doesn't see the dependencies during
+select.  We even have a doc for this now:
 
-> On Mar 4, 2020, at 1:49 AM, Christophe Leroy <christophe.leroy@c-s.fr> wro=
-te:
->=20
-> AFAIU, you are not taking an interrupt here. You are stuck in the pte_upda=
-te(), most likely due to nested locks. Try with LOCKDEP ?
+Documentation/kbuild/Kconfig.select-break
 
-Not exactly sure what did you mean here, but the kernel has all lockdep enab=
-led and did not flag anything here.=
+The only way to get this to work would be to have the long name symbol
+select both IMA and IMA_ARCH_POLICY, which doesn't seem to be what you
+want either.
+
+Looking at what you're trying to do, I think making the symbol
+independent of IMA and IMA_ARCH_POLICY is the correct thing, then
+enforce the dependencies inside the outer #ifdef, but I haven't looked
+deeply at the code.
+
+James
+
