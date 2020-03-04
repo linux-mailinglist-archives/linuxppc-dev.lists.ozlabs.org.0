@@ -1,49 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95072178F35
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 12:05:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XWJ53q2KzDqfv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:05:25 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 486C1178F5E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 12:09:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XWNR06pczDqNb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:09:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XWGZ4n9QzDqML
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 22:04:06 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=GjjpaZb1; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48XWGZ188kz9sR4; Wed,  4 Mar 2020 22:04:06 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 48XWGZ0D9yz9sSG; Wed,  4 Mar 2020 22:04:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1583319846;
- bh=b9nSCCm8tvdZujPFYesDAUQRod1GVZF/XpCS/op8SKE=;
- h=From:To:Subject:Date:From;
- b=GjjpaZb1JH3ClLuirR1w0IyoDM6QE56AvWlXcsW5tllFnzm4ImH57mFnj7j8HxEB2
- ez52NRaGTpRp900b2v+XMoUp8f4GByECIWqG08GrIIWwYZTNBWJ081KO/4kJYuDJU5
- hT9Cqhlo/sjQYd6AkoCiEbInhdgvyE5KziPKhwD55BMhRH+RuTW8077aGec2AX7QFv
- THT8KpGJtHb7IjPSgk4DFi6aAy3UF8SuVgT0DOkcpsBNv4moU9IpiNUa77Vneb6kbI
- RI0h/KlmxibrFwkIqz9oh/SS13WKP82DsO4+uaxh1izW41S10bBFRd42agfBgP1Ra9
- TbPuT+qV1J3/g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] selftests/powerpc: Add a test of sigreturn vs VDSO
-Date: Wed,  4 Mar 2020 22:04:02 +1100
-Message-Id: <20200304110402.6038-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XWKg5VCKzDq5t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 22:06:47 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 024B3kTq056501
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 06:06:44 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yhw6nukj9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 06:06:44 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 4 Mar 2020 11:06:41 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Mar 2020 11:06:35 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 024B5ZcQ41484714
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Mar 2020 11:05:35 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9325AE058;
+ Wed,  4 Mar 2020 11:06:33 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7F8AAE056;
+ Wed,  4 Mar 2020 11:06:32 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.145.27])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 11:06:32 +0000 (GMT)
+Subject: Re: [PATCH v3 21/27] powerpc/powernv/pmem: Add an IOCTL to request
+ controller health & perf data
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-22-alastair@au1.ibm.com>
+ <fdc5faec-d03d-3cba-4a9c-add7e522ad13@linux.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 4 Mar 2020 12:06:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
+In-Reply-To: <fdc5faec-d03d-3cba-4a9c-add7e522ad13@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030411-0008-0000-0000-0000035938C6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030411-0009-0000-0000-00004A7A6B55
+Message-Id: <3ecb49e3-8828-ab7b-4391-5dd6127e76e0@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-04_01:2020-03-04,
+ 2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=674 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,181 +95,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There's two different paths through the sigreturn code, depending on
-whether the VDSO is mapped or not. We recently discovered a bug in the
-unmapped case, because it's not commonly used these days.
 
-So add a test that sends itself a signal, then moves the VDSO, takes
-another signal and finally unmaps the VDSO before sending itself
-another signal. That tests the standard signal path, the code that
-handles the VDSO being moved, and also the signal path in the case
-where the VDSO is unmapped.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- .../selftests/powerpc/signal/.gitignore       |   1 +
- .../testing/selftests/powerpc/signal/Makefile |   2 +-
- .../selftests/powerpc/signal/sigreturn_vdso.c | 127 ++++++++++++++++++
- 3 files changed, 129 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
+Le 28/02/2020 à 07:12, Andrew Donnellan a écrit :
+> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+>> From: Alastair D'Silva <alastair@d-silva.org>
+>>
+>> When health & performance data is requested from the controller,
+>> it responds with an error log containing the requested information.
+>>
+>> This patch allows the request to me issued via an IOCTL.
+> 
+> A better explanation would be good - this IOCTL triggers a request to 
+> the controller to collect controller health/perf data, and the 
+> controller will later respond with an error log that can be picked up 
+> via the error log IOCTL that you've defined earlier.
 
-diff --git a/tools/testing/selftests/powerpc/signal/.gitignore b/tools/testing/selftests/powerpc/signal/.gitignore
-index dca5852a1546..03dafa795255 100644
---- a/tools/testing/selftests/powerpc/signal/.gitignore
-+++ b/tools/testing/selftests/powerpc/signal/.gitignore
-@@ -1,3 +1,4 @@
- signal
- signal_tm
- sigfuz
-+sigreturn_vdso
-diff --git a/tools/testing/selftests/powerpc/signal/Makefile b/tools/testing/selftests/powerpc/signal/Makefile
-index 113838fbbe7f..63b57583e07d 100644
---- a/tools/testing/selftests/powerpc/signal/Makefile
-+++ b/tools/testing/selftests/powerpc/signal/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--TEST_GEN_PROGS := signal signal_tm sigfuz
-+TEST_GEN_PROGS := signal signal_tm sigfuz sigreturn_vdso
- 
- CFLAGS += -maltivec
- $(OUTPUT)/signal_tm: CFLAGS += -mhtm
-diff --git a/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c b/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
-new file mode 100644
-index 000000000000..e282fff0fe25
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
-@@ -0,0 +1,127 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test that we can take signals with and without the VDSO mapped, which trigger
-+ * different paths in the signal handling code.
-+ *
-+ * See handle_rt_signal64() and setup_trampoline() in signal_64.c
-+ */
-+
-+#define _GNU_SOURCE
-+
-+#include <errno.h>
-+#include <stdio.h>
-+#include <signal.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+
-+// Ensure assert() is not compiled out
-+#undef NDEBUG
-+#include <assert.h>
-+
-+#include "utils.h"
-+
-+static int search_proc_maps(char *needle, unsigned long *low, unsigned long *high)
-+{
-+	unsigned long start, end;
-+	static char buf[4096];
-+	char name[128];
-+	FILE *f;
-+	int rc = -1;
-+
-+	f = fopen("/proc/self/maps", "r");
-+	if (!f) {
-+		perror("fopen");
-+		return -1;
-+	}
-+
-+	while (fgets(buf, sizeof(buf), f)) {
-+		rc = sscanf(buf, "%lx-%lx %*c%*c%*c%*c %*x %*d:%*d %*d %127s\n",
-+			    &start, &end, name);
-+		if (rc == 2)
-+			continue;
-+
-+		if (rc != 3) {
-+			printf("sscanf errored\n");
-+			rc = -1;
-+			break;
-+		}
-+
-+		if (strstr(name, needle)) {
-+			*low = start;
-+			*high = end - 1;
-+			rc = 0;
-+			break;
-+		}
-+	}
-+
-+	fclose(f);
-+
-+	return rc;
-+}
-+
-+static volatile sig_atomic_t took_signal = 0;
-+
-+static void sigusr1_handler(int sig)
-+{
-+	took_signal++;
-+}
-+
-+int test_sigreturn_vdso(void)
-+{
-+	unsigned long low, high, size;
-+	struct sigaction act;
-+	char *p;
-+
-+	act.sa_handler = sigusr1_handler;
-+	act.sa_flags = 0;
-+	sigemptyset(&act.sa_mask);
-+
-+	assert(sigaction(SIGUSR1, &act, NULL) == 0);
-+
-+	// Confirm the VDSO is mapped, and work out where it is
-+	assert(search_proc_maps("[vdso]", &low, &high) == 0);
-+	size = high - low + 1;
-+	printf("VDSO is at 0x%lx-0x%lx (%lu bytes)\n", low, high, size);
-+
-+	kill(getpid(), SIGUSR1);
-+	assert(took_signal == 1);
-+	printf("Signal delivered OK with VDSO mapped\n");
-+
-+	// Remap the VDSO somewhere else
-+	p = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-+	assert(p != MAP_FAILED);
-+	assert(mremap((void *)low, size, size, MREMAP_MAYMOVE|MREMAP_FIXED, p) != MAP_FAILED);
-+	assert(search_proc_maps("[vdso]", &low, &high) == 0);
-+	size = high - low + 1;
-+	printf("VDSO moved to 0x%lx-0x%lx (%lu bytes)\n", low, high, size);
-+
-+	kill(getpid(), SIGUSR1);
-+	assert(took_signal == 2);
-+	printf("Signal delivered OK with VDSO moved\n");
-+
-+	assert(munmap((void *)low, size) == 0);
-+	printf("Unmapped VDSO\n");
-+
-+	// Confirm the VDSO is not mapped anymore
-+	assert(search_proc_maps("[vdso]", &low, &high) != 0);
-+
-+	// Make the stack executable
-+	assert(search_proc_maps("[stack]", &low, &high) == 0);
-+	size = high - low + 1;
-+	mprotect((void *)low, size, PROT_READ|PROT_WRITE|PROT_EXEC);
-+	printf("Remapped the stack executable\n");
-+
-+	kill(getpid(), SIGUSR1);
-+	assert(took_signal == 3);
-+	printf("Signal delivered OK with VDSO unmapped\n");
-+
-+	return 0;
-+}
-+
-+int main(void)
-+{
-+	return test_harness(test_sigreturn_vdso, "sigreturn_vdso");
-+}
--- 
-2.21.1
+And even more precisely (to also check my understanding):
+
+ > this IOCTL triggers a request to
+ > the controller to collect controller health/perf data, and the
+ > controller will later respond
+
+by raising an interrupt to let the user app know that
+
+ > an error log that can be picked up
+ > via the error log IOCTL that you've defined earlier.
+
+
+The rest of the patch looks ok to me.
+
+   Fred
 
