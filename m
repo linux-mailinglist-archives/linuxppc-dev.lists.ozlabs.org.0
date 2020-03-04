@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BB3179A8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 21:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F13179A8D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:00:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XmSX362CzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 07:58:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XmVg1jWFzDqjY
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 08:00:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,54 +19,54 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XmG76sZVzDqfG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 07:49:35 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XmGs0GMpzDqcY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 07:50:12 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 024KmoxX050101; Wed, 4 Mar 2020 15:49:25 -0500
+ 024KiUsd069758; Wed, 4 Mar 2020 15:50:02 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yj8hc28h0-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yhsva8w6d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Mar 2020 15:49:24 -0500
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 024KnMfl051550;
- Wed, 4 Mar 2020 15:49:24 -0500
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yj8hc28gd-1
+ Wed, 04 Mar 2020 15:50:02 -0500
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 024KjN0b078025;
+ Wed, 4 Mar 2020 15:50:02 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yhsva8w5q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Mar 2020 15:49:24 -0500
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 024KjOYl019351;
- Wed, 4 Mar 2020 20:49:23 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 2yffk7qag6-1
+ Wed, 04 Mar 2020 15:50:02 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 024KmuSr024252;
+ Wed, 4 Mar 2020 20:50:00 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 2yffk6wrhg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Mar 2020 20:49:23 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 024KnM6N51380694
+ Wed, 04 Mar 2020 20:50:00 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 024Ko0N453346610
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Mar 2020 20:49:22 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 884AAAE062;
- Wed,  4 Mar 2020 20:49:22 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF134AE05F;
- Wed,  4 Mar 2020 20:49:21 +0000 (GMT)
+ Wed, 4 Mar 2020 20:50:00 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 683672805E;
+ Wed,  4 Mar 2020 20:50:00 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AB01728059;
+ Wed,  4 Mar 2020 20:49:59 +0000 (GMT)
 Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  4 Mar 2020 20:49:21 +0000 (GMT)
-Subject: [PATCH V6 07/14] powerpc/vas: Register NX with fault window ID and
- IRQ port value
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 20:49:59 +0000 (GMT)
+Subject: [PATCH V6 08/14] powerpc/vas: Take reference to PID and mm for
+ user space windows
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au
 In-Reply-To: <1583353283.18705.2112.camel@hbabu-laptop>
 References: <1583353283.18705.2112.camel@hbabu-laptop>
 Content-Type: text/plain; charset="UTF-8"
-Date: Wed, 04 Mar 2020 12:48:19 -0800
-Message-ID: <1583354899.18705.2150.camel@hbabu-laptop>
+Date: Wed, 04 Mar 2020 12:48:56 -0800
+Message-ID: <1583354937.18705.2153.camel@hbabu-laptop>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
@@ -75,11 +75,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-04_08:2020-03-04,
  2020-03-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 suspectscore=1 adultscore=0 phishscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=875 spamscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040135
+ priorityscore=1501
+ mlxlogscore=924 clxscore=1015 suspectscore=3 impostorscore=0 adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040134
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,89 +99,161 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-For each user space send window, register NX with fault window ID
-and port value so that NX paste CRBs in this fault FIFO when it
-sees fault on the request buffer.
+Process close windows after its requests are completed. In multi-thread
+applications, child can open a window but release FD will not be called
+upon its exit. Parent thread will be closing it later upon its exit.
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+The parent can also send NX requests with this window and NX can
+generate page faults. After kernel handles the page fault, send
+signal to process by using PID if CSB address is invalid. Parent
+thread will not receive signal since its PID is different from the one
+saved in vas_window. So use tgid in case if the task for the pid saved
+in window is not running and send signal to its parent.
+
+To prevent reusing the pid until the window closed, take reference to
+pid and task mm.
+
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/vas-window.c | 15 +++++++++++++--
- arch/powerpc/platforms/powernv/vas.h        | 15 +++++++++++++++
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/powernv/vas-debug.c  |  2 +-
+ arch/powerpc/platforms/powernv/vas-window.c | 53 ++++++++++++++++++++++++++---
+ arch/powerpc/platforms/powernv/vas.h        |  9 ++++-
+ 3 files changed, 57 insertions(+), 7 deletions(-)
 
+diff --git a/arch/powerpc/platforms/powernv/vas-debug.c b/arch/powerpc/platforms/powernv/vas-debug.c
+index 09e63df..ef9a717 100644
+--- a/arch/powerpc/platforms/powernv/vas-debug.c
++++ b/arch/powerpc/platforms/powernv/vas-debug.c
+@@ -38,7 +38,7 @@ static int info_show(struct seq_file *s, void *private)
+ 
+ 	seq_printf(s, "Type: %s, %s\n", cop_to_str(window->cop),
+ 					window->tx_win ? "Send" : "Receive");
+-	seq_printf(s, "Pid : %d\n", window->pid);
++	seq_printf(s, "Pid : %d\n", vas_window_pid(window));
+ 
+ unlock:
+ 	mutex_unlock(&vas_mutex);
 diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index 7c6f55f..a45d81d 100644
+index a45d81d..7587258 100644
 --- a/arch/powerpc/platforms/powernv/vas-window.c
 +++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -373,7 +373,7 @@ int init_winctx_regs(struct vas_window *window, struct vas_winctx *winctx)
- 	init_xlate_regs(window, winctx->user_win);
+@@ -12,6 +12,8 @@
+ #include <linux/log2.h>
+ #include <linux/rcupdate.h>
+ #include <linux/cred.h>
++#include <linux/sched/mm.h>
++#include <linux/mmu_context.h>
+ #include <asm/switch_to.h>
+ #include <asm/ppc-opcode.h>
+ #include "vas.h"
+@@ -876,8 +878,6 @@ struct vas_window *vas_rx_win_open(int vasid, enum vas_cop_type cop,
+ 	rxwin->user_win = rxattr->user_win;
+ 	rxwin->cop = cop;
+ 	rxwin->wcreds_max = rxattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
+-	if (rxattr->user_win)
+-		rxwin->pid = task_pid_vnr(current);
  
- 	val = 0ULL;
--	val = SET_FIELD(VAS_FAULT_TX_WIN, val, 0);
-+	val = SET_FIELD(VAS_FAULT_TX_WIN, val, winctx->fault_win_id);
- 	write_hvwc_reg(window, VREG(FAULT_TX_WIN), val);
+ 	init_winctx_for_rxwin(rxwin, rxattr, &winctx);
+ 	init_winctx_regs(rxwin, &winctx);
+@@ -1027,7 +1027,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
+ 	txwin->tx_win = 1;
+ 	txwin->rxwin = rxwin;
+ 	txwin->nx_win = txwin->rxwin->nx_win;
+-	txwin->pid = attr->pid;
+ 	txwin->user_win = attr->user_win;
+ 	txwin->wcreds_max = attr->wcreds_max ?: VAS_WCREDS_DEFAULT;
  
- 	/* In PowerNV, interrupts go to HV. */
-@@ -748,6 +748,8 @@ static void init_winctx_for_rxwin(struct vas_window *rxwin,
+@@ -1068,8 +1067,43 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
+ 			goto free_window;
+ 	}
  
- 	winctx->min_scope = VAS_SCOPE_LOCAL;
- 	winctx->max_scope = VAS_SCOPE_VECTORED_GROUP;
-+	if (rxwin->vinst->virq)
-+		winctx->irq_port = rxwin->vinst->irq_port;
- }
+-	set_vinst_win(vinst, txwin);
++	if (txwin->user_win) {
++		/*
++		 * Window opened by child thread may not be closed when
++		 * it exits. So take reference to its pid and release it
++		 * when the window is free by parent thread.
++		 * Acquire a reference to the task's pid to make sure
++		 * pid will not be re-used - needed only for multithread
++		 * applications.
++		 */
++		txwin->pid = get_task_pid(current, PIDTYPE_PID);
++		/*
++		 * Acquire a reference to the task's mm.
++		 */
++		txwin->mm = get_task_mm(current);
  
- static bool rx_win_args_valid(enum vas_cop_type cop,
-@@ -944,13 +946,22 @@ static void init_winctx_for_txwin(struct vas_window *txwin,
- 	winctx->lpid = txattr->lpid;
- 	winctx->pidr = txattr->pidr;
- 	winctx->rx_win_id = txwin->rxwin->winid;
-+	/*
-+	 * IRQ and fault window setup is successful. Set fault window
-+	 * for the send window so that ready to handle faults.
-+	 */
-+	if (txwin->vinst->virq)
-+		winctx->fault_win_id = txwin->vinst->fault_win->winid;
++		if (!txwin->mm) {
++			put_pid(txwin->pid);
++			pr_err("VAS: pid(%d): mm_struct is not found\n",
++					current->pid);
++			rc = -EPERM;
++			goto free_window;
++		}
++
++		mmgrab(txwin->mm);
++		mmput(txwin->mm);
++		mm_context_add_copro(txwin->mm);
++		/*
++		 * Process closes window during exit. In the case of
++		 * multithread application, child can open window and
++		 * can exit without closing it. Expects parent thread
++		 * to use and close the window. So do not need to take
++		 * pid reference for parent thread.
++		 */
++		txwin->tgid = find_get_pid(task_tgid_vnr(current));
++	}
++
++	set_vinst_win(vinst, txwin);
+ 	return txwin;
  
- 	winctx->dma_type = VAS_DMA_TYPE_INJECT;
- 	winctx->tc_mode = txattr->tc_mode;
- 	winctx->min_scope = VAS_SCOPE_LOCAL;
- 	winctx->max_scope = VAS_SCOPE_VECTORED_GROUP;
-+	if (txwin->vinst->virq)
-+		winctx->irq_port = txwin->vinst->irq_port;
+ free_window:
+@@ -1266,8 +1300,17 @@ int vas_win_close(struct vas_window *window)
+ 	poll_window_castout(window);
  
--	winctx->pswid = 0;
-+	winctx->pswid = txattr->pswid ? txattr->pswid :
-+			encode_pswid(txwin->vinst->vas_id, txwin->winid);
- }
+ 	/* if send window, drop reference to matching receive window */
+-	if (window->tx_win)
++	if (window->tx_win) {
++		if (window->user_win) {
++			/* Drop references to pid and mm */
++			put_pid(window->pid);
++			if (window->mm) {
++				mmdrop(window->mm);
++				mm_context_remove_copro(window->mm);
++			}
++		}
+ 		put_rx_win(window->rxwin);
++	}
  
- static bool tx_win_args_valid(enum vas_cop_type cop,
+ 	vas_window_free(window);
+ 
 diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-index b82d5da..ab41cd3 100644
+index ab41cd3..7c8e0182 100644
 --- a/arch/powerpc/platforms/powernv/vas.h
 +++ b/arch/powerpc/platforms/powernv/vas.h
-@@ -468,6 +468,21 @@ static inline u64 read_hvwc_reg(struct vas_window *win,
- 	return in_be64(win->hvwc_map+reg);
- }
+@@ -353,7 +353,9 @@ struct vas_window {
+ 	bool user_win;		/* True if user space window */
+ 	void *hvwc_map;		/* HV window context */
+ 	void *uwc_map;		/* OS/User window context */
+-	pid_t pid;		/* Linux process id of owner */
++	struct pid *pid;	/* Linux process id of owner */
++	struct pid *tgid;	/* Thread group ID of owner */
++	struct mm_struct *mm;	/* Linux process mm_struct */
+ 	int wcreds_max;		/* Window credits */
  
-+/*
-+ * Encode/decode the Partition Send Window ID (PSWID) for a window in
-+ * a way that we can uniquely identify any window in the system. i.e.
-+ * we should be able to locate the 'struct vas_window' given the PSWID.
-+ *
-+ *	Bits	Usage
-+ *	0:7	VAS id (8 bits)
-+ *	8:15	Unused, 0 (3 bits)
-+ *	16:31	Window id (16 bits)
-+ */
-+static inline u32 encode_pswid(int vasid, int winid)
+ 	char *dbgname;
+@@ -431,6 +433,11 @@ struct vas_winctx {
+ extern struct vas_window *vas_pswid_to_window(struct vas_instance *vinst,
+ 						uint32_t pswid);
+ 
++static inline int vas_window_pid(struct vas_window *window)
 +{
-+	return ((u32)winid | (vasid << (31 - 7)));
++	return pid_vnr(window->pid);
 +}
 +
- static inline void decode_pswid(u32 pswid, int *vasid, int *winid)
+ static inline void vas_log_write(struct vas_window *win, char *name,
+ 			void *regptr, u64 val)
  {
- 	if (vasid)
 -- 
 1.8.3.1
 
