@@ -2,66 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2361789B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 05:47:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF851789FE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 06:21:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XLvR1nXWzDqP3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 15:46:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XMgK70QJzDqWL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 16:21:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=bharata.rao@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UtZrFgtj; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XLqj722pzDqQ3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 15:43:39 +1100 (AEDT)
-Received: by mail-wr1-x442.google.com with SMTP id n7so645503wrt.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2020 20:43:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=okutyK5a8uQZodANWxrUAY3lG9R/jofu3YcVmmvfiXg=;
- b=UtZrFgtjsSVPD97F4GruvTZtyh2VBOeQ4HKg0HP2gH+pqaH90Kj/tqXWvqJVgqLWUI
- A8QRfAJIG0iLFragRxQi4JY75xgzmcKasIin+nANgxxdQj9csad7RLWFPuSK1AkvF8Cl
- 77q3rKVMKwuwtHS9sl3wggvbcKpP2CyzlN3pAXHRUeVObFSyVsoXOiWgS+JLlk6mXo+9
- cmIKQD9kIzJ9Mwhfoyu+DawM7UQVpWrrbIoKDQo8Iy7sXz9L14XsI6wu4f6Gfy30+KQB
- pmO1bQOZ2SB4rEEezl777klETr4hsjIYo9hTKe++NOgJdeaTbZSA5WKK/3EhrIpXHv0v
- qUyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=okutyK5a8uQZodANWxrUAY3lG9R/jofu3YcVmmvfiXg=;
- b=kZYFKYsTTTeEHiDnprxO4mxwwNY3F1c1DI0Gy5jNa1q45bZY1HbMRdnNINhn6i298o
- MopmgSn4xCeJW0TnHweAi/o7wMa9xfpAxx3MfX3XtvnmugG8pqy78Iy2CXJQEvgx/Lu2
- apBMt34ty8Izgc4r2qTKFlTGKtXSkFO7wC6Z+qzsm/w4q0C7zkYDIQrevn64FUE0v0Ql
- QS9n3dzsGbuxPlrW3jd4rWT8mW5kox/0+pGIGRAjHe8h+4BF0C12iMdre27dQrXoEoDu
- Lf54WqJzufKV9fKjc0dUcnY1t5jZqQCXm8n6w+8e/54TMDoQCeVZbaGolyxmQ4tL8jP3
- 2Z2g==
-X-Gm-Message-State: ANhLgQ1lyOkBVZ+7jbfewLXNRDiHUXawjeUz6tjDUG40m4VXFWyYBoSx
- +JxzaiDZlc8cuBWEnB2jE57cA59SL45QXC3yLJg=
-X-Google-Smtp-Source: ADFU+vvM2137kGKlC2DGBWaTikYu6VxUe7kjGnT7T8VaaOObxG+7akabL9DZ6E88BymipWybKPVlnzib9SXjeGFaECk=
-X-Received: by 2002:a5d:538e:: with SMTP id d14mr1770087wrv.62.1583297014940; 
- Tue, 03 Mar 2020 20:43:34 -0800 (PST)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48XMd32WlgzDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 16:19:33 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3EE0E31B;
+ Tue,  3 Mar 2020 21:19:31 -0800 (PST)
+Received: from [10.163.1.88] (unknown [10.163.1.88])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DDBA3F6CF;
+ Tue,  3 Mar 2020 21:19:16 -0800 (PST)
+Subject: Re: [RFC 1/3] mm/vma: Define a default value for VM_DATA_DEFAULT_FLAGS
+To: Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
+References: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
+ <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
+ <b243be54-7b5e-c6e9-fb68-46369d7d7aa4@suse.cz>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <8b0f4c1b-f693-e139-4f66-ee4e1e88b95c@arm.com>
+Date: Wed, 4 Mar 2020 10:49:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20200228060439.52749-1-leonardo@linux.ibm.com>
-In-Reply-To: <20200228060439.52749-1-leonardo@linux.ibm.com>
-From: Bharata B Rao <bharata.rao@gmail.com>
-Date: Wed, 4 Mar 2020 10:13:23 +0530
-Message-ID: <CAGZKiBr=8i11YPDn+1y5j6YfGj+tVbbTKakoGje9QQ8TEw9g5g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] powerpc/kernel: Enables memory hot-remove after
- reboot on pseries guests
-To: Leonardo Bras <leonardo@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <b243be54-7b5e-c6e9-fb68-46369d7d7aa4@suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,83 +50,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ndfont@gmail.com,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- arbab@linux.ibm.com, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Michael Roth <mdroth@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+ Brian Cain <bcain@codeaurora.org>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
+ Mark Salter <msalter@redhat.com>, Paul Burton <paulburton@kernel.org>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-alpha@vger.kernel.org,
+ nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 28, 2020 at 11:36 AM Leonardo Bras <leonardo@linux.ibm.com> wrote:
->
-> While providing guests, it's desirable to resize it's memory on demand.
->
-> By now, it's possible to do so by creating a guest with a small base
-> memory, hot-plugging all the rest, and using 'movable_node' kernel
-> command-line parameter, which puts all hot-plugged memory in
-> ZONE_MOVABLE, allowing it to be removed whenever needed.
->
-> But there is an issue regarding guest reboot:
-> If memory is hot-plugged, and then the guest is rebooted, all hot-plugged
-> memory goes to ZONE_NORMAL, which offers no guaranteed hot-removal.
-> It usually prevents this memory to be hot-removed from the guest.
->
-> It's possible to use device-tree information to fix that behavior, as
-> it stores flags for LMB ranges on ibm,dynamic-memory-vN.
-> It involves marking each memblock with the correct flags as hotpluggable
-> memory, which mm/memblock.c puts in ZONE_MOVABLE during boot if
-> 'movable_node' is passed.
->
-> For base memory, qemu assigns these flags for it's LMBs:
-> (DRCONF_MEM_AI_INVALID | DRCONF_MEM_RESERVED)
-> For hot-plugged memory, it assigns (DRCONF_MEM_ASSIGNED).
->
-> While guest kernel reads the device-tree, early_init_drmem_lmb() is
-> called for every added LMBs, doing nothing for base memory, and adding
-> memblocks for hot-plugged memory. Skipping base memory happens here:
->
-> if ((lmb->flags & DRCONF_MEM_RESERVED) ||
->     !(lmb->flags & DRCONF_MEM_ASSIGNED))
->         return;
->
-> Marking memblocks added by this function as hotplugable memory
-> is enough to get the desirable behavior, and should cause no change
-> if 'movable_node' parameter is not passed to kernel.
->
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/prom.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 6620f37abe73..f4d14c67bf53 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -518,6 +518,8 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
->                 DBG("Adding: %llx -> %llx\n", base, size);
->                 if (validate_mem_limit(base, &size))
->                         memblock_add(base, size);
-> +
-> +               early_init_dt_mark_hotplug_memory_arch(base, size);
 
-Hi,
 
-I tried this a few years back
-(https://patchwork.ozlabs.org/patch/800142/) and didn't pursue it
-further because at that time, it was felt that the approach might not
-work for PowerVM guests, because all the present memory except RMA
-gets marked as hot-pluggable by PowerVM. This discussion is not
-present in the above thread, but during my private discussions with
-Reza and Nathan, it was noted that making all that memory as MOVABLE
-is not preferable for PowerVM guests as we might run out of memory for
-kernel allocations.
+On 03/03/2020 10:55 PM, Vlastimil Babka wrote:
+> On 3/2/20 7:47 AM, Anshuman Khandual wrote:
+>> There are many platforms with exact same value for VM_DATA_DEFAULT_FLAGS
+>> This creates a default value for VM_DATA_DEFAULT_FLAGS in line with the
+>> existing VM_STACK_DEFAULT_FLAGS. While here, also define some more macros
+>> with standard VMA access flag combinations that are used frequently across
+>> many platforms. Apart from simplification, this reduces code duplication
+>> as well.
+>>
+>> Cc: Richard Henderson <rth@twiddle.net>
+>> Cc: Vineet Gupta <vgupta@synopsys.com>
+>> Cc: Russell King <linux@armlinux.org.uk>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Mark Salter <msalter@redhat.com>
+>> Cc: Guo Ren <guoren@kernel.org>
+>> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+>> Cc: Brian Cain <bcain@codeaurora.org>
+>> Cc: Tony Luck <tony.luck@intel.com>
+>> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+>> Cc: Michal Simek <monstr@monstr.eu>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Cc: Paul Burton <paulburton@kernel.org>
+>> Cc: Nick Hu <nickhu@andestech.com>
+>> Cc: Ley Foon Tan <ley.foon.tan@intel.com>
+>> Cc: Jonas Bonn <jonas@southpole.se>
+>> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+>> Cc: Rich Felker <dalias@libc.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Guan Xuetao <gxt@pku.edu.cn>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Jeff Dike <jdike@addtoit.com>
+>> Cc: Chris Zankel <chris@zankel.net>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: linux-alpha@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linux-snps-arc@lists.infradead.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-c6x-dev@linux-c6x.org
+>> Cc: uclinux-h8-devel@lists.sourceforge.jp
+>> Cc: linux-hexagon@vger.kernel.org
+>> Cc: linux-ia64@vger.kernel.org
+>> Cc: linux-m68k@lists.linux-m68k.org
+>> Cc: linux-mips@vger.kernel.org
+>> Cc: nios2-dev@lists.rocketboards.org
+>> Cc: openrisc@lists.librecores.org
+>> Cc: linux-parisc@vger.kernel.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: linux-riscv@lists.infradead.org
+>> Cc: linux-s390@vger.kernel.org
+>> Cc: linux-sh@vger.kernel.org
+>> Cc: sparclinux@vger.kernel.org
+>> Cc: linux-um@lists.infradead.org
+>> Cc: linux-xtensa@linux-xtensa.org
+>> Cc: linux-mm@kvack.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> 
+> Nit:
+> 
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index b0e53ef13ff1..7a764ae6ab68 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -342,6 +342,21 @@ extern unsigned int kobjsize(const void *objp);
+>>  /* Bits set in the VMA until the stack is in its final location */
+>>  #define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
+>>  
+>> +#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
+>> +
+>> +/* Common data flag combinations */
+>> +#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+>> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+>> +#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
+>> +				 VM_MAYWRITE | VM_MAYEXEC)
+>> +#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
+>> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+>> +
+>> +#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
+>> +#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
+>> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+> 
+> Should you use VM_DATA_FLAGS_EXEC here? Yeah one more macro to expand, but it's
+> right above this.
 
-Regards,
-Bharata.
--- 
-http://raobharata.wordpress.com/
+Sure, can do that.
+
+> 
+>> +#endif
+>> +
+>>  #ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
+>>  #define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
+>>  #endif
+>>
+> 
+> 
+> 
