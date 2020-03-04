@@ -1,67 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27648179094
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 13:46:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XYY2072xzDqcl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 23:46:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94CC179084
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 13:38:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XYMG4kCbzDqVK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 23:38:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=hansenpartnership.com (client-ip=66.63.167.143;
- helo=bedivere.hansenpartnership.com;
- envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=HansenPartnership.com
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com
- [66.63.167.143])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XYTj2k5szDqbW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 23:43:51 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
- by bedivere.hansenpartnership.com (Postfix) with ESMTP id B623A8EE11D;
- Tue,  3 Mar 2020 23:44:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
- s=20151216; t=1583307858;
- bh=8uR8mzo3ltrlZW4Iy67OY4i5Mkl1pL+LoHi/DArj9yI=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=FXwFo9WtUBe1E+akI7D7r62eQ9xSh2tXEFTpGpR5Bg7OwBS7unm4lNRNING1j3Qgv
- aTwtlf82y3cSCjx68gpun+Bvzh6C6Dn+tQ3ITcfwd2pDzCWeNKYSd+Mf/5aWMtVZYn
- k+jzSV4zIshUwLhoXBLbA+jqN9EdOz2j5wwbPaes=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new,
- port 10024)
- with ESMTP id EY0tNWdSnX5c; Tue,  3 Mar 2020 23:44:18 -0800 (PST)
-Received: from jarvis.ext.hansenpartnership.com
- (jarvis.ext.hansenpartnership.com [153.66.160.226])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 00B778EE10C;
- Tue,  3 Mar 2020 23:44:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
- s=20151216; t=1583307858;
- bh=8uR8mzo3ltrlZW4Iy67OY4i5Mkl1pL+LoHi/DArj9yI=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=FXwFo9WtUBe1E+akI7D7r62eQ9xSh2tXEFTpGpR5Bg7OwBS7unm4lNRNING1j3Qgv
- aTwtlf82y3cSCjx68gpun+Bvzh6C6Dn+tQ3ITcfwd2pDzCWeNKYSd+Mf/5aWMtVZYn
- k+jzSV4zIshUwLhoXBLbA+jqN9EdOz2j5wwbPaes=
-Message-ID: <1583307813.3907.4.camel@HansenPartnership.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XYHt3XK7zDqTK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 23:35:21 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 024CTB5D139756
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 07:35:19 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yj8hbh64b-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 07:35:19 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
+ Wed, 4 Mar 2020 12:35:17 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Mar 2020 12:35:13 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 024CZBJP38928546
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Mar 2020 12:35:11 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8565711C052;
+ Wed,  4 Mar 2020 12:35:11 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C57811C054;
+ Wed,  4 Mar 2020 12:35:10 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.200.112])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 12:35:10 +0000 (GMT)
 Subject: Re: [PATCH v2] ima: add a new CONFIG for loading arch-specific
  policies
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-efi@vger.kernel.org, 
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, Nayna Jain
+ <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-efi@vger.kernel.org,
  linux-s390@vger.kernel.org
-Date: Tue, 03 Mar 2020 23:43:33 -0800
-In-Reply-To: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
+Date: Wed, 04 Mar 2020 07:35:09 -0500
+In-Reply-To: <1583307813.3907.4.camel@HansenPartnership.com>
 References: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
+ <1583307813.3907.4.camel@HansenPartnership.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030412-0016-0000-0000-000002ED176D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030412-0017-0000-0000-0000335064A5
+Message-Id: <1583325309.6264.23.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-04_03:2020-03-04,
+ 2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ priorityscore=1501 suspectscore=0 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=972 spamscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,123 +95,44 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Philipp Rudo <prudo@linux.ibm.com>, Ard Biesheuvel <ardb@kernel.org>,
- zohar@linux.ibm.com, linux-kernel@vger.kernel.org
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-03-03 at 21:33 -0500, Nayna Jain wrote:
-> Every time a new architecture defines the IMA architecture specific
-> functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the
-> IMA
-> include file needs to be updated. To avoid this "noise", this patch
-> defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option,
-> allowing
-> the different architectures to select it.
+On Tue, 2020-03-03 at 23:43 -0800, James Bottomley wrote:
+> On Tue, 2020-03-03 at 21:33 -0500, Nayna Jain wrote:
+
+> > diff --git a/security/integrity/ima/Kconfig
+> > b/security/integrity/ima/Kconfig
+> > index 3f3ee4e2eb0d..d17972aa413a 100644
+> > --- a/security/integrity/ima/Kconfig
+> > +++ b/security/integrity/ima/Kconfig
+> > @@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+> >  	depends on IMA_MEASURE_ASYMMETRIC_KEYS
+> >  	depends on SYSTEM_TRUSTED_KEYRING
+> >  	default y
+> > +
+> > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
+> > +	bool
+> > +	depends on IMA
+> > +	depends on IMA_ARCH_POLICY
+> > +	default n
 > 
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Philipp Rudo <prudo@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> ---
-> v2:
-> * Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and
-> Michael for
-> discussing the fix.
+> You can't do this: a symbol designed to be selected can't depend on
+> other symbols because Kconfig doesn't see the dependencies during
+> select.  We even have a doc for this now:
 > 
->  arch/powerpc/Kconfig           | 1 +
->  arch/s390/Kconfig              | 1 +
->  arch/x86/Kconfig               | 1 +
->  include/linux/ima.h            | 3 +--
->  security/integrity/ima/Kconfig | 9 +++++++++
->  5 files changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 497b7d0b2d7e..a5cfde432983 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
->  	bool
->  	depends on PPC_POWERNV
->  	depends on IMA_ARCH_POLICY
-> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT
->  	help
->  	  Systems with firmware secure boot enabled need to define
-> security
->  	  policies to extend secure boot to the OS. This config
-> allows a user
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index 8abe77536d9d..4a502fbcb800 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -195,6 +195,7 @@ config S390
->  	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
->  	select SWIOTLB
->  	select GENERIC_ALLOCATOR
-> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
->  
->  
->  config SCHED_OMIT_FRAME_POINTER
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index beea77046f9b..7f5bfaf0cbd2 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -230,6 +230,7 @@ config X86
->  	select VIRT_TO_BUS
->  	select X86_FEATURE_NAMES		if PROC_FS
->  	select PROC_PID_ARCH_STATUS		if PROC_FS
-> +	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI &&
-> IMA_ARCH_POLICY
->  
->  config INSTRUCTION_DECODER
->  	def_bool y
-> diff --git a/include/linux/ima.h b/include/linux/ima.h
-> index 1659217e9b60..aefe758f4466 100644
-> --- a/include/linux/ima.h
-> +++ b/include/linux/ima.h
-> @@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int
-> size);
->  extern void ima_add_kexec_buffer(struct kimage *image);
->  #endif
->  
-> -#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) ||
-> defined(CONFIG_S390) \
-> -	|| defined(CONFIG_PPC_SECURE_BOOT)
-> +#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
->  extern bool arch_ima_get_secureboot(void);
->  extern const char * const *arch_get_ima_policy(void);
->  #else
-> diff --git a/security/integrity/ima/Kconfig
-> b/security/integrity/ima/Kconfig
-> index 3f3ee4e2eb0d..d17972aa413a 100644
-> --- a/security/integrity/ima/Kconfig
-> +++ b/security/integrity/ima/Kconfig
-> @@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
->  	depends on IMA_MEASURE_ASYMMETRIC_KEYS
->  	depends on SYSTEM_TRUSTED_KEYRING
->  	default y
-> +
-> +config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> +	bool
-> +	depends on IMA
-> +	depends on IMA_ARCH_POLICY
-> +	default n
+> Documentation/kbuild/Kconfig.select-break
 
-You can't do this: a symbol designed to be selected can't depend on
-other symbols because Kconfig doesn't see the dependencies during
-select.  We even have a doc for this now:
+The document is discussing a circular dependency, where C selects B.
+ IMA_SECURE_AND_OR_TRUSTED_BOOT is not selecting anything, but is
+being selected.  All of the Kconfig's are now dependent on
+IMA_ARCH_POLICY being enabled before selecting
+IMA_SECURE_AND_OR_TRUSTED_BOOT.
 
-Documentation/kbuild/Kconfig.select-break
+As Ard pointed out, both IMA and IMA_ARCH_POLICY are not needed, as
+IMA_ARCH_POLICY is already dependent on IMA.
 
-The only way to get this to work would be to have the long name symbol
-select both IMA and IMA_ARCH_POLICY, which doesn't seem to be what you
-want either.
-
-Looking at what you're trying to do, I think making the symbol
-independent of IMA and IMA_ARCH_POLICY is the correct thing, then
-enforce the dependencies inside the outer #ifdef, but I haven't looked
-deeply at the code.
-
-James
+Mimi
 
