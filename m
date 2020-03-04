@@ -2,88 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486C1178F5E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 12:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6339178F93
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 12:31:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XWNR06pczDqNb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:09:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XWt46yfrzDqY0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:31:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=qUya1I+I; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XWKg5VCKzDq5t
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 22:06:47 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 024B3kTq056501
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 06:06:44 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yhw6nukj9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 06:06:44 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Wed, 4 Mar 2020 11:06:41 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 4 Mar 2020 11:06:35 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 024B5ZcQ41484714
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Mar 2020 11:05:35 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9325AE058;
- Wed,  4 Mar 2020 11:06:33 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7F8AAE056;
- Wed,  4 Mar 2020 11:06:32 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.145.27])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  4 Mar 2020 11:06:32 +0000 (GMT)
-Subject: Re: [PATCH v3 21/27] powerpc/powernv/pmem: Add an IOCTL to request
- controller health & perf data
-To: Andrew Donnellan <ajd@linux.ibm.com>,
- "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-22-alastair@au1.ibm.com>
- <fdc5faec-d03d-3cba-4a9c-add7e522ad13@linux.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Wed, 4 Mar 2020 12:06:32 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <fdc5faec-d03d-3cba-4a9c-add7e522ad13@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20030411-0008-0000-0000-0000035938C6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030411-0009-0000-0000-00004A7A6B55
-Message-Id: <3ecb49e3-8828-ab7b-4391-5dd6127e76e0@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-04_01:2020-03-04,
- 2020-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 spamscore=0
- suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=674 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040086
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XWqs12pVzDqJq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Mar 2020 22:29:28 +1100 (AEDT)
+Received: by mail-qk1-x744.google.com with SMTP id e11so1167161qkg.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 03:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=Jx+iSwpjH1MMUgtvqiqrwQ2sYugCQ9UmLyXay35eB1Q=;
+ b=qUya1I+ID7bIC0Bkj4Q0zp0EdHdSdO6ykJWvMXw4HKDFjWyXV8ds3Bs9MArm+vdQdc
+ RpunjqglWR6mGJe2Lv7g9advYS1SvRo9LA3gCW5QqI/AMIgsHiHRUFAsdYeij2rtzyTk
+ sNSh4wHESGW+6lSzw7OKW4psbfNeqxjoimBZufpM/BoHmrYBRoQNs3Xc2GtPgWnsfXPf
+ igl3aC/5VPWbzpP3KfCNQ0wpC8Mh4VlwHq19u+9gw6f3Ulw8FCMZG8YCqNbscon2aj4Z
+ WYfZ5PGzedI3tG7vyVtTX+unDExTi5VMHoWYOeG+xlDzhECpmkCqkM7aufo6LUVMsIwj
+ NApA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=Jx+iSwpjH1MMUgtvqiqrwQ2sYugCQ9UmLyXay35eB1Q=;
+ b=c0XNH1hQecxTTCs6df4fSvLh1WXKEWntahqjUvtR4/Q6KFG5SYOqrIBCsWn58+FALp
+ cxZYJkjWeoI+wbVBQzzga3M9VB9xt/9B5T9oykGrA/CMVxXzqXwVFuallDNPQOzA+W1c
+ X4Lgabz8MwzAPRiRDjcaARM7yH/uIjOoe6nPsIiXb5sXdYM4SJVIdWJwyONBXK2zdCDT
+ QfSXxPtV36AnaJwRqFT86p7RYz+dQF1dZ+8zbKWqRz6Y29V35rgwcDChxWxkFotRk1/f
+ WjmnokPuskIfRAd+y5IemJcI1Ju93YxVh6WUIFadN6zBnjIu+5o2b4EoXe+VMXNv38/P
+ 4wrg==
+X-Gm-Message-State: ANhLgQ2Yg6EjuIK+DQQ9Kze2uVd5PVaPeRZAC0tZ+s0QpbcalLEX1v1f
+ XtxuuLQj8fxnRhsK0iN1EbMpoQ==
+X-Google-Smtp-Source: ADFU+vsraAELUldtqJkt+JLHLEkp9XWZWryntOEccYsrwg70reKk2W+439zfYVSLClVswo3lxz5LLw==
+X-Received: by 2002:a37:6115:: with SMTP id v21mr2464683qkb.105.1583321365177; 
+ Wed, 04 Mar 2020 03:29:25 -0800 (PST)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id u48sm85943qtc.79.2020.03.04.03.29.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Mar 2020 03:29:24 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH V14] mm/debug: Add tests validating architecture page
+ table helpers
+Date: Wed, 4 Mar 2020 06:29:23 -0500
+Message-Id: <11F41980-97CF-411F-8120-41287DC1A382@lca.pw>
+References: <c022e863-0807-fab1-cd41-3c320381f448@c-s.fr>
+In-Reply-To: <c022e863-0807-fab1-cd41-3c320381f448@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+X-Mailer: iPhone Mail (17D50)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,57 +81,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ the arch/x86 maintainers <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <Anshuman.Khandual@arm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 28/02/2020 à 07:12, Andrew Donnellan a écrit :
-> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
->> From: Alastair D'Silva <alastair@d-silva.org>
->>
->> When health & performance data is requested from the controller,
->> it responds with an error log containing the requested information.
->>
->> This patch allows the request to me issued via an IOCTL.
-> 
-> A better explanation would be good - this IOCTL triggers a request to 
-> the controller to collect controller health/perf data, and the 
-> controller will later respond with an error log that can be picked up 
-> via the error log IOCTL that you've defined earlier.
+> On Mar 4, 2020, at 1:49 AM, Christophe Leroy <christophe.leroy@c-s.fr> wro=
+te:
+>=20
+> AFAIU, you are not taking an interrupt here. You are stuck in the pte_upda=
+te(), most likely due to nested locks. Try with LOCKDEP ?
 
-And even more precisely (to also check my understanding):
-
- > this IOCTL triggers a request to
- > the controller to collect controller health/perf data, and the
- > controller will later respond
-
-by raising an interrupt to let the user app know that
-
- > an error log that can be picked up
- > via the error log IOCTL that you've defined earlier.
-
-
-The rest of the patch looks ok to me.
-
-   Fred
-
+Not exactly sure what did you mean here, but the kernel has all lockdep enab=
+led and did not flag anything here.=
