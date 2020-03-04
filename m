@@ -2,86 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D6217931D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 16:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AF717933E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 16:23:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Xcs22Kl2zDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 02:15:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Xd265X5QzDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 02:23:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Xcq101nWzDqRY
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 02:14:04 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 024Eofim042498
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 10:14:02 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yj4q17k6k-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Xd0G1ZZjzDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 02:22:05 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 024FKfvu170915
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 10:22:03 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yhsv3wv2h-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 10:14:01 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 10:22:02 -0500
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Wed, 4 Mar 2020 15:13:59 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 4 Mar 2020 15:22:00 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 4 Mar 2020 15:13:55 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 024FDsLL25428016
+ Wed, 4 Mar 2020 15:21:53 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 024FLpLC47710386
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Mar 2020 15:13:54 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25AEF52065;
- Wed,  4 Mar 2020 15:13:54 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.197.107])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 9B6BE52069;
- Wed,  4 Mar 2020 15:13:51 +0000 (GMT)
-Date: Wed, 4 Mar 2020 07:13:48 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Greg Kurz <groug@kaod.org>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
- <20200302233240.GB35885@umbus.fritz.box>
- <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
- <20200303170205.GA5416@oc0525413822.ibm.com>
- <20200303184520.632be270@bahia.home>
- <20200303185645.GB5416@oc0525413822.ibm.com>
- <20200304115948.7b2dfe10@bahia.home>
+ Wed, 4 Mar 2020 15:21:51 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 805F6AE051;
+ Wed,  4 Mar 2020 15:21:51 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 703C3AE045;
+ Wed,  4 Mar 2020 15:21:50 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.145.27])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 15:21:50 +0000 (GMT)
+Subject: Re: [PATCH v3 23/27] powerpc/powernv/pmem: Add debug IOCTLs
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-24-alastair@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 4 Mar 2020 16:21:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20200221032720.33893-24-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200304115948.7b2dfe10@bahia.home>
-User-Agent: Mutt/1.5.21 (2010-09-15)
 X-TM-AS-GCONF: 00
-x-cbid: 20030415-0012-0000-0000-0000038D25E6
+x-cbid: 20030415-0028-0000-0000-000003E0DDD3
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030415-0013-0000-0000-000021C9E1D8
-Message-Id: <20200304151348.GG5416@oc0525413822.ibm.com>
-Subject: RE: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
+x-cbparentid: 20030415-0029-0000-0000-000024A60F7B
+Message-Id: <7e0e3b71-d70c-1dee-b630-0c33596b7223@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-04_05:2020-03-04,
  2020-03-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 adultscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040112
+ bulkscore=0 mlxscore=0
+ clxscore=1015 mlxlogscore=995 impostorscore=0 malwarescore=0 adultscore=0
+ phishscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,121 +92,420 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, kvm-ppc@vger.kernel.org,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, David Gibson <david@gibson.dropbear.id.au>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 04, 2020 at 11:59:48AM +0100, Greg Kurz wrote:
-> On Tue, 3 Mar 2020 10:56:45 -0800
-> Ram Pai <linuxram@us.ibm.com> wrote:
-> 
-> > On Tue, Mar 03, 2020 at 06:45:20PM +0100, Greg Kurz wrote:
-> > > On Tue, 3 Mar 2020 09:02:05 -0800
-> > > Ram Pai <linuxram@us.ibm.com> wrote:
-> > > 
-> > > > On Tue, Mar 03, 2020 at 07:50:08AM +0100, C�dric Le Goater wrote:
-> > > > > On 3/3/20 12:32 AM, David Gibson wrote:
-> > > > > > On Fri, Feb 28, 2020 at 11:54:04PM -0800, Ram Pai wrote:
-> > > > > >> XIVE is not correctly enabled for Secure VM in the KVM Hypervisor yet.
-> > > > > >>
-> > > > > >> Hence Secure VM, must always default to XICS interrupt controller.
-> > > > > >>
-> > > > > >> If XIVE is requested through kernel command line option "xive=on",
-> > > > > >> override and turn it off.
-> > > > > >>
-> > > > > >> If XIVE is the only supported platform interrupt controller; specified
-> > > > > >> through qemu option "ic-mode=xive", simply abort. Otherwise default to
-> > > > > >> XICS.
-> > > > > > 
-> > > > > > Uh... the discussion thread here seems to have gotten oddly off
-> > > > > > track.  
-> > > > > 
-> > > > > There seem to be multiple issues. It is difficult to have a clear status.
-> > > > > 
-> > > > > > So, to try to clean up some misunderstandings on both sides:
-> > > > > > 
-> > > > > >   1) The guest is the main thing that knows that it will be in secure
-> > > > > >      mode, so it's reasonable for it to conditionally use XIVE based
-> > > > > >      on that
-> > > > > 
-> > > > > FW support is required AFAIUI.
-> > > > > >   2) The mechanism by which we do it here isn't quite right.  Here the
-> > > > > >      guest is checking itself that the host only allows XIVE, but we
-> > > > > >      can't do XIVE and is panic()ing.  Instead, in the SVM case we
-> > > > > >      should force support->xive to false, and send that in the CAS
-> > > > > >      request to the host.  We expect the host to just terminate
-> > > > > >      us because of the mismatch, but this will interact better with
-> > > > > >      host side options setting policy for panic states and the like.
-> > > > > >      Essentially an SVM kernel should behave like an old kernel with
-> > > > > >      no XIVE support at all, at least w.r.t. the CAS irq mode flags.
-> > > > > 
-> > > > > Yes. XIVE shouldn't be requested by the guest.
-> > > > 
-> > > > 	Ok.
-> > > > 
-> > > > > This is the last option 
-> > > > > I proposed but I thought there was some negotiation with the hypervisor
-> > > > > which is not the case. 
-> > > > > 
-> > > > > >   3) Although there are means by which the hypervisor can kind of know
-> > > > > >      a guest is in secure mode, there's not really an "svm=on" option
-> > > > > >      on the host side.  For the most part secure mode is based on
-> > > > > >      discussion directly between the guest and the ultravisor with
-> > > > > >      almost no hypervisor intervention.
-> > > > > 
-> > > > > Is there a negotiation with the ultravisor ? 
-> > > > 
-> > > > 	The VM has no negotiation with the ultravisor w.r.t CAS.
-> > > > 
-> > > > > 
-> > > > > >   4) I'm guessing the problem with XIVE in SVM mode is that XIVE needs
-> > > > > >      to write to event queues in guest memory, which would have to be
-> > > > > >      explicitly shared for secure mode.  That's true whether it's KVM
-> > > > > >      or qemu accessing the guest memory, so kernel_irqchip=on/off is
-> > > > > >      entirely irrelevant.
-> > > > > 
-> > > > > This problem should be already fixed.
-> > > > > The XIVE event queues are shared 
-> > > >  	
-> > > > Yes i have a patch for the guest kernel that shares the event 
-> > > > queue page with the hypervisor. This is done using the
-> > > > UV_SHARE_PAGE ultracall. This patch is not sent out to any any mailing
-> > > > lists yet.
-> > > 
-> > > Why ?
-> > 
-> > At this point I am not sure if this is the only change, I need to the
-> > guest kernel.
-> 
-> Maybe but we're already sure that this change is needed. I don't really see
-> the point in holding this any longer.
-> 
-> >  I also need changes to KVM and to the ultravisor. Its bit
-> > premature to send the patch without having figured out everything
-> > to get xive working on a Secure VM.
-> > 
-> 
-> I'm a bit confused... why did you send this workaround patch in
-> the first place then ? I mean, this raises a concern and we're
-> just trying to move forward.
 
-The upstream kernel in its current form, will hang as of today if qemu
-has 'ic-mode=xive'. The kernel hangs without giving any indication as to
-'why?'. This is a bad state to be in.
 
-This patch was a temporary solution. It is there to inform the user, not
-to use 'xive' in secureVM. The user is atleast informed/guided, instead
-of lost/confused.
+Le 21/02/2020 à 04:27, Alastair D'Silva a écrit :
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> These IOCTLs provide low level access to the card to aid in debugging
+> controller/FPGA firmware.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+>   arch/powerpc/platforms/powernv/pmem/Kconfig |   6 +
+>   arch/powerpc/platforms/powernv/pmem/ocxl.c  | 249 ++++++++++++++++++++
+>   include/uapi/nvdimm/ocxl-pmem.h             |  32 +++
+>   3 files changed, 287 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pmem/Kconfig b/arch/powerpc/platforms/powernv/pmem/Kconfig
+> index c5d927520920..3f44429d70c9 100644
+> --- a/arch/powerpc/platforms/powernv/pmem/Kconfig
+> +++ b/arch/powerpc/platforms/powernv/pmem/Kconfig
+> @@ -12,4 +12,10 @@ config OCXL_PMEM
+>   
+>   	  Select N if unsure.
+>   
+> +config OCXL_PMEM_DEBUG
+> +	bool "OpenCAPI Persistent Memory debugging"
+> +	depends on OCXL_PMEM
+> +	help
+> +	  Enables low level IOCTLs for OpenCAPI Persistent Memory firmware development
+> +
+>   endif
+> diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl.c b/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> index e01f6f9fc180..d4ce5e9e0521 100644
+> --- a/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> +++ b/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> @@ -1050,6 +1050,235 @@ int req_controller_health_perf(struct ocxlpmem *ocxlpmem)
+>   				      GLOBAL_MMIO_HCI_REQ_HEALTH_PERF);
+>   }
+>   
+> +#ifdef CONFIG_OCXL_PMEM_DEBUG
+> +/**
+> + * enable_fwdebug() - Enable FW debug on the controller
+> + * @ocxlpmem: the device metadata
+> + * Return: 0 on success, negative on failure
+> + */
+> +static int enable_fwdebug(const struct ocxlpmem *ocxlpmem)
+> +{
+> +	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
+> +				      OCXL_LITTLE_ENDIAN,
+> +				      GLOBAL_MMIO_HCI_FW_DEBUG);
+> +}
+> +
+> +/**
+> + * disable_fwdebug() - Disable FW debug on the controller
+> + * @ocxlpmem: the device metadata
+> + * Return: 0 on success, negative on failure
+> + */
+> +static int disable_fwdebug(const struct ocxlpmem *ocxlpmem)
+> +{
+> +	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCIC,
+> +				      OCXL_LITTLE_ENDIAN,
+> +				      GLOBAL_MMIO_HCI_FW_DEBUG);
+> +}
+> +
+> +static int ioctl_fwdebug(struct ocxlpmem *ocxlpmem,
+> +			     struct ioctl_ocxl_pmem_fwdebug __user *uarg)
+> +{
+> +	struct ioctl_ocxl_pmem_fwdebug args;
+> +	u64 val;
+> +	int i;
+> +	int rc;
+> +
+> +	if (copy_from_user(&args, uarg, sizeof(args)))
+> +		return -EFAULT;
+> +
+> +	// Buffer size must be a multiple of 8
+> +	if ((args.buf_size & 0x07))
+> +		return -EINVAL;
+> +
+> +	if (args.buf_size > ocxlpmem->admin_command.data_size)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&ocxlpmem->admin_command.lock);
+> +
+> +	rc = enable_fwdebug(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_FW_DEBUG);
+> +	if (rc)
+> +		goto out;
+> +
+> +	// Write DebugAction & FunctionCode
+> +	val = ((u64)args.debug_action << 56) | ((u64)args.function_code << 40);
+> +
+> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> +				      ocxlpmem->admin_command.request_offset + 0x08,
+> +				      OCXL_LITTLE_ENDIAN, val);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> +				      ocxlpmem->admin_command.request_offset + 0x10,
+> +				      OCXL_LITTLE_ENDIAN, args.debug_parameter_1);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> +				      ocxlpmem->admin_command.request_offset + 0x18,
+> +				      OCXL_LITTLE_ENDIAN, args.debug_parameter_2);
+> +	if (rc)
+> +		goto out;
+> +
+> +	for (i = 0x20; i < 0x38; i += 0x08)
+> +		rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> +					      ocxlpmem->admin_command.request_offset + i,
+> +					      OCXL_LITTLE_ENDIAN, 0);
+> +	if (rc)
+> +		goto out;
 
-The permanent solution, is to fix the problem in KVM and ultravisor,
-along with sharing the EQ-page in the SVM, and get a holistic solution
-in place. But that will take time, and may not happen by the time 5.6
-releases.
 
-RP
+rc is the for loop body. The rc test is not.
+
+
+> +
+> +
+> +	// Populate admin command buffer
+> +	if (args.buf_size) {
+> +		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
+> +			u64 val;
+> +
+> +			if (copy_from_user(&val, &args.buf[i], sizeof(u64)))
+> +				return -EFAULT;
+
+
+need to get rc and goto out because of the mutex
+
+
+> +
+> +			rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> +						      ocxlpmem->admin_command.data_offset + i,
+> +						      OCXL_HOST_ENDIAN, val);
+> +			if (rc)
+> +				goto out;
+> +		}
+> +	}
+> +
+> +	rc = admin_command_execute(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_complete_timeout(ocxlpmem,
+> +					    ocxlpmem->timeouts[ADMIN_COMMAND_FW_DEBUG]);
+> +	if (rc < 0)
+> +		goto out;
+> +
+> +	rc = admin_response(ocxlpmem);
+> +	if (rc < 0)
+> +		goto out;
+> +	if (rc != STATUS_SUCCESS) {
+> +		warn_status(ocxlpmem, "Unexpected status from FW Debug", rc);
+> +		goto out;
+> +	}
+> +
+> +	if (args.buf_size) {
+> +		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
+> +			u64 val;
+> +
+> +			rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> +						     ocxlpmem->admin_command.data_offset + i,
+> +						     OCXL_HOST_ENDIAN, &val);
+> +			if (rc)
+> +				goto out;
+> +
+> +			if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
+> +				rc = -EFAULT;
+> +				goto out;
+> +			}
+> +		}
+> +	}
+> +
+> +	rc = admin_response_handled(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = disable_fwdebug(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +out:
+> +	mutex_unlock(&ocxlpmem->admin_command.lock);
+> +	return rc;
+> +}
+> +
+> +static int ioctl_shutdown(struct ocxlpmem *ocxlpmem)
+> +{
+> +	int rc;
+> +
+> +	mutex_lock(&ocxlpmem->admin_command.lock);
+> +
+> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_SHUTDOWN);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_execute(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_complete_timeout(ocxlpmem, ADMIN_COMMAND_SHUTDOWN);
+> +	if (rc < 0) {
+> +		dev_warn(&ocxlpmem->dev, "Shutdown timed out\n");
+> +		goto out;
+> +	}
+> +
+> +	rc = 0;
+> +	goto out;
+
+
+We can remove that goto.
+
+No admin_response_handled()? Is that shutting down the full adapter and 
+we have nobody to talk to? What happens next?
+
+
+> +
+> +out:
+> +	mutex_unlock(&ocxlpmem->admin_command.lock);
+> +	return rc;
+> +}
+> +
+> +static int ioctl_mmio_write(struct ocxlpmem *ocxlpmem,
+> +				struct ioctl_ocxl_pmem_mmio __user *uarg)
+> +{
+> +	struct scm_ioctl_mmio args;
+> +
+> +	if (copy_from_user(&args, uarg, sizeof(args)))
+> +		return -EFAULT;
+> +
+> +	return ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, args.address,
+> +					OCXL_LITTLE_ENDIAN, args.val);
+> +}
+> +
+> +static int ioctl_mmio_read(struct ocxlpmem *ocxlpmem,
+> +				     struct ioctl_ocxl_pmem_mmio __user *uarg)
+> +{
+> +	struct ioctl_ocxl_pmem_mmio args;
+> +	int rc;
+> +
+> +	if (copy_from_user(&args, uarg, sizeof(args)))
+> +		return -EFAULT;
+> +
+> +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, args.address,
+> +				     OCXL_LITTLE_ENDIAN, &args.val);
+> +	if (rc)
+> +		return rc;
+> +
+> +	if (copy_to_user(uarg, &args, sizeof(args)))
+> +		return -EFAULT;
+> +
+> +	return 0;
+> +}
+> +#else /* CONFIG_OCXL_PMEM_DEBUG */
+> +static int ioctl_fwdebug(struct ocxlpmem *ocxlpmem,
+> +			     struct ioctl_ocxl_pmem_fwdebug __user *uarg)
+> +{
+> +	return -EPERM;
+> +}
+> +
+> +static int ioctl_shutdown(struct ocxlpmem *ocxlpmem)
+> +{
+> +	return -EPERM;
+> +}
+> +
+> +static int ioctl_mmio_write(struct ocxlpmem *ocxlpmem,
+> +				struct ioctl_ocxl_pmem_mmio __user *uarg)
+> +{
+> +	return -EPERM;
+> +}
+> +
+> +static int ioctl_mmio_read(struct ocxlpmem *ocxlpmem,
+> +			       struct ioctl_ocxl_pmem_mmio __user *uarg)
+> +{
+> +	return -EPERM;
+> +}
+
+
+The 'else' clause could be dropped, the ioctls will return EINVAL, which 
+is fine, I think.
+
+
+
+> +#endif /* CONFIG_OCXL_PMEM_DEBUG */
+> +
+>   static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
+>   {
+>   	struct ocxlpmem *ocxlpmem = file->private_data;
+> @@ -1091,6 +1320,26 @@ static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
+>   	case IOCTL_OCXL_PMEM_REQUEST_HEALTH:
+>   		rc = req_controller_health_perf(ocxlpmem);
+>   		break;
+> +
+> +	case IOCTL_OCXL_PMEM_FWDEBUG:
+> +		rc = ioctl_fwdebug(ocxlpmem,
+> +				   (struct ioctl_ocxl_pmem_fwdebug __user *)args);
+> +		break;
+> +
+> +	case IOCTL_OCXL_PMEM_SHUTDOWN:
+> +		rc = ioctl_shutdown(ocxlpmem);
+> +		break;
+> +
+> +	case IOCTL_OCXL_PMEM_MMIO_WRITE:
+> +		rc = ioctl_mmio_write(ocxlpmem,
+> +				      (struct ioctl_ocxl_pmem_mmio __user *)args);
+> +		break;
+> +
+> +	case IOCTL_OCXL_PMEM_MMIO_READ:
+> +		rc = ioctl_mmio_read(ocxlpmem,
+> +				     (struct ioctl_ocxl_pmem_mmio __user *)args);
+> +		break;
+> +
+>   	}
+>   
+>   	return rc;
+> diff --git a/include/uapi/nvdimm/ocxl-pmem.h b/include/uapi/nvdimm/ocxl-pmem.h
+> index 0d03abb44001..e20a4f8be82a 100644
+> --- a/include/uapi/nvdimm/ocxl-pmem.h
+> +++ b/include/uapi/nvdimm/ocxl-pmem.h
+> @@ -6,6 +6,28 @@
+>   #include <linux/types.h>
+>   #include <linux/ioctl.h>
+>   
+> +enum ocxlpmem_fwdebug_action {
+> +	OCXL_PMEM_FWDEBUG_READ_CONTROLLER_MEMORY = 0x01,
+> +	OCXL_PMEM_FWDEBUG_WRITE_CONTROLLER_MEMORY = 0x02,
+> +	OCXL_PMEM_FWDEBUG_ENABLE_FUNCTION = 0x03,
+> +	OCXL_PMEM_FWDEBUG_DISABLE_FUNCTION = 0x04,
+> +	OCXL_PMEM_FWDEBUG_GET_PEL = 0x05, // Retrieve Persistent Error Log
+> +};
+> +
+> +struct ioctl_ocxl_pmem_buffer_info {
+> +	__u32	admin_command_buffer_size; // out
+> +	__u32	near_storage_buffer_size; // out
+> +};
+> +
+> +struct ioctl_ocxl_pmem_fwdebug { // All args are inputs
+> +	enum ocxlpmem_fwdebug_action debug_action;
+
+
+More kernel ABI problems. My interpretation of the "enumeration 
+specifiers" section of C99 is that we can't rely on the size of the enum.
+
+
+> +	__u16 function_code;
+> +	__u16 buf_size; // Size of optional data buffer
+> +	__u64 debug_parameter_1;
+> +	__u64 debug_parameter_2;
+> +	__u8 *buf; // Pointer to optional in/out data buffer
+> +};
+> +
+>   #define OCXL_PMEM_ERROR_LOG_ACTION_RESET	(1 << (32-32))
+>   #define OCXL_PMEM_ERROR_LOG_ACTION_CHKFW	(1 << (53-32))
+>   #define OCXL_PMEM_ERROR_LOG_ACTION_REPLACE	(1 << (54-32))
+> @@ -66,6 +88,11 @@ struct ioctl_ocxl_pmem_controller_stats {
+>   	__u64 cache_write_latency; /* nanoseconds */
+>   };
+>   
+> +struct ioctl_ocxl_pmem_mmio {
+> +	__u64 address; /* Offset in global MMIO space */
+> +	__u64 val; /* value to write/was read */
+> +};
+
+
+Can we group all the debug data structures together in the header file, 
+with a comment indicating that they may not be available in the kernel, 
+depending on the config?
+
+   Fred
+
+
+> +
+>   struct ioctl_ocxl_pmem_eventfd {
+>   	__s32 eventfd;
+>   	__u32 reserved;
+> @@ -92,4 +119,9 @@ struct ioctl_ocxl_pmem_eventfd {
+>   #define IOCTL_OCXL_PMEM_EVENT_CHECK			_IOR(OCXL_PMEM_MAGIC, 0x07, __u64)
+>   #define IOCTL_OCXL_PMEM_REQUEST_HEALTH			_IO(OCXL_PMEM_MAGIC, 0x08)
+>   
+> +#define IOCTL_OCXL_PMEM_FWDEBUG		_IOWR(OCXL_PMEM_MAGIC, 0xf0, struct ioctl_ocxl_pmem_fwdebug)
+> +#define IOCTL_OCXL_PMEM_MMIO_WRITE	_IOW(OCXL_PMEM_MAGIC, 0xf1, struct ioctl_ocxl_pmem_mmio)
+> +#define IOCTL_OCXL_PMEM_MMIO_READ	_IOWR(OCXL_PMEM_MAGIC, 0xf2, struct ioctl_ocxl_pmem_mmio)
+> +#define IOCTL_OCXL_PMEM_SHUTDOWN	_IO(OCXL_PMEM_MAGIC, 0xf3)
+> +
+>   #endif /* _UAPI_OCXL_SCM_H */
+> 
 
