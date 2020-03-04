@@ -1,87 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CAA17924C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 15:26:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Xbls0536zDqMF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 01:26:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134CE17925D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 15:31:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Xbt81VdmzDqdX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 01:31:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=prudo@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XbcZ2fRKzDqHx
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 01:19:57 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 024DOoYh055366
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 08:25:54 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yhsv3rx97-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Xbln2d0vzDqPf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 01:26:12 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 024EKBFi017412
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 09:26:10 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yhrydp04c-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 08:25:54 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 09:26:10 -0500
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <prudo@linux.ibm.com>;
- Wed, 4 Mar 2020 13:25:51 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 4 Mar 2020 14:26:07 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 4 Mar 2020 13:25:47 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 024DPjTg44106154
+ Wed, 4 Mar 2020 14:26:00 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 024EPwZ512648592
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Mar 2020 13:25:45 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87476A4053;
- Wed,  4 Mar 2020 13:25:45 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 348D8A405F;
- Wed,  4 Mar 2020 13:25:45 +0000 (GMT)
-Received: from laptop2-ibm.local (unknown [9.152.212.60])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  4 Mar 2020 13:25:45 +0000 (GMT)
-Date: Wed, 4 Mar 2020 14:25:44 +0100
-From: Philipp Rudo <prudo@linux.ibm.com>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Subject: Re: [PATCH v2] ima: add a new CONFIG for loading arch-specific
- policies
-In-Reply-To: <1583326538.6264.32.camel@linux.ibm.com>
-References: <1583289211-5420-1-git-send-email-nayna@linux.ibm.com>
- <CAKv+Gu831SRo+Di6WgKTex40TcOVqNQAdeNLtfQpPdgnvrxucw@mail.gmail.com>
- <1583326538.6264.32.camel@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ Wed, 4 Mar 2020 14:25:58 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 93DBCAE04D;
+ Wed,  4 Mar 2020 14:25:58 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A97CAE045;
+ Wed,  4 Mar 2020 14:25:57 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.145.27])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 14:25:57 +0000 (GMT)
+Subject: Re: [PATCH v3 22/27] powerpc/powernv/pmem: Implement the heartbeat
+ command
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-23-alastair@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 4 Mar 2020 15:25:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200221032720.33893-23-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20030413-0028-0000-0000-000003E0D20D
+x-cbid: 20030414-0016-0000-0000-000002ED23C9
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030413-0029-0000-0000-000024A602B5
-Message-Id: <20200304142544.1c165852@laptop2-ibm.local>
+x-cbparentid: 20030414-0017-0000-0000-00003350725A
+Message-Id: <c660294c-58aa-24cc-efd1-291ffe4836c1@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-04_05:2020-03-04,
  2020-03-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- clxscore=1011 mlxlogscore=999 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040103
+ suspectscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 impostorscore=0 spamscore=0 adultscore=0
+ clxscore=1015 mlxlogscore=999 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,144 +93,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- linux-efi <linux-efi@vger.kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>,
- linux-integrity <linux-integrity@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 04 Mar 2020 07:55:38 -0500
-Mimi Zohar <zohar@linux.ibm.com> wrote:
 
-> [Cc'ing Thomas Gleixner and x86 mailing list]
-> 
-> On Wed, 2020-03-04 at 08:14 +0100, Ard Biesheuvel wrote:
-> > On Wed, 4 Mar 2020 at 03:34, Nayna Jain <nayna@linux.ibm.com> wrote:  
-> > >
-> > > Every time a new architecture defines the IMA architecture specific
-> > > functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
-> > > include file needs to be updated. To avoid this "noise", this patch
-> > > defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
-> > > the different architectures to select it.
-> > >
-> > > Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> > > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> > > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > > Cc: Philipp Rudo <prudo@linux.ibm.com>
-> > > Cc: Michael Ellerman <mpe@ellerman.id.au>  
-> > 
-> > Acked-by: Ard Biesheuvel <ardb@kernel.org>  
-> 
-> Thanks, Ard.
-> > 
-> > for the x86 bits, but I'm not an x86 maintainer. Also, you may need to
-> > split this if you want to permit arch maintainers to pick up their
-> > parts individually.  
-> 
-> Michael, Philipp, Thomas, do you prefer separate patches?
 
-I don't think splitting this patch makes sense. Otherwise you would break the
-build for all architectures until they picked up their line of code.
-
-I'm fine with the patch as is.
-
-Thanks
-Philipp
-
-> >   
-> > > ---
-> > > v2:
-> > > * Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and Michael for
-> > > discussing the fix.
-> > >
-> > >  arch/powerpc/Kconfig           | 1 +
-> > >  arch/s390/Kconfig              | 1 +
-> > >  arch/x86/Kconfig               | 1 +
-> > >  include/linux/ima.h            | 3 +--
-> > >  security/integrity/ima/Kconfig | 9 +++++++++
-> > >  5 files changed, 13 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > > index 497b7d0b2d7e..a5cfde432983 100644
-> > > --- a/arch/powerpc/Kconfig
-> > > +++ b/arch/powerpc/Kconfig
-> > > @@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
-> > >         bool
-> > >         depends on PPC_POWERNV
-> > >         depends on IMA_ARCH_POLICY
-> > > +       select IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > >         help
-> > >           Systems with firmware secure boot enabled need to define security
-> > >           policies to extend secure boot to the OS. This config allows a user
-> > > diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> > > index 8abe77536d9d..4a502fbcb800 100644
-> > > --- a/arch/s390/Kconfig
-> > > +++ b/arch/s390/Kconfig
-> > > @@ -195,6 +195,7 @@ config S390
-> > >         select ARCH_HAS_FORCE_DMA_UNENCRYPTED
-> > >         select SWIOTLB
-> > >         select GENERIC_ALLOCATOR
-> > > +       select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
-> > >
-> > >
-> > >  config SCHED_OMIT_FRAME_POINTER
-> > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > > index beea77046f9b..7f5bfaf0cbd2 100644
-> > > --- a/arch/x86/Kconfig
-> > > +++ b/arch/x86/Kconfig
-> > > @@ -230,6 +230,7 @@ config X86
-> > >         select VIRT_TO_BUS
-> > >         select X86_FEATURE_NAMES                if PROC_FS
-> > >         select PROC_PID_ARCH_STATUS             if PROC_FS
-> > > +       select IMA_SECURE_AND_OR_TRUSTED_BOOT   if EFI && IMA_ARCH_POLICY
-> > >
-> > >  config INSTRUCTION_DECODER
-> > >         def_bool y
-> > > diff --git a/include/linux/ima.h b/include/linux/ima.h
-> > > index 1659217e9b60..aefe758f4466 100644
-> > > --- a/include/linux/ima.h
-> > > +++ b/include/linux/ima.h
-> > > @@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
-> > >  extern void ima_add_kexec_buffer(struct kimage *image);
-> > >  #endif
-> > >
-> > > -#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
-> > > -       || defined(CONFIG_PPC_SECURE_BOOT)
-> > > +#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > >  extern bool arch_ima_get_secureboot(void);
-> > >  extern const char * const *arch_get_ima_policy(void);
-> > >  #else
-> > > diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-> > > index 3f3ee4e2eb0d..d17972aa413a 100644
-> > > --- a/security/integrity/ima/Kconfig
-> > > +++ b/security/integrity/ima/Kconfig
-> > > @@ -327,3 +327,12 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
-> > >         depends on IMA_MEASURE_ASYMMETRIC_KEYS
-> > >         depends on SYSTEM_TRUSTED_KEYRING
-> > >         default y
-> > > +
-> > > +config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > > +       bool
-> > > +       depends on IMA
-> > > +       depends on IMA_ARCH_POLICY  
-> > 
-> > Doesn't the latter already depend on the former?  
+Le 21/02/2020 à 04:27, Alastair D'Silva a écrit :
+> From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> Yes, there's no need for the first.
+> The heartbeat admin command is a simple admin command that exercises
+> the communication mechanisms within the controller.
 > 
-> Mimi
-> >   
-> > > +       default n
-> > > +       help
-> > > +          This option is selected by architectures to enable secure and/or
-> > > +          trusted boot based on IMA runtime policies.
-> > > --
-> > > 2.13.6
-> > >  
+> This patch issues a heartbeat command to the card during init to ensure
+> we can communicate with the card's controller.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+
+
+Nothing to add compared to what has already been commented on previous 
+patches (rc not set in probe(), higher level function to execute admin 
+command in one call).
+
+   Fred
+
+
+
+>   arch/powerpc/platforms/powernv/pmem/ocxl.c | 43 ++++++++++++++++++++++
+>   1 file changed, 43 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl.c b/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> index 081883a8247a..e01f6f9fc180 100644
+> --- a/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> +++ b/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> @@ -306,6 +306,44 @@ static bool is_usable(const struct ocxlpmem *ocxlpmem, bool verbose)
+>   	return true;
+>   }
+>   
+> +/**
+> + * heartbeat() - Issue a heartbeat command to the controller
+> + * @ocxlpmem: the device metadata
+> + * Return: 0 if the controller responded correctly, negative on error
+> + */
+> +static int heartbeat(struct ocxlpmem *ocxlpmem)
+> +{
+> +	int rc;
+> +
+> +	mutex_lock(&ocxlpmem->admin_command.lock);
+> +
+> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_HEARTBEAT);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_execute(ocxlpmem);
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc = admin_command_complete_timeout(ocxlpmem, ADMIN_COMMAND_HEARTBEAT);
+> +	if (rc < 0) {
+> +		dev_err(&ocxlpmem->dev, "Heartbeat timeout\n");
+> +		goto out;
+> +	}
+> +
+> +	rc = admin_response(ocxlpmem);
+> +	if (rc < 0)
+> +		goto out;
+> +	if (rc != STATUS_SUCCESS)
+> +		warn_status(ocxlpmem, "Unexpected status from heartbeat", rc);
+> +
+> +	(void)admin_response_handled(ocxlpmem);
+> +
+> +out:
+> +	mutex_unlock(&ocxlpmem->admin_command.lock);
+> +	return rc;
+> +}
+> +
+>   /**
+>    * allocate_minor() - Allocate a minor number to use for an OpenCAPI pmem device
+>    * @ocxlpmem: the device metadata
+> @@ -1458,6 +1496,11 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>   		goto err;
+>   	}
+>   
+> +	if (heartbeat(ocxlpmem)) {
+> +		dev_err(&pdev->dev, "Heartbeat failed\n");
+> +		goto err;
+> +	}
+> +
+>   	elapsed = 0;
+>   	timeout = ocxlpmem->readiness_timeout + ocxlpmem->memory_available_timeout;
+>   	while (!is_usable(ocxlpmem, false)) {
 > 
 
