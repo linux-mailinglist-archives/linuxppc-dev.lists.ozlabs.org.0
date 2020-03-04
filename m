@@ -2,64 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87A7179B4E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 22:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC1A179B85
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Mar 2020 23:07:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48XnjP0tkNzDqNf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 08:54:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Xp065KnvzDqdx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 09:07:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48XngP3qJSzDqYV
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 08:53:05 +1100 (AEDT)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1j9bws-0000aD-Ml; Wed, 04 Mar 2020 15:53:03 -0600
-Message-ID: <5737c82b1ab4c80e53904e4846694884ca429569.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au, 
- linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
- christophe.leroy@c-s.fr,  benh@kernel.crashing.org, paulus@samba.org,
- npiggin@gmail.com,  keescook@chromium.org,
- kernel-hardening@lists.openwall.com
-Date: Wed, 04 Mar 2020 15:53:01 -0600
-In-Reply-To: <20200206025825.22934-6-yanaijie@huawei.com>
-References: <20200206025825.22934-1-yanaijie@huawei.com>
- <20200206025825.22934-6-yanaijie@huawei.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: yanaijie@huawei.com, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
- keescook@chromium.org, kernel-hardening@lists.openwall.com,
- linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v3 5/6] powerpc/fsl_booke/64: clear the original kernel
- if randomized
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XnyJ3XzJzDqTG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 09:06:00 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 024Lwmcl133623; Wed, 4 Mar 2020 17:05:52 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfkncewpc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Mar 2020 17:05:51 -0500
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 024Lws2D133806;
+ Wed, 4 Mar 2020 17:05:51 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yfkncewp0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Mar 2020 17:05:51 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 024M0YaH030687;
+ Wed, 4 Mar 2020 22:05:50 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 2yffk77xby-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Mar 2020 22:05:50 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 024M5n0U13304420
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Mar 2020 22:05:49 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C3C2BE0AC;
+ Wed,  4 Mar 2020 22:05:49 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EEB24BE0A3;
+ Wed,  4 Mar 2020 22:05:46 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.190])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Mar 2020 22:05:46 +0000 (GMT)
+Message-ID: <a93a42c672171ed93557f9f9f3b5d64013980f26.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/1] powerpc/kernel: Enables memory hot-remove after
+ reboot on pseries guests
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Bharata B Rao <bharata.rao@gmail.com>
+Date: Wed, 04 Mar 2020 19:05:43 -0300
+In-Reply-To: <621dd76a8e0b449db66ba2c3ad20fb2c743a1f1b.camel@linux.ibm.com>
+References: <20200228060439.52749-1-leonardo@linux.ibm.com>
+ <CAGZKiBr=8i11YPDn+1y5j6YfGj+tVbbTKakoGje9QQ8TEw9g5g@mail.gmail.com>
+ <621dd76a8e0b449db66ba2c3ad20fb2c743a1f1b.camel@linux.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-i+d4i/WWLm20T4rx7xB5"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-04_09:2020-03-04,
+ 2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ mlxlogscore=897 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=2 clxscore=1015 mlxscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040140
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,46 +94,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: ndfont@gmail.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Michael Roth <mdroth@linux.vnet.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ arbab@linux.ibm.com, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-02-06 at 10:58 +0800, Jason Yan wrote:
-> The original kernel still exists in the memory, clear it now.
-> 
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
-> Cc: Scott Wood <oss@buserror.net>
-> Cc: Diana Craciun <diana.craciun@nxp.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> ---
->  arch/powerpc/mm/nohash/kaslr_booke.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c
-> b/arch/powerpc/mm/nohash/kaslr_booke.c
-> index c6f5c1db1394..ed1277059368 100644
-> --- a/arch/powerpc/mm/nohash/kaslr_booke.c
-> +++ b/arch/powerpc/mm/nohash/kaslr_booke.c
-> @@ -378,8 +378,10 @@ notrace void __init kaslr_early_init(void *dt_ptr,
-> phys_addr_t size)
->  	unsigned int *__kaslr_offset = (unsigned int *)(KERNELBASE + 0x58);
->  	unsigned int *__run_at_load = (unsigned int *)(KERNELBASE + 0x5c);
->  
-> -	if (*__run_at_load == 1)
-> +	if (*__run_at_load == 1) {
-> +		kaslr_late_init();
->  		return;
-> +	}
 
-What if you're here because kexec set __run_at_load (or
-CONFIG_RELOCATABLE_TEST is enabled), not because kaslr happened?
+--=-i+d4i/WWLm20T4rx7xB5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
--Scott
+On Wed, 2020-03-04 at 04:18 -0300, Leonardo Bras wrote:
+> Humm, this makes sense.
+> But with mu change, these pieces of memory only get into ZONE_MOVABLE
+> if the boot parameter 'movable_node' gets passed to guest kernel.=20
 
+Humm, I think your patch also does that.
+
+> So, even if we are unable to sort out some flag combination that work
+> fine for both use-cases, if PowerVM don't pass 'movable_node' as boot
+> parameter to kernel, it will behave just as today.
+
+Also, another option would be adding a new 'removable' flag, given it
+has a lot of free bytes. It would only be passed by qemu, so we would
+be safe with PowerVM.=20
+
+Then we would have=20
++	if(lmb->flags & DRCONF_MEM_REMOVABLE)=09
++		early_init_dt_mark_hotplug_memory_arch(base, size);
+
+Do you know if it's possible?
+We would need to update the LOPAPR?=20
+
+Leonardo
+
+--=-i+d4i/WWLm20T4rx7xB5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5gJjcACgkQlQYWtz9S
+ttSHtw/9EmfURu4xc28TKZKOR3RRVUWh04fm24UoyOjEiEQ//E0NsFKdT1sIx+uH
+CSL9M3nNE0+DFz9YOtFwRKNwvrleSJUzivvaJyLU0jOsgZu0XmRHw3Sz3faYeIwU
+fYke3nVYjqb+qrgJLhlX+EeVlAgpp0Wgr5gYxvMvjUrWhR163JOP8sXWZy2FW7vr
+EgGOasvyrNiX/tvAa4H9mGSeL0ivmDx6O9FB/EKaZIRMXPCT9L0+jIR/upFPhNBH
+3dmoCd26vpy/D/vs2thMQRU77WoIYQcGVTniM7/zEuJ2X3v0B95GnfblHh/3dQM7
+D796j+eXq/Io6DQyBh4EEjMWOyYuDb3KM1G/ZJuHPs/RhTCl31DveMBC6kK7e9Yw
+51q+hyU2opLZKDV3DI7EzzUIbUkC/i/wp7SmsswZQHZCpwOfCcf8/K24h9q5yUZn
+yjce+OpcLy/VfhlZGhf0E5D8p+IOL0zJHFlpb3bGDAXtUecp1C8J82nLdXHFE0Pz
+GitCSImCzjjwfoLEx8VYRV/TjBS9NjNbHOnG1GVVVgAlL1BauySvHYqTTdc0SlMG
+f+NKuqE9U0b5hpG4+cu3PQMCnAngv4PzG9tiF4HW+2UQ4ETujvqUwMFilYJa94VT
+bgB2swZfVuFydKx99Wy9FuBdsiNbzriiIccjv9Nn7MgXkJFl/+s=
+=Sv41
+-----END PGP SIGNATURE-----
+
+--=-i+d4i/WWLm20T4rx7xB5--
 
