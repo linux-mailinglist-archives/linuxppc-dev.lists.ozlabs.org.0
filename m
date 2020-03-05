@@ -2,70 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D12179FB3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 06:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE91179FCA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 07:09:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Y0S95mBZzDqq7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 16:59:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Y0hf21ZwzDqq7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 17:09:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=pHHIxu+p; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Y0PM4tKSzDqjM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 16:56:39 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Y0PH23ZTz9v0xf;
- Thu,  5 Mar 2020 06:56:35 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=pHHIxu+p; dkim-adsp=pass;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Y0g05rk6zDqkK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 17:08:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=hksLamx9; 
  dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id s9KFcENT85ew; Thu,  5 Mar 2020 06:56:35 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Y0PH10gQz9v0xd;
- Thu,  5 Mar 2020 06:56:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1583387795; bh=Z0UD98IxbqBaiuaVklCQ1qAh/kKOqkXFHSdToBuM/38=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=pHHIxu+p6SvLOjMUKls9TTSin3xoS1sPtQCZuJ4L/CLI/D1CXLNwziilL4+lUVp+4
- +kwyRvveqFA+gSbY93TJ+tnn2zFr/2LrtMLwCrg6M04AHIz541APRxu1qEVWaPpmyu
- 7GeQOh1JY6nhCgcYuG3fHXhRcTCdKNAZoaAJvtN8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 382908B790;
- Thu,  5 Mar 2020 06:56:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HWPfKwU2Yntd; Thu,  5 Mar 2020 06:56:35 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A8E18B756;
- Thu,  5 Mar 2020 06:56:33 +0100 (CET)
-Subject: Re: [PATCH -next] powerpc/mm/ptdump: fix an undefined behaviour
-To: Qian Cai <cai@lca.pw>, mpe@ellerman.id.au, akpm@linux-foundation.org
-References: <20200305044759.1279-1-cai@lca.pw>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3b724167-6bd2-f281-c6ee-fcb39cb9e24b@c-s.fr>
-Date: Thu, 5 Mar 2020 06:56:30 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+Received: by ozlabs.org (Postfix)
+ id 48Y0g03Pmsz9sQt; Thu,  5 Mar 2020 17:08:28 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48Y0g02MHfz9sNg;
+ Thu,  5 Mar 2020 17:08:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1583388508;
+ bh=NxWK+ZJrvSNKWYtiMj0zrErsYhVkJSm14BmzCSHgBOo=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=hksLamx94PxlEKTHyNNj1Pnu6y6PowlKRQCw/JrRWCB0NUp2KaEB6lyDwiCWm7dL4
+ YfZJqhRHlp27/98Y5OzX/1OHaYkF6IZHqIu27bziUQkNN5LfZYzGYdUxg3Wq8UHetI
+ osiOqCJiEqLuU9rk+FHpmhqHpfGabE9QQAIlZEXSBzqxxNm37K1Px03vzy//fOSCeq
+ j2trJChuvZPKqQ6dwQIbPV2Lv34vOKJ+CQRIMMsiLoUk2GPm6Hb9H715GtSVusguo7
+ quwSUJHOjGVXtA+Lu9iRRuD8iShTankeJ5ewIGcKrLWej+mUS5+g24baZ2uMmzbUn2
+ 1dZ5sQq/0CWCA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v2] powerpc/mm: Fix missing KUAP disable in
+ flush_coherent_icache()
+In-Reply-To: <ab27d125-54e7-3c31-709e-ff5d28c7bfbd@linux.ibm.com>
+References: <20200303235708.26004-1-mpe@ellerman.id.au>
+ <ab27d125-54e7-3c31-709e-ff5d28c7bfbd@linux.ibm.com>
+Date: Thu, 05 Mar 2020 17:08:25 +1100
+Message-ID: <875zfjqqp2.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200305044759.1279-1-cai@lca.pw>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,66 +62,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, rashmicy@gmail.com,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Andrew Donnellan <ajd@linux.ibm.com> writes:
+> On 4/3/20 10:57 am, Michael Ellerman wrote:
+>> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+>> index ef7b1119b2e2..36a8c7b105ce 100644
+>> --- a/arch/powerpc/mm/mem.c
+>> +++ b/arch/powerpc/mm/mem.c
+>> @@ -373,7 +373,9 @@ static inline bool flush_coherent_icache(unsigned long addr)
+>>   	 */
+>>   	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
+>>   		mb(); /* sync */
+>> +		allow_read_from_user((void *)addr, L1_CACHE_BYTES);
+>>   		icbi((void *)addr);
+>> +		prevent_read_from_user((void *)addr, L1_CACHE_BYTES);
+>>   		mb(); /* sync */
+>>   		isync();
+>>   		return true;
+>> 
+>
+> (void *) should be (const void __user *) to avoid sparse warnings.
+>
+> snowpatch reports: https://patchwork.ozlabs.org/patch/1248671/
 
+Thanks.
 
-Le 05/03/2020 à 05:47, Qian Cai a écrit :
-> Booting a power9 server with hash MMU could trigger an undefined
-> behaviour because pud_offset(p4d, 0) will do,
-> 
-> 0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
-> 
->   UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
->   shift exponent 34 is too large for 32-bit type 'int'
->   CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
->   Call Trace:
->   dump_stack+0xf4/0x164 (unreliable)
->   ubsan_epilogue+0x18/0x78
->   __ubsan_handle_shift_out_of_bounds+0x160/0x21c
->   walk_pagetables+0x2cc/0x700
->   walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
->   (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
->   ptdump_check_wx+0x8c/0xf0
->   mark_rodata_ro+0x48/0x80
->   kernel_init+0x74/0x194
->   ret_from_kernel_thread+0x5c/0x74
-> 
-> Fixes: 8eb07b187000 ("powerpc/mm: Dump linux pagetables")
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
-> 
-> Notes for maintainers:
-> 
-> This is on the top of the linux-next commit "powerpc: add support for
-> folded p4d page tables" which is in the Andrew's tree.
-> 
->   arch/powerpc/mm/ptdump/ptdump.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> index 9d6256b61df3..b530f81398a7 100644
-> --- a/arch/powerpc/mm/ptdump/ptdump.c
-> +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> @@ -279,7 +279,7 @@ static void walk_pmd(struct pg_state *st, pud_t *pud, unsigned long start)
->   
->   static void walk_pud(struct pg_state *st, p4d_t *p4d, unsigned long start)
->   {
-> -	pud_t *pud = pud_offset(p4d, 0);
-> +	pud_t *pud = pud_offset(p4d, 0UL);
-
-Is that the only place we have to do this ?
-
-(In 5.6-rc) I see the same in:
-/arch/powerpc/mm/ptdump/hashpagetable.c
-/arch/powerpc/kvm/book3s_64_mmu_radix.c
-
-Wouldn't it be better to:
-- Either cast addr to unsigned long in pud_index() macro
-- Or change pud_index() macro to a static inline function as x86 ?
-
-Christophe
+cheers
