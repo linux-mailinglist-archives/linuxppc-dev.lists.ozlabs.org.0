@@ -2,53 +2,104 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AC3179CDB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 01:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3A4179CDD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 01:32:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Xs9s5rsgzDqhD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 11:31:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48XsCb2N35zDqgq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 11:32:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Xs8452rrzDqQ0
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 11:29:40 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=fVDV3f2o; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 48Xs836Hz7z9sRR; Thu,  5 Mar 2020 11:29:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1583368179;
- bh=5xu/dzFuNwVikXTzBhBcxMlmER91thjs/7c43G7N2qU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=fVDV3f2oU8QzPzeza4hCjA/gjhFcU6eNxr/IRVoMZyAXS0yz7FClzew+zjwmG5VC4
- gdqdOiyO4viO1+SiCAzLFrhyF1EF0YcJ4X+u5ZIAwCbo8Hw5Y+RG5wJO7ZrYKfYh/z
- zZAdyemXORp2N+u1MYOKRV7DGImEv8/J6z0kq9WI=
-Date: Thu, 5 Mar 2020 10:55:45 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>
-Subject: Re: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
-Message-ID: <20200304235545.GE593957@umbus.fritz.box>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
- <20200302233240.GB35885@umbus.fritz.box>
- <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
- <20200303170205.GA5416@oc0525413822.ibm.com>
- <20200303184520.632be270@bahia.home>
- <20200303185645.GB5416@oc0525413822.ibm.com>
- <20200304115948.7b2dfe10@bahia.home>
- <20200304153727.GH5416@oc0525413822.ibm.com>
- <08269906-db11-b80c-0e67-777ab0aaa9bd@fr.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Xs9Y5s1PzDqhb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 11:30:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48Xs9Y3sLwz8tFV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 11:30:57 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48Xs9Y3B19z9sSJ; Thu,  5 Mar 2020 11:30:57 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 48Xs9X6F0vz9sRR
+ for <linuxppc-dev@ozlabs.org>; Thu,  5 Mar 2020 11:30:56 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0250KlUc029440
+ for <linuxppc-dev@ozlabs.org>; Wed, 4 Mar 2020 19:30:55 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yj4q1rw9g-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 04 Mar 2020 19:30:54 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <ajd@linux.ibm.com>;
+ Thu, 5 Mar 2020 00:30:52 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 5 Mar 2020 00:30:50 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0250Unm648431264
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 Mar 2020 00:30:49 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95E76A404D;
+ Thu,  5 Mar 2020 00:30:49 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40404A4040;
+ Thu,  5 Mar 2020 00:30:49 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Mar 2020 00:30:49 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 16046A0264;
+ Thu,  5 Mar 2020 11:30:44 +1100 (AEDT)
+Subject: Re: [PATCH v2] powerpc/mm: Fix missing KUAP disable in
+ flush_coherent_icache()
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+References: <20200303235708.26004-1-mpe@ellerman.id.au>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Thu, 5 Mar 2020 11:30:46 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
-Content-Disposition: inline
-In-Reply-To: <08269906-db11-b80c-0e67-777ab0aaa9bd@fr.ibm.com>
+In-Reply-To: <20200303235708.26004-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20030500-0012-0000-0000-0000038D412C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030500-0013-0000-0000-000021C9FE68
+Message-Id: <ab27d125-54e7-3c31-709e-ff5d28c7bfbd@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-04_10:2020-03-04,
+ 2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 adultscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0 mlxlogscore=689
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003050000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,71 +111,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, Ram Pai <linuxram@us.ibm.com>,
- Greg Kurz <groug@kaod.org>, kvm-ppc@vger.kernel.org,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 4/3/20 10:57 am, Michael Ellerman wrote:
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index ef7b1119b2e2..36a8c7b105ce 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -373,7 +373,9 @@ static inline bool flush_coherent_icache(unsigned long addr)
+>   	 */
+>   	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
+>   		mb(); /* sync */
+> +		allow_read_from_user((void *)addr, L1_CACHE_BYTES);
+>   		icbi((void *)addr);
+> +		prevent_read_from_user((void *)addr, L1_CACHE_BYTES);
+>   		mb(); /* sync */
+>   		isync();
+>   		return true;
+> 
 
---5xSkJheCpeK0RUEJ
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+(void *) should be (const void __user *) to avoid sparse warnings.
 
-On Wed, Mar 04, 2020 at 04:56:09PM +0100, C=E9dric Le Goater wrote:
-> [ ... ]
->=20
-> > (1) applied the patch which shares the EQ-page with the hypervisor.
-> > (2) set "kernel_irqchip=3Doff"
-> > (3) set "ic-mode=3Dxive"
->=20
-> you don't have to set the interrupt mode. xive should be negotiated
-> by default.
->=20
-> > (4) set "svm=3Don" on the kernel command line.
-> > (5) no changes to the hypervisor and ultravisor.
-> >=20
-> > And Boom it works!.   So you were right.
->=20
-> Excellent.
-> =20
-> > I am sending out the patch for (1) above ASAP.
->=20
-> Next step, could you please try to do the same with the TIMA and ESB pfn ?
-> and use KVM.
+snowpatch reports: https://patchwork.ozlabs.org/patch/1248671/
 
-I'm a bit confused by this.  Aren't the TIMA and ESB pages essentially
-IO pages, rather than memory pages from the guest's point of view?  I
-assume only memory pages are protected with PEF - I can't even really
-see what protecting an IO page would even mean.
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---5xSkJheCpeK0RUEJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5gP/8ACgkQbDjKyiDZ
-s5JaxxAAnwIyf0WXC5YzeSjk1V+AVuxL+cTigsJ+1YnlFgSAXo34iO5iCZbKag92
-Kz7HmDKLZwtomQ2WFrauUcg32Ui2e5xnfExVEjVQl9rm+8SxF4htjORiCVCkvWXt
-mnYEtW4u2nGtMKp90mKysXxKXC+mPAjq1vwgSl5/Jo6pLhpDvagUsxDH3pYDodlo
-8ie2CkmOGDOTVmAD9S+cRn/n8DBz4mw82TaWoL2Njes6BqLbkxjjpFW4y7pojHW/
-DHzq8f3q+qfoKG3DNwoLACvgTP5XLBlnqBJ0Sds5jmWz1wjHfQxcSP8Qn3g2H+DF
-EcA7w64YHAtLzsOrcAxXSkrG5nowiE6sgSKDskVuBFH59lo+5RgaWEJCVO6Nc5sp
-HriPGmRJAceJHtNTPF8sbcMAwNSwkfRYcpUTs4dmVUHUg1zfIsn0DorALL9/xy8a
-w6yDVfgf6yQGlojatQ7Wz3a43s2JalFf/zCODealfJJlStlCeY5Uw1bX11WdLbJi
-AnPygR6PS1FMbEUTM4BJkbICQ3rg2652IpsZd9rsHolEXk1yEpJlbQXpByUETsNq
-8tqjzb04gm/a9wBgsKrU1p3hAFJ4sGPsoXj+u17iZfOs9Xb5I4i6YOgXv+6J0OYi
-tjSW+Dmu8EImuTpULYbt1j1TjRU9oU/PzN5Jnzi/+uEakQxi3Nc=
-=DN2A
------END PGP SIGNATURE-----
-
---5xSkJheCpeK0RUEJ--
