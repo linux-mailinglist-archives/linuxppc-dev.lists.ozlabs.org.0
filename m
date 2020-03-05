@@ -1,77 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95A717B205
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 00:03:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YRBH1XCczDqwV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 10:03:35 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBC517B234
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 00:23:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YRdP57cVzDqrn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 10:23:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=tycho.ws
- (client-ip=2607:f8b0:4864:20::c43; helo=mail-yw1-xc43.google.com;
- envelope-from=tycho@tycho.ws; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=tycho.ws
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=tycho-ws.20150623.gappssmtp.com
- header.i=@tycho-ws.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=aGAWUnq2; dkim-atps=neutral
-Received: from mail-yw1-xc43.google.com (mail-yw1-xc43.google.com
- [IPv6:2607:f8b0:4864:20::c43])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YNFS1KlxzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 07:51:04 +1100 (AEDT)
-Received: by mail-yw1-xc43.google.com with SMTP id p124so65528ywc.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 12:51:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=tycho-ws.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=+KkcNSGG4PmqcHf5w0J/0EA5pqzwTNlZhZPBmrmp7lc=;
- b=aGAWUnq2cShWMA0rCbiRWuVCWELljpX3PB/FsEKGMOFKDXpvVY26swvU1c83ciEV+C
- vZfZPwlp/g4NcEdLGqpe73q7GJanZJzUj1PqzqD+1q/UbfbPfMtPUcBQqEQ1NG/baZT1
- Eg84AfRliEdTYVakSs34OEyTVaJcEodqXgcX/1DW2HbALNbr9n7Pe4axB/UldwC8oIhb
- e+LE398BVASwZokiGAXu+1GIxRuQENdZmZk6VIDtumHXmAfZsZufuaoMj2sBsHbO/Pb+
- hA0XbxlRv5htq2DMEsIiN1fAac252TMiClDppHPRIbUbRR8B1EbMDYwB0KsRmeF5LX2H
- gJpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=+KkcNSGG4PmqcHf5w0J/0EA5pqzwTNlZhZPBmrmp7lc=;
- b=ljcaycdRiueticWq8IuTF+RUAH6o0GKo30Y8O/mlBaWzcOXGRztssLfw7PBq+G2X2Q
- Irp/P9WJrRmhWnQDzM0r57DO8uWay59o+CsRj/hHinIbFRmLVM8DtQvQ8eneH8kst07Y
- xUnMibCTSgD175gblngzfIBcqPRXIvVo6r8EXLQMVTo46/J/KLyXhKpEl1uob4tnc1AF
- aNrL9osHksRjOQuzNe1aQxifO1xs2AbYpdYPw3P+u84Je86HporXI7wNbrwZy2iKtwCR
- /UeWivAW7t8RP0slYgATFySmq9Mvm/hkZ1sNbeEep5vJ+iwDki1AAX0wsaVQoRH8oa/S
- Q2QA==
-X-Gm-Message-State: ANhLgQ0GATG2hipz+Lzdx/K2CZ4RT1gWWtPoRVjszXlw3LcP8CiFJK37
- vDd5Rei+A/SxGgIFNMB/Mh1/Kw==
-X-Google-Smtp-Source: ADFU+vs50RkJRZ4RwwF6XWZXespcdsmaoCqqPgVtO/9DW5s3y9h2GpkJOYvZU+X77or1j5LpSjT7oQ==
-X-Received: by 2002:a25:6a45:: with SMTP id f66mr119436ybc.63.1583441461260;
- Thu, 05 Mar 2020 12:51:01 -0800 (PST)
-Received: from cisco ([2607:fb90:17d4:133:1002:9a44:e2a2:4464])
- by smtp.gmail.com with ESMTPSA id d203sm10941125ywc.29.2020.03.05.12.50.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Mar 2020 12:51:00 -0800 (PST)
-Date: Thu, 5 Mar 2020 13:50:54 -0700
-From: Tycho Andersen <tycho@tycho.ws>
-To: Arvind Sankar <nivedita@alum.mit.edu>
-Subject: Re: [PATCH] powerpc/32: Stop printing the virtual memory layout
-Message-ID: <20200305205054.GD6506@cisco>
-References: <202003021038.8F0369D907@keescook>
- <20200305150837.835083-1-nivedita@alum.mit.edu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YRbg1h7ZzDqlK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 10:22:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=psMUlKTk; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48YRbd5SFrz9sNg;
+ Fri,  6 Mar 2020 10:22:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1583450526;
+ bh=PvR3xvSSafUOmuGnnxb06iTcgtURZdFSYRFughwx4Jc=;
+ h=Date:From:To:Cc:Subject:From;
+ b=psMUlKTkLtxWgoN1IA50NGPWdGS3hB3HdMRoe5FDUpSOS1fIY6HWjZYAyHKKzxF3D
+ 9NRhvJfHINFTJlf/SEKKty3sKJso2RH/4AMJez+pTVPVImvYfGyhM5YSyz8famnEvr
+ obKpExYXgAU0g+ek1XBiV2G8bTZ2+BgByr/cqdOD9Qy03CYWfR2c9/9m40GVsUpy+4
+ G4DuKxrduayZUIizWVcBReAfCIj4MaMf+v0ehJqTivyZRB3FXxbDAVqDQqXh7kOdtD
+ CSd8iwgoQ159AM0f1MOW29lgknQmmrVG4ayd2iMxg+hAo1r5LtulZwr0GCbpc4BGqW
+ xh62PJw55My3Q==
+Date: Fri, 6 Mar 2020 10:21:58 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: David Miller <davem@davemloft.net>, Networking <netdev@vger.kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: manual merge of the net-next tree with the powerpc tree
+Message-ID: <20200306102158.0b88e0a0@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200305150837.835083-1-nivedita@alum.mit.edu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Fri, 06 Mar 2020 10:00:05 +1100
+Content-Type: multipart/signed; boundary="Sig_/MiD=6dX41diOlbdUFdeLJ7D";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,26 +58,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, kernel-hardening@lists.openwall.com,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, "Tobin C . Harding" <me@tobin.cc>
+Cc: Christian Brauner <christian.brauner@ubuntu.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 05, 2020 at 10:08:37AM -0500, Arvind Sankar wrote:
-> For security, don't display the kernel's virtual memory layout.
-> 
-> Kees Cook points out:
-> "These have been entirely removed on other architectures, so let's
-> just do the same for ia32 and remove it unconditionally."
-> 
-> 071929dbdd86 ("arm64: Stop printing the virtual memory layout")
-> 1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
-> 31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
-> fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
-> adb1fe9ae2ee ("mm/page_alloc: Remove kernel address exposure in free_reserved_area()")
-> 
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+--Sig_/MiD=6dX41diOlbdUFdeLJ7D
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Tycho Andersen <tycho@tycho.ws>
+Hi all,
+
+Today's linux-next merge of the net-next tree got a conflict in:
+
+  fs/sysfs/group.c
+
+between commit:
+
+  9255782f7061 ("sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj functio=
+n to change the symlink name")
+
+from the powerpc tree and commit:
+
+  303a42769c4c ("sysfs: add sysfs_group{s}_change_owner()")
+
+from the net-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc fs/sysfs/group.c
+index 1e2a096057bc,5afe0e7ff7cd..000000000000
+--- a/fs/sysfs/group.c
++++ b/fs/sysfs/group.c
+@@@ -478,4 -457,118 +479,118 @@@ int compat_only_sysfs_link_entry_to_kob
+  	kernfs_put(target);
+  	return PTR_ERR_OR_ZERO(link);
+  }
+ -EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
+ +EXPORT_SYMBOL_GPL(compat_only_sysfs_link_entry_to_kobj);
++=20
++ static int sysfs_group_attrs_change_owner(struct kernfs_node *grp_kn,
++ 					  const struct attribute_group *grp,
++ 					  struct iattr *newattrs)
++ {
++ 	struct kernfs_node *kn;
++ 	int error;
++=20
++ 	if (grp->attrs) {
++ 		struct attribute *const *attr;
++=20
++ 		for (attr =3D grp->attrs; *attr; attr++) {
++ 			kn =3D kernfs_find_and_get(grp_kn, (*attr)->name);
++ 			if (!kn)
++ 				return -ENOENT;
++=20
++ 			error =3D kernfs_setattr(kn, newattrs);
++ 			kernfs_put(kn);
++ 			if (error)
++ 				return error;
++ 		}
++ 	}
++=20
++ 	if (grp->bin_attrs) {
++ 		struct bin_attribute *const *bin_attr;
++=20
++ 		for (bin_attr =3D grp->bin_attrs; *bin_attr; bin_attr++) {
++ 			kn =3D kernfs_find_and_get(grp_kn, (*bin_attr)->attr.name);
++ 			if (!kn)
++ 				return -ENOENT;
++=20
++ 			error =3D kernfs_setattr(kn, newattrs);
++ 			kernfs_put(kn);
++ 			if (error)
++ 				return error;
++ 		}
++ 	}
++=20
++ 	return 0;
++ }
++=20
++ /**
++  * sysfs_group_change_owner - change owner of an attribute group.
++  * @kobj:	The kobject containing the group.
++  * @grp:	The attribute group.
++  * @kuid:	new owner's kuid
++  * @kgid:	new owner's kgid
++  *
++  * Returns 0 on success or error code on failure.
++  */
++ int sysfs_group_change_owner(struct kobject *kobj,
++ 			     const struct attribute_group *grp, kuid_t kuid,
++ 			     kgid_t kgid)
++ {
++ 	struct kernfs_node *grp_kn;
++ 	int error;
++ 	struct iattr newattrs =3D {
++ 		.ia_valid =3D ATTR_UID | ATTR_GID,
++ 		.ia_uid =3D kuid,
++ 		.ia_gid =3D kgid,
++ 	};
++=20
++ 	if (!kobj->state_in_sysfs)
++ 		return -EINVAL;
++=20
++ 	if (grp->name) {
++ 		grp_kn =3D kernfs_find_and_get(kobj->sd, grp->name);
++ 	} else {
++ 		kernfs_get(kobj->sd);
++ 		grp_kn =3D kobj->sd;
++ 	}
++ 	if (!grp_kn)
++ 		return -ENOENT;
++=20
++ 	error =3D kernfs_setattr(grp_kn, &newattrs);
++ 	if (!error)
++ 		error =3D sysfs_group_attrs_change_owner(grp_kn, grp, &newattrs);
++=20
++ 	kernfs_put(grp_kn);
++=20
++ 	return error;
++ }
++ EXPORT_SYMBOL_GPL(sysfs_group_change_owner);
++=20
++ /**
++  * sysfs_groups_change_owner - change owner of a set of attribute groups.
++  * @kobj:	The kobject containing the groups.
++  * @groups:	The attribute groups.
++  * @kuid:	new owner's kuid
++  * @kgid:	new owner's kgid
++  *
++  * Returns 0 on success or error code on failure.
++  */
++ int sysfs_groups_change_owner(struct kobject *kobj,
++ 			      const struct attribute_group **groups,
++ 			      kuid_t kuid, kgid_t kgid)
++ {
++ 	int error =3D 0, i;
++=20
++ 	if (!kobj->state_in_sysfs)
++ 		return -EINVAL;
++=20
++ 	if (!groups)
++ 		return 0;
++=20
++ 	for (i =3D 0; groups[i]; i++) {
++ 		error =3D sysfs_group_change_owner(kobj, groups[i], kuid, kgid);
++ 		if (error)
++ 			break;
++ 	}
++=20
++ 	return error;
++ }
++ EXPORT_SYMBOL_GPL(sysfs_groups_change_owner);
+
+--Sig_/MiD=6dX41diOlbdUFdeLJ7D
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl5hiZYACgkQAVBC80lX
+0GwNjgf+NR8vXKVJAOj4wfPbS7Z86o+CKOI/QhegsGe9hQhSVkfAPt2iQ44y3B4c
+8zSfBQW5uYRwXALv7eiFKnIBw1rFg66smu7svvbEIFE/siwIMqGZJW0gOpVwIAF7
+qgO7qyQJlRa7G3+vZsA8VDA/1ti+juHCJHikLmzHRZOB6hF2QQTGLodXuD0ReJHQ
+D0seqE0uNkN5DO/5KifBic8SHGRMAv0P28MC2SH8Si/YmF4CwN4E9gp9fKsQ4vo5
+dBpZvDO345/zQO7p31mIV/exmvQZ68ttELulIYglGLY2d3c245eBf432lqT9EIIk
+SlGc8Nxd/I8v17zpel/hCzWN1KrnxQ==
+=ApLk
+-----END PGP SIGNATURE-----
+
+--Sig_/MiD=6dX41diOlbdUFdeLJ7D--
