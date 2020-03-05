@@ -1,56 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A2317A4F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 13:14:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348E517A4CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 13:00:02 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Y8SZ08CXzDqkR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 22:59:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Y8mw3DfqzDql2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 23:14:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.61.149; helo=7.mo177.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 940 seconds by postgrey-1.36 at bilbo;
- Thu, 05 Mar 2020 22:57:45 AEDT
-Received: from 7.mo177.mail-out.ovh.net (7.mo177.mail-out.ovh.net
- [46.105.61.149])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Y8Q14Nt3zDqj1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 22:57:44 +1100 (AEDT)
-Received: from player762.ha.ovh.net (unknown [10.108.57.141])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id 20DFE12715D
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 12:41:59 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player762.ha.ovh.net (Postfix) with ESMTPSA id 2E8F8101583C6;
- Thu,  5 Mar 2020 11:41:34 +0000 (UTC)
-Subject: Re: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
-To: Ram Pai <linuxram@us.ibm.com>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
- <20200302233240.GB35885@umbus.fritz.box>
- <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
- <20200303170205.GA5416@oc0525413822.ibm.com>
- <6f7ea308-3505-6070-dde1-20fee8fdddc3@kaod.org>
- <20200303202918.GC5416@oc0525413822.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <950f5c11-07f6-56b9-db8d-e5fd6fa7ab26@kaod.org>
-Date: Thu, 5 Mar 2020 12:41:30 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Y8kM2v65zDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 23:11:54 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 0F5D6B080;
+ Thu,  5 Mar 2020 12:11:50 +0000 (UTC)
+Subject: Re: [PATCH 2/2] mm/vma: Introduce VM_ACCESS_FLAGS
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+References: <1583391014-8170-1-git-send-email-anshuman.khandual@arm.com>
+ <1583391014-8170-3-git-send-email-anshuman.khandual@arm.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <b3ab3943-7c3a-9c0a-17ba-bea254c5d5df@suse.cz>
+Date: Thu, 5 Mar 2020 13:11:46 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200303202918.GC5416@oc0525413822.ibm.com>
+In-Reply-To: <1583391014-8170-3-git-send-email-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 16539188159339400089
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedruddutddgfeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthejredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejiedvrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,30 +49,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org,
- kvm-ppc@vger.kernel.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nick Hu <nickhu@andestech.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, hughd@google.com,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ linux-kernel@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Rob Springer <rspringer@google.com>, Mark Salter <msalter@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Guan Xuetao <gxt@pku.edu.cn>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ ... ] 
-
->> yes because you also need to share the XIVE TIMA and ESB pages mapped 
->> in xive_native_esb_fault() and xive_native_tima_fault(). 
+On 3/5/20 7:50 AM, Anshuman Khandual wrote:
+> There are many places where all basic VMA access flags (read, write, exec)
+> are initialized or checked against as a group. One such example is during
+> page fault. Existing vma_is_accessible() wrapper already creates the notion
+> of VMA accessibility as a group access permissions. Hence lets just create
+> VM_ACCESS_FLAGS (VM_READ|VM_WRITE|VM_EXEC) which will not only reduce code
+> duplication but also extend the VMA accessibility concept in general.
 > 
-> These pages belong to the xive memory slot right? If that is the case,
-> they are implicitly shared. The Ultravisor will set them up to be
-> shared. The guest kernel should not be doing anything.
-> 
-> We still need some fixes in KVM and Ultravisor to correctly map the
-> hardware pages to GPA ranges of the xive memory slot. Work is in progress...
+> Cc: Russell King <linux@armlinux.org.uk>
+> CC: Catalin Marinas <catalin.marinas@arm.com>
+> CC: Mark Salter <msalter@redhat.com>
+> Cc: Nick Hu <nickhu@andestech.com>
+> CC: Ley Foon Tan <ley.foon.tan@intel.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Guan Xuetao <gxt@pku.edu.cn>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Rob Springer <rspringer@google.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: devel@driverdev.osuosl.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-ok. Since this is already done for KVM, I suppose it's not too hard. 
-the VMA has VM_IO | VM_PFNMAP flags.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Otherwise you could still pick up the XIVE ESB and TIMA HW MMIO ranges 
-in OPAL and brutally declare the whole as shared, if that's possible.
-
-C.
+Thanks.
