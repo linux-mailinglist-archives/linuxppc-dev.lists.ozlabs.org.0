@@ -1,89 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1ABD179EB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 05:48:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Xyv40YXszDqmT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 15:48:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6137C179EB7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 05:50:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Xywz1dRrzDqnV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 15:50:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::f44; helo=mail-qv1-xf44.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=B+rC3aCe; dkim-atps=neutral
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
+ [IPv6:2607:f8b0:4864:20::f44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Xys80pk5zDqjl
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 15:47:07 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0254ioQ0056969
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Mar 2020 23:47:05 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yhr4jsdjx-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 23:47:04 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Thu, 5 Mar 2020 04:47:02 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 5 Mar 2020 04:46:52 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0254kpjE54853756
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Mar 2020 04:46:51 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFE93A4040;
- Thu,  5 Mar 2020 04:46:51 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1DD1DA4053;
- Thu,  5 Mar 2020 04:46:45 +0000 (GMT)
-Received: from [9.199.61.135] (unknown [9.199.61.135])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  5 Mar 2020 04:46:44 +0000 (GMT)
-Subject: Re: [RFC 00/11] perf: Enhancing perf to export processor hazard
- information
-To: Kim Phillips <kim.phillips@amd.com>
-References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
- <20200302101332.GS18400@hirez.programming.kicks-ass.net>
- <CABPqkBSzwpR6p7UZs7g1vWGCJRLsh565mRMGc6m0Enn1SnkC4w@mail.gmail.com>
- <df966d6e-8898-029f-e697-8496500a1663@amd.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Thu, 5 Mar 2020 10:16:43 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48XytV2R5tzDqlL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 15:48:17 +1100 (AEDT)
+Received: by mail-qv1-xf44.google.com with SMTP id o18so1888146qvf.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2020 20:48:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bR0yHX0jt6RtU935MOjekAD7bW6X/oaFERrZJKbX81c=;
+ b=B+rC3aCeemmKXHBSwju8vpHFCDXJcRs2zcFIZabqMKtnfwyC5IFe4UBlPY5IdtlbNT
+ 1TyZfkxYuwzKwN0UMI8cCtJb36E2zFRjAVnc0eTu/XkdwYPFezn/waq+VXkI+VqRmYnU
+ n5Um4fRTCPyM9+n/57/Kx2tFyn3M9rwprh2/LZ9DPO1FiqsAsrfikh2KWR9wnIKxWeKi
+ wQuv8uUejauid1qLg6ALj5Gl8V2WZ9t8GxEn4fMgbfQ68WJ41HfHuFXnXVo8/TisXRLL
+ WU552JRA4VWKoyjVV+yCz4b1HxFOcjwfXTk29A3DP/yP+yFI6w8eE1hHRmZI3KKRG/Kg
+ 1B9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bR0yHX0jt6RtU935MOjekAD7bW6X/oaFERrZJKbX81c=;
+ b=umM1hS0tOl7SDLw0TEOn2FC859v/vgZkA7wXHo2yFirKHIhm014OfNXSbpO42tNeoO
+ 9qH7Ix+z+ldgf9uOSmRkmxB6NdMZpyVkIRVFIm8/v1nbYJFciaU4dySrcFkjSHm/nnxk
+ +fXmatkYLeV2KOb9nyJVyAGATCaPkfsx5uc4Cdlj+y4YboQrJHFY/SLtRSGBO+jGlfV1
+ j23P2YT/oazw9X8Rn0vMFNOeyJ1fOzL7b+P+qa5Hp6oeASPuSM5wLCeQdlqmtfNZPh+X
+ mX+Ix1qFU0WgqqXTedky03eyH5+qD8W67yAYj6kf0vBhmO4b3sqxm86vtWmPMEbe5Iul
+ dalg==
+X-Gm-Message-State: ANhLgQ0fS+TK0wRHGQvqIVGhMUsmjI+8j3ESPFKez+sIJESAHEIScHK8
+ YOQeaPtByeEtBlYXEyTxD1ag7A==
+X-Google-Smtp-Source: ADFU+vv4UwakNttileojs5+Urm6yioCkCkSY1Y4lDvERapnfL62VOgXHTglEEbpPG2qMx2Kb88J8Iw==
+X-Received: by 2002:a0c:b669:: with SMTP id q41mr673037qvf.20.1583383693207;
+ Wed, 04 Mar 2020 20:48:13 -0800 (PST)
+Received: from localhost.localdomain
+ (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id f13sm10558859qkm.42.2020.03.04.20.48.12
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 04 Mar 2020 20:48:12 -0800 (PST)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au,
+	akpm@linux-foundation.org
+Subject: [PATCH -next] powerpc/mm/ptdump: fix an undefined behaviour
+Date: Wed,  4 Mar 2020 23:47:59 -0500
+Message-Id: <20200305044759.1279-1-cai@lca.pw>
+X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
 MIME-Version: 1.0
-In-Reply-To: <df966d6e-8898-029f-e697-8496500a1663@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20030504-0016-0000-0000-000002ED4E8B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030504-0017-0000-0000-00003350A046
-Message-Id: <2550ec4d-a015-4625-ca24-ff10632dbe2e@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-04_10:2020-03-04,
- 2020-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- mlxscore=0 phishscore=0 mlxlogscore=999 suspectscore=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003050026
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,98 +78,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Andi Kleen <ak@linux.intel.com>,
- maddy@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
- Jiri Olsa <jolsa@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
- Stephane Eranian <eranian@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- yao.jin@linux.intel.com, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Robert Richter <robert.richter@amd.com>, Namhyung Kim <namhyung@kernel.org>,
- linuxppc-dev@lists.ozlabs.org,
- Alexey Budankov <alexey.budankov@linux.intel.com>, "Liang,
- Kan" <kan.liang@linux.intel.com>
+Cc: Qian Cai <cai@lca.pw>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ rashmicy@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kim,
+Booting a power9 server with hash MMU could trigger an undefined
+behaviour because pud_offset(p4d, 0) will do,
 
-Sorry about being bit late.
+0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
 
-On 3/3/20 3:55 AM, Kim Phillips wrote:
-> On 3/2/20 2:21 PM, Stephane Eranian wrote:
->> On Mon, Mar 2, 2020 at 2:13 AM Peter Zijlstra <peterz@infradead.org> wrote:
->>>
->>> On Mon, Mar 02, 2020 at 10:53:44AM +0530, Ravi Bangoria wrote:
->>>> Modern processors export such hazard data in Performance
->>>> Monitoring Unit (PMU) registers. Ex, 'Sampled Instruction Event
->>>> Register' on IBM PowerPC[1][2] and 'Instruction-Based Sampling' on
->>>> AMD[3] provides similar information.
->>>>
->>>> Implementation detail:
->>>>
->>>> A new sample_type called PERF_SAMPLE_PIPELINE_HAZ is introduced.
->>>> If it's set, kernel converts arch specific hazard information
->>>> into generic format:
->>>>
->>>>    struct perf_pipeline_haz_data {
->>>>           /* Instruction/Opcode type: Load, Store, Branch .... */
->>>>           __u8    itype;
->>>>           /* Instruction Cache source */
->>>>           __u8    icache;
->>>>           /* Instruction suffered hazard in pipeline stage */
->>>>           __u8    hazard_stage;
->>>>           /* Hazard reason */
->>>>           __u8    hazard_reason;
->>>>           /* Instruction suffered stall in pipeline stage */
->>>>           __u8    stall_stage;
->>>>           /* Stall reason */
->>>>           __u8    stall_reason;
->>>>           __u16   pad;
->>>>    };
->>>
->>> Kim, does this format indeed work for AMD IBS?
-> 
-> It's not really 1:1, we don't have these separations of stages
-> and reasons, for example: we have missed in L2 cache, for example.
-> So IBS output is flatter, with more cycle latency figures than
-> IBM's AFAICT.
+ UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
+ shift exponent 34 is too large for 32-bit type 'int'
+ CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
+ Call Trace:
+ dump_stack+0xf4/0x164 (unreliable)
+ ubsan_epilogue+0x18/0x78
+ __ubsan_handle_shift_out_of_bounds+0x160/0x21c
+ walk_pagetables+0x2cc/0x700
+ walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
+ (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
+ ptdump_check_wx+0x8c/0xf0
+ mark_rodata_ro+0x48/0x80
+ kernel_init+0x74/0x194
+ ret_from_kernel_thread+0x5c/0x74
 
-AMD IBS captures pipeline latency data incase Fetch sampling like the
-Fetch latency, tag to retire latency, completion to retire latency and
-so on. Yes, Ops sampling do provide more data on load/store centric
-information. But it also captures more detailed data for Branch instructions.
-And we also looked at ARM SPE, which also captures more details pipeline
-data and latency information.
+Fixes: 8eb07b187000 ("powerpc/mm: Dump linux pagetables")
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
 
-> 
->> Personally, I don't like the term hazard. This is too IBM Power
->> specific. We need to find a better term, maybe stall or penalty.
-> 
-> Right, IBS doesn't have a filter to only count stalled or otherwise
-> bad events.  IBS' PPR descriptions has one occurrence of the
-> word stall, and no penalty.  The way I read IBS is it's just
-> reporting more sample data than just the precise IP: things like
-> hits, misses, cycle latencies, addresses, types, etc., so words
-> like 'extended', or the 'auxiliary' already used today even
-> are more appropriate for IBS, although I'm the last person to
-> bikeshed.
+Notes for maintainers:
 
-We are thinking of using "pipeline" word instead of Hazard.
+This is on the top of the linux-next commit "powerpc: add support for
+folded p4d page tables" which is in the Andrew's tree.
 
-> 
->> Also worth considering is the support of ARM SPE (Statistical
->> Profiling Extension) which is their version of IBS.
->> Whatever gets added need to cover all three with no limitations.
-> 
-> I thought Intel's various LBR, PEBS, and PT supported providing
-> similar sample data in perf already, like with perf mem/c2c?
+ arch/powerpc/mm/ptdump/ptdump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-perf-mem is more of data centric in my opinion. It is more towards
-memory profiling. So proposal here is to expose pipeline related
-details like stalls and latencies.
-
-Thanks for the review,
-Ravi
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 9d6256b61df3..b530f81398a7 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -279,7 +279,7 @@ static void walk_pmd(struct pg_state *st, pud_t *pud, unsigned long start)
+ 
+ static void walk_pud(struct pg_state *st, p4d_t *p4d, unsigned long start)
+ {
+-	pud_t *pud = pud_offset(p4d, 0);
++	pud_t *pud = pud_offset(p4d, 0UL);
+ 	unsigned long addr;
+ 	unsigned int i;
+ 
+-- 
+2.21.0 (Apple Git-122.2)
 
