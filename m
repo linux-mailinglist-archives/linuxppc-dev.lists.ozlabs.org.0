@@ -2,42 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A2317A4F9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 13:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBFD17A535
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 13:24:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Y8mw3DfqzDql2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 23:14:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Y91M4SpKzDqkj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 23:24:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Y8kM2v65zDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 23:11:54 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 0F5D6B080;
- Thu,  5 Mar 2020 12:11:50 +0000 (UTC)
-Subject: Re: [PATCH 2/2] mm/vma: Introduce VM_ACCESS_FLAGS
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-References: <1583391014-8170-1-git-send-email-anshuman.khandual@arm.com>
- <1583391014-8170-3-git-send-email-anshuman.khandual@arm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <b3ab3943-7c3a-9c0a-17ba-bea254c5d5df@suse.cz>
-Date: Thu, 5 Mar 2020 13:11:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Y8yx0WMGzDqjj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 23:22:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=bGejFpEd; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48Y8yv6fsmz9sRR;
+ Thu,  5 Mar 2020 23:22:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1583410968;
+ bh=+OsquJtq3grVp9YA4QqA6DFjcAjE+NTDtO/i5VDINiA=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=bGejFpEdUnYmJaCxy2Xd4CK00nKq8huiP4Gh2AmlGmXnNUbfKB+ZofUsg6ReKLW87
+ zURP281v2rkDPyR0I2i4hJg8SK5SwI2/ygRmLGQ6vRueCbvChZ/g8yj+Ehe9D16mOW
+ ZUkvom/vfya9W18i4KjbnLfb/2SkmImrEwheB0jgm9kLeGrbExXXi/3kuYJ+ky8aQz
+ 8JJY0nV2fIqMlFvW+hrmW50gob9YWQrA/3TTcefEBaMnPFTjTRSMXLpZml8C/5zMok
+ r/Av7X3Dc7jBi9o00WX4SucGKSHOGNfVlQ2QndrK8gw4muj6CVwZpLCSLc1AVJfrNe
+ E5Kq7bmvJLUvg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: bugzilla-daemon@bugzilla.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [Bug 206695] New: kmemleak reports leaks in
+ drivers/macintosh/windfarm
+In-Reply-To: <bug-206695-206035@https.bugzilla.kernel.org/>
+References: <bug-206695-206035@https.bugzilla.kernel.org/>
+Date: Thu, 05 Mar 2020 23:22:41 +1100
+Message-ID: <87sginousu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <1583391014-8170-3-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,52 +58,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Nick Hu <nickhu@andestech.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, hughd@google.com,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- linux-kernel@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Rob Springer <rspringer@google.com>, Mark Salter <msalter@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Guan Xuetao <gxt@pku.edu.cn>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/5/20 7:50 AM, Anshuman Khandual wrote:
-> There are many places where all basic VMA access flags (read, write, exec)
-> are initialized or checked against as a group. One such example is during
-> page fault. Existing vma_is_accessible() wrapper already creates the notion
-> of VMA accessibility as a group access permissions. Hence lets just create
-> VM_ACCESS_FLAGS (VM_READ|VM_WRITE|VM_EXEC) which will not only reduce code
-> duplication but also extend the VMA accessibility concept in general.
-> 
-> Cc: Russell King <linux@armlinux.org.uk>
-> CC: Catalin Marinas <catalin.marinas@arm.com>
-> CC: Mark Salter <msalter@redhat.com>
-> Cc: Nick Hu <nickhu@andestech.com>
-> CC: Ley Foon Tan <ley.foon.tan@intel.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Guan Xuetao <gxt@pku.edu.cn>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Rob Springer <rspringer@google.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: devel@driverdev.osuosl.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Can you try this patch?
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-Thanks.
+diff --git a/drivers/macintosh/windfarm_pm112.c b/drivers/macintosh/windfarm_pm112.c
+index 4150301a89a5..a16f43a1def9 100644
+--- a/drivers/macintosh/windfarm_pm112.c
++++ b/drivers/macintosh/windfarm_pm112.c
+@@ -125,7 +125,7 @@ static int create_cpu_loop(int cpu)
+ {
+ 	int chip = cpu / 2;
+ 	int core = cpu & 1;
+-	struct smu_sdbp_header *hdr;
++	struct smu_sdbp_header *hdr, *hdr2;
+ 	struct smu_sdbp_cpupiddata *piddata;
+ 	struct wf_cpu_pid_param pid;
+ 	struct wf_control *main_fan = cpu_fans[0];
+@@ -141,9 +141,9 @@ static int create_cpu_loop(int cpu)
+ 	piddata = (struct smu_sdbp_cpupiddata *)&hdr[1];
+ 
+ 	/* Get FVT params to get Tmax; if not found, assume default */
+-	hdr = smu_sat_get_sdb_partition(chip, 0xC4 + core, NULL);
+-	if (hdr) {
+-		struct smu_sdbp_fvt *fvt = (struct smu_sdbp_fvt *)&hdr[1];
++	hdr2 = smu_sat_get_sdb_partition(chip, 0xC4 + core, NULL);
++	if (hdr2) {
++		struct smu_sdbp_fvt *fvt = (struct smu_sdbp_fvt *)&hdr2[1];
+ 		tmax = fvt->maxtemp << 16;
+ 	} else
+ 		tmax = 95 << 16;	/* default to 95 degrees C */
+@@ -174,6 +174,10 @@ static int create_cpu_loop(int cpu)
+ 		pid.min = fmin;
+ 
+ 	wf_cpu_pid_init(&cpu_pid[cpu], &pid);
++
++	kfree(hdr);
++	kfree(hdr2);
++
+ 	return 0;
+ }
+ 
