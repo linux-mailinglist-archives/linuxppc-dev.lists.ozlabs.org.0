@@ -2,106 +2,110 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9773117AFA5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 21:21:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727EF17B137
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 23:09:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YMbm0fcLzDqpM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 07:21:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YPzV0CpzzDqrX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 09:09:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YMYX5y5FzDqS9
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 07:20:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=nam02-cy1-obe.outbound.protection.outlook.com
+ (client-ip=40.107.76.73; helo=nam02-cy1-obe.outbound.protection.outlook.com;
+ envelope-from=kim.phillips@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=Zsw7mJH3; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=eOkcQg4R; 
+ dmarc=none (p=none dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amdcloud.onmicrosoft.com
+ header.i=@amdcloud.onmicrosoft.com header.a=rsa-sha256
+ header.s=selector2-amdcloud-onmicrosoft-com header.b=OiRMEtlu; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48YMYX4RQnz8tPV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 07:20:00 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48YMYX3zMCz9sPR; Fri,  6 Mar 2020 07:20:00 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.25;
- helo=wout2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=Zsw7mJH3; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=eOkcQg4R; 
- dkim-atps=neutral
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
- [64.147.123.25])
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com
+ (mail-eopbgr760073.outbound.protection.outlook.com [40.107.76.73])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48YMYS2YYhz9s3x
- for <linuxppc-dev@ozlabs.org>; Fri,  6 Mar 2020 07:19:55 +1100 (AEDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.west.internal (Postfix) with ESMTP id 1BA4B884;
- Thu,  5 Mar 2020 15:19:51 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Thu, 05 Mar 2020 15:19:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- 1Gn9LqA700X5RvpLGbT+RMn+rc0dqPF9Bf5Gq3WmpKo=; b=Zsw7mJH34eW3WdrI
- m2CJ+JnUp3y8gk+MbNh+8zx4C8ZDR0QqsiDOYPWCBYidHDvP8foDAgvxiTCeaUJd
- +FfsY94rSdyEVMVza4jLWE/sFryr0yPwKKOYaN8KoLohlkq0bzLgkrGRXWeu7SEY
- 4V1vDegq9EtnVwlaWqZ/3dEN25tImkbMCaaLt3IedysxSe/PThZ76alrcETHwiAI
- yZiGxwfxxLecD05xiR2U2/dx5UnQukDmBUdfWNHgnrgLOPr7E788hW+Bq4N/2baL
- 9+6ZCdKjfN7Z1s9fwK33ghc71kl+GtY1+MqNa4fFmRd1WiIyLXvWdRbUnPzsEuRq
- TP8kOQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; bh=1Gn9LqA700X5RvpLGbT+RMn+rc0dqPF9Bf5Gq3Wmp
- Ko=; b=eOkcQg4Rxcq/EZLasBg636GGl81JIhP+P3bb7/vqTU2p6D8+G5Cfbd9PI
- 9UisB9xezOzfdczWBeQLQ7kJHzyAPILIpBVkueSp7h5FkVYyeSuw67aYO8KSKr5R
- 8KsPWy6K0pqbD5O9hNE+weGUnoGqukWky9djKQ44c726PIi9NbNxb/cOc5BNNpdo
- o9nKosBrbZE6eoJOKZHJETAGizJ7y0Mkq7nNdvkFHxW6TmfL6S8rxkKvJpR9b6sF
- yj1zpGXJoYq+7fyvyTKN+QB9UoGnvFpStpU7v5pUEF48Jv7vzeL4UFFdrsSmocDK
- xa0b8q3lh8UiscIV62sq1F5igVZNQ==
-X-ME-Sender: <xms:5V5hXmI-IBciyvEhe__p7iqHpmKuGsRsxfPP57Y3AETZkObTYlKhHg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedruddutddgudegtdcutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculddutddmnecujfgurhepkf
- fuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomheptfhushhsvghllhcuvehu
- rhhrvgihuceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecukfhppeduvddvrdelle
- drkedvrddutdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
- ohhmpehruhhstghurhesrhhushhsvghllhdrtggt
-X-ME-Proxy: <xmx:5V5hXtSrJ9J93TrffMnJQl1Hxf3Z57hm9H4egx9o8iXc5isIvb6P-g>
- <xmx:5V5hXroN8CyBPcjrRvIcvqk5ReMxfF8C8M5c9MjdjqfxkdjtEGVA2Q>
- <xmx:5V5hXqG_6DeYAdO_9Z4ATn8dTLN5QEKxlfkFzgraWyLjTSaQzTIE1w>
- <xmx:5l5hXg_IbWavvEuBppOdgPLZ9Y_l7edqnj7PLGN0tTTn0eVjKfpcqg>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 65DEC3280063;
- Thu,  5 Mar 2020 15:19:48 -0500 (EST)
-Message-ID: <1a8920fa6cf040df0cb98f1500bc6c2b79367925.camel@russell.cc>
-Subject: Re: [PATCH v2] powerpc/mm: Fix missing KUAP disable in
- flush_coherent_icache()
-From: Russell Currey <ruscur@russell.cc>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-Date: Fri, 06 Mar 2020 07:19:45 +1100
-In-Reply-To: <20200303235708.26004-1-mpe@ellerman.id.au>
-References: <20200303235708.26004-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YPxc6CNxzDqmd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 09:07:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lYND0VQRxxfOplPQ0bJWQ8ZRpzOkI+m+ZPgQ7QZHUlVsDBD09N/Hbk/TE1aA1o+RXzHmhZ0f7H6aBgaMARGR6Ua+LROMZzJJqkx86D2tNqqT8ZlrBGtX8rtdcXeXQnU0kiXwPFVjJF9J5SR0Gamo7IRSdQJ8hOxhdQPx3rC7XcdDntOwc+LpFU+EbjUVYZQ5bu2x5m6ea9NA0jrr4ctIYb0EKmqAV9UFX5j3oUN8sf7zOv850vJ/RmeKCsVOz378frEJCgvB5TGVlqGK/FA0Bl7hd4HHXthfrw4TzJ94QPnEXYzdD6ESoQ3+jBsoeplqlgWNR+8736V9wlMLnB1MTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TvaJvMAO4X/6KtlJktfWtK6KTJ3YKH2bT8+MOJZYH+Q=;
+ b=Wq/Tqb9rp28SgWz/swZtAJlf5xrPupf1KXEyc1NEBoUUTPX0/lBxZPpxV98RQ8zrA7Nql+HDd3x54LWjWafVhMUFHupOjPl9qoOE2bzfY4C0EtShX31k+pmntW4AwSetRDknU4l0cnvJg2LQgQMt2Xdmf9kOC+QVQR/CAfLO9J98shTLPwmr2hPAWHmWkOPTW1ioHx28tfs2o9o0DlbbsB/z1xYP1V57XkSl/t5Zn0CLx4qVCkOiH8nGjZaVLXXCmtb9Epidj3fNLcmF4+00tcc9sXA+4MPEMNbKMYHP6vWI3AVOX0aoOWfO/X6zsln64iDDDovYLodKhN076RsSKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TvaJvMAO4X/6KtlJktfWtK6KTJ3YKH2bT8+MOJZYH+Q=;
+ b=OiRMEtluv8+AjNkOq7MHG5XxmJRoHLONc4ni+J9Pg7QWrwjTLF4Fj5bRkOMgQRjdtyI9gPX4RmvuBwv5r3CsA154VUiGEngJJPfu5VCug04W7Z5eTGI10nfWlmAoKIi3cfA47GtNrbUuIiLBqmszDTu1Da4SeBhzxyppjtW1sfk=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=kim.phillips@amd.com; 
+Received: from SN6PR12MB2845.namprd12.prod.outlook.com (2603:10b6:805:75::33)
+ by SN6PR12MB2751.namprd12.prod.outlook.com (2603:10b6:805:6c::26)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.18; Thu, 5 Mar
+ 2020 22:06:59 +0000
+Received: from SN6PR12MB2845.namprd12.prod.outlook.com
+ ([fe80::dd6f:a575:af8e:4f1b]) by SN6PR12MB2845.namprd12.prod.outlook.com
+ ([fe80::dd6f:a575:af8e:4f1b%7]) with mapi id 15.20.2793.013; Thu, 5 Mar 2020
+ 22:06:59 +0000
+Subject: Re: [RFC 00/11] perf: Enhancing perf to export processor hazard
+ information
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
+ <20200302101332.GS18400@hirez.programming.kicks-ass.net>
+ <CABPqkBSzwpR6p7UZs7g1vWGCJRLsh565mRMGc6m0Enn1SnkC4w@mail.gmail.com>
+ <df966d6e-8898-029f-e697-8496500a1663@amd.com>
+ <2550ec4d-a015-4625-ca24-ff10632dbe2e@linux.ibm.com>
+From: Kim Phillips <kim.phillips@amd.com>
+Message-ID: <d3c82708-dd09-80e0-4e9f-1cbab118a169@amd.com>
+Date: Thu, 5 Mar 2020 16:06:56 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+In-Reply-To: <2550ec4d-a015-4625-ca24-ff10632dbe2e@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN6PR01CA0021.prod.exchangelabs.com (2603:10b6:805:b6::34)
+ To SN6PR12MB2845.namprd12.prod.outlook.com
+ (2603:10b6:805:75::33)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.136.247] (165.204.77.1) by
+ SN6PR01CA0021.prod.exchangelabs.com (2603:10b6:805:b6::34) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2772.18 via Frontend Transport; Thu, 5 Mar 2020 22:06:58 +0000
+X-Originating-IP: [165.204.77.1]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 247a078f-1247-4889-d972-08d7c151869f
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2751:|SN6PR12MB2751:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN6PR12MB2751542223B6575A1BB1820987E20@SN6PR12MB2751.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
+X-Forefront-PRVS: 03333C607F
+X-Forefront-Antispam-Report: SFV:NSPM;
+ SFS:(10009020)(4636009)(376002)(346002)(396003)(39860400002)(366004)(136003)(199004)(189003)(16576012)(316002)(81166006)(2906002)(81156014)(53546011)(956004)(478600001)(54906003)(2616005)(66946007)(44832011)(52116002)(6486002)(8936002)(8676002)(5660300002)(31686004)(66556008)(6916009)(66476007)(86362001)(186003)(16526019)(26005)(4326008)(31696002)(36756003)(7416002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:SN6PR12MB2751;
+ H:SN6PR12MB2845.namprd12.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+Received-SPF: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: C3wy1n78yHKbo1yOTw0br2y0U2+ybLHpiE9arrdmwNEcIwG9v0MOcMRbJs4AFlWsgUsR9F6T3z+fAs4k7g/Ev25Ka6Q1TAJvOIN47GqoTA/8JVQzSb7mOf4J2Xcdcu1ef5Ou/3NLAt9R82ZY82tvJtrKWlyGWfcKrisM8A5bk6jr/2yKvaZ8MfzOSFGCN6baLS/g8M/UWjYX2F0hbIWoCflrZxTmOsva/Y/eKvD4Z8KIlfBZQB3caQZyO0Ldt1D0k2eNBecuAmcdK2UoeJti+IpZU7xrn3TuK5OJMCIZXP+rmPLlamY0RxTd1A5k7/ztpjDQjvFbNJO27RoaI1NETGH4coV788e6CUoHDDPlGJ3iARBQH9w51pHJGMiBC1jB3/3gZs5lLFm28xMpSXcw1BiaRsqZW7V9pX1Df7COiQ5pSKMfEz6LlAbWvXxvE69H
+X-MS-Exchange-AntiSpam-MessageData: pdcyoGlB0kdn6NcbczrywneCcIt8TFBr+J1wiM9KDRC/QA9qe0t+ZilunFVmoTdZxtICCn0xXtwZCkG9mZ7UCijWwbsYjlpANYn2O2uK7V2PFZl17YQEvEv47GZJ72nfa6ryvJwf45hQ2BipItCnsQ==
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 247a078f-1247-4889-d972-08d7c151869f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2020 22:06:59.3897 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3YSiA6ZTZmnA9NNF6icuBw7YzVBmcY+8kHN2Lu25xAB1g0jNZKXBn0Z2BX8ug/jSJJSv11oaoqPDc3JsAuUWXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2751
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,88 +117,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, Andi Kleen <ak@linux.intel.com>,
+ maddy@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
+ Jiri Olsa <jolsa@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ yao.jin@linux.intel.com, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Robert Richter <robert.richter@amd.com>, Namhyung Kim <namhyung@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ Alexey Budankov <alexey.budankov@linux.intel.com>, "Liang,
+ Kan" <kan.liang@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-03-04 at 10:57 +1100, Michael Ellerman wrote:
-> We received a report of strange kernel faults which turned out to be
-> due to a missing KUAP disable in flush_coherent_icache() called
-> from flush_icache_range().
-> 
-> The fault looks like:
-> 
->   Kernel attempted to access user page (7fffc30d9c00) - exploit
-> attempt? (uid: 1009)
->   BUG: Unable to handle kernel data access on read at 0x7fffc30d9c00
->   Faulting instruction address: 0xc00000000007232c
->   Oops: Kernel access of bad area, sig: 11 [#1]
->   LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
->   CPU: 35 PID: 5886 Comm: sigtramp Not tainted 5.6.0-rc2-gcc-8.2.0-
-> 00003-gfc37a1632d40 #79
->   NIP:  c00000000007232c LR: c00000000003b7fc CTR: 0000000000000000
->   REGS: c000001e11093940 TRAP: 0300   Not tainted  (5.6.0-rc2-gcc-
-> 8.2.0-00003-gfc37a1632d40)
->   MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR:
-> 28000884  XER: 00000000
->   CFAR: c0000000000722fc DAR: 00007fffc30d9c00 DSISR: 08000000
-> IRQMASK: 0
->   GPR00: c00000000003b7fc c000001e11093bd0 c0000000023ac200
-> 00007fffc30d9c00
->   GPR04: 00007fffc30d9c18 0000000000000000 c000001e11093bd4
-> 0000000000000000
->   GPR08: 0000000000000000 0000000000000001 0000000000000000
-> c000001e1104ed80
->   GPR12: 0000000000000000 c000001fff6ab380 c0000000016be2d0
-> 4000000000000000
->   GPR16: c000000000000000 bfffffffffffffff 0000000000000000
-> 0000000000000000
->   GPR20: 00007fffc30d9c00 00007fffc30d8f58 00007fffc30d9c18
-> 00007fffc30d9c20
->   GPR24: 00007fffc30d9c18 0000000000000000 c000001e11093d90
-> c000001e1104ed80
->   GPR28: c000001e11093e90 0000000000000000 c0000000023d9d18
-> 00007fffc30d9c00
->   NIP flush_icache_range+0x5c/0x80
->   LR  handle_rt_signal64+0x95c/0xc2c
->   Call Trace:
->     0xc000001e11093d90 (unreliable)
->     handle_rt_signal64+0x93c/0xc2c
->     do_notify_resume+0x310/0x430
->     ret_from_except_lite+0x70/0x74
->   Instruction dump:
->   409e002c 7c0802a6 3c62ff31 3863f6a0 f8010080 48195fed 60000000
-> 48fe4c8d
->   60000000 e8010080 7c0803a6 7c0004ac <7c00ffac> 7c0004ac 4c00012c
-> 38210070
-> 
-> This path through handle_rt_signal64() to setup_trampoline() and
-> flush_icache_range() is only triggered by 64-bit processes that have
-> unmapped their VDSO, which is rare.
-> 
-> flush_icache_range() takes a range of addresses to flush. In
-> flush_coherent_icache() we implement an optimisation for CPUs where
-> we
-> know we don't actually have to flush the whole range, we just need to
-> do a single icbi.
-> 
-> However we still execute the icbi on the user address of the start of
-> the range we're flushing. On CPUs that also implement KUAP (Power9)
-> that leads to the spurious fault above.
-> 
-> We should be able to pass any address, including a kernel address, to
-> the icbi on these CPUs, which would avoid any interaction with KUAP.
-> But I don't want to make that change in a bug fix, just in case it
-> surfaces some strange behaviour on some CPU.
-> 
-> So for now just disable KUAP around the icbi. Note the icbi is
-> treated
-> as a load, so we allow read access, not write as you'd expect.
-> 
-> Fixes: 890274c2dc4c ("powerpc/64s: Implement KUAP for Radix MMU")
-> Cc: stable@vger.kernel.org # v5.2+
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
+On 3/4/20 10:46 PM, Ravi Bangoria wrote:
+> Hi Kim,
 
-Reviewed-by: Russell Currey <ruscur@russell.cc>
+Hi Ravi,
 
+> On 3/3/20 3:55 AM, Kim Phillips wrote:
+>> On 3/2/20 2:21 PM, Stephane Eranian wrote:
+>>> On Mon, Mar 2, 2020 at 2:13 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>>>>
+>>>> On Mon, Mar 02, 2020 at 10:53:44AM +0530, Ravi Bangoria wrote:
+>>>>> Modern processors export such hazard data in Performance
+>>>>> Monitoring Unit (PMU) registers. Ex, 'Sampled Instruction Event
+>>>>> Register' on IBM PowerPC[1][2] and 'Instruction-Based Sampling' on
+>>>>> AMD[3] provides similar information.
+>>>>>
+>>>>> Implementation detail:
+>>>>>
+>>>>> A new sample_type called PERF_SAMPLE_PIPELINE_HAZ is introduced.
+>>>>> If it's set, kernel converts arch specific hazard information
+>>>>> into generic format:
+>>>>>
+>>>>>    struct perf_pipeline_haz_data {
+>>>>>           /* Instruction/Opcode type: Load, Store, Branch .... */
+>>>>>           __u8    itype;
+>>>>>           /* Instruction Cache source */
+>>>>>           __u8    icache;
+>>>>>           /* Instruction suffered hazard in pipeline stage */
+>>>>>           __u8    hazard_stage;
+>>>>>           /* Hazard reason */
+>>>>>           __u8    hazard_reason;
+>>>>>           /* Instruction suffered stall in pipeline stage */
+>>>>>           __u8    stall_stage;
+>>>>>           /* Stall reason */
+>>>>>           __u8    stall_reason;
+>>>>>           __u16   pad;
+>>>>>    };
+>>>>
+>>>> Kim, does this format indeed work for AMD IBS?
+>>
+>> It's not really 1:1, we don't have these separations of stages
+>> and reasons, for example: we have missed in L2 cache, for example.
+>> So IBS output is flatter, with more cycle latency figures than
+>> IBM's AFAICT.
+> 
+> AMD IBS captures pipeline latency data incase Fetch sampling like the
+> Fetch latency, tag to retire latency, completion to retire latency and
+> so on. Yes, Ops sampling do provide more data on load/store centric
+> information. But it also captures more detailed data for Branch instructions.
+> And we also looked at ARM SPE, which also captures more details pipeline
+> data and latency information.
+> 
+>>> Personally, I don't like the term hazard. This is too IBM Power
+>>> specific. We need to find a better term, maybe stall or penalty.
+>>
+>> Right, IBS doesn't have a filter to only count stalled or otherwise
+>> bad events.  IBS' PPR descriptions has one occurrence of the
+>> word stall, and no penalty.  The way I read IBS is it's just
+>> reporting more sample data than just the precise IP: things like
+>> hits, misses, cycle latencies, addresses, types, etc., so words
+>> like 'extended', or the 'auxiliary' already used today even
+>> are more appropriate for IBS, although I'm the last person to
+>> bikeshed.
+> 
+> We are thinking of using "pipeline" word instead of Hazard.
+
+Hm, the word 'pipeline' occurs 0 times in IBS documentation.
+
+I realize there are a couple of core pipeline-specific pieces
+of information coming out of it, but the vast majority
+are addresses, latencies of various components in the memory
+hierarchy, and various component hit/miss bits.
+
+What's needed here is a vendor-specific extended
+sample information that all these technologies gather,
+of which things like e.g., 'L1 TLB cycle latency' we
+all should have in common.
+
+I'm not sure why a new PERF_SAMPLE_PIPELINE_HAZ is needed
+either.  Can we use PERF_SAMPLE_AUX instead?  Take a look at
+commit 98dcf14d7f9c "perf tools: Add kernel AUX area sampling
+definitions".  The sample identifier can be used to determine
+which vendor's sampling IP's data is in it, and events can
+be recorded just by copying the content of the SIER, etc.
+registers, and then events get synthesized from the aux
+sample at report/inject/annotate etc. time.  This allows
+for less sample recording overhead, and moves all the vendor
+specific decoding and common event conversions for userspace
+to figure out.
+
+>>> Also worth considering is the support of ARM SPE (Statistical
+>>> Profiling Extension) which is their version of IBS.
+>>> Whatever gets added need to cover all three with no limitations.
+>>
+>> I thought Intel's various LBR, PEBS, and PT supported providing
+>> similar sample data in perf already, like with perf mem/c2c?
+> 
+> perf-mem is more of data centric in my opinion. It is more towards
+> memory profiling. So proposal here is to expose pipeline related
+> details like stalls and latencies.
+
+Like I said, I don't see it that way, I see it as "any particular
+vendor's event's extended details', and these pipeline details
+have overlap with existing infrastructure within perf, e.g., L2
+cache misses.
+
+Kim
