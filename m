@@ -1,94 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B6417A06D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 08:17:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Y2Bm1pN5zDql9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 18:17:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6367817A084
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 08:33:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Y2Y21CWpzDqrm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 18:33:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=fr.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@fr.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=fr.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Y2930w0SzDqkK
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 18:16:06 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0257F0sl082912
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 5 Mar 2020 02:16:04 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yhhy7mqvm-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 02:16:04 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <clg@fr.ibm.com>;
- Thu, 5 Mar 2020 07:16:02 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 5 Mar 2020 07:15:59 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0257FvSj38076526
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Mar 2020 07:15:57 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96A8FA404D;
- Thu,  5 Mar 2020 07:15:57 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 312EEA4051;
- Thu,  5 Mar 2020 07:15:57 +0000 (GMT)
-Received: from [9.145.85.22] (unknown [9.145.85.22])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  5 Mar 2020 07:15:57 +0000 (GMT)
-To: David Gibson <david@gibson.dropbear.id.au>
-References: <1582962844-26333-1-git-send-email-linuxram@us.ibm.com>
- <20200302233240.GB35885@umbus.fritz.box>
- <8f0c3d41-d1f9-7e6d-276b-b95238715979@fr.ibm.com>
- <20200303170205.GA5416@oc0525413822.ibm.com>
- <20200303184520.632be270@bahia.home>
- <20200303185645.GB5416@oc0525413822.ibm.com>
- <20200304115948.7b2dfe10@bahia.home>
- <20200304153727.GH5416@oc0525413822.ibm.com>
- <08269906-db11-b80c-0e67-777ab0aaa9bd@fr.ibm.com>
- <20200304235545.GE593957@umbus.fritz.box>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@fr.ibm.com>
-Date: Thu, 5 Mar 2020 08:15:56 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Y2WQ635CzDqlj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 18:32:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Dgl84ulZ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48Y2WQ2xs3z9sPK;
+ Thu,  5 Mar 2020 18:32:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1583393522;
+ bh=AqqD/7BsFEb+Qk3QF29MUqu1eSjy6ruJUlUW2LliTO0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Dgl84ulZ2LAPoIca7ZyBw2dkmL+xADxZa+I8AfmyYqC1E0xR55k/k9rtG4XzEm26Q
+ YWYKS3Mobc+u0snLdNHK+LBL2WlisAtIEUkrZPGX05e+iyyiJ7YzQxjND2ENPiHuvq
+ CS/tK+lrFtv6aGmMLp/2UipjzBjCYSjhd9yVbTARL0F8a0eGtASYNDeyfLVhNkMEJ9
+ GKVIOrsJwiGAoj1MkK3b9neMISiJc3EcNgFjXznF+F1guSesp9gowucE1VLlRRuHu0
+ gkR2MBmYkjVcbc5hFbGCJEnF63iNMHwum8TBdrnJtijG+ivFMeIN+u6l5wE+6EhuHA
+ 0SCPlU3ykZbdA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Po-Hsu Lin <po-hsu.lin@canonical.com>, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/powerpc: Turn off timeout setting for
+ benchmarks, dscr, signal, tm
+In-Reply-To: <20200304131553.27582-1-po-hsu.lin@canonical.com>
+References: <20200304131553.27582-1-po-hsu.lin@canonical.com>
+Date: Thu, 05 Mar 2020 18:31:57 +1100
+Message-ID: <87zhcvp89e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200304235545.GE593957@umbus.fritz.box>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20030507-0028-0000-0000-000003E10C75
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030507-0029-0000-0000-000024A64046
-Message-Id: <5e937cc6-1d34-af18-6358-19c8d442f6ad@fr.ibm.com>
-Subject: RE: [RFC PATCH v1] powerpc/prom_init: disable XIVE in Secure VM.
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-05_01:2020-03-04,
- 2020-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=668 lowpriorityscore=0 suspectscore=0 phishscore=0 mlxscore=0
- impostorscore=0 bulkscore=0 malwarescore=0 adultscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003050045
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,51 +58,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, Ram Pai <linuxram@us.ibm.com>,
- Greg Kurz <groug@kaod.org>, kvm-ppc@vger.kernel.org,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
+Cc: shuah@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/5/20 12:55 AM, David Gibson wrote:
-> On Wed, Mar 04, 2020 at 04:56:09PM +0100, Cédric Le Goater wrote:
->> [ ... ]
->>
->>> (1) applied the patch which shares the EQ-page with the hypervisor.
->>> (2) set "kernel_irqchip=off"
->>> (3) set "ic-mode=xive"
->>
->> you don't have to set the interrupt mode. xive should be negotiated
->> by default.
->>
->>> (4) set "svm=on" on the kernel command line.
->>> (5) no changes to the hypervisor and ultravisor.
->>>
->>> And Boom it works!.   So you were right.
->>
->> Excellent.
->>  
->>> I am sending out the patch for (1) above ASAP.
->>
->> Next step, could you please try to do the same with the TIMA and ESB pfn ?
->> and use KVM.
-> 
-> I'm a bit confused by this.  Aren't the TIMA and ESB pages essentially
-> IO pages, rather than memory pages from the guest's point of view?
+Po-Hsu Lin <po-hsu.lin@canonical.com> writes:
+> Some specific tests in powerpc can take longer than the default 45
+> seconds that added in commit 852c8cbf (selftests/kselftest/runner.sh:
+> Add 45 second timeout per test) to run, the following test result was
+> collected across 2 Power8 nodes and 1 Power9 node in our pool:
+>   powerpc/benchmarks/futex_bench - 52s
+>   powerpc/dscr/dscr_sysfs_test - 116s
+>   powerpc/signal/signal_fuzzer - 88s
+>   powerpc/tm/tm_unavailable_test - 168s
+>   powerpc/tm/tm-poison - 240s
+>
+> Thus they will fail with TIMEOUT error. Disable the timeout setting
+> for these sub-tests to allow them finish properly.
 
-yes. 
+I run the powerpc tests with run-parts, rather than the kselftest
+script, we already have our own test runner with a 120s timeout.
 
-> I assume only memory pages are protected with PEF - I can't even really
-> see what protecting an IO page would even mean.
+I didn't think the kselftests runner actually worked with the powerpc
+tests? Because we override RUN_TESTS.
 
-AFAIUI, the ultravisor needs to be aware of these IO page frames. We have 
-the information in KVM but we need to inform the ultravisor in some ways.
-It could be done earlier than in the page fault handler.
-
-C.
+cheers
 
 
- 
-
+> https://bugs.launchpad.net/bugs/1864642
+> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+> ---
+>  tools/testing/selftests/powerpc/benchmarks/Makefile | 2 ++
+>  tools/testing/selftests/powerpc/benchmarks/settings | 1 +
+>  tools/testing/selftests/powerpc/dscr/Makefile       | 2 ++
+>  tools/testing/selftests/powerpc/dscr/settings       | 1 +
+>  tools/testing/selftests/powerpc/signal/Makefile     | 2 ++
+>  tools/testing/selftests/powerpc/signal/settings     | 1 +
+>  tools/testing/selftests/powerpc/tm/Makefile         | 2 ++
+>  tools/testing/selftests/powerpc/tm/settings         | 1 +
+>  8 files changed, 12 insertions(+)
+>  create mode 100644 tools/testing/selftests/powerpc/benchmarks/settings
+>  create mode 100644 tools/testing/selftests/powerpc/dscr/settings
+>  create mode 100644 tools/testing/selftests/powerpc/signal/settings
+>  create mode 100644 tools/testing/selftests/powerpc/tm/settings
+>
+> diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile b/tools/testing/selftests/powerpc/benchmarks/Makefile
+> index d40300a..a32a6ab 100644
+> --- a/tools/testing/selftests/powerpc/benchmarks/Makefile
+> +++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
+> @@ -2,6 +2,8 @@
+>  TEST_GEN_PROGS := gettimeofday context_switch fork mmap_bench futex_bench null_syscall
+>  TEST_GEN_FILES := exec_target
+>  
+> +TEST_FILES := settings
+> +
+>  CFLAGS += -O2
+>  
+>  top_srcdir = ../../../../..
+> diff --git a/tools/testing/selftests/powerpc/benchmarks/settings b/tools/testing/selftests/powerpc/benchmarks/settings
+> new file mode 100644
+> index 0000000..e7b9417
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/benchmarks/settings
+> @@ -0,0 +1 @@
+> +timeout=0
+> diff --git a/tools/testing/selftests/powerpc/dscr/Makefile b/tools/testing/selftests/powerpc/dscr/Makefile
+> index 5df4763..cfa6eed 100644
+> --- a/tools/testing/selftests/powerpc/dscr/Makefile
+> +++ b/tools/testing/selftests/powerpc/dscr/Makefile
+> @@ -3,6 +3,8 @@ TEST_GEN_PROGS := dscr_default_test dscr_explicit_test dscr_user_test	\
+>  	      dscr_inherit_test dscr_inherit_exec_test dscr_sysfs_test	\
+>  	      dscr_sysfs_thread_test
+>  
+> +TEST_FILES := settings
+> +
+>  top_srcdir = ../../../../..
+>  include ../../lib.mk
+>  
+> diff --git a/tools/testing/selftests/powerpc/dscr/settings b/tools/testing/selftests/powerpc/dscr/settings
+> new file mode 100644
+> index 0000000..e7b9417
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/dscr/settings
+> @@ -0,0 +1 @@
+> +timeout=0
+> diff --git a/tools/testing/selftests/powerpc/signal/Makefile b/tools/testing/selftests/powerpc/signal/Makefile
+> index 113838f..153fafc 100644
+> --- a/tools/testing/selftests/powerpc/signal/Makefile
+> +++ b/tools/testing/selftests/powerpc/signal/Makefile
+> @@ -5,6 +5,8 @@ CFLAGS += -maltivec
+>  $(OUTPUT)/signal_tm: CFLAGS += -mhtm
+>  $(OUTPUT)/sigfuz: CFLAGS += -pthread -m64
+>  
+> +TEST_FILES := settings
+> +
+>  top_srcdir = ../../../../..
+>  include ../../lib.mk
+>  
+> diff --git a/tools/testing/selftests/powerpc/signal/settings b/tools/testing/selftests/powerpc/signal/settings
+> new file mode 100644
+> index 0000000..e7b9417
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/signal/settings
+> @@ -0,0 +1 @@
+> +timeout=0
+> diff --git a/tools/testing/selftests/powerpc/tm/Makefile b/tools/testing/selftests/powerpc/tm/Makefile
+> index b15a1a3..7b99d09 100644
+> --- a/tools/testing/selftests/powerpc/tm/Makefile
+> +++ b/tools/testing/selftests/powerpc/tm/Makefile
+> @@ -7,6 +7,8 @@ TEST_GEN_PROGS := tm-resched-dscr tm-syscall tm-signal-msr-resv tm-signal-stack
+>  	$(SIGNAL_CONTEXT_CHK_TESTS) tm-sigreturn tm-signal-sigreturn-nt \
+>  	tm-signal-context-force-tm tm-poison
+>  
+> +TEST_FILES := settings
+> +
+>  top_srcdir = ../../../../..
+>  include ../../lib.mk
+>  
+> diff --git a/tools/testing/selftests/powerpc/tm/settings b/tools/testing/selftests/powerpc/tm/settings
+> new file mode 100644
+> index 0000000..e7b9417
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/tm/settings
+> @@ -0,0 +1 @@
+> +timeout=0
+> -- 
+> 2.7.4
