@@ -2,51 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBC517B234
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 00:23:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0405B17B243
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 00:34:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YRdP57cVzDqrn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 10:23:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YRtK0sBzzDqcR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 10:34:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YRbg1h7ZzDqlK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 10:22:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=psMUlKTk; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48YRbd5SFrz9sNg;
- Fri,  6 Mar 2020 10:22:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1583450526;
- bh=PvR3xvSSafUOmuGnnxb06iTcgtURZdFSYRFughwx4Jc=;
- h=Date:From:To:Cc:Subject:From;
- b=psMUlKTkLtxWgoN1IA50NGPWdGS3hB3HdMRoe5FDUpSOS1fIY6HWjZYAyHKKzxF3D
- 9NRhvJfHINFTJlf/SEKKty3sKJso2RH/4AMJez+pTVPVImvYfGyhM5YSyz8famnEvr
- obKpExYXgAU0g+ek1XBiV2G8bTZ2+BgByr/cqdOD9Qy03CYWfR2c9/9m40GVsUpy+4
- G4DuKxrduayZUIizWVcBReAfCIj4MaMf+v0ehJqTivyZRB3FXxbDAVqDQqXh7kOdtD
- CSd8iwgoQ159AM0f1MOW29lgknQmmrVG4ayd2iMxg+hAo1r5LtulZwr0GCbpc4BGqW
- xh62PJw55My3Q==
-Date: Fri, 6 Mar 2020 10:21:58 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: David Miller <davem@davemloft.net>, Networking <netdev@vger.kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: manual merge of the net-next tree with the powerpc tree
-Message-ID: <20200306102158.0b88e0a0@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YRrY3h58zDqmT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 10:33:17 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 025NVkwZ005883; Thu, 5 Mar 2020 18:33:00 -0500
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yhs0w15hg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Mar 2020 18:33:00 -0500
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 025NUPx3012605;
+ Thu, 5 Mar 2020 23:33:00 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01dal.us.ibm.com with ESMTP id 2yffk82ruh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Mar 2020 23:32:59 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 025NWwIa14418624
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 Mar 2020 23:32:58 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33EEBBE04F;
+ Thu,  5 Mar 2020 23:32:58 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27088BE051;
+ Thu,  5 Mar 2020 23:32:55 +0000 (GMT)
+Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.147])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Mar 2020 23:32:54 +0000 (GMT)
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Leonardo Bras <leonardo@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Michael Anderson <andmike@linux.ibm.com>,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, bharata.rao@in.ibm.com
+Subject: [RFC PATCH v2 1/1] powerpc/kernel: Enables memory hot-remove after
+ reboot on pseries guests
+Date: Thu,  5 Mar 2020 20:32:31 -0300
+Message-Id: <20200305233231.174082-1-leonardo@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/MiD=6dX41diOlbdUFdeLJ7D";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-05_08:2020-03-05,
+ 2020-03-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0
+ lowpriorityscore=0 impostorscore=0 spamscore=0 clxscore=1015 adultscore=0
+ phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003050132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,185 +93,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian Brauner <christian.brauner@ubuntu.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/MiD=6dX41diOlbdUFdeLJ7D
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+While providing guests, it's desirable to resize it's memory on demand.
 
-Hi all,
+By now, it's possible to do so by creating a guest with a small base
+memory, hot-plugging all the rest, and using 'movable_node' kernel
+command-line parameter, which puts all hot-plugged memory in
+ZONE_MOVABLE, allowing it to be removed whenever needed.
 
-Today's linux-next merge of the net-next tree got a conflict in:
+But there is an issue regarding guest reboot:
+If memory is hot-plugged, and then the guest is rebooted, all hot-plugged
+memory goes to ZONE_NORMAL, which offers no guaranteed hot-removal.
+It usually prevents this memory to be hot-removed from the guest.
 
-  fs/sysfs/group.c
+It's possible to use device-tree information to fix that behavior, as
+it stores flags for LMB ranges on ibm,dynamic-memory-vN.
+It involves marking each memblock with the correct flags as hotpluggable
+memory, which mm/memblock.c puts in ZONE_MOVABLE during boot if
+'movable_node' is passed.
 
-between commit:
+For carrying such information, the new flag DRCONF_MEM_HOTPLUGGED is
+proposed, which should be true if memory was hot-plugged on guest, and
+false if it's base memory.
 
-  9255782f7061 ("sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj functio=
-n to change the symlink name")
+During boot, guest kernel reads the device-tree, early_init_drmem_lmb()
+is called for every added LMBs. Here, checking for this new flag and
+marking memblocks as hotplugable memory is enough to get the desirable
+behavior.
 
-from the powerpc tree and commit:
+This should cause no change if 'movable_node' parameter is not passed
+in kernel command-line.
 
-  303a42769c4c ("sysfs: add sysfs_group{s}_change_owner()")
+Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 
-from the net-next tree.
+---
+The new flag was already proposed on Power Architecture documentation,
+and it's waiting for approval.
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+I would like to get your comments on this change, but it's still not
+ready for being merged.
 
---=20
-Cheers,
-Stephen Rothwell
+I will send the matching qemu change as a reply later.
 
-diff --cc fs/sysfs/group.c
-index 1e2a096057bc,5afe0e7ff7cd..000000000000
---- a/fs/sysfs/group.c
-+++ b/fs/sysfs/group.c
-@@@ -478,4 -457,118 +479,118 @@@ int compat_only_sysfs_link_entry_to_kob
-  	kernfs_put(target);
-  	return PTR_ERR_OR_ZERO(link);
-  }
- -EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
- +EXPORT_SYMBOL_GPL(compat_only_sysfs_link_entry_to_kobj);
-+=20
-+ static int sysfs_group_attrs_change_owner(struct kernfs_node *grp_kn,
-+ 					  const struct attribute_group *grp,
-+ 					  struct iattr *newattrs)
-+ {
-+ 	struct kernfs_node *kn;
-+ 	int error;
-+=20
-+ 	if (grp->attrs) {
-+ 		struct attribute *const *attr;
-+=20
-+ 		for (attr =3D grp->attrs; *attr; attr++) {
-+ 			kn =3D kernfs_find_and_get(grp_kn, (*attr)->name);
-+ 			if (!kn)
-+ 				return -ENOENT;
-+=20
-+ 			error =3D kernfs_setattr(kn, newattrs);
-+ 			kernfs_put(kn);
-+ 			if (error)
-+ 				return error;
-+ 		}
-+ 	}
-+=20
-+ 	if (grp->bin_attrs) {
-+ 		struct bin_attribute *const *bin_attr;
-+=20
-+ 		for (bin_attr =3D grp->bin_attrs; *bin_attr; bin_attr++) {
-+ 			kn =3D kernfs_find_and_get(grp_kn, (*bin_attr)->attr.name);
-+ 			if (!kn)
-+ 				return -ENOENT;
-+=20
-+ 			error =3D kernfs_setattr(kn, newattrs);
-+ 			kernfs_put(kn);
-+ 			if (error)
-+ 				return error;
-+ 		}
-+ 	}
-+=20
-+ 	return 0;
-+ }
-+=20
-+ /**
-+  * sysfs_group_change_owner - change owner of an attribute group.
-+  * @kobj:	The kobject containing the group.
-+  * @grp:	The attribute group.
-+  * @kuid:	new owner's kuid
-+  * @kgid:	new owner's kgid
-+  *
-+  * Returns 0 on success or error code on failure.
-+  */
-+ int sysfs_group_change_owner(struct kobject *kobj,
-+ 			     const struct attribute_group *grp, kuid_t kuid,
-+ 			     kgid_t kgid)
-+ {
-+ 	struct kernfs_node *grp_kn;
-+ 	int error;
-+ 	struct iattr newattrs =3D {
-+ 		.ia_valid =3D ATTR_UID | ATTR_GID,
-+ 		.ia_uid =3D kuid,
-+ 		.ia_gid =3D kgid,
-+ 	};
-+=20
-+ 	if (!kobj->state_in_sysfs)
-+ 		return -EINVAL;
-+=20
-+ 	if (grp->name) {
-+ 		grp_kn =3D kernfs_find_and_get(kobj->sd, grp->name);
-+ 	} else {
-+ 		kernfs_get(kobj->sd);
-+ 		grp_kn =3D kobj->sd;
-+ 	}
-+ 	if (!grp_kn)
-+ 		return -ENOENT;
-+=20
-+ 	error =3D kernfs_setattr(grp_kn, &newattrs);
-+ 	if (!error)
-+ 		error =3D sysfs_group_attrs_change_owner(grp_kn, grp, &newattrs);
-+=20
-+ 	kernfs_put(grp_kn);
-+=20
-+ 	return error;
-+ }
-+ EXPORT_SYMBOL_GPL(sysfs_group_change_owner);
-+=20
-+ /**
-+  * sysfs_groups_change_owner - change owner of a set of attribute groups.
-+  * @kobj:	The kobject containing the groups.
-+  * @groups:	The attribute groups.
-+  * @kuid:	new owner's kuid
-+  * @kgid:	new owner's kgid
-+  *
-+  * Returns 0 on success or error code on failure.
-+  */
-+ int sysfs_groups_change_owner(struct kobject *kobj,
-+ 			      const struct attribute_group **groups,
-+ 			      kuid_t kuid, kgid_t kgid)
-+ {
-+ 	int error =3D 0, i;
-+=20
-+ 	if (!kobj->state_in_sysfs)
-+ 		return -EINVAL;
-+=20
-+ 	if (!groups)
-+ 		return 0;
-+=20
-+ 	for (i =3D 0; groups[i]; i++) {
-+ 		error =3D sysfs_group_change_owner(kobj, groups[i], kuid, kgid);
-+ 		if (error)
-+ 			break;
-+ 	}
-+=20
-+ 	return error;
-+ }
-+ EXPORT_SYMBOL_GPL(sysfs_groups_change_owner);
+Changes since v1:
+- Adds new flag, so PowerVM is compatible with the change.
+- Fixes mistakes in code
+---
+ arch/powerpc/include/asm/drmem.h | 1 +
+ arch/powerpc/kernel/prom.c       | 9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---Sig_/MiD=6dX41diOlbdUFdeLJ7D
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+index 3d76e1c388c2..92083b4565f6 100644
+--- a/arch/powerpc/include/asm/drmem.h
++++ b/arch/powerpc/include/asm/drmem.h
+@@ -65,6 +65,7 @@ struct of_drconf_cell_v2 {
+ #define DRCONF_MEM_ASSIGNED	0x00000008
+ #define DRCONF_MEM_AI_INVALID	0x00000040
+ #define DRCONF_MEM_RESERVED	0x00000080
++#define DRCONF_MEM_HOTPLUGGED	0x00000100
+ 
+ static inline u32 drmem_lmb_size(void)
+ {
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 6620f37abe73..9c5cb2e8049e 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -515,9 +515,14 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
+ 				size = 0x80000000ul - base;
+ 		}
+ 
++		if (!validate_mem_limit(base, &size))
++			continue;
++
+ 		DBG("Adding: %llx -> %llx\n", base, size);
+-		if (validate_mem_limit(base, &size))
+-			memblock_add(base, size);
++		memblock_add(base, size);
++
++		if (lmb->flags & DRCONF_MEM_HOTPLUGGED)
++			memblock_mark_hotplug(base, size);
+ 	} while (--rngs);
+ }
+ #endif /* CONFIG_PPC_PSERIES */
+-- 
+2.24.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl5hiZYACgkQAVBC80lX
-0GwNjgf+NR8vXKVJAOj4wfPbS7Z86o+CKOI/QhegsGe9hQhSVkfAPt2iQ44y3B4c
-8zSfBQW5uYRwXALv7eiFKnIBw1rFg66smu7svvbEIFE/siwIMqGZJW0gOpVwIAF7
-qgO7qyQJlRa7G3+vZsA8VDA/1ti+juHCJHikLmzHRZOB6hF2QQTGLodXuD0ReJHQ
-D0seqE0uNkN5DO/5KifBic8SHGRMAv0P28MC2SH8Si/YmF4CwN4E9gp9fKsQ4vo5
-dBpZvDO345/zQO7p31mIV/exmvQZ68ttELulIYglGLY2d3c245eBf432lqT9EIIk
-SlGc8Nxd/I8v17zpel/hCzWN1KrnxQ==
-=ApLk
------END PGP SIGNATURE-----
-
---Sig_/MiD=6dX41diOlbdUFdeLJ7D--
