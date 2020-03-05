@@ -1,60 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E95A717B205
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 00:03:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C971217B203
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 00:01:55 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YR8J5lLfzDqs6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 10:01:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YRBH1XCczDqwV
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 10:03:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.160.194;
- helo=mail-qt1-f194.google.com; envelope-from=niveditas98@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=alum.mit.edu
-Received: from mail-qt1-f194.google.com (mail-qt1-f194.google.com
- [209.85.160.194])
+ spf=none (no SPF record) smtp.mailfrom=tycho.ws
+ (client-ip=2607:f8b0:4864:20::c43; helo=mail-yw1-xc43.google.com;
+ envelope-from=tycho@tycho.ws; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=tycho.ws
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=tycho-ws.20150623.gappssmtp.com
+ header.i=@tycho-ws.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=aGAWUnq2; dkim-atps=neutral
+Received: from mail-yw1-xc43.google.com (mail-yw1-xc43.google.com
+ [IPv6:2607:f8b0:4864:20::c43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YDfR1Q5szDqgS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 02:08:41 +1100 (AEDT)
-Received: by mail-qt1-f194.google.com with SMTP id v22so4336698qtp.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 07:08:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YNFS1KlxzDqT7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 07:51:04 +1100 (AEDT)
+Received: by mail-yw1-xc43.google.com with SMTP id p124so65528ywc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 12:51:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=tycho-ws.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=+KkcNSGG4PmqcHf5w0J/0EA5pqzwTNlZhZPBmrmp7lc=;
+ b=aGAWUnq2cShWMA0rCbiRWuVCWELljpX3PB/FsEKGMOFKDXpvVY26swvU1c83ciEV+C
+ vZfZPwlp/g4NcEdLGqpe73q7GJanZJzUj1PqzqD+1q/UbfbPfMtPUcBQqEQ1NG/baZT1
+ Eg84AfRliEdTYVakSs34OEyTVaJcEodqXgcX/1DW2HbALNbr9n7Pe4axB/UldwC8oIhb
+ e+LE398BVASwZokiGAXu+1GIxRuQENdZmZk6VIDtumHXmAfZsZufuaoMj2sBsHbO/Pb+
+ hA0XbxlRv5htq2DMEsIiN1fAac252TMiClDppHPRIbUbRR8B1EbMDYwB0KsRmeF5LX2H
+ gJpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=m1v7KEH8H8EEgDnDnnlGNlXFsnNQAqOhZZNudokQ2Po=;
- b=bM+tLYTrLYWj5E1C1t5WAN+KJasLuftiNNDrc/AMrg6AFUBaXDGKrp+D6CC+D2JR56
- McVFie9NRt+YEw6Lo1GhmRNSLwP1eoxlRFvK6C8WsLTUBE9TlCQoAzylUl0Hb4H/cEIf
- kiunINxUilTP1+Pq+lVyOiua5XVZsKmpA/RF+uS1dMTg7M+2EdOSKPfl6lhFeu3L5syi
- 4cazjfZdsbLPz4muNt88cKWk65xx3HEVLNu6LbU9qVgZ2nWyBFS/qu5Q21luTJeXZHkw
- gJQaE4XzNVP0iw8WAcMrgQ2UDk/0kXaUKY2syNxemn6bCCiKeIKqUaJyRpH7wTV5GCpn
- PK2A==
-X-Gm-Message-State: ANhLgQ1JKEQaollBf8nkE8ghlu8PTVp+By7Wy4emiz9XUZQdFLtt/ZLA
- SCxRxYORPEep+HkAkkkTczM=
-X-Google-Smtp-Source: ADFU+vuOS2xZwbWZs6qEQtovSh6AUFl9WlSPml+IgYmIWtqCd0kt/sKG334d9lzu+FpmW4dkIw7TEw==
-X-Received: by 2002:ac8:4408:: with SMTP id j8mr7637069qtn.3.1583420918447;
- Thu, 05 Mar 2020 07:08:38 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
- by smtp.gmail.com with ESMTPSA id n46sm266850qtb.48.2020.03.05.07.08.37
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=+KkcNSGG4PmqcHf5w0J/0EA5pqzwTNlZhZPBmrmp7lc=;
+ b=ljcaycdRiueticWq8IuTF+RUAH6o0GKo30Y8O/mlBaWzcOXGRztssLfw7PBq+G2X2Q
+ Irp/P9WJrRmhWnQDzM0r57DO8uWay59o+CsRj/hHinIbFRmLVM8DtQvQ8eneH8kst07Y
+ xUnMibCTSgD175gblngzfIBcqPRXIvVo6r8EXLQMVTo46/J/KLyXhKpEl1uob4tnc1AF
+ aNrL9osHksRjOQuzNe1aQxifO1xs2AbYpdYPw3P+u84Je86HporXI7wNbrwZy2iKtwCR
+ /UeWivAW7t8RP0slYgATFySmq9Mvm/hkZ1sNbeEep5vJ+iwDki1AAX0wsaVQoRH8oa/S
+ Q2QA==
+X-Gm-Message-State: ANhLgQ0GATG2hipz+Lzdx/K2CZ4RT1gWWtPoRVjszXlw3LcP8CiFJK37
+ vDd5Rei+A/SxGgIFNMB/Mh1/Kw==
+X-Google-Smtp-Source: ADFU+vs50RkJRZ4RwwF6XWZXespcdsmaoCqqPgVtO/9DW5s3y9h2GpkJOYvZU+X77or1j5LpSjT7oQ==
+X-Received: by 2002:a25:6a45:: with SMTP id f66mr119436ybc.63.1583441461260;
+ Thu, 05 Mar 2020 12:51:01 -0800 (PST)
+Received: from cisco ([2607:fb90:17d4:133:1002:9a44:e2a2:4464])
+ by smtp.gmail.com with ESMTPSA id d203sm10941125ywc.29.2020.03.05.12.50.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Mar 2020 07:08:37 -0800 (PST)
-From: Arvind Sankar <nivedita@alum.mit.edu>
-To: Kees Cook <keescook@chromium.org>
-Subject: [PATCH] powerpc/32: Stop printing the virtual memory layout
-Date: Thu,  5 Mar 2020 10:08:37 -0500
-Message-Id: <20200305150837.835083-1-nivedita@alum.mit.edu>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <202003021038.8F0369D907@keescook>
+ Thu, 05 Mar 2020 12:51:00 -0800 (PST)
+Date: Thu, 5 Mar 2020 13:50:54 -0700
+From: Tycho Andersen <tycho@tycho.ws>
+To: Arvind Sankar <nivedita@alum.mit.edu>
+Subject: Re: [PATCH] powerpc/32: Stop printing the virtual memory layout
+Message-ID: <20200305205054.GD6506@cisco>
 References: <202003021038.8F0369D907@keescook>
+ <20200305150837.835083-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 06 Mar 2020 10:00:06 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200305150837.835083-1-nivedita@alum.mit.edu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Fri, 06 Mar 2020 10:00:05 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,58 +83,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tycho Andersen <tycho@tycho.ws>, kernel-hardening@lists.openwall.com,
+Cc: Kees Cook <keescook@chromium.org>, kernel-hardening@lists.openwall.com,
  linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
  linuxppc-dev@lists.ozlabs.org, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For security, don't display the kernel's virtual memory layout.
+On Thu, Mar 05, 2020 at 10:08:37AM -0500, Arvind Sankar wrote:
+> For security, don't display the kernel's virtual memory layout.
+> 
+> Kees Cook points out:
+> "These have been entirely removed on other architectures, so let's
+> just do the same for ia32 and remove it unconditionally."
+> 
+> 071929dbdd86 ("arm64: Stop printing the virtual memory layout")
+> 1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
+> 31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
+> fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
+> adb1fe9ae2ee ("mm/page_alloc: Remove kernel address exposure in free_reserved_area()")
+> 
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 
-Kees Cook points out:
-"These have been entirely removed on other architectures, so let's
-just do the same for ia32 and remove it unconditionally."
-
-071929dbdd86 ("arm64: Stop printing the virtual memory layout")
-1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
-31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
-fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
-adb1fe9ae2ee ("mm/page_alloc: Remove kernel address exposure in free_reserved_area()")
-
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- arch/powerpc/mm/mem.c | 17 -----------------
- 1 file changed, 17 deletions(-)
-
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index ef7b1119b2e2..df2c143b6bf7 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -331,23 +331,6 @@ void __init mem_init(void)
- #endif
- 
- 	mem_init_print_info(NULL);
--#ifdef CONFIG_PPC32
--	pr_info("Kernel virtual memory layout:\n");
--#ifdef CONFIG_KASAN
--	pr_info("  * 0x%08lx..0x%08lx  : kasan shadow mem\n",
--		KASAN_SHADOW_START, KASAN_SHADOW_END);
--#endif
--	pr_info("  * 0x%08lx..0x%08lx  : fixmap\n", FIXADDR_START, FIXADDR_TOP);
--#ifdef CONFIG_HIGHMEM
--	pr_info("  * 0x%08lx..0x%08lx  : highmem PTEs\n",
--		PKMAP_BASE, PKMAP_ADDR(LAST_PKMAP));
--#endif /* CONFIG_HIGHMEM */
--	if (ioremap_bot != IOREMAP_TOP)
--		pr_info("  * 0x%08lx..0x%08lx  : early ioremap\n",
--			ioremap_bot, IOREMAP_TOP);
--	pr_info("  * 0x%08lx..0x%08lx  : vmalloc & ioremap\n",
--		VMALLOC_START, VMALLOC_END);
--#endif /* CONFIG_PPC32 */
- }
- 
- void free_initmem(void)
--- 
-2.24.1
-
+Acked-by: Tycho Andersen <tycho@tycho.ws>
