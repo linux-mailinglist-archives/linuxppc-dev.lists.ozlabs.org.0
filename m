@@ -2,88 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175E717A5AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 13:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB2117A78D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 15:35:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Y9bt4KCFzDqbh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Mar 2020 23:51:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YCvz4rddzDqkK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:35:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=D+OoHwLv; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Y9WV2jhHzDqW7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Mar 2020 23:47:33 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 025CiBnh150975
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 5 Mar 2020 07:47:31 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmg3n2br-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 07:47:31 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
- Thu, 5 Mar 2020 12:47:27 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 5 Mar 2020 12:47:24 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 025ClNjc29687814
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Mar 2020 12:47:23 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 617CA11C064;
- Thu,  5 Mar 2020 12:47:23 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 029A011C04C;
- Thu,  5 Mar 2020 12:47:23 +0000 (GMT)
-Received: from localhost (unknown [9.199.53.44])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  5 Mar 2020 12:47:22 +0000 (GMT)
-Date: Thu, 05 Mar 2020 18:17:21 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: eh_frame confusion
-To: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML
- <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <3b00b45f-74b5-13e3-9a98-c3d6b3bb7286@rasmusvillemoes.dk>
- <1583168442.ovqnxu16tp.naveen@linux.ibm.com>
- <1583169883.zo43kx69lm.naveen@linux.ibm.com>
-In-Reply-To: <1583169883.zo43kx69lm.naveen@linux.ibm.com>
-MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20030512-0008-0000-0000-0000035998EA
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030512-0009-0000-0000-00004A7AD005
-Message-Id: <1583412126.fc8zskkv66.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-05_03:2020-03-05,
- 2020-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1015
- lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003050082
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YCsD2p33zDqjv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 01:33:03 +1100 (AEDT)
+Received: by mail-qk1-x743.google.com with SMTP id b5so5447566qkh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 06:33:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id;
+ bh=t12PP+Y6fPg04CGydQKRRud0jZNc7mh3eq+JnGGoFlw=;
+ b=D+OoHwLv5FkiKYYj+d73ffAMgsCKhAJcd1W6XTW4We88gcuddps6vzAiuWSwtm12ec
+ WIMfjMcZXNx0qEy6cpVC4VH0l5cTK+qQOA88gcaoHbzKkXczF2NN1zj4AxY+HmoyCmPA
+ VeftV9WHoPHEUW+/TmYdBS6Pp7Z2vew0495PtiJGCvliuiomniLTeO+BOu7ShXSgeH+a
+ IyX7US3HmI7+fYcvYS+WtzU0a1Jjo2Uvpp+GmwW3+aZ3SQ6nmXxDOxYP2njvzY/AP4Lo
+ 9wIb4YzvdMPQ6+MzBBpue2ktT7CHiXfN96vA1AlXiniIbePKT1hT0rCAJbe/hJQkYNfd
+ imIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=t12PP+Y6fPg04CGydQKRRud0jZNc7mh3eq+JnGGoFlw=;
+ b=tAdySNFGY3OXQQbjZ6dgtEClxEXzd/Bn0xCbXsTiVkX92ih9ako1cZ5xUzynZrYbsM
+ PYSAF0aKgRe0mT7FJlaKv9ceK9WZayFA+ZgrpfFGTpM8LQ+Jmhg5zCv+Bueh3ZegFybX
+ 9ekVHcXgCBwEJ9vs9/Rw5xtV9RD1VAf4CZX1E4uvNj8tqBzzveyz1asawvrc8Z3lKMyn
+ /LKPxzy4gTxl/TPoF/OFakNphc67Uc1MSLr6EOGv1Vy95jQFn0jJTK7dZ93GCZP1UpAA
+ UXr7DgqSKviAO4bRkg/jedLLffsad4z4q7WovVAEaGSWfCHcZcPcauegOQiqXZ6XRhXz
+ zwFw==
+X-Gm-Message-State: ANhLgQ3jZuv9tbGG0Rl1fxMc3olvrnoyEgBcJu4RpRcNZSqx3p8oI7FB
+ GmMeMYSZZI0kuN/Bo0mJLdWNzw==
+X-Google-Smtp-Source: ADFU+vsE3hyiBkiu5Q9p6/HXzxk0WFlohUygbSOHcmSvau43NwWVfS2PwRAeTD8NEkmqJRJ6pC7zBg==
+X-Received: by 2002:a05:620a:2209:: with SMTP id
+ m9mr4055395qkh.71.1583418779726; 
+ Thu, 05 Mar 2020 06:32:59 -0800 (PST)
+Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id f7sm16969486qtc.29.2020.03.05.06.32.58
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 05 Mar 2020 06:32:59 -0800 (PST)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au,
+	akpm@linux-foundation.org
+Subject: [PATCH -next v2] powerpc/64s/pgtable: fix an undefined behaviour
+Date: Thu,  5 Mar 2020 09:32:39 -0500
+Message-Id: <1583418759-16105-1-git-send-email-cai@lca.pw>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,74 +74,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: rashmicy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao wrote:
-> Naveen N. Rao wrote:
->> Rasmus Villemoes wrote:
-<snip>
-> Can you check if the below patch works? I am yet to test this in more=20
-> detail, but would be good to know the implications for ppc32.
->=20
-> - Naveen
->=20
->=20
-> ---
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index f35730548e42..5b5bf98b8217 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -239,10 +239,7 @@ KBUILD_CFLAGS +=3D $(call cc-option,-mno-vsx)
->  KBUILD_CFLAGS +=3D $(call cc-option,-mno-spe)
->  KBUILD_CFLAGS +=3D $(call cc-option,-mspe=3Dno)
-> =20
-> -# FIXME: the module load should be taught about the additional relocs
-> -# generated by this.
-> -# revert to pre-gcc-4.4 behaviour of .eh_frame
-> -KBUILD_CFLAGS  +=3D $(call cc-option,-fno-dwarf2-cfi-asm)
-> +KBUILD_CFLAGS  +=3D $(call cc-option,-fno-asynchronous-unwind-tables)
+Booting a power9 server with hash MMU could trigger an undefined
+behaviour because pud_offset(p4d, 0) will do,
 
-In terms of the CFI information, the primary difference I see with=20
--fno-dwarf2-cfi-asm is that when dumping the debug frames, CIE indicates=20
-version 3, while otherwise (i.e., without -fno-dwarf2-cfi-asm and=20
-with/without -fasynchronous-unwind-tables), it is version 1, regardless=20
-of -gdwarf-2/-gdwarf-4. There are few more minor changes, but none of=20
-these looked significant to me.
+0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
 
-> =20
->  # Never use string load/store instructions as they are
->  # often slow when they are implemented at all
-> diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vd=
-so32/Makefile
-> index e147bbdc12cd..d43b0b18137c 100644
-> --- a/arch/powerpc/kernel/vdso32/Makefile
-> +++ b/arch/powerpc/kernel/vdso32/Makefile
-> @@ -25,6 +25,7 @@ KCOV_INSTRUMENT :=3D n
->  UBSAN_SANITIZE :=3D n
-> =20
->  ccflags-y :=3D -shared -fno-common -fno-builtin -nostdlib \
-> +       -fasynchronous-unwind-tables \
->         -Wl,-soname=3Dlinux-vdso32.so.1 -Wl,--hash-style=3Dboth
->  asflags-y :=3D -D__VDSO32__ -s
-> =20
-> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vd=
-so64/Makefile
-> index 32ebb3522ea1..b2cbb5c49bad 100644
-> --- a/arch/powerpc/kernel/vdso64/Makefile
-> +++ b/arch/powerpc/kernel/vdso64/Makefile
-> @@ -13,6 +13,7 @@ KCOV_INSTRUMENT :=3D n
->  UBSAN_SANITIZE :=3D n
-> =20
->  ccflags-y :=3D -shared -fno-common -fno-builtin -nostdlib \
-> +       -fasynchronous-unwind-tables \
->         -Wl,-soname=3Dlinux-vdso64.so.1 -Wl,--hash-style=3Dboth
->  asflags-y :=3D -D__VDSO64__ -s
+Fix it by converting pud_offset() and friends to static inline
+functions.
 
-The above vdso hunks can be dropped since all our VDSO are assembly, so=20
-the above have no impact.
+ UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
+ shift exponent 34 is too large for 32-bit type 'int'
+ CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
+ Call Trace:
+ dump_stack+0xf4/0x164 (unreliable)
+ ubsan_epilogue+0x18/0x78
+ __ubsan_handle_shift_out_of_bounds+0x160/0x21c
+ walk_pagetables+0x2cc/0x700
+ walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
+ (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
+ ptdump_check_wx+0x8c/0xf0
+ mark_rodata_ro+0x48/0x80
+ kernel_init+0x74/0x194
+ ret_from_kernel_thread+0x5c/0x74
 
+Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-- Naveen
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index fa60e8594b9f..4967bc9e25e2 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1016,12 +1016,20 @@ static inline bool p4d_access_permitted(p4d_t p4d, bool write)
+ 
+ #define pgd_offset(mm, address)	 ((mm)->pgd + pgd_index(address))
+ 
+-#define pud_offset(p4dp, addr)	\
+-	(((pud_t *) p4d_page_vaddr(*(p4dp))) + pud_index(addr))
+-#define pmd_offset(pudp,addr) \
+-	(((pmd_t *) pud_page_vaddr(*(pudp))) + pmd_index(addr))
+-#define pte_offset_kernel(dir,addr) \
+-	(((pte_t *) pmd_page_vaddr(*(dir))) + pte_index(addr))
++static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
++{
++	return (pud_t *)p4d_page_vaddr(*p4d) + pud_index(address);
++}
++
++static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
++{
++	return (pmd_t *)pud_page_vaddr(*pud) + pmd_index(address);
++}
++
++static inline pte_t *pte_offset_kernel(pmd_t *pmd, unsigned long address)
++{
++	return (pte_t *)pmd_page_vaddr(*pmd) + pte_index(address);
++}
+ 
+ #define pte_offset_map(dir,addr)	pte_offset_kernel((dir), (addr))
+ 
+-- 
+1.8.3.1
 
