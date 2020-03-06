@@ -2,31 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A33617B33E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C7217B32F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:56:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YTjz2ZHBzDqw9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 11:57:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YTh45LtWzDr1m
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 11:56:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YT3W1p1fzDqYS
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YT3W2n8pzDqdp
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 11:27:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48YT3S1cFqz9sSm; Fri,  6 Mar 2020 11:27:47 +1100 (AEDT)
+ id 48YT3V4wQxz9sSx; Fri,  6 Mar 2020 11:27:49 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: fcdb524d440d6326c286006e16f252b40ba4fd6a
-In-Reply-To: <20200214080606.26872-1-kjain@linux.ibm.com>
-To: Kajol Jain <kjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: 16985f2d25095899685952296f128a71f0aff05c
+In-Reply-To: <20200217024833.30580-1-oohall@gmail.com>
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/kernel/sysfs: Refactor current sysfs.c
-Message-Id: <48YT3S1cFqz9sSm@ozlabs.org>
-Date: Fri,  6 Mar 2020 11:27:47 +1100 (AEDT)
+Subject: Re: [PATCH 1/2] powerpc/powernv: Treat an empty reboot string as
+ default
+Message-Id: <48YT3V4wQxz9sSx@ozlabs.org>
+Date: Fri,  6 Mar 2020 11:27:49 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,30 +39,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nasastry@in.ibm.com, kjain@linux.ibm.com,
- Madhavan Srinivasan <maddy@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- anju@linux.vnet.ibm.com
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-02-14 at 08:06:05 UTC, Kajol Jain wrote:
-> From: Madhavan Srinivasan <maddy@linux.ibm.com>
+On Mon, 2020-02-17 at 02:48:32 UTC, Oliver O'Halloran wrote:
+> Treat an empty reboot cmd string the same as a NULL string. This squashes a
+> spurious unsupported reboot message that sometimes gets out when using
+> xmon.
 > 
-> An attempt to refactor the current sysfs.c file.
-> To start with a big chuck of macro #defines and dscr
-> functions are moved to start of the file. Secondly,
-> HAS_ #define macros are cleanup based on CONFIG_ options
-> 
-> Finally new HAS_ macro added:
-> 1. HAS_PPC_PA6T (for PA6T) to separate out non-PMU SPRs.
-> 2. HAS_PPC_PMC56 to separate out PMC SPR's from HAS_PPC_PMC_CLASSIC
->    which come under CONFIG_PPC64.
-> 
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
 Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/fcdb524d440d6326c286006e16f252b40ba4fd6a
+https://git.kernel.org/powerpc/c/16985f2d25095899685952296f128a71f0aff05c
 
 cheers
