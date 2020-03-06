@@ -2,85 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF4817C48F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 18:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 252F517C4A6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 18:41:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Yvv24s7ZzDrGC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 04:37:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Yvzy1s9FzDrSF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 04:41:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YvsX56dtzDqvl
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 04:35:44 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 026HZD1E138785
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 Mar 2020 12:35:37 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Yvy74HJYzDqll
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 04:39:43 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 026Hb8kI045408
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 Mar 2020 12:39:40 -0500
 Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ykdu63uae-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ykmr6q1sr-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2020 12:35:37 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2020 12:39:40 -0500
 Received: from localhost
  by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Fri, 6 Mar 2020 17:35:35 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ for <linuxppc-dev@lists.ozlabs.org> from <nayna@linux.ibm.com>;
+ Fri, 6 Mar 2020 17:39:38 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
  by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 6 Mar 2020 17:35:32 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 026HZUWi30802058
+ Fri, 6 Mar 2020 17:39:37 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 026HdZia58130484
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Mar 2020 17:35:30 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BA48AE04D;
- Fri,  6 Mar 2020 17:35:30 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B650AE045;
- Fri,  6 Mar 2020 17:35:30 +0000 (GMT)
-Received: from localhost (unknown [9.199.51.218])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  6 Mar 2020 17:35:30 +0000 (GMT)
-Date: Fri, 06 Mar 2020 23:05:28 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 4/5] powerpc/sysfs: Show idle_purr and idle_spurr for
- every CPU
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <1582262314-8319-1-git-send-email-ego@linux.vnet.ibm.com>
- <1582262314-8319-5-git-send-email-ego@linux.vnet.ibm.com>
- <87eeunubp7.fsf@linux.ibm.com> <20200224051447.GC12846@in.ibm.com>
- <1582625516.nbsanohdks.naveen@linux.ibm.com> <87wo7xju0k.fsf@linux.ibm.com>
-In-Reply-To: <87wo7xju0k.fsf@linux.ibm.com>
-MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+ Fri, 6 Mar 2020 17:39:35 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 97D424C04E;
+ Fri,  6 Mar 2020 17:39:35 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 54BEC4C046;
+ Fri,  6 Mar 2020 17:39:33 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.160.48.59])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Mar 2020 17:39:33 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-efi@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: [PATCH v3] ima: add a new CONFIG for loading arch-specific policies
+Date: Fri,  6 Mar 2020 12:39:20 -0500
+X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
-x-cbid: 20030617-4275-0000-0000-000003A90C04
+x-cbid: 20030617-4275-0000-0000-000003A90C33
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030617-4276-0000-0000-000038BE1F55
-Message-Id: <1583515770.c7z1yvxj3h.naveen@linux.ibm.com>
+x-cbparentid: 20030617-4276-0000-0000-000038BE1F86
+Message-Id: <1583516360-22016-1-git-send-email-nayna@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-06_06:2020-03-06,
  2020-03-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2003060112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,89 +85,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ zohar@linux.ibm.com, Philipp Rudo <prudo@linux.ibm.com>,
+ Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch wrote:
-> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
->> Gautham R Shenoy wrote:
->>> On Fri, Feb 21, 2020 at 10:50:12AM -0600, Nathan Lynch wrote:
->>>> It's regrettable that we have to wake up potentially idle CPUs in orde=
-r
->>>> to derive correct idle statistics for them, but I suppose the main use=
-r
->>>> (lparstat) of these interfaces already is causing this to happen by
->>>> polling the existing per-cpu purr and spurr attributes.
->>>>=20
->>>> So now lparstat will incur at minimum four syscalls and four IPIs per
->>>> CPU per polling interval -- one for each of purr, spurr, idle_purr and
->>>> idle_spurr. Correct?
->>>=20
->>> Yes, it is unforunate that we will end up making four syscalls and
->>> generating IPI noise, and this is something that I discussed with
->>> Naveen and Kamalesh. We have the following two constraints:
->>>=20
->>> 1) These values of PURR and SPURR required are per-cpu. Hence putting
->>> them in lparcfg is not an option.
->>>=20
->>> 2) sysfs semantics encourages a single value per key, the key being
->>> the sysfs-file. Something like the following would have made far more
->>> sense.
->>>=20
->>> cat /sys/devices/system/cpu/cpuX/purr_spurr_accounting
->>> purr:A
->>> idle_purr:B
->>> spurr:C
->>> idle_spurr:D
->>>=20
->>> There are some sysfs files which allow something like this. Eg:=20
->>> /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state
->>>=20
->>> Thoughts on any other alternatives?
->>
->> Umm... procfs?
->> /me ducks
->=20
-> I had wondered about perf events but I'm not sure that's any more suitabl=
-e.
+Every time a new architecture defines the IMA architecture specific
+functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
+include file needs to be updated. To avoid this "noise", this patch
+defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
+the different architectures to select it.
 
-Yes, we considered that, but it looks like the event reads are not=20
-"batched" in any manner. So, the IPI overhead will be similar.
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Philipp Rudo <prudo@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+---
+v3:
+* Updated and tested the patch with improvements suggested by Michael.
+It now uses "imply" instead of "select". Thanks Michael.
+* Have missed replacing the CONFIG_IMA in x86 and s390 with new config,
+that was resulting in redefinition when the IMA_SECURE_AND_OR_TRUSTED_BOOT
+is not enabled. Thanks to Mimi for recognizing the problem.
 
->=20
->>>> At some point it's going to make sense to batch sampling of remote CPU=
-s'
->>>> SPRs.
->>
->> How did you mean this? It looks like we first need to provide a separate=
-=20
->> user interface, since with the existing sysfs interface providing=20
->> separate files, I am not sure if we can batch such reads.
->=20
-> I mean in order to minimize IPI traffic something like: sample/calculate
-> all of a CPU's purr, idle_purr, spurr, idle_spurr in a single IPI upon a
-> read of any of the attributes, and cache the result for some time, so
-> that the anticipated subsequent reads of the other attributes use the
-> cached results instead of generating more IPIs.
->=20
-> That would keep the current sysfs interface at the cost of imposing a
-> certain coarseness in the results.
+v2:
+* Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and Michael for
+discussing the fix.
 
-Thanks for clarifying, that makes sense. Though we need to be careful in=20
-ensuring the sysfs semantics work as expected.
+ arch/powerpc/Kconfig           | 1 +
+ arch/s390/Kconfig              | 1 +
+ arch/s390/kernel/Makefile      | 2 +-
+ arch/x86/Kconfig               | 1 +
+ arch/x86/kernel/Makefile       | 2 +-
+ include/linux/ima.h            | 3 +--
+ security/integrity/ima/Kconfig | 8 ++++++++
+ 7 files changed, 14 insertions(+), 4 deletions(-)
 
->=20
-> Anyway, that's a mitigation that could be considered if the
-> implementation in this patch is found to be too expensive in practice.
-
-That's a good point. We can optimize later if this turns out to be a=20
-problem in practice, if we end up using this approach.
-
-
-- Naveen
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 497b7d0b2d7e..a5cfde432983 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
+ 	bool
+ 	depends on PPC_POWERNV
+ 	depends on IMA_ARCH_POLICY
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT
+ 	help
+ 	  Systems with firmware secure boot enabled need to define security
+ 	  policies to extend secure boot to the OS. This config allows a user
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 8abe77536d9d..4a502fbcb800 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -195,6 +195,7 @@ config S390
+ 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+ 	select SWIOTLB
+ 	select GENERIC_ALLOCATOR
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT if IMA_ARCH_POLICY
+ 
+ 
+ config SCHED_OMIT_FRAME_POINTER
+diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
+index 2b1203cf7be6..578a6fa82ea4 100644
+--- a/arch/s390/kernel/Makefile
++++ b/arch/s390/kernel/Makefile
+@@ -70,7 +70,7 @@ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+ obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file.o kexec_image.o
+ obj-$(CONFIG_KEXEC_FILE)	+= kexec_elf.o
+ 
+-obj-$(CONFIG_IMA)		+= ima_arch.o
++obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
+ 
+ obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_cpum_cf_common.o
+ obj-$(CONFIG_PERF_EVENTS)	+= perf_cpum_cf.o perf_cpum_sf.o
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea77046f9b..7f5bfaf0cbd2 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -230,6 +230,7 @@ config X86
+ 	select VIRT_TO_BUS
+ 	select X86_FEATURE_NAMES		if PROC_FS
+ 	select PROC_PID_ARCH_STATUS		if PROC_FS
++	select IMA_SECURE_AND_OR_TRUSTED_BOOT	if EFI && IMA_ARCH_POLICY
+ 
+ config INSTRUCTION_DECODER
+ 	def_bool y
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 9b294c13809a..7f131ceba136 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -155,5 +155,5 @@ ifeq ($(CONFIG_X86_64),y)
+ endif
+ 
+ ifdef CONFIG_EFI
+-obj-$(CONFIG_IMA)			+= ima_arch.o
++obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
+ endif
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 1659217e9b60..aefe758f4466 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+ 
+-#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
+-	|| defined(CONFIG_PPC_SECURE_BOOT)
++#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+ extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 3f3ee4e2eb0d..2baaf196c6d8 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -327,3 +327,11 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+ 	depends on IMA_MEASURE_ASYMMETRIC_KEYS
+ 	depends on SYSTEM_TRUSTED_KEYRING
+ 	default y
++
++config IMA_SECURE_AND_OR_TRUSTED_BOOT
++	bool
++	depends on IMA_ARCH_POLICY
++	default n
++	help
++	   This option is selected by architectures to enable secure and/or
++	   trusted boot based on IMA runtime policies.
+-- 
+2.18.1
 
