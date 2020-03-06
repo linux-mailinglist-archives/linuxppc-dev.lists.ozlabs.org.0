@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0577917B770
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 08:31:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YfSh3qDxzDr1F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 18:31:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4677917B798
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 08:41:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YfhB0wJ0zDr0X
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 18:41:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=J2mA6nWS; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VxnpotsT; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YfQr0W2DzDqN5
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 18:30:10 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id nm6so702571pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 23:30:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YfdS62H3zDqdp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 18:39:22 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id y30so673019pga.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 23:39:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=aPIsdBNMDTmM5LisDJPsWi6uKxD6/S17e5eRPSOHUdY=;
- b=J2mA6nWSD5m1GboKsmCHNjuURdoyUfflGSc09A3cTUXOP2u71HMKatqwj+nrLT5ScP
- gCs4XmMmN+VoSh2Zube7QIjEP0QyfriKGjgSdvlnNn84Xu4W8gH3HLQhdMMKxwAsRiKc
- 1RhpsCxJOqVim3oAukgi81HqvLz97ZzQ5pGZI=
+ bh=oFiRitkK201GrP2Dxv23vSuZtaVLBW9tgjZaqJlSFKU=;
+ b=VxnpotsTvVqsI87iSsmm4NcaIWZNE50kd8dJkMXXv9w4R1+ghQ+o+4dfegy/rn15o9
+ 5WK1GdGDaGDk3N7MU1sMnL3NfvsortQG1zBzH59BJ/E3pRGslYA5bW/yKnplQdmamqw4
+ Gt7LaPxxQaN9dCU1RL78q6owqEcXkvM4PazrKPwcMH/q5laMXXAD42/iUo4Wb3GIHAVN
+ vzEUp3kWXy//SMsmQGv0xd4nD6NCKkJx4pP4xB+0lrZj791tA0puAdTUI6lb0Awvg3D0
+ 9oE2fcgBk8LzQUvFND6wtzNWFh6MOxbNrU/4O1RtfLhgB/90Vl7NuZ7IpZzPmToVXKfh
+ mp/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=aPIsdBNMDTmM5LisDJPsWi6uKxD6/S17e5eRPSOHUdY=;
- b=GllXzDIb6a50bONHsMrclEjbNEQZCXgCYKz8lCX/rY7WYe3O2EZDvmooUDhlT/Hkf7
- TKGjVEnFYoOzrSwfPgB7rUa/065cScTfcB+lvIsNfEKTkE+Yynp+Tdo5PiA2B9CzrUEl
- 3swyFc5PsFdAgNTyWMOy8bH/D/MB4VLaof8wMg2IkWh9QDiczitnXwp3hTItPSF9xrlZ
- icyrpYh7oOSO/Kt0SFQAB6oSQsxgZH9CrerGvTA0f/S0uandVXjSCfX+duBvgD69J39j
- 3OVwxUPn//e80AgD9w++F52x8Y7YIPSN+hAN9S0yuzO8GMPvo/P5yTcXn4zkkq23wo4p
- X78Q==
-X-Gm-Message-State: ANhLgQ06OCoSFn2qJM9mh8l40+drwURHZgND+PkhNW8kiFW3PbnHLRAE
- LAN99nYmyF+ttoZ7y6CFvTCtuZDgdS8=
-X-Google-Smtp-Source: ADFU+vt00YsWIs7Ek0f31W8FBexErtP3O+GABsUDrdAeGYCLmqOcIHuud5EiHsBesJOh5vhlTL74Uw==
-X-Received: by 2002:a17:902:6809:: with SMTP id
- h9mr1756173plk.32.1583479807186; 
- Thu, 05 Mar 2020 23:30:07 -0800 (PST)
-Received: from localhost
- (2001-44b8-111e-5c00-69b9-4410-8fa1-baff.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:69b9:4410:8fa1:baff])
- by smtp.gmail.com with ESMTPSA id f124sm19519697pfg.9.2020.03.05.23.30.05
+ bh=oFiRitkK201GrP2Dxv23vSuZtaVLBW9tgjZaqJlSFKU=;
+ b=h6mZ+whU+cAVp93V3GqCfIrOH6aDrB3wid0dj9N9T0yx9jmwuGRzaT8gRyw/yR9fBb
+ C7oNFyv567RmUwVGDmqudFOxv/wrrOQQVBZr7uKdfPqo9gIkViQsczVvPPICTyY6kmRT
+ sWHizqz64jihKGiFLu/He2qSlswH2u8yi2AYoru9DhXHrPJNV+nrYMZh6rVSM7LtCvW4
+ oEGbuHusU2172bo1V1wzDAzgbiVZhPynSoIoptZeNs8WBE5SDbkJbH/6hROPP6Q1fBmb
+ f8Fvq6pbsyJhHkFopKFAeXgykKbuLKJsc/9QUm7PSZso30MaxahT0uh+W8N3VVuAphuM
+ ZUTQ==
+X-Gm-Message-State: ANhLgQ0LksfLQ2q+N5W3FqyzKlvhC5wjVwU4CbdDj9GbGpncaAKUkBye
+ PaykPElK2ogtLMTyRxZMKneURpefi0I=
+X-Google-Smtp-Source: ADFU+vsz/I1BPUswBh5uxePYZeKydBEhLYa6i5759uRTXeT8fGJaPkMSI9ZcFArkmJO8KUdbJOBNxg==
+X-Received: by 2002:a63:c643:: with SMTP id x3mr1907918pgg.299.1583480358582; 
+ Thu, 05 Mar 2020 23:39:18 -0800 (PST)
+Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id b16sm6192999pff.25.2020.03.05.23.39.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Mar 2020 23:30:06 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
+ Thu, 05 Mar 2020 23:39:17 -0800 (PST)
+From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc: setup_64: set up PACA earlier to avoid kcov
- problems
-Date: Fri,  6 Mar 2020 18:30:00 +1100
-Message-Id: <20200306073000.9491-1-dja@axtens.net>
-X-Mailer: git-send-email 2.20.1
+Subject: [PATCH v2 1/6] powerpc/eeh: Add sysfs files in late probe
+Date: Fri,  6 Mar 2020 18:38:59 +1100
+Message-Id: <20200306073904.4737-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,161 +76,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Daniel Axtens <dja@axtens.net>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kcov instrumentation is collected the __sanitizer_cov_trace_pc hook in
-kernel/kcov.c. The compiler inserts these hooks into every basic block
-unless kcov is disabled for that file.
+Move creating the EEH specific sysfs files into eeh_add_device_late()
+rather than being open-coded all over the place. Calling the function is
+generally done immediately after calling eeh_add_device_late() anyway. This
+is also a correctness fix since currently the sysfs files will be added
+even if the EEH probe happens to fail.
 
-We then have a deep call-chain:
- - __sanitizer_cov_trace_pc calls to check_kcov_mode()
- - check_kcov_mode() (kernel/kcov.c) calls in_task()
- - in_task() (include/linux/preempt.h) calls preempt_count().
- - preempt_count() (include/asm-generic/preempt.h) calls
-     current_thread_info()
- - because powerpc has THREAD_INFO_IN_TASK, current_thread_info()
-     (include/linux/thread_info.h) is defined to 'current'
- - current (arch/powerpc/include/asm/current.h) is defined to
-     get_current().
- - get_current (same file) loads an offset of r13.
- - arch/powerpc/include/asm/paca.h makes r13 a register variable
-     called local_paca - it is the PACA for the current CPU, so
-     this has the effect of loading the current task from PACA.
- - get_current returns the current task from PACA,
- - current_thread_info returns the task cast to a thread_info
- - preempt_count dereferences the thread_info to load preempt_count
- - that value is used by in_task and so on up the chain
+Similarly, on pseries we currently add the sysfs files before calling
+eeh_add_device_late(). This is flat-out broken since the sysfs files
+require the pci_dev->dev.archdata.edev pointer to be set, and that is done
+in eeh_add_device_late().
 
-The problem is:
-
- - kcov instrumentation is enabled for arch/powerpc/kernel/dt_cpu_ftrs.c
-
- - even if it were not, dt_cpu_ftrs_init calls generic dt parsing code
-   which should definitely have instrumentation enabled.
-
- - setup_64.c calls dt_cpu_ftrs_init before it sets up a PACA.
-
- - If we don't set up a paca, r13 will contain unpredictable data.
-
- - In a zImage compiled with kcov and KASAN, we see r13 containing a value
-   that leads to dereferencing invalid memory (something like
-   912a72603d420015).
-
- - Weirdly, the same kernel as a vmlinux loaded directly by qemu does not
-   crash. Investigating with gdb, it seems that in the vmlinux boot case,
-   r13 is near enough to zero that we just happen to be able to read that
-   part of memory (we're operating with translation off at this point) and
-   the current pointer also happens to land in readable memory and
-   everything just works.
-
- - PACA setup refers to CPU features - setup_paca() looks at
-   early_cpu_has_feature(CPU_FTR_HVMODE)
-
-There's no generic kill switch for kcov (as far as I can tell), and we
-don't want to have to turn off instrumentation in the generic dt parsing
-code (which lives outside arch/powerpc/) just because we don't have a real
-paca or task yet.
-
-So:
- - change the test when setting up a PACA to consider the actual value of
-   the MSR rather than the CPU feature.
-
- - move the PACA setup to before the cpu feature parsing.
-
-Translations get switched on once we leave early_setup, so I think we'd
-already catch any other cases where the PACA or task aren't set up.
-
-Boot tested on a P9 guest and host.
-
-Fixes: fb0b0a73b223 ("powerpc: Enable kcov")
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
-
+Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
-
-Regarding moving the comment about printk()-safety:
-I am about 75% sure that the thing that makes printk() safe is the PACA,
-not the CPU features. That's what commit 24d9649574fb ("[POWERPC] Document
-when printk is useable") seems to indicate, but as someone wise recently
-told me, "bootstrapping is hard", so I may be totally wrong.
-
-v3: Update comment, thanks Christophe Leroy.
-    Remove a comment in dt_cpu_ftrs.c that is no longer accurate - thanks
-      Andrew. I think we want to retain all the code still, but I'm open to
-      being told otherwise.
+v2: Reworded commit message based on Sam Bobroff's comments. About the
+    current behaviour being broken.
 ---
- arch/powerpc/kernel/dt_cpu_ftrs.c |  1 -
- arch/powerpc/kernel/paca.c        |  2 +-
- arch/powerpc/kernel/setup_64.c    | 20 +++++++++++++++-----
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/eeh.h               |  3 ---
+ arch/powerpc/kernel/eeh.c                    | 24 +-----------------------
+ arch/powerpc/kernel/of_platform.c            |  3 ---
+ arch/powerpc/kernel/pci-common.c             |  3 ---
+ arch/powerpc/platforms/powernv/eeh-powernv.c |  1 -
+ arch/powerpc/platforms/pseries/eeh_pseries.c |  3 +--
+ 6 files changed, 2 insertions(+), 35 deletions(-)
 
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 182b4047c1ef..36bc0d5c4f3a 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -139,7 +139,6 @@ static void __init cpufeatures_setup_cpu(void)
- 	/* Initialize the base environment -- clear FSCR/HFSCR.  */
- 	hv_mode = !!(mfmsr() & MSR_HV);
- 	if (hv_mode) {
--		/* CPU_FTR_HVMODE is used early in PACA setup */
- 		cur_cpu_spec->cpu_features |= CPU_FTR_HVMODE;
- 		mtspr(SPRN_HFSCR, 0);
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index 6f9b2a1..5a34907 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -305,7 +305,6 @@ void eeh_add_device_early(struct pci_dn *);
+ void eeh_add_device_tree_early(struct pci_dn *);
+ void eeh_add_device_late(struct pci_dev *);
+ void eeh_add_device_tree_late(struct pci_bus *);
+-void eeh_add_sysfs_files(struct pci_bus *);
+ void eeh_remove_device(struct pci_dev *);
+ int eeh_unfreeze_pe(struct eeh_pe *pe);
+ int eeh_pe_reset_and_recover(struct eeh_pe *pe);
+@@ -368,8 +367,6 @@ static inline void eeh_add_device_late(struct pci_dev *dev) { }
+ 
+ static inline void eeh_add_device_tree_late(struct pci_bus *bus) { }
+ 
+-static inline void eeh_add_sysfs_files(struct pci_bus *bus) { }
+-
+ static inline void eeh_remove_device(struct pci_dev *dev) { }
+ 
+ #define EEH_POSSIBLE_ERROR(val, type) (0)
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 17cb3e9..0878912 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1210,6 +1210,7 @@ void eeh_add_device_late(struct pci_dev *dev)
+ 	dev->dev.archdata.edev = edev;
+ 
+ 	eeh_addr_cache_insert_dev(dev);
++	eeh_sysfs_add_device(dev);
+ }
+ 
+ /**
+@@ -1238,29 +1239,6 @@ void eeh_add_device_tree_late(struct pci_bus *bus)
+ EXPORT_SYMBOL_GPL(eeh_add_device_tree_late);
+ 
+ /**
+- * eeh_add_sysfs_files - Add EEH sysfs files for the indicated PCI bus
+- * @bus: PCI bus
+- *
+- * This routine must be used to add EEH sysfs files for PCI
+- * devices which are attached to the indicated PCI bus. The PCI bus
+- * is added after system boot through hotplug or dlpar.
+- */
+-void eeh_add_sysfs_files(struct pci_bus *bus)
+-{
+-	struct pci_dev *dev;
+-
+-	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		eeh_sysfs_add_device(dev);
+-		if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE) {
+-			struct pci_bus *subbus = dev->subordinate;
+-			if (subbus)
+-				eeh_add_sysfs_files(subbus);
+-		}
+-	}
+-}
+-EXPORT_SYMBOL_GPL(eeh_add_sysfs_files);
+-
+-/**
+  * eeh_remove_device - Undo EEH setup for the indicated pci device
+  * @dev: pci device to be removed
+  *
+diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_platform.c
+index 427fc22..cb68800 100644
+--- a/arch/powerpc/kernel/of_platform.c
++++ b/arch/powerpc/kernel/of_platform.c
+@@ -86,9 +86,6 @@ static int of_pci_phb_probe(struct platform_device *dev)
+ 	/* Add probed PCI devices to the device model */
+ 	pci_bus_add_devices(phb->bus);
+ 
+-	/* sysfs files should only be added after devices are added */
+-	eeh_add_sysfs_files(phb->bus);
+-
+ 	return 0;
+ }
+ 
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index c6c0341..3d2b1cf 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1404,9 +1404,6 @@ void pcibios_finish_adding_to_bus(struct pci_bus *bus)
+ 
+ 	/* Add new devices to global lists.  Register in proc, sysfs. */
+ 	pci_bus_add_devices(bus);
+-
+-	/* sysfs files should only be added after devices are added */
+-	eeh_add_sysfs_files(bus);
+ }
+ EXPORT_SYMBOL_GPL(pcibios_finish_adding_to_bus);
+ 
+diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+index 6f300ab..ef727ec 100644
+--- a/arch/powerpc/platforms/powernv/eeh-powernv.c
++++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+@@ -48,7 +48,6 @@ void pnv_pcibios_bus_add_device(struct pci_dev *pdev)
+ 	dev_dbg(&pdev->dev, "EEH: Setting up device\n");
+ 	eeh_add_device_early(pdn);
+ 	eeh_add_device_late(pdev);
+-	eeh_sysfs_add_device(pdev);
+ }
+ 
+ static int pnv_eeh_init(void)
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index 893ba3f..95bbf91 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -68,7 +68,6 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
  	}
-diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-index 949eceb254d8..347e947b9d4b 100644
---- a/arch/powerpc/kernel/paca.c
-+++ b/arch/powerpc/kernel/paca.c
-@@ -218,7 +218,7 @@ void setup_paca(struct paca_struct *new_paca)
- 	 * if we do a GET_PACA() before the feature fixups have been
- 	 * applied
- 	 */
--	if (early_cpu_has_feature(CPU_FTR_HVMODE))
-+	if (mfmsr() & MSR_HV)
- 		mtspr(SPRN_SPRG_HPACA, local_paca);
  #endif
- 	mtspr(SPRN_SPRG_PACA, local_paca);
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index e05e6dd67ae6..2259da8e8685 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -285,18 +285,28 @@ void __init early_setup(unsigned long dt_ptr)
+ 	eeh_add_device_early(pdn);
+-	eeh_add_device_late(pdev);
+ #ifdef CONFIG_PCI_IOV
+ 	if (pdev->is_virtfn) {
+ 		struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
+@@ -78,7 +77,7 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+ 		eeh_add_to_parent_pe(edev);   /* Add as VF PE type */
+ 	}
+ #endif
+-	eeh_sysfs_add_device(pdev);
++	eeh_add_device_late(pdev);
+ }
  
- 	/* -------- printk is _NOT_ safe to use here ! ------- */
- 
--	/* Try new device tree based feature discovery ... */
--	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
--		/* Otherwise use the old style CPU table */
--		identify_cpu(0, mfspr(SPRN_PVR));
-+	/*
-+	 * Assume we're on cpu 0 for now.
-+	 *
-+	 * We need to load a PACA very early if we are using kcov. kcov will
-+	 * call in_task() in its instrumentation, which relies on the current
-+	 * task from the PACA. dt_cpu_ftrs_init is coveraged-enabled and also
-+	 * calls into the coverage-enabled generic dt library.
-+	 *
-+	 * Set up a temporary paca. It is going to be replaced below.
-+	 */
- 
--	/* Assume we're on cpu 0 for now. Don't write to the paca yet! */
- 	initialise_paca(&boot_paca, 0);
- 	setup_paca(&boot_paca);
- 	fixup_boot_paca();
- 
- 	/* -------- printk is now safe to use ------- */
- 
-+	/* Try new device tree based feature discovery ... */
-+	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
-+		/* Otherwise use the old style CPU table */
-+		identify_cpu(0, mfspr(SPRN_PVR));
-+
- 	/* Enable early debugging if any specified (see udbg.h) */
- 	udbg_early_init();
- 
+ /*
 -- 
-2.20.1
+2.9.5
 
