@@ -1,83 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D388217B537
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 05:08:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YYy84rfWzDr0k
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 15:08:32 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C69DE17B55A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 05:19:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YZBY14PTzDqyw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 15:19:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YYwf1lZgzDqh3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:07:14 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YZ8t0SR3zDqtN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:17:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=AN/iyWAo; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48YYwd1qSdz8t91
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:07:13 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48YYwd1GPmz9sRR; Fri,  6 Mar 2020 15:07:13 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.90;
- helo=conssluserg-05.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=AN/iyWAo; 
- dkim-atps=neutral
-Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com
- [210.131.2.90])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48YYwZ5n4Dz9sPK
- for <linuxppc-dev@ozlabs.org>; Fri,  6 Mar 2020 15:07:09 +1100 (AEDT)
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com
- [209.85.217.43]) (authenticated)
- by conssluserg-05.nifty.com with ESMTP id 02646eGL024696
- for <linuxppc-dev@ozlabs.org>; Fri, 6 Mar 2020 13:06:40 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 02646eGL024696
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1583467601;
- bh=1ncTuHIScTyMk5Taq9h+PaYHUlk1ciBILDFFXrE1EGY=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=AN/iyWAoAaHJzfTMA3AOJ3J+oK7YbDQoN4IIcFngK8nTHHzfeX/0CVBownZ1mLDCs
- aObsYtzo5qE7yW3XofKI5/HbCMuKndPaVRZHmocGqDxiAhC8mxCeXEQJDezHD13KC2
- sIHTgRKALwAjaw14kbBmF0/C9WNa9dFrHifTLG66dQW4ZWeSJTUz/eHb6axnhfGckC
- tz6vKR4AJ0V0T1bGXyTLdUY5cau3eWoQSG9STCWrmoi/Fh2sIM21+t2vuOu5yqyd8k
- zQlEe95Ksl6/J9YLUrEvvkIrnx6+kB8aeLUaV4l07myuxBDhF3I9AEMM7RTv9cwTTl
- q2QM25KfunLqg==
-X-Nifty-SrcIP: [209.85.217.43]
-Received: by mail-vs1-f43.google.com with SMTP id c18so695053vsq.7
- for <linuxppc-dev@ozlabs.org>; Thu, 05 Mar 2020 20:06:40 -0800 (PST)
-X-Gm-Message-State: ANhLgQ3v3SFEiozcN9AZqQySXupbevffCXFsCk1ZNgVsXubmCXwgbScw
- l0NG7n+l0uRJXHQKzlycJDP+PY2HV88q0t9IGyU=
-X-Google-Smtp-Source: ADFU+vuschWJHDj8euZdyGy+o4J220QDbrHnuo+M3bhxaiWSQnYbzLYxv/gCmox0lsIvqG8GQKiryVE9QJC9OGlDDK4=
-X-Received: by 2002:a67:8c44:: with SMTP id o65mr983718vsd.181.1583467599524; 
- Thu, 05 Mar 2020 20:06:39 -0800 (PST)
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=WHwpFimr; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48YZ8s3xz3z9sPK;
+ Fri,  6 Mar 2020 15:17:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1583468269; bh=W55Sru9TkKAtFaLpWAFMN0S9NEayoaEaKhmZXBqRDDA=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=WHwpFimrGBrBl/SgH+b3ZBezTPh1zoTsSI2Yams6fLFVQ0KLwlq3xTLTrZrbs59qJ
+ R2ywM8+H+hghzR3GzalFOXBlJXcYPsfYTfFyb1GLsq1GwBLcASFzgAdRiQ2LAV5bPm
+ btuSsSoLLDJdIWX4qPbAADcifFr492/vU0+x/n2hicE4yD2JqQQG8PGcAkEBFDRqD2
+ eA/z7HDjTTalxhNgRqvaAvEC/Fy+8njaL7mDFctk+I+p2htTSBs56CXyV10XP4ZvGU
+ gyHD40LW80OlWIDWtPI6/7az5jL0OnfB+x6bkfwhcM7h8FKWdhZynC3ltdnm9hw0Cn
+ /8CgUcYV2alRw==
+Date: Fri, 6 Mar 2020 15:17:48 +1100
+From: Anton Blanchard <anton@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s/radix: Fix !SMP build
+Message-ID: <20200306151748.108e555d@kryten.localdomain>
+In-Reply-To: <20200302010410.2957362-1-npiggin@gmail.com>
+References: <20200302010410.2957362-1-npiggin@gmail.com>
+X-Mailer: Mutt/1.8.0 (2017-02-23)
 MIME-Version: 1.0
-References: <20200219000434.15872-1-mpe@ellerman.id.au>
- <48YT3Y2QBsz9sSs@ozlabs.org>
-In-Reply-To: <48YT3Y2QBsz9sSs@ozlabs.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 6 Mar 2020 13:06:02 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQfREwzk4NwE5PzxOXGLcsk2BtjYNKvKx8g4_vxHmNHdw@mail.gmail.com>
-Message-ID: <CAK7LNAQfREwzk4NwE5PzxOXGLcsk2BtjYNKvKx8g4_vxHmNHdw@mail.gmail.com>
-Subject: Re: [PATCH v2] powerpc/Makefile: Mark phony targets as PHONY
-To: Michael Ellerman <patch-notifications@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,41 +57,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- linuxppc-dev@ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 6, 2020 at 9:27 AM Michael Ellerman
-<patch-notifications@ellerman.id.au> wrote:
->
-> On Wed, 2020-02-19 at 00:04:34 UTC, Michael Ellerman wrote:
-> > Some of our phony targets are not marked as such. This can lead to
-> > confusing errors, eg:
-> >
-> >   $ make clean
-> >   $ touch install
-> >   $ make install
-> >   make: 'install' is up to date.
-> >   $
-> >
-> > Fix it by adding them to the PHONY variable which is marked phony in
-> > the top-level Makefile, or in scripts/Makefile.build for the boot
-> > Makefile.
-> >
-> > Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->
-> Applied to powerpc next.
->
-> https://git.kernel.org/powerpc/c/d42c6d0f8d004c3661dde3c376ed637e9f292c22
->
+Thanks Nick,
 
-You do not have to double your Signed-off-by.
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
+Tested-by: Anton Blanchard <anton@ozlabs.org>
 
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 1 +
+>  arch/powerpc/mm/book3s64/radix_tlb.c     | 7 ++++++-
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> b/arch/powerpc/mm/book3s64/radix_pgtable.c index
+> dd1bea45325c..2a9a0cd79490 100644 ---
+> a/arch/powerpc/mm/book3s64/radix_pgtable.c +++
+> b/arch/powerpc/mm/book3s64/radix_pgtable.c @@ -26,6 +26,7 @@
+>  #include <asm/firmware.h>
+>  #include <asm/powernv.h>
+>  #include <asm/sections.h>
+> +#include <asm/smp.h>
+>  #include <asm/trace.h>
+>  #include <asm/uaccess.h>
+>  #include <asm/ultravisor.h>
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c
+> b/arch/powerpc/mm/book3s64/radix_tlb.c index
+> 03f43c924e00..758ade2c2b6e 100644 ---
+> a/arch/powerpc/mm/book3s64/radix_tlb.c +++
+> b/arch/powerpc/mm/book3s64/radix_tlb.c @@ -587,6 +587,11 @@ void
+> radix__local_flush_all_mm(struct mm_struct *mm) preempt_enable();
+>  }
+>  EXPORT_SYMBOL(radix__local_flush_all_mm);
+> +
+> +static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
+> +{
+> +	radix__local_flush_all_mm(mm);
+> +}
+>  #endif /* CONFIG_SMP */
+>  
+>  void radix__local_flush_tlb_page_psize(struct mm_struct *mm,
+> unsigned long vmaddr, @@ -777,7 +782,7 @@ void
+> radix__flush_tlb_page(struct vm_area_struct *vma, unsigned long
+> vmaddr) EXPORT_SYMBOL(radix__flush_tlb_page); 
+>  #else /* CONFIG_SMP */
+> -#define radix__flush_all_mm radix__local_flush_all_mm
+> +static inline void exit_flush_lazy_tlbs(struct mm_struct *mm) { }
+>  #endif /* CONFIG_SMP */
+>  
+>  static void do_tlbiel_kernel(void *info)
 
--- 
-Best Regards
-Masahiro Yamada
