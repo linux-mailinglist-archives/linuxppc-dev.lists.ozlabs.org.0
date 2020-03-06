@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ACA17C2CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 17:20:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848E417C1FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 16:39:41 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YsHZ3g7BzDqv2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 02:39:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YtBJ5VCjzDr6w
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 03:20:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.61.94; helo=7.mo179.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=178.33.107.143;
+ helo=1.mo177.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 7.mo179.mail-out.ovh.net (7.mo179.mail-out.ovh.net
- [46.105.61.94])
+Received: from 1.mo177.mail-out.ovh.net (1.mo177.mail-out.ovh.net
+ [178.33.107.143])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YsFj613vzDqt3
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 02:38:00 +1100 (AEDT)
-Received: from player758.ha.ovh.net (unknown [10.110.171.238])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id BC01715E510
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 16:01:56 +0100 (CET)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Yt8d3yxfzDr2d
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 03:18:38 +1100 (AEDT)
+Received: from player758.ha.ovh.net (unknown [10.108.57.140])
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id E54B012779C
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 16:02:10 +0100 (CET)
 Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
  (Authenticated sender: clg@kaod.org)
- by player758.ha.ovh.net (Postfix) with ESMTPSA id 0DE06102B4F2F;
- Fri,  6 Mar 2020 15:01:49 +0000 (UTC)
+ by player758.ha.ovh.net (Postfix) with ESMTPSA id 5EF95102B504B;
+ Fri,  6 Mar 2020 15:02:06 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 1/4] powerpc/xive: Use XIVE_BAD_IRQ instead of zero to catch
- non configured IPIs
-Date: Fri,  6 Mar 2020 16:01:40 +0100
-Message-Id: <20200306150143.5551-2-clg@kaod.org>
+Subject: [PATCH 4/4] powerpc/xive: Add a debugfs file to dump internal XIVE
+ state
+Date: Fri,  6 Mar 2020 16:01:43 +0100
+Message-Id: <20200306150143.5551-5-clg@kaod.org>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200306150143.5551-1-clg@kaod.org>
 References: <20200306150143.5551-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 7341993296681339825
+X-Ovh-Tracer-Id: 7345933945286200241
 X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudduvddgjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejheekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudduvddgjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvffufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeehkedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,139 +54,229 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Gibson <david@gibson.dropbear.id.au>, linuxppc-dev@lists.ozlabs.org,
- Greg Kurz <groug@kaod.org>, stable@vger.kernel.org,
+Cc: linuxppc-dev@lists.ozlabs.org, Greg Kurz <groug@kaod.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a CPU is brought up, an IPI number is allocated and recorded
-under the XIVE CPU structure. Invalid IPI numbers are tracked with
-interrupt number 0x0.
+As does XMON, the debugfs file /sys/kernel/debug/powerpc/xive exposes
+the XIVE internal state of the machine CPUs and interrupts. Available
+on the PowerNV and sPAPR platforms.
 
-On the PowerNV platform, the interrupt number space starts at 0x10 and
-this works fine. However, on the sPAPR platform, it is possible to
-allocate the interrupt number 0x0 and this raises an issue when CPU 0
-is unplugged. The XIVE spapr driver tracks allocated interrupt numbers
-in a bitmask and it is not correctly updated when interrupt number 0x0
-is freed. It stays allocated and it is then impossible to reallocate.
-
-Fix by using the XIVE_BAD_IRQ value instead of zero on both platforms.
-
-Reported-by: David Gibson <david@gibson.dropbear.id.au>
-Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
-Cc: stable@vger.kernel.org # v4.14+
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- arch/powerpc/sysdev/xive/xive-internal.h |  7 +++++++
- arch/powerpc/sysdev/xive/common.c        | 12 +++---------
- arch/powerpc/sysdev/xive/native.c        |  4 ++--
- arch/powerpc/sysdev/xive/spapr.c         |  4 ++--
- 4 files changed, 14 insertions(+), 13 deletions(-)
+ arch/powerpc/sysdev/xive/xive-internal.h |   2 +
+ arch/powerpc/sysdev/xive/common.c        | 105 +++++++++++++++++++++++
+ arch/powerpc/sysdev/xive/native.c        |   3 +
+ arch/powerpc/sysdev/xive/spapr.c         |  19 ++++
+ 4 files changed, 129 insertions(+)
 
 diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
-index 59cd366e7933..382980f4de2d 100644
+index 382980f4de2d..b7b901da2168 100644
 --- a/arch/powerpc/sysdev/xive/xive-internal.h
 +++ b/arch/powerpc/sysdev/xive/xive-internal.h
-@@ -5,6 +5,13 @@
- #ifndef __XIVE_INTERNAL_H
- #define __XIVE_INTERNAL_H
+@@ -57,12 +57,14 @@ struct xive_ops {
+ 	int	(*get_ipi)(unsigned int cpu, struct xive_cpu *xc);
+ 	void	(*put_ipi)(unsigned int cpu, struct xive_cpu *xc);
+ #endif
++	int	(*debug_show)(struct seq_file *m, void *private);
+ 	const char *name;
+ };
  
-+/*
-+ * A "disabled" interrupt should never fire, to catch problems
-+ * we set its logical number to this
-+ */
-+#define XIVE_BAD_IRQ		0x7fffffff
-+#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
-+
- /* Each CPU carry one of these with various per-CPU state */
- struct xive_cpu {
- #ifdef CONFIG_SMP
+ bool xive_core_init(const struct xive_ops *ops, void __iomem *area, u32 offset,
+ 		    u8 max_prio);
+ __be32 *xive_queue_page_alloc(unsigned int cpu, u32 queue_shift);
++int xive_core_debug_init(void);
+ 
+ static inline u32 xive_alloc_order(u32 queue_shift)
+ {
 diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index fa49193206b6..550baba98ec9 100644
+index c865ae554605..e192077481a1 100644
 --- a/arch/powerpc/sysdev/xive/common.c
 +++ b/arch/powerpc/sysdev/xive/common.c
-@@ -68,13 +68,6 @@ static u32 xive_ipi_irq;
- /* Xive state for each CPU */
- static DEFINE_PER_CPU(struct xive_cpu *, xive_cpu);
+@@ -20,6 +20,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/msi.h>
  
--/*
-- * A "disabled" interrupt should never fire, to catch problems
-- * we set its logical number to this
-- */
--#define XIVE_BAD_IRQ		0x7fffffff
--#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
--
- /* An invalid CPU target */
- #define XIVE_INVALID_TARGET	(-1)
- 
-@@ -1153,7 +1146,7 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
- 	xc = per_cpu(xive_cpu, cpu);
- 
- 	/* Check if we are already setup */
--	if (xc->hw_ipi != 0)
-+	if (xc->hw_ipi != XIVE_BAD_IRQ)
- 		return 0;
- 
- 	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
-@@ -1190,7 +1183,7 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
- 	/* Disable the IPI and free the IRQ data */
- 
- 	/* Already cleaned up ? */
--	if (xc->hw_ipi == 0)
-+	if (xc->hw_ipi == XIVE_BAD_IRQ)
- 		return;
- 
- 	/* Mask the IPI */
-@@ -1346,6 +1339,7 @@ static int xive_prepare_cpu(unsigned int cpu)
- 		if (np)
- 			xc->chip_id = of_get_ibm_chip_id(np);
- 		of_node_put(np);
-+		xc->hw_ipi = XIVE_BAD_IRQ;
- 
- 		per_cpu(xive_cpu, cpu) = xc;
- 	}
++#include <asm/debugfs.h>
+ #include <asm/prom.h>
+ #include <asm/io.h>
+ #include <asm/smp.h>
+@@ -1558,3 +1559,107 @@ static int __init xive_off(char *arg)
+ 	return 0;
+ }
+ __setup("xive=off", xive_off);
++
++void xive_debug_show_cpu(struct seq_file *m, int cpu)
++{
++	struct xive_cpu *xc = per_cpu(xive_cpu, cpu);
++
++	seq_printf(m, "CPU %d:", cpu);
++	if (xc) {
++		seq_printf(m, "pp=%02x CPPR=%02x ", xc->pending_prio, xc->cppr);
++
++#ifdef CONFIG_SMP
++		{
++			u64 val = xive_esb_read(&xc->ipi_data, XIVE_ESB_GET);
++
++			seq_printf(m, "IPI=0x%08x PQ=%c%c ", xc->hw_ipi,
++				   val & XIVE_ESB_VAL_P ? 'P' : '-',
++				   val & XIVE_ESB_VAL_Q ? 'Q' : '-');
++		}
++#endif
++		{
++			struct xive_q *q = &xc->queue[xive_irq_priority];
++			u32 i0, i1, idx;
++
++			if (q->qpage) {
++				idx = q->idx;
++				i0 = be32_to_cpup(q->qpage + idx);
++				idx = (idx + 1) & q->msk;
++				i1 = be32_to_cpup(q->qpage + idx);
++				seq_printf(m, "EQ idx=%d T=%d %08x %08x ...",
++					   q->idx, q->toggle, i0, i1);
++			}
++		}
++	}
++	seq_puts(m, "\n");
++}
++
++void xive_debug_show_irq(struct seq_file *m, u32 hw_irq, struct irq_data *d)
++{
++	struct irq_chip *chip = irq_data_get_irq_chip(d);
++	int rc;
++	u32 target;
++	u8 prio;
++	u32 lirq;
++
++	if (!is_xive_irq(chip))
++		return;
++
++	rc = xive_ops->get_irq_config(hw_irq, &target, &prio, &lirq);
++	if (rc) {
++		seq_printf(m, "IRQ 0x%08x : no config rc=%d\n", hw_irq, rc);
++		return;
++	}
++
++	seq_printf(m, "IRQ 0x%08x : target=0x%x prio=%02x lirq=0x%x ",
++		   hw_irq, target, prio, lirq);
++
++	if (d) {
++		struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
++		u64 val = xive_esb_read(xd, XIVE_ESB_GET);
++
++		seq_printf(m, "flags=%c%c%c PQ=%c%c",
++			   xd->flags & XIVE_IRQ_FLAG_STORE_EOI ? 'S' : ' ',
++			   xd->flags & XIVE_IRQ_FLAG_LSI ? 'L' : ' ',
++			   xd->flags & XIVE_IRQ_FLAG_H_INT_ESB ? 'H' : ' ',
++			   val & XIVE_ESB_VAL_P ? 'P' : '-',
++			   val & XIVE_ESB_VAL_Q ? 'Q' : '-');
++	}
++	seq_puts(m, "\n");
++}
++
++static int xive_core_debug_show(struct seq_file *m, void *private)
++{
++	unsigned int i;
++	struct irq_desc *desc;
++	int cpu;
++
++	if (xive_ops->debug_show)
++		xive_ops->debug_show(m, private);
++
++	for_each_possible_cpu(cpu)
++		xive_debug_show_cpu(m, cpu);
++
++	for_each_irq_desc(i, desc) {
++		struct irq_data *d = irq_desc_get_irq_data(desc);
++		unsigned int hw_irq;
++
++		if (!d)
++			continue;
++
++		hw_irq = (unsigned int)irqd_to_hwirq(d);
++
++		/* IPIs are special (HW number 0) */
++		if (hw_irq)
++			xive_debug_show_irq(m, hw_irq, d);
++	}
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(xive_core_debug);
++
++int xive_core_debug_init(void)
++{
++	debugfs_create_file("xive", 0444, powerpc_debugfs_root,
++			    NULL, &xive_core_debug_fops);
++	return 0;
++}
 diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 0ff6b739052c..50e1a8e02497 100644
+index 50e1a8e02497..5218fdc4b29a 100644
 --- a/arch/powerpc/sysdev/xive/native.c
 +++ b/arch/powerpc/sysdev/xive/native.c
-@@ -312,7 +312,7 @@ static void xive_native_put_ipi(unsigned int cpu, struct xive_cpu *xc)
- 	s64 rc;
+@@ -19,6 +19,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/mm.h>
  
- 	/* Free the IPI */
--	if (!xc->hw_ipi)
-+	if (xc->hw_ipi == XIVE_BAD_IRQ)
- 		return;
- 	for (;;) {
- 		rc = opal_xive_free_irq(xc->hw_ipi);
-@@ -320,7 +320,7 @@ static void xive_native_put_ipi(unsigned int cpu, struct xive_cpu *xc)
- 			msleep(OPAL_BUSY_DELAY_MS);
- 			continue;
- 		}
--		xc->hw_ipi = 0;
-+		xc->hw_ipi = XIVE_BAD_IRQ;
- 		break;
- 	}
++#include <asm/machdep.h>
+ #include <asm/prom.h>
+ #include <asm/io.h>
+ #include <asm/smp.h>
+@@ -850,3 +851,5 @@ int xive_native_get_vp_state(u32 vp_id, u64 *out_state)
+ 	return 0;
  }
+ EXPORT_SYMBOL_GPL(xive_native_get_vp_state);
++
++machine_arch_initcall(powernv, xive_core_debug_init);
 diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-index 55dc61cb4867..3f15615712b5 100644
+index 3f15615712b5..7ab5c6780997 100644
 --- a/arch/powerpc/sysdev/xive/spapr.c
 +++ b/arch/powerpc/sysdev/xive/spapr.c
-@@ -560,11 +560,11 @@ static int xive_spapr_get_ipi(unsigned int cpu, struct xive_cpu *xc)
+@@ -18,6 +18,7 @@
+ #include <linux/delay.h>
+ #include <linux/libfdt.h>
  
- static void xive_spapr_put_ipi(unsigned int cpu, struct xive_cpu *xc)
- {
--	if (!xc->hw_ipi)
-+	if (xc->hw_ipi == XIVE_BAD_IRQ)
- 		return;
- 
- 	xive_irq_bitmap_free(xc->hw_ipi);
--	xc->hw_ipi = 0;
-+	xc->hw_ipi = XIVE_BAD_IRQ;
++#include <asm/machdep.h>
+ #include <asm/prom.h>
+ #include <asm/io.h>
+ #include <asm/smp.h>
+@@ -645,6 +646,21 @@ static void xive_spapr_sync_source(u32 hw_irq)
+ 	plpar_int_sync(0, hw_irq);
  }
- #endif /* CONFIG_SMP */
  
++static int xive_spapr_debug_show(struct seq_file *m, void *private)
++{
++	struct xive_irq_bitmap *xibm;
++	char *buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
++
++	list_for_each_entry(xibm, &xive_irq_bitmaps, list) {
++		memset(buf, 0, PAGE_SIZE);
++		bitmap_print_to_pagebuf(true, buf, xibm->bitmap, xibm->count);
++		seq_printf(m, "bitmap #%d: %s", xibm->count, buf);
++	}
++	kfree(buf);
++
++	return 0;
++}
++
+ static const struct xive_ops xive_spapr_ops = {
+ 	.populate_irq_data	= xive_spapr_populate_irq_data,
+ 	.configure_irq		= xive_spapr_configure_irq,
+@@ -662,6 +678,7 @@ static const struct xive_ops xive_spapr_ops = {
+ #ifdef CONFIG_SMP
+ 	.get_ipi		= xive_spapr_get_ipi,
+ 	.put_ipi		= xive_spapr_put_ipi,
++	.debug_show		= xive_spapr_debug_show,
+ #endif /* CONFIG_SMP */
+ 	.name			= "spapr",
+ };
+@@ -839,3 +856,5 @@ bool __init xive_spapr_init(void)
+ 	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
+ 	return true;
+ }
++
++machine_arch_initcall(pseries, xive_core_debug_init);
 -- 
 2.21.1
 
