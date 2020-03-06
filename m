@@ -2,75 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A9217B5D7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 05:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D251417B5DB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 05:54:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YZwm41FnzDr0K
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 15:52:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YZzD0TPTzDqTm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 15:54:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=e/Ei7Y5I; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YZv45rlQzDqFS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:50:56 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id j7so1181372qkd.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 20:50:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=0wipnWw1cldWf5kaoeA+yDqtsFNc3E5tyyjbRgywYFs=;
- b=e/Ei7Y5Ik8WM1Taux+DExv+Jv/Fqylv3LWaQkFS1tZS+VrdFV5zge1M+oSCL4N6nh1
- kqFutv0Jhd1kKJrkscv0XC4U8PWfWKvyp3UwW0tl0lYe99dOzId8l7/YWA1Xv+08VLY7
- hDJuO8ZOTI4vrG1s7V8krX9kJIqrXheC0YSn2thFWrdtdf55B18kKm6SouQ/651zKGQe
- w6qrjn9AzZRZiIJD/tYfimUsaWF6T2SnV5KzAUzqTJ6hVwCwgw3BQORlcmjO/INQpYpH
- /OGE6z0l6tphlsbCSsGA6ecMIRTXWlG6RPo9hVW3aJY8iZn1Laz5XEu2ALoMD9XX1pJD
- Lltg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=0wipnWw1cldWf5kaoeA+yDqtsFNc3E5tyyjbRgywYFs=;
- b=alY1xh4/H+1yk9f1488abdidvOhhNwNR+hKWsFjtAdeFi8htCVKOVsUkiYTeCQr5zs
- ihDFv8xyyywTCRxVH+vy1mJ3GuSj4oue7n/UWvFuR2niSQ3XQwTeGvGNAXITUCPdcqLB
- s/LkH+L083yWNruAjac/yuqvy7PrAI9ljnifOWaDggU7/H4MCKo6a7neUL5HgzLD5yBl
- QCuD2q0o0Xghdi8H1hdjwi4iebzYBpnNqdnUHqwyKvQMO+2J9rHv5pHmGTVGb1cTq1DN
- v5Iwj+CmH6PIyiXbadHkZyt13QOW3hvkevRSbYPRBTRfFCwi1Ir6XQXODoTIOmufWqc+
- 75Gw==
-X-Gm-Message-State: ANhLgQ2//Hj5iPP8nn1NAk+fwJqldBLZf3jA+/gsUlzjJv7FOJ6woIM8
- CTONVCcxxI8szo3Tyb0dpRyojA==
-X-Google-Smtp-Source: ADFU+vtic/BvcsQbXvszV0ThZDIcumBI/9MYEWzwIe8iZkHUwmR0NoS2w+h/h8sIk6M2DubtQ4nVmA==
-X-Received: by 2002:a37:a08b:: with SMTP id j133mr1326092qke.265.1583470253067; 
- Thu, 05 Mar 2020 20:50:53 -0800 (PST)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id b5sm7520197qkk.16.2020.03.05.20.50.52
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 05 Mar 2020 20:50:52 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
-Subject: Re: [PATCH -next v2] powerpc/64s/pgtable: fix an undefined behaviour
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <a082f4c3-db68-6ca3-c832-b1abb5363e3a@c-s.fr>
-Date: Thu, 5 Mar 2020 23:50:51 -0500
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A40C59F0-B4E2-4A6B-B3AF-0173C93DEB9C@lca.pw>
-References: <1583418759-16105-1-git-send-email-cai@lca.pw>
- <a082f4c3-db68-6ca3-c832-b1abb5363e3a@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-X-Mailer: Apple Mail (2.3608.60.0.2.5)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YZxS5ZnrzDqR0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:53:00 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0264oiqu066365; Thu, 5 Mar 2020 23:52:38 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yhsvbxhk3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Mar 2020 23:52:38 -0500
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0264qRB4070297;
+ Thu, 5 Mar 2020 23:52:37 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yhsvbxhjq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Mar 2020 23:52:37 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0264oGbO030012;
+ Fri, 6 Mar 2020 04:52:36 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04wdc.us.ibm.com with ESMTP id 2yffk70t6a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Mar 2020 04:52:36 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0264qZKT62980478
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Mar 2020 04:52:35 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 697116A047;
+ Fri,  6 Mar 2020 04:52:35 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 177716A04F;
+ Fri,  6 Mar 2020 04:52:29 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.31.186])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Mar 2020 04:52:28 +0000 (GMT)
+Subject: Re: [PATCH v3 6/8] perf/tools: Enhance JSON/metric infrastructure to
+ handle "?"
+To: Jiri Olsa <jolsa@redhat.com>
+References: <20200229094159.25573-1-kjain@linux.ibm.com>
+ <20200229094159.25573-7-kjain@linux.ibm.com> <20200302150819.GA259142@krava>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <d15a8aa6-e2d5-3edf-699a-8eda0862fd9b@linux.ibm.com>
+Date: Fri, 6 Mar 2020 10:22:27 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20200302150819.GA259142@krava>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-05_08:2020-03-05,
+ 2020-03-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=950 clxscore=1015 suspectscore=0 impostorscore=0 adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003060031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,90 +95,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rashmicy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, acme@kernel.org,
+ jmario@redhat.com, namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On Mar 5, 2020, at 2:22 PM, Christophe Leroy <christophe.leroy@c-s.fr> =
-wrote:
->=20
->=20
->=20
-> Le 05/03/2020 =C3=A0 15:32, Qian Cai a =C3=A9crit :
->> Booting a power9 server with hash MMU could trigger an undefined
->> behaviour because pud_offset(p4d, 0) will do,
->> 0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
->> Fix it by converting pud_offset() and friends to static inline
->> functions.
->=20
-> I was suggesting to convert pud_index() to static inline, because =
-that's where the shift sits. Is it not possible ?
->=20
-> Here you seems to fix the problem for now, but if someone reuses =
-pud_index() in another macro one day, the same problem may happen again.
->=20
-
-Sounds reasonable. I send out a v3,
-
-https://lore.kernel.org/lkml/20200306044852.3236-1-cai@lca.pw/T/#u
-
-> Christophe
->=20
->>  UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
->>  shift exponent 34 is too large for 32-bit type 'int'
->>  CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ =
-#13
->>  Call Trace:
->>  dump_stack+0xf4/0x164 (unreliable)
->>  ubsan_epilogue+0x18/0x78
->>  __ubsan_handle_shift_out_of_bounds+0x160/0x21c
->>  walk_pagetables+0x2cc/0x700
->>  walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
->>  (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
->>  ptdump_check_wx+0x8c/0xf0
->>  mark_rodata_ro+0x48/0x80
->>  kernel_init+0x74/0x194
->>  ret_from_kernel_thread+0x5c/0x74
->> Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> Signed-off-by: Qian Cai <cai@lca.pw>
->> ---
->>  arch/powerpc/include/asm/book3s/64/pgtable.h | 20 =
-++++++++++++++------
->>  1 file changed, 14 insertions(+), 6 deletions(-)
->> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h =
-b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> index fa60e8594b9f..4967bc9e25e2 100644
->> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> @@ -1016,12 +1016,20 @@ static inline bool p4d_access_permitted(p4d_t =
-p4d, bool write)
->>    #define pgd_offset(mm, address)	 ((mm)->pgd + =
-pgd_index(address))
->>  -#define pud_offset(p4dp, addr)	\
->> -	(((pud_t *) p4d_page_vaddr(*(p4dp))) + pud_index(addr))
->> -#define pmd_offset(pudp,addr) \
->> -	(((pmd_t *) pud_page_vaddr(*(pudp))) + pmd_index(addr))
->> -#define pte_offset_kernel(dir,addr) \
->> -	(((pte_t *) pmd_page_vaddr(*(dir))) + pte_index(addr))
->> +static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
->> +{
->> +	return (pud_t *)p4d_page_vaddr(*p4d) + pud_index(address);
->> +}
+On 3/2/20 8:38 PM, Jiri Olsa wrote:
+> On Sat, Feb 29, 2020 at 03:11:57PM +0530, Kajol Jain wrote:
+> 
+> SNIP
+> 
+>>  #define PVR_VER(pvr)    (((pvr) >>  16) & 0xFFFF) /* Version field */
+>>  #define PVR_REV(pvr)    (((pvr) >>   0) & 0xFFFF) /* Revison field */
+>>  
+>> +#define SOCKETS_INFO_FILE_PATH "/devices/hv_24x7/interface/"
 >> +
->> +static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
->> +{
->> +	return (pmd_t *)pud_page_vaddr(*pud) + pmd_index(address);
->> +}
+>>  int
+>>  get_cpuid(char *buffer, size_t sz)
+>>  {
+>> @@ -44,3 +51,43 @@ get_cpuid_str(struct perf_pmu *pmu __maybe_unused)
+>>  
+>>  	return bufp;
+>>  }
 >> +
->> +static inline pte_t *pte_offset_kernel(pmd_t *pmd, unsigned long =
-address)
+>> +int arch_get_runtimeparam(void)
 >> +{
->> +	return (pte_t *)pmd_page_vaddr(*pmd) + pte_index(address);
->> +}
->>    #define pte_offset_map(dir,addr)	pte_offset_kernel((dir), (addr))
->> =20
+>> +	int count = 0;
+>> +	DIR *dir;
+>> +	char path[PATH_MAX];
+>> +	const char *sysfs = sysfs__mountpoint();
+>> +	char filename[] = "sockets";
+>> +	FILE *file;
+>> +	char buf[16], *num;
+>> +	int data;
+>> +
+>> +	if (!sysfs)
+>> +		goto out;
+>> +
+>> +	snprintf(path, PATH_MAX,
+>> +		 "%s" SOCKETS_INFO_FILE_PATH, sysfs);
+>> +	dir = opendir(path);
+>> +
+>> +	if (!dir)
+>> +		goto out;
+>> +
+>> +	strcat(path, filename);
+>> +	file = fopen(path, "r");
+>> +
+>> +	if (!file)
+>> +		goto out;
+>> +
+>> +	data = fread(buf, 1, sizeof(buf), file);
+>> +
+>> +	if (data == 0)
+>> +		goto out;
+>> +
+>> +	count = strtol(buf, &num, 10);
+>> +out:
+>> +	if (!count)
+>> +		count = 1;
+>> +
+>> +	return count;
+> 
+> we have sysfs__read_ull for this
+> 
 
+Hi Jiri,
+    Thanks for suggesting it. Will update.
+
+Kajol
+
+> jirka
+> 
