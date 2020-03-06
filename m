@@ -2,47 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45ACA17C2CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 17:20:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB2017C347
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 17:51:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YtBJ5VCjzDr6w
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 03:20:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Ytt32GqfzDrCM
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 03:51:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.107.143;
- helo=1.mo177.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 1.mo177.mail-out.ovh.net (1.mo177.mail-out.ovh.net
- [178.33.107.143])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=HHxTmVII; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Yt8d3yxfzDr2d
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 03:18:38 +1100 (AEDT)
-Received: from player758.ha.ovh.net (unknown [10.108.57.140])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id E54B012779C
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 16:02:10 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player758.ha.ovh.net (Postfix) with ESMTPSA id 5EF95102B504B;
- Fri,  6 Mar 2020 15:02:06 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 4/4] powerpc/xive: Add a debugfs file to dump internal XIVE
- state
-Date: Fri,  6 Mar 2020 16:01:43 +0100
-Message-Id: <20200306150143.5551-5-clg@kaod.org>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200306150143.5551-1-clg@kaod.org>
-References: <20200306150143.5551-1-clg@kaod.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 7345933945286200241
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudduvddgjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvffufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeehkedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Ytrg2KCSzDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 03:49:54 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48YtrX5LCCz9v0DS;
+ Fri,  6 Mar 2020 17:49:48 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=HHxTmVII; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id w4rA5SjLa1tS; Fri,  6 Mar 2020 17:49:48 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48YtrX4C5mz9v0DQ;
+ Fri,  6 Mar 2020 17:49:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1583513388; bh=SIQXyXWwelcqc+qeZ+WYNegGKNceKMdyP7M7NjsPmX0=;
+ h=From:Subject:To:Cc:Date:From;
+ b=HHxTmVIIS3ZAyj0aykHgHgljQdz1abGbuCiRB7jYTQg9VcG7dTFeRVC25esgVtIey
+ Sz+P1LkPl+HERrM5W8DZ0nipllO3XIxcE+WVrSwEEHdfPHZQZC96/iTiOnhGDxSexa
+ 3832hum+zdvmuj+lsMkyQb3ygp9lufxLnCTPn2zA=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E73528B895;
+ Fri,  6 Mar 2020 17:49:49 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id R84HLGj6qG3t; Fri,  6 Mar 2020 17:49:49 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5562A8B88B;
+ Fri,  6 Mar 2020 17:49:49 +0100 (CET)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id 2974965470; Fri,  6 Mar 2020 16:49:49 +0000 (UTC)
+Message-Id: <ef5248fc1f496c6b0dfdb59380f24968f25f75c5.1583513368.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v3] powerpc/kasan: Fix shadow memory protection with
+ CONFIG_KASAN_VMALLOC
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri,  6 Mar 2020 16:49:49 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,229 +73,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Greg Kurz <groug@kaod.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As does XMON, the debugfs file /sys/kernel/debug/powerpc/xive exposes
-the XIVE internal state of the machine CPUs and interrupts. Available
-on the PowerNV and sPAPR platforms.
+With CONFIG_KASAN_VMALLOC, new page tables are created at the time
+shadow memory for vmalloc area in unmapped. If some parts of the
+page table still has entries to the zero page shadow memory, the
+entries are wrongly marked RW.
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
+With CONFIG_KASAN_VMALLOC, almost the entire kernel address space
+is managed by KASAN. To make it simple, just create KASAN page tables
+for the entire kernel space at kasan_init(). That doesn't use much
+more space, and that's anyway already done for hash platforms.
+
+Fixes: 3d4247fcc938 ("powerpc/32: Add support of KASAN_VMALLOC")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/sysdev/xive/xive-internal.h |   2 +
- arch/powerpc/sysdev/xive/common.c        | 105 +++++++++++++++++++++++
- arch/powerpc/sysdev/xive/native.c        |   3 +
- arch/powerpc/sysdev/xive/spapr.c         |  19 ++++
- 4 files changed, 129 insertions(+)
+v3: Split a too long line
 
-diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
-index 382980f4de2d..b7b901da2168 100644
---- a/arch/powerpc/sysdev/xive/xive-internal.h
-+++ b/arch/powerpc/sysdev/xive/xive-internal.h
-@@ -57,12 +57,14 @@ struct xive_ops {
- 	int	(*get_ipi)(unsigned int cpu, struct xive_cpu *xc);
- 	void	(*put_ipi)(unsigned int cpu, struct xive_cpu *xc);
- #endif
-+	int	(*debug_show)(struct seq_file *m, void *private);
- 	const char *name;
- };
+v2: Allocate all tables at init instead of doing it when
+unmapping vmalloc space KASAN pages.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/mm/kasan/kasan_init_32.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+index 1a29cf469903..cbcad369fcb2 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -120,12 +120,6 @@ static void __init kasan_unmap_early_shadow_vmalloc(void)
+ 	unsigned long k_cur;
+ 	phys_addr_t pa = __pa(kasan_early_shadow_page);
  
- bool xive_core_init(const struct xive_ops *ops, void __iomem *area, u32 offset,
- 		    u8 max_prio);
- __be32 *xive_queue_page_alloc(unsigned int cpu, u32 queue_shift);
-+int xive_core_debug_init(void);
+-	if (!early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+-		int ret = kasan_init_shadow_page_tables(k_start, k_end);
+-
+-		if (ret)
+-			panic("kasan: kasan_init_shadow_page_tables() failed");
+-	}
+ 	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
+ 		pmd_t *pmd = pmd_offset(pud_offset(pgd_offset_k(k_cur), k_cur), k_cur);
+ 		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
+@@ -143,7 +137,8 @@ void __init kasan_mmu_init(void)
+ 	int ret;
+ 	struct memblock_region *reg;
  
- static inline u32 xive_alloc_order(u32 queue_shift)
- {
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index c865ae554605..e192077481a1 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -20,6 +20,7 @@
- #include <linux/spinlock.h>
- #include <linux/msi.h>
+-	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
++	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE) ||
++	    IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
+ 		ret = kasan_init_shadow_page_tables(KASAN_SHADOW_START, KASAN_SHADOW_END);
  
-+#include <asm/debugfs.h>
- #include <asm/prom.h>
- #include <asm/io.h>
- #include <asm/smp.h>
-@@ -1558,3 +1559,107 @@ static int __init xive_off(char *arg)
- 	return 0;
- }
- __setup("xive=off", xive_off);
-+
-+void xive_debug_show_cpu(struct seq_file *m, int cpu)
-+{
-+	struct xive_cpu *xc = per_cpu(xive_cpu, cpu);
-+
-+	seq_printf(m, "CPU %d:", cpu);
-+	if (xc) {
-+		seq_printf(m, "pp=%02x CPPR=%02x ", xc->pending_prio, xc->cppr);
-+
-+#ifdef CONFIG_SMP
-+		{
-+			u64 val = xive_esb_read(&xc->ipi_data, XIVE_ESB_GET);
-+
-+			seq_printf(m, "IPI=0x%08x PQ=%c%c ", xc->hw_ipi,
-+				   val & XIVE_ESB_VAL_P ? 'P' : '-',
-+				   val & XIVE_ESB_VAL_Q ? 'Q' : '-');
-+		}
-+#endif
-+		{
-+			struct xive_q *q = &xc->queue[xive_irq_priority];
-+			u32 i0, i1, idx;
-+
-+			if (q->qpage) {
-+				idx = q->idx;
-+				i0 = be32_to_cpup(q->qpage + idx);
-+				idx = (idx + 1) & q->msk;
-+				i1 = be32_to_cpup(q->qpage + idx);
-+				seq_printf(m, "EQ idx=%d T=%d %08x %08x ...",
-+					   q->idx, q->toggle, i0, i1);
-+			}
-+		}
-+	}
-+	seq_puts(m, "\n");
-+}
-+
-+void xive_debug_show_irq(struct seq_file *m, u32 hw_irq, struct irq_data *d)
-+{
-+	struct irq_chip *chip = irq_data_get_irq_chip(d);
-+	int rc;
-+	u32 target;
-+	u8 prio;
-+	u32 lirq;
-+
-+	if (!is_xive_irq(chip))
-+		return;
-+
-+	rc = xive_ops->get_irq_config(hw_irq, &target, &prio, &lirq);
-+	if (rc) {
-+		seq_printf(m, "IRQ 0x%08x : no config rc=%d\n", hw_irq, rc);
-+		return;
-+	}
-+
-+	seq_printf(m, "IRQ 0x%08x : target=0x%x prio=%02x lirq=0x%x ",
-+		   hw_irq, target, prio, lirq);
-+
-+	if (d) {
-+		struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
-+		u64 val = xive_esb_read(xd, XIVE_ESB_GET);
-+
-+		seq_printf(m, "flags=%c%c%c PQ=%c%c",
-+			   xd->flags & XIVE_IRQ_FLAG_STORE_EOI ? 'S' : ' ',
-+			   xd->flags & XIVE_IRQ_FLAG_LSI ? 'L' : ' ',
-+			   xd->flags & XIVE_IRQ_FLAG_H_INT_ESB ? 'H' : ' ',
-+			   val & XIVE_ESB_VAL_P ? 'P' : '-',
-+			   val & XIVE_ESB_VAL_Q ? 'Q' : '-');
-+	}
-+	seq_puts(m, "\n");
-+}
-+
-+static int xive_core_debug_show(struct seq_file *m, void *private)
-+{
-+	unsigned int i;
-+	struct irq_desc *desc;
-+	int cpu;
-+
-+	if (xive_ops->debug_show)
-+		xive_ops->debug_show(m, private);
-+
-+	for_each_possible_cpu(cpu)
-+		xive_debug_show_cpu(m, cpu);
-+
-+	for_each_irq_desc(i, desc) {
-+		struct irq_data *d = irq_desc_get_irq_data(desc);
-+		unsigned int hw_irq;
-+
-+		if (!d)
-+			continue;
-+
-+		hw_irq = (unsigned int)irqd_to_hwirq(d);
-+
-+		/* IPIs are special (HW number 0) */
-+		if (hw_irq)
-+			xive_debug_show_irq(m, hw_irq, d);
-+	}
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(xive_core_debug);
-+
-+int xive_core_debug_init(void)
-+{
-+	debugfs_create_file("xive", 0444, powerpc_debugfs_root,
-+			    NULL, &xive_core_debug_fops);
-+	return 0;
-+}
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 50e1a8e02497..5218fdc4b29a 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -19,6 +19,7 @@
- #include <linux/cpumask.h>
- #include <linux/mm.h>
- 
-+#include <asm/machdep.h>
- #include <asm/prom.h>
- #include <asm/io.h>
- #include <asm/smp.h>
-@@ -850,3 +851,5 @@ int xive_native_get_vp_state(u32 vp_id, u64 *out_state)
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(xive_native_get_vp_state);
-+
-+machine_arch_initcall(powernv, xive_core_debug_init);
-diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-index 3f15615712b5..7ab5c6780997 100644
---- a/arch/powerpc/sysdev/xive/spapr.c
-+++ b/arch/powerpc/sysdev/xive/spapr.c
-@@ -18,6 +18,7 @@
- #include <linux/delay.h>
- #include <linux/libfdt.h>
- 
-+#include <asm/machdep.h>
- #include <asm/prom.h>
- #include <asm/io.h>
- #include <asm/smp.h>
-@@ -645,6 +646,21 @@ static void xive_spapr_sync_source(u32 hw_irq)
- 	plpar_int_sync(0, hw_irq);
- }
- 
-+static int xive_spapr_debug_show(struct seq_file *m, void *private)
-+{
-+	struct xive_irq_bitmap *xibm;
-+	char *buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+
-+	list_for_each_entry(xibm, &xive_irq_bitmaps, list) {
-+		memset(buf, 0, PAGE_SIZE);
-+		bitmap_print_to_pagebuf(true, buf, xibm->bitmap, xibm->count);
-+		seq_printf(m, "bitmap #%d: %s", xibm->count, buf);
-+	}
-+	kfree(buf);
-+
-+	return 0;
-+}
-+
- static const struct xive_ops xive_spapr_ops = {
- 	.populate_irq_data	= xive_spapr_populate_irq_data,
- 	.configure_irq		= xive_spapr_configure_irq,
-@@ -662,6 +678,7 @@ static const struct xive_ops xive_spapr_ops = {
- #ifdef CONFIG_SMP
- 	.get_ipi		= xive_spapr_get_ipi,
- 	.put_ipi		= xive_spapr_put_ipi,
-+	.debug_show		= xive_spapr_debug_show,
- #endif /* CONFIG_SMP */
- 	.name			= "spapr",
- };
-@@ -839,3 +856,5 @@ bool __init xive_spapr_init(void)
- 	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
- 	return true;
- }
-+
-+machine_arch_initcall(pseries, xive_core_debug_init);
+ 		if (ret)
 -- 
-2.21.1
+2.25.0
 
