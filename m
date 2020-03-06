@@ -1,92 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C5417B5CB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 05:47:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YZq2167rzDqxb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 15:47:26 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FB517B5CD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 05:50:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YZtW39ckzDqR0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 15:50:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::f42; helo=mail-qv1-xf42.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=SrHNzrCA; dkim-atps=neutral
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com
+ [IPv6:2607:f8b0:4864:20::f42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YZnL2ZtJzDqwg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:45:57 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0264jtqU074884
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 5 Mar 2020 23:45:55 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yj6nmatkf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 23:45:55 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Fri, 6 Mar 2020 04:45:46 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 6 Mar 2020 04:45:44 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0264iifv49021392
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Mar 2020 04:44:44 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0AFF842045;
- Fri,  6 Mar 2020 04:45:43 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AAD3A42041;
- Fri,  6 Mar 2020 04:45:42 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  6 Mar 2020 04:45:42 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B080AA011F;
- Fri,  6 Mar 2020 15:45:37 +1100 (AEDT)
-Subject: Re: [PATCH v2] powerpc: setup_64: set up PACA earlier to avoid kcov
- problems
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
-References: <20200213052327.24207-1-dja@axtens.net>
- <59e8a506-572a-f355-e0ca-9c75758a9b65@linux.ibm.com>
- <87zhcup02u.fsf@dja-thinkpad.axtens.net>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 6 Mar 2020 15:45:41 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YZrt6W24zDqwg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 15:49:02 +1100 (AEDT)
+Received: by mail-qv1-xf42.google.com with SMTP id p3so415608qvq.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 20:49:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=u3A82Tm6v/IKdXzlz1x166tlvvtPigj+LiMK7gr2ad8=;
+ b=SrHNzrCAmssYq4JPdHbvjy/uNh0otDPdaeUYLhK6N1FZtMOVeNPL2MCNVMLeAT/j3B
+ luVLvPkjt4oeynQQYFLozpy3gg58sLqjVeuuPewwHP6+aRyAoFFK4bxm5ph8Ks3uYtjX
+ p7MK1f0wFfrVwZGhiWr3Ab7BGcdMaoGRzozL2Kk+vRRLEQJvPs3gT4b4Hg7OnzjATPDB
+ +4XsgJeDkSCnf+y55h7aBEztRDdbBs/w9o6H4dFl47YNIGbg9omRnk1O2QHNEALknYQ1
+ draaEos8IIoGzuXT978acsZO4m8hdtAcRnxx5NMDqqIUV9j3IiEA/xnFwJU/GY3Tr9tn
+ ULkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=u3A82Tm6v/IKdXzlz1x166tlvvtPigj+LiMK7gr2ad8=;
+ b=UHv1HR0nVdAz35q6BeJjxFMuVt4z9MGnsCNq0B/fYTob7wwV9VwGaTYFo2c8AXD1Iy
+ 2eLE0jTY9bpz+heFVHDoVIUwVSLRr+kyexJr/4AFeF0QmGq0NVOA6g5Mz58+Nn9LMdbs
+ IXKAoJtQXuEr3/fkoTHSjngLNQqIeRq7DBo7nDN0gJv1+w3FHWQ7xd+K5/BTtKQraKVZ
+ JX8hTjhP5TGjrcl8Cji09suDcV6eOoak85PEEiWbDDMkyVoO3nu5KJv24m3rH74O0WDT
+ ZjhebNvXaocJlhVdTO6cKD9K2aTo/xjIHsDBKQToYKaJjQiFA+zp1SDTx7Fi9NeYiOF1
+ 9idA==
+X-Gm-Message-State: ANhLgQ3qCLv7H0TsEDxPQrWbV+dbk1e8jSvYI5tmaGmJua7sICP3hcYb
+ sCOZD9Xw4rMr+Y+IWX+RMqbGmQ==
+X-Google-Smtp-Source: ADFU+vvQgccczFThDKKrhdBq0sChFDblkmCyADzO4o8oCg8ZtNgK7xG/FRwurPZwlHpIbW/Z4/bbZg==
+X-Received: by 2002:a05:6214:907:: with SMTP id
+ dj7mr1361299qvb.245.1583470138296; 
+ Thu, 05 Mar 2020 20:48:58 -0800 (PST)
+Received: from ovpn-121-18.rdu2.redhat.com
+ (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id f189sm11207988qke.90.2020.03.05.20.48.57
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 05 Mar 2020 20:48:57 -0800 (PST)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au
+Subject: [PATCH v3] powerpc/64s/pgtable: fix an undefined behaviour
+Date: Thu,  5 Mar 2020 23:48:52 -0500
+Message-Id: <20200306044852.3236-1-cai@lca.pw>
+X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
 MIME-Version: 1.0
-In-Reply-To: <87zhcup02u.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20030604-0020-0000-0000-000003B0F552
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030604-0021-0000-0000-00002209340B
-Message-Id: <f9f212bb-66aa-ec99-2f04-c892c4572d2a@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-05_08:2020-03-05,
- 2020-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxlogscore=999 suspectscore=0
- impostorscore=0 priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003060031
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,38 +78,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org, rashmicy@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/3/20 3:40 pm, Daniel Axtens wrote:
->> There's some special handling for CPU_FTR_HVMODE in
->> cpufeatures_setup_cpu() in kernel/dt_cpu_ftrs.c:
->>
->>           /* Initialize the base environment -- clear FSCR/HFSCR.  */
->>           hv_mode = !!(mfmsr() & MSR_HV);
->>           if (hv_mode) {
->>                   /* CPU_FTR_HVMODE is used early in PACA setup */
->>                   cur_cpu_spec->cpu_features |= CPU_FTR_HVMODE;
->>                   mtspr(SPRN_HFSCR, 0);
->>           }
->>
->> With this patch, the comment about PACA setup I assume is no longer
->> true. It looks like we still rely on hv_mode being set to deal with
->> discrepancies between the device tree and the MSR.
-> 
-> This code confuses me. IIUC it sets the CPU feature if we're in HV mode,
-> which will catch the case where the HV bit is set in the MSR but for
-> some reason it's not listed in the DT. With my patch, we'll directly
-> test the MSR so we don't need the cpu feature set for that.
-> 
-> However, the CPU feature is tested elsewhere, so I think the correct
-> behaviour is to keep the code but drop the comment. Having said that
-> bootstrapping is hard so lmk if I've misunderstood.
+Booting a power9 server with hash MMU could trigger an undefined
+behaviour because pud_offset(p4d, 0) will do,
 
-That was my thinking too.
+0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
 
+Fix it by converting pud_index() and friends to static inline
+functions.
+
+UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
+shift exponent 34 is too large for 32-bit type 'int'
+CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
+Call Trace:
+dump_stack+0xf4/0x164 (unreliable)
+ubsan_epilogue+0x18/0x78
+__ubsan_handle_shift_out_of_bounds+0x160/0x21c
+walk_pagetables+0x2cc/0x700
+walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
+(inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
+ptdump_check_wx+0x8c/0xf0
+mark_rodata_ro+0x48/0x80
+kernel_init+0x74/0x194
+ret_from_kernel_thread+0x5c/0x74
+
+Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+
+v3: convert pud_index() etc to static inline functions.
+v2: convert pud_offset() etc to static inline functions.
+
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 201a69e6a355..bd432c6706b9 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -998,10 +998,25 @@ extern struct page *pgd_page(pgd_t pgd);
+ #define pud_page_vaddr(pud)	__va(pud_val(pud) & ~PUD_MASKED_BITS)
+ #define pgd_page_vaddr(pgd)	__va(pgd_val(pgd) & ~PGD_MASKED_BITS)
+ 
+-#define pgd_index(address) (((address) >> (PGDIR_SHIFT)) & (PTRS_PER_PGD - 1))
+-#define pud_index(address) (((address) >> (PUD_SHIFT)) & (PTRS_PER_PUD - 1))
+-#define pmd_index(address) (((address) >> (PMD_SHIFT)) & (PTRS_PER_PMD - 1))
+-#define pte_index(address) (((address) >> (PAGE_SHIFT)) & (PTRS_PER_PTE - 1))
++static inline unsigned long pgd_index(unsigned long address)
++{
++	return (address >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1);
++}
++
++static inline unsigned long pud_index(unsigned long address)
++{
++	return (address >> PUD_SHIFT) & (PTRS_PER_PUD - 1);
++}
++
++static inline unsigned long pmd_index(unsigned long address)
++{
++	return (address >> PMD_SHIFT) & (PTRS_PER_PMD - 1);
++}
++
++static inline unsigned long pte_index(unsigned long address)
++{
++	return (address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1);
++}
+ 
+ /*
+  * Find an entry in a page-table-directory.  We combine the address region
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.21.0 (Apple Git-122.2)
 
