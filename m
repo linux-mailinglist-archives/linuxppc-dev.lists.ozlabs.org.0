@@ -2,71 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FE117C702
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 21:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE2E17C707
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 21:27:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Yzfb1mCNzDrg2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 07:26:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Yzh04XcHzDsSm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 07:27:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YzSG64vBzDsVH
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 07:17:34 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YzTC2XbXzF0QT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 07:18:23 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 026K0Yeg122723; Fri, 6 Mar 2020 15:17:23 -0500
+ 026JxK4o063439; Fri, 6 Mar 2020 15:18:13 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yj6nn7h2m-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yj4q45nt1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Mar 2020 15:17:23 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 026KHMI4054305;
- Fri, 6 Mar 2020 15:17:22 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yj6nn7h29-1
+ Fri, 06 Mar 2020 15:18:12 -0500
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 026K13mB097043;
+ Fri, 6 Mar 2020 15:18:12 -0500
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yj4q45nsg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Mar 2020 15:17:22 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 026KHMFc004979;
- Fri, 6 Mar 2020 20:17:22 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 2yffk8bjc8-1
+ Fri, 06 Mar 2020 15:18:12 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 026KHL5w022433;
+ Fri, 6 Mar 2020 20:18:11 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma03wdc.us.ibm.com with ESMTP id 2yffk7p0ht-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Mar 2020 20:17:22 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 026KHK3W48300364
+ Fri, 06 Mar 2020 20:18:11 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 026KIAcB37880152
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Mar 2020 20:17:21 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE024BE054;
- Fri,  6 Mar 2020 20:17:20 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F2D9BE051;
- Fri,  6 Mar 2020 20:17:20 +0000 (GMT)
+ Fri, 6 Mar 2020 20:18:10 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5843F7805E;
+ Fri,  6 Mar 2020 20:18:10 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C15C57805C;
+ Fri,  6 Mar 2020 20:18:09 +0000 (GMT)
 Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri,  6 Mar 2020 20:17:20 +0000 (GMT)
-Subject: [PATCH V7 10/14] powerpc/vas: Print CRB and FIFO values
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Mar 2020 20:18:09 +0000 (GMT)
+Subject: [PATCH V7 11/14] powerpc/vas: Do not use default credits for
+ receive window
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au
 In-Reply-To: <1583525239.9256.5.camel@hbabu-laptop>
 References: <1583525239.9256.5.camel@hbabu-laptop>
 Content-Type: text/plain; charset="UTF-8"
-Date: Fri, 06 Mar 2020 12:17:17 -0800
-Message-ID: <1583525837.9256.15.camel@hbabu-laptop>
+Date: Fri, 06 Mar 2020 12:18:07 -0800
+Message-ID: <1583525887.9256.16.camel@hbabu-laptop>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
@@ -75,10 +76,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-06_07:2020-03-06,
  2020-03-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxlogscore=999 suspectscore=1
- impostorscore=0 priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0
+ suspectscore=1 adultscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0 mlxlogscore=893
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2003060121
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,88 +100,55 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Dump FIFO entries if could not find send window and print CRB
-for debugging.
+System checkstops if RxFIFO overruns with more requests than the
+maximum possible number of CRBs allowed in FIFO at any time. So
+max credits value (rxattr.wcreds_max) is set and is passed to
+vas_rx_win_open() by the the driver.
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/vas-fault.c | 41 ++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ arch/powerpc/platforms/powernv/vas-window.c | 4 ++--
+ arch/powerpc/platforms/powernv/vas.h        | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
-index 751ce48..940adc5 100644
---- a/arch/powerpc/platforms/powernv/vas-fault.c
-+++ b/arch/powerpc/platforms/powernv/vas-fault.c
-@@ -26,6 +26,28 @@
-  */
- #define VAS_FAULT_WIN_FIFO_SIZE	(4 << 20)
+diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+index 7587258..427a884 100644
+--- a/arch/powerpc/platforms/powernv/vas-window.c
++++ b/arch/powerpc/platforms/powernv/vas-window.c
+@@ -772,7 +772,7 @@ static bool rx_win_args_valid(enum vas_cop_type cop,
+ 	if (attr->rx_fifo_size > VAS_RX_FIFO_SIZE_MAX)
+ 		return false;
  
-+static void dump_crb(struct coprocessor_request_block *crb)
-+{
-+	struct data_descriptor_entry *dde;
-+	struct nx_fault_stamp *nx;
-+
-+	dde = &crb->source;
-+	pr_devel("SrcDDE: addr 0x%llx, len %d, count %d, idx %d, flags %d\n",
-+		be64_to_cpu(dde->address), be32_to_cpu(dde->length),
-+		dde->count, dde->index, dde->flags);
-+
-+	dde = &crb->target;
-+	pr_devel("TgtDDE: addr 0x%llx, len %d, count %d, idx %d, flags %d\n",
-+		be64_to_cpu(dde->address), be32_to_cpu(dde->length),
-+		dde->count, dde->index, dde->flags);
-+
-+	nx = &crb->stamp.nx;
-+	pr_devel("NX Stamp: PSWID 0x%x, FSA 0x%llx, flags 0x%x, FS 0x%x\n",
-+		be32_to_cpu(nx->pswid),
-+		be64_to_cpu(crb->stamp.nx.fault_storage_addr),
-+		nx->flags, nx->fault_status);
-+}
-+
+-	if (attr->wcreds_max > VAS_RX_WCREDS_MAX)
++	if (!attr->wcreds_max)
+ 		return false;
+ 
+ 	if (attr->nx_win) {
+@@ -877,7 +877,7 @@ struct vas_window *vas_rx_win_open(int vasid, enum vas_cop_type cop,
+ 	rxwin->nx_win = rxattr->nx_win;
+ 	rxwin->user_win = rxattr->user_win;
+ 	rxwin->cop = cop;
+-	rxwin->wcreds_max = rxattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
++	rxwin->wcreds_max = rxattr->wcreds_max;
+ 
+ 	init_winctx_for_rxwin(rxwin, rxattr, &winctx);
+ 	init_winctx_regs(rxwin, &winctx);
+diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
+index 16aa8ec..bc728d7 100644
+--- a/arch/powerpc/platforms/powernv/vas.h
++++ b/arch/powerpc/platforms/powernv/vas.h
+@@ -101,11 +101,9 @@
  /*
-  * Update the CSB to indicate a translation error.
+  * Initial per-process credits.
+  * Max send window credits:    4K-1 (12-bits in VAS_TX_WCRED)
+- * Max receive window credits: 64K-1 (16 bits in VAS_LRX_WCRED)
   *
-@@ -138,6 +160,23 @@ static void update_csb(struct vas_window *window,
- 			pid_vnr(pid), rc);
- }
- 
-+static void dump_fifo(struct vas_instance *vinst, void *entry)
-+{
-+	int i;
-+	unsigned long *fifo = entry;
-+	unsigned long *end = vinst->fault_fifo + vinst->fault_fifo_size;
-+
-+	pr_err("Fault fifo size %d, Max crbs %d\n", vinst->fault_fifo_size,
-+			vinst->fault_fifo_size / CRB_SIZE);
-+
-+	/* Dump 10 CRB entries or until end of FIFO */
-+	pr_err("Fault FIFO Dump:\n");
-+	for (i = 0; i < 10*(CRB_SIZE/8) && fifo < end; i += 4, fifo += 4) {
-+		pr_err("[%.3d, %p]: 0x%.16lx 0x%.16lx 0x%.16lx 0x%.16lx\n",
-+			i, fifo, *fifo, *(fifo+1), *(fifo+2), *(fifo+3));
-+	}
-+}
-+
- /*
-  * Process valid CRBs in fault FIFO.
+  * TODO: Needs tuning for per-process credits
   */
-@@ -204,6 +243,7 @@ irqreturn_t vas_fault_thread_fn(int irq, void *data)
- 				vinst->vas_id, vinst->fault_fifo, fifo,
- 				vinst->fault_crbs);
+-#define VAS_RX_WCREDS_MAX		((64 << 10) - 1)
+ #define VAS_TX_WCREDS_MAX		((4 << 10) - 1)
+ #define VAS_WCREDS_DEFAULT		(1 << 10)
  
-+		dump_crb(crb);
- 		window = vas_pswid_to_window(vinst,
- 				be32_to_cpu(crb->stamp.nx.pswid));
- 
-@@ -214,6 +254,7 @@ irqreturn_t vas_fault_thread_fn(int irq, void *data)
- 			 * even clean it up (return credit).
- 			 * But we should not get here.
- 			 */
-+			dump_fifo(vinst, (void *)entry);
- 			pr_err("VAS[%d] fault_fifo %p, fifo %p, pswid 0x%x, fault_crbs %d bad CRB?\n",
- 				vinst->vas_id, vinst->fault_fifo, fifo,
- 				be32_to_cpu(crb->stamp.nx.pswid),
 -- 
 1.8.3.1
 
