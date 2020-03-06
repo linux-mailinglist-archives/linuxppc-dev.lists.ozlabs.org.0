@@ -1,34 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC15D17B320
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:49:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YTXN708GzDqtt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 11:49:24 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F3517B322
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:51:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YTZC1FfYzDqxQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 11:50:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YT3M2RDnzDqht
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 11:27:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YT3N70MjzDqZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 11:27:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48YT3M1TFtz9sSZ; Fri,  6 Mar 2020 11:27:43 +1100 (AEDT)
+ id 48YT3N3R0Nz9sSm; Fri,  6 Mar 2020 11:27:43 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 030e347430957f6f7f29db9099368f8b86c0bf76
-In-Reply-To: <b30b2eae6960502eaf0d9e36c60820b839693c33.1580542939.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: e1347a020b81fe47c80cd277bfaa61295a9482a4
+In-Reply-To: <12f4f4f0ff89aeab3b937fc96c84fb35e1b2517e.1580748445.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc/32s: Don't flush all TLBs when flushing one
- page
-Message-Id: <48YT3M1TFtz9sSZ@ozlabs.org>
+Subject: Re: [PATCH] powerpc/32s: Slenderize _tlbia() for powerpc 603/603e
+Message-Id: <48YT3N3R0Nz9sSm@ozlabs.org>
 Date: Fri,  6 Mar 2020 11:27:43 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -46,17 +45,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2020-02-01 at 08:04:31 UTC, Christophe Leroy wrote:
-> When flushing any memory range, the flushing function
-> flushes all TLBs.
+On Mon, 2020-02-03 at 16:47:37 UTC, Christophe Leroy wrote:
+> _tlbia() is a function used only on 603/603e core, ie on CPUs which
+> don't have a hash table.
 > 
-> When (start) and (end - 1) are in the same memory page,
-> flush that page instead.
+> _tlbia() uses the tlbia macro which implements a loop of 1024 tlbie.
+> 
+> On the 603/603e core, flushing the entire TLB requires no more than
+> 32 tlbie.
+> 
+> Replace tlbia by a loop of 32 tlbie.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/030e347430957f6f7f29db9099368f8b86c0bf76
+https://git.kernel.org/powerpc/c/e1347a020b81fe47c80cd277bfaa61295a9482a4
 
 cheers
