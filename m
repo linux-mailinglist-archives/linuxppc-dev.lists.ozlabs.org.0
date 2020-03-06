@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0577917B770
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 08:31:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA9417B727
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 08:02:20 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Ydpd3stfzDq9d
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 18:02:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YfSh3qDxzDr1F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 18:31:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=Jz35VSqC; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=J2mA6nWS; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Ydh06sqPzDqjy
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 17:56:31 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48Ydgt3B8Hz9txgh;
- Fri,  6 Mar 2020 07:56:26 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Jz35VSqC; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id FyjWRpBQZ4C9; Fri,  6 Mar 2020 07:56:26 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48Ydgt206Pz9txgZ;
- Fri,  6 Mar 2020 07:56:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1583477786; bh=H55nzcmxh7V1cddi0UhKfI61T6Z6P/Eblvkn6q2IeGA=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=Jz35VSqCtC5bJghsDpbJwtCkfUQxPVtusOPGOj8Lircxn2BSUDyzTN2ynWXXi/dq+
- K4vmRkwxSO1GvH+X+RGt1vKT2wjeLdwH5NPMNo0KhpjGlI+dG/rwU2gED8Tw3s/Bx5
- tIxB6RG/JdszizpCWwPDG0g0k8YHaxhD/w/N4RbQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2025C8B77E;
- Fri,  6 Mar 2020 07:56:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Dg2xiB3HEfHY; Fri,  6 Mar 2020 07:56:27 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E552E8B752;
- Fri,  6 Mar 2020 07:56:26 +0100 (CET)
-Subject: Re: [PATCH v3] powerpc/64s/pgtable: fix an undefined behaviour
-To: Qian Cai <cai@lca.pw>, mpe@ellerman.id.au
-References: <20200306044852.3236-1-cai@lca.pw>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <952c3921-5aa8-bff5-9a87-baf5f901c535@c-s.fr>
-Date: Fri, 6 Mar 2020 07:56:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YfQr0W2DzDqN5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 18:30:10 +1100 (AEDT)
+Received: by mail-pj1-x1044.google.com with SMTP id nm6so702571pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2020 23:30:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=aPIsdBNMDTmM5LisDJPsWi6uKxD6/S17e5eRPSOHUdY=;
+ b=J2mA6nWSD5m1GboKsmCHNjuURdoyUfflGSc09A3cTUXOP2u71HMKatqwj+nrLT5ScP
+ gCs4XmMmN+VoSh2Zube7QIjEP0QyfriKGjgSdvlnNn84Xu4W8gH3HLQhdMMKxwAsRiKc
+ 1RhpsCxJOqVim3oAukgi81HqvLz97ZzQ5pGZI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=aPIsdBNMDTmM5LisDJPsWi6uKxD6/S17e5eRPSOHUdY=;
+ b=GllXzDIb6a50bONHsMrclEjbNEQZCXgCYKz8lCX/rY7WYe3O2EZDvmooUDhlT/Hkf7
+ TKGjVEnFYoOzrSwfPgB7rUa/065cScTfcB+lvIsNfEKTkE+Yynp+Tdo5PiA2B9CzrUEl
+ 3swyFc5PsFdAgNTyWMOy8bH/D/MB4VLaof8wMg2IkWh9QDiczitnXwp3hTItPSF9xrlZ
+ icyrpYh7oOSO/Kt0SFQAB6oSQsxgZH9CrerGvTA0f/S0uandVXjSCfX+duBvgD69J39j
+ 3OVwxUPn//e80AgD9w++F52x8Y7YIPSN+hAN9S0yuzO8GMPvo/P5yTcXn4zkkq23wo4p
+ X78Q==
+X-Gm-Message-State: ANhLgQ06OCoSFn2qJM9mh8l40+drwURHZgND+PkhNW8kiFW3PbnHLRAE
+ LAN99nYmyF+ttoZ7y6CFvTCtuZDgdS8=
+X-Google-Smtp-Source: ADFU+vt00YsWIs7Ek0f31W8FBexErtP3O+GABsUDrdAeGYCLmqOcIHuud5EiHsBesJOh5vhlTL74Uw==
+X-Received: by 2002:a17:902:6809:: with SMTP id
+ h9mr1756173plk.32.1583479807186; 
+ Thu, 05 Mar 2020 23:30:07 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-69b9-4410-8fa1-baff.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:69b9:4410:8fa1:baff])
+ by smtp.gmail.com with ESMTPSA id f124sm19519697pfg.9.2020.03.05.23.30.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Mar 2020 23:30:06 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] powerpc: setup_64: set up PACA earlier to avoid kcov
+ problems
+Date: Fri,  6 Mar 2020 18:30:00 +1100
+Message-Id: <20200306073000.9491-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200306044852.3236-1-cai@lca.pw>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,83 +77,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, rashmicy@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: ajd@linux.ibm.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+kcov instrumentation is collected the __sanitizer_cov_trace_pc hook in
+kernel/kcov.c. The compiler inserts these hooks into every basic block
+unless kcov is disabled for that file.
 
+We then have a deep call-chain:
+ - __sanitizer_cov_trace_pc calls to check_kcov_mode()
+ - check_kcov_mode() (kernel/kcov.c) calls in_task()
+ - in_task() (include/linux/preempt.h) calls preempt_count().
+ - preempt_count() (include/asm-generic/preempt.h) calls
+     current_thread_info()
+ - because powerpc has THREAD_INFO_IN_TASK, current_thread_info()
+     (include/linux/thread_info.h) is defined to 'current'
+ - current (arch/powerpc/include/asm/current.h) is defined to
+     get_current().
+ - get_current (same file) loads an offset of r13.
+ - arch/powerpc/include/asm/paca.h makes r13 a register variable
+     called local_paca - it is the PACA for the current CPU, so
+     this has the effect of loading the current task from PACA.
+ - get_current returns the current task from PACA,
+ - current_thread_info returns the task cast to a thread_info
+ - preempt_count dereferences the thread_info to load preempt_count
+ - that value is used by in_task and so on up the chain
 
-Le 06/03/2020 à 05:48, Qian Cai a écrit :
-> Booting a power9 server with hash MMU could trigger an undefined
-> behaviour because pud_offset(p4d, 0) will do,
-> 
-> 0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
-> 
-> Fix it by converting pud_index() and friends to static inline
-> functions.
-> 
-> UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
-> shift exponent 34 is too large for 32-bit type 'int'
-> CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
-> Call Trace:
-> dump_stack+0xf4/0x164 (unreliable)
-> ubsan_epilogue+0x18/0x78
-> __ubsan_handle_shift_out_of_bounds+0x160/0x21c
-> walk_pagetables+0x2cc/0x700
-> walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
-> (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
-> ptdump_check_wx+0x8c/0xf0
-> mark_rodata_ro+0x48/0x80
-> kernel_init+0x74/0x194
-> ret_from_kernel_thread+0x5c/0x74
-> 
-> Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Qian Cai <cai@lca.pw>
+The problem is:
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+ - kcov instrumentation is enabled for arch/powerpc/kernel/dt_cpu_ftrs.c
 
-> ---
-> 
-> v3: convert pud_index() etc to static inline functions.
-> v2: convert pud_offset() etc to static inline functions.
-> 
->   arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++----
->   1 file changed, 19 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> index 201a69e6a355..bd432c6706b9 100644
-> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> @@ -998,10 +998,25 @@ extern struct page *pgd_page(pgd_t pgd);
->   #define pud_page_vaddr(pud)	__va(pud_val(pud) & ~PUD_MASKED_BITS)
->   #define pgd_page_vaddr(pgd)	__va(pgd_val(pgd) & ~PGD_MASKED_BITS)
->   
-> -#define pgd_index(address) (((address) >> (PGDIR_SHIFT)) & (PTRS_PER_PGD - 1))
-> -#define pud_index(address) (((address) >> (PUD_SHIFT)) & (PTRS_PER_PUD - 1))
-> -#define pmd_index(address) (((address) >> (PMD_SHIFT)) & (PTRS_PER_PMD - 1))
-> -#define pte_index(address) (((address) >> (PAGE_SHIFT)) & (PTRS_PER_PTE - 1))
-> +static inline unsigned long pgd_index(unsigned long address)
-> +{
-> +	return (address >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1);
-> +}
-> +
-> +static inline unsigned long pud_index(unsigned long address)
-> +{
-> +	return (address >> PUD_SHIFT) & (PTRS_PER_PUD - 1);
-> +}
-> +
-> +static inline unsigned long pmd_index(unsigned long address)
-> +{
-> +	return (address >> PMD_SHIFT) & (PTRS_PER_PMD - 1);
-> +}
-> +
-> +static inline unsigned long pte_index(unsigned long address)
-> +{
-> +	return (address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1);
-> +}
->   
->   /*
->    * Find an entry in a page-table-directory.  We combine the address region
-> 
+ - even if it were not, dt_cpu_ftrs_init calls generic dt parsing code
+   which should definitely have instrumentation enabled.
+
+ - setup_64.c calls dt_cpu_ftrs_init before it sets up a PACA.
+
+ - If we don't set up a paca, r13 will contain unpredictable data.
+
+ - In a zImage compiled with kcov and KASAN, we see r13 containing a value
+   that leads to dereferencing invalid memory (something like
+   912a72603d420015).
+
+ - Weirdly, the same kernel as a vmlinux loaded directly by qemu does not
+   crash. Investigating with gdb, it seems that in the vmlinux boot case,
+   r13 is near enough to zero that we just happen to be able to read that
+   part of memory (we're operating with translation off at this point) and
+   the current pointer also happens to land in readable memory and
+   everything just works.
+
+ - PACA setup refers to CPU features - setup_paca() looks at
+   early_cpu_has_feature(CPU_FTR_HVMODE)
+
+There's no generic kill switch for kcov (as far as I can tell), and we
+don't want to have to turn off instrumentation in the generic dt parsing
+code (which lives outside arch/powerpc/) just because we don't have a real
+paca or task yet.
+
+So:
+ - change the test when setting up a PACA to consider the actual value of
+   the MSR rather than the CPU feature.
+
+ - move the PACA setup to before the cpu feature parsing.
+
+Translations get switched on once we leave early_setup, so I think we'd
+already catch any other cases where the PACA or task aren't set up.
+
+Boot tested on a P9 guest and host.
+
+Fixes: fb0b0a73b223 ("powerpc: Enable kcov")
+Cc: Andrew Donnellan <ajd@linux.ibm.com>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
+
+---
+
+Regarding moving the comment about printk()-safety:
+I am about 75% sure that the thing that makes printk() safe is the PACA,
+not the CPU features. That's what commit 24d9649574fb ("[POWERPC] Document
+when printk is useable") seems to indicate, but as someone wise recently
+told me, "bootstrapping is hard", so I may be totally wrong.
+
+v3: Update comment, thanks Christophe Leroy.
+    Remove a comment in dt_cpu_ftrs.c that is no longer accurate - thanks
+      Andrew. I think we want to retain all the code still, but I'm open to
+      being told otherwise.
+---
+ arch/powerpc/kernel/dt_cpu_ftrs.c |  1 -
+ arch/powerpc/kernel/paca.c        |  2 +-
+ arch/powerpc/kernel/setup_64.c    | 20 +++++++++++++++-----
+ 3 files changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 182b4047c1ef..36bc0d5c4f3a 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -139,7 +139,6 @@ static void __init cpufeatures_setup_cpu(void)
+ 	/* Initialize the base environment -- clear FSCR/HFSCR.  */
+ 	hv_mode = !!(mfmsr() & MSR_HV);
+ 	if (hv_mode) {
+-		/* CPU_FTR_HVMODE is used early in PACA setup */
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_HVMODE;
+ 		mtspr(SPRN_HFSCR, 0);
+ 	}
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index 949eceb254d8..347e947b9d4b 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -218,7 +218,7 @@ void setup_paca(struct paca_struct *new_paca)
+ 	 * if we do a GET_PACA() before the feature fixups have been
+ 	 * applied
+ 	 */
+-	if (early_cpu_has_feature(CPU_FTR_HVMODE))
++	if (mfmsr() & MSR_HV)
+ 		mtspr(SPRN_SPRG_HPACA, local_paca);
+ #endif
+ 	mtspr(SPRN_SPRG_PACA, local_paca);
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index e05e6dd67ae6..2259da8e8685 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -285,18 +285,28 @@ void __init early_setup(unsigned long dt_ptr)
+ 
+ 	/* -------- printk is _NOT_ safe to use here ! ------- */
+ 
+-	/* Try new device tree based feature discovery ... */
+-	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
+-		/* Otherwise use the old style CPU table */
+-		identify_cpu(0, mfspr(SPRN_PVR));
++	/*
++	 * Assume we're on cpu 0 for now.
++	 *
++	 * We need to load a PACA very early if we are using kcov. kcov will
++	 * call in_task() in its instrumentation, which relies on the current
++	 * task from the PACA. dt_cpu_ftrs_init is coveraged-enabled and also
++	 * calls into the coverage-enabled generic dt library.
++	 *
++	 * Set up a temporary paca. It is going to be replaced below.
++	 */
+ 
+-	/* Assume we're on cpu 0 for now. Don't write to the paca yet! */
+ 	initialise_paca(&boot_paca, 0);
+ 	setup_paca(&boot_paca);
+ 	fixup_boot_paca();
+ 
+ 	/* -------- printk is now safe to use ------- */
+ 
++	/* Try new device tree based feature discovery ... */
++	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
++		/* Otherwise use the old style CPU table */
++		identify_cpu(0, mfspr(SPRN_PVR));
++
+ 	/* Enable early debugging if any specified (see udbg.h) */
+ 	udbg_early_init();
+ 
+-- 
+2.20.1
+
