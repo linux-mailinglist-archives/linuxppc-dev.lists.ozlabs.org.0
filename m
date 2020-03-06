@@ -1,35 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE4717B30C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:42:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8BD17B30A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 01:41:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48YTLd5mFPzDqjh
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 11:40:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48YTNN0RndzDqgl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Mar 2020 11:42:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48YT3G6cSjzDqXR
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 11:27:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48YT3H2KDhzDqW9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2020 11:27:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48YT3F1QB8z9sRY; Fri,  6 Mar 2020 11:27:36 +1100 (AEDT)
+ id 48YT3G2CpCz9sSV; Fri,  6 Mar 2020 11:27:37 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: ba32f4b02105e57627912b42e141d65d90074c64
-In-Reply-To: <6ecbda05b4119c40222dc8ec284604e1597c9bff.1580327381.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+X-powerpc-patch-commit: 72c4ebbac476b8375e69fd09390e6b64c2891716
+In-Reply-To: <20200130040206.79998-1-vaibhav@linux.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/process: Remove unneccessary #ifdef CONFIG_PPC64
- in copy_thread_tls()
-Message-Id: <48YT3F1QB8z9sRY@ozlabs.org>
-Date: Fri,  6 Mar 2020 11:27:36 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/papr_scm: Mark papr_scm_ndctl() as static
+Message-Id: <48YT3G2CpCz9sSV@ozlabs.org>
+Date: Fri,  6 Mar 2020 11:27:37 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,18 +38,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-01-29 at 19:50:07 UTC, Christophe Leroy wrote:
-> is_32bit_task() exists on both PPC64 and PPC32, no need of an ifdefery.
+On Thu, 2020-01-30 at 04:02:06 UTC, Vaibhav Jain wrote:
+> Function papr_scm_ndctl() is neither exported from the module nor
+> called directly from outside 'papr.c' hence should be marked 'static'.
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/ba32f4b02105e57627912b42e141d65d90074c64
+https://git.kernel.org/powerpc/c/72c4ebbac476b8375e69fd09390e6b64c2891716
 
 cheers
