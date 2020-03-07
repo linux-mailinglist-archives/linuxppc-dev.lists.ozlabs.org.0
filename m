@@ -2,77 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B721217CA36
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 02:13:28 +0100 (CET)
-Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48Z61d0sKKzDr0x
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 12:13:25 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C60617CA80
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 02:35:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48Z6Vn4ZQQzDrCm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 12:35:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.215.193;
+ helo=mail-pg1-f193.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=209.85.219.68; helo=mail-qv1-f68.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=EGv7Xx0m; dkim-atps=neutral
-Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com
- [209.85.219.68])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com
+ [209.85.215.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48Z60467XSzDqyb
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 12:12:04 +1100 (AEDT)
-Received: by mail-qv1-f68.google.com with SMTP id o18so1870375qvf.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2020 17:12:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=EgkVlU+1chmZAdNkyF5q9aYrIAuysLZZez5WmPdEesQ=;
- b=EGv7Xx0mZhZufvegZpMUc+XHUkn93SE5ZYbqMRcl5l03s/x6c5RGn1Ma2qadFUAf7S
- mDQMjSqV0IMWb0LKZbXtHgPTizxmZGQTJdUUxxDOzRNaQofngetBXfwNZBmrbUir4STy
- e3xaR5vaUH0X/eG5wGlkW6iyRZ9+AVrlHBQUd8rTQK2YW8J6Zd2RLf0s/Z6jQ5Xya9vu
- aeJUNlgp7kS5lPRKKgCNzhDAIzhO4wqNELMKCmK5Pf7jkprIcuqhfAVWcp5Z+XuxcskU
- 0FpMxIT78jjgIVAOm8sfqI2jqD5aX8zFE6cx/mP42YiyM5KNoK8iovEJATfquaQSZhHz
- 6eAA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48Z6TK2QTCzDqyn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 12:33:54 +1100 (AEDT)
+Received: by mail-pg1-f193.google.com with SMTP id 7so1891243pgr.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2020 17:33:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=utbLqXD9CMgavbCxnlr6/AcL14xuX+rVDyDAq46auJA=;
+ b=aRJsmhc3cewVCEP4AZhnFINE0WvEFandNRFswILE38ZNibP0htc5t+sXuBwP7hgLpl
+ AWIX12ow5/Xkz1fof5hGHNDAMf195Q5H13wLvsVPQBqhSQ2IL3aLU2zb00CyZEOUT+1U
+ 8BKO/K/3TCZ8smnNEWzsTPff1Si4DW+raOqtQfyXs68tbufOVOw29fYgi/vRN1xWwMfK
+ ql7M7H1m37RFnI8KiUicvyj57om6U26bRII4mOcdYByKnCz0RGyXBvUZOAQaCQyQ2C4+
+ YJX9dnK5ljlYh6BWti3tjjXPz73yicU+qTugrkAfwmzHe0Mswua1mG+xeuonj6VHfYyw
+ clnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=EgkVlU+1chmZAdNkyF5q9aYrIAuysLZZez5WmPdEesQ=;
- b=g8uB5tcItx7IBnCP/AdeqyyR+bjl2LqyNMUvdt+H73fdW0kR23NAlOi6Ig+d53CwYl
- CElWOavNByWD/Pw3zeL0PswL2xnrwoUtobmv/Ep8Viu2tZpzXrAdoM5GSyTwAFouNKw1
- F/vQrS8UNBCn4rTxHxSI12P5UFYLtPm6H2HNQ2OiK80SdpjZhajTkHVc4uT3Jznfg2+2
- +yRqMeYXLsBbof3yeYeA7FINpksJ+oV8/dgycwv8bnXnS0oTWH4g6NwT+qrqGwK75FDm
- nLOZTi7HvlizFvVS+ZKQ28sxnGYyFjyChgsNprKPUib5wUTQXweRs6D/S9DvwnCOYsS8
- 84sQ==
-X-Gm-Message-State: ANhLgQ2COkBBxFQ8JvzVmfiVrvw7egenchbpf5w0BpnIR0QgaDxXA042
- rpKkMHwOxUDozTJHLg964yNyvQ==
-X-Google-Smtp-Source: ADFU+vsw52nux5Uc1WpPZ0fNtyFcwSVbVBgSYAhgVo8M+FINwP2UYIzF3QTk5i6KnfgTnuq5ecGdaA==
-X-Received: by 2002:a0c:e401:: with SMTP id o1mr5556949qvl.19.1583543455511;
- Fri, 06 Mar 2020 17:10:55 -0800 (PST)
-Received: from qians-mbp.fios-router.home
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id d35sm17605260qtc.21.2020.03.06.17.10.53
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 06 Mar 2020 17:10:54 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
-Subject: Re: [PATCH V15] mm/debug: Add tests validating architecture page
- table helpers
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <a45834bc-e6f2-ac21-de9e-1aff67d12797@arm.com>
-Date: Fri, 6 Mar 2020 20:10:52 -0500
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=utbLqXD9CMgavbCxnlr6/AcL14xuX+rVDyDAq46auJA=;
+ b=fZyGXzDhMk1WF34GkzCObMQpobuJze7KhWHkSUnqDWJoxlO+Tp2GhNCZeQse30f3Og
+ 95xPAR8dgTZjnOpCYpJtRDwOT2RP7YexvcZzNEORFWuMdT0TAa0ykGNf8N4M+OrOe5bk
+ 8cTd0ekA6oQf8e6WVo4YpgEvlrnJoduB+ZQu6pnN7C7piHcwzm7pIvrQ7iMeUc+gSXTx
+ E81Xm/cGRfhTMIUWLeBkGYIXJ5snisOtux6OVoSmws1zLomubiaw/HXEmCm9zYvQUZMm
+ PjOccLjVIZFr8Q8jeWW7ecjRHCOCcpfiwNGbapz0LgsHhYLN5rhX1Q15INypzm5I8sgn
+ ZO+Q==
+X-Gm-Message-State: ANhLgQ2kYMWX5xgmhbEjBVxdLk6iWcw7IsLxADq6OaUW6erRVgjCStdI
+ 9Nz4rkEeyyd4wXxPbGsLvSo=
+X-Google-Smtp-Source: ADFU+vuoCBd9PeYvVd50a4nWUK05dFEI4n0+PZoZxrM+BDuA4mc4IESxF144/lK1F/uT+EdTEiBPsw==
+X-Received: by 2002:aa7:880e:: with SMTP id c14mr6491095pfo.76.1583544772709; 
+ Fri, 06 Mar 2020 17:32:52 -0800 (PST)
+Received: from localhost (193-116-204-226.tpgi.com.au. [193.116.204.226])
+ by smtp.gmail.com with ESMTPSA id o128sm3168730pfg.5.2020.03.06.17.32.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Mar 2020 17:32:52 -0800 (PST)
+Date: Sat, 07 Mar 2020 11:32:46 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3] powerpc: setup_64: set up PACA earlier to avoid kcov
+ problems
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+References: <20200306073000.9491-1-dja@axtens.net>
+In-Reply-To: <20200306073000.9491-1-dja@axtens.net>
+MIME-Version: 1.0
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1583543617.bp71axgtlo.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C65A91AB-3F70-4120-893D-2751601C0F25@lca.pw>
-References: <61250cdc-f80b-2e50-5168-2ec67ec6f1e6@arm.com>
- <CEEAD95E-D468-4C58-A65B-7E8AED91168A@lca.pw>
- <a45834bc-e6f2-ac21-de9e-1aff67d12797@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-X-Mailer: Apple Mail (2.3608.60.0.2.5)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,87 +77,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Daniel Axtens's on March 6, 2020 5:30 pm:
+> kcov instrumentation is collected the __sanitizer_cov_trace_pc hook in
+> kernel/kcov.c. The compiler inserts these hooks into every basic block
+> unless kcov is disabled for that file.
+>=20
+> We then have a deep call-chain:
+>  - __sanitizer_cov_trace_pc calls to check_kcov_mode()
+>  - check_kcov_mode() (kernel/kcov.c) calls in_task()
+>  - in_task() (include/linux/preempt.h) calls preempt_count().
+>  - preempt_count() (include/asm-generic/preempt.h) calls
+>      current_thread_info()
+>  - because powerpc has THREAD_INFO_IN_TASK, current_thread_info()
+>      (include/linux/thread_info.h) is defined to 'current'
+>  - current (arch/powerpc/include/asm/current.h) is defined to
+>      get_current().
+>  - get_current (same file) loads an offset of r13.
+>  - arch/powerpc/include/asm/paca.h makes r13 a register variable
+>      called local_paca - it is the PACA for the current CPU, so
+>      this has the effect of loading the current task from PACA.
+>  - get_current returns the current task from PACA,
+>  - current_thread_info returns the task cast to a thread_info
+>  - preempt_count dereferences the thread_info to load preempt_count
+>  - that value is used by in_task and so on up the chain
+>=20
+> The problem is:
+>=20
+>  - kcov instrumentation is enabled for arch/powerpc/kernel/dt_cpu_ftrs.c
+>=20
+>  - even if it were not, dt_cpu_ftrs_init calls generic dt parsing code
+>    which should definitely have instrumentation enabled.
+>=20
+>  - setup_64.c calls dt_cpu_ftrs_init before it sets up a PACA.
+>=20
+>  - If we don't set up a paca, r13 will contain unpredictable data.
+>=20
+>  - In a zImage compiled with kcov and KASAN, we see r13 containing a valu=
+e
+>    that leads to dereferencing invalid memory (something like
+>    912a72603d420015).
+>=20
+>  - Weirdly, the same kernel as a vmlinux loaded directly by qemu does not
+>    crash. Investigating with gdb, it seems that in the vmlinux boot case,
+>    r13 is near enough to zero that we just happen to be able to read that
+>    part of memory (we're operating with translation off at this point) an=
+d
+>    the current pointer also happens to land in readable memory and
+>    everything just works.
+>=20
+>  - PACA setup refers to CPU features - setup_paca() looks at
+>    early_cpu_has_feature(CPU_FTR_HVMODE)
+>=20
+> There's no generic kill switch for kcov (as far as I can tell), and we
+> don't want to have to turn off instrumentation in the generic dt parsing
+> code (which lives outside arch/powerpc/) just because we don't have a rea=
+l
+> paca or task yet.
+>=20
+> So:
+>  - change the test when setting up a PACA to consider the actual value of
+>    the MSR rather than the CPU feature.
+>=20
+>  - move the PACA setup to before the cpu feature parsing.
 
+Hmm. Problem is that equally we want PACA to be sane before we call too
+far into the rest of the kernel ("generic dt parsing code").
 
-> On Mar 6, 2020, at 7:56 PM, Anshuman Khandual =
-<anshuman.khandual@arm.com> wrote:
->=20
->=20
->=20
-> On 03/07/2020 06:04 AM, Qian Cai wrote:
->>=20
->>=20
->>> On Mar 6, 2020, at 7:03 PM, Anshuman Khandual =
-<Anshuman.Khandual@arm.com> wrote:
->>>=20
->>> Hmm, set_pte_at() function is not preferred here for these tests. =
-The idea
->>> is to avoid or atleast minimize TLB/cache flushes triggered from =
-these sort
->>> of 'static' tests. set_pte_at() is platform provided and could/might =
-trigger
->>> these flushes or some other platform specific synchronization stuff. =
-Just
->>=20
->> Why is that important for this debugging option?
->=20
-> Primarily reason is to avoid TLB/cache flush instructions on the =
-system
-> during these tests that only involve transforming different page table
-> level entries through helpers. Unless really necessary, why should it
-> emit any TLB/cache flush instructions ?
->=20
->>=20
->>> wondering is there specific reason with respect to the soft lock up =
-problem
->>> making it necessary to use set_pte_at() rather than a simple =
-WRITE_ONCE() ?
->>=20
->> Looks at the s390 version of set_pte_at(), it has this comment,
->> vmaddr);
->>=20
->> /*
->> * Certain architectures need to do special things when PTEs
->> * within a page table are directly modified.  Thus, the following
->> * hook is made available.
->> */
->>=20
->> I can only guess that powerpc  could be the same here.
->=20
-> This comment is present in multiple platforms while defining =
-set_pte_at().
-> Is not 'barrier()' here alone good enough ? Else what exactly =
-set_pte_at()
+Does KCOV really need to instrument code this early? If not, then
+change
 
-No, barrier() is not enough.
+    if (!in_task())
+        return false;
 
-> does as compared to WRITE_ONCE() that avoids the soft lock up, just =
-trying
-> to understand.
+to
 
-I surely can spend hours to figure which exact things in set_pte_at() is =
-necessary for
-pte_clear() not to stuck, and then propose a solution and possible need =
-to retest on
-multiple arches. I am not sure if that is a good use of my time just to =
-saving
-a few TLB/cache flush on a debug kernel?=
+    if (system_state !=3D SYSTEM_RUNNING)
+        return false;
+    if (!in_task())
+        return false;
+
+If it does need to instrument early, then something like
+
+    if (system_state >=3D SYSTEM_SCHEDULING && !in_task())
+        return false;
+
+Thanks,
+Nick
+
+=
