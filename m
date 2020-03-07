@@ -2,44 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DFC17CDEA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 12:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8120517CEBA
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 15:32:27 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ZN7d6yhmzDqnW
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 22:49:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ZRky5gpYzDr7q
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Mar 2020 01:31:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=PU672xzD; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ZN5Q3zKYzDqyG
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 22:47:38 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48ZN5J3Jygz9sPJ;
- Sat,  7 Mar 2020 22:47:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1583581657;
- bh=T3Lc6pu0BF+ofHjpid246WVPoobyjA8sQizLZI14QII=;
- h=From:To:Cc:Subject:Date:From;
- b=ImJFabrrCN7wW00obUBvVIVpYWRF9ZE+ny/CHzmGTLU1ytFKk7TUeUUOVBZ7DWsxE
- 8KehbT2GLm8euKGOjfAVEcXd9NRp3LBcu46vMyeW22GMGA66Bln+5az1Z3YP/U6FNS
- wpcFe8xoZs2a2mpKof/eh8bNa7E+DxsQuLoPUxqIxF5Fp9A8DbUh8ZxN2kKqXGSuwb
- +3SEwZdrKXtPE9/I6buseCX+chTXBH/dsFv6G9fcXD0Faimh1cTIpynjnnbsTBMATS
- YTm9tfdlaFkGOnBxrINkeyl+cL+CTm4a5KsWwUy3VzRfap2Fe10Rgkn4JIKkzFlH4W
- xpfHzHe0KBi1g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.6-4 tag
-Date: Sat, 07 Mar 2020 22:47:24 +1100
-Message-ID: <87imjgpesz.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ZRhz0Vj7zDqQG
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Mar 2020 01:30:11 +1100 (AEDT)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.6-4 tag
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1583591408;
+ bh=Ev86iZBoGTPXKQRhi2ePP6wDemQ7zCT9lln7nV8YQTw=;
+ h=From:In-Reply-To:References:Date:To:Cc:From;
+ b=PU672xzDIEtQG3VLGQv7+zqW75tm4K+w4i9PBqVYk3inxljrS2ZFCVmGVzhYsVOpE
+ C28wH4KwV9S7wmLTLkcVGeCgqNcmjseB+XtsMbhSu3XaLRJ1aLPtzHo777jHKOgncN
+ BE3XhTM0Fyadfengg0l0ARSlDIXGM1m0q55O57L4=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87imjgpesz.fsf@mpe.ellerman.id.au>
+References: <87imjgpesz.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <87imjgpesz.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.6-4
+X-PR-Tracked-Commit-Id: 59bee45b9712c759ea4d3dcc4eff1752f3a66558
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 5236647adbae2d4cfc11eda20a38e0a300b97e73
+Message-Id: <158359140879.13770.6319462140753604746.pr-tracker-bot@kernel.org>
+Date: Sat, 07 Mar 2020 14:30:08 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,80 +56,21 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: ravi.bangoria@linux.ibm.com, desnesn@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- naveen.n.rao@linux.vnet.ibm.com
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+The pull request you sent on Sat, 07 Mar 2020 22:47:24 +1100:
 
-Hi Linus,
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.6-4
 
-Please pull some more powerpc fixes for 5.6:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/5236647adbae2d4cfc11eda20a38e0a300b97e73
 
-The following changes since commit 9eb425b2e04e0e3006adffea5bf5f227a896f128:
+Thank you!
 
-  powerpc/entry: Fix an #if which should be an #ifdef in entry_32.S (2020-02-19 10:35:22 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.6-4
-
-for you to fetch changes up to 59bee45b9712c759ea4d3dcc4eff1752f3a66558:
-
-  powerpc/mm: Fix missing KUAP disable in flush_coherent_icache() (2020-03-05 17:15:08 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.6 #4
-
-One fix for a recent regression to our breakpoint/watchpoint code.
-
-Another fix for our KUAP support, this time a missing annotation in a rarely
-used path in signal handling.
-
-A fix for our handling of a CPU feature that effects the PMU, when booting
-guests in some configurations.
-
-A minor fix to our linker script to explicitly include the .BTF section.
-
-Thanks to:
-  Christophe Leroy, Desnes A. Nunes do Rosario, Leonardo Bras, Naveen N. Rao,
-  Ravi Bangoria, Stefan Berger.
-
-- ------------------------------------------------------------------
-Desnes A. Nunes do Rosario (1):
-      powerpc: fix hardware PMU exception bug on PowerVM compatibility mode systems
-
-Michael Ellerman (1):
-      powerpc/mm: Fix missing KUAP disable in flush_coherent_icache()
-
-Naveen N. Rao (1):
-      powerpc: Include .BTF section
-
-Ravi Bangoria (1):
-      powerpc/watchpoint: Don't call dar_within_range() for Book3S
-
-
- arch/powerpc/kernel/cputable.c      |  4 +++-
- arch/powerpc/kernel/hw_breakpoint.c | 12 +++++++-----
- arch/powerpc/kernel/vmlinux.lds.S   |  6 ++++++
- arch/powerpc/mm/mem.c               |  2 ++
- 4 files changed, 18 insertions(+), 6 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl5jhbEACgkQUevqPMjh
-pYChUw/+OoOuPWLsnCm6G1qNXl0Bybos15zThSvFIt9/LDk4w1FA7DsO0fsaSejZ
-r/N/AN02sxTprINhd9+cEjTIdfMR45CVbGJZPqN7ynovhMOQieT60uMjoBUr+9Xx
-htHXyPokQNWRn4n5CTTxiwTlu9ehA0zqT9moEHMkERUdsx2BMWEb65lkNT1Jc5/C
-qdQ334Raj5ckZFaSBzvGRNGZYDg+lPlDU6Bnu+gxsPLZN+Yr9p9Pr3PHEXDrrEOs
-ILknaRoBq0vkI8np2q5iJeqQPri+LgVsTI9400zfJBTWVw4IiFbTmQnPsCOhpXr9
-ruUXWROq0hj2216T5pSS+zQkfLLVYI1Wb6O4tFAL2KogrC895qhx+11IAQo+fcKM
-IoR4cuQsE1OuWwQjKZfXTz2b+2zdPHEIUSh34rtoo3zT9BUZ5V6peXMIV8UVCdv4
-esjOI5oL8R3pa+8MOstDfH8wBDLX49zwjv5g4vCIuiAEqN/Cd6JdCqbLDbpYMIRt
-KClQQySKOfh45rl59a3+HRlrgPjLQCVjqHIaoPtxj647y8p33HvLVDXEduJtQ0QK
-KwFrzpkpD00L8aV+94pPVFTALG+lsxLxqtgOVd4sMwtHTDlrJ9FWefU+Hh4GuKTi
-glUuT0+C21UpLPcvazM5utqQOWWrpk+03Z0Ny9UGxKRTBtiBn6U=
-=0jhJ
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
