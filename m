@@ -2,66 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA2017CD79
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 11:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DFC17CDEA
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 12:49:38 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ZKxr6nHczDr63
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 21:10:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ZN7d6yhmzDqnW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Mar 2020 22:49:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=VA8mEknU; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ZKw82PygzDr0t
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 21:09:26 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48ZKw04l91z9tyJV;
- Sat,  7 Mar 2020 11:09:20 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=VA8mEknU; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 32DtUaR_qY3G; Sat,  7 Mar 2020 11:09:20 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48ZKw03V1zz9tyJT;
- Sat,  7 Mar 2020 11:09:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1583575760; bh=QF5moGMgYbnR8ZU8yFqiJqUSMgosscuIMeqnvY3R3MA=;
- h=From:Subject:To:Cc:Date:From;
- b=VA8mEknU+jpXH6BiQrTOc8wox0jcH31NzFYTXDaCnZ6ny3nweAZS6E6S6D/N3zmBy
- M9A9AWT58xSzxji9J7FKFCk/K2cDJnXJvkJsqCdubq+yK7erUZDPHnW4j5iCEL6sgI
- r474TiPxz9rPb5IxEtFxAUaR2OYx9DePZg+UfEfY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 995CC8B785;
- Sat,  7 Mar 2020 11:09:16 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id DwWifxh8Ip9Y; Sat,  7 Mar 2020 11:09:16 +0100 (CET)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5CD438B776;
- Sat,  7 Mar 2020 11:09:16 +0100 (CET)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 1682365494; Sat,  7 Mar 2020 10:09:15 +0000 (UTC)
-Message-Id: <b1177cdfc6af74a3e277bba5d9e708c4b3315ebe.1583575707.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/32: Fix missing NULL pmd check in virt_to_kpte()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- ndesaulniers@google.com
-Date: Sat,  7 Mar 2020 10:09:15 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ZN5Q3zKYzDqyG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Mar 2020 22:47:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48ZN5J3Jygz9sPJ;
+ Sat,  7 Mar 2020 22:47:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1583581657;
+ bh=T3Lc6pu0BF+ofHjpid246WVPoobyjA8sQizLZI14QII=;
+ h=From:To:Cc:Subject:Date:From;
+ b=ImJFabrrCN7wW00obUBvVIVpYWRF9ZE+ny/CHzmGTLU1ytFKk7TUeUUOVBZ7DWsxE
+ 8KehbT2GLm8euKGOjfAVEcXd9NRp3LBcu46vMyeW22GMGA66Bln+5az1Z3YP/U6FNS
+ wpcFe8xoZs2a2mpKof/eh8bNa7E+DxsQuLoPUxqIxF5Fp9A8DbUh8ZxN2kKqXGSuwb
+ +3SEwZdrKXtPE9/I6buseCX+chTXBH/dsFv6G9fcXD0Faimh1cTIpynjnnbsTBMATS
+ YTm9tfdlaFkGOnBxrINkeyl+cL+CTm4a5KsWwUy3VzRfap2Fe10Rgkn4JIKkzFlH4W
+ xpfHzHe0KBi1g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.6-4 tag
+Date: Sat, 07 Mar 2020 22:47:24 +1100
+Message-ID: <87imjgpesz.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,38 +51,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ravi.bangoria@linux.ibm.com, desnesn@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ naveen.n.rao@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 2efc7c085f05 ("powerpc/32: drop get_pteptr()"),
-replaced get_pteptr() by virt_to_kpte(). But virt_to_kpte() lacks a
-NULL pmd check and returns an invalid non NULL pointer when there
-is no page table.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Fixes: 2efc7c085f05 ("powerpc/32: drop get_pteptr()")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/pgtable.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Hi Linus,
 
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index b80bfd41828d..b1f1d5339735 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -54,7 +54,9 @@ static inline pmd_t *pmd_ptr_k(unsigned long va)
- 
- static inline pte_t *virt_to_kpte(unsigned long vaddr)
- {
--	return pte_offset_kernel(pmd_ptr_k(vaddr), vaddr);
-+	pmd_t *pmd = pmd_ptr_k(vaddr);
-+
-+	return pmd_none(*pmd) ? NULL : pte_offset_kernel(pmd, vaddr);
- }
- #endif
- 
--- 
-2.25.0
+Please pull some more powerpc fixes for 5.6:
 
+The following changes since commit 9eb425b2e04e0e3006adffea5bf5f227a896f128:
+
+  powerpc/entry: Fix an #if which should be an #ifdef in entry_32.S (2020-02-19 10:35:22 +1100)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.6-4
+
+for you to fetch changes up to 59bee45b9712c759ea4d3dcc4eff1752f3a66558:
+
+  powerpc/mm: Fix missing KUAP disable in flush_coherent_icache() (2020-03-05 17:15:08 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.6 #4
+
+One fix for a recent regression to our breakpoint/watchpoint code.
+
+Another fix for our KUAP support, this time a missing annotation in a rarely
+used path in signal handling.
+
+A fix for our handling of a CPU feature that effects the PMU, when booting
+guests in some configurations.
+
+A minor fix to our linker script to explicitly include the .BTF section.
+
+Thanks to:
+  Christophe Leroy, Desnes A. Nunes do Rosario, Leonardo Bras, Naveen N. Rao,
+  Ravi Bangoria, Stefan Berger.
+
+- ------------------------------------------------------------------
+Desnes A. Nunes do Rosario (1):
+      powerpc: fix hardware PMU exception bug on PowerVM compatibility mode systems
+
+Michael Ellerman (1):
+      powerpc/mm: Fix missing KUAP disable in flush_coherent_icache()
+
+Naveen N. Rao (1):
+      powerpc: Include .BTF section
+
+Ravi Bangoria (1):
+      powerpc/watchpoint: Don't call dar_within_range() for Book3S
+
+
+ arch/powerpc/kernel/cputable.c      |  4 +++-
+ arch/powerpc/kernel/hw_breakpoint.c | 12 +++++++-----
+ arch/powerpc/kernel/vmlinux.lds.S   |  6 ++++++
+ arch/powerpc/mm/mem.c               |  2 ++
+ 4 files changed, 18 insertions(+), 6 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl5jhbEACgkQUevqPMjh
+pYChUw/+OoOuPWLsnCm6G1qNXl0Bybos15zThSvFIt9/LDk4w1FA7DsO0fsaSejZ
+r/N/AN02sxTprINhd9+cEjTIdfMR45CVbGJZPqN7ynovhMOQieT60uMjoBUr+9Xx
+htHXyPokQNWRn4n5CTTxiwTlu9ehA0zqT9moEHMkERUdsx2BMWEb65lkNT1Jc5/C
+qdQ334Raj5ckZFaSBzvGRNGZYDg+lPlDU6Bnu+gxsPLZN+Yr9p9Pr3PHEXDrrEOs
+ILknaRoBq0vkI8np2q5iJeqQPri+LgVsTI9400zfJBTWVw4IiFbTmQnPsCOhpXr9
+ruUXWROq0hj2216T5pSS+zQkfLLVYI1Wb6O4tFAL2KogrC895qhx+11IAQo+fcKM
+IoR4cuQsE1OuWwQjKZfXTz2b+2zdPHEIUSh34rtoo3zT9BUZ5V6peXMIV8UVCdv4
+esjOI5oL8R3pa+8MOstDfH8wBDLX49zwjv5g4vCIuiAEqN/Cd6JdCqbLDbpYMIRt
+KClQQySKOfh45rl59a3+HRlrgPjLQCVjqHIaoPtxj647y8p33HvLVDXEduJtQ0QK
+KwFrzpkpD00L8aV+94pPVFTALG+lsxLxqtgOVd4sMwtHTDlrJ9FWefU+Hh4GuKTi
+glUuT0+C21UpLPcvazM5utqQOWWrpk+03Z0Ny9UGxKRTBtiBn6U=
+=0jhJ
+-----END PGP SIGNATURE-----
