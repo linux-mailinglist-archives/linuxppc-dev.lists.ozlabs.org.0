@@ -2,78 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260B417D7A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 01:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7D317D7F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 02:53:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48bKcs55fwzDqby
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 11:59:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48bLpX10q9zDqkL
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 12:53:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.193;
+ helo=mail-il1-f193.google.com; envelope-from=kernelfans@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Received: from mail-il1-f193.google.com (mail-il1-f193.google.com
+ [209.85.166.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48bKbC3cw1zDqS4
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Mar 2020 11:58:14 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0290tKUE095981
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 8 Mar 2020 20:58:05 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ym5e1c6n9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Mar 2020 20:58:04 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <nayna@linux.ibm.com>;
- Mon, 9 Mar 2020 00:58:03 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 9 Mar 2020 00:57:58 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0290uwXT49086812
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Mar 2020 00:56:58 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F3EFA404D;
- Mon,  9 Mar 2020 00:57:57 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EFCC3A4051;
- Mon,  9 Mar 2020 00:57:54 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.160.62.221])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  9 Mar 2020 00:57:54 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-efi@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v3] ima: add a new CONFIG for loading arch-specific policies
-Date: Sun,  8 Mar 2020 20:57:51 -0400
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-x-cbid: 20030900-0008-0000-0000-0000035A88E0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030900-0009-0000-0000-00004A7BC6FE
-Message-Id: <1583715471-15525-1-git-send-email-nayna@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-08_09:2020-03-06,
- 2020-03-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 priorityscore=1501 adultscore=0 malwarescore=0
- phishscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
- mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2003090003
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48bLn00wxGzDqSW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Mar 2020 12:51:45 +1100 (AEDT)
+Received: by mail-il1-f193.google.com with SMTP id f5so7221849ilq.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Mar 2020 18:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=NtUWtFnRoHixZyuZBmfMFJSnhS7OwKwOd9rd2v5oL4I=;
+ b=dnuwCfeG/t41mw734KNixttlsP4BmWgr25tDfloN0vIS6NevgfyAzX8oMdvoyptrMu
+ eVDg+qwMtHZPcQA/29yp4F0gPtceaPsD8EWhpXeeynjvg8o7Bd5UXmHAeJJaL1aXu6Sz
+ +U3lUcHh7syEjhcG9MdeZ8fPYdiDRKMc98NEAvcIPQ74v5zlBiYbxcuNRzDS3Apmgycj
+ KJV0AByrK2uZkGac2MjICk9csKhhL/hocgQw5kl2hMgVvAeL72KQ6fGYhcEuf+eTEGbq
+ ZrKA7elhTuzHAV3FWZ0rgcqY4yf9+HCN9JcFhGj20gjQCYpw263MICaY69uUG2hz015n
+ VnIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=NtUWtFnRoHixZyuZBmfMFJSnhS7OwKwOd9rd2v5oL4I=;
+ b=Zzxq9X0ODDvAVT/eWrB9zQ1kypP9UZd4zeZhqDL6Fg4/LgA0n4iA/FCJjg0TFPbjeq
+ rRdilXwQ0BHDbKOqFnoP7jhdQxFREgOJksOCN6p3Ay2b3H6kTt25wc+pVOhk/oSey111
+ yxh0d4lbvULPFm2kJM2gpNTG0yyYZxcvjfpRNdXjE7s3UeI4k9aN+u9AJ2gW5PQtNmeV
+ 0V1j7VLOoR2BIGgm1FhMdVrHyWh9o8oxPN12I+Z+hGWlF536GTFH6eKSVSM2iBC7+gHg
+ z6W+VNbW0OmGa7uY2ERqCYhWG5wKXUUMTaNDR2XcWLyXaD/wEawXQRR21WlaqPyrDbMW
+ 8ujA==
+X-Gm-Message-State: ANhLgQ2eVRLMY7M5ZS42a7CVItvBnHBLVn5aL/ShLWM+7r58KQQ+qsUS
+ W6qu0m7LAL+NG5K4Ik/JQrXWu5mjFrP95Vcb2w==
+X-Google-Smtp-Source: ADFU+vsVBnt8ZTgQv2IfEnSGzp7zi6Vy6tMPwtv4Mf1WMHG9M71JasbxRNUZNKT8b3u1i+3BiI7Yg/7FPF5NGH3Wrt0=
+X-Received: by 2002:a92:91c7:: with SMTP id e68mr13615632ill.161.1583718641516; 
+ Sun, 08 Mar 2020 18:50:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <1582882895-3142-1-git-send-email-kernelfans@gmail.com>
+ <1583311651-29310-1-git-send-email-kernelfans@gmail.com>
+ <1583311651-29310-2-git-send-email-kernelfans@gmail.com>
+ <87eeu5jlub.fsf@linux.ibm.com>
+In-Reply-To: <87eeu5jlub.fsf@linux.ibm.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Mon, 9 Mar 2020 09:50:30 +0800
+Message-ID: <CAFgQCTtJ=vK7Z02+kpDeu6Vjyi7=s2pE=PqCQ+Z0Y8yCPj3cpA@mail.gmail.com>
+Subject: Re: [PATCHv3 1/2] powerpc/of: split out new_property() for reusing
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,146 +72,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, Nayna Jain <nayna@linux.vnet.ibm.com>,
- linux-kernel@vger.kernel.org, zohar@linux.ibm.com,
- Philipp Rudo <prudo@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ard Biesheuvel <ardb@kernel.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Kexec Mailing List <kexec@lists.infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
+ Frank Rowand <frowand.list@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nayna Jain <nayna@linux.vnet.ibm.com>
+On Sat, Mar 7, 2020 at 3:59 AM Nathan Lynch <nathanl@linux.ibm.com> wrote:
+>
+> Hi,
+>
+> Pingfan Liu <kernelfans@gmail.com> writes:
+> > Splitting out new_property() for coming reusing and moving it to
+> > of_helpers.c.
+>
+> [...]
+>
+> > +struct property *new_property(const char *name, const int length,
+> > +             const unsigned char *value, struct property *last)
+> > +{
+> > +     struct property *new = kzalloc(sizeof(*new), GFP_KERNEL);
+> > +
+> > +     if (!new)
+> > +             return NULL;
+> > +
+> > +     new->name = kstrdup(name, GFP_KERNEL);
+> > +     if (!new->name)
+> > +             goto cleanup;
+> > +     new->value = kmalloc(length + 1, GFP_KERNEL);
+> > +     if (!new->value)
+> > +             goto cleanup;
+> > +
+> > +     memcpy(new->value, value, length);
+> > +     *(((char *)new->value) + length) = 0;
+> > +     new->length = length;
+> > +     new->next = last;
+> > +     return new;
+> > +
+> > +cleanup:
+> > +     kfree(new->name);
+> > +     kfree(new->value);
+> > +     kfree(new);
+> > +     return NULL;
+> > +}
+>
+> This function in its current form isn't suitable for more general use:
+>
+> * It appears to be tailored to string properties - note the char * value
+>   parameter, the length + 1 allocation and nul termination.
+>
+> * Most code shouldn't need the 'last' argument. The code where this
+>   currently resides builds a list of properties and attaches it to a new
+>   node, bypassing of_add_property().
+>
+> Let's look at the call site you add in your next patch:
+>
+> +               big = cpu_to_be64(p->bound_addr);
+> +               property = new_property("bound-addr", sizeof(u64), (const unsigned char *)&big,
+> +                       NULL);
+> +               of_add_property(dn, property);
+>
+> So you have to use a cast, and this is going to allocate (sizeof(u64) + 1)
+> for the value, is that what you want?
+>
+> I think you should leave that legacy pseries reconfig code undisturbed
+> (frankly that stuff should get deprecated and removed) and if you want a
+> generic helper it should look more like:
+>
+> struct property *of_property_new(const char *name, size_t length,
+>                                  const void *value, gfp_t allocflags)
+>
+> __of_prop_dup() looks like a good model/guide here.
 
-Every time a new architecture defines the IMA architecture specific
-functions - arch_ima_get_secureboot() and arch_ima_get_policy(), the IMA
-include file needs to be updated. To avoid this "noise", this patch
-defines a new IMA Kconfig IMA_SECURE_AND_OR_TRUSTED_BOOT option, allowing
-the different architectures to select it.
+Thanks for your good suggestion.
+I will re-code based on your suggestion, if [2/2] turns out acceptable.
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Philipp Rudo <prudo@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
----
-v3:
-* Removes CONFIG_IMA dependency. Thanks Ard.
-* Updated the patch with improvements suggested by Michael. It now uses
-"imply" instead of "select". Thanks Michael.
-* Replaced the CONFIG_IMA in x86 and s390 with new config, else it was
-resulting in redefinition when the IMA_SECURE_AND_OR_TRUSTED_BOOT
-is not enabled. Thanks to Mimi for identifying the problem.
-* Removed "#ifdef EFI" check in the arch/x86/Makefile for compiling
-ima_arch.c file.
-* Ard, Thanks for your Acked-by. I have changed the arch/x86/Makefile in
-this version. Can you please review again and confirm ?
-* Rudo, Thanks for your review. I have changed arch/s390/Makefile as well.
-Can you also please review again ?
-
-v2:
-* Fixed the issue identified by Mimi. Thanks Mimi, Ard, Heiko and Michael for
-discussing the fix.
-
- arch/powerpc/Kconfig           | 1 +
- arch/s390/Kconfig              | 1 +
- arch/s390/kernel/Makefile      | 2 +-
- arch/x86/Kconfig               | 1 +
- arch/x86/kernel/Makefile       | 4 +---
- include/linux/ima.h            | 3 +--
- security/integrity/ima/Kconfig | 7 +++++++
- 7 files changed, 13 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 497b7d0b2d7e..5b9f1cba2a44 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -979,6 +979,7 @@ config PPC_SECURE_BOOT
- 	bool
- 	depends on PPC_POWERNV
- 	depends on IMA_ARCH_POLICY
-+	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
- 	help
- 	  Systems with firmware secure boot enabled need to define security
- 	  policies to extend secure boot to the OS. This config allows a user
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 8abe77536d9d..59c216af6264 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -195,6 +195,7 @@ config S390
- 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
- 	select SWIOTLB
- 	select GENERIC_ALLOCATOR
-+	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
- 
- 
- config SCHED_OMIT_FRAME_POINTER
-diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
-index 2b1203cf7be6..578a6fa82ea4 100644
---- a/arch/s390/kernel/Makefile
-+++ b/arch/s390/kernel/Makefile
-@@ -70,7 +70,7 @@ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
- obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file.o kexec_image.o
- obj-$(CONFIG_KEXEC_FILE)	+= kexec_elf.o
- 
--obj-$(CONFIG_IMA)		+= ima_arch.o
-+obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
- 
- obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_cpum_cf_common.o
- obj-$(CONFIG_PERF_EVENTS)	+= perf_cpum_cf.o perf_cpum_sf.o
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index beea77046f9b..dcf5b1729f7c 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -230,6 +230,7 @@ config X86
- 	select VIRT_TO_BUS
- 	select X86_FEATURE_NAMES		if PROC_FS
- 	select PROC_PID_ARCH_STATUS		if PROC_FS
-+	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
- 
- config INSTRUCTION_DECODER
- 	def_bool y
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 9b294c13809a..cfef37a27def 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -154,6 +154,4 @@ ifeq ($(CONFIG_X86_64),y)
- 	obj-y				+= vsmp_64.o
- endif
- 
--ifdef CONFIG_EFI
--obj-$(CONFIG_IMA)			+= ima_arch.o
--endif
-+obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 1659217e9b60..aefe758f4466 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -30,8 +30,7 @@ extern void ima_kexec_cmdline(const void *buf, int size);
- extern void ima_add_kexec_buffer(struct kimage *image);
- #endif
- 
--#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
--	|| defined(CONFIG_PPC_SECURE_BOOT)
-+#ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
- extern bool arch_ima_get_secureboot(void);
- extern const char * const *arch_get_ima_policy(void);
- #else
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 3f3ee4e2eb0d..edde88dbe576 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -327,3 +327,10 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
- 	depends on IMA_MEASURE_ASYMMETRIC_KEYS
- 	depends on SYSTEM_TRUSTED_KEYRING
- 	default y
-+
-+config IMA_SECURE_AND_OR_TRUSTED_BOOT
-+       bool
-+       depends on IMA_ARCH_POLICY
-+       help
-+          This option is selected by architectures to enable secure and/or
-+          trusted boot based on IMA runtime policies.
--- 
-2.17.1
-
+Regards,
+Pingfan
