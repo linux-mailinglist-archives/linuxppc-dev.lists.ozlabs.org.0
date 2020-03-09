@@ -2,85 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1DD17DE17
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 12:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C661E17E101
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 14:25:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48bZxw5xLszDqcG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Mar 2020 22:00:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48bf8J0fvszDqV1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 00:24:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.170;
+ helo=mail-qk1-f170.google.com; envelope-from=arnaldo.melo@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Kcbf1gpP; dkim-atps=neutral
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com
+ [209.85.222.170])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48bZw93p0TzDqTd
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Mar 2020 21:58:46 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 029As42x130845
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 9 Mar 2020 06:58:40 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ym6tmkrj1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2020 06:58:39 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 029AsDWF131550
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 9 Mar 2020 06:58:39 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ym6tmkrhh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Mar 2020 06:58:39 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 029AspZD013514;
- Mon, 9 Mar 2020 10:58:38 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma03wdc.us.ibm.com with ESMTP id 2ym3861qav-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Mar 2020 10:58:38 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 029AwaBv42991924
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Mar 2020 10:58:37 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CBF03112064;
- Mon,  9 Mar 2020 10:58:36 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 923A7112061;
- Mon,  9 Mar 2020 10:58:34 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.204.201.20])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  9 Mar 2020 10:58:34 +0000 (GMT)
-X-Mailer: emacs 27.0.90 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 8/8] powerpc/papr_scm: Implement support for
- DSM_PAPR_SCM_HEALTH
-In-Reply-To: <20200220095805.197229-9-vaibhav@linux.ibm.com>
-References: <20200220095805.197229-1-vaibhav@linux.ibm.com>
- <20200220095805.197229-9-vaibhav@linux.ibm.com>
-Date: Mon, 09 Mar 2020 16:28:32 +0530
-Message-ID: <87y2s9yeuf.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48bbTv0RS5zDqRS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Mar 2020 22:24:31 +1100 (AEDT)
+Received: by mail-qk1-f170.google.com with SMTP id y126so8779495qke.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2020 04:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:user-agent:in-reply-to:references:mime-version
+ :content-transfer-encoding:subject:to:cc:from:message-id;
+ bh=87R1n5GHT05Dw43kEPO5QbfCk7rM5ACa/sVdjekbCLk=;
+ b=Kcbf1gpPIJTuTtA/N5tTEJGF0bhMinZE/jrHVNmrx3r82Jlem+l+EfBWIhA3jgRc/6
+ bwM4qUaHpO1G2rA992+G9tSLla4RUtszyAUZNYRuXag4xEfaBufMmQNAggyN7FiipqW3
+ DBHyok19gNF/H1XEtrmNO9JY6hp2V4H8vvWFycsSSmkrAzCGMlrOOduGVdKHHvy+v8TQ
+ 3d9PSu0O4COCIvUdfjImhbsJowunbS+ssfMyDwO4upZlnzHxuDioecGZnSHUabCl7hOB
+ lWDknvgIXHqOTyrk6ILAEVDF1q45b66uD2J9cTYHAaHC2lcBGbS9E4tZgPoEgWBST3E9
+ B0CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:user-agent:in-reply-to:references
+ :mime-version:content-transfer-encoding:subject:to:cc:from
+ :message-id;
+ bh=87R1n5GHT05Dw43kEPO5QbfCk7rM5ACa/sVdjekbCLk=;
+ b=ZqPEeghhcJkvkpya07zmeRPeyMe4dAb65BuyPL8gYh51UndwvKY4IO5Ry+sJPX546A
+ +J2Z1M+ETEAWtK8f796Ug4EHhIUyc+fphzYABer85OQ/QKhmpGMLVkWtPJZ426ZWoqSA
+ KirdhTeWXqrB8Wk+18sroThTuU2sfx5m9Ie7RpwP8e6YzH8zW5+DpWxY9gfCw0AUlE9a
+ 0stwEJsHe3QWIoc2wIyJyR457T3E+G16FHrIDlbB+5R+WpP0K0wP3t0xNvbwCnziuOtM
+ 4CJWOhHrAf3T4uDPj8s1Im4QwgA313jPD6OTfgDXNZCRHOwMU6YIhrpIvuHIgjM0aXqG
+ h+0g==
+X-Gm-Message-State: ANhLgQ1U7/xQYp/WtOKvG8df6JB3DMxKFVh2jfU3QbS67jTahey2HO1M
+ MMdMf04n4Zow9nRJYcRn+VQ=
+X-Google-Smtp-Source: ADFU+vsJ9ZcwLWcSy94eGUH/I5dzI+Wb5kTsWGIkR/hn7uMjskNsJSl9B5nIsjRB1eXf/wIMVa6IHQ==
+X-Received: by 2002:a05:620a:529:: with SMTP id
+ h9mr5124192qkh.142.1583753006927; 
+ Mon, 09 Mar 2020 04:23:26 -0700 (PDT)
+Received: from [192.168.86.185] ([179.97.37.151])
+ by smtp.gmail.com with ESMTPSA id x11sm8337400qkf.67.2020.03.09.04.23.25
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 09 Mar 2020 04:23:26 -0700 (PDT)
+Date: Mon, 09 Mar 2020 08:22:58 -0300
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20200309093506.GB67774@krava>
+References: <20200309062552.29911-1-kjain@linux.ibm.com>
+ <20200309093506.GB67774@krava>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-09_02:2020-03-08,
- 2020-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- spamscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
- suspectscore=0 adultscore=0 impostorscore=0 mlxlogscore=999 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003090077
+Content-Type: multipart/alternative;
+ boundary="----270YK9CK95ZFO6JEK6BIIT4MHMOD1S"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 0/8] powerpc/perf: Add json file metric support for the
+ hv_24x7 socket/chip level events
+To: Jiri Olsa <jolsa@redhat.com>,Kajol Jain <kjain@linux.ibm.com>
+From: Arnaldo Melo <arnaldo.melo@gmail.com>
+Message-ID: <A2F32D56-CCD0-4D5E-ACAA-710AD91635AC@gmail.com>
+X-Mailman-Approved-At: Tue, 10 Mar 2020 00:20:38 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,70 +85,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- Michael Ellerman <ellerman@au1.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- Alastair D'Silva <alastair@au1.ibm.com>
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, acme@kernel.org,
+ jmario@redhat.com, namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+------270YK9CK95ZFO6JEK6BIIT4MHMOD1S
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> The DSM 'DSM_PAPR_SCM_HEALTH' should return a 'struct
-> nd_papr_scm_dimm_health_stat' containing information in dimm health back
-> to user space in response to ND_CMD_CALL. We implement this DSM by
-> implementing a new function papr_scm_get_health() that queries the
-> DIMM health information and then copies these bitmaps to the package
-> payload whose layout is defined by 'struct papr_scm_ndctl_health'.
+Sure, will do it today
+
+On March 9, 2020 6:35:06 AM GMT-03:00, Jiri Olsa <jolsa@redhat=2Ecom> wrot=
+e:
+>On Mon, Mar 09, 2020 at 11:55:44AM +0530, Kajol Jain wrote:
+>> First patch of the patchset fix inconsistent results we are getting
+>when
+>> we run multiple 24x7 events=2E
+>>=20
+>> Patchset adds json file metric support for the hv_24x7 socket/chip
+>level
+>> events=2E "hv_24x7" pmu interface events needs system dependent
+>parameter
+>> like socket/chip/core=2E For example, hv_24x7 chip level events needs
+>> specific chip-id to which the data is requested should be added as
+>part
+>> of pmu events=2E
+>>=20
+>> So to enable JSON file support to "hv_24x7" interface, patchset
+>expose
+>> total number of sockets and chips per-socket details in sysfs
+>> files (sockets, chips) under "/sys/devices/hv_24x7/interface/"=2E
+>>=20
+>> To get sockets and number of chips per sockets, patchset adds a rtas
+>call
+>> with token "PROCESSOR_MODULE_INFO" to get these details=2E Patchset
+>also
+>> handles partition migration case to re-init these system depended
+>> parameters by adding proper calls in post_mobility_fixup()
+>(mobility=2Ec)=2E
+>>=20
+>> Patch 6 & 8 of the patchset handles perf tool plumbing needed to
+>replace
+>> the "?" character in the metric expression to proper value and
+>hv_24x7
+>> json metric file for different Socket/chip resources=2E
+>>=20
+>> Patch set also enable Hz/hz prinitg for --metric-only option to print
+>> metric data for bus frequency=2E
+>>=20
+>> Applied and tested all these patches cleanly on top of jiri's flex
+>changes
+>> with the changes done by Kan Liang for "Support metric group
+>constraint"
+>> patchset and made required changes=2E
+>>=20
+>> Changelog:
+>> v3 -> v4
+>> - Made changes suggested by jiri=2E
 >
-> The patch also handle cases where in future versions of 'struct
-> papr_scm_ndctl_health' may want to return more health
-> information. Such payload envelops will contain appropriate version
-> information in 'struct nd_papr_scm_cmd_pkg.payload_version'. The patch
-> takes care of only returning the sub-data corresponding to the payload
-> version requested. Please see the comments in papr_scm_get_health()
-> for how this is done.
+>could you please mention them next time? ;-)
 >
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 73 +++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
+>> - Apply these patch on top of Kan liang changes=2E
 >
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 29f38246c59f..bf81acb0bf3f 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -415,6 +415,74 @@ static int cmd_to_func(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
->  	return pkg->hdr.nd_command;
->  }
->  
-> +/*
-> + * Fetch the DIMM health info and populate it in provided papr_scm package.
-> + * Since the caller can request a different version of payload and each new
-> + * version of struct nd_papr_scm_dimm_health_stat is a proper-subset of
-> + * previous version hence we return a subset of the cached 'struct
-> + * nd_papr_scm_dimm_health_stat' depending on the payload version requested.
-> + */
-> +static int papr_scm_get_health(struct papr_scm_priv *p,
-> +			       struct nd_papr_scm_cmd_pkg *pkg)
-> +{
-> +	int rc;
-> +	size_t copysize;
-> +	/* Map version to number of bytes to be copied to payload */
-> +	const size_t copysizes[] = {
-> +		[1] =
-> +		sizeof(struct nd_papr_scm_dimm_health_stat_v1),
-> +
-> +		/*  This should always be preset */
-> +		[ND_PAPR_SCM_DIMM_HEALTH_VERSION] =
-> +		sizeof(struct nd_papr_scm_dimm_health_stat),
-> +	};
+>Arnaldo, could you please pull the expr flex changes and Kan's
+>metric group constraint changes? it's both prereq of this patchset
+>
+>thanks,
+>jirka
 
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+------270YK9CK95ZFO6JEK6BIIT4MHMOD1S
+Content-Type: text/html;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-We will not be able to determine that during build. For performance
-hcall to run LPAR should be privileged. ie, even if the kernel supports v2
-version of the health information, it may only be able to
-return v1 version of the health because LPAR performance stat hcall
-failed.
-
--aneesh
+<html><head></head><body>Sure, will do it today<br><br><div class=3D"gmail_=
+quote">On March 9, 2020 6:35:06 AM GMT-03:00, Jiri Olsa &lt;jolsa@redhat=2E=
+com&gt; wrote:<blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 0p=
+t 0=2E8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;">
+<pre class=3D"k9mail">On Mon, Mar 09, 2020 at 11:55:44AM +0530, Kajol Jain=
+ wrote:<br><blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 1ex 0=
+=2E8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">First patch of =
+the patchset fix inconsistent results we are getting when<br>we run multipl=
+e 24x7 events=2E<br><br>Patchset adds json file metric support for the hv_2=
+4x7 socket/chip level<br>events=2E "hv_24x7" pmu interface events needs sys=
+tem dependent parameter<br>like socket/chip/core=2E For example, hv_24x7 ch=
+ip level events needs<br>specific chip-id to which the data is requested sh=
+ould be added as part<br>of pmu events=2E<br><br>So to enable JSON file sup=
+port to "hv_24x7" interface, patchset expose<br>total number of sockets and=
+ chips per-socket details in sysfs<br>files (sockets, chips) under "/sys/de=
+vices/hv_24x7/interface/"=2E<br><br>To get sockets and number of chips per =
+sockets, patchset adds a rtas call<br>with token "PROCESSOR_MODULE_INFO" to=
+ get these details=2E Patchset also<br>handles partition migration case to =
+re-init these system depended<br>parameters by adding proper calls in post_=
+mobility_fixup() (mobility=2Ec)=2E<br><br>Patch 6 &amp; 8 of the patchset h=
+andles perf tool plumbing needed to replace<br>the "?" character in the met=
+ric expression to proper value and hv_24x7<br>json metric file for differen=
+t Socket/chip resources=2E<br><br>Patch set also enable Hz/hz prinitg for -=
+-metric-only option to print<br>metric data for bus frequency=2E<br><br>App=
+lied and tested all these patches cleanly on top of jiri's flex changes<br>=
+with the changes done by Kan Liang for "Support metric group constraint"<br=
+>patchset and made required changes=2E<br><br>Changelog:<br>v3 -&gt; v4<br>=
+- Made changes suggested by jiri=2E<br></blockquote><br>could you please me=
+ntion them next time? ;-)<br><br><blockquote class=3D"gmail_quote" style=3D=
+"margin: 0pt 0pt 1ex 0=2E8ex; border-left: 1px solid #729fcf; padding-left:=
+ 1ex;">- Apply these patch on top of Kan liang changes=2E<br></blockquote><=
+br>Arnaldo, could you please pull the expr flex changes and Kan's<br>metric=
+ group constraint changes? it's both prereq of this patchset<br><br>thanks,=
+<br>jirka<br><br></pre></blockquote></div><br>-- <br>Sent from my Android d=
+evice with K-9 Mail=2E Please excuse my brevity=2E</body></html>
+------270YK9CK95ZFO6JEK6BIIT4MHMOD1S--
