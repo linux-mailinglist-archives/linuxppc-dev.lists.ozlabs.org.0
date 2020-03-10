@@ -2,45 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB2317EEA2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 03:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5817B17EFBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 05:46:38 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48bzgB0fgpzDqYC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 13:33:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48c2cB4NR9zDqXl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 15:46:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48bzd50q99zDqSD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 13:32:06 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C538730E;
- Mon,  9 Mar 2020 19:32:02 -0700 (PDT)
-Received: from [10.163.1.203] (unknown [10.163.1.203])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E46843F67D;
- Mon,  9 Mar 2020 19:31:53 -0700 (PDT)
-Subject: Re: [PATCH V15] mm/debug: Add tests validating architecture page
- table helpers
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>
-References: <61250cdc-f80b-2e50-5168-2ec67ec6f1e6@arm.com>
- <CEEAD95E-D468-4C58-A65B-7E8AED91168A@lca.pw>
- <a45834bc-e6f2-ac21-de9e-1aff67d12797@arm.com>
- <c40d907a-b64b-ae0d-e58f-33dddf0e8edc@c-s.fr>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <2d950d8c-4b23-741e-591f-e22e857c0755@arm.com>
-Date: Tue, 10 Mar 2020 08:01:51 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48c2ZN0W8TzDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 15:45:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 48c2ZM6Vykz9sRR; Tue, 10 Mar 2020 15:44:59 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48c2ZJ2vhYz9sRN;
+ Tue, 10 Mar 2020 15:44:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1583815499;
+ bh=bEHwhhp+ToBBBkDedsqbBQ3oVlaBB0ehxgtaeFQLb/w=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=I2gVuXaoCwB1wqMe2cYAANxJaHB2Dopa3NKrNDz/fYGokfEaxlu0eMbsft5WhahFe
+ Kjod3YYvrbG10z5j+tuSYhNOgb4QbSyv+OhdfMuZQLrLIrEnrlivEB18KlrOeoi8v9
+ T126kYcwLn5dHm09Dh8BRYntsjNn2W2Mbt06Lx2kWvc4CLW+EVfbfzKz0dxQcP9ZVP
+ VjGdxZQ8OLppPOzft9cGF/lrRPYIibmVrITBdp33xLO7jD7vY5cey7Cjkv0vyNzvaf
+ A6/ipMx01/Y85PYD+ZmcUh/YRsLI3SJhEK2EFmhDKx8uuBVXqaoojjkoaaalti9N/2
+ tV5Q8qaAB304A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: ppc32 panic on boot on linux-next
+In-Reply-To: <c084a429-9ea1-7126-f057-8647a2e0dfac@c-s.fr>
+References: <CAKwvOdk=eFqRqN0KO1en9wH-NhcvwXbx_ntmUtf8h_xZSd-qKw@mail.gmail.com>
+ <3702b680-a0fc-20dc-027b-518b880f9a41@c-s.fr>
+ <c084a429-9ea1-7126-f057-8647a2e0dfac@c-s.fr>
+Date: Tue, 10 Mar 2020 15:44:54 +1100
+Message-ID: <875zfcked5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <c40d907a-b64b-ae0d-e58f-33dddf0e8edc@c-s.fr>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,98 +60,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: clang-built-linux <clang-built-linux@googlegroups.com>,
+ linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Le 07/03/2020 =C3=A0 09:42, Christophe Leroy a =C3=A9crit=C2=A0:
+>> Le 06/03/2020 =C3=A0 20:05, Nick Desaulniers a =C3=A9crit=C2=A0:
+>>> As a heads up, our CI went red last night, seems like a panic from
+>>> free_initmem?=C2=A0 Is this a known issue?
+>>=20
+>> Thanks for the heads up.
+>>=20
+>> No such issue with either 8xx or book3s/32.
+>>=20
+>> I've now been able to reproduce it with bamboo QEMU.
+>>=20
+>> Reverting 2efc7c085f05 makes it disappear. I'll investigate.
+>>=20
+>
+> Ok, I found the problem. virt_to_kpte() lacks a NULL pmd check. I'll=20
+> send a patch for that.
+>
+> However, if there is no PMD I guess this area is mapped through some=20
+> kind of block mapping. Therefore it should bail out of the function throu=
+gh:
+>
+> 	if (v_block_mapped(address))
+> 		return 0;
+>
+>
+> Can someone who knows BOOKE investigate that ?
 
+Not sure we have anyone left?
 
-On 03/07/2020 12:35 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 07/03/2020 à 01:56, Anshuman Khandual a écrit :
->>
->>
->> On 03/07/2020 06:04 AM, Qian Cai wrote:
->>>
->>>
->>>> On Mar 6, 2020, at 7:03 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
->>>>
->>>> Hmm, set_pte_at() function is not preferred here for these tests. The idea
->>>> is to avoid or atleast minimize TLB/cache flushes triggered from these sort
->>>> of 'static' tests. set_pte_at() is platform provided and could/might trigger
->>>> these flushes or some other platform specific synchronization stuff. Just
->>>
->>> Why is that important for this debugging option?
->>
->> Primarily reason is to avoid TLB/cache flush instructions on the system
->> during these tests that only involve transforming different page table
->> level entries through helpers. Unless really necessary, why should it
->> emit any TLB/cache flush instructions ?
-> 
-> What's the problem with thoses flushes ?
-> 
->>
->>>
->>>> wondering is there specific reason with respect to the soft lock up problem
->>>> making it necessary to use set_pte_at() rather than a simple WRITE_ONCE() ?
->>>
->>> Looks at the s390 version of set_pte_at(), it has this comment,
->>> vmaddr);
->>>
->>> /*
->>>   * Certain architectures need to do special things when PTEs
->>>   * within a page table are directly modified.  Thus, the following
->>>   * hook is made available.
->>>   */
->>>
->>> I can only guess that powerpc  could be the same here.
->>
->> This comment is present in multiple platforms while defining set_pte_at().
->> Is not 'barrier()' here alone good enough ? Else what exactly set_pte_at()
->> does as compared to WRITE_ONCE() that avoids the soft lock up, just trying
->> to understand.
->>
-> 
-> 
-> Argh ! I didn't realise that you were writing directly into the page tables. When it works, that's only by chance I guess.
-> 
-> To properly set the page table entries, set_pte_at() has to be used:
-> - On powerpc 8xx, with 16k pages, the page table entry must be copied four times. set_pte_at() does it, WRITE_ONCE() doesn't.
-> - On powerpc book3s/32 (hash MMU), the flag _PAGE_HASHPTE must be preserved among writes. set_pte_at() preserves it, WRITE_ONCE() doesn't.
-> 
-> set_pte_at() also does a few other mandatory things, like calling pte_mkpte()
-> 
-> So, the WRITE_ONCE() must definitely become a set_pte_at()
-
-Sure, will do. These are part of the clear tests that populates a given
-entry with a non zero value before clearing and testing it with pxx_none().
-In that context, WRITE_ONCE() seemed sufficient. But pte_clear() might be
-closely tied with proper page table entry update and hence a preceding
-set_pte_at() will be better.
-
-There are still more WRITE_ONCE() for other page table levels during these
-clear tests. set_pmd_at() and set_pud_at() are defined on platforms that
-support (and enable) THP and PUD based THP respectively. Hence they could
-not be used for clear tests as remaining helpers pmd_clear(), pud_clear(),
-p4d_clear() and pgd_clear() still need to be validated with or without
-THP support and enablement. We should just leave all other WRITE_ONCE()
-instances unchanged. Please correct me if I am missing something here.
-
-> 
-> Christophe
-> 
+cheers
