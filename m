@@ -2,74 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278C8180044
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 15:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E7E180128
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 16:06:25 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48cHdm6qTZzDqRs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 01:33:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48cJML0QPNzDqRN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 02:06:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=julietk@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
+ [209.85.210.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48cHXs0yXWzDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 01:29:29 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02AEMSHj001388; Tue, 10 Mar 2020 10:29:18 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ym8cap9g5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Mar 2020 10:29:18 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02AESnQk007625;
- Tue, 10 Mar 2020 14:29:18 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma05wdc.us.ibm.com with ESMTP id 2ym386ka9u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Mar 2020 14:29:18 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02AETHnk37159180
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Mar 2020 14:29:17 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E74428059;
- Tue, 10 Mar 2020 14:29:17 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B9F628058;
- Tue, 10 Mar 2020 14:29:17 +0000 (GMT)
-Received: from ltcalpine2-lp14.aus.stglabs.ibm.com (unknown [9.40.195.197])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 10 Mar 2020 14:29:17 +0000 (GMT)
-From: Juliet Kim <julietk@linux.vnet.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH net v2] ibmvnic: Do not process device remove during device
- reset
-Date: Tue, 10 Mar 2020 09:23:58 -0500
-Message-Id: <20200310142358.61392-1-julietk@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.25.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48cJFt3GhvzDqGv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 02:01:37 +1100 (AEDT)
+Received: by mail-ot1-f68.google.com with SMTP id a9so7231034otl.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 08:01:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=dX3tIfhg8Pgw7VaqAcNR8DRUcVBfEcC2G/jhaGAghMc=;
+ b=IGsyARgl2CE+/+lXrcgO5KFmsj5zXZ8sNWmAkb8L+Xt+mWIQ+CeeJoDc2Y/d5//twF
+ 062Rdfn623mKMx8E4gVeWdkwQqpEYuwHo296OqSItWEN/25kTn5mVlOFgXJiv83G2gkR
+ hkXGlrRX4tKyfRzFUcRfd/IhXfPJ0Qt0nZq8w3A9WIQYpM7FVtP5tEXthoL1ox4orEdi
+ LUQW/KFZXWgsTsf3udKifkaywKoSxZIMDQ/Y3Fsud+/Y5iUCZktwhyvHTt/y2y2ss5Ec
+ kybEcaH1gxia2n83Ec9JLzwFzijDX9/NN5gWosbAqboZK/v4hJCc2aw4RHP1Aq4NaXce
+ xESA==
+X-Gm-Message-State: ANhLgQ1aRRsNLwhcQgthL1lbb+Ejh/YG6oC5xwhwm8pJSc+A1BTSwZ+N
+ /xFFEX1cwzC+7eYTN3M+YdM=
+X-Google-Smtp-Source: ADFU+vuQuFenZSPppKiEGnjSnrmQcdZgNpbb5fhlH5HInmerm41VCtvaEccg65uDW45jDgzov0aZXA==
+X-Received: by 2002:a9d:4798:: with SMTP id b24mr10336276otf.243.1583852480995; 
+ Tue, 10 Mar 2020 08:01:20 -0700 (PDT)
+Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
+ by smtp.gmail.com with ESMTPSA id z23sm11802570otm.79.2020.03.10.08.01.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Mar 2020 08:01:19 -0700 (PDT)
+Date: Tue, 10 Mar 2020 16:01:14 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
+Message-ID: <20200310150114.GO8447@dhcp22.suse.cz>
+References: <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
+ <20200224085812.GB22443@dhcp22.suse.cz>
+ <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
+ <20200226184152.GQ3771@dhcp22.suse.cz>
+ <c412ee69-80f9-b013-67d4-3b0a2f6aff7f@suse.cz>
+ <dd450314-d428-6776-af07-f92c04c7b967@suse.cz>
+ <20200227121214.GE3771@dhcp22.suse.cz>
+ <52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com>
+ <9a86f865-50b5-7483-9257-dbb08fecd62b@suse.cz>
+ <20200227182650.GG3771@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-10_08:2020-03-10,
- 2020-03-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 suspectscore=3
- impostorscore=0 spamscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003100097
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200227182650.GG3771@dhcp22.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,114 +74,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: julietk@linux.vnet.ibm.com, tlfalcon@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>,
+ Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, Kirill Tkhai <ktkhai@virtuozzo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ibmvnic driver does not check the device state when the device
-is removed. If the device is removed while a device reset is being
-processed, the remove may free structures needed by the reset,
-causing an oops.
+On Thu 27-02-20 19:26:54, Michal Hocko wrote:
+> [Cc ppc maintainers]
+[...]
+> Please have a look at http://lkml.kernel.org/r/52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com
+> for the boot log with the debugging patch which tracks set_numa_mem.
+> This seems to lead to a crash in the slab allocator bebcause
+> node_to_mem_node(0) for memory less node resolves to the memory less
+> node http://lkml.kernel.org/r/dd450314-d428-6776-af07-f92c04c7b967@suse.cz.
+> The original report is http://lkml.kernel.org/r/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com
 
-Fix this by checking the device state before processing device remove.
-
-Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 24 ++++++++++++++++++++++--
- drivers/net/ethernet/ibm/ibmvnic.h |  6 +++++-
- 2 files changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index c75239d8820f..4bd33245bad6 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2142,6 +2142,8 @@ static void __ibmvnic_reset(struct work_struct *work)
- {
- 	struct ibmvnic_rwi *rwi;
- 	struct ibmvnic_adapter *adapter;
-+	bool saved_state = false;
-+	unsigned long flags;
- 	u32 reset_state;
- 	int rc = 0;
- 
-@@ -2153,17 +2155,25 @@ static void __ibmvnic_reset(struct work_struct *work)
- 		return;
- 	}
- 
--	reset_state = adapter->state;
--
- 	rwi = get_next_rwi(adapter);
- 	while (rwi) {
-+		spin_lock_irqsave(&adapter->state_lock, flags);
-+
- 		if (adapter->state == VNIC_REMOVING ||
- 		    adapter->state == VNIC_REMOVED) {
-+			spin_unlock_irqrestore(&adapter->state_lock, flags);
- 			kfree(rwi);
- 			rc = EBUSY;
- 			break;
- 		}
- 
-+		if (!saved_state) {
-+			reset_state = adapter->state;
-+			adapter->state = VNIC_RESETTING;
-+			saved_state = true;
-+		}
-+		spin_unlock_irqrestore(&adapter->state_lock, flags);
-+
- 		if (rwi->reset_reason == VNIC_RESET_CHANGE_PARAM) {
- 			/* CHANGE_PARAM requestor holds rtnl_lock */
- 			rc = do_change_param_reset(adapter, rwi, reset_state);
-@@ -5091,6 +5101,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 			  __ibmvnic_delayed_reset);
- 	INIT_LIST_HEAD(&adapter->rwi_list);
- 	spin_lock_init(&adapter->rwi_lock);
-+	spin_lock_init(&adapter->state_lock);
- 	mutex_init(&adapter->fw_lock);
- 	init_completion(&adapter->init_done);
- 	init_completion(&adapter->fw_done);
-@@ -5163,8 +5174,17 @@ static int ibmvnic_remove(struct vio_dev *dev)
- {
- 	struct net_device *netdev = dev_get_drvdata(&dev->dev);
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&adapter->state_lock, flags);
-+	if (adapter->state == VNIC_RESETTING) {
-+		spin_unlock_irqrestore(&adapter->state_lock, flags);
-+		return -EBUSY;
-+	}
- 
- 	adapter->state = VNIC_REMOVING;
-+	spin_unlock_irqrestore(&adapter->state_lock, flags);
-+
- 	rtnl_lock();
- 	unregister_netdevice(netdev);
- 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 60eccaf91b12..f8416e1d4cf0 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -941,7 +941,8 @@ enum vnic_state {VNIC_PROBING = 1,
- 		 VNIC_CLOSING,
- 		 VNIC_CLOSED,
- 		 VNIC_REMOVING,
--		 VNIC_REMOVED};
-+		 VNIC_REMOVED,
-+		 VNIC_RESETTING};
- 
- enum ibmvnic_reset_reason {VNIC_RESET_FAILOVER = 1,
- 			   VNIC_RESET_MOBILITY,
-@@ -1090,4 +1091,7 @@ struct ibmvnic_adapter {
- 
- 	struct ibmvnic_tunables desired;
- 	struct ibmvnic_tunables fallback;
-+
-+	/* Used for serializatin of state field */
-+	spinlock_t state_lock;
- };
+ping 
 -- 
-2.25.0
-
+Michal Hocko
+SUSE Labs
