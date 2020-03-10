@@ -2,53 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5817B17EFBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 05:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CBA17EFF7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 06:21:07 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48c2cB4NR9zDqXl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 15:46:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48c3N05v1rzDqZW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 16:21:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48c2ZN0W8TzDqQm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 15:45:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48c3Lj3340zDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 16:19:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 48c2ZM6Vykz9sRR; Tue, 10 Mar 2020 15:44:59 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48c2ZJ2vhYz9sRN;
- Tue, 10 Mar 2020 15:44:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1583815499;
- bh=bEHwhhp+ToBBBkDedsqbBQ3oVlaBB0ehxgtaeFQLb/w=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=I2gVuXaoCwB1wqMe2cYAANxJaHB2Dopa3NKrNDz/fYGokfEaxlu0eMbsft5WhahFe
- Kjod3YYvrbG10z5j+tuSYhNOgb4QbSyv+OhdfMuZQLrLIrEnrlivEB18KlrOeoi8v9
- T126kYcwLn5dHm09Dh8BRYntsjNn2W2Mbt06Lx2kWvc4CLW+EVfbfzKz0dxQcP9ZVP
- VjGdxZQ8OLppPOzft9cGF/lrRPYIibmVrITBdp33xLO7jD7vY5cey7Cjkv0vyNzvaf
- A6/ipMx01/Y85PYD+ZmcUh/YRsLI3SJhEK2EFmhDKx8uuBVXqaoojjkoaaalti9N/2
- tV5Q8qaAB304A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: ppc32 panic on boot on linux-next
-In-Reply-To: <c084a429-9ea1-7126-f057-8647a2e0dfac@c-s.fr>
-References: <CAKwvOdk=eFqRqN0KO1en9wH-NhcvwXbx_ntmUtf8h_xZSd-qKw@mail.gmail.com>
- <3702b680-a0fc-20dc-027b-518b880f9a41@c-s.fr>
- <c084a429-9ea1-7126-f057-8647a2e0dfac@c-s.fr>
-Date: Tue, 10 Mar 2020 15:44:54 +1100
-Message-ID: <875zfcked5.fsf@mpe.ellerman.id.au>
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=UN1oPECF; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 48c3Lg4hqCz9sRY; Tue, 10 Mar 2020 16:19:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1583817595;
+ bh=aN8E5yfBh5IMVaMorLM/md1F+PZSq6h0d7mwcFx6YlA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=UN1oPECFxFl1Coib8FMtJIQ6eDaS6OZrjdNjEI/n2zR1zOSqPKfeEod2IXgjP9Sv3
+ C1ekGz1IK0GmqlXHBVtN+QW76Ek2Y20KqItgrqe10exHzaUf9a2LqG2/3wfYn+RAHt
+ rJqE75JCHj9gcyJakpswv7r0nD3R25Z2Z8e7OCLU=
+Date: Tue, 10 Mar 2020 16:17:01 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH 1/4] powerpc/xive: Use XIVE_BAD_IRQ instead of zero to
+ catch non configured IPIs
+Message-ID: <20200310051701.GO660117@umbus.fritz.box>
+References: <20200306150143.5551-1-clg@kaod.org>
+ <20200306150143.5551-2-clg@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="GPOl6LAGMgeiWDic"
+Content-Disposition: inline
+In-Reply-To: <20200306150143.5551-2-clg@kaod.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,40 +54,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux <clang-built-linux@googlegroups.com>,
- linuxppc-dev@ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Greg Kurz <groug@kaod.org>,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Le 07/03/2020 =C3=A0 09:42, Christophe Leroy a =C3=A9crit=C2=A0:
->> Le 06/03/2020 =C3=A0 20:05, Nick Desaulniers a =C3=A9crit=C2=A0:
->>> As a heads up, our CI went red last night, seems like a panic from
->>> free_initmem?=C2=A0 Is this a known issue?
->>=20
->> Thanks for the heads up.
->>=20
->> No such issue with either 8xx or book3s/32.
->>=20
->> I've now been able to reproduce it with bamboo QEMU.
->>=20
->> Reverting 2efc7c085f05 makes it disappear. I'll investigate.
->>=20
->
-> Ok, I found the problem. virt_to_kpte() lacks a NULL pmd check. I'll=20
-> send a patch for that.
->
-> However, if there is no PMD I guess this area is mapped through some=20
-> kind of block mapping. Therefore it should bail out of the function throu=
-gh:
->
-> 	if (v_block_mapped(address))
-> 		return 0;
->
->
-> Can someone who knows BOOKE investigate that ?
 
-Not sure we have anyone left?
+--GPOl6LAGMgeiWDic
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-cheers
+On Fri, Mar 06, 2020 at 04:01:40PM +0100, C=E9dric Le Goater wrote:
+> When a CPU is brought up, an IPI number is allocated and recorded
+> under the XIVE CPU structure. Invalid IPI numbers are tracked with
+> interrupt number 0x0.
+>=20
+> On the PowerNV platform, the interrupt number space starts at 0x10 and
+> this works fine. However, on the sPAPR platform, it is possible to
+> allocate the interrupt number 0x0 and this raises an issue when CPU 0
+> is unplugged. The XIVE spapr driver tracks allocated interrupt numbers
+> in a bitmask and it is not correctly updated when interrupt number 0x0
+> is freed. It stays allocated and it is then impossible to reallocate.
+>=20
+> Fix by using the XIVE_BAD_IRQ value instead of zero on both platforms.
+>=20
+> Reported-by: David Gibson <david@gibson.dropbear.id.au>
+> Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interr=
+upt controller")
+> Cc: stable@vger.kernel.org # v4.14+
+> Signed-off-by: C=E9dric Le Goater <clg@kaod.org>
+
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Tested-by: David Gibson <david@gibson.dropbear.id.au>
+
+> ---
+>  arch/powerpc/sysdev/xive/xive-internal.h |  7 +++++++
+>  arch/powerpc/sysdev/xive/common.c        | 12 +++---------
+>  arch/powerpc/sysdev/xive/native.c        |  4 ++--
+>  arch/powerpc/sysdev/xive/spapr.c         |  4 ++--
+>  4 files changed, 14 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysd=
+ev/xive/xive-internal.h
+> index 59cd366e7933..382980f4de2d 100644
+> --- a/arch/powerpc/sysdev/xive/xive-internal.h
+> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
+> @@ -5,6 +5,13 @@
+>  #ifndef __XIVE_INTERNAL_H
+>  #define __XIVE_INTERNAL_H
+> =20
+> +/*
+> + * A "disabled" interrupt should never fire, to catch problems
+> + * we set its logical number to this
+> + */
+> +#define XIVE_BAD_IRQ		0x7fffffff
+> +#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
+> +
+>  /* Each CPU carry one of these with various per-CPU state */
+>  struct xive_cpu {
+>  #ifdef CONFIG_SMP
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index fa49193206b6..550baba98ec9 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -68,13 +68,6 @@ static u32 xive_ipi_irq;
+>  /* Xive state for each CPU */
+>  static DEFINE_PER_CPU(struct xive_cpu *, xive_cpu);
+> =20
+> -/*
+> - * A "disabled" interrupt should never fire, to catch problems
+> - * we set its logical number to this
+> - */
+> -#define XIVE_BAD_IRQ		0x7fffffff
+> -#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
+> -
+>  /* An invalid CPU target */
+>  #define XIVE_INVALID_TARGET	(-1)
+> =20
+> @@ -1153,7 +1146,7 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
+>  	xc =3D per_cpu(xive_cpu, cpu);
+> =20
+>  	/* Check if we are already setup */
+> -	if (xc->hw_ipi !=3D 0)
+> +	if (xc->hw_ipi !=3D XIVE_BAD_IRQ)
+>  		return 0;
+> =20
+>  	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
+> @@ -1190,7 +1183,7 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, =
+struct xive_cpu *xc)
+>  	/* Disable the IPI and free the IRQ data */
+> =20
+>  	/* Already cleaned up ? */
+> -	if (xc->hw_ipi =3D=3D 0)
+> +	if (xc->hw_ipi =3D=3D XIVE_BAD_IRQ)
+>  		return;
+> =20
+>  	/* Mask the IPI */
+> @@ -1346,6 +1339,7 @@ static int xive_prepare_cpu(unsigned int cpu)
+>  		if (np)
+>  			xc->chip_id =3D of_get_ibm_chip_id(np);
+>  		of_node_put(np);
+> +		xc->hw_ipi =3D XIVE_BAD_IRQ;
+> =20
+>  		per_cpu(xive_cpu, cpu) =3D xc;
+>  	}
+> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive=
+/native.c
+> index 0ff6b739052c..50e1a8e02497 100644
+> --- a/arch/powerpc/sysdev/xive/native.c
+> +++ b/arch/powerpc/sysdev/xive/native.c
+> @@ -312,7 +312,7 @@ static void xive_native_put_ipi(unsigned int cpu, str=
+uct xive_cpu *xc)
+>  	s64 rc;
+> =20
+>  	/* Free the IPI */
+> -	if (!xc->hw_ipi)
+> +	if (xc->hw_ipi =3D=3D XIVE_BAD_IRQ)
+>  		return;
+>  	for (;;) {
+>  		rc =3D opal_xive_free_irq(xc->hw_ipi);
+> @@ -320,7 +320,7 @@ static void xive_native_put_ipi(unsigned int cpu, str=
+uct xive_cpu *xc)
+>  			msleep(OPAL_BUSY_DELAY_MS);
+>  			continue;
+>  		}
+> -		xc->hw_ipi =3D 0;
+> +		xc->hw_ipi =3D XIVE_BAD_IRQ;
+>  		break;
+>  	}
+>  }
+> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/=
+spapr.c
+> index 55dc61cb4867..3f15615712b5 100644
+> --- a/arch/powerpc/sysdev/xive/spapr.c
+> +++ b/arch/powerpc/sysdev/xive/spapr.c
+> @@ -560,11 +560,11 @@ static int xive_spapr_get_ipi(unsigned int cpu, str=
+uct xive_cpu *xc)
+> =20
+>  static void xive_spapr_put_ipi(unsigned int cpu, struct xive_cpu *xc)
+>  {
+> -	if (!xc->hw_ipi)
+> +	if (xc->hw_ipi =3D=3D XIVE_BAD_IRQ)
+>  		return;
+> =20
+>  	xive_irq_bitmap_free(xc->hw_ipi);
+> -	xc->hw_ipi =3D 0;
+> +	xc->hw_ipi =3D XIVE_BAD_IRQ;
+>  }
+>  #endif /* CONFIG_SMP */
+> =20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--GPOl6LAGMgeiWDic
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5nIscACgkQbDjKyiDZ
+s5IfJg//TVb2COM4VBjygVw+JHH45auKanzXa4SQmbn+9pMhNqU7ngh85y6hfTh7
+tfNsmMNqpXYpp+zc0+2qSgCWaLBKegtQXRGCvfdbQqXSscRkwiaC7ywSX24yQ0v/
+YDP2SRbazQsB+Xjos0Mpj23xYqrlloGL6yvLtEPGXwNcu98bGODqAy61Ah5rQT7L
++Gn6raTwe6U2uaEpJz/qvTslBAZD12Ytqo5O3e46NCAzPAsxV65pOEoP0Feyev/i
+gx2MqSuUTgSmhiMPH7utf9ZLy3aMFIQUiL58QbjmLtSRdibIJNdxTGpvcWB/n+nq
+oIprQg4Zkr+PL8b80H/BQVZlm3RUlRtIqdAJxWY4rspu8gJgmI6QHvwPnoqfZWLk
+6w/Fbr9rTWgUq4SrIWI5wCy2CRMRrbnlzw93G8HFGkvmkVM8IAk8TlwY/c6+ZA53
+sp0w68ipPL2L99zZqLtvgxYX/v9rEqKkvc9hxPZ+FgnSV2nsHEXn6hqNk6jRoHFW
+GYacbVXUryjlhd9xyasi6RGwITfMF57WIYdD4kR7VUe+bLwHJRV/jiDT7oF1xwz8
+5ROulY4eVtuU+XxzeCG8e4ue1ItRUsv3ntWCaqEyg6Yp1zIr9KSZYFHcTJxXJcP5
+QGUpjFhc6epwY9NjshEwotEzVNGd20vy/V7qqJlIDwY2Ht3mMko=
+=nzVK
+-----END PGP SIGNATURE-----
+
+--GPOl6LAGMgeiWDic--
