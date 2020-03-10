@@ -2,73 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FB917ED24
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 01:09:30 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48bwSR2qpbzDqpC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 11:09:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7221817ED9E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 02:06:03 +0100 (CET)
+Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48bxjh6ZgbzDqXD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 12:06:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=julietk@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.29;
+ helo=out5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=JrKxWdR5; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=IR4E/nLE; 
+ dkim-atps=neutral
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
+ [66.111.4.29])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48bwQ81BZBzDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 11:07:27 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02A06GHD116339; Mon, 9 Mar 2020 20:07:25 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ym8g3wbd1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Mar 2020 20:07:25 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02A02W2W003100;
- Tue, 10 Mar 2020 00:07:24 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 2ym386kx4a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Mar 2020 00:07:24 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02A07NlP53346812
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Mar 2020 00:07:24 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDA3528059;
- Tue, 10 Mar 2020 00:07:23 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C8102805A;
- Tue, 10 Mar 2020 00:07:23 +0000 (GMT)
-Received: from ltcalpine2-lp14.aus.stglabs.ibm.com (unknown [9.40.195.197])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 10 Mar 2020 00:07:23 +0000 (GMT)
-From: Juliet Kim <julietk@linux.vnet.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH net] ibmvnic: Do not process device remove during device reset
-Date: Mon,  9 Mar 2020 19:02:04 -0500
-Message-Id: <20200310000204.58596-1-julietk@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.25.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48bxgc0zGRzDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 12:04:08 +1100 (AEDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 2A6F3221FC;
+ Mon,  9 Mar 2020 21:04:05 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute4.internal (MEProxy); Mon, 09 Mar 2020 21:04:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm1; bh=dIh8uC/4N1UI+4ilbuZrGnP794
+ RY0IvXvhY5yS9b+GU=; b=JrKxWdR5cimXKdB3kJvADgGfFXrnLGbPTQWUxkON3w
+ Q+qF5nQpeOcpdgz18QPcLfhbPVhgtrMTi17lg8ACntX+YLTqQdFH2y62+5seyICp
+ tC2PhHQbydxTqLaApejGNU9mn9zChFkK5BGtHmRvUay5qUGFGKm9dAErQYuUTxUg
+ KkSIDPLtgf1wLKYCWtzaPK4W1husUoyMEqp9omfXsD1F9cGc4fU9uBpKr9XhMB9c
+ dJqeHtU1ik1fu2ZKOtMCHz4eyf4oZRj8KA7dElpohTZ/Sky1FDYVer9dy9y1GIX+
+ uqNePIEfSNKkT/iNTYHG2WMxl+yjHMUMXBgrrsjPfKsA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=dIh8uC/4N1UI+4ilb
+ uZrGnP794RY0IvXvhY5yS9b+GU=; b=IR4E/nLEUDG9fI/dFDrthcxr3DXUxQ0Lq
+ JiiraKwnNwoujcmxZqMvG6QJ1WM75M9adiEKk7TthXAKqxBfMWaUlSJW4umQG5Bm
+ djJhC+28mBw8qOlohw0THbqAAVsd7FNT8adfrESUAezvK7nPD2iNnYF8QhiajEZI
+ wkFlEKZvSceCofVDdZZUR+K/bpcB9fk76u65IgnfRpvUVkW2HuZdZnqABSl0wxIz
+ h5/BDQN6B4c3tTSDm/fGSYDm4nrWt5H7vu5B2oWyjSkmMDwhGh8hYJyEgvrQrVff
+ msBeSZc/UObwu6BCIE5DuJoNdaVXIMuuCw8N8x/xlZJDay9fUuPlQ==
+X-ME-Sender: <xms:g-dmXvFpX7lhQPftJpkmGDNYs9XTmo4nhQW73a5-BSQBEKyWYm4pIQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrudduledgvdelucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
+ fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
+ uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuffhomhgrihhnpehoiihlrggssh
+ drohhrghenucfkphepuddvvddrleelrdekvddruddtnecuvehluhhsthgvrhfuihiivgep
+ tdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:g-dmXujOt0tDs5lC47uKCUTpi3f7wAcbCfey5PSIrDPnOVpUEUP7_g>
+ <xmx:g-dmXj4cQRz90Ri3w62uETh9C0_is1poX7qDJWP1qJIE0hcy4t-0jA>
+ <xmx:g-dmXoc6FC2XSSOJTuGdZdwIN3SDfSWv9IwBO8kYAb4gRslML2lNKA>
+ <xmx:hedmXuIt-_36sLLBxWsCqd4E35qWRXVeAunLAXvKKfv10y4iTBppnw>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 938A6328005A;
+ Mon,  9 Mar 2020 21:04:00 -0400 (EDT)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v6 0/7] set_memory() routines and STRICT_MODULE_RWX
+Date: Tue, 10 Mar 2020 12:03:31 +1100
+Message-Id: <20200310010338.21205-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-09_13:2020-03-09,
- 2020-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- suspectscore=3 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- impostorscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003090146
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,116 +86,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: julietk@linux.vnet.ibm.com, tlfalcon@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ joel@jms.id.au, Russell Currey <ruscur@russell.cc>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ibmvnic driver does not check the device state when the device
-is removed. If the device is removed while a device reset is being 
-processed, the remove may free structures needed by the reset, 
-causing an oops.
+Back again, just minor changes.
 
-Fix this by checking the device state before processing device remove.
+v5: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=160869
 
-Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 24 ++++++++++++++++++++++--
- drivers/net/ethernet/ibm/ibmvnic.h |  6 +++++-
- 2 files changed, 27 insertions(+), 3 deletions(-)
+Changes since v5:
+	[1/8]: Patch 8/8 squashed as suggested by Andrew Donnellan
+	       Added a note to the comment of change_page_attr()
+	       Rename size to sz to meet 90 chars without multiple lines
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index c75239d8820f..7ef1ae0d49bc 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2144,6 +2144,8 @@ static void __ibmvnic_reset(struct work_struct *work)
- 	struct ibmvnic_adapter *adapter;
- 	u32 reset_state;
- 	int rc = 0;
-+	unsigned long flags;
-+	bool saved_state = false;
- 
- 	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
- 
-@@ -2153,17 +2155,25 @@ static void __ibmvnic_reset(struct work_struct *work)
- 		return;
- 	}
- 
--	reset_state = adapter->state;
--
- 	rwi = get_next_rwi(adapter);
- 	while (rwi) {
-+		spin_lock_irqsave(&adapter->state_lock, flags);
-+
- 		if (adapter->state == VNIC_REMOVING ||
- 		    adapter->state == VNIC_REMOVED) {
-+			spin_unlock_irqrestore(&adapter->state_lock, flags);
- 			kfree(rwi);
- 			rc = EBUSY;
- 			break;
- 		}
- 
-+		if (!saved_state) {
-+			reset_state = adapter->state;
-+			adapter->state = VNIC_RESETTING;
-+			saved_state = true;
-+		}
-+		spin_unlock_irqrestore(&adapter->state_lock, flags);
-+
- 		if (rwi->reset_reason == VNIC_RESET_CHANGE_PARAM) {
- 			/* CHANGE_PARAM requestor holds rtnl_lock */
- 			rc = do_change_param_reset(adapter, rwi, reset_state);
-@@ -5091,6 +5101,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 			  __ibmvnic_delayed_reset);
- 	INIT_LIST_HEAD(&adapter->rwi_list);
- 	spin_lock_init(&adapter->rwi_lock);
-+	spin_lock_init(&adapter->state_lock);
- 	mutex_init(&adapter->fw_lock);
- 	init_completion(&adapter->init_done);
- 	init_completion(&adapter->fw_done);
-@@ -5161,10 +5172,19 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 
- static int ibmvnic_remove(struct vio_dev *dev)
- {
-+	unsigned long flags;
- 	struct net_device *netdev = dev_get_drvdata(&dev->dev);
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
- 
-+	spin_lock_irqsave(&adapter->state_lock, flags);
-+	if (adapter->state == VNIC_RESETTING) {
-+		spin_unlock_irqrestore(&adapter->state_lock, flags);
-+		return -EBUSY;
-+	}
-+
- 	adapter->state = VNIC_REMOVING;
-+	spin_unlock_irqrestore(&adapter->state_lock, flags);
-+
- 	rtnl_lock();
- 	unregister_netdevice(netdev);
- 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 60eccaf91b12..971505e4cc52 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -941,7 +941,8 @@ enum vnic_state {VNIC_PROBING = 1,
- 		 VNIC_CLOSING,
- 		 VNIC_CLOSED,
- 		 VNIC_REMOVING,
--		 VNIC_REMOVED};
-+		 VNIC_REMOVED,
-+		 VNIC_RESETTING};
- 
- enum ibmvnic_reset_reason {VNIC_RESET_FAILOVER = 1,
- 			   VNIC_RESET_MOBILITY,
-@@ -1090,4 +1091,7 @@ struct ibmvnic_adapter {
- 
- 	struct ibmvnic_tunables desired;
- 	struct ibmvnic_tunables fallback;
-+
-+	/* lock to protect state field */
-+	spinlock_t state_lock;
- };
+	[8/8]: Removed, change_memory_attr() section squashed, rest dropped
+	       as suggested by Christophe Leroy (since I just assumed it was
+	       the right thing to do instead of actually checking)
+
+Thanks for the feedback.
+
+Christophe Leroy (2):
+  powerpc/mm: implement set_memory_attr()
+  powerpc/32: use set_memory_attr()
+
+Russell Currey (5):
+  powerpc/mm: Implement set_memory() routines
+  powerpc/kprobes: Mark newly allocated probes as RO
+  powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+  powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+  powerpc/configs: Enable STRICT_MODULE_RWX in skiroot_defconfig
+
+ arch/powerpc/Kconfig                   |   2 +
+ arch/powerpc/Kconfig.debug             |   6 +-
+ arch/powerpc/configs/skiroot_defconfig |   1 +
+ arch/powerpc/include/asm/set_memory.h  |  34 ++++++++
+ arch/powerpc/kernel/kprobes.c          |  17 +++-
+ arch/powerpc/mm/Makefile               |   2 +-
+ arch/powerpc/mm/pageattr.c             | 112 +++++++++++++++++++++++++
+ arch/powerpc/mm/pgtable_32.c           |  95 +++------------------
+ arch/powerpc/mm/ptdump/ptdump.c        |  21 ++++-
+ 9 files changed, 197 insertions(+), 93 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/set_memory.h
+ create mode 100644 arch/powerpc/mm/pageattr.c
+
 -- 
-2.25.0
+2.25.1
 
