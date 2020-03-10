@@ -2,50 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33877180500
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 18:38:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB831804D1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 18:30:52 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48cMkc3ZFWzDqY4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 04:38:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48cMZ10bPPzDqTK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 04:30:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.107.29; helo=15.mo5.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 15.mo5.mail-out.ovh.net (15.mo5.mail-out.ovh.net
- [178.33.107.29])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=K7W5xBae; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48cMj90XVvzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 04:36:59 +1100 (AEDT)
-Received: from player762.ha.ovh.net (unknown [10.110.171.5])
- by mo5.mail-out.ovh.net (Postfix) with ESMTP id 8164A270F49
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 17:07:32 +0100 (CET)
-Received: from kaod.org (unknown [129.41.47.1])
- (Authenticated sender: clg@kaod.org)
- by player762.ha.ovh.net (Postfix) with ESMTPSA id 2A00810445AEB;
- Tue, 10 Mar 2020 16:07:27 +0000 (UTC)
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [PATCH 1/4] powerpc/xive: Use XIVE_BAD_IRQ instead of zero to
- catch non configured IPIs
-To: Greg Kurz <groug@kaod.org>
-References: <20200306150143.5551-1-clg@kaod.org>
- <20200306150143.5551-2-clg@kaod.org> <20200310160916.37de59c2@bahia.home>
-Message-ID: <77a77566-7b5d-158c-a775-de30375ec553@kaod.org>
-Date: Tue, 10 Mar 2020 17:07:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20200310160916.37de59c2@bahia.home>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 13493910384322906996
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedruddvtddgjeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffuvfhfkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpuddvledrgedurdegjedrudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejiedvrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48cMXH4C2fzDqQx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 04:29:18 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48cMX73ZVLz9tyJT;
+ Tue, 10 Mar 2020 18:29:11 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=K7W5xBae; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HkzUNqv0j9FF; Tue, 10 Mar 2020 18:29:11 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48cMX72XnSz9tyJR;
+ Tue, 10 Mar 2020 18:29:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1583861351; bh=wQFGA5yOUDCLiaQWRK43yJsCfrQxWMeWcX1p+cg+rY4=;
+ h=From:Subject:To:Cc:Date:From;
+ b=K7W5xBaeaIen39k2xESJ1+k6eHbVqFRJTEU7UDmC1DbQ6SfocM6JVkjExmj9AQ0BW
+ NKf/34uzOhgNo892c0yk3qRsO1n7i5QsyRdvTvwgdfosU8COLT7PvPdzOo+YhEOpXV
+ 76GgtOL4hjDvTgkZIqyf1bAXCKAxBmewclpnYVeM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 17E978B874;
+ Tue, 10 Mar 2020 18:29:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id vYZ3gXVSD6nz; Tue, 10 Mar 2020 18:29:12 +0100 (CET)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B49AE8B756;
+ Tue, 10 Mar 2020 18:29:12 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 6DC86654D9; Tue, 10 Mar 2020 17:29:12 +0000 (UTC)
+Message-Id: <c4d6c18a7f8d9d3b899bc492f55fbc40ef38896a.1583861325.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v3] powerpc/32s: reorder Linux PTE bits to better match Hash
+ PTE bits.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 10 Mar 2020 17:29:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,211 +73,163 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/10/20 4:09 PM, Greg Kurz wrote:
-> On Fri,  6 Mar 2020 16:01:40 +0100
-> Cédric Le Goater <clg@kaod.org> wrote:
-> 
->> When a CPU is brought up, an IPI number is allocated and recorded
->> under the XIVE CPU structure. Invalid IPI numbers are tracked with
->> interrupt number 0x0.
->>
->> On the PowerNV platform, the interrupt number space starts at 0x10 and
->> this works fine. However, on the sPAPR platform, it is possible to
->> allocate the interrupt number 0x0 and this raises an issue when CPU 0
->> is unplugged. The XIVE spapr driver tracks allocated interrupt numbers
->> in a bitmask and it is not correctly updated when interrupt number 0x0
->> is freed. It stays allocated and it is then impossible to reallocate.
->>
->> Fix by using the XIVE_BAD_IRQ value instead of zero on both platforms.
->>
->> Reported-by: David Gibson <david@gibson.dropbear.id.au>
->> Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
->> Cc: stable@vger.kernel.org # v4.14+
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
-> 
-> This looks mostly good. I'm juste wondering about potential overlooks:
+Reorder Linux PTE bits to (almost) match Hash PTE bits.
 
-Yes. Thanks for doing so. There are some non-obvious use of interrupt
-numbers under the hood. 
+RW Kernel : PP = 00
+RO Kernel : PP = 00
+RW User   : PP = 01
+RO User   : PP = 11
 
-One thing we should be adding is a comment on the different interrupt 
-number spaces. The HW interrupt numbers, the EISN numbers found on the 
-XIVE even queue and the Linux interrupt numbers are different spaces 
-and have different limits. XIVE_BAD_IRQ was introduced for the EISN 
-numbers and the patch is using this value for HW numbers. This is ok 
-because it's more a tag than a limit.
+So naturally, we should have
+_PAGE_USER = 0x001
+_PAGE_RW   = 0x002
 
-> $ git grep 'if.*hw_i' arch/powerpc/ | egrep -v 'xics|XIVE_BAD_IRQ'
->
->
-> arch/powerpc/kvm/book3s_xive.h:         if (out_hw_irq)
-> arch/powerpc/kvm/book3s_xive.h:         if (out_hw_irq)
-> arch/powerpc/kvm/book3s_xive_template.c:        else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW)
-> arch/powerpc/sysdev/xive/common.c:      else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW) {
->
-> This hw_irq check in xive_do_source_eoi() for example is related to:
-> 
-> 	/*
-> 	 * Note: We pass "0" to the hw_irq argument in order to
-> 	 * avoid calling into the backend EOI code which we don't
-> 	 * want to do in the case of a re-trigger. Backends typically
-> 	 * only do EOI for LSIs anyway.
-> 	 */
-> 	xive_do_source_eoi(0, xd);
+Today 0x001 and 0x002 and _PAGE_PRESENT and _PAGE_HASHPTE which
+both are software only bits.
 
-that's a hack to skip the following part of the code in case of EOI 
-being done through FW:
+Switch _PAGE_USER and _PAGE_PRESET
+Switch _PAGE_RW and _PAGE_HASHPTE
 
-	else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW) {
-		/*
-		 * The FW told us to call it. This happens for some
-		 * interrupt sources that need additional HW whacking
-		 * beyond the ESB manipulation. For example LPC interrupts
-		 * on P9 DD1.0 needed a latch to be clared in the LPC bridge
-		 * itself. The Firmware will take care of it.
-		 */
-		if (WARN_ON_ONCE(!xive_ops->eoi))
-			return;
-		xive_ops->eoi(hw_irq);
+This allows to remove a few insns.
 
-That was the case for PHB4 LSIs on P9 DD1 only. We could probably drop
-the code in Linux unless similar bugs show up on new platforms.
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+v3: rebased on today's powerpc/merge
 
-> but it can get hw_irq from:
-> 
-> 	xive_do_source_eoi(xc->hw_ipi, &xc->ipi_data);
+v2: rebased on today's powerpc/merge
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/book3s/32/hash.h |  8 ++++----
+ arch/powerpc/kernel/head_32.S             |  9 +++------
+ arch/powerpc/mm/book3s32/hash_low.S       | 14 ++++++--------
+ 3 files changed, 13 insertions(+), 18 deletions(-)
 
-That part is fine. It's an IPI EOI.
-
-> 
-> It seems that these should use XIVE_BAD_IRQ as well or I'm missing
-> something ?
-> 
-> arch/powerpc/sysdev/xive/common.c:      if (hw_irq)
-
-This tests the XIVE IPI number which is mapped to 0 for all CPUs.
-See xive_request_ipi() and xive_irq_domain_map()
-
-C.
-
-> arch/powerpc/sysdev/xive/common.c:              if (d->domain != xive_irq_domain || hw_irq == 0)
-> 
-> 
-> 
->>  arch/powerpc/sysdev/xive/xive-internal.h |  7 +++++++
->>  arch/powerpc/sysdev/xive/common.c        | 12 +++---------
->>  arch/powerpc/sysdev/xive/native.c        |  4 ++--
->>  arch/powerpc/sysdev/xive/spapr.c         |  4 ++--
->>  4 files changed, 14 insertions(+), 13 deletions(-)
->>
->> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
->> index 59cd366e7933..382980f4de2d 100644
->> --- a/arch/powerpc/sysdev/xive/xive-internal.h
->> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
->> @@ -5,6 +5,13 @@
->>  #ifndef __XIVE_INTERNAL_H
->>  #define __XIVE_INTERNAL_H
->>  
->> +/*
->> + * A "disabled" interrupt should never fire, to catch problems
->> + * we set its logical number to this
->> + */
->> +#define XIVE_BAD_IRQ		0x7fffffff
->> +#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
->> +
->>  /* Each CPU carry one of these with various per-CPU state */
->>  struct xive_cpu {
->>  #ifdef CONFIG_SMP
->> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
->> index fa49193206b6..550baba98ec9 100644
->> --- a/arch/powerpc/sysdev/xive/common.c
->> +++ b/arch/powerpc/sysdev/xive/common.c
->> @@ -68,13 +68,6 @@ static u32 xive_ipi_irq;
->>  /* Xive state for each CPU */
->>  static DEFINE_PER_CPU(struct xive_cpu *, xive_cpu);
->>  
->> -/*
->> - * A "disabled" interrupt should never fire, to catch problems
->> - * we set its logical number to this
->> - */
->> -#define XIVE_BAD_IRQ		0x7fffffff
->> -#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
->> -
->>  /* An invalid CPU target */
->>  #define XIVE_INVALID_TARGET	(-1)
->>  
->> @@ -1153,7 +1146,7 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
->>  	xc = per_cpu(xive_cpu, cpu);
->>  
->>  	/* Check if we are already setup */
->> -	if (xc->hw_ipi != 0)
->> +	if (xc->hw_ipi != XIVE_BAD_IRQ)
->>  		return 0;
->>  
->>  	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
->> @@ -1190,7 +1183,7 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
->>  	/* Disable the IPI and free the IRQ data */
->>  
->>  	/* Already cleaned up ? */
->> -	if (xc->hw_ipi == 0)
->> +	if (xc->hw_ipi == XIVE_BAD_IRQ)
->>  		return;
->>  
->>  	/* Mask the IPI */
->> @@ -1346,6 +1339,7 @@ static int xive_prepare_cpu(unsigned int cpu)
->>  		if (np)
->>  			xc->chip_id = of_get_ibm_chip_id(np);
->>  		of_node_put(np);
->> +		xc->hw_ipi = XIVE_BAD_IRQ;
->>  
->>  		per_cpu(xive_cpu, cpu) = xc;
->>  	}
->> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
->> index 0ff6b739052c..50e1a8e02497 100644
->> --- a/arch/powerpc/sysdev/xive/native.c
->> +++ b/arch/powerpc/sysdev/xive/native.c
->> @@ -312,7 +312,7 @@ static void xive_native_put_ipi(unsigned int cpu, struct xive_cpu *xc)
->>  	s64 rc;
->>  
->>  	/* Free the IPI */
->> -	if (!xc->hw_ipi)
->> +	if (xc->hw_ipi == XIVE_BAD_IRQ)
->>  		return;
->>  	for (;;) {
->>  		rc = opal_xive_free_irq(xc->hw_ipi);
->> @@ -320,7 +320,7 @@ static void xive_native_put_ipi(unsigned int cpu, struct xive_cpu *xc)
->>  			msleep(OPAL_BUSY_DELAY_MS);
->>  			continue;
->>  		}
->> -		xc->hw_ipi = 0;
->> +		xc->hw_ipi = XIVE_BAD_IRQ;
->>  		break;
->>  	}
->>  }
->> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
->> index 55dc61cb4867..3f15615712b5 100644
->> --- a/arch/powerpc/sysdev/xive/spapr.c
->> +++ b/arch/powerpc/sysdev/xive/spapr.c
->> @@ -560,11 +560,11 @@ static int xive_spapr_get_ipi(unsigned int cpu, struct xive_cpu *xc)
->>  
->>  static void xive_spapr_put_ipi(unsigned int cpu, struct xive_cpu *xc)
->>  {
->> -	if (!xc->hw_ipi)
->> +	if (xc->hw_ipi == XIVE_BAD_IRQ)
->>  		return;
->>  
->>  	xive_irq_bitmap_free(xc->hw_ipi);
->> -	xc->hw_ipi = 0;
->> +	xc->hw_ipi = XIVE_BAD_IRQ;
->>  }
->>  #endif /* CONFIG_SMP */
->>  
-> 
+diff --git a/arch/powerpc/include/asm/book3s/32/hash.h b/arch/powerpc/include/asm/book3s/32/hash.h
+index 2a0a467d2985..34a7215ae81e 100644
+--- a/arch/powerpc/include/asm/book3s/32/hash.h
++++ b/arch/powerpc/include/asm/book3s/32/hash.h
+@@ -17,9 +17,9 @@
+  * updating the accessed and modified bits in the page table tree.
+  */
+ 
+-#define _PAGE_PRESENT	0x001	/* software: pte contains a translation */
+-#define _PAGE_HASHPTE	0x002	/* hash_page has made an HPTE for this pte */
+-#define _PAGE_USER	0x004	/* usermode access allowed */
++#define _PAGE_USER	0x001	/* usermode access allowed */
++#define _PAGE_RW	0x002	/* software: user write access allowed */
++#define _PAGE_PRESENT	0x004	/* software: pte contains a translation */
+ #define _PAGE_GUARDED	0x008	/* G: prohibit speculative access */
+ #define _PAGE_COHERENT	0x010	/* M: enforce memory coherence (SMP systems) */
+ #define _PAGE_NO_CACHE	0x020	/* I: cache inhibit */
+@@ -27,7 +27,7 @@
+ #define _PAGE_DIRTY	0x080	/* C: page changed */
+ #define _PAGE_ACCESSED	0x100	/* R: page referenced */
+ #define _PAGE_EXEC	0x200	/* software: exec allowed */
+-#define _PAGE_RW	0x400	/* software: user write access allowed */
++#define _PAGE_HASHPTE	0x400	/* hash_page has made an HPTE for this pte */
+ #define _PAGE_SPECIAL	0x800	/* software: Special page */
+ 
+ #ifdef CONFIG_PTE_64BIT
+diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
+index 97c887950c3c..daaa153950c2 100644
+--- a/arch/powerpc/kernel/head_32.S
++++ b/arch/powerpc/kernel/head_32.S
+@@ -348,7 +348,7 @@ BEGIN_MMU_FTR_SECTION
+ 	andis.	r0, r5, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH)@h
+ #endif
+ 	bne	handle_page_fault_tramp_2	/* if not, try to put a PTE */
+-	rlwinm	r3, r5, 32 - 15, 21, 21		/* DSISR_STORE -> _PAGE_RW */
++	rlwinm	r3, r5, 32 - 24, 30, 30		/* DSISR_STORE -> _PAGE_RW */
+ 	bl	hash_page
+ 	b	handle_page_fault_tramp_1
+ FTR_SECTION_ELSE
+@@ -497,7 +497,6 @@ InstructionTLBMiss:
+ 	andc.	r1,r1,r0		/* check access & ~permission */
+ 	bne-	InstructionAddressInvalid /* return if access not permitted */
+ 	/* Convert linux-style PTE to low word of PPC-style PTE */
+-	rlwimi	r0,r0,32-2,31,31	/* _PAGE_USER -> PP lsb */
+ 	ori	r1, r1, 0xe06		/* clear out reserved bits */
+ 	andc	r1, r0, r1		/* PP = user? 1 : 0 */
+ BEGIN_FTR_SECTION
+@@ -565,9 +564,8 @@ DataLoadTLBMiss:
+ 	 * we would need to update the pte atomically with lwarx/stwcx.
+ 	 */
+ 	/* Convert linux-style PTE to low word of PPC-style PTE */
+-	rlwinm	r1,r0,32-9,30,30	/* _PAGE_RW -> PP msb */
+-	rlwimi	r0,r0,32-1,30,30	/* _PAGE_USER -> PP msb */
+-	rlwimi	r0,r0,32-1,31,31	/* _PAGE_USER -> PP lsb */
++	rlwinm	r1,r0,0,30,30		/* _PAGE_RW -> PP msb */
++	rlwimi	r0,r0,1,30,30		/* _PAGE_USER -> PP msb */
+ 	ori	r1,r1,0xe04		/* clear out reserved bits */
+ 	andc	r1,r0,r1		/* PP = user? rw? 1: 3: 0 */
+ BEGIN_FTR_SECTION
+@@ -645,7 +643,6 @@ DataStoreTLBMiss:
+ 	 * we would need to update the pte atomically with lwarx/stwcx.
+ 	 */
+ 	/* Convert linux-style PTE to low word of PPC-style PTE */
+-	rlwimi	r0,r0,32-2,31,31	/* _PAGE_USER -> PP lsb */
+ 	li	r1,0xe06		/* clear out reserved bits & PP msb */
+ 	andc	r1,r0,r1		/* PP = user? 1: 0 */
+ BEGIN_FTR_SECTION
+diff --git a/arch/powerpc/mm/book3s32/hash_low.S b/arch/powerpc/mm/book3s32/hash_low.S
+index 877d880890fe..6d236080cb1a 100644
+--- a/arch/powerpc/mm/book3s32/hash_low.S
++++ b/arch/powerpc/mm/book3s32/hash_low.S
+@@ -35,7 +35,7 @@ mmu_hash_lock:
+ /*
+  * Load a PTE into the hash table, if possible.
+  * The address is in r4, and r3 contains an access flag:
+- * _PAGE_RW (0x400) if a write.
++ * _PAGE_RW (0x002) if a write.
+  * r9 contains the SRR1 value, from which we use the MSR_PR bit.
+  * SPRG_THREAD contains the physical address of the current task's thread.
+  *
+@@ -69,7 +69,7 @@ _GLOBAL(hash_page)
+ 	blt+	112f			/* assume user more likely */
+ 	lis	r5, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
+ 	addi	r5 ,r5 ,(swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
+-	rlwimi	r3,r9,32-12,29,29	/* MSR_PR -> _PAGE_USER */
++	rlwimi	r3,r9,32-14,31,31	/* MSR_PR -> _PAGE_USER */
+ 112:
+ #ifndef CONFIG_PTE_64BIT
+ 	rlwimi	r5,r4,12,20,29		/* insert top 10 bits of address */
+@@ -94,7 +94,7 @@ _GLOBAL(hash_page)
+ #else
+ 	rlwimi	r8,r4,23,20,28		/* compute pte address */
+ #endif
+-	rlwinm	r0,r3,32-3,24,24	/* _PAGE_RW access -> _PAGE_DIRTY */
++	rlwinm	r0,r3,6,24,24		/* _PAGE_RW access -> _PAGE_DIRTY */
+ 	ori	r0,r0,_PAGE_ACCESSED|_PAGE_HASHPTE
+ 
+ 	/*
+@@ -310,11 +310,9 @@ Hash_msk = (((1 << Hash_bits) - 1) * 64)
+ 
+ _GLOBAL(create_hpte)
+ 	/* Convert linux-style PTE (r5) to low word of PPC-style PTE (r8) */
+-	rlwinm	r8,r5,32-9,30,30	/* _PAGE_RW -> PP msb */
+ 	rlwinm	r0,r5,32-6,30,30	/* _PAGE_DIRTY -> PP msb */
+-	and	r8,r8,r0		/* writable if _RW & _DIRTY */
+-	rlwimi	r5,r5,32-1,30,30	/* _PAGE_USER -> PP msb */
+-	rlwimi	r5,r5,32-2,31,31	/* _PAGE_USER -> PP lsb */
++	and	r8,r5,r0		/* writable if _RW & _DIRTY */
++	rlwimi	r5,r5,1,30,30		/* _PAGE_USER -> PP msb */
+ 	ori	r8,r8,0xe04		/* clear out reserved bits */
+ 	andc	r8,r5,r8		/* PP = user? (rw&dirty? 1: 3): 0 */
+ BEGIN_FTR_SECTION
+@@ -566,7 +564,7 @@ _GLOBAL(flush_hash_pages)
+ 33:	lwarx	r8,0,r5			/* fetch the pte flags word */
+ 	andi.	r0,r8,_PAGE_HASHPTE
+ 	beq	8f			/* done if HASHPTE is already clear */
+-	rlwinm	r8,r8,0,31,29		/* clear HASHPTE bit */
++	rlwinm	r8,r8,0,~_PAGE_HASHPTE	/* clear HASHPTE bit */
+ 	stwcx.	r8,0,r5			/* update the pte */
+ 	bne-	33b
+ 
+-- 
+2.25.0
 
