@@ -2,67 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E7E180128
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 16:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA3A180266
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 16:50:27 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48cJML0QPNzDqRN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 02:06:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48cKL91cmXzDqWZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 02:50:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=46.105.52.162; helo=2.mo68.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 2330 seconds by postgrey-1.36 at bilbo;
+ Wed, 11 Mar 2020 02:48:28 AEDT
+Received: from 2.mo68.mail-out.ovh.net (2.mo68.mail-out.ovh.net
+ [46.105.52.162])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48cJFt3GhvzDqGv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 02:01:37 +1100 (AEDT)
-Received: by mail-ot1-f68.google.com with SMTP id a9so7231034otl.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 08:01:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=dX3tIfhg8Pgw7VaqAcNR8DRUcVBfEcC2G/jhaGAghMc=;
- b=IGsyARgl2CE+/+lXrcgO5KFmsj5zXZ8sNWmAkb8L+Xt+mWIQ+CeeJoDc2Y/d5//twF
- 062Rdfn623mKMx8E4gVeWdkwQqpEYuwHo296OqSItWEN/25kTn5mVlOFgXJiv83G2gkR
- hkXGlrRX4tKyfRzFUcRfd/IhXfPJ0Qt0nZq8w3A9WIQYpM7FVtP5tEXthoL1ox4orEdi
- LUQW/KFZXWgsTsf3udKifkaywKoSxZIMDQ/Y3Fsud+/Y5iUCZktwhyvHTt/y2y2ss5Ec
- kybEcaH1gxia2n83Ec9JLzwFzijDX9/NN5gWosbAqboZK/v4hJCc2aw4RHP1Aq4NaXce
- xESA==
-X-Gm-Message-State: ANhLgQ1aRRsNLwhcQgthL1lbb+Ejh/YG6oC5xwhwm8pJSc+A1BTSwZ+N
- /xFFEX1cwzC+7eYTN3M+YdM=
-X-Google-Smtp-Source: ADFU+vuQuFenZSPppKiEGnjSnrmQcdZgNpbb5fhlH5HInmerm41VCtvaEccg65uDW45jDgzov0aZXA==
-X-Received: by 2002:a9d:4798:: with SMTP id b24mr10336276otf.243.1583852480995; 
- Tue, 10 Mar 2020 08:01:20 -0700 (PDT)
-Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
- by smtp.gmail.com with ESMTPSA id z23sm11802570otm.79.2020.03.10.08.01.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Mar 2020 08:01:19 -0700 (PDT)
-Date: Tue, 10 Mar 2020 16:01:14 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
-Message-ID: <20200310150114.GO8447@dhcp22.suse.cz>
-References: <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
- <20200224085812.GB22443@dhcp22.suse.cz>
- <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
- <20200226184152.GQ3771@dhcp22.suse.cz>
- <c412ee69-80f9-b013-67d4-3b0a2f6aff7f@suse.cz>
- <dd450314-d428-6776-af07-f92c04c7b967@suse.cz>
- <20200227121214.GE3771@dhcp22.suse.cz>
- <52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com>
- <9a86f865-50b5-7483-9257-dbb08fecd62b@suse.cz>
- <20200227182650.GG3771@dhcp22.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48cKHw19KMzDqQC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 02:48:27 +1100 (AEDT)
+Received: from player778.ha.ovh.net (unknown [10.108.42.102])
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id 2301715DF3A
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 16:09:25 +0100 (CET)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player778.ha.ovh.net (Postfix) with ESMTPSA id C440B1048A9AF;
+ Tue, 10 Mar 2020 15:09:18 +0000 (UTC)
+Date: Tue, 10 Mar 2020 16:09:16 +0100
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH 1/4] powerpc/xive: Use XIVE_BAD_IRQ instead of zero to
+ catch non configured IPIs
+Message-ID: <20200310160916.37de59c2@bahia.home>
+In-Reply-To: <20200306150143.5551-2-clg@kaod.org>
+References: <20200306150143.5551-1-clg@kaod.org>
+ <20200306150143.5551-2-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200227182650.GG3771@dhcp22.suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Ovh-Tracer-Id: 12512407139747600779
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedruddvtddgjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrvdehfedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjeekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,26 +57,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
- Linux-Next Mailing List <linux-next@vger.kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>,
- Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, Kirill Tkhai <ktkhai@virtuozzo.com>
+Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 27-02-20 19:26:54, Michal Hocko wrote:
-> [Cc ppc maintainers]
-[...]
-> Please have a look at http://lkml.kernel.org/r/52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com
-> for the boot log with the debugging patch which tracks set_numa_mem.
-> This seems to lead to a crash in the slab allocator bebcause
-> node_to_mem_node(0) for memory less node resolves to the memory less
-> node http://lkml.kernel.org/r/dd450314-d428-6776-af07-f92c04c7b967@suse.cz.
-> The original report is http://lkml.kernel.org/r/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com
+On Fri,  6 Mar 2020 16:01:40 +0100
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-ping 
--- 
-Michal Hocko
-SUSE Labs
+> When a CPU is brought up, an IPI number is allocated and recorded
+> under the XIVE CPU structure. Invalid IPI numbers are tracked with
+> interrupt number 0x0.
+>=20
+> On the PowerNV platform, the interrupt number space starts at 0x10 and
+> this works fine. However, on the sPAPR platform, it is possible to
+> allocate the interrupt number 0x0 and this raises an issue when CPU 0
+> is unplugged. The XIVE spapr driver tracks allocated interrupt numbers
+> in a bitmask and it is not correctly updated when interrupt number 0x0
+> is freed. It stays allocated and it is then impossible to reallocate.
+>=20
+> Fix by using the XIVE_BAD_IRQ value instead of zero on both platforms.
+>=20
+> Reported-by: David Gibson <david@gibson.dropbear.id.au>
+> Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interr=
+upt controller")
+> Cc: stable@vger.kernel.org # v4.14+
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+
+This looks mostly good. I'm juste wondering about potential overlooks:
+
+$ git grep 'if.*hw_i' arch/powerpc/ | egrep -v 'xics|XIVE_BAD_IRQ'
+arch/powerpc/kvm/book3s_xive.h:         if (out_hw_irq)
+arch/powerpc/kvm/book3s_xive.h:         if (out_hw_irq)
+arch/powerpc/kvm/book3s_xive_template.c:        else if (hw_irq && xd->flag=
+s & XIVE_IRQ_FLAG_EOI_FW)
+arch/powerpc/sysdev/xive/common.c:      else if (hw_irq && xd->flags & XIVE=
+_IRQ_FLAG_EOI_FW) {
+
+This hw_irq check in xive_do_source_eoi() for example is related to:
+
+	/*
+	 * Note: We pass "0" to the hw_irq argument in order to
+	 * avoid calling into the backend EOI code which we don't
+	 * want to do in the case of a re-trigger. Backends typically
+	 * only do EOI for LSIs anyway.
+	 */
+	xive_do_source_eoi(0, xd);
+
+but it can get hw_irq from:
+
+	xive_do_source_eoi(xc->hw_ipi, &xc->ipi_data);
+
+It seems that these should use XIVE_BAD_IRQ as well or I'm missing
+something ?
+
+arch/powerpc/sysdev/xive/common.c:      if (hw_irq)
+arch/powerpc/sysdev/xive/common.c:              if (d->domain !=3D xive_irq=
+_domain || hw_irq =3D=3D 0)
+
+
+
+>  arch/powerpc/sysdev/xive/xive-internal.h |  7 +++++++
+>  arch/powerpc/sysdev/xive/common.c        | 12 +++---------
+>  arch/powerpc/sysdev/xive/native.c        |  4 ++--
+>  arch/powerpc/sysdev/xive/spapr.c         |  4 ++--
+>  4 files changed, 14 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysd=
+ev/xive/xive-internal.h
+> index 59cd366e7933..382980f4de2d 100644
+> --- a/arch/powerpc/sysdev/xive/xive-internal.h
+> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
+> @@ -5,6 +5,13 @@
+>  #ifndef __XIVE_INTERNAL_H
+>  #define __XIVE_INTERNAL_H
+> =20
+> +/*
+> + * A "disabled" interrupt should never fire, to catch problems
+> + * we set its logical number to this
+> + */
+> +#define XIVE_BAD_IRQ		0x7fffffff
+> +#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
+> +
+>  /* Each CPU carry one of these with various per-CPU state */
+>  struct xive_cpu {
+>  #ifdef CONFIG_SMP
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index fa49193206b6..550baba98ec9 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -68,13 +68,6 @@ static u32 xive_ipi_irq;
+>  /* Xive state for each CPU */
+>  static DEFINE_PER_CPU(struct xive_cpu *, xive_cpu);
+> =20
+> -/*
+> - * A "disabled" interrupt should never fire, to catch problems
+> - * we set its logical number to this
+> - */
+> -#define XIVE_BAD_IRQ		0x7fffffff
+> -#define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
+> -
+>  /* An invalid CPU target */
+>  #define XIVE_INVALID_TARGET	(-1)
+> =20
+> @@ -1153,7 +1146,7 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
+>  	xc =3D per_cpu(xive_cpu, cpu);
+> =20
+>  	/* Check if we are already setup */
+> -	if (xc->hw_ipi !=3D 0)
+> +	if (xc->hw_ipi !=3D XIVE_BAD_IRQ)
+>  		return 0;
+> =20
+>  	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
+> @@ -1190,7 +1183,7 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, =
+struct xive_cpu *xc)
+>  	/* Disable the IPI and free the IRQ data */
+> =20
+>  	/* Already cleaned up ? */
+> -	if (xc->hw_ipi =3D=3D 0)
+> +	if (xc->hw_ipi =3D=3D XIVE_BAD_IRQ)
+>  		return;
+> =20
+>  	/* Mask the IPI */
+> @@ -1346,6 +1339,7 @@ static int xive_prepare_cpu(unsigned int cpu)
+>  		if (np)
+>  			xc->chip_id =3D of_get_ibm_chip_id(np);
+>  		of_node_put(np);
+> +		xc->hw_ipi =3D XIVE_BAD_IRQ;
+> =20
+>  		per_cpu(xive_cpu, cpu) =3D xc;
+>  	}
+> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive=
+/native.c
+> index 0ff6b739052c..50e1a8e02497 100644
+> --- a/arch/powerpc/sysdev/xive/native.c
+> +++ b/arch/powerpc/sysdev/xive/native.c
+> @@ -312,7 +312,7 @@ static void xive_native_put_ipi(unsigned int cpu, str=
+uct xive_cpu *xc)
+>  	s64 rc;
+> =20
+>  	/* Free the IPI */
+> -	if (!xc->hw_ipi)
+> +	if (xc->hw_ipi =3D=3D XIVE_BAD_IRQ)
+>  		return;
+>  	for (;;) {
+>  		rc =3D opal_xive_free_irq(xc->hw_ipi);
+> @@ -320,7 +320,7 @@ static void xive_native_put_ipi(unsigned int cpu, str=
+uct xive_cpu *xc)
+>  			msleep(OPAL_BUSY_DELAY_MS);
+>  			continue;
+>  		}
+> -		xc->hw_ipi =3D 0;
+> +		xc->hw_ipi =3D XIVE_BAD_IRQ;
+>  		break;
+>  	}
+>  }
+> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/=
+spapr.c
+> index 55dc61cb4867..3f15615712b5 100644
+> --- a/arch/powerpc/sysdev/xive/spapr.c
+> +++ b/arch/powerpc/sysdev/xive/spapr.c
+> @@ -560,11 +560,11 @@ static int xive_spapr_get_ipi(unsigned int cpu, str=
+uct xive_cpu *xc)
+> =20
+>  static void xive_spapr_put_ipi(unsigned int cpu, struct xive_cpu *xc)
+>  {
+> -	if (!xc->hw_ipi)
+> +	if (xc->hw_ipi =3D=3D XIVE_BAD_IRQ)
+>  		return;
+> =20
+>  	xive_irq_bitmap_free(xc->hw_ipi);
+> -	xc->hw_ipi =3D 0;
+> +	xc->hw_ipi =3D XIVE_BAD_IRQ;
+>  }
+>  #endif /* CONFIG_SMP */
+> =20
+
