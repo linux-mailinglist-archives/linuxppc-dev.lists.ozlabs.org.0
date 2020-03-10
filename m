@@ -2,56 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A39617F6FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 13:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A7D17F766
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 13:27:53 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48cDH50JkszDqRs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 23:02:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48cDrQ294YzDqVm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 23:27:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48cDDn6zmTzDqHF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 23:00:25 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=ukon=43=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=myWQjj6o; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48cDDn5Zgvz9sRN; Tue, 10 Mar 2020 23:00:25 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48cDDm2kHrz9sQx;
- Tue, 10 Mar 2020 23:00:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1583841624;
- bh=IOL1pQ8k+h2icJ3+rdfKQ0FCcEAuFYRuFoHqHy9IlP4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=myWQjj6ou9M/rx0t6WppLArlcp+X62GAuWKKpOnbPPnrled0bjPkm6keJHrkThfrs
- MVIJ4XU8hsmpo3lYwjj6XaEof4a9dw1MBHyRZSaU2Qp6WdLSb1pmkhhFNplYT84goq
- SFkv3VIkrG/i5lUUzC1D7USo4Jo2Trweix6nchWDVLKq4deu8xSR67RbIcABnaO6ud
- oNqCvaogrZu90PPuuv234bt05tO35Y1lIKl+rWny0zdlvXHbIhJat1rgNkICdZoeT6
- 0YM/z3sDxJl1dxyqJsT2ZxVH7hCK0kjQ/GWh8wsvi+jD+f43M/iEnqOonRX6n2Cfty
- 2fYA1ZVIjRcbQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <masahiroy@kernel.org>,
- Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc/Makefile: Mark phony targets as PHONY
-In-Reply-To: <CAK7LNAQfREwzk4NwE5PzxOXGLcsk2BtjYNKvKx8g4_vxHmNHdw@mail.gmail.com>
-References: <20200219000434.15872-1-mpe@ellerman.id.au>
- <48YT3Y2QBsz9sSs@ozlabs.org>
- <CAK7LNAQfREwzk4NwE5PzxOXGLcsk2BtjYNKvKx8g4_vxHmNHdw@mail.gmail.com>
-Date: Tue, 10 Mar 2020 23:00:21 +1100
-Message-ID: <87r1y0ifmy.fsf@mpe.ellerman.id.au>
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48cDpF1B6wzDqQc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 23:25:56 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
+ big-endian PowerKVM load
+Date: Tue, 10 Mar 2020 12:25:53 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: aneesh.kumar@linux.ibm.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-206669-206035-hXFGFOVRBg@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
+References: <bug-206669-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,43 +61,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> On Fri, Mar 6, 2020 at 9:27 AM Michael Ellerman
-> <patch-notifications@ellerman.id.au> wrote:
->>
->> On Wed, 2020-02-19 at 00:04:34 UTC, Michael Ellerman wrote:
->> > Some of our phony targets are not marked as such. This can lead to
->> > confusing errors, eg:
->> >
->> >   $ make clean
->> >   $ touch install
->> >   $ make install
->> >   make: 'install' is up to date.
->> >   $
->> >
->> > Fix it by adding them to the PHONY variable which is marked phony in
->> > the top-level Makefile, or in scripts/Makefile.build for the boot
->> > Makefile.
->> >
->> > Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
->> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->>
->> Applied to powerpc next.
->>
->> https://git.kernel.org/powerpc/c/d42c6d0f8d004c3661dde3c376ed637e9f292c22
->>
->
-> You do not have to double your Signed-off-by.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 
-Oops :/
+Aneesh Kumar KV (aneesh.kumar@linux.ibm.com) changed:
 
-My scripts don't cope with applying my own patches very well. Will try
-to fix it.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |aneesh.kumar@linux.ibm.com
 
-cheers
+--- Comment #9 from Aneesh Kumar KV (aneesh.kumar@linux.ibm.com) ---
+Also, can you try disabling THP. echo "never" >
+/sys/kernel/mm/transparent_hugepage/enabled=20
+
+-aneesh
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
