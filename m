@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A7D17F766
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 13:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 949EA17F772
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 13:29:46 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48cDrQ294YzDqVm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 23:27:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48cDtQ4qTXzDqVn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Mar 2020 23:29:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48cDpF1B6wzDqQc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 23:25:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48cDrn5F0fzDqQg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 23:28:09 +1100 (AEDT)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
  big-endian PowerKVM load
-Date: Tue, 10 Mar 2020 12:25:53 +0000
+Date: Tue, 10 Mar 2020 12:28:07 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -35,14 +35,14 @@ X-Bugzilla-Component: PPC-64
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: aneesh.kumar@linux.ibm.com
+X-Bugzilla-Who: glaubitz@physik.fu-berlin.de
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-206669-206035-hXFGFOVRBg@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206669-206035-hZcBFQxH3R@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
 References: <bug-206669-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,17 +67,16 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 
-Aneesh Kumar KV (aneesh.kumar@linux.ibm.com) changed:
+--- Comment #10 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.d=
+e) ---
+(In reply to Aneesh Kumar KV from comment #9)
+> Also, can you try disabling THP. echo "never" >
+> /sys/kernel/mm/transparent_hugepage/enabled=20
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |aneesh.kumar@linux.ibm.com
+Yes. Just disabled.
 
---- Comment #9 from Aneesh Kumar KV (aneesh.kumar@linux.ibm.com) ---
-Also, can you try disabling THP. echo "never" >
-/sys/kernel/mm/transparent_hugepage/enabled=20
-
--aneesh
+FWIW, the machine just crashed some minutes ago but I didn't have a serial
+console open to capture the trace.
 
 --=20
 You are receiving this mail because:
