@@ -2,80 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158E31818EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 13:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D59431818B7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 13:49:07 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48csVM3LGBzDqSH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 23:59:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48csGR5ng9zDqQR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 23:49:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=felix@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=QTAvgF0Y; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48csLX31ntzDqSD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 23:52:33 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02BBpbMH102625
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 07:53:09 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ypxwfaa7x-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 07:53:02 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <felix@linux.ibm.com>;
- Wed, 11 Mar 2020 11:52:55 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 11 Mar 2020 11:52:53 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02BBpqqf44695860
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Mar 2020 11:51:52 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2E91252050;
- Wed, 11 Mar 2020 11:52:52 +0000 (GMT)
-Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id ECB425204E;
- Wed, 11 Mar 2020 11:52:51 +0000 (GMT)
-Received: from w541.tlslab.ibm.com (t42p.tlslab.ibm.com [9.101.4.37])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id ABC1A2201CF;
- Wed, 11 Mar 2020 12:52:51 +0100 (CET)
-From: Philippe Bergheaud <felix@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] ocxl: control via sysfs whether the FPGA is reloaded on a
- link reset
-Date: Wed, 11 Mar 2020 12:52:16 +0100
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48crsY63VXzDqN5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 23:30:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1583929844;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yfddzOhrs8BW7sEdgX8Oe3MsWES9JOmYHC+bAobOVFY=;
+ b=QTAvgF0YU2hMb12rPfUcw/mtvvrJlu8M6z/d3b1NdgoWFQHzqt6Nr4pc2GRIXvPdJS/CfF
+ 25riM37Hapkjew/XJ0OVg5uNaYM9opxYgxRRJ+oWNAeK9U3upcx8pjJZnLmUutBl7eIEqS
+ t9vHgG6AgyemgutNNjumVYj6cTHbDrY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-413-6YM6DG_IMAKYaja-zLaXiw-1; Wed, 11 Mar 2020 08:30:40 -0400
+X-MC-Unique: 6YM6DG_IMAKYaja-zLaXiw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3A2C8107ACC7;
+ Wed, 11 Mar 2020 12:30:37 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.36.118.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 817935C1D4;
+ Wed, 11 Mar 2020 12:30:27 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/5] mm/memory_hotplug: allow to specify a default
+ online_type
+Date: Wed, 11 Mar 2020 13:30:21 +0100
+Message-Id: <20200311123026.16071-1-david@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20031111-0016-0000-0000-000002EF60FB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031111-0017-0000-0000-00003352C9EA
-Message-Id: <20200311115216.532-1-felix@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-11_05:2020-03-11,
- 2020-03-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=3 phishscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 mlxlogscore=922
- clxscore=1011 bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003110077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,222 +67,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fbarrat@linux.ibm.com, clombard@linux.ibm.com,
- Philippe Bergheaud <felix@linux.ibm.com>, ajd@linux.ibm.com,
- alastair@au1.ibm.com
+Cc: Yumei Huang <yuhuang@redhat.com>, linux-hyperv@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Baoquan He <bhe@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Eduardo Habkost <ehabkost@redhat.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Wei Yang <richard.weiyang@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>,
+ Milan Zamazal <mzamazal@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Igor Mammedov <imammedo@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some opencapi FPGA images allow to control if the FPGA should be reloaded
-on the next adapter reset. If it is supported, the image specifies it
-through a Vendor Specific DVSEC in the config space of function 0.
+Distributions nowadays use udev rules ([1] [2]) to specify if and
+how to online hotplugged memory. The rules seem to get more complex with
+many special cases. Due to the various special cases,
+CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE cannot be used. All memory hotplug
+is handled via udev rules.
 
-This patch adds an interface to sysfs to control that behavior, if possib=
-le.
+Everytime we hotplug memory, the udev rule will come to the same
+conclusion. Especially Hyper-V (but also soon virtio-mem) add a lot of
+memory in separate memory blocks and wait for memory to get onlined by us=
+er
+space before continuing to add more memory blocks (to not add memory fast=
+er
+than it is getting onlined). This of course slows down the whole memory
+hotplug process.
 
-Signed-off-by: Philippe Bergheaud <felix@linux.ibm.com>
----
- Documentation/ABI/testing/sysfs-class-ocxl | 10 ++++
- drivers/misc/ocxl/config.c                 | 59 +++++++++++++++++++++-
- drivers/misc/ocxl/ocxl_internal.h          |  6 +++
- drivers/misc/ocxl/sysfs.c                  | 35 +++++++++++++
- include/misc/ocxl-config.h                 |  1 +
- 5 files changed, 110 insertions(+), 1 deletion(-)
+To make the job of distributions easier and to avoid udev rules that get
+more and more complicated, let's extend the mechanism provided by
+- /sys/devices/system/memory/auto_online_blocks
+- "memhp_default_state=3D" on the kernel cmdline
+to be able to specify also "online_movable" as well as "online_kernel"
 
-diff --git a/Documentation/ABI/testing/sysfs-class-ocxl b/Documentation/A=
-BI/testing/sysfs-class-ocxl
-index b5b1fa197592..b9ea671d5805 100644
---- a/Documentation/ABI/testing/sysfs-class-ocxl
-+++ b/Documentation/ABI/testing/sysfs-class-ocxl
-@@ -33,3 +33,13 @@ Date:		January 2018
- Contact:	linuxppc-dev@lists.ozlabs.org
- Description:	read/write
- 		Give access the global mmio area for the AFU
+=3D=3D=3D Example /usr/libexec/config-memhotplug =3D=3D=3D
+
+#!/bin/bash
+
+VIRT=3D`systemd-detect-virt --vm`
+ARCH=3D`uname -p`
+
+sense_virtio_mem() {
+  if [ -d "/sys/bus/virtio/drivers/virtio_mem/" ]; then
+    DEVICES=3D`find /sys/bus/virtio/drivers/virtio_mem/ -maxdepth 1 -type=
+ l | wc -l`
+    if [ $DEVICES !=3D "0" ]; then
+        return 0
+    fi
+  fi
+  return 1
+}
+
+if [ ! -e "/sys/devices/system/memory/auto_online_blocks" ]; then
+  echo "Memory hotplug configuration support missing in the kernel"
+  exit 1
+fi
+
+if grep "memhp_default_state=3D" /proc/cmdline > /dev/null; then
+  echo "Memory hotplug configuration overridden in kernel cmdline (memhp_=
+default_state=3D)"
+  exit 1
+fi
+
+if [ $VIRT =3D=3D "microsoft" ]; then
+  echo "Detected Hyper-V on $ARCH"
+  # Hyper-V wants all memory in ZONE_NORMAL
+  ONLINE_TYPE=3D"online_kernel"
+elif sense_virtio_mem; then
+  echo "Detected virtio-mem on $ARCH"
+  # virtio-mem wants all memory in ZONE_NORMAL
+  ONLINE_TYPE=3D"online_kernel"
+elif [ $ARCH =3D=3D "s390x" ] || [ $ARCH =3D=3D "s390" ]; then
+  echo "Detected $ARCH"
+  # standby memory should not be onlined automatically
+  ONLINE_TYPE=3D"offline"
+elif [ $ARCH =3D=3D "ppc64" ] || [ $ARCH =3D=3D "ppc64le" ]; then
+  echo "Detected" $ARCH
+  # PPC64 is handled via a user space daemon AFAIK
+  ONLINE_TYPE=3D"offline"
+elif [ $VIRT =3D=3D "none" ]; then
+  echo "Detected bare-metal on $ARCH"
+  # Bare metal users expect hotplugged memory to be unpluggable. We assum=
+e
+  # that ZONE imbalances on such enterpise servers cannot happen and is
+  # properly documented
+  ONLINE_TYPE=3D"online_movable"
+else
+  # TODO: Hypervisors that want to unplug DIMMs and can guarantee that ZO=
+NE
+  # imbalances won't happen
+  echo "Detected $VIRT on $ARCH"
+  # Usually, ballooning is used in virtual environments, so memory should=
+ go to
+  # ZONE_NORMAL. However, sometimes "movable_node" is relevant.
+  ONLINE_TYPE=3D"online"
+fi
+
+echo "Selected online_type:" $ONLINE_TYPE
+
+# Configure what to do with memory that will be hotplugged in the future
+echo $ONLINE_TYPE 2>/dev/null > /sys/devices/system/memory/auto_online_bl=
+ocks
+if [ $? !=3D "0" ]; then
+  echo "Memory hotplug cannot be configured (e.g., old kernel or missing =
+permissions)"
+  # A backup udev rule should handle old kernels if necessary
+  exit 1
+fi
+
+# Process all already pluggedd blocks (e.g., DIMMs, but also Hyper-V or v=
+irtio-mem)
+if [ $ONLINE_TYPE !=3D "offline" ]; then
+  for MEMORY in /sys/devices/system/memory/memory*; do
+    STATE=3D`cat $MEMORY/state`
+    if [ $STATE =3D=3D "offline" ]; then
+        echo $ONLINE_TYPE > $MEMORY/state
+    fi
+  done
+fi
+
+
+=3D=3D=3D Example /usr/lib/systemd/system/config-memhotplug.service =3D=3D=
+=3D
+
+[Unit]
+Description=3DConfigure memory hotplug behavior
+DefaultDependencies=3Dno
+Conflicts=3Dshutdown.target
+Before=3Dsysinit.target shutdown.target
+After=3Dsystemd-modules-load.service
+ConditionPathExists=3D|/sys/devices/system/memory/auto_online_blocks
+
+[Service]
+ExecStart=3D/usr/libexec/config-memhotplug
+Type=3Doneshot
+TimeoutSec=3D0
+RemainAfterExit=3Dyes
+
+[Install]
+WantedBy=3Dsysinit.target
+
+
+=3D=3D=3D Example modification to the 40-redhat.rules [2] =3D=3D=3D
+
+diff --git a/40-redhat.rules b/40-redhat.rules-new
+index 2c690e5..168fd03 100644
+--- a/40-redhat.rules
++++ b/40-redhat.rules-new
+@@ -6,6 +6,9 @@ SUBSYSTEM=3D=3D"cpu", ACTION=3D=3D"add", TEST=3D=3D"onlin=
+e", ATTR{online}=3D=3D"0", ATTR{online}
+ # Memory hotadd request
+ SUBSYSTEM!=3D"memory", GOTO=3D"memory_hotplug_end"
+ ACTION!=3D"add", GOTO=3D"memory_hotplug_end"
++# memory hotplug behavior configured
++PROGRAM=3D=3D"grep online /sys/devices/system/memory/auto_online_blocks"=
+, GOTO=3D"memory_hotplug_end"
 +
-+What:		/sys/class/ocxl/<afu name>/reload_on_reset
-+Date:		February 2020
-+Contact:	linuxppc-dev@lists.ozlabs.org
-+Description:	read/write
-+		Control whether the FPGA is reloaded on a link reset
-+			0	Do not reload FPGA image from flash
-+			1	Reload FPGA image from flash
-+			unavailable
-+				The device does not support this capability
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index c8e19bfb5ef9..3488463c1640 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -71,6 +71,20 @@ static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8=
- afu_idx)
- 	return 0;
- }
-=20
-+/**
-+ * get_function_0() - Find a related PCI device (function 0)
-+ * @device: PCI device to match
-+ *
-+ * Returns a pointer to the related device, or null if not found
-+ */
-+static struct pci_dev *get_function_0(struct pci_dev *dev)
-+{
-+	unsigned int devfn =3D PCI_DEVFN(PCI_SLOT(dev->devfn), 0);
-+
-+	return pci_get_domain_bus_and_slot(pci_domain_nr(dev->bus),
-+					   dev->bus->number, devfn);
-+}
-+
- static void read_pasid(struct pci_dev *dev, struct ocxl_fn_config *fn)
- {
- 	u16 val;
-@@ -159,7 +173,7 @@ static int read_dvsec_afu_info(struct pci_dev *dev, s=
-truct ocxl_fn_config *fn)
- static int read_dvsec_vendor(struct pci_dev *dev)
- {
- 	int pos;
--	u32 cfg, tlx, dlx;
-+	u32 cfg, tlx, dlx, reset_reload;
-=20
- 	/*
- 	 * vendor specific DVSEC is optional
-@@ -178,11 +192,54 @@ static int read_dvsec_vendor(struct pci_dev *dev)
- 	pci_read_config_dword(dev, pos + OCXL_DVSEC_VENDOR_CFG_VERS, &cfg);
- 	pci_read_config_dword(dev, pos + OCXL_DVSEC_VENDOR_TLX_VERS, &tlx);
- 	pci_read_config_dword(dev, pos + OCXL_DVSEC_VENDOR_DLX_VERS, &dlx);
-+	pci_read_config_dword(dev, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD, &reset=
-_reload);
-=20
- 	dev_dbg(&dev->dev, "Vendor specific DVSEC:\n");
- 	dev_dbg(&dev->dev, "  CFG version =3D 0x%x\n", cfg);
- 	dev_dbg(&dev->dev, "  TLX version =3D 0x%x\n", tlx);
- 	dev_dbg(&dev->dev, "  DLX version =3D 0x%x\n", dlx);
-+	dev_dbg(&dev->dev, "  ResetReload =3D 0x%x\n", reset_reload);
-+	return 0;
-+}
-+
-+int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
-+{
-+	int reset_reload =3D -1;
-+	int pos =3D 0;
-+	struct pci_dev *dev0 =3D get_function_0(dev);
-+
-+	if (dev0)
-+		pos =3D find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
-+
-+	if (pos)
-+		pci_read_config_dword(dev0,
-+				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
-+				      &reset_reload);
-+	if (reset_reload =3D=3D -1)
-+		return reset_reload;
-+
-+	*val =3D reset_reload & BIT(0);
-+	return 0;
-+}
-+
-+int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
-+{
-+	int reset_reload =3D -1;
-+	int pos =3D 0;
-+	struct pci_dev *dev0 =3D get_function_0(dev);
-+
-+	if (dev0)
-+		pos =3D find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
-+
-+	if (pos)
-+		pci_read_config_dword(dev0,
-+				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
-+				      &reset_reload);
-+	if (reset_reload =3D=3D -1)
-+		return reset_reload;
-+
-+	val &=3D BIT(0);
-+	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD, val)=
-;
- 	return 0;
- }
-=20
-diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_i=
-nternal.h
-index 345bf843a38e..af9a84aeee6f 100644
---- a/drivers/misc/ocxl/ocxl_internal.h
-+++ b/drivers/misc/ocxl/ocxl_internal.h
-@@ -112,6 +112,12 @@ void ocxl_actag_afu_free(struct ocxl_fn *fn, u32 sta=
-rt, u32 size);
-  */
- int ocxl_config_get_pasid_info(struct pci_dev *dev, int *count);
-=20
-+/*
-+ * Control whether the FPGA is reloaded on a link reset
-+ */
-+int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val);
-+int ocxl_config_set_reset_reload(struct pci_dev *dev, int val);
-+
- /*
-  * Check if an AFU index is valid for the given function.
-  *
-diff --git a/drivers/misc/ocxl/sysfs.c b/drivers/misc/ocxl/sysfs.c
-index 58f1ba264206..8f69f7311343 100644
---- a/drivers/misc/ocxl/sysfs.c
-+++ b/drivers/misc/ocxl/sysfs.c
-@@ -51,11 +51,46 @@ static ssize_t contexts_show(struct device *device,
- 			afu->pasid_count, afu->pasid_max);
- }
-=20
-+static ssize_t reload_on_reset_show(struct device *device,
-+		struct device_attribute *attr,
-+		char *buf)
-+{
-+	struct ocxl_afu *afu =3D to_afu(device);
-+	struct ocxl_fn *fn =3D afu->fn;
-+	struct pci_dev *pci_dev =3D to_pci_dev(fn->dev.parent);
-+	int val;
-+
-+	if (ocxl_config_get_reset_reload(pci_dev, &val))
-+		return scnprintf(buf, PAGE_SIZE, "unavailable\n");
-+
-+	return scnprintf(buf, PAGE_SIZE, "%d\n", val);
-+}
-+
-+static ssize_t reload_on_reset_store(struct device *device,
-+		struct device_attribute *attr,
-+		const char *buf, size_t count)
-+{
-+	struct ocxl_afu *afu =3D to_afu(device);
-+	struct ocxl_fn *fn =3D afu->fn;
-+	struct pci_dev *pci_dev =3D to_pci_dev(fn->dev.parent);
-+	int rc, val;
-+
-+	rc =3D sscanf(buf, "%i", &val);
-+	if ((rc !=3D 1) || !(val =3D=3D 1 || val =3D=3D 0))
-+		return -EINVAL;
-+
-+	if (ocxl_config_set_reset_reload(pci_dev, val))
-+		return -ENODEV;
-+
-+	return count;
-+}
-+
- static struct device_attribute afu_attrs[] =3D {
- 	__ATTR_RO(global_mmio_size),
- 	__ATTR_RO(pp_mmio_size),
- 	__ATTR_RO(afu_version),
- 	__ATTR_RO(contexts),
-+	__ATTR_RW(reload_on_reset),
- };
-=20
- static ssize_t global_mmio_read(struct file *filp, struct kobject *kobj,
-diff --git a/include/misc/ocxl-config.h b/include/misc/ocxl-config.h
-index 3526fa996a22..ccfd3b463517 100644
---- a/include/misc/ocxl-config.h
-+++ b/include/misc/ocxl-config.h
-@@ -41,5 +41,6 @@
- #define   OCXL_DVSEC_VENDOR_CFG_VERS            0x0C
- #define   OCXL_DVSEC_VENDOR_TLX_VERS            0x10
- #define   OCXL_DVSEC_VENDOR_DLX_VERS            0x20
-+#define   OCXL_DVSEC_VENDOR_RESET_RELOAD        0x38
-=20
- #endif /* _OCXL_CONFIG_H_ */
+ PROGRAM=3D"/bin/uname -p", RESULT=3D=3D"s390*", GOTO=3D"memory_hotplug_e=
+nd"
+
+ ENV{.state}=3D"online"
+
+=3D=3D=3D
+
+
+[1] https://github.com/lnykryn/systemd-rhel/pull/281
+[2] https://github.com/lnykryn/systemd-rhel/blob/staging/rules/40-redhat.=
+rules
+
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Yumei Huang <yuhuang@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Eduardo Habkost <ehabkost@redhat.com>
+Cc: Milan Zamazal <mzamazal@redhat.com>
+
+David Hildenbrand (5):
+  drivers/base/memory: rename MMOP_ONLINE_KEEP to MMOP_ONLINE
+  drivers/base/memory: map MMOP_OFFLINE to 0
+  drivers/base/memory: store mapping between MMOP_* and string in an
+    array
+  mm/memory_hotplug: convert memhp_auto_online to store an online_type
+  mm/memory_hotplug: allow to specify a default online_type
+
+ arch/powerpc/platforms/powernv/memtrace.c |  2 +-
+ drivers/base/memory.c                     | 71 ++++++++++++-----------
+ drivers/hv/hv_balloon.c                   |  2 +-
+ include/linux/memory_hotplug.h            | 13 ++++-
+ mm/memory_hotplug.c                       | 17 +++---
+ 5 files changed, 58 insertions(+), 47 deletions(-)
+
 --=20
-2.25.1
+2.24.1
 
