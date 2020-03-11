@@ -2,79 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C72E18103B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 06:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5275181058
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 07:05:08 +0100 (CET)
 Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ch1s50fHzDqZx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 16:52:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48chJL1jX0zDqXs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Mar 2020 17:05:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=209.85.214.196;
+ helo=mail-pl1-f196.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com
+ [209.85.214.196])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ch0X6cjQzDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 16:51:21 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02B5oWWU034674
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 01:51:09 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ypt2u0a1d-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 01:51:09 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48chGw6K4bzDqN0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Mar 2020 17:03:48 +1100 (AEDT)
+Received: by mail-pl1-f196.google.com with SMTP id w12so553005pll.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2020 23:03:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=z8609wnYeWM4sQs0oWODebpUweUOgM1KYQF7Uwz5+vI=;
+ b=TTk96AoCDK6lTwmIwZ4oCfX2igI5LUohyL86QuLe143nSMzxX+4nSFmPWoEyslljR9
+ U+TSVIvp1Wy4GmqSMKP89TU0/V9g6AflTCwCdV6zEgskUbRWL0O3mHq9wiKE3mUOihAN
+ bGBy76nHD9rqzaYASuCE/DkiLnPDumm6CeXiE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=z8609wnYeWM4sQs0oWODebpUweUOgM1KYQF7Uwz5+vI=;
+ b=AEHyNkjtrxefIq2QfWz7y36k2NJZLtN/gRX4fiukp8dzUcbH5yuJiG4L357gU6Wv40
+ JToPGdjj85WYDm6qd/7AfFWX+o4Zb/TQi52CuFfaRiFlXqQOMKMy33VENKpljfaCJgqf
+ ZzyWJNHsEoftRHj/8ZyVducwZpeclQ3qywcukmIfjBOgNvbsvAJ/Lxsj/5wJKVG/SUcp
+ UgZExZ/JM3SRAH8rzQrZ4vD22l5OWLdDz6/fhQN6skcHZLGnjxedGm07GPjNFFNN7o0B
+ mpeLwjAAcZzf7nJMP1T2eeHbWJP3qRsywKRauC0PlboN/SmbOL/y/ZniC8Ay8jb+Dfr8
+ PY0w==
+X-Gm-Message-State: ANhLgQ30lp5bVII8/s5lrM8PFW4uf43xpq5eMCGaJSf2cn3R11qDSVLq
+ 6+6AT3EsCZNt8r7L+aKs9fpxrQ==
+X-Google-Smtp-Source: ADFU+vtg3jbcIVzZD3g1wFbmGSMoSJ7n6V1O7TzNEnL65b6AC/9l6n1n5U9ubMLhpS80zmw/PimItw==
+X-Received: by 2002:a17:90a:37c6:: with SMTP id
+ v64mr1811528pjb.20.1583906626109; 
+ Tue, 10 Mar 2020 23:03:46 -0700 (PDT)
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Wed, 11 Mar 2020 05:51:07 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 11 Mar 2020 05:51:04 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02B5o1P235324308
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Mar 2020 05:50:02 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7668942047;
- Wed, 11 Mar 2020 05:51:01 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 462CE4203F;
- Wed, 11 Mar 2020 05:51:00 +0000 (GMT)
-Received: from vajain21.in.ibm.com.com (unknown [9.199.53.91])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 11 Mar 2020 05:51:00 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] pseries/iommu: Tweak ddw behavior in presence of pmem
-Date: Wed, 11 Mar 2020 11:20:50 +0530
-X-Mailer: git-send-email 2.24.1
+ (2001-44b8-1113-6700-05c2-72f4-ac61-bc44.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:5c2:72f4:ac61:bc44])
+ by smtp.gmail.com with ESMTPSA id p7sm4230533pjp.1.2020.03.10.23.03.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Mar 2020 23:03:45 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v6 1/7] powerpc/mm: Implement set_memory() routines
+In-Reply-To: <20200310010338.21205-2-ruscur@russell.cc>
+References: <20200310010338.21205-1-ruscur@russell.cc>
+ <20200310010338.21205-2-ruscur@russell.cc>
+Date: Wed, 11 Mar 2020 17:03:41 +1100
+Message-ID: <87imjbpgw2.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20031105-0020-0000-0000-000003B29187
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031105-0021-0000-0000-0000220AE026
-Message-Id: <20200311055050.161556-1-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-11_01:2020-03-10,
- 2020-03-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=930 bulkscore=0 adultscore=0 spamscore=0 suspectscore=1
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2003110036
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,163 +74,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- Michael Ellerman <ellerman@au1.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Recently we discovered an issue on pseries guests that prevents pci
-devices from accessing pmem memory via DMA. Performing such an
-operation will cause PHB to freeze the corresponding partition
-endpoint and in some scenarios will shutdown the disk that hosts the
-rootfs.
+Russell Currey <ruscur@russell.cc> writes:
 
-A fix for this is in works until then this patch proposes to disable
-DDW if pmem nodes are present in the device-tree. This would force all
-DMA from I/O adapters through default 2-GB window and prevent direct
-access of pmem memory which is located beyond 4-TB guest physical
-address.
+> The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
+> and are generally useful primitives to have.  This implementation is
+> designed to be completely generic across powerpc's many MMUs.
+>
+> It's possible that this could be optimised to be faster for specific
+> MMUs, but the focus is on having a generic and safe implementation for
+> now.
+>
+> This implementation does not handle cases where the caller is attempting
+> to change the mapping of the page it is executing from, or if another
+> CPU is concurrently using the page being altered.  These cases likely
+> shouldn't happen, but a more complex implementation with MMU-specific code
+> could safely handle them, so that is left as a TODO for now.
+>
+> These functions do nothing if STRICT_KERNEL_RWX is not enabled.
+>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+> v6: Merge patch 8/8 from v5, handling RWX not being enabled.
+>     Add note to change_page_attr() in case it's ever made non-static
+> ---
+>  arch/powerpc/Kconfig                  |  1 +
+>  arch/powerpc/include/asm/set_memory.h | 32 +++++++++++
+>  arch/powerpc/mm/Makefile              |  2 +-
+>  arch/powerpc/mm/pageattr.c            | 79 +++++++++++++++++++++++++++
+>  4 files changed, 113 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/powerpc/include/asm/set_memory.h
+>  create mode 100644 arch/powerpc/mm/pageattr.c
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 497b7d0b2d7e..bd074246e34e 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -129,6 +129,7 @@ config PPC
+>  	select ARCH_HAS_PTE_SPECIAL
+>  	select ARCH_HAS_MEMBARRIER_CALLBACKS
+>  	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+> +	select ARCH_HAS_SET_MEMORY
+>  	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
+>  	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+>  	select ARCH_HAS_UACCESS_FLUSHCACHE
+> diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+> new file mode 100644
+> index 000000000000..64011ea444b4
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/set_memory.h
+> @@ -0,0 +1,32 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_POWERPC_SET_MEMORY_H
+> +#define _ASM_POWERPC_SET_MEMORY_H
+> +
+> +#define SET_MEMORY_RO	0
+> +#define SET_MEMORY_RW	1
+> +#define SET_MEMORY_NX	2
+> +#define SET_MEMORY_X	3
+> +
+> +int change_memory_attr(unsigned long addr, int numpages, long action);
+> +
+> +static inline int set_memory_ro(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
+> +}
+> +
+> +static inline int set_memory_rw(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
+> +}
+> +
+> +static inline int set_memory_nx(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
+> +}
+> +
+> +static inline int set_memory_x(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_X);
+> +}
+> +
+> +#endif
+> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+> index 5e147986400d..a998fdac52f9 100644
+> --- a/arch/powerpc/mm/Makefile
+> +++ b/arch/powerpc/mm/Makefile
+> @@ -5,7 +5,7 @@
+>  
+>  ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
+>  
+> -obj-y				:= fault.o mem.o pgtable.o mmap.o \
+> +obj-y				:= fault.o mem.o pgtable.o mmap.o pageattr.o \
+>  				   init_$(BITS).o pgtable_$(BITS).o \
+>  				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
+>  				   init-common.o mmu_context.o drmem.o
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> new file mode 100644
+> index 000000000000..748fa56d9db0
+> --- /dev/null
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -0,0 +1,79 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * MMU-generic set_memory implementation for powerpc
+> + *
+> + * Copyright 2019, IBM Corporation.
+> + */
+> +
+> +#include <linux/mm.h>
+> +#include <linux/set_memory.h>
+> +
+> +#include <asm/mmu.h>
+> +#include <asm/page.h>
+> +#include <asm/pgtable.h>
+> +
+> +
+> +/*
+> + * Updates the attributes of a page in three steps:
+> + *
+> + * 1. invalidate the page table entry
+> + * 2. flush the TLB
+> + * 3. install the new entry with the updated attributes
+> + *
+> + * This is unsafe if the caller is attempting to change the mapping of the
+> + * page it is executing from, or if another CPU is concurrently using the
+> + * page being altered.
+> + *
+> + * TODO make the implementation resistant to this.
+> + *
+> + * NOTE: can be dangerous to call without STRICT_KERNEL_RWX
+> + */
+> +static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+> +{
+> +	long action = (long)data;
+> +	pte_t pte;
+> +
+> +	spin_lock(&init_mm.page_table_lock);
+> +
+> +	/* invalidate the PTE so it's safe to modify */
+> +	pte = ptep_get_and_clear(&init_mm, addr, ptep);
+> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +
+> +	/* modify the PTE bits as desired, then apply */
+> +	switch (action) {
+> +	case SET_MEMORY_RO:
+> +		pte = pte_wrprotect(pte);
+> +		break;
+> +	case SET_MEMORY_RW:
+> +		pte = pte_mkwrite(pte);
+> +		break;
+> +	case SET_MEMORY_NX:
+> +		pte = pte_exprotect(pte);
+> +		break;
+> +	case SET_MEMORY_X:
+> +		pte = pte_mkexec(pte);
+> +		break;
+> +	default:
+> +		break;
 
-Since this change can have performance penalty for cases where its
-known that i/o adapters wont be performing DMA to pmem, the patch
-adds new args to the 'disable_ddw' kernel commanline flag with
-following possible values:
+Should this have a WARN_ON_ONCE to let you know you're doing something
+that doesn't work? I know it's only ever called by things in this file,
+but still... Anyway it's very minor and I'm not fussed either way.
 
-'default' : Enable DDW only if no Pmem nodes present in device-tree
-'Yes' : Disable DDW always
-'No'  : Force enable DDW even if Pmem nodes present in device-tree
+> +	}
+> +
+> +	set_pte_at(&init_mm, addr, ptep, pte);
+> +	spin_unlock(&init_mm.page_table_lock);
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- .../admin-guide/kernel-parameters.txt         | 10 ++-
- arch/powerpc/platforms/pseries/iommu.c        | 67 +++++++++++++++++--
- 2 files changed, 70 insertions(+), 7 deletions(-)
+Initially I thought: shouldn't you put the PTL lock/unlock in the outer
+function? Then I remembered that apply_to_page_range can potentially
+allocate new page table entries which would deadlock if you held the
+lock.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index c07815d230bc..58e09f7a2cb9 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -901,9 +901,13 @@
- 			The feature only exists starting from
- 			Arch Perfmon v4 (Skylake and newer).
- 
--	disable_ddw	[PPC/PSERIES]
--			Disable Dynamic DMA Window support. Use this if
--			to workaround buggy firmware.
-+	disable_ddw=	[PPC/PSERIES]
-+			Controls weather Dynamic DMA Window support is enabled.
-+			Use this if to workaround buggy firmware. Following
-+			values are supported:
-+                on      Disable ddw always
-+                off     Enable ddw always
-+		default Enable ddw if no Persistent memory present (default)
- 
- 	disable_ipv6=	[IPV6]
- 			See Documentation/networking/ipv6.txt.
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 2e0a8eab5588..97498cc25c9f 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -12,6 +12,7 @@
- 
- #include <linux/init.h>
- #include <linux/types.h>
-+#include <linux/string.h>
- #include <linux/slab.h>
- #include <linux/mm.h>
- #include <linux/memblock.h>
-@@ -755,12 +756,39 @@ static void pci_dma_dev_setup_pSeries(struct pci_dev *dev)
- 		       pci_name(dev));
- }
- 
-+/*
-+ * Following values for the variable are handled
-+ * '-1': Force enable ddw even if Persistent memory is present
-+ * '0' : Enable ddw if no Persistent memory present (default)
-+ * '1' : Disable ddw always
-+ */
- static int __read_mostly disable_ddw;
- 
--static int __init disable_ddw_setup(char *str)
-+static int __init disable_ddw_setup(char *param)
- {
--	disable_ddw = 1;
--	printk(KERN_INFO "ppc iommu: disabling ddw.\n");
-+	bool val;
-+	int res;
-+
-+	/* Maintain old behaviour that disables DDW when flag given */
-+	if (!param) {
-+		disable_ddw = 1;
-+		return 0;
-+	}
-+
-+	res = strtobool(param, &val);
-+
-+	if (!res) {
-+		if (val) {
-+			disable_ddw = 1;
-+			pr_info("ppc iommu: disabling ddw.\n");
-+		} else if (!val) {
-+			/* Force enable of DDW even if pmem is available */
-+			disable_ddw = -1;
-+			pr_info("ppc iommu: will force enable ddw.\n");
-+		}
-+	} else if (strcmp(param, "default") == 0) {
-+		disable_ddw = 0;
-+	}
- 
- 	return 0;
- }
-@@ -1313,6 +1341,37 @@ static struct notifier_block iommu_reconfig_nb = {
- 	.notifier_call = iommu_reconfig_notifier,
- };
- 
-+/* Check if DDW can be supported for this lpar */
-+int ddw_supported(void)
-+{
-+	struct device_node *dn;
-+
-+	if (disable_ddw == -1) /* force enable ddw */
-+		goto out;
-+
-+	if (disable_ddw == 1)
-+		return 0;
-+
-+	/*
-+	 * Due to DMA window limitations currently DDW is not supported
-+	 * for persistent memory. This is due 1 TiB size of direct mapped
-+	 * DMA window size limitation enforce by phyp. Since pmem memory
-+	 * will be mapped at phy address > 4TiB, we cannot accmodate pmem
-+	 * in the DDW window and DMA's to/from the pmem memory will result in
-+	 * PHBs getting frozen triggering EEH. Hence for the the time being
-+	 * disable DDW in presence of a 'ibm,pmemory' node.
-+	 */
-+	dn = of_find_compatible_node(NULL, NULL, "ibm,pmemory");
-+	if (dn) {
-+		pr_info("IOMMU: Disabling DDW as pmem memory available\n");
-+		of_node_put(dn);
-+		return 0;
-+	}
-+ out:
-+	pr_info("IOMMU: Enabling DDW support\n");
-+	return 1;
-+}
-+
- /* These are called very early. */
- void iommu_init_early_pSeries(void)
- {
-@@ -1322,7 +1381,7 @@ void iommu_init_early_pSeries(void)
- 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
- 		pseries_pci_controller_ops.dma_bus_setup = pci_dma_bus_setup_pSeriesLP;
- 		pseries_pci_controller_ops.dma_dev_setup = pci_dma_dev_setup_pSeriesLP;
--		if (!disable_ddw)
-+		if (ddw_supported())
- 			pseries_pci_controller_ops.iommu_bypass_supported =
- 				iommu_bypass_supported_pSeriesLP;
- 	} else {
--- 
-2.24.1
+Speaking of which - apply_to_page_range will create new pte entries if
+you apply it over an address range that isn't filled in. That doesn't
+really make sense here - should you use apply_to_existing_page_range
+instead?
 
+You _might_ be able to move the PTL lock if you use
+apply_to_existing_page_range but I'm not completely sure if that's safe
+or if the speed boost is worth it. You could check mm/memory.c if you
+wanted.
+
+> +
+> +	return 0;
+> +}
+> +
+> +int change_memory_attr(unsigned long addr, int numpages, long action)
+> +{
+> +	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
+> +	unsigned long sz = numpages * PAGE_SIZE;
+> +
+> +	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+> +		return 0;
+> +
+> +	if (!numpages)
+> +		return 0;
+
+What happens if numpages is negative? Doesn't the guard need to check
+for that rather than just for zero?
+
+With those caveats, and noting that I've been focused only on:
+ - lock/unlock paths
+ - integer arithmetic
+ - stuff about apply_page_range semantics
+this patch is:
+
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+
+Regards,
+Daniel
+
+> +
+> +	return apply_to_page_range(&init_mm, start, sz, change_page_attr, (void *)action);
+> +}
+> -- 
+> 2.25.1
