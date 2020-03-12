@@ -1,65 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A624182E6C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 12:00:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48dQpJ42s9zDqnZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 22:00:08 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF8F182E77
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 12:01:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48dQrD1SyszDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 22:01:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jolsa@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=BPcPXBcX; 
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48dQjW4NdpzDqLq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 21:55:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=kjtDKke2; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48dQf40vYHzDqTY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 21:52:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1584010377;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Qh0eXeonMgy20ck7YawIUlc8xJ7ukIA09ot5F0zPtg4=;
- b=BPcPXBcXMDiLhTIirLez1u3855R0hn2v5Z8En8r7jqz/Gm6tbCvSu8c3hb/DyccNcY0d2F
- IARAID12KJdc49dJeTdm85O7SSiCffg2zpxu3B0HuxAWm1PzKDw8wBezJF4pmbnP94CHpt
- I7qmJxIxZbnbKRUnZYX5Nzsgam6T5do=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-140-KYVpkvHxM6yhQfbW7eF_NQ-1; Thu, 12 Mar 2020 06:52:55 -0400
-X-MC-Unique: KYVpkvHxM6yhQfbW7eF_NQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D8FA3800D5B;
- Thu, 12 Mar 2020 10:52:52 +0000 (UTC)
-Received: from krava (ovpn-204-40.brq.redhat.com [10.40.204.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3C307388;
- Thu, 12 Mar 2020 10:52:44 +0000 (UTC)
-Date: Thu, 12 Mar 2020 11:52:31 +0100
-From: Jiri Olsa <jolsa@redhat.com>
-To: Kajol Jain <kjain@linux.ibm.com>
-Subject: Re: [PATCH v4 6/8] perf/tools: Enhance JSON/metric infrastructure to
- handle "?"
-Message-ID: <20200312105231.GE311223@krava>
-References: <20200309062552.29911-1-kjain@linux.ibm.com>
- <20200309062552.29911-7-kjain@linux.ibm.com>
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48dQjL3pfwz9sPF;
+ Thu, 12 Mar 2020 21:55:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1584010558;
+ bh=72/MkVf9VVMOXQXQBCEOJd5iIUWgKkmEQGqh1LToq2c=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=kjtDKke2a24ahWnaI2Uj0G4Fe2Y+Jmmv/GYwuEOLFEW9uRKLJ/Eh8hY/uIvPOkWOq
+ hSpbFhZ+nkMkq9HnJFD5n60KJODzNOkbfNQ2xKBvxmtGjcLFu/cP0AF6WyLXOSMULb
+ 6fFjUvKvb8/nZ+iPRU20W0VkcxW1QK6SeQvdds5ZfmEH3nf/wYggGS/dPu8fp0XU/0
+ 5piT2dBaqMVbWuvgxSVjBFiUYMtS2zI6exgAeql41Nme4eoBMZr+hItq7bW8gr3rM3
+ jCRuhb1gAjdGh5ftRaRGO6Z5fFXzHCOWGuRXdE2RxOkjZdMiy8L8pyOPyQMC+hwaj9
+ VAqGftLnfpYYg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Richard Henderson
+ <rth@twiddle.net>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>, Vineet Gupta
+ <vgupta@synopsys.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich
+ Felker <dalias@libc.org>, Dave Airlie <airlied@redhat.com>, David Airlie
+ <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs
+ <bskeggs@redhat.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri
+ Slaby <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>, Luis
+ Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>, "David
+ S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>, Jon
+ Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Arnd Bergmann
+ <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>, Andrew
+ Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+ virtualization@lists.linux-foundation.org, linux-arch@vger.kernel.org
+Subject: Re: [RESEND PATCH v2 1/9] iomap: Constify ioreadX() iomem argument
+ (as in generic implementation)
+In-Reply-To: <20200219175007.13627-2-krzk@kernel.org>
+References: <20200219175007.13627-1-krzk@kernel.org>
+ <20200219175007.13627-2-krzk@kernel.org>
+Date: Thu, 12 Mar 2020 21:55:44 +1100
+Message-ID: <87ftedj0zz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200309062552.29911-7-kjain@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,66 +82,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
- yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
- ak@linux.intel.com, alexander.shishkin@linux.intel.com,
- anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
- sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, acme@kernel.org,
- jmario@redhat.com, namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 09, 2020 at 11:55:50AM +0530, Kajol Jain wrote:
+Krzysztof Kozlowski <krzk@kernel.org> writes:
+> diff --git a/arch/powerpc/kernel/iomap.c b/arch/powerpc/kernel/iomap.c
+> index 5ac84efc6ede..9fe4fb3b08aa 100644
+> --- a/arch/powerpc/kernel/iomap.c
+> +++ b/arch/powerpc/kernel/iomap.c
+> @@ -15,23 +15,23 @@
+>   * Here comes the ppc64 implementation of the IOMAP 
+>   * interfaces.
+>   */
+> -unsigned int ioread8(void __iomem *addr)
+> +unsigned int ioread8(const void __iomem *addr)
+>  {
+>  	return readb(addr);
+>  }
+> -unsigned int ioread16(void __iomem *addr)
+> +unsigned int ioread16(const void __iomem *addr)
+>  {
+>  	return readw(addr);
+>  }
+> -unsigned int ioread16be(void __iomem *addr)
+> +unsigned int ioread16be(const void __iomem *addr)
+>  {
+>  	return readw_be(addr);
+>  }
+> -unsigned int ioread32(void __iomem *addr)
+> +unsigned int ioread32(const void __iomem *addr)
+>  {
+>  	return readl(addr);
+>  }
+> -unsigned int ioread32be(void __iomem *addr)
+> +unsigned int ioread32be(const void __iomem *addr)
+>  {
+>  	return readl_be(addr);
+>  }
+> @@ -41,27 +41,27 @@ EXPORT_SYMBOL(ioread16be);
+>  EXPORT_SYMBOL(ioread32);
+>  EXPORT_SYMBOL(ioread32be);
+>  #ifdef __powerpc64__
+> -u64 ioread64(void __iomem *addr)
+> +u64 ioread64(const void __iomem *addr)
+>  {
+>  	return readq(addr);
+>  }
+> -u64 ioread64_lo_hi(void __iomem *addr)
+> +u64 ioread64_lo_hi(const void __iomem *addr)
+>  {
+>  	return readq(addr);
+>  }
+> -u64 ioread64_hi_lo(void __iomem *addr)
+> +u64 ioread64_hi_lo(const void __iomem *addr)
+>  {
+>  	return readq(addr);
+>  }
+> -u64 ioread64be(void __iomem *addr)
+> +u64 ioread64be(const void __iomem *addr)
+>  {
+>  	return readq_be(addr);
+>  }
+> -u64 ioread64be_lo_hi(void __iomem *addr)
+> +u64 ioread64be_lo_hi(const void __iomem *addr)
+>  {
+>  	return readq_be(addr);
+>  }
+> -u64 ioread64be_hi_lo(void __iomem *addr)
+> +u64 ioread64be_hi_lo(const void __iomem *addr)
+>  {
+>  	return readq_be(addr);
+>  }
+> @@ -139,15 +139,15 @@ EXPORT_SYMBOL(iowrite64be_hi_lo);
+>   * FIXME! We could make these do EEH handling if we really
+>   * wanted. Not clear if we do.
+>   */
+> -void ioread8_rep(void __iomem *addr, void *dst, unsigned long count)
+> +void ioread8_rep(const void __iomem *addr, void *dst, unsigned long count)
+>  {
+>  	readsb(addr, dst, count);
+>  }
+> -void ioread16_rep(void __iomem *addr, void *dst, unsigned long count)
+> +void ioread16_rep(const void __iomem *addr, void *dst, unsigned long count)
+>  {
+>  	readsw(addr, dst, count);
+>  }
+> -void ioread32_rep(void __iomem *addr, void *dst, unsigned long count)
+> +void ioread32_rep(const void __iomem *addr, void *dst, unsigned long count)
+>  {
+>  	readsl(addr, dst, count);
+>  }
 
-SNIP
+This looks OK to me.
 
-> diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
-> index 9377538f4097..d17664e628db 100644
-> --- a/tools/perf/util/expr.h
-> +++ b/tools/perf/util/expr.h
-> @@ -15,6 +15,7 @@ struct parse_ctx {
->  	struct parse_id ids[MAX_PARSE_ID];
->  };
->  
-> +int expr__runtimeparam;
->  void expr__ctx_init(struct parse_ctx *ctx);
->  void expr__add_id(struct parse_ctx *ctx, const char *id, double val);
->  int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr);
-> diff --git a/tools/perf/util/expr.l b/tools/perf/util/expr.l
-> index 1928f2a3dddc..ec4b00671f67 100644
-> --- a/tools/perf/util/expr.l
-> +++ b/tools/perf/util/expr.l
-> @@ -45,6 +45,21 @@ static char *normalize(char *str)
->  			*dst++ = '/';
->  		else if (*str == '\\')
->  			*dst++ = *++str;
-> +        else if (*str == '?') {
-> +
-> +			int size = snprintf(NULL, 0, "%d", expr__runtimeparam);
-> +			char * paramval = (char *)malloc(size);
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-can't we agree that any reasonable number in here
-wouldn't cross 20 bytes in string or so and use
-buffer for that instead of that malloc exercise?
-
-thanks,
-jirka
-
-> +			int i = 0;
-> +
-> +			if(!paramval)
-> +				*dst++ = '0';
-> +			else {
-> +				sprintf(paramval, "%d", expr__runtimeparam);
-> +				while(i < size)
-> +					*dst++ = paramval[i++];
-> +				free(paramval);
-> +			}
-> +		}
-
-SNIP
-
+cheers
