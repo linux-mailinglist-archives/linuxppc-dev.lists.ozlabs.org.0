@@ -1,47 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773EA182C80
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 10:32:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48dNrs48JNzDqS7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 20:32:13 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A87182E45
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 11:51:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48dQc11hqPzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 21:51:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=tzimmermann@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
+ dmarc=none (p=none dis=none) header.from=suse.de
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48dNqM3fbLzDqKK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 20:30:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48dQYs0NwzzDqK1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 21:49:17 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 5C0B6AFB4;
- Thu, 12 Mar 2020 09:30:51 +0000 (UTC)
-Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
- <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
- <20200311115735.GM23944@dhcp22.suse.cz>
- <20200312052707.GA3277@linux.vnet.ibm.com>
- <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
-Date: Thu, 12 Mar 2020 10:30:50 +0100
+ by mx2.suse.de (Postfix) with ESMTP id 62A77B1EC;
+ Thu, 12 Mar 2020 10:49:11 +0000 (UTC)
+Subject: Re: [RESEND PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem
+ argument (as in generic implementation)
+To: Krzysztof Kozlowski <krzk@kernel.org>, Richard Henderson
+ <rth@twiddle.net>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Matt Turner <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+ Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri Slaby
+ <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
+ "David S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>,
+ Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
+ linux-arch@vger.kernel.org
+References: <20200219175007.13627-1-krzk@kernel.org>
+ <20200219175007.13627-7-krzk@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
+ BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
+ irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
+ clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
+ mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
+ KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
+ Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
+ UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
+ RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
+ dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
+ ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
+ 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
+ wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
+ h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
+ n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
+ aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
+ HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
+ 3H26qrE=
+Message-ID: <90baef2d-25fe-fac4-6a7e-b103b4b6721e@suse.de>
+Date: Thu, 12 Mar 2020 11:49:05 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200219175007.13627-7-krzk@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="8zb502i0uNK5UHJJl43MN65Z2VSqAtFfM"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,95 +101,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/12/20 9:23 AM, Sachin Sant wrote:
-> 
-> 
->> On 12-Mar-2020, at 10:57 AM, Srikar Dronamraju <srikar@linux.vnet.ibm.com> wrote:
->> 
->> * Michal Hocko <mhocko@kernel.org> [2020-03-11 12:57:35]:
->> 
->>> On Wed 11-03-20 16:32:35, Srikar Dronamraju wrote:
->>>> A Powerpc system with multiple possible nodes and with CONFIG_NUMA
->>>> enabled always used to have a node 0, even if node 0 does not any cpus
->>>> or memory attached to it. As per PAPR, node affinity of a cpu is only
->>>> available once its present / online. For all cpus that are possible but
->>>> not present, cpu_to_node() would point to node 0.
->>>> 
->>>> To ensure a cpuless, memoryless dummy node is not online, powerpc need
->>>> to make sure all possible but not present cpu_to_node are set to a
->>>> proper node.
->>> 
->>> Just curious, is this somehow related to
->>> http://lkml.kernel.org/r/20200227182650.GG3771@dhcp22.suse.cz?
->>> 
->> 
->> The issue I am trying to fix is a known issue in Powerpc since many years.
->> So this surely not a problem after a75056fc1e7c (mm/memcontrol.c: allocate
->> shrinker_map on appropriate NUMA node"). 
->> 
->> I tried v5.6-rc4 + a75056fc1e7c but didnt face any issues booting the
->> kernel. Will work with Sachin/Abdul (reporters of the issue).
->> 
-> 
-> I applied this 3 patch series on top of March 11 next tree (commit d44a64766795 )
-> The kernel still fails to boot with same call trace.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--8zb502i0uNK5UHJJl43MN65Z2VSqAtFfM
+Content-Type: multipart/mixed; boundary="UnbV06xuRFGsh6csSeVcRA5al48ja8xJK";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Richard Henderson
+ <rth@twiddle.net>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Matt Turner <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+ Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri Slaby
+ <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
+ "David S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>,
+ Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
+ linux-arch@vger.kernel.org
+Message-ID: <90baef2d-25fe-fac4-6a7e-b103b4b6721e@suse.de>
+Subject: Re: [RESEND PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem
+ argument (as in generic implementation)
+References: <20200219175007.13627-1-krzk@kernel.org>
+ <20200219175007.13627-7-krzk@kernel.org>
+In-Reply-To: <20200219175007.13627-7-krzk@kernel.org>
 
-Yeah when I skimmed the patches, I don't think they address the issue where
-node_to_mem_node(0) = 0 [1]. You could reapply the debug print patch to verify,
-but it seems very likely. So I'm not surprised you get the same trace.
+--UnbV06xuRFGsh6csSeVcRA5al48ja8xJK
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-[1] https://lore.kernel.org/linux-next/9a86f865-50b5-7483-9257-dbb08fecd62b@suse.cz/
+Hi Krzysztof,
 
-> [    6.159357] BUG: Kernel NULL pointer dereference on read at 0x000073b0
-> [    6.159363] Faulting instruction address: 0xc0000000003d7174
-> [    6.159368] Oops: Kernel access of bad area, sig: 11 [#1]
-> [    6.159372] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> [    6.159378] Modules linked in:
-> [    6.159382] CPU: 17 PID: 1 Comm: systemd Not tainted 5.6.0-rc5-next-20200311-autotest+ #1
-> [    6.159388] NIP:  c0000000003d7174 LR: c0000000003d7714 CTR: c000000000400e70
-> [    6.159393] REGS: c0000008b36836d0 TRAP: 0300   Not tainted  (5.6.0-rc5-next-20200311-autotest+)
-> [    6.159398] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004848  XER: 00000000
-> [    6.159406] CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1
-> [    6.159406] GPR00: c0000000003d7714 c0000008b3683960 c00000000155e300 c0000008b301f500
-> [    6.159406] GPR04: 0000000000000dc0 0000000000000000 c0000000003456f8 c0000008bb198620
-> [    6.159406] GPR08: 00000008ba0f0000 0000000000000001 0000000000000000 0000000000000000
-> [    6.159406] GPR12: 0000000024004848 c00000001ec55e00 0000000000000000 0000000000000000
-> [    6.159406] GPR16: c0000008b0a82048 c000000001595898 c000000001750ca8 0000000000000002
-> [    6.159406] GPR20: c000000001750cb8 c000000001624478 0000000fffffffe0 5deadbeef0000122
-> [    6.159406] GPR24: 0000000000000001 0000000000000dc0 0000000000000000 c0000000003456f8
-> [    6.159406] GPR28: c0000008b301f500 c0000008bb198620 0000000000000000 c00c000002285a40
-> [    6.159453] NIP [c0000000003d7174] ___slab_alloc+0x1f4/0x760
-> [    6.159458] LR [c0000000003d7714] __slab_alloc+0x34/0x60
-> [    6.159462] Call Trace:
-> [    6.159465] [c0000008b3683a40] [c0000008b3683a70] 0xc0000008b3683a70
-> [    6.159471] [c0000008b3683a70] [c0000000003d8b20] __kmalloc_node+0x110/0x490
-> [    6.159477] [c0000008b3683af0] [c0000000003456f8] kvmalloc_node+0x58/0x110
-> [    6.159483] [c0000008b3683b30] [c000000000400f78] mem_cgroup_css_online+0x108/0x270
-> [    6.159489] [c0000008b3683b90] [c000000000236ed8] online_css+0x48/0xd0
-> [    6.159494] [c0000008b3683bc0] [c00000000023ffac] cgroup_apply_control_enable+0x2ec/0x4d0
-> [    6.159501] [c0000008b3683ca0] [c0000000002437c8] cgroup_mkdir+0x228/0x5f0
-> [    6.159506] [c0000008b3683d10] [c000000000521780] kernfs_iop_mkdir+0x90/0xf0
-> [    6.159512] [c0000008b3683d50] [c00000000043f670] vfs_mkdir+0x110/0x230
-> [    6.159517] [c0000008b3683da0] [c000000000443150] do_mkdirat+0xb0/0x1a0
-> [    6.159523] [c0000008b3683e20] [c00000000000b278] system_call+0x5c/0x68
-> [    6.159527] Instruction dump:
-> [    6.159531] 7c421378 e95f0000 714a0001 4082fff0 4bffff64 60000000 60000000 faa10088
-> [    6.159538] 3ea2000c 3ab56178 7b4a1f24 7d55502a <e94a73b0> 2faa0000 409e0394 3d02002a
-> [    6.159545] ---[ end trace 36d65cb66091a5b6 ]—
-> 
-> Boot log attached.
-> 
-> Thanks
-> -Sachin
-> 
+I just received a resend email from 3 weeks ago :/
 
+Do you want me to merge the mgag200 patch into drm-misc-next?
+
+Best regards
+Thomas
+
+Am 19.02.20 um 18:50 schrieb Krzysztof Kozlowski:
+> The ioreadX() helpers have inconsistent interface.  On some architectur=
+es
+> void *__iomem address argument is a pointer to const, on some not.
+>=20
+> Implementations of ioreadX() do not modify the memory under the address=
+
+> so they can be converted to a "const" version for const-safety and
+> consistency among architectures.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+>=20
+> ---
+>=20
+> Changes since v1:
+> 1. Add Thomas' review.
+> ---
+>  drivers/gpu/drm/mgag200/mgag200_drv.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mg=
+ag200/mgag200_drv.h
+> index aa32aad222c2..6512b3af4fb7 100644
+> --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
+> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
+> @@ -34,9 +34,9 @@
+> =20
+>  #define MGAG200FB_CONN_LIMIT 1
+> =20
+> -#define RREG8(reg) ioread8(((void __iomem *)mdev->rmmio) + (reg))
+> +#define RREG8(reg) ioread8(((const void __iomem *)mdev->rmmio) + (reg)=
+)
+>  #define WREG8(reg, v) iowrite8(v, ((void __iomem *)mdev->rmmio) + (reg=
+))
+> -#define RREG32(reg) ioread32(((void __iomem *)mdev->rmmio) + (reg))
+> +#define RREG32(reg) ioread32(((const void __iomem *)mdev->rmmio) + (re=
+g))
+>  #define WREG32(reg, v) iowrite32(v, ((void __iomem *)mdev->rmmio) + (r=
+eg))
+> =20
+>  #define ATTR_INDEX 0x1fc0
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
+
+--UnbV06xuRFGsh6csSeVcRA5al48ja8xJK--
+
+--8zb502i0uNK5UHJJl43MN65Z2VSqAtFfM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl5qE6QACgkQaA3BHVML
+eiOp7Af/Z24gM/vp7wuoDOu1s9VJhDHNRqfYcrpjv+SeE5E7jsj4gBCwwLJxuyKf
+5DIzeOH97Mrv5fgfIx97Af8C372d1sRW46TwvSXFm8ywyTvigM4cWdRapf9cXozZ
+AiQUCqkrkGEL6FhofMuHqZ2arL+6NooRluvXmoeX9bXA+itrwOhU4YhoIUwTJnUc
+7UrcNFXhCKIZrEGfkHGZrnbC/Lr9g+tBLcEcQJf69SUMc56aboUZf47aOcpw67lj
+3TpHOqEJwqnxnQlKSO0cL4BgwEzZWt3ahVqFdDlM+QfSlJO65N7Y6s8CismBxubN
+bGiOW37w7Bmi4mVHO5RWa3uelcwjoA==
+=D9Sa
+-----END PGP SIGNATURE-----
+
+--8zb502i0uNK5UHJJl43MN65Z2VSqAtFfM--
