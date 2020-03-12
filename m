@@ -1,62 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8781118316F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 14:31:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599C818301B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 13:22:19 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48dSd32nklzDqwY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 23:22:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48dV911PP6zDqW6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 00:31:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48dSY73ssrzDqQ3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 23:18:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=NJk9WkVN; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48dSY504TYz9sP7;
- Thu, 12 Mar 2020 23:18:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584015530;
- bh=uzPQHcKFUKJMHkfBDqG3/L/YcmfDrTWlBQVsywQ7YR0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=NJk9WkVNueZQ8JdTLd9cdYNpSN2l6FT4LixC6H90elMVVUziqXUwM3RZoMTQAiKml
- 0XILov+55gYBGdg8UkJjOdPWCJeY7LTUyBuOoYDF4L/lyfe4Ed7uQpd6XvohxIZ2Fu
- hTIQkj/+zL2Oi9JUlzURBepA/uzEBhlnZGodbw5XVMSaXrodPbv2Fe3/3M/mBL5K+s
- WNI5yQJAJtWKbH31lUb4g/3lVpIZOXhi5fiHqOGBebL2V2V/DXWIGZ4X7Qsxddzi4K
- kRsBDzdH9twBbOzDAKozBKyUeMLfPTe0zpgk7dWPLH8zgbViB75ySHi9KhHuu+NxK9
- 9pJJQwPX+9vEA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal Hocko <mhocko@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [5.6.0-rc2-next-20200218/powerpc] Boot failure on POWER9
-In-Reply-To: <20200310150114.GO8447@dhcp22.suse.cz>
-References: <alpine.DEB.2.21.2002220337030.2000@www.lameter.com>
- <20200224085812.GB22443@dhcp22.suse.cz>
- <alpine.DEB.2.21.2002261823270.8012@www.lameter.com>
- <20200226184152.GQ3771@dhcp22.suse.cz>
- <c412ee69-80f9-b013-67d4-3b0a2f6aff7f@suse.cz>
- <dd450314-d428-6776-af07-f92c04c7b967@suse.cz>
- <20200227121214.GE3771@dhcp22.suse.cz>
- <52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com>
- <9a86f865-50b5-7483-9257-dbb08fecd62b@suse.cz>
- <20200227182650.GG3771@dhcp22.suse.cz> <20200310150114.GO8447@dhcp22.suse.cz>
-Date: Thu, 12 Mar 2020 23:18:42 +1100
-Message-ID: <87a74lix5p.fsf@mpe.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48dV4C5b2bzDqLx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 00:27:22 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02CDKERR096521
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 09:27:20 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yqkjxx841-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 09:27:18 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Thu, 12 Mar 2020 13:14:45 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 12 Mar 2020 13:14:42 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02CDDfmt45351394
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 Mar 2020 13:13:41 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 24C14A405B;
+ Thu, 12 Mar 2020 13:14:41 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1ACD4A4054;
+ Thu, 12 Mar 2020 13:14:39 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 12 Mar 2020 13:14:38 +0000 (GMT)
+Date: Thu, 12 Mar 2020 18:44:38 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
+References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
+ <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
+ <20200311115735.GM23944@dhcp22.suse.cz>
+ <20200312052707.GA3277@linux.vnet.ibm.com>
+ <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
+ <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20031213-4275-0000-0000-000003AB2976
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031213-4276-0000-0000-000038C0483A
+Message-Id: <20200312131438.GB3277@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-12_05:2020-03-11,
+ 2020-03-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ priorityscore=1501 malwarescore=0 mlxscore=0 bulkscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2003120072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,77 +94,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Pekka Enberg <penberg@kernel.org>,
- Linux-Next Mailing List <linux-next@vger.kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>,
- Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, Kirill Tkhai <ktkhai@virtuozzo.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Hocko <mhocko@kernel.org> writes:
-> On Thu 27-02-20 19:26:54, Michal Hocko wrote:
->> [Cc ppc maintainers]
-> [...]
->> Please have a look at http://lkml.kernel.org/r/52EF4673-7292-4C4C-B459-AF583951BA48@linux.vnet.ibm.com
->> for the boot log with the debugging patch which tracks set_numa_mem.
->> This seems to lead to a crash in the slab allocator bebcause
->> node_to_mem_node(0) for memory less node resolves to the memory less
->> node http://lkml.kernel.org/r/dd450314-d428-6776-af07-f92c04c7b967@suse.cz.
->> The original report is http://lkml.kernel.org/r/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com
->
-> ping 
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-12 10:30:50]:
 
-The obvious fix is:
+> On 3/12/20 9:23 AM, Sachin Sant wrote:
+> >> On 12-Mar-2020, at 10:57 AM, Srikar Dronamraju <srikar@linux.vnet.ibm.com> wrote:
+> >> * Michal Hocko <mhocko@kernel.org> [2020-03-11 12:57:35]:
+> >>> On Wed 11-03-20 16:32:35, Srikar Dronamraju wrote:
+> >>>> To ensure a cpuless, memoryless dummy node is not online, powerpc need
+> >>>> to make sure all possible but not present cpu_to_node are set to a
+> >>>> proper node.
+> >>> 
+> >>> Just curious, is this somehow related to
+> >>> http://lkml.kernel.org/r/20200227182650.GG3771@dhcp22.suse.cz?
+> >>> 
+> >> 
+> >> The issue I am trying to fix is a known issue in Powerpc since many years.
+> >> So this surely not a problem after a75056fc1e7c (mm/memcontrol.c: allocate
+> >> shrinker_map on appropriate NUMA node"). 
+> >> 
+> >> I tried v5.6-rc4 + a75056fc1e7c but didnt face any issues booting the
+> >> kernel. Will work with Sachin/Abdul (reporters of the issue).
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 37c12e3bab9e..33b1fca0b258 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -892,6 +892,7 @@ void smp_prepare_boot_cpu(void)
- 	paca_ptrs[boot_cpuid]->__current = current;
- #endif
- 	set_numa_node(numa_cpu_lookup_table[boot_cpuid]);
-+	set_numa_mem(local_memory_node(numa_cpu_lookup_table[boot_cpuid]));
- 	current_set[boot_cpuid] = current;
- }
+I had used v1 and not v2. So my mistake.
 
+> > I applied this 3 patch series on top of March 11 next tree (commit d44a64766795 )
+> > The kernel still fails to boot with same call trace.
+> 
 
-But that doesn't work because smp_prepare_boot_cpu() is called too
-early:
+While I am not an expert in the slub area, I looked at the patch
+a75056fc1e7c and had some thoughts on why this could be causing this issue.
 
-asmlinkage __visible void __init start_kernel(void)
-{
-	...
-	smp_prepare_boot_cpu();	/* arch-specific boot-cpu hooks */
-	boot_cpu_hotplug_init();
+On the system where the crash happens, the possible number of nodes is much
+greater than the number of onlined nodes. The pdgat or the NODE_DATA is only
+available for onlined nodes.
 
-	build_all_zonelists(NULL);
+With a75056fc1e7c memcg_alloc_shrinker_maps, we end up calling kzalloc_node
+for all possible nodes and in ___slab_alloc we end up looking at the
+node_present_pages which is NODE_DATA(nid)->node_present_pages.
+i.e for a node whose pdgat struct is not allocated, we are trying to
+dereference.
 
+Also for a memoryless/cpuless node or possible but not present nodes,
+node_to_mem_node(node) will still end up as node (atleast on powerpc).
 
-And local_memory_node() uses first_zones_zonelist() which doesn't work
-prior to build_all_zonelists() being called.
+I tried with this hunk below and it works.
 
+But I am not sure if we need to check at other places were
+node_present_pages is being called.
 
-The patch below might work. Sachin can you test this? I tried faking up
-a system with a memoryless node zero but couldn't get it to even start
-booting.
-
-cheers
-
-
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 9b4f5fb719e0..d1f11437f6c4 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -282,6 +282,9 @@ void __init mem_init(void)
- 	 */
- 	BUILD_BUG_ON(MMU_PAGE_COUNT > 16);
+diff --git a/mm/slub.c b/mm/slub.c
+index 626cbcbd977f..bddb93bed55e 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2571,9 +2571,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 	if (unlikely(!node_match(page, node))) {
+ 		int searchnode = node;
  
-+	BUG_ON(smp_processor_id() != boot_cpuid);
-+	set_numa_mem(local_memory_node(numa_cpu_lookup_table[boot_cpuid]));
-+
- #ifdef CONFIG_SWIOTLB
- 	/*
- 	 * Some platforms (e.g. 85xx) limit DMA-able memory way below
+-		if (node != NUMA_NO_NODE && !node_present_pages(node))
+-			searchnode = node_to_mem_node(node);
+-
++		if (node != NUMA_NO_NODE) {
++			if (!node_online(node) || !node_present_pages(node)) {
++				searchnode = node_to_mem_node(node);
++				if (!node_online(searchnode))
++					searchnode = first_online_node;
++			}
++		}
+ 		if (unlikely(!node_match(page, searchnode))) {
+ 			stat(s, ALLOC_NODE_MISMATCH);
+ 			deactivate_slab(s, page, c->freelist, c);
+
+> > 
+> 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
+
