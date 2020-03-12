@@ -1,85 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E4E18364F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 17:38:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48dZKB52X6zDqSp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 03:38:54 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4063C1835EF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 17:15:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48dYnt2KfJzDqVv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 03:15:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48dZHR2yxJzDqCV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 03:37:22 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48dYm90f85zDqHf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 03:13:44 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02CG46R8141698; Thu, 12 Mar 2020 12:09:58 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yqr96rgq7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Mar 2020 12:09:55 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02CG4BdJ142095;
- Thu, 12 Mar 2020 12:09:04 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yqr96rf7n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Mar 2020 12:09:01 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02CG1mo4012262;
- Thu, 12 Mar 2020 16:07:06 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma01dal.us.ibm.com with ESMTP id 2ypjxrhkj0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Mar 2020 16:07:06 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02CG75pa13763468
+ 02CG6ZPR155944
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 12:13:42 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yqqqwsypc-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 12:13:39 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Thu, 12 Mar 2020 16:13:18 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 12 Mar 2020 16:13:13 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02CGDCoq48627750
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Mar 2020 16:07:05 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59613124055;
- Thu, 12 Mar 2020 16:07:05 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D8D312405C;
- Thu, 12 Mar 2020 16:07:05 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.32])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 12 Mar 2020 16:07:05 +0000 (GMT)
-Date: Thu, 12 Mar 2020 11:07:04 -0500
-From: Scott Cheloha <cheloha@linux.ibm.com>
-To: Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-Subject: Re: [RFC PATCH v1] pseries/drmem: don't cache node id in drmem_lmb
- struct
-Message-ID: <20200312160704.cmmo7titbh7u4jia@rascal.austin.ibm.com>
-References: <20200311230815.1432367-1-cheloha@linux.ibm.com>
- <20200312050237.GP1776@kitsune.suse.cz>
+ Thu, 12 Mar 2020 16:13:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB3EFAE045;
+ Thu, 12 Mar 2020 16:13:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A93E5AE053;
+ Thu, 12 Mar 2020 16:13:10 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 12 Mar 2020 16:13:10 +0000 (GMT)
+Date: Thu, 12 Mar 2020 21:43:10 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
+References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
+ <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
+ <20200311115735.GM23944@dhcp22.suse.cz>
+ <20200312052707.GA3277@linux.vnet.ibm.com>
+ <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
+ <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
+ <20200312131438.GB3277@linux.vnet.ibm.com>
+ <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200312050237.GP1776@kitsune.suse.cz>
+In-Reply-To: <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
+x-cbid: 20031216-4275-0000-0000-000003AB3D27
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031216-4276-0000-0000-000038C05C53
+Message-Id: <20200312161310.GC3277@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
  definitions=2020-03-12_09:2020-03-11,
  2020-03-12 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- priorityscore=1501 malwarescore=0 phishscore=0 impostorscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=999 impostorscore=0
+ clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2003120083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,121 +96,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Nathan Fontenont <ndfont@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- Aneesh Kumar <aneesh.kumar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michal,
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-12 14:51:38]:
 
-On Thu, Mar 12, 2020 at 06:02:37AM +0100, Michal Suchánek wrote:
-> On Wed, Mar 11, 2020 at 06:08:15PM -0500, Scott Cheloha wrote:
-> > At memory hot-remove time we can retrieve an LMB's nid from its
-> > corresponding memory_block.  There is no need to store the nid
-> > in multiple locations.
+> > * Vlastimil Babka <vbabka@suse.cz> [2020-03-12 10:30:50]:
 > > 
-> > Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
-> > ---
-> > The linear search in powerpc's memory_add_physaddr_to_nid() has become a
-> > bottleneck at boot on systems with many LMBs.
+> >> On 3/12/20 9:23 AM, Sachin Sant wrote:
+> >> >> On 12-Mar-2020, at 10:57 AM, Srikar Dronamraju <srikar@linux.vnet.ibm.com> wrote:
+> >> >> * Michal Hocko <mhocko@kernel.org> [2020-03-11 12:57:35]:
+> >> >>> On Wed 11-03-20 16:32:35, Srikar Dronamraju wrote:
+> >> >>>> To ensure a cpuless, memoryless dummy node is not online, powerpc need
+> >> >>>> to make sure all possible but not present cpu_to_node are set to a
+> >> >>>> proper node.
+> >> >>> 
+> >> >>> Just curious, is this somehow related to
+> >> >>> http://lkml.kernel.org/r/20200227182650.GG3771@dhcp22.suse.cz?
+> >> >>> 
+> >> >> 
+> >> >> The issue I am trying to fix is a known issue in Powerpc since many years.
+> >> >> So this surely not a problem after a75056fc1e7c (mm/memcontrol.c: allocate
+> >> >> shrinker_map on appropriate NUMA node"). 
+> >> >> 
 > > 
-> > As described in this patch here:
+> > While I am not an expert in the slub area, I looked at the patch
+> > a75056fc1e7c and had some thoughts on why this could be causing this issue.
 > > 
-> > https://lore.kernel.org/linuxppc-dev/20200221172901.1596249-2-cheloha@linux.ibm.com/
+> > On the system where the crash happens, the possible number of nodes is much
+> > greater than the number of onlined nodes. The pdgat or the NODE_DATA is only
+> > available for onlined nodes.
 > > 
-> > the linear search seriously cripples drmem_init().
-> > 
-> > The obvious solution (shown in that patch) is to just make the search
-> > in memory_add_physaddr_to_nid() faster.  An XArray seems well-suited
-> > to the task of mapping an address range to an LMB object.
-> > 
-> > The less obvious approach is to just call memory_add_physaddr_to_nid()
-> > in fewer places.
-> > 
-> > I'm not sure which approach is correct, hence the RFC.
+> > With a75056fc1e7c memcg_alloc_shrinker_maps, we end up calling kzalloc_node
+> > for all possible nodes and in ___slab_alloc we end up looking at the
+> > node_present_pages which is NODE_DATA(nid)->node_present_pages.
+> > i.e for a node whose pdgat struct is not allocated, we are trying to
+> > dereference.
 > 
-> You basically revert the below which will likely cause the very error
-> that was fixed there:
+> From what we saw, the pgdat does exist, the problem is that slab's per-node data
+> doesn't exist for a node that doesn't have present pages, as it would be a waste
+> of memory.
+
+Just to be clear
+Before my 3 patches to fix dummy node:
+srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/possible
+0-31
+srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/online
+0-1
+
 > 
-> commit b2d3b5ee66f2a04a918cc043cec0c9ed3de58f40
-> Author: Nathan Fontenot <nfont@linux.vnet.ibm.com>
-> Date:   Tue Oct 2 10:35:59 2018 -0500
+> Uh actually you are probably right, the NODE_DATA doesn't exist anymore? In
+> Sachin's first report [1] we have
 > 
->     powerpc/pseries: Track LMB nid instead of using device tree
->     
->     When removing memory we need to remove the memory from the node
->     it was added to instead of looking up the node it should be in
->     in the device tree.
->     
->     During testing we have seen scenarios where the affinity for a
->     LMB changes due to a partition migration or PRRN event. In these
->     cases the node the LMB exists in may not match the node the device
->     tree indicates it belongs in. This can lead to a system crash
->     when trying to DLPAR remove the LMB after a migration or PRRN
->     event. The current code looks up the node in the device tree to
->     remove the LMB from, the crash occurs when we try to offline this
->     node and it does not have any data, i.e. node_data[nid] == NULL.
+> [    0.000000] numa:   NODE_DATA [mem 0x8bfedc900-0x8bfee3fff]
+> [    0.000000] numa:     NODE_DATA(0) on node 1
+> [    0.000000] numa:   NODE_DATA [mem 0x8bfed5200-0x8bfedc8ff]
+> 
 
-I'm aware of this patch and that this is a near-total revert.
+So even if pgdat would exist for nodes 0 and 1, there is no pgdat for the
+rest 30 nodes.
 
-I'm not reintroducing the original behavior, though.  Instead of going
-to the device tree to recompute the expected node id I'm retrieving it
-from the LMB's corresponding memory_block.
+> But in this thread, with your patches Sachin reports:
 
-That crucial difference is this chunk:
+and with my patches
+srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/possible
+0-31
+srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/online
+1
 
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -376,25 +376,29 @@ static int dlpar_add_lmb(struct drmem_lmb *);
- 
- static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- {
-+	struct memory_block *mem_block;
- 	unsigned long block_sz;
- 	int rc;
- 
- 	if (!lmb_is_removable(lmb))
- 		return -EINVAL;
- 
-+	mem_block = lmb_to_memblock(lmb);
-+	if (mem_block == NULL)
-+		return -EINVAL;
-+
- 	rc = dlpar_offline_lmb(lmb);
- 	if (rc)
- 		return rc;
- 
- 	block_sz = pseries_memory_block_size();
- 
--	__remove_memory(lmb->nid, lmb->base_addr, block_sz);
-+	__remove_memory(mem_block->nid, lmb->base_addr, block_sz);
- 
- 	/* Update memory regions for memory remove */
- 	memblock_remove(lmb->base_addr, block_sz);
- 
- 	invalidate_lmb_associativity_index(lmb);
--	lmb_clear_nid(lmb);
- 	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
- 
- 	return 0;
----
+> 
+> [    0.000000] numa:   NODE_DATA [mem 0x8bfedc900-0x8bfee3fff]
+> 
 
-Unless it's possible that the call:
+so we only see one pgdat.
 
-	__add_memory(my_nid, my_addr, my_size);
+> So I assume it's just node 1. In that case, node_present_pages is really dangerous.
+> 
+> [1]
+> https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
+> 
+> > Also for a memoryless/cpuless node or possible but not present nodes,
+> > node_to_mem_node(node) will still end up as node (atleast on powerpc).
+> 
+> I think that's the place where this would be best to fix.
+> 
 
-does not yield the following:
+Maybe. I thought about it but the current set_numa_mem semantics are apt
+for memoryless cpu node and not for possible nodes.  We could have upto 256
+possible nodes and only 2 nodes (1,2) with cpu and 1 node (1) with memory.
+node_to_mem_node seems to return what is set in set_numa_mem().
+set_numa_mem() seems to say set my numa_mem node for the current memoryless
+node to the param passed.
 
-	memory_block.nid == my_nid
+But how do we set numa_mem for all the other 253 possible nodes, which
+probably will have 0 as default?
 
-on success, then I think the solution in my patch is equivalent to and
-simpler than the one introduced in the patch you quote.
+Should we introduce another API such that we could update for all possible
+nodes?
 
-Can you see a way the above would not hold?
+> > I tried with this hunk below and it works.
+> > 
+> > But I am not sure if we need to check at other places were
+> > node_present_pages is being called.
+> 
+> I think this seems to defeat the purpose of node_to_mem_node()? Shouldn't it
+> return only nodes that are online with present memory?
+> CCing Joonsoo who seems to have introduced this in ad2c8144418c ("topology: add
+> support for node_to_mem_node() to determine the fallback node")
+> 
 
-Then again, maybe there's a good reason not to retrieve the node id in
-this way.  I'm thinking David Hildenbrand and/or Nathan Fontenont may
-have some insight on that.
+Agree 
+
+> I think we do need well defined and documented rules around node_to_mem_node(),
+> cpu_to_node(), existence of NODE_DATA, various node_states bitmaps etc so
+> everyone handles it the same, safe way.
+> 
+
+Other option would be to tweak Kirill Tkhai's patch such that we call
+kvmalloc_node()/kzalloc_node() if node is online and call kvmalloc/kvzalloc
+if the node is offline.
+
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 626cbcbd977f..bddb93bed55e 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2571,9 +2571,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+> >  	if (unlikely(!node_match(page, node))) {
+> >  		int searchnode = node;
+> >  
+> > -		if (node != NUMA_NO_NODE && !node_present_pages(node))
+> > -			searchnode = node_to_mem_node(node);
+> > -
+> > +		if (node != NUMA_NO_NODE) {
+> > +			if (!node_online(node) || !node_present_pages(node)) {
+> > +				searchnode = node_to_mem_node(node);
+> > +				if (!node_online(searchnode))
+> > +					searchnode = first_online_node;
+> > +			}
+> > +		}
+> >  		if (unlikely(!node_match(page, searchnode))) {
+> >  			stat(s, ALLOC_NODE_MISMATCH);
+> >  			deactivate_slab(s, page, c->freelist, c);
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
+
