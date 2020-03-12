@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE15183CA4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 23:38:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D360183C84
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Mar 2020 23:32:05 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48dk8f0fHGzDqKX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 09:32:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48dkJ93h8BzDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 09:38:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,25 +18,27 @@ Authentication-Results: lists.ozlabs.org;
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48dk4w6D0PzDqG1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48dk4w6D32zDqFp
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 09:28:43 +1100 (AEDT)
 Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 999851A11AB;
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EC2341A11B8;
  Thu, 12 Mar 2020 23:28:39 +0100 (CET)
 Received: from smtp.na-rdc02.nxp.com (usphx01srsp001v.us-phx01.nxp.com
  [134.27.49.11])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5DB571A11BA;
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id AE43D1A11C9;
  Thu, 12 Mar 2020 23:28:39 +0100 (CET)
 Received: from right.am.freescale.net (right.am.freescale.net [10.81.116.70])
  by usphx01srsp001v.us-phx01.nxp.com (Postfix) with ESMTP id
- C7CA840A63; Thu, 12 Mar 2020 15:28:38 -0700 (MST)
+ 28EBB40AB2; Thu, 12 Mar 2020 15:28:39 -0700 (MST)
 From: Li Yang <leoyang.li@nxp.com>
 To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Timur Tabi <timur@kernel.org>,
  Zhao Qiang <qiang.zhao@nxp.com>
-Subject: [PATCH 0/6] Fix sparse warnings for common qe library code
-Date: Thu, 12 Mar 2020 17:28:21 -0500
-Message-Id: <20200312222827.17409-1-leoyang.li@nxp.com>
+Subject: [PATCH 1/6] soc: fsl: qe: fix sparse warnings for qe.c
+Date: Thu, 12 Mar 2020 17:28:22 -0500
+Message-Id: <20200312222827.17409-2-leoyang.li@nxp.com>
 X-Mailer: git-send-email 2.25.1.377.g2d2118b
+In-Reply-To: <20200312222827.17409-1-leoyang.li@nxp.com>
+References: <20200312222827.17409-1-leoyang.li@nxp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: ClamAV using ClamSMTP
@@ -57,35 +59,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The QE code was previously only supported on big-endian PowerPC systems
-that use the same endian as the QE device.  The endian transfer code is
-not really exercised.  Recent updates extended the QE drivers to
-little-endian ARM/ARM64 systems which makes the endian transfer really
-meaningful and hence triggered more sparse warnings for the endian
-mismatch.  Some of these endian issues are real issues that need to be
-fixed.
+Fixes the following sparse warnings:
+drivers/soc/fsl/qe/qe.c:426:9: warning: cast to restricted __be32
+drivers/soc/fsl/qe/qe.c:528:41: warning: incorrect type in assignment (different base types)
+drivers/soc/fsl/qe/qe.c:528:41:    expected unsigned long long static [addressable] [toplevel] [usertype] extended_modes
+drivers/soc/fsl/qe/qe.c:528:41:    got restricted __be64 const [usertype] extended_modes
 
-While at it, fixed some direct de-references of IO memory space and
-suppressed other __iomem address space mismatch issues by adding correct
-address space attributes.
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+---
+ drivers/soc/fsl/qe/qe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Li Yang (6):
-  soc: fsl: qe: fix sparse warnings for qe.c
-  soc: fsl: qe: fix sparse warning for qe_common.c
-  soc: fsl: qe: fix sparse warnings for ucc.c
-  soc: fsl: qe: fix sparse warnings for qe_ic.c
-  soc: fsl: qe: fix sparse warnings for ucc_fast.c
-  soc: fsl: qe: fix sparse warnings for ucc_slow.c
-
- drivers/soc/fsl/qe/qe.c        |  4 ++--
- drivers/soc/fsl/qe/qe_common.c |  2 +-
- drivers/soc/fsl/qe/qe_ic.c     |  2 +-
- drivers/soc/fsl/qe/ucc.c       |  2 +-
- drivers/soc/fsl/qe/ucc_slow.c  | 33 +++++++++++++--------------------
- include/soc/fsl/qe/ucc_fast.h  |  6 +++---
- include/soc/fsl/qe/ucc_slow.h  | 13 ++++++-------
- 7 files changed, 27 insertions(+), 35 deletions(-)
-
+diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+index 96c2057d8d8e..447146861c2c 100644
+--- a/drivers/soc/fsl/qe/qe.c
++++ b/drivers/soc/fsl/qe/qe.c
+@@ -423,7 +423,7 @@ static void qe_upload_microcode(const void *base,
+ 		qe_iowrite32be(be32_to_cpu(code[i]), &qe_immr->iram.idata);
+ 	
+ 	/* Set I-RAM Ready Register */
+-	qe_iowrite32be(be32_to_cpu(QE_IRAM_READY), &qe_immr->iram.iready);
++	qe_iowrite32be(QE_IRAM_READY, &qe_immr->iram.iready);
+ }
+ 
+ /*
+@@ -525,7 +525,7 @@ int qe_upload_firmware(const struct qe_firmware *firmware)
+ 	 */
+ 	memset(&qe_firmware_info, 0, sizeof(qe_firmware_info));
+ 	strlcpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
+-	qe_firmware_info.extended_modes = firmware->extended_modes;
++	qe_firmware_info.extended_modes = be64_to_cpu(firmware->extended_modes);
+ 	memcpy(qe_firmware_info.vtraps, firmware->vtraps,
+ 		sizeof(firmware->vtraps));
+ 
 -- 
 2.17.1
 
