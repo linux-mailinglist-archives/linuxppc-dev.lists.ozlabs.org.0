@@ -2,72 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194C9183FBD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 04:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 577E91840B1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 06:54:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48drwh6KgLzDqRG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 14:37:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48dvyv0VXSzDqSW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 16:54:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
- helo=mail-oi1-x243.google.com; envelope-from=natechancellor@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=anju@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VvQtaK7O; dkim-atps=neutral
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48drtk4NCdzDqPS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 14:35:22 +1100 (AEDT)
-Received: by mail-oi1-x243.google.com with SMTP id i1so7908223oie.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Mar 2020 20:35:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=o9U8lazxGRetsQy6HWnT4z3HZb84M9DeDJBZYGquUHA=;
- b=VvQtaK7OKtdcv0KRvKeMjyrYt8hlIs0Vv5qQmDthPKjy15/K2kxiDlKjmOcjnDOcIQ
- Arp38t5pkvnfhLHd011nBlk0NFRhTjgx9WlVSPdl6p2wwPQCaNY5clM9UxERmPa/GnHM
- dLjMUs2IQ8Txs3QAkJNvS42FEqhuuAubNu73Hv0+N4oldHeUTEaOF7RHPtZLKKvtjyEy
- 2OTE9jMgKzSSbDsUtXn9X/WqP/121CzAZihC6t7x0V981y3uiWgVL8yxpxZL6aj4++sz
- t3hsJ6d4CstVJHV69rfRmfc7rqvF9ewNfCIscN5kVhErYC6y8s2efDkpAHNZTxZswWXK
- EG7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=o9U8lazxGRetsQy6HWnT4z3HZb84M9DeDJBZYGquUHA=;
- b=hqvKhpHkPMMgH7yd/f/7Ta7WwPLdO8AE32eiqvRV4SbhOFZI3ThP6Ebe27rYnAC98j
- qeeR2ooaT+Tr6/T2BY781L+4b/iBcXjNlcoHYWokcdlsXSGstR2TgSKtx45a976UTaUr
- W7j/8uAr5UINTQDPAc9C9UexVWmvbl5IC7+CjtGcqtBBoM7rqz8CZFyzZv+X/335fRjW
- e7LgUtHgkwPQLxtPS/qA5LDON7p9UVKJd7X+GAa76lqAmfeQd/Wo5DoUxbMup5fB/pIJ
- kkWZannuqDCNHzMhWm0Sz58OuU52ZRVoT91B5GFj9Va8KObAFo9MtjHDakrqhxQxG2IZ
- c+BA==
-X-Gm-Message-State: ANhLgQ3WXV9A7l3o6okJz0+SdStbYKEKwBiS7U+kDOhApsBOJxjvBoHl
- I/6p37dmoZw/tZF5LaefPkQ=
-X-Google-Smtp-Source: ADFU+vu7PRLfbONkr6AgNM7esPfXmysezUGwWouWPhb9//WvPJSpF00Lzuv38/ieLK4bSxa2EB769w==
-X-Received: by 2002:aca:c45:: with SMTP id i5mr5037058oiy.111.1584070519356;
- Thu, 12 Mar 2020 20:35:19 -0700 (PDT)
-Received: from ubuntu-m2-xlarge-x86 ([2604:1380:4111:8b00::1])
- by smtp.gmail.com with ESMTPSA id s203sm5817558oib.8.2020.03.12.20.35.18
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 12 Mar 2020 20:35:18 -0700 (PDT)
-Date: Thu, 12 Mar 2020 20:35:17 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/32: Fix missing NULL pmd check in virt_to_kpte()
-Message-ID: <20200313033517.GA37606@ubuntu-m2-xlarge-x86>
-References: <b1177cdfc6af74a3e277bba5d9e708c4b3315ebe.1583575707.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48dvxJ6zH1zDqHw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 16:52:51 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02D5oFoM080031
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 01:52:49 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yr17hpdnc-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 01:52:48 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <anju@linux.vnet.ibm.com>;
+ Fri, 13 Mar 2020 05:52:47 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 13 Mar 2020 05:52:45 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02D5qivH21757998
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Mar 2020 05:52:44 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 21E9B4C046;
+ Fri, 13 Mar 2020 05:52:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 915554C040;
+ Fri, 13 Mar 2020 05:52:42 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.62.115])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 13 Mar 2020 05:52:42 +0000 (GMT)
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v4 1/2] powerpc/perf: Implement a global lock to avoid races
+ between trace, core and thread imc events.
+Date: Fri, 13 Mar 2020 11:22:37 +0530
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b1177cdfc6af74a3e277bba5d9e708c4b3315ebe.1583575707.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20031305-0008-0000-0000-0000035C723C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031305-0009-0000-0000-00004A7DBE28
+Message-Id: <20200313055238.8656-1-anju@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-13_01:2020-03-11,
+ 2020-03-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 adultscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 clxscore=1015 bulkscore=0
+ spamscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=791 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003130028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,44 +87,353 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ndesaulniers@google.com, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: harihare@in.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, anju@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 07, 2020 at 10:09:15AM +0000, Christophe Leroy wrote:
-> Commit 2efc7c085f05 ("powerpc/32: drop get_pteptr()"),
-> replaced get_pteptr() by virt_to_kpte(). But virt_to_kpte() lacks a
-> NULL pmd check and returns an invalid non NULL pointer when there
-> is no page table.
-> 
-> Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-> Fixes: 2efc7c085f05 ("powerpc/32: drop get_pteptr()")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/include/asm/pgtable.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index b80bfd41828d..b1f1d5339735 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -54,7 +54,9 @@ static inline pmd_t *pmd_ptr_k(unsigned long va)
->  
->  static inline pte_t *virt_to_kpte(unsigned long vaddr)
->  {
-> -	return pte_offset_kernel(pmd_ptr_k(vaddr), vaddr);
-> +	pmd_t *pmd = pmd_ptr_k(vaddr);
-> +
-> +	return pmd_none(*pmd) ? NULL : pte_offset_kernel(pmd, vaddr);
->  }
->  #endif
->  
-> -- 
-> 2.25.0
-> 
+IMC(In-memory Collection Counters) does performance monitoring in
+two different modes, i.e accumulation mode(core-imc and thread-imc events),
+and trace mode(trace-imc events). A cpu thread can either be in
+accumulation-mode or trace-mode at a time and this is done via the LDBAR
+register in POWER architecture. The current design does not address the
+races between thread-imc and trace-imc events.
 
-With QEMU 4.2.0, I can confirm this fixes the panic:
+Patch implements a global id and lock to avoid the races between
+core, trace and thread imc events. With this global id-lock
+implementation, the system can either run core, thread or trace imc
+events at a time. i.e. to run any core-imc events, thread/trace imc events
+should not be enabled/monitored.
 
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+---
+Changes from v3->v4:
+
+- Added mutex lock for thread, core and trace imc cpu offline path.
+
+Changes from v2->v3:
+
+- Addressed the off-line comments from Michael Ellerman
+- Optimized the *_event_init code path for trace, core and thread imc
+- Handled the global refc in cpuhotplug scenario
+- Re-order the patch series
+- Removed the selftest patches and will send as a follow up patch
+
+Changes from v1 -> v2:
+
+- Added self test patches to the series.
+
+---
+ arch/powerpc/perf/imc-pmu.c | 173 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 149 insertions(+), 24 deletions(-)
+
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index cb50a9e1fd2d..eb82dda884e5 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -44,6 +44,16 @@ static DEFINE_PER_CPU(u64 *, trace_imc_mem);
+ static struct imc_pmu_ref *trace_imc_refc;
+ static int trace_imc_mem_size;
+ 
++/*
++ * Global data structure used to avoid races between thread,
++ * core and trace-imc
++ */
++static struct imc_pmu_ref imc_global_refc = {
++	.lock = __MUTEX_INITIALIZER(imc_global_refc.lock),
++	.id = 0,
++	.refc = 0,
++};
++
+ static struct imc_pmu *imc_event_to_pmu(struct perf_event *event)
+ {
+ 	return container_of(event->pmu, struct imc_pmu, pmu);
+@@ -698,6 +708,16 @@ static int ppc_core_imc_cpu_offline(unsigned int cpu)
+ 			return -EINVAL;
+ 
+ 		ref->refc = 0;
++		/*
++		 * Reduce the global reference count, if this is the
++		 * last cpu in this core and core-imc event running
++		 * in this cpu.
++		 */
++		mutex_lock(&imc_global_refc.lock);
++		if (imc_global_refc.id == IMC_DOMAIN_CORE)
++			imc_global_refc.refc--;
++
++		mutex_unlock(&imc_global_refc.lock);
+ 	}
+ 	return 0;
+ }
+@@ -710,6 +730,23 @@ static int core_imc_pmu_cpumask_init(void)
+ 				 ppc_core_imc_cpu_offline);
+ }
+ 
++static void reset_global_refc(struct perf_event *event)
++{
++		mutex_lock(&imc_global_refc.lock);
++		imc_global_refc.refc--;
++
++		/*
++		 * If no other thread is running any
++		 * event for this domain(thread/core/trace),
++		 * set the global id to zero.
++		 */
++		if (imc_global_refc.refc <= 0) {
++			imc_global_refc.refc = 0;
++			imc_global_refc.id = 0;
++		}
++		mutex_unlock(&imc_global_refc.lock);
++}
++
+ static void core_imc_counters_release(struct perf_event *event)
+ {
+ 	int rc, core_id;
+@@ -759,6 +796,8 @@ static void core_imc_counters_release(struct perf_event *event)
+ 		ref->refc = 0;
+ 	}
+ 	mutex_unlock(&ref->lock);
++
++	reset_global_refc(event);
+ }
+ 
+ static int core_imc_event_init(struct perf_event *event)
+@@ -819,6 +858,29 @@ static int core_imc_event_init(struct perf_event *event)
+ 	++ref->refc;
+ 	mutex_unlock(&ref->lock);
+ 
++	/*
++	 * Since the system can run either in accumulation or trace-mode
++	 * of IMC at a time, core-imc events are allowed only if no other
++	 * trace/thread imc events are enabled/monitored.
++	 *
++	 * Take the global lock, and check the refc.id
++	 * to know whether any other trace/thread imc
++	 * events are running.
++	 */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == 0 || imc_global_refc.id == IMC_DOMAIN_CORE) {
++		/*
++		 * No other trace/thread imc events are running in
++		 * the system, so set the refc.id to core-imc.
++		 */
++		imc_global_refc.id = IMC_DOMAIN_CORE;
++		imc_global_refc.refc++;
++	} else {
++		mutex_unlock(&imc_global_refc.lock);
++		return -EBUSY;
++	}
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	event->hw.event_base = (u64)pcmi->vbase + (config & IMC_EVENT_OFFSET_MASK);
+ 	event->destroy = core_imc_counters_release;
+ 	return 0;
+@@ -877,7 +939,23 @@ static int ppc_thread_imc_cpu_online(unsigned int cpu)
+ 
+ static int ppc_thread_imc_cpu_offline(unsigned int cpu)
+ {
+-	mtspr(SPRN_LDBAR, 0);
++	/*
++	 * Set the bit 0 of LDBAR to zero.
++	 *
++	 * If bit 0 of LDBAR is unset, it will stop posting
++	 * the counter data to memory.
++	 * For thread-imc, bit 0 of LDBAR will be set to 1 in the
++	 * event_add function. So reset this bit here, to stop the updates
++	 * to memory in the cpu_offline path.
++	 */
++	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) & (~(1UL << 63))));
++
++	/* Reduce the refc if thread-imc event running on this cpu */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == IMC_DOMAIN_THREAD)
++		imc_global_refc.refc--;
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	return 0;
+ }
+ 
+@@ -916,7 +994,22 @@ static int thread_imc_event_init(struct perf_event *event)
+ 	if (!target)
+ 		return -EINVAL;
+ 
++	mutex_lock(&imc_global_refc.lock);
++	/*
++	 * Check if any other trace/core imc events are running in the
++	 * system, if not set the global id to thread-imc.
++	 */
++	if (imc_global_refc.id == 0 || imc_global_refc.id == IMC_DOMAIN_THREAD) {
++		imc_global_refc.id = IMC_DOMAIN_THREAD;
++		imc_global_refc.refc++;
++	} else {
++		mutex_unlock(&imc_global_refc.lock);
++		return -EBUSY;
++	}
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	event->pmu->task_ctx_nr = perf_sw_context;
++	event->destroy = reset_global_refc;
+ 	return 0;
+ }
+ 
+@@ -1063,10 +1156,12 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
+ 	int core_id;
+ 	struct imc_pmu_ref *ref;
+ 
+-	mtspr(SPRN_LDBAR, 0);
+-
+ 	core_id = smp_processor_id() / threads_per_core;
+ 	ref = &core_imc_refc[core_id];
++	if (!ref) {
++		pr_debug("imc: Failed to get event reference count\n");
++		return;
++	}
+ 
+ 	mutex_lock(&ref->lock);
+ 	ref->refc--;
+@@ -1082,6 +1177,10 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
+ 		ref->refc = 0;
+ 	}
+ 	mutex_unlock(&ref->lock);
++
++	/* Set bit 0 of LDBAR to zero, to stop posting updates to memory */
++	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) & (~(1UL << 63))));
++
+ 	/*
+ 	 * Take a snapshot and calculate the delta and update
+ 	 * the event counter values.
+@@ -1133,7 +1232,18 @@ static int ppc_trace_imc_cpu_online(unsigned int cpu)
+ 
+ static int ppc_trace_imc_cpu_offline(unsigned int cpu)
+ {
+-	mtspr(SPRN_LDBAR, 0);
++	/*
++	 * No need to set bit 0 of LDBAR to zero, as
++	 * it is set to zero for imc trace-mode
++	 *
++	 * Reduce the refc if any trace-imc event running
++	 * on this cpu.
++	 */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == IMC_DOMAIN_TRACE)
++		imc_global_refc.refc--;
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	return 0;
+ }
+ 
+@@ -1226,15 +1336,14 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
+ 	local_mem = get_trace_imc_event_base_addr();
+ 	ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) | TRACE_IMC_ENABLE;
+ 
+-	if (core_imc_refc)
+-		ref = &core_imc_refc[core_id];
++	/* trace-imc reference count */
++	if (trace_imc_refc)
++		ref = &trace_imc_refc[core_id];
+ 	if (!ref) {
+-		/* If core-imc is not enabled, use trace-imc reference count */
+-		if (trace_imc_refc)
+-			ref = &trace_imc_refc[core_id];
+-		if (!ref)
+-			return -EINVAL;
++		pr_debug("imc: Failed to get the event reference count\n");
++		return -EINVAL;
+ 	}
++
+ 	mtspr(SPRN_LDBAR, ldbar_value);
+ 	mutex_lock(&ref->lock);
+ 	if (ref->refc == 0) {
+@@ -1242,13 +1351,11 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
+ 				get_hard_smp_processor_id(smp_processor_id()))) {
+ 			mutex_unlock(&ref->lock);
+ 			pr_err("trace-imc: Unable to start the counters for core %d\n", core_id);
+-			mtspr(SPRN_LDBAR, 0);
+ 			return -EINVAL;
+ 		}
+ 	}
+ 	++ref->refc;
+ 	mutex_unlock(&ref->lock);
+-
+ 	return 0;
+ }
+ 
+@@ -1274,16 +1381,13 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
+ 	int core_id = smp_processor_id() / threads_per_core;
+ 	struct imc_pmu_ref *ref = NULL;
+ 
+-	if (core_imc_refc)
+-		ref = &core_imc_refc[core_id];
++	if (trace_imc_refc)
++		ref = &trace_imc_refc[core_id];
+ 	if (!ref) {
+-		/* If core-imc is not enabled, use trace-imc reference count */
+-		if (trace_imc_refc)
+-			ref = &trace_imc_refc[core_id];
+-		if (!ref)
+-			return;
++		pr_debug("imc: Failed to get event reference count\n");
++		return;
+ 	}
+-	mtspr(SPRN_LDBAR, 0);
++
+ 	mutex_lock(&ref->lock);
+ 	ref->refc--;
+ 	if (ref->refc == 0) {
+@@ -1297,6 +1401,7 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
+ 		ref->refc = 0;
+ 	}
+ 	mutex_unlock(&ref->lock);
++
+ 	trace_imc_event_stop(event, flags);
+ }
+ 
+@@ -1314,10 +1419,30 @@ static int trace_imc_event_init(struct perf_event *event)
+ 	if (event->attr.sample_period == 0)
+ 		return -ENOENT;
+ 
++	/*
++	 * Take the global lock, and make sure
++	 * no other thread is running any core/thread imc
++	 * events
++	 */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == 0 || imc_global_refc.id == IMC_DOMAIN_TRACE) {
++		/*
++		 * No core/thread imc events are running in the
++		 * system, so set the refc.id to trace-imc.
++		 */
++		imc_global_refc.id = IMC_DOMAIN_TRACE;
++		imc_global_refc.refc++;
++	} else {
++		mutex_unlock(&imc_global_refc.lock);
++		return -EBUSY;
++	}
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	event->hw.idx = -1;
+ 	target = event->hw.target;
+ 
+ 	event->pmu->task_ctx_nr = perf_hw_context;
++	event->destroy = reset_global_refc;
+ 	return 0;
+ }
+ 
+@@ -1429,10 +1554,10 @@ static void cleanup_all_core_imc_memory(void)
+ static void thread_imc_ldbar_disable(void *dummy)
+ {
+ 	/*
+-	 * By Zeroing LDBAR, we disable thread-imc
+-	 * updates.
++	 * By setting 0th bit of LDBAR to zero, we disable thread-imc
++	 * updates to memory.
+ 	 */
+-	mtspr(SPRN_LDBAR, 0);
++	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) & (~(1UL << 63))));
+ }
+ 
+ void thread_imc_disable(void)
+-- 
+2.20.1
+
