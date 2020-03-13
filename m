@@ -1,49 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60919184F43
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 20:26:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7024D184E7C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 19:20:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48fDWK6jnQzDqXQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Mar 2020 05:19:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48fFzj4LDWzDqZN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Mar 2020 06:26:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.151;
- helo=m176151.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m176151.mail.qiye.163.com (m176151.mail.qiye.163.com
- [59.111.176.151])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=jPJ5U7XU; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48fDSt1hCRzDqKH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Mar 2020 05:17:48 +1100 (AEDT)
-Received: from vivo.com (wm-11.qy.internal [127.0.0.1])
- by m176151.mail.qiye.163.com (Hmail) with ESMTP id 915D0482052;
- Sat, 14 Mar 2020 02:17:38 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AIkAvQC8CBiKb1HKth-6ZqrH.3.1584123458318.Hmail.wenhu.wang@vivo.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCB2Ml0gcG93ZXJwYy9mc2wtODV4eDogZml4IGNvbXBpbGUgZXJyb3I=?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.226
-In-Reply-To: <320843ad-32d5-8799-7c4a-150fa5fd7ef8@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48fFxs4klrzDqWP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Mar 2020 06:24:31 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48fFxm37jMz9vBSq;
+ Fri, 13 Mar 2020 20:24:28 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=jPJ5U7XU; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id sCJ1qMKipF5m; Fri, 13 Mar 2020 20:24:28 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48fFxm0bJGz9vBSn;
+ Fri, 13 Mar 2020 20:24:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1584127468; bh=oGg/6CLsP2vrCX0e3mcJfJmLT7XtQfwgp1ayZajashg=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=jPJ5U7XUrUkIOsgNWrVah/vvDWsI/iScNnGEWDpajpQzDQRAAje+IkPbeWn9gudEr
+ y3IukLpqbN22allFMj8Faqt9/8lT0e45T7nOvaYtRwaQjFMzm9X661bMWCEk81T7H5
+ 1eGp3SxT6nNRK7DajxdHffUR4+BL1Ekzp8i14rH4=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C81328B8D1;
+ Fri, 13 Mar 2020 20:24:27 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id cH60zKUXPUZZ; Fri, 13 Mar 2020 20:24:27 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 51D528B8CE;
+ Fri, 13 Mar 2020 20:24:26 +0100 (CET)
+Subject: Re: [PATCH v2] powerpc/fsl-85xx: fix compile error
+To: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+References: <AIkAvQC8CBiKb1HKth-6ZqrH.3.1584123458318.Hmail.wenhu.wang@vivo.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <6eba5d46-bb3a-03bb-376d-2a6e684d018e@c-s.fr>
+Date: Fri, 13 Mar 2020 20:24:20 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
- [127.0.0.1] ) ; Sat, 14 Mar 2020 02:17:38 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Sat, 14 Mar 2020 02:17:38 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VJSUtCQkJMSkxMSklPWVdZKFlBSE
- 83V1ktWUFJV1kJDhceCFlBWTU0KTY6NyQpLjc#WQY+
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhNTUNJT0NLS05IN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6MhA6DSo4Qzg5EjAZSjMwDxNWTSEKCTNVSFVKTkNPSklIT01KTU5NVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQU5JSU43Bg++
-X-HM-Tid: 0a70d51db42c93b5kuws915d0482052
+In-Reply-To: <AIkAvQC8CBiKb1HKth-6ZqrH.3.1584123458318.Hmail.wenhu.wang@vivo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,40 +86,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-5Y+R5Lu25Lq677yaQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMuZnI+CuWP
-kemAgeaXpeacn++8mjIwMjAtMDMtMTQgMDE6NDU6MTEK5pS25Lu25Lq677yaV0FORyBXZW5odSA8
-d2VuaHUud2FuZ0B2aXZvLmNvbT4sQmVuamFtaW4gSGVycmVuc2NobWlkdCA8YmVuaEBrZXJuZWwu
-Y3Jhc2hpbmcub3JnPixQYXVsIE1hY2tlcnJhcyA8cGF1bHVzQHNhbWJhLm9yZz4sTWljaGFlbCBF
-bGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PixSaWNoYXJkIEZvbnRhbmEgPHJmb250YW5hQHJl
-ZGhhdC5jb20+LEthdGUgU3Rld2FydCA8a3N0ZXdhcnRAbGludXhmb3VuZGF0aW9uLm9yZz4sQWxs
-aXNvbiBSYW5kYWwgPGFsbGlzb25AbG9odXRvay5uZXQ+LFRob21hcyBHbGVpeG5lciA8dGdseEBs
-aW51dHJvbml4LmRlPixsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyxsaW51eC1rZXJuZWxA
-dmdlci5rZXJuZWwub3JnCuaKhOmAgeS6uu+8mmtlcm5lbEB2aXZvLmNvbSx0cml2aWFsQGtlcm5l
-bC5vcmcK5Li76aKY77yaUmU6IFtQQVRDSCB2Ml0gcG93ZXJwYy9mc2wtODV4eDogZml4IGNvbXBp
-bGUgZXJyb3I+Cj4KPkxlIDEzLzAzLzIwMjAgw6AgMTg6MTksIFdBTkcgV2VuaHUgYSDDqWNyaXTC
-oDoKPj4gSW5jbHVkZSAibGludXgvb2ZfYWRkcmVzcy5oIiB0byBmaXggdGhlIGNvbXBpbGUgZXJy
-b3IgZm9yCj4+IG1wYzg1eHhfbDJjdGxyX29mX3Byb2JlKCkgd2hlbiBjb21waWxpbmcgZnNsXzg1
-eHhfY2FjaGVfc3JhbS5jLgo+PiAKPj4gICAgQ0MgICAgICBhcmNoL3Bvd2VycGMvc3lzZGV2L2Zz
-bF84NXh4X2wyY3Rsci5vCj4+IGFyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1eHhfbDJjdGxyLmM6
-IEluIGZ1bmN0aW9uIOKAmG1wYzg1eHhfbDJjdGxyX29mX3Byb2Jl4oCZOgo+PiBhcmNoL3Bvd2Vy
-cGMvc3lzZGV2L2ZzbF84NXh4X2wyY3Rsci5jOjkwOjExOiBlcnJvcjogaW1wbGljaXQgZGVjbGFy
-YXRpb24gb2YgZnVuY3Rpb24g4oCYb2ZfaW9tYXDigJk7IGRpZCB5b3UgbWVhbiDigJhwY2lfaW9t
-YXDigJk/IFstV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9uLWRlY2xhcmF0aW9uXQo+PiAgICBsMmN0
-bHIgPSBvZl9pb21hcChkZXYtPmRldi5vZl9ub2RlLCAwKTsKPj4gICAgICAgICAgICAgXn5+fn5+
-fn4KPj4gICAgICAgICAgICAgcGNpX2lvbWFwCj4+IGFyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1
-eHhfbDJjdGxyLmM6OTA6OTogZXJyb3I6IGFzc2lnbm1lbnQgbWFrZXMgcG9pbnRlciBmcm9tIGlu
-dGVnZXIgd2l0aG91dCBhIGNhc3QgWy1XZXJyb3I9aW50LWNvbnZlcnNpb25dCj4+ICAgIGwyY3Rs
-ciA9IG9mX2lvbWFwKGRldi0+ZGV2Lm9mX25vZGUsIDApOwo+PiAgICAgICAgICAgXgo+PiBjYzE6
-IGFsbCB3YXJuaW5ncyBiZWluZyB0cmVhdGVkIGFzIGVycm9ycwo+PiBzY3JpcHRzL01ha2VmaWxl
-LmJ1aWxkOjI2NzogcmVjaXBlIGZvciB0YXJnZXQgJ2FyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1
-eHhfbDJjdGxyLm8nIGZhaWxlZAo+PiBtYWtlWzJdOiAqKiogW2FyY2gvcG93ZXJwYy9zeXNkZXYv
-ZnNsXzg1eHhfbDJjdGxyLm9dIEVycm9yIDEKPj4gCj4+IEZpeGVzOiBjb21taXQgNmRiOTJjYzlk
-MDdkICgicG93ZXJwYy84NXh4OiBhZGQgY2FjaGUtc3JhbSBzdXBwb3J0IikKPgo+U2hvdWxkbid0
-IHlvdSBDYyBzdGFibGUgYXMgd2VsbCA/ClByZXR0eSBzdXJlIGlmIGl0IG1ha2VzIGEgZGlmZmVy
-ZW5jZSh0aGF0IEkgZGlkIG5vdCByZWNvZ25pemUpLiAKRG9lcyB0aGUgaW5jb25zaXN0ZW5jeSBv
-ZiBDYyBsZWFkIHRvIGEgZmFpbHVyZSBvbiBjbGFzc2lmaWNhdGlvbgpvciBzb21ldGhpbmcgZWxz
-ZSB3aGljaCBtYXkgY29uZnVzZSB5b3U/Cj4KPj4gU2lnbmVkLW9mZi1ieTogV0FORyBXZW5odSA8
-d2VuaHUud2FuZ0B2aXZvLmNvbT4KPj4gLS0tCj4KPldoYXQncyB0aGUgZGlmZmVyZW5jZSBiZXR3
-ZWVuIHYxIGFuZCB2MiA/ClRoZSBsYWJlbCBmaWVsZCBtb2RpZmljYXRpb246ICJGaXhlZCIgLT4g
-IkZpeGVzIiwgd2hpY2ggbm93IGlzCmlkZW50aWZpZWQgc3VjY2Vzc2Z1bGx5LiBSZWFsbHkgc29y
-cnkgZm9yIHRoZSBmYXVsdCBvbiB2MS4KPgo+Q2hyaXN0b3BoZQoNCg0K
+
+
+Le 13/03/2020 à 19:17, 王文虎 a écrit :
+> 发件人：Christophe Leroy <christophe.leroy@c-s.fr>
+> 发送日期：2020-03-14 01:45:11
+> 收件人：WANG Wenhu <wenhu.wang@vivo.com>,Benjamin Herrenschmidt <benh@kernel.crashing.org>,Paul Mackerras <paulus@samba.org>,Michael Ellerman <mpe@ellerman.id.au>,Richard Fontana <rfontana@redhat.com>,Kate Stewart <kstewart@linuxfoundation.org>,Allison Randal <allison@lohutok.net>,Thomas Gleixner <tglx@linutronix.de>,linuxppc-dev@lists.ozlabs.org,linux-kernel@vger.kernel.org
+> 抄送人：kernel@vivo.com,trivial@kernel.org
+> 主题：Re: [PATCH v2] powerpc/fsl-85xx: fix compile error>
+>>
+>> Le 13/03/2020 à 18:19, WANG Wenhu a écrit :
+>>> Include "linux/of_address.h" to fix the compile error for
+>>> mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
+>>>
+>>>     CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
+>>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function ‘mpc85xx_l2ctlr_of_probe’:
+>>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaration of function ‘of_iomap’; did you mean ‘pci_iomap’? [-Werror=implicit-function-declaration]
+>>>     l2ctlr = of_iomap(dev->dev.of_node, 0);
+>>>              ^~~~~~~~
+>>>              pci_iomap
+>>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
+>>>     l2ctlr = of_iomap(dev->dev.of_node, 0);
+>>>            ^
+>>> cc1: all warnings being treated as errors
+>>> scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_85xx_l2ctlr.o' failed
+>>> make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
+>>>
+>>> Fixes: commit 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
+>>
+>> Shouldn't you Cc stable as well ?
+> Pretty sure if it makes a difference(that I did not recognize).
+> Does the inconsistency of Cc lead to a failure on classification
+> or something else which may confuse you?
+
+See 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/process/submitting-patches.rst?h=v5.1.9#n299
+
+>>
+>>> Signed-off-by: WANG Wenhu <wenhu.wang@vivo.com>
+>>> ---
+>>
+>> What's the difference between v1 and v2 ?
+> The label field modification: "Fixed" -> "Fixes", which now is
+> identified successfully. Really sorry for the fault on v1.
+
+Ok. Usually people tell here (just below the ---) what is the difference 
+between the different versions. It helps people understand what the 
+changes are.
+
+Christophe
