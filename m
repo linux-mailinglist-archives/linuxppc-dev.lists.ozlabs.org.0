@@ -1,77 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF0F184412
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 10:49:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48f1BT416gzDqLh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 20:49:37 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C11918441C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 10:51:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48f1Dj3lKGzDqLn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Mar 2020 20:51:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
- helo=mail-qt1-x844.google.com; envelope-from=js1304@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=idV80ylM; dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48f18m4Q0czDqDt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 20:48:04 +1100 (AEDT)
-Received: by mail-qt1-x844.google.com with SMTP id m33so6947999qtb.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 02:48:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=8ype9a2Pgy0TDkVr+jjtxMr6KTyOlymmisvMN8Riefk=;
- b=idV80ylMvEIMsvllcp2OWlep7Wg7lp0Ru/uKDyRC6qmc69JFzVeRgtSHUhR+D59WlM
- AoU7d3uKDNnIU1L8At21wB0rJIG17hd5BoXi5lLqgMBGnmwOMs8blHzdVC04jvi6xYui
- VIoMUsD22lhwAoWHU8w/iRpsazyrL77UIBOQZ7O0YewBF3lH5V3AYjrSvFPWYyu6I4Dz
- lmIpRCuLy0T/8xJY2bLzVqt7BVGuMqfPhBVGymY4PMzaxnf3FAOI9ltIzrUHPQFGt6xC
- foq4mOfumN0EfS2Z3VkXuD11EFgNuPjWhxsAjPbmAMIGuFGisI46U2A4qBu9rYkKJwnb
- bZ6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=8ype9a2Pgy0TDkVr+jjtxMr6KTyOlymmisvMN8Riefk=;
- b=WZjDCIvegwY3xavQTOfB1pftjU3O89hPJzbguyXTKczS98D7z7yFHW8XGQdXwDnh7m
- 1NhgPOZBSdhX4noKJwHi4ANScKU1mWZnQmRLifEBqeFWWzGoYzSF1r6ZQMOkq0ziRlWL
- zyozzJXkauyLN1b07arCItyKAARkWsp+rse8E8vWt7GOvCURxC3bI69+eZooflq/ywwj
- K4ZDUNfHn3vtrNGy5LBhVqC5dmlFPY1r96p2yDr1uVKMCIOeaEQeP3Nc4KqIXBYe2XVp
- o+ufnHNfvmVQfHa8vM3GlqDcoroLO9HBdahc9kUbVGm6ZgH4Xyf1IWpvIifIHa3kQHIN
- 3z6A==
-X-Gm-Message-State: ANhLgQ1m1X4f1oY9sqhTLCn5gNDijXevj6Ng5djUT4UDtf11Ko99ofpt
- H4FsFLbwH9v4bUlgm7NwNy4YH0FmRE2QZkMaPnk=
-X-Google-Smtp-Source: ADFU+vtE7WMgh4Gv9w102cDFerGRE1K1vCLoXgu1/Vg4RBcxs88YSkurvuT2VTjzFld7v8QADYo+l0oWYGQvFcjPMK8=
-X-Received: by 2002:aed:3346:: with SMTP id u64mr4634827qtd.333.1584092880504; 
- Fri, 13 Mar 2020 02:48:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48f19l359DzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 20:48:59 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02D9acZB141852; Fri, 13 Mar 2020 05:48:53 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yr0c06wgx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Mar 2020 05:48:53 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02D9affR142121;
+ Fri, 13 Mar 2020 05:48:53 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yr0c06wgk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Mar 2020 05:48:53 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02D9k7qi029318;
+ Fri, 13 Mar 2020 09:48:52 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma03wdc.us.ibm.com with ESMTP id 2yqt6pw9fp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Mar 2020 09:48:52 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02D9mqRN53608944
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Mar 2020 09:48:52 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 348CDB2064;
+ Fri, 13 Mar 2020 09:48:52 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 804FCB205F;
+ Fri, 13 Mar 2020 09:48:50 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.91.235])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 13 Mar 2020 09:48:50 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/book3s/hash64/devmap: Use H_PAGE_THP_HUGE when
+ setting up huge devmap pte entries
+Date: Fri, 13 Mar 2020 15:18:42 +0530
+Message-Id: <20200313094842.351830-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
- <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
- <20200311115735.GM23944@dhcp22.suse.cz>
- <20200312052707.GA3277@linux.vnet.ibm.com>
- <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
- <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
- <20200312131438.GB3277@linux.vnet.ibm.com>
- <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
- <20200312161310.GC3277@linux.vnet.ibm.com>
- <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
-In-Reply-To: <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
-From: Joonsoo Kim <js1304@gmail.com>
-Date: Fri, 13 Mar 2020 18:47:49 +0900
-Message-ID: <CAAmzW4OFy51BhAT62tdVQD52NNMWm+UPgoGAX97omY7P+nJ+5w@mail.gmail.com>
-Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
-To: Vlastimil Babka <vbabka@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-13_04:2020-03-11,
+ 2020-03-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ impostorscore=0 clxscore=1015 phishscore=0 adultscore=0 spamscore=0
+ bulkscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003130050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,213 +88,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Mel Gorman <mgorman@suse.de>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christopher Lameter <cl@linux.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, oohall@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-2020=EB=85=84 3=EC=9B=94 13=EC=9D=BC (=EA=B8=88) =EC=98=A4=EC=A0=84 1:42, V=
-lastimil Babka <vbabka@suse.cz>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> On 3/12/20 5:13 PM, Srikar Dronamraju wrote:
-> > * Vlastimil Babka <vbabka@suse.cz> [2020-03-12 14:51:38]:
-> >
-> >> > * Vlastimil Babka <vbabka@suse.cz> [2020-03-12 10:30:50]:
-> >> >
-> >> >> On 3/12/20 9:23 AM, Sachin Sant wrote:
-> >> >> >> On 12-Mar-2020, at 10:57 AM, Srikar Dronamraju <srikar@linux.vne=
-t.ibm.com> wrote:
-> >> >> >> * Michal Hocko <mhocko@kernel.org> [2020-03-11 12:57:35]:
-> >> >> >>> On Wed 11-03-20 16:32:35, Srikar Dronamraju wrote:
-> >> >> >>>> To ensure a cpuless, memoryless dummy node is not online, powe=
-rpc need
-> >> >> >>>> to make sure all possible but not present cpu_to_node are set =
-to a
-> >> >> >>>> proper node.
-> >> >> >>>
-> >> >> >>> Just curious, is this somehow related to
-> >> >> >>> http://lkml.kernel.org/r/20200227182650.GG3771@dhcp22.suse.cz?
-> >> >> >>>
-> >> >> >>
-> >> >> >> The issue I am trying to fix is a known issue in Powerpc since m=
-any years.
-> >> >> >> So this surely not a problem after a75056fc1e7c (mm/memcontrol.c=
-: allocate
-> >> >> >> shrinker_map on appropriate NUMA node").
-> >> >> >>
-> >> >
-> >> > While I am not an expert in the slub area, I looked at the patch
-> >> > a75056fc1e7c and had some thoughts on why this could be causing this=
- issue.
-> >> >
-> >> > On the system where the crash happens, the possible number of nodes =
-is much
-> >> > greater than the number of onlined nodes. The pdgat or the NODE_DATA=
- is only
-> >> > available for onlined nodes.
-> >> >
-> >> > With a75056fc1e7c memcg_alloc_shrinker_maps, we end up calling kzall=
-oc_node
-> >> > for all possible nodes and in ___slab_alloc we end up looking at the
-> >> > node_present_pages which is NODE_DATA(nid)->node_present_pages.
-> >> > i.e for a node whose pdgat struct is not allocated, we are trying to
-> >> > dereference.
-> >>
-> >> From what we saw, the pgdat does exist, the problem is that slab's per=
--node data
-> >> doesn't exist for a node that doesn't have present pages, as it would =
-be a waste
-> >> of memory.
-> >
-> > Just to be clear
-> > Before my 3 patches to fix dummy node:
-> > srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/possible
-> > 0-31
-> > srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/online
-> > 0-1
->
-> OK
->
-> >>
-> >> Uh actually you are probably right, the NODE_DATA doesn't exist anymor=
-e? In
-> >> Sachin's first report [1] we have
-> >>
-> >> [    0.000000] numa:   NODE_DATA [mem 0x8bfedc900-0x8bfee3fff]
-> >> [    0.000000] numa:     NODE_DATA(0) on node 1
-> >> [    0.000000] numa:   NODE_DATA [mem 0x8bfed5200-0x8bfedc8ff]
-> >>
-> >
-> > So even if pgdat would exist for nodes 0 and 1, there is no pgdat for t=
-he
-> > rest 30 nodes.
->
-> I see. Perhaps node_present_pages(node) is not safe in SLUB then and it s=
-hould
-> check online first, as you suggested.
->
-> >> But in this thread, with your patches Sachin reports:
-> >
-> > and with my patches
-> > srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/possible
-> > 0-31
-> > srikar@ltc-zzci-2 /sys/devices/system/node $ cat $PWD/online
-> > 1
-> >
-> >>
-> >> [    0.000000] numa:   NODE_DATA [mem 0x8bfedc900-0x8bfee3fff]
-> >>
-> >
-> > so we only see one pgdat.
-> >
-> >> So I assume it's just node 1. In that case, node_present_pages is real=
-ly dangerous.
-> >>
-> >> [1]
-> >> https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A6396=
-8@linux.vnet.ibm.com/
-> >>
-> >> > Also for a memoryless/cpuless node or possible but not present nodes=
-,
-> >> > node_to_mem_node(node) will still end up as node (atleast on powerpc=
-).
-> >>
-> >> I think that's the place where this would be best to fix.
-> >>
-> >
-> > Maybe. I thought about it but the current set_numa_mem semantics are ap=
-t
-> > for memoryless cpu node and not for possible nodes.  We could have upto=
- 256
-> > possible nodes and only 2 nodes (1,2) with cpu and 1 node (1) with memo=
-ry.
-> > node_to_mem_node seems to return what is set in set_numa_mem().
-> > set_numa_mem() seems to say set my numa_mem node for the current memory=
-less
-> > node to the param passed.
-> >
-> > But how do we set numa_mem for all the other 253 possible nodes, which
-> > probably will have 0 as default?
-> >
-> > Should we introduce another API such that we could update for all possi=
-ble
-> > nodes?
->
-> If we want to rely on node_to_mem_node() to give us something safe for ea=
-ch
-> possible node, then probably it would have to be like that, yeah.
->
-> >> > I tried with this hunk below and it works.
-> >> >
-> >> > But I am not sure if we need to check at other places were
-> >> > node_present_pages is being called.
-> >>
-> >> I think this seems to defeat the purpose of node_to_mem_node()? Should=
-n't it
-> >> return only nodes that are online with present memory?
-> >> CCing Joonsoo who seems to have introduced this in ad2c8144418c ("topo=
-logy: add
-> >> support for node_to_mem_node() to determine the fallback node")
-> >>
-> >
-> > Agree
+H_PAGE_THP_HUGE is used to differentiate between a THP hugepage and hugetlb
+hugepage entries. The difference is w.r.t how we handle hash fault on these
+address. THP address enables MPSS in segments. We want to manage devmap hugepage
+entries similar to THP pt entries. Hence use H_PAGE_THP_HUGE for devmap huge pte
+entries.
 
-I lost all the memory about it. :)
-Anyway, how about this?
+With current code while handling hash pte fault, we do set is_thp = true when
+finding devmap pte huge pte entries.
 
-1. make node_present_pages() safer
-static inline node_present_pages(nid)
-{
-if (!node_online(nid)) return 0;
-return (NODE_DATA(nid)->node_present_pages);
-}
+Current code also does the below sequence we setting up huge devmap entries.
+	entry = pmd_mkhuge(pfn_t_pmd(pfn, prot));
+	if (pfn_t_devmap(pfn))
+		entry = pmd_mkdevmap(entry);
 
-2. make node_to_mem_node() safer for all cases
-In ppc arch's mem_topology_setup(void)
-for_each_present_cpu(cpu) {
- numa_setup_cpu(cpu);
- mem_node =3D node_to_mem_node(numa_mem_id());
- if (!node_present_pages(mem_node)) {
-  _node_numa_mem_[numa_mem_id()] =3D first_online_node;
+In that case we would find both H_PAGE_THP_HUGE and PAGE_DEVMAP set for huge
+devmap pte entries. This results in false positive error like below.
+
+ kernel BUG at /home/kvaneesh/src/linux/mm/memory.c:4321!
+ Oops: Exception in kernel mode, sig: 5 [#1]
+ LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+ Modules linked in:
+ CPU: 56 PID: 67996 Comm: t_mmap_dio Not tainted 5.6.0-rc4-59640-g371c804dedbc #128
+ ....
+ NIP [c00000000044c9e4] __follow_pte_pmd+0x264/0x900
+ LR [c0000000005d45f8] dax_writeback_one+0x1a8/0x740
+ Call Trace:
+ [c000000c6e9f38c0] [c0000000013f4130] str_spec.74809+0x22ffb4/0x2d116c (unreliable)
+ [c000000c6e9f3960] [c0000000005d45f8] dax_writeback_one+0x1a8/0x740
+ [c000000c6e9f3a40] [c0000000005d4dfc] dax_writeback_mapping_range+0x26c/0x700
+ [c000000c6e9f3b30] [c000000000666580] ext4_dax_writepages+0x150/0x5a0
+ [c000000c6e9f3ba0] [c0000000003fe278] do_writepages+0x68/0x180
+ [c000000c6e9f3c10] [c0000000003ecc58] __filemap_fdatawrite_range+0x138/0x180
+ [c000000c6e9f3cc0] [c0000000003ede74] file_write_and_wait_range+0xa4/0x110
+ [c000000c6e9f3d10] [c0000000006552d0] ext4_sync_file+0x370/0x6e0
+ [c000000c6e9f3d70] [c00000000057d330] vfs_fsync_range+0x70/0xf0
+ [c000000c6e9f3db0] [c00000000046a000] sys_msync+0x220/0x2e0
+ [c000000c6e9f3e20] [c00000000000b478] system_call+0x5c/0x68
+ Instruction dump:
+ 7a941564 392affff 7fbffc36 7a94f082 7d2907b4 78f4f00e 7fff4838 7bff1f24
+ 7e54f82a 7e74fa14 724900a0 40820410 <0b080000> 72490040 418201c8 2fb7000
+
+This is because our pmd_trans_huge check doesn't exclude _PAGE_DEVMAP.
+
+To make this all consistent, update pmd_mkdevmap to set H_PAGE_THP_HUGE and
+pmd_trans_huge check now excludes _PAGE_DEVMAP correctly.
+
+Fixes: ebd31197931d ("powerpc/mm: Add devmap support for ppc64")
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  | 6 ++++++
+ arch/powerpc/include/asm/book3s/64/hash-64k.h | 8 +++++++-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 4 +++-
+ arch/powerpc/include/asm/book3s/64/radix.h    | 5 +++++
+ 4 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+index 8fd8599c9395..3f9ae3585ab9 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+@@ -156,6 +156,12 @@ extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
+ extern int hash__has_transparent_hugepage(void);
+ #endif
+ 
++static inline pmd_t hash__pmd_mkdevmap(pmd_t pmd)
++{
++	BUG();
++	return pmd;
++}
++
+ #endif /* !__ASSEMBLY__ */
+ 
+ #endif /* _ASM_POWERPC_BOOK3S_64_HASH_4K_H */
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+index d1d9177d9ebd..0729c034e56f 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+@@ -246,7 +246,7 @@ static inline void mark_hpte_slot_valid(unsigned char *hpte_slot_array,
+  */
+ static inline int hash__pmd_trans_huge(pmd_t pmd)
+ {
+-	return !!((pmd_val(pmd) & (_PAGE_PTE | H_PAGE_THP_HUGE)) ==
++	return !!((pmd_val(pmd) & (_PAGE_PTE | H_PAGE_THP_HUGE | _PAGE_DEVMAP)) ==
+ 		  (_PAGE_PTE | H_PAGE_THP_HUGE));
  }
-}
+ 
+@@ -272,6 +272,12 @@ extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 				       unsigned long addr, pmd_t *pmdp);
+ extern int hash__has_transparent_hugepage(void);
+ #endif /*  CONFIG_TRANSPARENT_HUGEPAGE */
++
++static inline pmd_t hash__pmd_mkdevmap(pmd_t pmd)
++{
++	return __pmd(pmd_val(pmd) | (_PAGE_PTE | H_PAGE_THP_HUGE | _PAGE_DEVMAP));
++}
++
+ #endif	/* __ASSEMBLY__ */
+ 
+ #endif /* _ASM_POWERPC_BOOK3S_64_HASH_64K_H */
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 201a69e6a355..368b136517e0 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1303,7 +1303,9 @@ extern void serialize_against_pte_lookup(struct mm_struct *mm);
+ 
+ static inline pmd_t pmd_mkdevmap(pmd_t pmd)
+ {
+-	return __pmd(pmd_val(pmd) | (_PAGE_PTE | _PAGE_DEVMAP));
++	if (radix_enabled())
++		return radix__pmd_mkdevmap(pmd);
++	return hash__pmd_mkdevmap(pmd);
+ }
+ 
+ static inline int pmd_devmap(pmd_t pmd)
+diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
+index d97db3ad9aae..a1c60d5b50af 100644
+--- a/arch/powerpc/include/asm/book3s/64/radix.h
++++ b/arch/powerpc/include/asm/book3s/64/radix.h
+@@ -263,6 +263,11 @@ static inline int radix__has_transparent_hugepage(void)
+ }
+ #endif
+ 
++static inline pmd_t radix__pmd_mkdevmap(pmd_t pmd)
++{
++	return __pmd(pmd_val(pmd) | (_PAGE_PTE | _PAGE_DEVMAP));
++}
++
+ extern int __meminit radix__vmemmap_create_mapping(unsigned long start,
+ 					     unsigned long page_size,
+ 					     unsigned long phys);
+-- 
+2.24.1
 
-With these two changes, we can uses node_present_pages() and node_to_mem_no=
-de()
-as intended.
-
-Thanks.
-
-> >> I think we do need well defined and documented rules around node_to_me=
-m_node(),
-> >> cpu_to_node(), existence of NODE_DATA, various node_states bitmaps etc=
- so
-> >> everyone handles it the same, safe way.
->
-> So let's try to brainstorm how this would look like? What I mean are some=
- rules
-> like below, even if some details in my current understanding are most lik=
-ely
-> incorrect:
->
-> with nid present in:
-> N_POSSIBLE - pgdat might not exist, node_to_mem_node() must return some o=
-nline
-> node with memory so that we don't require everyone to search for it in sl=
-ightly
-> different ways
-> N_ONLINE - pgdat must exist, there doesn't have to be present memory,
-> node_to_mem_node() still has to return something else (?)
-> N_NORMAL_MEMORY - there is present memory, node_to_mem_node() returns its=
-elf
-> N_HIGH_MEMORY - node has present high memory
