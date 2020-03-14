@@ -1,78 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BD81854A2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Mar 2020 05:01:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFCE185446
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Mar 2020 04:39:42 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48fSx46fQyzDqc1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Mar 2020 14:39:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48fTQs0rRbzDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Mar 2020 15:01:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=U8GtRzui; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48fSvP63SjzDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Mar 2020 14:38:07 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id ay11so5246321plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Mar 2020 20:38:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=ZNUVQBdecvt5COEcoIrcomryAYodxervF1IhwAWuYNI=;
- b=U8GtRzuiRrB30Vs6+2N7gcNJLro8jXQ1/qSE4IP8KtesA/le6vpZ7iKTPSSrJn6MAK
- xNSQA6dIV/bc4Qc3qOev2soDsex0gkfBiBDSs58LngBgtXQIamOTLH9x0kd+rHzK6wKU
- O//UxXQd/yVQFeHsIxNZHc+RinNuQHW1u3GslQ5HiAHPXSHh0ry8oC2yCbwvstTK2A9x
- Q096/0cO3fAsPAI5Mi954xBoAiTvLsKYvG42V4fAWxGG+DXxq0Wn5uinhyxbggJBhY5b
- PvVuVxwx+d+RWzksY7BYSqewm3TQXNMKuQbhPK3r4LWAAMBHsB+ETpoxGPaq99pXeCCO
- z8fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=ZNUVQBdecvt5COEcoIrcomryAYodxervF1IhwAWuYNI=;
- b=pNo0MNRrx9O6PV/Gc++QpSC6/28wB7qo4txfWT6oBWKN5CSjF2lDQ69Hf7/FvjSz4G
- gx6tEILs55IGOZKrFogGAyHD6Dnfbd1L7it/Ph/gZSaZUOlIgEmKBcDpjmoBA0hV7l25
- pCynD54+6lo+Gs+Z2z+ncq2R9pGFbcWMipEAwVO7AXDoLLq5Km9pv7M+10gYFG/VXBwC
- 1SCJxOLv4c9og3vRokyLveAKlQTZhs32ZHl84PLjJRUDdH110ZYeDSS9gUODTWap8RUF
- muDiVdINlw1rj1JMElMHW0uHNWZfUSQ0H9FmgZKuKzjmUvoN4dbltzs4fMcSN2VPeGSQ
- ac/A==
-X-Gm-Message-State: ANhLgQ0ovscnqW1S555AA74OGo4C0W/bCpTdLzE0SArCKrIN2o2sR+3F
- Ac5jEDgw6yvG4SJh8XbgMHk=
-X-Google-Smtp-Source: ADFU+vt5/H0AnFJwDMLEM03AgTdCqm0Bd8EJoF2XPratD08Zg8UuZuQ7nCX0zDh6qLPa92Alyja/hg==
-X-Received: by 2002:a17:902:a518:: with SMTP id
- s24mr16532704plq.157.1584157083999; 
- Fri, 13 Mar 2020 20:38:03 -0700 (PDT)
-Received: from localhost ([193.114.108.19])
- by smtp.gmail.com with ESMTPSA id 129sm34913634pfw.84.2020.03.13.20.38.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Mar 2020 20:38:03 -0700 (PDT)
-Date: Sat, 14 Mar 2020 13:37:15 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3] powerpc: setup_64: set up PACA earlier to avoid kcov
- problems
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20200306073000.9491-1-dja@axtens.net>
- <1583543617.bp71axgtlo.astroid@bobo.none>
- <87tv2wigj7.fsf@mpe.ellerman.id.au> <87lfo7q0cb.fsf@dja-thinkpad.axtens.net>
-In-Reply-To: <87lfo7q0cb.fsf@dja-thinkpad.axtens.net>
-MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584156888.f924kplz26.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48fT3D5ycqzDqTb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Mar 2020 14:44:56 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9040C1A194B;
+ Sat, 14 Mar 2020 04:44:53 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 913EE1A197C;
+ Sat, 14 Mar 2020 04:44:43 +0100 (CET)
+Received: from titan.ap.freescale.net (titan.ap.freescale.net [10.192.208.233])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5F52A402FF;
+ Sat, 14 Mar 2020 11:44:31 +0800 (SGT)
+From: Xiaowei Bao <xiaowei.bao@nxp.com>
+To: Zhiqiang.Hou@nxp.com, Minghuan.Lian@nxp.com, mingkai.hu@nxp.com,
+ bhelgaas@google.com, robh+dt@kernel.org, shawnguo@kernel.org,
+ leoyang.li@nxp.com, kishon@ti.com, lorenzo.pieralisi@arm.com,
+ roy.zang@nxp.com, amurray@thegoodpenguin.co.uk, jingoohan1@gmail.com,
+ gustavo.pimentel@synopsys.com, andrew.murray@arm.com,
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v6 09/11] PCI: layerscape: Add EP mode support for ls1088a and
+ ls2088a
+Date: Sat, 14 Mar 2020 11:30:36 +0800
+Message-Id: <20200314033038.24844-10-xiaowei.bao@nxp.com>
+X-Mailer: git-send-email 2.9.5
+In-Reply-To: <20200314033038.24844-1-xiaowei.bao@nxp.com>
+References: <20200314033038.24844-1-xiaowei.bao@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,45 +58,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com
+Cc: Xiaowei Bao <xiaowei.bao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens's on March 11, 2020 9:03 am:
->>>> So:
->>>>  - change the test when setting up a PACA to consider the actual value=
- of
->>>>    the MSR rather than the CPU feature.
->>>>=20
->>>>  - move the PACA setup to before the cpu feature parsing.
->>>
->>> Hmm. Problem is that equally we want PACA to be sane before we call too
->>> far into the rest of the kernel ("generic dt parsing code").
->>
->> But currently we call into that code with no paca at all. Or rather,
->> with r13 pointing somewhere random that will be interpreted as being a
->> paca.
->>
->> This took a while for Daniel to debug because depending on how you boot
->> r13 contains a different junk value. That junk value may not point to
->> memory at all, or if it does the memory it points to may or may not send
->> you down the wrong path, depending on which exact bit you're looking at
->> in some random location.
->>
->> So this is really not about kcov from my POV, that's just how we
->> discovered it.
->=20
-> Ah, yes. I agree with mpe, and reading back over my commit message I
-> think I did a pretty poor job of explaining it. How about this for a
-> commit message:
+Add PCIe EP mode support for ls1088a and ls2088a, there are some
+difference between LS1 and LS2 platform, so refactor the code of
+the EP driver.
 
-Sorry yeah I'm not quite sure what I was thinking there, because
-you actually are moving the paca setup earlier. Hmm. Anyway it seems
-okay to me. I would suggest putting a comment in the mfmsr() & MSR_HV
-test so it doesn't get used elsewhere. Maybe include CPU_FTR_HVMODE
-in the comment so grep shows it up.
+Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+---
+v2: 
+ - This is a new patch for supporting the ls1088a and ls2088a platform.
+v3:
+ - Adjust the some struct assignment order in probe function.
+v4:
+ - No change.
+v5:
+ - No change.
+v6:
+ - No change.
 
-Thanks,
-Nick
-=
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 72 +++++++++++++++++++-------
+ 1 file changed, 53 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index bfab1c6..84206f2 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -20,27 +20,29 @@
+ 
+ #define PCIE_DBI2_OFFSET		0x1000	/* DBI2 base address*/
+ 
+-struct ls_pcie_ep {
+-	struct dw_pcie		*pci;
+-	struct pci_epc_features	*ls_epc;
++#define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
++
++struct ls_pcie_ep_drvdata {
++	u32				func_offset;
++	const struct dw_pcie_ep_ops	*ops;
++	const struct dw_pcie_ops	*dw_pcie_ops;
+ };
+ 
+-#define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
++struct ls_pcie_ep {
++	struct dw_pcie			*pci;
++	struct pci_epc_features		*ls_epc;
++	const struct ls_pcie_ep_drvdata *drvdata;
++};
+ 
+ static int ls_pcie_establish_link(struct dw_pcie *pci)
+ {
+ 	return 0;
+ }
+ 
+-static const struct dw_pcie_ops ls_pcie_ep_ops = {
++static const struct dw_pcie_ops dw_ls_pcie_ep_ops = {
+ 	.start_link = ls_pcie_establish_link,
+ };
+ 
+-static const struct of_device_id ls_pcie_ep_of_match[] = {
+-	{ .compatible = "fsl,ls-pcie-ep",},
+-	{ },
+-};
+-
+ static const struct pci_epc_features*
+ ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+ {
+@@ -87,10 +89,39 @@ static int ls_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ 	}
+ }
+ 
+-static const struct dw_pcie_ep_ops pcie_ep_ops = {
++static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
++						u8 func_no)
++{
++	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
++	struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
++
++	WARN_ON(func_no && !pcie->drvdata->func_offset);
++	return pcie->drvdata->func_offset * func_no;
++}
++
++static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
+ 	.ep_init = ls_pcie_ep_init,
+ 	.raise_irq = ls_pcie_ep_raise_irq,
+ 	.get_features = ls_pcie_ep_get_features,
++	.func_conf_select = ls_pcie_ep_func_conf_select,
++};
++
++static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
++	.ops = &ls_pcie_ep_ops,
++	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
++};
++
++static const struct ls_pcie_ep_drvdata ls2_ep_drvdata = {
++	.func_offset = 0x20000,
++	.ops = &ls_pcie_ep_ops,
++	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
++};
++
++static const struct of_device_id ls_pcie_ep_of_match[] = {
++	{ .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
++	{ .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
++	{ .compatible = "fsl,ls2088a-pcie-ep", .data = &ls2_ep_drvdata },
++	{ },
+ };
+ 
+ static int __init ls_add_pcie_ep(struct ls_pcie_ep *pcie,
+@@ -103,7 +134,7 @@ static int __init ls_add_pcie_ep(struct ls_pcie_ep *pcie,
+ 	int ret;
+ 
+ 	ep = &pci->ep;
+-	ep->ops = &pcie_ep_ops;
++	ep->ops = pcie->drvdata->ops;
+ 
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
+ 	if (!res)
+@@ -142,20 +173,23 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	if (!ls_epc)
+ 		return -ENOMEM;
+ 
+-	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
+-	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
+-	if (IS_ERR(pci->dbi_base))
+-		return PTR_ERR(pci->dbi_base);
++	pcie->drvdata = of_device_get_match_data(dev);
+ 
+-	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
+ 	pci->dev = dev;
+-	pci->ops = &ls_pcie_ep_ops;
+-	pcie->pci = pci;
++	pci->ops = pcie->drvdata->dw_pcie_ops;
+ 
+ 	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
+ 
++	pcie->pci = pci;
+ 	pcie->ls_epc = ls_epc;
+ 
++	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
++	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
++	if (IS_ERR(pci->dbi_base))
++		return PTR_ERR(pci->dbi_base);
++
++	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
++
+ 	platform_set_drvdata(pdev, pcie);
+ 
+ 	ret = ls_add_pcie_ep(pcie, pdev);
+-- 
+2.9.5
+
