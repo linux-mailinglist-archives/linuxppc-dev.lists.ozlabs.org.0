@@ -2,42 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608EE185D86
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Mar 2020 15:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4773D186045
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Mar 2020 23:39:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gM7b3FZ1zDqRh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 01:21:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48gZBL5XLrzDqNy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:39:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
- envelope-from=cl@linux.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-Received: from gentwo.org (gentwo.org [3.19.106.255])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gM5h60JbzDqN3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 01:20:08 +1100 (AEDT)
-Received: by gentwo.org (Postfix, from userid 1002)
- id 1BDDF3F7A9; Sun, 15 Mar 2020 14:20:05 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by gentwo.org (Postfix) with ESMTP id 19C4C3F6EC;
- Sun, 15 Mar 2020 14:20:05 +0000 (UTC)
-Date: Sun, 15 Mar 2020 14:20:05 +0000 (UTC)
-From: Christopher Lameter <cl@linux.com>
-X-X-Sender: cl@www.lameter.com
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/3] mm/page_alloc: Keep memoryless cpuless node 0 offline
-In-Reply-To: <20200311110237.5731-4-srikar@linux.vnet.ibm.com>
-Message-ID: <alpine.DEB.2.21.2003151416230.14449@www.lameter.com>
-References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
- <20200311110237.5731-4-srikar@linux.vnet.ibm.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48gZ8L0gMszDqM3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 09:38:09 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02FMXOi1048477
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Mar 2020 18:38:06 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yrsdqd33e-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Mar 2020 18:38:06 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Sun, 15 Mar 2020 22:38:04 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sun, 15 Mar 2020 22:38:00 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02FMawwF44826954
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 15 Mar 2020 22:36:58 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 475F0AE06F;
+ Sun, 15 Mar 2020 22:37:59 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A04EEAE073;
+ Sun, 15 Mar 2020 22:37:56 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.80.222.34])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 15 Mar 2020 22:37:56 +0000 (GMT)
+From: Ram Pai <linuxram@us.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v1] powerpc/XIVE: SVM: share the event-queue page with the
+ Hypervisor.
+Date: Sun, 15 Mar 2020 15:37:32 -0700
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 20031522-0008-0000-0000-0000035DBEA1
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031522-0009-0000-0000-00004A7F0FD7
+Message-Id: <1584311852-15471-1-git-send-email-linuxram@us.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
+ definitions=2020-03-15_04:2020-03-12,
+ 2020-03-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ suspectscore=48 spamscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003150121
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,24 +85,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org, clg@fr.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 11 Mar 2020, Srikar Dronamraju wrote:
+XIVE interrupt controller maintains a Event-Queue(EQ) page. This page is
+used to communicate events with the Hypervisor/Qemu. In Secure-VM,
+unless a page is shared with the Hypervisor, the Hypervisor will
+not be able to read/write to that page.
 
-> Currently Linux kernel with CONFIG_NUMA on a system with multiple
-> possible nodes, marks node 0 as online at boot.  However in practice,
-> there are systems which have node 0 as memoryless and cpuless.
+Explicitly share the EQ page with the Hypervisor, and unshare it
+during cleanup.  This enables SVM to use XIVE.
 
-Would it not be better and simpler to require that node 0 always has
-memory (and processors)? A  mininum operational set?
+(NOTE: If the Hypervisor/Ultravisor is unable to target interrupts
+ directly to Secure VM, use "kernel_irqchip=off" on the qemu command
+ line).
 
-We can dynamically number the nodes right? So just make sure that the
-firmware properly creates memory on node 0?
+Cc: kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Michael Anderson <andmike@linux.ibm.com>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Cc: Greg Kurz <groug@kaod.org>
+Cc: Cedric Le Goater <clg@fr.ibm.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+---
+ arch/powerpc/sysdev/xive/spapr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 55dc61c..608b52f 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -26,6 +26,8 @@
+ #include <asm/xive.h>
+ #include <asm/xive-regs.h>
+ #include <asm/hvcall.h>
++#include <asm/svm.h>
++#include <asm/ultravisor.h>
+ 
+ #include "xive-internal.h"
+ 
+@@ -501,6 +503,9 @@ static int xive_spapr_configure_queue(u32 target, struct xive_q *q, u8 prio,
+ 		rc = -EIO;
+ 	} else {
+ 		q->qpage = qpage;
++		if (is_secure_guest())
++			uv_share_page(PHYS_PFN(qpage_phys),
++					1 << xive_alloc_order(order));
+ 	}
+ fail:
+ 	return rc;
+@@ -534,6 +539,8 @@ static void xive_spapr_cleanup_queue(unsigned int cpu, struct xive_cpu *xc,
+ 		       hw_cpu, prio);
+ 
+ 	alloc_order = xive_alloc_order(xive_queue_shift);
++	if (is_secure_guest())
++		uv_unshare_page(PHYS_PFN(__pa(q->qpage)), 1 << alloc_order);
+ 	free_pages((unsigned long)q->qpage, alloc_order);
+ 	q->qpage = NULL;
+ }
+-- 
+1.8.3.1
+
