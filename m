@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E827B186CD0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 15:08:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD3A186CC8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 15:05:44 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gykX6KcLzDqCZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 01:05:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48gyp93zSZzDqHx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 01:08:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,53 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=Z++zxaTQ; dkim-atps=neutral
+ header.s=mail header.b=IoVYZJc5; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gwlK0zStzDqM2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48gwlK74sszDqM3
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 23:36:13 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48gwl91Sftz9v02k;
- Mon, 16 Mar 2020 13:36:05 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 48gwlB0ymZz9v02l;
+ Mon, 16 Mar 2020 13:36:06 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Z++zxaTQ; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=IoVYZJc5; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id FJUfgkVjnvYp; Mon, 16 Mar 2020 13:36:05 +0100 (CET)
+ with ESMTP id cG2d8UF2a7Jt; Mon, 16 Mar 2020 13:36:06 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48gwl90S4Dz9v02f;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48gwl972jjz9v02f;
  Mon, 16 Mar 2020 13:36:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584362165; bh=QJ3AVzv18kp0O9jJ2O0qYyjb0tj49OV+u5oVdQwNeWs=;
+ t=1584362166; bh=o1SlEZz+Awhnm5bSq+8fgheIzjCx3KGw3W3VMVbmJv0=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=Z++zxaTQZwNr4HVC9eduWq4vQrfjV0SUtIIefJNFBUGgJ5WgT3rpJIj32EP9GDNNW
- 9VPH0hUZWko5XhYvqOAdpvw2emu3Y9xkuBcjtzqfggNzsiPw9HqHhjBycbrnyP7ih2
- Z4dhh20zEqfLD90pDGAXkPGydib507W170wc8BYY=
+ b=IoVYZJc5QXzBh9G+FWc9be0cKjYcLrK3DIOUHAUk/hpvoDay6Z2DWcv5YXXRZJ5sL
+ 4mHgATE5RwKBe8cOWU5X5cXa0Ebi8ZtsJYa4565vrB+WKgFbocMMAK0lLdmNgsJUXE
+ YzNankmMIl8gRIWCDUwXowEAqHGN5Vu85lU5ipz8=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0C1BB8B7D2;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EFC708B7D0;
  Mon, 16 Mar 2020 13:36:10 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id RF3yw7MAuO2U; Mon, 16 Mar 2020 13:36:09 +0100 (CET)
+ with ESMTP id xcenVoVwBBlG; Mon, 16 Mar 2020 13:36:10 +0100 (CET)
 Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BA4538B7CB;
- Mon, 16 Mar 2020 13:36:09 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C6A7E8B7CB;
+ Mon, 16 Mar 2020 13:36:10 +0100 (CET)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id AFDC465595; Mon, 16 Mar 2020 12:36:09 +0000 (UTC)
-Message-Id: <e0e958ba53efc9ef8a012a0756ba0f39d6077e70.1584360344.git.christophe.leroy@c-s.fr>
+ id B5CE565595; Mon, 16 Mar 2020 12:36:10 +0000 (UTC)
+Message-Id: <56d433fcf335e08b990730f1eca8547e851fd185.1584360344.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1584360343.git.christophe.leroy@c-s.fr>
 References: <cover.1584360343.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v1 24/46] powerpc/mm: Reduce hugepd size for 8M hugepages on
- 8xx
+Subject: [PATCH v1 25/46] powerpc/8xx: Drop CONFIG_8xx_COPYBACK option
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 16 Mar 2020 12:36:09 +0000 (UTC)
+Date: Mon, 16 Mar 2020 12:36:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,146 +80,161 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 55c8fc3f4930 ("powerpc/8xx: reintroduce 16K pages with HW
-assistance") redefined pte_t as a struct of 4 pte_basic_t, because
-in 16K pages mode there are four identical entries in the page table.
-But hugepd entries for 8M pages require only one entry of size
-pte_basic_t. So there is no point in creating a cache for 4 entries
-page tables.
+CONFIG_8xx_COPYBACK was there to help disabling copyback cache mode
+for debuging hardware. But nobody will design new boards with 8xx now.
 
-Calculate PTE_T_ORDER using the size of pte_basic_t instead of pte_t.
+All 8xx platforms select it, so make it the default and remove
+the option.
 
-Define specific huge_pte helpers (set_huge_pte_at(), huge_pte_clear(),
-huge_ptep_set_wrprotect()) to write the pte in a single entry instead
-of using set_pte_at() which writes 4 identical entries in 16k pages
-mode. Also make sure that __ptep_set_access_flags() properly handle
-the huge_pte case.
-
-Define set_pte_filter() inline otherwise GCC doesn't inline it anymore
-because it is now used twice, and that gives a pretty suboptimal code
-because of pte_t being a struct of 4 entries.
-
-Those functions are also used for 512k pages which only require one
-entry as well allthough replicating it four times was harmless as 512k
-pages entries are spread every 128 bytes in the table.
+Also remove the Mx_RESETVAL values which are pretty useless and hide
+the real value while reading code.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- .../include/asm/nohash/32/hugetlb-8xx.h       | 20 ++++++++++++++
- arch/powerpc/include/asm/nohash/32/pgtable.h  |  3 ++-
- arch/powerpc/mm/hugetlbpage.c                 |  3 ++-
- arch/powerpc/mm/pgtable.c                     | 26 ++++++++++++++++---
- 4 files changed, 46 insertions(+), 6 deletions(-)
+ arch/powerpc/configs/adder875_defconfig      |  1 -
+ arch/powerpc/configs/ep88xc_defconfig        |  1 -
+ arch/powerpc/configs/mpc866_ads_defconfig    |  1 -
+ arch/powerpc/configs/mpc885_ads_defconfig    |  1 -
+ arch/powerpc/configs/tqm8xx_defconfig        |  1 -
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h |  2 --
+ arch/powerpc/kernel/head_8xx.S               | 15 +--------------
+ arch/powerpc/platforms/8xx/Kconfig           |  9 ---------
+ 8 files changed, 1 insertion(+), 30 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-index a46616937d20..785437323576 100644
---- a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-@@ -41,4 +41,24 @@ static inline int check_and_get_huge_psize(int shift)
- 	return shift_to_mmu_psize(shift);
- }
+diff --git a/arch/powerpc/configs/adder875_defconfig b/arch/powerpc/configs/adder875_defconfig
+index f55e23cb176c..5326bc739279 100644
+--- a/arch/powerpc/configs/adder875_defconfig
++++ b/arch/powerpc/configs/adder875_defconfig
+@@ -10,7 +10,6 @@ CONFIG_EXPERT=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+ CONFIG_PPC_ADDER875=y
+-CONFIG_8xx_COPYBACK=y
+ CONFIG_GEN_RTC=y
+ CONFIG_HZ_1000=y
+ # CONFIG_SECCOMP is not set
+diff --git a/arch/powerpc/configs/ep88xc_defconfig b/arch/powerpc/configs/ep88xc_defconfig
+index 0e2e5e81a359..f5c3e72da719 100644
+--- a/arch/powerpc/configs/ep88xc_defconfig
++++ b/arch/powerpc/configs/ep88xc_defconfig
+@@ -12,7 +12,6 @@ CONFIG_EXPERT=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+ CONFIG_PPC_EP88XC=y
+-CONFIG_8xx_COPYBACK=y
+ CONFIG_GEN_RTC=y
+ CONFIG_HZ_100=y
+ # CONFIG_SECCOMP is not set
+diff --git a/arch/powerpc/configs/mpc866_ads_defconfig b/arch/powerpc/configs/mpc866_ads_defconfig
+index 5320735395e7..5c56d36cdfc5 100644
+--- a/arch/powerpc/configs/mpc866_ads_defconfig
++++ b/arch/powerpc/configs/mpc866_ads_defconfig
+@@ -12,7 +12,6 @@ CONFIG_EXPERT=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+ CONFIG_MPC86XADS=y
+-CONFIG_8xx_COPYBACK=y
+ CONFIG_GEN_RTC=y
+ CONFIG_HZ_1000=y
+ CONFIG_MATH_EMULATION=y
+diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
+index 82a008c04eae..949ff9ccda5e 100644
+--- a/arch/powerpc/configs/mpc885_ads_defconfig
++++ b/arch/powerpc/configs/mpc885_ads_defconfig
+@@ -11,7 +11,6 @@ CONFIG_EXPERT=y
+ # CONFIG_VM_EVENT_COUNTERS is not set
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+-CONFIG_8xx_COPYBACK=y
+ CONFIG_GEN_RTC=y
+ CONFIG_HZ_100=y
+ # CONFIG_SECCOMP is not set
+diff --git a/arch/powerpc/configs/tqm8xx_defconfig b/arch/powerpc/configs/tqm8xx_defconfig
+index eda8bfb2d0a3..77857d513022 100644
+--- a/arch/powerpc/configs/tqm8xx_defconfig
++++ b/arch/powerpc/configs/tqm8xx_defconfig
+@@ -15,7 +15,6 @@ CONFIG_MODULE_SRCVERSION_ALL=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+ CONFIG_TQM8XX=y
+-CONFIG_8xx_COPYBACK=y
+ # CONFIG_8xx_CPU15 is not set
+ CONFIG_GEN_RTC=y
+ CONFIG_HZ_100=y
+diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+index 76af5b0cb16e..26b7cee34dfe 100644
+--- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+@@ -19,7 +19,6 @@
+ #define MI_RSV4I	0x08000000	/* Reserve 4 TLB entries */
+ #define MI_PPCS		0x02000000	/* Use MI_RPN prob/priv state */
+ #define MI_IDXMASK	0x00001f00	/* TLB index to be loaded */
+-#define MI_RESETVAL	0x00000000	/* Value of register at reset */
  
-+#define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
-+void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_t pte);
-+
-+#define __HAVE_ARCH_HUGE_PTE_CLEAR
-+static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
-+				  pte_t *ptep, unsigned long sz)
-+{
-+	pte_update(mm, addr, ptep, ~0UL, 0, 1);
-+}
-+
-+#define __HAVE_ARCH_HUGE_PTEP_SET_WRPROTECT
-+static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
-+					   unsigned long addr, pte_t *ptep)
-+{
-+	unsigned long clr = ~pte_val(pte_wrprotect(__pte(~0)));
-+	unsigned long set = pte_val(pte_wrprotect(__pte(0)));
-+
-+	pte_update(mm, addr, ptep, clr, set, 1);
-+}
-+
- #endif /* _ASM_POWERPC_NOHASH_32_HUGETLB_8XX_H */
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index 272963a05ab2..dd5835354e33 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -314,8 +314,9 @@ static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
- 	pte_t pte_clr = pte_mkyoung(pte_mkdirty(pte_mkwrite(pte_mkexec(__pte(~0)))));
- 	unsigned long set = pte_val(entry) & pte_val(pte_set);
- 	unsigned long clr = ~pte_val(entry) & ~pte_val(pte_clr);
-+	int huge = psize > mmu_virtual_psize ? 1 : 0;
+ /* These are the Ks and Kp from the PowerPC books.  For proper operation,
+  * Ks = 0, Kp = 1.
+@@ -95,7 +94,6 @@
+ #define MD_TWAM		0x04000000	/* Use 4K page hardware assist */
+ #define MD_PPCS		0x02000000	/* Use MI_RPN prob/priv state */
+ #define MD_IDXMASK	0x00001f00	/* TLB index to be loaded */
+-#define MD_RESETVAL	0x04000000	/* Value of register at reset */
  
--	pte_update(vma->vm_mm, address, ptep, clr, set, 0);
-+	pte_update(vma->vm_mm, address, ptep, clr, set, huge);
+ #define SPRN_M_CASID	793	/* Address space ID (context) to match */
+ #define MC_ASIDMASK	0x0000000f	/* Bits used for ASID value */
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 073a651787df..905205c79a25 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -779,10 +779,7 @@ start_here:
+ initial_mmu:
+ 	li	r8, 0
+ 	mtspr	SPRN_MI_CTR, r8		/* remove PINNED ITLB entries */
+-	lis	r10, MD_RESETVAL@h
+-#ifndef CONFIG_8xx_COPYBACK
+-	oris	r10, r10, MD_WTDEF@h
+-#endif
++	lis	r10, MD_TWAM@h
+ 	mtspr	SPRN_MD_CTR, r10	/* remove PINNED DTLB entries */
  
- 	flush_tlb_page(vma, address);
- }
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index 33b3461d91e8..edf511c2a30a 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -30,7 +30,8 @@ bool hugetlb_disabled = false;
+ 	tlbia			/* Invalidate all TLB entries */
+@@ -857,17 +854,7 @@ initial_mmu:
+ 	mtspr	SPRN_DC_CST, r8
+ 	lis	r8, IDC_ENABLE@h
+ 	mtspr	SPRN_IC_CST, r8
+-#ifdef CONFIG_8xx_COPYBACK
+-	mtspr	SPRN_DC_CST, r8
+-#else
+-	/* For a debug option, I left this here to easily enable
+-	 * the write through cache mode
+-	 */
+-	lis	r8, DC_SFWT@h
+ 	mtspr	SPRN_DC_CST, r8
+-	lis	r8, IDC_ENABLE@h
+-	mtspr	SPRN_DC_CST, r8
+-#endif
+ 	/* Disable debug mode entry on breakpoints */
+ 	mfspr	r8, SPRN_DER
+ #ifdef CONFIG_PERF_EVENTS
+diff --git a/arch/powerpc/platforms/8xx/Kconfig b/arch/powerpc/platforms/8xx/Kconfig
+index e0fe670f06f6..b37de62d7e7f 100644
+--- a/arch/powerpc/platforms/8xx/Kconfig
++++ b/arch/powerpc/platforms/8xx/Kconfig
+@@ -98,15 +98,6 @@ menu "MPC8xx CPM Options"
+ # 8xx specific questions.
+ comment "Generic MPC8xx Options"
  
- #define hugepd_none(hpd)	(hpd_val(hpd) == 0)
- 
--#define PTE_T_ORDER	(__builtin_ffs(sizeof(pte_t)) - __builtin_ffs(sizeof(void *)))
-+#define PTE_T_ORDER	(__builtin_ffs(sizeof(pte_basic_t)) - \
-+			 __builtin_ffs(sizeof(void *)))
- 
- pte_t *huge_pte_offset(struct mm_struct *mm, unsigned long addr, unsigned long sz)
- {
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index e3759b69f81b..214a5f4beb6c 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -100,7 +100,7 @@ static pte_t set_pte_filter_hash(pte_t pte) { return pte; }
-  * as we don't have two bits to spare for _PAGE_EXEC and _PAGE_HWEXEC so
-  * instead we "filter out" the exec permission for non clean pages.
-  */
--static pte_t set_pte_filter(pte_t pte)
-+static inline pte_t set_pte_filter(pte_t pte)
- {
- 	struct page *pg;
- 
-@@ -249,16 +249,34 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 
- #else
- 		/*
--		 * Not used on non book3s64 platforms. But 8xx
--		 * can possibly use tsize derived from hstate.
-+		 * Not used on non book3s64 platforms.
-+		 * 8xx compares it with mmu_virtual_psize to
-+		 * know if it is a huge page or not.
- 		 */
--		psize = 0;
-+		psize = MMU_PAGE_COUNT;
- #endif
- 		__ptep_set_access_flags(vma, ptep, pte, addr, psize);
- 	}
- 	return changed;
- #endif
- }
-+
-+#if defined(CONFIG_PPC_8xx)
-+void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_t pte)
-+{
-+	/*
-+	 * Make sure hardware valid bit is not set. We don't do
-+	 * tlb flush for this update.
-+	 */
-+	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
-+
-+	pte = pte_mkpte(pte);
-+
-+	pte = set_pte_filter(pte);
-+
-+	ptep->pte = pte_val(pte);
-+}
-+#endif
- #endif /* CONFIG_HUGETLB_PAGE */
- 
- #ifdef CONFIG_DEBUG_VM
+-config 8xx_COPYBACK
+-	bool "Copy-Back Data Cache (else Writethrough)"
+-	help
+-	  Saying Y here will cause the cache on an MPC8xx processor to be used
+-	  in Copy-Back mode.  If you say N here, it is used in Writethrough
+-	  mode.
+-
+-	  If in doubt, say Y here.
+-
+ config 8xx_GPIO
+ 	bool "GPIO API Support"
+ 	select GPIOLIB
 -- 
 2.25.0
 
