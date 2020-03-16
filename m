@@ -1,67 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47402186773
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 10:08:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gr7d1RcszDqM3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 20:08:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9470118681A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 10:42:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48grvF1s7hzDqNC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 20:42:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
- [209.85.128.66])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gr5w5l8VzDqDX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 20:06:58 +1100 (AEDT)
-Received: by mail-wm1-f66.google.com with SMTP id 6so16698160wmi.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 02:06:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Eia2N/xoriWTxgPunD084+bbaPhpeo+lfldsdFtSAnI=;
- b=dVcbkLMA54y7uZfQfuWKujCqGc3ihe7q5kF3s2i2aV0dyNcKn0mxwujIfxkQpKzcWk
- OVcYaE1PNb+QnwwVfXVH0lbrqy4QfET/1PtWl8vWycLlXXAtFxDhl9fiqG8/x8bFFBl4
- dKFmLklnpe45fcpBNRJ4q/wqLANnLFo1ylpDLW/jHKfaO3UOuVSuQAPcREZYh+6MAmEf
- cgekbcJbOduSF/PkFJcwEtkxNYu4/LtwxG6mKxBVymLkGy89iawlMLPMFLVVAQctuKin
- epvGQDgW/x75ggqHczZ8aMwuoMcih1BQTVZ1qiAZq5NE+lczvS2IXhdu8vfmqxP7t1hb
- ogFw==
-X-Gm-Message-State: ANhLgQ22FMwj29vpP0iC249kQKQaLUcRHuZSI0XVNPMUE+jTAOlzbuCS
- ZpSHgMN6riMZHUezRJSz/Wk=
-X-Google-Smtp-Source: ADFU+vtWeEHQfTqTCceANDY21DeDfSr1E66N0BzW2u0PvcijS9Xo2cHFyYaR8gANISu8rCi+ihQx5A==
-X-Received: by 2002:a1c:f204:: with SMTP id s4mr22977836wmc.127.1584349615207; 
- Mon, 16 Mar 2020 02:06:55 -0700 (PDT)
-Received: from localhost (ip-37-188-254-25.eurotel.cz. [37.188.254.25])
- by smtp.gmail.com with ESMTPSA id m17sm11793854wrw.3.2020.03.16.02.06.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Mar 2020 02:06:54 -0700 (PDT)
-Date: Mon, 16 Mar 2020 10:06:52 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
-Message-ID: <20200316090652.GC11482@dhcp22.suse.cz>
-References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
- <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
- <20200311115735.GM23944@dhcp22.suse.cz>
- <20200312052707.GA3277@linux.vnet.ibm.com>
- <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
- <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
- <20200312131438.GB3277@linux.vnet.ibm.com>
- <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
- <20200312161310.GC3277@linux.vnet.ibm.com>
- <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48grsP3t3BzDqKj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 20:41:13 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=DOf+CeQI; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48grsM6VkJz9sP7;
+ Mon, 16 Mar 2020 20:41:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1584351672;
+ bh=0BJ3FURw+fjw50wR+e6LRkf2Tx726H888JVrSKrls5Y=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DOf+CeQIRr9jP+zd801bgQ9LbD/TE+CByjPvWQvxtr5O+4o/uK2xFlU76UoHQRM1m
+ PO1UW4Vu9Tn3ovq5neZhqoNPTofTuJvlkJdzuw73af6U6+M6OMMYOV5ATseJFLag1d
+ eGFHtLkuRRd+l35uigGkppduH+zZfcCp+HEH5Ox0Lg6H5WOFmqhf3yKgYxTeypdh6d
+ pHOnjPqwfPWJAnn4ZvO9glKgXR9NoACQZilm7+8n5WjERuDRAAt+e7zzdFJLFgKXIV
+ CQsDHCnCtxvsQrpIyuKhAC4GTZJHC7VD8yOytmTWWGwHrRvIQ8hGEOiumZJOhsfWn+
+ luLNejYRjYIaQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: WANG Wenhu <wenhu.wang@vivo.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, WANG Wenhu <wenhu.wang@vivo.com>,
+ Allison Randal <allison@lohutok.net>, Richard Fontana <rfontana@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] powerpc/fsl-85xx: fix compile error
+In-Reply-To: <20200314051035.64552-1-wenhu.wang@vivo.com>
+References: <20200314051035.64552-1-wenhu.wang@vivo.com>
+Date: Mon, 16 Mar 2020 20:41:12 +1100
+Message-ID: <875zf4r613.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,37 +64,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Mel Gorman <mgorman@suse.de>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christopher Lameter <cl@linux.com>
+Cc: kernel@vivo.com, trivial@kernel.org, stable <stable@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 12-03-20 17:41:58, Vlastimil Babka wrote:
-[...]
-> with nid present in:
-> N_POSSIBLE - pgdat might not exist, node_to_mem_node() must return some online
+WANG Wenhu <wenhu.wang@vivo.com> writes:
+> Include "linux/of_address.h" to fix the compile error for
+> mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
+>
+>   CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
+> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function =E2=80=98mpc85xx_l2ctl=
+r_of_probe=E2=80=99:
+> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaration =
+of function =E2=80=98of_iomap=E2=80=99; did you mean =E2=80=98pci_iomap=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+>   l2ctlr =3D of_iomap(dev->dev.of_node, 0);
+>            ^~~~~~~~
+>            pci_iomap
+> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes point=
+er from integer without a cast [-Werror=3Dint-conversion]
+>   l2ctlr =3D of_iomap(dev->dev.of_node, 0);
+>          ^
+> cc1: all warnings being treated as errors
+> scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_85=
+xx_l2ctlr.o' failed
+> make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
+>
+> Fixes: commit 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
 
-I would rather have a dummy pgdat for those. Have a look at 
-$ git grep "NODE_DATA.*->" | wc -l
-63
+The syntax is:
 
-Who knows how many else we have there. I haven't looked more closely.
-Besides that what is a real reason to not have pgdat ther and force all
-users of a $random node from those that the platform considers possible
-for special casing? Is that a memory overhead? Is that really a thing?
+Fixes: 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
 
-Somebody has suggested to tweak some of the low level routines to do the
-special casing but I really have to say I do not like that. We shouldn't
-use the first online node or anything like that. We should simply always
-follow the topology presented by FW and of that we need to have a pgdat.
--- 
-Michal Hocko
-SUSE Labs
+> Cc: stable <stable@vger.kernel.org>
+
+The commit above went into v2.6.37.
+
+So no one has noticed this bug since then, how? Or did something else
+change to expose the problem?
+
+cheers
