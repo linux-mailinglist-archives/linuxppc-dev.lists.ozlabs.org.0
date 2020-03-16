@@ -1,79 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68A0186630
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:17:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gq0D27LwzDqNd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:17:00 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BED1866AB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:39:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48gqVd1m5QzDqDT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:39:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=js1304@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
+ helo=mail-qk1-x742.google.com; envelope-from=kernelfans@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=B7QUWfZ2; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
+ header.s=20161025 header.b=ZR73x073; dkim-atps=neutral
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gpyb4bVqzDqKZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 19:15:33 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id p62so24613376qkb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 01:15:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48gqSj4P8kzDqLB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 19:38:13 +1100 (AEDT)
+Received: by mail-qk1-x742.google.com with SMTP id f28so24661119qkk.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 01:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=F/i4UURiGEiDmJWiySfSNZr+o1KHFsCHgdng66n03Q0=;
- b=B7QUWfZ2p0iHwX6wNgX6U4yztQAMGDAiU1KFSHsaBYgSKDV+Kdl+8H155Lfmbg+9o/
- TxGbcBBwEqOPQ/B/w6jAG6N0rUQpjSNA+s/F/Tud+SRpVnYFph4gVet/kfh28qnd9zQt
- +zSo6COsT5fR35kjG2HJUXBsYVrX9cRZUknKCS7W5sr1GYRTBMEC1QpOzQ7viSl+n2pN
- cGaEg2tPimuaF7sbPikYKrNGerAbRU77SHD6nW+mqtjD7aZXVr2oYClwzswetpGkUdY6
- ldrXWz4oCSqcw2vqUL3VtrVAEe7+21fSUUt9pt7RqkY8U0lRZc6KjarLjC7fRfr6wPSh
- YpKg==
+ :cc; bh=GBIKtQ/ulbcDtdh6PxMvU1viERIQc6Vgg9GWcGvGlv0=;
+ b=ZR73x073nxRSldQepsy/4rpi77Odw7Ua1MPLeNAObTcsBO4SekYhz5/bcaeG8WfZJ0
+ +LpxDDWOqJjQTlhPmolTcBnatJ2Vn7i84gAiyGnXMd6x+uW2eTTiBvE967lhoezcSuny
+ i+/Ekzakk1Lc9dS+W1Vb490tA/VbTPYFG7W5yRLku8cwKpsDa2gcVvaopKThahDncPE6
+ +LTd37NRlPNFzUrlRk3JbU5jdX5x6cSg9wlQbl7+Xwmg1FfHtkXLXIEb02e22tvMh6Tv
+ g10fUXAtqI+HdgK2uH8ECEQ5emDaJ3quLBLnl5teK3ycbC2Ha9sAI1/4v7XRJfe+Q0N7
+ YqzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=F/i4UURiGEiDmJWiySfSNZr+o1KHFsCHgdng66n03Q0=;
- b=AvAnNUrcxK5uSQfVolZAWXfBDa68Cqg1SM4wshxkk0Te4NeBFITqm+id204isdhCNV
- gNO46ArWno5QaOHDbsnxEB/dM1ByLXPMS1HQKXNtHQ9mdpWQ8IjVKLgxXBmVBsXm5VbV
- po0ki1FKBdspCITCFd4UHd0XofqjBOt6XYdoVb0lYsWvsGfNqO0DcUv4doaGmhn8BI3y
- gM/nDCWdqBltjymwJKQs9iQI+70cWhKKNzwWwGdFyivdf6iZulJwXTqh3mK5xdDT/t/T
- Tz6zPl93TLlOyXKuIZE6QYTlBZtXElldG5RHw85R/ilQgdIYG20pSyRkQMLjc+tct+li
- Wpxg==
-X-Gm-Message-State: ANhLgQ3q1XfjEF3MlI7T1IFdGF+P8t804XqH3g2/fWzM5wDnN2HWM6m4
- Q7xS7Gsj/nNaymCQp33z59+RJcGrc0Bd3uuLggQ=
-X-Google-Smtp-Source: ADFU+vtuhvzirDhMCsmE4l39TWh2tgFAp6304DDB1OcJOZvmemJgfuS7i39szr9xiMsVL2Kk2XCoJDL/oQcWR3C4GH0=
-X-Received: by 2002:a37:546:: with SMTP id 67mr24213408qkf.272.1584346530319; 
- Mon, 16 Mar 2020 01:15:30 -0700 (PDT)
+ :message-id:subject:to:cc;
+ bh=GBIKtQ/ulbcDtdh6PxMvU1viERIQc6Vgg9GWcGvGlv0=;
+ b=TEi7QoA1KQhHIpDh5PaRQXXy47czgVux1zKzhZ6L3unUmKi3FfUclR0wmrPsx0/MLg
+ 07FYpxjZaU/3sC4uNb5miueWsonDqLjNeCpFGcowIDC1B4s0obvmNZEDkbD94pIID5xK
+ 7jhpwD2aBN72bkLKE6OXJ3ex4YMugvMA/vPq0R4APwI+2yMwqSHNHgc2k3YIxmTNfmx2
+ Zf8iBeDX9cTzzoTsBfaymrbe7FIRkO7Sl0slYiv8Uywow74TwpPNuMt8KCvohxLuAmMU
+ /2KrwldePG3AuYUmI9syA5/X7U2Ov29SNKDbIJrohimfahWhHLEXqUynq9EwcKuoXecV
+ yClQ==
+X-Gm-Message-State: ANhLgQ3ykdWmVQEae9P1PfRoFmsPv/1l93SsK0M8nM4R3TSihHdjGieA
+ ne2T4MWe5n0GzUS5Waq5hwXEO5+GP2FgclsuWQ==
+X-Google-Smtp-Source: ADFU+vv+UzMC/vzWOR9wQVlK0+UMo9V0HpGdOJbXuEB8HSTCb40fYMnTh0rKQzoOCNyIsWrTvP0cDK7yOKJIP4nWAVw=
+X-Received: by 2002:a37:404f:: with SMTP id n76mr283707qka.442.1584347889961; 
+ Mon, 16 Mar 2020 01:38:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
- <20200311115735.GM23944@dhcp22.suse.cz>
- <20200312052707.GA3277@linux.vnet.ibm.com>
- <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
- <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
- <20200312131438.GB3277@linux.vnet.ibm.com>
- <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
- <20200312161310.GC3277@linux.vnet.ibm.com>
- <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
- <CAAmzW4OFy51BhAT62tdVQD52NNMWm+UPgoGAX97omY7P+nJ+5w@mail.gmail.com>
- <20200313110440.GA25144@linux.vnet.ibm.com>
- <06be5908-9af6-2892-0333-e9558b2cf474@suse.cz>
-In-Reply-To: <06be5908-9af6-2892-0333-e9558b2cf474@suse.cz>
-From: Joonsoo Kim <js1304@gmail.com>
-Date: Mon, 16 Mar 2020 17:15:19 +0900
-Message-ID: <CAAmzW4ME_WLYZPCt4+82RNKstv-H=LK5MKGGJR=6ha-ALS+FSw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
-To: Vlastimil Babka <vbabka@suse.cz>
+References: <1582882895-3142-1-git-send-email-kernelfans@gmail.com>
+ <1583311651-29310-1-git-send-email-kernelfans@gmail.com>
+ <1583311651-29310-3-git-send-email-kernelfans@gmail.com>
+ <41abb04e-d481-040f-827b-c04ad7d2abb9@linux.ibm.com>
+In-Reply-To: <41abb04e-d481-040f-827b-c04ad7d2abb9@linux.ibm.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Mon, 16 Mar 2020 16:37:58 +0800
+Message-ID: <CAFgQCTvsKaP34_v-P0x_RNDZ2Jne82DMS33LpC5EE819EjhJHg@mail.gmail.com>
+Subject: Re: [PATCHv3 2/2] pseries/scm: buffer pmem's bound addr in dt for
+ kexec kernel
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,79 +76,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Mel Gorman <mgorman@suse.de>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christopher Lameter <cl@linux.com>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Frank Rowand <frowand.list@gmail.com>,
+ Kexec Mailing List <kexec@lists.infradead.org>,
+ Rob Herring <robh+dt@kernel.org>, Oliver O'Halloran <oohall@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, Dan Williams <dan.j.williams@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-2020=EB=85=84 3=EC=9B=94 13=EC=9D=BC (=EA=B8=88) =EC=98=A4=ED=9B=84 8:38, V=
-lastimil Babka <vbabka@suse.cz>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+On Mon, Mar 16, 2020 at 10:53 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
 >
-> On 3/13/20 12:04 PM, Srikar Dronamraju wrote:
-> >> I lost all the memory about it. :)
-> >> Anyway, how about this?
-> >>
-> >> 1. make node_present_pages() safer
-> >> static inline node_present_pages(nid)
-> >> {
-> >> if (!node_online(nid)) return 0;
-> >> return (NODE_DATA(nid)->node_present_pages);
-> >> }
-> >>
+> On 3/4/20 2:17 PM, Pingfan Liu wrote:
+> > At present, plpar_hcall(H_SCM_BIND_MEM, ...) takes a very long time, so
+> > if dumping to fsdax, it will take a very long time.
 > >
-> > Yes this would help.
 >
-> Looks good, yeah.
 >
-> >> 2. make node_to_mem_node() safer for all cases
-> >> In ppc arch's mem_topology_setup(void)
-> >> for_each_present_cpu(cpu) {
-> >>  numa_setup_cpu(cpu);
-> >>  mem_node =3D node_to_mem_node(numa_mem_id());
-> >>  if (!node_present_pages(mem_node)) {
-> >>   _node_numa_mem_[numa_mem_id()] =3D first_online_node;
-> >>  }
-> >> }
-> >>
+> that should be fixed by
+>
+> faa6d21153fd11e139dd880044521389b34a24f2
+> Author:       Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> AuthorDate:   Tue Sep 3 18:04:52 2019 +0530
+> Commit:       Michael Ellerman <mpe@ellerman.id.au>
+> CommitDate:   Wed Sep 25 08:32:59 2019 +1000
+>
+> powerpc/nvdimm: use H_SCM_QUERY hcall on H_OVERLAP error
+>
+> Right now we force an unbind of SCM memory at drcindex on H_OVERLAP error.
+> This really slows down operations like kexec where we get the H_OVERLAP
+> error because we don't go through a full hypervisor re init.
+>
+> H_OVERLAP error for a H_SCM_BIND_MEM hcall indicates that SCM memory at
+> drc index is already bound. Since we don't specify a logical memory
+> address for bind hcall, we can use the H_SCM_QUERY hcall to query
+> the already bound logical address.
+Good to know it.
+
+Thanks,
+Pingfan
+>
+>
+>
+>
+> > Take a closer look, during the papr_scm initialization, the only
+> > configuration is through drc_pmem_bind()-> plpar_hcall(H_SCM_BIND_MEM,
+> > ...), which helps to set up the bound address.
 > >
-> > But here as discussed above, we miss the case of possible but not prese=
-nt nodes.
-> > For such nodes, the above change may not update, resulting in they stil=
-l
-> > having 0. And node 0 can be only possible but not present.
-
-Oops, I don't read full thread so miss the case.
-
-> So is there other way to do the setup so that node_to_mem_node() returns =
-an
-> online+present node when called for any possible node?
-
-Two changes seems to be sufficient.
-
-1. initialize all node's _node_numa_mem_[] =3D first_online_node in
-mem_topology_setup()
-2. replace the node with online+present node for _node_to_mem_node_[]
-in set_cpu_numa_mem().
-
- static inline void set_cpu_numa_mem(int cpu, int node)
- {
-        per_cpu(_numa_mem_, cpu) =3D node;
-+       if (!node_present_pages(node))
-+               node =3D first_online_node;
-        _node_numa_mem_[cpu_to_node(cpu)] =3D node;
- }
- #endif
-
-With these two change, we can safely call node_to_mem_node() anywhere.
-
-Thanks.
+> > On pseries, for kexec -l/-p kernel, there is no reset of hardware, and this
+> > step can be stepped around to save times.  So the pmem bound address can be
+> > passed to the 2nd kernel through a dynamic added property "bound-addr" in
+> > dt node 'ibm,pmemory'.
+> >
+>
+> -aneesh
+>
