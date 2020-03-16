@@ -2,69 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BED1866AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:39:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DA0186721
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:56:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gqVd1m5QzDqDT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:39:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48gqt85Vh9zDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:56:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=kernelfans@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZR73x073; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
+ [209.85.128.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gqSj4P8kzDqLB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 19:38:13 +1100 (AEDT)
-Received: by mail-qk1-x742.google.com with SMTP id f28so24661119qkk.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 01:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=GBIKtQ/ulbcDtdh6PxMvU1viERIQc6Vgg9GWcGvGlv0=;
- b=ZR73x073nxRSldQepsy/4rpi77Odw7Ua1MPLeNAObTcsBO4SekYhz5/bcaeG8WfZJ0
- +LpxDDWOqJjQTlhPmolTcBnatJ2Vn7i84gAiyGnXMd6x+uW2eTTiBvE967lhoezcSuny
- i+/Ekzakk1Lc9dS+W1Vb490tA/VbTPYFG7W5yRLku8cwKpsDa2gcVvaopKThahDncPE6
- +LTd37NRlPNFzUrlRk3JbU5jdX5x6cSg9wlQbl7+Xwmg1FfHtkXLXIEb02e22tvMh6Tv
- g10fUXAtqI+HdgK2uH8ECEQ5emDaJ3quLBLnl5teK3ycbC2Ha9sAI1/4v7XRJfe+Q0N7
- YqzQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48gqqY2DF2zDqJH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 19:54:31 +1100 (AEDT)
+Received: by mail-wm1-f65.google.com with SMTP id z13so606446wml.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 01:54:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=GBIKtQ/ulbcDtdh6PxMvU1viERIQc6Vgg9GWcGvGlv0=;
- b=TEi7QoA1KQhHIpDh5PaRQXXy47czgVux1zKzhZ6L3unUmKi3FfUclR0wmrPsx0/MLg
- 07FYpxjZaU/3sC4uNb5miueWsonDqLjNeCpFGcowIDC1B4s0obvmNZEDkbD94pIID5xK
- 7jhpwD2aBN72bkLKE6OXJ3ex4YMugvMA/vPq0R4APwI+2yMwqSHNHgc2k3YIxmTNfmx2
- Zf8iBeDX9cTzzoTsBfaymrbe7FIRkO7Sl0slYiv8Uywow74TwpPNuMt8KCvohxLuAmMU
- /2KrwldePG3AuYUmI9syA5/X7U2Ov29SNKDbIJrohimfahWhHLEXqUynq9EwcKuoXecV
- yClQ==
-X-Gm-Message-State: ANhLgQ3ykdWmVQEae9P1PfRoFmsPv/1l93SsK0M8nM4R3TSihHdjGieA
- ne2T4MWe5n0GzUS5Waq5hwXEO5+GP2FgclsuWQ==
-X-Google-Smtp-Source: ADFU+vv+UzMC/vzWOR9wQVlK0+UMo9V0HpGdOJbXuEB8HSTCb40fYMnTh0rKQzoOCNyIsWrTvP0cDK7yOKJIP4nWAVw=
-X-Received: by 2002:a37:404f:: with SMTP id n76mr283707qka.442.1584347889961; 
- Mon, 16 Mar 2020 01:38:09 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=oYVrvr0SPfoysj/NNmvUSSHpDs57n+aIQag0hdxed9Q=;
+ b=RVHahidSsXDvIW+HauYDPldESW+oTK2EfJMwN9hQP76i+/fJ3+ovc94WsAb8NHWH2G
+ 8ntJYg1UIeEUYtGE5IB8OOAYPcBtnYTBB0cBmEpS/ZjC67dpJEfcNE7IHkxswQaAJUvm
+ Tcr/WpJKZbFKdNVyWiPJFEz/TchCBHSz7DKTPUACjfFSByvdyQGUjEZDDWnzgntHhLtc
+ inlNpMkJkljM0lKxBbEEG/0cmLSE9SguCgZxHtKYcDidIuaR6gCt9iuwAw6sjIuwL7e2
+ wdH5GhLYcQAL5ziFwE8T0beqotZnjIzBjvQg8DfrwLyLcX+LER71avucnbLf9Q83pZop
+ 933A==
+X-Gm-Message-State: ANhLgQ3ss4/60Rwb2+jltUMV/HgjrfL6Uu13Jbo3HkPmdEhxqXbVeMHm
+ TQKM9wrPIo/uOc7E5IXsFZM=
+X-Google-Smtp-Source: ADFU+vtmZUZuH5KSxW2MgIvH0EKbLpsX37ml/XOZS0AIAJE35PQu3muHqSe7FqIS923IhbPKrfZNlQ==
+X-Received: by 2002:a7b:c92a:: with SMTP id h10mr26017913wml.26.1584348868140; 
+ Mon, 16 Mar 2020 01:54:28 -0700 (PDT)
+Received: from localhost (ip-37-188-254-25.eurotel.cz. [37.188.254.25])
+ by smtp.gmail.com with ESMTPSA id o3sm31430395wme.36.2020.03.16.01.54.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Mar 2020 01:54:27 -0700 (PDT)
+Date: Mon, 16 Mar 2020 09:54:25 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Christopher Lameter <cl@linux.com>
+Subject: Re: [PATCH 3/3] mm/page_alloc: Keep memoryless cpuless node 0 offline
+Message-ID: <20200316085425.GB11482@dhcp22.suse.cz>
+References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
+ <20200311110237.5731-4-srikar@linux.vnet.ibm.com>
+ <alpine.DEB.2.21.2003151416230.14449@www.lameter.com>
 MIME-Version: 1.0
-References: <1582882895-3142-1-git-send-email-kernelfans@gmail.com>
- <1583311651-29310-1-git-send-email-kernelfans@gmail.com>
- <1583311651-29310-3-git-send-email-kernelfans@gmail.com>
- <41abb04e-d481-040f-827b-c04ad7d2abb9@linux.ibm.com>
-In-Reply-To: <41abb04e-d481-040f-827b-c04ad7d2abb9@linux.ibm.com>
-From: Pingfan Liu <kernelfans@gmail.com>
-Date: Mon, 16 Mar 2020 16:37:58 +0800
-Message-ID: <CAFgQCTvsKaP34_v-P0x_RNDZ2Jne82DMS33LpC5EE819EjhJHg@mail.gmail.com>
-Subject: Re: [PATCHv3 2/2] pseries/scm: buffer pmem's bound addr in dt for
- kexec kernel
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2003151416230.14449@www.lameter.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,59 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, Frank Rowand <frowand.list@gmail.com>,
- Kexec Mailing List <kexec@lists.infradead.org>,
- Rob Herring <robh+dt@kernel.org>, Oliver O'Halloran <oohall@gmail.com>,
- Paul Mackerras <paulus@samba.org>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 16, 2020 at 10:53 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 3/4/20 2:17 PM, Pingfan Liu wrote:
-> > At present, plpar_hcall(H_SCM_BIND_MEM, ...) takes a very long time, so
-> > if dumping to fsdax, it will take a very long time.
-> >
->
->
-> that should be fixed by
->
-> faa6d21153fd11e139dd880044521389b34a24f2
-> Author:       Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> AuthorDate:   Tue Sep 3 18:04:52 2019 +0530
-> Commit:       Michael Ellerman <mpe@ellerman.id.au>
-> CommitDate:   Wed Sep 25 08:32:59 2019 +1000
->
-> powerpc/nvdimm: use H_SCM_QUERY hcall on H_OVERLAP error
->
-> Right now we force an unbind of SCM memory at drcindex on H_OVERLAP error.
-> This really slows down operations like kexec where we get the H_OVERLAP
-> error because we don't go through a full hypervisor re init.
->
-> H_OVERLAP error for a H_SCM_BIND_MEM hcall indicates that SCM memory at
-> drc index is already bound. Since we don't specify a logical memory
-> address for bind hcall, we can use the H_SCM_QUERY hcall to query
-> the already bound logical address.
-Good to know it.
+On Sun 15-03-20 14:20:05, Cristopher Lameter wrote:
+> On Wed, 11 Mar 2020, Srikar Dronamraju wrote:
+> 
+> > Currently Linux kernel with CONFIG_NUMA on a system with multiple
+> > possible nodes, marks node 0 as online at boot.  However in practice,
+> > there are systems which have node 0 as memoryless and cpuless.
+> 
+> Would it not be better and simpler to require that node 0 always has
+> memory (and processors)? A  mininum operational set?
 
-Thanks,
-Pingfan
->
->
->
->
-> > Take a closer look, during the papr_scm initialization, the only
-> > configuration is through drc_pmem_bind()-> plpar_hcall(H_SCM_BIND_MEM,
-> > ...), which helps to set up the bound address.
-> >
-> > On pseries, for kexec -l/-p kernel, there is no reset of hardware, and this
-> > step can be stepped around to save times.  So the pmem bound address can be
-> > passed to the 2nd kernel through a dynamic added property "bound-addr" in
-> > dt node 'ibm,pmemory'.
-> >
->
-> -aneesh
->
+I do not think you can simply ignore the reality. I cannot say that I am
+a fan of memoryless/cpuless numa configurations but they are a sad
+reality of different LPAR configurations. We have to deal with them.
+Besides that I do not really see any strong technical arguments to lack
+a support for those crippled configurations. We do have zonelists that
+allow to do reasonable decisions on memoryless nodes. So no, I do not
+think that this is a viable approach.
+
+> We can dynamically number the nodes right? So just make sure that the
+> firmware properly creates memory on node 0?
+
+Are you suggesting that the OS would renumber NUMA nodes coming
+from FW just to satisfy node 0 existence? If yes then I believe this is
+really a bad idea because it would make HW/LPAR configuration matching
+to the resulting memory layout really hard to follow.
+
+-- 
+Michal Hocko
+SUSE Labs
