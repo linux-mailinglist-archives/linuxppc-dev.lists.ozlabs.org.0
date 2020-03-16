@@ -2,86 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365941872BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC011872C6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:53:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48h55Q3k6PzDqXN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 05:52:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48h5783kbRzDqW1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 05:53:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ smtp.mailfrom=arista.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=dima@arista.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=arista.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256
+ header.s=googlenew header.b=V5DsuLdB; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gvgT417vzDqJf
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 22:47:48 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02GBW6aJ120670
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 07:47:45 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yru8sp1uk-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 07:47:44 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ganeshgr@linux.ibm.com>;
- Mon, 16 Mar 2020 11:47:43 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 16 Mar 2020 11:47:41 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02GBleM150724990
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Mar 2020 11:47:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3C08AE051;
- Mon, 16 Mar 2020 11:47:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B00C9AE04D;
- Mon, 16 Mar 2020 11:47:39 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.82.40])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 16 Mar 2020 11:47:39 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries: Fix MCE handling on pseries
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <20200313140418.7940-1-ganeshgr@linux.ibm.com>
- <1584157063.g5s75uhbdu.astroid@bobo.none>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Date: Mon, 16 Mar 2020 17:17:38 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48gzTs3kKkzDqJB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 01:39:41 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id 2so10033364pfg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 07:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=arista.com; s=googlenew;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=JXz4T/B3KLStmzRAt7XXeyU3eI2VFhj+Pr5+CtzGSpk=;
+ b=V5DsuLdBDrQU3DGueYDXmPutpMPnsVBXM/eQ83/6L4OkgmDPPTuFCkmLm1hRLqXhnq
+ +ccis/2OTb+htQSHYWyZ/4/YThdOQWX7uOr/GvGquWOQN6Myk8PeAZkMQihvSrPki0bQ
+ RvORLArp6aWsAhjtKPCLTbt8aslVxgvAU5qUqTBAyMT71OwEIUYvMXTKhtMD87DLzlj3
+ 5akc6ZiHM5V0aedBKFt3I0yADb4lNRHBYegbVsvJGQCkIOCI+XU6FmN+Y3wjDPQpXEz3
+ fiL5B0a19DcHOnOpQYFzbvapMVBueYF4ZCCnKi84aa+DbXUBKY6qRv/DrJDwZ5LN31wv
+ JqMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=JXz4T/B3KLStmzRAt7XXeyU3eI2VFhj+Pr5+CtzGSpk=;
+ b=WUgWgYTPxxpf6pMrj+Y/0HUiNBjUF8gZAgrBt/pUraNTB+nJUWsuNFE3pChlZbQZdw
+ RiYyeLxm35QM8hn/h0frdNiu21JgDTy7WOFw8rZhoEfi1Gdor6KUWtq4KIIac4ln1mKa
+ PmGMYLtymxcsOug5i+vHUTXKxWxt92WnsAFiZu3q/dUmGusCmf7/D4ds6WeI7LH5yOKr
+ s+1Vc4vzIg/EWvjPC5EIYnN26tZ+kBlIsiaVXUFvAkUDKOnP/M5SmNG/WO6TQDFcFPKY
+ LCXzlwkNqMhDDV2OKla79D17MNqfLu+DctvNqFoSlbbagy1C5h4Z1LFduOtGo6sBG2wG
+ UbFg==
+X-Gm-Message-State: ANhLgQ0P9AN+RAPrblhYuQXZph4ozy1i1KUAP8bbZnmMDqU059Z8aRLj
+ sjgNCjaLyVZQokCyUtlQIQ6eJQ==
+X-Google-Smtp-Source: ADFU+vsTuMQvQOU35QDzo7rso0R0MKXK6oI29BcQH9Me/osWEDUSqC94Pv9XxDKFtYDkI9SSJ2n08g==
+X-Received: by 2002:a62:1552:: with SMTP id 79mr28522840pfv.215.1584369579224; 
+ Mon, 16 Mar 2020 07:39:39 -0700 (PDT)
+Received: from Mindolluin.aristanetworks.com
+ ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+ by smtp.gmail.com with ESMTPSA id i2sm81524pjs.21.2020.03.16.07.39.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Mar 2020 07:39:38 -0700 (PDT)
+From: Dmitry Safonov <dima@arista.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCHv2 00/50] Add log level to show_stack()
+Date: Mon, 16 Mar 2020 14:38:26 +0000
+Message-Id: <20200316143916.195608-1-dima@arista.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <1584157063.g5s75uhbdu.astroid@bobo.none>
-Content-Type: multipart/alternative;
- boundary="------------F14B1228BC3C71B919C6F1E1"
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20031611-0020-0000-0000-000003B53E5E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031611-0021-0000-0000-0000220D9D5A
-Message-Id: <d22f9ef9-07db-9615-6420-001b85dd2742@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-16_03:2020-03-12,
- 2020-03-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0
- clxscore=1015 phishscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003160055
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 17 Mar 2020 05:51:00 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,199 +81,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com
+Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
+ Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Burton <paulburton@kernel.org>, Dmitry Safonov <dima@arista.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
+ Jiri Slaby <jslaby@suse.com>, Matt Turner <mattst88@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Len Brown <len.brown@intel.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-um@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Richard Henderson <rth@twiddle.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, Ralf Baechle <ralf@linux-mips.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-ia64@vger.kernel.org, Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ James Hogan <jhogan@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
+ Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Brian Cain <bcain@codeaurora.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
+ Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
+ "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
+ Petr Mladek <pmladek@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
+ nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------F14B1228BC3C71B919C6F1E1
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Changes to v2:
+- Removed excessive pr_cont("\n") (nits by Senozhatsky)
+- Leave backtrace debugging messages with pr_debug()
+  (noted by Russell King and Will Deacon)
+- Correct microblaze_unwind_inner() declaration
+  (Thanks to Michal Simek and kbuild test robot)
+- Fix copy'n'paste typo in show_stack_loglvl() for sparc
+  (kbuild robot)
+- Fix backtrace output on xtensa
+  (Thanks Max Filippov)
+- Add loglevel to show_stack() on s390 (kbuild robot)
+- Collected all Reviewed-by and Acked-by (thanks!)
 
+Add log level argument to show_stack().
+Done in three stages:
+1. Introducing show_stack_loglvl() for every architecture
+2. Migrating old users with an explicit log level
+3. Renaming show_stack_loglvl() into show_stack()
 
+Justification:
+o It's a design mistake to move a business-logic decision
+  into platform realization detail.
+o I have currently two patches sets that would benefit from this work:
+  Removing console_loglevel jumps in sysrq driver [1]
+  Hung task warning before panic [2] - suggested by Tetsuo (but he
+  probably didn't realise what it would involve).
+o While doing (1), (2) the backtraces were adjusted to headers
+  and other messages for each situation - so there won't be a situation
+  when the backtrace is printed, but the headers are missing because
+  they have lesser log level (or the reverse).
 
-On 3/14/20 9:18 AM, Nicholas Piggin wrote:
-> Ganesh Goudar's on March 14, 2020 12:04 am:
->> MCE handling on pSeries platform fails as recent rework to use common
->> code for pSeries and PowerNV in machine check error handling tries to
->> access per-cpu variables in realmode. The per-cpu variables may be
->> outside the RMO region on pSeries platform and needs translation to be
->> enabled for access. Just moving these per-cpu variable into RMO region
->> did'nt help because we queue some work to workqueues in real mode, which
->> again tries to touch per-cpu variables.
-> Which queues are these? We should not be using Linux workqueues, but the
-> powerpc mce code which uses irq_work.
+The least important for upstream, but maybe still worth to note that
+every company I've worked in so far had an off-list patch to print
+backtrace with the needed log level (but only for the architecture they
+cared about).
+If you have other ideas how you will benefit from show_stack() with
+a log level - please, reply to this cover letter.
 
-Yes, irq work queues accesses memory outside RMO.
-irq_work_queue()->__irq_work_queue_local()->[this_cpu_ptr(&lazy_list) | this_cpu_ptr(&raised_list)]
+See also discussion on v1:
+https://lore.kernel.org/linux-riscv/20191106083538.z5nlpuf64cigxigh@pathway.suse.cz/
 
->> Also fwnmi_release_errinfo()
->> cannot be called when translation is not enabled.
-> Why not?
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Slaby <jslaby@suse.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-It crashes when we try to get RTAS token for "ibm, nmi-interlock" device
-tree node. But yes we can avoid it by storing it rtas_token somewhere but haven't
-tried it, here is the backtrace I got when fwnmi_release_errinfo() called from
-realmode handler.
+Thanks,
+Dmitry
 
-[   70.856908] BUG: Unable to handle kernel data access on read at 0xc0000001ffffa8f8
-[   70.856918] Faulting instruction address: 0xc000000000853920
-[   70.856927] Oops: Kernel access of bad area, sig: 11 [#1]
-[   70.856935] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-[   70.856943] Modules linked in: mcetest_slb(OE+) bridge stp llc ebtable_filter ebtables ip6table_filter ip6_tables iptable_filter sg pseries_rng ip_tables xfs libcrc32c sd_mod t10_pi ibmvscsi ibmveth scsi_transport_srp
-[   70.856975] CPU: 13 PID: 6480 Comm: insmod Kdump: loaded Tainted: G           OE     5.6.0-rc2-ganesh+ #6
-[   70.856985] NIP:  c000000000853920 LR: c000000000853a14 CTR: c0000000000376b0
-[   70.856994] REGS: c000000007e4b870 TRAP: 0300   Tainted: G           OE      (5.6.0-rc2-ganesh+)
-[   70.857003] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88000422  XER: 00000009
-[   70.857015] CFAR: c000000000853a10 DAR: c0000001ffffa8f8 DSISR: 40000000 IRQMASK: 1
-[   70.857015] GPR00: c000000000853a14 c000000007e4bb00 c000000001372b00 c0000001ffffa8c8
-[   70.857015] GPR04: c000000000cf8728 0000000000000000 0000000000000002 c008000000420810
-[   70.857015] GPR08: 0000000000000000 0000000000000000 0000000000000001 0000000000000001
-[   70.857015] GPR12: 0000000000000000 c000000007f92000 c0000001f8113d70 c00800000059070d
-[   70.857015] GPR16: 00000000000004f8 c008000000421080 000000000000fff1 c008000000421038
-[   70.857015] GPR20: c00000000125eb20 c000000000d1d1c8 c008000000590000 0000000000000000
-[   70.857015] GPR24: 4000000000000510 c008000008000000 c0000000012355d8 c008000000420940
-[   70.857015] GPR28: c008000008000011 0000000000000000 c000000000cf8728 c00000000169a098
-[   70.857097] NIP [c000000000853920] __of_find_property+0x30/0xd0
-[   70.857106] LR [c000000000853a14] of_find_property+0x54/0x90
-[   70.857113] Call Trace:
-[   70.857117] Instruction dump:
-[   70.857124] 3c4c00b2 3842f210 2c230000 418200bc 7c0802a6 fba1ffe8 fbc1fff0 7cbd2b78
-[   70.857136] fbe1fff8 7c9e2378 f8010010 f821ffc1 <ebe30030> 2fbf0000 409e0014 48000064
-[   70.857152] ---[ end trace 13755f7502f3150b ]---
-[   70.864199]
-[   70.864226] Sending IPI to other CPUs
-[   82.011761] ERROR: 15 cpu(s) not responding
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+[2]: https://lkml.kernel.org/r/41fd7652-df1f-26f6-aba0-b87ebae07db6@i-love.sakura.ne.jp
 
->> This patch fixes this by enabling translation in the exception handler
->> when all required real mode handling is done. This change only affects
->> the pSeries platform.
-> Not supposed to do this, because we might not be in a state
-> where the MMU is ready to be turned on at this point.
->
-> I'd like to understand better which accesses are a problem, and whether
-> we can fix them all to be in the RMO.
+Dmitry Safonov (50):
+  kallsyms/printk: Add loglvl to print_ip_sym()
+  alpha: Add show_stack_loglvl()
+  arc: Add show_stack_loglvl()
+  arm/asm: Add loglvl to c_backtrace()
+  arm: Add loglvl to unwind_backtrace()
+  arm: Add loglvl to dump_backtrace()
+  arm: Wire up dump_backtrace_{entry,stm}
+  arm: Add show_stack_loglvl()
+  arm64: Add loglvl to dump_backtrace()
+  arm64: Add show_stack_loglvl()
+  c6x: Add show_stack_loglvl()
+  csky: Add show_stack_loglvl()
+  h8300: Add show_stack_loglvl()
+  hexagon: Add show_stack_loglvl()
+  ia64: Pass log level as arg into ia64_do_show_stack()
+  ia64: Add show_stack_loglvl()
+  m68k: Add show_stack_loglvl()
+  microblaze: Add loglvl to microblaze_unwind_inner()
+  microblaze: Add loglvl to microblaze_unwind()
+  microblaze: Add show_stack_loglvl()
+  mips: Add show_stack_loglvl()
+  nds32: Add show_stack_loglvl()
+  nios2: Add show_stack_loglvl()
+  openrisc: Add show_stack_loglvl()
+  parisc: Add show_stack_loglvl()
+  powerpc: Add show_stack_loglvl()
+  riscv: Add show_stack_loglvl()
+  s390: Add show_stack_loglvl()
+  sh: Add loglvl to dump_mem()
+  sh: Remove needless printk()
+  sh: Add loglvl to printk_address()
+  sh: Add loglvl to show_trace()
+  sh: Add show_stack_loglvl()
+  sparc: Add show_stack_loglvl()
+  um/sysrq: Remove needless variable sp
+  um: Add show_stack_loglvl()
+  unicore32: Remove unused pmode argument in c_backtrace()
+  unicore32: Add loglvl to c_backtrace()
+  unicore32: Add show_stack_loglvl()
+  x86: Add missing const qualifiers for log_lvl
+  x86: Add show_stack_loglvl()
+  xtensa: Add loglvl to show_trace()
+  xtensa: Add show_stack_loglvl()
+  sysrq: Use show_stack_loglvl()
+  x86/amd_gart: Print stacktrace for a leak with KERN_ERR
+  power: Use show_stack_loglvl()
+  kdb: Don't play with console_loglevel
+  sched: Print stack trace with KERN_INFO
+  kernel: Use show_stack_loglvl()
+  kernel: Rename show_stack_loglvl() => show_stack()
 
-I faced three such access problems,
-  * accessing per-cpu data (like mce_event,mce_event_queue and mce_event_queue),
-    we can move this inside RMO.
-  * calling fwnmi_release_errinfo().
-  * And queuing work to irq_work_queue, not sure how to fix this.
+ arch/alpha/kernel/traps.c            | 22 +++++++--------
+ arch/arc/include/asm/bug.h           |  3 ++-
+ arch/arc/kernel/stacktrace.c         | 17 +++++++-----
+ arch/arc/kernel/troubleshoot.c       |  2 +-
+ arch/arm/include/asm/bug.h           |  3 ++-
+ arch/arm/include/asm/traps.h         |  3 ++-
+ arch/arm/include/asm/unwind.h        |  3 ++-
+ arch/arm/kernel/traps.c              | 40 ++++++++++++++++------------
+ arch/arm/kernel/unwind.c             |  7 ++---
+ arch/arm/lib/backtrace-clang.S       |  9 +++++--
+ arch/arm/lib/backtrace.S             | 14 +++++++---
+ arch/arm64/include/asm/stacktrace.h  |  3 ++-
+ arch/arm64/kernel/process.c          |  2 +-
+ arch/arm64/kernel/traps.c            | 19 ++++++-------
+ arch/c6x/kernel/traps.c              | 18 +++++++------
+ arch/csky/kernel/dumpstack.c         |  9 ++++---
+ arch/csky/kernel/ptrace.c            |  4 +--
+ arch/h8300/kernel/traps.c            | 12 ++++-----
+ arch/hexagon/kernel/traps.c          | 25 ++++++++---------
+ arch/ia64/include/asm/ptrace.h       |  1 -
+ arch/ia64/kernel/mca.c               |  2 +-
+ arch/ia64/kernel/process.c           | 17 ++++++------
+ arch/m68k/kernel/traps.c             | 13 ++++-----
+ arch/microblaze/include/asm/unwind.h |  3 ++-
+ arch/microblaze/kernel/stacktrace.c  |  4 +--
+ arch/microblaze/kernel/traps.c       | 12 ++++-----
+ arch/microblaze/kernel/unwind.c      | 37 ++++++++++++++-----------
+ arch/mips/kernel/traps.c             | 35 ++++++++++++------------
+ arch/nds32/kernel/traps.c            | 15 ++++++-----
+ arch/nios2/kernel/traps.c            | 17 ++++++------
+ arch/openrisc/kernel/traps.c         | 12 +++++----
+ arch/parisc/kernel/traps.c           | 24 ++++++++---------
+ arch/powerpc/kernel/process.c        | 15 ++++++-----
+ arch/powerpc/kernel/stacktrace.c     |  2 +-
+ arch/riscv/kernel/stacktrace.c       |  9 ++++---
+ arch/s390/kernel/dumpstack.c         | 11 ++++----
+ arch/sh/include/asm/kdebug.h         |  6 +++--
+ arch/sh/include/asm/processor_32.h   |  2 +-
+ arch/sh/kernel/dumpstack.c           | 36 ++++++++++++-------------
+ arch/sh/kernel/process_32.c          |  2 +-
+ arch/sh/kernel/process_64.c          |  3 +--
+ arch/sh/kernel/traps.c               |  4 +--
+ arch/sh/mm/fault.c                   |  2 +-
+ arch/sparc/kernel/process_32.c       | 10 +++----
+ arch/sparc/kernel/process_64.c       |  2 +-
+ arch/um/drivers/mconsole_kern.c      |  2 +-
+ arch/um/kernel/sysrq.c               | 23 ++++++++--------
+ arch/unicore32/kernel/setup.h        |  2 +-
+ arch/unicore32/kernel/traps.c        | 34 +++++++++++------------
+ arch/unicore32/lib/backtrace.S       | 24 +++++++++++------
+ arch/x86/include/asm/stacktrace.h    |  2 +-
+ arch/x86/kernel/amd_gart_64.c        |  2 +-
+ arch/x86/kernel/dumpstack.c          |  9 ++++---
+ arch/xtensa/kernel/traps.c           | 26 ++++++++++--------
+ drivers/base/power/main.c            |  2 +-
+ drivers/tty/sysrq.c                  |  2 +-
+ include/linux/kallsyms.h             |  4 +--
+ include/linux/sched/debug.h          |  3 ++-
+ kernel/debug/kdb/kdb_bt.c            | 11 +++-----
+ kernel/locking/lockdep.c             |  4 +--
+ kernel/locking/rtmutex-debug.c       |  2 +-
+ kernel/sched/core.c                  |  6 ++---
+ kernel/trace/ftrace.c                |  8 +++---
+ lib/dump_stack.c                     |  2 +-
+ 64 files changed, 368 insertions(+), 311 deletions(-)
 
-> Thanks,
-> Nick
-
-
---------------F14B1228BC3C71B919C6F1E1
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <br>
-    <br>
-    <div class="moz-cite-prefix">On 3/14/20 9:18 AM, Nicholas Piggin
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:1584157063.g5s75uhbdu.astroid@bobo.none">
-      <pre class="moz-quote-pre" wrap="">Ganesh Goudar's on March 14, 2020 12:04 am:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">MCE handling on pSeries platform fails as recent rework to use common
-code for pSeries and PowerNV in machine check error handling tries to
-access per-cpu variables in realmode. The per-cpu variables may be
-outside the RMO region on pSeries platform and needs translation to be
-enabled for access. Just moving these per-cpu variable into RMO region
-did'nt help because we queue some work to workqueues in real mode, which
-again tries to touch per-cpu variables.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Which queues are these? We should not be using Linux workqueues, but the
-powerpc mce code which uses irq_work.</pre>
-    </blockquote>
-    <pre>Yes, irq work queues accesses memory outside RMO.
-irq_work_queue()-&gt;__irq_work_queue_local()-&gt;[this_cpu_ptr(&amp;lazy_list) | this_cpu_ptr(&amp;raised_list)]
-</pre>
-    <blockquote type="cite"
-      cite="mid:1584157063.g5s75uhbdu.astroid@bobo.none">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Also fwnmi_release_errinfo()
-cannot be called when translation is not enabled.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Why not?</pre>
-    </blockquote>
-    <pre class="moz-quote-pre" wrap="">It crashes when we try to get RTAS token for "ibm, nmi-interlock" device
-tree node. But yes we can avoid it by storing it rtas_token somewhere but haven't
-tried it, here is the backtrace I got when fwnmi_release_errinfo() called from
-realmode handler.
-
-[   70.856908] BUG: Unable to handle kernel data access on read at 0xc0000001ffffa8f8
-[   70.856918] Faulting instruction address: 0xc000000000853920
-[   70.856927] Oops: Kernel access of bad area, sig: 11 [#1]
-[   70.856935] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-[   70.856943] Modules linked in: mcetest_slb(OE+) bridge stp llc ebtable_filter ebtables ip6table_filter ip6_tables iptable_filter sg pseries_rng ip_tables xfs libcrc32c sd_mod t10_pi ibmvscsi ibmveth scsi_transport_srp
-[   70.856975] CPU: 13 PID: 6480 Comm: insmod Kdump: loaded Tainted: G           OE     5.6.0-rc2-ganesh+ #6
-[   70.856985] NIP:  c000000000853920 LR: c000000000853a14 CTR: c0000000000376b0
-[   70.856994] REGS: c000000007e4b870 TRAP: 0300   Tainted: G           OE      (5.6.0-rc2-ganesh+)
-[   70.857003] MSR:  8000000000001003 &lt;SF,ME,RI,LE&gt;  CR: 88000422  XER: 00000009
-[   70.857015] CFAR: c000000000853a10 DAR: c0000001ffffa8f8 DSISR: 40000000 IRQMASK: 1
-[   70.857015] GPR00: c000000000853a14 c000000007e4bb00 c000000001372b00 c0000001ffffa8c8
-[   70.857015] GPR04: c000000000cf8728 0000000000000000 0000000000000002 c008000000420810
-[   70.857015] GPR08: 0000000000000000 0000000000000000 0000000000000001 0000000000000001
-[   70.857015] GPR12: 0000000000000000 c000000007f92000 c0000001f8113d70 c00800000059070d
-[   70.857015] GPR16: 00000000000004f8 c008000000421080 000000000000fff1 c008000000421038
-[   70.857015] GPR20: c00000000125eb20 c000000000d1d1c8 c008000000590000 0000000000000000
-[   70.857015] GPR24: 4000000000000510 c008000008000000 c0000000012355d8 c008000000420940
-[   70.857015] GPR28: c008000008000011 0000000000000000 c000000000cf8728 c00000000169a098
-[   70.857097] NIP [c000000000853920] __of_find_property+0x30/0xd0
-[   70.857106] LR [c000000000853a14] of_find_property+0x54/0x90
-[   70.857113] Call Trace:
-[   70.857117] Instruction dump:
-[   70.857124] 3c4c00b2 3842f210 2c230000 418200bc 7c0802a6 fba1ffe8 fbc1fff0 7cbd2b78
-[   70.857136] fbe1fff8 7c9e2378 f8010010 f821ffc1 &lt;ebe30030&gt; 2fbf0000 409e0014 48000064
-[   70.857152] ---[ end trace 13755f7502f3150b ]---
-[   70.864199]
-[   70.864226] Sending IPI to other CPUs
-[   82.011761] ERROR: 15 cpu(s) not responding
-</pre>
-    <blockquote type="cite"
-      cite="mid:1584157063.g5s75uhbdu.astroid@bobo.none">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">This patch fixes this by enabling translation in the exception handler
-when all required real mode handling is done. This change only affects
-the pSeries platform.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Not supposed to do this, because we might not be in a state
-where the MMU is ready to be turned on at this point.
-
-I'd like to understand better which accesses are a problem, and whether
-we can fix them all to be in the RMO.</pre>
-    </blockquote>
-    <pre>I faced three such access problems,
- * accessing per-cpu data (like mce_event,mce_event_queue and mce_event_queue),
-   we can move this inside RMO.
- * calling fwnmi_release_errinfo().
- * And queuing work to irq_work_queue, not sure how to fix this.
-</pre>
-    <blockquote type="cite"
-      cite="mid:1584157063.g5s75uhbdu.astroid@bobo.none">
-      <pre class="moz-quote-pre" wrap="">Thanks,
-Nick
-</pre>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------F14B1228BC3C71B919C6F1E1--
+-- 
+2.23.0
 
