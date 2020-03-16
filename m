@@ -1,83 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68A0186630
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:17:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2505C186602
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:00:38 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gpdF6JKHzDqPG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:00:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48gq0D27LwzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 19:17:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=js1304@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=B7QUWfZ2; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gpbL3bV2zDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 18:58:53 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02G7oT9K047004
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 03:58:51 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yrue1ftse-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 03:58:50 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Mon, 16 Mar 2020 07:58:48 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 16 Mar 2020 07:58:45 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02G7wimP50659526
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Mar 2020 07:58:44 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A17142761;
- Mon, 16 Mar 2020 07:58:44 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D3DC742763;
- Mon, 16 Mar 2020 07:58:43 +0000 (GMT)
-Received: from localhost (unknown [9.199.55.244])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 16 Mar 2020 07:58:43 +0000 (GMT)
-Date: Mon, 16 Mar 2020 13:28:42 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] powerpc test_emulate_step: fix DS operand in ld
- encoding to appropriate value
-To: Balamuruhan S <bala24@linux.ibm.com>, mpe@ellerman.id.au
-References: <20200311102405.392263-1-bala24@linux.ibm.com>
-In-Reply-To: <20200311102405.392263-1-bala24@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48gpyb4bVqzDqKZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 19:15:33 +1100 (AEDT)
+Received: by mail-qk1-x744.google.com with SMTP id p62so24613376qkb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 01:15:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=F/i4UURiGEiDmJWiySfSNZr+o1KHFsCHgdng66n03Q0=;
+ b=B7QUWfZ2p0iHwX6wNgX6U4yztQAMGDAiU1KFSHsaBYgSKDV+Kdl+8H155Lfmbg+9o/
+ TxGbcBBwEqOPQ/B/w6jAG6N0rUQpjSNA+s/F/Tud+SRpVnYFph4gVet/kfh28qnd9zQt
+ +zSo6COsT5fR35kjG2HJUXBsYVrX9cRZUknKCS7W5sr1GYRTBMEC1QpOzQ7viSl+n2pN
+ cGaEg2tPimuaF7sbPikYKrNGerAbRU77SHD6nW+mqtjD7aZXVr2oYClwzswetpGkUdY6
+ ldrXWz4oCSqcw2vqUL3VtrVAEe7+21fSUUt9pt7RqkY8U0lRZc6KjarLjC7fRfr6wPSh
+ YpKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=F/i4UURiGEiDmJWiySfSNZr+o1KHFsCHgdng66n03Q0=;
+ b=AvAnNUrcxK5uSQfVolZAWXfBDa68Cqg1SM4wshxkk0Te4NeBFITqm+id204isdhCNV
+ gNO46ArWno5QaOHDbsnxEB/dM1ByLXPMS1HQKXNtHQ9mdpWQ8IjVKLgxXBmVBsXm5VbV
+ po0ki1FKBdspCITCFd4UHd0XofqjBOt6XYdoVb0lYsWvsGfNqO0DcUv4doaGmhn8BI3y
+ gM/nDCWdqBltjymwJKQs9iQI+70cWhKKNzwWwGdFyivdf6iZulJwXTqh3mK5xdDT/t/T
+ Tz6zPl93TLlOyXKuIZE6QYTlBZtXElldG5RHw85R/ilQgdIYG20pSyRkQMLjc+tct+li
+ Wpxg==
+X-Gm-Message-State: ANhLgQ3q1XfjEF3MlI7T1IFdGF+P8t804XqH3g2/fWzM5wDnN2HWM6m4
+ Q7xS7Gsj/nNaymCQp33z59+RJcGrc0Bd3uuLggQ=
+X-Google-Smtp-Source: ADFU+vtuhvzirDhMCsmE4l39TWh2tgFAp6304DDB1OcJOZvmemJgfuS7i39szr9xiMsVL2Kk2XCoJDL/oQcWR3C4GH0=
+X-Received: by 2002:a37:546:: with SMTP id 67mr24213408qkf.272.1584346530319; 
+ Mon, 16 Mar 2020 01:15:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
+References: <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
+ <20200311115735.GM23944@dhcp22.suse.cz>
+ <20200312052707.GA3277@linux.vnet.ibm.com>
+ <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
+ <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
+ <20200312131438.GB3277@linux.vnet.ibm.com>
+ <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
+ <20200312161310.GC3277@linux.vnet.ibm.com>
+ <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
+ <CAAmzW4OFy51BhAT62tdVQD52NNMWm+UPgoGAX97omY7P+nJ+5w@mail.gmail.com>
+ <20200313110440.GA25144@linux.vnet.ibm.com>
+ <06be5908-9af6-2892-0333-e9558b2cf474@suse.cz>
+In-Reply-To: <06be5908-9af6-2892-0333-e9558b2cf474@suse.cz>
+From: Joonsoo Kim <js1304@gmail.com>
+Date: Mon, 16 Mar 2020 17:15:19 +0900
+Message-ID: <CAAmzW4ME_WLYZPCt4+82RNKstv-H=LK5MKGGJR=6ha-ALS+FSw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
+To: Vlastimil Babka <vbabka@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20031607-0016-0000-0000-000002F1D550
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031607-0017-0000-0000-000033554F9B
-Message-Id: <1584345239.vtbmu1sv8q.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-16_01:2020-03-12,
- 2020-03-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- phishscore=0 adultscore=0 mlxlogscore=427 suspectscore=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 spamscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003160035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,34 +85,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
- sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>, Mel Gorman <mgorman@suse.de>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Balamuruhan S wrote:
-> ld instruction should have 14 bit immediate field (DS) concatenated with
-> 0b00 on the right, encode it accordingly. Introduce macro `IMM_DS()`
-> to encode DS form instructions with 14 bit immediate field.
->=20
-> Fixes: 4ceae137bdab ("powerpc: emulate_step() tests for load/store instru=
-ctions")
-> Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
-> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
-> ---
->  arch/powerpc/lib/test_emulate_step.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+2020=EB=85=84 3=EC=9B=94 13=EC=9D=BC (=EA=B8=88) =EC=98=A4=ED=9B=84 8:38, V=
+lastimil Babka <vbabka@suse.cz>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> On 3/13/20 12:04 PM, Srikar Dronamraju wrote:
+> >> I lost all the memory about it. :)
+> >> Anyway, how about this?
+> >>
+> >> 1. make node_present_pages() safer
+> >> static inline node_present_pages(nid)
+> >> {
+> >> if (!node_online(nid)) return 0;
+> >> return (NODE_DATA(nid)->node_present_pages);
+> >> }
+> >>
+> >
+> > Yes this would help.
+>
+> Looks good, yeah.
+>
+> >> 2. make node_to_mem_node() safer for all cases
+> >> In ppc arch's mem_topology_setup(void)
+> >> for_each_present_cpu(cpu) {
+> >>  numa_setup_cpu(cpu);
+> >>  mem_node =3D node_to_mem_node(numa_mem_id());
+> >>  if (!node_present_pages(mem_node)) {
+> >>   _node_numa_mem_[numa_mem_id()] =3D first_online_node;
+> >>  }
+> >> }
+> >>
+> >
+> > But here as discussed above, we miss the case of possible but not prese=
+nt nodes.
+> > For such nodes, the above change may not update, resulting in they stil=
+l
+> > having 0. And node 0 can be only possible but not present.
 
-LGTM. We ought to be careful when using TEST_LD() to ensure that the=20
-immediate value is aligned to a word, but since this is for selftests,=20
-we don't need to enforce that.
+Oops, I don't read full thread so miss the case.
 
-Long term, we should also consider generalizing the macros across this=20
-and the eBPF codebase so that we can reuse these.
+> So is there other way to do the setup so that node_to_mem_node() returns =
+an
+> online+present node when called for any possible node?
 
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Two changes seems to be sufficient.
 
+1. initialize all node's _node_numa_mem_[] =3D first_online_node in
+mem_topology_setup()
+2. replace the node with online+present node for _node_to_mem_node_[]
+in set_cpu_numa_mem().
 
-- Naveen
+ static inline void set_cpu_numa_mem(int cpu, int node)
+ {
+        per_cpu(_numa_mem_, cpu) =3D node;
++       if (!node_present_pages(node))
++               node =3D first_online_node;
+        _node_numa_mem_[cpu_to_node(cpu)] =3D node;
+ }
+ #endif
 
+With these two change, we can safely call node_to_mem_node() anywhere.
+
+Thanks.
