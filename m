@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022F7186217
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 03:36:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ggRj1lgrzDqM2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 13:36:49 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 609601862C1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 03:40:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ggWP6f1YzDqHF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 13:40:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=qZthJYlb; dkim-atps=neutral
+ header.s=default header.b=tzc+Z4Ka; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ggMz4xDtzDqGT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 13:33:35 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ggNx5zlkzDqLL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 13:34:25 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 97B7520746;
- Mon, 16 Mar 2020 02:33:32 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 92FBC2073C;
+ Mon, 16 Mar 2020 02:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584326013;
- bh=KOWS1rfOKz6tAoQSHaudkWzbFWJ9Df0Y/oOxctuLLvk=;
+ s=default; t=1584326063;
+ bh=8X2R9B81uygvlwk78ZVjrQkcxRPs2hX4U9MOssooVZ8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qZthJYlb3yRsAbs+Bi9OpnV9ifiJMl4De53NepsbZ7s+9U0kXXU4s2XQHRNkQOafk
- GDr0H+ok3Ebri+S7Vcm6PPjFftI5UZ29TJ67elFYTU5w2EUiPy9jfqYvS5iJSV9gJt
- NXlqmgQVwN4MhTZ8Qro4uMRO0YxZwXQcR61PnvyM=
+ b=tzc+Z4KazT7+XMGu24TwK5O4LJRhZ2Yaox0HztuyC0x2W67l6tDMlSk39KqO9Wvgu
+ c6+yUGSImhEMGOgd+Vc0h4mj8E+YBoPu8/JkBM1dABToSe2o91IYjKVe7OnHh1VWQb
+ K/hSsKQz8Ej7jcgOMTKtfLk8UMPWdHpTzUtyj0HE=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 11/41] powerpc: Include .BTF section
-Date: Sun, 15 Mar 2020 22:32:49 -0400
-Message-Id: <20200316023319.749-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 10/35] powerpc: Include .BTF section
+Date: Sun, 15 Mar 2020 22:33:46 -0400
+Message-Id: <20200316023411.1263-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200316023319.749-1-sashal@kernel.org>
-References: <20200316023319.749-1-sashal@kernel.org>
+In-Reply-To: <20200316023411.1263-1-sashal@kernel.org>
+References: <20200316023411.1263-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+)
 
 diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 8834220036a51..857ab49750f18 100644
+index 060a1acd7c6d7..4638d28633888 100644
 --- a/arch/powerpc/kernel/vmlinux.lds.S
 +++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -303,6 +303,12 @@ SECTIONS
+@@ -326,6 +326,12 @@ SECTIONS
  		*(.branch_lt)
  	}
  
