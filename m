@@ -1,79 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022F7186217
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 03:36:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4773D186045
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Mar 2020 23:39:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48gZBL5XLrzDqNy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 09:39:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ggRj1lgrzDqM2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 13:36:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=qZthJYlb; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48gZ8L0gMszDqM3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 09:38:09 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02FMXOi1048477
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Mar 2020 18:38:06 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yrsdqd33e-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Mar 2020 18:38:06 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Sun, 15 Mar 2020 22:38:04 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sun, 15 Mar 2020 22:38:00 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02FMawwF44826954
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 15 Mar 2020 22:36:58 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 475F0AE06F;
- Sun, 15 Mar 2020 22:37:59 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A04EEAE073;
- Sun, 15 Mar 2020 22:37:56 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.222.34])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sun, 15 Mar 2020 22:37:56 +0000 (GMT)
-From: Ram Pai <linuxram@us.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v1] powerpc/XIVE: SVM: share the event-queue page with the
- Hypervisor.
-Date: Sun, 15 Mar 2020 15:37:32 -0700
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-x-cbid: 20031522-0008-0000-0000-0000035DBEA1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031522-0009-0000-0000-00004A7F0FD7
-Message-Id: <1584311852-15471-1-git-send-email-linuxram@us.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.572
- definitions=2020-03-15_04:2020-03-12,
- 2020-03-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0
- suspectscore=48 spamscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003150121
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ggMz4xDtzDqGT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 13:33:35 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 97B7520746;
+ Mon, 16 Mar 2020 02:33:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1584326013;
+ bh=KOWS1rfOKz6tAoQSHaudkWzbFWJ9Df0Y/oOxctuLLvk=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=qZthJYlb3yRsAbs+Bi9OpnV9ifiJMl4De53NepsbZ7s+9U0kXXU4s2XQHRNkQOafk
+ GDr0H+ok3Ebri+S7Vcm6PPjFftI5UZ29TJ67elFYTU5w2EUiPy9jfqYvS5iJSV9gJt
+ NXlqmgQVwN4MhTZ8Qro4uMRO0YxZwXQcR61PnvyM=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.5 11/41] powerpc: Include .BTF section
+Date: Sun, 15 Mar 2020 22:32:49 -0400
+Message-Id: <20200316023319.749-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200316023319.749-1-sashal@kernel.org>
+References: <20200316023319.749-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,73 +59,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org, clg@fr.ibm.com,
- sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: Sasha Levin <sashal@kernel.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-XIVE interrupt controller maintains a Event-Queue(EQ) page. This page is
-used to communicate events with the Hypervisor/Qemu. In Secure-VM,
-unless a page is shared with the Hypervisor, the Hypervisor will
-not be able to read/write to that page.
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 
-Explicitly share the EQ page with the Hypervisor, and unshare it
-during cleanup.  This enables SVM to use XIVE.
+[ Upstream commit cb0cc635c7a9fa8a3a0f75d4d896721819c63add ]
 
-(NOTE: If the Hypervisor/Ultravisor is unable to target interrupts
- directly to Secure VM, use "kernel_irqchip=off" on the qemu command
- line).
+Selecting CONFIG_DEBUG_INFO_BTF results in the below warning from ld:
+  ld: warning: orphan section `.BTF' from `.btf.vmlinux.bin.o' being placed in section `.BTF'
 
-Cc: kvm-ppc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Cc: Michael Anderson <andmike@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Cc: Greg Kurz <groug@kaod.org>
-Cc: Cedric Le Goater <clg@fr.ibm.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+Include .BTF section in vmlinux explicitly to fix the same.
+
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200220113132.857132-1-naveen.n.rao@linux.vnet.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xive/spapr.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/vmlinux.lds.S | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-index 55dc61c..608b52f 100644
---- a/arch/powerpc/sysdev/xive/spapr.c
-+++ b/arch/powerpc/sysdev/xive/spapr.c
-@@ -26,6 +26,8 @@
- #include <asm/xive.h>
- #include <asm/xive-regs.h>
- #include <asm/hvcall.h>
-+#include <asm/svm.h>
-+#include <asm/ultravisor.h>
- 
- #include "xive-internal.h"
- 
-@@ -501,6 +503,9 @@ static int xive_spapr_configure_queue(u32 target, struct xive_q *q, u8 prio,
- 		rc = -EIO;
- 	} else {
- 		q->qpage = qpage;
-+		if (is_secure_guest())
-+			uv_share_page(PHYS_PFN(qpage_phys),
-+					1 << xive_alloc_order(order));
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 8834220036a51..857ab49750f18 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -303,6 +303,12 @@ SECTIONS
+ 		*(.branch_lt)
  	}
- fail:
- 	return rc;
-@@ -534,6 +539,8 @@ static void xive_spapr_cleanup_queue(unsigned int cpu, struct xive_cpu *xc,
- 		       hw_cpu, prio);
  
- 	alloc_order = xive_alloc_order(xive_queue_shift);
-+	if (is_secure_guest())
-+		uv_unshare_page(PHYS_PFN(__pa(q->qpage)), 1 << alloc_order);
- 	free_pages((unsigned long)q->qpage, alloc_order);
- 	q->qpage = NULL;
- }
++#ifdef CONFIG_DEBUG_INFO_BTF
++	.BTF : AT(ADDR(.BTF) - LOAD_OFFSET) {
++		*(.BTF)
++	}
++#endif
++
+ 	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
+ 		__start_opd = .;
+ 		KEEP(*(.opd))
 -- 
-1.8.3.1
+2.20.1
 
