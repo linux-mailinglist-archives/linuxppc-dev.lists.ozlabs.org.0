@@ -2,77 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B361872F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 20:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 924D818747D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 22:09:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48h5Ks6rxbzDqXL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 06:03:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48h8701hwfzDqX7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 08:09:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=rzinsly@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::444;
+ helo=mail-wr1-x444.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.a=rsa-sha256 header.s=google header.b=cyJ67de5; 
+ dkim-atps=neutral
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48h46R6Rg4zDqCs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 05:08:15 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02GHpVTo018618; Mon, 16 Mar 2020 14:08:07 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yrtk6x59f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Mar 2020 14:08:07 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02GI6Us7005327;
- Mon, 16 Mar 2020 18:08:06 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02dal.us.ibm.com with ESMTP id 2yrpw66cwk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Mar 2020 18:08:06 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02GI832U52036074
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Mar 2020 18:08:03 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2024BBE051;
- Mon, 16 Mar 2020 18:08:03 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A69D7BE04F;
- Mon, 16 Mar 2020 18:08:02 +0000 (GMT)
-Received: from localhost (unknown [9.85.153.64])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 16 Mar 2020 18:08:02 +0000 (GMT)
-From: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
-Subject: [PATCH 5/5] selftests/powerpc: Add README for GZIP engine tests
-Date: Mon, 16 Mar 2020 15:07:14 -0300
-Message-Id: <20200316180714.18631-6-rzinsly@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20200316180714.18631-1-rzinsly@linux.ibm.com>
-References: <20200316180714.18631-1-rzinsly@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48h85M26KTzDqWK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 08:07:34 +1100 (AEDT)
+Received: by mail-wr1-x444.google.com with SMTP id h6so2716479wrs.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 14:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=e4Js+GQN9i9BA17yb5cl9W991Ln3p6FSzvC77lFfomI=;
+ b=cyJ67de5xFz1SvZEhRxwZqWrPgxn0OKkczBOTpCiEBdsUAfjmlrHcgf1ubnpaLBXXl
+ UD5u/Kt8WmQHfVqeeZwIwbQsWv1ZpvyKHQlfV5p2w6GtUBmXIAiDdvOIJkOaQKuo2pzk
+ kI90cqzwoP6aTh1YX0/1Kd7iFxdR3H1peXxw8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=e4Js+GQN9i9BA17yb5cl9W991Ln3p6FSzvC77lFfomI=;
+ b=Liq/qz78WbS0wE0OUP5CnL7Xt0+mC5AlCO3OZ0SN2ErQNpTcGbf4fXSIxiAr2HvJQ1
+ lBaT9swUdC+nUSyAmKgOPrJbhRX9yVZnN7pa6akbIWpT9sWHAzIiCQXRPncYJZKz9D2V
+ 34K9O6m4x7uaLmOQW55FSjamNNfz4VjxY7Lam3R+th5E9hu5ZwVItOErd+bWlL4NY2QB
+ mOFyh4LuYuZrx2YumRnjc9HBfGEh5t+Fajvv8VHhYufD5gutOymWT7A+HkW2LBw9I1EO
+ GQdyOupK4EHDqlaVaTtZsjMJ8VY88ib9TD2LivGPU646eTRTIhFywS93NbqTHUqv+IFQ
+ QWzw==
+X-Gm-Message-State: ANhLgQ2+NzkToYSF8fpdjMv1ZOWl6cOyI6cDs8w7VM21OZmZLYWD5VpR
+ 6kqo+ioCrHvyykB0ySP+s9PsjA==
+X-Google-Smtp-Source: ADFU+vt5ctZNOHVsCYlZlRY1l6ofXMxdnVHIEAGpjfBZBJ9JDM+B9T++1/sSbSvJu1sP+6rFmFrJ0A==
+X-Received: by 2002:adf:d1a9:: with SMTP id w9mr130439wrc.17.1584392847404;
+ Mon, 16 Mar 2020 14:07:27 -0700 (PDT)
+Received: from [192.168.1.149] (ip-5-186-114-43.cgn.fibianet.dk.
+ [5.186.114.43])
+ by smtp.gmail.com with ESMTPSA id q13sm1407210wrs.91.2020.03.16.14.07.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Mar 2020 14:07:26 -0700 (PDT)
+Subject: Re: [PATCH 6/6] soc: fsl: qe: fix sparse warnings for ucc_slow.c
+To: Li Yang <leoyang.li@nxp.com>, Timur Tabi <timur@kernel.org>,
+ Zhao Qiang <qiang.zhao@nxp.com>
+References: <20200312222827.17409-1-leoyang.li@nxp.com>
+ <20200312222827.17409-7-leoyang.li@nxp.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <b9c5a514-18c1-e36c-1595-2b86c9bfcff1@rasmusvillemoes.dk>
+Date: Mon, 16 Mar 2020 22:07:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-16_08:2020-03-12,
- 2020-03-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
- mlxscore=0 priorityscore=1501 clxscore=1015 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003160078
-X-Mailman-Approved-At: Tue, 17 Mar 2020 05:51:00 +1100
+In-Reply-To: <20200312222827.17409-7-leoyang.li@nxp.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,81 +84,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>, haren@linux.ibm.com,
- herbert@gondor.apana.org.au, abali@us.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Include a README file with the instructions to use the
-testcases at selftests/powerpc/nx-gzip.
+On 12/03/2020 23.28, Li Yang wrote:
+> Fixes the following sparse warnings:
+> 
+[snip]
+> 
+> Also removed the unneccessary clearing for kzalloc'ed structure.
 
-Signed-off-by: Bulent Abali <abali@us.ibm.com>
-Signed-off-by: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
----
- .../powerpc/nx-gzip/99-nx-gzip.rules          |  1 +
- .../testing/selftests/powerpc/nx-gzip/README  | 44 +++++++++++++++++++
- 2 files changed, 45 insertions(+)
- create mode 100644 tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules
- create mode 100644 tools/testing/selftests/powerpc/nx-gzip/README
+Please don't mix that in the same patch, do it in a preparatory patch.
+That makes reviewing much easier.
 
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules b/tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules
-new file mode 100644
-index 000000000000..5a7118495cb3
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules
-@@ -0,0 +1 @@
-+SUBSYSTEM=="nxgzip", KERNEL=="nx-gzip", MODE="0666"
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/README b/tools/testing/selftests/powerpc/nx-gzip/README
-new file mode 100644
-index 000000000000..ff0c817a65c5
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/nx-gzip/README
-@@ -0,0 +1,44 @@
-+Test the nx-gzip function:
-+=========================
-+
-+Verify that following device exists:
-+  /dev/crypto/nx-gzip
-+If you get a permission error run as sudo or set the device permissions:
-+   sudo chmod go+rw /dev/crypto/nx-gzip
-+However, chmod may not survive across boots. You may create a udev file such
-+as:
-+   /etc/udev/rules.d/99-nx-gzip.rules
-+
-+
-+Then make and run:
-+$ make
-+gcc -O3 -I./inc -o gzfht_test gzfht_test.c gzip_vas.c
-+gcc -O3 -I./inc -o gunz_test gunz_test.c gzip_vas.c
-+
-+
-+Compress any file using Fixed Huffman mode. Output will have a .nx.gz suffix:
-+$ ./gzfht_test gzip_vas.c
-+file gzip_vas.c read, 5276 bytes
-+compressed 5276 to 2564 bytes total, crc32 checksum = b937a37d
-+
-+
-+Uncompress the previous output. Output will have a .nx.gunzip suffix:
-+$ ./gunz_test gzip_vas.c.nx.gz
-+gzHeader FLG 0
-+00 00 00 00 04 03
-+gzHeader MTIME, XFL, OS ignored
-+computed checksum b937a37d isize 0000149c
-+stored   checksum b937a37d isize 0000149c
-+decomp is complete: fclose
-+
-+
-+Compare two files:
-+$ sha1sum gzip_vas.c.nx.gz.nx.gunzip gzip_vas.c
-+f041cd8581e8d920f79f6ce7f65411be5d026c2a  gzip_vas.c.nx.gz.nx.gunzip
-+f041cd8581e8d920f79f6ce7f65411be5d026c2a  gzip_vas.c
-+
-+
-+Note that the code here are intended for testing the nx-gzip hardware function.
-+They are not intended for demonstrating performance or compression ratio.
-+For more information and source code consider using:
-+https://github.com/libnxz/power-gzip
--- 
-2.21.0
+>  
+>  	/* Get PRAM base */
+>  	uccs->us_pram_offset =
+> @@ -231,24 +224,24 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>  		/* clear bd buffer */
+>  		qe_iowrite32be(0, &bd->buf);
+>  		/* set bd status and length */
+> -		qe_iowrite32be(0, (u32 *)bd);
+> +		qe_iowrite32be(0, (u32 __iomem *)bd);
 
+It's cleaner to do two qe_iowrite16be to &bd->status and &bd->length,
+that avoids the casting altogether.
+
+>  		bd++;
+>  	}
+>  	/* for last BD set Wrap bit */
+>  	qe_iowrite32be(0, &bd->buf);
+> -	qe_iowrite32be(cpu_to_be32(T_W), (u32 *)bd);
+> +	qe_iowrite32be(T_W, (u32 __iomem *)bd);
+
+Yeah, and this is why. Who can actually keep track of where that bit
+ends up being set with that casting going on. Please use
+qe_iowrite16be() with an appropriately modified constant to the
+appropriate field instead of these games.
+
+And if the hardware doesn't support 16 bit writes, the definition of
+struct qe_bd is wrong and should have a single __be32 status_length
+field, with appropriate accessors defined.
+
+>  	/* Init Rx bds */
+>  	bd = uccs->rx_bd = qe_muram_addr(uccs->rx_base_offset);
+>  	for (i = 0; i < us_info->rx_bd_ring_len - 1; i++) {
+>  		/* set bd status and length */
+> -		qe_iowrite32be(0, (u32 *)bd);
+> +		qe_iowrite32be(0, (u32 __iomem *)bd);
+
+Same.
+
+>  		/* clear bd buffer */
+>  		qe_iowrite32be(0, &bd->buf);
+>  		bd++;
+>  	}
+>  	/* for last BD set Wrap bit */
+> -	qe_iowrite32be(cpu_to_be32(R_W), (u32 *)bd);
+> +	qe_iowrite32be(R_W, (u32 __iomem *)bd);
+
+Same.
+
+>  	qe_iowrite32be(0, &bd->buf);
+>  
+>  	/* Set GUMR (For more details see the hardware spec.). */
+> @@ -273,8 +266,8 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>  	qe_iowrite32be(gumr, &us_regs->gumr_h);
+>  
+>  	/* gumr_l */
+> -	gumr = us_info->tdcr | us_info->rdcr | us_info->tenc | us_info->renc |
+> -		us_info->diag | us_info->mode;
+> +	gumr = (u32)us_info->tdcr | (u32)us_info->rdcr | (u32)us_info->tenc |
+> +	       (u32)us_info->renc | (u32)us_info->diag | (u32)us_info->mode;
+
+Are the tdcr, rdcr, tenc, renc fields actually set anywhere (the same
+for the diag and mode, but word-grepping for those give way too many
+false positives)? They seem to be a somewhat pointless split out of the
+bitfields of gumr_l, and not populated anywhere?. That's not directly
+related to this patch, of course, but getting rid of them first (if they
+are indeed completely unused) might make the sparse cleanup a little
+simpler.
+
+Rasmus
