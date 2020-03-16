@@ -2,66 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535421875D6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 23:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B50187639
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 00:33:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hBRt4SNbzDqRh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 09:53:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hCKy0PPMzDqXb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 10:33:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=PGt/Pcs8; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hBPl1q33zDqWg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:51:48 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id u12so10572143pgb.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 15:51:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NX0Wlea0R+1ZmGi4xMK0+FDmtBI/tqrLeKbfSQ7Asuo=;
- b=PGt/Pcs8qCHWG0HZAYcY4liJPhGxmPGT2SofhLVciazm2WCrV04GL5dX4GIaLyyoHe
- dbOgjLpBHV0G4APe6a7npTSAjkEuYSLe6NAuPG+6eCRK7IOwEmImaAuNQJn0DVDm6maF
- uotA5/rrJ7GWT5B+WSAeW301ZL78kgGsdPaFt9ZbyRpF0xqegp9Nwm9dICs1VTAGL00+
- ih/cpO8iq7phkb/bKTqjpFfwlJL4mMPu5K7r+eF5ghVq70zzaJX0OHWghftHVbulubyw
- 3hyM8EphOhCSd1/quYzOuI/1Y+ZGxOC8E1r434ppacD05u44UA44q3QxIKD030XDYaHC
- k7bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=NX0Wlea0R+1ZmGi4xMK0+FDmtBI/tqrLeKbfSQ7Asuo=;
- b=ha/oRdigEI9tKQwz7zcu7ox2sWeMsnE6QSS75WwqaHnQOFub9meYSgNUHtwiu+iV7v
- 6bJS3fQlOIT2W8GBYRkigbQE66m9+i1lKWLaqDwqqWjvX+3JDkL0OshyVo+S5Tx0GvHQ
- CRpvlGmiI4nbbyQtK99e50sMvdJjAy+ehkOrjrscSKwvBj/woUOHDuMP7l5Uymm05Oqf
- 5W2/qnX/JCVjsxd6hL1w0aNAqbbWsdAJ5IP5H4fF6vU7cIU8OtsQogWFWkBpchK3bMvR
- I06dEY74ZjPOWWc2p4uxD4nbPJg97rDbjPg07yJUHJDudRBrDWUDE91vltD40h8nxr27
- Hxpw==
-X-Gm-Message-State: ANhLgQ28om+wF2ms7iQitJpL8TkE/FrJoScUhYm3nBA9ixf241cNerm2
- PSzoBd22ipqMkQApc3WDFnqEYZiqwv/RQJVHdn74vA==
-X-Google-Smtp-Source: ADFU+vv5Y28ixNFLFWNAzRJSTYVQJvMzfJGA6f5XuD7J4RDHOOk3bgVb55GFlwn8kKvWpGQW9XT8MUU6eLclIGt/498=
-X-Received: by 2002:aa7:87ca:: with SMTP id i10mr1941704pfo.169.1584399104245; 
- Mon, 16 Mar 2020 15:51:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <b1177cdfc6af74a3e277bba5d9e708c4b3315ebe.1583575707.git.christophe.leroy@c-s.fr>
- <20200313033517.GA37606@ubuntu-m2-xlarge-x86>
-In-Reply-To: <20200313033517.GA37606@ubuntu-m2-xlarge-x86>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 16 Mar 2020 15:51:32 -0700
-Message-ID: <CAKwvOdm6Z+ERUcGXPbuBKmnpBUNKfL8fPOdxK2g+a1gVRWqh-Q@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/32: Fix missing NULL pmd check in virt_to_kpte()
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hCJF2PMGzDqWK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:32:13 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02GNL9S5073560; Mon, 16 Mar 2020 19:32:02 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yrtwu94kx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Mar 2020 19:32:02 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02GNLFNL074028;
+ Mon, 16 Mar 2020 19:32:01 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yrtwu94kh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Mar 2020 19:32:01 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02GNUQYO014878;
+ Mon, 16 Mar 2020 23:32:01 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04dal.us.ibm.com with ESMTP id 2yrpw68pe6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Mar 2020 23:32:01 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02GNVxGF27853172
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 16 Mar 2020 23:31:59 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 905756A051;
+ Mon, 16 Mar 2020 23:31:59 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 191DE6A047;
+ Mon, 16 Mar 2020 23:31:59 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 16 Mar 2020 23:31:58 +0000 (GMT)
+Subject: Re: [PATCH v3 0/9] crypto/nx: Enable GZIP engine and provide
+ userpace API
+From: Haren Myneni <haren@linux.ibm.com>
+To: Daniel Axtens <dja@axtens.net>
+In-Reply-To: <87y2s0o3i5.fsf@dja-thinkpad.axtens.net>
+References: <1583540877.9256.24.camel@hbabu-laptop>
+ <87y2s0o3i5.fsf@dja-thinkpad.axtens.net>
 Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 16 Mar 2020 16:31:39 -0700
+Message-ID: <1584401499.9256.14460.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-16_10:2020-03-12,
+ 2020-03-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2003160094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,56 +93,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
+ linux-crypto@vger.kernel.org, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello ppc friends, did this get picked up into -next yet?
+On Tue, 2020-03-17 at 00:04 +1100, Daniel Axtens wrote:
+> Hi Haren,
+> 
+> If I understand correctly, to test these, I need to apply both this
+> series and your VAS userspace page fault handling series - is that
+> right?
 
-On Thu, Mar 12, 2020 at 8:35 PM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
->
-> On Sat, Mar 07, 2020 at 10:09:15AM +0000, Christophe Leroy wrote:
-> > Commit 2efc7c085f05 ("powerpc/32: drop get_pteptr()"),
-> > replaced get_pteptr() by virt_to_kpte(). But virt_to_kpte() lacks a
-> > NULL pmd check and returns an invalid non NULL pointer when there
-> > is no page table.
+Daniel, 
+
+Yes, This patch series enables GZIP engine and provides user space API.
+Whereas VAS fault handling series process faults if NX sees fault on
+request buffer.  
+
+selftest -
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/206035.html
+
+or https://github.com/abalib/power-gzip/tree/develop/selftest
+
+More tests are available - https://github.com/abalib/power-gzip
+
+libnxz - https://github.com/libnxz/power-gzip  
+
+Thanks
+Haren
+
+> 
+> Kind regards,
+> Daniel
+> 
+> > Power9 processor supports Virtual Accelerator Switchboard (VAS) which
+> > allows kernel and userspace to send compression requests to Nest
+> > Accelerator (NX) directly. The NX unit comprises of 2 842 compression
+> > engines and 1 GZIP engine. Linux kernel already has 842 compression
+> > support on kernel. This patch series adds GZIP compression support
+> > from user space. The GZIP Compression engine implements the ZLIB and
+> > GZIP compression algorithms. No plans of adding NX-GZIP compression
+> > support in kernel right now.
 > >
-> > Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-> > Fixes: 2efc7c085f05 ("powerpc/32: drop get_pteptr()")
-> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> > ---
-> >  arch/powerpc/include/asm/pgtable.h | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > Applications can send requests to NX directly with COPY/PASTE
+> > instructions. But kernel has to establish channel / window on NX-GZIP
+> > device for the userspace. So userspace access to the GZIP engine is
+> > provided through /dev/crypto/nx-gzip device with several operations.
 > >
-> > diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> > index b80bfd41828d..b1f1d5339735 100644
-> > --- a/arch/powerpc/include/asm/pgtable.h
-> > +++ b/arch/powerpc/include/asm/pgtable.h
-> > @@ -54,7 +54,9 @@ static inline pmd_t *pmd_ptr_k(unsigned long va)
+> > An application must open the this device to obtain a file descriptor (fd).
+> > Using the fd, application should issue the VAS_TX_WIN_OPEN ioctl to
+> > establish a connection to the engine. Once window is opened, should use
+> > mmap() system call to map the hardware address of engine's request queue
+> > into the application's virtual address space. Then user space forms the
+> > request as co-processor Request Block (CRB) and paste this CRB on the
+> > mapped HW address using COPY/PASTE instructions. Application can poll
+> > on status flags (part of CRB) with timeout for request completion.
 > >
-> >  static inline pte_t *virt_to_kpte(unsigned long vaddr)
-> >  {
-> > -     return pte_offset_kernel(pmd_ptr_k(vaddr), vaddr);
-> > +     pmd_t *pmd = pmd_ptr_k(vaddr);
-> > +
-> > +     return pmd_none(*pmd) ? NULL : pte_offset_kernel(pmd, vaddr);
-> >  }
-> >  #endif
+> > For VAS_TX_WIN_OPEN ioctl, if user space passes vas_id = -1 (struct
+> > vas_tx_win_open_attr), kernel determines the VAS instance on the
+> > corresponding chip based on the CPU on which the process is executing.
+> > Otherwise, the specified VAS instance is used if application passes the
+> > proper VAS instance (vas_id listed in /proc/device-tree/vas@*/ibm,vas_id).
 > >
-> > --
-> > 2.25.0
+> > Process can open multiple windows with different FDs or can send several
+> > requests to NX on the same window at the same time.
 > >
->
-> With QEMU 4.2.0, I can confirm this fixes the panic:
->
-> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+> > A userspace library libnxz is available:
+> >         https://github.com/abalib/power-gzip
+> >
+> > Applications that use inflate/deflate calls can link with libNXz and use
+> > NX GZIP compression without any modification.
+> >
+> > Tested the available 842 compression on power8 and power9 system to make
+> > sure no regression and tested GZIP compression on power9 with tests
+> > available in the above link.
+> >
+> > Thanks to Bulent Abali for nxz library and tests development.
+> >
+> > Changelog:
+> > V2:
+> >   - Move user space API code to powerpc as suggested. Also this API
+> >     can be extended to any other coprocessor type that VAS can support
+> >     in future. Example: Fast thread wakeup feature from VAS
+> >   - Rebased to 5.6-rc3
+> >
+> > V3:
+> >   - Fix sparse warnings (patches 3&6)
+> >
+> > Haren Myneni (9):
+> >   powerpc/vas: Initialize window attributes for GZIP coprocessor type
+> >   powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API
+> >   powerpc/vas: Add VAS user space API
+> >   crypto/nx: Initialize coproc entry with kzalloc
+> >   crypto/nx: Rename nx-842-powernv file name to nx-common-powernv
+> >   crypto/NX: Make enable code generic to add new GZIP compression type
+> >   crypto/nx: Enable and setup GZIP compresstion type
+> >   crypto/nx: Remove 'pid' in vas_tx_win_attr struct
+> >   Documentation/powerpc: VAS API
+> >
+> >  Documentation/powerpc/index.rst                    |    1 +
+> >  Documentation/powerpc/vas-api.rst                  |  246 +++++
+> >  Documentation/userspace-api/ioctl/ioctl-number.rst |    1 +
+> >  arch/powerpc/include/asm/vas.h                     |   12 +-
+> >  arch/powerpc/include/uapi/asm/vas-api.h            |   22 +
+> >  arch/powerpc/platforms/powernv/Makefile            |    2 +-
+> >  arch/powerpc/platforms/powernv/vas-api.c           |  290 +++++
+> >  arch/powerpc/platforms/powernv/vas-window.c        |   23 +-
+> >  arch/powerpc/platforms/powernv/vas.h               |    2 +
+> >  drivers/crypto/nx/Makefile                         |    2 +-
+> >  drivers/crypto/nx/nx-842-powernv.c                 | 1062 ------------------
+> >  drivers/crypto/nx/nx-common-powernv.c              | 1133 ++++++++++++++++++++
+> >  12 files changed, 1723 insertions(+), 1073 deletions(-)
+> >  create mode 100644 Documentation/powerpc/vas-api.rst
+> >  create mode 100644 arch/powerpc/include/uapi/asm/vas-api.h
+> >  create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
+> >  delete mode 100644 drivers/crypto/nx/nx-842-powernv.c
+> >  create mode 100644 drivers/crypto/nx/nx-common-powernv.c
+> >
+> > -- 
+> > 1.8.3.1
 
 
-
--- 
-Thanks,
-~Nick Desaulniers
