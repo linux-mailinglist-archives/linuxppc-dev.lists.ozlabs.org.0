@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CC1187492
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 22:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7A8187527
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Mar 2020 22:53:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48h8G453kyzDqX1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 08:15:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48h9616WnQzDqX1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 08:53:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.a=rsa-sha256 header.s=google header.b=IIbbRosY; 
- dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48h8DN28PLzDqJV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 08:13:39 +1100 (AEDT)
-Received: by mail-wr1-x444.google.com with SMTP id f11so6287373wrp.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Mar 2020 14:13:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=rA/inJ3N2dzQGtrL1M4Qr6g56ao5g6/q7NGAAMSseqI=;
- b=IIbbRosYhmoGbMSReB5jZmMjLoa7dNfhds1z14gzkwdNCqWcXtCVTdnAWdh411B9Xw
- Pf4v7dC2pqSP+PigEeewQpeiNq10Yt6zj9neGcC6dL72ZVmjZ9adFtKImkTFJN5byWrA
- YV5qo+jNI+wyc6KLos5URe77rW8L/15fw9fVQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=rA/inJ3N2dzQGtrL1M4Qr6g56ao5g6/q7NGAAMSseqI=;
- b=Bf2X0g+8AXe9JV2NOtnxPB6PVQVSnvPY02bHIM+HbiHr2nN3POILVclrFMBJa2Sghy
- Dw7DZSEF9vzuNhh0DoC6V4z9p8XbJOMxJ1QqtVp2NkMGvS2CZYQ2cXz5YJpl9h7VoyvA
- /jcZWtgKRqWVde2zODdAY6DMJNqsSNX6p6hEhvQ9lKigmvXx51RDGPC4vABzxYzPI/E5
- ZlPucEofbtjCfhaO6juutbcH3bzBoHbLuneZRSSlmQAFQpk3O09niju3jRo7bJoG7ITn
- 38s9ylSqWXVk7fm9T7iblgBIxAv6d1L3HbEmgA6qrNfQd4v35IqmvwGVfdxpQXOxuyhU
- JvIA==
-X-Gm-Message-State: ANhLgQ3AUeY2BYKnba7HsCRUDa7hzTBJwdN1cysKHy1zEqx81VRMPOSw
- i+0L4jbik8j4Ir7LWljZAtfdmQ==
-X-Google-Smtp-Source: ADFU+vuuSfZ5TW55YNV+T4hvZhIZ2NQ7sFNgir1TJISFKzU6o6dDmFBAVVlV4Y0u5pMnIX54CY0E7A==
-X-Received: by 2002:a5d:4b82:: with SMTP id b2mr1354253wrt.102.1584393216479; 
- Mon, 16 Mar 2020 14:13:36 -0700 (PDT)
-Received: from [192.168.1.149] (ip-5-186-114-43.cgn.fibianet.dk.
- [5.186.114.43])
- by smtp.gmail.com with ESMTPSA id k133sm1209338wma.11.2020.03.16.14.13.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Mar 2020 14:13:36 -0700 (PDT)
-Subject: Re: [PATCH 0/6] Fix sparse warnings for common qe library code
-To: Li Yang <leoyang.li@nxp.com>, Timur Tabi <timur@kernel.org>,
- Zhao Qiang <qiang.zhao@nxp.com>
-References: <20200312222827.17409-1-leoyang.li@nxp.com>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <766263cd-6b84-0c6b-d80a-d7f05fabd875@rasmusvillemoes.dk>
-Date: Mon, 16 Mar 2020 22:13:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20200312222827.17409-1-leoyang.li@nxp.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48h93v2cxtzDqVc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 08:51:22 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02GLfWm7078990; Mon, 16 Mar 2020 17:51:12 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ytb3nndj5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Mar 2020 17:51:11 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02GLoWrP009983;
+ Mon, 16 Mar 2020 21:51:11 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 2yrpw6fx34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Mar 2020 21:51:11 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02GLpAMr53608832
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 16 Mar 2020 21:51:10 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25EE1B2064;
+ Mon, 16 Mar 2020 21:51:10 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 800D0B205F;
+ Mon, 16 Mar 2020 21:51:09 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 16 Mar 2020 21:51:09 +0000 (GMT)
+Subject: Re: [PATCH 0/5] selftests/powerpc: Add NX-GZIP engine testcase
+From: Haren Myneni <haren@linux.ibm.com>
+To: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
+In-Reply-To: <20200316180714.18631-1-rzinsly@linux.ibm.com>
+References: <20200316180714.18631-1-rzinsly@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 16 Mar 2020 14:50:50 -0700
+Message-ID: <1584395450.9256.14334.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-16_10:2020-03-12,
+ 2020-03-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 bulkscore=0
+ spamscore=0 adultscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003160088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,41 +83,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: abali@us.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/03/2020 23.28, Li Yang wrote:
-> The QE code was previously only supported on big-endian PowerPC systems
-> that use the same endian as the QE device.  The endian transfer code is
-> not really exercised.  Recent updates extended the QE drivers to
-> little-endian ARM/ARM64 systems which makes the endian transfer really
-> meaningful and hence triggered more sparse warnings for the endian
-> mismatch.  Some of these endian issues are real issues that need to be
-> fixed.
+On Mon, 2020-03-16 at 15:07 -0300, Raphael Moreira Zinsly wrote:
+> This patch series are intended to test the power8 and power9 Nest
+> Accelerator (NX) GZIP engine that is being introduced by
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/205659.html
+> More information about how to access the NX can be found in that patch, also a
+> complete userspace library and more documentation can be found at:
+> https://github.com/libnxz/power-gzip
 > 
-> While at it, fixed some direct de-references of IO memory space and
-> suppressed other __iomem address space mismatch issues by adding correct
-> address space attributes.
+Raphael, Please delete power8 reference. NX-GZIP engine and user space
+support (with VAS) are introduced in P9. 
+
 > 
-> Li Yang (6):
->   soc: fsl: qe: fix sparse warnings for qe.c
->   soc: fsl: qe: fix sparse warning for qe_common.c
->   soc: fsl: qe: fix sparse warnings for ucc.c
->   soc: fsl: qe: fix sparse warnings for qe_ic.c
->   soc: fsl: qe: fix sparse warnings for ucc_fast.c
->   soc: fsl: qe: fix sparse warnings for ucc_slow.c
+> Thanks,
+> Raphael
+> 
+> 
 
-Patches 2-5 should not change the generated code, whether LE or BE host,
-as they merely add sparse annotations (please double-check with objdump
-that that is indeed the case), so for those you may add
 
-Reviewed-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-
-I think patch 1 is also correct, but I don't have hardware to test it on
-ATM. I'd like to see patch 6 split into smaller pieces, most of it seems
-obviously correct.
-
-Rasmus
