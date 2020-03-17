@@ -1,52 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B756218991D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:18:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B9B18990F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:16:54 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j5YZ5syjzDqvx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:16:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j5bj3VBLzDqwP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:18:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=jhQXGRpy; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hYT36278zDqfk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:11:03 +1100 (AEDT)
-Received: from mail.kernel.org (ip5f5ad4e9.dynamic.kabel-deutschland.de
- [95.90.212.233])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 62B84206EC;
- Tue, 17 Mar 2020 13:10:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584450659;
- bh=wj5NkzbISu9o2utN78bxPeqq1ZgvydCMMryyeO/xzBU=;
- h=From:To:Cc:Subject:Date:From;
- b=jhQXGRpyEjN1FbAvcv9quZfGePLCoK4kU909OULrkuYhnOKG38jWSBAxykmFtnPEc
- FmxsmxL6osKlKdWLuFSmfK9Bc26tcpyTHH+GVRCjBz/zbJaE7+EUQig6/jG7Ef2Xw2
- zXXfz+9+g7PLdkQHLfuE/QRAg89PRDvvy0ezvspc=
-Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
- (envelope-from <mchehab@kernel.org>)
- id 1jEBzh-0006Rm-EN; Tue, 17 Mar 2020 14:10:53 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH 00/12] Fix broken references for Documentation/*
-Date: Tue, 17 Mar 2020 14:10:39 +0100
-Message-Id: <cover.1584450500.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hbLs2sRPzDqjh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:35:49 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02HEWD3v085421
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:35:46 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yru54bp99-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:35:46 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ganeshgr@linux.ibm.com>;
+ Tue, 17 Mar 2020 14:35:44 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 17 Mar 2020 14:35:42 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02HEZfxq55771146
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Mar 2020 14:35:41 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C044A4051;
+ Tue, 17 Mar 2020 14:35:41 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F4B5A4040;
+ Tue, 17 Mar 2020 14:35:40 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.59.221])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Mar 2020 14:35:40 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries: Fix MCE handling on pseries
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au
+References: <20200313140418.7940-1-ganeshgr@linux.ibm.com>
+ <1584157063.g5s75uhbdu.astroid@bobo.none>
+ <d22f9ef9-07db-9615-6420-001b85dd2742@linux.ibm.com>
+ <1584437866.2pbq6ca4ia.astroid@bobo.none>
+From: Ganesh <ganeshgr@linux.ibm.com>
+Date: Tue, 17 Mar 2020 20:05:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.3.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 18 Mar 2020 21:15:09 +1100
+In-Reply-To: <1584437866.2pbq6ca4ia.astroid@bobo.none>
+Content-Type: multipart/alternative;
+ boundary="------------A03758E1FEFCED53C9652184"
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 20031714-0020-0000-0000-000003B5EB0B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031714-0021-0000-0000-0000220E4FED
+Message-Id: <3d8acf3d-4996-3b4d-bc06-0ef7525035bb@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-17_05:2020-03-17,
+ 2020-03-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0 impostorscore=0
+ phishscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003170061
+X-Mailman-Approved-At: Wed, 18 Mar 2020 21:15:10 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,192 +96,214 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, dri-devel@lists.freedesktop.org,
- Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
- linux-arch@vger.kernel.org, Tyler Hicks <code@tyhicks.com>,
- Christoph Hellwig <hch@infradead.org>, Doug Ledford <dledford@redhat.com>,
- Alan Stern <stern@rowland.harvard.edu>,
- =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
- linux-pm@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
- Jyri Sarha <jsarha@ti.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Thomas Gleixner <tglx@linutronix.de>, Sean Paul <sean@poorly.run>,
- Anton Altaparmakov <anton@tuxera.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, freedreno@lists.freedesktop.org,
- Wanpeng Li <wanpengli@tencent.com>,
- Benjamin Gaignard <benjamin.gaignard@st.com>, David Airlie <airlied@linux.ie>,
- Harry Wei <harryxiyou@gmail.com>, Corentin Labbe <clabbe.montjoie@gmail.com>,
- Ben Peled <bpeled@marvell.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- kvmarm@lists.cs.columbia.edu, Bartosz Golaszewski <bgolaszewski@baylibre.com>,
- Wolfgang Grandegger <wg@grandegger.com>, Andrea Parri <parri.andrea@gmail.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, linux-arm-msm@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>,
- OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Nicolas Pitre <nico@fluxnic.net>,
- linux-ntfs-dev@lists.sourceforge.net, Miklos Szeredi <miklos@szeredi.hu>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- James Morse <james.morse@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Akira Yokosawa <akiyks@gmail.com>, Alex Shi <alex.shi@linux.alibaba.com>,
- Will Deacon <will@kernel.org>, linux-afs@lists.infradead.org,
- Dan Murphy <dmurphy@ti.com>, Rob Herring <robh@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Kishon Vijay Abraham I <kishon@ti.com>, Chen-Yu Tsai <wens@csie.org>,
- Tomi Valkeinen <tomi.valkeinen@ti.com>, linux-arm-kernel@lists.infradead.org,
- Federico Vaga <federico.vaga@vaga.pv.it>, Jade Alglave <j.alglave@ucl.ac.uk>,
- Alexey Dobriyan <adobriyan@gmail.com>, linux-pwm@vger.kernel.org,
- Gregory CLEMENT <gregory.clement@bootlin.com>, Borislav Petkov <bp@alien8.de>,
- Maxime Ripard <maxime@cerno.tech>, Luc Maranget <luc.maranget@inria.fr>,
- Yuti Amonkar <yamonkar@cadence.com>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, ocfs2-devel@oss.oracle.com,
- Jan Kara <jack@suse.cz>, kvm@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, Amit Kucheria <amit.kucheria@verdurent.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Fasheh <mark@fasheh.com>, x86@kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>,
- Zhang Rui <rui.zhang@intel.com>, Mike Leach <mike.leach@linaro.org>,
- devicetree@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
- "Paul E. McKenney" <paulmck@kernel.org>, Daniel Lustig <dlustig@nvidia.com>,
- ecryptfs@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Rob Herring <robh+dt@kernel.org>, Marc Kleine-Budde <mkl@pengutronix.de>,
- Nicholas Piggin <npiggin@gmail.com>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
- David Sterba <dsterba@suse.com>, Jim Mattson <jmattson@google.com>,
- netdev@vger.kernel.org, linux-unionfs@vger.kernel.org,
- Rob Clark <robdclark@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- linuxppc-dev@lists.ozlabs.org, Joerg Roedel <joro@8bytes.org>,
- Joel Becker <jlbec@evilplan.org>
+Cc: mahesh@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch series is against next-20200317. It fixes all references to files
-under Documentation/* that were moved, renamed or removed.
+This is a multi-part message in MIME format.
+--------------A03758E1FEFCED53C9652184
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-After this patch series, this script:
-	./scripts/documentation-file-ref-check
 
-Doesn't complain about any broken reference.
 
-Mauro Carvalho Chehab (12):
-  MAINTAINERS: dt: update display/allwinner file entry
-  MAINTAINERS: dt: update etnaviv file reference
-  MAINTAINERS: drop an old reference to stm32 pwm timers doc
-  docs: dt: fix references to m_can.txt file
-  docs: dt: fix references to ap806-system-controller.txt
-  docs: dt: fix a broken reference to input.yaml
-  docs: dt: fix broken reference to phy-cadence-torrent.yaml
-  docs: fix broken references to text files
-  docs: fix broken references for ReST files that moved around
-  docs: dt: display/ti: fix typos at the devicetree/ directory name
-  docs: filesystems: fix renamed references
-  docs: kernel-parameters.txt: remove reference for removed Intel MPX
+On 3/17/20 3:31 PM, Nicholas Piggin wrote:
+> Ganesh's on March 16, 2020 9:47 pm:
+>>
+>> On 3/14/20 9:18 AM, Nicholas Piggin wrote:
+>>> Ganesh Goudar's on March 14, 2020 12:04 am:
+>>>> MCE handling on pSeries platform fails as recent rework to use common
+>>>> code for pSeries and PowerNV in machine check error handling tries to
+>>>> access per-cpu variables in realmode. The per-cpu variables may be
+>>>> outside the RMO region on pSeries platform and needs translation to be
+>>>> enabled for access. Just moving these per-cpu variable into RMO region
+>>>> did'nt help because we queue some work to workqueues in real mode, which
+>>>> again tries to touch per-cpu variables.
+>>> Which queues are these? We should not be using Linux workqueues, but the
+>>> powerpc mce code which uses irq_work.
+>> Yes, irq work queues accesses memory outside RMO.
+>> irq_work_queue()->__irq_work_queue_local()->[this_cpu_ptr(&lazy_list) | this_cpu_ptr(&raised_list)]
+> Hmm, okay.
+>
+>>>> Also fwnmi_release_errinfo()
+>>>> cannot be called when translation is not enabled.
+>>> Why not?
+>> It crashes when we try to get RTAS token for "ibm, nmi-interlock" device
+>> tree node. But yes we can avoid it by storing it rtas_token somewhere but haven't
+>> tried it, here is the backtrace I got when fwnmi_release_errinfo() called from
+>> realmode handler.
+> Okay, I actually had problems with that messing up soft-irq state too
+> and so I sent a patch to get rid of it, but that's the least of your
+> problems really.
+>
+>>>> This patch fixes this by enabling translation in the exception handler
+>>>> when all required real mode handling is done. This change only affects
+>>>> the pSeries platform.
+>>> Not supposed to do this, because we might not be in a state
+>>> where the MMU is ready to be turned on at this point.
+>>>
+>>> I'd like to understand better which accesses are a problem, and whether
+>>> we can fix them all to be in the RMO.
+>> I faced three such access problems,
+>>    * accessing per-cpu data (like mce_event,mce_event_queue and mce_event_queue),
+>>      we can move this inside RMO.
+>>    * calling fwnmi_release_errinfo().
+>>    * And queuing work to irq_work_queue, not sure how to fix this.
+> Yeah. The irq_work_queue one is the biggest problem.
+>
+> This code "worked" prior to the series unifying pseries and powernv
+> machine check handlers, 9ca766f9891d ("powerpc/64s/pseries: machine
+> check convert to use common event code") and friends. But it does in
+> basically the same way as your fix (i.e., it runs this early handler
+> in virtual mode), but that's not really the right fix.
+>
+> Consider: you get a SLB multi hit on a kernel address due to hardware or
+> software error. That access causes a MCE, but before the error can be
+> decode to save and flush the SLB, you turn on relocation and that
+> causes another SLB multi hit...
 
- Documentation/ABI/stable/sysfs-devices-node   |  2 +-
- Documentation/ABI/testing/procfs-smaps_rollup |  2 +-
- Documentation/admin-guide/cpu-load.rst        |  2 +-
- .../admin-guide/kernel-parameters.txt         | 11 ++--
- Documentation/admin-guide/nfs/nfsroot.rst     |  2 +-
- .../bindings/arm/freescale/fsl,scu.txt        |  2 +-
- .../bindings/display/ti/ti,am65x-dss.yaml     |  2 +-
- .../bindings/display/ti/ti,j721e-dss.yaml     |  2 +-
- .../bindings/display/ti/ti,k2g-dss.yaml       |  2 +-
- .../devicetree/bindings/gpio/gpio-mvebu.txt   |  2 +-
- .../devicetree/bindings/net/can/tcan4x5x.txt  |  2 +-
- .../bindings/phy/ti,phy-j721e-wiz.yaml        |  2 +-
- .../bindings/thermal/armada-thermal.txt       |  2 +-
- .../doc-guide/maintainer-profile.rst          |  2 +-
- .../driver-api/driver-model/device.rst        |  4 +-
- .../driver-api/driver-model/overview.rst      |  2 +-
- Documentation/filesystems/dax.txt             |  2 +-
- Documentation/filesystems/dnotify.txt         |  2 +-
- .../filesystems/ramfs-rootfs-initramfs.rst    |  2 +-
- Documentation/filesystems/sysfs.rst           |  2 +-
- Documentation/memory-barriers.txt             |  2 +-
- .../powerpc/firmware-assisted-dump.rst        |  2 +-
- Documentation/process/adding-syscalls.rst     |  2 +-
- Documentation/process/submit-checklist.rst    |  2 +-
- .../it_IT/process/adding-syscalls.rst         |  2 +-
- .../it_IT/process/submit-checklist.rst        |  2 +-
- .../translations/ko_KR/memory-barriers.txt    |  2 +-
- .../translations/zh_CN/filesystems/sysfs.txt  |  8 +--
- .../zh_CN/process/submit-checklist.rst        |  2 +-
- Documentation/virt/kvm/arm/pvtime.rst         |  2 +-
- Documentation/virt/kvm/devices/vcpu.rst       |  2 +-
- Documentation/virt/kvm/hypercalls.rst         |  4 +-
- Documentation/virt/kvm/mmu.rst                |  2 +-
- Documentation/virt/kvm/review-checklist.rst   |  2 +-
- MAINTAINERS                                   | 61 +++++++++----------
- Next/merge.log                                | 12 ++--
- arch/powerpc/include/uapi/asm/kvm_para.h      |  2 +-
- arch/x86/kvm/mmu/mmu.c                        |  2 +-
- drivers/base/core.c                           |  2 +-
- .../allwinner/sun8i-ce/sun8i-ce-cipher.c      |  2 +-
- .../crypto/allwinner/sun8i-ce/sun8i-ce-core.c |  2 +-
- .../allwinner/sun8i-ss/sun8i-ss-cipher.c      |  2 +-
- .../crypto/allwinner/sun8i-ss/sun8i-ss-core.c |  2 +-
- drivers/gpu/drm/Kconfig                       |  2 +-
- drivers/gpu/drm/drm_ioctl.c                   |  2 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |  2 +-
- drivers/hwtracing/coresight/Kconfig           |  2 +-
- drivers/media/v4l2-core/v4l2-fwnode.c         |  2 +-
- fs/Kconfig                                    |  2 +-
- fs/Kconfig.binfmt                             |  2 +-
- fs/adfs/Kconfig                               |  2 +-
- fs/affs/Kconfig                               |  2 +-
- fs/afs/Kconfig                                |  6 +-
- fs/bfs/Kconfig                                |  2 +-
- fs/cramfs/Kconfig                             |  2 +-
- fs/ecryptfs/Kconfig                           |  2 +-
- fs/fat/Kconfig                                |  8 +--
- fs/fuse/Kconfig                               |  2 +-
- fs/fuse/dev.c                                 |  2 +-
- fs/hfs/Kconfig                                |  2 +-
- fs/hpfs/Kconfig                               |  2 +-
- fs/isofs/Kconfig                              |  2 +-
- fs/namespace.c                                |  2 +-
- fs/notify/inotify/Kconfig                     |  2 +-
- fs/ntfs/Kconfig                               |  2 +-
- fs/ocfs2/Kconfig                              |  2 +-
- fs/overlayfs/Kconfig                          |  6 +-
- fs/proc/Kconfig                               |  4 +-
- fs/romfs/Kconfig                              |  2 +-
- fs/sysfs/dir.c                                |  2 +-
- fs/sysfs/file.c                               |  2 +-
- fs/sysfs/mount.c                              |  2 +-
- fs/sysfs/symlink.c                            |  2 +-
- fs/sysv/Kconfig                               |  2 +-
- fs/udf/Kconfig                                |  2 +-
- include/linux/kobject.h                       |  2 +-
- include/linux/kobject_ns.h                    |  2 +-
- include/linux/mm.h                            |  4 +-
- include/linux/relay.h                         |  2 +-
- include/linux/sysfs.h                         |  2 +-
- include/uapi/linux/ethtool_netlink.h          |  2 +-
- include/uapi/linux/kvm.h                      |  4 +-
- include/uapi/rdma/rdma_user_ioctl_cmds.h      |  2 +-
- kernel/relay.c                                |  2 +-
- lib/kobject.c                                 |  4 +-
- mm/gup.c                                      | 12 ++--
- tools/include/uapi/linux/kvm.h                |  4 +-
- virt/kvm/arm/vgic/vgic-mmio-v3.c              |  2 +-
- virt/kvm/arm/vgic/vgic.h                      |  4 +-
- 89 files changed, 151 insertions(+), 151 deletions(-)
+We turn on relocation only after all the realmode handling/recovery is done
+like SLB flush and reload, All we do after we turn relocation on is saving
+mce event to array and queuing the work to irq_workqueue.
+So we are good to turn it on here.
 
--- 
-2.24.1
+> I think the irq_work subsystem will have to be changed to use an array
+> unfortunately.
+>
+> Thanks,
+> Nick
+>
 
+
+--------------A03758E1FEFCED53C9652184
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <br>
+    <br>
+    <div class="moz-cite-prefix">On 3/17/20 3:31 PM, Nicholas Piggin
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:1584437866.2pbq6ca4ia.astroid@bobo.none">
+      <pre class="moz-quote-pre" wrap="">Ganesh's on March 16, 2020 9:47 pm:
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">
+
+On 3/14/20 9:18 AM, Nicholas Piggin wrote:
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">Ganesh Goudar's on March 14, 2020 12:04 am:
+</pre>
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">MCE handling on pSeries platform fails as recent rework to use common
+code for pSeries and PowerNV in machine check error handling tries to
+access per-cpu variables in realmode. The per-cpu variables may be
+outside the RMO region on pSeries platform and needs translation to be
+enabled for access. Just moving these per-cpu variable into RMO region
+did'nt help because we queue some work to workqueues in real mode, which
+again tries to touch per-cpu variables.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">Which queues are these? We should not be using Linux workqueues, but the
+powerpc mce code which uses irq_work.
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+Yes, irq work queues accesses memory outside RMO.
+irq_work_queue()-&gt;__irq_work_queue_local()-&gt;[this_cpu_ptr(&amp;lazy_list) | this_cpu_ptr(&amp;raised_list)]
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Hmm, okay.
+
+</pre>
+      <blockquote type="cite">
+        <blockquote type="cite">
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">Also fwnmi_release_errinfo()
+cannot be called when translation is not enabled.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">Why not?
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+It crashes when we try to get RTAS token for "ibm, nmi-interlock" device
+tree node. But yes we can avoid it by storing it rtas_token somewhere but haven't
+tried it, here is the backtrace I got when fwnmi_release_errinfo() called from
+realmode handler.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Okay, I actually had problems with that messing up soft-irq state too
+and so I sent a patch to get rid of it, but that's the least of your
+problems really.
+
+</pre>
+      <blockquote type="cite">
+        <blockquote type="cite">
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">This patch fixes this by enabling translation in the exception handler
+when all required real mode handling is done. This change only affects
+the pSeries platform.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">Not supposed to do this, because we might not be in a state
+where the MMU is ready to be turned on at this point.
+
+I'd like to understand better which accesses are a problem, and whether
+we can fix them all to be in the RMO.
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+I faced three such access problems,
+  * accessing per-cpu data (like mce_event,mce_event_queue and mce_event_queue),
+    we can move this inside RMO.
+  * calling fwnmi_release_errinfo().
+  * And queuing work to irq_work_queue, not sure how to fix this.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Yeah. The irq_work_queue one is the biggest problem.
+
+This code "worked" prior to the series unifying pseries and powernv
+machine check handlers, 9ca766f9891d ("powerpc/64s/pseries: machine 
+check convert to use common event code") and friends. But it does in
+basically the same way as your fix (i.e., it runs this early handler
+in virtual mode), but that's not really the right fix.
+
+Consider: you get a SLB multi hit on a kernel address due to hardware or 
+software error. That access causes a MCE, but before the error can be 
+decode to save and flush the SLB, you turn on relocation and that
+causes another SLB multi hit...</pre>
+    </blockquote>
+    <pre>We turn on relocation only after all the realmode handling/recovery is done
+like SLB flush and reload, All we do after we turn relocation on is saving
+mce event to array and queuing the work to irq_workqueue.
+So we are good to turn it on here.
+</pre>
+    <blockquote type="cite"
+      cite="mid:1584437866.2pbq6ca4ia.astroid@bobo.none">
+      <pre class="moz-quote-pre" wrap="">
+I think the irq_work subsystem will have to be changed to use an array
+unfortunately.
+
+Thanks,
+Nick
+
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------A03758E1FEFCED53C9652184--
 
