@@ -2,98 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F01B188B34
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6050A188B50
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:58:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hfPf6Pz8zDq9l
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:53:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hfX04swvzDqkx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:58:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hdp422YdzDqCF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:26:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48hdnx2sQdz9BWK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:25:57 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48hdnw0s9wz9sRY; Wed, 18 Mar 2020 03:25:56 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
+ helo=us-smtp-delivery-74.mimecast.com; envelope-from=vkuznets@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=CtL78Je9; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-74.mimecast.com
+ (us-smtp-delivery-74.mimecast.com [63.128.21.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48hdnp40Dvz9sSM
- for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 03:25:49 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HGJwlC065520
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 12:25:47 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ytake0m28-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 12:25:47 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Tue, 17 Mar 2020 16:25:44 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 16:25:40 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HGPd7s54329536
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 16:25:39 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E22AA11C050;
- Tue, 17 Mar 2020 16:25:38 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C5EC811C058;
- Tue, 17 Mar 2020 16:25:36 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 17 Mar 2020 16:25:36 +0000 (GMT)
-Date: Tue, 17 Mar 2020 21:55:36 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: Slub: Increased mem consumption on cpu,mem-less node powerpc guest
-References: <20200317092624.GB22538@in.ibm.com>
- <20200317115339.GA26049@in.ibm.com>
- <4088ae3c-4dfa-62ae-f56a-b46773788fc7@suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hdsx5RcRzDqlL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:29:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1584462562;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yQFhJkeMlClPNzJr9WGcWOa+gyd2HFJg9MdUprRfJ3w=;
+ b=CtL78Je9BTpDxS9W0Um87D4/mkckubmuQjoN1dGq+FFqo1ojrz82M2K1qvdiLYhTunwrG0
+ H5WrIP2gWTj75320cXTBwqjhrOIkkuLrclOzRydZlQkxG21elllYBY4JD3pP9n40xoK4RK
+ 6HT5+Fer8WaCzL3BUnhD/m+e326ssvU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-80-u0TIHALEOd2LesF3Zwxwyw-1; Tue, 17 Mar 2020 12:29:15 -0400
+X-MC-Unique: u0TIHALEOd2LesF3Zwxwyw-1
+Received: by mail-wr1-f71.google.com with SMTP id p2so8382438wrw.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:29:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=hJ9IRxNEXJZnQrunYJpAkXFYXEUKw/iYEqZiM94FqR4=;
+ b=W/FX/7reyMi3jebL8P/vAR44AP3jtPCXkhovcmZGMuR1y+xbMyW/NyJCtQFlKYwy70
+ fDTzZ2FgRr+cimiHgSRrgX7nBqWyUBGwEFi6LKUZyvDThdXEGWwpZfLO98rEBziA9Cmz
+ BlVozsXf669W7Vt55RqBN8MXIs0K8jckff6MUUsXP9W/0kh7V47IXALVS7slDXHoEyEZ
+ J85mbfzAaevwTxz2jbZb+JzAeFJ+2wfs8LV4MYNplSQsa3qRNWQO7u5PYKfrgyyjWw4u
+ qR9y/J0qT7OcQdDbqfnHvlpKQbCiyNDU4hgNzFGer0fzA+LMZOTLvFmrooJkrntIgEth
+ GtCA==
+X-Gm-Message-State: ANhLgQ3nM1Zj+MRJ8Jm2VBF1kWJfTe8MXV82dhctwCTeNX8DF+numpdx
+ HFT4g4yWg9n2ZpfH3duKrRu4tRbp29mUTq7PzuRCfsC++AbL2jm8V22Cr/+JmJexefBkuSHHtAL
+ dI8Rluzu1JlGOpkLIYf0vZTeWwA==
+X-Received: by 2002:a1c:4c16:: with SMTP id z22mr155410wmf.50.1584462553803;
+ Tue, 17 Mar 2020 09:29:13 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vu7fxbd1NOj1Fd8X5IeMCfKPLtyDx4k9CrBADtVAaVO0WdO+/adOUSeBrq8Zo7JnejqPA35DQ==
+X-Received: by 2002:a1c:4c16:: with SMTP id z22mr155367wmf.50.1584462553538;
+ Tue, 17 Mar 2020 09:29:13 -0700 (PDT)
+Received: from vitty.brq.redhat.com (g-server-2.ign.cz. [91.219.240.2])
+ by smtp.gmail.com with ESMTPSA id 19sm4550594wma.3.2020.03.17.09.29.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Mar 2020 09:29:11 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] hv_balloon: don't check for memhp_auto_online
+ manually
+In-Reply-To: <20200317104942.11178-6-david@redhat.com>
+References: <20200317104942.11178-1-david@redhat.com>
+ <20200317104942.11178-6-david@redhat.com>
+Date: Tue, 17 Mar 2020 17:29:09 +0100
+Message-ID: <877dzj3pyi.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <4088ae3c-4dfa-62ae-f56a-b46773788fc7@suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 20031716-0020-0000-0000-000003B5F91D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031716-0021-0000-0000-0000220E5EA3
-Message-Id: <20200317162536.GB27520@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-17_06:2020-03-17,
- 2020-03-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
- mlxlogscore=742 priorityscore=1501 phishscore=0 bulkscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003170064
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,33 +89,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@ozlabs.org,
- aneesh.kumar@linux.ibm.com, bharata@linux.ibm.com,
- Pekka Enberg <penberg@kernel.org>, linux-mm@kvack.org,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@linux.com>,
- Michal Hocko <mhocko@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: linux-hyperv@vger.kernel.org, Stephen Hemminger <sthemmin@microsoft.com>,
+ Baoquan He <bhe@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Wei Yang <richard.weiyang@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, linuxppc-dev@lists.ozlabs.org,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Vlastimil Babka <vbabka@suse.cz> [2020-03-17 16:56:04]:
+David Hildenbrand <david@redhat.com> writes:
 
-> 
-> I wonder why do you get a memory leak while Sachin in the same situation [1]
-> gets a crash? I don't understand anything anymore.
+> We get the MEM_ONLINE notifier call if memory is added right from the
+> kernel via add_memory() or later from user space.
+>
+> Let's get rid of the "ha_waiting" flag - the wait event has an inbuilt
+> mechanism (->done) for that. Initialize the wait event only once and
+> reinitialize before adding memory. Unconditionally call complete() and
+> wait_for_completion_timeout().
+>
+> If there are no waiters, complete() will only increment ->done - which
+> will be reset by reinit_completion(). If complete() has already been
+> called, wait_for_completion_timeout() will not wait.
+>
+> There is still the chance for a small race between concurrent
+> reinit_completion() and complete(). If complete() wins, we would not
+> wait - which is tolerable (and the race exists in current code as
+> well).
 
-Sachin was testing on linux-next which has Kirill's patch which modifies
-slub to use kmalloc_node instead of kmalloc. While Bharata is testing on
-upstream, which doesn't have this. 
+How can we see concurent reinit_completion() and complete()? Obvioulsy,
+we are not onlining new memory in kernel and hv_mem_hot_add() calls are
+serialized, we're waiting up to 5*HZ for the added block to come online
+before proceeding to the next one. Or do you mean we actually hit this
+5*HZ timeout, proceeded to the next block and immediately after
+reinit_completion() we saw complete() for the previously added block?
+This is tolerable indeed, we're making forward progress (and this all is
+'best effort' anyway).
 
-> 
-> [1]
-> https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
-> 
+>
+> Note: We only wait for "some" memory to get onlined, which seems to be
+>       good enough for now.
+>
+> Cc: "K. Y. Srinivasan" <kys@microsoft.com>
+> Cc: Haiyang Zhang <haiyangz@microsoft.com>
+> Cc: Stephen Hemminger <sthemmin@microsoft.com>
+> Cc: Wei Liu <wei.liu@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+> Cc: linux-hyperv@vger.kernel.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  drivers/hv/hv_balloon.c | 25 ++++++++++---------------
+>  1 file changed, 10 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
+> index a02ce43d778d..af5e09f08130 100644
+> --- a/drivers/hv/hv_balloon.c
+> +++ b/drivers/hv/hv_balloon.c
+> @@ -533,7 +533,6 @@ struct hv_dynmem_device {
+>  =09 * State to synchronize hot-add.
+>  =09 */
+>  =09struct completion  ol_waitevent;
+> -=09bool ha_waiting;
+>  =09/*
+>  =09 * This thread handles hot-add
+>  =09 * requests from the host as well as notifying
+> @@ -634,10 +633,7 @@ static int hv_memory_notifier(struct notifier_block =
+*nb, unsigned long val,
+>  =09switch (val) {
+>  =09case MEM_ONLINE:
+>  =09case MEM_CANCEL_ONLINE:
+> -=09=09if (dm_device.ha_waiting) {
+> -=09=09=09dm_device.ha_waiting =3D false;
+> -=09=09=09complete(&dm_device.ol_waitevent);
+> -=09=09}
+> +=09=09complete(&dm_device.ol_waitevent);
+>  =09=09break;
+> =20
+>  =09case MEM_OFFLINE:
+> @@ -726,8 +722,7 @@ static void hv_mem_hot_add(unsigned long start, unsig=
+ned long size,
+>  =09=09has->covered_end_pfn +=3D  processed_pfn;
+>  =09=09spin_unlock_irqrestore(&dm_device.ha_lock, flags);
+> =20
+> -=09=09init_completion(&dm_device.ol_waitevent);
+> -=09=09dm_device.ha_waiting =3D !memhp_auto_online;
+> +=09=09reinit_completion(&dm_device.ol_waitevent);
+> =20
+>  =09=09nid =3D memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
+>  =09=09ret =3D add_memory(nid, PFN_PHYS((start_pfn)),
+> @@ -753,15 +748,14 @@ static void hv_mem_hot_add(unsigned long start, uns=
+igned long size,
+>  =09=09}
+> =20
+>  =09=09/*
+> -=09=09 * Wait for the memory block to be onlined when memory onlining
+> -=09=09 * is done outside of kernel (memhp_auto_online). Since the hot
+> -=09=09 * add has succeeded, it is ok to proceed even if the pages in
+> -=09=09 * the hot added region have not been "onlined" within the
+> -=09=09 * allowed time.
+> +=09=09 * Wait for memory to get onlined. If the kernel onlined the
+> +=09=09 * memory when adding it, this will return directly. Otherwise,
+> +=09=09 * it will wait for user space to online the memory. This helps
+> +=09=09 * to avoid adding memory faster than it is getting onlined. As
+> +=09=09 * adding succeeded, it is ok to proceed even if the memory was
+> +=09=09 * not onlined in time.
+>  =09=09 */
+> -=09=09if (dm_device.ha_waiting)
+> -=09=09=09wait_for_completion_timeout(&dm_device.ol_waitevent,
+> -=09=09=09=09=09=09    5*HZ);
+> +=09=09wait_for_completion_timeout(&dm_device.ol_waitevent, 5 * HZ);
+>  =09=09post_status(&dm_device);
+>  =09}
+>  }
+> @@ -1707,6 +1701,7 @@ static int balloon_probe(struct hv_device *dev,
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+>  =09set_online_page_callback(&hv_online_page);
+>  =09register_memory_notifier(&hv_memory_nb);
+> +=09init_completion(&dm_device.ol_waitevent);
+>  #endif
+> =20
+>  =09hv_set_drvdata(dev, &dm_device);
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+
+--=20
+Vitaly
 
