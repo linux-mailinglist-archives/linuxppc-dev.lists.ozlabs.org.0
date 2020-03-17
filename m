@@ -2,31 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C72188560
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 14:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4524188568
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 14:25:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hYlM2T4lzDqjg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 00:23:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hYnm0WSFzDqgj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 00:25:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hYYB5GVJzDqdL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:14:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hYYC5DRdzDqfB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:14:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48hYY83BzFz9sPR; Wed, 18 Mar 2020 00:14:36 +1100 (AEDT)
+ id 48hYYB1926z9sRR; Wed, 18 Mar 2020 00:14:37 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 9451c79bc39e610882bdd12370f01af5004a3c4f
-In-Reply-To: <20190920153951.25762-1-ilie.halip@gmail.com>
-To: Ilie Halip <ilie.halip@gmail.com>
+X-powerpc-patch-commit: 3670664b5da555a2a481449b3baafff113b0ac35
+In-Reply-To: <20200109183912.5fcb52aa@canb.auug.org.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.com>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pmac/smp: avoid unused-variable warnings
-Message-Id: <48hYY83BzFz9sPR@ozlabs.org>
-Date: Wed, 18 Mar 2020 00:14:36 +1100 (AEDT)
+Subject: Re: [PATCH] evh_bytechan: fix out of bounds accesses
+Message-Id: <48hYYB1926z9sRR@ozlabs.org>
+Date: Wed, 18 Mar 2020 00:14:37 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,27 +39,200 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ilie Halip <ilie.halip@gmail.com>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-09-20 at 15:39:51 UTC, Ilie Halip wrote:
-> When building with ppc64_defconfig, the compiler reports
-> that these 2 variables are not used:
->     warning: unused variable 'core99_l2_cache' [-Wunused-variable]
->     warning: unused variable 'core99_l3_cache' [-Wunused-variable]
+On Thu, 2020-01-09 at 07:39:12 UTC, Stephen Rothwell wrote:
+> ev_byte_channel_send() assumes that its third argument is a 16 byte array.
+> Some places where it is called it may not be (or we can't easily tell
+> if it is).  Newer compilers have started producing warnings about this,
+> so make sure we actually pass a 16 byte array.
 > 
-> They are only used when CONFIG_PPC64 is not defined. Move
-> them into a section which does the same macro check.
+> There may be more elegant solutions to this, but the driver is quite
+> old and hasn't been updated in many years.
 > 
-> Reported-by: Nathan Chancellor <natechancellor@gmail.com>
-> Signed-off-by: Ilie Halip <ilie.halip@gmail.com>
+> The warnings (from a powerpc allyesconfig build) are:
+> 
+> In file included from include/linux/byteorder/big_endian.h:5,
+>                  from arch/powerpc/include/uapi/asm/byteorder.h:14,
+>                  from include/asm-generic/bitops/le.h:6,
+>                  from arch/powerpc/include/asm/bitops.h:250,
+>                  from include/linux/bitops.h:29,
+>                  from include/linux/kernel.h:12,
+>                  from include/asm-generic/bug.h:19,
+>                  from arch/powerpc/include/asm/bug.h:109,
+>                  from include/linux/bug.h:5,
+>                  from include/linux/mmdebug.h:5,
+>                  from include/linux/gfp.h:5,
+>                  from include/linux/slab.h:15,
+>                  from drivers/tty/ehv_bytechan.c:24:
+> drivers/tty/ehv_bytechan.c: In function =E2=80=98ehv_bc_udbg_putc=E2=80=99:
+> arch/powerpc/include/asm/epapr_hcalls.h:298:20: warning: array subscript 1 =
+> is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
+>   298 |  r6 =3D be32_to_cpu(p[1]);
+> include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
+> ro =E2=80=98__be32_to_cpu=E2=80=99
+>    40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
+>       |                                                   ^
+> arch/powerpc/include/asm/epapr_hcalls.h:298:7: note: in expansion of macro =
+> =E2=80=98be32_to_cpu=E2=80=99
+>   298 |  r6 =3D be32_to_cpu(p[1]);
+>       |       ^~~~~~~~~~~
+> drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
+> =80=99
+>   166 | static void ehv_bc_udbg_putc(char c)
+>       |             ^~~~~~~~~~~~~~~~
+> In file included from include/linux/byteorder/big_endian.h:5,
+>                  from arch/powerpc/include/uapi/asm/byteorder.h:14,
+>                  from include/asm-generic/bitops/le.h:6,
+>                  from arch/powerpc/include/asm/bitops.h:250,
+>                  from include/linux/bitops.h:29,
+>                  from include/linux/kernel.h:12,
+>                  from include/asm-generic/bug.h:19,
+>                  from arch/powerpc/include/asm/bug.h:109,
+>                  from include/linux/bug.h:5,
+>                  from include/linux/mmdebug.h:5,
+>                  from include/linux/gfp.h:5,
+>                  from include/linux/slab.h:15,
+>                  from drivers/tty/ehv_bytechan.c:24:
+> arch/powerpc/include/asm/epapr_hcalls.h:299:20: warning: array subscript 2 =
+> is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
+>   299 |  r7 =3D be32_to_cpu(p[2]);
+> include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
+> ro =E2=80=98__be32_to_cpu=E2=80=99
+>    40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
+>       |                                                   ^
+> arch/powerpc/include/asm/epapr_hcalls.h:299:7: note: in expansion of macro =
+> =E2=80=98be32_to_cpu=E2=80=99
+>   299 |  r7 =3D be32_to_cpu(p[2]);
+>       |       ^~~~~~~~~~~
+> drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
+> =80=99
+>   166 | static void ehv_bc_udbg_putc(char c)
+>       |             ^~~~~~~~~~~~~~~~
+> In file included from include/linux/byteorder/big_endian.h:5,
+>                  from arch/powerpc/include/uapi/asm/byteorder.h:14,
+>                  from include/asm-generic/bitops/le.h:6,
+>                  from arch/powerpc/include/asm/bitops.h:250,
+>                  from include/linux/bitops.h:29,
+>                  from include/linux/kernel.h:12,
+>                  from include/asm-generic/bug.h:19,
+>                  from arch/powerpc/include/asm/bug.h:109,
+>                  from include/linux/bug.h:5,
+>                  from include/linux/mmdebug.h:5,
+>                  from include/linux/gfp.h:5,
+>                  from include/linux/slab.h:15,
+>                  from drivers/tty/ehv_bytechan.c:24:
+> arch/powerpc/include/asm/epapr_hcalls.h:300:20: warning: array subscript 3 =
+> is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
+>   300 |  r8 =3D be32_to_cpu(p[3]);
+> include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
+> ro =E2=80=98__be32_to_cpu=E2=80=99
+>    40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
+>       |                                                   ^
+> arch/powerpc/include/asm/epapr_hcalls.h:300:7: note: in expansion of macro =
+> =E2=80=98be32_to_cpu=E2=80=99
+>   300 |  r8 =3D be32_to_cpu(p[3]);
+>       |       ^~~~~~~~~~~
+> drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
+> =80=99
+>   166 | static void ehv_bc_udbg_putc(char c)
+>       |             ^~~~~~~~~~~~~~~~
+> In file included from include/linux/byteorder/big_endian.h:5,
+>                  from arch/powerpc/include/uapi/asm/byteorder.h:14,
+>                  from include/asm-generic/bitops/le.h:6,
+>                  from arch/powerpc/include/asm/bitops.h:250,
+>                  from include/linux/bitops.h:29,
+>                  from include/linux/kernel.h:12,
+>                  from include/asm-generic/bug.h:19,
+>                  from arch/powerpc/include/asm/bug.h:109,
+>                  from include/linux/bug.h:5,
+>                  from include/linux/mmdebug.h:5,
+>                  from include/linux/gfp.h:5,
+>                  from include/linux/slab.h:15,
+>                  from drivers/tty/ehv_bytechan.c:24:
+> arch/powerpc/include/asm/epapr_hcalls.h:298:20: warning: array subscript 1 =
+> is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
+>   298 |  r6 =3D be32_to_cpu(p[1]);
+> include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
+> ro =E2=80=98__be32_to_cpu=E2=80=99
+>    40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
+>       |                                                   ^
+> arch/powerpc/include/asm/epapr_hcalls.h:298:7: note: in expansion of macro =
+> =E2=80=98be32_to_cpu=E2=80=99
+>   298 |  r6 =3D be32_to_cpu(p[1]);
+>       |       ^~~~~~~~~~~
+> drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
+> =80=99
+>   166 | static void ehv_bc_udbg_putc(char c)
+>       |             ^~~~~~~~~~~~~~~~
+> In file included from include/linux/byteorder/big_endian.h:5,
+>                  from arch/powerpc/include/uapi/asm/byteorder.h:14,
+>                  from include/asm-generic/bitops/le.h:6,
+>                  from arch/powerpc/include/asm/bitops.h:250,
+>                  from include/linux/bitops.h:29,
+>                  from include/linux/kernel.h:12,
+>                  from include/asm-generic/bug.h:19,
+>                  from arch/powerpc/include/asm/bug.h:109,
+>                  from include/linux/bug.h:5,
+>                  from include/linux/mmdebug.h:5,
+>                  from include/linux/gfp.h:5,
+>                  from include/linux/slab.h:15,
+>                  from drivers/tty/ehv_bytechan.c:24:
+> arch/powerpc/include/asm/epapr_hcalls.h:299:20: warning: array subscript 2 =
+> is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
+>   299 |  r7 =3D be32_to_cpu(p[2]);
+> include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
+> ro =E2=80=98__be32_to_cpu=E2=80=99
+>    40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
+>       |                                                   ^
+> arch/powerpc/include/asm/epapr_hcalls.h:299:7: note: in expansion of macro =
+> =E2=80=98be32_to_cpu=E2=80=99
+>   299 |  r7 =3D be32_to_cpu(p[2]);
+>       |       ^~~~~~~~~~~
+> drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
+> =80=99
+>   166 | static void ehv_bc_udbg_putc(char c)
+>       |             ^~~~~~~~~~~~~~~~
+> In file included from include/linux/byteorder/big_endian.h:5,
+>                  from arch/powerpc/include/uapi/asm/byteorder.h:14,
+>                  from include/asm-generic/bitops/le.h:6,
+>                  from arch/powerpc/include/asm/bitops.h:250,
+>                  from include/linux/bitops.h:29,
+>                  from include/linux/kernel.h:12,
+>                  from include/asm-generic/bug.h:19,
+>                  from arch/powerpc/include/asm/bug.h:109,
+>                  from include/linux/bug.h:5,
+>                  from include/linux/mmdebug.h:5,
+>                  from include/linux/gfp.h:5,
+>                  from include/linux/slab.h:15,
+>                  from drivers/tty/ehv_bytechan.c:24:
+> arch/powerpc/include/asm/epapr_hcalls.h:300:20: warning: array subscript 3 =
+> is outside array bounds of =E2=80=98const char[1]=E2=80=99 [-Warray-bounds]
+>   300 |  r8 =3D be32_to_cpu(p[3]);
+> include/uapi/linux/byteorder/big_endian.h:40:51: note: in definition of mac=
+> ro =E2=80=98__be32_to_cpu=E2=80=99
+>    40 | #define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
+>       |                                                   ^
+> arch/powerpc/include/asm/epapr_hcalls.h:300:7: note: in expansion of macro =
+> =E2=80=98be32_to_cpu=E2=80=99
+>   300 |  r8 =3D be32_to_cpu(p[3]);
+>       |       ^~~~~~~~~~~
+> drivers/tty/ehv_bytechan.c:166:13: note: while referencing =E2=80=98data=E2=
+> =80=99
+>   166 | static void ehv_bc_udbg_putc(char c)
+>       |             ^~~~~~~~~~~~~~~~
+> 
+> Fixes: dcd83aaff1c8 ("tty/powerpc: introduce the ePAPR embedded hypervisor =
+> byte channel driver")
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/9451c79bc39e610882bdd12370f01af5004a3c4f
+https://git.kernel.org/powerpc/c/3670664b5da555a2a481449b3baafff113b0ac35
 
 cheers
