@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F73818906B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 22:32:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hmbw4PlbzDqsH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 08:32:44 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 162C41890AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 22:38:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hmk214SbzDqsX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 08:38:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
- helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=LjpQr+Gl; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=perches.com
+ (client-ip=216.40.44.75; helo=smtprelay.hostedemail.com;
+ envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=perches.com
+Received: from smtprelay.hostedemail.com (smtprelay0075.hostedemail.com
+ [216.40.44.75])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hmZ73RLFzDqZN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 08:31:11 +1100 (AEDT)
-Received: from zn.tnic (p200300EC2F0C960029779DE4AAC583E4.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f0c:9600:2977:9de4:aac5:83e4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 58AE31EC0C68;
- Tue, 17 Mar 2020 22:31:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1584480668;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=RMKAealFBjjSPHlKH7zxedK6Vy5tkttV34MQFS3HmiQ=;
- b=LjpQr+GlX3iH9rEkBWb84N4Q1ycXhEIq9TvynjyGe4TTrcJjq+Fn4WVqy1q6xvjSVFjVR5
- QLXkqznZ/G8JHEBkbIojedr2YcdSwmzZdn/FjtptrhJZyyAdnmnnK/8ZMln+7fi4kGNysY
- VZaz4YQQKq3EP6FINuFyeolQaLrbBug=
-Date: Tue, 17 Mar 2020 22:31:14 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Dave Hansen <dave.hansen@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hmhD1mjfzDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 08:36:26 +1100 (AEDT)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay02.hostedemail.com (Postfix) with ESMTP id 0B53645A8;
+ Tue, 17 Mar 2020 21:36:22 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
+ RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3167:3353:3622:3865:3866:3867:3868:3871:3872:3873:3874:4250:4321:5007:6742:6743:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14096:14097:14659:14721:21080:21433:21451:21627:30012:30029:30045:30054:30079:30090:30091,
+ 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
+ DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
+ LFtime:1, LUA_SUMMARY:none
+X-HE-Tag: tax31_8e64a60b0ff18
+X-Filterd-Recvd-Size: 3175
+Received: from XPS-9350.home (unknown [47.151.143.254])
+ (Authenticated sender: joe@perches.com)
+ by omf13.hostedemail.com (Postfix) with ESMTPA;
+ Tue, 17 Mar 2020 21:36:18 +0000 (UTC)
+Message-ID: <1e52a8441a319e55b913376ad47c6b18843742cd.camel@perches.com>
 Subject: Re: [PATCH] treewide: Rename "unencrypted" to "decrypted"
-Message-ID: <20200317213100.GH15609@zn.tnic>
+From: Joe Perches <joe@perches.com>
+To: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
+Date: Tue, 17 Mar 2020 14:34:30 -0700
+In-Reply-To: <f3e520c6-f455-9c82-abfc-d014ca63eeb5@intel.com>
 References: <20200317111822.GA15609@zn.tnic>
  <2cb4a8ae-3b13-67bd-c021-aee47fdf58c5@intel.com>
  <20200317210602.GG15609@zn.tnic>
  <f3e520c6-f455-9c82-abfc-d014ca63eeb5@intel.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f3e520c6-f455-9c82-abfc-d014ca63eeb5@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,32 +70,44 @@ Cc: "Schofield, Alison" <alison.schofield@intel.com>,
  Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
  linux-s390@vger.kernel.org, x86@kernel.org,
  Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "Shutemov, Kirill" <kirill.shutemov@intel.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Robin Murphy <robin.murphy@arm.com>, lkml <linux-kernel@vger.kernel.org>,
- iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+ Borislav Petkov <bp@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, "Shutemov,
+ Kirill" <kirill.shutemov@intel.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Robin Murphy <robin.murphy@arm.com>,
+ lkml <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 17, 2020 at 02:24:59PM -0700, Dave Hansen wrote:
+On Tue, 2020-03-17 at 14:24 -0700, Dave Hansen wrote:
+> On 3/17/20 2:06 PM, Borislav Petkov wrote:
+> > On Tue, Mar 17, 2020 at 01:35:12PM -0700, Dave Hansen wrote:
+> > > On 3/17/20 4:18 AM, Borislav Petkov wrote:
+> > > > Back then when the whole SME machinery started getting mainlined, it
+> > > > was agreed that for simplicity, clarity and sanity's sake, the terms
+> > > > denoting encrypted and not-encrypted memory should be "encrypted" and
+> > > > "decrypted". And the majority of the code sticks to that convention
+> > > > except those two. So rename them.
+> > > Don't "unencrypted" and "decrypted" mean different things?
+> > > 
+> > > Unencrypted to me means "encryption was never used for this data".
+> > > 
+> > > Decrypted means "this was/is encrypted but here is a plaintext copy".
+> > Maybe but linguistical semantics is not the point here.
+> > 
+> > The idea is to represent a "binary" concept of memory being encrypted
+> > or memory being not encrypted. And at the time we decided to use
+> > "encrypted" and "decrypted" for those two things.
+> 
+> Yeah, agreed.  We're basically trying to name "!encrypted".
+> 
+> > Do you see the need to differentiate a third "state", so to speak, of
+> > memory which was never encrypted?
+> 
 > No, there are just two states.  I just think the "!encrypted" case
 > should not be called "decrypted".
 
-Yeah, we suck at naming - news at 11! :-)
+Nor do I, it's completely misleading.
 
-I believe we even considered things like "encrypted" vs "clear" but
-that sucked too. ;-\
 
-In any case, that ship has sailed now and having two as differently as
-possible looking words to denote the two "states" should be good enough
-for our purposes...
-
-Oh well.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
