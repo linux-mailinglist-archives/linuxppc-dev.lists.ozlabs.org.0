@@ -1,98 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8841E18891A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:23:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4696F1888E1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:17:30 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hcGs1k7FzDqZ1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:17:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hcPG08cQzDqRy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:22:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hZnp6xGrzDqSY
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hZnp6zWqzDqTh
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:10:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48hZnn5mHlz9BVl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:10:37 +1100 (AEDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48hZnp5Bk9z9BVj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:10:38 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 48hZnk208nz9sTT; Wed, 18 Mar 2020 01:10:34 +1100 (AEDT)
+ id 48hZnn5lmFz9sT9; Wed, 18 Mar 2020 01:10:37 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48hZnj64Kcz9sTR
+ by ozlabs.org (Postfix) with ESMTPS id 48hZnj5fPQz9sTP
  for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 01:10:33 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HE4KvZ109594
+ 02HE2Bdb130565
  for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:10:31 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ytakdtj9b-1
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ytb21gav4-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:10:31 -0400
+ for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:10:30 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
- Tue, 17 Mar 2020 14:10:28 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Tue, 17 Mar 2020 14:10:29 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 14:10:25 -0000
+ Tue, 17 Mar 2020 14:10:27 -0000
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HEAOFQ41746506
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02HEAQE254001694
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 14:10:24 GMT
+ Tue, 17 Mar 2020 14:10:26 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6778011C070;
+ by IMSVA (Postfix) with ESMTP id 3608B11C066;
+ Tue, 17 Mar 2020 14:10:26 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BF4D611C054;
  Tue, 17 Mar 2020 14:10:24 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F18C911C066;
- Tue, 17 Mar 2020 14:10:22 +0000 (GMT)
 Received: from pratiks-thinkpad.ibmuc.com (unknown [9.199.61.203])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Mar 2020 14:10:22 +0000 (GMT)
+ Tue, 17 Mar 2020 14:10:24 +0000 (GMT)
 From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
  ego@linux.vnet.ibm.com, linuxram@us.ibm.com, psampat@in.ibm.com,
  pratik.r.sampat@gmail.com
-Subject: [PATCH v5 2/3] powerpc/powernv: Introduce Self save support
-Date: Tue, 17 Mar 2020 19:40:17 +0530
+Subject: [PATCH v5 3/3] powerpc/powernv: Parse device tree,
+ population of SPR support
+Date: Tue, 17 Mar 2020 19:40:18 +0530
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200317141018.42380-1-psampat@linux.ibm.com>
 References: <20200317141018.42380-1-psampat@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20031714-0008-0000-0000-0000035EC01A
+x-cbid: 20031714-4275-0000-0000-000003ADD593
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031714-0009-0000-0000-00004A8016F9
-Message-Id: <20200317141018.42380-3-psampat@linux.ibm.com>
+x-cbparentid: 20031714-4276-0000-0000-000038C2FEA2
+Message-Id: <20200317141018.42380-4-psampat@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-17_05:2020-03-17,
  2020-03-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
- mlxlogscore=999 priorityscore=1501 phishscore=0 bulkscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003170059
+ lowpriorityscore=0
+ spamscore=0 mlxlogscore=999 phishscore=0 impostorscore=0 bulkscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003170059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,104 +109,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This commit introduces and leverages the Self save API which OPAL now
-supports.
-
-Add the new Self Save OPAL API call in the list of OPAL calls.
-Implement the self saving of the SPRs based on the support populated
-while respecting it's preferences.
-
-This implementation allows mixing of support for the SPRs, which
-means that a SPR can be self restored while another SPR be self saved if
-they support and prefer it to be so.
+Parse the device tree for nodes self-save, self-restore and populate
+support for the preferred SPRs based what was advertised by the device
+tree.
 
 Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
 Reviewed-by: Ram Pai <linuxram@us.ibm.com>
 ---
- arch/powerpc/include/asm/opal-api.h        |  3 ++-
- arch/powerpc/include/asm/opal.h            |  1 +
- arch/powerpc/platforms/powernv/idle.c      | 22 ++++++++++++++++++++++
- arch/powerpc/platforms/powernv/opal-call.c |  1 +
- 4 files changed, 26 insertions(+), 1 deletion(-)
+ .../bindings/powerpc/opal/power-mgt.txt       | 10 +++
+ arch/powerpc/platforms/powernv/idle.c         | 78 +++++++++++++++++++
+ 2 files changed, 88 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-index c1f25a760eb1..1b6e1a68d431 100644
---- a/arch/powerpc/include/asm/opal-api.h
-+++ b/arch/powerpc/include/asm/opal-api.h
-@@ -214,7 +214,8 @@
- #define OPAL_SECVAR_GET				176
- #define OPAL_SECVAR_GET_NEXT			177
- #define OPAL_SECVAR_ENQUEUE_UPDATE		178
--#define OPAL_LAST				178
-+#define OPAL_SLW_SELF_SAVE_REG			181
-+#define OPAL_LAST				181
- 
- #define QUIESCE_HOLD			1 /* Spin all calls at entry */
- #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
-diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-index 9986ac34b8e2..389a85b63805 100644
---- a/arch/powerpc/include/asm/opal.h
-+++ b/arch/powerpc/include/asm/opal.h
-@@ -203,6 +203,7 @@ int64_t opal_handle_hmi(void);
- int64_t opal_handle_hmi2(__be64 *out_flags);
- int64_t opal_register_dump_region(uint32_t id, uint64_t start, uint64_t end);
- int64_t opal_unregister_dump_region(uint32_t id);
-+int64_t opal_slw_self_save_reg(uint64_t cpu_pir, uint64_t sprn);
- int64_t opal_slw_set_reg(uint64_t cpu_pir, uint64_t sprn, uint64_t val);
- int64_t opal_config_cpu_idle_state(uint64_t state, uint64_t flag);
- int64_t opal_pci_set_phb_cxl_mode(uint64_t phb_id, uint64_t mode, uint64_t pe_number);
+diff --git a/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt b/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
+index 9d619e955576..093cb5fe3d2d 100644
+--- a/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
++++ b/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
+@@ -116,3 +116,13 @@ otherwise. The length of all the property arrays must be the same.
+ 	which of the fields of the PMICR are set in the corresponding
+ 	entries in ibm,cpu-idle-state-pmicr. This is an optional
+ 	property on POWER8 and is absent on POWER9.
++
++- self-restore:
++ Array of unsigned 64-bit values containing a property for sprn-mask
++ with each bit indicating the index of the supported SPR for the
++ functionality. This is an optional property for both Power8 and Power9
++
++- self-save:
++  Array of unsigned 64-bit values containing a property for sprn-mask
++  with each bit indicating the index of the supported SPR for the
++  functionality. This is an optional property for both Power8 and Power9
 diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 03fe835aadd1..97aeb45e897b 100644
+index 97aeb45e897b..c39111b338ff 100644
 --- a/arch/powerpc/platforms/powernv/idle.c
 +++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -279,6 +279,26 @@ static int pnv_self_save_restore_sprs(void)
- 					if (rc != 0)
- 						return rc;
- 					break;
-+				} else if (preferred & curr_spr.supported_mode
-+					   & SELF_SAVE_STRICT) {
-+					is_initialized = true;
-+					if (curr_spr.spr == SPRN_HMEER &&
-+					    cpu_thread_in_core(cpu) != 0) {
-+						continue;
-+					}
-+					rc = opal_slw_self_save_reg(pir,
-+								curr_spr.spr);
-+					if (rc != 0)
-+						return rc;
-+					switch (curr_spr.spr) {
-+					case SPRN_LPCR:
-+						is_lpcr_self_save = true;
-+						break;
-+					case SPRN_PTCR:
-+						is_ptcr_self_save = true;
-+						break;
-+					}
-+					break;
- 				}
- 				preferred_sprs[index].preferred_mode =
- 					preferred_sprs[index].preferred_mode >>
-@@ -1159,6 +1179,8 @@ void pnv_program_cpu_hotplug_lpcr(unsigned int cpu, u64 lpcr_val)
- 		if (!is_lpcr_self_save)
- 			opal_slw_set_reg(pir, SPRN_LPCR,
- 					 lpcr_val);
-+		else
-+			opal_slw_self_save_reg(pir, SPRN_LPCR);
- 	}
+@@ -1436,6 +1436,81 @@ static void __init pnv_probe_idle_states(void)
+ 		supported_cpuidle_states |= pnv_idle_states[i].flags;
  }
  
-diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-index 5cd0f52d258f..11e0ceb90de0 100644
---- a/arch/powerpc/platforms/powernv/opal-call.c
-+++ b/arch/powerpc/platforms/powernv/opal-call.c
-@@ -223,6 +223,7 @@ OPAL_CALL(opal_handle_hmi,			OPAL_HANDLE_HMI);
- OPAL_CALL(opal_handle_hmi2,			OPAL_HANDLE_HMI2);
- OPAL_CALL(opal_config_cpu_idle_state,		OPAL_CONFIG_CPU_IDLE_STATE);
- OPAL_CALL(opal_slw_set_reg,			OPAL_SLW_SET_REG);
-+OPAL_CALL(opal_slw_self_save_reg,		OPAL_SLW_SELF_SAVE_REG);
- OPAL_CALL(opal_register_dump_region,		OPAL_REGISTER_DUMP_REGION);
- OPAL_CALL(opal_unregister_dump_region,		OPAL_UNREGISTER_DUMP_REGION);
- OPAL_CALL(opal_pci_set_phb_cxl_mode,		OPAL_PCI_SET_PHB_CAPI_MODE);
++/*
++ * Extracts and populates the self save or restore capabilities
++ * passed from the device tree node
++ */
++static int extract_save_restore_state_dt(struct device_node *np, int type)
++{
++	int nr_sprns = 0, i, bitmask_index;
++	u64 *temp_u64;
++	u64 bit_pos;
++
++	nr_sprns = of_property_count_u64_elems(np, "sprn-bitmask");
++	if (nr_sprns <= 0)
++		return -EINVAL;
++	temp_u64 = kcalloc(nr_sprns, sizeof(u64), GFP_KERNEL);
++	if (of_property_read_u64_array(np, "sprn-bitmask",
++				       temp_u64, nr_sprns)) {
++		pr_warn("cpuidle-powernv: failed to find registers in DT\n");
++		kfree(temp_u64);
++		return -EINVAL;
++	}
++	/*
++	 * Populate acknowledgment of support for the sprs in the global vector
++	 * gotten by the registers supplied by the firmware.
++	 * The registers are in a bitmask, bit index within
++	 * that specifies the SPR
++	 */
++	for (i = 0; i < nr_preferred_sprs; i++) {
++		bitmask_index = BIT_WORD(preferred_sprs[i].spr);
++		bit_pos = BIT_MASK(preferred_sprs[i].spr);
++		if ((temp_u64[bitmask_index] & bit_pos) == 0) {
++			if (type == SELF_RESTORE_TYPE)
++				preferred_sprs[i].supported_mode &=
++					~SELF_RESTORE_STRICT;
++			else
++				preferred_sprs[i].supported_mode &=
++					~SELF_SAVE_STRICT;
++			continue;
++		}
++		if (type == SELF_RESTORE_TYPE) {
++			preferred_sprs[i].supported_mode |=
++				SELF_RESTORE_STRICT;
++		} else {
++			preferred_sprs[i].supported_mode |=
++				SELF_SAVE_STRICT;
++		}
++	}
++
++	kfree(temp_u64);
++	return 0;
++}
++
++static int pnv_parse_deepstate_dt(void)
++{
++	struct device_node *np;
++	int rc = 0, i;
++
++	/* Self restore register population */
++	np = of_find_compatible_node(NULL, NULL, "ibm,opal-self-restore");
++	if (np) {
++		rc = extract_save_restore_state_dt(np, SELF_RESTORE_TYPE);
++		if (rc != 0)
++			return rc;
++	}
++	/* Self save register population */
++	np = of_find_compatible_node(NULL, NULL, "ibm,opal-self-save");
++	if (!np) {
++		for (i = 0; i < nr_preferred_sprs; i++)
++			preferred_sprs[i].supported_mode &= ~SELF_SAVE_STRICT;
++	} else {
++		rc = extract_save_restore_state_dt(np, SELF_SAVE_TYPE);
++	}
++	of_node_put(np);
++	return rc;
++}
++
+ /*
+  * This function parses device-tree and populates all the information
+  * into pnv_idle_states structure. It also sets up nr_pnv_idle_states
+@@ -1584,6 +1659,9 @@ static int __init pnv_init_idle_states(void)
+ 		return rc;
+ 	pnv_probe_idle_states();
+ 
++	rc = pnv_parse_deepstate_dt();
++	if (rc)
++		return rc;
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
+ 		if (!(supported_cpuidle_states & OPAL_PM_SLEEP_ENABLED_ER1)) {
+ 			power7_fastsleep_workaround_entry = false;
 -- 
 2.17.1
 
