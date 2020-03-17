@@ -1,53 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D357E18793E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 06:30:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hMF26bs9zDqXw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:29:58 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56ADE187968
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 06:57:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hMs45wwkzDqW8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:57:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=FOidQHyo; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hMCM322bzDqKg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 16:28:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=d91RdLS+; 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hMqb1yl4zDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 16:56:26 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48hMqS6pwZz9tyDw;
+ Tue, 17 Mar 2020 06:56:20 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=FOidQHyo; dkim-adsp=pass;
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48hMCJ0k7Nz9sPF;
- Tue, 17 Mar 2020 16:28:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584422909;
- bh=MC7b550T0UEn3drzTQSwKJbnBymjcHLQYxopp0o0TlI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=d91RdLS+w0OBqsSohbMCBFtTXzvt2cYiGdB2907ElTzecbWUSddNYERGfLe3M0IQP
- Ip9ln0Xszw+0h6rQiG9w4uCZaMyKCJvg9HGDcQHq/BIsoOWtX59qACkb8ucJDjZU1y
- CSgRoNwnYMBTpiV3G8JQWOq9kGvxRExzL9x3EOmLen0532vgpuiVGSJe8G92nEl/Rv
- u6f/oHJc0/iFUDnKI/c2FdM85kzixcq7QGUVAWJn9gof8drXkCYMcFtivLYBoCgkXh
- AQjPJOO7yUozoLCAQOxaR11MG2QdGhsfd6zEkqb/ffUuU0Vebi3ZpsAkJZ6b/0bEpz
- 02aRl2JAKM9zQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Haren Myneni <haren@linux.ibm.com>
-Subject: Re: [PATCH V7 09/14] powerpc/vas: Update CSB and notify process for
- fault CRBs
-In-Reply-To: <1583525805.9256.14.camel@hbabu-laptop>
-References: <1583525239.9256.5.camel@hbabu-laptop>
- <1583525805.9256.14.camel@hbabu-laptop>
-Date: Tue, 17 Mar 2020 16:28:27 +1100
-Message-ID: <877dzj35z8.fsf@mpe.ellerman.id.au>
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id cPizxOgcNxsG; Tue, 17 Mar 2020 06:56:20 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48hMqS5VtRz9tyDl;
+ Tue, 17 Mar 2020 06:56:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1584424580; bh=29Ro1sGHbS20qY55HkxOqhfus0j9f4fLJSkyAdiV1/4=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=FOidQHyopLQOscrsoLsYg4jHsoRiuJV5fsq3sx+BICCF3ZT60LoNqSsJxcCWwEwxP
+ CMGi+Dk119bdW1M3W3teXcfHsAmn9A/c4hszai4thhYm52mT2c6kOhUDUw2c0RWShz
+ vlKVuPflD+zUsf6I1jIW4r88BbQqMO6dlJCDul/k=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 659E18B785;
+ Tue, 17 Mar 2020 06:56:21 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id GF0S_tHCs4ek; Tue, 17 Mar 2020 06:56:21 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C3A2B8B782;
+ Tue, 17 Mar 2020 06:56:19 +0100 (CET)
+Subject: Re: [PATCH 00/15] powerpc/watchpoint: Preparation for more than one
+ watchpoint
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
+ <b7148b91-e3db-d48a-7294-5c18fc801933@c-s.fr>
+ <20200316184339.GB22482@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <16e4639a-eeb9-da39-9a17-3d30e16b180e@c-s.fr>
+Date: Tue, 17 Mar 2020 06:56:14 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200316184339.GB22482@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,201 +80,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
+ apopple@linux.ibm.com, peterz@infradead.org, fweisbec@gmail.com,
+ oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
+ paulus@samba.org, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
-> For each fault CRB, update fault address in CRB (fault_storage_addr)
-> and translation error status in CSB so that user space can touch the
-> fault address and resend the request. If the user space passed invalid
-> CSB address send signal to process with SIGSEGV.
->
-> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/powernv/vas-fault.c | 114 +++++++++++++++++++++++++++++
->  1 file changed, 114 insertions(+)
->
-> diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
-> index 1c6d5cc..751ce48 100644
-> --- a/arch/powerpc/platforms/powernv/vas-fault.c
-> +++ b/arch/powerpc/platforms/powernv/vas-fault.c
-> @@ -11,6 +11,7 @@
->  #include <linux/slab.h>
->  #include <linux/uaccess.h>
->  #include <linux/kthread.h>
-> +#include <linux/sched/signal.h>
->  #include <linux/mmu_context.h>
->  #include <asm/icswx.h>
->  
-> @@ -26,6 +27,118 @@
->  #define VAS_FAULT_WIN_FIFO_SIZE	(4 << 20)
->  
->  /*
-> + * Update the CSB to indicate a translation error.
-> + *
-> + * If we are unable to update the CSB means copy_to_user failed due to
-> + * invalid csb_addr, send a signal to the process.
-> + *
-> + * Remaining settings in the CSB are based on wait_for_csb() of
-> + * NX-GZIP.
-> + */
-> +static void update_csb(struct vas_window *window,
-> +			struct coprocessor_request_block *crb)
-> +{
-> +	int rc;
-> +	struct pid *pid;
-> +	void __user *csb_addr;
-> +	struct task_struct *tsk;
-> +	struct kernel_siginfo info;
-> +	struct coprocessor_status_block csb;
 
-csb is on the stack, and later copied to user, which is a risk for
-creating an infoleak.
 
-Also please use reverse Christmas tree layout for your variables.
+Le 16/03/2020 à 19:43, Segher Boessenkool a écrit :
+> On Mon, Mar 16, 2020 at 04:05:01PM +0100, Christophe Leroy wrote:
+>> Some book3s (e300 family for instance, I think G2 as well) already have
+>> a DABR2 in addition to DABR.
+> 
+> The original "G2" (meaning 603 and 604) do not have DABR2.  The newer
+> "G2" (meaning e300) does have it.  e500 and e600 do not have it either.
+> 
+> Hope I got that right ;-)
+> 
+> 
 
-> +
-> +	/*
-> +	 * NX user space windows can not be opened for task->mm=NULL
-> +	 * and faults will not be generated for kernel requests.
-> +	 */
-> +	if (!window->mm || !window->user_win)
-> +		return;
+G2 core reference manual says:
 
-If that's a should-never-happen condition then should it do a
-WARN_ON_ONCE() rather than silently returning?
+Features specific to the G2 core not present on the original MPC603e 
+(PID6-603e) processors follow:
+...
+  Enhanced debug features
+  — Addition of three breakpoint registers—IABR2, DABR, and DABR2
+  — Two new breakpoint control registers—DBCR and IBCR
 
-> +	csb_addr = (void __user *)be64_to_cpu(crb->csb_addr);
-> +
-> +	csb.cc = CSB_CC_TRANSLATION;
-> +	csb.ce = CSB_CE_TERMINATION;
-> +	csb.cs = 0;
-> +	csb.count = 0;
-> +
-> +	/*
-> +	 * NX operates and returns in BE format as defined CRB struct.
-> +	 * So return fault_storage_addr in BE as NX pastes in FIFO and
-> +	 * expects user space to convert to CPU format.
-> +	 */
-> +	csb.address = crb->stamp.nx.fault_storage_addr;
-> +	csb.flags = 0;
 
-I'm pretty sure this has initialised all the fields of csb.
+e500 has DAC1 and DAC2 instead for breakpoints iaw e500 core reference 
+manual.
 
-But, I'd still be much happier if you zeroed the whole struct to begin
-with, that way we know for sure we can't leak any uninitialised bytes to
-userspace. It's only 16 bytes so it shouldn't add any noticeable
-overhead.
-
-> +
-> +	pid = window->pid;
-> +	tsk = get_pid_task(pid, PIDTYPE_PID);
-> +	/*
-> +	 * Send window will be closed after processing all NX requests
-> +	 * and process exits after closing all windows. In multi-thread
-> +	 * applications, thread may not exists, but does not close FD
-> +	 * (means send window) upon exit. Parent thread (tgid) can use
-> +	 * and close the window later.
-> +	 * pid and mm references are taken when window is opened by
-> +	 * process (pid). So tgid is used only when child thread opens
-> +	 * a window and exits without closing it in multithread tasks.
-> +	 */
-> +	if (!tsk) {
-> +		pid = window->tgid;
-> +		tsk = get_pid_task(pid, PIDTYPE_PID);
-> +		/*
-> +		 * Parent thread will be closing window during its exit.
-> +		 * So should not get here.
-> +		 */
-> +		if (!tsk)
-> +			return;
-
-Similar question on WARN_ON_ONCE()
-
-> +	}
-> +
-> +	/* Return if the task is exiting. */
-
-Why? Just because it's no use? It's racy isn't it, so it can't be for
-correctness?
-
-> +	if (tsk->flags & PF_EXITING) {
-> +		put_task_struct(tsk);
-> +		return;
-> +	}
-> +
-> +	use_mm(window->mm);
-
-There's no check that csb_addr is actually pointing into userspace, but
-copy_to_user() does it for you.
-
-> +	rc = copy_to_user(csb_addr, &csb, sizeof(csb));
-> +	/*
-> +	 * User space polls on csb.flags (first byte). So add barrier
-> +	 * then copy first byte with csb flags update.
-> +	 */
-> +	smp_mb();
-
-You only need to order the stores above vs the store below to csb.flags.
-So you should only need an smp_wmb() here.
-
-> +	if (!rc) {
-> +		csb.flags = CSB_V;
-> +		rc = copy_to_user(csb_addr, &csb, sizeof(u8));
-> +	}
-> +	unuse_mm(window->mm);
-> +	put_task_struct(tsk);
-> +
-> +	/* Success */
-> +	if (!rc)
-> +		return;
-> +
-> +	pr_debug("Invalid CSB address 0x%p signalling pid(%d)\n",
-> +			csb_addr, pid_vnr(pid));
-> +
-> +	clear_siginfo(&info);
-> +	info.si_signo = SIGSEGV;
-> +	info.si_errno = EFAULT;
-> +	info.si_code = SEGV_MAPERR;
-> +	info.si_addr = csb_addr;
-> +
-> +	/*
-> +	 * process will be polling on csb.flags after request is sent to
-> +	 * NX. So generally CSB update should not fail except when an
-> +	 * application does not follow the process properly. So an error
-> +	 * message will be displayed and leave it to user space whether
-> +	 * to ignore or handle this signal.
-> +	 */
-> +	rcu_read_lock();
-> +	rc = kill_pid_info(SIGSEGV, &info, pid);
-> +	rcu_read_unlock();
-
-Shouldn't this be using force_sig_fault_to_task() or another helper,
-rather than open-coding?
-
-> +
-> +	pr_devel("%s(): pid %d kill_proc_info() rc %d\n", __func__,
-> +			pid_vnr(pid), rc);
-> +}
-> +
-> +/*
->   * Process valid CRBs in fault FIFO.
->   */
->  irqreturn_t vas_fault_thread_fn(int irq, void *data)
-> @@ -111,6 +224,7 @@ irqreturn_t vas_fault_thread_fn(int irq, void *data)
->  			return IRQ_HANDLED;
->  		}
->  
-> +		update_csb(window, crb);
->  	} while (true);
->  }
->  
-> -- 
-> 1.8.3.1
-
-cheers
+Christophe
