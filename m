@@ -2,72 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0D4188992
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 367F61889C5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:05:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hd9b5wZjzDqdb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:57:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hdL74J3BzDqhY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:05:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=jX0aVra6; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hbWS0XcZzDqhH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:43:16 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48hbWL0ktTz9txKB;
- Tue, 17 Mar 2020 15:43:10 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jX0aVra6; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id RNzJeTCS2zXw; Tue, 17 Mar 2020 15:43:10 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48hbWK6nWSz9txK6;
- Tue, 17 Mar 2020 15:43:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584456189; bh=aysZJ0oAlGihBmkcbuVURApboUV6znAXwjAIXT1Fqb8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=jX0aVra6NpHJierLO2o6lej5QYe1IaZKYnRs2FNd365bgNplX5De1a5dQnmFKTZB1
- Mq4ydcqQ5laEyLsojIL0ZaS2RjK3iBP0+ymOI65V92f2XrPaoP8UtuwawB+5xqoesW
- WVjcds2rtOcejkeAvSdEX44eW4FrLMIv3bzHOPsk=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 59EF88B7BB;
- Tue, 17 Mar 2020 15:43:11 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fqTBFZC1M03R; Tue, 17 Mar 2020 15:43:11 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 99B298B7B7;
- Tue, 17 Mar 2020 15:43:10 +0100 (CET)
-Subject: Re: [PATCH v1 39/46] powerpc/8xx: Add a function to early map kernel
- via huge pages
-To: kbuild test robot <lkp@intel.com>
-References: <abaf66aaebfd988d835dc9520bccedd546ee95c4.1584360344.git.christophe.leroy@c-s.fr>
- <202003170938.Z0IuUore%lkp@intel.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <22bc0bba-533f-548b-8eec-a3392acc8e3d@c-s.fr>
-Date: Tue, 17 Mar 2020 15:43:01 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hbhn5jpvzDqg3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:51:21 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02HEoYJu056966
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:51:18 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ytb3phr58-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:51:17 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Tue, 17 Mar 2020 14:51:14 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 17 Mar 2020 14:51:09 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02HEp8Pr44761490
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Mar 2020 14:51:08 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BAC5BAE059;
+ Tue, 17 Mar 2020 14:51:08 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8CDD5AE055;
+ Tue, 17 Mar 2020 14:51:06 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue, 17 Mar 2020 14:51:06 +0000 (GMT)
+Date: Tue, 17 Mar 2020 20:21:05 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 2/4] mm/slub: Use mem_node to allocate a new slab
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+ <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
+ <20200317131753.4074-3-srikar@linux.vnet.ibm.com>
+ <ef34b0bb-4dfa-cb0e-1830-9ad59119da5e@suse.cz>
+ <20200317134523.GB4334@linux.vnet.ibm.com>
+ <3d9629d4-4a6d-d2b5-28b7-58af497671c7@suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <202003170938.Z0IuUore%lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <3d9629d4-4a6d-d2b5-28b7-58af497671c7@suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20031714-0012-0000-0000-000003929C71
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031714-0013-0000-0000-000021CF7BB7
+Message-Id: <20200317145105.GA27520@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-17_05:2020-03-17,
+ 2020-03-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 bulkscore=0
+ spamscore=0 adultscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003170061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,70 +94,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-17 14:53:26]:
 
-
-Le 17/03/2020 à 02:39, kbuild test robot a écrit :
-> Hi Christophe,
+> >> > 
+> >> > Mitigate this by allocating the new slab from the node_numa_mem.
+> >> 
+> >> Are you sure this is really needed and the other 3 patches are not enough for
+> >> the current SLUB code to work as needed? It seems you are changing the semantics
+> >> here...
+> >> 
+> > 
+> > The other 3 patches are not enough because we don't carry the searchnode
+> > when the actual alloc_pages_node gets called. 
+> > 
+> > With only the 3 patches, we see the above Panic, its signature is slightly
+> > different from what Sachin first reported and which I have carried in 1st
+> > patch.
 > 
-> Thank you for the patch! Yet something to improve:
+> Ah, I see. So that's the missing pgdat after your series [1] right?
+
+Yes the pgdat would be missing after my cpuless, memoryless node patchset.
+However..
 > 
-> [auto build test ERROR on next-20200316]
-> [cannot apply to powerpc/next v5.6-rc6 v5.6-rc5 v5.6-rc4 v5.6-rc6]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+> That sounds like an argument for Michal's suggestions that pgdats exist and have
+> correctly populated zonelists for all possible nodes.
+
+Only the first patch in this series would be affected by pgdat existing or
+not.  Even if the pgdat existed, the NODE_DATA[nid]->node_present_pages
+would be 0. Right? So it would look at node_to_mem_node(). And since node 0 is
+cpuless it would return 0. If we pass this node 0 (which is memoryless/cpuless) to
+alloc_pages_node. Please note I am only setting node_numa_mem only
+for offline nodes. However we could change this to set for all offline and
+memoryless nodes.
+
+> node_to_mem_node() could be just a shortcut for the first zone's node in the
+> zonelist, so that fallback follows the topology.
 > 
-> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Use-hugepages-to-map-kernel-mem-on-8xx/20200317-065610
-> base:    8548fd2f20ed19b0e8c0585b71fdfde1ae00ae3c
-> config: powerpc-tqm8xx_defconfig (attached as .config)
-> compiler: powerpc-linux-gcc (GCC) 9.2.0
-> reproduce:
->          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->          chmod +x ~/bin/make.cross
->          # save the attached .config to linux build tree
->          GCC_VERSION=9.2.0 make.cross ARCH=powerpc
+> [1]
+> https://lore.kernel.org/linuxppc-dev/20200311110237.5731-1-srikar@linux.vnet.ibm.com/t/#m76e5b4c4084380b1d4b193d5aa0359b987f2290e
 > 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->     In file included from arch/powerpc/mm/fault.c:33:
->     include/linux/hugetlb.h: In function 'hstate_inode':
->>> include/linux/hugetlb.h:522:9: error: implicit declaration of function 'HUGETLBFS_SB'; did you mean 'HUGETLBFS_MAGIC'? [-Werror=implicit-function-declaration]
->       522 |  return HUGETLBFS_SB(i->i_sb)->hstate;
->           |         ^~~~~~~~~~~~
->           |         HUGETLBFS_MAGIC
->>> include/linux/hugetlb.h:522:30: error: invalid type argument of '->' (have 'int')
->       522 |  return HUGETLBFS_SB(i->i_sb)->hstate;
->           |                              ^~
->     cc1: all warnings being treated as errors
-
-hstate_inode() shouldn't use HUGETLBFS_SB() which CONFIG_HUGETLBFS is 
-not set.
-
-Proposed fix at https://patchwork.ozlabs.org/patch/1256108/
-
-[...]
 
 
->>> include/linux/hugetlb.h:522:30: error: invalid type argument of '->' (have 'int')
->       522 |  return HUGETLBFS_SB(i->i_sb)->hstate;
->           |                              ^~
->     At top level:
->     arch/powerpc//mm/nohash/8xx.c:73:18: error: '__early_map_kernel_hugepage' defined but not used [-Werror=unused-function]
->        73 | static int __ref __early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
->           |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->     cc1: all warnings being treated as errors
 
-This patch is a preparation patch. The function is not used yet, that's 
-normal. Ok, it breaks bisectability. Should it be squashed with the 
-first user of the function ?
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
-Christophe
