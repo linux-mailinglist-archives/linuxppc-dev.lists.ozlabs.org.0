@@ -2,97 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8841E18891A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:23:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5287A188939
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:33:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hcPG08cQzDqRy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:22:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hcd710hszDqSZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:33:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hZnp6zWqzDqTh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:10:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48hZnp5Bk9z9BVj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:10:38 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48hZnn5lmFz9sT9; Wed, 18 Mar 2020 01:10:37 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48hZnj5fPQz9sTP
- for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 01:10:33 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hb3z6tl8zDqJg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:22:47 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HE2Bdb130565
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:10:31 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ytb21gav4-1
+ 02HEKGUw029988
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:22:44 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yrubp4vc7-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:10:30 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:22:44 -0400
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
- Tue, 17 Mar 2020 14:10:29 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Tue, 17 Mar 2020 14:22:42 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 14:10:27 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HEAQE254001694
+ Tue, 17 Mar 2020 14:22:37 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02HEMbct58589262
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 14:10:26 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3608B11C066;
- Tue, 17 Mar 2020 14:10:26 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF4D611C054;
- Tue, 17 Mar 2020 14:10:24 +0000 (GMT)
-Received: from pratiks-thinkpad.ibmuc.com (unknown [9.199.61.203])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Mar 2020 14:10:24 +0000 (GMT)
-From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
- ego@linux.vnet.ibm.com, linuxram@us.ibm.com, psampat@in.ibm.com,
- pratik.r.sampat@gmail.com
-Subject: [PATCH v5 3/3] powerpc/powernv: Parse device tree,
- population of SPR support
-Date: Tue, 17 Mar 2020 19:40:18 +0530
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200317141018.42380-1-psampat@linux.ibm.com>
-References: <20200317141018.42380-1-psampat@linux.ibm.com>
+ Tue, 17 Mar 2020 14:22:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E26F34C040;
+ Tue, 17 Mar 2020 14:22:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C22224C046;
+ Tue, 17 Mar 2020 14:22:34 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.32.136])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue, 17 Mar 2020 14:22:34 +0000 (GMT)
+Date: Tue, 17 Mar 2020 19:52:32 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH 4/4] powerpc/numa: Set fallback nodes for offline nodes
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+ <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
+ <20200317131753.4074-5-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200317131753.4074-5-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-TM-AS-GCONF: 00
-x-cbid: 20031714-4275-0000-0000-000003ADD593
+x-cbid: 20031714-0008-0000-0000-0000035EC18B
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031714-4276-0000-0000-000038C2FEA2
-Message-Id: <20200317141018.42380-4-psampat@linux.ibm.com>
+x-cbparentid: 20031714-0009-0000-0000-00004A80187D
+Message-Id: <20200317142232.GB26049@in.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-17_05:2020-03-17,
  2020-03-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 mlxlogscore=999 phishscore=0 impostorscore=0 bulkscore=0
- clxscore=1015 malwarescore=0 priorityscore=1501 suspectscore=0
- adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 suspectscore=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 clxscore=1011 impostorscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2003170059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -105,135 +91,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Reply-To: bharata@linux.ibm.com
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Parse the device tree for nodes self-save, self-restore and populate
-support for the preferred SPRs based what was advertised by the device
-tree.
+This patchset can also fix a related problem that I reported earlier at
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/206076.html
+with an additional change, suggested by Srikar as shown below:
 
-Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-Reviewed-by: Ram Pai <linuxram@us.ibm.com>
----
- .../bindings/powerpc/opal/power-mgt.txt       | 10 +++
- arch/powerpc/platforms/powernv/idle.c         | 78 +++++++++++++++++++
- 2 files changed, 88 insertions(+)
+On Tue, Mar 17, 2020 at 06:47:53PM +0530, Srikar Dronamraju wrote:
+> Currently fallback nodes for offline nodes aren't set. Hence by default
+> node 0 ends up being the default node. However node 0 might be offline.
+> 
+> Fix this by explicitly setting fallback node. Ensure first_memory_node
+> is set before kernel does explicit setting of fallback node.
+> 
+>  arch/powerpc/mm/numa.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 281531340230..6e97ab6575cb 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -827,7 +827,16 @@ void __init dump_numa_cpu_topology(void)
+>  	if (!numa_enabled)
+>  		return;
+>  
+> -	for_each_online_node(node) {
+> +	for_each_node(node) {
+> +		/*
+> +		 * For all possible but not yet online nodes, ensure their
+> +		 * node_numa_mem is set correctly so that kmalloc_node works
+> +		 * for such nodes.
+> +		 */
+> +		if (!node_online(node)) {
 
-diff --git a/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt b/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
-index 9d619e955576..093cb5fe3d2d 100644
---- a/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
-+++ b/Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
-@@ -116,3 +116,13 @@ otherwise. The length of all the property arrays must be the same.
- 	which of the fields of the PMICR are set in the corresponding
- 	entries in ibm,cpu-idle-state-pmicr. This is an optional
- 	property on POWER8 and is absent on POWER9.
-+
-+- self-restore:
-+ Array of unsigned 64-bit values containing a property for sprn-mask
-+ with each bit indicating the index of the supported SPR for the
-+ functionality. This is an optional property for both Power8 and Power9
-+
-+- self-save:
-+  Array of unsigned 64-bit values containing a property for sprn-mask
-+  with each bit indicating the index of the supported SPR for the
-+  functionality. This is an optional property for both Power8 and Power9
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 97aeb45e897b..c39111b338ff 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -1436,6 +1436,81 @@ static void __init pnv_probe_idle_states(void)
- 		supported_cpuidle_states |= pnv_idle_states[i].flags;
- }
- 
-+/*
-+ * Extracts and populates the self save or restore capabilities
-+ * passed from the device tree node
-+ */
-+static int extract_save_restore_state_dt(struct device_node *np, int type)
-+{
-+	int nr_sprns = 0, i, bitmask_index;
-+	u64 *temp_u64;
-+	u64 bit_pos;
-+
-+	nr_sprns = of_property_count_u64_elems(np, "sprn-bitmask");
-+	if (nr_sprns <= 0)
-+		return -EINVAL;
-+	temp_u64 = kcalloc(nr_sprns, sizeof(u64), GFP_KERNEL);
-+	if (of_property_read_u64_array(np, "sprn-bitmask",
-+				       temp_u64, nr_sprns)) {
-+		pr_warn("cpuidle-powernv: failed to find registers in DT\n");
-+		kfree(temp_u64);
-+		return -EINVAL;
-+	}
-+	/*
-+	 * Populate acknowledgment of support for the sprs in the global vector
-+	 * gotten by the registers supplied by the firmware.
-+	 * The registers are in a bitmask, bit index within
-+	 * that specifies the SPR
-+	 */
-+	for (i = 0; i < nr_preferred_sprs; i++) {
-+		bitmask_index = BIT_WORD(preferred_sprs[i].spr);
-+		bit_pos = BIT_MASK(preferred_sprs[i].spr);
-+		if ((temp_u64[bitmask_index] & bit_pos) == 0) {
-+			if (type == SELF_RESTORE_TYPE)
-+				preferred_sprs[i].supported_mode &=
-+					~SELF_RESTORE_STRICT;
-+			else
-+				preferred_sprs[i].supported_mode &=
-+					~SELF_SAVE_STRICT;
-+			continue;
-+		}
-+		if (type == SELF_RESTORE_TYPE) {
-+			preferred_sprs[i].supported_mode |=
-+				SELF_RESTORE_STRICT;
-+		} else {
-+			preferred_sprs[i].supported_mode |=
-+				SELF_SAVE_STRICT;
-+		}
-+	}
-+
-+	kfree(temp_u64);
-+	return 0;
-+}
-+
-+static int pnv_parse_deepstate_dt(void)
-+{
-+	struct device_node *np;
-+	int rc = 0, i;
-+
-+	/* Self restore register population */
-+	np = of_find_compatible_node(NULL, NULL, "ibm,opal-self-restore");
-+	if (np) {
-+		rc = extract_save_restore_state_dt(np, SELF_RESTORE_TYPE);
-+		if (rc != 0)
-+			return rc;
-+	}
-+	/* Self save register population */
-+	np = of_find_compatible_node(NULL, NULL, "ibm,opal-self-save");
-+	if (!np) {
-+		for (i = 0; i < nr_preferred_sprs; i++)
-+			preferred_sprs[i].supported_mode &= ~SELF_SAVE_STRICT;
-+	} else {
-+		rc = extract_save_restore_state_dt(np, SELF_SAVE_TYPE);
-+	}
-+	of_node_put(np);
-+	return rc;
-+}
-+
- /*
-  * This function parses device-tree and populates all the information
-  * into pnv_idle_states structure. It also sets up nr_pnv_idle_states
-@@ -1584,6 +1659,9 @@ static int __init pnv_init_idle_states(void)
- 		return rc;
- 	pnv_probe_idle_states();
- 
-+	rc = pnv_parse_deepstate_dt();
-+	if (rc)
-+		return rc;
- 	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
- 		if (!(supported_cpuidle_states & OPAL_PM_SLEEP_ENABLED_ER1)) {
- 			power7_fastsleep_workaround_entry = false;
--- 
-2.17.1
+Change the above line to like below:
+
++               if (!node_state(node, N_MEMORY)) {
+
+Regards,
+Bharata.
 
