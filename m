@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B8B187BC7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 10:13:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hSBW3g8JzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 20:13:07 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7AE187BCA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 10:14:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hSDJ6NZTzDqcJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 20:14:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=KNBXDL8o; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20161025 header.b=Hx3Kungp; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hS7L44KLzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 20:10:21 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id hg10so5906350pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 02:10:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hS7N3nfCzDqW2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 20:10:24 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id 3so3748564pff.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 02:10:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=GedQgDj4C03DxWvmsFcdRYKRCaUmzydqAL1+dFKrReI=;
- b=KNBXDL8oKGjRRgFjMuek29p4ZK07dpZRrUCBYG20/jSeMnpQYdLAjL8V9hJSUwdZAh
- eFvAKaZ+YcTFRQy5x0C3tlAeb6AGIB59W7WLSwoXzfQxd/8cBgD4fmWrM0qPsRsv3fwE
- cFrHEZwY131hT//Y4Pl/Xhr+gGgxZA7qlpgTQJU4fCAqDsEFr3LeUhw7PV6rNt8lLhnB
- 2INPado43IEn8Wujlm1VIJ4d0IuHY+COuVCkIijPjWi7tfuTyMYLwau/SAW/j3QTGP/I
- pI+CPONkHaXYFd2ALlW1PLrvQMaApBZtqTA4oN6Q92Dl3/CGFjQXaXjQYlPxdxTBtFM9
- bAoQ==
+ bh=dne2FYboYRGkTTCFl4cucL/oOgiBdHvSMQ950WlMzl8=;
+ b=Hx3Kungpoy+CX/hSKwY8rw7qBiJE0ZICiteGkMo+L1ti7JkVzRKmf9W0ogcONeJGn8
+ Jq28OdDt0TlleH7X8NmE7GSNlukPULgAXYBurjJ2RgDinIdyq9sFUq9hfAKFS3QZKEv3
+ p8Ihrr7G7Ke0tpNgUR36fV+T5SczSuLbXAa12rqCqR/sjEwTCTBLoREo3xay9Z9oezeG
+ hjJ1W96pKADsBizifcHY1xhJbrBAtldYTY5tgP9u0FXvtYrGtlXpJyjaqsUuw6LhrzQD
+ KxOcp/UyDVV+QrQ960FjWcMKilyc4mcHP7u24doM6A04VHUzw+KVYyqtBCm0J7n2R5XC
+ 7pnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=GedQgDj4C03DxWvmsFcdRYKRCaUmzydqAL1+dFKrReI=;
- b=GQZV2HN2/78Oi/pwA5pYohka1pDm3KM5URa/Hy2M/fgs7gQve0M1fYi4hOgJqMljmF
- TuKt6Yog9SJbd+xFxCy/RRBNWhK577lF0swCXimR21GwIpYOCyynSmizifgJLXFBRkWg
- c4mj43YN7HJzm7loE3R8NlYaAjE0GzsuMkj+/rppov45gQZ91KbwOfDT5P4lW8IXf9vR
- j5+jOTB4ZhCl4neYCExIDiTxIsDkwgS3kiGhLsPWX/6TMlgk0IKiWeEqpR8ArqnxgPcA
- ZFPbSKRNyROKHrDG2k8JhlLsAZW9wr3XGKhZZkD2ZjRV1h/MC4Wd3KYdyuEuRNzaC79X
- jnOg==
-X-Gm-Message-State: ANhLgQ2uDqwy9QFXdxZYF2mqrHLNuc9nUDF/Dgn0A0tIlHGNM5kxyzGf
- zgD81J/X8w3yiY3ivq3tAnQWLhqL
-X-Google-Smtp-Source: ADFU+vuKx9X6jN9TVym866sVaqaXvc+YXK1iEUxd7o6NBg1djQMFPM2cVrtyfFV+SU/axgCHspa8eQ==
-X-Received: by 2002:a17:90a:5801:: with SMTP id
- h1mr4256211pji.121.1584436218148; 
- Tue, 17 Mar 2020 02:10:18 -0700 (PDT)
+ bh=dne2FYboYRGkTTCFl4cucL/oOgiBdHvSMQ950WlMzl8=;
+ b=VCKxlb8708LW5LlsgwWxZbtbZhI2l3KpN0/rrgdKcEXuM4efwiCFOjBd9cC4LY2lZV
+ gbx7sxd2BcHT4Sv4VrQf9ViMy832GDeW06UmUNYKzjvP2f+TMn9dhEcIRG3UG8dDcX/9
+ B9x9PUa8+8FNWGARhR8lcroxc1mCrAxaonxpaqoW3YF+efZ5DDCDuQnUx9XxZYlu9qEW
+ Eo+BttLbs5Yrqq1ETCJZw8pWPvm5hynxj8yICmSE3r9rN22ydRL/dZqOYeL/oWkjh0nH
+ fvMzRYetE48qENoPuccI3XgQqFbisRjkJGNxblMgcIRBes0J5NYvNn7qJAGc1/z349pG
+ RBJA==
+X-Gm-Message-State: ANhLgQ2a8r9+DYCVQafSYTG1g83Ppmfggab/NDaeQALRCDfed2nYeb2E
+ GaQ0GidkuFUG7Ybll1n6BLnc0eW1
+X-Google-Smtp-Source: ADFU+vuKoZVouBNRyyTxgXvx/Bni6OnCK5W3TCCLaqZnu6ZeubgsHJmth1L+yTyiQ32m7WvkdDppMw==
+X-Received: by 2002:a63:7359:: with SMTP id d25mr3938896pgn.2.1584436221387;
+ Tue, 17 Mar 2020 02:10:21 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (14-202-190-183.tpgi.com.au.
  [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id i13sm2463745pfd.180.2020.03.17.02.10.15
+ by smtp.gmail.com with ESMTPSA id i13sm2463745pfd.180.2020.03.17.02.10.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Mar 2020 02:10:17 -0700 (PDT)
+ Tue, 17 Mar 2020 02:10:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/7] powerpc/64: mark emergency stacks valid to unwind
-Date: Tue, 17 Mar 2020 19:09:07 +1000
-Message-Id: <20200317090913.343097-2-npiggin@gmail.com>
+Subject: [PATCH 2/7] powerpc/pseries/ras: avoid calling rtas_token in NMI paths
+Date: Tue, 17 Mar 2020 19:09:08 +1000
+Message-Id: <20200317090913.343097-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200317090913.343097-1-npiggin@gmail.com>
 References: <20200317090913.343097-1-npiggin@gmail.com>
@@ -86,115 +85,81 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before:
-
-  WARNING: CPU: 0 PID: 494 at arch/powerpc/kernel/irq.c:343
-  CPU: 0 PID: 494 Comm: a Tainted: G        W
-  NIP:  c00000000001ed2c LR: c000000000d13190 CTR: c00000000003f910
-  REGS: c0000001fffd3870 TRAP: 0700   Tainted: G        W
-  MSR:  8000000000021003 <SF,ME,RI,LE>  CR: 28000488  XER: 00000000
-  CFAR: c00000000001ec90 IRQMASK: 0
-  GPR00: c000000000aeb12c c0000001fffd3b00 c0000000012ba300 0000000000000000
-  GPR04: 0000000000000000 0000000000000000 000000010bd207c8 6b00696e74657272
-  GPR08: 0000000000000000 0000000000000000 0000000000000000 efbeadde00000000
-  GPR12: 0000000000000000 c0000000014a0000 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR24: 0000000000000000 0000000000000000 0000000000000000 000000010bd207bc
-  GPR28: 0000000000000000 c00000000148a898 0000000000000000 c0000001ffff3f50
-  NIP [c00000000001ed2c] arch_local_irq_restore.part.0+0xac/0x100
-  LR [c000000000d13190] _raw_spin_unlock_irqrestore+0x50/0xc0
-  Call Trace:
-  Instruction dump:
-  60000000 7d2000a6 71298000 41820068 39200002 7d210164 4bffff9c 60000000
-  60000000 7d2000a6 71298000 4c820020 <0fe00000> 4e800020 60000000 60000000
-
-After:
-
-  WARNING: CPU: 0 PID: 499 at arch/powerpc/kernel/irq.c:343
-  CPU: 0 PID: 499 Comm: a Not tainted
-  NIP:  c00000000001ed2c LR: c000000000d13210 CTR: c00000000003f980
-  REGS: c0000001fffd3870 TRAP: 0700   Not tainted
-  MSR:  8000000000021003 <SF,ME,RI,LE>  CR: 28000488  XER: 00000000
-  CFAR: c00000000001ec90 IRQMASK: 0
-  GPR00: c000000000aeb1ac c0000001fffd3b00 c0000000012ba300 0000000000000000
-  GPR04: 0000000000000000 0000000000000000 00000001347607c8 6b00696e74657272
-  GPR08: 0000000000000000 0000000000000000 0000000000000000 efbeadde00000000
-  GPR12: 0000000000000000 c0000000014a0000 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR24: 0000000000000000 0000000000000000 0000000000000000 00000001347607bc
-  GPR28: 0000000000000000 c00000000148a898 0000000000000000 c0000001ffff3f50
-  NIP [c00000000001ed2c] arch_local_irq_restore.part.0+0xac/0x100
-  LR [c000000000d13210] _raw_spin_unlock_irqrestore+0x50/0xc0
-  Call Trace:
-  [c0000001fffd3b20] [c000000000aeb1ac] of_find_property+0x6c/0x90
-  [c0000001fffd3b70] [c000000000aeb1f0] of_get_property+0x20/0x40
-  [c0000001fffd3b90] [c000000000042cdc] rtas_token+0x3c/0x70
-  [c0000001fffd3bb0] [c0000000000dc318] fwnmi_release_errinfo+0x28/0x70
-  [c0000001fffd3c10] [c0000000000dcd8c] pseries_machine_check_realmode+0x1dc/0x540
-  [c0000001fffd3cd0] [c00000000003fe04] machine_check_early+0x54/0x70
-  [c0000001fffd3d00] [c000000000008384] machine_check_early_common+0x134/0x1f0
-  --- interrupt: 200 at 0x1347607c8
-      LR = 0x7fffafbd8328
-  Instruction dump:
-  60000000 7d2000a6 71298000 41820068 39200002 7d210164 4bffff9c 60000000
-  60000000 7d2000a6 71298000 4c820020 <0fe00000> 4e800020 60000000 60000000
+In the interest of reducing code and possible failures in the
+machine check and system reset paths, grab the "ibm,nmi-interlock"
+token at init time.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/process.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/firmware.h    |  1 +
+ arch/powerpc/platforms/pseries/ras.c   |  2 +-
+ arch/powerpc/platforms/pseries/setup.c | 13 ++++++++++---
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 1dea4d280f6f..d27bf367e929 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1983,6 +1983,32 @@ static inline int valid_irq_stack(unsigned long sp, struct task_struct *p,
- 	return 0;
- }
+diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+index ca33f4ef6cb4..6003c2e533a0 100644
+--- a/arch/powerpc/include/asm/firmware.h
++++ b/arch/powerpc/include/asm/firmware.h
+@@ -128,6 +128,7 @@ extern void machine_check_fwnmi(void);
  
-+static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
-+					unsigned long nbytes)
-+{
-+#ifdef CONFIG_PPC64
-+	unsigned long stack_page;
-+	unsigned long cpu = task_cpu(p);
-+
-+	stack_page = (unsigned long)paca_ptrs[cpu]->emergency_sp - THREAD_SIZE;
-+	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
-+		return 1;
-+
-+# ifdef CONFIG_PPC_BOOK3S_64
-+	stack_page = (unsigned long)paca_ptrs[cpu]->nmi_emergency_sp - THREAD_SIZE;
-+	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
-+		return 1;
-+
-+	stack_page = (unsigned long)paca_ptrs[cpu]->mc_emergency_sp - THREAD_SIZE;
-+	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
-+		return 1;
-+# endif
-+#endif
-+
-+	return 0;
-+}
-+
-+
- int validate_sp(unsigned long sp, struct task_struct *p,
- 		       unsigned long nbytes)
+ /* This is true if we are using the firmware NMI handler (typically LPAR) */
+ extern int fwnmi_active;
++extern int ibm_nmi_interlock_token;
+ 
+ extern unsigned int __start___fw_ftr_fixup, __stop___fw_ftr_fixup;
+ 
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index 1d7f973c647b..c74d5e740922 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -458,7 +458,7 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
+  */
+ static void fwnmi_release_errinfo(void)
  {
-@@ -1994,7 +2020,10 @@ int validate_sp(unsigned long sp, struct task_struct *p,
- 	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
- 		return 1;
- 
--	return valid_irq_stack(sp, p, nbytes);
-+	if (valid_irq_stack(sp, p, nbytes))
-+		return 1;
-+
-+	return valid_emergency_stack(sp, p, nbytes);
+-	int ret = rtas_call(rtas_token("ibm,nmi-interlock"), 0, 1, NULL);
++	int ret = rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
+ 	if (ret != 0)
+ 		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
  }
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 17d17f064a2d..c31acd7ce0c0 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -83,6 +83,7 @@ unsigned long CMO_PageSize = (ASM_CONST(1) << IOMMU_PAGE_SHIFT_4K);
+ EXPORT_SYMBOL(CMO_PageSize);
  
- EXPORT_SYMBOL(validate_sp);
+ int fwnmi_active;  /* TRUE if an FWNMI handler is present */
++int ibm_nmi_interlock_token;
+ 
+ static void pSeries_show_cpuinfo(struct seq_file *m)
+ {
+@@ -113,9 +114,14 @@ static void __init fwnmi_init(void)
+ 	struct slb_entry *slb_ptr;
+ 	size_t size;
+ #endif
++	int ibm_nmi_register_token;
+ 
+-	int ibm_nmi_register = rtas_token("ibm,nmi-register");
+-	if (ibm_nmi_register == RTAS_UNKNOWN_SERVICE)
++	ibm_nmi_register_token = rtas_token("ibm,nmi-register");
++	if (ibm_nmi_register_token == RTAS_UNKNOWN_SERVICE)
++		return;
++
++	ibm_nmi_interlock_token = rtas_token("ibm,nmi-interlock");
++	if (WARN_ON(ibm_nmi_interlock_token == RTAS_UNKNOWN_SERVICE))
+ 		return;
+ 
+ 	/* If the kernel's not linked at zero we point the firmware at low
+@@ -123,7 +129,8 @@ static void __init fwnmi_init(void)
+ 	system_reset_addr  = __pa(system_reset_fwnmi) - PHYSICAL_START;
+ 	machine_check_addr = __pa(machine_check_fwnmi) - PHYSICAL_START;
+ 
+-	if (0 == rtas_call(ibm_nmi_register, 2, 1, NULL, system_reset_addr,
++	if (0 == rtas_call(ibm_nmi_register_token, 2, 1, NULL,
++				system_reset_addr,
+ 				machine_check_addr))
+ 		fwnmi_active = 1;
+ 
 -- 
 2.23.0
 
