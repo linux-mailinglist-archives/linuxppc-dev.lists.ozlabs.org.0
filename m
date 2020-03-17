@@ -1,57 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E476D188AEE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:45:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AF1188A82
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:38:46 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hf4c6RdNzDqV5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:38:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hfDR2SLNzDqnF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:45:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::542;
+ helo=mail-ed1-x542.google.com; envelope-from=luc.vanoostenryck@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bhJ9poWF; dkim-atps=neutral
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
+ [IPv6:2a00:1450:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hd7d038YzDqgq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:56:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48hd7c27Sfz8tHw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:56:12 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48hd7b5MhLz9sPR; Wed, 18 Mar 2020 02:56:11 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48hd7b0kRWz9sRY
- for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 02:56:10 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id E8582ACA1;
- Tue, 17 Mar 2020 15:56:06 +0000 (UTC)
-Subject: Re: Slub: Increased mem consumption on cpu,mem-less node powerpc guest
-To: bharata@linux.ibm.com, linux-mm@kvack.org
-References: <20200317092624.GB22538@in.ibm.com>
- <20200317115339.GA26049@in.ibm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <4088ae3c-4dfa-62ae-f56a-b46773788fc7@suse.cz>
-Date: Tue, 17 Mar 2020 16:56:04 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hdPz38BqzDqhH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:08:39 +1100 (AEDT)
+Received: by mail-ed1-x542.google.com with SMTP id a20so27280759edj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=i3/HhLR/O0/CbHZXM0VcSB7U8Xi1Wft1dlRFMRO02HY=;
+ b=bhJ9poWFWMl3+oFEzoqGdFvuBFpm4liZ2xa75YGFftjCp27P/Rq5S9JgCJRzJeRhFp
+ ET2jcWzJwcmzndjTjjgo4I3sJMcKP+zOFfJHkcmviLpx6GFMub044cfodyeDzvBTr5rz
+ QdrlvCdm3eeXDmrKrYARcYEsRegY7+N/81F2BDIkvGaOUXh+IY+1mzKNynCPCRccwVWO
+ p9wZAVHWeEtV8zdWfRvvT54cIDi65FYaftfEROjVkUCwMBrrLFZ3jnkcn40bfP8wrEy5
+ bBmK5VKsrEKR0a4bhnsKqu8+qk/Tp35ox/MPtgBJghewi5xBETXjkq8jPZi6yKH4U4Wm
+ 9Big==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=i3/HhLR/O0/CbHZXM0VcSB7U8Xi1Wft1dlRFMRO02HY=;
+ b=pCHb55O40Tua4/PTrW8x4D6FMOQAMLSl8U3aEtV3mtMTlcsj0z3Z9Q7gTUwiMIsrS1
+ kC6vTKpoeRMbhDbrmYzGfyI6Zpgq8iuc/s3GN1zdBkCJb5Nq7ZJfHf9GwCadjDHjJSEi
+ onMmFhFRrFzBegD9jNb0aPblmGCNXV77sotGBV0elPmq2Bit9f05RxhdZxIhAbo1vNAn
+ /XS3dtjGgJ43QUDxJ23lqHigqnZrJUfqkyCp9QejsKEPU0wcTujBEszMcKBPbeGB8HL8
+ K6UPHscqhJEs1UKtd87GC9V1spAIO2Kd5yhWTFJrxF87+assHV/mN9zdcg/OrcU51Grr
+ k4kg==
+X-Gm-Message-State: ANhLgQ24UbKZsV/qhXKY9JApnVA11yFgrYRwnQfasW2+sRCY+7IupGMZ
+ t9PGTocS8KfhlqtchviaNa/qLVxh
+X-Google-Smtp-Source: ADFU+vvpUZPkVKlGLkpmFLSH2ItwqGs0OIwlevrD4d2kPESi8laXU73YjAy22NfvrT4WFKHOjIAkXw==
+X-Received: by 2002:adf:ecc7:: with SMTP id s7mr6946877wro.386.1584460807500; 
+ Tue, 17 Mar 2020 09:00:07 -0700 (PDT)
+Received: from ltop.local ([2a02:a03f:b7f9:7600:e00d:142c:5e21:c280])
+ by smtp.gmail.com with ESMTPSA id a13sm5194418wrh.80.2020.03.17.09.00.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Mar 2020 09:00:06 -0700 (PDT)
+Date: Tue, 17 Mar 2020 17:00:05 +0100
+From: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v1 16/46] powerpc/mm: Allocate static page tables for
+ fixmap
+Message-ID: <20200317160005.imgtv3w62op4nm2t@ltop.local>
+References: <cover.1584360343.git.christophe.leroy@c-s.fr>
+ <d4bd46fe0103f8a8cb7e5affb2a7fcc3185be24e.1584360344.git.christophe.leroy@c-s.fr>
+ <b9c92137-f757-1e6a-bca9-5c522e1083c5@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200317115339.GA26049@in.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b9c92137-f757-1e6a-bca9-5c522e1083c5@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +81,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, aneesh.kumar@linux.ibm.com,
- Michal Hocko <mhocko@kernel.org>, Pekka Enberg <penberg@kernel.org>,
- linuxppc-dev@ozlabs.org, David Rientjes <rientjes@google.com>,
- Christoph Lameter <cl@linux.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- srikar@linux.vnet.ibm.com
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/17/20 12:53 PM, Bharata B Rao wrote:
-> On Tue, Mar 17, 2020 at 02:56:28PM +0530, Bharata B Rao wrote:
->> Case 1: 2 node NUMA, node0 empty
->> ================================
->> # numactl -H
->> available: 2 nodes (0-1)
->> node 0 cpus:
->> node 0 size: 0 MB
->> node 0 free: 0 MB
->> node 1 cpus: 0 1 2 3 4 5 6 7
->> node 1 size: 16294 MB
->> node 1 free: 15453 MB
->> node distances:
->> node   0   1 
->>   0:  10  40 
->>   1:  40  10 
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 17dc00e33115..888e4d245444 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -1971,10 +1971,8 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
->>  	void *object;
->>  	int searchnode = node;
->>  
->> -	if (node == NUMA_NO_NODE)
->> +	if (node == NUMA_NO_NODE || !node_present_pages(node))
->>  		searchnode = numa_mem_id();
->> -	else if (!node_present_pages(node))
->> -		searchnode = node_to_mem_node(node);
+On Tue, Mar 17, 2020 at 03:38:46PM +0100, Christophe Leroy wrote:
+> > diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+> > index f62de06e3d07..9934659cb871 100644
+> > --- a/arch/powerpc/mm/pgtable_32.c
+> > +++ b/arch/powerpc/mm/pgtable_32.c
+> > @@ -29,11 +29,27 @@
+> >   #include <asm/fixmap.h>
+> >   #include <asm/setup.h>
+> >   #include <asm/sections.h>
+> > +#include <asm/early_ioremap.h>
+> >   #include <mm/mmu_decl.h>
+> >   extern char etext[], _stext[], _sinittext[], _einittext[];
+> > +static u8 early_fixmap_pagetable[FIXMAP_PTE_SIZE] __page_aligned_data;
 > 
-> For the above topology, I see this:
-> 
-> node_to_mem_node(1) = 1
-> node_to_mem_node(0) = 0
-> node_to_mem_node(NUMA_NO_NODE) = 0
-> 
-> Looks like the last two cases (returning memory-less node 0) is the
-> problem here?
+> Sparse reports this as a variable size array. This is definitely not. Gcc
+> properly sees it is an 8k table (2 pages).
 
-I wonder why do you get a memory leak while Sachin in the same situation [1]
-gets a crash? I don't understand anything anymore.
+Yes, thing is that FIXMAP_PTE_SIZE is not that constant since it uses
+__builtin_ffs() (via PTE_SHIFT / PTE_T_LOG2).
+Nevertheless, since Sparse v0.6.1 (released in October) accepts these
+in constant expressions, like GCC does.
 
-[1]
-https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
-
-> Regards,
-> Bharata.
-> 
-> 
-
+-- Luc
