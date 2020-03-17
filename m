@@ -1,78 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947AE188797
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 15:36:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86A818878B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 15:33:48 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hbJS5pH0zDqBt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:33:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hbMj35xlzDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:36:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::f41;
- helo=mail-qv1-xf41.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
- header.s=google header.b=MGDRAHHw; dkim-atps=neutral
-Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com
- [IPv6:2607:f8b0:4864:20::f41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hYpN0pGczDqH4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:26:01 +1100 (AEDT)
-Received: by mail-qv1-xf41.google.com with SMTP id cy12so4899798qvb.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 06:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=149vrDC6Ny5kXlZ3c9yb3Ff3i3SdoOBmg7pfld3LKGI=;
- b=MGDRAHHwM4nroOOuiUdxwzeDLPsUSxkKGB1ZBFk85k2dwJdJTHMO8PEvHSg2fVErKC
- xbyOzKDkvp5ST2WwzC+GHN4a0yqFAY4pquPxURWoEm5babHrmv41sG04VZtMii9smFBi
- npONJDDXJCv1pMi4ZyGmSrpR4itL6lpn//Whw93FEmcsdwIhQaGMygrv0IxYCF/CIf6e
- A5KYy2R78gVt9xaczD36OBsEfKo76u/YveXPSIXg1stdm9llUXaTvmmz7+djHoeqj25m
- k6WX9vZgfDVYYUp8MszMkTZpAxuWbQ5QLXn6OJXFdneBqng5r8BZ7FIMyRYxs+n/udis
- UKfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=149vrDC6Ny5kXlZ3c9yb3Ff3i3SdoOBmg7pfld3LKGI=;
- b=Iem1UyN1Wdrdhigfgg2G4v84NE9Tp1Y4R2Rsw7u3OyLAeudNS1p8VoNsupjvYm6+iW
- PqGS+mDKlCY9bwEPqhTJEpeAZ2XEeU9Fa2DzbuNELEkcBSwuo13D3u3h0K8AVjBChatx
- lJV2HC7P4yJ28tyReO4qCnGrjYQTGlj5kE9enzzxmhh9roTGX6vFHSxxjpcA5vj9jDFc
- ZmqJ2NFeOT5q8eI4FNadjojqfwbgu5lkN4LhNd+KA4EGcjekURPRSKP3HsBf0o4aWqMF
- ArBAWOioYiW+IjgV4hHlACiczsLwfa52BDe3d+l8oNotT9UHpgIF9Wb7W2tcaG4SkNZx
- nt+Q==
-X-Gm-Message-State: ANhLgQ0vLK4pvEPRM7/fs0JxIgosrMJd8y7fegMRWaaQl9JfKgEH4+Gc
- 97HrkIOkjIOxY5k/ufWVLgGwWg==
-X-Google-Smtp-Source: ADFU+vud8ckGfbpq7RFxGRUQtjLFosMM5WbNx995vqc+P+Orw+3LIFDIv/yLP5SnzTRZvkDSJttSbw==
-X-Received: by 2002:a0c:bf46:: with SMTP id b6mr4911822qvj.47.1584451558143;
- Tue, 17 Mar 2020 06:25:58 -0700 (PDT)
-Received: from ziepe.ca
- (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.68.57.212])
- by smtp.gmail.com with ESMTPSA id u77sm1882170qka.134.2020.03.17.06.25.57
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 17 Mar 2020 06:25:57 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
- (envelope-from <jgg@ziepe.ca>)
- id 1jECEH-00027w-2X; Tue, 17 Mar 2020 10:25:57 -0300
-Date: Tue, 17 Mar 2020 10:25:57 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 08/12] docs: fix broken references to text files
-Message-ID: <20200317132557.GS20941@ziepe.ca>
-References: <cover.1584450500.git.mchehab+huawei@kernel.org>
- <35dcbefd50875b92aaf5b7671d4c57c50b4274fe.1584450500.git.mchehab+huawei@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hZ072h7lzDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:34:31 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 9DEAAAD2C;
+ Tue, 17 Mar 2020 13:34:26 +0000 (UTC)
+Subject: Re: [PATCH 2/4] mm/slub: Use mem_node to allocate a new slab
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+ <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
+ <20200317131753.4074-3-srikar@linux.vnet.ibm.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <ef34b0bb-4dfa-cb0e-1830-9ad59119da5e@suse.cz>
+Date: Tue, 17 Mar 2020 14:34:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <35dcbefd50875b92aaf5b7671d4c57c50b4274fe.1584450500.git.mchehab+huawei@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200317131753.4074-3-srikar@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,69 +51,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Akira Yokosawa <akiyks@gmail.com>,
- dri-devel@lists.freedesktop.org, linux-unionfs@vger.kernel.org,
- linux-mm@kvack.org, Harry Wei <harryxiyou@gmail.com>,
- Alex Shi <alex.shi@linux.alibaba.com>, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, linux-arch@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- kvm-ppc@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Doug Ledford <dledford@redhat.com>, Alan Stern <stern@rowland.harvard.edu>,
- linux-arm-kernel@lists.infradead.org, Federico Vaga <federico.vaga@vaga.pv.it>,
- Jade Alglave <j.alglave@ucl.ac.uk>, Daniel Lustig <dlustig@nvidia.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- Mike Leach <mike.leach@linaro.org>, Andrea Parri <parri.andrea@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, "Paul E. McKenney" <paulmck@kernel.org>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Boqun Feng <boqun.feng@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Nicholas Piggin <npiggin@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Luc Maranget <luc.maranget@inria.fr>,
- OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
- David Howells <dhowells@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- James Morse <james.morse@arm.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Marc Zyngier <maz@kernel.org>, linux-fsdevel@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Christopher Lameter <cl@linux.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 17, 2020 at 02:10:47PM +0100, Mauro Carvalho Chehab wrote:
-> Several references got broken due to txt to ReST conversion.
+On 3/17/20 2:17 PM, Srikar Dronamraju wrote:
+> Currently while allocating a slab for a offline node, we use its
+> associated node_numa_mem to search for a partial slab. If we don't find
+> a partial slab, we try allocating a slab from the offline node using
+> __alloc_pages_node. However this is bound to fail.
 > 
-> Several of them can be automatically fixed with:
+> NIP [c00000000039a300] __alloc_pages_nodemask+0x130/0x3b0
+> LR [c00000000039a3c4] __alloc_pages_nodemask+0x1f4/0x3b0
+> Call Trace:
+> [c0000008b36837f0] [c00000000039a3b4] __alloc_pages_nodemask+0x1e4/0x3b0 (unreliable)
+> [c0000008b3683870] [c0000000003d1ff8] new_slab+0x128/0xcf0
+> [c0000008b3683950] [c0000000003d6060] ___slab_alloc+0x410/0x820
+> [c0000008b3683a40] [c0000000003d64a4] __slab_alloc+0x34/0x60
+> [c0000008b3683a70] [c0000000003d78b0] __kmalloc_node+0x110/0x490
+> [c0000008b3683af0] [c000000000343a08] kvmalloc_node+0x58/0x110
+> [c0000008b3683b30] [c0000000003ffd44] mem_cgroup_css_online+0x104/0x270
+> [c0000008b3683b90] [c000000000234e08] online_css+0x48/0xd0
+> [c0000008b3683bc0] [c00000000023dedc] cgroup_apply_control_enable+0x2ec/0x4d0
+> [c0000008b3683ca0] [c0000000002416f8] cgroup_mkdir+0x228/0x5f0
+> [c0000008b3683d10] [c000000000520360] kernfs_iop_mkdir+0x90/0xf0
+> [c0000008b3683d50] [c00000000043e400] vfs_mkdir+0x110/0x230
+> [c0000008b3683da0] [c000000000441ee0] do_mkdirat+0xb0/0x1a0
+> [c0000008b3683e20] [c00000000000b278] system_call+0x5c/0x68
 > 
-> 	scripts/documentation-file-ref-check --fix
+> Mitigate this by allocating the new slab from the node_numa_mem.
+
+Are you sure this is really needed and the other 3 patches are not enough for
+the current SLUB code to work as needed? It seems you are changing the semantics
+here...
+
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -1970,14 +1970,8 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
+>  		struct kmem_cache_cpu *c)
+>  {
+>  	void *object;
+> -	int searchnode = node;
+>  
+> -	if (node == NUMA_NO_NODE)
+> -		searchnode = numa_mem_id();
+> -	else if (!node_present_pages(node))
+> -		searchnode = node_to_mem_node(node);
+> -
+> -	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+> +	object = get_partial_node(s, get_node(s, node), c, flags);
+>  	if (object || node != NUMA_NO_NODE)>  		return object;
+>
+>       return get_any_partial(s, flags, c);
+
+I.e. here in this if(), now node will never equal NUMA_NO_NODE (thanks to the
+hunk below), thus the get_any_partial() call becomes dead code?
+
+> @@ -2470,6 +2464,11 @@ static inline void *new_slab_objects(struct kmem_cache *s, gfp_t flags,
+>  
+>  	WARN_ON_ONCE(s->ctor && (flags & __GFP_ZERO));
+>  
+> +	if (node == NUMA_NO_NODE)
+> +		node = numa_mem_id();
+> +	else if (!node_present_pages(node))
+> +		node = node_to_mem_node(node);
+> +
+>  	freelist = get_partial(s, flags, node, c);
+>  
+>  	if (freelist)
+> @@ -2569,12 +2568,10 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  redo:
+>  
+>  	if (unlikely(!node_match(page, node))) {
+> -		int searchnode = node;
+> -
+>  		if (node != NUMA_NO_NODE && !node_present_pages(node))
+> -			searchnode = node_to_mem_node(node);
+> +			node = node_to_mem_node(node);
+>  
+> -		if (unlikely(!node_match(page, searchnode))) {
+> +		if (unlikely(!node_match(page, node))) {
+>  			stat(s, ALLOC_NODE_MISMATCH);
+>  			deactivate_slab(s, page, c->freelist, c);
+>  			goto new_slab;
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
->  Documentation/admin-guide/kernel-parameters.txt      |  2 +-
->  Documentation/memory-barriers.txt                    |  2 +-
->  Documentation/process/submit-checklist.rst           |  2 +-
->  .../translations/it_IT/process/submit-checklist.rst  |  2 +-
->  Documentation/translations/ko_KR/memory-barriers.txt |  2 +-
->  .../translations/zh_CN/filesystems/sysfs.txt         |  2 +-
->  .../translations/zh_CN/process/submit-checklist.rst  |  2 +-
->  Documentation/virt/kvm/arm/pvtime.rst                |  2 +-
->  Documentation/virt/kvm/devices/vcpu.rst              |  2 +-
->  Documentation/virt/kvm/hypercalls.rst                |  4 ++--
->  arch/powerpc/include/uapi/asm/kvm_para.h             |  2 +-
->  drivers/gpu/drm/Kconfig                              |  2 +-
->  drivers/gpu/drm/drm_ioctl.c                          |  2 +-
->  drivers/hwtracing/coresight/Kconfig                  |  2 +-
->  fs/fat/Kconfig                                       |  8 ++++----
->  fs/fuse/Kconfig                                      |  2 +-
->  fs/fuse/dev.c                                        |  2 +-
->  fs/overlayfs/Kconfig                                 |  6 +++---
->  include/linux/mm.h                                   |  4 ++--
->  include/uapi/linux/ethtool_netlink.h                 |  2 +-
->  include/uapi/rdma/rdma_user_ioctl_cmds.h             |  2 +-
 
-For the rdma files
-
-Acked-by: Jason Gunthorpe <jgg@mellanox.com>
-
-Jason
