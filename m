@@ -2,84 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190991887A7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 15:38:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D3D1887B6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 15:42:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hbQM27mNzDqXX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:38:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hbTy5QhjzDqdb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:41:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hZ3H3fGXzDqfs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:37:15 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HDVolx086689
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:37:13 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yrt353dns-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:37:12 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Tue, 17 Mar 2020 13:37:10 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 13:37:05 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HDb4rH55771218
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 13:37:05 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC7BF11C052;
- Tue, 17 Mar 2020 13:37:04 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1F1F11C04A;
- Tue, 17 Mar 2020 13:37:02 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 17 Mar 2020 13:37:02 +0000 (GMT)
-Date: Tue, 17 Mar 2020 19:07:01 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 1/4] mm: Check for node_online in node_present_pages
-References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
- <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
- <20200317131753.4074-2-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hZD34hj2zDqCc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:44:51 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 44F85AD1E;
+ Tue, 17 Mar 2020 13:44:47 +0000 (UTC)
+Subject: Re: [PATCH 1/3] powerpc/numa: Set numa_node for all possible cpus
+To: Michal Hocko <mhocko@kernel.org>
+References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
+ <20200311110237.5731-2-srikar@linux.vnet.ibm.com>
+ <20200311115735.GM23944@dhcp22.suse.cz>
+ <20200312052707.GA3277@linux.vnet.ibm.com>
+ <C5560C71-483A-41FB-BDE9-526F1E0CFA36@linux.vnet.ibm.com>
+ <5e5c736a-a88c-7c76-fc3d-7bc765e8dcba@suse.cz>
+ <20200312131438.GB3277@linux.vnet.ibm.com>
+ <61437352-8b54-38fa-4471-044a65c9d05a@suse.cz>
+ <20200312161310.GC3277@linux.vnet.ibm.com>
+ <e115048c-be38-c298-b8d1-d4b513e7d2fb@suse.cz>
+ <20200316090652.GC11482@dhcp22.suse.cz>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <65b99db6-3bdf-6caa-74e5-6d6b681f16b5@suse.cz>
+Date: Tue, 17 Mar 2020 14:44:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20200317131753.4074-2-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 20031713-4275-0000-0000-000003ADD11A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031713-4276-0000-0000-000038C2FA07
-Message-Id: <20200317133701.GA4334@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-17_04:2020-03-17,
- 2020-03-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 mlxscore=0 spamscore=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003170058
+In-Reply-To: <20200316090652.GC11482@dhcp22.suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,48 +58,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
- Mel Gorman <mgorman@suse.de>, Christopher Lameter <cl@linux.com>,
- Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Kirill Tkhai <ktkhai@virtuozzo.com>, Mel Gorman <mgorman@suse.de>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Srikar Dronamraju <srikar@linux.vnet.ibm.com> [2020-03-17 18:47:50]:
-
+On 3/16/20 10:06 AM, Michal Hocko wrote:
+> On Thu 12-03-20 17:41:58, Vlastimil Babka wrote:
+> [...]
+>> with nid present in:
+>> N_POSSIBLE - pgdat might not exist, node_to_mem_node() must return some online
 > 
-> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
->  include/linux/mmzone.h | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> I would rather have a dummy pgdat for those. Have a look at 
+> $ git grep "NODE_DATA.*->" | wc -l
+> 63
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index f3f264826423..88078a3b95e5 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -756,8 +756,10 @@ typedef struct pglist_data {
->  	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
->  } pg_data_t;
+> Who knows how many else we have there. I haven't looked more closely.
+> Besides that what is a real reason to not have pgdat ther and force all
+> users of a $random node from those that the platform considers possible
+> for special casing? Is that a memory overhead? Is that really a thing?
+
+I guess we can ignore memory overhead. I guess there only might be some concern
+that for nodes that are initially offline, we will allocate the pgdat on a
+different node, and after they are online, it will stay on a different node with
+more access latency from local cpus. If we only allocate for online nodes, it
+can always be local? But I guess it doesn't matter that much.
+
+> Somebody has suggested to tweak some of the low level routines to do the
+> special casing but I really have to say I do not like that. We shouldn't
+> use the first online node or anything like that. We should simply always
+> follow the topology presented by FW and of that we need to have a pgdat.
 > 
-> -#define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
-> -#define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
-> +#define node_present_pages(nid)		\
-> +	(node_online(nid) ? NODE_DATA(nid)->node_present_pages : 0)
-> +#define node_spanned_pages(nid)		\
-> +	(node_online(nid) ? NODE_DATA(nid)->node_spanned_pages : 0)
->  #ifdef CONFIG_FLAT_NODE_MEM_MAP
->  #define pgdat_page_nr(pgdat, pagenr)	((pgdat)->node_mem_map + (pagenr))
->  #else
-
-If we indeed start having pgdat/NODE_DATA for even offline nodes as Michal
-Hocko, then we may not this particular patch.
-
--- 
-Thanks and Regards
-Srikar Dronamraju
 
