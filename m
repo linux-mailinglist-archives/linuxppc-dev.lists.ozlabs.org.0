@@ -2,37 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301AB188348
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 13:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1478B18837F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 13:18:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hX8f0CzlzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 23:11:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hXHz70XgzDqfN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 23:18:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=bp@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hVzF6nPhzDqT5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 22:18:27 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 429AFAD71;
- Tue, 17 Mar 2020 11:18:21 +0000 (UTC)
-Date: Tue, 17 Mar 2020 12:18:23 +0100
-From: Borislav Petkov <bp@suse.de>
-To: lkml <linux-kernel@vger.kernel.org>
-Subject: [PATCH] treewide: Rename "unencrypted" to "decrypted"
-Message-ID: <20200317111822.GA15609@zn.tnic>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hW3Z6x4qzDqTn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 22:22:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=R3suC07y; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48hW3W3wNXzB3t3;
+ Tue, 17 Mar 2020 22:22:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1584444136;
+ bh=7m6xTV6ORC9fimP591QotV0DExi6ArwAslaYAD6a8gE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=R3suC07yLLownGnMiQtBzYlWQBjC2Y2Mr1fjgaMhi7I03Tw6ufjZw4WoaZXiqoW7X
+ 9w7zSb2LsfkCq8qcUn9o6JDfZtIASBH4sFz8ntWfjzvCQz05fGey3e+m483q7aENNl
+ WTjER2R9FHM0pwErCXzPUaOlqszJZ/dyxvLAY/7h0QKpfmECwhSvG1su6e0j9+Ibat
+ SXe0q3bo4rMn5DbePzxlsRagSr8oOu986j8OGuQrkaCUhpM00HGe9unpetpD+aO/eV
+ wcdxLe1dn62eA00W63BAXp3KDbgrdVnAh5ByL/QW192YlMk3FeRuzPn7et6TB3Nz1X
+ 57yXL6Iyl5JEg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: =?utf-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Subject: Re: [PATCH v3] powerpc/fsl-85xx: fix compile error
+In-Reply-To: <AJUA5gAVCMaMlIkPsaTC0KqL.3.1584357605616.Hmail.wenhu.wang@vivo.com>
+References: <AJUA5gAVCMaMlIkPsaTC0KqL.3.1584357605616.Hmail.wenhu.wang@vivo.com>
+Date: Tue, 17 Mar 2020 22:22:13 +1100
+Message-ID: <878sjzfcpm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,226 +58,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: trivial@kernel.org, kernel@vivo.com, linux-kernel@vger.kernel.org,
+ stable <stable@vger.kernel.org>, Richard Fontana <rfontana@redhat.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+=E7=8E=8B=E6=96=87=E8=99=8E <wenhu.wang@vivo.com> writes:
+> From: Michael Ellerman <mpe@ellerman.id.au>
+>  Date: 2020-03-16 17:41:12
+> To:WANG Wenhu <wenhu.wang@vivo.com>,Benjamin Herrenschmidt <benh@kernel.c=
+rashing.org>,Paul Mackerras <paulus@samba.org>,WANG Wenhu <wenhu.wang@vivo.=
+com>,Allison Randal <allison@lohutok.net>,Richard Fontana <rfontana@redhat.=
+com>,Greg Kroah-Hartman <gregkh@linuxfoundation.org>,Thomas Gleixner <tglx@=
+linutronix.de>,linuxppc-dev@lists.ozlabs.org,linux-kernel@vger.kernel.org
+>  cc: trivial@kernel.org,kernel@vivo.com,stable <stable@vger.kernel.org>
+> Subject: Re: [PATCH v3] powerpc/fsl-85xx: fix compile error>WANG Wenhu <w=
+enhu.wang@vivo.com> writes:
+>>> Include "linux/of_address.h" to fix the compile error for
+>>> mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
+>>>
+>>>   CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
+>>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function =E2=80=98mpc85xx_l2c=
+tlr_of_probe=E2=80=99:
+>>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaratio=
+n of function =E2=80=98of_iomap=E2=80=99; did you mean =E2=80=98pci_iomap=
+=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+>>>   l2ctlr =3D of_iomap(dev->dev.of_node, 0);
+>>>            ^~~~~~~~
+>>>            pci_iomap
+>>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes poi=
+nter from integer without a cast [-Werror=3Dint-conversion]
+>>>   l2ctlr =3D of_iomap(dev->dev.of_node, 0);
+>>>          ^
+>>> cc1: all warnings being treated as errors
+>>> scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_=
+85xx_l2ctlr.o' failed
+>>> make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
+>>>
+>>> Fixes: commit 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
+>>
+>>The syntax is:
+>>
+>>Fixes: 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
+>>
+>>> Cc: stable <stable@vger.kernel.org>
+>>
+>>The commit above went into v2.6.37.
+>>
+>>So no one has noticed this bug since then, how? Or did something else
+>>change to expose the problem?
+>
+> Actually a hard question to answer cause it also left me scratching for l=
+ong.
+> However, I can not find right or definite answer.
 
-this hasn't been fully tested yet but it is mechanical rename only so
-there shouldn't be any problems (famous last words :-)).
+Oh, actually it's fairly straight forward, the code can't be built at
+all in upstream because CONFIG_FSL_85XX_CACHE_SRAM is not selectable or
+selected by anything.
 
-I'll run it through the randconfig bench today and take it through tip if
-there are no objections.
+You sent a patch previously to make it selectable, which Scott thought
+was a bad idea.
 
-Thx.
+So this whole file is dead code as far as I'm concerned, so patches for
+it definitely do not need to go to stable.
 
----
+If you want to add a user for it then please send a series doing that,
+and this commit can be the first.
 
-Back then when the whole SME machinery started getting mainlined, it
-was agreed that for simplicity, clarity and sanity's sake, the terms
-denoting encrypted and not-encrypted memory should be "encrypted" and
-"decrypted". And the majority of the code sticks to that convention
-except those two. So rename them.
-
-No functional changes.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
----
- arch/powerpc/platforms/pseries/Kconfig |  2 +-
- arch/s390/Kconfig                      |  2 +-
- arch/x86/Kconfig                       |  2 +-
- arch/x86/mm/mem_encrypt.c              |  4 ++--
- include/linux/dma-direct.h             |  8 ++++----
- kernel/dma/Kconfig                     |  2 +-
- kernel/dma/direct.c                    | 14 +++++++-------
- kernel/dma/mapping.c                   |  2 +-
- 8 files changed, 18 insertions(+), 18 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 24c18362e5ea..a78e2c3e1d92 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -151,7 +151,7 @@ config PPC_SVM
- 	depends on PPC_PSERIES
- 	select SWIOTLB
- 	select ARCH_HAS_MEM_ENCRYPT
--	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
-+	select ARCH_HAS_FORCE_DMA_DECRYPTED
- 	help
- 	 There are certain POWER platforms which support secure guests using
- 	 the Protected Execution Facility, with the help of an Ultravisor
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 8abe77536d9d..ab1dbb7415b4 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -192,7 +192,7 @@ config S390
- 	select VIRT_CPU_ACCOUNTING
- 	select ARCH_HAS_SCALED_CPUTIME
- 	select HAVE_NMI
--	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
-+	select ARCH_HAS_FORCE_DMA_DECRYPTED
- 	select SWIOTLB
- 	select GENERIC_ALLOCATOR
- 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index beea77046f9b..2ae904f505e1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1525,7 +1525,7 @@ config AMD_MEM_ENCRYPT
- 	depends on X86_64 && CPU_SUP_AMD
- 	select DYNAMIC_PHYSICAL_MASK
- 	select ARCH_USE_MEMREMAP_PROT
--	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
-+	select ARCH_HAS_FORCE_DMA_DECRYPTED
- 	---help---
- 	  Say yes to enable support for the encryption of system memory.
- 	  This requires an AMD processor that supports Secure Memory
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index a03614bd3e1a..66d09f269e6d 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -350,8 +350,8 @@ bool sev_active(void)
- 	return sme_me_mask && sev_enabled;
- }
- 
--/* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
--bool force_dma_unencrypted(struct device *dev)
-+/* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_DECRYPTED */
-+bool force_dma_decrypted(struct device *dev)
- {
- 	/*
- 	 * For SEV, all DMA must be to unencrypted addresses.
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index 24b8684aa21d..9f955844e9c7 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -26,14 +26,14 @@ static inline phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dev_addr)
- }
- #endif /* !CONFIG_ARCH_HAS_PHYS_TO_DMA */
- 
--#ifdef CONFIG_ARCH_HAS_FORCE_DMA_UNENCRYPTED
--bool force_dma_unencrypted(struct device *dev);
-+#ifdef CONFIG_ARCH_HAS_FORCE_DMA_DECRYPTED
-+bool force_dma_decrypted(struct device *dev);
- #else
--static inline bool force_dma_unencrypted(struct device *dev)
-+static inline bool force_dma_decrypted(struct device *dev)
- {
- 	return false;
- }
--#endif /* CONFIG_ARCH_HAS_FORCE_DMA_UNENCRYPTED */
-+#endif /* CONFIG_ARCH_HAS_FORCE_DMA_DECRYPTED */
- 
- /*
-  * If memory encryption is supported, phys_to_dma will set the memory encryption
-diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-index 4c103a24e380..55c4147bb2b1 100644
---- a/kernel/dma/Kconfig
-+++ b/kernel/dma/Kconfig
-@@ -51,7 +51,7 @@ config ARCH_HAS_SYNC_DMA_FOR_CPU_ALL
- config ARCH_HAS_DMA_PREP_COHERENT
- 	bool
- 
--config ARCH_HAS_FORCE_DMA_UNENCRYPTED
-+config ARCH_HAS_FORCE_DMA_DECRYPTED
- 	bool
- 
- config DMA_NONCOHERENT_CACHE_SYNC
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index ac7956c38f69..a0576c0ccacd 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -26,7 +26,7 @@ unsigned int zone_dma_bits __ro_after_init = 24;
- static inline dma_addr_t phys_to_dma_direct(struct device *dev,
- 		phys_addr_t phys)
- {
--	if (force_dma_unencrypted(dev))
-+	if (force_dma_decrypted(dev))
- 		return __phys_to_dma(dev, phys);
- 	return phys_to_dma(dev, phys);
- }
-@@ -49,7 +49,7 @@ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
- {
- 	u64 dma_limit = min_not_zero(dma_mask, dev->bus_dma_limit);
- 
--	if (force_dma_unencrypted(dev))
-+	if (force_dma_decrypted(dev))
- 		*phys_limit = __dma_to_phys(dev, dma_limit);
- 	else
- 		*phys_limit = dma_to_phys(dev, dma_limit);
-@@ -138,7 +138,7 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
- 		return NULL;
- 
- 	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
--	    !force_dma_unencrypted(dev)) {
-+	    !force_dma_decrypted(dev)) {
- 		/* remove any dirty cache lines on the kernel alias */
- 		if (!PageHighMem(page))
- 			arch_dma_prep_coherent(page, size);
-@@ -179,7 +179,7 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
- 	}
- 
- 	ret = page_address(page);
--	if (force_dma_unencrypted(dev))
-+	if (force_dma_decrypted(dev))
- 		set_memory_decrypted((unsigned long)ret, 1 << get_order(size));
- 
- 	memset(ret, 0, size);
-@@ -190,7 +190,7 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
- 		ret = uncached_kernel_address(ret);
- 	}
- done:
--	if (force_dma_unencrypted(dev))
-+	if (force_dma_decrypted(dev))
- 		*dma_handle = __phys_to_dma(dev, page_to_phys(page));
- 	else
- 		*dma_handle = phys_to_dma(dev, page_to_phys(page));
-@@ -203,7 +203,7 @@ void dma_direct_free_pages(struct device *dev, size_t size, void *cpu_addr,
- 	unsigned int page_order = get_order(size);
- 
- 	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
--	    !force_dma_unencrypted(dev)) {
-+	    !force_dma_decrypted(dev)) {
- 		/* cpu_addr is a struct page cookie, not a kernel address */
- 		dma_free_contiguous(dev, cpu_addr, size);
- 		return;
-@@ -213,7 +213,7 @@ void dma_direct_free_pages(struct device *dev, size_t size, void *cpu_addr,
- 	    dma_free_from_pool(cpu_addr, PAGE_ALIGN(size)))
- 		return;
- 
--	if (force_dma_unencrypted(dev))
-+	if (force_dma_decrypted(dev))
- 		set_memory_encrypted((unsigned long)cpu_addr, 1 << page_order);
- 
- 	if (IS_ENABLED(CONFIG_DMA_REMAP) && is_vmalloc_addr(cpu_addr))
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 98e3d873792e..dbd0605a39c5 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -154,7 +154,7 @@ EXPORT_SYMBOL(dma_get_sgtable_attrs);
-  */
- pgprot_t dma_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
- {
--	if (force_dma_unencrypted(dev))
-+	if (force_dma_decrypted(dev))
- 		prot = pgprot_decrypted(prot);
- 	if (dev_is_dma_coherent(dev) ||
- 	    (IS_ENABLED(CONFIG_DMA_NONCOHERENT_CACHE_SYNC) &&
--- 
-2.21.0
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+cheers
