@@ -1,74 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A5D1879A5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 07:26:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56ADE187968
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 06:57:48 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hMs45wwkzDqW8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:57:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hNVk4L0dzDqT7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:26:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=FOidQHyo; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hMqb1yl4zDqRb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 16:56:26 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48hMqS6pwZz9tyDw;
- Tue, 17 Mar 2020 06:56:20 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=FOidQHyo; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cPizxOgcNxsG; Tue, 17 Mar 2020 06:56:20 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48hMqS5VtRz9tyDl;
- Tue, 17 Mar 2020 06:56:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584424580; bh=29Ro1sGHbS20qY55HkxOqhfus0j9f4fLJSkyAdiV1/4=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=FOidQHyopLQOscrsoLsYg4jHsoRiuJV5fsq3sx+BICCF3ZT60LoNqSsJxcCWwEwxP
- CMGi+Dk119bdW1M3W3teXcfHsAmn9A/c4hszai4thhYm52mT2c6kOhUDUw2c0RWShz
- vlKVuPflD+zUsf6I1jIW4r88BbQqMO6dlJCDul/k=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 659E18B785;
- Tue, 17 Mar 2020 06:56:21 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id GF0S_tHCs4ek; Tue, 17 Mar 2020 06:56:21 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C3A2B8B782;
- Tue, 17 Mar 2020 06:56:19 +0100 (CET)
-Subject: Re: [PATCH 00/15] powerpc/watchpoint: Preparation for more than one
- watchpoint
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
- <b7148b91-e3db-d48a-7294-5c18fc801933@c-s.fr>
- <20200316184339.GB22482@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <16e4639a-eeb9-da39-9a17-3d30e16b180e@c-s.fr>
-Date: Tue, 17 Mar 2020 06:56:14 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hNRv3Hh1zDqC9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 17:24:27 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02H6Jubk053502
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 02:24:24 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yrr5euck7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 02:24:24 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
+ Tue, 17 Mar 2020 06:24:21 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 17 Mar 2020 06:24:15 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02H6ODIH60031192
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Mar 2020 06:24:13 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8CD7A11C04A;
+ Tue, 17 Mar 2020 06:24:13 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 88F6D11C05C;
+ Tue, 17 Mar 2020 06:24:00 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.63.85])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Mar 2020 06:24:00 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ sukadev@linux.vnet.ibm.com
+Subject: [PATCH v5 00/11] powerpc/perf: Add json file metric support for the
+ hv_24x7 socket/chip level events
+Date: Tue, 17 Mar 2020 11:53:22 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20200316184339.GB22482@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20031706-0012-0000-0000-000003925E9A
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031706-0013-0000-0000-000021CF3C4F
+Message-Id: <20200317062333.14555-1-kjain@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-17_01:2020-03-12,
+ 2020-03-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 spamscore=0
+ suspectscore=0 mlxlogscore=641 clxscore=1015 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 phishscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2003170024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,40 +89,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- apopple@linux.ibm.com, peterz@infradead.org, fweisbec@gmail.com,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ ravi.bangoria@linux.ibm.com, kjain@linux.ibm.com, jmario@redhat.com,
+ namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Patchset fixes the inconsistent results we are getting when
+we run multiple 24x7 events.
 
+Patchset adds json file metric support for the hv_24x7 socket/chip level
+events. "hv_24x7" pmu interface events needs system dependent parameter
+like socket/chip/core. For example, hv_24x7 chip level events needs
+specific chip-id to which the data is requested should be added as part
+of pmu events.
 
-Le 16/03/2020 à 19:43, Segher Boessenkool a écrit :
-> On Mon, Mar 16, 2020 at 04:05:01PM +0100, Christophe Leroy wrote:
->> Some book3s (e300 family for instance, I think G2 as well) already have
->> a DABR2 in addition to DABR.
-> 
-> The original "G2" (meaning 603 and 604) do not have DABR2.  The newer
-> "G2" (meaning e300) does have it.  e500 and e600 do not have it either.
-> 
-> Hope I got that right ;-)
-> 
-> 
+So to enable JSON file support to "hv_24x7" interface, patchset expose
+total number of sockets and chips per-socket details in sysfs
+files (sockets, chips) under "/sys/devices/hv_24x7/interface/".
 
-G2 core reference manual says:
+To get sockets and number of chips per sockets, patchset adds a rtas call
+with token "PROCESSOR_MODULE_INFO" to get these details. Patchset also
+handles partition migration case to re-init these system depended
+parameters by adding proper calls in post_mobility_fixup() (mobility.c).
 
-Features specific to the G2 core not present on the original MPC603e 
-(PID6-603e) processors follow:
-...
-  Enhanced debug features
-  — Addition of three breakpoint registers—IABR2, DABR, and DABR2
-  — Two new breakpoint control registers—DBCR and IBCR
+Second patch of the patchset adds expr_scanner_ctx object to hold user
+data for the expr scanner, which can be used to hold runtime parameter.
 
+Patch 9 & 11 of the patchset handles perf tool plumbing needed to replace
+the "?" character in the metric expression to proper value and hv_24x7
+json metric file for different Socket/chip resources.
 
-e500 has DAC1 and DAC2 instead for breakpoints iaw e500 core reference 
-manual.
+Patch set also enable Hz/hz prinitg for --metric-only option to print
+metric data for bus frequency.
 
-Christophe
+Applied and tested all these patches cleanly on top of jiri's flex changes
+with the changes done by Kan Liang for "Support metric group constraint"
+patchset and made required changes.
+
+Changelog:
+v4 -> v5
+- Using sysfs__read_int instead of sysfs__read_ull while reading
+  parameter value in powerpc/util/header.c file.
+
+- Using asprintf rather then malloc and sprintf 
+  Suggested by Arnaldo Carvalho de Melo
+
+- Break patch 6 from previous version to two patch,
+  - One to add refactor current "metricgroup__add_metric" function
+    and another where actually "?" handling infra added.
+
+- Add expr__runtimeparam as part of 'expr_scanner_ctx' struct
+  rather then making it global variable. Thanks Jiri for
+  adding this structure to hold user data for the expr scanner.
+
+- Add runtime param as agrugement to function 'expr__find_other'
+  and 'expr__parse' and made changes on references accordingly.
+
+v3 -> v4
+- Apply these patch on top of Kan liang changes.
+  As suggested by Jiri.
+
+v2 -> v3
+- Remove setting  event_count to 0 part in function 'h_24x7_event_read'
+  with comment rather then adding 0 to event_count value.
+  Suggested by: Sukadev Bhattiprolu
+
+- Apply tool side changes require to replace "?" on Jiri's flex patch
+  series and made all require changes to make it compatible with added
+  flex change.
+
+v1 -> v2
+- Rename hv-24x7 metric json file as nest_metrics.json
+
+Jiri Olsa (2):
+  perf expr: Add expr_ prefix for parse_ctx and parse_id
+  perf expr: Add expr_scanner_ctx object
+
+Kajol Jain (9):
+  powerpc/perf/hv-24x7: Fix inconsistent output values incase multiple
+    hv-24x7 events run
+  powerpc/hv-24x7: Add rtas call in hv-24x7 driver to get processor
+    details
+  powerpc/hv-24x7: Add sysfs files inside hv-24x7 device to show
+    processor details
+  Documentation/ABI: Add ABI documentation for chips and sockets
+  powerpc/hv-24x7: Update post_mobility_fixup() to handle migration
+  perf/tools: Refactoring metricgroup__add_metric function
+  perf/tools: Enhance JSON/metric infrastructure to handle "?"
+  tools/perf: Enable Hz/hz prinitg for --metric-only option
+  perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip level metric
+    events
+
+ .../sysfs-bus-event_source-devices-hv_24x7    |  14 ++
+ arch/powerpc/perf/hv-24x7.c                   | 104 ++++++++++++--
+ arch/powerpc/platforms/pseries/mobility.c     |  12 ++
+ arch/powerpc/platforms/pseries/pseries.h      |   3 +
+ tools/perf/arch/powerpc/util/header.c         |  10 ++
+ .../arch/powerpc/power9/nest_metrics.json     |  19 +++
+ tools/perf/tests/expr.c                       |  12 +-
+ tools/perf/util/expr.c                        |  25 ++--
+ tools/perf/util/expr.h                        |  19 ++-
+ tools/perf/util/expr.l                        |  37 +++--
+ tools/perf/util/expr.y                        |   6 +-
+ tools/perf/util/metricgroup.c                 | 127 ++++++++++++++----
+ tools/perf/util/metricgroup.h                 |   1 +
+ tools/perf/util/stat-display.c                |   2 -
+ tools/perf/util/stat-shadow.c                 |  14 +-
+ 15 files changed, 326 insertions(+), 79 deletions(-)
+ create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
+
+-- 
+2.18.1
+
