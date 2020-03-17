@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122FE18875B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 15:21:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1781886F4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 15:10:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hZp82SsHzDqGl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:10:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hb2F74dMzDqQ1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:21:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,60 +19,60 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hYhN2B2qzDqfF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:20:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hYhS5GNDzDqdb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:20:56 +1100 (AEDT)
 Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HDBjlN141892
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:20:49 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ytgkv9pef-1
+ 02HDB5X4141111
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:20:54 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ytgkv9pgp-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:20:49 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 09:20:53 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Tue, 17 Mar 2020 13:20:47 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Tue, 17 Mar 2020 13:20:50 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 13:20:43 -0000
+ Tue, 17 Mar 2020 13:20:47 -0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HDKgZ145744366
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02HDKkMk55050322
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 13:20:42 GMT
+ Tue, 17 Mar 2020 13:20:46 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8BC45A405F;
- Tue, 17 Mar 2020 13:20:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4DB5DA4060;
+ Tue, 17 Mar 2020 13:20:46 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59FE0A4054;
- Tue, 17 Mar 2020 13:20:39 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1331CA4054;
+ Tue, 17 Mar 2020 13:20:43 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.85.71.34])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Mar 2020 13:20:39 +0000 (GMT)
+ Tue, 17 Mar 2020 13:20:42 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 2/4] mm/slub: Use mem_node to allocate a new slab
-Date: Tue, 17 Mar 2020 18:47:51 +0530
+Subject: [PATCH 3/4] mm: Implement reset_numa_mem
+Date: Tue, 17 Mar 2020 18:47:52 +0530
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
 References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
  <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 20031713-0020-0000-0000-000003B5E0B4
+x-cbid: 20031713-0016-0000-0000-000002F2929B
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031713-0021-0000-0000-0000220E451E
-Message-Id: <20200317131753.4074-3-srikar@linux.vnet.ibm.com>
+x-cbparentid: 20031713-0017-0000-0000-00003356131A
+Message-Id: <20200317131753.4074-4-srikar@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-17_04:2020-03-17,
  2020-03-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  lowpriorityscore=0
- suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=763
+ suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=975
  priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0
  impostorscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2003020000 definitions=main-2003170058
@@ -98,30 +98,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently while allocating a slab for a offline node, we use its
-associated node_numa_mem to search for a partial slab. If we don't find
-a partial slab, we try allocating a slab from the offline node using
-__alloc_pages_node. However this is bound to fail.
+For a memoryless or offline nodes, node_numa_mem refers to a N_MEMORY
+fallback node. Currently kernel has an API set_numa_mem that sets
+node_numa_mem for memoryless node. However this API cannot be used for
+offline nodes. Hence all offline nodes will have their node_numa_mem set
+to 0. However systems can themselves have node 0 as offline i.e
+memoryless and cpuless at this time. In such cases,
+node_to_mem_node() fails to provide a N_MEMORY fallback node.
 
-NIP [c00000000039a300] __alloc_pages_nodemask+0x130/0x3b0
-LR [c00000000039a3c4] __alloc_pages_nodemask+0x1f4/0x3b0
-Call Trace:
-[c0000008b36837f0] [c00000000039a3b4] __alloc_pages_nodemask+0x1e4/0x3b0 (unreliable)
-[c0000008b3683870] [c0000000003d1ff8] new_slab+0x128/0xcf0
-[c0000008b3683950] [c0000000003d6060] ___slab_alloc+0x410/0x820
-[c0000008b3683a40] [c0000000003d64a4] __slab_alloc+0x34/0x60
-[c0000008b3683a70] [c0000000003d78b0] __kmalloc_node+0x110/0x490
-[c0000008b3683af0] [c000000000343a08] kvmalloc_node+0x58/0x110
-[c0000008b3683b30] [c0000000003ffd44] mem_cgroup_css_online+0x104/0x270
-[c0000008b3683b90] [c000000000234e08] online_css+0x48/0xd0
-[c0000008b3683bc0] [c00000000023dedc] cgroup_apply_control_enable+0x2ec/0x4d0
-[c0000008b3683ca0] [c0000000002416f8] cgroup_mkdir+0x228/0x5f0
-[c0000008b3683d10] [c000000000520360] kernfs_iop_mkdir+0x90/0xf0
-[c0000008b3683d50] [c00000000043e400] vfs_mkdir+0x110/0x230
-[c0000008b3683da0] [c000000000441ee0] do_mkdirat+0xb0/0x1a0
-[c0000008b3683e20] [c00000000000b278] system_call+0x5c/0x68
-
-Mitigate this by allocating the new slab from the node_numa_mem.
+Mitigate this by having a new API that sets the default node_numa_mem for
+offline nodes to be first_memory_node.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org
@@ -141,56 +127,42 @@ Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 ---
- mm/slub.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ include/asm-generic/topology.h | 3 +++
+ include/linux/topology.h       | 7 +++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 1c55bf7892bf..fdf7f38f96e6 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1970,14 +1970,8 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
- 		struct kmem_cache_cpu *c)
- {
- 	void *object;
--	int searchnode = node;
+diff --git a/include/asm-generic/topology.h b/include/asm-generic/topology.h
+index 238873739550..e803ee7850e6 100644
+--- a/include/asm-generic/topology.h
++++ b/include/asm-generic/topology.h
+@@ -68,6 +68,9 @@
+ #ifndef set_numa_mem
+ #define set_numa_mem(node)
+ #endif
++#ifndef reset_numa_mem
++#define reset_numa_mem(node)
++#endif
+ #ifndef set_cpu_numa_mem
+ #define set_cpu_numa_mem(cpu, node)
+ #endif
+diff --git a/include/linux/topology.h b/include/linux/topology.h
+index eb2fe6edd73c..bebda80038bf 100644
+--- a/include/linux/topology.h
++++ b/include/linux/topology.h
+@@ -147,6 +147,13 @@ static inline int node_to_mem_node(int node)
+ }
+ #endif
  
--	if (node == NUMA_NO_NODE)
--		searchnode = numa_mem_id();
--	else if (!node_present_pages(node))
--		searchnode = node_to_mem_node(node);
--
--	object = get_partial_node(s, get_node(s, searchnode), c, flags);
-+	object = get_partial_node(s, get_node(s, node), c, flags);
- 	if (object || node != NUMA_NO_NODE)
- 		return object;
- 
-@@ -2470,6 +2464,11 @@ static inline void *new_slab_objects(struct kmem_cache *s, gfp_t flags,
- 
- 	WARN_ON_ONCE(s->ctor && (flags & __GFP_ZERO));
- 
-+	if (node == NUMA_NO_NODE)
-+		node = numa_mem_id();
-+	else if (!node_present_pages(node))
-+		node = node_to_mem_node(node);
++#ifndef reset_numa_mem
++static inline void reset_numa_mem(int node)
++{
++	_node_numa_mem_[node] = first_memory_node;
++}
++#endif
 +
- 	freelist = get_partial(s, flags, node, c);
- 
- 	if (freelist)
-@@ -2569,12 +2568,10 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- redo:
- 
- 	if (unlikely(!node_match(page, node))) {
--		int searchnode = node;
--
- 		if (node != NUMA_NO_NODE && !node_present_pages(node))
--			searchnode = node_to_mem_node(node);
-+			node = node_to_mem_node(node);
- 
--		if (unlikely(!node_match(page, searchnode))) {
-+		if (unlikely(!node_match(page, node))) {
- 			stat(s, ALLOC_NODE_MISMATCH);
- 			deactivate_slab(s, page, c->freelist, c);
- 			goto new_slab;
+ #ifndef numa_mem_id
+ /* Returns the number of the nearest Node with memory */
+ static inline int numa_mem_id(void)
 -- 
 2.18.1
 
