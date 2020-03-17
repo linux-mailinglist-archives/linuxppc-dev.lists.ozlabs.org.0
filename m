@@ -2,84 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAC1189850
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 10:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B9B18990F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:16:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j4sy4x2bzDqW4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 20:45:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j5YZ5syjzDqvx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:16:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=jhQXGRpy; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48j4qx0TqXzDqL5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 20:44:12 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02I9Ze5x131371
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 05:44:09 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yua2ap1y8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 05:44:09 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Wed, 18 Mar 2020 09:44:07 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 18 Mar 2020 09:44:02 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02I9i1mA59441288
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Mar 2020 09:44:01 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5779152052;
- Wed, 18 Mar 2020 09:44:01 +0000 (GMT)
-Received: from [9.203.170.80] (unknown [9.203.170.80])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B804952065;
- Wed, 18 Mar 2020 09:43:10 +0000 (GMT)
-Subject: Re: [PATCH 10/15] powerpc/watchpoint: Use loop for
- thread_struct->ptrace_bps
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
- <20200309085806.155823-11-ravi.bangoria@linux.ibm.com>
- <0eeeac90-b5e3-722b-2d2c-bb95c81d851a@c-s.fr>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Wed, 18 Mar 2020 15:13:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hYT36278zDqfk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:11:03 +1100 (AEDT)
+Received: from mail.kernel.org (ip5f5ad4e9.dynamic.kabel-deutschland.de
+ [95.90.212.233])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 62B84206EC;
+ Tue, 17 Mar 2020 13:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1584450659;
+ bh=wj5NkzbISu9o2utN78bxPeqq1ZgvydCMMryyeO/xzBU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=jhQXGRpyEjN1FbAvcv9quZfGePLCoK4kU909OULrkuYhnOKG38jWSBAxykmFtnPEc
+ FmxsmxL6osKlKdWLuFSmfK9Bc26tcpyTHH+GVRCjBz/zbJaE7+EUQig6/jG7Ef2Xw2
+ zXXfz+9+g7PLdkQHLfuE/QRAg89PRDvvy0ezvspc=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+ (envelope-from <mchehab@kernel.org>)
+ id 1jEBzh-0006Rm-EN; Tue, 17 Mar 2020 14:10:53 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH 00/12] Fix broken references for Documentation/*
+Date: Tue, 17 Mar 2020 14:10:39 +0100
+Message-Id: <cover.1584450500.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <0eeeac90-b5e3-722b-2d2c-bb95c81d851a@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20031809-0016-0000-0000-000002F31937
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031809-0017-0000-0000-000033569D96
-Message-Id: <a52ef8d3-b27b-d48d-b0ab-c9b41209a6ca@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_03:2020-03-17,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 malwarescore=0 suspectscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003180046
+X-Mailman-Approved-At: Wed, 18 Mar 2020 21:15:09 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,95 +58,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, mikey@neuling.org,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, peterz@infradead.org,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, fweisbec@gmail.com,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- mingo@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, dri-devel@lists.freedesktop.org,
+ Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ linux-arch@vger.kernel.org, Tyler Hicks <code@tyhicks.com>,
+ Christoph Hellwig <hch@infradead.org>, Doug Ledford <dledford@redhat.com>,
+ Alan Stern <stern@rowland.harvard.edu>,
+ =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
+ linux-pm@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ Jyri Sarha <jsarha@ti.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, Sean Paul <sean@poorly.run>,
+ Anton Altaparmakov <anton@tuxera.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, freedreno@lists.freedesktop.org,
+ Wanpeng Li <wanpengli@tencent.com>,
+ Benjamin Gaignard <benjamin.gaignard@st.com>, David Airlie <airlied@linux.ie>,
+ Harry Wei <harryxiyou@gmail.com>, Corentin Labbe <clabbe.montjoie@gmail.com>,
+ Ben Peled <bpeled@marvell.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ kvmarm@lists.cs.columbia.edu, Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ Wolfgang Grandegger <wg@grandegger.com>, Andrea Parri <parri.andrea@gmail.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, linux-arm-msm@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Maxime Ripard <mripard@kernel.org>,
+ OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Nicolas Pitre <nico@fluxnic.net>,
+ linux-ntfs-dev@lists.sourceforge.net, Miklos Szeredi <miklos@szeredi.hu>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ James Morse <james.morse@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Akira Yokosawa <akiyks@gmail.com>, Alex Shi <alex.shi@linux.alibaba.com>,
+ Will Deacon <will@kernel.org>, linux-afs@lists.infradead.org,
+ Dan Murphy <dmurphy@ti.com>, Rob Herring <robh@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Kishon Vijay Abraham I <kishon@ti.com>, Chen-Yu Tsai <wens@csie.org>,
+ Tomi Valkeinen <tomi.valkeinen@ti.com>, linux-arm-kernel@lists.infradead.org,
+ Federico Vaga <federico.vaga@vaga.pv.it>, Jade Alglave <j.alglave@ucl.ac.uk>,
+ Alexey Dobriyan <adobriyan@gmail.com>, linux-pwm@vger.kernel.org,
+ Gregory CLEMENT <gregory.clement@bootlin.com>, Borislav Petkov <bp@alien8.de>,
+ Maxime Ripard <maxime@cerno.tech>, Luc Maranget <luc.maranget@inria.fr>,
+ Yuti Amonkar <yamonkar@cadence.com>, Joseph Qi <joseph.qi@linux.alibaba.com>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, ocfs2-devel@oss.oracle.com,
+ Jan Kara <jack@suse.cz>, kvm@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, Amit Kucheria <amit.kucheria@verdurent.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Fasheh <mark@fasheh.com>, x86@kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>,
+ Zhang Rui <rui.zhang@intel.com>, Mike Leach <mike.leach@linaro.org>,
+ devicetree@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Daniel Lustig <dlustig@nvidia.com>,
+ ecryptfs@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Rob Herring <robh+dt@kernel.org>, Marc Kleine-Budde <mkl@pengutronix.de>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ David Sterba <dsterba@suse.com>, Jim Mattson <jmattson@google.com>,
+ netdev@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ Rob Clark <robdclark@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org, Joerg Roedel <joro@8bytes.org>,
+ Joel Becker <jlbec@evilplan.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> @@ -1628,6 +1628,9 @@ int copy_thread_tls(unsigned long clone_flags, unsigned long usp,
->>       void (*f)(void);
->>       unsigned long sp = (unsigned long)task_stack_page(p) + THREAD_SIZE;
->>       struct thread_info *ti = task_thread_info(p);
->> +#ifdef CONFIG_HAVE_HW_BREAKPOINT
->> +    int i;
->> +#endif
-> 
-> Could we avoid all those #ifdefs ?
-> 
-> I think if we make p->thread.ptrace_bps[] exist all the time, with a size of 0 when CONFIG_HAVE_HW_BREAKPOINT is not set, then we can drop a lot of #ifdefs.
+This patch series is against next-20200317. It fixes all references to files
+under Documentation/* that were moved, renamed or removed.
 
-Hmm.. what you are saying seems possible. But IMO it should be done as
-independent series. Will work on it.
+After this patch series, this script:
+	./scripts/documentation-file-ref-check
 
-> 
->>       klp_init_thread_info(p);
->> @@ -1687,7 +1690,8 @@ int copy_thread_tls(unsigned long clone_flags, unsigned long usp,
->>       p->thread.ksp_limit = (unsigned long)end_of_stack(p);
->>   #endif
->>   #ifdef CONFIG_HAVE_HW_BREAKPOINT
->> -    p->thread.ptrace_bps[0] = NULL;
->> +    for (i = 0; i < nr_wp_slots(); i++)
->> +        p->thread.ptrace_bps[i] = NULL;
->>   #endif
->>       p->thread.fp_save_area = NULL;
->> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
->> index f6d7955fc61e..e2651f86d56f 100644
->> --- a/arch/powerpc/kernel/ptrace.c
->> +++ b/arch/powerpc/kernel/ptrace.c
-> 
-> You'll have to rebase all this on the series https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=161356 which is about to go into powerpc-next
+Doesn't complain about any broken reference.
 
-Sure. Thanks for heads up.
+Mauro Carvalho Chehab (12):
+  MAINTAINERS: dt: update display/allwinner file entry
+  MAINTAINERS: dt: update etnaviv file reference
+  MAINTAINERS: drop an old reference to stm32 pwm timers doc
+  docs: dt: fix references to m_can.txt file
+  docs: dt: fix references to ap806-system-controller.txt
+  docs: dt: fix a broken reference to input.yaml
+  docs: dt: fix broken reference to phy-cadence-torrent.yaml
+  docs: fix broken references to text files
+  docs: fix broken references for ReST files that moved around
+  docs: dt: display/ti: fix typos at the devicetree/ directory name
+  docs: filesystems: fix renamed references
+  docs: kernel-parameters.txt: remove reference for removed Intel MPX
 
-> 
->> @@ -2829,6 +2829,19 @@ static int set_dac_range(struct task_struct *child,
->>   }
->>   #endif /* CONFIG_PPC_ADV_DEBUG_DAC_RANGE */
->> +#ifdef CONFIG_HAVE_HW_BREAKPOINT
->> +static int empty_ptrace_bp(struct thread_struct *thread)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < nr_wp_slots(); i++) {
->> +        if (!thread->ptrace_bps[i])
->> +            return i;
->> +    }
->> +    return -1;
->> +}
->> +#endif
-> 
-> What does this function do exactly ? I seems to do more than what its name suggests.
+ Documentation/ABI/stable/sysfs-devices-node   |  2 +-
+ Documentation/ABI/testing/procfs-smaps_rollup |  2 +-
+ Documentation/admin-guide/cpu-load.rst        |  2 +-
+ .../admin-guide/kernel-parameters.txt         | 11 ++--
+ Documentation/admin-guide/nfs/nfsroot.rst     |  2 +-
+ .../bindings/arm/freescale/fsl,scu.txt        |  2 +-
+ .../bindings/display/ti/ti,am65x-dss.yaml     |  2 +-
+ .../bindings/display/ti/ti,j721e-dss.yaml     |  2 +-
+ .../bindings/display/ti/ti,k2g-dss.yaml       |  2 +-
+ .../devicetree/bindings/gpio/gpio-mvebu.txt   |  2 +-
+ .../devicetree/bindings/net/can/tcan4x5x.txt  |  2 +-
+ .../bindings/phy/ti,phy-j721e-wiz.yaml        |  2 +-
+ .../bindings/thermal/armada-thermal.txt       |  2 +-
+ .../doc-guide/maintainer-profile.rst          |  2 +-
+ .../driver-api/driver-model/device.rst        |  4 +-
+ .../driver-api/driver-model/overview.rst      |  2 +-
+ Documentation/filesystems/dax.txt             |  2 +-
+ Documentation/filesystems/dnotify.txt         |  2 +-
+ .../filesystems/ramfs-rootfs-initramfs.rst    |  2 +-
+ Documentation/filesystems/sysfs.rst           |  2 +-
+ Documentation/memory-barriers.txt             |  2 +-
+ .../powerpc/firmware-assisted-dump.rst        |  2 +-
+ Documentation/process/adding-syscalls.rst     |  2 +-
+ Documentation/process/submit-checklist.rst    |  2 +-
+ .../it_IT/process/adding-syscalls.rst         |  2 +-
+ .../it_IT/process/submit-checklist.rst        |  2 +-
+ .../translations/ko_KR/memory-barriers.txt    |  2 +-
+ .../translations/zh_CN/filesystems/sysfs.txt  |  8 +--
+ .../zh_CN/process/submit-checklist.rst        |  2 +-
+ Documentation/virt/kvm/arm/pvtime.rst         |  2 +-
+ Documentation/virt/kvm/devices/vcpu.rst       |  2 +-
+ Documentation/virt/kvm/hypercalls.rst         |  4 +-
+ Documentation/virt/kvm/mmu.rst                |  2 +-
+ Documentation/virt/kvm/review-checklist.rst   |  2 +-
+ MAINTAINERS                                   | 61 +++++++++----------
+ Next/merge.log                                | 12 ++--
+ arch/powerpc/include/uapi/asm/kvm_para.h      |  2 +-
+ arch/x86/kvm/mmu/mmu.c                        |  2 +-
+ drivers/base/core.c                           |  2 +-
+ .../allwinner/sun8i-ce/sun8i-ce-cipher.c      |  2 +-
+ .../crypto/allwinner/sun8i-ce/sun8i-ce-core.c |  2 +-
+ .../allwinner/sun8i-ss/sun8i-ss-cipher.c      |  2 +-
+ .../crypto/allwinner/sun8i-ss/sun8i-ss-core.c |  2 +-
+ drivers/gpu/drm/Kconfig                       |  2 +-
+ drivers/gpu/drm/drm_ioctl.c                   |  2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |  2 +-
+ drivers/hwtracing/coresight/Kconfig           |  2 +-
+ drivers/media/v4l2-core/v4l2-fwnode.c         |  2 +-
+ fs/Kconfig                                    |  2 +-
+ fs/Kconfig.binfmt                             |  2 +-
+ fs/adfs/Kconfig                               |  2 +-
+ fs/affs/Kconfig                               |  2 +-
+ fs/afs/Kconfig                                |  6 +-
+ fs/bfs/Kconfig                                |  2 +-
+ fs/cramfs/Kconfig                             |  2 +-
+ fs/ecryptfs/Kconfig                           |  2 +-
+ fs/fat/Kconfig                                |  8 +--
+ fs/fuse/Kconfig                               |  2 +-
+ fs/fuse/dev.c                                 |  2 +-
+ fs/hfs/Kconfig                                |  2 +-
+ fs/hpfs/Kconfig                               |  2 +-
+ fs/isofs/Kconfig                              |  2 +-
+ fs/namespace.c                                |  2 +-
+ fs/notify/inotify/Kconfig                     |  2 +-
+ fs/ntfs/Kconfig                               |  2 +-
+ fs/ocfs2/Kconfig                              |  2 +-
+ fs/overlayfs/Kconfig                          |  6 +-
+ fs/proc/Kconfig                               |  4 +-
+ fs/romfs/Kconfig                              |  2 +-
+ fs/sysfs/dir.c                                |  2 +-
+ fs/sysfs/file.c                               |  2 +-
+ fs/sysfs/mount.c                              |  2 +-
+ fs/sysfs/symlink.c                            |  2 +-
+ fs/sysv/Kconfig                               |  2 +-
+ fs/udf/Kconfig                                |  2 +-
+ include/linux/kobject.h                       |  2 +-
+ include/linux/kobject_ns.h                    |  2 +-
+ include/linux/mm.h                            |  4 +-
+ include/linux/relay.h                         |  2 +-
+ include/linux/sysfs.h                         |  2 +-
+ include/uapi/linux/ethtool_netlink.h          |  2 +-
+ include/uapi/linux/kvm.h                      |  4 +-
+ include/uapi/rdma/rdma_user_ioctl_cmds.h      |  2 +-
+ kernel/relay.c                                |  2 +-
+ lib/kobject.c                                 |  4 +-
+ mm/gup.c                                      | 12 ++--
+ tools/include/uapi/linux/kvm.h                |  4 +-
+ virt/kvm/arm/vgic/vgic-mmio-v3.c              |  2 +-
+ virt/kvm/arm/vgic/vgic.h                      |  4 +-
+ 89 files changed, 151 insertions(+), 151 deletions(-)
 
-It finds an empty breakpoint in ptrace_bps[]. But yeah, function name is
-misleading. I'll rename it to find_empty_ptrace_bp().
+-- 
+2.24.1
 
-...
-
->> @@ -2979,10 +2993,10 @@ static long ppc_del_hwdebug(struct task_struct *child, long data)
->>           return -EINVAL;
->>   #ifdef CONFIG_HAVE_HW_BREAKPOINT
->> -    bp = thread->ptrace_bps[0];
->> +    bp = thread->ptrace_bps[data - 1];
-> 
-> Is data checked somewhere to ensure it is not out of boundaries ? Or are we sure it is always within ?
-
-Yes. it's checked. See patch #9:
-
-   @@ -2955,7 +2975,7 @@ static long ppc_del_hwdebug(struct task_struct *child, long data)
-    	}
-    	return rc;
-    #else
-   -	if (data != 1)
-   +	if (data < 1 || data > nr_wp_slots())
-    		return -EINVAL;
-    
-    #ifdef CONFIG_HAVE_HW_BREAKPOINT
-
-Thanks,
-Ravi
 
