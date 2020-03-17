@@ -2,63 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5327A188169
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 12:19:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E1818821E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 12:24:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hW082tHgzDqSN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 22:19:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hW5p53v3zDq9D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 22:24:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.68; helo=mail-wr1-f68.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=V4aXzPbh; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [216.205.24.74])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com
+ [209.85.221.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hVLz31hlzDqdq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 21:50:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1584442231;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9Xl1YbByyYFiK6yfX6MmnHGP4uzRrFgfV39buVPYxCU=;
- b=V4aXzPbh7j6UqiEzupTdmd8j05qQqrDh5j2G6oG9Udlt2w1d1VUvIM9yrmr7pjjItjUQne
- sO27I9D4bvicCf0PGMiwOVAJrI0EUN/hIJAeJpazUjv68I0R8xXqycb9OonKxbJkClhvYE
- tZrXuGnL9i11KbbyGpBpcTwO8XTo1P0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-231-rOenjaorNYCyOoJ8e97dKw-1; Tue, 17 Mar 2020 06:50:30 -0400
-X-MC-Unique: rOenjaorNYCyOoJ8e97dKw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2E8B8800D53;
- Tue, 17 Mar 2020 10:50:28 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-112-136.ams2.redhat.com [10.36.112.136])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 44EFB93531;
- Tue, 17 Mar 2020 10:50:23 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 8/8] mm/memory_hotplug: allow to specify a default
- online_type
-Date: Tue, 17 Mar 2020 11:49:42 +0100
-Message-Id: <20200317104942.11178-9-david@redhat.com>
-In-Reply-To: <20200317104942.11178-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hVX174DHzDqcJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 21:58:25 +1100 (AEDT)
+Received: by mail-wr1-f68.google.com with SMTP id t2so14956636wrx.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 03:58:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=GMaxJmgHFs3UkzWKRUJIGAMAuAis9ucYU7WNuhbnrM0=;
+ b=sbj5vQqVhjdIas4Dut7JVMpUPiuuq5Tlk4T2LGfMo8HhkFBwD5n0vsa6uUWknm7+2x
+ o0xZVzUxhIwydH2yPIo78Jg7R0rbKOlvzq4IM74sR6rOXh/kE7Oxbk+bbGqcbYD1WOtd
+ 7Il89Mx+jLuHS43RHgCN4RaglhLOgOBj67gUC4E+D+RVl/SqrlVZz9f+c0oD1wUV9YjJ
+ ACz7D5rkx4/jh79ywS76aHSWcKYE0nmcOJropIa/j3mUBbpDkiWuwiPB2vGQhMpSVvvy
+ a3F0vIImMK9Yik+V4z+HYZX3dpkGX6l5cHBRQjxjU9SGaED71E0cG+yvJRhie8qNSzvY
+ /CrQ==
+X-Gm-Message-State: ANhLgQ0vSyty5ASiZStb0ilEagVmR5FOk0rzXkJJEdVrm21EqzN1MjNL
+ U3/T2nRPXAoAE3bKBSFMwB8=
+X-Google-Smtp-Source: ADFU+vuwMUcRYGkxYv04ItK19Y8hWebnnNI8rNDKcJ7IZEFzRgxAHrUzVDn0iHSETvqcL5o3Rxedng==
+X-Received: by 2002:a05:6000:1186:: with SMTP id
+ g6mr5358405wrx.331.1584442700152; 
+ Tue, 17 Mar 2020 03:58:20 -0700 (PDT)
+Received: from localhost (ip-37-188-255-121.eurotel.cz. [37.188.255.121])
+ by smtp.gmail.com with ESMTPSA id y189sm3615478wmb.26.2020.03.17.03.58.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Mar 2020 03:58:19 -0700 (PDT)
+Date: Tue, 17 Mar 2020 11:58:18 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 4/8] powernv/memtrace: always online added memory blocks
+Message-ID: <20200317105818.GK26018@dhcp22.suse.cz>
 References: <20200317104942.11178-1-david@redhat.com>
+ <20200317104942.11178-5-david@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200317104942.11178-5-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,122 +67,73 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-hyperv@vger.kernel.org, Baoquan He <bhe@redhat.com>,
- David Hildenbrand <david@redhat.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Michal Hocko <mhocko@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Oscar Salvador <osalvador@suse.de>
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For now, distributions implement advanced udev rules to essentially
-- Don't online any hotplugged memory (s390x)
-- Online all memory to ZONE_NORMAL (e.g., most virt environments like
-  hyperv)
-- Online all memory to ZONE_MOVABLE in case the zone imbalance is taken
-  care of (e.g., bare metal, special virt environments)
+On Tue 17-03-20 11:49:38, David Hildenbrand wrote:
+> Let's always try to online the re-added memory blocks. In case add_memory()
+> already onlined the added memory blocks, the first device_online() call
+> will fail and stop processing the remaining memory blocks.
+> 
+> This avoids manually having to check memhp_auto_online.
+> 
+> Note: PPC always onlines all hotplugged memory directly from the kernel
+> as well - something that is handled by user space on other
+> architectures.
+> 
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-In summary: All memory is usually onlined the same way, however, the
-kernel always has to ask user space to come up with the same answer.
-E.g., Hyper-V always waits for a memory block to get onlined before
-continuing, otherwise it might end up adding memory faster than
-hotplugging it, which can result in strange OOM situations. This waiting
-slows down adding of a bigger amount of memory.
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-Let's allow to specify a default online_type, not just "online" and
-"offline". This allows distributions to configure the default online_type
-when booting up and be done with it.
+> ---
+>  arch/powerpc/platforms/powernv/memtrace.c | 14 ++++----------
+>  1 file changed, 4 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+> index d6d64f8718e6..13b369d2cc45 100644
+> --- a/arch/powerpc/platforms/powernv/memtrace.c
+> +++ b/arch/powerpc/platforms/powernv/memtrace.c
+> @@ -231,16 +231,10 @@ static int memtrace_online(void)
+>  			continue;
+>  		}
+>  
+> -		/*
+> -		 * If kernel isn't compiled with the auto online option
+> -		 * we need to online the memory ourselves.
+> -		 */
+> -		if (!memhp_auto_online) {
+> -			lock_device_hotplug();
+> -			walk_memory_blocks(ent->start, ent->size, NULL,
+> -					   online_mem_block);
+> -			unlock_device_hotplug();
+> -		}
+> +		lock_device_hotplug();
+> +		walk_memory_blocks(ent->start, ent->size, NULL,
+> +				   online_mem_block);
+> +		unlock_device_hotplug();
+>  
+>  		/*
+>  		 * Memory was added successfully so clean up references to it
+> -- 
+> 2.24.1
 
-We can now specify "offline", "online", "online_movable" and
-"online_kernel" via
-- "memhp_default_state=3D" on the kernel cmdline
-- /sys/devices/system/memory/auto_online_blocks
-just like we are able to specify for a single memory block via
-/sys/devices/system/memory/memoryX/state
-
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/base/memory.c          | 11 +++++------
- include/linux/memory_hotplug.h |  2 ++
- mm/memory_hotplug.c            |  8 ++++----
- 3 files changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 8d3e16dab69f..2b09b68b9f78 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -35,7 +35,7 @@ static const char *const online_type_to_str[] =3D {
- 	[MMOP_ONLINE_MOVABLE] =3D "online_movable",
- };
-=20
--static int memhp_online_type_from_str(const char *str)
-+int memhp_online_type_from_str(const char *str)
- {
- 	int i;
-=20
-@@ -394,13 +394,12 @@ static ssize_t auto_online_blocks_store(struct devi=
-ce *dev,
- 					struct device_attribute *attr,
- 					const char *buf, size_t count)
- {
--	if (sysfs_streq(buf, "online"))
--		memhp_default_online_type =3D MMOP_ONLINE;
--	else if (sysfs_streq(buf, "offline"))
--		memhp_default_online_type =3D MMOP_OFFLINE;
--	else
-+	const int online_type =3D memhp_online_type_from_str(buf);
-+
-+	if (online_type < 0)
- 		return -EINVAL;
-=20
-+	memhp_default_online_type =3D online_type;
- 	return count;
- }
-=20
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplu=
-g.h
-index c6e090b34c4b..ef55115320fb 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -117,6 +117,8 @@ extern int arch_add_memory(int nid, u64 start, u64 si=
-ze,
- 			struct mhp_restrictions *restrictions);
- extern u64 max_mem_size;
-=20
-+extern int memhp_online_type_from_str(const char *str);
-+
- /* Default online_type (MMOP_*) when new memory blocks are added. */
- extern int memhp_default_online_type;
- /* If movable_node boot option specified */
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 1975a2b99a2b..9916977b6ee1 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -74,10 +74,10 @@ int memhp_default_online_type =3D MMOP_ONLINE;
-=20
- static int __init setup_memhp_default_state(char *str)
- {
--	if (!strcmp(str, "online"))
--		memhp_default_online_type =3D MMOP_ONLINE;
--	else if (!strcmp(str, "offline"))
--		memhp_default_online_type =3D MMOP_OFFLINE;
-+	const int online_type =3D memhp_online_type_from_str(str);
-+
-+	if (online_type >=3D 0)
-+		memhp_default_online_type =3D online_type;
-=20
- 	return 1;
- }
---=20
-2.24.1
-
+-- 
+Michal Hocko
+SUSE Labs
