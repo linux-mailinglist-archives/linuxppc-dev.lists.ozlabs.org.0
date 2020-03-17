@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B2918851D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 14:17:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D52188532
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 14:20:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hYcm370DzDqdL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 00:17:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hYgp680CzDqf0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 00:20:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Vl1ZAOnd; dkim-atps=neutral
+ header.s=default header.b=u5B+6Ay0; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hYSz6QtpzDqg6
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hYSz6SjxzDqg8
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:10:59 +1100 (AEDT)
 Received: from mail.kernel.org (ip5f5ad4e9.dynamic.kabel-deutschland.de
  [95.90.212.233])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B5C9D20776;
+ by mail.kernel.org (Postfix) with ESMTPSA id A04152077A;
  Tue, 17 Mar 2020 13:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=default; t=1584450657;
- bh=VwiCIVDdWIXHhkivfXvJuw2IMfa6JwSEWzmkZnaqOHY=;
+ bh=iCrjWBQmeN1BbqeAvSke6TEyonsZ7DG7ruorIpYEhOM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Vl1ZAOndlCW3ZFBvt42qOPUXo/MpxTfq52MfrJcXJgWU5hsUaz6Bavw3j4Af1qjwI
- pUgLf7FcQFUowIK83Io8DzhfDTN9dLEAtXTgLLjCLredHuXas7vbn7T/jqjnmU91x0
- 0djXAHGFOvtSdUnpngUZLr4ng7pa9hvrf2Eeba2g=
+ b=u5B+6Ay0mn2w5069gpiEsLEXrtPLHqQWMO+jWZnS89xwAni20PldmmkHNiWsHU/Xc
+ LpnLpBhX5FoHk1Fc6TEBt2IDAX2bqIsb38oDboNHrc0DZUPFjrnxSdTN5DHdu6vB6d
+ /BirqAzfuCWE0oQB2LiVBpaPAc55Hs8+x3GtNbcw=
 Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
  (envelope-from <mchehab@kernel.org>)
- id 1jEBzh-0006SL-PO; Tue, 17 Mar 2020 14:10:53 +0100
+ id 1jEBzh-0006SX-Ut; Tue, 17 Mar 2020 14:10:53 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH 08/12] docs: fix broken references to text files
-Date: Tue, 17 Mar 2020 14:10:47 +0100
-Message-Id: <35dcbefd50875b92aaf5b7671d4c57c50b4274fe.1584450500.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 11/12] docs: filesystems: fix renamed references
+Date: Tue, 17 Mar 2020 14:10:50 +0100
+Message-Id: <2c2f46214a09307b510ba3e1e82e52cd5326dbb2.1584450500.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <cover.1584450500.git.mchehab+huawei@kernel.org>
 References: <cover.1584450500.git.mchehab+huawei@kernel.org>
@@ -60,476 +60,1023 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Akira Yokosawa <akiyks@gmail.com>, dri-devel@lists.freedesktop.org,
- linux-unionfs@vger.kernel.org, linux-mm@kvack.org,
- Harry Wei <harryxiyou@gmail.com>, Alex Shi <alex.shi@linux.alibaba.com>,
- Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
- linux-arch@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+Cc: Jan Kara <jack@suse.cz>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ David Airlie <airlied@linux.ie>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel@lists.freedesktop.org, David Howells <dhowells@redhat.com>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Harry Wei <harryxiyou@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+ Alex Shi <alex.shi@linux.alibaba.com>, linux-afs@lists.infradead.org,
  Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, kvm-ppc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Doug Ledford <dledford@redhat.com>,
- Alan Stern <stern@rowland.harvard.edu>, linux-arm-kernel@lists.infradead.org,
- Federico Vaga <federico.vaga@vaga.pv.it>, Jade Alglave <j.alglave@ucl.ac.uk>,
- Daniel Lustig <dlustig@nvidia.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- Mike Leach <mike.leach@linaro.org>, Andrea Parri <parri.andrea@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, "Paul E. McKenney" <paulmck@kernel.org>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Boqun Feng <boqun.feng@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Nicholas Piggin <npiggin@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Luc Maranget <luc.maranget@inria.fr>,
- OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
- David Howells <dhowells@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- linux-rdma@vger.kernel.org, James Morse <james.morse@arm.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Marc Zyngier <maz@kernel.org>,
- linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Mark Fasheh <mark@fasheh.com>, Tyler Hicks <code@tyhicks.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Federico Vaga <federico.vaga@vaga.pv.it>,
+ Alexey Dobriyan <adobriyan@gmail.com>, freedreno@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, ecryptfs@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ David Sterba <dsterba@suse.com>, Sean Paul <sean@poorly.run>,
+ Anton Altaparmakov <anton@tuxera.com>, Nicolas Pitre <nico@fluxnic.net>,
+ linux-ntfs-dev@lists.sourceforge.net,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Rob Clark <robdclark@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ ocfs2-devel@oss.oracle.com, Joel Becker <jlbec@evilplan.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Several references got broken due to txt to ReST conversion.
-
-Several of them can be automatically fixed with:
-
-	scripts/documentation-file-ref-check --fix
+Some filesystem references got broken by a previous patch
+series I submitted. Address those.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt      |  2 +-
- Documentation/memory-barriers.txt                    |  2 +-
- Documentation/process/submit-checklist.rst           |  2 +-
- .../translations/it_IT/process/submit-checklist.rst  |  2 +-
- Documentation/translations/ko_KR/memory-barriers.txt |  2 +-
- .../translations/zh_CN/filesystems/sysfs.txt         |  2 +-
- .../translations/zh_CN/process/submit-checklist.rst  |  2 +-
- Documentation/virt/kvm/arm/pvtime.rst                |  2 +-
- Documentation/virt/kvm/devices/vcpu.rst              |  2 +-
- Documentation/virt/kvm/hypercalls.rst                |  4 ++--
- arch/powerpc/include/uapi/asm/kvm_para.h             |  2 +-
- drivers/gpu/drm/Kconfig                              |  2 +-
- drivers/gpu/drm/drm_ioctl.c                          |  2 +-
- drivers/hwtracing/coresight/Kconfig                  |  2 +-
- fs/fat/Kconfig                                       |  8 ++++----
- fs/fuse/Kconfig                                      |  2 +-
- fs/fuse/dev.c                                        |  2 +-
- fs/overlayfs/Kconfig                                 |  6 +++---
- include/linux/mm.h                                   |  4 ++--
- include/uapi/linux/ethtool_netlink.h                 |  2 +-
- include/uapi/rdma/rdma_user_ioctl_cmds.h             |  2 +-
- mm/gup.c                                             | 12 ++++++------
- virt/kvm/arm/vgic/vgic-mmio-v3.c                     |  2 +-
- virt/kvm/arm/vgic/vgic.h                             |  4 ++--
- 24 files changed, 37 insertions(+), 37 deletions(-)
+ Documentation/ABI/stable/sysfs-devices-node   |  2 +-
+ Documentation/ABI/testing/procfs-smaps_rollup |  2 +-
+ Documentation/admin-guide/cpu-load.rst        |  2 +-
+ .../admin-guide/kernel-parameters.txt         |  2 +-
+ Documentation/admin-guide/nfs/nfsroot.rst     |  2 +-
+ .../driver-api/driver-model/device.rst        |  4 +-
+ .../driver-api/driver-model/overview.rst      |  2 +-
+ Documentation/filesystems/dax.txt             |  2 +-
+ Documentation/filesystems/dnotify.txt         |  2 +-
+ .../filesystems/ramfs-rootfs-initramfs.rst    |  2 +-
+ Documentation/filesystems/sysfs.rst           |  2 +-
+ .../powerpc/firmware-assisted-dump.rst        |  2 +-
+ Documentation/process/adding-syscalls.rst     |  2 +-
+ .../it_IT/process/adding-syscalls.rst         |  2 +-
+ .../translations/zh_CN/filesystems/sysfs.txt  |  6 +--
+ MAINTAINERS                                   | 54 +++++++++----------
+ Next/merge.log                                | 12 ++---
+ drivers/base/core.c                           |  2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |  2 +-
+ fs/Kconfig                                    |  2 +-
+ fs/Kconfig.binfmt                             |  2 +-
+ fs/adfs/Kconfig                               |  2 +-
+ fs/affs/Kconfig                               |  2 +-
+ fs/afs/Kconfig                                |  6 +--
+ fs/bfs/Kconfig                                |  2 +-
+ fs/cramfs/Kconfig                             |  2 +-
+ fs/ecryptfs/Kconfig                           |  2 +-
+ fs/hfs/Kconfig                                |  2 +-
+ fs/hpfs/Kconfig                               |  2 +-
+ fs/isofs/Kconfig                              |  2 +-
+ fs/namespace.c                                |  2 +-
+ fs/notify/inotify/Kconfig                     |  2 +-
+ fs/ntfs/Kconfig                               |  2 +-
+ fs/ocfs2/Kconfig                              |  2 +-
+ fs/proc/Kconfig                               |  4 +-
+ fs/romfs/Kconfig                              |  2 +-
+ fs/sysfs/dir.c                                |  2 +-
+ fs/sysfs/file.c                               |  2 +-
+ fs/sysfs/mount.c                              |  2 +-
+ fs/sysfs/symlink.c                            |  2 +-
+ fs/sysv/Kconfig                               |  2 +-
+ fs/udf/Kconfig                                |  2 +-
+ include/linux/kobject.h                       |  2 +-
+ include/linux/kobject_ns.h                    |  2 +-
+ include/linux/relay.h                         |  2 +-
+ include/linux/sysfs.h                         |  2 +-
+ kernel/relay.c                                |  2 +-
+ lib/kobject.c                                 |  4 +-
+ 48 files changed, 86 insertions(+), 86 deletions(-)
 
+diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+index df8413cf1468..484fc04bcc25 100644
+--- a/Documentation/ABI/stable/sysfs-devices-node
++++ b/Documentation/ABI/stable/sysfs-devices-node
+@@ -54,7 +54,7 @@ Date:		October 2002
+ Contact:	Linux Memory Management list <linux-mm@kvack.org>
+ Description:
+ 		Provides information about the node's distribution and memory
+-		utilization. Similar to /proc/meminfo, see Documentation/filesystems/proc.txt
++		utilization. Similar to /proc/meminfo, see Documentation/filesystems/proc.rst
+ 
+ What:		/sys/devices/system/node/nodeX/numastat
+ Date:		October 2002
+diff --git a/Documentation/ABI/testing/procfs-smaps_rollup b/Documentation/ABI/testing/procfs-smaps_rollup
+index 274df44d8b1b..046978193368 100644
+--- a/Documentation/ABI/testing/procfs-smaps_rollup
++++ b/Documentation/ABI/testing/procfs-smaps_rollup
+@@ -11,7 +11,7 @@ Description:
+ 		Additionally, the fields Pss_Anon, Pss_File and Pss_Shmem
+ 		are not present in /proc/pid/smaps.  These fields represent
+ 		the sum of the Pss field of each type (anon, file, shmem).
+-		For more details, see Documentation/filesystems/proc.txt
++		For more details, see Documentation/filesystems/proc.rst
+ 		and the procfs man page.
+ 
+ 		Typical output looks like this:
+diff --git a/Documentation/admin-guide/cpu-load.rst b/Documentation/admin-guide/cpu-load.rst
+index 2d01ce43d2a2..ebdecf864080 100644
+--- a/Documentation/admin-guide/cpu-load.rst
++++ b/Documentation/admin-guide/cpu-load.rst
+@@ -105,7 +105,7 @@ References
+ ----------
+ 
+ - http://lkml.org/lkml/2007/2/12/6
+-- Documentation/filesystems/proc.txt (1.8)
++- Documentation/filesystems/proc.rst (1.8)
+ 
+ 
+ Thanks
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index df34a4176e58..28be91d4e66b 100644
+index 28be91d4e66b..192a36a66fc9 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -960,7 +960,7 @@
- 			edid/1680x1050.bin, or edid/1920x1080.bin is given
- 			and no file with the same name exists. Details and
- 			instructions how to build your own EDID data are
--			available in Documentation/driver-api/edid.rst. An EDID
-+			available in Documentation/admin-guide/edid.rst. An EDID
- 			data set will only be used for a particular connector,
- 			if its name and a colon are prepended to the EDID
- 			name. Each connector may use a unique EDID data
-diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
-index e1c355e84edd..eaabc3134294 100644
---- a/Documentation/memory-barriers.txt
-+++ b/Documentation/memory-barriers.txt
-@@ -620,7 +620,7 @@ because the CPUs that the Linux kernel supports don't do writes
- until they are certain (1) that the write will actually happen, (2)
- of the location of the write, and (3) of the value to be written.
- But please carefully read the "CONTROL DEPENDENCIES" section and the
--Documentation/RCU/rcu_dereference.txt file:  The compiler can and does
-+Documentation/RCU/rcu_dereference.rst file:  The compiler can and does
- break dependencies in a great many highly creative ways.
+@@ -683,7 +683,7 @@
+ 	coredump_filter=
+ 			[KNL] Change the default value for
+ 			/proc/<pid>/coredump_filter.
+-			See also Documentation/filesystems/proc.txt.
++			See also Documentation/filesystems/proc.rst.
  
- 	CPU 1		      CPU 2
-diff --git a/Documentation/process/submit-checklist.rst b/Documentation/process/submit-checklist.rst
-index 8e56337d422d..3f8e9d5d95c2 100644
---- a/Documentation/process/submit-checklist.rst
-+++ b/Documentation/process/submit-checklist.rst
-@@ -107,7 +107,7 @@ and elsewhere regarding submitting Linux kernel patches.
-     and why.
+ 	coresight_cpu_debug.enable
+ 			[ARM,ARM64]
+diff --git a/Documentation/admin-guide/nfs/nfsroot.rst b/Documentation/admin-guide/nfs/nfsroot.rst
+index 82a4fda057f9..c6772075c80c 100644
+--- a/Documentation/admin-guide/nfs/nfsroot.rst
++++ b/Documentation/admin-guide/nfs/nfsroot.rst
+@@ -18,7 +18,7 @@ Mounting the root filesystem via NFS (nfsroot)
+ In order to use a diskless system, such as an X-terminal or printer server for
+ example, it is necessary for the root filesystem to be present on a non-disk
+ device. This may be an initramfs (see
+-Documentation/filesystems/ramfs-rootfs-initramfs.txt), a ramdisk (see
++Documentation/filesystems/ramfs-rootfs-initramfs.rst), a ramdisk (see
+ Documentation/admin-guide/initrd.rst) or a filesystem mounted via NFS. The
+ following text describes on how to use NFS for the root filesystem. For the rest
+ of this text 'client' means the diskless system, and 'server' means the NFS
+diff --git a/Documentation/driver-api/driver-model/device.rst b/Documentation/driver-api/driver-model/device.rst
+index 2b868d49d349..b9b022371e85 100644
+--- a/Documentation/driver-api/driver-model/device.rst
++++ b/Documentation/driver-api/driver-model/device.rst
+@@ -50,10 +50,10 @@ Attributes
  
- 26) If any ioctl's are added by the patch, then also update
--    ``Documentation/ioctl/ioctl-number.rst``.
-+    ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
+ Attributes of devices can be exported by a device driver through sysfs.
  
- 27) If your modified source code depends on or uses any of the kernel
-     APIs or features that are related to the following ``Kconfig`` symbols,
-diff --git a/Documentation/translations/it_IT/process/submit-checklist.rst b/Documentation/translations/it_IT/process/submit-checklist.rst
-index 995ee69fab11..3e575502690f 100644
---- a/Documentation/translations/it_IT/process/submit-checklist.rst
-+++ b/Documentation/translations/it_IT/process/submit-checklist.rst
-@@ -117,7 +117,7 @@ sottomissione delle patch, in particolare
-     sorgenti che ne spieghi la logica: cosa fanno e perché.
+-Please see Documentation/filesystems/sysfs.txt for more information
++Please see Documentation/filesystems/sysfs.rst for more information
+ on how sysfs works.
  
- 25) Se la patch aggiunge nuove chiamate ioctl, allora aggiornate
--    ``Documentation/ioctl/ioctl-number.rst``.
-+    ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
+-As explained in Documentation/kobject.txt, device attributes must be
++As explained in Documentation/core-api/kobject.rst, device attributes must be
+ created before the KOBJ_ADD uevent is generated. The only way to realize
+ that is by defining an attribute group.
  
- 26) Se il codice che avete modificato dipende o usa una qualsiasi interfaccia o
-     funzionalità del kernel che è associata a uno dei seguenti simboli
-diff --git a/Documentation/translations/ko_KR/memory-barriers.txt b/Documentation/translations/ko_KR/memory-barriers.txt
-index 2e831ece6e26..e50fe6541335 100644
---- a/Documentation/translations/ko_KR/memory-barriers.txt
-+++ b/Documentation/translations/ko_KR/memory-barriers.txt
-@@ -641,7 +641,7 @@ P 는 짝수 번호 캐시 라인에 저장되어 있고, 변수 B 는 홀수 
- 리눅스 커널이 지원하는 CPU 들은 (1) 쓰기가 정말로 일어날지, (2) 쓰기가 어디에
- 이루어질지, 그리고 (3) 쓰여질 값을 확실히 알기 전까지는 쓰기를 수행하지 않기
- 때문입니다.  하지만 "컨트롤 의존성" 섹션과
--Documentation/RCU/rcu_dereference.txt 파일을 주의 깊게 읽어 주시기 바랍니다:
-+Documentation/RCU/rcu_dereference.rst 파일을 주의 깊게 읽어 주시기 바랍니다:
- 컴파일러는 매우 창의적인 많은 방법으로 종속성을 깰 수 있습니다.
+diff --git a/Documentation/driver-api/driver-model/overview.rst b/Documentation/driver-api/driver-model/overview.rst
+index d4d1e9b40e0c..e98d0ab4a9b6 100644
+--- a/Documentation/driver-api/driver-model/overview.rst
++++ b/Documentation/driver-api/driver-model/overview.rst
+@@ -121,4 +121,4 @@ device-specific data or tunable interfaces.
  
- 	CPU 1		      CPU 2
+ More information about the sysfs directory layout can be found in
+ the other documents in this directory and in the file
+-Documentation/filesystems/sysfs.txt.
++Documentation/filesystems/sysfs.rst.
+diff --git a/Documentation/filesystems/dax.txt b/Documentation/filesystems/dax.txt
+index 679729442fd2..735f3859b19f 100644
+--- a/Documentation/filesystems/dax.txt
++++ b/Documentation/filesystems/dax.txt
+@@ -74,7 +74,7 @@ are zeroed out and converted to written extents before being returned to avoid
+ exposure of uninitialized data through mmap.
+ 
+ These filesystems may be used for inspiration:
+-- ext2: see Documentation/filesystems/ext2.txt
++- ext2: see Documentation/filesystems/ext2.rst
+ - ext4: see Documentation/filesystems/ext4/
+ - xfs:  see Documentation/admin-guide/xfs.rst
+ 
+diff --git a/Documentation/filesystems/dnotify.txt b/Documentation/filesystems/dnotify.txt
+index 15156883d321..08d575ece45d 100644
+--- a/Documentation/filesystems/dnotify.txt
++++ b/Documentation/filesystems/dnotify.txt
+@@ -67,4 +67,4 @@ See tools/testing/selftests/filesystems/dnotify_test.c for an example.
+ NOTE
+ ----
+ Beginning with Linux 2.6.13, dnotify has been replaced by inotify.
+-See Documentation/filesystems/inotify.txt for more information on it.
++See Documentation/filesystems/inotify.rst for more information on it.
+diff --git a/Documentation/filesystems/ramfs-rootfs-initramfs.rst b/Documentation/filesystems/ramfs-rootfs-initramfs.rst
+index 6c576e241d86..3fddacc6bf14 100644
+--- a/Documentation/filesystems/ramfs-rootfs-initramfs.rst
++++ b/Documentation/filesystems/ramfs-rootfs-initramfs.rst
+@@ -71,7 +71,7 @@ be allowed write access to a ramfs mount.
+ 
+ A ramfs derivative called tmpfs was created to add size limits, and the ability
+ to write the data to swap space.  Normal users can be allowed write access to
+-tmpfs mounts.  See Documentation/filesystems/tmpfs.txt for more information.
++tmpfs mounts.  See Documentation/filesystems/tmpfs.rst for more information.
+ 
+ What is rootfs?
+ ---------------
+diff --git a/Documentation/filesystems/sysfs.rst b/Documentation/filesystems/sysfs.rst
+index 290891c3fecb..ab0f7795792b 100644
+--- a/Documentation/filesystems/sysfs.rst
++++ b/Documentation/filesystems/sysfs.rst
+@@ -20,7 +20,7 @@ a means to export kernel data structures, their attributes, and the
+ linkages between them to userspace.
+ 
+ sysfs is tied inherently to the kobject infrastructure. Please read
+-Documentation/kobject.txt for more information concerning the kobject
++Documentation/core-api/kobject.rst for more information concerning the kobject
+ interface.
+ 
+ 
+diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
+index b3f3ee135dbe..20ea8cdee0aa 100644
+--- a/Documentation/powerpc/firmware-assisted-dump.rst
++++ b/Documentation/powerpc/firmware-assisted-dump.rst
+@@ -344,7 +344,7 @@ Here is the list of files under powerpc debugfs:
+ 
+ 
+ NOTE:
+-      Please refer to Documentation/filesystems/debugfs.txt on
++      Please refer to Documentation/filesystems/debugfs.rst on
+       how to mount the debugfs filesystem.
+ 
+ 
+diff --git a/Documentation/process/adding-syscalls.rst b/Documentation/process/adding-syscalls.rst
+index 1c3a840d06b9..a6b4a3a5bf3f 100644
+--- a/Documentation/process/adding-syscalls.rst
++++ b/Documentation/process/adding-syscalls.rst
+@@ -33,7 +33,7 @@ interface.
+        to a somewhat opaque API.
+ 
+  - If you're just exposing runtime system information, a new node in sysfs
+-   (see ``Documentation/filesystems/sysfs.txt``) or the ``/proc`` filesystem may
++   (see ``Documentation/filesystems/sysfs.rst``) or the ``/proc`` filesystem may
+    be more appropriate.  However, access to these mechanisms requires that the
+    relevant filesystem is mounted, which might not always be the case (e.g.
+    in a namespaced/sandboxed/chrooted environment).  Avoid adding any API to
+diff --git a/Documentation/translations/it_IT/process/adding-syscalls.rst b/Documentation/translations/it_IT/process/adding-syscalls.rst
+index c3a3439595a6..bff0a82bf127 100644
+--- a/Documentation/translations/it_IT/process/adding-syscalls.rst
++++ b/Documentation/translations/it_IT/process/adding-syscalls.rst
+@@ -39,7 +39,7 @@ vostra interfaccia.
+        un qualche modo opaca.
+ 
+  - Se dovete esporre solo delle informazioni sul sistema, un nuovo nodo in
+-   sysfs (vedere ``Documentation/filesystems/sysfs.txt``) o
++   sysfs (vedere ``Documentation/filesystems/sysfs.rst``) o
+    in procfs potrebbe essere sufficiente.  Tuttavia, l'accesso a questi
+    meccanismi richiede che il filesystem sia montato, il che potrebbe non
+    essere sempre vero (per esempio, in ambienti come namespace/sandbox/chroot).
 diff --git a/Documentation/translations/zh_CN/filesystems/sysfs.txt b/Documentation/translations/zh_CN/filesystems/sysfs.txt
-index ee1f37da5b23..a15c3ebdfa82 100644
+index a15c3ebdfa82..fcf620049d11 100644
 --- a/Documentation/translations/zh_CN/filesystems/sysfs.txt
 +++ b/Documentation/translations/zh_CN/filesystems/sysfs.txt
-@@ -281,7 +281,7 @@ drivers/ 包含了每个已为特定总线上的设备而挂载的驱动程序
- 假定驱动没有跨越多个总线类型)。
+@@ -1,4 +1,4 @@
+-Chinese translated version of Documentation/filesystems/sysfs.txt
++Chinese translated version of Documentation/filesystems/sysfs.rst
  
- fs/ 包含了一个为文件系统设立的目录。现在每个想要导出属性的文件系统必须
--在 fs/ 下创建自己的层次结构(参见Documentation/filesystems/fuse.txt)。
-+在 fs/ 下创建自己的层次结构(参见Documentation/filesystems/fuse.rst)。
+ If you have any comment or update to the content, please contact the
+ original document maintainer directly.  However, if you have a problem
+@@ -10,7 +10,7 @@ Maintainer: Patrick Mochel	<mochel@osdl.org>
+ 		Mike Murphy <mamurph@cs.clemson.edu>
+ Chinese maintainer: Fu Wei <tekkamanninja@gmail.com>
+ ---------------------------------------------------------------------
+-Documentation/filesystems/sysfs.txt 的中文翻译
++Documentation/filesystems/sysfs.rst 的中文翻译
  
- dev/ 包含两个子目录： char/ 和 block/。在这两个子目录中，有以
- <major>:<minor> 格式命名的符号链接。这些符号链接指向 sysfs 目录
-diff --git a/Documentation/translations/zh_CN/process/submit-checklist.rst b/Documentation/translations/zh_CN/process/submit-checklist.rst
-index 8738c55e42a2..50386e0e42e7 100644
---- a/Documentation/translations/zh_CN/process/submit-checklist.rst
-+++ b/Documentation/translations/zh_CN/process/submit-checklist.rst
-@@ -97,7 +97,7 @@ Linux内核补丁提交清单
- 24) 所有内存屏障例如 ``barrier()``, ``rmb()``, ``wmb()`` 都需要源代码中的注
-     释来解释它们正在执行的操作及其原因的逻辑。
+ 如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
+ 交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
+@@ -40,7 +40,7 @@ sysfs 是一个最初基于 ramfs 且位于内存的文件系统。它提供导
+ 数据结构及其属性，以及它们之间的关联到用户空间的方法。
  
--25) 如果补丁添加了任何ioctl，那么也要更新 ``Documentation/ioctl/ioctl-number.rst``
-+25) 如果补丁添加了任何ioctl，那么也要更新 ``Documentation/userspace-api/ioctl/ioctl-number.rst``
+ sysfs 始终与 kobject 的底层结构紧密相关。请阅读
+-Documentation/kobject.txt 文档以获得更多关于 kobject 接口的
++Documentation/core-api/kobject.rst 文档以获得更多关于 kobject 接口的
+ 信息。
  
- 26) 如果修改后的源代码依赖或使用与以下 ``Kconfig`` 符号相关的任何内核API或
-     功能，则在禁用相关 ``Kconfig`` 符号和/或 ``=m`` （如果该选项可用）的情况
-diff --git a/Documentation/virt/kvm/arm/pvtime.rst b/Documentation/virt/kvm/arm/pvtime.rst
-index 2357dd2d8655..687b60d76ca9 100644
---- a/Documentation/virt/kvm/arm/pvtime.rst
-+++ b/Documentation/virt/kvm/arm/pvtime.rst
-@@ -76,5 +76,5 @@ It is advisable that one or more 64k pages are set aside for the purpose of
- these structures and not used for other purposes, this enables the guest to map
- the region using 64k pages and avoids conflicting attributes with other memory.
  
--For the user space interface see Documentation/virt/kvm/devices/vcpu.txt
-+For the user space interface see Documentation/virt/kvm/devices/vcpu.rst
- section "3. GROUP: KVM_ARM_VCPU_PVTIME_CTRL".
-diff --git a/Documentation/virt/kvm/devices/vcpu.rst b/Documentation/virt/kvm/devices/vcpu.rst
-index 9963e680770a..ca374d3fe085 100644
---- a/Documentation/virt/kvm/devices/vcpu.rst
-+++ b/Documentation/virt/kvm/devices/vcpu.rst
-@@ -110,5 +110,5 @@ Returns:
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 84cb39b5a23b..f5ca9ebcb96b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -214,7 +214,7 @@ Q:	http://patchwork.kernel.org/project/v9fs-devel/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/ericvh/v9fs.git
+ T:	git git://github.com/martinetd/linux.git
+ S:	Maintained
+-F:	Documentation/filesystems/9p.txt
++F:	Documentation/filesystems/9p.rst
+ F:	fs/9p/
+ F:	net/9p/
+ F:	include/net/9p/
+@@ -584,7 +584,7 @@ AFFS FILE SYSTEM
+ M:	David Sterba <dsterba@suse.com>
+ L:	linux-fsdevel@vger.kernel.org
+ S:	Odd Fixes
+-F:	Documentation/filesystems/affs.txt
++F:	Documentation/filesystems/affs.rst
+ F:	fs/affs/
  
- Specifies the base address of the stolen time structure for this VCPU. The
- base address must be 64 byte aligned and exist within a valid guest memory
--region. See Documentation/virt/kvm/arm/pvtime.txt for more information
-+region. See Documentation/virt/kvm/arm/pvtime.rst for more information
- including the layout of the stolen time structure.
-diff --git a/Documentation/virt/kvm/hypercalls.rst b/Documentation/virt/kvm/hypercalls.rst
-index dbaf207e560d..ed4fddd364ea 100644
---- a/Documentation/virt/kvm/hypercalls.rst
-+++ b/Documentation/virt/kvm/hypercalls.rst
-@@ -22,7 +22,7 @@ S390:
-   number in R1.
+ AFS FILESYSTEM
+@@ -593,7 +593,7 @@ L:	linux-afs@lists.infradead.org
+ S:	Supported
+ F:	fs/afs/
+ F:	include/trace/events/afs.h
+-F:	Documentation/filesystems/afs.txt
++F:	Documentation/filesystems/afs.rst
+ W:	https://www.infradead.org/~dhowells/kafs/
  
-   For further information on the S390 diagnose call as supported by KVM,
--  refer to Documentation/virt/kvm/s390-diag.txt.
-+  refer to Documentation/virt/kvm/s390-diag.rst.
+ AGPGART DRIVER
+@@ -3079,7 +3079,7 @@ M:	Luis de Bethencourt <luisbg@kernel.org>
+ M:	Salah Triki <salah.triki@gmail.com>
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/luisbg/linux-befs.git
+-F:	Documentation/filesystems/befs.txt
++F:	Documentation/filesystems/befs.rst
+ F:	fs/befs/
  
- PowerPC:
-   It uses R3-R10 and hypercall number in R11. R4-R11 are used as output registers.
-@@ -30,7 +30,7 @@ PowerPC:
+ BFQ I/O SCHEDULER
+@@ -3093,7 +3093,7 @@ F:	Documentation/block/bfq-iosched.rst
+ BFS FILE SYSTEM
+ M:	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>
+ S:	Maintained
+-F:	Documentation/filesystems/bfs.txt
++F:	Documentation/filesystems/bfs.rst
+ F:	fs/bfs/
+ F:	include/uapi/linux/bfs_fs.h
  
-   KVM hypercalls uses 4 byte opcode, that are patched with 'hypercall-instructions'
-   property inside the device tree's /hypervisor node.
--  For more information refer to Documentation/virt/kvm/ppc-pv.txt
-+  For more information refer to Documentation/virt/kvm/ppc-pv.rst
+@@ -3637,7 +3637,7 @@ W:	http://btrfs.wiki.kernel.org/
+ Q:	http://patchwork.kernel.org/project/linux-btrfs/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mason/linux-btrfs.git
+ S:	Maintained
+-F:	Documentation/filesystems/btrfs.txt
++F:	Documentation/filesystems/btrfs.rst
+ F:	fs/btrfs/
+ F:	include/linux/btrfs*
+ F:	include/uapi/linux/btrfs*
+@@ -3934,7 +3934,7 @@ W:	http://ceph.com/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/sage/ceph-client.git
+ T:	git git://github.com/ceph/ceph-client.git
+ S:	Supported
+-F:	Documentation/filesystems/ceph.txt
++F:	Documentation/filesystems/ceph.rst
+ F:	fs/ceph/
  
- MIPS:
-   KVM hypercalls use the HYPCALL instruction with code 0 and the hypercall
-diff --git a/arch/powerpc/include/uapi/asm/kvm_para.h b/arch/powerpc/include/uapi/asm/kvm_para.h
-index be48c2215fa2..a809b1b44ddf 100644
---- a/arch/powerpc/include/uapi/asm/kvm_para.h
-+++ b/arch/powerpc/include/uapi/asm/kvm_para.h
-@@ -31,7 +31,7 @@
-  * Struct fields are always 32 or 64 bit aligned, depending on them being 32
-  * or 64 bit wide respectively.
+ CERTIFICATE HANDLING
+@@ -4446,7 +4446,7 @@ F:	include/linux/cpuidle.h
+ CRAMFS FILESYSTEM
+ M:	Nicolas Pitre <nico@fluxnic.net>
+ S:	Maintained
+-F:	Documentation/filesystems/cramfs.txt
++F:	Documentation/filesystems/cramfs.rst
+ F:	fs/cramfs/
+ 
+ CREATIVE SB0540
+@@ -5996,7 +5996,7 @@ W:	http://ecryptfs.org
+ W:	https://launchpad.net/ecryptfs
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tyhicks/ecryptfs.git
+ S:	Odd Fixes
+-F:	Documentation/filesystems/ecryptfs.txt
++F:	Documentation/filesystems/ecryptfs.rst
+ F:	fs/ecryptfs/
+ 
+ EDAC-AMD64
+@@ -6317,7 +6317,7 @@ M:	Chao Yu <yuchao0@huawei.com>
+ L:	linux-erofs@lists.ozlabs.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs.git
+-F:	Documentation/filesystems/erofs.txt
++F:	Documentation/filesystems/erofs.rst
+ F:	fs/erofs/
+ F:	include/trace/events/erofs.h
+ 
+@@ -6379,7 +6379,7 @@ EXT2 FILE SYSTEM
+ M:	Jan Kara <jack@suse.com>
+ L:	linux-ext4@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/filesystems/ext2.txt
++F:	Documentation/filesystems/ext2.rst
+ F:	fs/ext2/
+ F:	include/linux/ext2*
+ 
+@@ -6452,7 +6452,7 @@ L:	linux-f2fs-devel@lists.sourceforge.net
+ W:	https://f2fs.wiki.kernel.org/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs.git
+ S:	Maintained
+-F:	Documentation/filesystems/f2fs.txt
++F:	Documentation/filesystems/f2fs.rst
+ F:	Documentation/ABI/testing/sysfs-fs-f2fs
+ F:	fs/f2fs/
+ F:	include/linux/f2fs_fs.h
+@@ -7501,13 +7501,13 @@ F:	drivers/infiniband/hw/hfi1
+ HFS FILESYSTEM
+ L:	linux-fsdevel@vger.kernel.org
+ S:	Orphan
+-F:	Documentation/filesystems/hfs.txt
++F:	Documentation/filesystems/hfs.rst
+ F:	fs/hfs/
+ 
+ HFSPLUS FILESYSTEM
+ L:	linux-fsdevel@vger.kernel.org
+ S:	Orphan
+-F:	Documentation/filesystems/hfsplus.txt
++F:	Documentation/filesystems/hfsplus.rst
+ F:	fs/hfsplus/
+ 
+ HGA FRAMEBUFFER DRIVER
+@@ -8383,7 +8383,7 @@ M:	Jan Kara <jack@suse.cz>
+ R:	Amir Goldstein <amir73il@gmail.com>
+ L:	linux-fsdevel@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/filesystems/inotify.txt
++F:	Documentation/filesystems/inotify.rst
+ F:	fs/notify/inotify/
+ F:	include/linux/inotify.h
+ F:	include/uapi/linux/inotify.h
+@@ -11895,7 +11895,7 @@ W:	https://nilfs.sourceforge.io/
+ W:	https://nilfs.osdn.jp/
+ T:	git git://github.com/konis/nilfs2.git
+ S:	Supported
+-F:	Documentation/filesystems/nilfs2.txt
++F:	Documentation/filesystems/nilfs2.rst
+ F:	fs/nilfs2/
+ F:	include/trace/events/nilfs2.h
+ F:	include/uapi/linux/nilfs2_api.h
+@@ -12005,7 +12005,7 @@ L:	linux-ntfs-dev@lists.sourceforge.net
+ W:	http://www.tuxera.com/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/aia21/ntfs.git
+ S:	Supported
+-F:	Documentation/filesystems/ntfs.txt
++F:	Documentation/filesystems/ntfs.rst
+ F:	fs/ntfs/
+ 
+ NUBUS SUBSYSTEM
+@@ -12351,7 +12351,7 @@ OMFS FILESYSTEM
+ M:	Bob Copeland <me@bobcopeland.com>
+ L:	linux-karma-devel@lists.sourceforge.net
+ S:	Maintained
+-F:	Documentation/filesystems/omfs.txt
++F:	Documentation/filesystems/omfs.rst
+ F:	fs/omfs/
+ 
+ OMNIKEY CARDMAN 4000 DRIVER
+@@ -12599,8 +12599,8 @@ M:	Joseph Qi <joseph.qi@linux.alibaba.com>
+ L:	ocfs2-devel@oss.oracle.com (moderated for non-subscribers)
+ W:	http://ocfs2.wiki.kernel.org
+ S:	Supported
+-F:	Documentation/filesystems/ocfs2.txt
+-F:	Documentation/filesystems/dlmfs.txt
++F:	Documentation/filesystems/ocfs2.rst
++F:	Documentation/filesystems/dlmfs.rst
+ F:	fs/ocfs2/
+ 
+ ORANGEFS FILESYSTEM
+@@ -12610,7 +12610,7 @@ L:	devel@lists.orangefs.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/hubcap/linux.git
+ S:	Supported
+ F:	fs/orangefs/
+-F:	Documentation/filesystems/orangefs.txt
++F:	Documentation/filesystems/orangefs.rst
+ 
+ ORINOCO DRIVER
+ L:	linux-wireless@vger.kernel.org
+@@ -13573,7 +13573,7 @@ S:	Maintained
+ F:	fs/proc/
+ F:	include/linux/proc_fs.h
+ F:	tools/testing/selftests/proc/
+-F:	Documentation/filesystems/proc.txt
++F:	Documentation/filesystems/proc.rst
+ 
+ PROC SYSCTL
+ M:	Luis Chamberlain <mcgrof@kernel.org>
+@@ -15869,7 +15869,7 @@ L:	squashfs-devel@lists.sourceforge.net (subscribers-only)
+ W:	http://squashfs.org.uk
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pkl/squashfs-next.git
+ S:	Maintained
+-F:	Documentation/filesystems/squashfs.txt
++F:	Documentation/filesystems/squashfs.rst
+ F:	fs/squashfs/
+ 
+ SRM (Alpha) environment access
+@@ -16320,7 +16320,7 @@ F:	drivers/platform/x86/system76_acpi.c
+ SYSV FILESYSTEM
+ M:	Christoph Hellwig <hch@infradead.org>
+ S:	Maintained
+-F:	Documentation/filesystems/sysv-fs.txt
++F:	Documentation/filesystems/sysv-fs.rst
+ F:	fs/sysv/
+ F:	include/linux/sysv_fs.h
+ 
+@@ -17197,7 +17197,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rw/ubifs.git next
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rw/ubifs.git fixes
+ W:	http://www.linux-mtd.infradead.org/doc/ubifs.html
+ S:	Supported
+-F:	Documentation/filesystems/ubifs.txt
++F:	Documentation/filesystems/ubifs.rst
+ F:	fs/ubifs/
+ 
+ UCLINUX (M68KNOMMU AND COLDFIRE)
+@@ -17216,7 +17216,7 @@ F:	arch/m68k/include/asm/*_no.*
+ UDF FILESYSTEM
+ M:	Jan Kara <jack@suse.com>
+ S:	Maintained
+-F:	Documentation/filesystems/udf.txt
++F:	Documentation/filesystems/udf.rst
+ F:	fs/udf/
+ 
+ UDRAW TABLET
+@@ -18663,7 +18663,7 @@ L:	linux-fsdevel@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/zonefs.git
+ S:	Maintained
+ F:	fs/zonefs/
+-F:	Documentation/filesystems/zonefs.txt
++F:	Documentation/filesystems/zonefs.rst
+ 
+ ZPOOL COMPRESSED PAGE STORAGE API
+ M:	Dan Streetman <ddstreet@ieee.org>
+diff --git a/Next/merge.log b/Next/merge.log
+index 7c5d15d865f6..6a9bb9104d6f 100644
+--- a/Next/merge.log
++++ b/Next/merge.log
+@@ -2510,9 +2510,9 @@ Auto-merging Documentation/kbuild/index.rst
+ CONFLICT (content): Merge conflict in Documentation/kbuild/index.rst
+ Auto-merging Documentation/filesystems/zonefs.rst
+ CONFLICT (content): Merge conflict in Documentation/filesystems/zonefs.rst
+-Removing Documentation/filesystems/omfs.txt
++Removing Documentation/filesystems/omfs.rst
+ Removing Documentation/filesystems/nfs/nfs41-server.txt
+-Removing Documentation/filesystems/isofs.txt
++Removing Documentation/filesystems/isofs.rst
+ Auto-merging Documentation/filesystems/debugfs.rst
+ Removing Documentation/debugging-modules.txt
+ Auto-merging Documentation/admin-guide/kernel-parameters.txt
+@@ -2580,7 +2580,7 @@ $ git diff -M --stat --summary HEAD^..
+  Documentation/filesystems/index.rst                |   45 +
+  .../filesystems/{inotify.txt => inotify.rst}       |   33 +-
+  Documentation/filesystems/isofs.rst                |   64 +
+- Documentation/filesystems/isofs.txt                |   48 -
++ Documentation/filesystems/isofs.rst                |   48 -
+  Documentation/filesystems/nfs/index.rst            |   13 +
+  .../nfs/{knfsd-stats.txt => knfsd-stats.rst}       |   17 +-
+  Documentation/filesystems/nfs/nfs41-server.rst     |  256 ++++
+@@ -2593,7 +2593,7 @@ $ git diff -M --stat --summary HEAD^..
+  ...ne-filecheck.txt => ocfs2-online-filecheck.rst} |   45 +-
+  Documentation/filesystems/{ocfs2.txt => ocfs2.rst} |   31 +-
+  Documentation/filesystems/omfs.rst                 |  112 ++
+- Documentation/filesystems/omfs.txt                 |  106 --
++ Documentation/filesystems/omfs.rst                 |  106 --
+  .../filesystems/{orangefs.txt => orangefs.rst}     |  187 ++-
+  Documentation/filesystems/{proc.txt => proc.rst}   | 1544 +++++++++++---------
+  Documentation/filesystems/{qnx6.txt => qnx6.rst}   |   22 +
+@@ -2681,7 +2681,7 @@ $ git diff -M --stat --summary HEAD^..
+  rename Documentation/filesystems/{hpfs.txt => hpfs.rst} (66%)
+  rename Documentation/filesystems/{inotify.txt => inotify.rst} (83%)
+  create mode 100644 Documentation/filesystems/isofs.rst
+- delete mode 100644 Documentation/filesystems/isofs.txt
++ delete mode 100644 Documentation/filesystems/isofs.rst
+  create mode 100644 Documentation/filesystems/nfs/index.rst
+  rename Documentation/filesystems/nfs/{knfsd-stats.txt => knfsd-stats.rst} (95%)
+  create mode 100644 Documentation/filesystems/nfs/nfs41-server.rst
+@@ -2694,7 +2694,7 @@ $ git diff -M --stat --summary HEAD^..
+  rename Documentation/filesystems/{ocfs2-online-filecheck.txt => ocfs2-online-filecheck.rst} (77%)
+  rename Documentation/filesystems/{ocfs2.txt => ocfs2.rst} (88%)
+  create mode 100644 Documentation/filesystems/omfs.rst
+- delete mode 100644 Documentation/filesystems/omfs.txt
++ delete mode 100644 Documentation/filesystems/omfs.rst
+  rename Documentation/filesystems/{orangefs.txt => orangefs.rst} (83%)
+  rename Documentation/filesystems/{proc.txt => proc.rst} (65%)
+  rename Documentation/filesystems/{qnx6.txt => qnx6.rst} (98%)
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 5b84ba3f8c46..74d065ff7fc4 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1374,7 +1374,7 @@ static void device_release(struct kobject *kobj)
+ 	else if (dev->class && dev->class->dev_release)
+ 		dev->class->dev_release(dev);
+ 	else
+-		WARN(1, KERN_ERR "Device '%s' does not have a release() function, it is broken and must be fixed. See Documentation/kobject.txt.\n",
++		WARN(1, KERN_ERR "Device '%s' does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.\n",
+ 			dev_name(dev));
+ 	kfree(p);
+ }
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index c6169e7df19d..16a3f00a745a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -144,7 +144,7 @@ struct vsync_info {
   *
-- * See Documentation/virt/kvm/ppc-pv.txt
-+ * See Documentation/virt/kvm/ppc-pv.rst
-  */
- struct kvm_vcpu_arch_shared {
- 	__u64 scratch1;
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 43594978958e..fb92be7e8aa7 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -161,7 +161,7 @@ config DRM_LOAD_EDID_FIRMWARE
- 	  monitor are unable to provide appropriate EDID data. Since this
- 	  feature is provided as a workaround for broken hardware, the
- 	  default case is N. Details and instructions how to build your own
--	  EDID data are given in Documentation/driver-api/edid.rst.
-+	  EDID data are given in Documentation/admin-guide/edid.rst.
- 
- config DRM_DP_CEC
- 	bool "Enable DisplayPort CEC-Tunneling-over-AUX HDMI support"
-diff --git a/drivers/gpu/drm/drm_ioctl.c b/drivers/gpu/drm/drm_ioctl.c
-index 9e41972c4bbc..c2b8d2a953ae 100644
---- a/drivers/gpu/drm/drm_ioctl.c
-+++ b/drivers/gpu/drm/drm_ioctl.c
-@@ -741,7 +741,7 @@ static const struct drm_ioctl_desc drm_ioctls[] = {
-  *     };
+  * Main debugfs documentation is located at,
   *
-  * Please make sure that you follow all the best practices from
-- * ``Documentation/ioctl/botching-up-ioctls.rst``. Note that drm_ioctl()
-+ * ``Documentation/process/botching-up-ioctls.rst``. Note that drm_ioctl()
-  * automatically zero-extends structures, hence make sure you can add more stuff
-  * at the end, i.e. don't put a variable sized array there.
+- * Documentation/filesystems/debugfs.txt
++ * Documentation/filesystems/debugfs.rst
   *
-diff --git a/drivers/hwtracing/coresight/Kconfig b/drivers/hwtracing/coresight/Kconfig
-index 83e841be1081..02dbb5ca3bcf 100644
---- a/drivers/hwtracing/coresight/Kconfig
-+++ b/drivers/hwtracing/coresight/Kconfig
-@@ -107,7 +107,7 @@ config CORESIGHT_CPU_DEBUG
- 	  can quickly get to know program counter (PC), secure state,
- 	  exception level, etc. Before use debugging functionality, platform
- 	  needs to ensure the clock domain and power domain are enabled
--	  properly, please refer Documentation/trace/coresight-cpu-debug.rst
-+	  properly, please refer Documentation/trace/coresight/coresight-cpu-debug.rst
- 	  for detailed description and the example for usage.
+  * @dpu_debugfs_setup_regset32: Initialize data for dpu_debugfs_create_regset32
+  * @dpu_debugfs_create_regset32: Create 32-bit register dump file
+diff --git a/fs/Kconfig b/fs/Kconfig
+index f08fbbfafd9a..d1ad3935fb85 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -166,7 +166,7 @@ config TMPFS
+ 	  space. If you unmount a tmpfs instance, everything stored therein is
+ 	  lost.
  
- config CORESIGHT_CTI
-diff --git a/fs/fat/Kconfig b/fs/fat/Kconfig
-index 718163d0c621..ca31993dcb47 100644
---- a/fs/fat/Kconfig
-+++ b/fs/fat/Kconfig
-@@ -69,7 +69,7 @@ config VFAT_FS
+-	  See <file:Documentation/filesystems/tmpfs.txt> for details.
++	  See <file:Documentation/filesystems/tmpfs.rst> for details.
  
- 	  The VFAT support enlarges your kernel by about 10 KB and it only
- 	  works if you said Y to the "DOS FAT fs support" above.  Please read
--	  the file <file:Documentation/filesystems/vfat.txt> for details.  If
-+	  the file <file:Documentation/filesystems/vfat.rst> for details.  If
- 	  unsure, say Y.
+ config TMPFS_POSIX_ACL
+ 	bool "Tmpfs POSIX Access Control Lists"
+diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+index 62dc4f577ba1..3fbbd54f50fd 100644
+--- a/fs/Kconfig.binfmt
++++ b/fs/Kconfig.binfmt
+@@ -72,7 +72,7 @@ config CORE_DUMP_DEFAULT_ELF_HEADERS
  
- 	  To compile this as a module, choose M here: the module will be called
-@@ -82,7 +82,7 @@ config FAT_DEFAULT_CODEPAGE
- 	help
- 	  This option should be set to the codepage of your FAT filesystems.
- 	  It can be overridden with the "codepage" mount option.
--	  See <file:Documentation/filesystems/vfat.txt> for more information.
-+	  See <file:Documentation/filesystems/vfat.rst> for more information.
+ 	  The core dump behavior can be controlled per process using
+ 	  the /proc/PID/coredump_filter pseudo-file; this setting is
+-	  inherited.  See Documentation/filesystems/proc.txt for details.
++	  inherited.  See Documentation/filesystems/proc.rst for details.
  
- config FAT_DEFAULT_IOCHARSET
- 	string "Default iocharset for FAT"
-@@ -96,7 +96,7 @@ config FAT_DEFAULT_IOCHARSET
- 	  Note that "utf8" is not recommended for FAT filesystems.
- 	  If unsure, you shouldn't set "utf8" here - select the next option
- 	  instead if you would like to use UTF-8 encoded file names by default.
--	  See <file:Documentation/filesystems/vfat.txt> for more information.
-+	  See <file:Documentation/filesystems/vfat.rst> for more information.
+ 	  This config option changes the default setting of coredump_filter
+ 	  seen at boot time.  If unsure, say Y.
+diff --git a/fs/adfs/Kconfig b/fs/adfs/Kconfig
+index df4650dccf68..44738fed6625 100644
+--- a/fs/adfs/Kconfig
++++ b/fs/adfs/Kconfig
+@@ -12,7 +12,7 @@ config ADFS_FS
  
- 	  Enable any character sets you need in File Systems/Native Language
- 	  Support.
-@@ -114,4 +114,4 @@ config FAT_DEFAULT_UTF8
+ 	  The ADFS partition should be the first partition (i.e.,
+ 	  /dev/[hs]d?1) on each of your drives. Please read the file
+-	  <file:Documentation/filesystems/adfs.txt> for further details.
++	  <file:Documentation/filesystems/adfs.rst> for further details.
  
- 	  Say Y if you use UTF-8 encoding for file names, N otherwise.
+ 	  To compile this code as a module, choose M here: the module will be
+ 	  called adfs.
+diff --git a/fs/affs/Kconfig b/fs/affs/Kconfig
+index 84c46b9025c5..eb9d0ab850cb 100644
+--- a/fs/affs/Kconfig
++++ b/fs/affs/Kconfig
+@@ -9,7 +9,7 @@ config AFFS_FS
+ 	  FFS partition on your hard drive.  Amiga floppies however cannot be
+ 	  read with this driver due to an incompatibility of the floppy
+ 	  controller used in an Amiga and the standard floppy controller in
+-	  PCs and workstations. Read <file:Documentation/filesystems/affs.txt>
++	  PCs and workstations. Read <file:Documentation/filesystems/affs.rst>
+ 	  and <file:fs/affs/Changes>.
  
--	  See <file:Documentation/filesystems/vfat.txt> for more information.
-+	  See <file:Documentation/filesystems/vfat.rst> for more information.
-diff --git a/fs/fuse/Kconfig b/fs/fuse/Kconfig
-index eb2a585572dc..774b2618018a 100644
---- a/fs/fuse/Kconfig
-+++ b/fs/fuse/Kconfig
-@@ -12,7 +12,7 @@ config FUSE_FS
- 	  although chances are your distribution already has that library
- 	  installed if you've installed the "fuse" package itself.
+ 	  With this driver you can also mount disk files used by Bernd
+diff --git a/fs/afs/Kconfig b/fs/afs/Kconfig
+index 3fb1f559e317..1ad211d72b3b 100644
+--- a/fs/afs/Kconfig
++++ b/fs/afs/Kconfig
+@@ -8,7 +8,7 @@ config AFS_FS
+ 	  If you say Y here, you will get an experimental Andrew File System
+ 	  driver. It currently only supports unsecured read-only AFS access.
  
--	  See <file:Documentation/filesystems/fuse.txt> for more information.
-+	  See <file:Documentation/filesystems/fuse.rst> for more information.
- 	  See <file:Documentation/Changes> for needed library/utility version.
- 
- 	  If you want to develop a userspace FS, or if you want to use
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 97eec7522bf2..c7a65cf2bcca 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -2081,7 +2081,7 @@ static void end_polls(struct fuse_conn *fc)
-  * The same effect is usually achievable through killing the filesystem daemon
-  * and all users of the filesystem.  The exception is the combination of an
-  * asynchronous request and the tricky deadlock (see
-- * Documentation/filesystems/fuse.txt).
-+ * Documentation/filesystems/fuse.rst).
-  *
-  * Aborting requests under I/O goes as follows: 1: Separate out unlocked
-  * requests, they should be finished off immediately.  Locked requests will be
-diff --git a/fs/overlayfs/Kconfig b/fs/overlayfs/Kconfig
-index 714c14c47ca5..dd188c7996b3 100644
---- a/fs/overlayfs/Kconfig
-+++ b/fs/overlayfs/Kconfig
-@@ -9,7 +9,7 @@ config OVERLAY_FS
- 	  'lower' filesystem is either hidden or, in the case of directories,
- 	  merged with the 'upper' object.
- 
--	  For more information see Documentation/filesystems/overlayfs.txt
-+	  For more information see Documentation/filesystems/overlayfs.rst
- 
- config OVERLAY_FS_REDIRECT_DIR
- 	bool "Overlayfs: turn on redirect directory feature by default"
-@@ -38,7 +38,7 @@ config OVERLAY_FS_REDIRECT_ALWAYS_FOLLOW
- 	  If backward compatibility is not an issue, then it is safe and
- 	  recommended to say N here.
- 
--	  For more information, see Documentation/filesystems/overlayfs.txt
-+	  For more information, see Documentation/filesystems/overlayfs.rst
- 
- 	  If unsure, say Y.
- 
-@@ -103,7 +103,7 @@ config OVERLAY_FS_XINO_AUTO
- 	  If compatibility with applications that expect 32bit inodes is not an
- 	  issue, then it is safe and recommended to say Y here.
- 
--	  For more information, see Documentation/filesystems/overlayfs.txt
-+	  For more information, see Documentation/filesystems/overlayfs.rst
+-	  See <file:Documentation/filesystems/afs.txt> for more information.
++	  See <file:Documentation/filesystems/afs.rst> for more information.
  
  	  If unsure, say N.
  
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index bb50335af2ed..0173fa9850ff 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1219,7 +1219,7 @@ void unpin_user_pages(struct page **pages, unsigned long npages);
-  * used to track the pincount (instead using of the GUP_PIN_COUNTING_BIAS
-  * scheme).
+@@ -18,7 +18,7 @@ config AFS_DEBUG
+ 	help
+ 	  Say Y here to make runtime controllable debugging messages appear.
+ 
+-	  See <file:Documentation/filesystems/afs.txt> for more information.
++	  See <file:Documentation/filesystems/afs.rst> for more information.
+ 
+ 	  If unsure, say N.
+ 
+@@ -37,6 +37,6 @@ config AFS_DEBUG_CURSOR
+ 	  the dmesg log if the server rotation algorithm fails to successfully
+ 	  contact a server.
+ 
+-	  See <file:Documentation/filesystems/afs.txt> for more information.
++	  See <file:Documentation/filesystems/afs.rst> for more information.
+ 
+ 	  If unsure, say N.
+diff --git a/fs/bfs/Kconfig b/fs/bfs/Kconfig
+index 3e1247f07913..3a757805b585 100644
+--- a/fs/bfs/Kconfig
++++ b/fs/bfs/Kconfig
+@@ -11,7 +11,7 @@ config BFS_FS
+ 	  on your /stand slice from within Linux.  You then also need to say Y
+ 	  to "UnixWare slices support", below.  More information about the BFS
+ 	  file system is contained in the file
+-	  <file:Documentation/filesystems/bfs.txt>.
++	  <file:Documentation/filesystems/bfs.rst>.
+ 
+ 	  If you don't know what this is about, say N.
+ 
+diff --git a/fs/cramfs/Kconfig b/fs/cramfs/Kconfig
+index c8bebb70a971..d98cef0dbb6b 100644
+--- a/fs/cramfs/Kconfig
++++ b/fs/cramfs/Kconfig
+@@ -9,7 +9,7 @@ config CRAMFS
+ 	  limited to 256MB file systems (with 16MB files), and doesn't support
+ 	  16/32 bits uid/gid, hard links and timestamps.
+ 
+-	  See <file:Documentation/filesystems/cramfs.txt> and
++	  See <file:Documentation/filesystems/cramfs.rst> and
+ 	  <file:fs/cramfs/README> for further information.
+ 
+ 	  To compile this as a module, choose M here: the module will be called
+diff --git a/fs/ecryptfs/Kconfig b/fs/ecryptfs/Kconfig
+index 522c35d5292b..1bdeaa6d5790 100644
+--- a/fs/ecryptfs/Kconfig
++++ b/fs/ecryptfs/Kconfig
+@@ -7,7 +7,7 @@ config ECRYPT_FS
+ 	select CRYPTO_MD5
+ 	help
+ 	  Encrypted filesystem that operates on the VFS layer.  See
+-	  <file:Documentation/filesystems/ecryptfs.txt> to learn more about
++	  <file:Documentation/filesystems/ecryptfs.rst> to learn more about
+ 	  eCryptfs.  Userspace components are required and can be
+ 	  obtained from <http://ecryptfs.sf.net>.
+ 
+diff --git a/fs/hfs/Kconfig b/fs/hfs/Kconfig
+index 44f6e89bcb75..129926b5142d 100644
+--- a/fs/hfs/Kconfig
++++ b/fs/hfs/Kconfig
+@@ -6,7 +6,7 @@ config HFS_FS
+ 	help
+ 	  If you say Y here, you will be able to mount Macintosh-formatted
+ 	  floppy disks and hard drive partitions with full read-write access.
+-	  Please read <file:Documentation/filesystems/hfs.txt> to learn about
++	  Please read <file:Documentation/filesystems/hfs.rst> to learn about
+ 	  the available mount options.
+ 
+ 	  To compile this file system support as a module, choose M here: the
+diff --git a/fs/hpfs/Kconfig b/fs/hpfs/Kconfig
+index 56aa0336254a..2b36dc6f0a10 100644
+--- a/fs/hpfs/Kconfig
++++ b/fs/hpfs/Kconfig
+@@ -9,7 +9,7 @@ config HPFS_FS
+ 	  write files to an OS/2 HPFS partition on your hard drive. OS/2
+ 	  floppies however are in regular MSDOS format, so you don't need this
+ 	  option in order to be able to read them. Read
+-	  <file:Documentation/filesystems/hpfs.txt>.
++	  <file:Documentation/filesystems/hpfs.rst>.
+ 
+ 	  To compile this file system support as a module, choose M here: the
+ 	  module will be called hpfs.  If unsure, say N.
+diff --git a/fs/isofs/Kconfig b/fs/isofs/Kconfig
+index 5e7419599f50..08ffd37b9bb8 100644
+--- a/fs/isofs/Kconfig
++++ b/fs/isofs/Kconfig
+@@ -8,7 +8,7 @@ config ISO9660_FS
+ 	  long Unix filenames and symbolic links are also supported by this
+ 	  driver.  If you have a CD-ROM drive and want to do more with it than
+ 	  just listen to audio CDs and watch its LEDs, say Y (and read
+-	  <file:Documentation/filesystems/isofs.txt> and the CD-ROM-HOWTO,
++	  <file:Documentation/filesystems/isofs.rst> and the CD-ROM-HOWTO,
+ 	  available from <http://www.tldp.org/docs.html#howto>), thereby
+ 	  enlarging your kernel by about 27 KB; otherwise say N.
+ 
+diff --git a/fs/namespace.c b/fs/namespace.c
+index e6aed405611d..894a1d12fe5f 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3592,7 +3592,7 @@ EXPORT_SYMBOL(path_is_under);
+  * file system may be mounted on put_old. After all, new_root is a mountpoint.
   *
-- * For more information, please see Documentation/vm/pin_user_pages.rst.
-+ * For more information, please see Documentation/core-api/pin_user_pages.rst.
+  * Also, the current root cannot be on the 'rootfs' (initial ramfs) filesystem.
+- * See Documentation/filesystems/ramfs-rootfs-initramfs.txt for alternatives
++ * See Documentation/filesystems/ramfs-rootfs-initramfs.rst for alternatives
+  * in this situation.
   *
-  * @page:	pointer to page to be queried.
-  * @Return:	True, if it is likely that the page has been "dma-pinned".
-@@ -2854,7 +2854,7 @@ struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
-  * releasing pages: get_user_pages*() pages must be released via put_page(),
-  * while pin_user_pages*() pages must be released via unpin_user_page().
+  * Notes:
+diff --git a/fs/notify/inotify/Kconfig b/fs/notify/inotify/Kconfig
+index 6736e47d94d8..7715fadd5fff 100644
+--- a/fs/notify/inotify/Kconfig
++++ b/fs/notify/inotify/Kconfig
+@@ -12,6 +12,6 @@ config INOTIFY_USER
+ 	  new features including multiple file events, one-shot support, and
+ 	  unmount notification.
+ 
+-	  For more information, see <file:Documentation/filesystems/inotify.txt>
++	  For more information, see <file:Documentation/filesystems/inotify.rst>
+ 
+ 	  If unsure, say Y.
+diff --git a/fs/ntfs/Kconfig b/fs/ntfs/Kconfig
+index de9fb5cff226..1667a7e590d8 100644
+--- a/fs/ntfs/Kconfig
++++ b/fs/ntfs/Kconfig
+@@ -18,7 +18,7 @@ config NTFS_FS
+ 	  the Linux 2.4 kernel series is separately available as a patch
+ 	  from the project web site.
+ 
+-	  For more information see <file:Documentation/filesystems/ntfs.txt>
++	  For more information see <file:Documentation/filesystems/ntfs.rst>
+ 	  and <http://www.linux-ntfs.org/>.
+ 
+ 	  To compile this file system support as a module, choose M here: the
+diff --git a/fs/ocfs2/Kconfig b/fs/ocfs2/Kconfig
+index 46bba20da6b5..1177c33df895 100644
+--- a/fs/ocfs2/Kconfig
++++ b/fs/ocfs2/Kconfig
+@@ -21,7 +21,7 @@ config OCFS2_FS
+ 	  OCFS2 mailing lists: http://oss.oracle.com/projects/ocfs2/mailman/
+ 
+ 	  For more information on OCFS2, see the file
+-	  <file:Documentation/filesystems/ocfs2.txt>.
++	  <file:Documentation/filesystems/ocfs2.rst>.
+ 
+ config OCFS2_FS_O2CB
+ 	tristate "O2CB Kernelspace Clustering"
+diff --git a/fs/proc/Kconfig b/fs/proc/Kconfig
+index 27ef84d99f59..971a42f6357d 100644
+--- a/fs/proc/Kconfig
++++ b/fs/proc/Kconfig
+@@ -23,7 +23,7 @@ config PROC_FS
+ 	  /proc" or the equivalent line in /etc/fstab does the job.
+ 
+ 	  The /proc file system is explained in the file
+-	  <file:Documentation/filesystems/proc.txt> and on the proc(5) manpage
++	  <file:Documentation/filesystems/proc.rst> and on the proc(5) manpage
+ 	  ("man 5 proc").
+ 
+ 	  This option will enlarge your kernel by about 67 KB. Several
+@@ -95,7 +95,7 @@ config PROC_CHILDREN
+ 	default n
+ 	help
+ 	  Provides a fast way to retrieve first level children pids of a task. See
+-	  <file:Documentation/filesystems/proc.txt> for more information.
++	  <file:Documentation/filesystems/proc.rst> for more information.
+ 
+ 	  Say Y if you are running any user-space software which takes benefit from
+ 	  this interface. For example, rkt is such a piece of software.
+diff --git a/fs/romfs/Kconfig b/fs/romfs/Kconfig
+index ad4c45788896..9737b8e68878 100644
+--- a/fs/romfs/Kconfig
++++ b/fs/romfs/Kconfig
+@@ -6,7 +6,7 @@ config ROMFS_FS
+ 	  This is a very small read-only file system mainly intended for
+ 	  initial ram disks of installation disks, but it could be used for
+ 	  other read-only media as well.  Read
+-	  <file:Documentation/filesystems/romfs.txt> for details.
++	  <file:Documentation/filesystems/romfs.rst> for details.
+ 
+ 	  To compile this file system support as a module, choose M here: the
+ 	  module will be called romfs.  Note that the file system of your
+diff --git a/fs/sysfs/dir.c b/fs/sysfs/dir.c
+index aa85f2874a9f..59dffd5ca517 100644
+--- a/fs/sysfs/dir.c
++++ b/fs/sysfs/dir.c
+@@ -6,7 +6,7 @@
+  * Copyright (c) 2007 SUSE Linux Products GmbH
+  * Copyright (c) 2007 Tejun Heo <teheo@suse.de>
   *
-- * Please see Documentation/vm/pin_user_pages.rst for more information.
-+ * Please see Documentation/core-api/pin_user_pages.rst for more information.
+- * Please see Documentation/filesystems/sysfs.txt for more information.
++ * Please see Documentation/filesystems/sysfs.rst for more information.
   */
  
- static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
-diff --git a/include/uapi/linux/ethtool_netlink.h b/include/uapi/linux/ethtool_netlink.h
-index c7c7a1a550af..7e93cf1dc7dc 100644
---- a/include/uapi/linux/ethtool_netlink.h
-+++ b/include/uapi/linux/ethtool_netlink.h
-@@ -2,7 +2,7 @@
- /*
-  * include/uapi/linux/ethtool_netlink.h - netlink interface for ethtool
+ #define pr_fmt(fmt)	"sysfs: " fmt
+diff --git a/fs/sysfs/file.c b/fs/sysfs/file.c
+index 26bbf960e2a2..f275fcda62fb 100644
+--- a/fs/sysfs/file.c
++++ b/fs/sysfs/file.c
+@@ -6,7 +6,7 @@
+  * Copyright (c) 2007 SUSE Linux Products GmbH
+  * Copyright (c) 2007 Tejun Heo <teheo@suse.de>
   *
-- * See Documentation/networking/ethtool-netlink.txt in kernel source tree for
-+ * See Documentation/networking/ethtool-netlink.rst in kernel source tree for
-  * doucumentation of the interface.
+- * Please see Documentation/filesystems/sysfs.txt for more information.
++ * Please see Documentation/filesystems/sysfs.rst for more information.
   */
  
-diff --git a/include/uapi/rdma/rdma_user_ioctl_cmds.h b/include/uapi/rdma/rdma_user_ioctl_cmds.h
-index 7b1ec806f8f9..38ab7accb7be 100644
---- a/include/uapi/rdma/rdma_user_ioctl_cmds.h
-+++ b/include/uapi/rdma/rdma_user_ioctl_cmds.h
-@@ -36,7 +36,7 @@
- #include <linux/types.h>
- #include <linux/ioctl.h>
+ #include <linux/module.h>
+diff --git a/fs/sysfs/mount.c b/fs/sysfs/mount.c
+index db81cfbab9d6..e747c135c1d1 100644
+--- a/fs/sysfs/mount.c
++++ b/fs/sysfs/mount.c
+@@ -6,7 +6,7 @@
+  * Copyright (c) 2007 SUSE Linux Products GmbH
+  * Copyright (c) 2007 Tejun Heo <teheo@suse.de>
+  *
+- * Please see Documentation/filesystems/sysfs.txt for more information.
++ * Please see Documentation/filesystems/sysfs.rst for more information.
+  */
  
--/* Documentation/ioctl/ioctl-number.rst */
-+/* Documentation/userspace-api/ioctl/ioctl-number.rst */
- #define RDMA_IOCTL_MAGIC	0x1b
- #define RDMA_VERBS_IOCTL \
- 	_IOWR(RDMA_IOCTL_MAGIC, 1, struct ib_uverbs_ioctl_hdr)
-diff --git a/mm/gup.c b/mm/gup.c
-index 0361a1dca77e..00823d1ece86 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2832,9 +2832,9 @@ EXPORT_SYMBOL_GPL(get_user_pages_fast);
-  * the arguments here are identical.
+ #include <linux/fs.h>
+diff --git a/fs/sysfs/symlink.c b/fs/sysfs/symlink.c
+index c4deecc80f67..5603530a1a52 100644
+--- a/fs/sysfs/symlink.c
++++ b/fs/sysfs/symlink.c
+@@ -6,7 +6,7 @@
+  * Copyright (c) 2007 SUSE Linux Products GmbH
+  * Copyright (c) 2007 Tejun Heo <teheo@suse.de>
   *
-  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
-- * see Documentation/vm/pin_user_pages.rst for further details.
-+ * see Documentation/core-api/pin_user_pages.rst for further details.
-  *
-- * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
-+ * This is intended for Case 1 (DIO) in Documentation/core-api/pin_user_pages.rst. It
-  * is NOT intended for Case 2 (RDMA: long-term pins).
+- * Please see Documentation/filesystems/sysfs.txt for more information.
++ * Please see Documentation/filesystems/sysfs.rst for more information.
   */
- int pin_user_pages_fast(unsigned long start, int nr_pages,
-@@ -2872,9 +2872,9 @@ EXPORT_SYMBOL_GPL(pin_user_pages_fast);
-  * the arguments here are identical.
+ 
+ #include <linux/fs.h>
+diff --git a/fs/sysv/Kconfig b/fs/sysv/Kconfig
+index d4edf7d9ae10..b4e23e03fbeb 100644
+--- a/fs/sysv/Kconfig
++++ b/fs/sysv/Kconfig
+@@ -28,7 +28,7 @@ config SYSV_FS
+ 	  tar" or preferably "info tar").  Note also that this option has
+ 	  nothing whatsoever to do with the option "System V IPC". Read about
+ 	  the System V file system in
+-	  <file:Documentation/filesystems/sysv-fs.txt>.
++	  <file:Documentation/filesystems/sysv-fs.rst>.
+ 	  Saying Y here will enlarge your kernel by about 27 KB.
+ 
+ 	  To compile this as a module, choose M here: the module will be called
+diff --git a/fs/udf/Kconfig b/fs/udf/Kconfig
+index 6848de581ce1..26e1a49f3ba7 100644
+--- a/fs/udf/Kconfig
++++ b/fs/udf/Kconfig
+@@ -9,7 +9,7 @@ config UDF_FS
+ 	  compatible with standard unix file systems, it is also suitable for
+ 	  removable USB disks. Say Y if you intend to mount DVD discs or CDRW's
+ 	  written in packet mode, or if you want to use UDF for removable USB
+-	  disks. Please read <file:Documentation/filesystems/udf.txt>.
++	  disks. Please read <file:Documentation/filesystems/udf.rst>.
+ 
+ 	  To compile this file system support as a module, choose M here: the
+ 	  module will be called udf.
+diff --git a/include/linux/kobject.h b/include/linux/kobject.h
+index e2ca0a292e21..fc8d83e91379 100644
+--- a/include/linux/kobject.h
++++ b/include/linux/kobject.h
+@@ -7,7 +7,7 @@
+  * Copyright (c) 2006-2008 Greg Kroah-Hartman <greg@kroah.com>
+  * Copyright (c) 2006-2008 Novell Inc.
   *
-  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
-- * see Documentation/vm/pin_user_pages.rst for details.
-+ * see Documentation/core-api/pin_user_pages.rst for details.
-  *
-- * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
-+ * This is intended for Case 1 (DIO) in Documentation/core-api/pin_user_pages.rst. It
-  * is NOT intended for Case 2 (RDMA: long-term pins).
+- * Please read Documentation/kobject.txt before using the kobject
++ * Please read Documentation/core-api/kobject.rst before using the kobject
+  * interface, ESPECIALLY the parts about reference counts and object
+  * destructors.
   */
- long pin_user_pages_remote(struct task_struct *tsk, struct mm_struct *mm,
-@@ -2908,9 +2908,9 @@ EXPORT_SYMBOL(pin_user_pages_remote);
-  * FOLL_PIN is set.
+diff --git a/include/linux/kobject_ns.h b/include/linux/kobject_ns.h
+index 069aa2ebef90..2b5b64256cf4 100644
+--- a/include/linux/kobject_ns.h
++++ b/include/linux/kobject_ns.h
+@@ -8,7 +8,7 @@
   *
-  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
-- * see Documentation/vm/pin_user_pages.rst for details.
-+ * see Documentation/core-api/pin_user_pages.rst for details.
+  * Split from kobject.h by David Howells (dhowells@redhat.com)
   *
-- * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
-+ * This is intended for Case 1 (DIO) in Documentation/core-api/pin_user_pages.rst. It
-  * is NOT intended for Case 2 (RDMA: long-term pins).
+- * Please read Documentation/kobject.txt before using the kobject
++ * Please read Documentation/core-api/kobject.rst before using the kobject
+  * interface, ESPECIALLY the parts about reference counts and object
+  * destructors.
   */
- long pin_user_pages(unsigned long start, unsigned long nr_pages,
-diff --git a/virt/kvm/arm/vgic/vgic-mmio-v3.c b/virt/kvm/arm/vgic/vgic-mmio-v3.c
-index 48fd9fc229a2..215409ac8f12 100644
---- a/virt/kvm/arm/vgic/vgic-mmio-v3.c
-+++ b/virt/kvm/arm/vgic/vgic-mmio-v3.c
-@@ -300,7 +300,7 @@ static unsigned long vgic_v3_uaccess_read_pending(struct kvm_vcpu *vcpu,
- 	 * pending state of interrupt is latched in pending_latch variable.
- 	 * Userspace will save and restore pending state and line_level
- 	 * separately.
--	 * Refer to Documentation/virt/kvm/devices/arm-vgic-v3.txt
-+	 * Refer to Documentation/virt/kvm/devices/arm-vgic-v3.rst
- 	 * for handling of ISPENDR and ICPENDR.
+diff --git a/include/linux/relay.h b/include/linux/relay.h
+index c759f96e39c1..e13a333e7c37 100644
+--- a/include/linux/relay.h
++++ b/include/linux/relay.h
+@@ -141,7 +141,7 @@ struct rchan_callbacks
+ 	 * cause relay_open() to create a single global buffer rather
+ 	 * than the default set of per-cpu buffers.
+ 	 *
+-	 * See Documentation/filesystems/relay.txt for more info.
++	 * See Documentation/filesystems/relay.rst for more info.
  	 */
- 	for (i = 0; i < len * 8; i++) {
-diff --git a/virt/kvm/arm/vgic/vgic.h b/virt/kvm/arm/vgic/vgic.h
-index 769e4802645e..64fcd7511110 100644
---- a/virt/kvm/arm/vgic/vgic.h
-+++ b/virt/kvm/arm/vgic/vgic.h
-@@ -42,7 +42,7 @@
- 			    VGIC_AFFINITY_LEVEL(val, 3))
- 
- /*
-- * As per Documentation/virt/kvm/devices/arm-vgic-v3.txt,
-+ * As per Documentation/virt/kvm/devices/arm-vgic-v3.rst,
-  * below macros are defined for CPUREG encoding.
+ 	struct dentry *(*create_buf_file)(const char *filename,
+ 					  struct dentry *parent,
+diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+index aae751521d3a..74edf6d728c7 100644
+--- a/include/linux/sysfs.h
++++ b/include/linux/sysfs.h
+@@ -7,7 +7,7 @@
+  * Copyright (c) 2007 SUSE Linux Products GmbH
+  * Copyright (c) 2007 Tejun Heo <teheo@suse.de>
+  *
+- * Please see Documentation/filesystems/sysfs.txt for more information.
++ * Please see Documentation/filesystems/sysfs.rst for more information.
   */
- #define KVM_REG_ARM_VGIC_SYSREG_OP0_MASK   0x000000000000c000
-@@ -63,7 +63,7 @@
- 				      KVM_REG_ARM_VGIC_SYSREG_OP2_MASK)
  
+ #ifndef _SYSFS_H_
+diff --git a/kernel/relay.c b/kernel/relay.c
+index 07ee1a791d85..628f570ca678 100644
+--- a/kernel/relay.c
++++ b/kernel/relay.c
+@@ -1,7 +1,7 @@
  /*
-- * As per Documentation/virt/kvm/devices/arm-vgic-its.txt,
-+ * As per Documentation/virt/kvm/devices/arm-vgic-its.rst,
-  * below macros are defined for ITS table entry encoding.
+  * Public API and common code for kernel->userspace relay file support.
+  *
+- * See Documentation/filesystems/relay.txt for an overview.
++ * See Documentation/filesystems/relay.rst for an overview.
+  *
+  * Copyright (C) 2002-2005 - Tom Zanussi (zanussi@us.ibm.com), IBM Corp
+  * Copyright (C) 1999-2005 - Karim Yaghmour (karim@opersys.com)
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 83198cb37d8d..65fa7bf70c57 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -6,7 +6,7 @@
+  * Copyright (c) 2006-2007 Greg Kroah-Hartman <greg@kroah.com>
+  * Copyright (c) 2006-2007 Novell Inc.
+  *
+- * Please see the file Documentation/kobject.txt for critical information
++ * Please see the file Documentation/core-api/kobject.rst for critical information
+  * about using the kobject interface.
   */
- #define KVM_ITS_CTE_VALID_SHIFT		63
+ 
+@@ -670,7 +670,7 @@ static void kobject_cleanup(struct kobject *kobj)
+ 		 kobject_name(kobj), kobj, __func__, kobj->parent);
+ 
+ 	if (t && !t->release)
+-		pr_debug("kobject: '%s' (%p): does not have a release() function, it is broken and must be fixed. See Documentation/kobject.txt.\n",
++		pr_debug("kobject: '%s' (%p): does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.\n",
+ 			 kobject_name(kobj), kobj);
+ 
+ 	/* send "remove" if the caller did not do it but sent "add" */
 -- 
 2.24.1
 
