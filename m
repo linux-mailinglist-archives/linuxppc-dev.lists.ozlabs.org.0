@@ -1,68 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0B0187BF1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 10:20:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC2E187BDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 10:19:14 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hSKW5FqqzDqdX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 20:19:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hSMW5G6NzDqjQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 20:20:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IO4JQczT; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20161025 header.b=qBbspeyE; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hS7Y2kckzDqX6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 20:10:33 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id m15so11362362pgv.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 02:10:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hS7d30f5zDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 20:10:37 +1100 (AEDT)
+Received: by mail-pj1-x1044.google.com with SMTP id mq3so10228902pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 02:10:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=dKi8BU578lRrpQgsBEmeY+Wae0ouYy4n5AlvdfJQzlg=;
- b=IO4JQczTQT/nPGt+MKHwSy4fLeYPE21lHjEeuDIbglF0eR0+P22LjN/y+GJTKvz0qI
- fwcJwi6CIN+PxS2q2qQ0zREKL4vBm/KRW4tl0sBB8B9AF3EwDJHubH+iaaeEeanYNG6F
- 7OeVdUONjkilp9ulTPHf/cTWyl0fdqZx+/0LjETYiFH8ddL/uKNOb6IxyVx8wInFZ1rt
- K1FqZbLyQHD/QDb5pFEHivLauUBxyYoydLJYUsIUXrgn8HYm4GQxBWlJN20eMufJVZGo
- fRjwTZjwoLByX6ECQLwqhqtBP6eRleti5e9unH/irjiWD9dFgoaw3tcuIBti2NMjzsym
- bbdA==
+ bh=pIQfjMq+C2jUbP9ScwG0NM6KSCSOR34SFi5O3FOeAcI=;
+ b=qBbspeyErzhzcjyKqJH9Y/1cvS28D/yt/f0jSCOmmfyGa+XeafaK30VAZIzR59fhde
+ EKnMoPLFcWRfiPxIZBCVsGbxUF6UsFtHfjDSDpaztHvMkVhFsTm7vQ7BfE+qCMC+25Vi
+ 9gF7XjBSzMwzsSOOyvvCgtuuMuj7GPRxfgdKzzQpFP9V7ZHutgVP6LZS9l1aWANeXzQI
+ hxiVqaOTt+ispEYyxYjHz4OopsuL+ppQ0+uxmgBKpYLdnHuJUkgDXfbFFT2rYwKFN29u
+ C8FJ+V93JApdhTf+r90W7EIVN+YT+AznLIPbs+AjOHJz88umBk38BPPCLby7RHlJS5tB
+ BcZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=dKi8BU578lRrpQgsBEmeY+Wae0ouYy4n5AlvdfJQzlg=;
- b=hWh6LjfdEj/ECcbqPf+GZ/L52UJjeh0BYZ6lMcFH3sCKSTsb2ire4MxaxEBYOQ97/m
- jyAuL+Q19kl9PKEDctkROkY1R86uT2bAAamp52i2xZY2h/CW21ooS6f+OWAMrNgPVIsv
- TmkbgujzYNWYUw67Z47Oia8l8K25iFcfcpjxqSb8paytOdfSixBdLIjrjeT+1Xvq5hYQ
- aU+nH8IM2LEP5/JeqAgmCi7MTpLsE9tX0GDpRRN6nup/M4ZZ9CfY44WScrVekM2Rh8Kc
- ZvTh/7N7J+dGsZMRppQyEoeP+0dzugqlRaugckjjLjL40zyrtr04Uq7sW7mkOeuNGKsS
- MVvQ==
-X-Gm-Message-State: ANhLgQ3aEHZGm7q4Q7qBEZnlPHxXTOriaZ5VANeLtswQ2ybuPwrCp5xe
- yfZ03VbU+vYJKSti/kulh6P7fq2w
-X-Google-Smtp-Source: ADFU+vtB/Q/LXRLxuRnweQyLmvmFTUH1hLO3Wg0SsWms6uxH5mF65spaH8uT3dCKFyaxV7SQe+KZiQ==
-X-Received: by 2002:aa7:9588:: with SMTP id z8mr3932569pfj.240.1584436231086; 
- Tue, 17 Mar 2020 02:10:31 -0700 (PDT)
+ bh=pIQfjMq+C2jUbP9ScwG0NM6KSCSOR34SFi5O3FOeAcI=;
+ b=V2RD3ae6UH1bimNk5B5LQf02/iyxOAZ8Ee6/t47Hu2KVAuuLq2W7V/tMr6HrwYeAPX
+ vAOsda9ShIZV0F1i+9z2jbkvj3+BmhL9nnEQC9es9a25oik7XKXgasN4YTjVtR9B75Gr
+ YDiMJKwvwtj+58opBRT77A1y9vskyNrtRdM74jfWxE3mPsWHp7T2mBuIHVNCffo46zY5
+ TTzJB+yNApGDcqu6Tn4mKs25aK9oSIaIQauQw2bFw/I7WQsEdY/D3asG0uYWT1UuJkHr
+ kxKHxQYtnq7GvA2B4rCqq1B/E6rwEq0hp4WEH9zxy9X+G+36gLBiBD04bIq13EUkI7qg
+ c2dA==
+X-Gm-Message-State: ANhLgQ0vnVcW03C/T+evJfiiU++LTaGeQ3pZ0LlbVKvLKrkY2eDkWHT6
+ dvPDDh7sbBlBQ5Y775OOXdM2iuB4
+X-Google-Smtp-Source: ADFU+vsjhoX3k1p1AZtqDaDAQ55bey4cQqiJZVXmrb6+q7Mz1+StwNReWrinGK8FSBV7aKaaYIYo/w==
+X-Received: by 2002:a17:902:b285:: with SMTP id
+ u5mr3329893plr.208.1584436233907; 
+ Tue, 17 Mar 2020 02:10:33 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (14-202-190-183.tpgi.com.au.
  [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id i13sm2463745pfd.180.2020.03.17.02.10.28
+ by smtp.gmail.com with ESMTPSA id i13sm2463745pfd.180.2020.03.17.02.10.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Mar 2020 02:10:30 -0700 (PDT)
+ Tue, 17 Mar 2020 02:10:33 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/7] powerpc/pseries/ras: FWNMI_VALID off by one
-Date: Tue, 17 Mar 2020 19:09:11 +1000
-Message-Id: <20200317090913.343097-6-npiggin@gmail.com>
+Subject: [PATCH 6/7] powerpc/pseries/ras: fwnmi avoid modifying r3 in error
+ case
+Date: Tue, 17 Mar 2020 19:09:12 +1000
+Message-Id: <20200317090913.343097-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200317090913.343097-1-npiggin@gmail.com>
 References: <20200317090913.343097-1-npiggin@gmail.com>
@@ -85,33 +87,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This was discovered developing qemu fwnmi sreset support. This
-off-by-one bug means the last 16 bytes of the rtas area can not
-be used for a 16 byte save area.
+If there is some error with the fwnmi save area, r3 has already been
+modified which doesn't help with debugging.
+
+Only update r3 when to restore the saved value.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/ras.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/ras.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index c74d5e740922..9a37bda47468 100644
+index 9a37bda47468..a40598e6e525 100644
 --- a/arch/powerpc/platforms/pseries/ras.c
 +++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -395,10 +395,11 @@ static irqreturn_t ras_error_interrupt(int irq, void *dev_id)
- /*
-  * Some versions of FWNMI place the buffer inside the 4kB page starting at
-  * 0x7000. Other versions place it inside the rtas buffer. We check both.
-+ * Minimum size of the buffer is 16 bytes.
+@@ -423,18 +423,19 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
   */
- #define VALID_FWNMI_BUFFER(A) \
--	((((A) >= 0x7000) && ((A) < 0x7ff0)) || \
--	(((A) >= rtas.base) && ((A) < (rtas.base + rtas.size - 16))))
-+	((((A) >= 0x7000) && ((A) <= 0x8000 - 16)) || \
-+	(((A) >= rtas.base) && ((A) <= (rtas.base + rtas.size - 16))))
- 
- static inline struct rtas_error_log *fwnmi_get_errlog(void)
+ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
  {
++	unsigned long savep_ra;
+ 	unsigned long *savep;
+ 	struct rtas_error_log *h;
+ 
+ 	/* Mask top two bits */
+-	regs->gpr[3] &= ~(0x3UL << 62);
++	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
+ 
+-	if (!VALID_FWNMI_BUFFER(regs->gpr[3])) {
++	if (!VALID_FWNMI_BUFFER(savep_ra)) {
+ 		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
+ 		return NULL;
+ 	}
+ 
+-	savep = __va(regs->gpr[3]);
++	savep = __va(savep_ra);
+ 	regs->gpr[3] = be64_to_cpu(savep[0]);	/* restore original r3 */
+ 
+ 	h = (struct rtas_error_log *)&savep[1];
 -- 
 2.23.0
 
