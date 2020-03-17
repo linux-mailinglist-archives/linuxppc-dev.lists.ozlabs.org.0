@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0A6188889
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA09C18892A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:28:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hc0Z5tsyzDqkL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:05:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hcWN4pJwzDqLL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:28:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hZm42LxWzDqSY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:09:08 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hZpv5KL3zDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:11:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48hZm20J3Qz8tFp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:09:06 +1100 (AEDT)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48hZpv1VWvz8tHw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:11:35 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 48hZm16BHKz9sTG; Wed, 18 Mar 2020 01:09:05 +1100 (AEDT)
+ id 48hZpt4GlPz9sTV; Wed, 18 Mar 2020 01:11:34 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
@@ -33,71 +33,63 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48hZm10hJ1z9sSd
- for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 01:09:04 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HE266g057435
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:09:01 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yru54aje7-1
+ by ozlabs.org (Postfix) with ESMTPS id 48hZps0dlPz9sTT
+ for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 01:11:32 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02HE1LgD030352
+ for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:11:31 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yrr6u7ywb-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:09:01 -0400
+ for <linuxppc-dev@ozlabs.org>; Tue, 17 Mar 2020 10:10:26 -0400
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
- Tue, 17 Mar 2020 14:08:59 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Tue, 17 Mar 2020 14:10:24 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 14:08:57 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HE8uVF50593844
+ Tue, 17 Mar 2020 14:10:21 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02HEAKLb57147470
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 14:08:56 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1F9014C046;
- Tue, 17 Mar 2020 14:08:56 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A03704C05A;
- Tue, 17 Mar 2020 14:08:54 +0000 (GMT)
-Received: from [9.199.61.203] (unknown [9.199.61.203])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Mar 2020 14:08:54 +0000 (GMT)
-Subject: Re: [PATCH v4 3/3] powerpc/powernv: Parse device tree, population of
- SPR support
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, svaidy@linux.ibm.com, ego@linux.vnet.ibm.com,
- linuxram@us.ibm.com, pratik.sampat@in.ibm.com, pratik.r.sampat@gmail.com
-References: <cover.1581505210.git.psampat@linux.ibm.com>
- <1f5138b5080606804162b0a7cf20c134589b96b1.1581505210.git.psampat@linux.ibm.com>
- <87tv2nptb8.fsf@mpe.ellerman.id.au>
-From: Pratik Sampat <psampat@linux.ibm.com>
-Date: Tue, 17 Mar 2020 19:38:53 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ Tue, 17 Mar 2020 14:10:21 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C8ED211C052;
+ Tue, 17 Mar 2020 14:10:20 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B82B11C058;
+ Tue, 17 Mar 2020 14:10:19 +0000 (GMT)
+Received: from pratiks-thinkpad.ibmuc.com (unknown [9.199.61.203])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Mar 2020 14:10:19 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
+ ego@linux.vnet.ibm.com, linuxram@us.ibm.com, psampat@in.ibm.com,
+ pratik.r.sampat@gmail.com
+Subject: [PATCH v5 0/3] Introduce Self-Save API for deep stop states
+Date: Tue, 17 Mar 2020 19:40:15 +0530
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <87tv2nptb8.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20031714-0012-0000-0000-00000392968B
+x-cbid: 20031714-4275-0000-0000-000003ADD591
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031714-0013-0000-0000-000021CF75AB
-Message-Id: <ec342c73-1e10-4e63-627d-01eaa2bd8593@linux.ibm.com>
+x-cbparentid: 20031714-4276-0000-0000-000038C2FEA0
+Message-Id: <20200317141018.42380-1-psampat@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-17_05:2020-03-17,
  2020-03-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0 impostorscore=0
- phishscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 impostorscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2003170059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -114,140 +106,99 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thank you Michael for the review.
+Skiboot patches v4: https://lists.ozlabs.org/pipermail/skiboot/2020-February/016404.html
+Linux patches v4: https://lkml.org/lkml/2020/2/12/446
+Changelog
+v4 --> v5
+Based on Michael Ellerman's comments, in patch3:
+1. Added documentation in power-mgt.txt for self-save and self-restore
+2. Used bitmap abstractions while parsing device tree
+3. Fixed scenario where zero or less SPRs were treated as a success
+4. Removed redundant device_node pointer
+5. Removed unnecessary pr_warn messages
+6. Changed the old of_find_node_by_path calls to of_find_compatible_node
+7. Fixed leaking reference of the parsed device_node pointer 
 
+Currently the stop-API supports a mechanism called as self-restore
+which allows us to restore the values of certain SPRs on wakeup from a
+deep-stop state to a desired value. To use this, the Kernel makes an
+OPAL call passing the PIR of the CPU, the SPR number and the value to
+which the SPR should be restored when that CPU wakes up from a deep
+stop state.
 
-On 17/03/20 8:43 am, Michael Ellerman wrote:
-> Pratik Rajesh Sampat <psampat@linux.ibm.com> writes:
->> Parse the device tree for nodes self-save, self-restore and populate
->> support for the preferred SPRs based what was advertised by the device
->> tree.
-> These should be documented in:
->    Documentation/devicetree/bindings/powerpc/opal/power-mgt.txt
+Recently, a new feature, named self-save has been enabled in the
+stop-api, which is an alternative mechanism to do the same, except
+that self-save will save the current content of the SPR before
+entering a deep stop state and also restore the content back on
+waking up from a deep stop state.
 
-Sure thing I'll add them.
+This patch series aims at introducing and leveraging the self-save feature in
+the kernel.
 
->> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
->> index 97aeb45e897b..27dfadf609e8 100644
->> --- a/arch/powerpc/platforms/powernv/idle.c
->> +++ b/arch/powerpc/platforms/powernv/idle.c
->> @@ -1436,6 +1436,85 @@ static void __init pnv_probe_idle_states(void)
->>   		supported_cpuidle_states |= pnv_idle_states[i].flags;
->>   }
->>   
->> +/*
->> + * Extracts and populates the self save or restore capabilities
->> + * passed from the device tree node
->> + */
->> +static int extract_save_restore_state_dt(struct device_node *np, int type)
->> +{
->> +	int nr_sprns = 0, i, bitmask_index;
->> +	int rc = 0;
->> +	u64 *temp_u64;
->> +	u64 bit_pos;
->> +
->> +	nr_sprns = of_property_count_u64_elems(np, "sprn-bitmask");
->> +	if (nr_sprns <= 0)
->> +		return rc;
-> Using <= 0 means zero SPRs is treated by success as the caller, is that
-> intended? If so a comment would be appropriate.
+Now, as the kernel has a choice to prefer one mode over the other and
+there can be registers in both the save/restore SPR list which are sent
+from the device tree, a new interface has been defined for the seamless
+handing of the modes for each SPR.
 
-My bad, this is undesirable. This should be treated as a failure.
-I'll fix this.
+A list of preferred SPRs are maintained in the kernel which contains two
+properties:
+1. supported_mode: Helps in identifying if it strictly supports self
+                   save or restore or both.
+                   Initialized using the information from device tree.
+2. preferred_mode: Calls out what mode is preferred for each SPR. It
+                   could be strictly self save or restore, or it can also
+                   determine the preference of  mode over the other if both
+                   are present by encapsulating the other in bitmask from
+                   LSB to MSB.
+                   Initialized statically.
 
->> +	temp_u64 = kcalloc(nr_sprns, sizeof(u64), GFP_KERNEL);
->> +	if (of_property_read_u64_array(np, "sprn-bitmask",
->> +				       temp_u64, nr_sprns)) {
->> +		pr_warn("cpuidle-powernv: failed to find registers in DT\n");
->> +		kfree(temp_u64);
->> +		return -EINVAL;
->> +	}
->> +	/*
->> +	 * Populate acknowledgment of support for the sprs in the global vector
->> +	 * gotten by the registers supplied by the firmware.
->> +	 * The registers are in a bitmask, bit index within
->> +	 * that specifies the SPR
->> +	 */
->> +	for (i = 0; i < nr_preferred_sprs; i++) {
->> +		bitmask_index = preferred_sprs[i].spr / 64;
->> +		bit_pos = preferred_sprs[i].spr % 64;
-> This is basically a hand coded bitmap, see eg. BIT_WORD(), BIT_MASK() etc.
->
-> I don't think there's an easy way to convert temp_u64 into a proper
-> bitmap, so it's probably not worth doing that. But at least use the macros.
+Below is a table to show the Scenario::Consequence when the self save and
+self restore modes are available or disabled in different combinations as
+perceived from the device tree thus giving complete backwards compatibly
+regardless of an older firmware running a newer kernel or vise-versa.
+Support for self save or self-restore is embedded in the device tree,
+along with the set of registers it supports.
 
-Right. I'll use the macros for a cleaner abstraction.
+SR = Self restore; SS = Self save
 
->> +		if ((temp_u64[bitmask_index] & (1UL << bit_pos)) == 0) {
->> +			if (type == SELF_RESTORE_TYPE)
->> +				preferred_sprs[i].supported_mode &=
->> +					~SELF_RESTORE_STRICT;
->> +			else
->> +				preferred_sprs[i].supported_mode &=
->> +					~SELF_SAVE_STRICT;
->> +			continue;
->> +		}
->> +		if (type == SELF_RESTORE_TYPE) {
->> +			preferred_sprs[i].supported_mode |=
->> +				SELF_RESTORE_STRICT;
->> +		} else {
->> +			preferred_sprs[i].supported_mode |=
->> +				SELF_SAVE_STRICT;
->> +		}
->> +	}
->> +
->> +	kfree(temp_u64);
->> +	return rc;
->> +}
->> +
->> +static int pnv_parse_deepstate_dt(void)
->> +{
->> +	struct device_node *sr_np, *ss_np;
-> You never use these concurrently AFAICS, so you could just have a single *np.
+.-----------------------------------.----------------------------------------.
+|             Scenario              |                Consequence             |
+:-----------------------------------+----------------------------------------:
+| Legacy Firmware. No SS or SR node | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: !active           | Deep stop states disabled              |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: !active            | Self restore is called for all         |
+|                                   | supported SPRs                         |
+:-----------------------------------+----------------------------------------:
+| SR: active SS: active             | Goes through the preferences for each  |
+|                                   | SPR and executes of the modes          |
+|                                   | accordingly. Currently, Self restore is|
+|                                   | called for all the SPRs except PSSCR   |
+|                                   | which is self saved                    |
+:-----------------------------------+----------------------------------------:
+| SR: active(only HID0) SS: active  | Self save called for all supported     |
+|                                   | registers expect HID0 (as HID0 cannot  |
+|                                   | be self saved currently)               |
+:-----------------------------------+----------------------------------------:
+| SR: !active SS: active            | currently will disable deep states as  |
+|                                   | HID0 is needed to be self restored and |
+|                                   | cannot be self saved                   |
+'-----------------------------------'----------------------------------------'
 
-Sure, got rid of it.
+Pratik Rajesh Sampat (3):
+  powerpc/powernv: Interface to define support and preference for a SPR
+  powerpc/powernv: Introduce Self save support
+  powerpc/powernv: Parse device tree, population of SPR support
 
->> +	int rc = 0, i;
->> +
->> +	/* Self restore register population */
->> +	sr_np = of_find_node_by_path("/ibm,opal/power-mgt/self-restore");
-> I know the existing idle code uses of_find_node_by_path(), but that's
-> because it's old and crufty. Please don't add new searches by path. You
-> should be searching by compatible.
->
-Alright, I'll replace of_find_node_by_path() calls with of_find_compatible_node()
+ .../bindings/powerpc/opal/power-mgt.txt       |  10 +
+ arch/powerpc/include/asm/opal-api.h           |   3 +-
+ arch/powerpc/include/asm/opal.h               |   1 +
+ arch/powerpc/platforms/powernv/idle.c         | 416 +++++++++++++++---
+ arch/powerpc/platforms/powernv/opal-call.c    |   1 +
+ 5 files changed, 373 insertions(+), 58 deletions(-)
 
->> +	if (!sr_np) {
->> +		pr_warn("opal: self restore Node not found");
-> This warning and the others below will fire on all existing firmware
-> versions, which is not OK.
-
-I'll get rid of the warnings. They seem unnecessary to me also now.
-
->> +	} else {
->> +		rc = extract_save_restore_state_dt(sr_np, SELF_RESTORE_TYPE);
->> +		if (rc != 0)
->> +			return rc;
->> +	}
->> +	/* Self save register population */
->> +	ss_np = of_find_node_by_path("/ibm,opal/power-mgt/self-save");
->> +	if (!ss_np) {
->> +		pr_warn("opal: self save Node not found");
->> +		pr_warn("Legacy firmware. Assuming default self-restore support");
->> +		for (i = 0; i < nr_preferred_sprs; i++)
->> +			preferred_sprs[i].supported_mode &= ~SELF_SAVE_STRICT;
->> +	} else {
->> +		rc = extract_save_restore_state_dt(ss_np, SELF_SAVE_TYPE);
->> +	}
->> +	return rc;
-> You're leaking references on all the device_nodes in here, you need
-> of_node_put() before exiting.
-
-Got it. I'll clear the refcount before exitting.
-
->> +}
->
-> cheers
-Thanks!
-Pratik
+-- 
+2.17.1
 
