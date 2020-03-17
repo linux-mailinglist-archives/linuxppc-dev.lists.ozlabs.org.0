@@ -1,65 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 681EA188A45
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:30:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF9B188A3A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:27:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hdrD24StzDqT6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:27:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hdvF2tytzDqT2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:30:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=jolsa@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=boVVogPA; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [63.128.21.74])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hc8r35BkzDqRy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:12:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1584457928;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=W5HQAvbPU4U3uMqTwVbtXlufV8kjT1jXd8mJ+pSamK4=;
- b=boVVogPAQ8J6KFMSEaEnFv/coxjncoAXIRY1ttyyEEcFTn/YYjmB+3eE4Xb0bigyEqxynE
- rDbsBtzB0MaX2BlJG0FNOWZNln/WhnO4HrvPrSnbL9a8ptXr1NB/c++9prRUhVWdi013Nv
- +bRnNwPuGNZ451ZEH51nQOOE3pyq/T0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-479-kEnLFVR7PCuI3hiVy5LX1g-1; Tue, 17 Mar 2020 11:11:00 -0400
-X-MC-Unique: kEnLFVR7PCuI3hiVy5LX1g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B4D28107ACC4;
- Tue, 17 Mar 2020 15:10:56 +0000 (UTC)
-Received: from krava (unknown [10.40.195.82])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7BE4073865;
- Tue, 17 Mar 2020 15:10:50 +0000 (UTC)
-Date: Tue, 17 Mar 2020 16:10:47 +0100
-From: Jiri Olsa <jolsa@redhat.com>
-To: Kajol Jain <kjain@linux.ibm.com>
-Subject: Re: [PATCH v5 09/11] perf/tools: Enhance JSON/metric infrastructure
- to handle "?"
-Message-ID: <20200317151047.GF757893@krava>
-References: <20200317062333.14555-1-kjain@linux.ibm.com>
- <20200317062333.14555-10-kjain@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200317062333.14555-10-kjain@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hcNV4cGmzDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:22:18 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02HFLbEN098998
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 11:22:14 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yrue3915t-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 11:22:14 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Tue, 17 Mar 2020 15:22:11 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 17 Mar 2020 15:22:07 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02HFM6cq58523826
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Mar 2020 15:22:06 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 924EEAE064;
+ Tue, 17 Mar 2020 15:22:06 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D933EAE051;
+ Tue, 17 Mar 2020 15:22:04 +0000 (GMT)
+Received: from [9.199.40.234] (unknown [9.199.40.234])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Mar 2020 15:22:04 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH] tpm2: Export tpm2_get_cc_attrs_tbl for ibmvtpm driver as
+ module
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <20200317130819.720318-1-stefanb@linux.vnet.ibm.com>
+Date: Tue, 17 Mar 2020 20:52:03 +0530
+Content-Transfer-Encoding: quoted-printable
+References: <20200317130819.720318-1-stefanb@linux.vnet.ibm.com>
+To: Stefan Berger <stefanb@linux.vnet.ibm.com>
+X-Mailer: Apple Mail (2.3445.104.11)
+X-TM-AS-GCONF: 00
+x-cbid: 20031715-4275-0000-0000-000003ADDF12
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031715-4276-0000-0000-000038C30858
+Message-Id: <03C24A2B-643D-4CDB-99FA-F5321684EEE4@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-17_05:2020-03-17,
+ 2020-03-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003170062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,77 +91,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
- yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
- ak@linux.intel.com, alexander.shishkin@linux.intel.com,
- anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
- sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, acme@kernel.org,
- jmario@redhat.com, namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: LKML <linux-kernel@vger.kernel.org>, jarkko.sakkinen@linux.intel.com,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 17, 2020 at 11:53:31AM +0530, Kajol Jain wrote:
 
-SBIP
+> On 17-Mar-2020, at 6:38 PM, Stefan Berger <stefanb@linux.vnet.ibm.com> =
+wrote:
+>=20
+> From: Stefan Berger <stefanb@linux.ibm.com>
+>=20
+> This patch fixes the following problem when the ibmvtpm driver
+> is built as a module:
+>=20
+> ERROR: modpost: "tpm2_get_cc_attrs_tbl" =
+[drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
+> make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
+> make: *** [Makefile:1298: modules] Error 2
+>=20
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 
-> +static int metricgroup__add_metric_runtime_param(struct strbuf *events,
-> +			struct list_head *group_list, struct pmu_event *pe)
-> +{
-> +	int i, count;
-> +	int ret = -EINVAL;
-> +
-> +	count = arch_get_runtimeparam();
-> +
-> +	/* This loop is added to create multiple
-> +	 * events depend on count value and add
-> +	 * those events to group_list.
-> +	 */
-> +
-> +	for (i = 0; i < count; i++) {
-> +		const char **ids;
-> +		int idnum;
-> +		struct egroup *eg;
-> +		char value[PATH_MAX];
-> +
-> +		if (expr__find_other(pe->metric_expr, NULL, &ids, &idnum, i) < 0)
-> +			return ret;
-> +
-> +		if (events->len > 0)
-> +			strbuf_addf(events, ",");
-> +
-> +		if (metricgroup__has_constraint(pe))
-> +			metricgroup__add_metric_non_group(events, ids, idnum);
-> +		else
-> +			metricgroup__add_metric_weak_group(events, ids, idnum);
-> +
-> +		eg = malloc(sizeof(*eg));
-> +		if (!eg) {
-> +			ret = -ENOMEM;
-> +			return ret;
-> +		}
-> +
-> +		sprintf(value, "%s%c%d", pe->metric_name, '_', i);
-> +		eg->ids = ids;
-> +		eg->idnum = idnum;
-> +		eg->metric_name = strdup(value);
-> +		if (!eg->metric_name) {
-> +			ret = -ENOMEM;
-> +			return ret;
-> +		}
-> +
-> +		eg->metric_expr = pe->metric_expr;
-> +		eg->metric_unit = pe->unit;
-> +		list_add_tail(&eg->nd, group_list);
-> +		ret = 0;
-> +
-> +		if (ret != 0)
-> +			break;
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 
-again, this is part of metricgroup__add_metric_param no? why not use it?
-
-jirka
+Thanks
+-Sachin
 
