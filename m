@@ -1,85 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681EA188A45
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:30:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hdvF2tytzDqT2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:30:33 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AAC188A4A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 17:32:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hdxK3dJczDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:32:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hcNV4cGmzDqWv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:22:18 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HFLbEN098998
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 11:22:14 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yrue3915t-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 11:22:14 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
- Tue, 17 Mar 2020 15:22:11 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 15:22:07 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HFM6cq58523826
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 15:22:06 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 924EEAE064;
- Tue, 17 Mar 2020 15:22:06 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D933EAE051;
- Tue, 17 Mar 2020 15:22:04 +0000 (GMT)
-Received: from [9.199.40.234] (unknown [9.199.40.234])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Mar 2020 15:22:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [PATCH] tpm2: Export tpm2_get_cc_attrs_tbl for ibmvtpm driver as
- module
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <20200317130819.720318-1-stefanb@linux.vnet.ibm.com>
-Date: Tue, 17 Mar 2020 20:52:03 +0530
-Content-Transfer-Encoding: quoted-printable
-References: <20200317130819.720318-1-stefanb@linux.vnet.ibm.com>
-To: Stefan Berger <stefanb@linux.vnet.ibm.com>
-X-Mailer: Apple Mail (2.3445.104.11)
-X-TM-AS-GCONF: 00
-x-cbid: 20031715-4275-0000-0000-000003ADDF12
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031715-4276-0000-0000-000038C30858
-Message-Id: <03C24A2B-643D-4CDB-99FA-F5321684EEE4@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-17_05:2020-03-17,
- 2020-03-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- phishscore=0 adultscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 spamscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003170062
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hcXp2gDJzDqSB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:29:30 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id B6359AE2D;
+ Tue, 17 Mar 2020 15:29:22 +0000 (UTC)
+Subject: Re: [PATCH 2/4] mm/slub: Use mem_node to allocate a new slab
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
+ <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
+ <20200317131753.4074-3-srikar@linux.vnet.ibm.com>
+ <ef34b0bb-4dfa-cb0e-1830-9ad59119da5e@suse.cz>
+ <20200317134523.GB4334@linux.vnet.ibm.com>
+ <3d9629d4-4a6d-d2b5-28b7-58af497671c7@suse.cz>
+ <20200317145105.GA27520@linux.vnet.ibm.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <abeaec0d-e9ea-28ce-5b9a-9a6d41ab38c9@suse.cz>
+Date: Tue, 17 Mar 2020 16:29:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+In-Reply-To: <20200317145105.GA27520@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,33 +54,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, jarkko.sakkinen@linux.intel.com,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Stefan Berger <stefanb@linux.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 3/17/20 3:51 PM, Srikar Dronamraju wrote:
+> * Vlastimil Babka <vbabka@suse.cz> [2020-03-17 14:53:26]:
+> 
+>> >> > 
+>> >> > Mitigate this by allocating the new slab from the node_numa_mem.
+>> >> 
+>> >> Are you sure this is really needed and the other 3 patches are not enough for
+>> >> the current SLUB code to work as needed? It seems you are changing the semantics
+>> >> here...
+>> >> 
+>> > 
+>> > The other 3 patches are not enough because we don't carry the searchnode
+>> > when the actual alloc_pages_node gets called. 
+>> > 
+>> > With only the 3 patches, we see the above Panic, its signature is slightly
+>> > different from what Sachin first reported and which I have carried in 1st
+>> > patch.
+>> 
+>> Ah, I see. So that's the missing pgdat after your series [1] right?
+> 
+> Yes the pgdat would be missing after my cpuless, memoryless node patchset.
+> However..
+>> 
+>> That sounds like an argument for Michal's suggestions that pgdats exist and have
+>> correctly populated zonelists for all possible nodes.
+> 
+> Only the first patch in this series would be affected by pgdat existing or
+> not.  Even if the pgdat existed, the NODE_DATA[nid]->node_present_pages
+> would be 0. Right? So it would look at node_to_mem_node(). And since node 0 is
+> cpuless it would return 0.
 
-> On 17-Mar-2020, at 6:38 PM, Stefan Berger <stefanb@linux.vnet.ibm.com> =
-wrote:
->=20
-> From: Stefan Berger <stefanb@linux.ibm.com>
->=20
-> This patch fixes the following problem when the ibmvtpm driver
-> is built as a module:
->=20
-> ERROR: modpost: "tpm2_get_cc_attrs_tbl" =
-[drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
-> make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
-> make: *** [Makefile:1298: modules] Error 2
->=20
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+I thought the point was to return 1 for node 0.
 
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> If we pass this node 0 (which is memoryless/cpuless) to
+> alloc_pages_node. Please note I am only setting node_numa_mem only
+> for offline nodes. However we could change this to set for all offline and
+> memoryless nodes.
 
-Thanks
--Sachin
+That would indeed make sense.
+
+But I guess that alloc_pages would still crash as the result of
+numa_to_mem_node() is not passed down to alloc_pages() without this patch. In
+__alloc_pages_node() we currently have "The node must be valid and online" so
+offline nodes don't have zonelists. Either they get them, or we indeed need
+something like this patch. But in order to not make get_any_partial() dead code,
+the final replacement of invalid node with a valid one should be done in
+alloc_slab_page() I guess?
+
+>> node_to_mem_node() could be just a shortcut for the first zone's node in the
+>> zonelist, so that fallback follows the topology.
+>> 
+>> [1]
+>> https://lore.kernel.org/linuxppc-dev/20200311110237.5731-1-srikar@linux.vnet.ibm.com/t/#m76e5b4c4084380b1d4b193d5aa0359b987f2290e
+>> 
+> 
+> 
+> 
 
