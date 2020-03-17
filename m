@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01EC188984
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:54:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0D4188992
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:57:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hd5w52vmzDqf2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:54:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hd9b5wZjzDqdb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:57:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,57 +17,55 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=NGasMkjV; dkim-atps=neutral
+ header.s=mail header.b=jX0aVra6; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hbQf6JJYzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:39:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hbWS0XcZzDqhH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:43:16 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48hbQY2Pzdz9txJr;
- Tue, 17 Mar 2020 15:39:01 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 48hbWL0ktTz9txKB;
+ Tue, 17 Mar 2020 15:43:10 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=NGasMkjV; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=jX0aVra6; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id jy1vh3gr2NYn; Tue, 17 Mar 2020 15:39:01 +0100 (CET)
+ with ESMTP id RNzJeTCS2zXw; Tue, 17 Mar 2020 15:43:10 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48hbQY1B2Lz9txJP;
- Tue, 17 Mar 2020 15:39:01 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48hbWK6nWSz9txK6;
+ Tue, 17 Mar 2020 15:43:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584455941; bh=3aB3sKo4axTmyvq66pIQTh9FsqX/8+Pv5FpPFzBfBtE=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=NGasMkjVrfGKMNcqn7ZWm4o8AloBrVIUTxZ+xl/7ZrrIMIHTwfhml5pVfzHvW41NT
- jT920tTUmPvzOA3iNZ7VmxiDhhtrt/hdAoAtAU/nBAfmCj6kmMebRt/W1EFKfDmWOE
- +CUxGE2C+bGZkeT4TiJ6wfbqxWuBnRczQWcHTLaY=
+ t=1584456189; bh=aysZJ0oAlGihBmkcbuVURApboUV6znAXwjAIXT1Fqb8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=jX0aVra6NpHJierLO2o6lej5QYe1IaZKYnRs2FNd365bgNplX5De1a5dQnmFKTZB1
+ Mq4ydcqQ5laEyLsojIL0ZaS2RjK3iBP0+ymOI65V92f2XrPaoP8UtuwawB+5xqoesW
+ WVjcds2rtOcejkeAvSdEX44eW4FrLMIv3bzHOPsk=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8C2FF8B7BA;
- Tue, 17 Mar 2020 15:39:02 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 59EF88B7BB;
+ Tue, 17 Mar 2020 15:43:11 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QqoWzBYd6i2c; Tue, 17 Mar 2020 15:39:02 +0100 (CET)
+ with ESMTP id fqTBFZC1M03R; Tue, 17 Mar 2020 15:43:11 +0100 (CET)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DB4CF8B7B7;
- Tue, 17 Mar 2020 15:39:00 +0100 (CET)
-Subject: Re: [PATCH v1 16/46] powerpc/mm: Allocate static page tables for
- fixmap
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 99B298B7B7;
+ Tue, 17 Mar 2020 15:43:10 +0100 (CET)
+Subject: Re: [PATCH v1 39/46] powerpc/8xx: Add a function to early map kernel
+ via huge pages
+To: kbuild test robot <lkp@intel.com>
+References: <abaf66aaebfd988d835dc9520bccedd546ee95c4.1584360344.git.christophe.leroy@c-s.fr>
+ <202003170938.Z0IuUore%lkp@intel.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-References: <cover.1584360343.git.christophe.leroy@c-s.fr>
- <d4bd46fe0103f8a8cb7e5affb2a7fcc3185be24e.1584360344.git.christophe.leroy@c-s.fr>
-Message-ID: <b9c92137-f757-1e6a-bca9-5c522e1083c5@c-s.fr>
-Date: Tue, 17 Mar 2020 15:38:46 +0100
+Message-ID: <22bc0bba-533f-548b-8eec-a3392acc8e3d@c-s.fr>
+Date: Tue, 17 Mar 2020 15:43:01 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <d4bd46fe0103f8a8cb7e5affb2a7fcc3185be24e.1584360344.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <202003170938.Z0IuUore%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,93 +79,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 16/03/2020 Ã  13:36, Christophe Leroy a Ã©critÂ :
-> Allocate static page tables for the fixmap area. This allows
-> setting mappings through page tables before memblock is ready.
-> That's needed to use early_ioremap() early and to use standard
-> page mappings with fixmap.
+Le 17/03/2020 à 02:39, kbuild test robot a écrit :
+> Hi Christophe,
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->   arch/powerpc/include/asm/fixmap.h |  4 ++++
->   arch/powerpc/kernel/setup_32.c    |  2 +-
->   arch/powerpc/mm/pgtable_32.c      | 16 ++++++++++++++++
->   3 files changed, 21 insertions(+), 1 deletion(-)
+> Thank you for the patch! Yet something to improve:
 > 
-> diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
-> index 2ef155a3c821..ccbe2e83c950 100644
-> --- a/arch/powerpc/include/asm/fixmap.h
-> +++ b/arch/powerpc/include/asm/fixmap.h
-> @@ -86,6 +86,10 @@ enum fixed_addresses {
->   #define __FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
->   #define FIXADDR_START		(FIXADDR_TOP - __FIXADDR_SIZE)
->   
-> +#define FIXMAP_ALIGNED_SIZE	(ALIGN(FIXADDR_TOP, PGDIR_SIZE) - \
-> +				 ALIGN_DOWN(FIXADDR_START, PGDIR_SIZE))
-> +#define FIXMAP_PTE_SIZE	(FIXMAP_ALIGNED_SIZE / PGDIR_SIZE * PTE_TABLE_SIZE)
-> +
->   #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NCG
->   #define FIXMAP_PAGE_IO	PAGE_KERNEL_NCG
->   
-> diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
-> index 5b49b26eb154..3f1e1c0b328a 100644
-> --- a/arch/powerpc/kernel/setup_32.c
-> +++ b/arch/powerpc/kernel/setup_32.c
-> @@ -81,7 +81,7 @@ notrace void __init machine_init(u64 dt_ptr)
->   	/* Configure static keys first, now that we're relocated. */
->   	setup_feature_keys();
->   
-> -	early_ioremap_setup();
-> +	early_ioremap_init();
->   
->   	/* Enable early debugging if any specified (see udbg.h) */
->   	udbg_early_init();
-> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-> index f62de06e3d07..9934659cb871 100644
-> --- a/arch/powerpc/mm/pgtable_32.c
-> +++ b/arch/powerpc/mm/pgtable_32.c
-> @@ -29,11 +29,27 @@
->   #include <asm/fixmap.h>
->   #include <asm/setup.h>
->   #include <asm/sections.h>
-> +#include <asm/early_ioremap.h>
->   
->   #include <mm/mmu_decl.h>
->   
->   extern char etext[], _stext[], _sinittext[], _einittext[];
->   
-> +static u8 early_fixmap_pagetable[FIXMAP_PTE_SIZE] __page_aligned_data;
-
-Sparse reports this as a variable size array. This is definitely not. 
-Gcc properly sees it is an 8k table (2 pages).
-
-Christophe
-
-
-> +
-> +notrace void __init early_ioremap_init(void)
-> +{
-> +	unsigned long addr = ALIGN_DOWN(FIXADDR_START, PGDIR_SIZE);
-> +	pte_t *ptep = (pte_t *)early_fixmap_pagetable;
-> +	pmd_t *pmdp = pmd_ptr_k(addr);
-> +
-> +	for (; (s32)(FIXADDR_TOP - addr) > 0;
-> +	     addr += PGDIR_SIZE, ptep += PTRS_PER_PTE, pmdp++)
-> +		pmd_populate_kernel(&init_mm, pmdp, ptep);
-> +
-> +	early_ioremap_setup();
-> +}
-> +
->   static void __init *early_alloc_pgtable(unsigned long size)
->   {
->   	void *ptr = memblock_alloc(size, size);
+> [auto build test ERROR on next-20200316]
+> [cannot apply to powerpc/next v5.6-rc6 v5.6-rc5 v5.6-rc4 v5.6-rc6]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 > 
+> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Use-hugepages-to-map-kernel-mem-on-8xx/20200317-065610
+> base:    8548fd2f20ed19b0e8c0585b71fdfde1ae00ae3c
+> config: powerpc-tqm8xx_defconfig (attached as .config)
+> compiler: powerpc-linux-gcc (GCC) 9.2.0
+> reproduce:
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # save the attached .config to linux build tree
+>          GCC_VERSION=9.2.0 make.cross ARCH=powerpc
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>     In file included from arch/powerpc/mm/fault.c:33:
+>     include/linux/hugetlb.h: In function 'hstate_inode':
+>>> include/linux/hugetlb.h:522:9: error: implicit declaration of function 'HUGETLBFS_SB'; did you mean 'HUGETLBFS_MAGIC'? [-Werror=implicit-function-declaration]
+>       522 |  return HUGETLBFS_SB(i->i_sb)->hstate;
+>           |         ^~~~~~~~~~~~
+>           |         HUGETLBFS_MAGIC
+>>> include/linux/hugetlb.h:522:30: error: invalid type argument of '->' (have 'int')
+>       522 |  return HUGETLBFS_SB(i->i_sb)->hstate;
+>           |                              ^~
+>     cc1: all warnings being treated as errors
+
+hstate_inode() shouldn't use HUGETLBFS_SB() which CONFIG_HUGETLBFS is 
+not set.
+
+Proposed fix at https://patchwork.ozlabs.org/patch/1256108/
+
+[...]
+
+
+>>> include/linux/hugetlb.h:522:30: error: invalid type argument of '->' (have 'int')
+>       522 |  return HUGETLBFS_SB(i->i_sb)->hstate;
+>           |                              ^~
+>     At top level:
+>     arch/powerpc//mm/nohash/8xx.c:73:18: error: '__early_map_kernel_hugepage' defined but not used [-Werror=unused-function]
+>        73 | static int __ref __early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
+>           |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>     cc1: all warnings being treated as errors
+
+This patch is a preparation patch. The function is not used yet, that's 
+normal. Ok, it breaks bisectability. Should it be squashed with the 
+first user of the function ?
 
 Christophe
