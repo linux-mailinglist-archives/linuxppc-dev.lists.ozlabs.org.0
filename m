@@ -2,72 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E718C1882E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 13:06:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 301AB188348
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 13:11:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hX2r29CZzDqdb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 23:06:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hX8f0CzlzDqbf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 23:11:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=bp@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=cCQpZUj0; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hVtY0TnjzDqJY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 22:14:29 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48hVtQ5ppyz9v0xK;
- Tue, 17 Mar 2020 12:14:22 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=cCQpZUj0; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Rz4HNBhm-l3C; Tue, 17 Mar 2020 12:14:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48hVtQ3lwhz9v0xF;
- Tue, 17 Mar 2020 12:14:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584443662; bh=BZ0LYBWWFO9urZQIr4mGJkiXKv895B7QODHRrvOV2AU=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=cCQpZUj0Sk/tvj0qZdyMJ/s5V8UQYcITTFhrQyV+46r4pDhdwWfE5E9owV2m4s4ey
- 78Zs9E7G+xi2BcM0YhflUcW5Uw3BLZpXBSqJJx943v0W9lyZsBX4LFLu/756PEtxK+
- J3yCNF6OSmTIF5c3lLrHUW/Te6vDVy3K8cJSRD2E=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 330C88B785;
- Tue, 17 Mar 2020 12:14:23 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id AfLjiEvarbtM; Tue, 17 Mar 2020 12:14:22 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E1B088B787;
- Tue, 17 Mar 2020 12:14:17 +0100 (CET)
-Subject: Re: [PATCH 15/15] powerpc/watchpoint/xmon: Support 2nd dawr
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au,
- mikey@neuling.org
-References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
- <20200309085806.155823-16-ravi.bangoria@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <dabb2823-783a-6a3f-4f04-f3200a1086fc@c-s.fr>
-Date: Tue, 17 Mar 2020 12:14:10 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hVzF6nPhzDqT5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 22:18:27 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 429AFAD71;
+ Tue, 17 Mar 2020 11:18:21 +0000 (UTC)
+Date: Tue, 17 Mar 2020 12:18:23 +0100
+From: Borislav Petkov <bp@suse.de>
+To: lkml <linux-kernel@vger.kernel.org>
+Subject: [PATCH] treewide: Rename "unencrypted" to "decrypted"
+Message-ID: <20200317111822.GA15609@zn.tnic>
 MIME-Version: 1.0
-In-Reply-To: <20200309085806.155823-16-ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,212 +44,226 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, peterz@infradead.org, fweisbec@gmail.com,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: linux-s390@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
+ iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi all,
 
+this hasn't been fully tested yet but it is mechanical rename only so
+there shouldn't be any problems (famous last words :-)).
 
-Le 09/03/2020 à 09:58, Ravi Bangoria a écrit :
-> Add support for 2nd DAWR in xmon. With this, we can have two
-> simultaneous breakpoints from xmon.
-> 
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->   arch/powerpc/xmon/xmon.c | 101 ++++++++++++++++++++++++++-------------
->   1 file changed, 69 insertions(+), 32 deletions(-)
-> 
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index ac18fe3e4295..20adc83404c8 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -110,7 +110,7 @@ struct bpt {
->   
->   #define NBPTS	256
->   static struct bpt bpts[NBPTS];
-> -static struct bpt dabr;
-> +static struct bpt dabr[HBP_NUM_MAX];
->   static struct bpt *iabr;
->   static unsigned bpinstr = 0x7fe00008;	/* trap */
->   
-> @@ -786,10 +786,17 @@ static int xmon_sstep(struct pt_regs *regs)
->   
->   static int xmon_break_match(struct pt_regs *regs)
->   {
-> +	int i;
-> +
->   	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
->   		return 0;
-> -	if (dabr.enabled == 0)
-> -		return 0;
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (dabr[i].enabled)
-> +			goto found;
-> +	}
-> +	return 0;
-> +
-> +found:
->   	xmon_core(regs, 0);
->   	return 1;
->   }
-> @@ -928,13 +935,16 @@ static void insert_bpts(void)
->   
->   static void insert_cpu_bpts(void)
->   {
-> +	int i;
->   	struct arch_hw_breakpoint brk;
->   
-> -	if (dabr.enabled) {
-> -		brk.address = dabr.address;
-> -		brk.type = (dabr.enabled & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
-> -		brk.len = DABR_MAX_LEN;
-> -		__set_breakpoint(&brk, 0);
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (dabr[i].enabled) {
-> +			brk.address = dabr[i].address;
-> +			brk.type = (dabr[i].enabled & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
-> +			brk.len = 8;
-> +			__set_breakpoint(&brk, i);
-> +		}
->   	}
->   
->   	if (iabr)
-> @@ -1348,6 +1358,35 @@ static long check_bp_loc(unsigned long addr)
->   	return 1;
->   }
->   
-> +static int free_data_bpt(void)
+I'll run it through the randconfig bench today and take it through tip if
+there are no objections.
 
-This names suggests the function frees a breakpoint.
-I guess it should be find_free_data_bpt()
+Thx.
 
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (!dabr[i].enabled)
-> +			return i;
-> +	}
-> +	printf("Couldn't find free breakpoint register\n");
-> +	return -1;
-> +}
-> +
-> +static void print_data_bpts(void)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (!dabr[i].enabled)
-> +			continue;
-> +
-> +		printf("   data   "REG"  [", dabr[i].address);
-> +		if (dabr[i].enabled & 1)
-> +			printf("r");
-> +		if (dabr[i].enabled & 2)
-> +			printf("w");
-> +		printf("]\n");
-> +	}
-> +}
-> +
->   static char *breakpoint_help_string =
->       "Breakpoint command usage:\n"
->       "b                show breakpoints\n"
-> @@ -1381,10 +1420,9 @@ bpt_cmds(void)
->   			printf("Hardware data breakpoint not supported on this cpu\n");
->   			break;
->   		}
-> -		if (dabr.enabled) {
-> -			printf("Couldn't find free breakpoint register\n");
-> +		i = free_data_bpt();
-> +		if (i < 0)
->   			break;
-> -		}
->   		mode = 7;
->   		cmd = inchar();
->   		if (cmd == 'r')
-> @@ -1393,15 +1431,15 @@ bpt_cmds(void)
->   			mode = 6;
->   		else
->   			termch = cmd;
-> -		dabr.address = 0;
-> -		dabr.enabled = 0;
-> -		if (scanhex(&dabr.address)) {
-> -			if (!is_kernel_addr(dabr.address)) {
-> +		dabr[i].address = 0;
-> +		dabr[i].enabled = 0;
-> +		if (scanhex(&dabr[i].address)) {
-> +			if (!is_kernel_addr(dabr[i].address)) {
->   				printf(badaddr);
->   				break;
->   			}
-> -			dabr.address &= ~HW_BRK_TYPE_DABR;
-> -			dabr.enabled = mode | BP_DABR;
-> +			dabr[i].address &= ~HW_BRK_TYPE_DABR;
-> +			dabr[i].enabled = mode | BP_DABR;
->   		}
->   
->   		force_enable_xmon();
-> @@ -1440,7 +1478,9 @@ bpt_cmds(void)
->   			for (i = 0; i < NBPTS; ++i)
->   				bpts[i].enabled = 0;
->   			iabr = NULL;
-> -			dabr.enabled = 0;
-> +			for (i = 0; i < nr_wp_slots(); i++)
-> +				dabr[i].enabled = 0;
-> +
->   			printf("All breakpoints cleared\n");
->   			break;
->   		}
-> @@ -1474,14 +1514,7 @@ bpt_cmds(void)
->   		if (xmon_is_ro || !scanhex(&a)) {
->   			/* print all breakpoints */
->   			printf("   type            address\n");
-> -			if (dabr.enabled) {
-> -				printf("   data   "REG"  [", dabr.address);
-> -				if (dabr.enabled & 1)
-> -					printf("r");
-> -				if (dabr.enabled & 2)
-> -					printf("w");
-> -				printf("]\n");
-> -			}
-> +			print_data_bpts();
->   			for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
->   				if (!bp->enabled)
->   					continue;
-> @@ -1941,8 +1974,13 @@ static void dump_207_sprs(void)
->   
->   	printf("hfscr  = %.16lx  dhdes = %.16lx rpr    = %.16lx\n",
->   		mfspr(SPRN_HFSCR), mfspr(SPRN_DHDES), mfspr(SPRN_RPR));
-> -	printf("dawr   = %.16lx  dawrx = %.16lx ciabr  = %.16lx\n",
-> -		mfspr(SPRN_DAWR0), mfspr(SPRN_DAWRX0), mfspr(SPRN_CIABR));
-> +	printf("dawr0  = %.16lx dawrx0 = %.16lx\n",
-> +		mfspr(SPRN_DAWR0), mfspr(SPRN_DAWRX0));
-> +	if (nr_wp_slots() > 1) {
-> +		printf("dawr1  = %.16lx dawrx1 = %.16lx\n",
-> +			mfspr(SPRN_DAWR1), mfspr(SPRN_DAWRX1));
-> +	}
-> +	printf("ciabr  = %.16lx\n", mfspr(SPRN_CIABR));
->   #endif
->   }
->   
-> @@ -3862,10 +3900,9 @@ static void clear_all_bpt(void)
->   		bpts[i].enabled = 0;
->   
->   	/* Clear any data or iabr breakpoints */
-> -	if (iabr || dabr.enabled) {
-> -		iabr = NULL;
-> -		dabr.enabled = 0;
-> -	}
-> +	iabr = NULL;
-> +	for (i = 0; i < nr_wp_slots(); i++)
-> +		dabr[i].enabled = 0;
->   }
->   
->   #ifdef CONFIG_DEBUG_FS
-> 
+---
 
-Christophe
+Back then when the whole SME machinery started getting mainlined, it
+was agreed that for simplicity, clarity and sanity's sake, the terms
+denoting encrypted and not-encrypted memory should be "encrypted" and
+"decrypted". And the majority of the code sticks to that convention
+except those two. So rename them.
+
+No functional changes.
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+---
+ arch/powerpc/platforms/pseries/Kconfig |  2 +-
+ arch/s390/Kconfig                      |  2 +-
+ arch/x86/Kconfig                       |  2 +-
+ arch/x86/mm/mem_encrypt.c              |  4 ++--
+ include/linux/dma-direct.h             |  8 ++++----
+ kernel/dma/Kconfig                     |  2 +-
+ kernel/dma/direct.c                    | 14 +++++++-------
+ kernel/dma/mapping.c                   |  2 +-
+ 8 files changed, 18 insertions(+), 18 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+index 24c18362e5ea..a78e2c3e1d92 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -151,7 +151,7 @@ config PPC_SVM
+ 	depends on PPC_PSERIES
+ 	select SWIOTLB
+ 	select ARCH_HAS_MEM_ENCRYPT
+-	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
++	select ARCH_HAS_FORCE_DMA_DECRYPTED
+ 	help
+ 	 There are certain POWER platforms which support secure guests using
+ 	 the Protected Execution Facility, with the help of an Ultravisor
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 8abe77536d9d..ab1dbb7415b4 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -192,7 +192,7 @@ config S390
+ 	select VIRT_CPU_ACCOUNTING
+ 	select ARCH_HAS_SCALED_CPUTIME
+ 	select HAVE_NMI
+-	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
++	select ARCH_HAS_FORCE_DMA_DECRYPTED
+ 	select SWIOTLB
+ 	select GENERIC_ALLOCATOR
+ 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea77046f9b..2ae904f505e1 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1525,7 +1525,7 @@ config AMD_MEM_ENCRYPT
+ 	depends on X86_64 && CPU_SUP_AMD
+ 	select DYNAMIC_PHYSICAL_MASK
+ 	select ARCH_USE_MEMREMAP_PROT
+-	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
++	select ARCH_HAS_FORCE_DMA_DECRYPTED
+ 	---help---
+ 	  Say yes to enable support for the encryption of system memory.
+ 	  This requires an AMD processor that supports Secure Memory
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index a03614bd3e1a..66d09f269e6d 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -350,8 +350,8 @@ bool sev_active(void)
+ 	return sme_me_mask && sev_enabled;
+ }
+ 
+-/* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
+-bool force_dma_unencrypted(struct device *dev)
++/* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_DECRYPTED */
++bool force_dma_decrypted(struct device *dev)
+ {
+ 	/*
+ 	 * For SEV, all DMA must be to unencrypted addresses.
+diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+index 24b8684aa21d..9f955844e9c7 100644
+--- a/include/linux/dma-direct.h
++++ b/include/linux/dma-direct.h
+@@ -26,14 +26,14 @@ static inline phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dev_addr)
+ }
+ #endif /* !CONFIG_ARCH_HAS_PHYS_TO_DMA */
+ 
+-#ifdef CONFIG_ARCH_HAS_FORCE_DMA_UNENCRYPTED
+-bool force_dma_unencrypted(struct device *dev);
++#ifdef CONFIG_ARCH_HAS_FORCE_DMA_DECRYPTED
++bool force_dma_decrypted(struct device *dev);
+ #else
+-static inline bool force_dma_unencrypted(struct device *dev)
++static inline bool force_dma_decrypted(struct device *dev)
+ {
+ 	return false;
+ }
+-#endif /* CONFIG_ARCH_HAS_FORCE_DMA_UNENCRYPTED */
++#endif /* CONFIG_ARCH_HAS_FORCE_DMA_DECRYPTED */
+ 
+ /*
+  * If memory encryption is supported, phys_to_dma will set the memory encryption
+diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+index 4c103a24e380..55c4147bb2b1 100644
+--- a/kernel/dma/Kconfig
++++ b/kernel/dma/Kconfig
+@@ -51,7 +51,7 @@ config ARCH_HAS_SYNC_DMA_FOR_CPU_ALL
+ config ARCH_HAS_DMA_PREP_COHERENT
+ 	bool
+ 
+-config ARCH_HAS_FORCE_DMA_UNENCRYPTED
++config ARCH_HAS_FORCE_DMA_DECRYPTED
+ 	bool
+ 
+ config DMA_NONCOHERENT_CACHE_SYNC
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index ac7956c38f69..a0576c0ccacd 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -26,7 +26,7 @@ unsigned int zone_dma_bits __ro_after_init = 24;
+ static inline dma_addr_t phys_to_dma_direct(struct device *dev,
+ 		phys_addr_t phys)
+ {
+-	if (force_dma_unencrypted(dev))
++	if (force_dma_decrypted(dev))
+ 		return __phys_to_dma(dev, phys);
+ 	return phys_to_dma(dev, phys);
+ }
+@@ -49,7 +49,7 @@ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
+ {
+ 	u64 dma_limit = min_not_zero(dma_mask, dev->bus_dma_limit);
+ 
+-	if (force_dma_unencrypted(dev))
++	if (force_dma_decrypted(dev))
+ 		*phys_limit = __dma_to_phys(dev, dma_limit);
+ 	else
+ 		*phys_limit = dma_to_phys(dev, dma_limit);
+@@ -138,7 +138,7 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 		return NULL;
+ 
+ 	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+-	    !force_dma_unencrypted(dev)) {
++	    !force_dma_decrypted(dev)) {
+ 		/* remove any dirty cache lines on the kernel alias */
+ 		if (!PageHighMem(page))
+ 			arch_dma_prep_coherent(page, size);
+@@ -179,7 +179,7 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 	}
+ 
+ 	ret = page_address(page);
+-	if (force_dma_unencrypted(dev))
++	if (force_dma_decrypted(dev))
+ 		set_memory_decrypted((unsigned long)ret, 1 << get_order(size));
+ 
+ 	memset(ret, 0, size);
+@@ -190,7 +190,7 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 		ret = uncached_kernel_address(ret);
+ 	}
+ done:
+-	if (force_dma_unencrypted(dev))
++	if (force_dma_decrypted(dev))
+ 		*dma_handle = __phys_to_dma(dev, page_to_phys(page));
+ 	else
+ 		*dma_handle = phys_to_dma(dev, page_to_phys(page));
+@@ -203,7 +203,7 @@ void dma_direct_free_pages(struct device *dev, size_t size, void *cpu_addr,
+ 	unsigned int page_order = get_order(size);
+ 
+ 	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+-	    !force_dma_unencrypted(dev)) {
++	    !force_dma_decrypted(dev)) {
+ 		/* cpu_addr is a struct page cookie, not a kernel address */
+ 		dma_free_contiguous(dev, cpu_addr, size);
+ 		return;
+@@ -213,7 +213,7 @@ void dma_direct_free_pages(struct device *dev, size_t size, void *cpu_addr,
+ 	    dma_free_from_pool(cpu_addr, PAGE_ALIGN(size)))
+ 		return;
+ 
+-	if (force_dma_unencrypted(dev))
++	if (force_dma_decrypted(dev))
+ 		set_memory_encrypted((unsigned long)cpu_addr, 1 << page_order);
+ 
+ 	if (IS_ENABLED(CONFIG_DMA_REMAP) && is_vmalloc_addr(cpu_addr))
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 98e3d873792e..dbd0605a39c5 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -154,7 +154,7 @@ EXPORT_SYMBOL(dma_get_sgtable_attrs);
+  */
+ pgprot_t dma_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
+ {
+-	if (force_dma_unencrypted(dev))
++	if (force_dma_decrypted(dev))
+ 		prot = pgprot_decrypted(prot);
+ 	if (dev_is_dma_coherent(dev) ||
+ 	    (IS_ENABLED(CONFIG_DMA_NONCOHERENT_CACHE_SYNC) &&
+-- 
+2.21.0
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
