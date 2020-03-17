@@ -1,59 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F2C188BDF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 18:18:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hfy25hMnzDqn5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 04:18:02 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355D7188BE9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 18:19:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hg070l3MzDqYJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 04:19:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hfDL2WLFzDqc5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:45:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48hfDL0p7rz9BWT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:45:22 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48hfDK6brRz9sPR; Wed, 18 Mar 2020 03:45:21 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=edVSWYia; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48hfDK21V1z9sPF
- for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 03:45:20 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id A890BAD11;
- Tue, 17 Mar 2020 16:45:16 +0000 (UTC)
-Subject: Re: Slub: Increased mem consumption on cpu,mem-less node powerpc guest
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20200317092624.GB22538@in.ibm.com>
- <20200317115339.GA26049@in.ibm.com>
- <4088ae3c-4dfa-62ae-f56a-b46773788fc7@suse.cz>
- <20200317162536.GB27520@linux.vnet.ibm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <080b2d00-76ef-2187-ec78-c9d181ef1701@suse.cz>
-Date: Tue, 17 Mar 2020 17:45:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hfGY16MBzDqPl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:47:15 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48hfGM5Cz9zB09ZX;
+ Tue, 17 Mar 2020 17:47:07 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=edVSWYia; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id njCKhkKL8GbJ; Tue, 17 Mar 2020 17:47:07 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48hfGM48TszB09ZV;
+ Tue, 17 Mar 2020 17:47:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1584463627; bh=JsfnXC/cnJsuXWRqx1TwBBaG9YgLMK3pw2NWMP79MMg=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=edVSWYia3WgoAWxJueDngYrDM6YB8liD5IapHEPAvxvpuVIPS5fcq2U2XkF9/AnsU
+ SMTVyae6LoLClyQAvXUQV8YRkcibhq/XcxkeVCCqWxMJmd8jbBS8OdA2B4LWUzYQVu
+ 9t8KZ0sVM/a39S+fpyZhyPjU59kK0jfeK8/c+GHU=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C6F548B851;
+ Tue, 17 Mar 2020 17:47:08 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 51wPl3YqcNGk; Tue, 17 Mar 2020 17:47:07 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C8E9E8B846;
+ Tue, 17 Mar 2020 17:47:04 +0100 (CET)
+Subject: Re: [PATCH] mm/hugetlb: Fix build failure with HUGETLB_PAGE but not
+ HUGEBTLBFS
+To: Mike Kravetz <mike.kravetz@oracle.com>, Baoquan He <bhe@redhat.com>
+References: <7e8c3a3c9a587b9cd8a2f146df32a421b961f3a2.1584432148.git.christophe.leroy@c-s.fr>
+ <20200317082550.GA3375@MiWiFi-R3L-srv>
+ <60117fd7-46ff-326b-34f1-0c7087111ca7@c-s.fr>
+ <a31c86c9-2f86-4f40-a367-5953037ee137@oracle.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <ff480af2-d376-3b99-ba9e-36397ecde232@c-s.fr>
+Date: Tue, 17 Mar 2020 17:47:02 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200317162536.GB27520@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <a31c86c9-2f86-4f40-a367-5953037ee137@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,50 +81,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@ozlabs.org,
- aneesh.kumar@linux.ibm.com, bharata@linux.ibm.com,
- Pekka Enberg <penberg@kernel.org>, linux-mm@kvack.org,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@linux.com>,
- Michal Hocko <mhocko@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Nick Piggin <npiggin@suse.de>, Andi Kleen <ak@suse.de>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, Adam Litke <agl@us.ibm.com>,
+ Nishanth Aravamudan <nacc@us.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/17/20 5:25 PM, Srikar Dronamraju wrote:
-> * Vlastimil Babka <vbabka@suse.cz> [2020-03-17 16:56:04]:
+
+
+Le 17/03/2020 à 17:40, Mike Kravetz a écrit :
+> On 3/17/20 1:43 AM, Christophe Leroy wrote:
+>>
+>>
+>> Le 17/03/2020 à 09:25, Baoquan He a écrit :
+>>> On 03/17/20 at 08:04am, Christophe Leroy wrote:
+>>>> When CONFIG_HUGETLB_PAGE is set but not CONFIG_HUGETLBFS, the
+>>>> following build failure is encoutered:
+>>>
+>>>   From the definition of HUGETLB_PAGE, isn't it relying on HUGETLBFS?
+>>> I could misunderstand the def_bool, please correct me if I am wrong.
+>>
+>> AFAIU, it means that HUGETLBFS rely on HUGETLB_PAGE, by default HUGETLB_PAGE is not selected when HUGETLBFS is not. But it is still possible for an arch to select HUGETLB_PAGE without selecting HUGETLBFS when it uses huge pages for other purpose than hugetlb file system.
+>>
 > 
->> 
->> I wonder why do you get a memory leak while Sachin in the same situation [1]
->> gets a crash? I don't understand anything anymore.
+> Hi Christophe,
 > 
-> Sachin was testing on linux-next which has Kirill's patch which modifies
-> slub to use kmalloc_node instead of kmalloc. While Bharata is testing on
-> upstream, which doesn't have this. 
-
-Yes, that Kirill's patch was about the memcg shrinker map allocation. But the
-patch hunk that Bharata posted as a "hack" that fixes the problem, it follows
-that there has to be something else that calls kmalloc_node(node) where node is
-one that doesn't have present pages.
-
-He mentions alloc_fair_sched_group() which has:
-
-        for_each_possible_cpu(i) {
-                cfs_rq = kzalloc_node(sizeof(struct cfs_rq),
-                                      GFP_KERNEL, cpu_to_node(i));
-...
-                se = kzalloc_node(sizeof(struct sched_entity),
-                                  GFP_KERNEL, cpu_to_node(i));
-
-I assume one of these structs is 1k and other 512 bytes (rounded) and that for
-some possible cpu's cpu_to_node(i) will be 0, which has no present pages. And as
-Bharata pasted, node_to_mem_node(0) = 0
-So this looks like the same scenario, but it doesn't crash? Is the node 0
-actually online here, and/or does it have N_NORMAL_MEMORY state?
-
->> 
->> [1]
->> https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
->> 
+> Do you actually have a use case/example of using hugetlb pages without
+> hugetlbfs?  I can understand that there are some use cases which never
+> use the filesystem interface.  However, hugetlb support is so intertwined
+> with hugetlbfs, I am thinking there would be issues trying to use them
+> separately.  I will look into this further.
 > 
 
+Hi Mike,
+
+Series https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=164620
+
+And especially patch 39 to 41.
+
+Thanks
+Christophe
