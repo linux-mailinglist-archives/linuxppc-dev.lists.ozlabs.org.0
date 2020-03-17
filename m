@@ -1,85 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5287A188939
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:33:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hcd710hszDqSZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:33:15 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2F9188944
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 16:37:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hckW2WzNzDqcn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:37:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ smtp.mailfrom=vivo.com (client-ip=59.111.176.151;
+ helo=m176151.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m176151.mail.qiye.163.com (m176151.mail.qiye.163.com
+ [59.111.176.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hb3z6tl8zDqJg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:22:47 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HEKGUw029988
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:22:44 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yrubp4vc7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:22:44 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Tue, 17 Mar 2020 14:22:42 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 14:22:37 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HEMbct58589262
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 14:22:37 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E26F34C040;
- Tue, 17 Mar 2020 14:22:36 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C22224C046;
- Tue, 17 Mar 2020 14:22:34 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.199.32.136])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue, 17 Mar 2020 14:22:34 +0000 (GMT)
-Date: Tue, 17 Mar 2020 19:52:32 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 4/4] powerpc/numa: Set fallback nodes for offline nodes
-References: <3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com>
- <20200317131753.4074-1-srikar@linux.vnet.ibm.com>
- <20200317131753.4074-5-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hb6n25LZzDqdc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:25:15 +1100 (AEDT)
+Received: from vivo.com (wm-11.qy.internal [127.0.0.1])
+ by m176151.mail.qiye.163.com (Hmail) with ESMTP id BF500483D7B;
+ Tue, 17 Mar 2020 22:25:04 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <ACEA7wD3CNSN-spMiGEyUqod.3.1584455104769.Hmail.wenhu.wang@vivo.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCB2M10gcG93ZXJwYy9mc2wtODV4eDogZml4IGNvbXBpbGUgZXJyb3I=?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.227
+In-Reply-To: <878sjzfcpm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200317131753.4074-5-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 20031714-0008-0000-0000-0000035EC18B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031714-0009-0000-0000-00004A80187D
-Message-Id: <20200317142232.GB26049@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-17_05:2020-03-17,
- 2020-03-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0
- adultscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 clxscore=1011 impostorscore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003170059
+Received: from wenhu.wang@vivo.com( [58.251.74.227) ] by ajax-webmail (
+ [127.0.0.1] ) ; Tue, 17 Mar 2020 22:25:04 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Tue, 17 Mar 2020 22:25:04 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSFVDSEJCQkJNTE5MTktMSFlXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhNTEhMSUlNSklNN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6OD46TAw*SDg1KDVWCAs2Ejw#Ai4KFB9VSFVKTkNPT05OSktMSE5MVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlMWVdZCAFZQUxJQkg3Bg++
+X-HM-Tid: 0a70e8e2391993b5kuwsbf500483d7b
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,51 +55,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
- Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: trivial@kernel.org, kernel@vivo.com, linux-kernel@vger.kernel.org,
+ stable <stable@vger.kernel.org>, Richard Fontana <rfontana@redhat.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patchset can also fix a related problem that I reported earlier at
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/206076.html
-with an additional change, suggested by Srikar as shown below:
-
-On Tue, Mar 17, 2020 at 06:47:53PM +0530, Srikar Dronamraju wrote:
-> Currently fallback nodes for offline nodes aren't set. Hence by default
-> node 0 ends up being the default node. However node 0 might be offline.
-> 
-> Fix this by explicitly setting fallback node. Ensure first_memory_node
-> is set before kernel does explicit setting of fallback node.
-> 
->  arch/powerpc/mm/numa.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 281531340230..6e97ab6575cb 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -827,7 +827,16 @@ void __init dump_numa_cpu_topology(void)
->  	if (!numa_enabled)
->  		return;
->  
-> -	for_each_online_node(node) {
-> +	for_each_node(node) {
-> +		/*
-> +		 * For all possible but not yet online nodes, ensure their
-> +		 * node_numa_mem is set correctly so that kmalloc_node works
-> +		 * for such nodes.
-> +		 */
-> +		if (!node_online(node)) {
-
-Change the above line to like below:
-
-+               if (!node_state(node, N_MEMORY)) {
-
-Regards,
-Bharata.
-
+RnJvbTogTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PgogRGF0ZTogMjAyMC0w
+My0xNyAxOToyMjoxMwpUbzoi546L5paH6JmOIiA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KIGNjOiBC
+ZW5qYW1pbiBIZXJyZW5zY2htaWR0IDxiZW5oQGtlcm5lbC5jcmFzaGluZy5vcmc+LFBhdWwgTWFj
+a2VycmFzIDxwYXVsdXNAc2FtYmEub3JnPixBbGxpc29uIFJhbmRhbCA8YWxsaXNvbkBsb2h1dG9r
+Lm5ldD4sUmljaGFyZCBGb250YW5hIDxyZm9udGFuYUByZWRoYXQuY29tPixHcmVnIEtyb2FoLUhh
+cnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPixUaG9tYXMgR2xlaXhuZXIgPHRnbHhA
+bGludXRyb25peC5kZT4sbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcsbGludXgta2VybmVs
+QHZnZXIua2VybmVsLm9yZyx0cml2aWFsQGtlcm5lbC5vcmcsa2VybmVsQHZpdm8uY29tLHN0YWJs
+ZSA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4KU3ViamVjdDogUmU6IFtQQVRDSCB2M10gcG93ZXJw
+Yy9mc2wtODV4eDogZml4IGNvbXBpbGUgZXJyb3I+546L5paH6JmOIDx3ZW5odS53YW5nQHZpdm8u
+Y29tPiB3cml0ZXM6Cj4+IEZyb206IE1pY2hhZWwgRWxsZXJtYW4gPG1wZUBlbGxlcm1hbi5pZC5h
+dT4KPj4gIERhdGU6IDIwMjAtMDMtMTYgMTc6NDE6MTIKPj4gVG86V0FORyBXZW5odSA8d2VuaHUu
+d2FuZ0B2aXZvLmNvbT4sQmVuamFtaW4gSGVycmVuc2NobWlkdCA8YmVuaEBrZXJuZWwuY3Jhc2hp
+bmcub3JnPixQYXVsIE1hY2tlcnJhcyA8cGF1bHVzQHNhbWJhLm9yZz4sV0FORyBXZW5odSA8d2Vu
+aHUud2FuZ0B2aXZvLmNvbT4sQWxsaXNvbiBSYW5kYWwgPGFsbGlzb25AbG9odXRvay5uZXQ+LFJp
+Y2hhcmQgRm9udGFuYSA8cmZvbnRhbmFAcmVkaGF0LmNvbT4sR3JlZyBLcm9haC1IYXJ0bWFuIDxn
+cmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4sVGhvbWFzIEdsZWl4bmVyIDx0Z2x4QGxpbnV0cm9u
+aXguZGU+LGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtl
+cm5lbC5vcmcKPj4gIGNjOiB0cml2aWFsQGtlcm5lbC5vcmcsa2VybmVsQHZpdm8uY29tLHN0YWJs
+ZSA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4KPj4gU3ViamVjdDogUmU6IFtQQVRDSCB2M10gcG93
+ZXJwYy9mc2wtODV4eDogZml4IGNvbXBpbGUgZXJyb3I+V0FORyBXZW5odSA8d2VuaHUud2FuZ0B2
+aXZvLmNvbT4gd3JpdGVzOgo+Pj4+IEluY2x1ZGUgImxpbnV4L29mX2FkZHJlc3MuaCIgdG8gZml4
+IHRoZSBjb21waWxlIGVycm9yIGZvcgo+Pj4+IG1wYzg1eHhfbDJjdGxyX29mX3Byb2JlKCkgd2hl
+biBjb21waWxpbmcgZnNsXzg1eHhfY2FjaGVfc3JhbS5jLgo+Pj4+Cj4+Pj4gICBDQyAgICAgIGFy
+Y2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1eHhfbDJjdGxyLm8KPj4+PiBhcmNoL3Bvd2VycGMvc3lz
+ZGV2L2ZzbF84NXh4X2wyY3Rsci5jOiBJbiBmdW5jdGlvbiDigJhtcGM4NXh4X2wyY3Rscl9vZl9w
+cm9iZeKAmToKPj4+PiBhcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84NXh4X2wyY3Rsci5jOjkwOjEx
+OiBlcnJvcjogaW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g4oCYb2ZfaW9tYXDigJk7
+IGRpZCB5b3UgbWVhbiDigJhwY2lfaW9tYXDigJk/IFstV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9u
+LWRlY2xhcmF0aW9uXQo+Pj4+ICAgbDJjdGxyID0gb2ZfaW9tYXAoZGV2LT5kZXYub2Zfbm9kZSwg
+MCk7Cj4+Pj4gICAgICAgICAgICBefn5+fn5+fgo+Pj4+ICAgICAgICAgICAgcGNpX2lvbWFwCj4+
+Pj4gYXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4eF9sMmN0bHIuYzo5MDo5OiBlcnJvcjogYXNz
+aWdubWVudCBtYWtlcyBwb2ludGVyIGZyb20gaW50ZWdlciB3aXRob3V0IGEgY2FzdCBbLVdlcnJv
+cj1pbnQtY29udmVyc2lvbl0KPj4+PiAgIGwyY3RsciA9IG9mX2lvbWFwKGRldi0+ZGV2Lm9mX25v
+ZGUsIDApOwo+Pj4+ICAgICAgICAgIF4KPj4+PiBjYzE6IGFsbCB3YXJuaW5ncyBiZWluZyB0cmVh
+dGVkIGFzIGVycm9ycwo+Pj4+IHNjcmlwdHMvTWFrZWZpbGUuYnVpbGQ6MjY3OiByZWNpcGUgZm9y
+IHRhcmdldCAnYXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4eF9sMmN0bHIubycgZmFpbGVkCj4+
+Pj4gbWFrZVsyXTogKioqIFthcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84NXh4X2wyY3Rsci5vXSBF
+cnJvciAxCj4+Pj4KPj4+PiBGaXhlczogY29tbWl0IDZkYjkyY2M5ZDA3ZCAoInBvd2VycGMvODV4
+eDogYWRkIGNhY2hlLXNyYW0gc3VwcG9ydCIpCj4+Pgo+Pj5UaGUgc3ludGF4IGlzOgo+Pj4KPj4+
+Rml4ZXM6IDZkYjkyY2M5ZDA3ZCAoInBvd2VycGMvODV4eDogYWRkIGNhY2hlLXNyYW0gc3VwcG9y
+dCIpCj4+Pgo+Pj4+IENjOiBzdGFibGUgPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+Cj4+Pgo+Pj5U
+aGUgY29tbWl0IGFib3ZlIHdlbnQgaW50byB2Mi42LjM3Lgo+Pj4KPj4+U28gbm8gb25lIGhhcyBu
+b3RpY2VkIHRoaXMgYnVnIHNpbmNlIHRoZW4sIGhvdz8gT3IgZGlkIHNvbWV0aGluZyBlbHNlCj4+
+PmNoYW5nZSB0byBleHBvc2UgdGhlIHByb2JsZW0/Cj4+Cj4+IEFjdHVhbGx5IGEgaGFyZCBxdWVz
+dGlvbiB0byBhbnN3ZXIgY2F1c2UgaXQgYWxzbyBsZWZ0IG1lIHNjcmF0Y2hpbmcgZm9yIGxvbmcu
+Cj4+IEhvd2V2ZXIsIEkgY2FuIG5vdCBmaW5kIHJpZ2h0IG9yIGRlZmluaXRlIGFuc3dlci4KPgo+
+T2gsIGFjdHVhbGx5IGl0J3MgZmFpcmx5IHN0cmFpZ2h0IGZvcndhcmQsIHRoZSBjb2RlIGNhbid0
+IGJlIGJ1aWx0IGF0Cj5hbGwgaW4gdXBzdHJlYW0gYmVjYXVzZSBDT05GSUdfRlNMXzg1WFhfQ0FD
+SEVfU1JBTSBpcyBub3Qgc2VsZWN0YWJsZSBvcgo+c2VsZWN0ZWQgYnkgYW55dGhpbmcuCgpZZWFo
+LCBzdXJlIHRoYXQgaXMgdGhlIHJlYXNvbiwgYW5kIEkgbWVhbnQgaXQgd2FzIGhhcmQgdG8gZmln
+dXJlIG91dCB3aHkKbm9ib2R5IGhhZCBldmVyIGNvbXBpbGVkIHRoZSBkcml2ZXIgd2l0aCBGU0xf
+ODVYWF9DQUNIRV9TUkFNIGVuYWJsZWQKdW50aWwgbWUuCj4KPllvdSBzZW50IGEgcGF0Y2ggcHJl
+dmlvdXNseSB0byBtYWtlIGl0IHNlbGVjdGFibGUsIHdoaWNoIFNjb3R0IHRob3VnaHQKPndhcyBh
+IGJhZCBpZGVhLgo+Cj5TbyB0aGlzIHdob2xlIGZpbGUgaXMgZGVhZCBjb2RlIGFzIGZhciBhcyBJ
+J20gY29uY2VybmVkLCBzbyBwYXRjaGVzIGZvcgo+aXQgZGVmaW5pdGVseSBkbyBub3QgbmVlZCB0
+byBnbyB0byBzdGFibGUuCj4KPklmIHlvdSB3YW50IHRvIGFkZCBhIHVzZXIgZm9yIGl0IHRoZW4g
+cGxlYXNlIHNlbmQgYSBzZXJpZXMgZG9pbmcgdGhhdCwKPmFuZCB0aGlzIGNvbW1pdCBjYW4gYmUg
+dGhlIGZpcnN0LgoKRm9yIHRoaXMsIGFzIHlvdSBtZW50aW9uZWQsIGl0IGlzIGRlYWQgYW5kIGRv
+IG5vdCBuZWVkIHRvIGJlIGFwcGxpZWQgdG8gYW55IHN0YWJsZS4KQW5kIEkgcmVjb21tYW5kIHRo
+ZSBwYXRjaCBhcyBhIHVuaXQgaXRzZWxmIGNhdXNlIG91ciBtb2R1bGUgd2hpY2ggdXNlcwppdCBp
+cyBzdGlsbCB1bmRlciBkZXZlbG9waW5nLCBhbmQgdGhlIG1vZHVsZSBpdHNlbGYgd291bGQgYmUg
+dGFrZW4gYXMgYQpjb21wbGV0ZSBsb2dpY2FsIGJsb2NrLiBBbHNvIGl0IHdvdWxkIHRha2Ugc29t
+ZSB0aW1lLgoKVGhhbmtzLCBXZW5odQo+Cj5jaGVlcnMKDQoNCg==
