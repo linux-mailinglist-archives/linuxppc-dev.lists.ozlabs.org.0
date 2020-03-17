@@ -2,33 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EA918857F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 14:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 157BA1885CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Mar 2020 14:32:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hYsf6w9tzDqbr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 00:28:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hYy708Y9zDqH4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 00:32:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hYYD1VCyzDqdk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:14:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hYYH5kFCzDqdp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 00:14:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48hYYB6CJzz9sPF; Wed, 18 Mar 2020 00:14:38 +1100 (AEDT)
+ id 48hYYG1y3Lz9sSL; Wed, 18 Mar 2020 00:14:40 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: aa4113340ae6c2811e046f08c2bc21011d20a072
-In-Reply-To: <20200123111914.2565-1-laurentiu.tudor@nxp.com>
-To: Laurentiu Tudor <laurentiu.tudor@nxp.com>,
- "oss@buserror.net" <oss@buserror.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+X-powerpc-patch-commit: d0a72efac89d1c35ac55197895201b7b94c5e6ef
+In-Reply-To: <20200206062622.28235-1-oohall@gmail.com>
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/fsl_booke: avoid creating duplicate tlb1 entry
-Message-Id: <48hYYB6CJzz9sPF@ozlabs.org>
-Date: Wed, 18 Mar 2020 00:14:38 +1100 (AEDT)
+Subject: Re: [PATCH 1/2] cpufreq/powernv: Fix use-after-free
+Message-Id: <48hYYG1y3Lz9sSL@ozlabs.org>
+Date: Wed, 18 Mar 2020 00:14:40 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,27 +38,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Diana Madalina Craciun <diana.craciun@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-01-23 at 11:19:25 UTC, Laurentiu Tudor wrote:
-> In the current implementation, the call to loadcam_multi() is wrapped
-> between switch_to_as1() and restore_to_as0() calls so, when it tries
-> to create its own temporary AS=3D1 TLB1 entry, it ends up duplicating the
-> existing one created by switch_to_as1(). Add a check to skip creating
-> the temporary entry if already running in AS=3D1.
+On Thu, 2020-02-06 at 06:26:21 UTC, Oliver O'Halloran wrote:
+> The cpufreq driver has a use-after-free that we can hit if:
 > 
-> Fixes: d9e1831a4202 ("powerpc/85xx: Load all early TLB entries at once")
-> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> Cc: stable@vger.kernel.org
+> a) There's an OCC message pending when the notifier is registered, and
+> b) The cpufreq driver fails to register with the core.
+> 
+> When a) occurs the notifier schedules a workqueue item to handle the
+> message. The backing work_struct is located on chips[].throttle and when b)
+> happens we clean up by freeing the array. Once we get to the (now free)
+> queued item and the kernel crashes.
+> 
+> Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+> Fixes: c5e29ea ("cpufreq: powernv: Fix bugs in powernv_cpufreq_{init/exit}")
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
-Applied to powerpc next, thanks.
+Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/aa4113340ae6c2811e046f08c2bc21011d20a072
+https://git.kernel.org/powerpc/c/d0a72efac89d1c35ac55197895201b7b94c5e6ef
 
 cheers
