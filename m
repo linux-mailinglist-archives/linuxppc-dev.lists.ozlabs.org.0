@@ -1,77 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E33D189633
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 08:29:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j1rq0DVkzDqtS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 18:29:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9AB189636
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 08:31:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j1tw4r9rzDqvY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 18:31:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48j1qJ4ghCzDqkG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 18:28:28 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02I73k4X010762
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:28:25 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu861d2k5-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48j1qQ0Rj7zDqnp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 18:28:33 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02I73u8m166913
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:28:31 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yucv4v65b-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:28:25 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 03:28:31 -0400
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Wed, 18 Mar 2020 07:28:23 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Wed, 18 Mar 2020 07:28:29 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 18 Mar 2020 07:28:20 -0000
+ Wed, 18 Mar 2020 07:28:25 -0000
 Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02I7SJ4356295584
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02I7RM1S17629592
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Mar 2020 07:28:19 GMT
+ Wed, 18 Mar 2020 07:27:22 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EC5CC4203F;
- Wed, 18 Mar 2020 07:28:18 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6819F4203F;
+ Wed, 18 Mar 2020 07:28:23 +0000 (GMT)
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13EC942042;
- Wed, 18 Mar 2020 07:28:15 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id DAB3542042;
+ Wed, 18 Mar 2020 07:28:19 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.85.106.17])
  by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 18 Mar 2020 07:28:14 +0000 (GMT)
+ Wed, 18 Mar 2020 07:28:19 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 0/4] Fix kmalloc_node on offline nodes
-Date: Wed, 18 Mar 2020 12:58:06 +0530
+Subject: [PATCH v2 1/4] mm: Check for node_online in node_present_pages
+Date: Wed, 18 Mar 2020 12:58:07 +0530
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
+References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 20031807-0012-0000-0000-0000039305C4
+x-cbid: 20031807-0008-0000-0000-0000035F2E18
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031807-0013-0000-0000-000021CFE731
-Message-Id: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
+x-cbparentid: 20031807-0009-0000-0000-00004A808795
+Message-Id: <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-18_02:2020-03-17,
  2020-03-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 clxscore=1015
- impostorscore=0 mlxlogscore=850 mlxscore=0 suspectscore=0 adultscore=0
- bulkscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003180034
+ malwarescore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0 mlxscore=0
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003180032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,36 +97,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Changelog v1 -> v2:
-- Handled comments from Vlastimil Babka and Bharata B Rao
-- Changes only in patch 2 and 4.
+Calling a kmalloc_node on a possible node which is not yet onlined can
+lead to panic. Currently node_present_pages() doesn't verify the node is
+online before accessing the pgdat for the node. However pgdat struct may
+not be available resulting in a crash.
 
-Sachin recently reported that linux-next was no more bootable on few
-powerpc systems.
-https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
+NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
+LR [c0000000003d5b94] __slab_alloc+0x34/0x60
+Call Trace:
+[c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
+[c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
+[c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
+[c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
+[c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
+[c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
+[c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
+[c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
+[c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
+[c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
+[c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
+[c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
 
-# numactl -H
-available: 2 nodes (0-1)
-node 0 cpus:
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
-node 1 size: 35247 MB
-node 1 free: 30907 MB
-node distances:
-node   0   1
-  0:  10  40
-  1:  40  10
-#
-
-Sachin bisected the problem to Commit a75056fc1e7c ("mm/memcontrol.c: allocate
-shrinker_map on appropriate NUMA node")
-
-The root cause analysis showed that mm/slub and powerpc/numa had some shortcomings
-with respect to offline nodes.
-
-This patch series is on top of patches posted at
-https://lore.kernel.org/linuxppc-dev/20200311110237.5731-1-srikar@linux.vnet.ibm.com/t/#u
+Fix this by verifying the node is online before accessing the pgdat
+structure. Fix the same for node_spanned_pages() too.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org
@@ -141,20 +136,30 @@ Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Cc: Bharata B Rao <bharata@linux.ibm.com>
 Cc: Nathan Lynch <nathanl@linux.ibm.com>
 
-Srikar Dronamraju (4):
-  mm: Check for node_online in node_present_pages
-  mm/slub: Use mem_node to allocate a new slab
-  mm: Implement reset_numa_mem
-  powerpc/numa: Set fallback nodes for offline nodes
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+---
+ include/linux/mmzone.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- arch/powerpc/include/asm/topology.h | 16 ++++++++++++++++
- arch/powerpc/kernel/smp.c           |  1 +
- include/asm-generic/topology.h      |  3 +++
- include/linux/mmzone.h              |  6 ++++--
- include/linux/topology.h            |  7 +++++++
- mm/slub.c                           |  9 +++++----
- 6 files changed, 36 insertions(+), 6 deletions(-)
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index f3f264826423..88078a3b95e5 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -756,8 +756,10 @@ typedef struct pglist_data {
+ 	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
+ } pg_data_t;
+ 
+-#define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
+-#define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
++#define node_present_pages(nid)		\
++	(node_online(nid) ? NODE_DATA(nid)->node_present_pages : 0)
++#define node_spanned_pages(nid)		\
++	(node_online(nid) ? NODE_DATA(nid)->node_spanned_pages : 0)
+ #ifdef CONFIG_FLAT_NODE_MEM_MAP
+ #define pgdat_page_nr(pgdat, pagenr)	((pgdat)->node_mem_map + (pagenr))
+ #else
 -- 
 2.18.1
 
