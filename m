@@ -2,71 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B7E18A835
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 23:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD5518A856
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 23:38:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jPsR3LtfzDr6x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:31:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jQ1G35HjzDqld
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:38:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=cs7i=5d=paulmck-thinkpad-p72.home=paulmck@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=SaOQY3Zi; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=eXUI9HQi; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jPqF2JgjzDr2w
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 09:29:43 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id h11so119447plr.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 15:29:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=MAzsdjmQhjaOVYcxw+UOykxk2qmTtErS2Jij0krbIJk=;
- b=SaOQY3ZiKknnLmW8szYtiXVNA7Uo4g4d/EsH5gQvHKKmkHrEcpRt1KoB35hpFV0vrN
- yYu7/AtNPs8gLsEXlRc9OeMmulSf2zKax73fLI0cy9w/14wmeS2TgtvFvKxpVB0JSrsr
- m+YGIhNOwD49jw62KsBiu+3ZDIiWQnQ8LwuMQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=MAzsdjmQhjaOVYcxw+UOykxk2qmTtErS2Jij0krbIJk=;
- b=XgR7YA23BKMUyUnYm4uOV5vZjHN/3WipC4BBVJT+pgFUStFvnr+9LxT6P5mlxE2R+b
- b+gl2HvDwZIni8qWT5XE+XEGijkLs36nvLqjHEH0PPBJuoy3cP5KsDi5vDoCRlyyyGoc
- cV3WPGEhSa2VIhuqUEOwTC8sL68SaZOJES4Jz9lfnsMeNzjJiigxyAssq+4v7laJNYMz
- GlSPSKb24lml3VkzREQkVuJu92lOBds0dKa5/8ee7QqvCimTnBtBUQtvyE7wdlhg4T/h
- hrMbZuzyyFd5ssTpDMHw0qPzhGiftrdm7ch8IBmAHQu3APMI6sa/aeCfAshhgjc4GZlY
- 0JPA==
-X-Gm-Message-State: ANhLgQ0gjPqqOJBU4BQ1hMBvtaZrMmtRVsDMT8oSeiXdztL1LpcIKjzN
- 7c2Ndx1pa3rjHe1UE4OWUCaIiA==
-X-Google-Smtp-Source: ADFU+vvPKZEzFEEbxUvDrDld238Rb2bBAXthSR2r5gIiN3R7/0Qc0rRdau697G/2EiCa4j3aCtDIFA==
-X-Received: by 2002:a17:902:8bc8:: with SMTP id r8mr449817plo.48.1584570581866; 
- Wed, 18 Mar 2020 15:29:41 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-d960-12d9-4a9d-f47f.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:d960:12d9:4a9d:f47f])
- by smtp.gmail.com with ESMTPSA id g75sm22956pje.37.2020.03.18.15.29.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Mar 2020 15:29:41 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
-Subject: Re: [PATCH 2/5] selftests/powerpc: Add header files for NX
- compresion/decompression
-In-Reply-To: <20200316180714.18631-3-rzinsly@linux.ibm.com>
-References: <20200316180714.18631-1-rzinsly@linux.ibm.com>
- <20200316180714.18631-3-rzinsly@linux.ibm.com>
-Date: Thu, 19 Mar 2020 09:29:37 +1100
-Message-ID: <87r1xpmh4e.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jPsT13KCzDr2s
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 09:31:40 +1100 (AEDT)
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
+ [50.39.105.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 372A220754;
+ Wed, 18 Mar 2020 22:31:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1584570698;
+ bh=LNyvQjscnCJtpeGddOeGGKGQD6+k3gOjSe2WMRiOUQY=;
+ h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+ b=eXUI9HQiQ8XaTg68pP9Qnja3pTRnFlnrL163PG/dcv4Hv+fnfjjPtzoW7xI2jGnyq
+ vZIJr6ilHEFWbqLC8cdg3UGZmFPv4KO2C2rB9uHW/P8eXa7mNBkdACFGLw4w+TyW3S
+ X93dWEV+LbapEq347UPjuuLxgYWealahp7eo0kQI=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+ id 058D4352275A; Wed, 18 Mar 2020 15:31:38 -0700 (PDT)
+Date: Wed, 18 Mar 2020 15:31:38 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V2 08/15] Documentation: Add lock ordering and nesting
+ documentation
+Message-ID: <20200318223137.GW3199@paulmck-ThinkPad-P72>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.211530902@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318204408.211530902@linutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailman-Approved-At: Thu, 19 Mar 2020 09:37:06 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,853 +63,399 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: abali@us.ibm.com, haren@linux.ibm.com, herbert@gondor.apana.org.au,
- Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
+Reply-To: paulmck@kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Logan Gunthorpe <logang@deltatee.com>,
+ Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Raphael Moreira Zinsly <rzinsly@linux.ibm.com> writes:
+On Wed, Mar 18, 2020 at 09:43:10PM +0100, Thomas Gleixner wrote:
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> The kernel provides a variety of locking primitives. The nesting of these
+> lock types and the implications of them on RT enabled kernels is nowhere
+> documented.
+> 
+> Add initial documentation.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-> Add files to be able to compress and decompress files using the
-> powerpc NX-GZIP engine.
->
-> Signed-off-by: Bulent Abali <abali@us.ibm.com>
-> Signed-off-by: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
+Mostly native-English-speaker services below, so please feel free to
+ignore.  The one place I made a substantive change, I marked it "@@@".
+I only did about half of this document, but should this prove useful,
+I will do the other half later.
+
+							Thanx, Paul
+
 > ---
->  .../powerpc/nx-gzip/inc/copy-paste.h          |  54 ++
->  .../selftests/powerpc/nx-gzip/inc/nx_dbg.h    |  95 +++
->  .../selftests/powerpc/nx-gzip/inc/nxu.h       | 644 ++++++++++++++++++
->  3 files changed, 793 insertions(+)
->  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/copy-paste.h
->  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/nx_dbg.h
->  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/nxu.h
->
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/copy-paste.h b/tools/testing/selftests/powerpc/nx-gzip/inc/copy-paste.h
-> new file mode 100644
-> index 000000000000..107139b6c7df
+> V2: Addressed review comments from Randy
+> ---
+>  Documentation/locking/index.rst     |    1 
+>  Documentation/locking/locktypes.rst |  298 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 299 insertions(+)
+>  create mode 100644 Documentation/locking/locktypes.rst
+> 
+> --- a/Documentation/locking/index.rst
+> +++ b/Documentation/locking/index.rst
+> @@ -7,6 +7,7 @@ locking
+>  .. toctree::
+>      :maxdepth: 1
+>  
+> +    locktypes
+>      lockdep-design
+>      lockstat
+>      locktorture
 > --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/copy-paste.h
-> @@ -0,0 +1,54 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +++ b/Documentation/locking/locktypes.rst
+> @@ -0,0 +1,298 @@
+> +.. _kernel_hacking_locktypes:
 > +
-> +#include "nx-helpers.h"
+> +==========================
+> +Lock types and their rules
+> +==========================
 > +
-> +/*
-> + * Macros taken from arch/powerpc/include/asm/ppc-opcode.h and other
-> + * header files.
-> + */
-> +#define ___PPC_RA(a)    (((a) & 0x1f) << 16)
-> +#define ___PPC_RB(b)    (((b) & 0x1f) << 11)
+> +Introduction
+> +============
 > +
-> +#define PPC_INST_COPY                   0x7c20060c
-> +#define PPC_INST_PASTE                  0x7c20070d
+> +The kernel provides a variety of locking primitives which can be divided
+> +into two categories:
 > +
-> +#define PPC_COPY(a, b)          stringify_in_c(.long PPC_INST_COPY | \
-> +						___PPC_RA(a) | ___PPC_RB(b))
-> +#define PPC_PASTE(a, b)         stringify_in_c(.long PPC_INST_PASTE | \
-> +						___PPC_RA(a) | ___PPC_RB(b))
-> +#define CR0_SHIFT	28
-> +#define CR0_MASK	0xF
-> +/*
-> + * Copy/paste instructions:
-> + *
-> + *	copy RA,RB
-> + *		Copy contents of address (RA) + effective_address(RB)
-> + *		to internal copy-buffer.
-> + *
-> + *	paste RA,RB
-> + *		Paste contents of internal copy-buffer to the address
-> + *		(RA) + effective_address(RB)
-> + */
-> +static inline int vas_copy(void *crb, int offset)
-> +{
-> +	asm volatile(PPC_COPY(%0, %1)";"
-> +		:
-> +		: "b" (offset), "b" (crb)
-> +		: "memory");
+> + - Sleeping locks
+> + - Spinning locks
 > +
-> +	return 0;
-> +}
-> +
-> +static inline int vas_paste(void *paste_address, int offset)
-> +{
-> +	u32 cr;
-> +
-> +	cr = 0;
-> +	asm volatile(PPC_PASTE(%1, %2)";"
-> +		"mfocrf %0, 0x80;"
-> +		: "=r" (cr)
-> +		: "b" (offset), "b" (paste_address)
-> +		: "memory", "cr0");
-> +
-> +	return (cr >> CR0_SHIFT) & CR0_MASK;
-> +}
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/nx_dbg.h b/tools/testing/selftests/powerpc/nx-gzip/inc/nx_dbg.h
-> new file mode 100644
-> index 000000000000..f2c0eee2317e
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/nx_dbg.h
-> @@ -0,0 +1,95 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Copyright 2020 IBM Corporation
-> + *
-> + */
-> +
-> +#ifndef _NXU_DBG_H_
-> +#define _NXU_DBG_H_
-> +
-> +#include <sys/file.h>
-> +#include <stdint.h>
-> +#include <stdio.h>
-> +#include <time.h>
-> +#include <pthread.h>
-> +
-> +extern FILE * nx_gzip_log;
-> +extern int nx_gzip_trace;
-> +extern unsigned int nx_gzip_inflate_impl;
-> +extern unsigned int nx_gzip_deflate_impl;
-> +extern unsigned int nx_gzip_inflate_flags;
-> +extern unsigned int nx_gzip_deflate_flags;
-> +
-> +extern int nx_dbg;
-> +pthread_mutex_t mutex_log;
-> +
-> +#define nx_gzip_trace_enabled()       (nx_gzip_trace & 0x1)
-> +#define nx_gzip_hw_trace_enabled()    (nx_gzip_trace & 0x2)
-> +#define nx_gzip_sw_trace_enabled()    (nx_gzip_trace & 0x4)
-> +#define nx_gzip_gather_statistics()   (nx_gzip_trace & 0x8)
-> +#define nx_gzip_per_stream_stat()     (nx_gzip_trace & 0x10)
-> +
-> +#define prt(fmt, ...) do { \
-> +	pthread_mutex_lock(&mutex_log);					\
-> +	flock(nx_gzip_log->_fileno, LOCK_EX);				\
-> +	time_t t; struct tm *m; time(&t); m = localtime(&t);		\
-> +	fprintf(nx_gzip_log, "[%04d/%02d/%02d %02d:%02d:%02d] "		\
-> +		"pid %d: " fmt,	\
-> +		(int)m->tm_year + 1900, (int)m->tm_mon+1, (int)m->tm_mday, \
-> +		(int)m->tm_hour, (int)m->tm_min, (int)m->tm_sec,	\
-> +		(int)getpid(), ## __VA_ARGS__);				\
-> +	fflush(nx_gzip_log);						\
-> +	flock(nx_gzip_log->_fileno, LOCK_UN);				\
-> +	pthread_mutex_unlock(&mutex_log);				\
-> +} while (0)
-> +
-> +/* Use in case of an error */
-> +#define prt_err(fmt, ...) do { if (nx_dbg >= 0) {			\
-> +	prt("%s:%u: Error: "fmt,					\
-> +		__FILE__, __LINE__, ## __VA_ARGS__);			\
-> +}} while (0)
-> +
-> +/* Use in case of an warning */
-> +#define prt_warn(fmt, ...) do {	if (nx_dbg >= 1) {			\
-> +	prt("%s:%u: Warning: "fmt,					\
-> +		__FILE__, __LINE__, ## __VA_ARGS__);			\
-> +}} while (0)
-> +
-> +/* Informational printouts */
-> +#define prt_info(fmt, ...) do {	if (nx_dbg >= 2) {			\
-> +	prt("Info: "fmt, ## __VA_ARGS__);				\
-> +}} while (0)
-> +
-> +/* Trace zlib wrapper code */
-> +#define prt_trace(fmt, ...) do { if (nx_gzip_trace_enabled()) {		\
-> +	prt("### "fmt, ## __VA_ARGS__);					\
-> +}} while (0)
-> +
-> +/* Trace statistics */
-> +#define prt_stat(fmt, ...) do {	if (nx_gzip_gather_statistics()) {	\
-> +	prt("### "fmt, ## __VA_ARGS__);					\
-> +}} while (0)
-> +
-> +/* Trace zlib hardware implementation */
-> +#define hw_trace(fmt, ...) do {						\
-> +		if (nx_gzip_hw_trace_enabled())				\
-> +			fprintf(nx_gzip_log, "hhh " fmt, ## __VA_ARGS__); \
-> +	} while (0)
-> +
-> +/* Trace zlib software implementation */
-> +#define sw_trace(fmt, ...) do {						\
-> +		if (nx_gzip_sw_trace_enabled())				\
-> +			fprintf(nx_gzip_log, "sss " fmt, ## __VA_ARGS__); \
-> +	} while (0)
-> +
-> +
-> +/**
-> + * str_to_num - Convert string into number and copy with endings like
-> + *              KiB for kilobyte
-> + *              MiB for megabyte
-> + *              GiB for gigabyte
-> + */
-> +uint64_t str_to_num(char *str);
-> +void nx_lib_debug(int onoff);
-> +
-> +#endif	/* _NXU_DBG_H_ */
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/nxu.h b/tools/testing/selftests/powerpc/nx-gzip/inc/nxu.h
-> new file mode 100644
-> index 000000000000..faa95ffc162a
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/nxu.h
-> @@ -0,0 +1,644 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Hardware interface of the NX-GZIP compression accelerator
-> + *
-> + * Copyright (C) IBM Corporation, 2020
-> + *
-> + * Author: Bulent Abali <abali@us.ibm.com>
-> + *
-> + */
-> +
-> +#ifndef _NXU_H
-> +#define _NXU_H
-> +
-> +#include <stdint.h>
-> +#include <endian.h>
-> +
-> +/* deflate */
-> +#define LLSZ   286
-> +#define DSZ    30
-> +
-> +/* nx */
-> +#define DHTSZ  18
-> +#define DHT_MAXSZ 288
-> +#define MAX_DDE_COUNT 256
-> +
-> +/* util */
-> +#ifdef NXDBG
-> +#define NXPRT(X) do { X; } while (0)
-> +#else
-> +#define NXPRT(X) do { ; } while (0)
-> +#endif
-> +
-> +#ifdef NXTIMER
-> +#include <sys/platform/ppc.h>
-> +#define NX_CLK(X)      do { X; } while (0)
-> +#define nx_get_time()  __ppc_get_timebase()
-> +#define nx_get_freq()  __ppc_get_timebase_freq()
-> +#else
-> +#define NX_CLK(X)      do { ; } while (0)
-> +#define nx_get_time()  (-1)
-> +#define nx_get_freq()  (-1)
-> +#endif
-> +
-> +/*
-> + * Definitions of acronyms used here. See
-> + * P9 NX Gzip Accelerator User's Manual for details
-> + *
+> +This document describes the lock types at least at the conceptual level and
+> +provides rules for nesting of lock types also under the aspect of PREEMPT_RT.
 
-If I google "P9 NX Gzip Accelerator User's Manual" I just find the
-POWER9 Processor User's Manual which seems to be a different
-thing... following the links in that document to a GitHub repo I think
-the document I'm looking for is
+I suggest something like this:
 
-https://github.com/abalib/power-gzip/blob/master/power_nx_gzip_um.pdf
+This document conceptually describes these lock types and provides rules
+for their nesting, including the rules for use under PREEMPT_RT.
 
-If that's right and the URL isstable, could you include a link in source
-code? (Should perhaps the power-gzip repository be moved from a personal
-github account to the open-power organisation?)
+> +
+> +Lock categories
+> +===============
+> +
+> +Sleeping locks
+> +--------------
+> +
+> +Sleeping locks can only be acquired in preemptible task context.
+> +
+> +Some of the implementations allow try_lock() attempts from other contexts,
+> +but that has to be really evaluated carefully including the question
+> +whether the unlock can be done from that context safely as well.
+> +
+> +Note that some lock types change their implementation details when
+> +debugging is enabled, so this should be really only considered if there is
+> +no other option.
 
-Regards,
-Daniel
+How about something like this?
 
-> + * adler/crc: 32 bit checksums appended to stream tail
-> + * ce:       completion extension
-> + * cpb:      coprocessor parameter block (metadata)
-> + * crb:      coprocessor request block (command)
-> + * csb:      coprocessor status block (status)
-> + * dht:      dynamic huffman table
-> + * dde:      data descriptor element (address, length)
-> + * ddl:      list of ddes
-> + * dh/fh:    dynamic and fixed huffman types
-> + * fc:       coprocessor function code
-> + * histlen:  history/dictionary length
-> + * history:  sliding window of up to 32KB of data
-> + * lzcount:  Deflate LZ symbol counts
-> + * rembytecnt: remaining byte count
-> + * sfbt:     source final block type; last block's type during decomp
-> + * spbc:     source processed byte count
-> + * subc:     source unprocessed bit count
-> + * tebc:     target ending bit count; valid bits in the last byte
-> + * tpbc:     target processed byte count
-> + * vas:      virtual accelerator switch; the user mode interface
-> + */
-> +
-> +typedef union {
-> +    uint32_t word[4];
-> +    uint64_t dword[2];
-> +} nx_qw_t __attribute__((aligned (16)));
-> +
-> +/*
-> + * Note: NX registers with fewer than 32 bits are declared by
-> + * convention as uint32_t variables in unions. If *_offset and *_mask
-> + * are defined for a variable, then use get_ put_ macros to
-> + * conveniently access the register fields for endian conversions.
-> + */
-> +
-> +typedef struct {
-> +    /* Data Descriptor Element, Section 6.4 */
-> +    union {
-> +	uint32_t dde_count;
-> +	/* When dde_count == 0 ddead is a pointer to a data buffer;
-> +	 * ddebc is the buffer length bytes.
-> +	 * When dde_count > 0 dde is an indirect dde; ddead is a pointer
-> +	 * to a contiguous list of direct ddes; ddebc is the total length
-> +	 * of all data pointed to by the list of direct ddes.
-> +	 * Note that only one level of indirection is permitted.
-> +	 * See Section 6.4 of the user manual for additional details
-> +	 */
-> +    };
-> +    uint32_t ddebc; /* dde byte count */
-> +    uint64_t ddead; /* dde address */
-> +} nx_dde_t __attribute__((aligned (16)));
-> +
-> +typedef struct {
-> +    /* Coprocessor Status Block, Section 6.6  */
-> +    union {
-> +	uint32_t csb_v;
-> +	/* Valid bit. v must be set to 0 by the program
-> +	 * before submitting the coprocessor command.
-> +	 * Software can poll for the v bit
-> +	 */
-> +
-> +	uint32_t csb_f;
-> +	/* 16B CSB size. Written to 0 by DMA when it writes the CPB */
-> +
-> +	uint32_t csb_cs;
-> +	/* cs completion sequence; unused */
-> +
-> +	uint32_t csb_cc;
-> +	/* cc completion code; cc != 0 exception occurred */
-> +
-> +	uint32_t csb_ce;
-> +	/* ce completion extension */
-> +
-> +    };
-> +    uint32_t tpbc;
-> +    /* target processed byte count TPBC */
-> +
-> +    uint64_t fsaddr;
-> +    /* Section 6.12.1 CSB NonZero error summary.  FSA Failing storage
-> +     * address.  Address where error occurred. When available, written
-> +     * to A field of CSB
-> +     */
-> +} nx_csb_t __attribute__((aligned (16)));
-> +
-> +typedef struct {
-> +    /* Coprocessor Completion Block, Section 6.7 */
-> +
-> +    uint32_t reserved[3];
-> +    union {
-> +	/* When crb.c==0 (no ccb defined) it is reserved;
-> +	 * When crb.c==1 (ccb defined) it is cm
-> +	 */
-> +
-> +	uint32_t ccb_cm;
-> +	/* Signal interrupt of crb.c==1 and cm==1 */
-> +
-> +	uint32_t word;
-> +	/* generic access to the 32bit word */
-> +    };
-> +} nx_ccb_t __attribute__((aligned (16)));
-> +
-> +typedef struct {
-> +    /*
-> +     * CRB operand of the paste coprocessor instruction is stamped
-> +     * in quadword 4 with the information shown here as its written
-> +     * in to the receive FIFO of the coprocessor
-> +     */
-> +
-> +    union {
-> +	uint32_t vas_buf_num;
-> +	/* Verification only vas buffer number which correlates to
-> +	 * the low order bits of the atag in the paste command
-> +	 */
-> +
-> +	uint32_t send_wc_id;
-> +	/* Pointer to Send Window Context that provides for NX address
-> +	 * translation information, such as MSR and LPCR bits, job completion
-> +	 * interrupt RA, PSWID, and job utilization counter.
-> +	 */
-> +
-> +    };
-> +    union {
-> +	uint32_t recv_wc_id;
-> +	/* Pointer to Receive Window Context. NX uses this to return
-> +	 * credits to a Receive FIFO as entries are dequeued.
-> +	 */
-> +
-> +    };
-> +    uint32_t reserved2;
-> +    union {
-> +	uint32_t vas_invalid;
-> +	/* Invalid bit. If this bit is 1 the CRB is discarded by
-> +	 * NX upon fetching from the receive FIFO. If this bit is 0
-> +	 * the CRB is processed normally. The bit is stamped to 0
-> +	 * by VAS and may be written to 1 by hypervisor while
-> +	 * the CRB is in the receive FIFO (in memory).
-> +	 */
-> +
-> +    };
-> +} vas_stamped_crb_t;
-> +
-> +typedef struct {
-> +    /*
-> +     * A CRB that has a translation fault is stamped by NX in quadword 4
-> +     * and pasted to the Fault Send Window in VAS.
-> +     */
-> +    uint64_t fsa;
-> +    union {
-> +	uint32_t nxsf_t;
-> +	uint32_t nxsf_fs;
-> +    };
-> +    uint32_t pswid;
-> +} nx_stamped_fault_crb_t;
-> +
-> +typedef union {
-> +    vas_stamped_crb_t      vas;
-> +    nx_stamped_fault_crb_t nx;
-> +} stamped_crb_t;
-> +
-> +typedef struct {
-> +    /*
-> +     * Coprocessor Parameter Block In/Out are used to pass metadata
-> +     * to/from accelerator.  Tables 6.5 and 6.6 of the user manual.
-> +     */
-> +
-> +    /* CPBInput */
-> +
-> +    struct {
-> +	union {
-> +	    nx_qw_t qw0;
-> +	    struct {
-> +		uint32_t in_adler;            /* bits 0:31    */
-> +		uint32_t in_crc;              /* bits 32:63   */
-> +		union {
-> +		    uint32_t in_histlen;      /* bits 64:75   */
-> +		    uint32_t in_subc;         /* bits 93:95   */
-> +		};
-> +		union {
-> +		    uint32_t in_sfbt;         /* bits 108:111 */
-> +		    uint32_t in_rembytecnt;   /* bits 112:127 */
-> +		    uint32_t in_dhtlen;       /* bits 116:127 */
-> +		};
-> +	    };
-> +	};
-> +	union {
-> +	    nx_qw_t  in_dht[DHTSZ];           /* qw[1:18]     */
-> +	    char     in_dht_char[DHT_MAXSZ];  /* byte access  */
-> +	};
-> +	nx_qw_t  reserved[5];                 /* qw[19:23]    */
-> +    };
-> +
-> +    /* CPBOutput */
-> +
-> +    volatile struct {
-> +	union {
-> +	    nx_qw_t qw24;
-> +	    struct {
-> +		uint32_t out_adler;           /* bits 0:31  qw[24]   */
-> +		uint32_t out_crc;             /* bits 32:63 qw[24]   */
-> +		union {
-> +		    uint32_t out_tebc;        /* bits 77:79 qw[24]   */
-> +		    uint32_t out_subc;        /* bits 80:95 qw[24]   */
-> +		};
-> +		union {
-> +		    uint32_t out_sfbt;        /* bits 108:111 qw[24] */
-> +		    uint32_t out_rembytecnt;  /* bits 112:127 qw[24] */
-> +		    uint32_t out_dhtlen;      /* bits 116:127 qw[24] */
-> +		};
-> +	    };
-> +	};
-> +	union {
-> +	    nx_qw_t  qw25[79];              /* qw[25:103] */
-> +	    /* qw[25] compress no lzcounts or wrap */
-> +	    uint32_t out_spbc_comp_wrap;
-> +	    uint32_t out_spbc_wrap;         /* qw[25] wrap */
-> +	    uint32_t out_spbc_comp;         /* qw[25] compress no lzcounts */
-> +	    uint32_t out_lzcount[LLSZ+DSZ]; /* 286 LL and 30 D symbol counts */
-> +	    struct {
-> +		nx_qw_t  out_dht[DHTSZ];    /* qw[25:42] */
-> +		uint32_t out_spbc_decomp;   /* qw[43] decompress */
-> +	    };
-> +	};
-> +	/* qw[104] compress with lzcounts */
-> +	uint32_t out_spbc_comp_with_count;
-> +    };
-> +} nx_gzip_cpb_t  __attribute__((aligned (128)));
-> +
-> +typedef struct {
-> +    union {                   /* byte[0:3]   */
-> +	uint32_t gzip_fc;     /* bits[24-31] */
-> +    };
-> +    uint32_t reserved1;       /* byte[4:7]   */
-> +    union {
-> +	uint64_t csb_address; /* byte[8:15]  */
-> +	struct {
-> +	    uint32_t reserved2;
-> +	    union {
-> +		uint32_t crb_c;
-> +		/* c==0 no ccb defined */
-> +
-> +		uint32_t crb_at;
-> +		/* at==0 address type is ignored;
-> +		 * all addrs effective assumed.
-> +		 */
-> +
-> +	    };
-> +	};
-> +    };
-> +    nx_dde_t source_dde;           /* byte[16:31] */
-> +    nx_dde_t target_dde;           /* byte[32:47] */
-> +    volatile nx_ccb_t ccb;         /* byte[48:63] */
-> +    volatile union {
-> +	/* byte[64:239] shift csb by 128 bytes out of the crb; csb was in crb
-> +	 * earlier; JReilly says csb written with partial inject.
-> +	 */
-> +	nx_qw_t reserved64[11];
-> +	stamped_crb_t stamp;       /* byte[64:79] */
-> +    };
-> +    volatile nx_csb_t csb;
-> +} nx_gzip_crb_t __attribute__((aligned (128)));
-> +
-> +
-> +typedef struct {
-> +    nx_gzip_crb_t crb;
-> +    nx_gzip_cpb_t cpb;
-> +} nx_gzip_crb_cpb_t __attribute__((aligned (2048)));
-> +
-> +
-> +/*
-> + * NX hardware convention has the msb bit on the left numbered 0.
-> + * The defines below has *_offset defined as the right most bit
-> + * position of a field.  x of size_mask(x) is the field width in bits.
-> + */
-> +
-> +#define size_mask(x)          ((1U<<(x))-1)
-> +
-> +/*
-> + * Offsets and Widths within the containing 32 bits of the various NX
-> + * gzip hardware registers.  Use the getnn/putnn macros to access
-> + * these regs
-> + */
-> +
-> +#define dde_count_mask        size_mask(8)
-> +#define dde_count_offset      23
-> +
-> +/* CSB */
-> +
-> +#define csb_v_mask            size_mask(1)
-> +#define csb_v_offset          0
-> +#define csb_f_mask            size_mask(1)
-> +#define csb_f_offset          6
-> +#define csb_cs_mask           size_mask(8)
-> +#define csb_cs_offset         15
-> +#define csb_cc_mask           size_mask(8)
-> +#define csb_cc_offset         23
-> +#define csb_ce_mask           size_mask(8)
-> +#define csb_ce_offset         31
-> +
-> +/* CCB */
-> +
-> +#define ccb_cm_mask           size_mask(3)
-> +#define ccb_cm_offset         31
-> +
-> +/* VAS stamped CRB fields */
-> +
-> +#define vas_buf_num_mask      size_mask(6)
-> +#define vas_buf_num_offset    5
-> +#define send_wc_id_mask       size_mask(16)
-> +#define send_wc_id_offset     31
-> +#define recv_wc_id_mask       size_mask(16)
-> +#define recv_wc_id_offset     31
-> +#define vas_invalid_mask      size_mask(1)
-> +#define vas_invalid_offset    31
-> +
-> +/* NX stamped fault CRB fields */
-> +
-> +#define nxsf_t_mask           size_mask(1)
-> +#define nxsf_t_offset         23
-> +#define nxsf_fs_mask          size_mask(8)
-> +#define nxsf_fs_offset        31
-> +
-> +/* CPB input */
-> +
-> +#define in_histlen_mask       size_mask(12)
-> +#define in_histlen_offset     11
-> +#define in_dhtlen_mask        size_mask(12)
-> +#define in_dhtlen_offset      31
-> +#define in_subc_mask          size_mask(3)
-> +#define in_subc_offset        31
-> +#define in_sfbt_mask          size_mask(4)
-> +#define in_sfbt_offset        15
-> +#define in_rembytecnt_mask    size_mask(16)
-> +#define in_rembytecnt_offset  31
-> +
-> +/* CPB output */
-> +
-> +#define out_tebc_mask         size_mask(3)
-> +#define out_tebc_offset       15
-> +#define out_subc_mask         size_mask(16)
-> +#define out_subc_offset       31
-> +#define out_sfbt_mask         size_mask(4)
-> +#define out_sfbt_offset       15
-> +#define out_rembytecnt_mask   size_mask(16)
-> +#define out_rembytecnt_offset 31
-> +#define out_dhtlen_mask       size_mask(12)
-> +#define out_dhtlen_offset     31
-> +
-> +/* CRB */
-> +
-> +#define gzip_fc_mask          size_mask(8)
-> +#define gzip_fc_offset        31
-> +#define crb_c_mask            size_mask(1)
-> +#define crb_c_offset          28
-> +#define crb_at_mask           size_mask(1)
-> +#define crb_at_offset         30
-> +#define csb_address_mask      ~(15UL) /* mask off bottom 4b */
-> +
-> +/*
-> + * Access macros for the registers.  Do not access registers directly
-> + * because of the endian conversion.  P9 processor may run either as
-> + * Little or Big endian. However the NX coprocessor regs are always
-> + * big endian.
-> + * Use the 32 and 64b macros to access respective
-> + * register sizes.
-> + * Use nn forms for the register fields shorter than 32 bits.
-> + */
-> +
-> +#define getnn(ST, REG)      ((be32toh(ST.REG) >> (31-REG##_offset)) \
-> +				 & REG##_mask)
-> +#define getpnn(ST, REG)     ((be32toh((ST)->REG) >> (31-REG##_offset)) \
-> +				 & REG##_mask)
-> +#define get32(ST, REG)      (be32toh(ST.REG))
-> +#define getp32(ST, REG)     (be32toh((ST)->REG))
-> +#define get64(ST, REG)      (be64toh(ST.REG))
-> +#define getp64(ST, REG)     (be64toh((ST)->REG))
-> +
-> +#define unget32(ST, REG)    (get32(ST, REG) & ~((REG##_mask) \
-> +				<< (31-REG##_offset)))
-> +/* get 32bits less the REG field */
-> +
-> +#define ungetp32(ST, REG)   (getp32(ST, REG) & ~((REG##_mask) \
-> +				<< (31-REG##_offset)))
-> +/* get 32bits less the REG field */
-> +
-> +#define clear_regs(ST)      do { memset((void *)(&(ST)), 0, sizeof(ST)); \
-> +				} while (0)
-> +#define clear_dde(ST)       do { ST.dde_count = ST.ddebc = 0; ST.ddead = 0; \
-> +				} while (0)
-> +#define clearp_dde(ST)      do { (ST)->dde_count = (ST)->ddebc = 0; \
-> +				 (ST)->ddead = 0; \
-> +				} while (0)
-> +#define clear_struct(ST)    do { memset((void *)(&(ST)), 0, sizeof(ST)); \
-> +				} while (0)
-> +
-> +#define putnn(ST, REG, X)   do { ST.REG = htobe32(unget32(ST, REG) | (((X) \
-> +				 & REG##_mask) << (31-REG##_offset))); \
-> +				} while (0)
-> +#define putpnn(ST, REG, X)  do { (ST)->REG = htobe32(ungetp32(ST, REG) \
-> +				| (((X) & REG##_mask) << (31-REG##_offset))); \
-> +				} while (0)
-> +
-> +#define put32(ST, REG, X)   do { ST.REG = htobe32(X); } while (0)
-> +#define putp32(ST, REG, X)  do { (ST)->REG = htobe32(X); } while (0)
-> +#define put64(ST, REG, X)   do { ST.REG = htobe64(X); } while (0)
-> +#define putp64(ST, REG, X)  do { (ST)->REG = htobe64(X); } while (0)
-> +
-> +/*
-> + * Completion extension ce(0) ce(1) ce(2).  Bits ce(3-7)
-> + * unused.  Section 6.6 Figure 6.7.
-> + */
-> +
-> +#define get_csb_ce(ST) ((uint32_t)getnn(ST, csb_ce))
-> +#define get_csb_ce_ms3b(ST) (get_csb_ce(ST) >> 5)
-> +#define put_csb_ce_ms3b(ST, X) do { putnn(ST, csb_ce, ((uint32_t)(X) << 5)); \
-> +				   } while (0)
-> +
-> +#define CSB_CE_PARTIAL         0x4
-> +#define CSB_CE_TERMINATE       0x2
-> +#define CSB_CE_TPBC_VALID      0x1
-> +
-> +#define csb_ce_termination(X)         (!!((X) & CSB_CE_TERMINATE))
-> +/* termination, output buffers may be modified, SPBC/TPBC invalid Fig.6-7 */
-> +
-> +#define csb_ce_check_completion(X)    (!csb_ce_termination(X))
-> +/* if not terminated then check full or partial completion */
-> +
-> +#define csb_ce_partial_completion(X)  (!!((X) & CSB_CE_PARTIAL))
-> +#define csb_ce_full_completion(X)     (!csb_ce_partial_completion(X))
-> +#define csb_ce_tpbc_valid(X)          (!!((X) & CSB_CE_TPBC_VALID))
-> +/* TPBC indicates successfully stored data count */
-> +
-> +#define csb_ce_default_err(X)         csb_ce_termination(X)
-> +/* most error CEs have CE(0)=0 and CE(1)=1 */
-> +
-> +#define csb_ce_cc3_partial(X)         csb_ce_partial_completion(X)
-> +/* some CC=3 are partially completed, Table 6-8 */
-> +
-> +#define csb_ce_cc64(X)                ((X)&(CSB_CE_PARTIAL \
-> +					| CSB_CE_TERMINATE) == 0)
-> +/* Compression: when TPBC>SPBC then CC=64 Table 6-8; target didn't
-> + * compress smaller than source.
-> + */
-> +
-> +/* Decompress SFBT combinations Tables 5-3, 6-4, 6-6 */
-> +
-> +#define SFBT_BFINAL 0x1
-> +#define SFBT_LIT    0x4
-> +#define SFBT_FHT    0x5
-> +#define SFBT_DHT    0x6
-> +#define SFBT_HDR    0x7
-> +
-> +/*
-> + * NX gzip function codes. Table 6.2.
-> + * Bits 0:4 are the FC. Bit 5 is used by the DMA controller to
-> + * select one of the two Byte Count Limits.
-> + */
-> +
-> +#define GZIP_FC_LIMIT_MASK                               0x01
-> +#define GZIP_FC_COMPRESS_FHT                             0x00
-> +#define GZIP_FC_COMPRESS_DHT                             0x02
-> +#define GZIP_FC_COMPRESS_FHT_COUNT                       0x04
-> +#define GZIP_FC_COMPRESS_DHT_COUNT                       0x06
-> +#define GZIP_FC_COMPRESS_RESUME_FHT                      0x08
-> +#define GZIP_FC_COMPRESS_RESUME_DHT                      0x0a
-> +#define GZIP_FC_COMPRESS_RESUME_FHT_COUNT                0x0c
-> +#define GZIP_FC_COMPRESS_RESUME_DHT_COUNT                0x0e
-> +#define GZIP_FC_DECOMPRESS                               0x10
-> +#define GZIP_FC_DECOMPRESS_SINGLE_BLK_N_SUSPEND          0x12
-> +#define GZIP_FC_DECOMPRESS_RESUME                        0x14
-> +#define GZIP_FC_DECOMPRESS_RESUME_SINGLE_BLK_N_SUSPEND   0x16
-> +#define GZIP_FC_WRAP                                     0x1e
-> +
-> +#define fc_is_compress(fc)  (((fc) & 0x10) == 0)
-> +#define fc_has_count(fc)    (fc_is_compress(fc) && (((fc) & 0x4) != 0))
-> +
-> +/* CSB.CC Error codes */
-> +
-> +#define ERR_NX_OK             0
-> +#define ERR_NX_ALIGNMENT      1
-> +#define ERR_NX_OPOVERLAP      2
-> +#define ERR_NX_DATA_LENGTH    3
-> +#define ERR_NX_TRANSLATION    5
-> +#define ERR_NX_PROTECTION     6
-> +#define ERR_NX_EXTERNAL_UE7   7
-> +#define ERR_NX_INVALID_OP     8
-> +#define ERR_NX_PRIVILEGE      9
-> +#define ERR_NX_INTERNAL_UE   10
-> +#define ERR_NX_EXTERN_UE_WR  12
-> +#define ERR_NX_TARGET_SPACE  13
-> +#define ERR_NX_EXCESSIVE_DDE 14
-> +#define ERR_NX_TRANSL_WR     15
-> +#define ERR_NX_PROTECT_WR    16
-> +#define ERR_NX_SUBFUNCTION   17
-> +#define ERR_NX_FUNC_ABORT    18
-> +#define ERR_NX_BYTE_MAX      19
-> +#define ERR_NX_CORRUPT_CRB   20
-> +#define ERR_NX_INVALID_CRB   21
-> +#define ERR_NX_INVALID_DDE   30
-> +#define ERR_NX_SEGMENTED_DDL 31
-> +#define ERR_NX_DDE_OVERFLOW  33
-> +#define ERR_NX_TPBC_GT_SPBC  64
-> +#define ERR_NX_MISSING_CODE  66
-> +#define ERR_NX_INVALID_DIST  67
-> +#define ERR_NX_INVALID_DHT   68
-> +#define ERR_NX_EXTERNAL_UE90 90
-> +#define ERR_NX_WDOG_TIMER   224
-> +#define ERR_NX_AT_FAULT     250
-> +#define ERR_NX_INTR_SERVER  252
-> +#define ERR_NX_UE253        253
-> +#define ERR_NX_NO_HW        254
-> +#define ERR_NX_HUNG_OP      255
-> +#define ERR_NX_END          256
-> +
-> +/* initial values for non-resume operations */
-> +#define INIT_CRC   0  /* crc32(0L, Z_NULL, 0) */
-> +#define INIT_ADLER 1  /* adler32(0L, Z_NULL, 0)  adler is initalized to 1 */
-> +
-> +/* prototypes */
-> +#ifdef NX_JOB_CALLBACK
-> +int nxu_run_job(nx_gzip_crb_cpb_t *c, void *handle,
-> +		int (*callback)(const void *));
-> +#else
-> +int nxu_run_job(nx_gzip_crb_cpb_t *c, void *handle);
-> +#endif
-> +
-> +
-> +/* caller supplies a print buffer 4*sizeof(crb) */
-> +
-> +char *nx_crb_str(nx_gzip_crb_t *crb, char *prbuf);
-> +char *nx_cpb_str(nx_gzip_cpb_t *cpb, char *prbuf);
-> +char *nx_prt_hex(void *cp, int sz, char *prbuf);
-> +char *nx_lzcount_str(nx_gzip_cpb_t *cpb, char *prbuf);
-> +char *nx_strerror(int e);
-> +
-> +#ifdef NX_SIM
-> +#include <stdio.h>
-> +int nx_sim_init(void *ctx);
-> +int nx_sim_end(void *ctx);
-> +int nxu_run_sim_job(nx_gzip_crb_cpb_t *c, void *ctx);
-> +#endif /* NX_SIM */
-> +
-> +/* Deflate stream manipulation */
-> +
-> +#define set_final_bit(x) do { x |= (unsigned char)1; } while (0)
-> +#define clr_final_bit(x) do { x &= ~(unsigned char)1; } while (0)
-> +
-> +#define append_empty_fh_blk(p, b) do { *(p) = (2 | (1&(b))); *((p)+1) = 0; \
-> +				    } while (0)
-> +/* append 10 bits 0000001b 00...... ;
-> + * assumes appending starts on a byte boundary; b is the final bit.
-> + */
-> +
-> +
-> +#ifdef NX_842
-> +
-> +/* 842 Engine */
-> +
-> +typedef struct {
-> +    union {                   /* byte[0:3]   */
-> +	uint32_t eft_fc;      /* bits[29-31] */
-> +    };
-> +    uint32_t reserved1;       /* byte[4:7]   */
-> +    union {
-> +	uint64_t csb_address; /* byte[8:15]  */
-> +	struct {
-> +	    uint32_t reserved2;
-> +	    union {
-> +		uint32_t crb_c;
-> +		/* c==0 no ccb defined */
-> +
-> +		uint32_t crb_at;
-> +		/* at==0 address type is ignored;
-> +		   all addrs effective assumed */
-> +
-> +	    };
-> +	};
-> +    };
-> +    nx_dde_t source_dde;           /* byte[16:31] */
-> +    nx_dde_t target_dde;           /* byte[32:47] */
-> +    nx_ccb_t ccb;                  /* byte[48:63] */
-> +    union {
-> +	nx_qw_t reserved64[3];     /* byte[64:96] */
-> +    };
-> +    nx_csb_t csb;
-> +} nx_eft_crb_t __attribute__((aligned (128)));
-> +
-> +/* 842 CRB */
-> +
-> +#define EFT_FC_MASK                 size_mask(3)
-> +#define EFT_FC_OFFSET               31
-> +#define EFT_FC_COMPRESS             0x0
-> +#define EFT_FC_COMPRESS_WITH_CRC    0x1
-> +#define EFT_FC_DECOMPRESS           0x2
-> +#define EFT_FC_DECOMPRESS_WITH_CRC  0x3
-> +#define EFT_FC_BLK_DATA_MOVE        0x4
-> +#endif /* NX_842 */
-> +
-> +#endif /* _NXU_H */
-> -- 
-> 2.21.0
+Although implementations allow try_lock() from other contexts, it is
+necessary to carefully evaluate the safety of unlock() as well as of
+try_lock().  Furthermore, it is also necessary to evaluate the debugging
+versions of these primitives.  In short, don't acquire sleeping locks
+from other contexts unless there is no other option.
+
+> +Sleeping lock types:
+> +
+> + - mutex
+> + - rt_mutex
+> + - semaphore
+> + - rw_semaphore
+> + - ww_mutex
+> + - percpu_rw_semaphore
+> +
+> +On a PREEMPT_RT enabled kernel the following lock types are converted to
+> +sleeping locks:
+
+On PREEMPT_RT kernels, these lock types are converted to sleeping locks:
+
+> + - spinlock_t
+> + - rwlock_t
+> +
+> +Spinning locks
+> +--------------
+> +
+> + - raw_spinlock_t
+> + - bit spinlocks
+> +
+> +On a non PREEMPT_RT enabled kernel the following lock types are spinning
+> +locks as well:
+
+On non-PREEMPT_RT kernels, these lock types are also spinning locks:
+
+> + - spinlock_t
+> + - rwlock_t
+> +
+> +Spinning locks implicitly disable preemption and the lock / unlock functions
+> +can have suffixes which apply further protections:
+> +
+> + ===================  ====================================================
+> + _bh()                Disable / enable bottom halves (soft interrupts)
+> + _irq()               Disable / enable interrupts
+> + _irqsave/restore()   Save and disable / restore interrupt disabled state
+> + ===================  ====================================================
+> +
+> +
+> +rtmutex
+> +=======
+> +
+> +RT-mutexes are mutexes with support for priority inheritance (PI).
+> +
+> +PI has limitations on non PREEMPT_RT enabled kernels due to preemption and
+> +interrupt disabled sections.
+> +
+> +On a PREEMPT_RT enabled kernel most of these sections are fully
+> +preemptible. This is possible because PREEMPT_RT forces most executions
+> +into task context, especially interrupt handlers and soft interrupts, which
+> +allows to substitute spinlock_t and rwlock_t with RT-mutex based
+> +implementations.
+
+PI clearly cannot preempt preemption-disabled or interrupt-disabled
+regions of code, even on PREEMPT_RT kernels.  Instead, PREEMPT_RT kernels
+execute most such regions of code in preemptible task context, especially
+interrupt handlers and soft interrupts.  This conversion allows spinlock_t
+and rwlock_t to be implemented via RT-mutexes.
+
+> +
+> +raw_spinlock_t and spinlock_t
+> +=============================
+> +
+> +raw_spinlock_t
+> +--------------
+> +
+> +raw_spinlock_t is a strict spinning lock implementation regardless of the
+> +kernel configuration including PREEMPT_RT enabled kernels.
+> +
+> +raw_spinlock_t is to be used only in real critical core code, low level
+> +interrupt handling and places where protecting (hardware) state is required
+> +to be safe against preemption and eventually interrupts.
+> +
+> +Another reason to use raw_spinlock_t is when the critical section is tiny
+> +to avoid the overhead of spinlock_t on a PREEMPT_RT enabled kernel in the
+> +contended case.
+
+raw_spinlock_t is a strict spinning lock implementation in all kernels,
+including PREEMPT_RT kernels.  Use raw_spinlock_t only in real critical
+core code, low level interrupt handling and places where disabling
+preemption or interrupts is required, for example, to safely access
+hardware state.  raw_spinlock_t can sometimes also be used when the
+critical section is tiny and the lock is lightly contended, thus avoiding
+RT-mutex overhead.
+
+@@@  I added the point about the lock being lightly contended.
+
+> +spinlock_t
+> +----------
+> +
+> +The semantics of spinlock_t change with the state of CONFIG_PREEMPT_RT.
+> +
+> +On a non PREEMPT_RT enabled kernel spinlock_t is mapped to raw_spinlock_t
+> +and has exactly the same semantics.
+> +
+> +spinlock_t and PREEMPT_RT
+> +-------------------------
+> +
+> +On a PREEMPT_RT enabled kernel spinlock_t is mapped to a separate
+> +implementation based on rt_mutex which changes the semantics:
+> +
+> + - Preemption is not disabled
+> +
+> + - The hard interrupt related suffixes for spin_lock / spin_unlock
+> +   operations (_irq, _irqsave / _irqrestore) do not affect the CPUs
+                                                                  CPU's
+> +   interrupt disabled state
+> +
+> + - The soft interrupt related suffix (_bh()) is still disabling the
+> +   execution of soft interrupts, but contrary to a non PREEMPT_RT enabled
+> +   kernel, which utilizes the preemption count, this is achieved by a per
+> +   CPU bottom half locking mechanism.
+
+ - The soft interrupt related suffix (_bh()) still disables softirq
+   handlers.  However, unlike non-PREEMPT_RT kernels (which disable
+   preemption to get this effect), PREEMPT_RT kernels use a per-CPU
+   per-bottom-half locking mechanism.
+
+> +All other semantics of spinlock_t are preserved:
+> +
+> + - Migration of tasks which hold a spinlock_t is prevented. On a non
+> +   PREEMPT_RT enabled kernel this is implicit due to preemption disable.
+> +   PREEMPT_RT has a separate mechanism to achieve this. This ensures that
+> +   pointers to per CPU variables stay valid even if the task is preempted.
+> +
+> + - Task state preservation. The task state is not affected when a lock is
+> +   contended and the task has to schedule out and wait for the lock to
+> +   become available. The lock wake up restores the task state unless there
+> +   was a regular (not lock related) wake up on the task. This ensures that
+> +   the task state rules are always correct independent of the kernel
+> +   configuration.
+> +
+> +rwlock_t
+> +========
+> +
+> +rwlock_t is a multiple readers and single writer lock mechanism.
+> +
+> +On a non PREEMPT_RT enabled kernel rwlock_t is implemented as a spinning
+> +lock and the suffix rules of spinlock_t apply accordingly. The
+> +implementation is fair and prevents writer starvation.
+> +
+> +rwlock_t and PREEMPT_RT
+> +-----------------------
+> +
+> +On a PREEMPT_RT enabled kernel rwlock_t is mapped to a separate
+> +implementation based on rt_mutex which changes the semantics:
+> +
+> + - Same changes as for spinlock_t
+> +
+> + - The implementation is not fair and can cause writer starvation under
+> +   certain circumstances. The reason for this is that a writer cannot grant
+> +   its priority to multiple readers. Readers which are blocked on a writer
+> +   fully support the priority inheritance protocol.
+> +
+> +
+> +PREEMPT_RT caveats
+> +==================
+> +
+> +spinlock_t and rwlock_t
+> +-----------------------
+> +
+> +The substitution of spinlock_t and rwlock_t on PREEMPT_RT enabled kernels
+> +with RT-mutex based implementations has a few implications.
+> +
+> +On a non PREEMPT_RT enabled kernel the following code construct is
+> +perfectly fine::
+> +
+> +   local_irq_disable();
+> +   spin_lock(&lock);
+> +
+> +and fully equivalent to::
+> +
+> +   spin_lock_irq(&lock);
+> +
+> +Same applies to rwlock_t and the _irqsave() suffix variant.
+> +
+> +On a PREEMPT_RT enabled kernel this breaks because the RT-mutex
+> +substitution expects a fully preemptible context.
+> +
+> +The preferred solution is to use :c:func:`spin_lock_irq()` or
+> +:c:func:`spin_lock_irqsave()` and their unlock counterparts.
+> +
+> +PREEMPT_RT also offers a local_lock mechanism to substitute the
+> +local_irq_disable/save() constructs in cases where a separation of the
+> +interrupt disabling and the locking is really unavoidable. This should be
+> +restricted to very rare cases.
+> +
+> +
+> +raw_spinlock_t
+> +--------------
+> +
+> +Locking of a raw_spinlock_t disables preemption and eventually interrupts.
+> +Therefore code inside the critical region has to be careful to avoid calls
+> +into code which takes a regular spinlock_t or rwlock_t. A prime example is
+> +memory allocation.
+> +
+> +On a non PREEMPT_RT enabled kernel the following code construct is
+> +perfectly fine code::
+> +
+> +  raw_spin_lock(&lock);
+> +  p = kmalloc(sizeof(*p), GFP_ATOMIC);
+> +
+> +On a PREEMPT_RT enabled kernel this breaks because the memory allocator is
+> +fully preemptible and therefore does not support allocations from truly
+> +atomic contexts.
+> +
+> +Contrary to that the following code construct is perfectly fine on
+> +PREEMPT_RT as spin_lock() does not disable preemption::
+> +
+> +  spin_lock(&lock);
+> +  p = kmalloc(sizeof(*p), GFP_ATOMIC);
+> +
+> +Most places which use GFP_ATOMIC allocations are safe on PREEMPT_RT as the
+> +execution is forced into thread context and the lock substitution is
+> +ensuring preemptibility.
+> +
+> +
+> +bit spinlocks
+> +-------------
+> +
+> +Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
+> +substituted by an RT-mutex based implementation for obvious reasons.
+> +
+> +The semantics of bit spinlocks are preserved on a PREEMPT_RT enabled kernel
+> +and the caveats vs. raw_spinlock_t apply.
+> +
+> +Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
+> +this requires conditional (#ifdef'ed) code changes at the usage side while
+> +the spinlock_t substitution is simply done by the compiler and the
+> +conditionals are restricted to header files and core implementation of the
+> +locking primitives and the usage sites do not require any changes.
+> +
+> +
+> +Lock type nesting rules
+> +=======================
+> +
+> +The most basic rules are:
+> +
+> +  - Lock types of the same lock category (sleeping, spinning) can nest
+> +    arbitrarily as long as they respect the general lock ordering rules to
+> +    prevent deadlocks.
+> +
+> +  - Sleeping lock types cannot nest inside spinning lock types.
+> +
+> +  - Spinning lock types can nest inside sleeping lock types.
+> +
+> +These rules apply in general independent of CONFIG_PREEMPT_RT.
+> +
+> +As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
+> +spinning to sleeping this has obviously restrictions how they can nest with
+> +raw_spinlock_t.
+> +
+> +This results in the following nest ordering:
+> +
+> +  1) Sleeping locks
+> +  2) spinlock_t and rwlock_t
+> +  3) raw_spinlock_t and bit spinlocks
+> +
+> +Lockdep is aware of these constraints to ensure that they are respected.
+> +
+> +
+> +Owner semantics
+> +===============
+> +
+> +Most lock types in the Linux kernel have strict owner semantics, i.e. the
+> +context (task) which acquires a lock has to release it.
+> +
+> +There are two exceptions:
+> +
+> +  - semaphores
+> +  - rwsems
+> +
+> +semaphores have no strict owner semantics for historical reasons. They are
+> +often used for both serialization and waiting purposes. That's generally
+> +discouraged and should be replaced by separate serialization and wait
+> +mechanisms.
+> +
+> +rwsems have grown interfaces which allow non owner release for special
+> +purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+> +substitutes all locking primitives except semaphores with RT-mutex based
+> +implementations to provide priority inheritance for all lock types except
+> +the truly spinning ones. Priority inheritance on ownerless locks is
+> +obviously impossible.
+> +
+> +For now the rwsem non-owner release excludes code which utilizes it from
+> +being used on PREEMPT_RT enabled kernels. In same cases this can be
+> +mitigated by disabling portions of the code, in other cases the complete
+> +functionality has to be disabled until a workable solution has been found.
+> 
