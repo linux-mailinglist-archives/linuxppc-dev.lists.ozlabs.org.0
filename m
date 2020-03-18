@@ -1,49 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540ED189431
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 03:52:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hvhd366DzDqsh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 13:52:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC75189439
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 04:01:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hvv00DQFzDqrW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 14:01:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.6.52; helo=eur04-db3-obe.outbound.protection.outlook.com;
+ envelope-from=peng.ma@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=WPXblPFy; 
+ dkim-atps=neutral
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (mail-eopbgr60052.outbound.protection.outlook.com [40.107.6.52])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hvfr0Q0lzDqQQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 13:50:36 +1100 (AEDT)
-IronPort-SDR: 9hQu6hESZ1k4sa/G89L1ajvXGZh3Sdx2N1ZjUlCpzycKR7OtNc0UmbdI+B8hAtc9T2DpLOzFGp
- zX3Z0EEIX8Hg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2020 19:50:33 -0700
-IronPort-SDR: HlhoVdhx5hefwQ0FifAiAiR8IePaIynsG9FuFiPWda90R3ek3oQunokASbCyPibYAIcRGkswbY
- RO/AvDcpU1RA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,565,1574150400"; d="scan'208";a="391293765"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga004.jf.intel.com with ESMTP; 17 Mar 2020 19:50:32 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jEOmt-000Av5-Aq; Wed, 18 Mar 2020 10:50:31 +0800
-Date: Wed, 18 Mar 2020 10:50:15 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 8a445cbcb9f5090cb07ec6cbb89a8a1fc99a0ff7
-Message-ID: <5e718c67.suOXP+ST6H8p7k6b%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hvs90ZMlzDql2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 13:59:37 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gtZzdtBmXczlp/TMYvilkXImx9TScIUzjk7wW9gAkhW7D+swu/oI1Sy6+RP7pC2rYYXU3jIlt0UnuqU3po/vGgzZQ4p07mmMdmNx7sFL5rSWJRci8Xy5fXelpNYAoROdvNVCCyyO19X1trQm9wecwVRSyNeEP0zxjSv/QF3mfdBWj2HnIJe8e3yrbl/V6xb5bwuegV7vNPIkpNDwMNaMG44ROgwiCTlpc0kZypZuOfplCFgyNvZ8022TsM3D3u7jGncdUjs0CpVlfn3kZLhW1Hd4KmIwoRxjtAqiPsQwEypq/3yJ9NHeBfbwuDgKr4K68Q2lE37VFKms7C8EdH6AHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fMydHRIbTHGOL4stBTGJQEQgpXgMzMnUhuRPmS/lsbk=;
+ b=PrgyqcUtoHKmxw2ZDGuhiOr6iYYncgxdDt2fYloyo4K3tBOBW1hPF1EShZP5SlsyM6a+0mJPxy/qsTC/7bOB2IDRRgigmiyaQNlAcqcSQvp4I8STxV9lTByS0+AFOIoJ2oNY8mXTRElPP9xAs0/mD3cfE4H0MhFv6vPnf+Tpe/w405MKDYiyUaZa0U3P93Nk+oEIbtDvV35nmBEFklHYIzlPFNsR+PY/UJB34S9191sMh1Ohs8c7+f5mxys+oP77v3Bc2Rdsh/8BhEnsR/+MyGFxPA5Ela7pfdyf87UawxSpAtEJ1O63En0MvteEwi3A4kzoCclVKqssZPf7+DcBEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fMydHRIbTHGOL4stBTGJQEQgpXgMzMnUhuRPmS/lsbk=;
+ b=WPXblPFy9D0fnwPerfwZwVgeeMkp5yduCnxYaHhR9PDHa52dN3fc9ccewX4LVOptUoorBIiV+8aNB711LItn3NfOVUVVfEplGVZ/TxSCoglikA/H45XvFxRSZV5XjpzDL9E/DUzStfK0f82YAY6OoluE3ezNwcZxB7XDWaL6k9c=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=peng.ma@nxp.com; 
+Received: from AM7PR04MB7016.eurprd04.prod.outlook.com (52.135.58.214) by
+ AM7PR04MB6823.eurprd04.prod.outlook.com (10.141.171.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2814.21; Wed, 18 Mar 2020 02:59:31 +0000
+Received: from AM7PR04MB7016.eurprd04.prod.outlook.com
+ ([fe80::14c2:8800:1248:ddfa]) by AM7PR04MB7016.eurprd04.prod.outlook.com
+ ([fe80::14c2:8800:1248:ddfa%7]) with mapi id 15.20.2814.021; Wed, 18 Mar 2020
+ 02:59:31 +0000
+From: Peng Ma <peng.ma@nxp.com>
+To: leoyang.li@nxp.com, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] soc: fsl: enable acpi support
+Date: Wed, 18 Mar 2020 10:56:05 +0800
+Message-Id: <20200318025605.6671-1-peng.ma@nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR0401CA0014.apcprd04.prod.outlook.com
+ (2603:1096:3:1::24) To AM7PR04MB7016.eurprd04.prod.outlook.com
+ (2603:10a6:20b:11e::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost.localdomain (119.31.174.73) by
+ SG2PR0401CA0014.apcprd04.prod.outlook.com (2603:1096:3:1::24) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2835.15 via Frontend Transport; Wed, 18 Mar 2020 02:59:29 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [119.31.174.73]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: f3e031ac-eb0f-4f18-d67b-08d7cae8615b
+X-MS-TrafficTypeDiagnostic: AM7PR04MB6823:|AM7PR04MB6823:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM7PR04MB6823C9539465CA19161A418FEDF70@AM7PR04MB6823.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:949;
+X-Forefront-PRVS: 03468CBA43
+X-Forefront-Antispam-Report: SFV:NSPM;
+ SFS:(10009020)(4636009)(39860400002)(396003)(366004)(376002)(346002)(136003)(199004)(4326008)(66556008)(66476007)(66946007)(5660300002)(16526019)(44832011)(69590400007)(2616005)(186003)(26005)(956004)(86362001)(1076003)(6506007)(316002)(6486002)(4744005)(6512007)(8676002)(81156014)(36756003)(478600001)(2906002)(52116002)(6666004)(8936002)(81166006);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:AM7PR04MB6823;
+ H:AM7PR04MB7016.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; 
+Received-SPF: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xrzPY2ejFQqC1OhopF1CCychFqwHMWf563Z7hsS3+oITrD+1+DM59CVtBATIoQ3haFNAaKlJiAu64+yWn76qDG6oBqejMRNjHyKNNrTkpU2ONga5LDzkigL3r8QGd049orwZOacZD6YvaH4QIGNa+2+PZWcaATcnoVQcOrbxO7KMgfeKZt+VeVYmdeh0cQq15hi9PIa+NfbENg56BBV2MqLmFYu2i4EgUS64VvjbBcaYtiAD25M2+bfzV0HyD14lQPfMi++NdssNebLlv5aA/5QOLgwMmyzFHCiieQ25wPBeuYHSsq+vZrNTbEK4JllafhcDh+wvP1U8uU95T1d8YPiFJ2Qsa0+rIddgy+ljeHjW3D2S/sz9XAVO01rjmkU2GIP2vDvQZP+l+B0etWx3ttDQvIOoMlWgBbTMR7dQKhOb1W7WRWF7wvZH39bRPjpJTjns1Om4CR12PaFXGxvHsosfwLVG5qI0rOQEpkvP8VnBxQc0K6yjyZ5W1Ea9Fira
+X-MS-Exchange-AntiSpam-MessageData: ydjO25rVKsFY6f9cQDySFWLzv7ry8LCIoV3PAionkQ71YonLblXXRuUtdLG/Fh2fbXYYNEXEGyJ0u0tGl2Oj/wsW6rMBWhLNROwP/12v5Ofw0purLM2GVim4U7apmz1Ipi/46+0C0RaaMVsvbsXdmw==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3e031ac-eb0f-4f18-d67b-08d7cae8615b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2020 02:59:31.4112 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2zISa8wj5m2ZluF8fMNwwj/OyY1jenmKNKGWPGw0ae71S3WUxfiJVtptPjHHR1wj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6823
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,179 +106,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: ran.wang_1@nxp.com, Peng Ma <peng.ma@nxp.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 8a445cbcb9f5090cb07ec6cbb89a8a1fc99a0ff7  Automatic merge of branches 'master', 'next' and 'fixes' into merge
+This patch enables ACPI support in Rcpm driver.
 
-elapsed time: 785m
-
-configs tested: 156
-configs skipped: 0
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-arm64                            allmodconfig
-mips                      fuloong2e_defconfig
-s390                                defconfig
-openrisc                 simple_smp_defconfig
-riscv                             allnoconfig
-s390                             allyesconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                                defconfig
-arm                              allmodconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-alpha                               defconfig
-csky                                defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-x86_64               randconfig-a001-20200317
-x86_64               randconfig-a002-20200317
-x86_64               randconfig-a003-20200317
-i386                 randconfig-a001-20200317
-i386                 randconfig-a002-20200317
-i386                 randconfig-a003-20200317
-alpha                randconfig-a001-20200317
-m68k                 randconfig-a001-20200317
-mips                 randconfig-a001-20200317
-nds32                randconfig-a001-20200317
-parisc               randconfig-a001-20200317
-h8300                randconfig-a001-20200318
-sparc64              randconfig-a001-20200318
-c6x                  randconfig-a001-20200318
-nios2                randconfig-a001-20200318
-microblaze           randconfig-a001-20200318
-csky                 randconfig-a001-20200318
-openrisc             randconfig-a001-20200318
-s390                 randconfig-a001-20200318
-sh                   randconfig-a001-20200318
-xtensa               randconfig-a001-20200318
-xtensa               randconfig-a001-20200317
-openrisc             randconfig-a001-20200317
-csky                 randconfig-a001-20200317
-sh                   randconfig-a001-20200317
-s390                 randconfig-a001-20200317
-x86_64               randconfig-b001-20200317
-x86_64               randconfig-b002-20200317
-x86_64               randconfig-b003-20200317
-i386                 randconfig-b001-20200317
-i386                 randconfig-b002-20200317
-i386                 randconfig-b003-20200317
-x86_64               randconfig-c001-20200317
-x86_64               randconfig-c002-20200317
-x86_64               randconfig-c003-20200317
-i386                 randconfig-c001-20200317
-i386                 randconfig-c002-20200317
-i386                 randconfig-c003-20200317
-x86_64               randconfig-d001-20200318
-x86_64               randconfig-d002-20200318
-x86_64               randconfig-d003-20200318
-i386                 randconfig-d001-20200318
-i386                 randconfig-d002-20200318
-i386                 randconfig-d003-20200318
-x86_64               randconfig-e001-20200317
-x86_64               randconfig-e002-20200317
-x86_64               randconfig-e003-20200317
-i386                 randconfig-e001-20200317
-i386                 randconfig-e002-20200317
-i386                 randconfig-e003-20200317
-x86_64               randconfig-g001-20200317
-x86_64               randconfig-g002-20200317
-x86_64               randconfig-g003-20200317
-i386                 randconfig-g001-20200317
-i386                 randconfig-g002-20200317
-i386                 randconfig-g003-20200317
-arc                  randconfig-a001-20200318
-arm                  randconfig-a001-20200318
-arm64                randconfig-a001-20200318
-ia64                 randconfig-a001-20200318
-powerpc              randconfig-a001-20200318
-sparc                randconfig-a001-20200318
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
+Signed-off-by: Peng Ma <peng.ma@nxp.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/soc/fsl/rcpm.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+index a093dbe..7da6bbd 100644
+--- a/drivers/soc/fsl/rcpm.c
++++ b/drivers/soc/fsl/rcpm.c
+@@ -13,6 +13,7 @@
+ #include <linux/slab.h>
+ #include <linux/suspend.h>
+ #include <linux/kernel.h>
++#include <linux/acpi.h>
+ 
+ #define RCPM_WAKEUP_CELL_MAX_SIZE	7
+ 
+@@ -139,10 +140,17 @@ static const struct of_device_id rcpm_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, rcpm_of_match);
+ 
++static const struct acpi_device_id rcpm_imx_acpi_ids[] = {
++	{"NXP0012",},
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, rcpm_imx_acpi_ids);
++
+ static struct platform_driver rcpm_driver = {
+ 	.driver = {
+ 		.name = "rcpm",
+ 		.of_match_table = rcpm_of_match,
++		.acpi_match_table = ACPI_PTR(rcpm_imx_acpi_ids),
+ 		.pm	= &rcpm_pm_ops,
+ 	},
+ 	.probe = rcpm_probe,
+-- 
+2.9.5
+
