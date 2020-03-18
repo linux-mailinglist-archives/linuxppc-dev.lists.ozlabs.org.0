@@ -2,60 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E088189930
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F2A189A31
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 12:03:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j5h26TgCzDqyg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:22:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j6bt29swzDqtr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:03:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48j5bF6fprzDqX1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 21:18:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48j5bF5tNBz8tGy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 21:18:17 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48j5bF5hZhz9sQx; Wed, 18 Mar 2020 21:18:17 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48j5bF126fz9sPk
- for <linuxppc-dev@ozlabs.org>; Wed, 18 Mar 2020 21:18:16 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 43548AB98;
- Wed, 18 Mar 2020 10:18:13 +0000 (UTC)
-Subject: Re: Slub: Increased mem consumption on cpu,mem-less node powerpc guest
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20200317092624.GB22538@in.ibm.com>
- <20200317115339.GA26049@in.ibm.com>
- <4088ae3c-4dfa-62ae-f56a-b46773788fc7@suse.cz>
- <20200317162536.GB27520@linux.vnet.ibm.com>
- <080b2d00-76ef-2187-ec78-c9d181ef1701@suse.cz>
- <20200318032044.GC4879@linux.vnet.ibm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz>
-Date: Wed, 18 Mar 2020 11:18:11 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48j6ZG3rKYzDqrN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 22:02:28 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02IB1VuD116891
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 07:02:25 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu7d9ddy2-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 07:02:25 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Wed, 18 Mar 2020 11:02:23 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 18 Mar 2020 11:02:20 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02IB2I8g38207562
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 18 Mar 2020 11:02:18 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B48C24204F;
+ Wed, 18 Mar 2020 11:02:18 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 73A7B4204C;
+ Wed, 18 Mar 2020 11:02:16 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 18 Mar 2020 11:02:16 +0000 (GMT)
+Date: Wed, 18 Mar 2020 16:32:15 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2 1/4] mm: Check for node_online in node_present_pages
+References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
+ <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
+ <20200318100256.GH21362@dhcp22.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20200318032044.GC4879@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200318100256.GH21362@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20031811-0008-0000-0000-0000035F48CF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031811-0009-0000-0000-00004A80A2E9
+Message-Id: <20200318110215.GC27520@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-18_04:2020-03-18,
+ 2020-03-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
+ adultscore=0 spamscore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2003180052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,146 +91,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@ozlabs.org,
- aneesh.kumar@linux.ibm.com, bharata@linux.ibm.com,
- Pekka Enberg <penberg@kernel.org>, linux-mm@kvack.org,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@linux.com>,
- Michal Hocko <mhocko@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>
+ Nathan Lynch <nathanl@linux.ibm.com>, Bharata B Rao <bharata@linux.ibm.com>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/18/20 4:20 AM, Srikar Dronamraju wrote:
-> * Vlastimil Babka <vbabka@suse.cz> [2020-03-17 17:45:15]:
->> 
->> Yes, that Kirill's patch was about the memcg shrinker map allocation. But the
->> patch hunk that Bharata posted as a "hack" that fixes the problem, it follows
->> that there has to be something else that calls kmalloc_node(node) where node is
->> one that doesn't have present pages.
->> 
->> He mentions alloc_fair_sched_group() which has:
->> 
->>         for_each_possible_cpu(i) {
->>                 cfs_rq = kzalloc_node(sizeof(struct cfs_rq),
->>                                       GFP_KERNEL, cpu_to_node(i));
->> ...
->>                 se = kzalloc_node(sizeof(struct sched_entity),
->>                                   GFP_KERNEL, cpu_to_node(i));
->> 
-> 
-> 
-> Sachin's experiment.
-> Upstream-next/ memcg /
-> possible nodes were 0-31
-> online nodes were 0-1
-> kmalloc_node called for_each_node / for_each_possible_node.
-> This would crash while allocating slab from !N_ONLINE nodes.
+* Michal Hocko <mhocko@suse.com> [2020-03-18 11:02:56]:
 
-So you're saying the crash was actually for allocation on e.g. node 2, not node 0?
-But I believe it was on node 0, because init_kmem_cache_nodes() will only
-allocate kmem_cache_node on nodes with N_NORMAL_MEMORY (which doesn't include
-0), and slab_mem_going_online_callback() was probably not called for node 0 (it
-was not dynamically onlined).
-Also if node 0 was fine, node_to_mem_node(2-31) (not initialized explicitly)
-would have returned 0 and thus not crash as well.
+> On Wed 18-03-20 12:58:07, Srikar Dronamraju wrote:
+> > Calling a kmalloc_node on a possible node which is not yet onlined can
+> > lead to panic. Currently node_present_pages() doesn't verify the node is
+> > online before accessing the pgdat for the node. However pgdat struct may
+> > not be available resulting in a crash.
+> >
+> > NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
+> > LR [c0000000003d5b94] __slab_alloc+0x34/0x60
+> > Call Trace:
+> > [c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
+> > [c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
+> > [c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
+> > [c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
+> > [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
+> > [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
+> > [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
+> > [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
+> > [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
+> > [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
+> > [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
+> > [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
+> >
+> > Fix this by verifying the node is online before accessing the pgdat
+> > structure. Fix the same for node_spanned_pages() too.
+> >
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: linux-mm@kvack.org
+> > Cc: Mel Gorman <mgorman@suse.de>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> > Cc: Michal Hocko <mhocko@kernel.org>
+> > Cc: Christopher Lameter <cl@linux.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+> > Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > Cc: Bharata B Rao <bharata@linux.ibm.com>
+> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> >
+> > Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> > Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > ---
+> >  include/linux/mmzone.h | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index f3f264826423..88078a3b95e5 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -756,8 +756,10 @@ typedef struct pglist_data {
+> >  	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
+> >  } pg_data_t;
+> >
+> > -#define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
+> > -#define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
+> > +#define node_present_pages(nid)		\
+> > +	(node_online(nid) ? NODE_DATA(nid)->node_present_pages : 0)
+> > +#define node_spanned_pages(nid)		\
+> > +	(node_online(nid) ? NODE_DATA(nid)->node_spanned_pages : 0)
+>
+> I believe this is a wrong approach. We really do not want to special
+> case all the places which require NODE_DATA. Can we please go and
+> allocate pgdat for all possible nodes?
+>
 
-> Bharata's experiment.
-> Upstream
-> possible nodes were 0-1
-> online nodes were 0-1
-> kmalloc_node called for_each_online_node/ for_each_possible_cpu
-> i.e kmalloc is called for N_ONLINE nodes.
-> So wouldn't crash
-> 
-> Even if his possible nodes were 0-256. I don't think we have kmalloc_node
-> being called in !N_ONLINE nodes. Hence its not crashing.
-> If we see the above code that you quote, kzalloc_node is using cpu_to_node
-> which in Bharata's case will always return 1.
+I can do that but the question I had was should we make this change just for
+Powerpc or should the change be for other archs.
 
-Are you sure that for_each_possible_cpu(), cpu_to_node() will be 1? Are all of
-them properly initialized or is there a similar issue as with
-node_to_mem_node(), that some were not initialized and thus cpu_to_node() will
-return 0?
+NODE_DATA initialization always seems to be in arch specific code.
 
-Because AFAICS, if kzalloc_node() was always called 1, then
-node_present_pages(1) is true, and the "hack" that Bharata reports to work in
-his original mail would make no functional difference.
+The other archs that are affected seem to be mips, sh and sparc
+These archs seem to have making an assumption that NODE_DATA has to be local
+only,
 
-> 
->> I assume one of these structs is 1k and other 512 bytes (rounded) and that for
->> some possible cpu's cpu_to_node(i) will be 0, which has no present pages. And as
->> Bharata pasted, node_to_mem_node(0) = 0
->> So this looks like the same scenario, but it doesn't crash? Is the node 0
->> actually online here, and/or does it have N_NORMAL_MEMORY state?
-> 
-> I still dont have any clue on the leak though.
+For example on sparc / arch/sparc/mm/init_64.c in allocate_node_data function.
 
-Let's assume that kzalloc_node() was called with 0 for some of the possible
-CPU's. I still wonder why it won't crash, but let's assume kmem_cache_node does
-exist for node 0 here.
-So the execution AFAICS goes like this:
+  NODE_DATA(nid) = memblock_alloc_node(sizeof(struct pglist_data),
+                                             SMP_CACHE_BYTES, nid);
+        if (!NODE_DATA(nid)) {
+                prom_printf("Cannot allocate pglist_data for nid[%d]\n", nid);
+                prom_halt();
+        }
 
-slab_alloc_node(0)
-  c = raw_cpu_ptr(s->cpu_slab);
-  object = c->freelist;
-  page = c->page;
-  if (unlikely(!object || !node_match(page, node))) {
-  // whatever we have in the per-cpu cache must be from node 1
-  // because node 0 has no memory, so there's no node_match and thus
-   __slab_alloc(node == 0)
-    ___slab_alloc(node == 0)
-      page = c->page;
-     redo:
-      if (unlikely(!node_match(page, node))) { // still no match
-        int searchnode = node;
+        NODE_DATA(nid)->node_id = nid;
 
-        if (node != NUMA_NO_NODE && !node_present_pages(node))
-	                   //  true && true for node 0
-          searchnode = node_to_mem_node(node);
-          // searchnode is 0, not 1
+So even if I make changes to allocate NODE_DATA from fallback node, I may not
+be able to test them.
 
-          if (unlikely(!node_match(page, searchnode))) {
-          // page still from node 1, searchnode is 0, no match
-	
-            stat(s, ALLOC_NODE_MISMATCH);
-            deactivate_slab(s, page, c->freelist, c);
-            // we removed the slab from cpu's cache
-            goto new_slab;
-          }
+So please let me know your thoughts around the same.
 
-     new_slab:
-      if (slub_percpu_partial(c)) {
-        page = c->page = slub_percpu_partial(c);
-        slub_set_percpu_partial(c, page);
-        stat(s, CPU_PARTIAL_ALLOC);
-        goto redo;
-        // huh, so with CONFIG_SLUB_CPU_PARTIAL
-        // this can become an infinite loop actually?
-      }
-// Bharata's slub stats don't include cpu_partial_alloc so I assume
-// CONFIG_SLUB_CPU_PARTIAL is not enabled and we don't loop
-      freelist = new_slab_objects(s, gfpflags, node, &c);
-        freelist = new_slab_objects(s, gfpflags, node, &c);
+> The current state of memory less hacks subtle bugs poping up here and
+> there just prove that we should have done that from the very begining
+> IMHO.
+>
+> >  #ifdef CONFIG_FLAT_NODE_MEM_MAP
+> >  #define pgdat_page_nr(pgdat, pagenr)	((pgdat)->node_mem_map + (pagenr))
+> >  #else
+> > --
+> > 2.18.1
+>
+> --
+> Michal Hocko
+> SUSE Labs
+>
 
-         if (node == NUMA_NO_NODE) // false, it's 0
-         else if (!node_present_pages(node)) // true for 0
-            searchnode = node_to_mem_node(node); // still 0
+--
+Thanks and Regards
+Srikar Dronamraju
 
-         object = get_partial_node(s, get_node(s, searchnode),...);
-         // object is NULL as node 0 has nothing
-         // but we have node == 0 so we return the NULL
-         if (object || node != NUMA_NO_NODE)
-                return object;
-         // and we don't fallback to get_any_partial which would
-         // have found e.g. the slab we deactivated earlier
-         return get_any_partial(s, flags, c);
-
-       page = new_slab(s, flags, node);
-       // we attempt to allocate new slab on node 0, but it will come
-       // from node 1
-
-So that explains the leak I think. We keep throwing away slabs from node 1 only
-to allocate new ones on node 1. Effectively each cfs_rq object and each
-sched_entity object will get a new (high-order?) page
-for a possible cpu where cpu_to_node() is 0.
