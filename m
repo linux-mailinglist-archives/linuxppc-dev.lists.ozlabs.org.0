@@ -1,17 +1,17 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B756218991D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:18:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j5bj3VBLzDqwP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:18:41 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49F91898D8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:04:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j5Gz3w2NzDqZR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:04:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,72 +19,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hbLs2sRPzDqjh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 01:35:49 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02HEWD3v085421
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:35:46 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yru54bp99-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48j5Dq39MhzDqtK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 21:02:18 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02I9Z5fI112405
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 06:02:16 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yu7abucc8-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 10:35:46 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 06:02:16 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ganeshgr@linux.ibm.com>;
- Tue, 17 Mar 2020 14:35:44 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 18 Mar 2020 10:02:14 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Mar 2020 14:35:42 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02HEZfxq55771146
+ Wed, 18 Mar 2020 10:02:12 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02IA2Akt47448512
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Mar 2020 14:35:41 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C044A4051;
- Tue, 17 Mar 2020 14:35:41 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5F4B5A4040;
- Tue, 17 Mar 2020 14:35:40 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.59.221])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Mar 2020 14:35:40 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries: Fix MCE handling on pseries
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <20200313140418.7940-1-ganeshgr@linux.ibm.com>
- <1584157063.g5s75uhbdu.astroid@bobo.none>
- <d22f9ef9-07db-9615-6420-001b85dd2742@linux.ibm.com>
- <1584437866.2pbq6ca4ia.astroid@bobo.none>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Date: Tue, 17 Mar 2020 20:05:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.1
+ Wed, 18 Mar 2020 10:02:10 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7ADF311C052;
+ Wed, 18 Mar 2020 10:02:10 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39C3C11C04A;
+ Wed, 18 Mar 2020 10:02:10 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.59.146])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 18 Mar 2020 10:02:10 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.ibm.com,
+ clombard@linux.ibm.com, felix@linux.ibm.com, ajd@linux.ibm.com,
+ alastair@au1.ibm.com
+Subject: [PATCH v3] ocxl: control via sysfs whether the FPGA is reloaded on a
+ link reset
+Date: Wed, 18 Mar 2020 11:02:10 +0100
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <1584437866.2pbq6ca4ia.astroid@bobo.none>
-Content-Type: multipart/alternative;
- boundary="------------A03758E1FEFCED53C9652184"
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20031714-0020-0000-0000-000003B5EB0B
+x-cbid: 20031810-4275-0000-0000-000003AE5685
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031714-0021-0000-0000-0000220E4FED
-Message-Id: <3d8acf3d-4996-3b4d-bc06-0ef7525035bb@linux.ibm.com>
+x-cbparentid: 20031810-4276-0000-0000-000038C381D3
+Message-Id: <20200318100210.80035-1-fbarrat@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-17_05:2020-03-17,
- 2020-03-17 signatures=0
+ definitions=2020-03-18_03:2020-03-17,
+ 2020-03-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0 impostorscore=0
- phishscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003170061
-X-Mailman-Approved-At: Wed, 18 Mar 2020 21:15:10 +1100
+ phishscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ suspectscore=2 clxscore=1015 adultscore=0 spamscore=0 impostorscore=0
+ malwarescore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2003180046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,214 +89,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------A03758E1FEFCED53C9652184
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Philippe Bergheaud <felix@linux.ibm.com>
 
+Some opencapi FPGA images allow to control if the FPGA should be reloaded
+on the next adapter reset. If it is supported, the image specifies it
+through a Vendor Specific DVSEC in the config space of function 0.
 
+Signed-off-by: Philippe Bergheaud <felix@linux.ibm.com>
+---
+Changelog:
+v2:
+  - refine ResetReload debug message
+  - do not call get_function_0() if pci_dev is for function 0
+v3:
+  - avoid get_function_0() in ocxl_config_set_reset_reload also
+       
+ Documentation/ABI/testing/sysfs-class-ocxl | 10 ++++
+ drivers/misc/ocxl/config.c                 | 68 +++++++++++++++++++++-
+ drivers/misc/ocxl/ocxl_internal.h          |  6 ++
+ drivers/misc/ocxl/sysfs.c                  | 35 +++++++++++
+ include/misc/ocxl-config.h                 |  1 +
+ 5 files changed, 119 insertions(+), 1 deletion(-)
 
-On 3/17/20 3:31 PM, Nicholas Piggin wrote:
-> Ganesh's on March 16, 2020 9:47 pm:
->>
->> On 3/14/20 9:18 AM, Nicholas Piggin wrote:
->>> Ganesh Goudar's on March 14, 2020 12:04 am:
->>>> MCE handling on pSeries platform fails as recent rework to use common
->>>> code for pSeries and PowerNV in machine check error handling tries to
->>>> access per-cpu variables in realmode. The per-cpu variables may be
->>>> outside the RMO region on pSeries platform and needs translation to be
->>>> enabled for access. Just moving these per-cpu variable into RMO region
->>>> did'nt help because we queue some work to workqueues in real mode, which
->>>> again tries to touch per-cpu variables.
->>> Which queues are these? We should not be using Linux workqueues, but the
->>> powerpc mce code which uses irq_work.
->> Yes, irq work queues accesses memory outside RMO.
->> irq_work_queue()->__irq_work_queue_local()->[this_cpu_ptr(&lazy_list) | this_cpu_ptr(&raised_list)]
-> Hmm, okay.
->
->>>> Also fwnmi_release_errinfo()
->>>> cannot be called when translation is not enabled.
->>> Why not?
->> It crashes when we try to get RTAS token for "ibm, nmi-interlock" device
->> tree node. But yes we can avoid it by storing it rtas_token somewhere but haven't
->> tried it, here is the backtrace I got when fwnmi_release_errinfo() called from
->> realmode handler.
-> Okay, I actually had problems with that messing up soft-irq state too
-> and so I sent a patch to get rid of it, but that's the least of your
-> problems really.
->
->>>> This patch fixes this by enabling translation in the exception handler
->>>> when all required real mode handling is done. This change only affects
->>>> the pSeries platform.
->>> Not supposed to do this, because we might not be in a state
->>> where the MMU is ready to be turned on at this point.
->>>
->>> I'd like to understand better which accesses are a problem, and whether
->>> we can fix them all to be in the RMO.
->> I faced three such access problems,
->>    * accessing per-cpu data (like mce_event,mce_event_queue and mce_event_queue),
->>      we can move this inside RMO.
->>    * calling fwnmi_release_errinfo().
->>    * And queuing work to irq_work_queue, not sure how to fix this.
-> Yeah. The irq_work_queue one is the biggest problem.
->
-> This code "worked" prior to the series unifying pseries and powernv
-> machine check handlers, 9ca766f9891d ("powerpc/64s/pseries: machine
-> check convert to use common event code") and friends. But it does in
-> basically the same way as your fix (i.e., it runs this early handler
-> in virtual mode), but that's not really the right fix.
->
-> Consider: you get a SLB multi hit on a kernel address due to hardware or
-> software error. That access causes a MCE, but before the error can be
-> decode to save and flush the SLB, you turn on relocation and that
-> causes another SLB multi hit...
-
-We turn on relocation only after all the realmode handling/recovery is done
-like SLB flush and reload, All we do after we turn relocation on is saving
-mce event to array and queuing the work to irq_workqueue.
-So we are good to turn it on here.
-
-> I think the irq_work subsystem will have to be changed to use an array
-> unfortunately.
->
-> Thanks,
-> Nick
->
-
-
---------------A03758E1FEFCED53C9652184
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <br>
-    <br>
-    <div class="moz-cite-prefix">On 3/17/20 3:31 PM, Nicholas Piggin
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:1584437866.2pbq6ca4ia.astroid@bobo.none">
-      <pre class="moz-quote-pre" wrap="">Ganesh's on March 16, 2020 9:47 pm:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-
-On 3/14/20 9:18 AM, Nicholas Piggin wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Ganesh Goudar's on March 14, 2020 12:04 am:
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">MCE handling on pSeries platform fails as recent rework to use common
-code for pSeries and PowerNV in machine check error handling tries to
-access per-cpu variables in realmode. The per-cpu variables may be
-outside the RMO region on pSeries platform and needs translation to be
-enabled for access. Just moving these per-cpu variable into RMO region
-did'nt help because we queue some work to workqueues in real mode, which
-again tries to touch per-cpu variables.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Which queues are these? We should not be using Linux workqueues, but the
-powerpc mce code which uses irq_work.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-Yes, irq work queues accesses memory outside RMO.
-irq_work_queue()-&gt;__irq_work_queue_local()-&gt;[this_cpu_ptr(&amp;lazy_list) | this_cpu_ptr(&amp;raised_list)]
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Hmm, okay.
-
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Also fwnmi_release_errinfo()
-cannot be called when translation is not enabled.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Why not?
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-It crashes when we try to get RTAS token for "ibm, nmi-interlock" device
-tree node. But yes we can avoid it by storing it rtas_token somewhere but haven't
-tried it, here is the backtrace I got when fwnmi_release_errinfo() called from
-realmode handler.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Okay, I actually had problems with that messing up soft-irq state too
-and so I sent a patch to get rid of it, but that's the least of your
-problems really.
-
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">This patch fixes this by enabling translation in the exception handler
-when all required real mode handling is done. This change only affects
-the pSeries platform.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Not supposed to do this, because we might not be in a state
-where the MMU is ready to be turned on at this point.
-
-I'd like to understand better which accesses are a problem, and whether
-we can fix them all to be in the RMO.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-I faced three such access problems,
-  * accessing per-cpu data (like mce_event,mce_event_queue and mce_event_queue),
-    we can move this inside RMO.
-  * calling fwnmi_release_errinfo().
-  * And queuing work to irq_work_queue, not sure how to fix this.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Yeah. The irq_work_queue one is the biggest problem.
-
-This code "worked" prior to the series unifying pseries and powernv
-machine check handlers, 9ca766f9891d ("powerpc/64s/pseries: machine 
-check convert to use common event code") and friends. But it does in
-basically the same way as your fix (i.e., it runs this early handler
-in virtual mode), but that's not really the right fix.
-
-Consider: you get a SLB multi hit on a kernel address due to hardware or 
-software error. That access causes a MCE, but before the error can be 
-decode to save and flush the SLB, you turn on relocation and that
-causes another SLB multi hit...</pre>
-    </blockquote>
-    <pre>We turn on relocation only after all the realmode handling/recovery is done
-like SLB flush and reload, All we do after we turn relocation on is saving
-mce event to array and queuing the work to irq_workqueue.
-So we are good to turn it on here.
-</pre>
-    <blockquote type="cite"
-      cite="mid:1584437866.2pbq6ca4ia.astroid@bobo.none">
-      <pre class="moz-quote-pre" wrap="">
-I think the irq_work subsystem will have to be changed to use an array
-unfortunately.
-
-Thanks,
-Nick
-
-</pre>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------A03758E1FEFCED53C9652184--
+diff --git a/Documentation/ABI/testing/sysfs-class-ocxl b/Documentation/ABI/testing/sysfs-class-ocxl
+index b5b1fa197592..b9ea671d5805 100644
+--- a/Documentation/ABI/testing/sysfs-class-ocxl
++++ b/Documentation/ABI/testing/sysfs-class-ocxl
+@@ -33,3 +33,13 @@ Date:		January 2018
+ Contact:	linuxppc-dev@lists.ozlabs.org
+ Description:	read/write
+ 		Give access the global mmio area for the AFU
++
++What:		/sys/class/ocxl/<afu name>/reload_on_reset
++Date:		February 2020
++Contact:	linuxppc-dev@lists.ozlabs.org
++Description:	read/write
++		Control whether the FPGA is reloaded on a link reset
++			0	Do not reload FPGA image from flash
++			1	Reload FPGA image from flash
++			unavailable
++				The device does not support this capability
+diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
+index c8e19bfb5ef9..b364b6ceb996 100644
+--- a/drivers/misc/ocxl/config.c
++++ b/drivers/misc/ocxl/config.c
+@@ -71,6 +71,20 @@ static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
+ 	return 0;
+ }
+ 
++/**
++ * get_function_0() - Find a related PCI device (function 0)
++ * @device: PCI device to match
++ *
++ * Returns a pointer to the related device, or null if not found
++ */
++static struct pci_dev *get_function_0(struct pci_dev *dev)
++{
++	unsigned int devfn = PCI_DEVFN(PCI_SLOT(dev->devfn), 0);
++
++	return pci_get_domain_bus_and_slot(pci_domain_nr(dev->bus),
++					   dev->bus->number, devfn);
++}
++
+ static void read_pasid(struct pci_dev *dev, struct ocxl_fn_config *fn)
+ {
+ 	u16 val;
+@@ -159,7 +173,7 @@ static int read_dvsec_afu_info(struct pci_dev *dev, struct ocxl_fn_config *fn)
+ static int read_dvsec_vendor(struct pci_dev *dev)
+ {
+ 	int pos;
+-	u32 cfg, tlx, dlx;
++	u32 cfg, tlx, dlx, reset_reload;
+ 
+ 	/*
+ 	 * vendor specific DVSEC is optional
+@@ -183,6 +197,58 @@ static int read_dvsec_vendor(struct pci_dev *dev)
+ 	dev_dbg(&dev->dev, "  CFG version = 0x%x\n", cfg);
+ 	dev_dbg(&dev->dev, "  TLX version = 0x%x\n", tlx);
+ 	dev_dbg(&dev->dev, "  DLX version = 0x%x\n", dlx);
++
++	if (ocxl_config_get_reset_reload(dev, &reset_reload) != 0)
++		dev_dbg(&dev->dev, "  ResetReload is not available\n");
++	else
++		dev_dbg(&dev->dev, "  ResetReload = 0x%x\n", reset_reload);
++	return 0;
++}
++
++int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
++{
++	int reset_reload = -1;
++	int pos = 0;
++	struct pci_dev *dev0 = dev;
++
++	if (PCI_FUNC(dev->devfn) != 0)
++		dev0 = get_function_0(dev);
++
++	if (dev0)
++		pos = find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
++
++	if (pos)
++		pci_read_config_dword(dev0,
++				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
++				      &reset_reload);
++	if (reset_reload == -1)
++		return reset_reload;
++
++	*val = reset_reload & BIT(0);
++	return 0;
++}
++
++int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
++{
++	int reset_reload = -1;
++	int pos = 0;
++	struct pci_dev *dev0 = dev;
++
++	if (PCI_FUNC(dev->devfn) != 0)
++		dev0 = get_function_0(dev);
++
++	if (dev0)
++		pos = find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
++
++	if (pos)
++		pci_read_config_dword(dev0,
++				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
++				      &reset_reload);
++	if (reset_reload == -1)
++		return reset_reload;
++
++	val &= BIT(0);
++	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD, val);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
+index 345bf843a38e..af9a84aeee6f 100644
+--- a/drivers/misc/ocxl/ocxl_internal.h
++++ b/drivers/misc/ocxl/ocxl_internal.h
+@@ -112,6 +112,12 @@ void ocxl_actag_afu_free(struct ocxl_fn *fn, u32 start, u32 size);
+  */
+ int ocxl_config_get_pasid_info(struct pci_dev *dev, int *count);
+ 
++/*
++ * Control whether the FPGA is reloaded on a link reset
++ */
++int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val);
++int ocxl_config_set_reset_reload(struct pci_dev *dev, int val);
++
+ /*
+  * Check if an AFU index is valid for the given function.
+  *
+diff --git a/drivers/misc/ocxl/sysfs.c b/drivers/misc/ocxl/sysfs.c
+index 58f1ba264206..8f69f7311343 100644
+--- a/drivers/misc/ocxl/sysfs.c
++++ b/drivers/misc/ocxl/sysfs.c
+@@ -51,11 +51,46 @@ static ssize_t contexts_show(struct device *device,
+ 			afu->pasid_count, afu->pasid_max);
+ }
+ 
++static ssize_t reload_on_reset_show(struct device *device,
++		struct device_attribute *attr,
++		char *buf)
++{
++	struct ocxl_afu *afu = to_afu(device);
++	struct ocxl_fn *fn = afu->fn;
++	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
++	int val;
++
++	if (ocxl_config_get_reset_reload(pci_dev, &val))
++		return scnprintf(buf, PAGE_SIZE, "unavailable\n");
++
++	return scnprintf(buf, PAGE_SIZE, "%d\n", val);
++}
++
++static ssize_t reload_on_reset_store(struct device *device,
++		struct device_attribute *attr,
++		const char *buf, size_t count)
++{
++	struct ocxl_afu *afu = to_afu(device);
++	struct ocxl_fn *fn = afu->fn;
++	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
++	int rc, val;
++
++	rc = sscanf(buf, "%i", &val);
++	if ((rc != 1) || !(val == 1 || val == 0))
++		return -EINVAL;
++
++	if (ocxl_config_set_reset_reload(pci_dev, val))
++		return -ENODEV;
++
++	return count;
++}
++
+ static struct device_attribute afu_attrs[] = {
+ 	__ATTR_RO(global_mmio_size),
+ 	__ATTR_RO(pp_mmio_size),
+ 	__ATTR_RO(afu_version),
+ 	__ATTR_RO(contexts),
++	__ATTR_RW(reload_on_reset),
+ };
+ 
+ static ssize_t global_mmio_read(struct file *filp, struct kobject *kobj,
+diff --git a/include/misc/ocxl-config.h b/include/misc/ocxl-config.h
+index 3526fa996a22..ccfd3b463517 100644
+--- a/include/misc/ocxl-config.h
++++ b/include/misc/ocxl-config.h
+@@ -41,5 +41,6 @@
+ #define   OCXL_DVSEC_VENDOR_CFG_VERS            0x0C
+ #define   OCXL_DVSEC_VENDOR_TLX_VERS            0x10
+ #define   OCXL_DVSEC_VENDOR_DLX_VERS            0x20
++#define   OCXL_DVSEC_VENDOR_RESET_RELOAD        0x38
+ 
+ #endif /* _OCXL_CONFIG_H_ */
+-- 
+2.25.1
 
