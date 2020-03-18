@@ -1,45 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72137189361
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 02:01:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADEE0189357
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 01:58:23 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48hs983vh7zDqnT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:58:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48hsF04tsPzDqrj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 12:01:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48hs7C5g48zDqnT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 11:56:34 +1100 (AEDT)
-IronPort-SDR: o4EAjbngsTEMJEYUuSTSgJScALU5AWGCuXCYwlnNI6yb+0uRl4iVcLNQAN5AqG8lJ4jXMMKtiP
- jZh9gzflFiCA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48hs7D0w0QzDqnW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 11:56:35 +1100 (AEDT)
+IronPort-SDR: njb8Fa0TTzKPIzyQrLWAWrVCCE3+Qw8fN+jmYOEdl3WVnNWHbZo4kpYcBjQv385JpT661H6ea6
+ ttmSJKgYoEHg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2020 17:56:32 -0700
-IronPort-SDR: CH3kswXyVQDV4zF82TqS3UswWgPzQbN9s9K1YV5LB2JAD9dg677NISMdnBl3RUFR7E98mpxg6H
- mD+EdYZACvpQ==
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2020 17:56:31 -0700
+IronPort-SDR: UhXz+Lz11V89bEO03HNYJAxgZkVWbtV/9pFwNdoQ3r5Qff6LL+zmL8Lvnar2v2gKU8YOh8RAWP
+ stpGBvKgA2uA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,565,1574150400"; d="scan'208";a="233686995"
+X-IronPort-AV: E=Sophos;i="5.70,565,1574150400"; d="scan'208";a="248010503"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga007.jf.intel.com with ESMTP; 17 Mar 2020 17:56:30 -0700
+ by orsmga006.jf.intel.com with ESMTP; 17 Mar 2020 17:56:30 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
  (envelope-from <lkp@intel.com>)
- id 1jEN0X-000FmZ-NO; Wed, 18 Mar 2020 08:56:29 +0800
-Date: Wed, 18 Mar 2020 08:55:51 +0800
+ id 1jEN0X-000FmO-KH; Wed, 18 Mar 2020 08:56:29 +0800
+Date: Wed, 18 Mar 2020 08:55:54 +0800
 From: kbuild test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 59ed2adf393109c56d383e568f2e57bb5ad6d901
-Message-ID: <5e717197.rTIl2eWNqc1gK5Fk%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 033c9d310e29706e46c05f4fe7e863b1f32939db
+Message-ID: <5e71719a.Suyc1vo2MZOhF9rg%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -60,13 +61,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: 59ed2adf393109c56d383e568f2e57bb5ad6d901  powerpc/lib: Fix emulate_step() std test
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: 033c9d310e29706e46c05f4fe7e863b1f32939db  powerpc/hash64/devmap: Use H_PAGE_THP_HUGE when setting up huge devmap PTE entries
 
 elapsed time: 669m
 
-configs tested: 161
-configs skipped: 0
+configs tested: 156
+configs skipped: 7
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -83,6 +84,7 @@ arm                        multi_v7_defconfig
 arm                        shmobile_defconfig
 arm                           sunxi_defconfig
 arm64                               defconfig
+sparc                            allyesconfig
 arm64                            allmodconfig
 mips                      fuloong2e_defconfig
 s390                                defconfig
@@ -118,13 +120,13 @@ m68k                             allmodconfig
 m68k                       m5475evb_defconfig
 m68k                          multi_defconfig
 m68k                           sun3_defconfig
-arc                              allyesconfig
 arc                                 defconfig
+arc                              allyesconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
 microblaze                      mmu_defconfig
 microblaze                    nommu_defconfig
 powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
 mips                           32r2_defconfig
 mips                         64r6el_defconfig
 mips                             allmodconfig
@@ -191,11 +193,6 @@ x86_64               randconfig-g003-20200317
 i386                 randconfig-g001-20200317
 i386                 randconfig-g002-20200317
 i386                 randconfig-g003-20200317
-arc                  randconfig-a001-20200317
-ia64                 randconfig-a001-20200317
-arm                  randconfig-a001-20200317
-arm64                randconfig-a001-20200317
-sparc                randconfig-a001-20200317
 arc                  randconfig-a001-20200318
 arm                  randconfig-a001-20200318
 arm64                randconfig-a001-20200318
@@ -217,7 +214,6 @@ sh                                allnoconfig
 sh                          rsk7269_defconfig
 sh                  sh7785lcr_32bit_defconfig
 sh                            titan_defconfig
-sparc                            allyesconfig
 sparc                               defconfig
 sparc64                          allmodconfig
 sparc64                           allnoconfig
