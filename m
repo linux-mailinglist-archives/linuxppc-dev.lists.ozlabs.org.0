@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE68618A2C4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 19:58:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EDD18A30B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 20:22:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jK7s6RcnzDr0f
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:58:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jKfv5rb1zDr2c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 06:22:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,26 +17,24 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.com
 Received: from gentwo.org (gentwo.org [3.19.106.255])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jK5z08tZzDqwl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 05:57:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jKd8186SzDqvW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 06:20:43 +1100 (AEDT)
 Received: by gentwo.org (Postfix, from userid 1002)
- id 1FEAA3EF51; Wed, 18 Mar 2020 18:57:07 +0000 (UTC)
+ id 5CF353EF51; Wed, 18 Mar 2020 19:20:41 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
- by gentwo.org (Postfix) with ESMTP id 1DA593EF50;
- Wed, 18 Mar 2020 18:57:07 +0000 (UTC)
-Date: Wed, 18 Mar 2020 18:57:07 +0000 (UTC)
+ by gentwo.org (Postfix) with ESMTP id 5AC813EF50;
+ Wed, 18 Mar 2020 19:20:41 +0000 (UTC)
+Date: Wed, 18 Mar 2020 19:20:41 +0000 (UTC)
 From: Christopher Lameter <cl@linux.com>
 X-X-Sender: cl@www.lameter.com
-To: Michal Hocko <mhocko@kernel.org>
-Subject: Re: [PATCH 3/3] mm/page_alloc: Keep memoryless cpuless node 0 offline
-In-Reply-To: <20200316085425.GB11482@dhcp22.suse.cz>
-Message-ID: <alpine.DEB.2.21.2003181855260.18605@www.lameter.com>
-References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
- <20200311110237.5731-4-srikar@linux.vnet.ibm.com>
- <alpine.DEB.2.21.2003151416230.14449@www.lameter.com>
- <20200316085425.GB11482@dhcp22.suse.cz>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 3/4] mm: Implement reset_numa_mem
+In-Reply-To: <20200318072810.9735-4-srikar@linux.vnet.ibm.com>
+Message-ID: <alpine.DEB.2.21.2003181919450.18605@www.lameter.com>
+References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
+ <20200318072810.9735-4-srikar@linux.vnet.ibm.com>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,27 +49,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 16 Mar 2020, Michal Hocko wrote:
+On Wed, 18 Mar 2020, Srikar Dronamraju wrote:
 
-> > We can dynamically number the nodes right? So just make sure that the
-> > firmware properly creates memory on node 0?
->
-> Are you suggesting that the OS would renumber NUMA nodes coming
-> from FW just to satisfy node 0 existence? If yes then I believe this is
-> really a bad idea because it would make HW/LPAR configuration matching
-> to the resulting memory layout really hard to follow.
+> For a memoryless or offline nodes, node_numa_mem refers to a N_MEMORY
+> fallback node. Currently kernel has an API set_numa_mem that sets
+> node_numa_mem for memoryless node. However this API cannot be used for
+> offline nodes. Hence all offline nodes will have their node_numa_mem set
+> to 0. However systems can themselves have node 0 as offline i.e
 
-NUMA nodes are created by the OS based on information provided by the
-firmware. Either the FW would need to ensure that a viable node 0 exists
-or the bootstrap arch code could setup things to the same effect.
+That is a significant change to the basic assumptions for memory less
+nodes. Node 0 needed to have memory and processors. Not sure what else
+may break.
+
 
