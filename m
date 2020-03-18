@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0246B18A506
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 092C518A60C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:05:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jMp45sBMzDqhD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 07:58:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jMy41wW5zDqsj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:05:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,22 +19,23 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jMXn3HH6zDqyq
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jMXn75b3zDqx9
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:47:05 +1100 (AEDT)
 Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jEfaO-0006BC-A3; Wed, 18 Mar 2020 21:46:44 +0100
+ id 1jEfaH-00065h-5J; Wed, 18 Mar 2020 21:46:37 +0100
 Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
- by nanos.tec.linutronix.de (Postfix) with ESMTP id 13D7C1040D1;
- Wed, 18 Mar 2020 21:46:37 +0100 (CET)
-Message-Id: <20200318204408.319891308@linutronix.de>
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 79FA31040C6;
+ Wed, 18 Mar 2020 21:46:35 +0100 (CET)
+Message-Id: <20200318204407.607241357@linutronix.de>
 User-Agent: quilt/0.65
-Date: Wed, 18 Mar 2020 21:43:11 +0100
+Date: Wed, 18 Mar 2020 21:43:04 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V2 09/15] timekeeping: Split jiffies seqlock
+Subject: [patch V2 02/15] pci/switchtec: Replace completion wait queue usage
+ for poll
 References: <20200318204302.693307984@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -70,169 +71,118 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-seqlock consists of a sequence counter and a spinlock_t which is used to
-serialize the writers. spinlock_t is substituted by a "sleeping" spinlock
-on PREEMPT_RT enabled kernels which breaks the usage in the timekeeping
-code as the writers are executed in hard interrupt and therefore
-non-preemptible context even on PREEMPT_RT.
+The poll callback is using the completion wait queue and sticks it into
+poll_wait() to wake up pollers after a command has completed.
 
-The spinlock in seqlock cannot be unconditionally replaced by a
-raw_spinlock_t as many seqlock users have nesting spinlock sections or
-other code which is not suitable to run in truly atomic context on RT.
+This works to some extent, but cannot provide EPOLLEXCLUSIVE support
+because the waker side uses complete_all() which unconditionally wakes up
+all waiters. complete_all() is required because completions internally use
+exclusive wait and complete() only wakes up one waiter by default.
 
-Instead of providing a raw_seqlock API for a single use case, open code the
-seqlock for the jiffies use case and implement it with a raw_spinlock_t and
-a sequence counter.
+This mixes conceptually different mechanisms and relies on internal
+implementation details of completions, which in turn puts contraints on
+changing the internal implementation of completions.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Replace it with a regular wait queue and store the state in struct
+switchtec_user.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Kurt Schwemmer <kurt.schwemmer@microsemi.com>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-pci@vger.kernel.org
 ---
- kernel/time/jiffies.c     |    7 ++++---
- kernel/time/tick-common.c |   10 ++++++----
- kernel/time/tick-sched.c  |   19 ++++++++++++-------
- kernel/time/timekeeping.c |    6 ++++--
- kernel/time/timekeeping.h |    3 ++-
- 5 files changed, 28 insertions(+), 17 deletions(-)
+V2: Reworded changelog.
+---
+ drivers/pci/switch/switchtec.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/kernel/time/jiffies.c
-+++ b/kernel/time/jiffies.c
-@@ -58,7 +58,8 @@ static struct clocksource clocksource_ji
- 	.max_cycles	= 10,
- };
+--- a/drivers/pci/switch/switchtec.c
++++ b/drivers/pci/switch/switchtec.c
+@@ -52,10 +52,11 @@ struct switchtec_user {
  
--__cacheline_aligned_in_smp DEFINE_SEQLOCK(jiffies_lock);
-+__cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(jiffies_lock);
-+__cacheline_aligned_in_smp seqcount_t jiffies_seq;
+ 	enum mrpc_state state;
  
- #if (BITS_PER_LONG < 64)
- u64 get_jiffies_64(void)
-@@ -67,9 +68,9 @@ u64 get_jiffies_64(void)
- 	u64 ret;
+-	struct completion comp;
++	wait_queue_head_t cmd_comp;
+ 	struct kref kref;
+ 	struct list_head list;
  
- 	do {
--		seq = read_seqbegin(&jiffies_lock);
-+		seq = read_seqcount_begin(&jiffies_seq);
- 		ret = jiffies_64;
--	} while (read_seqretry(&jiffies_lock, seq));
-+	} while (read_seqcount_retry(&jiffies_seq, seq));
- 	return ret;
- }
- EXPORT_SYMBOL(get_jiffies_64);
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -84,13 +84,15 @@ int tick_is_oneshot_available(void)
- static void tick_periodic(int cpu)
- {
- 	if (tick_do_timer_cpu == cpu) {
--		write_seqlock(&jiffies_lock);
-+		raw_spin_lock(&jiffies_lock);
-+		write_seqcount_begin(&jiffies_seq);
++	bool cmd_done;
+ 	u32 cmd;
+ 	u32 status;
+ 	u32 return_code;
+@@ -77,7 +78,7 @@ static struct switchtec_user *stuser_cre
+ 	stuser->stdev = stdev;
+ 	kref_init(&stuser->kref);
+ 	INIT_LIST_HEAD(&stuser->list);
+-	init_completion(&stuser->comp);
++	init_waitqueue_head(&stuser->cmd_comp);
+ 	stuser->event_cnt = atomic_read(&stdev->event_cnt);
  
- 		/* Keep track of the next tick event */
- 		tick_next_period = ktime_add(tick_next_period, tick_period);
+ 	dev_dbg(&stdev->dev, "%s: %p\n", __func__, stuser);
+@@ -175,7 +176,7 @@ static int mrpc_queue_cmd(struct switcht
+ 	kref_get(&stuser->kref);
+ 	stuser->read_len = sizeof(stuser->data);
+ 	stuser_set_state(stuser, MRPC_QUEUED);
+-	reinit_completion(&stuser->comp);
++	stuser->cmd_done = false;
+ 	list_add_tail(&stuser->list, &stdev->mrpc_queue);
  
- 		do_timer(1);
--		write_sequnlock(&jiffies_lock);
-+		write_seqcount_end(&jiffies_seq);
-+		raw_spin_unlock(&jiffies_lock);
- 		update_wall_time();
- 	}
+ 	mrpc_cmd_submit(stdev);
+@@ -222,7 +223,8 @@ static void mrpc_complete_cmd(struct swi
+ 		memcpy_fromio(stuser->data, &stdev->mmio_mrpc->output_data,
+ 			      stuser->read_len);
+ out:
+-	complete_all(&stuser->comp);
++	stuser->cmd_done = true;
++	wake_up_interruptible(&stuser->cmd_comp);
+ 	list_del_init(&stuser->list);
+ 	stuser_put(stuser);
+ 	stdev->mrpc_busy = 0;
+@@ -529,10 +531,11 @@ static ssize_t switchtec_dev_read(struct
+ 	mutex_unlock(&stdev->mrpc_mutex);
  
-@@ -162,9 +164,9 @@ void tick_setup_periodic(struct clock_ev
- 		ktime_t next;
- 
- 		do {
--			seq = read_seqbegin(&jiffies_lock);
-+			seq = read_seqcount_begin(&jiffies_seq);
- 			next = tick_next_period;
--		} while (read_seqretry(&jiffies_lock, seq));
-+		} while (read_seqcount_retry(&jiffies_seq, seq));
- 
- 		clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT);
- 
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -65,7 +65,8 @@ static void tick_do_update_jiffies64(kti
- 		return;
- 
- 	/* Reevaluate with jiffies_lock held */
--	write_seqlock(&jiffies_lock);
-+	raw_spin_lock(&jiffies_lock);
-+	write_seqcount_begin(&jiffies_seq);
- 
- 	delta = ktime_sub(now, last_jiffies_update);
- 	if (delta >= tick_period) {
-@@ -91,10 +92,12 @@ static void tick_do_update_jiffies64(kti
- 		/* Keep the tick_next_period variable up to date */
- 		tick_next_period = ktime_add(last_jiffies_update, tick_period);
+ 	if (filp->f_flags & O_NONBLOCK) {
+-		if (!try_wait_for_completion(&stuser->comp))
++		if (!stuser->cmd_done)
+ 			return -EAGAIN;
  	} else {
--		write_sequnlock(&jiffies_lock);
-+		write_seqcount_end(&jiffies_seq);
-+		raw_spin_unlock(&jiffies_lock);
- 		return;
+-		rc = wait_for_completion_interruptible(&stuser->comp);
++		rc = wait_event_interruptible(stuser->cmd_comp,
++					      stuser->cmd_done);
+ 		if (rc < 0)
+ 			return rc;
  	}
--	write_sequnlock(&jiffies_lock);
-+	write_seqcount_end(&jiffies_seq);
-+	raw_spin_unlock(&jiffies_lock);
- 	update_wall_time();
- }
+@@ -580,7 +583,7 @@ static __poll_t switchtec_dev_poll(struc
+ 	struct switchtec_dev *stdev = stuser->stdev;
+ 	__poll_t ret = 0;
  
-@@ -105,12 +108,14 @@ static ktime_t tick_init_jiffy_update(vo
- {
- 	ktime_t period;
+-	poll_wait(filp, &stuser->comp.wait, wait);
++	poll_wait(filp, &stuser->cmd_comp, wait);
+ 	poll_wait(filp, &stdev->event_wq, wait);
  
--	write_seqlock(&jiffies_lock);
-+	raw_spin_lock(&jiffies_lock);
-+	write_seqcount_begin(&jiffies_seq);
- 	/* Did we start the jiffies update yet ? */
- 	if (last_jiffies_update == 0)
- 		last_jiffies_update = tick_next_period;
- 	period = last_jiffies_update;
--	write_sequnlock(&jiffies_lock);
-+	write_seqcount_end(&jiffies_seq);
-+	raw_spin_unlock(&jiffies_lock);
- 	return period;
- }
+ 	if (lock_mutex_and_test_alive(stdev))
+@@ -588,7 +591,7 @@ static __poll_t switchtec_dev_poll(struc
  
-@@ -676,10 +681,10 @@ static ktime_t tick_nohz_next_event(stru
+ 	mutex_unlock(&stdev->mrpc_mutex);
  
- 	/* Read jiffies and the time when jiffies were updated last */
- 	do {
--		seq = read_seqbegin(&jiffies_lock);
-+		seq = read_seqcount_begin(&jiffies_seq);
- 		basemono = last_jiffies_update;
- 		basejiff = jiffies;
--	} while (read_seqretry(&jiffies_lock, seq));
-+	} while (read_seqcount_retry(&jiffies_seq, seq));
- 	ts->last_jiffies = basejiff;
- 	ts->timer_expires_base = basemono;
+-	if (try_wait_for_completion(&stuser->comp))
++	if (stuser->cmd_done)
+ 		ret |= EPOLLIN | EPOLLRDNORM;
  
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2397,8 +2397,10 @@ EXPORT_SYMBOL(hardpps);
-  */
- void xtime_update(unsigned long ticks)
- {
--	write_seqlock(&jiffies_lock);
-+	raw_spin_lock(&jiffies_lock);
-+	write_seqcount_begin(&jiffies_seq);
- 	do_timer(ticks);
--	write_sequnlock(&jiffies_lock);
-+	write_seqcount_end(&jiffies_seq);
-+	raw_spin_unlock(&jiffies_lock);
- 	update_wall_time();
- }
---- a/kernel/time/timekeeping.h
-+++ b/kernel/time/timekeeping.h
-@@ -25,7 +25,8 @@ static inline void sched_clock_resume(vo
- extern void do_timer(unsigned long ticks);
- extern void update_wall_time(void);
+ 	if (stuser->event_cnt != atomic_read(&stdev->event_cnt))
+@@ -1272,7 +1275,8 @@ static void stdev_kill(struct switchtec_
  
--extern seqlock_t jiffies_lock;
-+extern raw_spinlock_t jiffies_lock;
-+extern seqcount_t jiffies_seq;
- 
- #define CS_NAME_LEN	32
- 
+ 	/* Wake up and kill any users waiting on an MRPC request */
+ 	list_for_each_entry_safe(stuser, tmpuser, &stdev->mrpc_queue, list) {
+-		complete_all(&stuser->comp);
++		stuser->cmd_done = true;
++		wake_up_interruptible(&stuser->cmd_comp);
+ 		list_del_init(&stuser->list);
+ 		stuser_put(stuser);
+ 	}
 
