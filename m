@@ -1,87 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C831895F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 07:42:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1881895A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 07:21:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j0LQ38RbzDqww
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 17:21:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j0pB30w9zDqpq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 17:42:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=FtR2PsJj; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48j0J51gh0zDqst
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 17:19:49 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02I62lNY163734
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:19:46 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8actc3y-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 02:19:46 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48j0mQ6nPtzDqkK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 17:40:54 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id x7so13124497pgh.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Mar 2020 23:40:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=XzGu2D0qbUiQXlYIBSsYZEbEbHXflKv2iEThfbgwGOA=;
+ b=FtR2PsJjhjhKf5THRO1zaSBNSWnNScL3wmfKecLJuGLphjWSBVrpyhEaqdSCNdSvUQ
+ 9FrvdstZbxCKwoBww4uyXL3VL1qbVUFSpIw7QtI0+oTebzcUk4pXZyjSFF5ZBCT1lOcw
+ Qa5HTtUFLY9yhYArROexRhc0SxHUYghz9Km4k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=XzGu2D0qbUiQXlYIBSsYZEbEbHXflKv2iEThfbgwGOA=;
+ b=WRHvQbxSMw9rGBs39W7RUARK1oc85r/UAyhhEVCR7ysxmGBWuaxOkuEUcgUhw4f2ZN
+ FN5b1RJvijnEy2OcPIsBEB5vGk2RBco8myzPH0Y5a/byUJ34aVc9K0kEfX+CFnyqdoOB
+ kQ3l44IdKR6T9wiQX9n++efz41O5bd2NlAOFcvL48itl7Whu0Jpo67oZulWrFliXhyX0
+ jou2tkXb0aVXz1Oo/nLRT01X72tOB5TmwcpYwztAhkVf0ElcDKedG/4WRKTh/De9YYdV
+ VuXv2/ZebP2NdVYET/qxKO+JpFa8Jl2J9syPGqMeIMYPYNaeohpmrzWLfZEAX4MF4CLQ
+ PyVg==
+X-Gm-Message-State: ANhLgQ38zjBGgxYY2sp3YjT20lz2Ym0rNy94IZ3q4D5/wz+ytXQZYm8b
+ JJS6TiZIfVt6m5XertmUlfNqsg==
+X-Google-Smtp-Source: ADFU+vuuLgtMuWos5RSXth1TDFodBLLeGr0ujcN7Kxgun0iHFMriORUyvEX61Ty5qRi6xy2iWUvIrQ==
+X-Received: by 2002:aa7:95a1:: with SMTP id a1mr2834620pfk.279.1584513650717; 
+ Tue, 17 Mar 2020 23:40:50 -0700 (PDT)
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Wed, 18 Mar 2020 06:19:43 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 18 Mar 2020 06:19:38 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02I6JbgL62259362
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Mar 2020 06:19:37 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0B639A405C;
- Wed, 18 Mar 2020 06:19:37 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDB4CA4060;
- Wed, 18 Mar 2020 06:18:43 +0000 (GMT)
-Received: from [9.199.62.91] (unknown [9.199.62.91])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 18 Mar 2020 06:18:35 +0000 (GMT)
-Subject: Re: [PATCH 05/15] powerpc/watchpoint: Provide DAWR number to set_dawr
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
- <20200309085806.155823-6-ravi.bangoria@linux.ibm.com>
- <4704ba5d-2bc3-38f6-8097-b8a850592461@c-s.fr>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Wed, 18 Mar 2020 11:48:32 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ (2001-44b8-111e-5c00-11e1-e7cb-3c10-05d6.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:11e1:e7cb:3c10:5d6])
+ by smtp.gmail.com with ESMTPSA id t8sm1244142pjy.11.2020.03.17.23.40.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Mar 2020 23:40:49 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
+Subject: Re: [PATCH 5/5] selftests/powerpc: Add README for GZIP engine tests
+In-Reply-To: <20200316180714.18631-6-rzinsly@linux.ibm.com>
+References: <20200316180714.18631-1-rzinsly@linux.ibm.com>
+ <20200316180714.18631-6-rzinsly@linux.ibm.com>
+Date: Wed, 18 Mar 2020 17:40:46 +1100
+Message-ID: <874kumnp1t.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <4704ba5d-2bc3-38f6-8097-b8a850592461@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20031806-0016-0000-0000-000002F2FFC3
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031806-0017-0000-0000-000033568365
-Message-Id: <16bc7420-0e46-0600-62b4-e5ac97f833fb@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_02:2020-03-17,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1015 priorityscore=1501 spamscore=0
- malwarescore=0 impostorscore=0 suspectscore=0 bulkscore=0 mlxlogscore=752
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003180028
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,30 +77,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, mikey@neuling.org,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, peterz@infradead.org,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, fweisbec@gmail.com,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- mingo@kernel.org
+Cc: abali@us.ibm.com, haren@linux.ibm.com, herbert@gondor.apana.org.au,
+ Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is a good readme, the instructions for compiling and testing work.
 
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 
-On 3/17/20 3:58 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 09/03/2020 à 09:57, Ravi Bangoria a écrit :
->> Introduce new parameter 'nr' to set_dawr() which indicates which DAWR
->> should be programed.
-> 
-> While we are at it (In another patch I think), we should do the same to set_dabr() so that we can use both DABR and DABR2
+Regards,
+Daniel
 
-This series is for DAWR only and does not support DABR2. I'll look
-at how other book3s family processors provides DABR2 supports.
+Raphael Moreira Zinsly <rzinsly@linux.ibm.com> writes:
 
-Thanks,
-Ravi
-
+> Include a README file with the instructions to use the
+> testcases at selftests/powerpc/nx-gzip.
+>
+> Signed-off-by: Bulent Abali <abali@us.ibm.com>
+> Signed-off-by: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
+> ---
+>  .../powerpc/nx-gzip/99-nx-gzip.rules          |  1 +
+>  .../testing/selftests/powerpc/nx-gzip/README  | 44 +++++++++++++++++++
+>  2 files changed, 45 insertions(+)
+>  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules
+>  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/README
+>
+> diff --git a/tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules b/tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules
+> new file mode 100644
+> index 000000000000..5a7118495cb3
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/nx-gzip/99-nx-gzip.rules
+> @@ -0,0 +1 @@
+> +SUBSYSTEM=="nxgzip", KERNEL=="nx-gzip", MODE="0666"
+> diff --git a/tools/testing/selftests/powerpc/nx-gzip/README b/tools/testing/selftests/powerpc/nx-gzip/README
+> new file mode 100644
+> index 000000000000..ff0c817a65c5
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/nx-gzip/README
+> @@ -0,0 +1,44 @@
+> +Test the nx-gzip function:
+> +=========================
+> +
+> +Verify that following device exists:
+> +  /dev/crypto/nx-gzip
+> +If you get a permission error run as sudo or set the device permissions:
+> +   sudo chmod go+rw /dev/crypto/nx-gzip
+> +However, chmod may not survive across boots. You may create a udev file such
+> +as:
+> +   /etc/udev/rules.d/99-nx-gzip.rules
+> +
+> +
+> +Then make and run:
+> +$ make
+> +gcc -O3 -I./inc -o gzfht_test gzfht_test.c gzip_vas.c
+> +gcc -O3 -I./inc -o gunz_test gunz_test.c gzip_vas.c
+> +
+> +
+> +Compress any file using Fixed Huffman mode. Output will have a .nx.gz suffix:
+> +$ ./gzfht_test gzip_vas.c
+> +file gzip_vas.c read, 5276 bytes
+> +compressed 5276 to 2564 bytes total, crc32 checksum = b937a37d
+> +
+> +
+> +Uncompress the previous output. Output will have a .nx.gunzip suffix:
+> +$ ./gunz_test gzip_vas.c.nx.gz
+> +gzHeader FLG 0
+> +00 00 00 00 04 03
+> +gzHeader MTIME, XFL, OS ignored
+> +computed checksum b937a37d isize 0000149c
+> +stored   checksum b937a37d isize 0000149c
+> +decomp is complete: fclose
+> +
+> +
+> +Compare two files:
+> +$ sha1sum gzip_vas.c.nx.gz.nx.gunzip gzip_vas.c
+> +f041cd8581e8d920f79f6ce7f65411be5d026c2a  gzip_vas.c.nx.gz.nx.gunzip
+> +f041cd8581e8d920f79f6ce7f65411be5d026c2a  gzip_vas.c
+> +
+> +
+> +Note that the code here are intended for testing the nx-gzip hardware function.
+> +They are not intended for demonstrating performance or compression ratio.
+> +For more information and source code consider using:
+> +https://github.com/libnxz/power-gzip
+> -- 
+> 2.21.0
