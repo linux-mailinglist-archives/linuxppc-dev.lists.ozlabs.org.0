@@ -1,48 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE68618A2C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 19:58:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE1A18A264
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 19:32:18 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jJYC2bg9zDr3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:32:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jK7s6RcnzDr0f
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:58:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
+ envelope-from=cl@linux.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from gentwo.org (gentwo.org [3.19.106.255])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jJWc736bzDqn4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 05:30:52 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 02IIUQYD002064;
- Wed, 18 Mar 2020 13:30:26 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 02IIUOWq002063;
- Wed, 18 Mar 2020 13:30:24 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 18 Mar 2020 13:30:24 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH 02/15] powerpc/watchpoint: Add SPRN macros for second DAWR
-Message-ID: <20200318183024.GJ22482@gate.crashing.org>
-References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
- <20200309085806.155823-3-ravi.bangoria@linux.ibm.com>
- <0a45786d-f44b-8717-3aed-dfcfcb1856bb@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0a45786d-f44b-8717-3aed-dfcfcb1856bb@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jK5z08tZzDqwl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 05:57:10 +1100 (AEDT)
+Received: by gentwo.org (Postfix, from userid 1002)
+ id 1FEAA3EF51; Wed, 18 Mar 2020 18:57:07 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by gentwo.org (Postfix) with ESMTP id 1DA593EF50;
+ Wed, 18 Mar 2020 18:57:07 +0000 (UTC)
+Date: Wed, 18 Mar 2020 18:57:07 +0000 (UTC)
+From: Christopher Lameter <cl@linux.com>
+X-X-Sender: cl@www.lameter.com
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH 3/3] mm/page_alloc: Keep memoryless cpuless node 0 offline
+In-Reply-To: <20200316085425.GB11482@dhcp22.suse.cz>
+Message-ID: <alpine.DEB.2.21.2003181855260.18605@www.lameter.com>
+References: <20200311110237.5731-1-srikar@linux.vnet.ibm.com>
+ <20200311110237.5731-4-srikar@linux.vnet.ibm.com>
+ <alpine.DEB.2.21.2003151416230.14449@www.lameter.com>
+ <20200316085425.GB11482@dhcp22.suse.cz>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,32 +51,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- apopple@linux.ibm.com, peterz@infradead.org, fweisbec@gmail.com,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 17, 2020 at 11:16:34AM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 09/03/2020 à 09:57, Ravi Bangoria a écrit :
-> >Future Power architecture is introducing second DAWR. Add SPRN_ macros
-> >for the same.
-> 
-> I'm not sure this is called 'macros'. For me a macro is something more 
-> complex.
+On Mon, 16 Mar 2020, Michal Hocko wrote:
 
-It is called "macros" in the C standard, and in common usage as well.
-"Object-like macros", as opposed to "function-like macros": there are
-no arguments.
+> > We can dynamically number the nodes right? So just make sure that the
+> > firmware properly creates memory on node 0?
+>
+> Are you suggesting that the OS would renumber NUMA nodes coming
+> from FW just to satisfy node 0 existence? If yes then I believe this is
+> really a bad idea because it would make HW/LPAR configuration matching
+> to the resulting memory layout really hard to follow.
 
-> For me those are 'constants'.
+NUMA nodes are created by the OS based on information provided by the
+firmware. Either the FW would need to ensure that a viable node 0 exists
+or the bootstrap arch code could setup things to the same effect.
 
-That would be more like "static const" in C since 1990 ;-)
-
-
-Segher
