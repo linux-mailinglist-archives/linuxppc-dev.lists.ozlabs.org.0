@@ -2,52 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B25018A6FF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC1FE18A711
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:31:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jNTf26npzDqhs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:29:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jNWp1cq7zDr4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:31:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=C/fnKMGP; dkim-atps=neutral
+ header.s=default header.b=J4R5BuBT; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jMmC3pz4zDr0x
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:56:59 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jNNv1chFzDqxj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 08:25:18 +1100 (AEDT)
+Received: from localhost (mobile-166-175-186-165.mycingular.net
+ [166.175.186.165])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A10CA2166E;
- Wed, 18 Mar 2020 20:56:56 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A267920772;
+ Wed, 18 Mar 2020 21:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584565017;
- bh=X7SO+AFWtttTHvmpiHOIjqHujUY1avAOlL7VXiJYJl0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=C/fnKMGPRcdR2tZN3S/29Bd3UX3pbPwmqoHYuYuMVBbQjtSLv10qi3Tcd0z2pSLM1
- mZxFjOQvu6v0cH20/69pKBzYbCrITY80PlfyoKbhJKEimcmaoz9Jds+WBpVsCkw+pI
- HIJUaDgFW+T4z7YA7AKewVHQEDSLqBlEzSTlnuok=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 07/12] dt-bindings: net: FMan erratum A050385
-Date: Wed, 18 Mar 2020 16:56:43 -0400
-Message-Id: <20200318205648.17937-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200318205648.17937-1-sashal@kernel.org>
-References: <20200318205648.17937-1-sashal@kernel.org>
+ s=default; t=1584566716;
+ bh=PPihHaGg1zzpn1nHu5VlZHYT+H8Lm/yb44OJhzptGDI=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=J4R5BuBT7s0ufQ6OkQFm2DJaGU3GVO9cGs2MX4LtzTi7i9JWE5dM20xu5JQTXlZ83
+ PEvcq3DTg4VilmyOANCyGwCHYadT4otbhpLYSpa8TZJkQXYvR3a8J+LlUM3ulELzZx
+ jLKhC0M9bULug4AxIw26CRfmCEZy/H4Ad8J0WRnI=
+Date: Wed, 18 Mar 2020 16:25:13 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V2 01/15] PCI/switchtec: Fix init_completion race
+ condition with poll_wait()
+Message-ID: <20200318212513.GA240916@google.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318204407.497942274@linutronix.de>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,94 +57,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, devicetree@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
- Madalin Bucur <madalin.bucur@nxp.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Arnd Bergmann <arnd@arndb.de>,
+ Logan Gunthorpe <logang@deltatee.com>,
+ "Paul E . McKenney" <paulmck@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Madalin Bucur <madalin.bucur@nxp.com>
+On Wed, Mar 18, 2020 at 09:43:03PM +0100, Thomas Gleixner wrote:
+> From: Logan Gunthorpe <logang@deltatee.com>
+> 
+> The call to init_completion() in mrpc_queue_cmd() can theoretically
+> race with the call to poll_wait() in switchtec_dev_poll().
+> 
+>   poll()			write()
+>     switchtec_dev_poll()   	  switchtec_dev_write()
+>       poll_wait(&s->comp.wait);      mrpc_queue_cmd()
+> 			               init_completion(&s->comp)
+> 				         init_waitqueue_head(&s->comp.wait)
+> 
+> To my knowledge, no one has hit this bug.
+> 
+> Fix this by using reinit_completion() instead of init_completion() in
+> mrpc_queue_cmd().
+> 
+> Fixes: 080b47def5e5 ("MicroSemi Switchtec management interface driver")
+> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lkml.kernel.org/r/20200313183608.2646-1-logang@deltatee.com
 
-[ Upstream commit 26d5bb9e4c4b541c475751e015072eb2cbf70d15 ]
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-FMAN DMA read or writes under heavy traffic load may cause FMAN
-internal resource leak; thus stopping further packet processing.
+Not because I understand and have reviewed this, but because I trust
+you to do the right thing and it belongs with the rest of the series.
 
-The FMAN internal queue can overflow when FMAN splits single
-read or write transactions into multiple smaller transactions
-such that more than 17 AXI transactions are in flight from FMAN
-to interconnect. When the FMAN internal queue overflows, it can
-stall further packet processing. The issue can occur with any one
-of the following three conditions:
-
-  1. FMAN AXI transaction crosses 4K address boundary (Errata
-     A010022)
-  2. FMAN DMA address for an AXI transaction is not 16 byte
-     aligned, i.e. the last 4 bits of an address are non-zero
-  3. Scatter Gather (SG) frames have more than one SG buffer in
-     the SG list and any one of the buffers, except the last
-     buffer in the SG list has data size that is not a multiple
-     of 16 bytes, i.e., other than 16, 32, 48, 64, etc.
-
-With any one of the above three conditions present, there is
-likelihood of stalled FMAN packet processing, especially under
-stress with multiple ports injecting line-rate traffic.
-
-To avoid situations that stall FMAN packet processing, all of the
-above three conditions must be avoided; therefore, configure the
-system with the following rules:
-
-  1. Frame buffers must not span a 4KB address boundary, unless
-     the frame start address is 256 byte aligned
-  2. All FMAN DMA start addresses (for example, BMAN buffer
-     address, FD[address] + FD[offset]) are 16B aligned
-  3. SG table and buffer addresses are 16B aligned and the size
-     of SG buffers are multiple of 16 bytes, except for the last
-     SG buffer that can be of any size.
-
-Additional workaround notes:
-- Address alignment of 64 bytes is recommended for maximally
-efficient system bus transactions (although 16 byte alignment is
-sufficient to avoid the stall condition)
-- To support frame sizes that are larger than 4K bytes, there are
-two options:
-  1. Large single buffer frames that span a 4KB page boundary can
-     be converted into SG frames to avoid transaction splits at
-     the 4KB boundary,
-  2. Align the large single buffer to 256B address boundaries,
-     ensure that the frame address plus offset is 256B aligned.
-- If software generated SG frames have buffers that are unaligned
-and with random non-multiple of 16 byte lengths, before
-transmitting such frames via FMAN, frames will need to be copied
-into a new single buffer or multiple buffer SG frame that is
-compliant with the three rules listed above.
-
-Signed-off-by: Madalin Bucur <madalin.bucur@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- Documentation/devicetree/bindings/powerpc/fsl/fman.txt | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/powerpc/fsl/fman.txt b/Documentation/devicetree/bindings/powerpc/fsl/fman.txt
-index 1fc5328c0651b..23708f3f4e58a 100644
---- a/Documentation/devicetree/bindings/powerpc/fsl/fman.txt
-+++ b/Documentation/devicetree/bindings/powerpc/fsl/fman.txt
-@@ -110,6 +110,13 @@ PROPERTIES
- 		Usage: required
- 		Definition: See soc/fsl/qman.txt and soc/fsl/bman.txt
- 
-+- fsl,erratum-a050385
-+		Usage: optional
-+		Value type: boolean
-+		Definition: A boolean property. Indicates the presence of the
-+		erratum A050385 which indicates that DMA transactions that are
-+		split can result in a FMan lock.
-+
- =============================================================================
- FMan MURAM Node
- 
--- 
-2.20.1
-
+> ---
+>  drivers/pci/switch/switchtec.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
+> index a823b4b8ef8a..81dc7ac01381 100644
+> --- a/drivers/pci/switch/switchtec.c
+> +++ b/drivers/pci/switch/switchtec.c
+> @@ -175,7 +175,7 @@ static int mrpc_queue_cmd(struct switchtec_user *stuser)
+>  	kref_get(&stuser->kref);
+>  	stuser->read_len = sizeof(stuser->data);
+>  	stuser_set_state(stuser, MRPC_QUEUED);
+> -	init_completion(&stuser->comp);
+> +	reinit_completion(&stuser->comp);
+>  	list_add_tail(&stuser->list, &stdev->mrpc_queue);
+>  
+>  	mrpc_cmd_submit(stdev);
+> -- 
+> 2.20.1
+> 
+> 
