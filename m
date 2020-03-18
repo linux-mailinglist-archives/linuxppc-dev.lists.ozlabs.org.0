@@ -1,50 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A0018A23F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 19:21:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jJJX36TSzDqxl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:21:16 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE1A18A264
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 19:32:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jJYC2bg9zDr3D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:32:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=sean.j.christopherson@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jJCc2rmfzDqnx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 05:16:50 +1100 (AEDT)
-IronPort-SDR: PG77UocWLW4F2uAs4/N0ICE0V+b0dnI4E1BpFeXALTyFm4Mpsm0qi6fH43HOMrm0/uzXOEtC0A
- SiNRMgDAqZ+g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2020 11:16:47 -0700
-IronPort-SDR: /nMRDuFjDvnEQdAI25G2RprZu7vl2tFb/s5g9nSzTkbNQFEl6S1jB8R9gAAlxCI24lNdz7A8m0
- 4//JGQe4hw+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,568,1574150400"; d="scan'208";a="291388997"
-Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com)
- ([10.54.74.202])
- by FMSMGA003.fm.intel.com with ESMTP; 18 Mar 2020 11:16:46 -0700
-Date: Wed, 18 Mar 2020 11:16:46 -0700
-From: Sean Christopherson <sean.j.christopherson@intel.com>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH 1/3] KVM: PPC: Fix kernel crash with PR KVM
-Message-ID: <20200318181646.GL24357@linux.intel.com>
-References: <158455340419.178873.11399595021669446372.stgit@bahia.lan>
- <158455341029.178873.15248663726399374882.stgit@bahia.lan>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jJWc736bzDqn4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 05:30:52 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 02IIUQYD002064;
+ Wed, 18 Mar 2020 13:30:26 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 02IIUOWq002063;
+ Wed, 18 Mar 2020 13:30:24 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 18 Mar 2020 13:30:24 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH 02/15] powerpc/watchpoint: Add SPRN macros for second DAWR
+Message-ID: <20200318183024.GJ22482@gate.crashing.org>
+References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
+ <20200309085806.155823-3-ravi.bangoria@linux.ibm.com>
+ <0a45786d-f44b-8717-3aed-dfcfcb1856bb@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <158455341029.178873.15248663726399374882.stgit@bahia.lan>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0a45786d-f44b-8717-3aed-dfcfcb1856bb@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,29 +54,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
+ apopple@linux.ibm.com, peterz@infradead.org, fweisbec@gmail.com,
+ oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
+ paulus@samba.org, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 18, 2020 at 06:43:30PM +0100, Greg Kurz wrote:
-> It turns out that this is only relevant to PR KVM actually. And both
-> 32 and 64 backends need vcpu->arch.book3s to be valid when calling
-> kvmppc_mmu_destroy_pr(). So instead of calling kvmppc_mmu_destroy()
-> from kvm_arch_vcpu_destroy(), call kvmppc_mmu_destroy_pr() at the
-> beginning of kvmppc_core_vcpu_free_pr(). This is consistent with
-> kvmppc_mmu_init() being the last call in kvmppc_core_vcpu_create_pr().
+On Tue, Mar 17, 2020 at 11:16:34AM +0100, Christophe Leroy wrote:
 > 
-> For the same reason, if kvmppc_core_vcpu_create_pr() returns an
-> error then this means that kvmppc_mmu_init() was either not called
-> or failed, in which case kvmppc_mmu_destroy() should not be called.
-> Drop the line in the error path of kvm_arch_vcpu_create().
 > 
-> Fixes: ff030fdf5573 ("KVM: PPC: Move kvm_vcpu_init() invocation to common code")
-> Signed-off-by: Greg Kurz <groug@kaod.org>
-> ---
+> Le 09/03/2020 à 09:57, Ravi Bangoria a écrit :
+> >Future Power architecture is introducing second DAWR. Add SPRN_ macros
+> >for the same.
+> 
+> I'm not sure this is called 'macros'. For me a macro is something more 
+> complex.
 
-Dang, I see where I went wrong.  Sorry :-(
+It is called "macros" in the C standard, and in common usage as well.
+"Object-like macros", as opposed to "function-like macros": there are
+no arguments.
 
-Reviewed-by: Sean Christopherson <sean.j.christopherson@intel.com>
+> For me those are 'constants'.
+
+That would be more like "static const" in C since 1990 ;-)
+
+
+Segher
