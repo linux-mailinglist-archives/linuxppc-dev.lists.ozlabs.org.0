@@ -2,82 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49F91898D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF19189928
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 11:20:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j5Gz3w2NzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:04:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j5dn1dVBzDqwp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:20:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48j5Dq39MhzDqtK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 21:02:18 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02I9Z5fI112405
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 06:02:16 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yu7abucc8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 06:02:16 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Wed, 18 Mar 2020 10:02:14 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 18 Mar 2020 10:02:12 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02IA2Akt47448512
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Mar 2020 10:02:10 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7ADF311C052;
- Wed, 18 Mar 2020 10:02:10 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 39C3C11C04A;
- Wed, 18 Mar 2020 10:02:10 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.59.146])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 18 Mar 2020 10:02:10 +0000 (GMT)
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.ibm.com,
- clombard@linux.ibm.com, felix@linux.ibm.com, ajd@linux.ibm.com,
- alastair@au1.ibm.com
-Subject: [PATCH v3] ocxl: control via sysfs whether the FPGA is reloaded on a
- link reset
-Date: Wed, 18 Mar 2020 11:02:10 +0100
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48j5Ft18wfzDqv8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 21:03:06 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 7734EAC6B;
+ Wed, 18 Mar 2020 10:02:58 +0000 (UTC)
+Date: Wed, 18 Mar 2020 11:02:56 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 1/4] mm: Check for node_online in node_present_pages
+Message-ID: <20200318100256.GH21362@dhcp22.suse.cz>
+References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
+ <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20031810-4275-0000-0000-000003AE5685
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031810-4276-0000-0000-000038C381D3
-Message-Id: <20200318100210.80035-1-fbarrat@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_03:2020-03-17,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0
- suspectscore=2 clxscore=1015 adultscore=0 spamscore=0 impostorscore=0
- malwarescore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003180046
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
+X-Mailman-Approved-At: Wed, 18 Mar 2020 21:15:09 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,222 +46,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Bharata B Rao <bharata@linux.ibm.com>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Philippe Bergheaud <felix@linux.ibm.com>
+On Wed 18-03-20 12:58:07, Srikar Dronamraju wrote:
+> Calling a kmalloc_node on a possible node which is not yet onlined can
+> lead to panic. Currently node_present_pages() doesn't verify the node is
+> online before accessing the pgdat for the node. However pgdat struct may
+> not be available resulting in a crash.
+> 
+> NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
+> LR [c0000000003d5b94] __slab_alloc+0x34/0x60
+> Call Trace:
+> [c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
+> [c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
+> [c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
+> [c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
+> [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
+> [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
+> [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
+> [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
+> [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
+> [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
+> [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
+> [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
+> 
+> Fix this by verifying the node is online before accessing the pgdat
+> structure. Fix the same for node_spanned_pages() too.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Christopher Lameter <cl@linux.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+> Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Cc: Bharata B Rao <bharata@linux.ibm.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> 
+> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> ---
+>  include/linux/mmzone.h | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index f3f264826423..88078a3b95e5 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -756,8 +756,10 @@ typedef struct pglist_data {
+>  	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
+>  } pg_data_t;
+>  
+> -#define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
+> -#define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
+> +#define node_present_pages(nid)		\
+> +	(node_online(nid) ? NODE_DATA(nid)->node_present_pages : 0)
+> +#define node_spanned_pages(nid)		\
+> +	(node_online(nid) ? NODE_DATA(nid)->node_spanned_pages : 0)
 
-Some opencapi FPGA images allow to control if the FPGA should be reloaded
-on the next adapter reset. If it is supported, the image specifies it
-through a Vendor Specific DVSEC in the config space of function 0.
+I believe this is a wrong approach. We really do not want to special
+case all the places which require NODE_DATA. Can we please go and
+allocate pgdat for all possible nodes?
 
-Signed-off-by: Philippe Bergheaud <felix@linux.ibm.com>
----
-Changelog:
-v2:
-  - refine ResetReload debug message
-  - do not call get_function_0() if pci_dev is for function 0
-v3:
-  - avoid get_function_0() in ocxl_config_set_reset_reload also
-       
- Documentation/ABI/testing/sysfs-class-ocxl | 10 ++++
- drivers/misc/ocxl/config.c                 | 68 +++++++++++++++++++++-
- drivers/misc/ocxl/ocxl_internal.h          |  6 ++
- drivers/misc/ocxl/sysfs.c                  | 35 +++++++++++
- include/misc/ocxl-config.h                 |  1 +
- 5 files changed, 119 insertions(+), 1 deletion(-)
+The current state of memory less hacks subtle bugs poping up here and
+there just prove that we should have done that from the very begining
+IMHO.
 
-diff --git a/Documentation/ABI/testing/sysfs-class-ocxl b/Documentation/ABI/testing/sysfs-class-ocxl
-index b5b1fa197592..b9ea671d5805 100644
---- a/Documentation/ABI/testing/sysfs-class-ocxl
-+++ b/Documentation/ABI/testing/sysfs-class-ocxl
-@@ -33,3 +33,13 @@ Date:		January 2018
- Contact:	linuxppc-dev@lists.ozlabs.org
- Description:	read/write
- 		Give access the global mmio area for the AFU
-+
-+What:		/sys/class/ocxl/<afu name>/reload_on_reset
-+Date:		February 2020
-+Contact:	linuxppc-dev@lists.ozlabs.org
-+Description:	read/write
-+		Control whether the FPGA is reloaded on a link reset
-+			0	Do not reload FPGA image from flash
-+			1	Reload FPGA image from flash
-+			unavailable
-+				The device does not support this capability
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index c8e19bfb5ef9..b364b6ceb996 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -71,6 +71,20 @@ static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
- 	return 0;
- }
- 
-+/**
-+ * get_function_0() - Find a related PCI device (function 0)
-+ * @device: PCI device to match
-+ *
-+ * Returns a pointer to the related device, or null if not found
-+ */
-+static struct pci_dev *get_function_0(struct pci_dev *dev)
-+{
-+	unsigned int devfn = PCI_DEVFN(PCI_SLOT(dev->devfn), 0);
-+
-+	return pci_get_domain_bus_and_slot(pci_domain_nr(dev->bus),
-+					   dev->bus->number, devfn);
-+}
-+
- static void read_pasid(struct pci_dev *dev, struct ocxl_fn_config *fn)
- {
- 	u16 val;
-@@ -159,7 +173,7 @@ static int read_dvsec_afu_info(struct pci_dev *dev, struct ocxl_fn_config *fn)
- static int read_dvsec_vendor(struct pci_dev *dev)
- {
- 	int pos;
--	u32 cfg, tlx, dlx;
-+	u32 cfg, tlx, dlx, reset_reload;
- 
- 	/*
- 	 * vendor specific DVSEC is optional
-@@ -183,6 +197,58 @@ static int read_dvsec_vendor(struct pci_dev *dev)
- 	dev_dbg(&dev->dev, "  CFG version = 0x%x\n", cfg);
- 	dev_dbg(&dev->dev, "  TLX version = 0x%x\n", tlx);
- 	dev_dbg(&dev->dev, "  DLX version = 0x%x\n", dlx);
-+
-+	if (ocxl_config_get_reset_reload(dev, &reset_reload) != 0)
-+		dev_dbg(&dev->dev, "  ResetReload is not available\n");
-+	else
-+		dev_dbg(&dev->dev, "  ResetReload = 0x%x\n", reset_reload);
-+	return 0;
-+}
-+
-+int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
-+{
-+	int reset_reload = -1;
-+	int pos = 0;
-+	struct pci_dev *dev0 = dev;
-+
-+	if (PCI_FUNC(dev->devfn) != 0)
-+		dev0 = get_function_0(dev);
-+
-+	if (dev0)
-+		pos = find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
-+
-+	if (pos)
-+		pci_read_config_dword(dev0,
-+				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
-+				      &reset_reload);
-+	if (reset_reload == -1)
-+		return reset_reload;
-+
-+	*val = reset_reload & BIT(0);
-+	return 0;
-+}
-+
-+int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
-+{
-+	int reset_reload = -1;
-+	int pos = 0;
-+	struct pci_dev *dev0 = dev;
-+
-+	if (PCI_FUNC(dev->devfn) != 0)
-+		dev0 = get_function_0(dev);
-+
-+	if (dev0)
-+		pos = find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
-+
-+	if (pos)
-+		pci_read_config_dword(dev0,
-+				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
-+				      &reset_reload);
-+	if (reset_reload == -1)
-+		return reset_reload;
-+
-+	val &= BIT(0);
-+	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD, val);
- 	return 0;
- }
- 
-diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
-index 345bf843a38e..af9a84aeee6f 100644
---- a/drivers/misc/ocxl/ocxl_internal.h
-+++ b/drivers/misc/ocxl/ocxl_internal.h
-@@ -112,6 +112,12 @@ void ocxl_actag_afu_free(struct ocxl_fn *fn, u32 start, u32 size);
-  */
- int ocxl_config_get_pasid_info(struct pci_dev *dev, int *count);
- 
-+/*
-+ * Control whether the FPGA is reloaded on a link reset
-+ */
-+int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val);
-+int ocxl_config_set_reset_reload(struct pci_dev *dev, int val);
-+
- /*
-  * Check if an AFU index is valid for the given function.
-  *
-diff --git a/drivers/misc/ocxl/sysfs.c b/drivers/misc/ocxl/sysfs.c
-index 58f1ba264206..8f69f7311343 100644
---- a/drivers/misc/ocxl/sysfs.c
-+++ b/drivers/misc/ocxl/sysfs.c
-@@ -51,11 +51,46 @@ static ssize_t contexts_show(struct device *device,
- 			afu->pasid_count, afu->pasid_max);
- }
- 
-+static ssize_t reload_on_reset_show(struct device *device,
-+		struct device_attribute *attr,
-+		char *buf)
-+{
-+	struct ocxl_afu *afu = to_afu(device);
-+	struct ocxl_fn *fn = afu->fn;
-+	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
-+	int val;
-+
-+	if (ocxl_config_get_reset_reload(pci_dev, &val))
-+		return scnprintf(buf, PAGE_SIZE, "unavailable\n");
-+
-+	return scnprintf(buf, PAGE_SIZE, "%d\n", val);
-+}
-+
-+static ssize_t reload_on_reset_store(struct device *device,
-+		struct device_attribute *attr,
-+		const char *buf, size_t count)
-+{
-+	struct ocxl_afu *afu = to_afu(device);
-+	struct ocxl_fn *fn = afu->fn;
-+	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
-+	int rc, val;
-+
-+	rc = sscanf(buf, "%i", &val);
-+	if ((rc != 1) || !(val == 1 || val == 0))
-+		return -EINVAL;
-+
-+	if (ocxl_config_set_reset_reload(pci_dev, val))
-+		return -ENODEV;
-+
-+	return count;
-+}
-+
- static struct device_attribute afu_attrs[] = {
- 	__ATTR_RO(global_mmio_size),
- 	__ATTR_RO(pp_mmio_size),
- 	__ATTR_RO(afu_version),
- 	__ATTR_RO(contexts),
-+	__ATTR_RW(reload_on_reset),
- };
- 
- static ssize_t global_mmio_read(struct file *filp, struct kobject *kobj,
-diff --git a/include/misc/ocxl-config.h b/include/misc/ocxl-config.h
-index 3526fa996a22..ccfd3b463517 100644
---- a/include/misc/ocxl-config.h
-+++ b/include/misc/ocxl-config.h
-@@ -41,5 +41,6 @@
- #define   OCXL_DVSEC_VENDOR_CFG_VERS            0x0C
- #define   OCXL_DVSEC_VENDOR_TLX_VERS            0x10
- #define   OCXL_DVSEC_VENDOR_DLX_VERS            0x20
-+#define   OCXL_DVSEC_VENDOR_RESET_RELOAD        0x38
- 
- #endif /* _OCXL_CONFIG_H_ */
+>  #ifdef CONFIG_FLAT_NODE_MEM_MAP
+>  #define pgdat_page_nr(pgdat, pagenr)	((pgdat)->node_mem_map + (pagenr))
+>  #else
+> -- 
+> 2.18.1
+
 -- 
-2.25.1
-
+Michal Hocko
+SUSE Labs
