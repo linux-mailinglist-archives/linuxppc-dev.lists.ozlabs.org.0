@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12FB18A6EB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:25:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jNP30GvGzDr3t
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:25:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9793118A6D7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:18:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jNF40WWgzDqQg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:18:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,16 +19,16 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jMh62j48zDr2h
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:53:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jMXq4GTwzDqxB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:47:07 +1100 (AEDT)
 Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jEfgZ-0006nB-PS; Wed, 18 Mar 2020 21:53:08 +0100
+ id 1jEfaR-0006Fi-0w; Wed, 18 Mar 2020 21:46:47 +0100
 Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
- by nanos.tec.linutronix.de (Postfix) with ESMTP id 5B0BB101161;
- Wed, 18 Mar 2020 21:53:05 +0100 (CET)
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 49D23101161;
+ Wed, 18 Mar 2020 21:46:37 +0100 (CET)
 Message-Id: <20200318204408.428468767@linutronix.de>
 User-Agent: quilt/0.65
 Date: Wed, 18 Mar 2020 21:43:12 +0100
