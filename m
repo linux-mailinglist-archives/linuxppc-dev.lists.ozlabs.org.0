@@ -2,83 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66833189C71
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 13:58:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED984189C99
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 14:09:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j9836CCYzDqRr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 23:58:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j9NC1X8NzDqJK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 00:08:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.74;
+ helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=WkqL39NI; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-74.mimecast.com
+ (us-smtp-delivery-74.mimecast.com [216.205.24.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48j91k6BLQzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 23:52:58 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02ICWnn4076829
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 08:52:56 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu931vphc-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 08:52:56 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Wed, 18 Mar 2020 12:52:53 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 18 Mar 2020 12:52:48 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02ICqlFH59768886
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Mar 2020 12:52:47 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1EC8552057;
- Wed, 18 Mar 2020 12:52:47 +0000 (GMT)
-Received: from [9.199.38.35] (unknown [9.199.38.35])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 91F215204E;
- Wed, 18 Mar 2020 12:52:35 +0000 (GMT)
-Subject: Re: [PATCH 00/15] powerpc/watchpoint: Preparation for more than one
- watchpoint
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <20200309085806.155823-1-ravi.bangoria@linux.ibm.com>
- <b7148b91-e3db-d48a-7294-5c18fc801933@c-s.fr>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Wed, 18 Mar 2020 18:22:28 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48j9Jg02y4zDqfq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 00:05:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1584536752;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rEc/Fi0HtCRksr3RR+jEtjuBFNtDmtlrQKs7EcBkpIE=;
+ b=WkqL39NIwL8GpG2BDRRUlKTwvK8Q0a65bgrE/+czi4l0eLWFykV6fMaxZ8OC/Zo8QPgU0T
+ yAf/9L0hVwCYEmlkYK0YL5b6vRiaKtYRJCr6MRXKUoegcegYLQdKbi2SgW0p5YKjRl4Aog
+ QW/aNlgHw9g/k1iOpQJMiNnzBuK9U3I=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-319-Fx28kn8nP7-AcMX5JfSHgA-1; Wed, 18 Mar 2020 09:05:50 -0400
+X-MC-Unique: Fx28kn8nP7-AcMX5JfSHgA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 61AF8107B7DD;
+ Wed, 18 Mar 2020 13:05:46 +0000 (UTC)
+Received: from localhost (ovpn-12-66.pek2.redhat.com [10.72.12.66])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 637AA67265;
+ Wed, 18 Mar 2020 13:05:20 +0000 (UTC)
+Date: Wed, 18 Mar 2020 21:05:17 +0800
+From: Baoquan He <bhe@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 0/8] mm/memory_hotplug: allow to specify a default
+ online_type
+Message-ID: <20200318130517.GC30899@MiWiFi-R3L-srv>
+References: <20200317104942.11178-1-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <b7148b91-e3db-d48a-7294-5c18fc801933@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20031812-0012-0000-0000-000003932FA3
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031812-0013-0000-0000-000021D0120A
-Message-Id: <429c04e9-7267-55a9-a6f9-1fe9b21ae033@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_05:2020-03-18,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003180061
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200317104942.11178-1-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,34 +71,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, mikey@neuling.org,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, peterz@infradead.org,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, fweisbec@gmail.com,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- mingo@kernel.org
+Cc: Yumei Huang <yuhuang@redhat.com>, linux-hyperv@vger.kernel.org,
+ Michal Hocko <mhocko@suse.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Wei Liu <wei.liu@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
+ Eduardo Habkost <ehabkost@redhat.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Wei Yang <richard.weiyang@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Milan Zamazal <mzamazal@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 3/16/20 8:35 PM, Christophe Leroy wrote:
+On 03/17/20 at 11:49am, David Hildenbrand wrote:
+> Distributions nowadays use udev rules ([1] [2]) to specify if and
+> how to online hotplugged memory. The rules seem to get more complex with
+> many special cases. Due to the various special cases,
+> CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE cannot be used. All memory hotplug
+> is handled via udev rules.
 > 
+> Everytime we hotplug memory, the udev rule will come to the same
+> conclusion. Especially Hyper-V (but also soon virtio-mem) add a lot of
+> memory in separate memory blocks and wait for memory to get onlined by user
+> space before continuing to add more memory blocks (to not add memory faster
+> than it is getting onlined). This of course slows down the whole memory
+> hotplug process.
 > 
-> Le 09/03/2020 à 09:57, Ravi Bangoria a écrit :
->> So far, powerpc Book3S code has been written with an assumption of only
->> one watchpoint. But future power architecture is introducing second
->> watchpoint register (DAWR). Even though this patchset does not enable
->> 2nd DAWR, it make the infrastructure ready so that enabling 2nd DAWR
->> should just be a matter of changing count.
-> 
-> Some book3s (e300 family for instance, I think G2 as well) already have a DABR2 in addition to DABR.
-> Will this series allow to use it as well ?
+> To make the job of distributions easier and to avoid udev rules that get
+> more and more complicated, let's extend the mechanism provided by
+> - /sys/devices/system/memory/auto_online_blocks
+> - "memhp_default_state=" on the kernel cmdline
+> to be able to specify also "online_movable" as well as "online_kernel"
 
-I wasn't aware of that. I'll take a look at their specs and check if they
-can piggyback on this series for 2nd DABR.
+This patch series looks good, thanks. Since Andrew has merged it to -mm again,
+I won't add my Reviewed-by to bother. 
 
-Thanks,
-Ravi
+Hi David, Vitaly
+
+There are several things unclear to me.
+
+So, these improved interfaces are used to alleviate the burden of the 
+existing udev rules, or try to replace it? As you know, we have been
+using udev rules to interact between kernel and user space on bare metal,
+and guests who want to hot add/remove.
+
+And also the OOM issue in hyperV when onlining pages after adding memory
+block. I am not a virt devel expert, could this happen on bare metal
+system?
+
+Thanks
+Baoquan
 
