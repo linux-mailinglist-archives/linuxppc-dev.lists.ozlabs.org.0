@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A386189A8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 12:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E90F189A8C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 12:25:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48j71B1k1yzDqsR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:22:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48j74C1TRkzDqs3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:24:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
