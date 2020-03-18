@@ -1,83 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A017118A443
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 21:53:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601F118A364
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 20:55:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jLPf0cW3zDr0R
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 06:55:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jMgf09yTzDr1c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 07:53:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jLMd0m4mzDqF6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 06:54:04 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02IJXENF025898; Wed, 18 Mar 2020 15:53:58 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yupjt6m4q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Mar 2020 15:53:57 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02IJZI8b005100;
- Wed, 18 Mar 2020 19:53:56 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01wdc.us.ibm.com with ESMTP id 2yrpw6jyjm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Mar 2020 19:53:56 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02IJrtfH38338984
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Mar 2020 19:53:55 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8938BE04F;
- Wed, 18 Mar 2020 19:53:55 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09626BE051;
- Wed, 18 Mar 2020 19:53:54 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 18 Mar 2020 19:53:54 +0000 (GMT)
-Subject: Re: [PATCH] tpm2: Export tpm2_get_cc_attrs_tbl for ibmvtpm driver as
- module
-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20200317130819.720318-1-stefanb@linux.vnet.ibm.com>
- <20200318194247.GC48177@linux.intel.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-Message-ID: <4b2949a9-b251-906d-d513-1b2ccef758a0@linux.ibm.com>
-Date: Wed, 18 Mar 2020 15:53:54 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20200318194247.GC48177@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_07:2020-03-18,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- impostorscore=0 phishscore=0 clxscore=1015 malwarescore=0 adultscore=0
- mlxlogscore=999 lowpriorityscore=0 spamscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003180086
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jMXn2DTtzDqx9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:47:05 +1100 (AEDT)
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
+ helo=nanos.tec.linutronix.de)
+ by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+ (Exim 4.80) (envelope-from <tglx@linutronix.de>)
+ id 1jEfaG-00065g-VF; Wed, 18 Mar 2020 21:46:37 +0100
+Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 0CF59101161;
+ Wed, 18 Mar 2020 21:46:35 +0100 (CET)
+Message-Id: <20200318204302.693307984@linutronix.de>
+User-Agent: quilt/0.65
+Date: Wed, 18 Mar 2020 21:43:02 +0100
+From: Thomas Gleixner <tglx@linutronix.de>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [patch V2 00/15] Lock ordering documentation and annotation for
+ lockdep
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
+ SHORTCIRCUIT=-0.0001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,37 +51,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- linux-next@vger.kernel.org, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Arnd Bergmann <arnd@arndb.de>, Logan Gunthorpe <logang@deltatee.com>,
+ "Paul E . McKenney" <paulmck@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
+ netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/18/20 3:42 PM, Jarkko Sakkinen wrote:
-> On Tue, Mar 17, 2020 at 09:08:19AM -0400, Stefan Berger wrote:
->> From: Stefan Berger <stefanb@linux.ibm.com>
->>
->> This patch fixes the following problem when the ibmvtpm driver
->> is built as a module:
->>
->> ERROR: modpost: "tpm2_get_cc_attrs_tbl" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
->> make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
->> make: *** [Makefile:1298: modules] Error 2
->>
->> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> Hi, wrong tag (we use "tpm:"), missing fixes tag and please cc stable.
-> Thanks.
+This is the second version of this work. The first one can be found here:
 
-I did not add the fixes tag because I do not know the final commit hash, 
-or is it the final commit hash once it is in linux-next? I doubt it with 
-all the merging that can occur.
+   https://lore.kernel.org/r/20200313174701.148376-1-bigeasy@linutronix.de
 
+Changes since V1:
 
-    Stefan
+  - Split the PCI/switchtec patch (picked up the fix from Logan) and
+    reworked the change log.
 
+  - Addressed Linus feedback vs. completions.
 
->
-> /Jarkko
+    Most of the places which had open coded completion variants have been
+    analysed and fixed up to use the regular interfaces.
 
+    The PS3 one got converted by Peter Zijlstra to rcu_wait().
+
+    Add explanation in the change log why swait actually fits the
+    completion semantics.
+
+  - Addressed Randys feedback on documentation
+
+Thanks,
+
+	tglx
 
