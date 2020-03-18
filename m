@@ -2,66 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA7D189EFC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 16:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD3B189F5F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 16:12:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jCzm37rnzDqlY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 02:06:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jD6y5vc1zDqyB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 02:12:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
+ helo=us-smtp-delivery-74.mimecast.com; envelope-from=vkuznets@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=KAEI0kAw; 
+ header.s=mimecast20190719 header.b=SdmhbB/e; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [216.205.24.74])
+ (us-smtp-delivery-74.mimecast.com [63.128.21.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jCdc38BJzDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 01:50:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jCrp702ZzDqll
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 02:00:26 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1584543040;
+ s=mimecast20190719; t=1584543622;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pg3T1YSkd/t+cEXO/Ncu3CZsj7y8ycoimX/LbjLT0SY=;
- b=KAEI0kAwVQ95hzTb+ABSyphQMQZKvE3RZMXtJ/iw9A7f1ZyhjK8SPFNzemdBoiJ7s3byeD
- HyvX4ShufC58CKymCVIEzSJZFfLQtj8/NoHdSDLJwygC/RYScBBm1G2vDlWRRGYq45CQHN
- +QxvfWVWqLkzJtuTl1Vumen8c/mlwAU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-357-Tzw0Wt77OHWjREzHnSG7Wg-1; Wed, 18 Mar 2020 10:50:37 -0400
-X-MC-Unique: Tzw0Wt77OHWjREzHnSG7Wg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3833F1005512;
- Wed, 18 Mar 2020 14:50:34 +0000 (UTC)
-Received: from localhost (ovpn-12-66.pek2.redhat.com [10.72.12.66])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3CF618F35B;
- Wed, 18 Mar 2020 14:50:30 +0000 (UTC)
-Date: Wed, 18 Mar 2020 22:50:26 +0800
-From: Baoquan He <bhe@redhat.com>
-To: David Hildenbrand <david@redhat.com>
+ bh=eGl81AXOETQ2vk6QwAuLbQxuIwytBmzR9QEu1doc/+g=;
+ b=SdmhbB/eaYT3jfHpGK+gATxl5tmSXiXxd0HoRrQyePgkwDns3ojRboNhFxtXCgpYz1h2ed
+ aLQQZ9S7F5YwbRSGzBSM4kXGc6CdXEjh0FAjhKBNctqASjLPxdCch6JgFZQETHXYBfu5fJ
+ QBUTIsZ1rjlGd1nbnPw4RwuQcJkVQfg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-366-xyCtUB_PMSO-ezDabvmaqQ-1; Wed, 18 Mar 2020 11:00:20 -0400
+X-MC-Unique: xyCtUB_PMSO-ezDabvmaqQ-1
+Received: by mail-wr1-f69.google.com with SMTP id o9so12488039wrw.14
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 08:00:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=vM5m3AgHzQ8TLHWUI0zWYeLWIk49n7q4tlPXYDa1gEQ=;
+ b=VE/ZHjwJgk7dzj56K7CmZRu1i42ObFzWrjvqF9rmGord5xtkWyW2Yhmab5P+hcFJc6
+ bpyGR3YDaS0ibKYukJM2LChHW7HYopyfWTptzjUDYpJFicwE6zG0a4vA/2/Ta/i8TX6C
+ GcZSSoeMNQPlbPQktkYDAas/MaJHxbpm9L7PZ5qwGt/431riJgILzKxEThX0v4mgKmYK
+ u/FACtpnjd2fHr5w/GXUEDpMYNfLVN2OWWcSVVZugyHNLcOaSpIOEUP2cFnNpLN8+FFz
+ uQtihev50xLjzJpB0Q8Xi9U8QnGtayJspODA3O6HKxqg5Zfjh3L5XoyDwaRZeYXyPxW9
+ l9tQ==
+X-Gm-Message-State: ANhLgQ3ATBHMKiHYaq5+sXEC4d3vW3NH9Rp45TVPrXfsb+1gfJtpM+tx
+ o1jLJ8COGtMhVfwSWHy12sAud4jPMYDptX8pr5vPThIY93WeGLRPHtkoUOv1mtjVQxqijiirQPe
+ KAO0ZI4RGCp3vnXjqPwucD7GwlA==
+X-Received: by 2002:a5d:474c:: with SMTP id o12mr6171291wrs.156.1584543618829; 
+ Wed, 18 Mar 2020 08:00:18 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vv+zT1QJmX75ZvxUY39VsKhPCv6bUGTeJatv+Ce8GRjcg/v0Lus2RekaAdHVMZwveqCGhi86Q==
+X-Received: by 2002:a5d:474c:: with SMTP id o12mr6171235wrs.156.1584543618411; 
+ Wed, 18 Mar 2020 08:00:18 -0700 (PDT)
+Received: from vitty.brq.redhat.com (g-server-2.ign.cz. [91.219.240.2])
+ by smtp.gmail.com with ESMTPSA id x13sm4631033wmj.5.2020.03.18.08.00.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Mar 2020 08:00:17 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Baoquan He <bhe@redhat.com>
 Subject: Re: [PATCH v2 0/8] mm/memory_hotplug: allow to specify a default
  online_type
-Message-ID: <20200318145026.GF30899@MiWiFi-R3L-srv>
+In-Reply-To: <20200318144119.GD30899@MiWiFi-R3L-srv>
 References: <20200317104942.11178-1-david@redhat.com>
- <20200318130517.GC30899@MiWiFi-R3L-srv>
- <67a054f6-df07-e4fb-dd4b-e503cb767276@redhat.com>
+ <20200318130517.GC30899@MiWiFi-R3L-srv> <87d0993gto.fsf@vitty.brq.redhat.com>
+ <20200318144119.GD30899@MiWiFi-R3L-srv>
+Date: Wed, 18 Mar 2020 16:00:15 +0100
+Message-ID: <874kul3dz4.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67a054f6-df07-e4fb-dd4b-e503cb767276@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,75 +91,34 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Yumei Huang <yuhuang@redhat.com>, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
  Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
  Paul Mackerras <paulus@samba.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
  Wei Liu <wei.liu@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
- Eduardo Habkost <ehabkost@redhat.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Wei Yang <richard.weiyang@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Milan Zamazal <mzamazal@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+ "Rafael J. Wysocki" <rafael@kernel.org>, Eduardo Habkost <ehabkost@redhat.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Yang <richard.weiyang@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Milan Zamazal <mzamazal@redhat.com>,
+ linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Igor Mammedov <imammedo@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/18/20 at 02:50pm, David Hildenbrand wrote:
-> On 18.03.20 14:05, Baoquan He wrote:
-> > On 03/17/20 at 11:49am, David Hildenbrand wrote:
-> >> Distributions nowadays use udev rules ([1] [2]) to specify if and
-> >> how to online hotplugged memory. The rules seem to get more complex with
-> >> many special cases. Due to the various special cases,
-> >> CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE cannot be used. All memory hotplug
-> >> is handled via udev rules.
-> >>
-> >> Everytime we hotplug memory, the udev rule will come to the same
-> >> conclusion. Especially Hyper-V (but also soon virtio-mem) add a lot of
-> >> memory in separate memory blocks and wait for memory to get onlined by user
-> >> space before continuing to add more memory blocks (to not add memory faster
-> >> than it is getting onlined). This of course slows down the whole memory
-> >> hotplug process.
-> >>
-> >> To make the job of distributions easier and to avoid udev rules that get
-> >> more and more complicated, let's extend the mechanism provided by
-> >> - /sys/devices/system/memory/auto_online_blocks
-> >> - "memhp_default_state=" on the kernel cmdline
-> >> to be able to specify also "online_movable" as well as "online_kernel"
-> > 
-> > This patch series looks good, thanks. Since Andrew has merged it to -mm again,
-> > I won't add my Reviewed-by to bother. 
-> > 
-> > Hi David, Vitaly
-> > 
-> > There are several things unclear to me.
-> > 
-> > So, these improved interfaces are used to alleviate the burden of the 
-> > existing udev rules, or try to replace it? As you know, we have been
-> 
-> At least in RHEL, my plan is to replace it / use a udev rules as a
-> fallback on older kernels (see the example scripts below). But other
+Baoquan He <bhe@redhat.com> writes:
 
-Ok, got it. Didn't notice the script and the systemd service are your
-part of plan, thought you are demonstrating the status. Thanks.
+> Is there a reason hyperV need boot with small memory, then enlarge it
+> with huge memory? Since it's a real case in hyperV, I guess there must
+> be reason, I am just curious.
+>
 
-> distribution can handle it as they want.
-> 
-> > using udev rules to interact between kernel and user space on bare metal,
-> > and guests who want to hot add/remove.>
-> > And also the OOM issue in hyperV when onlining pages after adding memory
-> > block. I am not a virt devel expert, could this happen on bare metal
-> > system?
-> 
-> Don't think it's relevant on bare metal. If you plug a big DIMM, all
-> memory blocks will be added first in one shot and then all memory blocks
-> will be onlined. So it doesn't matter "how fast" you online that memory.
-> 
-> In contrast, Hyper-V (and virtio-mem) add one (or a limited number of)
-> memory block at a time and wait for them to get onlined.
-> 
-> -- 
-> Thanks,
-> 
-> David / dhildenb
+It doesn't really *need* to but this can be utilized in e.g. 'hot
+standby' schemes I believe. Also, it may be enough if the administrator
+is just trying to e.g. double the size of RAM but the VM is already
+under memory pressure. I wouldn't say that these cases are common but
+afair bugs like 'I tried adding more memory to my VM and it just OOMed'
+were reported in the past.
+
+--=20
+Vitaly
 
