@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EA518A58D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:02:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jMtR1NmJzDqNt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:02:23 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1B218A692
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Mar 2020 22:09:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jN2Y3WNRzDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:09:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,22 +19,22 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jMXn5qQrzDqys
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:47:05 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jMXp5cSZzDqyq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 07:47:06 +1100 (AEDT)
 Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jEfaJ-000666-4B; Wed, 18 Mar 2020 21:46:39 +0100
+ id 1jEfaO-0006CC-Ol; Wed, 18 Mar 2020 21:46:45 +0100
 Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
- by nanos.tec.linutronix.de (Postfix) with ESMTP id E74691040C9;
- Wed, 18 Mar 2020 21:46:35 +0100 (CET)
-Message-Id: <20200318204407.793899611@linutronix.de>
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 2A8F31040CB;
+ Wed, 18 Mar 2020 21:46:36 +0100 (CET)
+Message-Id: <20200318204407.901266791@linutronix.de>
 User-Agent: quilt/0.65
-Date: Wed, 18 Mar 2020 21:43:06 +0100
+Date: Wed, 18 Mar 2020 21:43:07 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V2 04/15] orinoco_usb: Use the regular completion interfaces
+Subject: [patch V2 05/15] acpi: Remove header dependency
 References: <20200318204302.693307984@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -70,92 +70,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thomas Gleixner <tglx@linutronix.de>
+In order to avoid future header hell, remove the inclusion of
+proc_fs.h from acpi_bus.h. All it needs is a forward declaration of a
+struct.
 
-The completion usage in this driver is interesting:
-
-  - it uses a magic complete function which according to the comment was
-    implemented by invoking complete() four times in a row because
-    complete_all() was not exported at that time.
-
-  - it uses an open coded wait/poll which checks completion:done. Only one wait
-    side (device removal) uses the regular wait_for_completion() interface.
-
-The rationale behind this is to prevent that wait_for_completion() consumes
-completion::done which would prevent that all waiters are woken. This is not
-necessary with complete_all() as that sets completion::done to UINT_MAX which
-is left unmodified by the woken waiters.
-
-Replace the magic complete function with complete_all() and convert the
-open coded wait/poll to regular completion interfaces.
-
-This changes the wait to exclusive wait mode. But that does not make any
-difference because the wakers use complete_all() which ignores the
-exclusive mode.
-
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
 ---
-V2: New patch to avoid conversion to swait functions later.
----
- drivers/net/wireless/intersil/orinoco/orinoco_usb.c |   21 ++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ drivers/platform/x86/dell-smo8800.c                      |    1 +
+ drivers/platform/x86/wmi.c                               |    1 +
+ drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c |    1 +
+ include/acpi/acpi_bus.h                                  |    2 +-
+ 4 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-+++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-@@ -365,17 +365,6 @@ static struct request_context *ezusb_all
- 	return ctx;
- }
+--- a/drivers/platform/x86/dell-smo8800.c
++++ b/drivers/platform/x86/dell-smo8800.c
+@@ -16,6 +16,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/miscdevice.h>
+ #include <linux/uaccess.h>
++#include <linux/fs.h>
  
--
--/* Hopefully the real complete_all will soon be exported, in the mean
-- * while this should work. */
--static inline void ezusb_complete_all(struct completion *comp)
--{
--	complete(comp);
--	complete(comp);
--	complete(comp);
--	complete(comp);
--}
--
- static void ezusb_ctx_complete(struct request_context *ctx)
- {
- 	struct ezusb_priv *upriv = ctx->upriv;
-@@ -409,7 +398,7 @@ static void ezusb_ctx_complete(struct re
+ struct smo8800_device {
+ 	u32 irq;                     /* acpi device irq */
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -29,6 +29,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/uuid.h>
+ #include <linux/wmi.h>
++#include <linux/fs.h>
+ #include <uapi/linux/wmi.h>
  
- 			netif_wake_queue(dev);
- 		}
--		ezusb_complete_all(&ctx->done);
-+		complete_all(&ctx->done);
- 		ezusb_request_context_put(ctx);
- 		break;
+ ACPI_MODULE_NAME("wmi");
+--- a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
++++ b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
+@@ -19,6 +19,7 @@
+ #include <linux/acpi.h>
+ #include <linux/uaccess.h>
+ #include <linux/miscdevice.h>
++#include <linux/fs.h>
+ #include "acpi_thermal_rel.h"
  
-@@ -419,7 +408,7 @@ static void ezusb_ctx_complete(struct re
- 			/* This is normal, as all request contexts get flushed
- 			 * when the device is disconnected */
- 			err("Called, CTX not terminating, but device gone");
--			ezusb_complete_all(&ctx->done);
-+			complete_all(&ctx->done);
- 			ezusb_request_context_put(ctx);
- 			break;
- 		}
-@@ -690,11 +679,11 @@ static void ezusb_req_ctx_wait(struct ez
- 			 * get the chance to run themselves. So we make sure
- 			 * that we don't sleep for ever */
- 			int msecs = DEF_TIMEOUT * (1000 / HZ);
--			while (!ctx->done.done && msecs--)
-+
-+			while (!try_wait_for_completion(&ctx->done) && msecs--)
- 				udelay(1000);
- 		} else {
--			wait_event_interruptible(ctx->done.wait,
--						 ctx->done.done);
-+			wait_for_completion(&ctx->done);
- 		}
- 		break;
- 	default:
+ static acpi_handle acpi_thermal_rel_handle;
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -80,7 +80,7 @@ bool acpi_dev_present(const char *hid, c
+ 
+ #ifdef CONFIG_ACPI
+ 
+-#include <linux/proc_fs.h>
++struct proc_dir_entry;
+ 
+ #define ACPI_BUS_FILE_ROOT	"acpi"
+ extern struct proc_dir_entry *acpi_root_dir;
 
