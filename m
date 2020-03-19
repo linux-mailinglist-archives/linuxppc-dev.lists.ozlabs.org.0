@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BD018A9D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 01:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E75A18A9DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 01:35:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jSZ322SqzDr7J
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 11:33:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jScH2QLVzDq6J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 11:35:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jSXS35Z6zDr2j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 11:32:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=joel@joelfernandes.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=FHDf+uNy; 
+ header.from=joelfernandes.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org
+ header.a=rsa-sha256 header.s=google header.b=vKjz15ir; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48jSXQ3Wplz9sPk;
- Thu, 19 Mar 2020 11:32:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584577928;
- bh=p3yUK94n4o5XB56udaZYSN32CZNrZihzKes8EAjuyqs=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=FHDf+uNyKd+uHmaJKbOcCweS5THEDDnXJ7upesQDGiasynhR/m433VKbxgAiT59mS
- 46z29WS4PqaOs0b/u9Zn8qG8KsRrVlYsFOaOWpwWVm4j9ex61w2MQswBxQNDxn/XKL
- KXzT4wSFYA/Z6ZIuP/QiIs3kpZmu+vZqLjFxsSjw9iriFC1Kpn26giV+kH32qr9Rc7
- kmIV4DoLMhHV9vy/y3q4bxhlKrgAf+kbjxFqzJ5kbt/EFECrC7t5uPD1cQewh0D7qh
- zSxXnRXAD9d+TMVGk61Dqz7E9xTD8GQXaDQHaNPD0T+Z45ofqTJYna1q8WA4NEXqIB
- Ts80jBORlXaHA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 1/4] mm: Check for node_online in node_present_pages
-In-Reply-To: <2d7c55ed-0f67-bd47-e478-9726734abcc9@suse.cz>
-References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
- <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
- <20200318100256.GH21362@dhcp22.suse.cz>
- <2d7c55ed-0f67-bd47-e478-9726734abcc9@suse.cz>
-Date: Thu, 19 Mar 2020 11:32:07 +1100
-Message-ID: <87tv2ldw1k.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jSZb4XFMzDq6J
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 11:33:56 +1100 (AEDT)
+Received: by mail-qt1-x843.google.com with SMTP id g16so365863qtp.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Mar 2020 17:33:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=joelfernandes.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=cHl5FEDU/in/tKhyh8KADSkZ8t44HVVU6qSIiQF7HDk=;
+ b=vKjz15irrUHQOxGKx3YJZSYaREZiLBQ5dkdKASVNi/DUnapYI1oeMp9PSbchikzKPl
+ RL8eE9BxcoQ9gT2Z+96oGA/M+zvf4M7Ww0jlnMdeOCV7wPsoaRRDYZ+t1YRHJBhYvxmw
+ JQHaOq18/lt39V3Rogoc35Lu1FpkxEJUwdFM4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=cHl5FEDU/in/tKhyh8KADSkZ8t44HVVU6qSIiQF7HDk=;
+ b=RV1n657EOWH7vqsz75iA9XOkWtAvCvoVIL0Wmn2obGVpiMEQU1IY1/5DP0eOFUqFWI
+ oCeNjs5f3TWg8Omspi3MD8076xzYjdV+imUyZwW3Xw47vsmIDNiBEKcJSj5kB0PKvx+A
+ 5599B6NwqoTvgg3jM6cgWf1xN2bfGm3/zEtC6U0NS6i4pnKqJps19ed6kQBiYAuEp36S
+ ubycG2Xgqcu28SceLq//a70HRpAOkpH+66WgfJLLfzT4z0bwtksQBzGZwDJ6TIT5u6o0
+ WtST4yhy6jMNI67mrfaUvNXWQSplg7iEjsEXIoiyzSiIvtPoGDzUlRX8NTMptl3tYX2U
+ JnfQ==
+X-Gm-Message-State: ANhLgQ0e6tKPEtH0194sSTfqkRkTOoMCUldPylfD8Gezlo0uyXIVbJ/p
+ wGcHEWie56lnc4g4a/uMsZymhQ==
+X-Google-Smtp-Source: ADFU+vte9vg5yrKnsJYwQUFLJMp35Yp0oNpQIim2wyXmoa5rkeGpiqYzRFosPkhMiCPa11iAMkqA+g==
+X-Received: by 2002:ac8:1762:: with SMTP id u31mr389327qtk.359.1584578032733; 
+ Wed, 18 Mar 2020 17:33:52 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+ by smtp.gmail.com with ESMTPSA id f13sm456312qkm.19.2020.03.18.17.33.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Mar 2020 17:33:52 -0700 (PDT)
+Date: Wed, 18 Mar 2020 20:33:51 -0400
+From: Joel Fernandes <joel@joelfernandes.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V2 11/15] completion: Use simple wait queues
+Message-ID: <20200319003351.GA211584@google.com>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.521507446@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318204408.521507446@linutronix.de>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,152 +79,250 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Nathan Lynch <nathanl@linux.ibm.com>, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
- Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christopher Lameter <cl@linux.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Oleg Nesterov <oleg@redhat.com>, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ "Paul E . McKenney" <paulmck@kernel.org>,
+ Logan Gunthorpe <logang@deltatee.com>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vlastimil Babka <vbabka@suse.cz> writes:
-> On 3/18/20 11:02 AM, Michal Hocko wrote:
->> On Wed 18-03-20 12:58:07, Srikar Dronamraju wrote:
->>> Calling a kmalloc_node on a possible node which is not yet onlined can
->>> lead to panic. Currently node_present_pages() doesn't verify the node is
->>> online before accessing the pgdat for the node. However pgdat struct may
->>> not be available resulting in a crash.
->>> 
->>> NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
->>> LR [c0000000003d5b94] __slab_alloc+0x34/0x60
->>> Call Trace:
->>> [c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
->>> [c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
->>> [c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
->>> [c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
->>> [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
->>> [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
->>> [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
->>> [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
->>> [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
->>> [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
->>> [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
->>> [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
->>> 
->>> Fix this by verifying the node is online before accessing the pgdat
->>> structure. Fix the same for node_spanned_pages() too.
->>> 
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: linux-mm@kvack.org
->>> Cc: Mel Gorman <mgorman@suse.de>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>
->>> Cc: Michal Hocko <mhocko@kernel.org>
->>> Cc: Christopher Lameter <cl@linux.com>
->>> Cc: linuxppc-dev@lists.ozlabs.org
->>> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
->>> Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
->>> Cc: Vlastimil Babka <vbabka@suse.cz>
->>> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
->>> Cc: Bharata B Rao <bharata@linux.ibm.com>
->>> Cc: Nathan Lynch <nathanl@linux.ibm.com>
->>> 
->>> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
->>> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
->>> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
->>> ---
->>>  include/linux/mmzone.h | 6 ++++--
->>>  1 file changed, 4 insertions(+), 2 deletions(-)
->>> 
->>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->>> index f3f264826423..88078a3b95e5 100644
->>> --- a/include/linux/mmzone.h
->>> +++ b/include/linux/mmzone.h
->>> @@ -756,8 +756,10 @@ typedef struct pglist_data {
->>>  	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
->>>  } pg_data_t;
->>>  
->>> -#define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
->>> -#define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
->>> +#define node_present_pages(nid)		\
->>> +	(node_online(nid) ? NODE_DATA(nid)->node_present_pages : 0)
->>> +#define node_spanned_pages(nid)		\
->>> +	(node_online(nid) ? NODE_DATA(nid)->node_spanned_pages : 0)
->> 
->> I believe this is a wrong approach. We really do not want to special
->> case all the places which require NODE_DATA. Can we please go and
->> allocate pgdat for all possible nodes?
->> 
->> The current state of memory less hacks subtle bugs poping up here and
->> there just prove that we should have done that from the very begining
->> IMHO.
->
-> Yes. So here's an alternative proposal for fixing the current situation in SLUB,
-> before the long-term solution of having all possible nodes provide valid pgdat
-> with zonelists:
->
-> - fix SLUB with the hunk at the end of this mail - the point is to use NUMA_NO_NODE
->   as fallback instead of node_to_mem_node()
-> - this removes all uses of node_to_mem_node (luckily it's just SLUB),
->   kill it completely instead of trying to fix it up
-> - patch 1/4 is not needed with the fix
-> - perhaps many of your other patches are alss not needed 
-> - once we get the long-term solution, some of the !node_online() checks can be removed
+Hi Thomas,
 
-Seems like a nice solution to me :)
+On Wed, Mar 18, 2020 at 09:43:13PM +0100, Thomas Gleixner wrote:
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> completion uses a wait_queue_head_t to enqueue waiters.
+> 
+> wait_queue_head_t contains a spinlock_t to protect the list of waiters
+> which excludes it from being used in truly atomic context on a PREEMPT_RT
+> enabled kernel.
+> 
+> The spinlock in the wait queue head cannot be replaced by a raw_spinlock
+> because:
+> 
+>   - wait queues can have custom wakeup callbacks, which acquire other
+>     spinlock_t locks and have potentially long execution times
 
-> ----8<----
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 17dc00e33115..1d4f2d7a0080 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -1511,7 +1511,7 @@ static inline struct page *alloc_slab_page(struct kmem_cache *s,
->  	struct page *page;
->  	unsigned int order = oo_order(oo);
+Cool, makes sense.
+
+>   - wake_up() walks an unbounded number of list entries during the wake up
+>     and may wake an unbounded number of waiters.
+
+Just to clarify here, wake_up() will really wake up just 1 waiter if all the
+waiters on the queue are exclusive right? So in such scenario at least, the
+"unbounded number of waiters" would not be an issue if everything waiting was
+exclusive and waitqueue with wake_up() was used. Please correct me if I'm
+wrong about that though.
+
+So the main reasons to avoid waitqueue in favor of swait (as you mentioned)
+would be the sleep-while-atomic issue in truly atomic context on RT, and the
+fact that callbacks can take a long time.
+
+> 
+> For simplicity and performance reasons complete() should be usable on
+> PREEMPT_RT enabled kernels.
+> 
+> completions do not use custom wakeup callbacks and are usually single
+> waiter, except for a few corner cases.
+> 
+> Replace the wait queue in the completion with a simple wait queue (swait),
+> which uses a raw_spinlock_t for protecting the waiter list and therefore is
+> safe to use inside truly atomic regions on PREEMPT_RT.
+> 
+> There is no semantical or functional change:
+> 
+>   - completions use the exclusive wait mode which is what swait provides
+> 
+>   - complete() wakes one exclusive waiter
+> 
+>   - complete_all() wakes all waiters while holding the lock which protects
+>     the wait queue against newly incoming waiters. The conversion to swait
+>     preserves this behaviour.
+> 
+> complete_all() might cause unbound latencies with a large number of waiters
+> being woken at once, but most complete_all() usage sites are either in
+> testing or initialization code or have only a really small number of
+> concurrent waiters which for now does not cause a latency problem. Keep it
+> simple for now.
+> 
+> The fixup of the warning check in the USB gadget driver is just a straight
+> forward conversion of the lockless waiter check from one waitqueue type to
+> the other.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+
+thanks,
+
+ - Joel
+
+
+> ---
+> V2: Split out the orinoco and usb gadget parts and amended change log
+> ---
+>  drivers/usb/gadget/function/f_fs.c |    2 +-
+>  include/linux/completion.h         |    8 ++++----
+>  kernel/sched/completion.c          |   36 +++++++++++++++++++-----------------
+>  3 files changed, 24 insertions(+), 22 deletions(-)
+> 
+> --- a/drivers/usb/gadget/function/f_fs.c
+> +++ b/drivers/usb/gadget/function/f_fs.c
+> @@ -1703,7 +1703,7 @@ static void ffs_data_put(struct ffs_data
+>  		pr_info("%s(): freeing\n", __func__);
+>  		ffs_data_clear(ffs);
+>  		BUG_ON(waitqueue_active(&ffs->ev.waitq) ||
+> -		       waitqueue_active(&ffs->ep0req_completion.wait) ||
+> +		       swait_active(&ffs->ep0req_completion.wait) ||
+>  		       waitqueue_active(&ffs->wait));
+>  		destroy_workqueue(ffs->io_completion_wq);
+>  		kfree(ffs->dev_name);
+> --- a/include/linux/completion.h
+> +++ b/include/linux/completion.h
+> @@ -9,7 +9,7 @@
+>   * See kernel/sched/completion.c for details.
+>   */
 >  
-> -	if (node == NUMA_NO_NODE)
-> +	if (node == NUMA_NO_NODE || !node_online(node))
-
-Why don't we need the node_present_pages() check here?
-
->  		page = alloc_pages(flags, order);
->  	else
->  		page = __alloc_pages_node(node, flags, order);
-> @@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
+> -#include <linux/wait.h>
+> +#include <linux/swait.h>
 >  
->  	if (node == NUMA_NO_NODE)
->  		searchnode = numa_mem_id();
-> -	else if (!node_present_pages(node))
-> -		searchnode = node_to_mem_node(node);
+>  /*
+>   * struct completion - structure used to maintain state for a "completion"
+> @@ -25,7 +25,7 @@
+>   */
+>  struct completion {
+>  	unsigned int done;
+> -	wait_queue_head_t wait;
+> +	struct swait_queue_head wait;
+>  };
 >  
->  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
->  	if (object || node != NUMA_NO_NODE)
-> @@ -2568,12 +2566,15 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
->  redo:
+>  #define init_completion_map(x, m) __init_completion(x)
+> @@ -34,7 +34,7 @@ static inline void complete_acquire(stru
+>  static inline void complete_release(struct completion *x) {}
 >  
->  	if (unlikely(!node_match(page, node))) {
-> -		int searchnode = node;
-> -
-> -		if (node != NUMA_NO_NODE && !node_present_pages(node))
-> -			searchnode = node_to_mem_node(node);
-> -
-> -		if (unlikely(!node_match(page, searchnode))) {
-> +		/*
-> +		 * node_match() false implies node != NUMA_NO_NODE
-> +		 * but if the node is not online and has no pages, just
-                                                 ^
-                                                 this should be 'or' ?
-
-> +		 * ignore the constraint
-> +		 */
-> +		if ((!node_online(node) || !node_present_pages(node))) {
-> +			node = NUMA_NO_NODE;
-> +			goto redo;
-> +		} else {
->  			stat(s, ALLOC_NODE_MISMATCH);
->  			deactivate_slab(s, page, c->freelist, c);
->  			goto new_slab;
-
-cheers
+>  #define COMPLETION_INITIALIZER(work) \
+> -	{ 0, __WAIT_QUEUE_HEAD_INITIALIZER((work).wait) }
+> +	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait) }
+>  
+>  #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
+>  	(*({ init_completion_map(&(work), &(map)); &(work); }))
+> @@ -85,7 +85,7 @@ static inline void complete_release(stru
+>  static inline void __init_completion(struct completion *x)
+>  {
+>  	x->done = 0;
+> -	init_waitqueue_head(&x->wait);
+> +	init_swait_queue_head(&x->wait);
+>  }
+>  
+>  /**
+> --- a/kernel/sched/completion.c
+> +++ b/kernel/sched/completion.c
+> @@ -29,12 +29,12 @@ void complete(struct completion *x)
+>  {
+>  	unsigned long flags;
+>  
+> -	spin_lock_irqsave(&x->wait.lock, flags);
+> +	raw_spin_lock_irqsave(&x->wait.lock, flags);
+>  
+>  	if (x->done != UINT_MAX)
+>  		x->done++;
+> -	__wake_up_locked(&x->wait, TASK_NORMAL, 1);
+> -	spin_unlock_irqrestore(&x->wait.lock, flags);
+> +	swake_up_locked(&x->wait);
+> +	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
+>  }
+>  EXPORT_SYMBOL(complete);
+>  
+> @@ -58,10 +58,12 @@ void complete_all(struct completion *x)
+>  {
+>  	unsigned long flags;
+>  
+> -	spin_lock_irqsave(&x->wait.lock, flags);
+> +	WARN_ON(irqs_disabled());
+> +
+> +	raw_spin_lock_irqsave(&x->wait.lock, flags);
+>  	x->done = UINT_MAX;
+> -	__wake_up_locked(&x->wait, TASK_NORMAL, 0);
+> -	spin_unlock_irqrestore(&x->wait.lock, flags);
+> +	swake_up_all_locked(&x->wait);
+> +	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
+>  }
+>  EXPORT_SYMBOL(complete_all);
+>  
+> @@ -70,20 +72,20 @@ do_wait_for_common(struct completion *x,
+>  		   long (*action)(long), long timeout, int state)
+>  {
+>  	if (!x->done) {
+> -		DECLARE_WAITQUEUE(wait, current);
+> +		DECLARE_SWAITQUEUE(wait);
+>  
+> -		__add_wait_queue_entry_tail_exclusive(&x->wait, &wait);
+>  		do {
+>  			if (signal_pending_state(state, current)) {
+>  				timeout = -ERESTARTSYS;
+>  				break;
+>  			}
+> +			__prepare_to_swait(&x->wait, &wait);
+>  			__set_current_state(state);
+> -			spin_unlock_irq(&x->wait.lock);
+> +			raw_spin_unlock_irq(&x->wait.lock);
+>  			timeout = action(timeout);
+> -			spin_lock_irq(&x->wait.lock);
+> +			raw_spin_lock_irq(&x->wait.lock);
+>  		} while (!x->done && timeout);
+> -		__remove_wait_queue(&x->wait, &wait);
+> +		__finish_swait(&x->wait, &wait);
+>  		if (!x->done)
+>  			return timeout;
+>  	}
+> @@ -100,9 +102,9 @@ static inline long __sched
+>  
+>  	complete_acquire(x);
+>  
+> -	spin_lock_irq(&x->wait.lock);
+> +	raw_spin_lock_irq(&x->wait.lock);
+>  	timeout = do_wait_for_common(x, action, timeout, state);
+> -	spin_unlock_irq(&x->wait.lock);
+> +	raw_spin_unlock_irq(&x->wait.lock);
+>  
+>  	complete_release(x);
+>  
+> @@ -291,12 +293,12 @@ bool try_wait_for_completion(struct comp
+>  	if (!READ_ONCE(x->done))
+>  		return false;
+>  
+> -	spin_lock_irqsave(&x->wait.lock, flags);
+> +	raw_spin_lock_irqsave(&x->wait.lock, flags);
+>  	if (!x->done)
+>  		ret = false;
+>  	else if (x->done != UINT_MAX)
+>  		x->done--;
+> -	spin_unlock_irqrestore(&x->wait.lock, flags);
+> +	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL(try_wait_for_completion);
+> @@ -322,8 +324,8 @@ bool completion_done(struct completion *
+>  	 * otherwise we can end up freeing the completion before complete()
+>  	 * is done referencing it.
+>  	 */
+> -	spin_lock_irqsave(&x->wait.lock, flags);
+> -	spin_unlock_irqrestore(&x->wait.lock, flags);
+> +	raw_spin_lock_irqsave(&x->wait.lock, flags);
+> +	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
+>  	return true;
+>  }
+>  EXPORT_SYMBOL(completion_done);
+> 
