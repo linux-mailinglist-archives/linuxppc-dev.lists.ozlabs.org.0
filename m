@@ -1,42 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966FA18B9AB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:45:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3107018B98D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:40:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jqLm3LzZzDqlF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:40:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jqSh1JBQzDqQF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:45:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jpYh17PjzDqnD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:04:24 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 959CDAE63;
- Thu, 19 Mar 2020 14:04:18 +0000 (UTC)
-Date: Thu, 19 Mar 2020 15:04:16 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v11 4/8] powerpc/perf: consolidate valid_user_sp
-Message-ID: <20200319140416.GK25468@kitsune.suse.cz>
-References: <cover.1584613649.git.msuchanek@suse.de>
- <1b612025371bb9f2bcce72c700c809ae29e57392.1584613649.git.msuchanek@suse.de>
- <CAHp75VcMkPeJ6exroipnxvf-7g-C8QbVm0bAnp=rk505_nxySw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jpbg0LSFzDrN2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:06:06 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02JE2jQQ070066
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 10:06:04 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8aef7td-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 10:06:01 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Thu, 19 Mar 2020 14:05:58 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 19 Mar 2020 14:05:53 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02JE5qKR55705840
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Mar 2020 14:05:52 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DE91A4053;
+ Thu, 19 Mar 2020 14:05:52 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DB2AFA4051;
+ Thu, 19 Mar 2020 14:05:49 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 19 Mar 2020 14:05:49 +0000 (GMT)
+Date: Thu, 19 Mar 2020 19:35:49 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [RFC 1/2] mm, slub: prevent kmalloc_node crashes and memory leaks
+References: <20200318144220.18083-1-vbabka@suse.cz>
+ <20200318160610.GD26049@in.ibm.com>
+ <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
+ <0F67B5AA-96DF-4977-BDC6-D72959B3F7EF@linux.vnet.ibm.com>
+ <b9b95895-ca6b-5ad2-1f67-45fee93d1e67@suse.cz>
+ <658E6AB8-581F-4722-BCBB-4BDD2245D265@linux.vnet.ibm.com>
+ <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAHp75VcMkPeJ6exroipnxvf-7g-C8QbVm0bAnp=rk505_nxySw@mail.gmail.com>
+In-Reply-To: <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
 User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20031914-0020-0000-0000-000003B72D93
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031914-0021-0000-0000-0000220F9BD3
+Message-Id: <20200319140549.GF4879@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-19_04:2020-03-19,
+ 2020-03-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 bulkscore=0 mlxlogscore=860
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003190063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,94 +95,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Jiri Olsa <jolsa@redhat.com>,
- Rob Herring <robh@kernel.org>, Michael Neuling <mikey@neuling.org>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- "linux-fsdevel @ vger . kernel . org --in-reply-to="
- <20200225173541.1549955-1-npiggin@gmail.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
- Jordan Niethe <jniethe5@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Eric Richter <erichte@linux.ibm.com>,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Michal Hocko <mhocko@kernel.org>, Pekka Enberg <penberg@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ David Rientjes <rientjes@google.com>, Christopher Lameter <cl@linux.com>,
+ bharata@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 19, 2020 at 03:35:03PM +0200, Andy Shevchenko wrote:
-> On Thu, Mar 19, 2020 at 1:54 PM Michal Suchanek <msuchanek@suse.de> wrote:
-> >
-> > Merge the 32bit and 64bit version.
-> >
-> > Halve the check constants on 32bit.
-> >
-> > Use STACK_TOP since it is defined.
-> >
-> > Passing is_64 is now redundant since is_32bit_task() is used to
-> > determine which callchain variant should be used. Use STACK_TOP and
-> > is_32bit_task() directly.
-> >
-> > This removes a page from the valid 32bit area on 64bit:
-> >  #define TASK_SIZE_USER32 (0x0000000100000000UL - (1 * PAGE_SIZE))
-> >  #define STACK_TOP_USER32 TASK_SIZE_USER32
-> 
-> ...
-> 
-> > +static inline int valid_user_sp(unsigned long sp)
-> > +{
-> > +       bool is_64 = !is_32bit_task();
-> > +
-> > +       if (!sp || (sp & (is_64 ? 7 : 3)) || sp > STACK_TOP - (is_64 ? 32 : 16))
-> > +               return 0;
-> > +       return 1;
-> > +}
-> 
-> Perhaps better to read
-> 
->   if (!sp)
->     return 0;
-> 
->   if (is_32bit_task()) {
->     if (sp & 0x03)
->       return 0;
->     if (sp > STACK_TOP - 16)
->       return 0;
->   } else {
->     ...
->   }
-> 
->   return 1;
-> 
-> Other possibility:
-> 
->   unsigned long align = is_32bit_task() ? 3 : 7;
->   unsigned long top = STACK_TOP - (is_32bit_task() ? 16 : 32);
-> 
->   return !(!sp || (sp & align) || sp > top);
-Sounds reasonale.
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-19 14:47:58]:
 
-Thanks
-
-Michal
+> ----8<----
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 17dc00e33115..7113b1f9cd77 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
 > 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+>  	if (node == NUMA_NO_NODE)
+>  		searchnode = numa_mem_id();
+> -	else if (!node_present_pages(node))
+> -		searchnode = node_to_mem_node(node);
+> 
+>  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+
+Are we okay with passing a node to get_partial_node with !NUMA_NO_NODE and
+!N_MEMORY including possible nodes?
+
+>  	if (object || node != NUMA_NO_NODE)
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
+
