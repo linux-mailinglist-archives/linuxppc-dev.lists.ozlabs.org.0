@@ -1,63 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966FA18B9AB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:45:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jqSh1JBQzDqQF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:45:08 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D3D18B9BD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:50:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jqZb5DBkzDrNw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:50:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jpbg0LSFzDrN2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:06:06 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02JE2jQQ070066
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 10:06:04 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8aef7td-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 10:06:01 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Thu, 19 Mar 2020 14:05:58 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 19 Mar 2020 14:05:53 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02JE5qKR55705840
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 14:05:52 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DE91A4053;
- Thu, 19 Mar 2020 14:05:52 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB2AFA4051;
- Thu, 19 Mar 2020 14:05:49 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu, 19 Mar 2020 14:05:49 +0000 (GMT)
-Date: Thu, 19 Mar 2020 19:35:49 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Vlastimil Babka <vbabka@suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jphf2rt3zDqvt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:10:25 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 9EE31ABF6;
+ Thu, 19 Mar 2020 14:10:21 +0000 (UTC)
 Subject: Re: [RFC 1/2] mm, slub: prevent kmalloc_node crashes and memory leaks
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 References: <20200318144220.18083-1-vbabka@suse.cz>
  <20200318160610.GD26049@in.ibm.com>
  <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
@@ -65,25 +33,17 @@ References: <20200318144220.18083-1-vbabka@suse.cz>
  <b9b95895-ca6b-5ad2-1f67-45fee93d1e67@suse.cz>
  <658E6AB8-581F-4722-BCBB-4BDD2245D265@linux.vnet.ibm.com>
  <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
+ <20200319140549.GF4879@linux.vnet.ibm.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <717aa572-73a9-65c0-4d6c-30f15d9d909a@suse.cz>
+Date: Thu, 19 Mar 2020 15:10:19 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 20031914-0020-0000-0000-000003B72D93
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031914-0021-0000-0000-0000220F9BD3
-Message-Id: <20200319140549.GF4879@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-19_04:2020-03-19,
- 2020-03-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1015 priorityscore=1501 spamscore=0
- malwarescore=0 impostorscore=0 suspectscore=0 bulkscore=0 mlxlogscore=860
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003190063
+In-Reply-To: <20200319140549.GF4879@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,7 +55,6 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
  Nathan Lynch <nathanl@linux.ibm.com>, Mel Gorman <mgorman@techsingularity.net>,
  Michal Hocko <mhocko@kernel.org>, Pekka Enberg <penberg@kernel.org>,
@@ -107,28 +66,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Vlastimil Babka <vbabka@suse.cz> [2020-03-19 14:47:58]:
-
-> ----8<----
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 17dc00e33115..7113b1f9cd77 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
+On 3/19/20 3:05 PM, Srikar Dronamraju wrote:
+> * Vlastimil Babka <vbabka@suse.cz> [2020-03-19 14:47:58]:
 > 
->  	if (node == NUMA_NO_NODE)
->  		searchnode = numa_mem_id();
-> -	else if (!node_present_pages(node))
-> -		searchnode = node_to_mem_node(node);
+>> ----8<----
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 17dc00e33115..7113b1f9cd77 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
+>> 
+>>  	if (node == NUMA_NO_NODE)
+>>  		searchnode = numa_mem_id();
+>> -	else if (!node_present_pages(node))
+>> -		searchnode = node_to_mem_node(node);
+>> 
+>>  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
 > 
->  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+> Are we okay with passing a node to get_partial_node with !NUMA_NO_NODE and
+> !N_MEMORY including possible nodes?
 
-Are we okay with passing a node to get_partial_node with !NUMA_NO_NODE and
-!N_MEMORY including possible nodes?
+No, but AFAICS, such node values are already handled in ___slab_alloc, and
+cannot reach get_partial(). If you see something I missed, please do tell.
 
->  	if (object || node != NUMA_NO_NODE)
-
--- 
-Thanks and Regards
-Srikar Dronamraju
+>>  	if (object || node != NUMA_NO_NODE)
+> 
 
