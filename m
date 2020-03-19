@@ -1,71 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B0E18ACDD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 07:38:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A620218ACDB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 07:37:06 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jcdW4n8MzDqxB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 17:37:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jcg45lvTzDr1V
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 17:38:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jcGD3NczzDr95
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 17:20:20 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02J62RQc147725; Thu, 19 Mar 2020 02:20:08 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jcGs3pwFzDr9w
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 17:20:52 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02J63jRB022604; Thu, 19 Mar 2020 02:20:42 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yu7acxukj-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8bsea10-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 02:20:08 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02J64we5155384;
- Thu, 19 Mar 2020 02:20:07 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yu7acxuk6-1
+ Thu, 19 Mar 2020 02:20:42 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02J63tVD023325;
+ Thu, 19 Mar 2020 02:20:42 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8bsea0c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 02:20:07 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02J6F0PA004235;
- Thu, 19 Mar 2020 06:20:07 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2yrpw6ywg5-1
+ Thu, 19 Mar 2020 02:20:42 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02J6F0cT022045;
+ Thu, 19 Mar 2020 06:20:40 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma01wdc.us.ibm.com with ESMTP id 2yrpw6pcav-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 06:20:07 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02J6K6WN14680832
+ Thu, 19 Mar 2020 06:20:40 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02J6Keux49086916
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 06:20:06 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29A00112071;
- Thu, 19 Mar 2020 06:20:06 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69B9B112072;
- Thu, 19 Mar 2020 06:20:05 +0000 (GMT)
+ Thu, 19 Mar 2020 06:20:40 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1ADBC13604F;
+ Thu, 19 Mar 2020 06:20:40 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82C62136053;
+ Thu, 19 Mar 2020 06:20:38 +0000 (GMT)
 Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 19 Mar 2020 06:20:05 +0000 (GMT)
-Subject: [PATCH v8 13/14] powerpc/vas: Display process stuck message
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Mar 2020 06:20:38 +0000 (GMT)
+Subject: [PATCH v8 14/14] powerpc/vas: Free send window in VAS instance
+ after credits returned
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au
 In-Reply-To: <1584598120.9256.15237.camel@hbabu-laptop>
 References: <1584598120.9256.15237.camel@hbabu-laptop>
 Content-Type: text/plain; charset="UTF-8"
-Date: Wed, 18 Mar 2020 23:19:42 -0700
-Message-ID: <1584598782.9256.15265.camel@hbabu-laptop>
+Date: Wed, 18 Mar 2020 23:20:15 -0700
+Message-ID: <1584598815.9256.15267.camel@hbabu-laptop>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
@@ -74,11 +76,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-18_10:2020-03-18,
  2020-03-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0
- suspectscore=1 clxscore=1015 adultscore=0 spamscore=0 impostorscore=0
- malwarescore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003190024
+ clxscore=1015 mlxscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=3 malwarescore=0 mlxlogscore=999 spamscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003190024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,80 +100,35 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Process can not close send window until all requests are processed.
-Means wait until window state is not busy and send credits are
-returned. Display debug messages in case taking longer to close the
-window.
+NX may be processing requests while trying to close window. Wait until
+all credits are returned and then free send window from VAS instance.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/vas-window.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/powerpc/platforms/powernv/vas-window.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index 20a2a8b..d5754a8 100644
+index d5754a8..a1d3fb1 100644
 --- a/arch/powerpc/platforms/powernv/vas-window.c
 +++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -1182,6 +1182,7 @@ static void poll_window_credits(struct vas_window *window)
- {
- 	u64 val;
- 	int creds, mode;
-+	int count = 0;
+@@ -1317,14 +1317,14 @@ int vas_win_close(struct vas_window *window)
  
- 	val = read_hvwc_reg(window, VREG(WINCTL));
- 	if (window->tx_win)
-@@ -1200,10 +1201,27 @@ static void poll_window_credits(struct vas_window *window)
- 		creds = GET_FIELD(VAS_LRX_WCRED, val);
- 	}
+ 	unmap_paste_region(window);
  
-+	/*
-+	 * Takes around few milliseconds to complete all pending requests
-+	 * and return credits.
-+	 * TODO: Scan fault FIFO and invalidate CRBs points to this window
-+	 *       and issue CRB Kill to stop all pending requests. Need only
-+	 *       if there is a bug in NX or fault handling in kernel.
-+	 */
- 	if (creds < window->wcreds_max) {
- 		val = 0;
- 		set_current_state(TASK_UNINTERRUPTIBLE);
- 		schedule_timeout(msecs_to_jiffies(10));
-+		count++;
-+		/*
-+		 * Process can not close send window until all credits are
-+		 * returned.
-+		 */
-+		if (!(count % 10000))
-+			pr_debug("VAS: pid %d stuck. Waiting for credits returned for Window(%d). creds %d, Retries %d\n",
-+				vas_window_pid(window), window->winid,
-+				creds, count);
+-	clear_vinst_win(window);
+-
+ 	poll_window_busy_state(window);
+ 
+ 	unpin_close_window(window);
+ 
+ 	poll_window_credits(window);
+ 
++	clear_vinst_win(window);
 +
- 		goto retry;
- 	}
- }
-@@ -1217,6 +1235,7 @@ static void poll_window_busy_state(struct vas_window *window)
- {
- 	int busy;
- 	u64 val;
-+	int count = 0;
+ 	poll_window_castout(window);
  
- retry:
- 	val = read_hvwc_reg(window, VREG(WIN_STATUS));
-@@ -1225,6 +1244,15 @@ static void poll_window_busy_state(struct vas_window *window)
- 		val = 0;
- 		set_current_state(TASK_UNINTERRUPTIBLE);
- 		schedule_timeout(msecs_to_jiffies(5));
-+		count++;
-+		/*
-+		 * Takes around few milliseconds to process all pending
-+		 * requests.
-+		 */
-+		if (!(count % 10000))
-+			pr_debug("VAS: pid %d stuck. Window (ID=%d) is in busy state. Retries %d\n",
-+				vas_window_pid(window), window->winid, count);
-+
- 		goto retry;
- 	}
- }
+ 	/* if send window, drop reference to matching receive window */
 -- 
 1.8.3.1
 
