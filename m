@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D861118C18A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 21:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAA518C18E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 21:40:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jzK968gkzDrN4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 07:39:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jzLr2C6dzDrQp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 07:40:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
- helo=mail-wm1-x341.google.com; envelope-from=pankaj.gupta.linux@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::343;
+ helo=mail-wm1-x343.google.com; envelope-from=pankaj.gupta.linux@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RJtNiJ3k; dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
+ header.s=20161025 header.b=Y4xc6fED; dkim-atps=neutral
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jssf6482zDr5J
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 03:33:24 +1100 (AEDT)
-Received: by mail-wm1-x341.google.com with SMTP id z12so3080063wmf.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 09:33:24 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jtHT5ZgDzDrPC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 03:52:18 +1100 (AEDT)
+Received: by mail-wm1-x343.google.com with SMTP id a9so104596wmj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 09:52:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=EV0H/xHTVbYqHl2SwE3LQu0p/ZfnWJaxt/btO6HNCKc=;
- b=RJtNiJ3k6sAQDNVAqFF3d2CVXcvwFgvzjPC0w+H5R7gWQps28vhYZy7GgZRM06MHya
- QQToYt3EjmXhucEHTTvjR2hIFJxawkijfrEt8iN8LtDMLt+j6AwONiJSxTULhlCNicK/
- +2o07B+kQGc/5U0zBOnKomsAAPEA1SyHhbaxhsqSEVcs2J5aIsAF/b3hnElTY5l/yVGY
- FW3tBOTVHWiCiVxbKsIH2UfwuUwtau3dd3Z0YMgmaG/L4gaSLfteA3UF0aZQWm1E4kin
- XVSYSvYkEtok8vrKTtSzm+rcUV6j7CmguoLOaJTsGftxMjOZcOw2ChsJlGdiHRtOWKFj
- C8UA==
+ :cc; bh=hB9EOmeEoQOPuImvB9jQhgdyqLRUd97IR5tYRMN/KRg=;
+ b=Y4xc6fEDR9ZHOybEP5BSWaD2bCPXt0bWNVHUYEZEoiO95Tr1osrH5Jg+ukA+i2z9Ui
+ 8736XBhtjQpD23VoNl2wnLTxw7vrkSpl4aRfQH9IlWPeTp5zvZ+U8x4yrhdcaNZXo5e4
+ 9Gq9vqwItg4qNpX2rl4QntOkZcN/mPIoowB3YasVy5lknqPdaWhmmIKjvHsbTW8leN3u
+ 95GD69hDivtRX2YaRauGxLAAMBOiLXlYhZYAptC84AAB3U+edwC07k7IGUDAU32IoeEA
+ rkttdRg5/vN0IIDtzGg9TNzJMsegxA7CBENS/LuzyaKZfMDg73to4nj9d6CtbP+kl/Tp
+ Z8JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=EV0H/xHTVbYqHl2SwE3LQu0p/ZfnWJaxt/btO6HNCKc=;
- b=evy3aOiiv2IXGaKY3t2QkNA0c7ktP+Ut9qa/IkJ2zwBK7uzkIlx5fWhGn3nflxqpfZ
- X0NlYRKJIgEDdrU+I5S5+t5iIBr++6S5Gj+kU9nEvttdblJxL2+2O4kKBTzlSTqUKC4B
- sd0onFM0f7sDVTGknHXStftmErPGVbVP8023v681Gd+wJDZdlKS6KAJNcYaeXkmW6di7
- iTz+ZmQjeW70T1+Ap6sPdNa3efBcPYGZ0KSSAFwCDvtJPmfzJ0OqqnsJyGxTchsd3vJH
- 0mlm8JHHsm5E8bNmk+WRHAC7vFMM+6dNgMLIxf04PWu6YPpTiLP9GeiIixK/4CA/Y4Ka
- Tapw==
-X-Gm-Message-State: ANhLgQ1OJ6z8teGWOl9aAPlyYGm7QvVA6PpM9TZel+wZPxIDD3+c83Ok
- vC1nRWe5aTGB2UHnOdYGpkY7aUtEDLF5YCxuZ9o=
-X-Google-Smtp-Source: ADFU+vumPc/wa4n9qWnBfWoVelrKk4kAGib5WSrNdiwqlrFqLF1BlylJKsfGJ5rFJXKaGKbYD3+R/QLpQgtoSmTw7E4=
-X-Received: by 2002:a1c:1fc7:: with SMTP id f190mr4567359wmf.2.1584635599696; 
- Thu, 19 Mar 2020 09:33:19 -0700 (PDT)
+ bh=hB9EOmeEoQOPuImvB9jQhgdyqLRUd97IR5tYRMN/KRg=;
+ b=K5zJ4daD9E0OKmBRibSXVYsasANlkmLXfMWcephPSrocqHaoR5fUM2XeMBb6qaTXJ1
+ Pm8zVw4whgfqwDVEGCO/PuQ6WqhZwOIvvLiVDLVnuy0gIBZmQP3LXlUYznnOs2xfhE80
+ /ZGtZgVG3Pr4JZp9uFW+tsbN55Jz1VgzRccub8I69sbEiaUXiouWvp/R9Y21iL0gS7hL
+ jU+FDwBTMCkiWIA71FWkqo39llW9A2bdH4N/DlaSxwbYP9wZXIOA0xBQ/4hlj3c6R9Zk
+ RUp5QAqhkYJq6Sfzl/B0HuYU1LxfdURLdFUYDg57976DG+O6H2A3H3tL3nTSUEDzMNBT
+ y8XQ==
+X-Gm-Message-State: ANhLgQ1G4c0PqYf9wVO2OU09uFMUtEaJdy9WXEXJNxIgG7WiYosoINLw
+ n/PTIC0qsRdw0VY+TdM/PtI0MYa6zoHv30pUtaU=
+X-Google-Smtp-Source: ADFU+vv1zSb3f06esRnDQl+NjMCVPD282wJZ/FHh2w2P8kdQDmilSBiF4CcKHzLjYAQ03eTB5GFF5fFsJ6f1/h7dKu8=
+X-Received: by 2002:a05:600c:2709:: with SMTP id
+ 9mr4778011wmm.30.1584636735093; 
+ Thu, 19 Mar 2020 09:52:15 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200319131221.14044-1-david@redhat.com>
- <20200319131221.14044-4-david@redhat.com>
-In-Reply-To: <20200319131221.14044-4-david@redhat.com>
+ <20200319131221.14044-7-david@redhat.com>
+In-Reply-To: <20200319131221.14044-7-david@redhat.com>
 From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Thu, 19 Mar 2020 17:33:08 +0100
-Message-ID: <CAM9Jb+i-idWyxCX1vPow3VPGBbqTQEAbzLio0vn1QLHrpGJSSg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/8] drivers/base/memory: store mapping between MMOP_*
- and string in an array
+Date: Thu, 19 Mar 2020 17:52:04 +0100
+Message-ID: <CAM9Jb+jaia-AxpvxsTOVxYg_S=xZy2UY5srARA2J2_DkXPgZ7g@mail.gmail.com>
+Subject: Re: [PATCH v3 6/8] mm/memory_hotplug: unexport memhp_auto_online
 To: David Hildenbrand <david@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Fri, 20 Mar 2020 07:34:17 +1100
@@ -77,20 +77,18 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
  Baoquan He <bhe@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+ linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+ linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Let's use a simple array which we can reuse soon. While at it, move the
-> string->mmop conversion out of the device hotplug lock.
+> All in-tree users except the mm-core are gone. Let's drop the export.
 >
 > Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 > Acked-by: Michal Hocko <mhocko@suse.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: Michal Hocko <mhocko@kernel.org>
 > Cc: Oscar Salvador <osalvador@suse.de>
@@ -99,83 +97,24 @@ Sender: "Linuxppc-dev"
 > Cc: Wei Yang <richard.weiyang@gmail.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->  drivers/base/memory.c | 38 +++++++++++++++++++++++---------------
->  1 file changed, 23 insertions(+), 15 deletions(-)
+>  mm/memory_hotplug.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index e7e77cafef80..8a7f29c0bf97 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -28,6 +28,24 @@
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index da6aab272c9b..e21a7d53ade5 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -71,7 +71,6 @@ bool memhp_auto_online;
+>  #else
+>  bool memhp_auto_online = true;
+>  #endif
+> -EXPORT_SYMBOL_GPL(memhp_auto_online);
 >
->  #define MEMORY_CLASS_NAME      "memory"
->
-> +static const char *const online_type_to_str[] = {
-> +       [MMOP_OFFLINE] = "offline",
-> +       [MMOP_ONLINE] = "online",
-> +       [MMOP_ONLINE_KERNEL] = "online_kernel",
-> +       [MMOP_ONLINE_MOVABLE] = "online_movable",
-> +};
-> +
-> +static int memhp_online_type_from_str(const char *str)
-> +{
-> +       int i;
-> +
-> +       for (i = 0; i < ARRAY_SIZE(online_type_to_str); i++) {
-> +               if (sysfs_streq(str, online_type_to_str[i]))
-> +                       return i;
-> +       }
-> +       return -EINVAL;
-> +}
-> +
->  #define to_memory_block(dev) container_of(dev, struct memory_block, dev)
->
->  static int sections_per_block;
-> @@ -236,26 +254,17 @@ static int memory_subsys_offline(struct device *dev)
->  static ssize_t state_store(struct device *dev, struct device_attribute *attr,
->                            const char *buf, size_t count)
+>  static int __init setup_memhp_default_state(char *str)
 >  {
-> +       const int online_type = memhp_online_type_from_str(buf);
->         struct memory_block *mem = to_memory_block(dev);
-> -       int ret, online_type;
-> +       int ret;
-> +
-> +       if (online_type < 0)
-> +               return -EINVAL;
->
->         ret = lock_device_hotplug_sysfs();
->         if (ret)
->                 return ret;
->
-> -       if (sysfs_streq(buf, "online_kernel"))
-> -               online_type = MMOP_ONLINE_KERNEL;
-> -       else if (sysfs_streq(buf, "online_movable"))
-> -               online_type = MMOP_ONLINE_MOVABLE;
-> -       else if (sysfs_streq(buf, "online"))
-> -               online_type = MMOP_ONLINE;
-> -       else if (sysfs_streq(buf, "offline"))
-> -               online_type = MMOP_OFFLINE;
-> -       else {
-> -               ret = -EINVAL;
-> -               goto err;
-> -       }
-> -
->         switch (online_type) {
->         case MMOP_ONLINE_KERNEL:
->         case MMOP_ONLINE_MOVABLE:
-> @@ -271,7 +280,6 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
->                 ret = -EINVAL; /* should never happen */
->         }
->
-> -err:
->         unlock_device_hotplug();
->
->         if (ret < 0)
 > --
-
-Nice cleanup patch.
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-
 > 2.24.1
+
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 >
 >
