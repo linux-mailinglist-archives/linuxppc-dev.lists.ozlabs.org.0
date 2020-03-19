@@ -1,50 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FAD18AA3C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 02:13:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEDA18AA3A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 02:12:10 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jTQb6z8wzDr6Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 12:12:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jTST5KfczDr6T
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 12:13:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jTNC1kxjzDr28
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 12:10:03 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jTQG39VYzDr6T
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 12:11:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Zb3sKzT6; 
+ header.a=rsa-sha256 header.s=201909 header.b=WMISpwrZ; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48jTNB4zmfz9sPR;
- Thu, 19 Mar 2020 12:10:02 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48jTQD552Wz9sPR;
+ Thu, 19 Mar 2020 12:11:48 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584580202;
- bh=dsAYUpBIHWyRqWv4FX0udbRGa8tLjAzSdzZd9Xm8pUc=;
+ s=201909; t=1584580310;
+ bh=AROPkr0/x0jWefgWRqLgxlAdYBv8MESLBGpi5+wUaXo=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Zb3sKzT6T9ViFk6GbzMBqYOtExyqc326gRnRRFeY93+ikmdpL/2w3BjoZYonb8xdB
- zNGeceQor22vgMsAqPzV2zcAEAQUhN/6BsBts7nvjXHmHscSS+eLB8ZFbBgwCe9amv
- NacobufLfRXgHz8hrby6XyLxQ3lsJUIsOARwMvDXgt85rL5f/2LK+yI42UsqXzRn41
- Fa8suzuIUejDuskRsHDvt9HYad1CfrU9dJvQ1JQGcMp1+eLS+4qK2FiqAG9Pf99xm+
- EahjJq64zjm9cSrJ5jwNLAy+G5YP9Kfy9U56PFB4b85CGiBQZxnicbvCaM3SjNcVen
- pnT8waua6xXjw==
+ b=WMISpwrZPOSM0yHSuuEl39W9IA/I/pv5gsNTwolryrkOkfcW2XMTSTh7CF/NAz4Ej
+ bjIioFimSMRNepG2BkV1869ABw3/A2KTFQj3noNbIwEJrTB4hup0WPw/m4VLc4CWCi
+ HIS1uD1zhl59j+K73k+ts8exMD0s19BDKK4CO3imPA20u60mMKLUcmobgSDaFtV/LW
+ W7nMkN+dnw+fuWEmBjW9t6LaHX+MuUU7lWDLFBPr+ypUWXw30o10pesSs91DitrH7U
+ lvroWPKUAu8C0K13083db0hnXEQTWTNF20cwvHgChtVTrEQScCiIwEEoP7q9ZBUqfe
+ AlcvvSGeFhnEQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Anton Blanchard <anton@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/vdso: Fix multiple issues with sys_call_table
-In-Reply-To: <20200306135705.7f80fcad@kryten.localdomain>
-References: <20200306135705.7f80fcad@kryten.localdomain>
-Date: Thu, 19 Mar 2020 12:10:03 +1100
-Message-ID: <87pnd9duac.fsf@mpe.ellerman.id.au>
+To: Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 1/4] mm: Check for node_online in node_present_pages
+In-Reply-To: <87tv2ldw1k.fsf@mpe.ellerman.id.au>
+References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
+ <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
+ <20200318100256.GH21362@dhcp22.suse.cz>
+ <2d7c55ed-0f67-bd47-e478-9726734abcc9@suse.cz>
+ <87tv2ldw1k.fsf@mpe.ellerman.id.au>
+Date: Thu, 19 Mar 2020 12:11:51 +1100
+Message-ID: <87mu8ddu7c.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,84 +62,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Bharata B Rao <bharata@linux.ibm.com>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anton Blanchard <anton@ozlabs.org> writes:
-> The VDSO exports a bitmap of valid syscalls. vdso_setup_syscall_map()
-> sets this up, but there are both little and big endian bugs. The issue
-> is with:
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Vlastimil Babka <vbabka@suse.cz> writes:
+>> On 3/18/20 11:02 AM, Michal Hocko wrote:
+>>> On Wed 18-03-20 12:58:07, Srikar Dronamraju wrote:
+>>>> Calling a kmalloc_node on a possible node which is not yet onlined can
+>>>> lead to panic. Currently node_present_pages() doesn't verify the node is
+>>>> online before accessing the pgdat for the node. However pgdat struct may
+>>>> not be available resulting in a crash.
+>>>> 
+>>>> NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
+>>>> LR [c0000000003d5b94] __slab_alloc+0x34/0x60
+>>>> Call Trace:
+>>>> [c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
+>>>> [c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
+>>>> [c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
+>>>> [c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
+>>>> [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
+>>>> [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
+>>>> [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
+>>>> [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
+>>>> [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
+>>>> [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
+>>>> [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
+>>>> [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
+>>>> 
+>>>> Fix this by verifying the node is online before accessing the pgdat
+>>>> structure. Fix the same for node_spanned_pages() too.
+>>>> 
+>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>> Cc: linux-mm@kvack.org
+>>>> Cc: Mel Gorman <mgorman@suse.de>
+>>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>>> Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>
+>>>> Cc: Michal Hocko <mhocko@kernel.org>
+>>>> Cc: Christopher Lameter <cl@linux.com>
+>>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>>> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+>>>> Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
+>>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>>> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+>>>> Cc: Bharata B Rao <bharata@linux.ibm.com>
+>>>> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+>>>> 
+>>>> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+>>>> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+>>>> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+>>>> ---
+>>>>  include/linux/mmzone.h | 6 ++++--
+>>>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>>> 
+>>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>>>> index f3f264826423..88078a3b95e5 100644
+>>>> --- a/include/linux/mmzone.h
+>>>> +++ b/include/linux/mmzone.h
+>>>> @@ -756,8 +756,10 @@ typedef struct pglist_data {
+>>>>  	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
+>>>>  } pg_data_t;
+>>>>  
+>>>> -#define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
+>>>> -#define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
+>>>> +#define node_present_pages(nid)		\
+>>>> +	(node_online(nid) ? NODE_DATA(nid)->node_present_pages : 0)
+>>>> +#define node_spanned_pages(nid)		\
+>>>> +	(node_online(nid) ? NODE_DATA(nid)->node_spanned_pages : 0)
+>>> 
+>>> I believe this is a wrong approach. We really do not want to special
+>>> case all the places which require NODE_DATA. Can we please go and
+>>> allocate pgdat for all possible nodes?
+>>> 
+>>> The current state of memory less hacks subtle bugs poping up here and
+>>> there just prove that we should have done that from the very begining
+>>> IMHO.
+>>
+>> Yes. So here's an alternative proposal for fixing the current situation in SLUB,
+>> before the long-term solution of having all possible nodes provide valid pgdat
+>> with zonelists:
+>>
+>> - fix SLUB with the hunk at the end of this mail - the point is to use NUMA_NO_NODE
+>>   as fallback instead of node_to_mem_node()
+>> - this removes all uses of node_to_mem_node (luckily it's just SLUB),
+>>   kill it completely instead of trying to fix it up
+>> - patch 1/4 is not needed with the fix
+>> - perhaps many of your other patches are alss not needed 
+>> - once we get the long-term solution, some of the !node_online() checks can be removed
 >
->        if (sys_call_table[i] != sys_ni_syscall)
+> Seems like a nice solution to me :)
 >
-> On little endian, instead of comparing pointers to the two functions,
-> we compare the first two instructions of each function. If a function
-> happens to have the same first two instructions as sys_ni_syscall, then
-> we have a spurious match and mark the instruction as not implemented.
-> Fix this by removing the inline declarations.
+>> ----8<----
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 17dc00e33115..1d4f2d7a0080 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -1511,7 +1511,7 @@ static inline struct page *alloc_slab_page(struct kmem_cache *s,
+>>  	struct page *page;
+>>  	unsigned int order = oo_order(oo);
+>>  
+>> -	if (node == NUMA_NO_NODE)
+>> +	if (node == NUMA_NO_NODE || !node_online(node))
 >
-> On big endian we have a further issue where sys_ni_syscall is a function
-> descriptor and sys_call_table[] holds pointers to the instruction text.
-> Fix this by using dereference_kernel_function_descriptor().
+> Why don't we need the node_present_pages() check here?
 >
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anton Blanchard <anton@ozlabs.org>
+>>  		page = alloc_pages(flags, order);
+>>  	else
+>>  		page = __alloc_pages_node(node, flags, order);
+>> @@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
+>>  
+>>  	if (node == NUMA_NO_NODE)
+>>  		searchnode = numa_mem_id();
+>> -	else if (!node_present_pages(node))
+>> -		searchnode = node_to_mem_node(node);
+>>  
+>>  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+>>  	if (object || node != NUMA_NO_NODE)
+>> @@ -2568,12 +2566,15 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>>  redo:
+>>  
+>>  	if (unlikely(!node_match(page, node))) {
+>> -		int searchnode = node;
+>> -
+>> -		if (node != NUMA_NO_NODE && !node_present_pages(node))
+>> -			searchnode = node_to_mem_node(node);
+>> -
+>> -		if (unlikely(!node_match(page, searchnode))) {
+>> +		/*
+>> +		 * node_match() false implies node != NUMA_NO_NODE
+>> +		 * but if the node is not online and has no pages, just
+>                                                  ^
+>                                                  this should be 'or' ?
 
-That's some pretty epic breakage.
-
-Is it even worth keeping, or should we just rip it out and declare that
-the syscall map is junk? Userspace can hardly rely on it given it's been
-this broken for so long.
-
-If not it would be really nice to have a selftest of this stuff so we
-can verify it works and not break it again in future.
+Sorry I see you've already fixed this in the version you posted.
 
 cheers
-
-> ---
-> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-> index b9a108411c0d..d186b729026e 100644
-> --- a/arch/powerpc/kernel/vdso.c
-> +++ b/arch/powerpc/kernel/vdso.c
-> @@ -17,6 +17,7 @@
->  #include <linux/elf.h>
->  #include <linux/security.h>
->  #include <linux/memblock.h>
-> +#include <linux/syscalls.h>
->  
->  #include <asm/pgtable.h>
->  #include <asm/processor.h>
-> @@ -30,6 +31,7 @@
->  #include <asm/vdso.h>
->  #include <asm/vdso_datapage.h>
->  #include <asm/setup.h>
-> +#include <asm/syscall.h>
->  
->  #undef DEBUG
->  
-> @@ -644,19 +646,16 @@ static __init int vdso_setup(void)
->  static void __init vdso_setup_syscall_map(void)
->  {
->  	unsigned int i;
-> -	extern unsigned long *sys_call_table;
-> -#ifdef CONFIG_PPC64
-> -	extern unsigned long *compat_sys_call_table;
-> -#endif
-> -	extern unsigned long sys_ni_syscall;
-> +	unsigned long ni_syscall;
->  
-> +	ni_syscall = (unsigned long)dereference_kernel_function_descriptor(sys_ni_syscall);
->  
->  	for (i = 0; i < NR_syscalls; i++) {
->  #ifdef CONFIG_PPC64
-> -		if (sys_call_table[i] != sys_ni_syscall)
-> +		if (sys_call_table[i] != ni_syscall)
->  			vdso_data->syscall_map_64[i >> 5] |=
->  				0x80000000UL >> (i & 0x1f);
-> -		if (compat_sys_call_table[i] != sys_ni_syscall)
-> +		if (compat_sys_call_table[i] != ni_syscall)
->  			vdso_data->syscall_map_32[i >> 5] |=
->  				0x80000000UL >> (i & 0x1f);
->  #else /* CONFIG_PPC64 */
