@@ -1,53 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17CA18BA62
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 16:07:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jqy85jsBzDrK2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 02:07:12 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A4618BAB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 16:11:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jr3N5xM0zDqhk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 02:11:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jq4K0t3PzDrDm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:27:27 +1100 (AEDT)
-IronPort-SDR: uQo9tqux6VO2w9gG6NoiCUEyWZCf061db/ULKUHLnJNi4AzYtRIgdYW9iBL7SM1c0rKK3RdKNQ
- 9OsobNG0wGkQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Mar 2020 07:27:19 -0700
-IronPort-SDR: EtchYp8B7uoiL7wXlFcN9kwhNz4PotBR5UDN4L88/9cjUnL/sX041L43u1+FsR1fQ8+fpnnp2x
- +Sf2pLhtxX4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,571,1574150400"; d="scan'208";a="245175060"
-Received: from awagner-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.249.86.227])
- by orsmga003.jf.intel.com with ESMTP; 19 Mar 2020 07:27:15 -0700
-Date: Thu, 19 Mar 2020 16:27:14 +0200
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH] tpm2: Export tpm2_get_cc_attrs_tbl for ibmvtpm driver as
- module
-Message-ID: <20200319142714.GB3703@linux.intel.com>
-References: <20200317130819.720318-1-stefanb@linux.vnet.ibm.com>
- <20200318194247.GC48177@linux.intel.com>
- <4b2949a9-b251-906d-d513-1b2ccef758a0@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jqVf63b3zDr6x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:46:50 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 0A894AC66;
+ Thu, 19 Mar 2020 14:46:44 +0000 (UTC)
+Date: Thu, 19 Mar 2020 15:46:42 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v11 4/8] powerpc/perf: consolidate valid_user_sp
+Message-ID: <20200319144642.GL25468@kitsune.suse.cz>
+References: <cover.1584613649.git.msuchanek@suse.de>
+ <1b612025371bb9f2bcce72c700c809ae29e57392.1584613649.git.msuchanek@suse.de>
+ <CAHp75VcMkPeJ6exroipnxvf-7g-C8QbVm0bAnp=rk505_nxySw@mail.gmail.com>
+ <8775f299-be1b-3457-c59d-e4f61d8223e5@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <4b2949a9-b251-906d-d513-1b2ccef758a0@linux.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8775f299-be1b-3457-c59d-e4f61d8223e5@c-s.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,33 +50,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp@linux.vnet.ibm.com, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Jiri Olsa <jolsa@redhat.com>,
+ Rob Herring <robh@kernel.org>, Michael Neuling <mikey@neuling.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ "linux-fsdevel @ vger . kernel . org --in-reply-to="
+ <20200225173541.1549955-1-npiggin@gmail.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+ Allison Randal <allison@lohutok.net>, Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Eric Richter <erichte@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
+ <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 18, 2020 at 03:53:54PM -0400, Stefan Berger wrote:
-> On 3/18/20 3:42 PM, Jarkko Sakkinen wrote:
-> > On Tue, Mar 17, 2020 at 09:08:19AM -0400, Stefan Berger wrote:
-> > > From: Stefan Berger <stefanb@linux.ibm.com>
-> > > 
-> > > This patch fixes the following problem when the ibmvtpm driver
-> > > is built as a module:
-> > > 
-> > > ERROR: modpost: "tpm2_get_cc_attrs_tbl" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
-> > > make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
-> > > make: *** [Makefile:1298: modules] Error 2
-> > > 
-> > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> > Hi, wrong tag (we use "tpm:"), missing fixes tag and please cc stable.
-> > Thanks.
+On Thu, Mar 19, 2020 at 03:16:03PM +0100, Christophe Leroy wrote:
 > 
-> I did not add the fixes tag because I do not know the final commit hash, or
-> is it the final commit hash once it is in linux-next? I doubt it with all
-> the merging that can occur.
+> 
+> Le 19/03/2020 à 14:35, Andy Shevchenko a écrit :
+> > On Thu, Mar 19, 2020 at 1:54 PM Michal Suchanek <msuchanek@suse.de> wrote:
+> > > 
+> > > Merge the 32bit and 64bit version.
+> > > 
+> > > Halve the check constants on 32bit.
+> > > 
+> > > Use STACK_TOP since it is defined.
+> > > 
+> > > Passing is_64 is now redundant since is_32bit_task() is used to
+> > > determine which callchain variant should be used. Use STACK_TOP and
+> > > is_32bit_task() directly.
+> > > 
+> > > This removes a page from the valid 32bit area on 64bit:
+> > >   #define TASK_SIZE_USER32 (0x0000000100000000UL - (1 * PAGE_SIZE))
+> > >   #define STACK_TOP_USER32 TASK_SIZE_USER32
+> > 
+> > ...
+> > 
+> > > +static inline int valid_user_sp(unsigned long sp)
+> > > +{
+> > > +       bool is_64 = !is_32bit_task();
+> > > +
+> > > +       if (!sp || (sp & (is_64 ? 7 : 3)) || sp > STACK_TOP - (is_64 ? 32 : 16))
+> > > +               return 0;
+> > > +       return 1;
+> > > +}
+> > 
+> > Other possibility:
+> 
+> I prefer this one.
+> 
+> > 
+> >    unsigned long align = is_32bit_task() ? 3 : 7;
+> 
+> I would call it mask instead of align
+> 
+> >    unsigned long top = STACK_TOP - (is_32bit_task() ? 16 : 32);
+> > 
+> >    return !(!sp || (sp & align) || sp > top);
+And we can avoid the inversion here as well as in !valid_user_sp(sp) by
+changing to invalid_user_sp.
 
-Can you send me a new version after rc1 is out?
+Thanks
 
-/Jarkko
+Michal
