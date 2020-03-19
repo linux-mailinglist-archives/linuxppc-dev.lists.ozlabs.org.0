@@ -1,65 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D2718B92F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:18:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jptQ3GcnzDrNP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:18:54 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39A318B94D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:23:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jpzg44WfzDr27
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:23:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=andy.shevchenko@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=andy.shevchenko@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Bh5NyyG1; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=nRi61yux; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jnw34HHrzDrD1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 00:35:14 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id z5so1452494pfn.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 06:35:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jnyL5TwQzDr7P
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 00:37:14 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id j10so1433209pfi.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 06:37:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ket5nG48OjRkSmjRLhm6o/GZWaiXnw2ieKQdmnyTlMc=;
- b=Bh5NyyG1M8gtKQIPrZf/5qLuu0ztHrg/ar6jVL2/WT1taChSOWg/KvzKJbbR0KSYtR
- XPtaZguXMqGkXBJ3gJyLO7wN+gVjLuV9q3Tz8TwQGSGAjkytzkvd45orPduurhypW4gD
- yJO04p/sjDB3DsSwi3caCRbP2G4wKsjv3RFhMMrqRyLk1I17Hd7iKJTiXBdaQKPXCmbG
- /NP1TWBrM/8HPRvMvfpqj8Jq2nmMrWRYtiIF3ldTvwMzZPlyYJxZwNVJiKpxUepjxUOW
- 3Rs27tmyLu3uAw+5+1836CWrZplMOz3sKM7WD7zh+xZEVScIfOCeygBpVOiyZhii8JwD
- BWgA==
+ :cc; bh=MbaLg9Gua2M3U1asnVDIvDva7tQ41AoreM1Ms+SYaSk=;
+ b=nRi61yuxZ0Xq+2Qr8bOpOgW2XtV6fryd3C0G4dMcc9FFEMKfZGwP+P/GAI17pT9cjn
+ 1lviN+GIEhx3YiHb3db3mmCnPH5CiTFUs0hR3zK+JcRGkonTqxCrgePfWqm24DVtKC+N
+ yKBMMLxYkqoQHnxA9hX3R6YTpQhMUTIU2EkMA3FcYmOAraM8BMrIN/BcbR6OXfguc3Aj
+ CRtrYhn61Lez9OI9owj8+MzXzOZ3Al2zvlk2n0sipwdqQik013kKza2ByhsQSUvdQQXB
+ 4hgKnZjY0Rdf9u5ZaK2sdFyVLPpQIw/+/l3IVizC7fEil118v2V60y5p2BgFFHrSbP+x
+ N5kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=ket5nG48OjRkSmjRLhm6o/GZWaiXnw2ieKQdmnyTlMc=;
- b=iWjeEnaJ8wyE1sDME+Jgof0MMMZimEdKAQnGsHKOoey53tuSbFtl8LCxlg/asdzLC1
- xryFQ8lwS2tu7oFHrnhzy9MiriUlvVCDjsjrHz2USPchyWmu6HpOO/oRfPnhBMywAeQ2
- xQdZMbDgDE5OJGLOkFcTeXfPNwlIEFFivnZsyPF1zQFPxvBpfGo5RgeW3mIwGiurk6Jm
- YfjipYPW1kpjAs88YpKBjKmf4dJp16Ws1k95nW8Z1mDJWM2g7kUWC4RMkIBLiAW4Gru2
- 9Z5wsJOubSvAWRp0FtLNmebKdm3ogyXD+xZQjhFJrjjB/rOS7O3IAz9NgIzpkKkscwID
- z50A==
-X-Gm-Message-State: ANhLgQ0/xUg9B95xzmk8hSSpMX5pPSmVBFJPhTFmW5ELJ98XyRzUhkGm
- 0YKHoLeZp8JRMvUcPHLD+8JGFSa1en6oKGFpSEY=
-X-Google-Smtp-Source: ADFU+vvo67RB7PN+1WI5QYtP3PGnTDjr7aFXa63C0L5Ako2i2oQmzaEBTO0AggKTr2A7JzPp7zlA8WyDdxJDa+KRnLs=
-X-Received: by 2002:a63:1c4d:: with SMTP id c13mr3369187pgm.4.1584624911491;
- Thu, 19 Mar 2020 06:35:11 -0700 (PDT)
+ bh=MbaLg9Gua2M3U1asnVDIvDva7tQ41AoreM1Ms+SYaSk=;
+ b=aa/SaVlrsCXTB1cIPRnboXseVNnAPfOv6o/JC59ak8ePXPKxFxQXHofr/2G5xbQ+Km
+ BXVW13GOrsDKWD26CGrSkEbeYudlgXGnlJXrLWaaP7nfDasNGK9WxufjDh4+YJwJePiq
+ t60mtvWsJagAnk/6mOfheNqhWFabw6cSLuUbh9jlwq3Stjr1RnCyxSsmVMRALCDKf47n
+ Y0atdpGraw0K2IrXiDCOL8W2kJpn43L39G6MJM5f0r036CjNDynoeiMoa4z2WCS+NRx3
+ KyKtw10SNtG40SVS9aHMJIPj/ymNf4XBk4DVscnlS7bBzXutzBgRZYQNaBh8O5LuE87b
+ mwcA==
+X-Gm-Message-State: ANhLgQ3sdN9HGIqM0/gf8ZGyUlfH66e4K5rSYy2uG8WYvv2wY67Jqg/2
+ 4EVj6DkYC8Ef4qZXWz8Q9JxDn44/MmzS2XH2X3k=
+X-Google-Smtp-Source: ADFU+vtAoSv40N/3WnXxvMcn62PtlKa6UP0H140pXfQ3uWlj/cLaUak6oaGVR1tGFhEl0JCb/O0lFMkytGGb/lpOUcA=
+X-Received: by 2002:a63:798a:: with SMTP id u132mr3546499pgc.203.1584625031303; 
+ Thu, 19 Mar 2020 06:37:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1584613649.git.msuchanek@suse.de>
- <1b612025371bb9f2bcce72c700c809ae29e57392.1584613649.git.msuchanek@suse.de>
-In-Reply-To: <1b612025371bb9f2bcce72c700c809ae29e57392.1584613649.git.msuchanek@suse.de>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <5cd926191175c4a4a85dc2246adc84bcfac21b1a.1584620202.git.msuchanek@suse.de>
+In-Reply-To: <5cd926191175c4a4a85dc2246adc84bcfac21b1a.1584620202.git.msuchanek@suse.de>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 19 Mar 2020 15:35:03 +0200
-Message-ID: <CAHp75VcMkPeJ6exroipnxvf-7g-C8QbVm0bAnp=rk505_nxySw@mail.gmail.com>
-Subject: Re: [PATCH v11 4/8] powerpc/perf: consolidate valid_user_sp
+Date: Thu, 19 Mar 2020 15:37:03 +0200
+Message-ID: <CAHp75VegYhz-hwSUNHbGFB3yiatAWWytwB7Vctf=mCLyCJEy3Q@mail.gmail.com>
+Subject: Re: [PATCH v11 8/8] MAINTAINERS: perf: Add pattern that matches ppc
+ perf to the perf entry.
 To: Michal Suchanek <msuchanek@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,8 +84,6 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
  Rob Herring <robh@kernel.org>, Michael Neuling <mikey@neuling.org>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- "linux-fsdevel @ vger . kernel . org --in-reply-to="
- <20200225173541.1549955-1-npiggin@gmail.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
  Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
  Jordan Niethe <jniethe5@gmail.com>,
@@ -98,6 +98,7 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
  Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
  Eric Richter <erichte@linux.ibm.com>,
  "Eric W. Biederman" <ebiederm@xmission.com>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
  "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
  <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>,
  Thiago Jung Bauermann <bauerman@linux.ibm.com>
@@ -105,55 +106,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 19, 2020 at 1:54 PM Michal Suchanek <msuchanek@suse.de> wrote:
+On Thu, Mar 19, 2020 at 2:21 PM Michal Suchanek <msuchanek@suse.de> wrote:
 >
-> Merge the 32bit and 64bit version.
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+> v10: new patch
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> Halve the check constants on 32bit.
->
-> Use STACK_TOP since it is defined.
->
-> Passing is_64 is now redundant since is_32bit_task() is used to
-> determine which callchain variant should be used. Use STACK_TOP and
-> is_32bit_task() directly.
->
-> This removes a page from the valid 32bit area on 64bit:
->  #define TASK_SIZE_USER32 (0x0000000100000000UL - (1 * PAGE_SIZE))
->  #define STACK_TOP_USER32 TASK_SIZE_USER32
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index bc8dbe4fe4c9..329bf4a31412 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13088,6 +13088,8 @@ F:      arch/*/kernel/*/perf_event*.c
+>  F:     arch/*/kernel/*/*/perf_event*.c
+>  F:     arch/*/include/asm/perf_event.h
+>  F:     arch/*/kernel/perf_callchain.c
+> +F:     arch/*/perf/*
+> +F:     arch/*/perf/*/*
+>  F:     arch/*/events/*
+>  F:     arch/*/events/*/*
+>  F:     tools/perf/
 
-...
-
-> +static inline int valid_user_sp(unsigned long sp)
-> +{
-> +       bool is_64 = !is_32bit_task();
-> +
-> +       if (!sp || (sp & (is_64 ? 7 : 3)) || sp > STACK_TOP - (is_64 ? 32 : 16))
-> +               return 0;
-> +       return 1;
-> +}
-
-Perhaps better to read
-
-  if (!sp)
-    return 0;
-
-  if (is_32bit_task()) {
-    if (sp & 0x03)
-      return 0;
-    if (sp > STACK_TOP - 16)
-      return 0;
-  } else {
-    ...
-  }
-
-  return 1;
-
-Other possibility:
-
-  unsigned long align = is_32bit_task() ? 3 : 7;
-  unsigned long top = STACK_TOP - (is_32bit_task() ? 16 : 32);
-
-  return !(!sp || (sp & align) || sp > top);
+Had you run parse-maintainers.pl?
 
 -- 
 With Best Regards,
