@@ -2,74 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36EA18AA27
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 02:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEDA18AA3A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 02:12:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jTFP35b6zDr68
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 12:04:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jTQb6z8wzDr6Z
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 12:12:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jTCS3C3VzDqty
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 12:02:28 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02J0X0sF017985; Wed, 18 Mar 2020 21:00:20 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu932gr91-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Mar 2020 21:00:20 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02J0tiV9017885;
- Thu, 19 Mar 2020 01:00:19 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 2yrpw6mp6k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 01:00:19 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02J10IBq48759194
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 01:00:18 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CEE6112075;
- Thu, 19 Mar 2020 01:00:18 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7225B112070;
- Thu, 19 Mar 2020 01:00:18 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 19 Mar 2020 01:00:18 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.vnet.ibm.com>
-To: jarkko.sakkinen@linux.intel.com, linux-integrity@vger.kernel.org
-Subject: [PATCH v2] qtpm2: Export tpm2_get_cc_attrs_tbl for ibmvtpm driver as
- module
-Date: Wed, 18 Mar 2020 21:00:17 -0400
-Message-Id: <20200319010017.738677-1-stefanb@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jTNC1kxjzDr28
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 12:10:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Zb3sKzT6; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48jTNB4zmfz9sPR;
+ Thu, 19 Mar 2020 12:10:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1584580202;
+ bh=dsAYUpBIHWyRqWv4FX0udbRGa8tLjAzSdzZd9Xm8pUc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Zb3sKzT6T9ViFk6GbzMBqYOtExyqc326gRnRRFeY93+ikmdpL/2w3BjoZYonb8xdB
+ zNGeceQor22vgMsAqPzV2zcAEAQUhN/6BsBts7nvjXHmHscSS+eLB8ZFbBgwCe9amv
+ NacobufLfRXgHz8hrby6XyLxQ3lsJUIsOARwMvDXgt85rL5f/2LK+yI42UsqXzRn41
+ Fa8suzuIUejDuskRsHDvt9HYad1CfrU9dJvQ1JQGcMp1+eLS+4qK2FiqAG9Pf99xm+
+ EahjJq64zjm9cSrJ5jwNLAy+G5YP9Kfy9U56PFB4b85CGiBQZxnicbvCaM3SjNcVen
+ pnT8waua6xXjw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Anton Blanchard <anton@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/vdso: Fix multiple issues with sys_call_table
+In-Reply-To: <20200306135705.7f80fcad@kryten.localdomain>
+References: <20200306135705.7f80fcad@kryten.localdomain>
+Date: Thu, 19 Mar 2020 12:10:03 +1100
+Message-ID: <87pnd9duac.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_07:2020-03-18,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003190001
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +58,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Stefan Berger <stefanb@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+Anton Blanchard <anton@ozlabs.org> writes:
+> The VDSO exports a bitmap of valid syscalls. vdso_setup_syscall_map()
+> sets this up, but there are both little and big endian bugs. The issue
+> is with:
+>
+>        if (sys_call_table[i] != sys_ni_syscall)
+>
+> On little endian, instead of comparing pointers to the two functions,
+> we compare the first two instructions of each function. If a function
+> happens to have the same first two instructions as sys_ni_syscall, then
+> we have a spurious match and mark the instruction as not implemented.
+> Fix this by removing the inline declarations.
+>
+> On big endian we have a further issue where sys_ni_syscall is a function
+> descriptor and sys_call_table[] holds pointers to the instruction text.
+> Fix this by using dereference_kernel_function_descriptor().
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anton Blanchard <anton@ozlabs.org>
 
-This patch fixes the following problem when the ibmvtpm driver
-is built as a module:
+That's some pretty epic breakage.
 
-ERROR: modpost: "tpm2_get_cc_attrs_tbl" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
-make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
-make: *** [Makefile:1298: modules] Error 2
+Is it even worth keeping, or should we just rip it out and declare that
+the syscall map is junk? Userspace can hardly rely on it given it's been
+this broken for so long.
 
-Fixes: 18b3670d79ae ("tpm: ibmvtpm: Add support for TPM2")
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
----
- drivers/char/tpm/tpm2-cmd.c | 1 +
- 1 file changed, 1 insertion(+)
+If not it would be really nice to have a selftest of this stuff so we
+can verify it works and not break it again in future.
 
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index 76f67b155bd5..eff1f12d981a 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -681,6 +681,7 @@ int tpm2_get_cc_attrs_tbl(struct tpm_chip *chip)
- 		rc = -ENODEV;
- 	return rc;
- }
-+EXPORT_SYMBOL_GPL(tpm2_get_cc_attrs_tbl);
- 
- /**
-  * tpm2_startup - turn on the TPM
--- 
-2.23.0
+cheers
 
+> ---
+> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+> index b9a108411c0d..d186b729026e 100644
+> --- a/arch/powerpc/kernel/vdso.c
+> +++ b/arch/powerpc/kernel/vdso.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/elf.h>
+>  #include <linux/security.h>
+>  #include <linux/memblock.h>
+> +#include <linux/syscalls.h>
+>  
+>  #include <asm/pgtable.h>
+>  #include <asm/processor.h>
+> @@ -30,6 +31,7 @@
+>  #include <asm/vdso.h>
+>  #include <asm/vdso_datapage.h>
+>  #include <asm/setup.h>
+> +#include <asm/syscall.h>
+>  
+>  #undef DEBUG
+>  
+> @@ -644,19 +646,16 @@ static __init int vdso_setup(void)
+>  static void __init vdso_setup_syscall_map(void)
+>  {
+>  	unsigned int i;
+> -	extern unsigned long *sys_call_table;
+> -#ifdef CONFIG_PPC64
+> -	extern unsigned long *compat_sys_call_table;
+> -#endif
+> -	extern unsigned long sys_ni_syscall;
+> +	unsigned long ni_syscall;
+>  
+> +	ni_syscall = (unsigned long)dereference_kernel_function_descriptor(sys_ni_syscall);
+>  
+>  	for (i = 0; i < NR_syscalls; i++) {
+>  #ifdef CONFIG_PPC64
+> -		if (sys_call_table[i] != sys_ni_syscall)
+> +		if (sys_call_table[i] != ni_syscall)
+>  			vdso_data->syscall_map_64[i >> 5] |=
+>  				0x80000000UL >> (i & 0x1f);
+> -		if (compat_sys_call_table[i] != sys_ni_syscall)
+> +		if (compat_sys_call_table[i] != ni_syscall)
+>  			vdso_data->syscall_map_32[i >> 5] |=
+>  				0x80000000UL >> (i & 0x1f);
+>  #else /* CONFIG_PPC64 */
