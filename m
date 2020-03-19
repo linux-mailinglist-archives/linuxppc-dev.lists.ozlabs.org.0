@@ -2,49 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85AD518C3E1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 00:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A8918C3E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 00:44:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48k3Ml4ZnXzDr41
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 10:41:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48k3R70bLSzDrTg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 10:44:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48k3Cm44DYzDr4Y
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48k3Cm564JzDr5J
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:34:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=w+xaqjFY; dkim-atps=neutral
+ header.s=201707 header.b=okApgmuZ; dkim-atps=neutral
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 48k3Cm2kFYz9sRf; Fri, 20 Mar 2020 10:34:43 +1100 (AEDT)
+ id 48k3Cm3QZgz9sSL; Fri, 20 Mar 2020 10:34:43 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1584660884; bh=3e2k76pHCNkJOTrpeeP78LipvWD3QnennPV0985nbeY=;
+ t=1584660884; bh=LG8xa3mS/oJ94UFOhSt2KGXBPPU42IS8V/3vBwMyZ/o=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=w+xaqjFY5Fv29r1Q0f9Q0Bo8C4lkPR9EmD5Ich/4mWGxpHrXeA7cX9BRHCaCbTXCz
- LUtuJ4h9wDgyvIx3cLqP6DXvLkowerdeH1F7vr3N6oHvo21rBjMqf5IAVQqEZXYTc2
- OoZQsJjlRliODnmWWffoyVgOqHsmAZEGprxfLrtTbMjBUjNXHgvh/qJ/ZH0yFgbima
- 2sR+0gJNIjornWzZBsn34TSW3pyh1CRKS5Sd7xO7qLcqD0iyetshmgT+bYdNn9CJk7
- 0pukYH3HWFi2K873b/NZjs40Xz3XCI+vFqd596KQdGf2agfYZWKZjC5vPJ0rJ8/NHn
- sLFtKqmgI5pVQ==
-Date: Fri, 20 Mar 2020 10:33:30 +1100
+ b=okApgmuZWnbdSgXyMpMtt0Ag/byLSD5AFy8eQz8G5nuUs5kEs60eQBs0ktqfCnfih
+ ilfkajX1ztYMWdMYeyI+j0w5jQDsuHWC7xOb7xZQAccxqr5JGueyfWtPv5nj7rFSlt
+ PVjsyByaNGFBFXttYFegapoB+zlNhG9a++d6vj7M1PmgYcqSVVCr2FVYENuWZfRPnl
+ pf80sFN6VBuIhTxBL8t/ckNSQgdXO6MmVgVwGXO9ErEpwfS4py5v8Ij3TSbjtAtP6w
+ LVmzSt2gF+3avbt9maTtZGZFyGVDGHDWEFU5hDdFKmCr2b4qE/pIzw/afREjLT+af9
+ +MTiv8dylJHOA==
+Date: Fri, 20 Mar 2020 10:34:34 +1100
 From: Paul Mackerras <paulus@ozlabs.org>
-To: Joe Perches <joe@perches.com>
-Subject: Re: [PATCH -next 016/491] KERNEL VIRTUAL MACHINE FOR POWERPC
- (KVM/powerpc): Use fallthrough;
-Message-ID: <20200319233330.GE3260@blackberry>
-References: <cover.1583896344.git.joe@perches.com>
- <37a5342c67e1b68b9ad06aca8da245b0ff409692.1583896348.git.joe@perches.com>
- <20200319011840.GA5033@blackberry>
- <7584d7937f4bb929beb0b9f5e80523653297676d.camel@perches.com>
+To: Greg Kurz <groug@kaod.org>
+Subject: Re: [PATCH 0/3] KVM: PPC: Fix host kernel crash with PR KVM
+Message-ID: <20200319233434.GF3260@blackberry>
+References: <158455340419.178873.11399595021669446372.stgit@bahia.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7584d7937f4bb929beb0b9f5e80523653297676d.camel@perches.com>
+In-Reply-To: <158455340419.178873.11399595021669446372.stgit@bahia.lan>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,41 +53,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: kvm-ppc@vger.kernel.org,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 18, 2020 at 06:22:29PM -0700, Joe Perches wrote:
-> On Thu, 2020-03-19 at 12:18 +1100, Paul Mackerras wrote:
-> > On Tue, Mar 10, 2020 at 09:51:30PM -0700, Joe Perches wrote:
-> > > Convert the various uses of fallthrough comments to fallthrough;
-> > > 
-> > > Done via script
-> > > Link: https://lore.kernel.org/lkml/b56602fcf79f849e733e7b521bb0e17895d390fa.1582230379.git.joe.com/
-> > > 
-> > > Signed-off-by: Joe Perches <joe@perches.com>
-> > 
-> > The subject line should look like "KVM: PPC: Use fallthrough".
+On Wed, Mar 18, 2020 at 06:43:24PM +0100, Greg Kurz wrote:
+> Recent cleanup from Sean Christopherson introduced a use-after-free
+> condition that crashes the kernel when shutting down the VM with
+> PR KVM. It went unnoticed so far because PR isn't tested/used much
+> these days (mostly used for nested on POWER8, not supported on POWER9
+> where HV should be used for nested), and other KVM implementations for
+> ppc are unaffected.
 > 
-> There's no way to generate a subject line like that via a script
-> so far as I can tell.
+> This all boils down to the fact that the path that frees the per-vCPU
+> MMU data goes through a complex set of indirections. This obfuscates
+> the code to the point that we didn't realize that the MMU data was
+> now being freed too early. And worse, most of the indirection isn't
+> needed because only PR KVM has some MMU data to free when the vCPU is
+> destroyed.
 > 
-> > Apart from that,
-> > 
-> > Acked-by: Paul Mackerras <paulus@ozlabs.org>
-> > 
-> > How are these patches going upstream?  Do you want me to take this via
-> > my tree?
-> 
-> If you want.
-> 
-> Ideally, these changes would go in treewide via a script run
-> by Linus at an -rc1, but if the change is OK with you, it'd
-> be fine to have you apply it now.
+> Fix the issue (patch 1) and simplify the code (patch 2 and 3).
 
-I have taken this patch in my kvm-ppc-next branch.
+I have put this series in my kvm-ppc-next branch, and I believe
+Michael Ellerman is putting patch 1 in his fixes branch so it gets
+into 5.6.
 
 Thanks,
 Paul.
