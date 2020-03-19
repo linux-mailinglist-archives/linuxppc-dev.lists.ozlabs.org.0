@@ -2,46 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F34918B955
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CDB18B96C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:32:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jq4k360QzDr5n
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:27:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jqB20n1rzDqlF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:32:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
+ dmarc=none (p=none dis=none) header.from=suse.de
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jpBt1JdnzDrGG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 00:48:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jpSy2SctzDrL4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 01:00:18 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id CC5EDACDF;
- Thu, 19 Mar 2020 13:47:59 +0000 (UTC)
-Subject: Re: [RFC 1/2] mm, slub: prevent kmalloc_node crashes and memory leaks
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>
-References: <20200318144220.18083-1-vbabka@suse.cz>
- <20200318160610.GD26049@in.ibm.com>
- <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
- <0F67B5AA-96DF-4977-BDC6-D72959B3F7EF@linux.vnet.ibm.com>
- <b9b95895-ca6b-5ad2-1f67-45fee93d1e67@suse.cz>
- <658E6AB8-581F-4722-BCBB-4BDD2245D265@linux.vnet.ibm.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
-Date: Thu, 19 Mar 2020 14:47:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by mx2.suse.de (Postfix) with ESMTP id 31271AD48;
+ Thu, 19 Mar 2020 14:00:11 +0000 (UTC)
+Date: Thu, 19 Mar 2020 15:00:08 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v11 8/8] MAINTAINERS: perf: Add pattern that matches ppc
+ perf to the perf entry.
+Message-ID: <20200319140008.GI25468@kitsune.suse.cz>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <5cd926191175c4a4a85dc2246adc84bcfac21b1a.1584620202.git.msuchanek@suse.de>
+ <CAHp75VegYhz-hwSUNHbGFB3yiatAWWytwB7Vctf=mCLyCJEy3Q@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <658E6AB8-581F-4722-BCBB-4BDD2245D265@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VegYhz-hwSUNHbGFB3yiatAWWytwB7Vctf=mCLyCJEy3Q@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,101 +50,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>, Michal Hocko <mhocko@kernel.org>,
- Pekka Enberg <penberg@kernel.org>, linux-mm@kvack.org,
- Kirill Tkhai <ktkhai@virtuozzo.com>, David Rientjes <rientjes@google.com>,
- Christopher Lameter <cl@linux.com>, bharata@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Jiri Olsa <jolsa@redhat.com>,
+ Rob Herring <robh@kernel.org>, Michael Neuling <mikey@neuling.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Eric Richter <erichte@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
+ <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/19/20 2:26 PM, Sachin Sant wrote:
+On Thu, Mar 19, 2020 at 03:37:03PM +0200, Andy Shevchenko wrote:
+> On Thu, Mar 19, 2020 at 2:21 PM Michal Suchanek <msuchanek@suse.de> wrote:
+> >
+> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > ---
+> > v10: new patch
+> > ---
+> >  MAINTAINERS | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index bc8dbe4fe4c9..329bf4a31412 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -13088,6 +13088,8 @@ F:      arch/*/kernel/*/perf_event*.c
+> >  F:     arch/*/kernel/*/*/perf_event*.c
+> >  F:     arch/*/include/asm/perf_event.h
+> >  F:     arch/*/kernel/perf_callchain.c
+> > +F:     arch/*/perf/*
+> > +F:     arch/*/perf/*/*
+> >  F:     arch/*/events/*
+> >  F:     arch/*/events/*/*
+> >  F:     tools/perf/
 > 
-> 
->> On 19-Mar-2020, at 6:53 PM, Vlastimil Babka <vbabka@suse.cz> wrote:
->> 
->> On 3/19/20 9:52 AM, Sachin Sant wrote:
->>> 
->>>> OK how about this version? It's somewhat ugly, but important is that the fast
->>>> path case (c->page exists) is unaffected and another common case (c->page is
->>>> NULL, but node is NUMA_NO_NODE) is just one extra check - impossible to avoid at
->>>> some point anyway.
->>>> 
->>> 
->>> I attempted the suggested tests.
->>> 
->>> Test 1: March 18 linux-next + Patch 1 [1] + Patch  2 [2]
->>> 
->>> Machine boots fine. numactl o/p after boot:
->> 
->> Great, thanks! Can I add your Tested-by: then?
-> 
-> Sure.
-> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> 
-> Thank you for the fix.
+> Had you run parse-maintainers.pl?
+Did not know it exists. The output is:
 
-Thanks! Sorry to bother, but in the end I decided to do further change so I
-would appreciate verification if it still works as intended.
-The point is to use node_state(N_NORMAL_MEMORY) instead of node_present_pages(),
-as that is really what SLUB uses to decide whether to allocate the
-kmem_cache_node. So we should match this properly given the opportunity.
-I have also again removed the node_online() check in alloc_slab_page() as it
-really shouldn't be reachable with an offline node - everything is taken care of
-in ___slab_alloc, or callers use NUMA_NO_NODE.
+scripts/parse-maintainers.pl 
+Odd non-pattern line '
+Documentation/devicetree/bindings/media/ti,cal.yaml
+' for 'TI VPE/CAL DRIVERS' at scripts/parse-maintainers.pl line 147,
+<$file> line 16756.
 
-----8<----
-diff --git a/mm/slub.c b/mm/slub.c
-index 17dc00e33115..7113b1f9cd77 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
- 
- 	if (node == NUMA_NO_NODE)
- 		searchnode = numa_mem_id();
--	else if (!node_present_pages(node))
--		searchnode = node_to_mem_node(node);
- 
- 	object = get_partial_node(s, get_node(s, searchnode), c, flags);
- 	if (object || node != NUMA_NO_NODE)
-@@ -2563,17 +2561,27 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 	struct page *page;
- 
- 	page = c->page;
--	if (!page)
-+	if (!page) {
-+		/*
-+		 * if the node is not online or has no normal memory, just
-+		 * ignore the node constraint
-+		 */
-+		if (unlikely(node != NUMA_NO_NODE &&
-+			     !node_state(node, N_NORMAL_MEMORY)))
-+			node = NUMA_NO_NODE;
- 		goto new_slab;
-+	}
- redo:
- 
- 	if (unlikely(!node_match(page, node))) {
--		int searchnode = node;
--
--		if (node != NUMA_NO_NODE && !node_present_pages(node))
--			searchnode = node_to_mem_node(node);
--
--		if (unlikely(!node_match(page, searchnode))) {
-+		/*
-+		 * same as above but node_match() being false already
-+		 * implies node != NUMA_NO_NODE
-+		 */
-+		if (!node_state(node, N_NORMAL_MEMORY)) {
-+			node = NUMA_NO_NODE;
-+			goto redo;
-+		} else {
- 			stat(s, ALLOC_NODE_MISMATCH);
- 			deactivate_slab(s, page, c->freelist, c);
- 			goto new_slab;
--- 
-2.25.1
+Thanks
 
+Michal
