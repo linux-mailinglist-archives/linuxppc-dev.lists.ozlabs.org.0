@@ -2,75 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BFD18C35F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 23:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE7918C39B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 00:27:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48k2Mz6LbBzDrRy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 09:56:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48k33P0ncZzDrSg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 10:27:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::142;
+ helo=mail-lf1-x142.google.com; envelope-from=julian.calaby@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=W4p7IqK8; dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48k2LT0Yz1zDrNk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 09:55:24 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02JMaSuo073128; Thu, 19 Mar 2020 18:55:20 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yu7adv25a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 18:55:19 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02JMhSsG005508;
- Thu, 19 Mar 2020 22:55:19 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03wdc.us.ibm.com with ESMTP id 2yrpw6uv8w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 22:55:19 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02JMtIra54854094
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 22:55:18 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 782D3C605A;
- Thu, 19 Mar 2020 22:55:18 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7E53C6055;
- Thu, 19 Mar 2020 22:55:15 +0000 (GMT)
-Received: from farosas.linux.ibm.com.ibmuc.com (unknown [9.85.143.6])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Mar 2020 22:55:15 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH] KVM: PPC: Book3S HV: Skip kvmppc_uvmem_free if Ultravisor is
- not supported
-Date: Thu, 19 Mar 2020 19:55:10 -0300
-Message-Id: <20200319225510.945603-1-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48k31h4H98zDrN6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:25:57 +1100 (AEDT)
+Received: by mail-lf1-x142.google.com with SMTP id s1so3098871lfd.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 16:25:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=xryJO8lkXqRCZQK2yjx1cRHjWBLO8IFysYsWxEoA3uE=;
+ b=W4p7IqK840U96gHxPUFDwKRKl0DeyM62Cf4hK4MVxDeZLz/NuJnzVzNLCXHzzJPXw3
+ cuO7UoACnyau5ntSIeAtexp74bDciO1/5FPGcp4uN5dfZOgTP1gdGS6uEx07EyMxxSuW
+ UTG41vXaINQUcorBOvlljqNGUuDzQ/Gzdti5RddYiwIqkyU/TcLQoyujB40JItwp4I44
+ aLE8124W9EF1NiPA2u/s7EaM8iAp9jTolVsVbLF6auvhBLnXqNVx2On8kwVpvS0Al6yh
+ 3ce8EGJVdi1kbQEQX8KtoqT37e1mM0eGUDk1WEofyR/5anu3exltpzmPFnsw6CUMrPmR
+ 10SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=xryJO8lkXqRCZQK2yjx1cRHjWBLO8IFysYsWxEoA3uE=;
+ b=dfg/2aF5sPWxUbavhQTftX3teC1gtRfu+u9oKX3OSrFMvNrrw4TUuVPP7q16VObJnO
+ fJ67tz1ZwYE7DU1wGAOSMcUuSsVZ7IiYbOZg2qtsfXsbsFoiuaMg982kIZIyAf1adwlk
+ +2K1x4w8nYjwBiYXunBoKKuf94hYIInzCVs2d9N+F6FOKq9NEdXXi3E+fByv+Cz1Xuxf
+ 3FE6nCgBNJ4kEiUJ1jsAy42/mvr3xmM+kuNoYpMczwuBnefFmhH8z/Trx983oj0fOsrZ
+ BciBCTmZSh7QVwnpIQZNGUhdpxo4p4nNg5Ju/0dBS2Go1WFLJLWXSlFbD5zx+iEAPQXX
+ uqJA==
+X-Gm-Message-State: ANhLgQ3votZ2ilwAYJ/zYHNyrB7UJLmk4KPQXdgHWmwiUdlOFTseGA8P
+ 1HTji0eeUFYsq5abS244n8ho0m0QPnAdKE4EJZk=
+X-Google-Smtp-Source: ADFU+vutZe3vAn9jxlvO0kvX2a2rYQyzTHs+93M3VoF6k7ot+b480wfjbV128JnurPO8vWCARFUaoAdJ1D285cdVDEc=
+X-Received: by 2002:a19:5504:: with SMTP id n4mr3537070lfe.149.1584660352957; 
+ Thu, 19 Mar 2020 16:25:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-19_09:2020-03-19,
- 2020-03-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0
- suspectscore=3 clxscore=1011 adultscore=0 spamscore=0 impostorscore=0
- malwarescore=0 mlxlogscore=486 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003190090
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.521507446@linutronix.de>
+In-Reply-To: <20200318204408.521507446@linutronix.de>
+From: Julian Calaby <julian.calaby@gmail.com>
+Date: Fri, 20 Mar 2020 10:25:41 +1100
+Message-ID: <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
+Subject: Re: [patch V2 11/15] completion: Use simple wait queues
+To: Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,70 +73,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, groug@kaod.org, bharata@linux.ibm.com
+Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Logan Gunthorpe <logang@deltatee.com>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-usb <linux-usb@vger.kernel.org>, linux-wireless@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kvmppc_uvmem_init checks for Ultravisor support and returns early if
-it is not present. Calling kvmppc_uvmem_free at module exit will cause
-an Oops:
+Hi Thomas,
 
-$ modprobe -r kvm-hv
+On Thu, Mar 19, 2020 at 7:48 AM Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+> From: Thomas Gleixner <tglx@linutronix.de>
+>
+> completion uses a wait_queue_head_t to enqueue waiters.
+>
+> wait_queue_head_t contains a spinlock_t to protect the list of waiters
+> which excludes it from being used in truly atomic context on a PREEMPT_RT
+> enabled kernel.
+>
+> The spinlock in the wait queue head cannot be replaced by a raw_spinlock
+> because:
+>
+>   - wait queues can have custom wakeup callbacks, which acquire other
+>     spinlock_t locks and have potentially long execution times
+>
+>   - wake_up() walks an unbounded number of list entries during the wake up
+>     and may wake an unbounded number of waiters.
+>
+> For simplicity and performance reasons complete() should be usable on
+> PREEMPT_RT enabled kernels.
+>
+> completions do not use custom wakeup callbacks and are usually single
+> waiter, except for a few corner cases.
+>
+> Replace the wait queue in the completion with a simple wait queue (swait),
+> which uses a raw_spinlock_t for protecting the waiter list and therefore is
+> safe to use inside truly atomic regions on PREEMPT_RT.
+>
+> There is no semantical or functional change:
+>
+>   - completions use the exclusive wait mode which is what swait provides
+>
+>   - complete() wakes one exclusive waiter
+>
+>   - complete_all() wakes all waiters while holding the lock which protects
+>     the wait queue against newly incoming waiters. The conversion to swait
+>     preserves this behaviour.
+>
+> complete_all() might cause unbound latencies with a large number of waiters
+> being woken at once, but most complete_all() usage sites are either in
+> testing or initialization code or have only a really small number of
+> concurrent waiters which for now does not cause a latency problem. Keep it
+> simple for now.
+>
+> The fixup of the warning check in the USB gadget driver is just a straight
+> forward conversion of the lockless waiter check from one waitqueue type to
+> the other.
+>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> ---
+> V2: Split out the orinoco and usb gadget parts and amended change log
+> ---
+>  drivers/usb/gadget/function/f_fs.c |    2 +-
+>  include/linux/completion.h         |    8 ++++----
+>  kernel/sched/completion.c          |   36 +++++++++++++++++++-----------------
+>  3 files changed, 24 insertions(+), 22 deletions(-)
+>
+> --- a/drivers/usb/gadget/function/f_fs.c
+> +++ b/drivers/usb/gadget/function/f_fs.c
+> @@ -1703,7 +1703,7 @@ static void ffs_data_put(struct ffs_data
+>                 pr_info("%s(): freeing\n", __func__);
+>                 ffs_data_clear(ffs);
+>                 BUG_ON(waitqueue_active(&ffs->ev.waitq) ||
+> -                      waitqueue_active(&ffs->ep0req_completion.wait) ||
+> +                      swait_active(&ffs->ep0req_completion.wait) ||
 
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  <snip>
-  NIP:  c000000000789e90 LR: c000000000789e8c CTR: c000000000401030
-  REGS: c000003fa7bab9a0 TRAP: 0300   Not tainted  (5.6.0-rc6-00033-g6c90b86a745a-dirty)
-  MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 24002282  XER: 00000000
-  CFAR: c000000000dae880 DAR: 0000000000000008 DSISR: 40000000 IRQMASK: 1
-  GPR00: c000000000789e8c c000003fa7babc30 c0000000016fe500 0000000000000000
-  GPR04: 0000000000000000 0000000000000006 0000000000000000 c000003faf205c00
-  GPR08: 0000000000000000 0000000000000001 000000008000002d c00800000ddde140
-  GPR12: c000000000401030 c000003ffffd9080 0000000000000001 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 000000013aad0074 000000013aaac978
-  GPR20: 000000013aad0070 0000000000000000 00007fffd1b37158 0000000000000000
-  GPR24: 000000014fef0d58 0000000000000000 000000014fef0cf0 0000000000000001
-  GPR28: 0000000000000000 0000000000000000 c0000000018b2a60 0000000000000000
-  NIP [c000000000789e90] percpu_ref_kill_and_confirm+0x40/0x170
-  LR [c000000000789e8c] percpu_ref_kill_and_confirm+0x3c/0x170
-  Call Trace:
-  [c000003fa7babc30] [c000003faf2064d4] 0xc000003faf2064d4 (unreliable)
-  [c000003fa7babcb0] [c000000000400e8c] dev_pagemap_kill+0x6c/0x80
-  [c000003fa7babcd0] [c000000000401064] memunmap_pages+0x34/0x2f0
-  [c000003fa7babd50] [c00800000dddd548] kvmppc_uvmem_free+0x30/0x80 [kvm_hv]
-  [c000003fa7babd80] [c00800000ddcef18] kvmppc_book3s_exit_hv+0x20/0x78 [kvm_hv]
-  [c000003fa7babda0] [c0000000002084d0] sys_delete_module+0x1d0/0x2c0
-  [c000003fa7babe20] [c00000000000b9d0] system_call+0x5c/0x68
-  Instruction dump:
-  3fc2001b fb81ffe0 fba1ffe8 fbe1fff8 7c7f1b78 7c9c2378 3bde4560 7fc3f378
-  f8010010 f821ff81 486249a1 60000000 <e93f0008> 7c7d1b78 712a0002 40820084
-  ---[ end trace 5774ef4dc2c98279 ]---
+This looks like some code is reaching deep into the dirty dark corners
+of the completion implementation, should there be some wrapper around
+this to hide that?
 
-So this patch checks if kvmppc_uvmem_init actually allocated anything
-before running kvmppc_uvmem_free.
+Thanks,
 
-Fixes: ca9f4942670c ("KVM: PPC: Book3S HV: Support for running secure guests")
-Reported-by: Greg Kurz <groug@kaod.org>
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv_uvmem.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 79b1202b1c62..9d26614b2a77 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -806,6 +806,9 @@ int kvmppc_uvmem_init(void)
- 
- void kvmppc_uvmem_free(void)
- {
-+	if (!kvmppc_uvmem_bitmap)
-+		return;
-+
- 	memunmap_pages(&kvmppc_uvmem_pgmap);
- 	release_mem_region(kvmppc_uvmem_pgmap.res.start,
- 			   resource_size(&kvmppc_uvmem_pgmap.res));
 -- 
-2.23.0
+Julian Calaby
 
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
