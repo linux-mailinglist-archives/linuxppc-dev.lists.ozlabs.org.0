@@ -1,85 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C9318ABD4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:35:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jYxZ39CLzDrC8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:35:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DA918ABDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:37:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jYzx4yM9zDqyZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:37:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jY5w6ljyzDr6V
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 14:57:56 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02J3WgXp081704; Wed, 18 Mar 2020 23:57:48 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yu98tyf14-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Mar 2020 23:57:48 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02J3ok1s144739;
- Wed, 18 Mar 2020 23:57:48 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2yu98tyf0y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Mar 2020 23:57:48 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02J3v0n5000836;
- Thu, 19 Mar 2020 03:57:47 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2yrpw6y0ku-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 03:57:47 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02J3vkMb3080932
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 03:57:46 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2CFA112063;
- Thu, 19 Mar 2020 03:57:46 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D64F112062;
- Thu, 19 Mar 2020 03:57:43 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.34.213])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 19 Mar 2020 03:57:43 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 22/22] powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel
- page fault race
-Date: Thu, 19 Mar 2020 09:26:09 +0530
-Message-Id: <20200319035609.158654-23-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200319035609.158654-1-aneesh.kumar@linux.ibm.com>
-References: <20200319035609.158654-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jY8l0gZSzDr6f
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 15:00:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=p7pitOs8; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 48jY8j20fYz9sPk; Thu, 19 Mar 2020 15:00:21 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48jY8h0SJFz9sPF;
+ Thu, 19 Mar 2020 15:00:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1584590420;
+ bh=9wx1NLy6m5RpEPHePuI00IK9MMIShCWZkgfj4hiQWMA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=p7pitOs8CvfrQKLb3aV9cxqUbE4Mb3nt8QdsxHHwZLM19PGC6tN3bWPKonycbHz4a
+ I3IIznOJOOOklgJSxutzVYayV1ZPo045LCcG5ys+h610RtkyncG0aS+WXX9/M5NPxj
+ B4lOWZVWvxSIAo8HwUVMc7Lh8NCPWkuDmIw3UjAsdxSk/JQiaW+XuMO7uY9T9C0rgT
+ MT3NzDshb6R8SFZul99sHdS/Mo+I6ex9XRODoDTuwKh2tJm6NFFwkLU1VnH7s2deQg
+ MoUQqRvA2AHjvGVjNovT5YXTORAZJhB4cS3X2DoBxupVyL7V1cxFJjfD9zvMRCOg3g
+ dm41WrkXrh6Cw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v5 2/2] powerpc/64: Prevent stack protection in early boot
+In-Reply-To: <87wo7hn8az.fsf@dja-thinkpad.axtens.net>
+References: <20200316124421.99211-1-mpe@ellerman.id.au>
+ <20200316124421.99211-2-mpe@ellerman.id.au>
+ <87wo7hn8az.fsf@dja-thinkpad.axtens.net>
+Date: Thu, 19 Mar 2020 15:00:18 +1100
+Message-ID: <87eetpdmel.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_10:2020-03-18,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015
- adultscore=0 mlxlogscore=999 suspectscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003190013
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,102 +62,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: leonardo@linux.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- npiggin@gmail.com, kirill@shutemov.name
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-MADV_DONTNEED holds mmap_sem in read mode and that implies a
-parallel page fault is possible and the kernel can end up with a level 1 PTE
-entry (THP entry) converted to a level 0 PTE entry without flushing
-the THP TLB entry.
+Daniel Axtens <dja@axtens.net> writes:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>
+>> The previous commit reduced the amount of code that is run before we
+>> setup a paca. However there are still a few remaining functions that
+>> run with no paca, or worse, with an arbitrary value in r13 that will
+>> be used as a paca pointer.
+>>
+>> In particular the stack protector canary is stored in the paca, so if
+>> stack protector is activated for any of these functions we will read
+>> the stack canary from wherever r13 points. If r13 happens to point
+>> outside of memory we will get a machine check / checkstop.
+>>
+>> For example if we modify initialise_paca() to trigger stack
+>> protection, and then boot in the mambo simulator with r13 poisoned in
+>> skiboot before calling the kernel:
+>>
+>>   DEBUG: 19952232: (19952232): INSTRUCTION: PC=0xC0000000191FC1E8: [0x3C4C006D]: addis   r2,r12,0x6D [fetch]
+>>   DEBUG: 19952236: (19952236): INSTRUCTION: PC=0xC00000001807EAD8: [0x7D8802A6]: mflr    r12 [fetch]
+>>   FATAL ERROR: 19952276: (19952276): Check Stop for 0:0: Machine Check with ME bit of MSR off
+>>   DEBUG: 19952276: (19952276): INSTRUCTION: PC=0xC0000000191FCA7C: [0xE90D0CF8]: ld      r8,0xCF8(r13) [Instruction Failed]
+>>   INFO: 19952276: (19952277): ** Execution stopped: Mambo Error, Machine Check Stop,  **
+>>   systemsim % bt
+>>   pc:                             0xC0000000191FCA7C      initialise_paca+0x54
+>>   lr:                             0xC0000000191FC22C      early_setup+0x44
+>>   stack:0x00000000198CBED0        0x0     +0x0
+>>   stack:0x00000000198CBF00        0xC0000000191FC22C      early_setup+0x44
+>>   stack:0x00000000198CBF90        0x1801C968      +0x1801C968
+>>
+>> So annotate the relevant functions to ensure stack protection is never
+>> enabled for them.
+>
+> This all makes sense to me, although I don't really understand the stack
+> protector especially well.
 
-Most architectures including POWER have issues with kernel instantiating a level
-0 PTE entry while holding level 1 TLB entries.
+The key details for this bug are that 1) some functions get stack
+protection, if they have on-stack buffers etc. 2) that stack protection
+involves reading a canary from the paca.
 
-The code sequence I am looking at is
 
-down_read(mmap_sem)                         down_read(mmap_sem)
+> I have checked and I can find no other C functions that are called
+> before early_setup.
 
-zap_pmd_range()
- zap_huge_pmd()
-  pmd lock held
-  pmd_cleared
-  table details added to mmu_gather
-  pmd_unlock()
-                                         insert a level 0 PTE entry()
+Thanks.
 
-tlb_finish_mmu().
+Except for all of prom_init.c but that's already built with no stack
+protector.
 
-Fix this by forcing a tlb flush before releasing pmd lock if this is
-not a fullmm invalidate. We can safely skip this invalidate for
-task exit case (fullmm invalidate) because in that case we are sure
-there can be no parallel fault handlers.
+> Do we need to do add setup_64.c to the part of the Makefile that
+> disables tracing of early boot?
+>
+> ifdef CONFIG_FUNCTION_TRACER
+> # Do not trace early boot code
+> CFLAGS_REMOVE_cputable.o = $(CC_FLAGS_FTRACE)
+> CFLAGS_REMOVE_prom_init.o = $(CC_FLAGS_FTRACE)
+> CFLAGS_REMOVE_btext.o = $(CC_FLAGS_FTRACE)
+> CFLAGS_REMOVE_prom.o = $(CC_FLAGS_FTRACE)
+> -> should we add setup_64.c here?
+> endif
 
-This do change the Qemu guest RAM del/unplug time as below
+No I don't think so.
 
-128 core, 496GB guest:
+Tracing is less of a concern during very early boot because although the
+functions may be built to support tracing, you can't actually turn
+tracing *on* that early.
 
-Without patch:
-munmap start: timer = 196449 ms, PID=6681
-munmap finish: timer = 196488 ms, PID=6681 - delta = 39ms
+Also setup_64.c is not purely early boot code, there are some functions
+in there we would like to be able to trace.
 
-With patch:
-munmap start: timer = 196345 ms, PID=6879
-munmap finish: timer = 196714 ms, PID=6879 - delta = 369ms
+As I was saying the other day, we may want to create a specific
+directory (or file) for all the really early boot code where we turn off
+all special options like tracing, kcov, stack protector etc.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/book3s/64/pgtable.h |  5 +++++
- arch/powerpc/mm/book3s64/pgtable.c           | 18 ++++++++++++++++++
- 2 files changed, 23 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 89eb7b350df8..e98cb141d490 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1265,6 +1265,11 @@ static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- }
- #define pmdp_collapse_flush pmdp_collapse_flush
- 
-+#define __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR_FULL
-+pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
-+				   unsigned long addr,
-+				   pmd_t *pmdp, int full);
-+
- #define __HAVE_ARCH_PGTABLE_DEPOSIT
- static inline void pgtable_trans_huge_deposit(struct mm_struct *mm,
- 					      pmd_t *pmdp, pgtable_t pgtable)
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 93fc3be41ed9..fefdc7d41040 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -112,6 +112,24 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 	return __pmd(old_pmd);
- }
- 
-+pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
-+				   unsigned long addr, pmd_t *pmdp, int full)
-+{
-+	pmd_t pmd;
-+	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
-+	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp) &&
-+		   !pmd_devmap(*pmdp)) || !pmd_present(*pmdp));
-+	pmd = pmdp_huge_get_and_clear(vma->vm_mm, addr, pmdp);
-+	/*
-+	 * if it not a fullmm flush, then we can possibly end up converting
-+	 * this PMD pte entry to a regular level 0 PTE by a parallel page fault.
-+	 * Make sure we flush the tlb in this case.
-+	 */
-+	if (!full)
-+		flush_pmd_tlb_range(vma, addr, addr + HPAGE_PMD_SIZE);
-+	return pmd;
-+}
-+
- static pmd_t pmd_set_protbits(pmd_t pmd, pgprot_t pgprot)
- {
- 	return __pmd(pmd_val(pmd) | pgprot_val(pgprot));
--- 
-2.24.1
-
+cheers
