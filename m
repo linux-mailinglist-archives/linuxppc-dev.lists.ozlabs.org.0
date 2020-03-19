@@ -2,52 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C00118ABE6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 05:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CF318ACA2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 07:11:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jZ5n2wRpzDrQq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 15:42:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jc3X42zXzDqwV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 17:11:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jYZZ68q7zDrJD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 15:19:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ZqxOYYlt; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48jYZZ3tb1z9sPF;
- Thu, 19 Mar 2020 15:19:18 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584591558;
- bh=BImETbxzOaIj90zC7U8sK/pp/Wx9f0/AgvV1p1x+VDA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ZqxOYYlt3gS91WRdkIAgxPOp7sep2MACE0TwJAf91g+PJfzgyiY93aD6WNEPIm+UM
- FD4QUWVsdNvIUmK9DOLLmb0/+03uX63WwPu84VW791GyuW9OntlKE89KSVu6tNdSEV
- ayuzvxlSAvhtf7Cya5OodzpCsHtL4UipmN6UtcFRuXqUHjb8O6kuHPh5rECHBATX+y
- aPNrVLOt2MTDswMKwFD34TPqy5+1NLVNPCPyADxvLZsBYaul7+lS1dqvEySkuI9l9W
- cLT25qM9xByJtvVICYMzqF8+H53hvOjKIyUphhxvJp0VF5irIjVJsLcdDuimTVICsE
- zbbhfK+13f5fQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com
-Subject: Re: [PATCH v4] powerpc: setup_64: set up PACA before parsing device
- tree
-In-Reply-To: <20200316042227.12445-1-dja@axtens.net>
-References: <20200316042227.12445-1-dja@axtens.net>
-Date: Thu, 19 Mar 2020 15:19:21 +1100
-Message-ID: <875zf1dliu.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jc1d2s4BzDqwV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 17:09:24 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02J62hKx063960; Thu, 19 Mar 2020 02:09:06 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yu98u2j13-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Mar 2020 02:09:06 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02J62rf6064737;
+ Thu, 19 Mar 2020 02:09:05 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yu98u2j0k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Mar 2020 02:09:05 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02J6509i030518;
+ Thu, 19 Mar 2020 06:09:04 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03dal.us.ibm.com with ESMTP id 2yrpw6yubr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Mar 2020 06:09:04 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02J693KB16122614
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Mar 2020 06:09:03 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 83ADDC6055;
+ Thu, 19 Mar 2020 06:09:03 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 182AFC6057;
+ Thu, 19 Mar 2020 06:09:03 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Mar 2020 06:09:02 +0000 (GMT)
+Subject: [PATCH v8 00/14] powerpc/vas: Page fault handling for user space
+ NX requests
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 18 Mar 2020 23:08:40 -0700
+Message-ID: <1584598120.9256.15237.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-18_10:2020-03-18,
+ 2020-03-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015
+ adultscore=0 mlxlogscore=733 suspectscore=2 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003190024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,173 +90,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Daniel Axtens <dja@axtens.net>
+Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
+ hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
+ ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-> Currently, we set up the PACA after parsing the device tree for CPU
-> features. Before that, r13 contains random data, which means there is
-> random data in r13 while we're running the generic dt parsing code.
->
-> This random data varies depending on whether we boot through a vmlinux or a
-> zImage: for the vmlinux case it's usually around zero, but for zImages we
-> see random values like 912a72603d420015.
->
-> This is poor practice, and can also lead to difficult-to-debug crashes. For
-> example, when kcov is enabled, the kcov instrumentation attempts to read
-> preempt_count out of the current task, which goes via the PACA. This then
-> crashes in the zImage case.
->
-> To resolve this:
->
->  - move the PACA setup to before the cpu feature parsing.
->
->  - because we no longer have access to cpu feature flags in PACA setup,
->    change the HV feature test in the PACA setup path to consider the actual
->    value of the MSR rather than the CPU feature.
->
-> Translations get switched on once we leave early_setup, so I think we'd
-> already catch any other cases where the PACA or task aren't set up.
->
-> Boot tested on a P9 guest and host.
->
-> Fixes: fb0b0a73b223 ("powerpc: Enable kcov")
-> Cc: Andrew Donnellan <ajd@linux.ibm.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
->
-> ---
->
-> Regarding moving the comment about printk()-safety:
-> I am about 75% sure that the thing that makes printk() safe is the PACA,
-> not the CPU features. That's what commit 24d9649574fb ("[POWERPC] Document
-> when printk is useable") seems to indicate, but as someone wise recently
-> told me, "bootstrapping is hard", so I may be totally wrong.
 
-Yeah:
-    When debugging early boot problems, it's common to sprinkle printk's
-    all over the place.  However, on 64-bit powerpc, this can lead to
-    memory corruption if done too early due to the PACA pointer and
-    lockdep core not being initialized.
+On power9, Virtual Accelerator Switchboard (VAS) allows user space or
+kernel to communicate with Nest Accelerator (NX) directly using COPY/PASTE
+instructions. NX provides various functionalities such as compression,
+encryption and etc. But only compression (842 and GZIP formats) is
+supported in Linux kernel on power9.
 
-ie. printk was calling into lockdep and that was blowing chunks. My
-recollection is that lockdep was crashing because it wasn't initialised
-rather than anything to do with the paca, but I could be wrong.
+842 compression driver (drivers/crypto/nx/nx-842-powernv.c)
+is already included in Linux. Only GZIP support will be available from
+user space.
 
-Presumably the lockdep issue was actually fixed in:
+Applications can issue GZIP compression / decompression requests to NX with
+COPY/PASTE instructions. When NX is processing these requests, can hit
+fault on the request buffer (not in memory). It issues an interrupt and
+pastes fault CRB in fault FIFO. Expects kernel to handle this fault and
+return credits for both send and fault windows after processing.
 
-  06bea3dbfe6a ("locking/lockdep: Eliminate lockdep_init()") (Feb 2016)
+This patch series adds IRQ and fault window setup, and NX fault handling:
+- Alloc IRQ and trigger port address, and configure IRQ per VAS instance.
+- Set port# for each window to generate an interrupt when noticed fault.
+- Set fault window and FIFO on which NX paste fault CRB.
+- Setup IRQ thread fault handler per VAS instance.
+- When receiving an interrupt, Read CRBs from fault FIFO and update
+  coprocessor_status_block (CSB) in the corresponding CRB with translation
+  failure (CSB_CC_TRANSLATION). After issuing NX requests, process polls
+  on CSB address. When it sees translation error, can touch the request
+  buffer to bring the page in to memory and reissue NX request.
+- If copy_to_user fails on user space CSB address, OS sends SEGV signal.
 
-Which removed the lockdep_init() call entirely.
+Tested these patches with NX-GZIP support and will be posting this series
+soon.
 
-And that's why we haven't noticed any issues despite the fact that
-dt_cpu_ftrs_init() *is* calling printk:
+Patches 1 & 2: Define alloc IRQ and get port address per chip which are needed
+               to alloc IRQ per VAS instance.
+Patch 3: Define nx_fault_stamp on which NX writes fault status for the fault
+         CRB
+Patch 4: Alloc and setup IRQ and trigger port address for each VAS instance
+Patch 5: Setup fault window per each VAS instance. This window is used for
+         NX to paste fault CRB in FIFO.
+Patches 6 & 7: Setup threaded IRQ per VAS and register NX with fault window
+         ID and port number for each send window so that NX paste fault CRB
+         in this window.
+Patch 8: Reference to pid and mm so that pid is not used until window closed.
+         Needed for multi thread application where child can open a window
+         and can be used by parent later.
+Patches 9 and 10: Process CRBs from fault FIFO and notify tasks by
+         updating CSB or through signals.
+Patches 11 and 12: Return credits for send and fault windows after handling
+        faults.
+Patch 14:Fix closing send window after all credits are returned. This issue
+         happens only for user space requests. No page faults on kernel
+         request buffer.
 
-  13190702: (13190702): [    0.013183435,5] INIT: Starting kernel at 0x20010000, fdt at 0x3054c230 15395 bytes
-  41352186: (41352186): [    0.000000][    T0] dt-cpu-ftrs: setup for ISA 3000
-  41479101: (41479101): [    0.000000][    T0] dt-cpu-ftrs: not enabling: system-call-vectored (disabled or unsupported by kernel)
-  41718546: (41718546): [    0.000000][    T0] dt-cpu-ftrs: final cpu/mmu features = 0x0001986f8f5fb1a7 0x3c006041
-  41923251: (41923251): [    0.000000][    T0] radix-mmu: Page sizes from device-tree:
+Changelog:
+V2:
+  - Use threaded IRQ instead of own kernel thread handler
+  - Use pswid instead of user space CSB address to find valid CRB
+  - Removed unused macros and other changes as suggested by Christoph Hellwig
+
+V3:
+  - Rebased to 5.5-rc2
+  - Use struct pid * instead of pid_t for vas_window tgid
+  - Code cleanup as suggested by Christoph Hellwig
+
+V4:
+  - Define xive alloc and get IRQ info based on chip ID and use these
+    functions for IRQ setup per VAS instance. It eliminates skiboot
+    dependency as suggested by Oliver.
+
+V5:
+  - Do not update CSB if the process is exiting (patch9)
+
+V6:
+  - Add interrupt handler instead of default one and return IRQ_HANDLED
+    if the fault handling thread is already in progress. (Patch6)
+  - Use platform send window ID and CCW[0] bit to find valid CRB in
+    fault FIFO (Patch6).
+  - Return fault address to user space in BE and other changes as
+    suggested by Michael Neuling. (patch9)
+  - Rebased to 5.6-rc4
+
+V7:
+  - Fix sparse warnings (patches 6,9 and 10)
+
+V8:
+  - Move mm_context_remove_copro() before mmdrop() (patch8)
+  - Move barrier before csb.flags store and add WARN_ON_ONCE() checks (patch9)
+
+Haren Myneni (14):
+  powerpc/xive: Define xive_native_alloc_irq_on_chip()
+  powerpc/xive: Define xive_native_alloc_get_irq_info()
+  powerpc/vas: Define nx_fault_stamp in coprocessor_request_block
+  powerpc/vas: Alloc and setup IRQ and trigger port address
+  powerpc/vas: Setup fault window per VAS instance
+  powerpc/vas: Setup thread IRQ handler per VAS instance
+  powerpc/vas: Register NX with fault window ID and IRQ port value
+  powerpc/vas: Take reference to PID and mm for user space windows
+  powerpc/vas: Update CSB and notify process for fault CRBs
+  powerpc/vas: Print CRB and FIFO values
+  powerpc/vas: Do not use default credits for receive window
+  powerpc/vas: Return credits after handling fault
+  powerpc/vas: Display process stuck message
+  powerpc/vas: Free send window in VAS instance after credits returned
+
+ arch/powerpc/include/asm/icswx.h            |  18 +-
+ arch/powerpc/include/asm/xive.h             |  11 +-
+ arch/powerpc/platforms/powernv/Makefile     |   2 +-
+ arch/powerpc/platforms/powernv/ocxl.c       |  20 +-
+ arch/powerpc/platforms/powernv/vas-debug.c  |   2 +-
+ arch/powerpc/platforms/powernv/vas-fault.c  | 332 ++++++++++++++++++++++++++++
+ arch/powerpc/platforms/powernv/vas-window.c | 185 ++++++++++++++--
+ arch/powerpc/platforms/powernv/vas.c        | 101 ++++++++-
+ arch/powerpc/platforms/powernv/vas.h        |  51 ++++-
+ arch/powerpc/sysdev/xive/native.c           |  29 ++-
+ 10 files changed, 704 insertions(+), 47 deletions(-)
+ create mode 100644 arch/powerpc/platforms/powernv/vas-fault.c
+
+-- 
+1.8.3.1
 
 
-As you've seen I pulled on this string and found problems with stack
-protector. But I didn't actually see any problems with printk.
 
-So possibly we should update that comment to not refer to printk but
-instead say something like "don't call generic code".
-
-cheers
-
-
-> v4: Update commit message and clarify that the mfmsr() approach is not
->      for general use. Thanks Nick Piggin.
->
-> v3: Update comment, thanks Christophe Leroy.
->     Remove a comment in dt_cpu_ftrs.c that is no longer accurate - thanks
->       Andrew. I think we want to retain all the code still, but I'm open to
->       being told otherwise.
-> ---
->  arch/powerpc/kernel/dt_cpu_ftrs.c |  1 -
->  arch/powerpc/kernel/paca.c        | 10 +++++++---
->  arch/powerpc/kernel/setup_64.c    | 20 +++++++++++++++-----
->  3 files changed, 22 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> index 182b4047c1ef..36bc0d5c4f3a 100644
-> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> @@ -139,7 +139,6 @@ static void __init cpufeatures_setup_cpu(void)
->  	/* Initialize the base environment -- clear FSCR/HFSCR.  */
->  	hv_mode = !!(mfmsr() & MSR_HV);
->  	if (hv_mode) {
-> -		/* CPU_FTR_HVMODE is used early in PACA setup */
->  		cur_cpu_spec->cpu_features |= CPU_FTR_HVMODE;
->  		mtspr(SPRN_HFSCR, 0);
->  	}
-> diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-> index 949eceb254d8..0ee6308541b1 100644
-> --- a/arch/powerpc/kernel/paca.c
-> +++ b/arch/powerpc/kernel/paca.c
-> @@ -214,11 +214,15 @@ void setup_paca(struct paca_struct *new_paca)
->  	/* On Book3E, initialize the TLB miss exception frames */
->  	mtspr(SPRN_SPRG_TLB_EXFRAME, local_paca->extlb);
->  #else
-> -	/* In HV mode, we setup both HPACA and PACA to avoid problems
-> +	/*
-> +	 * In HV mode, we setup both HPACA and PACA to avoid problems
->  	 * if we do a GET_PACA() before the feature fixups have been
-> -	 * applied
-> +	 * applied.
-> +	 *
-> +	 * Normally you should test against CPU_FTR_HVMODE, but CPU features
-> +	 * are not yet set up when we first reach here.
->  	 */
-> -	if (early_cpu_has_feature(CPU_FTR_HVMODE))
-> +	if (mfmsr() & MSR_HV)
->  		mtspr(SPRN_SPRG_HPACA, local_paca);
->  #endif
->  	mtspr(SPRN_SPRG_PACA, local_paca);
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> index e05e6dd67ae6..2259da8e8685 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -285,18 +285,28 @@ void __init early_setup(unsigned long dt_ptr)
->  
->  	/* -------- printk is _NOT_ safe to use here ! ------- */
->  
-> -	/* Try new device tree based feature discovery ... */
-> -	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
-> -		/* Otherwise use the old style CPU table */
-> -		identify_cpu(0, mfspr(SPRN_PVR));
-> +	/*
-> +	 * Assume we're on cpu 0 for now.
-> +	 *
-> +	 * We need to load a PACA very early if we are using kcov. kcov will
-> +	 * call in_task() in its instrumentation, which relies on the current
-> +	 * task from the PACA. dt_cpu_ftrs_init is coveraged-enabled and also
-> +	 * calls into the coverage-enabled generic dt library.
-> +	 *
-> +	 * Set up a temporary paca. It is going to be replaced below.
-> +	 */
->  
-> -	/* Assume we're on cpu 0 for now. Don't write to the paca yet! */
->  	initialise_paca(&boot_paca, 0);
->  	setup_paca(&boot_paca);
->  	fixup_boot_paca();
->  
->  	/* -------- printk is now safe to use ------- */
->  
-> +	/* Try new device tree based feature discovery ... */
-> +	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
-> +		/* Otherwise use the old style CPU table */
-> +		identify_cpu(0, mfspr(SPRN_PVR));
-> +
->  	/* Enable early debugging if any specified (see udbg.h) */
->  	udbg_early_init();
->  
-> -- 
-> 2.20.1
