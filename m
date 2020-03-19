@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3764418AE7F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:42:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D47518AE87
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:44:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jgQG5tY4zDrCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 19:42:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jgSL3SMRzDr9P
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 19:44:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,37 +17,37 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=XAF/A62c; dkim-atps=neutral
+ header.s=default header.b=NZqqpZ2j; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jgNX2bzQzDr3T
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:40:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jgNv6TGrzDr3j
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:41:19 +1100 (AEDT)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3A53D20724;
- Thu, 19 Mar 2020 08:40:55 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 237512072C;
+ Thu, 19 Mar 2020 08:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584607255;
- bh=dHtJENXjO0z7ELO16+oHxTUd6KSiGYOo+FAU1g3r1L8=;
+ s=default; t=1584607277;
+ bh=Ax69JWe2mAO3MiZ3t8XP/HcweZkT7pxlhXJ1svHjTis=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=XAF/A62c4v2KZMa+b7MNCvt5Okc6ArSh27nZ6WmkbKaRhYOcWXD+8cWrAPcz+Oxd5
- GcEJnnmipmcEEfVQKgD3elLE172vOeV5zt61gPiItbhWXmp1y4AT19XvauDwP8kAkL
- YnG/UNS29vEd98MwDnk+VTNPMtTHoyQsUCF7HqAk=
-Date: Thu, 19 Mar 2020 09:40:53 +0100
+ b=NZqqpZ2jqJGbiLh1O9e+6Zp6HeAL9Yj2e7wjAbOpeJv419lkji1jaJB7nHjmMhGzm
+ 7GPB5mhSV879Jnm+FzyKpqgQIUxX3FrelEzxKQJHyPfzrXshDpuEU831YrsdrjaF5K
+ ZKnx/byPP6ThnVhPThevhoLaMVz4u7vaQJ77K2II=
+Date: Thu, 19 Mar 2020 09:41:15 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 04/15] orinoco_usb: Use the regular completion
- interfaces
-Message-ID: <20200319084053.GA3492783@kroah.com>
+Subject: Re: [patch V2 03/15] usb: gadget: Use completion interface instead
+ of open coding it
+Message-ID: <20200319084115.GB3492783@kroah.com>
 References: <20200318204302.693307984@linutronix.de>
- <20200318204407.793899611@linutronix.de>
+ <20200318204407.700914073@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200318204407.793899611@linutronix.de>
+In-Reply-To: <20200318204407.700914073@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,59 +76,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 18, 2020 at 09:43:06PM +0100, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
+On Wed, Mar 18, 2020 at 09:43:05PM +0100, Thomas Gleixner wrote:
+> ep_io() uses a completion on stack and open codes the waiting with:
 > 
-> The completion usage in this driver is interesting:
+>   wait_event_interruptible (done.wait, done.done);
+> and
+>   wait_event (done.wait, done.done);
 > 
->   - it uses a magic complete function which according to the comment was
->     implemented by invoking complete() four times in a row because
->     complete_all() was not exported at that time.
+> This waits in non-exclusive mode for complete(), but there is no reason to
+> do so because the completion can only be waited for by the task itself and
+> complete() wakes exactly one exlusive waiter.
 > 
->   - it uses an open coded wait/poll which checks completion:done. Only one wait
->     side (device removal) uses the regular wait_for_completion() interface.
+> Replace the open coded implementation with the corresponding
+> wait_for_completion*() functions.
 > 
-> The rationale behind this is to prevent that wait_for_completion() consumes
-> completion::done which would prevent that all waiters are woken. This is not
-> necessary with complete_all() as that sets completion::done to UINT_MAX which
-> is left unmodified by the woken waiters.
-> 
-> Replace the magic complete function with complete_all() and convert the
-> open coded wait/poll to regular completion interfaces.
-> 
-> This changes the wait to exclusive wait mode. But that does not make any
-> difference because the wakers use complete_all() which ignores the
-> exclusive mode.
+> No functional change.
 > 
 > Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
+> Cc: Felipe Balbi <balbi@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-usb@vger.kernel.org
 > ---
-> V2: New patch to avoid conversion to swait functions later.
+> V2: New patch to avoid the conversion to swait interfaces later
 > ---
->  drivers/net/wireless/intersil/orinoco/orinoco_usb.c |   21 ++++----------------
->  1 file changed, 5 insertions(+), 16 deletions(-)
-> 
-> --- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-> @@ -365,17 +365,6 @@ static struct request_context *ezusb_all
->  	return ctx;
->  }
->  
-> -
-> -/* Hopefully the real complete_all will soon be exported, in the mean
-> - * while this should work. */
-> -static inline void ezusb_complete_all(struct completion *comp)
-> -{
-> -	complete(comp);
-> -	complete(comp);
-> -	complete(comp);
-> -	complete(comp);
-> -}
-
-That's so funny... :(
 
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
