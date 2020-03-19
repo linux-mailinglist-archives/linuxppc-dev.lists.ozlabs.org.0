@@ -2,40 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B2618B156
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 11:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A1418B174
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 11:31:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jjmq0NLczDr0w
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 21:28:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jjqp45gczDqyS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 21:31:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=dypae57F; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jjkG12qgzDr0l
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 21:26:29 +1100 (AEDT)
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
- (envelope-from <bigeasy@linutronix.de>)
- id 1jEsNR-0005K1-NA; Thu, 19 Mar 2020 11:26:13 +0100
-Date: Thu, 19 Mar 2020 11:26:13 +0100
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [patch V2 07/15] powerpc/ps3: Convert half completion to rcuwait
-Message-ID: <20200319102613.hbwax7zrrvgcde4x@linutronix.de>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.102694393@linutronix.de>
- <20200319100459.GA18506@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jjmb0XhDzDrFn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 21:28:31 +1100 (AEDT)
+Received: from zn.tnic (p200300EC2F0A850035180F69CBC86220.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f0a:8500:3518:f69:cbc8:6220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C77D31EC0CF9;
+ Thu, 19 Mar 2020 11:28:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1584613707;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=iZUZhIBkCAhoEjiFaedPIp77BnKEXPzFG3udsiDWQxc=;
+ b=dypae57FKE5rQct1uVw9z0eRqwwakJqg6wApvPGh+7jfpxaIYR9NvqV9dcyEoHaQhwxgS1
+ SyvVx/9MAyVls4z0HFyj86rMEjzesgL6031uOQFgJUVuTia2O/DFwyOCcnYoUJCzSSUw5a
+ 7IXXW0Qn9kLr8AQU+YnSYTs99pl6VAE=
+Date: Thu, 19 Mar 2020 11:28:34 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH -v2] treewide: Rename "unencrypted" to "decrypted"
+Message-ID: <20200319102834.GC13073@zn.tnic>
+References: <20200317111822.GA15609@zn.tnic> <20200319101657.GB13073@zn.tnic>
+ <20200319102011.GA3617@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200319100459.GA18506@infradead.org>
+In-Reply-To: <20200319102011.GA3617@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,36 +60,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- linux-pci@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
- Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Davidlohr Bueso <dave@stgolabs.net>,
- "Paul E . McKenney" <paulmck@kernel.org>,
- Logan Gunthorpe <logang@deltatee.com>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
- Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-wireless@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-s390@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-03-19 03:04:59 [-0700], Christoph Hellwig wrote:
-> But I wonder how alive the whole PS3 support is to start with..
+On Thu, Mar 19, 2020 at 11:20:11AM +0100, Christoph Hellwig wrote:
+> I thought we agreed that decrypted is absolutely the wrong term.
 
-OtherOS can only be used on "old" PS3 which do not have have their
-firmware upgraded past version 3.21, released April 1, 2010 [0].
-It was not possible to install OtherOS on PS3-slim and I don't remember
-if it was a successor or a budget version (but it had lower power
-consumption as per my memory).
-*I* remember from back then that a few universities bought quite a few
-of them and used them as a computation cluster. However, whatever broke
-over the last 10 years is broken.
+I don't think we did. At least I don't know where we did that.
 
-[0] https://en.wikipedia.org/wiki/OtherOS
+> So NAK - if you want to change things it needs to go the other way.
 
-Sebastian
+We are already using "decrypted" everywhere in arch/x86/. Changing that
+would be a *lot* more churn.
+
+And it is just a term, for chrissakes, to denote memory which is not
+encrypted. And it would make our lifes easier if we had only *two* terms
+instead of three or more. Especially if the concept we denote with this
+is a binary one: encrypted memory and *not* encrypted memory.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
