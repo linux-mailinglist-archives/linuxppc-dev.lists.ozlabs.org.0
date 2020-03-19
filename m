@@ -1,42 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549BF18AECE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:54:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jggj4nDXzDr6y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 19:54:09 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C53AE18AED4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:55:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jgjl11Y5zDr5g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 19:55:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=stgolabs.net (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=dave@stgolabs.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=stgolabs.net
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jgdk00MXzDr5D
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:52:21 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 25E85B117;
- Thu, 19 Mar 2020 08:52:16 +0000 (UTC)
-Date: Thu, 19 Mar 2020 01:51:09 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 08/15] Documentation: Add lock ordering and nesting
- documentation
-Message-ID: <20200319085109.vrvmpesytul3ek3e@linux-p48b>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.211530902@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200318204408.211530902@linutronix.de>
-User-Agent: NeoMutt/20180716
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jgdx1hdDzDr5s
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:52:36 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02J8XfDQ053833
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 04:52:34 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8bsjp7f-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 04:52:34 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Thu, 19 Mar 2020 08:52:28 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 19 Mar 2020 08:52:24 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02J8qMSx54657268
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Mar 2020 08:52:22 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0EE2811C05B;
+ Thu, 19 Mar 2020 08:52:22 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9D1611C058;
+ Thu, 19 Mar 2020 08:52:17 +0000 (GMT)
+Received: from [9.85.82.238] (unknown [9.85.82.238])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Mar 2020 08:52:17 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [RFC 1/2] mm, slub: prevent kmalloc_node crashes and memory leaks
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
+Date: Thu, 19 Mar 2020 14:22:13 +0530
+Content-Transfer-Encoding: quoted-printable
+References: <20200318144220.18083-1-vbabka@suse.cz>
+ <20200318160610.GD26049@in.ibm.com>
+ <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
+To: Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: Apple Mail (2.3445.104.11)
+X-TM-AS-GCONF: 00
+x-cbid: 20031908-0008-0000-0000-0000035FE18C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031908-0009-0000-0000-00004A813E9D
+Message-Id: <0F67B5AA-96DF-4977-BDC6-D72959B3F7EF@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-19_01:2020-03-18,
+ 2020-03-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=747 spamscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003190039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,60 +92,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
- Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Logan Gunthorpe <logang@deltatee.com>,
- "Paul E . McKenney" <paulmck@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>, Michal Hocko <mhocko@kernel.org>,
+ Pekka Enberg <penberg@kernel.org>, linux-mm@kvack.org,
+ Kirill Tkhai <ktkhai@virtuozzo.com>, David Rientjes <rientjes@google.com>,
+ Christopher Lameter <cl@linux.com>, bharata@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 18 Mar 2020, Thomas Gleixner wrote:
->+Owner semantics
->+===============
->+
->+Most lock types in the Linux kernel have strict owner semantics, i.e. the
->+context (task) which acquires a lock has to release it.
->+
->+There are two exceptions:
->+
->+  - semaphores
->+  - rwsems
->+
->+semaphores have no strict owner semantics for historical reasons. They are
 
-I would rephrase this to:
+> OK how about this version? It's somewhat ugly, but important is that =
+the fast
+> path case (c->page exists) is unaffected and another common case =
+(c->page is
+> NULL, but node is NUMA_NO_NODE) is just one extra check - impossible =
+to avoid at
+> some point anyway.
+>=20
 
-semaphores have no owner semantics for historical reason, and as such
-trylock and release operations can be called from interrupt context. They
-are ...
+I attempted the suggested tests.
 
->+often used for both serialization and waiting purposes. That's generally
->+discouraged and should be replaced by separate serialization and wait
->+mechanisms.
-            ^ , such as mutexes or completions.
+Test 1: March 18 linux-next + Patch 1 [1] + Patch  2 [2]
 
->+
->+rwsems have grown interfaces which allow non owner release for special
->+purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
->+substitutes all locking primitives except semaphores with RT-mutex based
->+implementations to provide priority inheritance for all lock types except
->+the truly spinning ones. Priority inheritance on ownerless locks is
->+obviously impossible.
->+
->+For now the rwsem non-owner release excludes code which utilizes it from
->+being used on PREEMPT_RT enabled kernels. In same cases this can be
->+mitigated by disabling portions of the code, in other cases the complete
->+functionality has to be disabled until a workable solution has been found.
+Machine boots fine. numactl o/p after boot:
 
-Thanks,
-Davidlohr
+# numactl -H
+available: 2 nodes (0-1)
+node 0 cpus:
+node 0 size: 0 MB
+node 0 free: 0 MB
+node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 =
+23 24 25 26 27 28 29 30 31
+node 1 size: 35631 MB
+node 1 free: 32724 MB
+node distances:
+node   0   1
+  0:  10  40
+  1:  40  10
+#
+
+Test 2: Code base as used in Test 1 + 3 patch series from Srikar [3]
+
+Machine boots fine. numactl o/p after boot:
+
+# numactl -H
+available: 1 nodes (1)
+node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 =
+23 24 25 26 27 28 29 30 31
+node 1 size: 35631 MB
+node 1 free: 32711 MB
+node distances:
+node   1
+  1:  10
+#
+
+Thanks!
+-Sachin
+
+
+[1] =
+https://lore.kernel.org/linux-mm/e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse=
+.cz/T/#mb8d0a358dc5c5fb9661fa45047072a92c510faf2
+[2] =
+https://lore.kernel.org/linux-mm/e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse=
+.cz/T/#mce342e54a95ce2ee3043901e52d70ee2fd94c516
+[3] =
+https://lore.kernel.org/linux-mm/20200311110237.5731-1-srikar@linux.vnet.i=
+bm.com/=
+
