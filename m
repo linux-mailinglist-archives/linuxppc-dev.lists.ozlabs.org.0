@@ -2,61 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABAA18B24E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 12:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BFE18B2DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 12:59:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jl5821VczDqBx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 22:27:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jlnQ3kK8zDrGq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 22:59:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jkyN3JpmzDr5n
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 22:22:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jPns8Zj4; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48jkyJ4c93z9sQt;
- Thu, 19 Mar 2020 22:22:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584616922;
- bh=EEchnxXtnjsxaM2QrIQOc4QB6WvA6Z7scPBjPCIHTLw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jPns8Zj45gHQLCIXDaac06BYlBNrlEfdIA/AyVRhSvWuFR+bSj6L3xUOlxAeLAT7Y
- IimhyEhBlVePcdOLNWU++TkB4dTNn6/fWpVDVzmvLjSRL3n+C/bhTKCIBp4ybK2VI4
- a818JY9LzjnY7BK8obSeDZhTko1z2dzxiS8xhKrpPOT8TKQkcLFCeG5P9tUM5guDbT
- 7RbLWW+cSm/44zSyDEzwJxehyxpWzR3KojDp6N0uEB/+QwcwpUf5bdTr1YJv9TMO2b
- VcZK/Ck0u0ikk8DV+5ArdmgIiZ9GPL+iW4lOqXAPiOit4L52Yeq+QY6sN9tQYGf407
- D2r+081Ra/Mhw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kim Phillips <kim.phillips@amd.com>, maddy <maddy@linux.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [RFC 00/11] perf: Enhancing perf to export processor hazard
- information
-In-Reply-To: <8803550e-5d6d-2eda-39f5-e4594052188c@amd.com>
-References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
- <20200302101332.GS18400@hirez.programming.kicks-ass.net>
- <CABPqkBSzwpR6p7UZs7g1vWGCJRLsh565mRMGc6m0Enn1SnkC4w@mail.gmail.com>
- <df966d6e-8898-029f-e697-8496500a1663@amd.com>
- <2550ec4d-a015-4625-ca24-ff10632dbe2e@linux.ibm.com>
- <d3c82708-dd09-80e0-4e9f-1cbab118a169@amd.com>
- <8a4d966c-acc9-b2b7-8ab7-027aefab201c@linux.ibm.com>
- <f226f4c5-6310-fd6b-ee76-aebd938ec212@amd.com>
- <0c5e94a3-e86e-f7cb-d668-d542b3a8ae29@linux.ibm.com>
- <8803550e-5d6d-2eda-39f5-e4594052188c@amd.com>
-Date: Thu, 19 Mar 2020 22:22:03 +1100
-Message-ID: <87o8ssd1yc.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jlf05d2ZzDr7M
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 22:52:56 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id B2E7BAC84;
+ Thu, 19 Mar 2020 11:52:50 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v11 0/8] Disable compat cruft on ppc64le v11
+Date: Thu, 19 Mar 2020 12:52:20 +0100
+Message-Id: <cover.1584613649.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,51 +43,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Andi Kleen <ak@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Jiri Olsa <jolsa@redhat.com>,
- Alexey Budankov <alexey.budankov@linux.intel.com>,
- LKML <linux-kernel@vger.kernel.org>, Stephane Eranian <eranian@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ "linux-fsdevel @ vger . kernel . org --in-reply-to="
+ <20200225173541.1549955-1-npiggin@gmail.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- yao.jin@linux.intel.com, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Robert Richter <robert.richter@amd.com>, Namhyung Kim <namhyung@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, "Liang, Kan" <kan.liang@linux.intel.com>
+ Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jordan Niethe <jniethe5@gmail.com>, Michal Suchanek <msuchanek@suse.de>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Eric Richter <erichte@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kim Phillips <kim.phillips@amd.com> writes:
-> On 3/17/20 1:50 AM, maddy wrote:
->> On 3/13/20 4:08 AM, Kim Phillips wrote:
->>> On 3/11/20 11:00 AM, Ravi Bangoria wrote:
->>>
->>>> information on each sample using PMI at periodic intervals. Hence proposing
->>>> PERF_SAMPLE_PIPELINE_HAZ.
->>>
->>> And that's fine for any extra bits that POWER9 has to convey
->>> to its users beyond things already represented by other sample
->>> types like PERF_SAMPLE_DATA_SRC, but the capturing of both POWER9
->>> and other vendor e.g., AMD IBS data can be made vendor-independent
->>> at record time by using SAMPLE_AUX, or SAMPLE_RAW even, which is
->>> what IBS currently uses.
->> 
->> My bad. Not sure what you mean by this. We are trying to abstract
->> as much vendor specific data as possible with this (like perf-mem).
->
-> Perhaps if I say it this way: instead of doing all the 
-> isa207_get_phazard_data() work past the mfspr(SPRN_SIER)
-> in patch 4/11, rather/instead just put the raw sier value in a 
-> PERF_SAMPLE_RAW or _AUX event, and call perf_event_update_userpage.
-> Specific SIER capabilities can be written as part of the perf.data
-> header.  Then synthesize the true pipe events from the raw SIER
-> values later, and in userspace.
+Less code means less bugs so add a knob to skip the compat stuff.
 
-In the past the perf maintainers have wanted the perf API to abstract
-over the specific CPU details, rather than just pushing raw register
-values out to userspace.
+Changes in v2: saner CONFIG_COMPAT ifdefs
+Changes in v3:
+ - change llseek to 32bit instead of builing it unconditionally in fs
+ - clanup the makefile conditionals
+ - remove some ifdefs or convert to IS_DEFINED where possible
+Changes in v4:
+ - cleanup is_32bit_task and current_is_64bit
+ - more makefile cleanup
+Changes in v5:
+ - more current_is_64bit cleanup
+ - split off callchain.c 32bit and 64bit parts
+Changes in v6:
+ - cleanup makefile after split
+ - consolidate read_user_stack_32
+ - fix some checkpatch warnings
+Changes in v7:
+ - add back __ARCH_WANT_SYS_LLSEEK to fix build with llseek
+ - remove leftover hunk
+ - add review tags
+Changes in v8:
+ - consolidate valid_user_sp to fix it in the split callchain.c
+ - fix build errors/warnings with PPC64 !COMPAT and PPC32
+Changes in v9:
+ - remove current_is_64bit()
+Chanegs in v10:
+ - rebase, sent together with the syscall cleanup
+Changes in v11:
+ - rebase
+ - add MAINTAINERS pattern for ppc perf
 
-But maybe that's no longer the case and we should just use
-PERF_SAMPLE_AUX?
+Michal Suchanek (8):
+  powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
+  powerpc: move common register copy functions from signal_32.c to
+    signal.c
+  powerpc/perf: consolidate read_user_stack_32
+  powerpc/perf: consolidate valid_user_sp
+  powerpc/64: make buildable without CONFIG_COMPAT
+  powerpc/64: Make COMPAT user-selectable disabled on littleendian by
+    default.
+  powerpc/perf: split callchain.c by bitness
+  MAINTAINERS: perf: Add pattern that matches ppc perf to the perf
+    entry.
 
-cheers
+ MAINTAINERS                            |   2 +
+ arch/powerpc/Kconfig                   |   5 +-
+ arch/powerpc/include/asm/thread_info.h |   4 +-
+ arch/powerpc/include/asm/unistd.h      |   1 +
+ arch/powerpc/kernel/Makefile           |   6 +-
+ arch/powerpc/kernel/entry_64.S         |   2 +
+ arch/powerpc/kernel/signal.c           | 144 +++++++++-
+ arch/powerpc/kernel/signal_32.c        | 140 ----------
+ arch/powerpc/kernel/syscall_64.c       |   6 +-
+ arch/powerpc/kernel/vdso.c             |   3 +-
+ arch/powerpc/perf/Makefile             |   5 +-
+ arch/powerpc/perf/callchain.c          | 356 +------------------------
+ arch/powerpc/perf/callchain.h          |  20 ++
+ arch/powerpc/perf/callchain_32.c       | 196 ++++++++++++++
+ arch/powerpc/perf/callchain_64.c       | 174 ++++++++++++
+ fs/read_write.c                        |   3 +-
+ 16 files changed, 556 insertions(+), 511 deletions(-)
+ create mode 100644 arch/powerpc/perf/callchain.h
+ create mode 100644 arch/powerpc/perf/callchain_32.c
+ create mode 100644 arch/powerpc/perf/callchain_64.c
+
+-- 
+2.23.0
+
