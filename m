@@ -2,46 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A8918C3E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 00:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B65218C3FD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 00:56:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48k3R70bLSzDrTg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 10:44:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48k3hF4ZJxzDrRr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 10:55:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48k3Cm564JzDr5J
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:34:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=okApgmuZ; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 48k3Cm3QZgz9sSL; Fri, 20 Mar 2020 10:34:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1584660884; bh=LG8xa3mS/oJ94UFOhSt2KGXBPPU42IS8V/3vBwMyZ/o=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=okApgmuZWnbdSgXyMpMtt0Ag/byLSD5AFy8eQz8G5nuUs5kEs60eQBs0ktqfCnfih
- ilfkajX1ztYMWdMYeyI+j0w5jQDsuHWC7xOb7xZQAccxqr5JGueyfWtPv5nj7rFSlt
- PVjsyByaNGFBFXttYFegapoB+zlNhG9a++d6vj7M1PmgYcqSVVCr2FVYENuWZfRPnl
- pf80sFN6VBuIhTxBL8t/ckNSQgdXO6MmVgVwGXO9ErEpwfS4py5v8Ij3TSbjtAtP6w
- LVmzSt2gF+3avbt9maTtZGZFyGVDGHDWEFU5hDdFKmCr2b4qE/pIzw/afREjLT+af9
- +MTiv8dylJHOA==
-Date: Fri, 20 Mar 2020 10:34:34 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH 0/3] KVM: PPC: Fix host kernel crash with PR KVM
-Message-ID: <20200319233434.GF3260@blackberry>
-References: <158455340419.178873.11399595021669446372.stgit@bahia.lan>
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48k3fV2L6YzDrHt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:54:26 +1100 (AEDT)
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
+ helo=nanos.tec.linutronix.de)
+ by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+ (Exim 4.80) (envelope-from <tglx@linutronix.de>)
+ id 1jF4z5-0002E7-Dg; Fri, 20 Mar 2020 00:53:56 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+ id 4DD6B100375; Fri, 20 Mar 2020 00:53:49 +0100 (CET)
+From: Thomas Gleixner <tglx@linutronix.de>
+To: Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH -v2] treewide: Rename "unencrypted" to "decrypted"
+In-Reply-To: <20200319174254.GE13073@zn.tnic>
+References: <20200317111822.GA15609@zn.tnic> <20200319101657.GB13073@zn.tnic>
+ <20200319102011.GA3617@lst.de> <20200319102834.GC13073@zn.tnic>
+ <8d6d3b6c-7e4e-7d9e-3e19-38f7d4477c72@arm.com>
+ <20200319112054.GD13073@zn.tnic> <878sjw5k9u.fsf@nanos.tec.linutronix.de>
+ <20200319174254.GE13073@zn.tnic>
+Date: Fri, 20 Mar 2020 00:53:49 +0100
+Message-ID: <87pnd752b6.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158455340419.178873.11399595021669446372.stgit@bahia.lan>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
+ SHORTCIRCUIT=-0.0001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,33 +56,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 18, 2020 at 06:43:24PM +0100, Greg Kurz wrote:
-> Recent cleanup from Sean Christopherson introduced a use-after-free
-> condition that crashes the kernel when shutting down the VM with
-> PR KVM. It went unnoticed so far because PR isn't tested/used much
-> these days (mostly used for nested on POWER8, not supported on POWER9
-> where HV should be used for nested), and other KVM implementations for
-> ppc are unaffected.
-> 
-> This all boils down to the fact that the path that frees the per-vCPU
-> MMU data goes through a complex set of indirections. This obfuscates
-> the code to the point that we didn't realize that the MMU data was
-> now being freed too early. And worse, most of the indirection isn't
-> needed because only PR KVM has some MMU data to free when the vCPU is
-> destroyed.
-> 
-> Fix the issue (patch 1) and simplify the code (patch 2 and 3).
+Borislav Petkov <bp@alien8.de> writes:
+> On Thu, Mar 19, 2020 at 06:25:49PM +0100, Thomas Gleixner wrote:
+>> TBH, I don't see how
+>> 
+>> 	if (force_dma_decrypted(dev))
+>> 		set_memory_encrypted((unsigned long)cpu_addr, 1 << page_order);
+>>
+>> makes more sense than the above. It's both non-sensical unless there is
+>
+> 9087c37584fb ("dma-direct: Force unencrypted DMA under SME for certain DMA masks")
 
-I have put this series in my kvm-ppc-next branch, and I believe
-Michael Ellerman is putting patch 1 in his fixes branch so it gets
-into 5.6.
+Reading the changelog again...
+
+I have to say that force_dma_unencrypted() makes way more sense in that
+context than force_dma_decrypted(). It still wants a comment.
+
+Linguistical semantics and correctness matters a lot. Consistency is
+required as well, but not for the price of ambiguous wording.
 
 Thanks,
-Paul.
+
+        tglx
+
+
