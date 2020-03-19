@@ -2,85 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B0E18ACDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 07:38:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8C118AD22
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 08:04:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jcg45lvTzDr1V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 17:38:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jdFd3q2hzDr3V
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 18:04:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Tli73Npw; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jcGs3pwFzDr9w
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 17:20:52 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02J63jRB022604; Thu, 19 Mar 2020 02:20:42 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8bsea10-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 02:20:42 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02J63tVD023325;
- Thu, 19 Mar 2020 02:20:42 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8bsea0c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 02:20:42 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02J6F0cT022045;
- Thu, 19 Mar 2020 06:20:40 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01wdc.us.ibm.com with ESMTP id 2yrpw6pcav-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Mar 2020 06:20:40 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02J6Keux49086916
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 06:20:40 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1ADBC13604F;
- Thu, 19 Mar 2020 06:20:40 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 82C62136053;
- Thu, 19 Mar 2020 06:20:38 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Mar 2020 06:20:38 +0000 (GMT)
-Subject: [PATCH v8 14/14] powerpc/vas: Free send window in VAS instance
- after credits returned
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au
-In-Reply-To: <1584598120.9256.15237.camel@hbabu-laptop>
-References: <1584598120.9256.15237.camel@hbabu-laptop>
-Content-Type: text/plain; charset="UTF-8"
-Date: Wed, 18 Mar 2020 23:20:15 -0700
-Message-ID: <1584598815.9256.15267.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-18_10:2020-03-18,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- suspectscore=3 malwarescore=0 mlxlogscore=999 spamscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003190024
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jd9t4vVczDr5R
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 18:01:37 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id u12so744066pgb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 00:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=p7RU8iP2/BJyBARlUg58yvEyysSwoyVzs2GzWwZXEZI=;
+ b=Tli73NpwpNhjGI6zJEJ/udrN/oZXm30lXeGbwkRbK4wf3JFqHWhQhI20mLQOQCvsqg
+ sL4s7/3B0BRzI0CcTIJc1846xhBsWuu9YqbvqgsCLla27hFUeId17NfGZlSLGZW35zE4
+ ImCTafYfIOcF+nTmlFEHGHn5lPSA97DZHKawKn9p/UGbfWAsbR13lZ5dBxYIj2lpctcv
+ wSymUKQneYV8WGWTz6p2FtsKy8FZO8xCPOVCdfirMtnUY/l7f8187jnPSA5CTL8F3GNW
+ zMzn0knuMMDBDd8mcC+mz45cCNjwQLbHLSVfM7olFbWsPZPWMOysFgW6TcgKCMQ/J3NI
+ PWRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=p7RU8iP2/BJyBARlUg58yvEyysSwoyVzs2GzWwZXEZI=;
+ b=X7dyseLZBvYdipuuefaRp9S51plXXMZbq8TQlWRmleiwL2n9FcjskEmvTsi9LD427w
+ 7bgTGTU8TSNZ+UoR7B5MIDIKK19vexSgkUS0dYs5B8ornxFeTxg6T+SZWzV5GoSi7dqV
+ E5U8akZkYhtlaOEFcoPZ9s8L2EDds56utbhva1muO8gxkfGe3GCGgI9ykXczMN6oujGp
+ yJmWGaAftORvVpvm/ZXdr54RQYaQJ60kkPLIdibI2IoX7pYkAO1tOMHokJZfR1w9OeOj
+ XQRIq7WLTN2QJBUAU1r3NpqlN3ZJZWYiXq9VNnIAJ1UlmYfe/U5Glikj+DA7GPuMEjgi
+ JM6Q==
+X-Gm-Message-State: ANhLgQ0A0fWSMTeG8oeGz40MZIvT5mwl4yR+d51hMWCsH+N5Hk1KFeAO
+ qJ7xNKh9UXW2JKwAn9KdBTbZFHk2
+X-Google-Smtp-Source: ADFU+vsz9OG60vU+AXCirAERcwzl4GtZNgrQU5B3oFi3iAljb/ZpXZ56IuHNw3hoBdo+tLULGkPLfA==
+X-Received: by 2002:aa7:84c9:: with SMTP id x9mr2458201pfn.191.1584601294894; 
+ Thu, 19 Mar 2020 00:01:34 -0700 (PDT)
+Received: from bobo.ibm.com (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id g11sm1140417pfm.4.2020.03.19.00.01.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Mar 2020 00:01:34 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] Fix "[v3,
+ 28/32] powerpc/64s: interrupt implement exit logic in C"
+Date: Thu, 19 Mar 2020 16:59:34 +1000
+Message-Id: <20200319065934.1021079-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,45 +77,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Accessing thread_info flags can cause an SLB fault, so it must not
+be done with MSR[RI]=0, which leads to SLB unrecoverable fault error.
 
-NX may be processing requests while trying to close window. Wait until
-all credits are returned and then free send window from VAS instance.
-
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/powernv/vas-window.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/syscall_64.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index d5754a8..a1d3fb1 100644
---- a/arch/powerpc/platforms/powernv/vas-window.c
-+++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -1317,14 +1317,14 @@ int vas_win_close(struct vas_window *window)
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index 87d95b455b83..a56ae78f2d1d 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -313,12 +313,18 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ {
+ 	unsigned long *ti_flagsp = &current_thread_info()->flags;
+ 	unsigned long flags;
++	unsigned long ret = 0;
  
- 	unmap_paste_region(window);
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && unlikely(!(regs->msr & MSR_RI)))
+ 		unrecoverable_exception(regs);
+ 	BUG_ON(regs->msr & MSR_PR);
+ 	BUG_ON(!FULL_REGS(regs));
  
--	clear_vinst_win(window);
--
- 	poll_window_busy_state(window);
- 
- 	unpin_close_window(window);
- 
- 	poll_window_credits(window);
- 
-+	clear_vinst_win(window);
++	if (unlikely(*ti_flagsp & _TIF_EMULATE_STACK_STORE)) {
++		clear_bits(_TIF_EMULATE_STACK_STORE, ti_flagsp);
++		ret = 1;
++	}
 +
- 	poll_window_castout(window);
+ 	local_irq_save(flags);
  
- 	/* if send window, drop reference to matching receive window */
+ 	if (regs->softe == IRQS_ENABLED) {
+@@ -370,10 +376,6 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ 	 */
+ 	kuap_restore_amr(regs);
+ 
+-	if (unlikely(*ti_flagsp & _TIF_EMULATE_STACK_STORE)) {
+-		clear_bits(_TIF_EMULATE_STACK_STORE, ti_flagsp);
+-		return 1;
+-	}
+-	return 0;
++	return ret;
+ }
+ #endif
 -- 
-1.8.3.1
-
-
+2.23.0
 
