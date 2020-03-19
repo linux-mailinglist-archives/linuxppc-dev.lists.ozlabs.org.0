@@ -1,87 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3764418AE7F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:42:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89F818AE6D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 09:36:30 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jgHJ15gTzDr9W
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 19:36:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jgQG5tY4zDrCD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 19:42:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=XAF/A62c; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jgFQ42zvzDqck
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:34:50 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02J8XigA110257
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 04:34:47 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8hwhduy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 04:34:47 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Thu, 19 Mar 2020 08:34:45 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 19 Mar 2020 08:34:43 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02J8YgOk48431254
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Mar 2020 08:34:42 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2EC4EAE057;
- Thu, 19 Mar 2020 08:34:42 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E3FEEAE053;
- Thu, 19 Mar 2020 08:34:41 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.71.125])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 19 Mar 2020 08:34:41 +0000 (GMT)
-Subject: Re: [PATCH v3] ocxl: control via sysfs whether the FPGA is reloaded
- on a link reset
-To: linuxppc-dev@lists.ozlabs.org, clombard@linux.ibm.com, felix@linux.ibm.com,
- ajd@linux.ibm.com, alastair@au1.ibm.com
-References: <20200318100210.80035-1-fbarrat@linux.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 19 Mar 2020 09:34:41 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jgNX2bzQzDr3T
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:40:58 +1100 (AEDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3A53D20724;
+ Thu, 19 Mar 2020 08:40:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1584607255;
+ bh=dHtJENXjO0z7ELO16+oHxTUd6KSiGYOo+FAU1g3r1L8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=XAF/A62c4v2KZMa+b7MNCvt5Okc6ArSh27nZ6WmkbKaRhYOcWXD+8cWrAPcz+Oxd5
+ GcEJnnmipmcEEfVQKgD3elLE172vOeV5zt61gPiItbhWXmp1y4AT19XvauDwP8kAkL
+ YnG/UNS29vEd98MwDnk+VTNPMtTHoyQsUCF7HqAk=
+Date: Thu, 19 Mar 2020 09:40:53 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V2 04/15] orinoco_usb: Use the regular completion
+ interfaces
+Message-ID: <20200319084053.GA3492783@kroah.com>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204407.793899611@linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200318100210.80035-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20031908-4275-0000-0000-000003AEF5CF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031908-4276-0000-0000-000038C423B1
-Message-Id: <270b6450-7524-5182-aa02-8f28f476da7f@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-19_01:2020-03-18,
- 2020-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- suspectscore=2 mlxlogscore=999 priorityscore=1501 impostorscore=0
- phishscore=0 clxscore=1015 adultscore=0 malwarescore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003190037
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318204407.793899611@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,230 +59,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Arnd Bergmann <arnd@arndb.de>,
+ "Paul E . McKenney" <paulmck@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Logan Gunthorpe <logang@deltatee.com>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 18/03/2020 à 11:02, Frederic Barrat a écrit :
-> From: Philippe Bergheaud <felix@linux.ibm.com>
+On Wed, Mar 18, 2020 at 09:43:06PM +0100, Thomas Gleixner wrote:
+> From: Thomas Gleixner <tglx@linutronix.de>
 > 
-> Some opencapi FPGA images allow to control if the FPGA should be reloaded
-> on the next adapter reset. If it is supported, the image specifies it
-> through a Vendor Specific DVSEC in the config space of function 0.
+> The completion usage in this driver is interesting:
 > 
-> Signed-off-by: Philippe Bergheaud <felix@linux.ibm.com>
+>   - it uses a magic complete function which according to the comment was
+>     implemented by invoking complete() four times in a row because
+>     complete_all() was not exported at that time.
+> 
+>   - it uses an open coded wait/poll which checks completion:done. Only one wait
+>     side (device removal) uses the regular wait_for_completion() interface.
+> 
+> The rationale behind this is to prevent that wait_for_completion() consumes
+> completion::done which would prevent that all waiters are woken. This is not
+> necessary with complete_all() as that sets completion::done to UINT_MAX which
+> is left unmodified by the woken waiters.
+> 
+> Replace the magic complete function with complete_all() and convert the
+> open coded wait/poll to regular completion interfaces.
+> 
+> This changes the wait to exclusive wait mode. But that does not make any
+> difference because the wakers use complete_all() which ignores the
+> exclusive mode.
+> 
+> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
 > ---
-
-
-Thanks!
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-
-> Changelog:
-> v2:
->    - refine ResetReload debug message
->    - do not call get_function_0() if pci_dev is for function 0
-> v3:
->    - avoid get_function_0() in ocxl_config_set_reset_reload also
->         
->   Documentation/ABI/testing/sysfs-class-ocxl | 10 ++++
->   drivers/misc/ocxl/config.c                 | 68 +++++++++++++++++++++-
->   drivers/misc/ocxl/ocxl_internal.h          |  6 ++
->   drivers/misc/ocxl/sysfs.c                  | 35 +++++++++++
->   include/misc/ocxl-config.h                 |  1 +
->   5 files changed, 119 insertions(+), 1 deletion(-)
+> V2: New patch to avoid conversion to swait functions later.
+> ---
+>  drivers/net/wireless/intersil/orinoco/orinoco_usb.c |   21 ++++----------------
+>  1 file changed, 5 insertions(+), 16 deletions(-)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-class-ocxl b/Documentation/ABI/testing/sysfs-class-ocxl
-> index b5b1fa197592..b9ea671d5805 100644
-> --- a/Documentation/ABI/testing/sysfs-class-ocxl
-> +++ b/Documentation/ABI/testing/sysfs-class-ocxl
-> @@ -33,3 +33,13 @@ Date:		January 2018
->   Contact:	linuxppc-dev@lists.ozlabs.org
->   Description:	read/write
->   		Give access the global mmio area for the AFU
-> +
-> +What:		/sys/class/ocxl/<afu name>/reload_on_reset
-> +Date:		February 2020
-> +Contact:	linuxppc-dev@lists.ozlabs.org
-> +Description:	read/write
-> +		Control whether the FPGA is reloaded on a link reset
-> +			0	Do not reload FPGA image from flash
-> +			1	Reload FPGA image from flash
-> +			unavailable
-> +				The device does not support this capability
-> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-> index c8e19bfb5ef9..b364b6ceb996 100644
-> --- a/drivers/misc/ocxl/config.c
-> +++ b/drivers/misc/ocxl/config.c
-> @@ -71,6 +71,20 @@ static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
->   	return 0;
->   }
->   
-> +/**
-> + * get_function_0() - Find a related PCI device (function 0)
-> + * @device: PCI device to match
-> + *
-> + * Returns a pointer to the related device, or null if not found
-> + */
-> +static struct pci_dev *get_function_0(struct pci_dev *dev)
-> +{
-> +	unsigned int devfn = PCI_DEVFN(PCI_SLOT(dev->devfn), 0);
-> +
-> +	return pci_get_domain_bus_and_slot(pci_domain_nr(dev->bus),
-> +					   dev->bus->number, devfn);
-> +}
-> +
->   static void read_pasid(struct pci_dev *dev, struct ocxl_fn_config *fn)
->   {
->   	u16 val;
-> @@ -159,7 +173,7 @@ static int read_dvsec_afu_info(struct pci_dev *dev, struct ocxl_fn_config *fn)
->   static int read_dvsec_vendor(struct pci_dev *dev)
->   {
->   	int pos;
-> -	u32 cfg, tlx, dlx;
-> +	u32 cfg, tlx, dlx, reset_reload;
->   
->   	/*
->   	 * vendor specific DVSEC is optional
-> @@ -183,6 +197,58 @@ static int read_dvsec_vendor(struct pci_dev *dev)
->   	dev_dbg(&dev->dev, "  CFG version = 0x%x\n", cfg);
->   	dev_dbg(&dev->dev, "  TLX version = 0x%x\n", tlx);
->   	dev_dbg(&dev->dev, "  DLX version = 0x%x\n", dlx);
-> +
-> +	if (ocxl_config_get_reset_reload(dev, &reset_reload) != 0)
-> +		dev_dbg(&dev->dev, "  ResetReload is not available\n");
-> +	else
-> +		dev_dbg(&dev->dev, "  ResetReload = 0x%x\n", reset_reload);
-> +	return 0;
-> +}
-> +
-> +int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
-> +{
-> +	int reset_reload = -1;
-> +	int pos = 0;
-> +	struct pci_dev *dev0 = dev;
-> +
-> +	if (PCI_FUNC(dev->devfn) != 0)
-> +		dev0 = get_function_0(dev);
-> +
-> +	if (dev0)
-> +		pos = find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
-> +
-> +	if (pos)
-> +		pci_read_config_dword(dev0,
-> +				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
-> +				      &reset_reload);
-> +	if (reset_reload == -1)
-> +		return reset_reload;
-> +
-> +	*val = reset_reload & BIT(0);
-> +	return 0;
-> +}
-> +
-> +int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
-> +{
-> +	int reset_reload = -1;
-> +	int pos = 0;
-> +	struct pci_dev *dev0 = dev;
-> +
-> +	if (PCI_FUNC(dev->devfn) != 0)
-> +		dev0 = get_function_0(dev);
-> +
-> +	if (dev0)
-> +		pos = find_dvsec(dev0, OCXL_DVSEC_VENDOR_ID);
-> +
-> +	if (pos)
-> +		pci_read_config_dword(dev0,
-> +				      pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
-> +				      &reset_reload);
-> +	if (reset_reload == -1)
-> +		return reset_reload;
-> +
-> +	val &= BIT(0);
-> +	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD, val);
->   	return 0;
->   }
->   
-> diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
-> index 345bf843a38e..af9a84aeee6f 100644
-> --- a/drivers/misc/ocxl/ocxl_internal.h
-> +++ b/drivers/misc/ocxl/ocxl_internal.h
-> @@ -112,6 +112,12 @@ void ocxl_actag_afu_free(struct ocxl_fn *fn, u32 start, u32 size);
->    */
->   int ocxl_config_get_pasid_info(struct pci_dev *dev, int *count);
->   
-> +/*
-> + * Control whether the FPGA is reloaded on a link reset
-> + */
-> +int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val);
-> +int ocxl_config_set_reset_reload(struct pci_dev *dev, int val);
-> +
->   /*
->    * Check if an AFU index is valid for the given function.
->    *
-> diff --git a/drivers/misc/ocxl/sysfs.c b/drivers/misc/ocxl/sysfs.c
-> index 58f1ba264206..8f69f7311343 100644
-> --- a/drivers/misc/ocxl/sysfs.c
-> +++ b/drivers/misc/ocxl/sysfs.c
-> @@ -51,11 +51,46 @@ static ssize_t contexts_show(struct device *device,
->   			afu->pasid_count, afu->pasid_max);
->   }
->   
-> +static ssize_t reload_on_reset_show(struct device *device,
-> +		struct device_attribute *attr,
-> +		char *buf)
-> +{
-> +	struct ocxl_afu *afu = to_afu(device);
-> +	struct ocxl_fn *fn = afu->fn;
-> +	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
-> +	int val;
-> +
-> +	if (ocxl_config_get_reset_reload(pci_dev, &val))
-> +		return scnprintf(buf, PAGE_SIZE, "unavailable\n");
-> +
-> +	return scnprintf(buf, PAGE_SIZE, "%d\n", val);
-> +}
-> +
-> +static ssize_t reload_on_reset_store(struct device *device,
-> +		struct device_attribute *attr,
-> +		const char *buf, size_t count)
-> +{
-> +	struct ocxl_afu *afu = to_afu(device);
-> +	struct ocxl_fn *fn = afu->fn;
-> +	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
-> +	int rc, val;
-> +
-> +	rc = sscanf(buf, "%i", &val);
-> +	if ((rc != 1) || !(val == 1 || val == 0))
-> +		return -EINVAL;
-> +
-> +	if (ocxl_config_set_reset_reload(pci_dev, val))
-> +		return -ENODEV;
-> +
-> +	return count;
-> +}
-> +
->   static struct device_attribute afu_attrs[] = {
->   	__ATTR_RO(global_mmio_size),
->   	__ATTR_RO(pp_mmio_size),
->   	__ATTR_RO(afu_version),
->   	__ATTR_RO(contexts),
-> +	__ATTR_RW(reload_on_reset),
->   };
->   
->   static ssize_t global_mmio_read(struct file *filp, struct kobject *kobj,
-> diff --git a/include/misc/ocxl-config.h b/include/misc/ocxl-config.h
-> index 3526fa996a22..ccfd3b463517 100644
-> --- a/include/misc/ocxl-config.h
-> +++ b/include/misc/ocxl-config.h
-> @@ -41,5 +41,6 @@
->   #define   OCXL_DVSEC_VENDOR_CFG_VERS            0x0C
->   #define   OCXL_DVSEC_VENDOR_TLX_VERS            0x10
->   #define   OCXL_DVSEC_VENDOR_DLX_VERS            0x20
-> +#define   OCXL_DVSEC_VENDOR_RESET_RELOAD        0x38
->   
->   #endif /* _OCXL_CONFIG_H_ */
-> 
+> --- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+> @@ -365,17 +365,6 @@ static struct request_context *ezusb_all
+>  	return ctx;
+>  }
+>  
+> -
+> -/* Hopefully the real complete_all will soon be exported, in the mean
+> - * while this should work. */
+> -static inline void ezusb_complete_all(struct completion *comp)
+> -{
+> -	complete(comp);
+> -	complete(comp);
+> -	complete(comp);
+> -	complete(comp);
+> -}
 
+That's so funny... :(
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
