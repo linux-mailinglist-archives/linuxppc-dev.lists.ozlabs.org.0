@@ -1,47 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE4B18B064
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 10:39:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48jhhK5Yw4zDr7Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 20:39:45 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E38E18B081
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 10:51:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48jhxs0GqmzDr3X
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Mar 2020 20:51:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48jhfS0DSczDr34
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 20:38:07 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 1E6DFACB9;
- Thu, 19 Mar 2020 09:38:04 +0000 (UTC)
-Subject: Re: [PATCH v2 1/4] mm: Check for node_online in node_present_pages
-To: Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20200318072810.9735-1-srikar@linux.vnet.ibm.com>
- <20200318072810.9735-2-srikar@linux.vnet.ibm.com>
- <20200318100256.GH21362@dhcp22.suse.cz>
- <2d7c55ed-0f67-bd47-e478-9726734abcc9@suse.cz>
- <87tv2ldw1k.fsf@mpe.ellerman.id.au>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <d950e0e3-e4c0-f36b-5925-ba0bfcdd348f@suse.cz>
-Date: Thu, 19 Mar 2020 10:38:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48jhvx5M6PzDqwV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 20:49:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=P5t7qg+u; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48jhvw5NCyz9sPF;
+ Thu, 19 Mar 2020 20:49:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1584611389;
+ bh=D+Q6J/bh0fif9u1z1m+OOV+M4Bo54jJdaeTGMRX6pe0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=P5t7qg+uFhsXVHj/dGsqwMeHcyT0zb6aCcAP9pCh9sU5LJNryN893v2fqhEN4BqX4
+ S3GXGk+rHMaXEOQsacD7MF0Bx5B6TshTYYqYo6ToQMeuLZji/+1ZtQKdyI/rQEGl2h
+ pvOsSqItdZeRFJPJ/9eGRLiBr46Johep5VQGxzU2B01YhqNzaKmgx1hPx6gp699FY0
+ HqwgCGwc62dtUWU1+rd3NgbkuL5H0S9ICvAo2aqnrd0eKi8ciEPL92vpKdVWnx7fQ5
+ 3/Aab35W1AEhGldn8upttkR191P6KVZJdVc9H0tYu+++o/In27Fj9LfbXVtvov7Qpa
+ X6r19DYk3RAbg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/8] powernv/memtrace: always online added memory blocks
+In-Reply-To: <20200317104942.11178-5-david@redhat.com>
+References: <20200317104942.11178-1-david@redhat.com>
+ <20200317104942.11178-5-david@redhat.com>
+Date: Thu, 19 Mar 2020 20:49:47 +1100
+Message-ID: <8736a4eksk.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87tv2ldw1k.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,41 +58,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Nathan Lynch <nathanl@linux.ibm.com>, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
- Mel Gorman <mgorman@suse.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christopher Lameter <cl@linux.com>
+Cc: linux-hyperv@vger.kernel.org, Baoquan He <bhe@redhat.com>,
+ David Hildenbrand <david@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Wei Yang <richard.weiyang@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/19/20 1:32 AM, Michael Ellerman wrote:
-> Seems like a nice solution to me
+David Hildenbrand <david@redhat.com> writes:
+> Let's always try to online the re-added memory blocks. In case add_memory()
+> already onlined the added memory blocks, the first device_online() call
+> will fail and stop processing the remaining memory blocks.
+>
+> This avoids manually having to check memhp_auto_online.
+>
+> Note: PPC always onlines all hotplugged memory directly from the kernel
+> as well - something that is handled by user space on other
+> architectures.
+>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/powerpc/platforms/powernv/memtrace.c | 14 ++++----------
+>  1 file changed, 4 insertions(+), 10 deletions(-)
 
-Thanks :)
+Fine by me.
 
->> ----8<----
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 17dc00e33115..1d4f2d7a0080 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -1511,7 +1511,7 @@ static inline struct page *alloc_slab_page(struct kmem_cache *s,
->>  	struct page *page;
->>  	unsigned int order = oo_order(oo);
->>  
->> -	if (node == NUMA_NO_NODE)
->> +	if (node == NUMA_NO_NODE || !node_online(node))
-> 
-> Why don't we need the node_present_pages() check here?
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Page allocator is fine with a node without present pages, as long as there's a
-zonelist, which online nodes must have (ideally all possible nodes should have,
-and then we can remove this).
+cheers
 
-SLUB on the other hand doesn't allocate cache per-cpu structures for nodes
-without present pages (understandably) that's why the other place includes the
-node_present_pages() check.
-
-Thanks
+> diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+> index d6d64f8718e6..13b369d2cc45 100644
+> --- a/arch/powerpc/platforms/powernv/memtrace.c
+> +++ b/arch/powerpc/platforms/powernv/memtrace.c
+> @@ -231,16 +231,10 @@ static int memtrace_online(void)
+>  			continue;
+>  		}
+>  
+> -		/*
+> -		 * If kernel isn't compiled with the auto online option
+> -		 * we need to online the memory ourselves.
+> -		 */
+> -		if (!memhp_auto_online) {
+> -			lock_device_hotplug();
+> -			walk_memory_blocks(ent->start, ent->size, NULL,
+> -					   online_mem_block);
+> -			unlock_device_hotplug();
+> -		}
+> +		lock_device_hotplug();
+> +		walk_memory_blocks(ent->start, ent->size, NULL,
+> +				   online_mem_block);
+> +		unlock_device_hotplug();
+>  
+>  		/*
+>  		 * Memory was added successfully so clean up references to it
+> -- 
+> 2.24.1
