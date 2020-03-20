@@ -2,62 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB1A18D63B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7737D18D77B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 19:41:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kWWq2vpNzF0Vk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 04:50:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kXfy5wgXzF0c0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 05:41:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.65; helo=mail-io1-f65.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-io1-f65.google.com (mail-io1-f65.google.com
- [209.85.166.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kWTb2l8lzDrf6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 04:48:17 +1100 (AEDT)
-Received: by mail-io1-f65.google.com with SMTP id q128so6811959iof.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:48:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=sdZ8Fz0NTe2Z8mbny4b+ZzHCT+owc9QawbF3H7/fFjQ=;
- b=bsr3Z47Vz28zcCURuTuw4kMzq7jABfwpFnZk3Fazahi55E7RMTjyUbHfSTvKodNgyv
- 5o4XCu74P830HlYPTtQUCIecK+UFrxKU6i00uUzlm4r87ut+cMUkd9rFb+qeGmOgIWrW
- X8ddJor4rnforEPW+GgWX8J6Oo1gdlABqebdg0Yrgl9ZxFSvUZxwcxP/G1lJl/mswHXq
- C+MSzDcnzqq9oD3kR2bBhMDc05KO4mPDGgGwZsSbgv0d8Maa5ps64K1Fqs1P1ZUA+Wis
- er7+Mhbmo6iKf7xu89DMsoBV04Po2bwHPLnVz/3oS3OE8AWU9z5KLi1+ZXgIjkaPWS7w
- cyew==
-X-Gm-Message-State: ANhLgQ3eHJCmJ2LDEyToDTFhWrlucuzYoZLuq/61OFk1m6wi9CVe9ade
- ulZNd8T0IxmzmTKtwZXQNg==
-X-Google-Smtp-Source: ADFU+vvwo0sFRpgMy8S/+VmmSzmDzKFlPryLvd9OSadfOfVEWtEg1diSdrBlcDY6qZflMYnDgSLyOw==
-X-Received: by 2002:a6b:7a07:: with SMTP id h7mr8385084iom.47.1584726495070;
- Fri, 20 Mar 2020 10:48:15 -0700 (PDT)
-Received: from rob-hp-laptop ([64.188.179.250])
- by smtp.gmail.com with ESMTPSA id t86sm2201336ili.82.2020.03.20.10.48.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Mar 2020 10:48:14 -0700 (PDT)
-Received: (nullmailer pid 10514 invoked by uid 1000);
- Fri, 20 Mar 2020 17:48:12 -0000
-Date: Fri, 20 Mar 2020 11:48:12 -0600
-From: Rob Herring <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v5 6/7] ASoC: dt-bindings: fsl_easrc: Add document for
- EASRC
-Message-ID: <20200320174812.GA27070@bogus>
-References: <cover.1583725533.git.shengjiu.wang@nxp.com>
- <71b6ad3d0ea79076fded2373490ec1eb8c418d21.1583725533.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kXcl1v3wzDvJ4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 05:39:34 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02KIWhXj143655
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 14:39:31 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8aftn24-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 14:39:31 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Fri, 20 Mar 2020 18:39:28 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 20 Mar 2020 18:39:26 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02KIdP6t62390278
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Mar 2020 18:39:25 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A5E3211C04A;
+ Fri, 20 Mar 2020 18:39:25 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0FB2F11C052;
+ Fri, 20 Mar 2020 18:39:25 +0000 (GMT)
+Received: from localhost (unknown [9.85.72.197])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Mar 2020 18:39:24 +0000 (GMT)
+Date: Sat, 21 Mar 2020 00:09:20 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/64: ftrace don't trace real mode
+To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20200320152551.1468983-1-npiggin@gmail.com>
+In-Reply-To: <20200320152551.1468983-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <71b6ad3d0ea79076fded2373490ec1eb8c418d21.1583725533.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20032018-0016-0000-0000-000002F4A285
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032018-0017-0000-0000-00003358330B
+Message-Id: <1584728788.91gvyrzbi3.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-20_06:2020-03-20,
+ 2020-03-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 bulkscore=0 mlxlogscore=926
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003200074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,145 +89,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 09, 2020 at 11:58:33AM +0800, Shengjiu Wang wrote:
-> EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
-> IP module found on i.MX8MN.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Hi Nick,
+
+Nicholas Piggin wrote:
+> This warns and prevents tracing attempted in a real-mode context.
+
+Is this something you're seeing often? Last time we looked at this, KVM=20
+was the biggest offender and we introduced paca->ftrace_enabled as a way=20
+to disable ftrace while in KVM code.
+
+While this is cheap when handling ftrace_regs_caller() as done in this=20
+patch, for simple function tracing (see below), we will have to grab the=20
+MSR which will slow things down slightly.
+
+>=20
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  .../devicetree/bindings/sound/fsl,easrc.yaml  | 101 ++++++++++++++++++
->  1 file changed, 101 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
-> new file mode 100644
-> index 000000000000..ff22f8056a63
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
-> @@ -0,0 +1,101 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl,easrc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>  arch/powerpc/kernel/trace/ftrace.c            |  3 +++
+>  .../powerpc/kernel/trace/ftrace_64_mprofile.S | 19 +++++++++++++++----
+>  2 files changed, 18 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/tra=
+ce/ftrace.c
+> index 7ea0ca044b65..ef965815fcb9 100644
+> --- a/arch/powerpc/kernel/trace/ftrace.c
+> +++ b/arch/powerpc/kernel/trace/ftrace.c
+> @@ -949,6 +949,9 @@ unsigned long prepare_ftrace_return(unsigned long par=
+ent, unsigned long ip,
+>  {
+>  	unsigned long return_hooker;
+>=20
+> +	if (WARN_ON_ONCE((mfmsr() & (MSR_IR|MSR_DR)) !=3D (MSR_IR|MSR_DR)))
+> +		goto out;
 > +
-> +title: NXP Asynchronous Sample Rate Converter (ASRC) Controller
-> +
-> +maintainers:
-> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: "^easrc@.*"
-> +
-> +  compatible:
-> +    const: fsl,imx8mn-easrc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: Peripheral clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: mem
-> +
-> +  dmas:
-> +    maxItems: 8
-> +
-> +  dma-names:
-> +    items:
-> +      - const: ctx0_rx
-> +      - const: ctx0_tx
-> +      - const: ctx1_rx
-> +      - const: ctx1_tx
-> +      - const: ctx2_rx
-> +      - const: ctx2_tx
-> +      - const: ctx3_rx
-> +      - const: ctx3_tx
-> +
-> +  fsl,easrc-ram-script-name:
 
-'firmware-name' is the established property name for this.
+This is called on function entry to redirect function return to a=20
+trampoline if needed. I am not sure if we have (or will have) too many C=20
+functions that disable MSR_IR|MSR_DR. Unless the number of such=20
+functions is large, it might be preferable to mark specific functions as=20
+notrace.
 
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/string
-> +      - const: imx/easrc/easrc-imx8mn.bin
+>  	if (unlikely(ftrace_graph_is_dead()))
+>  		goto out;
+>=20
+> diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerp=
+c/kernel/trace/ftrace_64_mprofile.S
+> index f9fd5f743eba..6205f15cb603 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> @@ -51,16 +51,21 @@ _GLOBAL(ftrace_regs_caller)
+>  	SAVE_10GPRS(12, r1)
+>  	SAVE_10GPRS(22, r1)
+>=20
+> -	/* Save previous stack pointer (r1) */
+> -	addi	r8, r1, SWITCH_FRAME_SIZE
+> -	std	r8, GPR1(r1)
+> -
+>  	/* Load special regs for save below */
+>  	mfmsr   r8
+>  	mfctr   r9
+>  	mfxer   r10
+>  	mfcr	r11
+>=20
+> +	/* Shouldn't be called in real mode */
+> +	andi.	r3,r8,(MSR_IR|MSR_DR)
+> +	cmpdi	r3,(MSR_IR|MSR_DR)
+> +	bne	ftrace_bad_realmode
+> +
+> +	/* Save previous stack pointer (r1) */
+> +	addi	r8, r1, SWITCH_FRAME_SIZE
+> +	std	r8, GPR1(r1)
+> +
 
-Though if there's only 1 possible value, why does this need to be in DT?
+This stomps on the MSR value in r8, which is saved into pt_regs further=20
+below.
 
-> +    description: The coefficient table for the filters
+You'll also have to handle ftrace_caller() which is used for simple=20
+function tracing. We don't read the MSR there today, but that will be=20
+needed if we want to suppress tracing.
 
-If the firmware is only 1 thing, then perhaps this should just be a DT 
-property rather than a separate file. It depends on who owns/creates 
-this file. If fixed for the platform, then DT is a good fit. If updated 
-separately from DT and boot firmware, then keeping it separate makes 
-sense.
 
-> +
-> +  fsl,asrc-rate:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 8000
-> +      - maximum: 192000
-> +    description: Defines a mutual sample rate used by DPCM Back Ends
-> +
-> +  fsl,asrc-format:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - enum: [2, 6, 10, 32, 36]
-> +        default: 2
-> +    description:
-> +      Defines a mutual sample format used by DPCM Back Ends
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - dmas
-> +  - dma-names
-> +  - fsl,easrc-ram-script-name
-> +  - fsl,asrc-rate
-> +  - fsl,asrc-format
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/imx8mn-clock.h>
-> +
-> +    easrc: easrc@300C0000 {
-> +           compatible = "fsl,imx8mn-easrc";
-> +           reg = <0x0 0x300C0000 0x0 0x10000>;
-> +           interrupts = <0x0 122 0x4>;
-> +           clocks = <&clk IMX8MN_CLK_ASRC_ROOT>;
-> +           clock-names = "mem";
-> +           dmas = <&sdma2 16 23 0> , <&sdma2 17 23 0>,
-> +                  <&sdma2 18 23 0> , <&sdma2 19 23 0>,
-> +                  <&sdma2 20 23 0> , <&sdma2 21 23 0>,
-> +                  <&sdma2 22 23 0> , <&sdma2 23 23 0>;
-> +           dma-names = "ctx0_rx", "ctx0_tx",
-> +                       "ctx1_rx", "ctx1_tx",
-> +                       "ctx2_rx", "ctx2_tx",
-> +                       "ctx3_rx", "ctx3_tx";
-> +           fsl,easrc-ram-script-name = "imx/easrc/easrc-imx8mn.bin";
-> +           fsl,asrc-rate  = <8000>;
-> +           fsl,asrc-format = <2>;
-> +    };
-> -- 
-> 2.21.0
-> 
+- Naveen
+
