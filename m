@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E47A18C700
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 06:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B6518C708
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 06:31:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kC4c4YfPzDrSK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:29:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kC6y1CDqzDrfQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:31:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JMLQHdcx; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=VwUWpO8a; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kBs93BgNzDrTs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 16:19:09 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id x2so2631435pfn.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 22:19:09 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kBsG15bdzDrT2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 16:19:13 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id d17so1921763pgo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 22:19:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=S/r32Q7grwQQf3uHgdNTaaRJ9xKAmkDdHphVshqxgn0=;
- b=JMLQHdcxkOh40BGu5bSQaFy04CDLFvWuwC1l60DUkEp887HDbr97WKEcFFTU4V9wOA
- oNAx0/8MWlpvwa1QVrfMLNI8ROOt8BhRdbu2ULIjL/5a9mY0yc9wR7TMhQ/cw6l/88jg
- 4RgZwhs2vNdcuQzZ0kg4sSDinrmriix49FeMNx0mlofROj+zO8DjguBdAGD4Rsbay/zL
- ApsP7em6uU2mogx7FJwQWyZ+FvgPJ+AX6ItvqoBQQUCTjWWqdyVM752qaM6d42bkyCZI
- rPPpqoDPJCBSOixCFNw+g+aryAsDrFB+zioqHO5UHPJI/YkIVgPqOEIowbqcGfsOMySu
- JdFA==
+ bh=47ZTgaT4e6mi0NjK6miw5fls+T/eF1jO5otBlIoDje0=;
+ b=VwUWpO8aEBq+6EjcCwobvUSkqWfqLpkOLH52oBdGVKdomWVJvK3ErX/2AfWeHD4Xd2
+ RI5ARhDMVdGaLtBvS+xUWcRF0g3QEnN5nJ0fF5Gs9dOndojEh7PdhhzmaZtNWdSJcnps
+ 1CTQthafLOtiD8lRS2ZbIit03Mm1bMpsvVlanExssmVHD48qke15Y+DZe6BTLW7ZkQ1f
+ vy3caWoDBkRncEk4ApxZpq0uqj7Cm04Pk7w5h1Q0E3pQRKbzA3Be/dB2cBES91pI0Lxt
+ WDpb2wDmoSpKqemW7pWaXkYwQTShWOe2uEOhrdy30D/I7JUje/jHCodmp866zgx3t9UL
+ iDPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=S/r32Q7grwQQf3uHgdNTaaRJ9xKAmkDdHphVshqxgn0=;
- b=VjAmpYeR4sktlz0pmlhVietFy57PI6MQQqv9KoAqik1/TXy4Aac+blRosGRQbWZ0D3
- iSHe6GO2o8FxfySFGFlq5VctqoBxRtqehUU0lzMnCXoxqfelQb7M0H3XmmoKiyyWMUkr
- AkVhJevUhypXss3a4F7HrhOuZDlB20JH4eYNz9cvpcrJp6TFZ8tAvLfuWm4ErXuSQSvC
- aWo0yqjl5BNqZtf042w7IiJtO7I0PmdsA5oOeXB4LNW3jXoc7JZUOJY/EelwzrapmENo
- wwHT3pDc5eUi3noZa0F/DUqwHFOYI00boZt/dYjqKZUu8hg7/4dmpMeFbGABnp/UvpVI
- sTTA==
-X-Gm-Message-State: ANhLgQ2o7blLCt8D/5Isf2Eu2vsAoPMCo3peu4KDeq4JlbjuEdLa+GHe
- x/+QOiD1hhVeAmMJc9DFkx+yNU4I8j8=
-X-Google-Smtp-Source: ADFU+vsZSShlTCWaOtJb+1ECsrRwCD5re4N9C8Noh+hX2FuExN+cXWyuSRNrNR8kYDs6fiuRiNJLRQ==
-X-Received: by 2002:a05:6a00:2a5:: with SMTP id
- q5mr7621431pfs.183.1584681547113; 
- Thu, 19 Mar 2020 22:19:07 -0700 (PDT)
+ bh=47ZTgaT4e6mi0NjK6miw5fls+T/eF1jO5otBlIoDje0=;
+ b=N3ZMpRcW8fypHdWdJ4jdGChRXL7QESMbQB6PquGedsYbAyYriGxjlNtzLamKqLokU5
+ xakg9Xf6YRG0z8D4po16tb/gToz2xykIUOg2Xi09a0jQOS/v3ordsdE44dzsin5nINvX
+ uIDul0elRaK1Udr/Fd2PVj9LrYEIzwF+KtfuosBCbA/KilecSSfhwvzdYxOZEqwEdu+E
+ e2j0MUUGyXK1/CnUUlUgbU7WcclPDg2WGAHnRGMZHQ5akY4/zF5/h4L59CP0XYjivRhw
+ Aa44PTBq+rkN+WVbcgkijLYAN08yLDKjP5kG9Fm7CqtiGozISbN9xHY54kUWHrq3YdmN
+ 4jKQ==
+X-Gm-Message-State: ANhLgQ2KhWykwlmKmCQqK7MFShYU1QjqurC4padmhvUg9A2dWQO7eIc7
+ Duh1tt4HPqJVByofkyMnRas6Y3obReE=
+X-Google-Smtp-Source: ADFU+vsxM8s0oGo3MWyrwF2hnZK+6g4QWIOwPROrdqv9d74aIAm8LgD3vOEGOHS7PtMEngQZvjffXA==
+X-Received: by 2002:a62:d144:: with SMTP id t4mr179899pfl.10.1584681551349;
+ Thu, 19 Mar 2020 22:19:11 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id c207sm3988716pfb.47.2020.03.19.22.19.03
+ by smtp.gmail.com with ESMTPSA id c207sm3988716pfb.47.2020.03.19.22.19.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Mar 2020 22:19:06 -0700 (PDT)
+ Thu, 19 Mar 2020 22:19:10 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 05/16] powerpc: Use a function for masking instructions
-Date: Fri, 20 Mar 2020 16:17:58 +1100
-Message-Id: <20200320051809.24332-6-jniethe5@gmail.com>
+Subject: [PATCH v4 06/16] powerpc: Use a function for getting the instruction
+ op code
+Date: Fri, 20 Mar 2020 16:17:59 +1100
+Message-Id: <20200320051809.24332-7-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200320051809.24332-1-jniethe5@gmail.com>
 References: <20200320051809.24332-1-jniethe5@gmail.com>
@@ -83,138 +83,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for using an instruction data type that can not be used
-directly with the '&' operator, use a function to mask instructions.
+In preparation for using a data type for instructions that can not be
+directly used with the '>>' operator use a function for getting the op
+code of an instruction.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
 v4: New to series
 ---
- arch/powerpc/include/asm/sstep.h   |  6 +++---
- arch/powerpc/kernel/align.c        |  2 +-
- arch/powerpc/kernel/trace/ftrace.c |  8 ++++----
- arch/powerpc/lib/code-patching.c   | 12 ++++++------
- 4 files changed, 14 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/align.c      | 4 ++--
+ arch/powerpc/lib/code-patching.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
-index 9353916fcba7..ef5483288920 100644
---- a/arch/powerpc/include/asm/sstep.h
-+++ b/arch/powerpc/include/asm/sstep.h
-@@ -16,9 +16,9 @@ struct pt_regs;
-  * Note that IS_MTMSRD returns true for both an mtmsr (32-bit)
-  * and an mtmsrd (64-bit).
-  */
--#define IS_MTMSRD(instr)	(((instr) & 0xfc0007be) == 0x7c000124)
--#define IS_RFID(instr)		(((instr) & 0xfc0007fe) == 0x4c000024)
--#define IS_RFI(instr)		(((instr) & 0xfc0007fe) == 0x4c000064)
-+#define IS_MTMSRD(instr)	((ppc_inst_mask((instr), 0xfc0007be) == 0x7c000124))
-+#define IS_RFID(instr)		((ppc_inst_mask((instr), 0xfc0007fe) == 0x4c000024))
-+#define IS_RFI(instr)		((ppc_inst_mask((instr), 0xfc0007fe) == 0x4c000064))
- 
- enum instruction_type {
- 	COMPUTE,		/* arith/logical/CR op, etc. */
 diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-index 6008f14a145b..38542fffa179 100644
+index 38542fffa179..77c49dfdc1b4 100644
 --- a/arch/powerpc/kernel/align.c
 +++ b/arch/powerpc/kernel/align.c
-@@ -331,7 +331,7 @@ int fix_alignment(struct pt_regs *regs)
- 	 * when pasting to a co-processor. Furthermore, paste_last is the
- 	 * synchronisation point for preceding copy/paste sequences.
- 	 */
--	if ((instr & 0xfc0006fe) == (PPC_INST_COPY & 0xfc0006fe))
-+	if (ppc_inst_mask(instr, 0xfc0006fe) == (PPC_INST_COPY & 0xfc0006fe))
- 		return -EIO;
+@@ -313,8 +313,8 @@ int fix_alignment(struct pt_regs *regs)
+ 	}
  
- 	r = analyse_instr(&op, regs, instr);
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 380f1ce77715..b189a34baaa2 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -98,19 +98,19 @@ static ppc_inst test_24bit_addr(unsigned long ip, unsigned long addr)
- 
- static int is_bl_op(ppc_inst op)
- {
--	return (op & 0xfc000003) == 0x48000001;
-+	return ppc_inst_mask(op, 0xfc000003) == 0x48000001;
- }
- 
- static int is_b_op(ppc_inst op)
- {
--	return (op & 0xfc000003) == 0x48000000;
-+	return ppc_inst_mask(op, 0xfc000003) == 0x48000000;
- }
- 
- static unsigned long find_bl_target(unsigned long ip, ppc_inst op)
- {
- 	int offset;
- 
--	offset = (op & 0x03fffffc);
-+	offset = ppc_inst_mask(op, 0x03fffffc);
- 	/* make it signed */
- 	if (offset & 0x02000000)
- 		offset |= 0xfe000000;
-@@ -494,7 +494,7 @@ expected_nop_sequence(void *ip, ppc_inst op0, ppc_inst op1)
- 	 * The load offset is different depending on the ABI. For simplicity
- 	 * just mask it out when doing the compare.
- 	 */
--	if ((op0 != 0x48000008) || ((op1 & 0xffff0000) != 0xe8410000))
-+	if ((op0 != 0x48000008) || (ppc_inst_mask(op1, 0xffff0000) != 0xe8410000))
- 		return 0;
- 	return 1;
- }
+ #ifdef CONFIG_SPE
+-	if ((instr >> 26) == 0x4) {
+-		int reg = (instr >> 21) & 0x1f;
++	if (ppc_inst_opcode(instr) == 0x4) {
++		int reg = (ppc_inst_word(instr) >> 21) & 0x1f;
+ 		PPC_WARN_ALIGNMENT(spe, regs);
+ 		return emulate_spe(regs, reg, instr);
+ 	}
 diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 5d69e836337d..e2ba23fd6f4d 100644
+index e2ba23fd6f4d..04a303c059e2 100644
 --- a/arch/powerpc/lib/code-patching.c
 +++ b/arch/powerpc/lib/code-patching.c
-@@ -301,7 +301,7 @@ static int instr_is_branch_bform(ppc_inst instr)
- 
- int instr_is_relative_branch(ppc_inst instr)
+@@ -228,7 +228,7 @@ bool is_offset_in_branch_range(long offset)
+  */
+ bool is_conditional_branch(ppc_inst instr)
  {
--	if (instr & BRANCH_ABSOLUTE)
-+	if (ppc_inst_mask(instr, BRANCH_ABSOLUTE))
- 		return 0;
+-	unsigned int opcode = instr >> 26;
++	unsigned int opcode = ppc_inst_opcode(instr);
  
- 	return instr_is_branch_iform(instr) || instr_is_branch_bform(instr);
-@@ -309,20 +309,20 @@ int instr_is_relative_branch(ppc_inst instr)
+ 	if (opcode == 16)       /* bc, bca, bcl, bcla */
+ 		return true;
+@@ -286,7 +286,7 @@ unsigned int create_cond_branch(const unsigned int *addr,
  
- int instr_is_relative_link_branch(ppc_inst instr)
+ static unsigned int branch_opcode(ppc_inst instr)
  {
--	return instr_is_relative_branch(instr) && (instr & BRANCH_SET_LINK);
-+	return instr_is_relative_branch(instr) && ppc_inst_mask(instr, BRANCH_SET_LINK);
+-	return (instr >> 26) & 0x3F;
++	return ppc_inst_opcode(instr) & 0x3F;
  }
  
- static unsigned long branch_iform_target(const ppc_inst *instr)
- {
- 	signed long imm;
- 
--	imm = *instr & 0x3FFFFFC;
-+	imm = ppc_inst_mask(*instr, 0x3FFFFFC);
- 
- 	/* If the top bit of the immediate value is set this is negative */
- 	if (imm & 0x2000000)
- 		imm -= 0x4000000;
- 
--	if ((*instr & BRANCH_ABSOLUTE) == 0)
-+	if ((ppc_inst_mask(*instr, BRANCH_ABSOLUTE)) == 0)
- 		imm += (unsigned long)instr;
- 
- 	return (unsigned long)imm;
-@@ -332,13 +332,13 @@ static unsigned long branch_bform_target(const ppc_inst *instr)
- {
- 	signed long imm;
- 
--	imm = *instr & 0xFFFC;
-+	imm = ppc_inst_mask(*instr, 0xFFFC);
- 
- 	/* If the top bit of the immediate value is set this is negative */
- 	if (imm & 0x8000)
- 		imm -= 0x10000;
- 
--	if ((*instr & BRANCH_ABSOLUTE) == 0)
-+	if ((ppc_inst_mask(*instr, BRANCH_ABSOLUTE)) == 0)
- 		imm += (unsigned long)instr;
- 
- 	return (unsigned long)imm;
+ static int instr_is_branch_iform(ppc_inst instr)
 -- 
 2.17.1
 
