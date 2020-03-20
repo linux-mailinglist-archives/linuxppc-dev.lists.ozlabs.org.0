@@ -1,64 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB1A18D63B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:50:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0DB18D5E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:33:56 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kW8x5FmHzF08G
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 04:33:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kWWq2vpNzF0Vk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 04:50:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.193;
- helo=mail-il1-f193.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.65; helo=mail-io1-f65.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-il1-f193.google.com (mail-il1-f193.google.com
- [209.85.166.193])
+Received: from mail-io1-f65.google.com (mail-io1-f65.google.com
+ [209.85.166.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kW780vCbzDvgD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 04:32:19 +1100 (AEDT)
-Received: by mail-il1-f193.google.com with SMTP id d14so6324377ilq.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:32:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kWTb2l8lzDrf6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 04:48:17 +1100 (AEDT)
+Received: by mail-io1-f65.google.com with SMTP id q128so6811959iof.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:48:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=FXIfsAVUFp8IJFPm+/hNheLawxwEVeZKgbspez8Hy3A=;
- b=dkT66fhUD4EW2m3ZMh2GRlGj4FSFmY5TC1QgD7OYqDy07mTaua1z8DARI4prWbIuEO
- +lEzPRay8V/fDHHgVodoLSiLB3J2yIywZBGL9Rg0hy9ayCcwxpRyjo611rLNLedbVtDd
- PKPWBYwx+BZrjmLRZ6fyhxcS6dTOJXSP3QVB7E1mftU8GooKLgnYCY3YcC1XznKeBx5J
- DcdAvaieBwiR9N5XX8GLruGEdIF0G1F5a6zkjV9pd99TPl7fudwzE2nBWbuzqfWwUq07
- fUikFbq/3rzAsnP6Yc7ffKpkd2NgQiaEh9CMbkHZEjsXgyppFykO3e1ogtTDyAiNTMTf
- MOHg==
-X-Gm-Message-State: ANhLgQ0WPpvbgvzqRLDSz+z3mdG5A3WNrUF5EPLaaNd/MX5lsIi+kRuy
- hRce1CZjZrx3ZNS5GMS98g==
-X-Google-Smtp-Source: ADFU+vvyOEHh52ksLg64oqQQtskIyPgC3Gb9PgcVjz3NdBpqcYEYi8YkzZvcjgp/TY2ZkGE4F1dg5g==
-X-Received: by 2002:a92:d641:: with SMTP id x1mr9850010ilp.223.1584725536379; 
- Fri, 20 Mar 2020 10:32:16 -0700 (PDT)
+ bh=sdZ8Fz0NTe2Z8mbny4b+ZzHCT+owc9QawbF3H7/fFjQ=;
+ b=bsr3Z47Vz28zcCURuTuw4kMzq7jABfwpFnZk3Fazahi55E7RMTjyUbHfSTvKodNgyv
+ 5o4XCu74P830HlYPTtQUCIecK+UFrxKU6i00uUzlm4r87ut+cMUkd9rFb+qeGmOgIWrW
+ X8ddJor4rnforEPW+GgWX8J6Oo1gdlABqebdg0Yrgl9ZxFSvUZxwcxP/G1lJl/mswHXq
+ C+MSzDcnzqq9oD3kR2bBhMDc05KO4mPDGgGwZsSbgv0d8Maa5ps64K1Fqs1P1ZUA+Wis
+ er7+Mhbmo6iKf7xu89DMsoBV04Po2bwHPLnVz/3oS3OE8AWU9z5KLi1+ZXgIjkaPWS7w
+ cyew==
+X-Gm-Message-State: ANhLgQ3eHJCmJ2LDEyToDTFhWrlucuzYoZLuq/61OFk1m6wi9CVe9ade
+ ulZNd8T0IxmzmTKtwZXQNg==
+X-Google-Smtp-Source: ADFU+vvwo0sFRpgMy8S/+VmmSzmDzKFlPryLvd9OSadfOfVEWtEg1diSdrBlcDY6qZflMYnDgSLyOw==
+X-Received: by 2002:a6b:7a07:: with SMTP id h7mr8385084iom.47.1584726495070;
+ Fri, 20 Mar 2020 10:48:15 -0700 (PDT)
 Received: from rob-hp-laptop ([64.188.179.250])
- by smtp.gmail.com with ESMTPSA id j23sm1874792ioa.10.2020.03.20.10.32.14
+ by smtp.gmail.com with ESMTPSA id t86sm2201336ili.82.2020.03.20.10.48.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Mar 2020 10:32:15 -0700 (PDT)
-Received: (nullmailer pid 16573 invoked by uid 1000);
- Fri, 20 Mar 2020 17:32:13 -0000
-Date: Fri, 20 Mar 2020 11:32:13 -0600
+ Fri, 20 Mar 2020 10:48:14 -0700 (PDT)
+Received: (nullmailer pid 10514 invoked by uid 1000);
+ Fri, 20 Mar 2020 17:48:12 -0000
+Date: Fri, 20 Mar 2020 11:48:12 -0600
 From: Rob Herring <robh@kernel.org>
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Subject: Re: [PATCH v5 1/7] ASoC: dt-bindings: fsl_asrc: Add new property
- fsl,asrc-format
-Message-ID: <20200320173213.GA9093@bogus>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v5 6/7] ASoC: dt-bindings: fsl_easrc: Add document for
+ EASRC
+Message-ID: <20200320174812.GA27070@bogus>
 References: <cover.1583725533.git.shengjiu.wang@nxp.com>
- <24f69c50925b93afd7a706bd888ee25d27247c78.1583725533.git.shengjiu.wang@nxp.com>
- <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
+ <71b6ad3d0ea79076fded2373490ec1eb8c418d21.1583725533.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
+In-Reply-To: <71b6ad3d0ea79076fded2373490ec1eb8c418d21.1583725533.git.shengjiu.wang@nxp.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,50 +71,143 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
  alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>,
- tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, broonie@kernel.org,
- festevam@gmail.com, linux-kernel@vger.kernel.org
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 09, 2020 at 02:19:44PM -0700, Nicolin Chen wrote:
-> On Mon, Mar 09, 2020 at 11:58:28AM +0800, Shengjiu Wang wrote:
-> > In order to support new EASRC and simplify the code structure,
-> > We decide to share the common structure between them. This bring
-> > a problem that EASRC accept format directly from devicetree, but
-> > ASRC accept width from devicetree.
-> > 
-> > In order to align with new ESARC, we add new property fsl,asrc-format.
-> > The fsl,asrc-format can replace the fsl,asrc-width, then driver
-> > can accept format from devicetree, don't need to convert it to
-> > format through width.
-> > 
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/sound/fsl,asrc.txt | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > index cb9a25165503..780455cf7f71 100644
-> > --- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > +++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > @@ -51,6 +51,11 @@ Optional properties:
-> >  			  will be in use as default. Otherwise, the big endian
-> >  			  mode will be in use for all the device registers.
-> >  
-> > +   - fsl,asrc-format	: Defines a mutual sample format used by DPCM Back
-> > +			  Ends, which can replace the fsl,asrc-width.
-> > +			  The value is SNDRV_PCM_FORMAT_S16_LE, or
-> > +			  SNDRV_PCM_FORMAT_S24_LE
+On Mon, Mar 09, 2020 at 11:58:33AM +0800, Shengjiu Wang wrote:
+> EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
+> IP module found on i.MX8MN.
 > 
-> I am still holding the concern at the DT binding of this format,
-> as it uses values from ASoC header file instead of a dt-binding
-> header file -- not sure if we can do this. Let's wait for Rob's
-> comments.
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,easrc.yaml  | 101 ++++++++++++++++++
+>  1 file changed, 101 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> new file mode 100644
+> index 000000000000..ff22f8056a63
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> @@ -0,0 +1,101 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/fsl,easrc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP Asynchronous Sample Rate Converter (ASRC) Controller
+> +
+> +maintainers:
+> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: "^easrc@.*"
+> +
+> +  compatible:
+> +    const: fsl,imx8mn-easrc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: Peripheral clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: mem
+> +
+> +  dmas:
+> +    maxItems: 8
+> +
+> +  dma-names:
+> +    items:
+> +      - const: ctx0_rx
+> +      - const: ctx0_tx
+> +      - const: ctx1_rx
+> +      - const: ctx1_tx
+> +      - const: ctx2_rx
+> +      - const: ctx2_tx
+> +      - const: ctx3_rx
+> +      - const: ctx3_tx
+> +
+> +  fsl,easrc-ram-script-name:
 
-I assume those are an ABI as well, so it's okay to copy them unless we 
-already have some format definitions for DT. But it does need to be copy 
-in a header under include/dt-bindings/.
+'firmware-name' is the established property name for this.
 
-Rob
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/string
+> +      - const: imx/easrc/easrc-imx8mn.bin
+
+Though if there's only 1 possible value, why does this need to be in DT?
+
+> +    description: The coefficient table for the filters
+
+If the firmware is only 1 thing, then perhaps this should just be a DT 
+property rather than a separate file. It depends on who owns/creates 
+this file. If fixed for the platform, then DT is a good fit. If updated 
+separately from DT and boot firmware, then keeping it separate makes 
+sense.
+
+> +
+> +  fsl,asrc-rate:
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - minimum: 8000
+> +      - maximum: 192000
+> +    description: Defines a mutual sample rate used by DPCM Back Ends
+> +
+> +  fsl,asrc-format:
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - enum: [2, 6, 10, 32, 36]
+> +        default: 2
+> +    description:
+> +      Defines a mutual sample format used by DPCM Back Ends
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - dmas
+> +  - dma-names
+> +  - fsl,easrc-ram-script-name
+> +  - fsl,asrc-rate
+> +  - fsl,asrc-format
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8mn-clock.h>
+> +
+> +    easrc: easrc@300C0000 {
+> +           compatible = "fsl,imx8mn-easrc";
+> +           reg = <0x0 0x300C0000 0x0 0x10000>;
+> +           interrupts = <0x0 122 0x4>;
+> +           clocks = <&clk IMX8MN_CLK_ASRC_ROOT>;
+> +           clock-names = "mem";
+> +           dmas = <&sdma2 16 23 0> , <&sdma2 17 23 0>,
+> +                  <&sdma2 18 23 0> , <&sdma2 19 23 0>,
+> +                  <&sdma2 20 23 0> , <&sdma2 21 23 0>,
+> +                  <&sdma2 22 23 0> , <&sdma2 23 23 0>;
+> +           dma-names = "ctx0_rx", "ctx0_tx",
+> +                       "ctx1_rx", "ctx1_tx",
+> +                       "ctx2_rx", "ctx2_tx",
+> +                       "ctx3_rx", "ctx3_tx";
+> +           fsl,easrc-ram-script-name = "imx/easrc/easrc-imx8mn.bin";
+> +           fsl,asrc-rate  = <8000>;
+> +           fsl,asrc-format = <2>;
+> +    };
+> -- 
+> 2.21.0
+> 
