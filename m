@@ -2,54 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBE818C45A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:47:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC8B18C527
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 03:04:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48k4q65cs7zDrTf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 11:46:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48k6XC5hKjzDrSL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 13:04:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48k4nG33jmzDrPW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 11:45:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=iC9emPAu; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=WIrbZ26Z; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48k4n82YYsz9sPF;
- Fri, 20 Mar 2020 11:45:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1584665121;
- bh=W+Z34vvZKks0HjWcw4Ddw/+LfmZqr1ApEjeY4QXdx4k=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=iC9emPAuS206WtkabWO9eiUH5LztrJbBox0vIOO3kG0SPAnzRJgryz3vVCJbwNVHg
- ChJHL3XBrOvTGVMVOfltoDKGUtZFjkxVnXFTzQ1TYd6mypfOAF2KMXB3DUTC7uSKTh
- oF4RTptfsRx2oy1FfM0kULYxXYx8zNnnnAUk08dO+rJphnaXy06EWZx71jVHnDP127
- l5uCxuHEqQ850rzJ6nQGBNnVW7w5K2Yf8/sIlxW2i0QNGxfOMb5MTgdjv4/CTROVBe
- Iwn7NXnhB6fPJK4bYVeFjWm2DLK9TZs1BTFTRTJ2s4T76HvHWDDPHqlOiIIkN1syjf
- /ka3XQZiH7IEA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Christoph Hellwig <hch@infradead.org>
-Subject: Re: [patch V2 07/15] powerpc/ps3: Convert half completion to rcuwait
-In-Reply-To: <20200319102613.hbwax7zrrvgcde4x@linutronix.de>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.102694393@linutronix.de>
- <20200319100459.GA18506@infradead.org>
- <20200319102613.hbwax7zrrvgcde4x@linutronix.de>
-Date: Fri, 20 Mar 2020 11:45:16 +1100
-Message-ID: <87lfnvdfc3.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48k6V81Z3QzDrRP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 13:02:23 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id u68so2434340pfb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 19:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
+ :message-id:content-transfer-encoding;
+ bh=pS16UFS9Sd5MXf2yyt3PZHIxkrIfRhj0n2t480rTsMc=;
+ b=WIrbZ26Z2gO4M3k0kvN+LLnMgMZPb8KoHYDUWv8Wa2/u+9nJYomE/fpBXRhP/tmd63
+ OGeJ3u5a56rZIchfmEeDuJ9CCR8EMvmPmaGUThsJABiktavUb3Q12WwOFKwiZ3rDvf6Y
+ +WKorPXRMi33jjV4BjMD00yItLxBKLLkrEtSIkMMRTU41HTkTBkShUwqpjNsD25kafpm
+ aO1o8qsWrOADONR8bBiBW214nJyvcT+78b5QBbQs/c01cKcmwWkG+Qgpat2Ud0YEkYYj
+ dHUTee0ILsU6A9IXB9kbhurxGs+DItvkLipneW4nroK+YyImQbsOFKN09TCFuBi+XKBb
+ THZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=pS16UFS9Sd5MXf2yyt3PZHIxkrIfRhj0n2t480rTsMc=;
+ b=YmQp9bkM9nam/0MVM9vFncPTeXpub5etFxZnfIVudnRbM6d8WREt+rS4CGyZ28ahuJ
+ 1dtn5fZk3Km0R6NMByZMbmHcZXHD9pH8kzDa1WhNjsgaRbbmEn7dxUr5UZdl00K7ypJd
+ W9qFbd+9Jt0IxR1IKr+feEuaXvRfhUgKJYeDEkFIheDyIH3EGu6omF+yJopsmds9i04z
+ wO1f+6mldYuy80iaqneLAlRi5b3FAvzhhC7qXqfIMw4EOKGeeTytnqrFaOpJCUMvMEDa
+ +6OZu3r8WeNFsgGbIjb+E3BCjIh0jdOggQPDPgFTuNa0BoU+VEl9tp8adlX4sPGLilFP
+ jX1w==
+X-Gm-Message-State: ANhLgQ0v1nCbUOaOokbZksDQzeHJNTlGKYneW4JLVOPImxK3VbDU2YkS
+ mGj4TlPxKHhxg0oi0XCRoKqUtYGh
+X-Google-Smtp-Source: ADFU+vtMJuJkdLvfvaAuuvSiWmJvsLt+CkZd/XlpKLfzjR9etQZ4WZLDvgX7NNfgnxKuSrPRVsoBYQ==
+X-Received: by 2002:a62:f205:: with SMTP id m5mr7304115pfh.3.1584669741459;
+ Thu, 19 Mar 2020 19:02:21 -0700 (PDT)
+Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id o11sm3241399pgh.78.2020.03.19.19.02.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Mar 2020 19:02:20 -0700 (PDT)
+Date: Fri, 20 Mar 2020 12:00:13 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH] powerpc/64s: CONFIG_PPC_HASH_MMU
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <20200302044902.3418935-1-npiggin@gmail.com>
+ <878sjxdlpa.fsf@mpe.ellerman.id.au>
+In-Reply-To: <878sjxdlpa.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1584667943.t0isihrd3v.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,44 +80,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- netdev@vger.kernel.org, Joel Fernandes <joel@joelfernandes.org>,
- Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney" <paulmck@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Geoff Levand <geoff@infradead.org>, Logan Gunthorpe <logang@deltatee.com>,
- linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
- Oleg Nesterov <oleg@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
-> On 2020-03-19 03:04:59 [-0700], Christoph Hellwig wrote:
->> But I wonder how alive the whole PS3 support is to start with..
->
-> OtherOS can only be used on "old" PS3 which do not have have their
-> firmware upgraded past version 3.21, released April 1, 2010 [0].
-> It was not possible to install OtherOS on PS3-slim and I don't remember
-> if it was a successor or a budget version (but it had lower power
-> consumption as per my memory).
-> *I* remember from back then that a few universities bought quite a few
-> of them and used them as a computation cluster. However, whatever broke
-> over the last 10 years is broken.
->
-> [0] https://en.wikipedia.org/wiki/OtherOS
+Michael Ellerman's on March 19, 2020 2:15 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> This allows the 64s hash MMU code to be compiled out if radix is
+>> selected. This saves about 128kB kernel image size (90kB text) on
+>> powernv_defconfig minus KVM, 40kB on a tiny config.
+>=20
+> TBH my feelings are:
+>  - the size savings don't excite me much, given our kernels can be ~32MB
+>    in size.
+>  - it's unlikely a major (or any) distro would ever enable this, so it
+>    would not be well tested.
 
-Last time I asked on the list there were still a handful of users.
+Yeah, it would only really be used for firmware or certain embedded=20
+things. We'd want some actual user before it's merged.
 
-And I had a patch submitted from a user as recently as last October, so
-it still has some life.
+>  - it adds a *lot* of #ifdefs.
 
-cheers
+Yeah I started to get lazy, we can improve those quite a bit I think.
+
+> So if we want to get this merged I'd want a good amount of refactoring
+> done to avoid the bulk of the #ifdefs in the code. ie. lots of wrapper
+> inlines etc. to hide the #ifdefs.
+>=20
+> And someone to put up their hand to maintain it, ie. ensure it keeps
+> building and fix any issues that come up when it breaks.
+
+Yeah, I'll keep tinkering on it, it might come in useful.
+
+Thanks,
+Nick
+=
