@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F47118C95A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 09:58:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC25618C964
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 09:59:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kHjs1rMlzDrgW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 19:58:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kHlc1q3kzDrN7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 19:59:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,20 +18,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kHh54JL9zDrMc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 19:56:37 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kHh95fPLzDrYy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 19:56:41 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id E9FE4AE5C;
- Fri, 20 Mar 2020 08:56:33 +0000 (UTC)
+ by mx2.suse.de (Postfix) with ESMTP id E7528AB76;
+ Fri, 20 Mar 2020 08:56:38 +0000 (UTC)
 From: Davidlohr Bueso <dave@stgolabs.net>
 To: tglx@linutronix.de
-Subject: [PATCH 16/15] rcuwait: Get rid of stale name comment
-Date: Fri, 20 Mar 2020 01:55:24 -0700
-Message-Id: <20200320085527.23861-1-dave@stgolabs.net>
+Subject: [PATCH 17/15] rcuwait: Inform rcuwait_wake_up() users if a wakeup was
+ attempted
+Date: Fri, 20 Mar 2020 01:55:25 -0700
+Message-Id: <20200320085527.23861-2-dave@stgolabs.net>
 X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20200318204302.693307984@linutronix.de>
+In-Reply-To: <20200320085527.23861-1-dave@stgolabs.net>
 References: <20200318204302.693307984@linutronix.de>
+ <20200320085527.23861-1-dave@stgolabs.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,27 +58,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The 'trywake' name was renamed to simply 'wake',
-update the comment.
+Let the caller know if wake_up_process() was actually called or not;
+some users can use this information for ad-hoc. Of course returning
+true does not guarantee that wake_up_process() actually woke anything
+up.
 
 Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
 ---
- kernel/exit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/rcuwait.h |  2 +-
+ kernel/exit.c           | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
+diff --git a/include/linux/rcuwait.h b/include/linux/rcuwait.h
+index 6e8798458091..3f83b9a12ad3 100644
+--- a/include/linux/rcuwait.h
++++ b/include/linux/rcuwait.h
+@@ -24,7 +24,7 @@ static inline void rcuwait_init(struct rcuwait *w)
+ 	w->task = NULL;
+ }
+ 
+-extern void rcuwait_wake_up(struct rcuwait *w);
++extern bool rcuwait_wake_up(struct rcuwait *w);
+ 
+ /*
+  * The caller is responsible for locking around rcuwait_wait_event(),
 diff --git a/kernel/exit.c b/kernel/exit.c
-index 0b81b26a872a..6cc6cc485d07 100644
+index 6cc6cc485d07..b0bb0a8ec4b1 100644
 --- a/kernel/exit.c
 +++ b/kernel/exit.c
-@@ -243,7 +243,7 @@ void rcuwait_wake_up(struct rcuwait *w)
- 	/*
- 	 * Order condition vs @task, such that everything prior to the load
- 	 * of @task is visible. This is the condition as to why the user called
--	 * rcuwait_trywake() in the first place. Pairs with set_current_state()
-+	 * rcuwait_wake() in the first place. Pairs with set_current_state()
- 	 * barrier (A) in rcuwait_wait_event().
- 	 *
- 	 *    WAIT                WAKE
+@@ -234,9 +234,10 @@ void release_task(struct task_struct *p)
+ 		goto repeat;
+ }
+ 
+-void rcuwait_wake_up(struct rcuwait *w)
++bool rcuwait_wake_up(struct rcuwait *w)
+ {
+ 	struct task_struct *task;
++	bool ret = false;
+ 
+ 	rcu_read_lock();
+ 
+@@ -254,10 +255,15 @@ void rcuwait_wake_up(struct rcuwait *w)
+ 	smp_mb(); /* (B) */
+ 
+ 	task = rcu_dereference(w->task);
+-	if (task)
++	if (task) {
+ 		wake_up_process(task);
++	        ret = true;
++	}
+ 	rcu_read_unlock();
++
++	return ret;
+ }
++EXPORT_SYMBOL_GPL(rcuwait_wake_up);
+ 
+ /*
+  * Determine if a process group is "orphaned", according to the POSIX
 -- 
 2.16.4
 
