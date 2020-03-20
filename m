@@ -1,65 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B3A18CB41
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 11:10:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kKKL536nzDrfw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 21:10:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730FC18CB43
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 11:12:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kKMJ3ThNzDrf6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 21:12:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Ldf/NL40; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [216.205.24.74])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kK7P52xgzDrh9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 21:01:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1584698510;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WzV2FN2ok/NhA5NWpOHsyZ7D0zfIBp3v9eJJSSNVJkQ=;
- b=Ldf/NL400QFhgIEG3vM8AetYxopBl16vVyQA+9FL2dEnNU3V/l57e/8PEax+gqjeWHQ++H
- uz1LpixKVICa5j9Sn6UCjeq3MB0nckrjlrrqWCPWO+t5Fp7inyeyCbLObK75nxmssMuk8o
- vE+XkRrQuVD9Pav/wdhDMbGQ96yqFZI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-333-w0dPq5DaN-2l2TxvoiClSQ-1; Fri, 20 Mar 2020 06:01:49 -0400
-X-MC-Unique: w0dPq5DaN-2l2TxvoiClSQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0130418B5F78;
- Fri, 20 Mar 2020 10:01:33 +0000 (UTC)
-Received: from localhost (ovpn-13-97.pek2.redhat.com [10.72.13.97])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 83DD396F92;
- Fri, 20 Mar 2020 10:01:30 +0000 (UTC)
-Date: Fri, 20 Mar 2020 18:01:27 +0800
-From: Baoquan He <bhe@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 0/8] mm/memory_hotplug: allow to specify a default
- online_type
-Message-ID: <20200320100127.GG2987@MiWiFi-R3L-srv>
-References: <20200319131221.14044-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kKK92HYqzDsNc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 21:10:20 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02KA5Nl1008033
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 06:10:17 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu934142s-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 06:10:17 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Fri, 20 Mar 2020 10:10:15 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 20 Mar 2020 10:10:11 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02KAA99t22806954
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Mar 2020 10:10:09 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B46EAA404D;
+ Fri, 20 Mar 2020 10:10:09 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F663A4053;
+ Fri, 20 Mar 2020 10:10:07 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 20 Mar 2020 10:10:07 +0000 (GMT)
+Date: Fri, 20 Mar 2020 15:40:06 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [RFC 1/2] mm, slub: prevent kmalloc_node crashes and memory leaks
+References: <20200318160610.GD26049@in.ibm.com>
+ <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
+ <0F67B5AA-96DF-4977-BDC6-D72959B3F7EF@linux.vnet.ibm.com>
+ <b9b95895-ca6b-5ad2-1f67-45fee93d1e67@suse.cz>
+ <658E6AB8-581F-4722-BCBB-4BDD2245D265@linux.vnet.ibm.com>
+ <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
+ <20200319140549.GF4879@linux.vnet.ibm.com>
+ <717aa572-73a9-65c0-4d6c-30f15d9d909a@suse.cz>
+ <20200320074638.GG4879@linux.vnet.ibm.com>
+ <90075919-dd9b-e38a-47a8-aea8520b3b94@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200319131221.14044-1-david@redhat.com>
+In-Reply-To: <90075919-dd9b-e38a-47a8-aea8520b3b94@suse.cz>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-TM-AS-GCONF: 00
+x-cbid: 20032010-0016-0000-0000-000002F468B5
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032010-0017-0000-0000-00003357F6F0
+Message-Id: <20200320100950.GA12944@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-20_02:2020-03-20,
+ 2020-03-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003200044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,56 +98,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yumei Huang <yuhuang@redhat.com>, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
- Eduardo Habkost <ehabkost@redhat.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Wei Yang <richard.weiyang@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Milan Zamazal <mzamazal@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Michal Hocko <mhocko@kernel.org>, Pekka Enberg <penberg@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ David Rientjes <rientjes@google.com>, Christopher Lameter <cl@linux.com>,
+ bharata@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/19/20 at 02:12pm, David Hildenbrand wrote:
-> Distributions nowadays use udev rules ([1] [2]) to specify if and
-> how to online hotplugged memory. The rules seem to get more complex with
-> many special cases. Due to the various special cases,
-> CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE cannot be used. All memory hotplug
-> is handled via udev rules.
-> 
-> Everytime we hotplug memory, the udev rule will come to the same
-> conclusion. Especially Hyper-V (but also soon virtio-mem) add a lot of
-> memory in separate memory blocks and wait for memory to get onlined by user
-> space before continuing to add more memory blocks (to not add memory faster
-> than it is getting onlined). This of course slows down the whole memory
-> hotplug process.
-> 
-> To make the job of distributions easier and to avoid udev rules that get
-> more and more complicated, let's extend the mechanism provided by
-> - /sys/devices/system/memory/auto_online_blocks
-> - "memhp_default_state=" on the kernel cmdline
-> to be able to specify also "online_movable" as well as "online_kernel"
-> 
-> v2 -> v3:
-> - "hv_balloon: don't check for memhp_auto_online manually"
-> -- init_completion() before register_memory_notifier()
-> - Minor typo fix
-> 
-> v1 -> v2:
-> - Tweaked some patch descriptions
-> - Added
-> -- "powernv/memtrace: always online added memory blocks"
-> -- "hv_balloon: don't check for memhp_auto_online manually"
-> -- "mm/memory_hotplug: unexport memhp_auto_online"
-> - "mm/memory_hotplug: convert memhp_auto_online to store an online_type"
-> -- No longer touches hv/memtrace code
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-20 09:43:11]:
 
-Ack the series.
+> On 3/20/20 8:46 AM, Srikar Dronamraju wrote:
+> > * Vlastimil Babka <vbabka@suse.cz> [2020-03-19 15:10:19]:
+> > 
+> >> On 3/19/20 3:05 PM, Srikar Dronamraju wrote:
+> >> > * Vlastimil Babka <vbabka@suse.cz> [2020-03-19 14:47:58]:
+> >> > 
+> >> 
+> >> No, but AFAICS, such node values are already handled in ___slab_alloc, and
+> >> cannot reach get_partial(). If you see something I missed, please do tell.
+> >> 
+> > 
+> > Ah I probably got confused with your previous version where
+> > alloc_slab_page() was modified. I see no problems with this version.
+> 
+> Thanks!
+> 
+> > Sorry for the noise.
+> 
+> No problem.
+> 
+> > A question just for my better understanding,
+> > How worse would it be to set node to numa_mem_id() instead of NUMA_NODE_ID
+> > when the current node is !N_NORMAL_MEMORY?
+> 
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+Yes,
+
+> (I'm assuming you mean s/NUMA_NODE_ID/NUMA_NO_NODE/)
+> 
+> Well, numa_mem_id() should work too, but it would make the allocation
+> constrained to the node of current cpu, with all the consequences (deactivating
+> percpu slab if it was from a different node etc).
+> 
+> There's no reason why this cpu's node should be the closest node to the one that
+> was originally requested (but has no memory), so it's IMO pointless or even
+> suboptimal to constraint to it. This can be revisited in case we get guaranteed
+> existence of node data with zonelists for all possible nodes, but for now
+> NUMA_NO_NODE seems the most reasonable fix to me.
+> 
+
+Okay.
+
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
