@@ -1,85 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0E818CF03
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 14:35:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBAC18CF5F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 14:49:17 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kQ9j15dQzDrND
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 00:49:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kPt00P7QzDsRQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 00:35:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=S+msKOf2; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kP053QQWzDrfY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:55:49 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02KCYfj9122553
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:55:46 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yua2dcjuy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:55:45 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Fri, 20 Mar 2020 12:55:44 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 20 Mar 2020 12:55:38 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02KCtboG54722632
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Mar 2020 12:55:37 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06BA64C04A;
- Fri, 20 Mar 2020 12:55:37 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 46F994C046;
- Fri, 20 Mar 2020 12:55:31 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.35.76])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 20 Mar 2020 12:55:31 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- sukadev@linux.vnet.ibm.com
-Subject: [PATCH v6 11/11] perf/tools/pmu-events/powerpc: Add hv_24x7
- socket/chip level metric events
-Date: Fri, 20 Mar 2020 18:24:06 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20200320125406.30995-1-kjain@linux.ibm.com>
-References: <20200320125406.30995-1-kjain@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kNzq5yFSzDrNc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:55:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=9sJuQlZdjTLh4p9vc8U/OzHYsApB7N+ztV93SXfUXTY=; b=S+msKOf2a1fh8blY+Rww+BWM12
+ nVEZN4NzwFV6andPM4+8lKK11q/OicWX2iQkylcgiiXoJXlNoBsNsuH3Hsp2RR8RDPZL2TdcCODPS
+ uXqwQjWFKzeQTHtaizkhr7Eo97mIjvh21zbrPXi93EqkofUUhGO+C6IK+RNwVwfqauDddv3GldqOZ
+ jfFfEHZEnFgz//yhDOiVCZfQldh+E+9GX+YRXaUAVYRX5jQUgr/PHWQVGE7cyWwVF36aIaotjD5Zk
+ 0y7RVQesMd3sxQR2DC76m8acC4k0uK2OUV9rbi/RfYT8M2tZQ3jZP6DJGye+lpHGnC+0OB1EyRrvO
+ hrIvLsLg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jFHAv-0000xV-Ux; Fri, 20 Mar 2020 12:54:58 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 40E9C305C92;
+ Fri, 20 Mar 2020 13:54:55 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 0E42E2858D5B2; Fri, 20 Mar 2020 13:54:55 +0100 (CET)
+Date: Fri, 20 Mar 2020 13:54:55 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Davidlohr Bueso <dave@stgolabs.net>
+Subject: Re: [PATCH 18/15] kvm: Replace vcpu->swait with rcuwait
+Message-ID: <20200320125455.GE20696@hirez.programming.kicks-ass.net>
+References: <20200318204302.693307984@linutronix.de>
+ <20200320085527.23861-1-dave@stgolabs.net>
+ <20200320085527.23861-3-dave@stgolabs.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20032012-4275-0000-0000-000003AFB9ED
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032012-4276-0000-0000-000038C4EB21
-Message-Id: <20200320125406.30995-12-kjain@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-20_03:2020-03-20,
- 2020-03-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 lowpriorityscore=0
- mlxlogscore=538 malwarescore=0 suspectscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003200055
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200320085527.23861-3-dave@stgolabs.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,72 +71,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
- yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
- ak@linux.intel.com, alexander.shishkin@linux.intel.com,
- anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
- ravi.bangoria@linux.ibm.com, kjain@linux.ibm.com, jmario@redhat.com,
- namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org
+Cc: rdunlap@infradead.org, linux-pci@vger.kernel.org, bigeasy@linutronix.de,
+ linux-kernel@vger.kernel.org, joel@joelfernandes.org, will@kernel.org,
+ mingo@kernel.org, arnd@arndb.de, Davidlohr Bueso <dbueso@suse.de>,
+ torvalds@linux-foundation.org, paulmck@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bhelgaas@google.com,
+ kurt.schwemmer@microsemi.com, kvalo@codeaurora.org, balbi@kernel.org,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, oleg@redhat.com, tglx@linutronix.de,
+ netdev@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ logang@deltatee.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hv_24×7 feature in IBM® POWER9™ processor-based servers provide the
-facility to continuously collect large numbers of hardware performance
-metrics efficiently and accurately.
-This patch adds hv_24x7  metric file for different Socket/chip
-resources.
+On Fri, Mar 20, 2020 at 01:55:26AM -0700, Davidlohr Bueso wrote:
+> -	swait_event_interruptible_exclusive(*wq, ((!vcpu->arch.power_off) &&
+> -				       (!vcpu->arch.pause)));
+> +	rcuwait_wait_event(*wait,
+> +			   (!vcpu->arch.power_off) && (!vcpu->arch.pause),
+> +			   TASK_INTERRUPTIBLE);
 
-Result:
+> -	for (;;) {
+> -		prepare_to_swait_exclusive(&vcpu->wq, &wait, TASK_INTERRUPTIBLE);
+> -
+> -		if (kvm_vcpu_check_block(vcpu) < 0)
+> -			break;
+> -
+> -		waited = true;
+> -		schedule();
+> -	}
+> -
+> -	finish_swait(&vcpu->wq, &wait);
+> +	rcuwait_wait_event(&vcpu->wait,
+> +			   (block_check = kvm_vcpu_check_block(vcpu)) < 0,
+> +			   TASK_INTERRUPTIBLE);
 
-power9 platform:
-
-command:# ./perf stat --metric-only -M Memory_RD_BW_Chip -C 0 -I 1000
-
-     1.000096188                      0.9                      0.3
-     2.000285720                      0.5                      0.1
-     3.000424990                      0.4                      0.1
-
-command:# ./perf stat --metric-only -M PowerBUS_Frequency -C 0 -I 1000
-
-     1.000097981                        2.3                        2.3
-     2.000291713                        2.3                        2.3
-     3.000421719                        2.3                        2.3
-     4.000550912                        2.3                        2.3
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- .../arch/powerpc/power9/nest_metrics.json     | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
- create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-new file mode 100644
-index 000000000000..ac38f5540ac6
---- /dev/null
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-@@ -0,0 +1,19 @@
-+[
-+    {
-+        "MetricExpr": "(hv_24x7@PM_MCS01_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_RD_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT23\\,chip\\=?@)",
-+        "MetricName": "Memory_RD_BW_Chip",
-+        "MetricGroup": "Memory_BW",
-+        "ScaleUnit": "1.6e-2MB"
-+    },
-+    {
-+    "MetricExpr": "(hv_24x7@PM_MCS01_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_WR_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT23\\,chip\\=?@ )",
-+        "MetricName": "Memory_WR_BW_Chip",
-+        "MetricGroup": "Memory_BW",
-+        "ScaleUnit": "1.6e-2MB"
-+    },
-+    {
-+    "MetricExpr": "(hv_24x7@PM_PB_CYC\\,chip\\=?@ )",
-+        "MetricName": "PowerBUS_Frequency",
-+        "ScaleUnit": "2.5e-7GHz"
-+    }
-+]
--- 
-2.18.1
+Are these yet more instances that really want to be TASK_IDLE ?
 
