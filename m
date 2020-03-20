@@ -1,75 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B18DF18CBF8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 11:49:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2D118CBF3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 11:47:16 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kL7j71RpzF0x8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 21:47:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kL9x0BR7zDrFP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 21:49:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kKqR58qjzF0Pl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 21:33:07 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02KA4AWV116868; Fri, 20 Mar 2020 06:33:03 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu8btw8cw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Mar 2020 06:33:03 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02KAVwf6022476;
- Fri, 20 Mar 2020 10:33:01 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2yrpw7kew5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Mar 2020 10:33:01 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02KAX1J745547940
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Mar 2020 10:33:01 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F1775AC05E;
- Fri, 20 Mar 2020 10:33:00 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74173AC05B;
- Fri, 20 Mar 2020 10:32:59 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.72.106])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 20 Mar 2020 10:32:59 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, paulus@ozlabs.org
-Subject: [PATCH] arch/powerpc/mm: Enable compound page check for both THP and
- HugeTLB
-Date: Fri, 20 Mar 2020 16:02:56 +0530
-Message-Id: <20200320103256.229365-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kKrT4NfpzDrR9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 21:33:59 +1100 (AEDT)
+IronPort-SDR: HgKbWDAoq0l/pNjoX29WVW8iOgQloiX8jL31HtCcNwjOoPziBPaVvdHqr0Jv75oFXiC2t/kxNS
+ ZfnlFJckIq2g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2020 03:33:57 -0700
+IronPort-SDR: dvyOOwpm3ck0vNEcjFg0Ln9rtXpCUZTdZcp6iT/sMJoJaRldBYM8OWYnTUButP6k1/hcmEEsxM
+ R4UhrSvV447g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,284,1580803200"; d="scan'208";a="446612540"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+ by fmsmga006.fm.intel.com with ESMTP; 20 Mar 2020 03:33:50 -0700
+Received: from andy by smile with local (Exim 4.93)
+ (envelope-from <andriy.shevchenko@linux.intel.com>)
+ id 1jFEyM-00BKoR-Uc; Fri, 20 Mar 2020 12:33:50 +0200
+Date: Fri, 20 Mar 2020 12:33:50 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michal Suchanek <msuchanek@suse.de>
+Subject: Re: [PATCH v12 8/8] MAINTAINERS: perf: Add pattern that matches ppc
+ perf to the perf entry.
+Message-ID: <20200320103350.GV1922688@smile.fi.intel.com>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584699455.git.msuchanek@suse.de>
+ <4b150d01c60bd37705789200d9adee9f1c9b50ce.1584699455.git.msuchanek@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-20_02:2020-03-20,
- 2020-03-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003200044
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4b150d01c60bd37705789200d9adee9f1c9b50ce.1584699455.git.msuchanek@suse.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,32 +61,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Eric Richter <erichte@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-THP config can result in compound pages. Make sure kernel enables the
-PageCompound() check when only THP is enabled.
+On Fri, Mar 20, 2020 at 11:20:19AM +0100, Michal Suchanek wrote:
+> While at it also simplify the existing perf patterns.
+> 
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+And still missed fixes from parse-maintainers.pl.
 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 9b4f5fb719e0..b03cbddf9054 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -485,7 +485,7 @@ EXPORT_SYMBOL(flush_dcache_page);
- 
- void flush_dcache_icache_page(struct page *page)
- {
--#ifdef CONFIG_HUGETLB_PAGE
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLB_PAGE)
- 	if (PageCompound(page)) {
- 		flush_dcache_icache_hugepage(page);
- 		return;
+I see it like below in the linux-next (after the script)
+
+PERFORMANCE EVENTS SUBSYSTEM
+M:      Peter Zijlstra <peterz@infradead.org>
+M:      Ingo Molnar <mingo@redhat.com>
+M:      Arnaldo Carvalho de Melo <acme@kernel.org>
+R:      Mark Rutland <mark.rutland@arm.com>
+R:      Alexander Shishkin <alexander.shishkin@linux.intel.com>
+R:      Jiri Olsa <jolsa@redhat.com>
+R:      Namhyung Kim <namhyung@kernel.org>
+L:      linux-kernel@vger.kernel.org
+S:      Supported
+T:      git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git perf/core
+F:      arch/*/events/*
+F:      arch/*/events/*/*
+F:      arch/*/include/asm/perf_event.h
+F:      arch/*/kernel/*/*/perf_event*.c
+F:      arch/*/kernel/*/perf_event*.c
+F:      arch/*/kernel/perf_callchain.c
+F:      arch/*/kernel/perf_event*.c
+F:      include/linux/perf_event.h
+F:      include/uapi/linux/perf_event.h
+F:      kernel/events/*
+F:      tools/perf/
+
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13080,7 +13080,7 @@ R:	Namhyung Kim <namhyung@kernel.org>
+>  L:	linux-kernel@vger.kernel.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git perf/core
+>  S:	Supported
+> -F:	kernel/events/*
+> +F:	kernel/events/
+>  F:	include/linux/perf_event.h
+>  F:	include/uapi/linux/perf_event.h
+>  F:	arch/*/kernel/perf_event*.c
+> @@ -13088,8 +13088,8 @@ F:	arch/*/kernel/*/perf_event*.c
+>  F:	arch/*/kernel/*/*/perf_event*.c
+>  F:	arch/*/include/asm/perf_event.h
+>  F:	arch/*/kernel/perf_callchain.c
+> -F:	arch/*/events/*
+> -F:	arch/*/events/*/*
+> +F:	arch/*/events/
+> +F:	arch/*/perf/
+>  F:	tools/perf/
+>  
+>  PERFORMANCE EVENTS SUBSYSTEM ARM64 PMU EVENTS
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
