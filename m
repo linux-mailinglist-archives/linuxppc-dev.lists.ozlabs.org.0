@@ -1,66 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0698418C85E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 08:48:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8C718C848
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 08:38:40 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kFy53XjRzDrcd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:38:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kG9R71fTzDqlR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:48:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=YLldNI9a; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [63.128.21.74])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kFwR2bW4zDrbv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 18:37:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1584689827;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=W1gum1vAgnk9ohf+zv7pJnapCaZq6wcMIaHYE+lE4nY=;
- b=YLldNI9aNF6eZYVqh/9elfdrkL+4Tj6O1M6gPUJzcIz44etgLRM/opfCfMW119GRIjEWkP
- sqqKxgMf/DT9cpkCB88L6Vx8xXWKyaA1r7VjDwE1vjCssPniV4GxaAERACRPXZPLdYEKRj
- xq+BuYjowsdvNSCj+YwHQCcP77dNt8s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-354-3-PS3H37ND6CvYBdStjOow-1; Fri, 20 Mar 2020 03:37:03 -0400
-X-MC-Unique: 3-PS3H37ND6CvYBdStjOow-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 120D88010D9;
- Fri, 20 Mar 2020 07:37:00 +0000 (UTC)
-Received: from localhost (ovpn-13-97.pek2.redhat.com [10.72.13.97])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 00D1460BF1;
- Fri, 20 Mar 2020 07:36:56 +0000 (UTC)
-Date: Fri, 20 Mar 2020 15:36:53 +0800
-From: Baoquan He <bhe@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 3/8] drivers/base/memory: store mapping between MMOP_*
- and string in an array
-Message-ID: <20200320073653.GE2987@MiWiFi-R3L-srv>
-References: <20200319131221.14044-1-david@redhat.com>
- <20200319131221.14044-4-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kG7c05q7zDrMf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 18:46:50 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02K7Xd2J085293
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 03:46:48 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yu96h3wkr-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 03:46:47 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Fri, 20 Mar 2020 07:46:46 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 20 Mar 2020 07:46:43 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02K7kf0g20119576
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Mar 2020 07:46:41 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 51C4011C04A;
+ Fri, 20 Mar 2020 07:46:41 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D63FB11C050;
+ Fri, 20 Mar 2020 07:46:38 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 20 Mar 2020 07:46:38 +0000 (GMT)
+Date: Fri, 20 Mar 2020 13:16:38 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [RFC 1/2] mm, slub: prevent kmalloc_node crashes and memory leaks
+References: <20200318144220.18083-1-vbabka@suse.cz>
+ <20200318160610.GD26049@in.ibm.com>
+ <e060ad43-ff4e-0e59-2e64-ce8a4916ec70@suse.cz>
+ <0F67B5AA-96DF-4977-BDC6-D72959B3F7EF@linux.vnet.ibm.com>
+ <b9b95895-ca6b-5ad2-1f67-45fee93d1e67@suse.cz>
+ <658E6AB8-581F-4722-BCBB-4BDD2245D265@linux.vnet.ibm.com>
+ <339cf655-393e-c48e-4797-86f61df56c35@suse.cz>
+ <20200319140549.GF4879@linux.vnet.ibm.com>
+ <717aa572-73a9-65c0-4d6c-30f15d9d909a@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200319131221.14044-4-david@redhat.com>
+In-Reply-To: <717aa572-73a9-65c0-4d6c-30f15d9d909a@suse.cz>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-TM-AS-GCONF: 00
+x-cbid: 20032007-0008-0000-0000-000003607A28
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032007-0009-0000-0000-00004A81DAA8
+Message-Id: <20200320074638.GG4879@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-20_01:2020-03-19,
+ 2020-03-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=922 bulkscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ phishscore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2003200030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,109 +97,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Michal Hocko <mhocko@kernel.org>, Pekka Enberg <penberg@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ David Rientjes <rientjes@google.com>, Christopher Lameter <cl@linux.com>,
+ bharata@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/19/20 at 02:12pm, David Hildenbrand wrote:
-> Let's use a simple array which we can reuse soon. While at it, move the
-> string->mmop conversion out of the device hotplug lock.
-> 
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Wei Yang <richard.weiyang@gmail.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/base/memory.c | 38 +++++++++++++++++++++++---------------
->  1 file changed, 23 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index e7e77cafef80..8a7f29c0bf97 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -28,6 +28,24 @@
->  
->  #define MEMORY_CLASS_NAME	"memory"
->  
-> +static const char *const online_type_to_str[] = {
-> +	[MMOP_OFFLINE] = "offline",
-> +	[MMOP_ONLINE] = "online",
-> +	[MMOP_ONLINE_KERNEL] = "online_kernel",
-> +	[MMOP_ONLINE_MOVABLE] = "online_movable",
-> +};
-> +
-> +static int memhp_online_type_from_str(const char *str)
-> +{
-> +	int i;
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-19 15:10:19]:
 
-I would change it as: 
-
-	for (int i = 0; i < ARRAY_SIZE(online_type_to_str); i++) {
-
-> +
-> +	for (i = 0; i < ARRAY_SIZE(online_type_to_str); i++) {
-> +		if (sysfs_streq(str, online_type_to_str[i]))
-> +			return i;
-> +	}
-> +	return -EINVAL;
-> +}
-> +
->  #define to_memory_block(dev) container_of(dev, struct memory_block, dev)
->  
->  static int sections_per_block;
-> @@ -236,26 +254,17 @@ static int memory_subsys_offline(struct device *dev)
->  static ssize_t state_store(struct device *dev, struct device_attribute *attr,
->  			   const char *buf, size_t count)
->  {
-> +	const int online_type = memhp_online_type_from_str(buf);
->  	struct memory_block *mem = to_memory_block(dev);
-> -	int ret, online_type;
-> +	int ret;
-> +
-> +	if (online_type < 0)
-> +		return -EINVAL;
->  
->  	ret = lock_device_hotplug_sysfs();
->  	if (ret)
->  		return ret;
->  
-> -	if (sysfs_streq(buf, "online_kernel"))
-> -		online_type = MMOP_ONLINE_KERNEL;
-> -	else if (sysfs_streq(buf, "online_movable"))
-> -		online_type = MMOP_ONLINE_MOVABLE;
-> -	else if (sysfs_streq(buf, "online"))
-> -		online_type = MMOP_ONLINE;
-> -	else if (sysfs_streq(buf, "offline"))
-> -		online_type = MMOP_OFFLINE;
-> -	else {
-> -		ret = -EINVAL;
-> -		goto err;
-> -	}
-> -
->  	switch (online_type) {
->  	case MMOP_ONLINE_KERNEL:
->  	case MMOP_ONLINE_MOVABLE:
-> @@ -271,7 +280,6 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
->  		ret = -EINVAL; /* should never happen */
->  	}
->  
-> -err:
->  	unlock_device_hotplug();
->  
->  	if (ret < 0)
-> -- 
-> 2.24.1
+> On 3/19/20 3:05 PM, Srikar Dronamraju wrote:
+> > * Vlastimil Babka <vbabka@suse.cz> [2020-03-19 14:47:58]:
+> > 
+> >> ----8<----
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 17dc00e33115..7113b1f9cd77 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -1973,8 +1973,6 @@ static void *get_partial(struct kmem_cache *s, gfp_t flags, int node,
+> >> 
+> >>  	if (node == NUMA_NO_NODE)
+> >>  		searchnode = numa_mem_id();
+> >> -	else if (!node_present_pages(node))
+> >> -		searchnode = node_to_mem_node(node);
+> >> 
+> >>  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+> > 
+> > Are we okay with passing a node to get_partial_node with !NUMA_NO_NODE and
+> > !N_MEMORY including possible nodes?
 > 
+> No, but AFAICS, such node values are already handled in ___slab_alloc, and
+> cannot reach get_partial(). If you see something I missed, please do tell.
+> 
+
+Ah I probably got confused with your previous version where
+alloc_slab_page() was modified. I see no problems with this version.
+
+Sorry for the noise.
+
+A question just for my better understanding,
+How worse would it be to set node to numa_mem_id() instead of NUMA_NODE_ID
+when the current node is !N_NORMAL_MEMORY?
+
+> >>  	if (object || node != NUMA_NO_NODE)
+> > 
+> 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
