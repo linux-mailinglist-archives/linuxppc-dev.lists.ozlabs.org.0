@@ -1,49 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB05B18C7CE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 08:01:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79A218C759
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 07:18:10 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kD9C30B8zDrQR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 17:18:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kF7j5jPXzDrfl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:01:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+e7fddad6f7a51abe8bfe+6053+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kD7J4pJwzDrNr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 17:16:23 +1100 (AEDT)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 3C57286598A0FBBAB9AA;
- Fri, 20 Mar 2020 14:16:16 +0800 (CST)
-Received: from [127.0.0.1] (10.173.221.195) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0;
- Fri, 20 Mar 2020 14:16:06 +0800
-Subject: Re: [PATCH v4 0/6] implement KASLR for powerpc/fsl_booke/64
-To: Daniel Axtens <dja@axtens.net>, <mpe@ellerman.id.au>,
- <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
- <christophe.leroy@c-s.fr>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <npiggin@gmail.com>, <keescook@chromium.org>,
- <kernel-hardening@lists.openwall.com>, <oss@buserror.net>
-References: <20200306064033.3398-1-yanaijie@huawei.com>
- <87imizww4i.fsf@dja-thinkpad.axtens.net>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <6546b653-c7d6-41cf-3954-0587600127e3@huawei.com>
-Date: Fri, 20 Mar 2020 14:16:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kF5k5jjZzDrbn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 18:00:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=iZ+tfXP9s+9EAQeQf95cP5ovh7AcQ3rFatDjmNA0Hpo=; b=SS2stUyn7rcx2bDE5sgbJPy234
+ X9zm/vp1W32VRiUAiag9wc6+PVqSgvIgsex3vU9E84yi9emMqCBjOL8b7qfPZtQkzzDv+ofwjR/c0
+ QqIG4wFoyXYG03dKfZLr/ByjjOnzQZgMIsED/UXA3TjGOpdi16UiLfl7+s/pKrebSwQXNd9u4pstl
+ +qXtTUiOQHDVZkhWsyHsqIFLLUunbIQgVzbJEP1S4/2sDgk9ikKUV9u7HOeGT3pSs1gwB2yhFrrPK
+ c3xR/dV7sjrTgGqDl4NyeXhuFf9XPfBkHa1DsefnsUIiMYD5W+PnILH3G4rhCIrK0mmmME0frAQvb
+ yfAFAVTA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1jFBdD-00080q-N8; Fri, 20 Mar 2020 06:59:47 +0000
+Date: Thu, 19 Mar 2020 23:59:47 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Julian Calaby <julian.calaby@gmail.com>
+Subject: Re: [patch V2 11/15] completion: Use simple wait queues
+Message-ID: <20200320065947.GA25206@infradead.org>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.521507446@linutronix.de>
+ <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <87imizww4i.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.221.195]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,121 +60,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: linux-usb <linux-usb@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+ Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Davidlohr Bueso <dave@stgolabs.net>,
+ "Paul E . McKenney" <paulmck@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Logan Gunthorpe <logang@deltatee.com>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-wireless@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Mar 20, 2020 at 10:25:41AM +1100, Julian Calaby wrote:
+> > +++ b/drivers/usb/gadget/function/f_fs.c
+> > @@ -1703,7 +1703,7 @@ static void ffs_data_put(struct ffs_data
+> >                 pr_info("%s(): freeing\n", __func__);
+> >                 ffs_data_clear(ffs);
+> >                 BUG_ON(waitqueue_active(&ffs->ev.waitq) ||
+> > -                      waitqueue_active(&ffs->ep0req_completion.wait) ||
+> > +                      swait_active(&ffs->ep0req_completion.wait) ||
+> 
+> This looks like some code is reaching deep into the dirty dark corners
+> of the completion implementation, should there be some wrapper around
+> this to hide that?
 
-
-在 2020/3/20 11:19, Daniel Axtens 写道:
-> Hi Jason,
-> 
-> I tried to compile this series and got the following error:
-> 
-> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c: In function ‘kaslr_early_init’:
-> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:357:33: error: ‘linear_sz’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
->    357 |  regions.pa_end = memstart_addr + linear_sz;
->        |                   ~~~~~~~~~~~~~~^~~~~~~~~~~
-> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:317:21: note: ‘linear_sz’ was declared here
->    317 |  unsigned long ram, linear_sz;
->        |                     ^~~~~~~~~
-> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:187:8: error: ‘ram’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
->    187 |  ret = parse_crashkernel(boot_command_line, size, &crash_size,
->        |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    188 |     &crash_base);
->        |     ~~~~~~~~~~~~
-> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:317:16: note: ‘ram’ was declared here
->    317 |  unsigned long ram, linear_sz;
->        |                ^~~
-> cc1: all warnings being treated as errors
-> make[4]: *** [/home/dja/dev/linux/linux/scripts/Makefile.build:268: arch/powerpc/mm/nohash/kaslr_booke.o] Error 1
-> make[3]: *** [/home/dja/dev/linux/linux/scripts/Makefile.build:505: arch/powerpc/mm/nohash] Error 2
-> make[2]: *** [/home/dja/dev/linux/linux/scripts/Makefile.build:505: arch/powerpc/mm] Error 2
-> make[2]: *** Waiting for unfinished jobs....
-> 
-> I have attached my .config file.
-> 
-
-Thanks Daniel,
-
-My config had CC_DISABLE_WARN_MAYBE_UNINITIALIZED=y enabled so I missed 
-this warning. I will fix it.
-
-Thanks again.
-
-Jason
-
-> I'm using
-> powerpc64-linux-gnu-gcc (Ubuntu 9.2.1-9ubuntu1) 9.2.1 20191008
-> 
-> Regards,
-> Daniel
-> 
-> 
-> 
-> 
->> This is a try to implement KASLR for Freescale BookE64 which is based on
->> my earlier implementation for Freescale BookE32:
->> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=131718&state=*
->>
->> The implementation for Freescale BookE64 is similar as BookE32. One
->> difference is that Freescale BookE64 set up a TLB mapping of 1G during
->> booting. Another difference is that ppc64 needs the kernel to be
->> 64K-aligned. So we can randomize the kernel in this 1G mapping and make
->> it 64K-aligned. This can save some code to creat another TLB map at
->> early boot. The disadvantage is that we only have about 1G/64K = 16384
->> slots to put the kernel in.
->>
->>      KERNELBASE
->>
->>            64K                     |--> kernel <--|
->>             |                      |              |
->>          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->>          |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
->>          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->>          |                         |                        1G
->>          |----->   offset    <-----|
->>
->>                                kernstart_virt_addr
->>
->> I'm not sure if the slot numbers is enough or the design has any
->> defects. If you have some better ideas, I would be happy to hear that.
->>
->> Thank you all.
->>
->> v3->v4:
->>    Do not define __kaslr_offset as a fixed symbol. Reference __run_at_load and
->>      __kaslr_offset by symbol instead of magic offsets.
->>    Use IS_ENABLED(CONFIG_PPC32) instead of #ifdef CONFIG_PPC32.
->>    Change kaslr-booke32 to kaslr-booke in index.rst
->>    Switch some instructions to 64-bit.
->> v2->v3:
->>    Fix build error when KASLR is disabled.
->> v1->v2:
->>    Add __kaslr_offset for the secondary cpu boot up.
->>
->> Jason Yan (6):
->>    powerpc/fsl_booke/kaslr: refactor kaslr_legal_offset() and
->>      kaslr_early_init()
->>    powerpc/fsl_booke/64: introduce reloc_kernel_entry() helper
->>    powerpc/fsl_booke/64: implement KASLR for fsl_booke64
->>    powerpc/fsl_booke/64: do not clear the BSS for the second pass
->>    powerpc/fsl_booke/64: clear the original kernel if randomized
->>    powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to kaslr-booke.rst
->>      and add 64bit part
->>
->>   Documentation/powerpc/index.rst               |  2 +-
->>   .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 +++++++-
->>   arch/powerpc/Kconfig                          |  2 +-
->>   arch/powerpc/kernel/exceptions-64e.S          | 23 +++++
->>   arch/powerpc/kernel/head_64.S                 | 13 +++
->>   arch/powerpc/kernel/setup_64.c                |  3 +
->>   arch/powerpc/mm/mmu_decl.h                    | 23 ++---
->>   arch/powerpc/mm/nohash/kaslr_booke.c          | 88 +++++++++++++------
->>   8 files changed, 144 insertions(+), 45 deletions(-)
->>   rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} (59%)
->>
->> -- 
->> 2.17.2
-
+Or just remote it entirely..
