@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D5018C70D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 06:34:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3389018C70A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 06:32:50 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kC8v1qpmzDrhj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:32:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kCBm0YcVzDrfT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:34:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cGUJZ0HY; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=mmYieBoc; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kBsK3C49zDrQg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 16:19:17 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id b72so2620141pfb.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 22:19:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kBsR0SLMzDrSJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 16:19:22 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id r3so2005814pls.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Mar 2020 22:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=5h6ggFzcy3V91w/AOwjRs0iFE0F6SWUzKuIEtGHr8EQ=;
- b=cGUJZ0HYpxjhb1OMlM8mRzeyyXD2wwbq+9ZL8IPi0GGMp2JFU80DAZC37ow72xnGqY
- dJyEQ+ZPUEaFh2nL63/le/jv7T22scoCWShIOJWHM8O5bRylC3tdOUUDFbeNZwQngu98
- LDtsbqkdItGdTJ7Nlc7Vcyv05BmhV3SEQ6FrHXKaUaeN0s1ZIyje0MutqGFqaxyS84Al
- /noa2q1O34+sOHM0icLRrrZvzd2u/PK8rihvJZOP6zIWMalqyKDJKmVoUAmF0z9qh587
- NJVdYFmS67BvoxL5Bspzlv2mk6KZDa94xsZIC2hNKiEzq12S6saTIaBbRE2uuOhmQ54n
- 24Rw==
+ bh=Gki9s0Z1fz3RJJfYb55WIAVyWc1UytjmukUl2i/97Ww=;
+ b=mmYieBocsIFFuqeyb1Jo8JJfbop2LZHldHt7ploXyU3ttgLM7Ps3XRMGpHbvx1DDqJ
+ 9EW7SgdRjIgk1BfstdjWpHLNfHCAXPXZGvZHfDKsmVTcz3BYVSoKbuqB3sddXFvqTWC5
+ t3YumFdJCCV5h0TTt8fdq7bFRjTBooMKLd52Q8TnDf8uL22dCOznfZRMCrcAoEY29h8c
+ 3Sg00jsKCCQ8LB1WocKSuQJYbD080F/khjhqveXmyqv9SONXCUXHps28KJxxL4Zh7vey
+ 8SxPqOuEN9fP7p34qsSFuhk+lovQ1V+PJoZbEcw1ffIUHe1LCmd6+hzuWANEh4RC3x0X
+ YR4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=5h6ggFzcy3V91w/AOwjRs0iFE0F6SWUzKuIEtGHr8EQ=;
- b=sxCM/KRaffSO1AIwxGMNFldXhIC+8ctZ1sNkRFLgbSnnhpdRNpB4Lf+/8rrIhhQ+7p
- QGdqZ/P+9NbOSXFmr02trj7G521p2AHxNdCMFAtNuROTlYlxeBX6F4CVNEOvAwjwaU8W
- 32B46V5L2ReSvpGJhxrtZGT6sBXzIjB2tGzDSDkgMp+Qze520SId3uq73Vfih9sPGalU
- ABOLn7NARXcdNHZjnoveXYPphmLEckFAMsSd1J4On2nJM4F2Q8m1baZNJIil7DiNCvJ0
- 2EjL2cqDNV3cgI0ox4GUAmKvGdMiLgo9FyV2pOdL4wFHzWKIN666602C29zU+Yd91wSD
- bZdQ==
-X-Gm-Message-State: ANhLgQ1u6QSoCxDtN8MKcOR+RXlCJEWkTrEcH0egG/jfgp43w6OXuH0A
- BvjC1YM+y1oQO9KKdQmD/HUNyHmiFYw=
-X-Google-Smtp-Source: ADFU+vusMLYGCMDqx86uFBcy2ld5LkXeOJtS2igV93ekSHI09Wtb3HMGneOq7LUFo8HEKOPFm5mggg==
-X-Received: by 2002:a62:1513:: with SMTP id 19mr7719887pfv.85.1584681555229;
- Thu, 19 Mar 2020 22:19:15 -0700 (PDT)
+ bh=Gki9s0Z1fz3RJJfYb55WIAVyWc1UytjmukUl2i/97Ww=;
+ b=Pw66mJoDI0hUvKTPzWRB0zGjfUX4kyRxr+EuiIiQi9701rBW0ZO6nYyp+0s5B/pAJ/
+ vaU7cpf0LjQNmcVFfzhOdU3jzUsPV7zwcBvFpDCRy5nsMw42JXVw+qMv2kRDM2QC4UQU
+ jsrYxjUtZFibu4bfVh6eLsgE1DfWNKpA++AJQJoGqOToRK1J09dknEQ9fNodF3kA75Og
+ h0cAEbRJyutMbP55JaEuk1gbWdrkrGQqd4ow3YH1Yli9H9one8pE07uAM7dAdF1HDH4b
+ TeZwgx2VzxGo7JOjorRH2uAfajG+GCxkJ0Fx7oPQYJvV0nVtBNhiHLc55zYtnk+i83Le
+ tm7Q==
+X-Gm-Message-State: ANhLgQ2F+byJumNJmwC3l/iOOXmpadmd/zaycPU97pq24e8asurBYCXE
+ GcQXoKMMO67DQJrzqO7CvzMAO2b1G6o=
+X-Google-Smtp-Source: ADFU+vuei8tmibgTm5STa4nIYCWPn8R4aK7/DXuAvU03/igGf2mSKA7S1DBTEjFuSGK8yVBERYk3TA==
+X-Received: by 2002:a17:90a:7105:: with SMTP id
+ h5mr7575999pjk.54.1584681559130; 
+ Thu, 19 Mar 2020 22:19:19 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id c207sm3988716pfb.47.2020.03.19.22.19.11
+ by smtp.gmail.com with ESMTPSA id c207sm3988716pfb.47.2020.03.19.22.19.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Mar 2020 22:19:14 -0700 (PDT)
+ Thu, 19 Mar 2020 22:19:18 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 07/16] powerpc: Introduce functions for instruction nullity
- and equality
-Date: Fri, 20 Mar 2020 16:18:00 +1100
-Message-Id: <20200320051809.24332-8-jniethe5@gmail.com>
+Subject: [PATCH v4 08/16] powerpc: Use an accessor for word instructions
+Date: Fri, 20 Mar 2020 16:18:01 +1100
+Message-Id: <20200320051809.24332-9-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200320051809.24332-1-jniethe5@gmail.com>
 References: <20200320051809.24332-1-jniethe5@gmail.com>
@@ -83,286 +83,1057 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for an instruction data type that can not be directly
-used with the '==' operator use functions for checking equality and
-nullity.
+In preparation for prefixed instructions where all instructions are no
+longer words, use an accessor for getting a word instruction as a u32
+from the instruction data type.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/kernel/optprobes.c      |  2 +-
- arch/powerpc/kernel/trace/ftrace.c   | 33 +++++++++++++++-------------
- arch/powerpc/lib/code-patching.c     | 16 +++++++-------
- arch/powerpc/lib/feature-fixups.c    |  2 +-
- arch/powerpc/lib/test_emulate_step.c |  4 ++--
- arch/powerpc/xmon/xmon.c             |  4 ++--
- 6 files changed, 32 insertions(+), 29 deletions(-)
+v4: New to series
+---
+ arch/powerpc/kernel/align.c          |   2 +-
+ arch/powerpc/kernel/kprobes.c        |   2 +-
+ arch/powerpc/kernel/trace/ftrace.c   |  16 +-
+ arch/powerpc/lib/code-patching.c     |   2 +-
+ arch/powerpc/lib/feature-fixups.c    |   4 +-
+ arch/powerpc/lib/sstep.c             | 270 ++++++++++++++-------------
+ arch/powerpc/lib/test_emulate_step.c |   4 +-
+ arch/powerpc/xmon/xmon.c             |   4 +-
+ 8 files changed, 153 insertions(+), 151 deletions(-)
 
-diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index 1025a7a3b3a8..6027425a85f2 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -259,7 +259,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 				(unsigned long)emulate_step_addr,
- 				BRANCH_SET_LINK);
+diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+index 77c49dfdc1b4..b246ca124931 100644
+--- a/arch/powerpc/kernel/align.c
++++ b/arch/powerpc/kernel/align.c
+@@ -309,7 +309,7 @@ int fix_alignment(struct pt_regs *regs)
+ 		/* We don't handle PPC little-endian any more... */
+ 		if (cpu_has_feature(CPU_FTR_PPC_LE))
+ 			return -EIO;
+-		instr = PPC_INST(swab32(instr));
++		instr = PPC_INST(swab32(ppc_inst_word(instr)));
+ 	}
  
--	if (!branch_op_callback || !branch_emulate_step)
-+	if (ppc_inst_null(branch_op_callback) || ppc_inst_null(branch_emulate_step))
- 		goto error;
- 
- 	patch_instruction(buff + TMPL_CALL_HDLR_IDX, branch_op_callback);
+ #ifdef CONFIG_SPE
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 4c2b656615a6..0c600b6e4ead 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -242,7 +242,7 @@ static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
+ 		 * So, we should never get here... but, its still
+ 		 * good to catch them, just in case...
+ 		 */
+-		printk("Can't step on instruction %x\n", insn);
++		printk("Can't step on instruction %x\n", ppc_inst_word(insn));
+ 		BUG();
+ 	} else {
+ 		/*
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index b189a34baaa2..b3645b664819 100644
+index b3645b664819..7614a9f537fd 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -72,7 +72,7 @@ ftrace_modify_code(unsigned long ip, ppc_inst old, ppc_inst new)
- 		return -EFAULT;
- 
+@@ -74,7 +74,7 @@ ftrace_modify_code(unsigned long ip, ppc_inst old, ppc_inst new)
  	/* Make sure it is what we expect it to be */
--	if (replaced != old) {
-+	if (!ppc_inst_equal(replaced, old)) {
+ 	if (!ppc_inst_equal(replaced, old)) {
  		pr_err("%p: replaced (%#x) != old (%#x)",
- 		(void *)ip, replaced, old);
+-		(void *)ip, replaced, old);
++		(void *)ip, ppc_inst_word(replaced), ppc_inst_word(old));
  		return -EINVAL;
-@@ -169,7 +169,8 @@ __ftrace_make_nop(struct module *mod,
  	}
  
+@@ -136,7 +136,7 @@ __ftrace_make_nop(struct module *mod,
+ 
+ 	/* Make sure that that this is still a 24bit jump */
+ 	if (!is_bl_op(op)) {
+-		pr_err("Not expected bl: opcode is %x\n", op);
++		pr_err("Not expected bl: opcode is %x\n", ppc_inst_word(op));
+ 		return -EINVAL;
+ 	}
+ 
+@@ -171,7 +171,7 @@ __ftrace_make_nop(struct module *mod,
  	/* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
--	if (op != PPC_INST(PPC_INST_MFLR) && op != PPC_INST(PPC_INST_STD_LR)) {
-+	if (!ppc_inst_equal(op, PPC_INST(PPC_INST_MFLR)) &&
-+	    !ppc_inst_equal(op, PPC_INST(PPC_INST_STD_LR))) {
- 		pr_err("Unexpected instruction %08x around bl _mcount\n", op);
+ 	if (!ppc_inst_equal(op, PPC_INST(PPC_INST_MFLR)) &&
+ 	    !ppc_inst_equal(op, PPC_INST(PPC_INST_STD_LR))) {
+-		pr_err("Unexpected instruction %08x around bl _mcount\n", op);
++		pr_err("Unexpected instruction %08x around bl _mcount\n", ppc_inst_word(op));
  		return -EINVAL;
  	}
-@@ -199,7 +200,7 @@ __ftrace_make_nop(struct module *mod,
- 		return -EFAULT;
- 	}
- 
--	if (op != PPC_INST(PPC_INST_LD_TOC)) {
-+	if (!ppc_inst_equal(op,  PPC_INST(PPC_INST_LD_TOC))) {
- 		pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC, op);
- 		return -EINVAL;
- 	}
-@@ -296,7 +297,7 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
- 	for (i = NUM_FTRACE_TRAMPS - 1; i >= 0; i--)
- 		if (!ftrace_tramps[i])
- 			continue;
--		else if (create_branch((void *)ip, ftrace_tramps[i], 0))
-+		else if (!ppc_inst_null(create_branch((void *)ip, ftrace_tramps[i], 0)))
- 			return ftrace_tramps[i];
- 
- 	return 0;
-@@ -368,7 +369,7 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
  #else
- 	ptr = ppc_global_function_entry((void *)ftrace_caller);
- #endif
--	if (!create_branch((void *)tramp, ptr, 0)) {
-+	if (ppc_inst_null(create_branch((void *)tramp, ptr, 0))) {
- 		pr_debug("%ps is not reachable from existing mcount tramp\n",
- 				(void *)ptr);
- 		return -1;
-@@ -437,7 +438,7 @@ int ftrace_make_nop(struct module *mod,
- 	 * then we had to use a trampoline to make the call.
- 	 * Otherwise just update the call site.
- 	 */
--	if (test_24bit_addr(ip, addr)) {
-+	if (!ppc_inst_null(test_24bit_addr(ip, addr))) {
- 		/* within range */
- 		old = ftrace_call_replace(ip, addr, 1);
- 		new = PPC_INST(PPC_INST_NOP);
-@@ -494,7 +495,8 @@ expected_nop_sequence(void *ip, ppc_inst op0, ppc_inst op1)
- 	 * The load offset is different depending on the ABI. For simplicity
- 	 * just mask it out when doing the compare.
- 	 */
--	if ((op0 != 0x48000008) || (ppc_inst_mask(op1, 0xffff0000) != 0xe8410000))
-+	if ((!ppc_inst_equal(op0, PPC_INST(0x48000008)) ||
-+	     ((ppc_inst_mask(op1, 0xffff0000) != 0xe8410000))
- 		return 0;
- 	return 1;
- }
-@@ -503,7 +505,7 @@ static int
- expected_nop_sequence(void *ip, ppc_inst op0, ppc_inst op1)
- {
- 	/* look for patched "NOP" on ppc64 with -mprofile-kernel */
--	if (op0 != PPC_INST(PPC_INST_NOP))
-+	if (!ppc_inst_equal(op0, PPC_INST(PPC_INST_NOP)))
- 		return 0;
- 	return 1;
- }
-@@ -559,7 +561,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+@@ -201,7 +201,7 @@ __ftrace_make_nop(struct module *mod,
  	}
  
- 	/* Ensure branch is within 24 bits */
--	if (!create_branch(ip, tramp, BRANCH_SET_LINK)) {
-+	if (ppc_inst_null(create_branch(ip, tramp, BRANCH_SET_LINK))) {
- 		pr_err("Branch out of range\n");
+ 	if (!ppc_inst_equal(op,  PPC_INST(PPC_INST_LD_TOC))) {
+-		pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC, op);
++		pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC, ppc_inst_word(op));
  		return -EINVAL;
  	}
-@@ -584,7 +586,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 		return -EFAULT;
+ #endif /* CONFIG_MPROFILE_KERNEL */
+@@ -401,7 +401,7 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
  
- 	/* It should be pointing to a nop */
--	if (op != PPC_INST(PPC_INST_NOP)) {
-+	if (!ppc_inst_equal(op,  PPC_INST(PPC_INST_NOP))) {
- 		pr_err("Expected NOP but have %x\n", op);
+ 	/* Make sure that that this is still a 24bit jump */
+ 	if (!is_bl_op(op)) {
+-		pr_err("Not expected bl: opcode is %x\n", op);
++		pr_err("Not expected bl: opcode is %x\n", ppc_inst_word(op));
  		return -EINVAL;
  	}
-@@ -641,7 +643,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
- 		return -EFAULT;
- 	}
  
--	if (op != PPC_INST(PPC_INST_NOP)) {
-+	if (!ppc_inst_equal(op, PPC_INST(PPC_INST_NOP))) {
- 		pr_err("Unexpected call sequence at %p: %x\n", ip, op);
+@@ -525,7 +525,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 
+ 	if (!expected_nop_sequence(ip, op[0], op[1])) {
+ 		pr_err("Unexpected call sequence at %p: %x %x\n",
+-		ip, op[0], op[1]);
++		ip, ppc_inst_word(op[0]), ppc_inst_word(op[1]));
  		return -EINVAL;
  	}
-@@ -670,7 +672,7 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	 * then we had to use a trampoline to make the call.
- 	 * Otherwise just update the call site.
- 	 */
--	if (test_24bit_addr(ip, addr)) {
-+	if (!ppc_inst_null(test_24bit_addr(ip, addr))) {
- 		/* within range */
- 		old = PPC_INST(PPC_INST_NOP);
- 		new = ftrace_call_replace(ip, addr, 1);
-@@ -748,7 +750,7 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ 
+@@ -644,7 +644,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
  	}
  
- 	/* The new target may be within range */
--	if (test_24bit_addr(ip, addr)) {
-+	if (!ppc_inst_null(test_24bit_addr(ip, addr))) {
- 		/* within range */
- 		if (patch_branch((ppc_inst *)ip, addr, BRANCH_SET_LINK)) {
- 			pr_err("REL24 out of range!\n");
-@@ -778,7 +780,7 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
- 	}
- 
- 	/* Ensure branch is within 24 bits */
--	if (!create_branch((ppc_inst *)ip, tramp, BRANCH_SET_LINK)) {
-+	if (ppc_inst_null(create_branch((ppc_inst *)ip, tramp, BRANCH_SET_LINK))) {
- 		pr_err("Branch out of range\n");
+ 	if (!ppc_inst_equal(op, PPC_INST(PPC_INST_NOP))) {
+-		pr_err("Unexpected call sequence at %p: %x\n", ip, op);
++		pr_err("Unexpected call sequence at %p: %x\n", ip, ppc_inst_word(op));
  		return -EINVAL;
  	}
-@@ -803,7 +805,8 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
- 	 * then we had to use a trampoline to make the call.
- 	 * Otherwise just update the call site.
- 	 */
--	if (test_24bit_addr(ip, addr) && test_24bit_addr(ip, old_addr)) {
-+	if (!ppc_inst_null(test_24bit_addr(ip, addr)) &&
-+	    !ppc_inst_null(test_24bit_addr(ip, old_addr))) {
- 		/* within range */
- 		old = ftrace_call_replace(ip, old_addr, 1);
- 		new = ftrace_call_replace(ip, addr, 1);
+ 
+@@ -723,7 +723,7 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ 
+ 	/* Make sure that that this is still a 24bit jump */
+ 	if (!is_bl_op(op)) {
+-		pr_err("Not expected bl: opcode is %x\n", op);
++		pr_err("Not expected bl: opcode is %x\n", ppc_inst_word(op));
+ 		return -EINVAL;
+ 	}
+ 
 diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 04a303c059e2..ec3abe1a6927 100644
+index ec3abe1a6927..849eee63df3d 100644
 --- a/arch/powerpc/lib/code-patching.c
 +++ b/arch/powerpc/lib/code-patching.c
-@@ -461,20 +461,20 @@ static void __init test_branch_iform(void)
- 
- 	/* Out of range relative negative offset, - 32 MB + 4*/
- 	instr = create_branch(&instr, addr - 0x2000004, BRANCH_SET_LINK);
--	check(instr == 0);
-+	check(ppc_inst_null(instr));
- 
- 	/* Out of range relative positive offset, + 32 MB */
- 	instr = create_branch(&instr, addr + 0x2000000, BRANCH_SET_LINK);
--	check(instr == 0);
-+	check(ppc_inst_null(instr));
- 
- 	/* Unaligned target */
- 	instr = create_branch(&instr, addr + 3, BRANCH_SET_LINK);
--	check(instr == 0);
-+	check(ppc_inst_null(instr));
- 
- 	/* Check flags are masked correctly */
- 	instr = create_branch(&instr, addr, 0xFFFFFFFC);
- 	check(instr_is_branch_to_addr(&instr, addr));
--	check(instr == PPC_INST(0x48000000));
-+	check(ppc_inst_equal(instr, PPC_INST(0x48000000)));
- }
- 
- static void __init test_create_function_call(void)
-@@ -544,20 +544,20 @@ static void __init test_branch_bform(void)
- 
- 	/* Out of range relative negative offset, - 32 KB + 4*/
- 	instr = create_cond_branch(iptr, addr - 0x8004, flags);
--	check(instr == 0);
-+	check(ppc_inst_null(instr));
- 
- 	/* Out of range relative positive offset, + 32 KB */
- 	instr = create_cond_branch(iptr, addr + 0x8000, flags);
--	check(instr == 0);
-+	check(ppc_inst_null(instr));
- 
- 	/* Unaligned target */
- 	instr = create_cond_branch(iptr, addr + 3, flags);
--	check(instr == 0);
-+	check(ppc_inst_null(instr));
- 
- 	/* Check flags are masked correctly */
- 	instr = create_cond_branch(iptr, addr, 0xFFFFFFFC);
- 	check(instr_is_branch_to_addr(&instr, addr));
--	check(instr == 0x43FF0000);
-+	check(ppc_inst_equal(instr, PPC_INST(0x43FF0000)));
- }
- 
- static void __init test_translate_branch(void)
+@@ -233,7 +233,7 @@ bool is_conditional_branch(ppc_inst instr)
+ 	if (opcode == 16)       /* bc, bca, bcl, bcla */
+ 		return true;
+ 	if (opcode == 19) {
+-		switch ((instr >> 1) & 0x3ff) {
++		switch ((ppc_inst_word(instr) >> 1) & 0x3ff) {
+ 		case 16:        /* bclr, bclrl */
+ 		case 528:       /* bcctr, bcctrl */
+ 		case 560:       /* bctar, bctarl */
 diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-index a5f3d98862e9..552106d1f64a 100644
+index 552106d1f64a..fe8ec099aa96 100644
 --- a/arch/powerpc/lib/feature-fixups.c
 +++ b/arch/powerpc/lib/feature-fixups.c
-@@ -55,7 +55,7 @@ static int patch_alt_instruction(unsigned int *src, unsigned int *dest,
+@@ -54,8 +54,8 @@ static int patch_alt_instruction(unsigned int *src, unsigned int *dest,
+ 
  		/* Branch within the section doesn't need translating */
  		if (target < alt_start || target > alt_end) {
- 			instr = translate_branch(dest, src);
--			if (!instr)
-+			if (ppc_inst_null(instr))
+-			instr = translate_branch(dest, src);
+-			if (ppc_inst_null(instr))
++			instr = ppc_inst_word(translate_branch((ppc_inst *)dest, (ppc_inst *)src));
++			if (!instr)
  				return 1;
  		}
  	}
-diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-index 227ebae9ba5a..486e057e5be1 100644
---- a/arch/powerpc/lib/test_emulate_step.c
-+++ b/arch/powerpc/lib/test_emulate_step.c
-@@ -846,7 +846,7 @@ static int __init emulate_compute_instr(struct pt_regs *regs,
- {
- 	struct instruction_op op;
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index 1d9c766a89fe..bae878a83fa5 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -1169,26 +1169,28 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	unsigned long int imm;
+ 	unsigned long int val, val2;
+ 	unsigned int mb, me, sh;
++	unsigned int word;
+ 	long ival;
  
--	if (!regs || !instr)
-+	if (!regs || ppc_inst_null(instr))
- 		return -EINVAL;
++	word = ppc_inst_word(instr);
+ 	op->type = COMPUTE;
  
- 	if (analyse_instr(&op, regs, instr) != 1 ||
-@@ -865,7 +865,7 @@ static int __init execute_compute_instr(struct pt_regs *regs,
- 	extern int exec_instr(struct pt_regs *regs);
- 	extern s32 patch__exec_instr;
+-	opcode = instr >> 26;
++	opcode = word >> 26;
+ 	switch (opcode) {
+ 	case 16:	/* bc */
+ 		op->type = BRANCH;
+-		imm = (signed short)(instr & 0xfffc);
+-		if ((instr & 2) == 0)
++		imm = (signed short)(word & 0xfffc);
++		if ((word & 2) == 0)
+ 			imm += regs->nip;
+ 		op->val = truncate_if_32bit(regs->msr, imm);
+-		if (instr & 1)
++		if (word & 1)
+ 			op->type |= SETLK;
+-		if (branch_taken(instr, regs, op))
++		if (branch_taken(word, regs, op))
+ 			op->type |= BRTAKEN;
+ 		return 1;
+ #ifdef CONFIG_PPC64
+ 	case 17:	/* sc */
+-		if ((instr & 0xfe2) == 2)
++		if ((word & 0xfe2) == 2)
+ 			op->type = SYSCALL;
+ 		else
+ 			op->type = UNKNOWN;
+@@ -1196,21 +1198,21 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ #endif
+ 	case 18:	/* b */
+ 		op->type = BRANCH | BRTAKEN;
+-		imm = instr & 0x03fffffc;
++		imm = word & 0x03fffffc;
+ 		if (imm & 0x02000000)
+ 			imm -= 0x04000000;
+-		if ((instr & 2) == 0)
++		if ((word & 2) == 0)
+ 			imm += regs->nip;
+ 		op->val = truncate_if_32bit(regs->msr, imm);
+-		if (instr & 1)
++		if (word & 1)
+ 			op->type |= SETLK;
+ 		return 1;
+ 	case 19:
+-		switch ((instr >> 1) & 0x3ff) {
++		switch ((word >> 1) & 0x3ff) {
+ 		case 0:		/* mcrf */
+ 			op->type = COMPUTE + SETCC;
+-			rd = 7 - ((instr >> 23) & 0x7);
+-			ra = 7 - ((instr >> 18) & 0x7);
++			rd = 7 - ((word >> 23) & 0x7);
++			ra = 7 - ((word >> 18) & 0x7);
+ 			rd *= 4;
+ 			ra *= 4;
+ 			val = (regs->ccr >> ra) & 0xf;
+@@ -1220,11 +1222,11 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 16:	/* bclr */
+ 		case 528:	/* bcctr */
+ 			op->type = BRANCH;
+-			imm = (instr & 0x400)? regs->ctr: regs->link;
++			imm = (word & 0x400)? regs->ctr: regs->link;
+ 			op->val = truncate_if_32bit(regs->msr, imm);
+-			if (instr & 1)
++			if (word & 1)
+ 				op->type |= SETLK;
+-			if (branch_taken(instr, regs, op))
++			if (branch_taken(word, regs, op))
+ 				op->type |= BRTAKEN;
+ 			return 1;
  
--	if (!regs || !instr)
-+	if (!regs || ppc_inst_null(instr))
- 		return -EINVAL;
+@@ -1247,23 +1249,23 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 417:	/* crorc */
+ 		case 449:	/* cror */
+ 			op->type = COMPUTE + SETCC;
+-			ra = (instr >> 16) & 0x1f;
+-			rb = (instr >> 11) & 0x1f;
+-			rd = (instr >> 21) & 0x1f;
++			ra = (word >> 16) & 0x1f;
++			rb = (word >> 11) & 0x1f;
++			rd = (word >> 21) & 0x1f;
+ 			ra = (regs->ccr >> (31 - ra)) & 1;
+ 			rb = (regs->ccr >> (31 - rb)) & 1;
+-			val = (instr >> (6 + ra * 2 + rb)) & 1;
++			val = (word >> (6 + ra * 2 + rb)) & 1;
+ 			op->ccval = (regs->ccr & ~(1UL << (31 - rd))) |
+ 				(val << (31 - rd));
+ 			return 1;
+ 		}
+ 		break;
+ 	case 31:
+-		switch ((instr >> 1) & 0x3ff) {
++		switch ((word >> 1) & 0x3ff) {
+ 		case 598:	/* sync */
+ 			op->type = BARRIER + BARRIER_SYNC;
+ #ifdef __powerpc64__
+-			switch ((instr >> 21) & 3) {
++			switch ((word >> 21) & 3) {
+ 			case 1:		/* lwsync */
+ 				op->type = BARRIER + BARRIER_LWSYNC;
+ 				break;
+@@ -1285,20 +1287,20 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	if (!FULL_REGS(regs))
+ 		return -1;
  
- 	/* Patch the NOP with the actual instruction */
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index f8a7a55e6ab2..d045e583f1c9 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -951,7 +951,7 @@ static void remove_bpts(void)
- 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) != BP_TRAP)
- 			continue;
- 		if (mread(bp->address, &instr, 4) == 4
--		    && instr == PPC_INST(bpinstr)
-+		    && ppc_inst_equal(instr, PPC_INST(bpinstr))
- 		    && patch_instruction(
- 			(ppc_inst *)bp->address, bp->instr[0]) != 0)
- 			printf("Couldn't remove breakpoint at %lx\n",
-@@ -2861,7 +2861,7 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
+-	rd = (instr >> 21) & 0x1f;
+-	ra = (instr >> 16) & 0x1f;
+-	rb = (instr >> 11) & 0x1f;
+-	rc = (instr >> 6) & 0x1f;
++	rd = (word >> 21) & 0x1f;
++	ra = (word >> 16) & 0x1f;
++	rb = (word >> 11) & 0x1f;
++	rc = (word >> 6) & 0x1f;
+ 
+ 	switch (opcode) {
+ #ifdef __powerpc64__
+ 	case 2:		/* tdi */
+-		if (rd & trap_compare(regs->gpr[ra], (short) instr))
++		if (rd & trap_compare(regs->gpr[ra], (short) word))
+ 			goto trap;
+ 		return 1;
+ #endif
+ 	case 3:		/* twi */
+-		if (rd & trap_compare((int)regs->gpr[ra], (short) instr))
++		if (rd & trap_compare((int)regs->gpr[ra], (short) word))
+ 			goto trap;
+ 		return 1;
+ 
+@@ -1307,7 +1309,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		if (!cpu_has_feature(CPU_FTR_ARCH_300))
+ 			return -1;
+ 
+-		switch (instr & 0x3f) {
++		switch (word & 0x3f) {
+ 		case 48:	/* maddhd */
+ 			asm volatile(PPC_MADDHD(%0, %1, %2, %3) :
+ 				     "=r" (op->val) : "r" (regs->gpr[ra]),
+@@ -1335,16 +1337,16 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ #endif
+ 
+ 	case 7:		/* mulli */
+-		op->val = regs->gpr[ra] * (short) instr;
++		op->val = regs->gpr[ra] * (short) word;
+ 		goto compute_done;
+ 
+ 	case 8:		/* subfic */
+-		imm = (short) instr;
++		imm = (short) word;
+ 		add_with_carry(regs, op, rd, ~regs->gpr[ra], imm, 1);
+ 		return 1;
+ 
+ 	case 10:	/* cmpli */
+-		imm = (unsigned short) instr;
++		imm = (unsigned short) word;
+ 		val = regs->gpr[ra];
+ #ifdef __powerpc64__
+ 		if ((rd & 1) == 0)
+@@ -1354,7 +1356,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		return 1;
+ 
+ 	case 11:	/* cmpi */
+-		imm = (short) instr;
++		imm = (short) word;
+ 		val = regs->gpr[ra];
+ #ifdef __powerpc64__
+ 		if ((rd & 1) == 0)
+@@ -1364,35 +1366,35 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		return 1;
+ 
+ 	case 12:	/* addic */
+-		imm = (short) instr;
++		imm = (short) word;
+ 		add_with_carry(regs, op, rd, regs->gpr[ra], imm, 0);
+ 		return 1;
+ 
+ 	case 13:	/* addic. */
+-		imm = (short) instr;
++		imm = (short) word;
+ 		add_with_carry(regs, op, rd, regs->gpr[ra], imm, 0);
+ 		set_cr0(regs, op);
+ 		return 1;
+ 
+ 	case 14:	/* addi */
+-		imm = (short) instr;
++		imm = (short) word;
+ 		if (ra)
+ 			imm += regs->gpr[ra];
+ 		op->val = imm;
+ 		goto compute_done;
+ 
+ 	case 15:	/* addis */
+-		imm = ((short) instr) << 16;
++		imm = ((short) word) << 16;
+ 		if (ra)
+ 			imm += regs->gpr[ra];
+ 		op->val = imm;
+ 		goto compute_done;
+ 
+ 	case 19:
+-		if (((instr >> 1) & 0x1f) == 2) {
++		if (((word >> 1) & 0x1f) == 2) {
+ 			/* addpcis */
+-			imm = (short) (instr & 0xffc1);	/* d0 + d2 fields */
+-			imm |= (instr >> 15) & 0x3e;	/* d1 field */
++			imm = (short) (word & 0xffc1);	/* d0 + d2 fields */
++			imm |= (word >> 15) & 0x3e;	/* d1 field */
+ 			op->val = regs->nip + (imm << 16) + 4;
+ 			goto compute_done;
+ 		}
+@@ -1400,65 +1402,65 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		return 0;
+ 
+ 	case 20:	/* rlwimi */
+-		mb = (instr >> 6) & 0x1f;
+-		me = (instr >> 1) & 0x1f;
++		mb = (word >> 6) & 0x1f;
++		me = (word >> 1) & 0x1f;
+ 		val = DATA32(regs->gpr[rd]);
+ 		imm = MASK32(mb, me);
+ 		op->val = (regs->gpr[ra] & ~imm) | (ROTATE(val, rb) & imm);
+ 		goto logical_done;
+ 
+ 	case 21:	/* rlwinm */
+-		mb = (instr >> 6) & 0x1f;
+-		me = (instr >> 1) & 0x1f;
++		mb = (word >> 6) & 0x1f;
++		me = (word >> 1) & 0x1f;
+ 		val = DATA32(regs->gpr[rd]);
+ 		op->val = ROTATE(val, rb) & MASK32(mb, me);
+ 		goto logical_done;
+ 
+ 	case 23:	/* rlwnm */
+-		mb = (instr >> 6) & 0x1f;
+-		me = (instr >> 1) & 0x1f;
++		mb = (word >> 6) & 0x1f;
++		me = (word >> 1) & 0x1f;
+ 		rb = regs->gpr[rb] & 0x1f;
+ 		val = DATA32(regs->gpr[rd]);
+ 		op->val = ROTATE(val, rb) & MASK32(mb, me);
+ 		goto logical_done;
+ 
+ 	case 24:	/* ori */
+-		op->val = regs->gpr[rd] | (unsigned short) instr;
++		op->val = regs->gpr[rd] | (unsigned short) word;
+ 		goto logical_done_nocc;
+ 
+ 	case 25:	/* oris */
+-		imm = (unsigned short) instr;
++		imm = (unsigned short) word;
+ 		op->val = regs->gpr[rd] | (imm << 16);
+ 		goto logical_done_nocc;
+ 
+ 	case 26:	/* xori */
+-		op->val = regs->gpr[rd] ^ (unsigned short) instr;
++		op->val = regs->gpr[rd] ^ (unsigned short) word;
+ 		goto logical_done_nocc;
+ 
+ 	case 27:	/* xoris */
+-		imm = (unsigned short) instr;
++		imm = (unsigned short) word;
+ 		op->val = regs->gpr[rd] ^ (imm << 16);
+ 		goto logical_done_nocc;
+ 
+ 	case 28:	/* andi. */
+-		op->val = regs->gpr[rd] & (unsigned short) instr;
++		op->val = regs->gpr[rd] & (unsigned short) word;
+ 		set_cr0(regs, op);
+ 		goto logical_done_nocc;
+ 
+ 	case 29:	/* andis. */
+-		imm = (unsigned short) instr;
++		imm = (unsigned short) word;
+ 		op->val = regs->gpr[rd] & (imm << 16);
+ 		set_cr0(regs, op);
+ 		goto logical_done_nocc;
+ 
+ #ifdef __powerpc64__
+ 	case 30:	/* rld* */
+-		mb = ((instr >> 6) & 0x1f) | (instr & 0x20);
++		mb = ((word >> 6) & 0x1f) | (word & 0x20);
+ 		val = regs->gpr[rd];
+-		if ((instr & 0x10) == 0) {
+-			sh = rb | ((instr & 2) << 4);
++		if ((word & 0x10) == 0) {
++			sh = rb | ((word & 2) << 4);
+ 			val = ROTATE(val, sh);
+-			switch ((instr >> 2) & 3) {
++			switch ((word >> 2) & 3) {
+ 			case 0:		/* rldicl */
+ 				val &= MASK64_L(mb);
+ 				break;
+@@ -1478,7 +1480,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		} else {
+ 			sh = regs->gpr[rb] & 0x3f;
+ 			val = ROTATE(val, sh);
+-			switch ((instr >> 1) & 7) {
++			switch ((word >> 1) & 7) {
+ 			case 0:		/* rldcl */
+ 				op->val = val & MASK64_L(mb);
+ 				goto logical_done;
+@@ -1493,8 +1495,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ 	case 31:
+ 		/* isel occupies 32 minor opcodes */
+-		if (((instr >> 1) & 0x1f) == 15) {
+-			mb = (instr >> 6) & 0x1f; /* bc field */
++		if (((word >> 1) & 0x1f) == 15) {
++			mb = (word >> 6) & 0x1f; /* bc field */
+ 			val = (regs->ccr >> (31 - mb)) & 1;
+ 			val2 = (ra) ? regs->gpr[ra] : 0;
+ 
+@@ -1502,7 +1504,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			goto compute_done;
+ 		}
+ 
+-		switch ((instr >> 1) & 0x3ff) {
++		switch ((word >> 1) & 0x3ff) {
+ 		case 4:		/* tw */
+ 			if (rd == 0x1f ||
+ 			    (rd & trap_compare((int)regs->gpr[ra],
+@@ -1536,17 +1538,17 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			op->reg = rd;
+ 			/* only MSR_EE and MSR_RI get changed if bit 15 set */
+ 			/* mtmsrd doesn't change MSR_HV, MSR_ME or MSR_LE */
+-			imm = (instr & 0x10000)? 0x8002: 0xefffffffffffeffeUL;
++			imm = (word & 0x10000)? 0x8002: 0xefffffffffffeffeUL;
+ 			op->val = imm;
+ 			return 0;
+ #endif
+ 
+ 		case 19:	/* mfcr */
+ 			imm = 0xffffffffUL;
+-			if ((instr >> 20) & 1) {
++			if ((word >> 20) & 1) {
+ 				imm = 0xf0000000UL;
+ 				for (sh = 0; sh < 8; ++sh) {
+-					if (instr & (0x80000 >> sh))
++					if (word & (0x80000 >> sh))
+ 						break;
+ 					imm >>= 4;
+ 				}
+@@ -1560,7 +1562,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			val = regs->gpr[rd];
+ 			op->ccval = regs->ccr;
+ 			for (sh = 0; sh < 8; ++sh) {
+-				if (instr & (0x80000 >> sh))
++				if (word & (0x80000 >> sh))
+ 					op->ccval = (op->ccval & ~imm) |
+ 						(val & imm);
+ 				imm >>= 4;
+@@ -1568,7 +1570,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			return 1;
+ 
+ 		case 339:	/* mfspr */
+-			spr = ((instr >> 16) & 0x1f) | ((instr >> 6) & 0x3e0);
++			spr = ((word >> 16) & 0x1f) | ((word >> 6) & 0x3e0);
+ 			op->type = MFSPR;
+ 			op->reg = rd;
+ 			op->spr = spr;
+@@ -1578,7 +1580,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			return 0;
+ 
+ 		case 467:	/* mtspr */
+-			spr = ((instr >> 16) & 0x1f) | ((instr >> 6) & 0x3e0);
++			spr = ((word >> 16) & 0x1f) | ((word >> 6) & 0x3e0);
+ 			op->type = MTSPR;
+ 			op->val = regs->gpr[rd];
+ 			op->spr = spr;
+@@ -1948,7 +1950,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 826:	/* sradi with sh_5 = 0 */
+ 		case 827:	/* sradi with sh_5 = 1 */
+ 			op->type = COMPUTE + SETREG + SETXER;
+-			sh = rb | ((instr & 2) << 4);
++			sh = rb | ((word & 2) << 4);
+ 			ival = (signed long int) regs->gpr[rd];
+ 			op->val = ival >> sh;
+ 			op->xerval = regs->xer;
+@@ -1964,7 +1966,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			if (!cpu_has_feature(CPU_FTR_ARCH_300))
+ 				return -1;
+ 			op->type = COMPUTE + SETREG;
+-			sh = rb | ((instr & 2) << 4);
++			sh = rb | ((word & 2) << 4);
+ 			val = (signed int) regs->gpr[rd];
+ 			if (sh)
+ 				op->val = ROTATE(val, sh) & MASK64(0, 63 - sh);
+@@ -1979,34 +1981,34 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+  */
+ 		case 54:	/* dcbst */
+ 			op->type = MKOP(CACHEOP, DCBST, 0);
+-			op->ea = xform_ea(instr, regs);
++			op->ea = xform_ea(word, regs);
+ 			return 0;
+ 
+ 		case 86:	/* dcbf */
+ 			op->type = MKOP(CACHEOP, DCBF, 0);
+-			op->ea = xform_ea(instr, regs);
++			op->ea = xform_ea(word, regs);
+ 			return 0;
+ 
+ 		case 246:	/* dcbtst */
+ 			op->type = MKOP(CACHEOP, DCBTST, 0);
+-			op->ea = xform_ea(instr, regs);
++			op->ea = xform_ea(word, regs);
+ 			op->reg = rd;
+ 			return 0;
+ 
+ 		case 278:	/* dcbt */
+ 			op->type = MKOP(CACHEOP, DCBTST, 0);
+-			op->ea = xform_ea(instr, regs);
++			op->ea = xform_ea(word, regs);
+ 			op->reg = rd;
+ 			return 0;
+ 
+ 		case 982:	/* icbi */
+ 			op->type = MKOP(CACHEOP, ICBI, 0);
+-			op->ea = xform_ea(instr, regs);
++			op->ea = xform_ea(word, regs);
+ 			return 0;
+ 
+ 		case 1014:	/* dcbz */
+ 			op->type = MKOP(CACHEOP, DCBZ, 0);
+-			op->ea = xform_ea(instr, regs);
++			op->ea = xform_ea(word, regs);
+ 			return 0;
+ 		}
+ 		break;
+@@ -2019,14 +2021,14 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	op->update_reg = ra;
+ 	op->reg = rd;
+ 	op->val = regs->gpr[rd];
+-	u = (instr >> 20) & UPDATE;
++	u = (word >> 20) & UPDATE;
+ 	op->vsx_flags = 0;
+ 
+ 	switch (opcode) {
+ 	case 31:
+-		u = instr & UPDATE;
+-		op->ea = xform_ea(instr, regs);
+-		switch ((instr >> 1) & 0x3ff) {
++		u = word & UPDATE;
++		op->ea = xform_ea(word, regs);
++		switch ((word >> 1) & 0x3ff) {
+ 		case 20:	/* lwarx */
+ 			op->type = MKOP(LARX, 0, 4);
+ 			break;
+@@ -2271,25 +2273,25 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ #ifdef CONFIG_VSX
+ 		case 12:	/* lxsiwzx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 76:	/* lxsiwax */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, SIGNEXT, 4);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 140:	/* stxsiwx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 4);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 268:	/* lxvx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 16;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+@@ -2298,33 +2300,33 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 269:	/* lxvl */
+ 		case 301: {	/* lxvll */
+ 			int nb;
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->ea = ra ? regs->gpr[ra] : 0;
+ 			nb = regs->gpr[rb] & 0xff;
+ 			if (nb > 16)
+ 				nb = 16;
+ 			op->type = MKOP(LOAD_VSX, 0, nb);
+ 			op->element_size = 16;
+-			op->vsx_flags = ((instr & 0x20) ? VSX_LDLEFT : 0) |
++			op->vsx_flags = ((word & 0x20) ? VSX_LDLEFT : 0) |
+ 				VSX_CHECK_VEC;
  			break;
  		}
- 		inst = PPC_INST(GETWORD(val));
--		if (adr > first_adr && inst == last_inst) {
-+		if (adr > first_adr && ppc_inst_equal(inst, last_inst)) {
- 			if (!dotted) {
- 				printf(" ...\n");
- 				dotted = 1;
+ 		case 332:	/* lxvdsx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 8);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_SPLAT;
+ 			break;
+ 
+ 		case 364:	/* lxvwsx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+ 			op->element_size = 4;
+ 			op->vsx_flags = VSX_SPLAT | VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 396:	/* stxvx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 16;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+@@ -2333,118 +2335,118 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 397:	/* stxvl */
+ 		case 429: {	/* stxvll */
+ 			int nb;
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->ea = ra ? regs->gpr[ra] : 0;
+ 			nb = regs->gpr[rb] & 0xff;
+ 			if (nb > 16)
+ 				nb = 16;
+ 			op->type = MKOP(STORE_VSX, 0, nb);
+ 			op->element_size = 16;
+-			op->vsx_flags = ((instr & 0x20) ? VSX_LDLEFT : 0) |
++			op->vsx_flags = ((word & 0x20) ? VSX_LDLEFT : 0) |
+ 				VSX_CHECK_VEC;
+ 			break;
+ 		}
+ 		case 524:	/* lxsspx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_FPCONV;
+ 			break;
+ 
+ 		case 588:	/* lxsdx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 8);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 652:	/* stxsspx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 4);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_FPCONV;
+ 			break;
+ 
+ 		case 716:	/* stxsdx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 8);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 780:	/* lxvw4x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 4;
+ 			break;
+ 
+ 		case 781:	/* lxsibzx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 1);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 812:	/* lxvh8x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 2;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 813:	/* lxsihzx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 2);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 844:	/* lxvd2x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 876:	/* lxvb16x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 1;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 908:	/* stxvw4x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 4;
+ 			break;
+ 
+ 		case 909:	/* stxsibx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 1);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 940:	/* stxvh8x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 2;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 941:	/* stxsihx */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 2);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 
+ 		case 972:	/* stxvd2x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 8;
+ 			break;
+ 
+ 		case 1004:	/* stxvb16x */
+-			op->reg = rd | ((instr & 1) << 5);
++			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 1;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+@@ -2457,80 +2459,80 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	case 32:	/* lwz */
+ 	case 33:	/* lwzu */
+ 		op->type = MKOP(LOAD, u, 4);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 34:	/* lbz */
+ 	case 35:	/* lbzu */
+ 		op->type = MKOP(LOAD, u, 1);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 36:	/* stw */
+ 	case 37:	/* stwu */
+ 		op->type = MKOP(STORE, u, 4);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 38:	/* stb */
+ 	case 39:	/* stbu */
+ 		op->type = MKOP(STORE, u, 1);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 40:	/* lhz */
+ 	case 41:	/* lhzu */
+ 		op->type = MKOP(LOAD, u, 2);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 42:	/* lha */
+ 	case 43:	/* lhau */
+ 		op->type = MKOP(LOAD, SIGNEXT | u, 2);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 44:	/* sth */
+ 	case 45:	/* sthu */
+ 		op->type = MKOP(STORE, u, 2);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 46:	/* lmw */
+ 		if (ra >= rd)
+ 			break;		/* invalid form, ra in range to load */
+ 		op->type = MKOP(LOAD_MULTI, 0, 4 * (32 - rd));
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 47:	/* stmw */
+ 		op->type = MKOP(STORE_MULTI, 0, 4 * (32 - rd));
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ #ifdef CONFIG_PPC_FPU
+ 	case 48:	/* lfs */
+ 	case 49:	/* lfsu */
+ 		op->type = MKOP(LOAD_FP, u | FPCONV, 4);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 50:	/* lfd */
+ 	case 51:	/* lfdu */
+ 		op->type = MKOP(LOAD_FP, u, 8);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 52:	/* stfs */
+ 	case 53:	/* stfsu */
+ 		op->type = MKOP(STORE_FP, u | FPCONV, 4);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ 
+ 	case 54:	/* stfd */
+ 	case 55:	/* stfdu */
+ 		op->type = MKOP(STORE_FP, u, 8);
+-		op->ea = dform_ea(instr, regs);
++		op->ea = dform_ea(word, regs);
+ 		break;
+ #endif
+ 
+@@ -2538,14 +2540,14 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	case 56:	/* lq */
+ 		if (!((rd & 1) || (rd == ra)))
+ 			op->type = MKOP(LOAD, 0, 16);
+-		op->ea = dqform_ea(instr, regs);
++		op->ea = dqform_ea(word, regs);
+ 		break;
+ #endif
+ 
+ #ifdef CONFIG_VSX
+ 	case 57:	/* lfdp, lxsd, lxssp */
+-		op->ea = dsform_ea(instr, regs);
+-		switch (instr & 3) {
++		op->ea = dsform_ea(word, regs);
++		switch (word & 3) {
+ 		case 0:		/* lfdp */
+ 			if (rd & 1)
+ 				break;		/* reg must be even */
+@@ -2569,8 +2571,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ #ifdef __powerpc64__
+ 	case 58:	/* ld[u], lwa */
+-		op->ea = dsform_ea(instr, regs);
+-		switch (instr & 3) {
++		op->ea = dsform_ea(word, regs);
++		switch (word & 3) {
+ 		case 0:		/* ld */
+ 			op->type = MKOP(LOAD, 0, 8);
+ 			break;
+@@ -2586,16 +2588,16 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ #ifdef CONFIG_VSX
+ 	case 61:	/* stfdp, lxv, stxsd, stxssp, stxv */
+-		switch (instr & 7) {
++		switch (word & 7) {
+ 		case 0:		/* stfdp with LSB of DS field = 0 */
+ 		case 4:		/* stfdp with LSB of DS field = 1 */
+-			op->ea = dsform_ea(instr, regs);
++			op->ea = dsform_ea(word, regs);
+ 			op->type = MKOP(STORE_FP, 0, 16);
+ 			break;
+ 
+ 		case 1:		/* lxv */
+-			op->ea = dqform_ea(instr, regs);
+-			if (instr & 8)
++			op->ea = dqform_ea(word, regs);
++			if (word & 8)
+ 				op->reg = rd + 32;
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 16;
+@@ -2604,7 +2606,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ 		case 2:		/* stxsd with LSB of DS field = 0 */
+ 		case 6:		/* stxsd with LSB of DS field = 1 */
+-			op->ea = dsform_ea(instr, regs);
++			op->ea = dsform_ea(word, regs);
+ 			op->reg = rd + 32;
+ 			op->type = MKOP(STORE_VSX, 0, 8);
+ 			op->element_size = 8;
+@@ -2613,7 +2615,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ 		case 3:		/* stxssp with LSB of DS field = 0 */
+ 		case 7:		/* stxssp with LSB of DS field = 1 */
+-			op->ea = dsform_ea(instr, regs);
++			op->ea = dsform_ea(word, regs);
+ 			op->reg = rd + 32;
+ 			op->type = MKOP(STORE_VSX, 0, 4);
+ 			op->element_size = 8;
+@@ -2621,8 +2623,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 5:		/* stxv */
+-			op->ea = dqform_ea(instr, regs);
+-			if (instr & 8)
++			op->ea = dqform_ea(word, regs);
++			if (word & 8)
+ 				op->reg = rd + 32;
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 16;
+@@ -2634,8 +2636,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ #ifdef __powerpc64__
+ 	case 62:	/* std[u] */
+-		op->ea = dsform_ea(instr, regs);
+-		switch (instr & 3) {
++		op->ea = dsform_ea(word, regs);
++		switch (word & 3) {
+ 		case 0:		/* std */
+ 			op->type = MKOP(STORE, 0, 8);
+ 			break;
+@@ -2663,7 +2665,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	return 0;
+ 
+  logical_done:
+-	if (instr & 1)
++	if (word & 1)
+ 		set_cr0(regs, op);
+  logical_done_nocc:
+ 	op->reg = ra;
+@@ -2671,7 +2673,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 	return 1;
+ 
+  arith_done:
+-	if (instr & 1)
++	if (word & 1)
+ 		set_cr0(regs, op);
+  compute_done:
+ 	op->reg = rd;
+diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
+index 486e057e5be1..d6275a9b8ce6 100644
+--- a/arch/powerpc/lib/test_emulate_step.c
++++ b/arch/powerpc/lib/test_emulate_step.c
+@@ -851,7 +851,7 @@ static int __init emulate_compute_instr(struct pt_regs *regs,
+ 
+ 	if (analyse_instr(&op, regs, instr) != 1 ||
+ 	    GETTYPE(op.type) != COMPUTE) {
+-		pr_info("emulation failed, instruction = 0x%08x\n", instr);
++		pr_info("emulation failed, instruction = 0x%08x\n", ppc_inst_word(instr));
+ 		return -EFAULT;
+ 	}
+ 
+@@ -871,7 +871,7 @@ static int __init execute_compute_instr(struct pt_regs *regs,
+ 	/* Patch the NOP with the actual instruction */
+ 	patch_instruction_site(&patch__exec_instr, instr);
+ 	if (exec_instr(regs)) {
+-		pr_info("execution failed, instruction = 0x%08x\n", instr);
++		pr_info("execution failed, instruction = 0x%08x\n", ppc_inst_word(instr));
+ 		return -EFAULT;
+ 	}
+ 
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index d045e583f1c9..dec522fa8201 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -2871,9 +2871,9 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
+ 		dotted = 0;
+ 		last_inst = inst;
+ 		if (praddr)
+-			printf(REG"  %.8x", adr, inst);
++			printf(REG"  %.8x", adr, ppc_inst_word(inst));
+ 		printf("\t");
+-		dump_func(inst, adr);
++		dump_func(ppc_inst_word(inst), adr);
+ 		printf("\n");
+ 	}
+ 	return adr - first_adr;
 -- 
 2.17.1
 
