@@ -2,62 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DF918DA7B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 22:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B870418DAC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 23:05:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kccl4x88zF0Vt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 08:39:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kd9r2ZjczDsTN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 09:05:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.145; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0145.hostedemail.com
- [216.40.44.145])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kcb96hH2zDrP6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 08:38:28 +1100 (AEDT)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay07.hostedemail.com (Postfix) with ESMTP id CC5FF181D341E;
- Fri, 20 Mar 2020 21:38:23 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
- RULES_HIT:41:355:379:599:800:967:968:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3865:3866:3867:3868:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:5007:6120:7875:7901:7903:9025:10004:10400:10848:11232:11658:11914:12043:12050:12297:12438:12663:12740:12895:13069:13255:13311:13357:13439:13894:14096:14097:14181:14659:14721:21080:21212:21627:21811:21987:30054:30062:30083:30089:30090:30091,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:3, LUA_SUMMARY:none
-X-HE-Tag: range27_2c0c3d609a007
-X-Filterd-Recvd-Size: 2461
-Received: from XPS-9350.home (unknown [47.151.143.254])
- (Authenticated sender: joe@perches.com)
- by omf16.hostedemail.com (Postfix) with ESMTPA;
- Fri, 20 Mar 2020 21:38:22 +0000 (UTC)
-Message-ID: <4512dfe1ea1e445a7ce71829d24de97c7fd30266.camel@perches.com>
-Subject: Re: [PATCH v12 8/8] MAINTAINERS: perf: Add pattern that matches ppc
- perf to the perf entry.
-From: Joe Perches <joe@perches.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linus Torvalds
- <torvalds@linux-foundation.org>
-Date: Fri, 20 Mar 2020 14:36:35 -0700
-In-Reply-To: <20200320163157.GF1922688@smile.fi.intel.com>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <cover.1584699455.git.msuchanek@suse.de>
- <4b150d01c60bd37705789200d9adee9f1c9b50ce.1584699455.git.msuchanek@suse.de>
- <20200320103350.GV1922688@smile.fi.intel.com>
- <20200320112338.GP25468@kitsune.suse.cz>
- <20200320124251.GW1922688@smile.fi.intel.com>
- <b96c9dd4dba4afca5288a551158659bf545d29fb.camel@perches.com>
- <20200320163157.GF1922688@smile.fi.intel.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kd5q3WPxzDrqV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 09:01:28 +1100 (AEDT)
+IronPort-SDR: JBr8ONM7nb9xMbysuH9TfokEURrQH2qEyEG1k/reE5p/m8J7sIKzRZE34xInPSWcqaNO9pw2DC
+ wf858QQEXidQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2020 15:01:24 -0700
+IronPort-SDR: 7S3Mi4swb4c76s8OxSQ/gEhNvOZJ0c+aBoqjfP3+lMFR2QBunJBHkogLj9SNWwz0dBMoT6YRll
+ HJ+nyfp3uKBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,286,1580803200"; d="scan'208";a="446785769"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga006.fm.intel.com with ESMTP; 20 Mar 2020 15:01:23 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1jFPhi-0000GK-Gt; Sat, 21 Mar 2020 06:01:22 +0800
+Date: Sat, 21 Mar 2020 06:00:47 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS a87b93bdf800a4d7a42d95683624a4516e516b4f
+Message-ID: <5e753d0f.YdLBirrFIHG2zMfD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,42 +55,180 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fsdevel@vger.kernel.org,
- Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(removed a bunch of cc's)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: a87b93bdf800a4d7a42d95683624a4516e516b4f  Automatic merge of branches 'master', 'next' and 'fixes' into merge
 
-On Fri, 2020-03-20 at 18:31 +0200, Andy Shevchenko wrote:
-> On Fri, Mar 20, 2020 at 07:42:03AM -0700, Joe Perches wrote:
-> > On Fri, 2020-03-20 at 14:42 +0200, Andy Shevchenko wrote:
-> > > On Fri, Mar 20, 2020 at 12:23:38PM +0100, Michal Suchánek wrote:
-> > > > On Fri, Mar 20, 2020 at 12:33:50PM +0200, Andy Shevchenko wrote:
-> > > > > On Fri, Mar 20, 2020 at 11:20:19AM +0100, Michal Suchanek wrote:
-> > > > > > While at it also simplify the existing perf patterns.
-> > > > > And still missed fixes from parse-maintainers.pl.
-> > > > 
-> > > > Oh, that script UX is truly ingenious.
-> > > 
-> > > You have at least two options, their combinations, etc:
-> > >  - complain to the author :-)
-> > >  - send a patch :-)
-> > 
-> > Recently:
-> > 
-> > https://lore.kernel.org/lkml/4d5291fa3fb4962b1fa55e8fd9ef421ef0c1b1e5.camel@perches.com/
-> 
-> But why?
-> 
-> Shouldn't we rather run MAINTAINERS clean up once and require people to use
-> parse-maintainers.pl for good?
+elapsed time: 569m
 
-That can basically only be done by Linus just before he releases
-an RC1.
+configs tested: 157
+configs skipped: 0
 
-I am for it.  One day...
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+parisc                generic-32bit_defconfig
+openrisc                 simple_smp_defconfig
+sparc64                          allmodconfig
+powerpc                       ppc64_defconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                                defconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+xtensa                       common_defconfig
+xtensa                          iss_defconfig
+alpha                               defconfig
+csky                                defconfig
+nds32                             allnoconfig
+nds32                               defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                       m5475evb_defconfig
+m68k                           sun3_defconfig
+m68k                             allmodconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-64bit_defconfig
+x86_64               randconfig-a001-20200320
+x86_64               randconfig-a002-20200320
+x86_64               randconfig-a003-20200320
+i386                 randconfig-a001-20200320
+i386                 randconfig-a002-20200320
+i386                 randconfig-a003-20200320
+alpha                randconfig-a001-20200320
+mips                 randconfig-a001-20200320
+nds32                randconfig-a001-20200320
+parisc               randconfig-a001-20200320
+m68k                 randconfig-a001-20200320
+c6x                  randconfig-a001-20200320
+h8300                randconfig-a001-20200320
+microblaze           randconfig-a001-20200320
+nios2                randconfig-a001-20200320
+sparc64              randconfig-a001-20200320
+csky                 randconfig-a001-20200320
+openrisc             randconfig-a001-20200320
+s390                 randconfig-a001-20200320
+sh                   randconfig-a001-20200320
+xtensa               randconfig-a001-20200320
+i386                 randconfig-b003-20200320
+i386                 randconfig-b001-20200320
+x86_64               randconfig-b003-20200320
+i386                 randconfig-b002-20200320
+x86_64               randconfig-b002-20200320
+x86_64               randconfig-b001-20200320
+x86_64               randconfig-c003-20200320
+i386                 randconfig-c002-20200320
+x86_64               randconfig-c001-20200320
+i386                 randconfig-c003-20200320
+i386                 randconfig-c001-20200320
+x86_64               randconfig-c002-20200320
+i386                 randconfig-d003-20200320
+i386                 randconfig-d001-20200320
+x86_64               randconfig-d002-20200320
+i386                 randconfig-d002-20200320
+x86_64               randconfig-d001-20200320
+x86_64               randconfig-d003-20200320
+x86_64               randconfig-f001-20200320
+x86_64               randconfig-f002-20200320
+x86_64               randconfig-f003-20200320
+i386                 randconfig-f001-20200320
+i386                 randconfig-f002-20200320
+i386                 randconfig-f003-20200320
+x86_64               randconfig-g001-20200320
+x86_64               randconfig-g002-20200320
+x86_64               randconfig-g003-20200320
+i386                 randconfig-g001-20200320
+i386                 randconfig-g002-20200320
+i386                 randconfig-g003-20200320
+x86_64               randconfig-h001-20200320
+x86_64               randconfig-h002-20200320
+x86_64               randconfig-h003-20200320
+i386                 randconfig-h001-20200320
+i386                 randconfig-h002-20200320
+i386                 randconfig-h003-20200320
+arc                  randconfig-a001-20200320
+arm                  randconfig-a001-20200320
+arm64                randconfig-a001-20200320
+ia64                 randconfig-a001-20200320
+powerpc              randconfig-a001-20200320
+sparc                randconfig-a001-20200320
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
