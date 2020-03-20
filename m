@@ -2,57 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B95818D0F7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 15:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7396D18D15C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 15:44:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kR982y1GzDqJX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 01:33:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kRPw1RgkzDrHY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 01:44:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+e7fddad6f7a51abe8bfe+6053+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=asa8WKNM; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kQrC4QKxzDsGv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 01:19:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=YrgVxrzmHYPrXyoeTJHbxP1u+oy6sSqDdJuYBqnOLUw=; b=asa8WKNM498IZYcLhs08/zLNPc
- sa5hNsp3CWZcXx0I3FMC7Jz7rdddp6/Qjz9Eb9/0xEmKO1CWMkZw8lTedOp1Oo0913Xep7ce77s1d
- irLGIlz2YApSXqVSeuWuteFYkTbb1eWcaff6fnKXVoOniK5laVM383+CCMsT1xj0yNuS5QYGRVIut
- QW6hRJUd/unTjJepe6iefAaYoCOxUz8Gk3DakyMYZCAr4VLiA1Au6cac0UzSSNcWdQfN1prjmUWor
- zGYqXmEkBtY5xAICBQxZ+X9klbBzq5M1SPusX9WQHw5KINGnDUN6/MnT2spzUl/0ARFiNOV2UBIPl
- 51Spyrhw==;
-Received: from [2001:4bb8:188:30cd:a410:8a7:7f20:5c9c] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jFIUL-0007Fu-7m; Fri, 20 Mar 2020 14:19:05 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org,
-	Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH 2/2] powerpc: use the generic dma_ops_bypass mode
-Date: Fri, 20 Mar 2020 15:16:40 +0100
-Message-Id: <20200320141640.366360-3-hch@lst.de>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200320141640.366360-1-hch@lst.de>
-References: <20200320141640.366360-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kRD32V72zDrGq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 01:36:18 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02KEXQCU167052
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:36:13 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2yvxn2jffu-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:36:13 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.ibm.com>;
+ Fri, 20 Mar 2020 14:36:11 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 20 Mar 2020 14:36:08 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02KEZ6H634996734
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Mar 2020 14:35:06 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 88622AE05D;
+ Fri, 20 Mar 2020 14:36:07 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14320AE051;
+ Fri, 20 Mar 2020 14:36:07 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.63.10])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Mar 2020 14:36:06 +0000 (GMT)
+Subject: Re: [PATCH 2/2] KVM: PPC: Book3S HV: H_SVM_INIT_START must call
+ UV_RETURN
+To: bharata@linux.ibm.com
+References: <20200320102643.15516-1-ldufour@linux.ibm.com>
+ <20200320102643.15516-3-ldufour@linux.ibm.com>
+ <20200320112403.GG26049@in.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Date: Fri, 20 Mar 2020 15:36:05 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <20200320112403.GG26049@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-TM-AS-GCONF: 00
+x-cbid: 20032014-0012-0000-0000-000003948596
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032014-0013-0000-0000-000021D16F34
+Message-Id: <f6a71da6-6363-8cba-8215-78b23a046443@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-20_04:2020-03-20,
+ 2020-03-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ clxscore=1015 suspectscore=3 spamscore=0 lowpriorityscore=0
+ impostorscore=0 adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003200059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,233 +94,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the DMA API bypass mechanism for direct window mappings.  This uses
-common code and speed up the direct mapping case by avoiding indirect
-calls just when not using dma ops at all.  It also fixes a problem where
-the sync_* methods were using the bypass check for DMA allocations, but
-those are part of the streaming ops.
+Le 20/03/2020 à 12:24, Bharata B Rao a écrit :
+> On Fri, Mar 20, 2020 at 11:26:43AM +0100, Laurent Dufour wrote:
+>> When the call to UV_REGISTER_MEM_SLOT is failing, for instance because
+>> there is not enough free secured memory, the Hypervisor (HV) has to call
+>> UV_RETURN to report the error to the Ultravisor (UV). Then the UV will call
+>> H_SVM_INIT_ABORT to abort the securing phase and go back to the calling VM.
+>>
+>> If the kvm->arch.secure_guest is not set, in the return path rfid is called
+>> but there is no valid context to get back to the SVM since the Hcall has
+>> been routed by the Ultravisor.
+>>
+>> Move the setting of kvm->arch.secure_guest earlier in
+>> kvmppc_h_svm_init_start() so in the return path, UV_RETURN will be called
+>> instead of rfid.
+>>
+>> Cc: Bharata B Rao <bharata@linux.ibm.com>
+>> Cc: Paul Mackerras <paulus@ozlabs.org>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kvm/book3s_hv_uvmem.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> index 79b1202b1c62..68dff151315c 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> @@ -209,6 +209,8 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>>   	int ret = H_SUCCESS;
+>>   	int srcu_idx;
+>>   
+>> +	kvm->arch.secure_guest = KVMPPC_SECURE_INIT_START;
+>> +
+>>   	if (!kvmppc_uvmem_bitmap)
+>>   		return H_UNSUPPORTED;
+>>   
+>> @@ -233,7 +235,6 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>>   			goto out;
+>>   		}
+>>   	}
+>> -	kvm->arch.secure_guest |= KVMPPC_SECURE_INIT_START;
+> 
+> There is an assumption that memory slots would have been registered with UV
+> if KVMPPC_SECURE_INIT_START has been done. KVM_PPC_SVM_OFF ioctl will skip
+> unregistration and other steps during reboot if KVMPPC_SECURE_INIT_START
+> hasn't been done.
+> 
+> Have you checked if that path isn't affected by this change?
 
-Note that this patch loses the DMA_ATTR_WEAK_ORDERING override, which
-has never been well defined, as is only used by a few drivers, which
-IIRC never showed up in the typical Cell blade setups that are affected
-by the ordering workaround.
+I checked that and didn't find any issue there.
 
-Fixes: efd176a04bef ("powerpc/pseries/dma: Allow SWIOTLB")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/include/asm/device.h |  5 --
- arch/powerpc/kernel/dma-iommu.c   | 90 ++++---------------------------
- 2 files changed, 9 insertions(+), 86 deletions(-)
+My only concern was that block:
+	kvm_for_each_vcpu(i, vcpu, kvm) {
+		spin_lock(&vcpu->arch.vpa_update_lock);
+		unpin_vpa_reset(kvm, &vcpu->arch.dtl);
+		unpin_vpa_reset(kvm, &vcpu->arch.slb_shadow);
+		unpin_vpa_reset(kvm, &vcpu->arch.vpa);
+		spin_unlock(&vcpu->arch.vpa_update_lock);
+	}
 
-diff --git a/arch/powerpc/include/asm/device.h b/arch/powerpc/include/asm/device.h
-index 266542769e4b..452402215e12 100644
---- a/arch/powerpc/include/asm/device.h
-+++ b/arch/powerpc/include/asm/device.h
-@@ -18,11 +18,6 @@ struct iommu_table;
-  * drivers/macintosh/macio_asic.c
-  */
- struct dev_archdata {
--	/*
--	 * Set to %true if the dma_iommu_ops are requested to use a direct
--	 * window instead of dynamically mapping memory.
--	 */
--	bool			iommu_bypass : 1;
- 	/*
- 	 * These two used to be a union. However, with the hybrid ops we need
- 	 * both so here we store both a DMA offset for direct mappings and
-diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-index e486d1d78de2..569fecd7b5b2 100644
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -14,23 +14,6 @@
-  * Generic iommu implementation
-  */
- 
--/*
-- * The coherent mask may be smaller than the real mask, check if we can
-- * really use a direct window.
-- */
--static inline bool dma_iommu_alloc_bypass(struct device *dev)
--{
--	return dev->archdata.iommu_bypass && !iommu_fixed_is_weak &&
--		dma_direct_supported(dev, dev->coherent_dma_mask);
--}
--
--static inline bool dma_iommu_map_bypass(struct device *dev,
--		unsigned long attrs)
--{
--	return dev->archdata.iommu_bypass &&
--		(!iommu_fixed_is_weak || (attrs & DMA_ATTR_WEAK_ORDERING));
--}
--
- /* Allocates a contiguous real buffer and creates mappings over it.
-  * Returns the virtual address of the buffer and sets dma_handle
-  * to the dma address (mapping) of the first page.
-@@ -39,8 +22,6 @@ static void *dma_iommu_alloc_coherent(struct device *dev, size_t size,
- 				      dma_addr_t *dma_handle, gfp_t flag,
- 				      unsigned long attrs)
- {
--	if (dma_iommu_alloc_bypass(dev))
--		return dma_direct_alloc(dev, size, dma_handle, flag, attrs);
- 	return iommu_alloc_coherent(dev, get_iommu_table_base(dev), size,
- 				    dma_handle, dev->coherent_dma_mask, flag,
- 				    dev_to_node(dev));
-@@ -50,11 +31,7 @@ static void dma_iommu_free_coherent(struct device *dev, size_t size,
- 				    void *vaddr, dma_addr_t dma_handle,
- 				    unsigned long attrs)
- {
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_free(dev, size, vaddr, dma_handle, attrs);
--	else
--		iommu_free_coherent(get_iommu_table_base(dev), size, vaddr,
--				dma_handle);
-+	iommu_free_coherent(get_iommu_table_base(dev), size, vaddr, dma_handle);
- }
- 
- /* Creates TCEs for a user provided buffer.  The user buffer must be
-@@ -67,9 +44,6 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
- 				     enum dma_data_direction direction,
- 				     unsigned long attrs)
- {
--	if (dma_iommu_map_bypass(dev, attrs))
--		return dma_direct_map_page(dev, page, offset, size, direction,
--				attrs);
- 	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
- 			      size, dma_get_mask(dev), direction, attrs);
- }
-@@ -79,11 +53,8 @@ static void dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
- 				 size_t size, enum dma_data_direction direction,
- 				 unsigned long attrs)
- {
--	if (!dma_iommu_map_bypass(dev, attrs))
--		iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size,
--				direction,  attrs);
--	else
--		dma_direct_unmap_page(dev, dma_handle, size, direction, attrs);
-+	iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size, direction,
-+			 attrs);
- }
- 
- 
-@@ -91,8 +62,6 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
- 			    int nelems, enum dma_data_direction direction,
- 			    unsigned long attrs)
- {
--	if (dma_iommu_map_bypass(dev, attrs))
--		return dma_direct_map_sg(dev, sglist, nelems, direction, attrs);
- 	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
- 				dma_get_mask(dev), direction, attrs);
- }
-@@ -101,11 +70,8 @@ static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
- 		int nelems, enum dma_data_direction direction,
- 		unsigned long attrs)
- {
--	if (!dma_iommu_map_bypass(dev, attrs))
--		ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
-+	ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
- 			   direction, attrs);
--	else
--		dma_direct_unmap_sg(dev, sglist, nelems, direction, attrs);
- }
- 
- static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
-@@ -113,8 +79,9 @@ static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
- 
--	return phb->controller_ops.iommu_bypass_supported &&
--		phb->controller_ops.iommu_bypass_supported(pdev, mask);
-+	if (iommu_fixed_is_weak || !phb->controller_ops.iommu_bypass_supported)
-+		return false;
-+	return phb->controller_ops.iommu_bypass_supported(pdev, mask);
- }
- 
- /* We support DMA to/from any memory page via the iommu */
-@@ -123,7 +90,7 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
- 	struct iommu_table *tbl = get_iommu_table_base(dev);
- 
- 	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
--		dev->archdata.iommu_bypass = true;
-+		dev->dma_ops_bypass = true;
- 		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
- 		return 1;
- 	}
-@@ -141,7 +108,7 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
- 	}
- 
- 	dev_dbg(dev, "iommu: not 64-bit, using default ops\n");
--	dev->archdata.iommu_bypass = false;
-+	dev->dma_ops_bypass = false;
- 	return 1;
- }
- 
-@@ -153,47 +120,12 @@ u64 dma_iommu_get_required_mask(struct device *dev)
- 	if (!tbl)
- 		return 0;
- 
--	if (dev_is_pci(dev)) {
--		u64 bypass_mask = dma_direct_get_required_mask(dev);
--
--		if (dma_iommu_bypass_supported(dev, bypass_mask))
--			return bypass_mask;
--	}
--
- 	mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
- 	mask += mask - 1;
- 
- 	return mask;
- }
- 
--static void dma_iommu_sync_for_cpu(struct device *dev, dma_addr_t addr,
--		size_t size, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
--}
--
--static void dma_iommu_sync_for_device(struct device *dev, dma_addr_t addr,
--		size_t sz, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_single_for_device(dev, addr, sz, dir);
--}
--
--extern void dma_iommu_sync_sg_for_cpu(struct device *dev,
--		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_sg_for_cpu(dev, sgl, nents, dir);
--}
--
--extern void dma_iommu_sync_sg_for_device(struct device *dev,
--		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_sg_for_device(dev, sgl, nents, dir);
--}
--
- const struct dma_map_ops dma_iommu_ops = {
- 	.alloc			= dma_iommu_alloc_coherent,
- 	.free			= dma_iommu_free_coherent,
-@@ -203,10 +135,6 @@ const struct dma_map_ops dma_iommu_ops = {
- 	.map_page		= dma_iommu_map_page,
- 	.unmap_page		= dma_iommu_unmap_page,
- 	.get_required_mask	= dma_iommu_get_required_mask,
--	.sync_single_for_cpu	= dma_iommu_sync_for_cpu,
--	.sync_single_for_device	= dma_iommu_sync_for_device,
--	.sync_sg_for_cpu	= dma_iommu_sync_sg_for_cpu,
--	.sync_sg_for_device	= dma_iommu_sync_sg_for_device,
- 	.mmap			= dma_common_mmap,
- 	.get_sgtable		= dma_common_get_sgtable,
- };
--- 
-2.25.1
+But that seems to be safe.
+
+However I'm not a familiar with the KVM's code, do you think an additional 
+KVMPPC_SECURE_INIT_* value needed here?
+
+Thanks,
+Laurent.
+
+
+
 
