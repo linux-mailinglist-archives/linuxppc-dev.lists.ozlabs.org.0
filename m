@@ -2,61 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D5218D4DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 17:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0DB18D5E0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:33:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kV9k6M6bzF0RF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 03:49:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kW8x5FmHzF08G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 04:33:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.193;
+ helo=mail-il1-f193.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-il1-f193.google.com (mail-il1-f193.google.com
+ [209.85.166.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kV7M11pmzDscR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 03:47:26 +1100 (AEDT)
-IronPort-SDR: nzONMyQJNwG03jA0997cCEA0Y563ClGShqujhsK+XYfQNFjFn9UDZwZALSLQNZV8EM9234uLcJ
- hHqZvlnBr9ug==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2020 09:47:19 -0700
-IronPort-SDR: dh18lLVo7SI0bBVLPd2Cy19KovYFRENeBeSupTfr4AIdadWB9ym3f9KLJ4NiA2Y4dyMWqRbDKu
- uxX8AfF9TK1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,285,1580803200"; d="scan'208";a="234560765"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by orsmga007.jf.intel.com with ESMTP; 20 Mar 2020 09:47:11 -0700
-Received: from andy by smile with local (Exim 4.93)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1jFKnf-00BVrf-RA; Fri, 20 Mar 2020 18:47:11 +0200
-Date: Fri, 20 Mar 2020 18:47:11 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH v12 8/8] MAINTAINERS: perf: Add pattern that matches ppc
- perf to the perf entry.
-Message-ID: <20200320164711.GH1922688@smile.fi.intel.com>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <cover.1584699455.git.msuchanek@suse.de>
- <4b150d01c60bd37705789200d9adee9f1c9b50ce.1584699455.git.msuchanek@suse.de>
- <20200320103350.GV1922688@smile.fi.intel.com>
- <20200320112338.GP25468@kitsune.suse.cz>
- <20200320124251.GW1922688@smile.fi.intel.com>
- <b96c9dd4dba4afca5288a551158659bf545d29fb.camel@perches.com>
- <20200320163157.GF1922688@smile.fi.intel.com>
- <20200320164204.GV25468@kitsune.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kW780vCbzDvgD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 04:32:19 +1100 (AEDT)
+Received: by mail-il1-f193.google.com with SMTP id d14so6324377ilq.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:32:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=FXIfsAVUFp8IJFPm+/hNheLawxwEVeZKgbspez8Hy3A=;
+ b=dkT66fhUD4EW2m3ZMh2GRlGj4FSFmY5TC1QgD7OYqDy07mTaua1z8DARI4prWbIuEO
+ +lEzPRay8V/fDHHgVodoLSiLB3J2yIywZBGL9Rg0hy9ayCcwxpRyjo611rLNLedbVtDd
+ PKPWBYwx+BZrjmLRZ6fyhxcS6dTOJXSP3QVB7E1mftU8GooKLgnYCY3YcC1XznKeBx5J
+ DcdAvaieBwiR9N5XX8GLruGEdIF0G1F5a6zkjV9pd99TPl7fudwzE2nBWbuzqfWwUq07
+ fUikFbq/3rzAsnP6Yc7ffKpkd2NgQiaEh9CMbkHZEjsXgyppFykO3e1ogtTDyAiNTMTf
+ MOHg==
+X-Gm-Message-State: ANhLgQ0WPpvbgvzqRLDSz+z3mdG5A3WNrUF5EPLaaNd/MX5lsIi+kRuy
+ hRce1CZjZrx3ZNS5GMS98g==
+X-Google-Smtp-Source: ADFU+vvyOEHh52ksLg64oqQQtskIyPgC3Gb9PgcVjz3NdBpqcYEYi8YkzZvcjgp/TY2ZkGE4F1dg5g==
+X-Received: by 2002:a92:d641:: with SMTP id x1mr9850010ilp.223.1584725536379; 
+ Fri, 20 Mar 2020 10:32:16 -0700 (PDT)
+Received: from rob-hp-laptop ([64.188.179.250])
+ by smtp.gmail.com with ESMTPSA id j23sm1874792ioa.10.2020.03.20.10.32.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Mar 2020 10:32:15 -0700 (PDT)
+Received: (nullmailer pid 16573 invoked by uid 1000);
+ Fri, 20 Mar 2020 17:32:13 -0000
+Date: Fri, 20 Mar 2020 11:32:13 -0600
+From: Rob Herring <robh@kernel.org>
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH v5 1/7] ASoC: dt-bindings: fsl_asrc: Add new property
+ fsl,asrc-format
+Message-ID: <20200320173213.GA9093@bogus>
+References: <cover.1583725533.git.shengjiu.wang@nxp.com>
+ <24f69c50925b93afd7a706bd888ee25d27247c78.1583725533.git.shengjiu.wang@nxp.com>
+ <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200320164204.GV25468@kitsune.suse.cz>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,69 +71,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
- Michael Neuling <mikey@neuling.org>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
- Jordan Niethe <jniethe5@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, linux-fsdevel@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Eric Richter <erichte@linux.ibm.com>,
- "Eric W. Biederman" <ebiederm@xmission.com>, Joe Perches <joe@perches.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, broonie@kernel.org,
+ festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 20, 2020 at 05:42:04PM +0100, Michal Suchánek wrote:
-> On Fri, Mar 20, 2020 at 06:31:57PM +0200, Andy Shevchenko wrote:
-> > On Fri, Mar 20, 2020 at 07:42:03AM -0700, Joe Perches wrote:
-> > > On Fri, 2020-03-20 at 14:42 +0200, Andy Shevchenko wrote:
-> > > > On Fri, Mar 20, 2020 at 12:23:38PM +0100, Michal Suchánek wrote:
-> > > > > On Fri, Mar 20, 2020 at 12:33:50PM +0200, Andy Shevchenko wrote:
-> > > > > > On Fri, Mar 20, 2020 at 11:20:19AM +0100, Michal Suchanek wrote:
-> > > > > > > While at it also simplify the existing perf patterns.
-> > > > > > And still missed fixes from parse-maintainers.pl.
-> > > > > 
-> > > > > Oh, that script UX is truly ingenious.
-> > > > 
-> > > > You have at least two options, their combinations, etc:
-> > > >  - complain to the author :-)
-> > > >  - send a patch :-)
-> > > 
-> > > Recently:
-> > > 
-> > > https://lore.kernel.org/lkml/4d5291fa3fb4962b1fa55e8fd9ef421ef0c1b1e5.camel@perches.com/
+On Mon, Mar 09, 2020 at 02:19:44PM -0700, Nicolin Chen wrote:
+> On Mon, Mar 09, 2020 at 11:58:28AM +0800, Shengjiu Wang wrote:
+> > In order to support new EASRC and simplify the code structure,
+> > We decide to share the common structure between them. This bring
+> > a problem that EASRC accept format directly from devicetree, but
+> > ASRC accept width from devicetree.
 > > 
-> > But why?
+> > In order to align with new ESARC, we add new property fsl,asrc-format.
+> > The fsl,asrc-format can replace the fsl,asrc-width, then driver
+> > can accept format from devicetree, don't need to convert it to
+> > format through width.
 > > 
-> > Shouldn't we rather run MAINTAINERS clean up once and require people to use
-> > parse-maintainers.pl for good?
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/sound/fsl,asrc.txt | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
+> > index cb9a25165503..780455cf7f71 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
+> > @@ -51,6 +51,11 @@ Optional properties:
+> >  			  will be in use as default. Otherwise, the big endian
+> >  			  mode will be in use for all the device registers.
+> >  
+> > +   - fsl,asrc-format	: Defines a mutual sample format used by DPCM Back
+> > +			  Ends, which can replace the fsl,asrc-width.
+> > +			  The value is SNDRV_PCM_FORMAT_S16_LE, or
+> > +			  SNDRV_PCM_FORMAT_S24_LE
 > 
-> That cleanup did not happen yet, and I am not volunteering for one.
-> The difference between MAINTAINERS and MAINTAINERS.new is:
-> 
->  MAINTAINERS | 5510 +++++++++++++++++++++++++++++------------------------------
->  1 file changed, 2755 insertions(+), 2755 deletions(-)
+> I am still holding the concern at the DT binding of this format,
+> as it uses values from ASoC header file instead of a dt-binding
+> header file -- not sure if we can do this. Let's wait for Rob's
+> comments.
 
-Yes, it was basically reply to Joe.
+I assume those are an ABI as well, so it's okay to copy them unless we 
+already have some format definitions for DT. But it does need to be copy 
+in a header under include/dt-bindings/.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Rob
