@@ -2,48 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDAD18CFAA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 15:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCA318CFBB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 15:09:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kQWw4b9zzDqMB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 01:05:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kQdZ5Vq0zDrfb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 01:09:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=87.98.143.68; helo=2.mo7.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 2178 seconds by postgrey-1.36 at bilbo;
- Fri, 20 Mar 2020 23:59:33 AEDT
-Received: from 2.mo7.mail-out.ovh.net (2.mo7.mail-out.ovh.net [87.98.143.68])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kP4P25MBzDrf6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:59:29 +1100 (AEDT)
-Received: from player728.ha.ovh.net (unknown [10.108.54.67])
- by mo7.mail-out.ovh.net (Postfix) with ESMTP id 02DE515A163
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 13:23:05 +0100 (CET)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player728.ha.ovh.net (Postfix) with ESMTPSA id 060EF108AE6BD;
- Fri, 20 Mar 2020 12:22:49 +0000 (UTC)
-Date: Fri, 20 Mar 2020 13:22:48 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH 1/2] KVM: PPC: Book3S HV: check caller of H_SVM_* Hcalls
-Message-ID: <20200320132248.44b81b3b@bahia.lan>
-In-Reply-To: <20200320102643.15516-2-ldufour@linux.ibm.com>
-References: <20200320102643.15516-1-ldufour@linux.ibm.com>
- <20200320102643.15516-2-ldufour@linux.ibm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kPKQ4v1czDrg4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 00:10:50 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02KD3viR127403
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 09:10:47 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yu7wfajvp-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 09:10:47 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Fri, 20 Mar 2020 13:10:44 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 20 Mar 2020 13:10:41 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02KDAeOn60096640
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Mar 2020 13:10:40 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 240C942042;
+ Fri, 20 Mar 2020 13:10:40 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DF2B42049;
+ Fri, 20 Mar 2020 13:10:37 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 20 Mar 2020 13:10:37 +0000 (GMT)
+Date: Fri, 20 Mar 2020 18:40:36 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 1/2] mm, slub: prevent kmalloc_node crashes and memory
+ leaks
+References: <20200320115533.9604-1-vbabka@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 13089993795129285060
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudeguddgfeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrvdehfedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejvdekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200320115533.9604-1-vbabka@suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 20032013-0016-0000-0000-000002F47CD9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032013-0017-0000-0000-000033580BC1
+Message-Id: <20200320131036.GB12944@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-20_03:2020-03-20,
+ 2020-03-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ clxscore=1015 priorityscore=1501 phishscore=0 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=968 impostorscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003200055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,98 +89,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, Pekka Enberg <penberg@kernel.org>,
+ linux-mm@kvack.org, Kirill Tkhai <ktkhai@virtuozzo.com>,
+ David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Christopher Lameter <cl@linux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 20 Mar 2020 11:26:42 +0100
-Laurent Dufour <ldufour@linux.ibm.com> wrote:
+* Vlastimil Babka <vbabka@suse.cz> [2020-03-20 12:55:32]:
 
-> The Hcall named H_SVM_* are reserved to the Ultravisor. However, nothing
-> prevent a malicious VM or SVM to call them. This could lead to weird result
-> and should be filtered out.
+> Sachin reports [1] a crash in SLUB __slab_alloc():
 > 
-> Checking the Secure bit of the calling MSR ensure that the call is coming
-> from either the Ultravisor or a SVM. But any system call made from a SVM
-> are going through the Ultravisor, and the Ultravisor should filter out
-> these malicious call. This way, only the Ultravisor is able to make such a
-> Hcall.
-
-"Ultravisor should filter" ? And what if it doesn't (eg. because of a bug) ?
-
-Shouldn't we also check the HV bit of the calling MSR as well to
-disambiguate SVM and UV ?
-
+> BUG: Kernel NULL pointer dereference on read at 0x000073b0
+> Faulting instruction address: 0xc0000000003d55f4
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> Modules linked in:
+> CPU: 19 PID: 1 Comm: systemd Not tainted 5.6.0-rc2-next-20200218-autotest #1
+> NIP:  c0000000003d55f4 LR: c0000000003d5b94 CTR: 0000000000000000
+> REGS: c0000008b37836d0 TRAP: 0300   Not tainted  (5.6.0-rc2-next-20200218-autotest)
+> MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004844  XER: 00000000
+> CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1
+> GPR00: c0000000003d5b94 c0000008b3783960 c00000000155d400 c0000008b301f500
+> GPR04: 0000000000000dc0 0000000000000002 c0000000003443d8 c0000008bb398620
+> GPR08: 00000008ba2f0000 0000000000000001 0000000000000000 0000000000000000
+> GPR12: 0000000024004844 c00000001ec52a00 0000000000000000 0000000000000000
+> GPR16: c0000008a1b20048 c000000001595898 c000000001750c18 0000000000000002
+> GPR20: c000000001750c28 c000000001624470 0000000fffffffe0 5deadbeef0000122
+> GPR24: 0000000000000001 0000000000000dc0 0000000000000002 c0000000003443d8
+> GPR28: c0000008b301f500 c0000008bb398620 0000000000000000 c00c000002287180
+> NIP [c0000000003d55f4] ___slab_alloc+0x1f4/0x760
+> LR [c0000000003d5b94] __slab_alloc+0x34/0x60
+> Call Trace:
+> [c0000008b3783960] [c0000000003d5734] ___slab_alloc+0x334/0x760 (unreliable)
+> [c0000008b3783a40] [c0000000003d5b94] __slab_alloc+0x34/0x60
+> [c0000008b3783a70] [c0000000003d6fa0] __kmalloc_node+0x110/0x490
+> [c0000008b3783af0] [c0000000003443d8] kvmalloc_node+0x58/0x110
+> [c0000008b3783b30] [c0000000003fee38] mem_cgroup_css_online+0x108/0x270
+> [c0000008b3783b90] [c000000000235aa8] online_css+0x48/0xd0
+> [c0000008b3783bc0] [c00000000023eaec] cgroup_apply_control_enable+0x2ec/0x4d0
+> [c0000008b3783ca0] [c000000000242318] cgroup_mkdir+0x228/0x5f0
+> [c0000008b3783d10] [c00000000051e170] kernfs_iop_mkdir+0x90/0xf0
+> [c0000008b3783d50] [c00000000043dc00] vfs_mkdir+0x110/0x230
+> [c0000008b3783da0] [c000000000441c90] do_mkdirat+0xb0/0x1a0
+> [c0000008b3783e20] [c00000000000b278] system_call+0x5c/0x68
 > 
-> Cc: Bharata B Rao <bharata@linux.ibm.com>
-> Cc: Paul Mackerras <paulus@ozlabs.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 32 +++++++++++++++++++++-----------
->  1 file changed, 21 insertions(+), 11 deletions(-)
+> This is a PowerPC platform with following NUMA topology:
 > 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 33be4d93248a..43773182a737 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -1074,25 +1074,35 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->  					 kvmppc_get_gpr(vcpu, 6));
->  		break;
->  	case H_SVM_PAGE_IN:
-> -		ret = kvmppc_h_svm_page_in(vcpu->kvm,
-> -					   kvmppc_get_gpr(vcpu, 4),
-> -					   kvmppc_get_gpr(vcpu, 5),
-> -					   kvmppc_get_gpr(vcpu, 6));
-> +		ret = H_UNSUPPORTED;
-> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
-> +			ret = kvmppc_h_svm_page_in(vcpu->kvm,
-> +						   kvmppc_get_gpr(vcpu, 4),
-> +						   kvmppc_get_gpr(vcpu, 5),
-> +						   kvmppc_get_gpr(vcpu, 6));
+> available: 2 nodes (0-1)
+> node 0 cpus:
+> node 0 size: 0 MB
+> node 0 free: 0 MB
+> node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+> node 1 size: 35247 MB
+> node 1 free: 30907 MB
+> node distances:
+> node   0   1
+>   0:  10  40
+>   1:  40  10
+> 
+> possible numa nodes: 0-31
+> 
+> This only happens with a mmotm patch "mm/memcontrol.c: allocate shrinker_map on
+> appropriate NUMA node" [2] which effectively calls kmalloc_node for each
+> possible node. SLUB however only allocates kmem_cache_node on online
+> N_NORMAL_MEMORY nodes, and relies on node_to_mem_node to return such valid node
+> for other nodes since commit a561ce00b09e ("slub: fall back to
+> node_to_mem_node() node if allocating on memoryless node"). This is however not
+> true in this configuration where the _node_numa_mem_ array is not initialized
+> for nodes 0 and 2-31, thus it contains zeroes and get_partial() ends up
+> accessing non-allocated kmem_cache_node.
+> 
+> A related issue was reported by Bharata (originally by Ramachandran) [3] where
+> a similar PowerPC configuration, but with mainline kernel without patch [2]
+> ends up allocating large amounts of pages by kmalloc-1k kmalloc-512. This seems
+> to have the same underlying issue with node_to_mem_node() not behaving as
+> expected, and might probably also lead to an infinite loop with
+> CONFIG_SLUB_CPU_PARTIAL [4].
+> 
+> This patch should fix both issues by not relying on node_to_mem_node() anymore
+> and instead simply falling back to NUMA_NO_NODE, when kmalloc_node(node) is
+> attempted for a node that's not online, or has no usable memory. The "usable
+> memory" condition is also changed from node_present_pages() to N_NORMAL_MEMORY
+> node state, as that is exactly the condition that SLUB uses to allocate
+> kmem_cache_node structures. The check in get_partial() is removed completely,
+> as the checks in ___slab_alloc() are now sufficient to prevent get_partial()
+> being reached with an invalid node.
+> 
+> [1] https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
+> [2] https://lore.kernel.org/linux-mm/fff0e636-4c36-ed10-281c-8cdb0687c839@virtuozzo.com/
+> [3] https://lore.kernel.org/linux-mm/20200317092624.GB22538@in.ibm.com/
+> [4] https://lore.kernel.org/linux-mm/088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz/
+> 
+> Reported-and-tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Reported-by: PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>
+> Tested-by: Bharata B Rao <bharata@linux.ibm.com>
+> Debugged-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> Fixes: a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating on memoryless node")
 
-If calling kvmppc_h_svm_page_in() produces a "weird result" when
-the MSR_S bit isn't set, then I think it should do the checking
-itself, ie. pass vcpu.
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-This would also prevent adding that many lines in kvmppc_pseries_do_hcall()
-which is a big enough function already. The checking could be done in a
-helper in book3s_hv_uvmem.c and used by all UV specific hcalls.
-
->  		break;
->  	case H_SVM_PAGE_OUT:
-> -		ret = kvmppc_h_svm_page_out(vcpu->kvm,
-> -					    kvmppc_get_gpr(vcpu, 4),
-> -					    kvmppc_get_gpr(vcpu, 5),
-> -					    kvmppc_get_gpr(vcpu, 6));
-> +		ret = H_UNSUPPORTED;
-> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
-> +			ret = kvmppc_h_svm_page_out(vcpu->kvm,
-> +						    kvmppc_get_gpr(vcpu, 4),
-> +						    kvmppc_get_gpr(vcpu, 5),
-> +						    kvmppc_get_gpr(vcpu, 6));
->  		break;
->  	case H_SVM_INIT_START:
-> -		ret = kvmppc_h_svm_init_start(vcpu->kvm);
-> +		ret = H_UNSUPPORTED;
-> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
-> +			ret = kvmppc_h_svm_init_start(vcpu->kvm);
->  		break;
->  	case H_SVM_INIT_DONE:
-> -		ret = kvmppc_h_svm_init_done(vcpu->kvm);
-> +		ret = H_UNSUPPORTED;
-> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
-> +			ret = kvmppc_h_svm_init_done(vcpu->kvm);
->  		break;
->  	case H_SVM_INIT_ABORT:
-> -		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
-> +		ret = H_UNSUPPORTED;
-> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
-> +			ret = kvmppc_h_svm_init_abort(vcpu->kvm);
->  		break;
->  
->  	default:
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
