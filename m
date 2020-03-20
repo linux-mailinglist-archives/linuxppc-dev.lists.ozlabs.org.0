@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29A818CDCA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 13:20:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kNCk415FzDrPF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 23:20:50 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D54A18CDDE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 13:27:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kNMY4kfczDrH8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 23:27:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=cuqNK0pX; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ header.s=google header.b=jigqQtCU; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kN934GmNzDrHG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:18:30 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id q16so3420319pje.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 05:18:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kNJW3J4ZzDrH8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:24:59 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id b72so3133182pfb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 05:24:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=f7RHhFMRVO0U9ez1eE0R4o9B6X8hkHM6MI3NsJSz6Co=;
- b=cuqNK0pX85BbfRqHgyzMHDy9GPVCg7WHmFkP/aAEZZ+eSrmByyTPgTqoQxoXB0PBn+
- fi2Y52I60ts0IXlneM+eioR+GhpiGQcz72Z6VGoxADcVvF9KdWC4wJDFxHn8kvV4Ht4b
- fkvOY4amD52fVGuGi6xx2FMn6M3oV8mkmIzU0=
+ :mime-version; bh=7j/gZWCgTveqAxJksxzETYlHVAwTk7I1BKebV7lwMSI=;
+ b=jigqQtCURtINYdEgrdVGDagbUr2GGY2M/usZCtgaCG+zM/OYR31CKlpjIQVuiSTNE1
+ LlbX4vMGCjyJMoWfRFYy54AffjMd48Smq1zGjj2jk3ZVpm5YQNf03nN97S2BtToMo++d
+ mX2hH7acmqfBm2J5VLd05U86jpoKV7HSrPDTU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=f7RHhFMRVO0U9ez1eE0R4o9B6X8hkHM6MI3NsJSz6Co=;
- b=UnlsMWjoRC135KUWLTqP6Hlaje/OTvnMIbUIQiOmjRx/u7fTryNEwsIGWXtXQnR0qw
- Py25oINZAN4HHFfZJuLx2MG4Tn/ubQi3oo9qk1gieJqRcS7h+o8Rlq6ec5D1/qNHGFfe
- 2nl7xPhrJ/iJ2uClZGtLmkmji3etVpZJIJ0WVHZOw2C+Nf4LFTl+dNrkZevWvMCu1iSG
- jr05XXshQXYjpZY2TUSE5ulE6G9wMRdmfgJKgUQN7Z1VNONLvEZYo10X81EVrZ5LPDns
- 7bEZR/+sMDSGcINgCj9CWlRJpNkp6ICY6fhZyFEPgTKimAIdrF+vgkAaZihVF4nha3xM
- niXg==
-X-Gm-Message-State: ANhLgQ34x1nbGYvu2m1Jr+1zWo443N/g0G6mxLmMuGAJHoy+IMLmb6vJ
- 1Zd7V/8sj+JsLWLbGE3lKFomuw==
-X-Google-Smtp-Source: ADFU+vsl4aBp4+o6EqkcwaN6Dkq9xueoibgrteQnUIDc1V0+B9IcOgB65oKFw4a8wMiWLw6KgqtNLw==
-X-Received: by 2002:a17:90a:c244:: with SMTP id
- d4mr9234584pjx.136.1584706707557; 
- Fri, 20 Mar 2020 05:18:27 -0700 (PDT)
+ bh=7j/gZWCgTveqAxJksxzETYlHVAwTk7I1BKebV7lwMSI=;
+ b=iBUaF1PVUDDIPv+bTXhmU0LBP1Mq/CHCJNpUU0E5Lnhio0OwbZznIbVG++B6d2Q0xQ
+ pZjJCUq+EgECAcezTwo6bcpEsFJRr6qpM03Z5EropUH17IfD9Nyr8q/EOPc+m26VpTnk
+ 6g0aClhwpq1Yfp6SsjdPt6U7VbbUbwcoSkVM2OxWoSY9bFJq8ZiZB4U6MVoVVf50xTlE
+ fSKjib18wVDpIg/Gbe1sMXz78wTH+IRCYDtHTuaPnVRal24Rq2A7/XmIkIxhUR6DJlo5
+ Sc6oSb18xIKgQIXSyvMsP/+eTH/9idNTJMPfsFHLgNmdTHjJUOT+pz7D8SjIcMukAJ1Z
+ Gxig==
+X-Gm-Message-State: ANhLgQ1hPqDE5riKdmcLRZth86x62ZUSrDp9PT8rzUwy24TCn6P1yJgH
+ Xix7gUM7s5ztobKhyqH1YDETxw==
+X-Google-Smtp-Source: ADFU+vs3qE1kqu10ggDM9jEgALLlR+aaHI0fgOVM6cUzo/zZbCL0txsH777WrJ4nTUR/yH2t8ovp1w==
+X-Received: by 2002:a63:fd0d:: with SMTP id d13mr7339958pgh.302.1584707095927; 
+ Fri, 20 Mar 2020 05:24:55 -0700 (PDT)
 Received: from localhost
  (2001-44b8-111e-5c00-5c35-14f7-8aa3-37c9.static.ipv6.internode.on.net.
  [2001:44b8:111e:5c00:5c35:14f7:8aa3:37c9])
- by smtp.gmail.com with ESMTPSA id c15sm5017516pgk.66.2020.03.20.05.18.25
+ by smtp.gmail.com with ESMTPSA id w138sm5737630pff.145.2020.03.20.05.24.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Mar 2020 05:18:26 -0700 (PDT)
+ Fri, 20 Mar 2020 05:24:55 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au
-Subject: Re: [PATCH v3 3/9] powerpc/vas: Add VAS user space API
-In-Reply-To: <1583541215.9256.35.camel@hbabu-laptop>
+Subject: Re: [PATCH v3 9/9] Documentation/powerpc: VAS API
+In-Reply-To: <1583541541.9256.50.camel@hbabu-laptop>
 References: <1583540877.9256.24.camel@hbabu-laptop>
- <1583541215.9256.35.camel@hbabu-laptop>
-Date: Fri, 20 Mar 2020 23:18:22 +1100
-Message-ID: <87fte3w775.fsf@dja-thinkpad.axtens.net>
+ <1583541541.9256.50.camel@hbabu-laptop>
+Date: Fri, 20 Mar 2020 23:24:51 +1100
+Message-ID: <87blorw6wc.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,446 +82,306 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
+Hi Haren,
 
-> On power9, userspace can send GZIP compression requests directly to NX
-> once kernel establishes NX channel / window with VAS. This patch provides
-> user space API which allows user space to establish channel using open
-> VAS_TX_WIN_OPEN ioctl, mmap and close operations.
+This is good documentation.
+
+> Power9 introduced Virtual Accelerator Switchboard (VAS) which allows
+> userspace to communicate with Nest Accelerator (NX) directly. But
+> kernel has to establish channel to NX for userspace. This document
+> describes user space API that application can use to establish
+> communication channel.
 >
-> Each window corresponds to file descriptor and application can open
-> multiple windows. After the window is opened, VAS_TX_WIN_OPEN icoctl to
-> open a window on specific VAS instance, mmap() system call to map
-> the hardware address of engine's request queue into the application's
-> virtual address space.
->
-> Then the application can then submit one or more requests to the the
-> engine by using the copy/paste instructions and pasting the CRBs to
-> the virtual address (aka paste_address) returned by mmap().
->
-> Only NX GZIP coprocessor type is supported right now and allow GZIP
-> engine access via /dev/crypto/nx-gzip device node.
->
-> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
 > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/vas.h              |  11 ++
->  arch/powerpc/platforms/powernv/Makefile     |   2 +-
->  arch/powerpc/platforms/powernv/vas-api.c    | 290 ++++++++++++++++++++++++++++
->  arch/powerpc/platforms/powernv/vas-window.c |   6 +-
->  arch/powerpc/platforms/powernv/vas.h        |   2 +
->  5 files changed, 307 insertions(+), 4 deletions(-)
->  create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
+>  Documentation/powerpc/index.rst   |   1 +
+>  Documentation/powerpc/vas-api.rst | 246 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 247 insertions(+)
+>  create mode 100644 Documentation/powerpc/vas-api.rst
 >
-> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-> index f93e6b0..e064953 100644
-> --- a/arch/powerpc/include/asm/vas.h
-> +++ b/arch/powerpc/include/asm/vas.h
-> @@ -163,4 +163,15 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
->   */
->  int vas_paste_crb(struct vas_window *win, int offset, bool re);
+> diff --git a/Documentation/powerpc/index.rst b/Documentation/powerpc/index.rst
+> index 0d45f0f..afe2d5e 100644
+> --- a/Documentation/powerpc/index.rst
+> +++ b/Documentation/powerpc/index.rst
+> @@ -30,6 +30,7 @@ powerpc
+>      syscall64-abi
+>      transactional_memory
+>      ultravisor
+> +    vas-api
 >  
-> +/*
-> + * Register / unregister coprocessor type to VAS API which will be exported
-> + * to user space. Applications can use this API to open / close window
-> + * which can be used to send / receive requests directly to cooprcessor.
-> + *
-> + * Only NX GZIP coprocessor type is supported now, but this API can be
-> + * used for others in future.
-> + */
-> +int vas_register_coproc_api(struct module *mod);
-> +void vas_unregister_coproc_api(void);
-> +
->  #endif /* __ASM_POWERPC_VAS_H */
-> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
-> index 395789f..fe3f0fb 100644
-> --- a/arch/powerpc/platforms/powernv/Makefile
-> +++ b/arch/powerpc/platforms/powernv/Makefile
-> @@ -17,7 +17,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
->  obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
->  obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
->  obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
-> -obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
-> +obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o vas-api.o
->  obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
->  obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
->  obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
-> diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/powernv/vas-api.c
+>  .. only::  subproject and html
+>  
+> diff --git a/Documentation/powerpc/vas-api.rst b/Documentation/powerpc/vas-api.rst
 > new file mode 100644
-> index 0000000..3473a4a
+> index 0000000..13ce4e7
 > --- /dev/null
-> +++ b/arch/powerpc/platforms/powernv/vas-api.c
-> @@ -0,0 +1,290 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * VAS user space API for its accelerators (Only NX-GZIP is supported now)
-> + * Copyright (C) 2019 Haren Myneni, IBM Corp
-> + */
+> +++ b/Documentation/powerpc/vas-api.rst
+> @@ -0,0 +1,246 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +.. _VAS-API:
 > +
-> +#include <linux/kernel.h>
-> +#include <linux/device.h>
-> +#include <linux/cdev.h>
-> +#include <linux/fs.h>
-> +#include <linux/slab.h>
-> +#include <linux/uaccess.h>
-> +#include <asm/vas.h>
-> +#include <uapi/asm/vas-api.h>
-> +#include "vas.h"
+> +===================================================
+> +Virtual Accelerator Switchboard (VAS) userspace API
+> +===================================================
 > +
-> +/*
-> + * The driver creates the device node that can be used as follows:
-> + * For NX-GZIP
-> + *
-> + *	fd = open("/dev/crypto/nx-gzip", O_RDWR);
-> + *	rc = ioctl(fd, VAS_TX_WIN_OPEN, &attr);
-> + *	paste_addr = mmap(NULL, PAGE_SIZE, prot, MAP_SHARED, fd, 0ULL).
-> + *	vas_copy(&crb, 0, 1);
-> + *	vas_paste(paste_addr, 0, 1);
-> + *	close(fd) or exit process to close window.
-> + *
-> + * where "vas_copy" and "vas_paste" are defined in copy-paste.h.
-> + * copy/paste returns to the user space directly. So refer NX hardware
-> + * documententation for excat copy/paste usage and completion / error
-> + * conditions.
-> + */
+> +Introduction
+> +============
 > +
-> +static char	*coproc_dev_name = "nx-gzip";
-> +static atomic_t	coproc_instid = ATOMIC_INIT(0);
+> +Power9 processor introduced Virtual Accelerator Switchboard (VAS) which
+> +allows both userspace and kernel communicate to co-processor
+> +(hardware accelerator) referred to as the Nest Accelerator (NX). The NX
+> +unit comprises of one or more hardware engines or co-processor types
+> +such as 842 compression, GZIP compression and encryption. On power9,
+> +userspace applications will have access to only GZIP Compression engine
+> +which supports ZLIB and GZIP compression algorithms in the hardware.
 > +
-> +/*
-> + * Wrapper object for the nx-gzip device - there is just one instance of
-> + * this node for the whole system.
-> + */
-> +static struct coproc_dev {
-> +	struct cdev cdev;
-> +	struct device *device;
-> +	char *name;
-> +	dev_t devt;
-> +	struct class *class;
-> +} coproc_device;
+> +To communicate with NX, kernel has to establish a channel or window and
+> +then requests can be submitted directly without kernel involvement.
+> +Requests to the GZIP engine must be formatted as a co-processor Request
+> +Block (CRB) and these CRBs must be submitted to the NX using COPY/PASTE
+> +instructions to paste the CRB to hardware address that is associated with
+> +the engine's request queue.
 > +
-> +/*
-> + * One instance per open of a nx-gzip device. Each coproc_instance is
-> + * associated with a VAS window after the caller issues
-> + * VAS_GZIP_TX_WIN_OPEN ioctl.
-> + */
-> +struct coproc_instance {
-> +	int id;
-> +	struct vas_window *txwin;
-> +};
+> +The GZIP engine provides two priority levels of requests: Normal and
+> +High. Only Normal requests are supported from userspace right now.
 > +
-> +static char *coproc_devnode(struct device *dev, umode_t *mode)
-> +{
-> +	return kasprintf(GFP_KERNEL, "crypto/%s", dev_name(dev));
-> +}
+> +This document explains userspace API that is used to interact with
+> +kernel to setup channel / window which can be used to send compression
+> +requests directly to NX accelerator.
 > +
-> +static int coproc_open(struct inode *inode, struct file *fp)
-> +{
-> +	struct coproc_instance *instance;
 > +
-> +	instance = kzalloc(sizeof(*instance), GFP_KERNEL);
-> +	if (!instance)
-> +		return -ENOMEM;
+> +Overview
+> +========
 > +
-> +	instance->id = atomic_inc_return(&coproc_instid);
+> +Application access to the GZIP engine is provided through
+> +/dev/crypto/nx-gzip device node implemented by the VAS/NX device driver.
+> +An application must open the /dev/crypto/nx-gzip device to obtain a file
+> +descriptor (fd). Then should issue VAS_TX_WIN_OPEN ioctl with this fd to
+> +establish connection to the engine. It means send window is opened on GZIP
+> +engine for this process. Once a connection is established, the application
+> +should use the mmap() system call to map the hardware address of engine's
+> +request queue into the application's virtual address space.
+> +
+> +The application can then submit one or more requests to the the engine by
+> +using copy/paste instructions and pasting the CRBs to the virtual address
+> +(aka paste_address) returned by mmap(). User space can close the
+> +established connection or send window by closing the file descriptior
+> +(close(fd)) or upon the process exit.
+> +
+> +Note that applications can send several requests with the same window or
+> +can establish multiple windows, but one window for each file descriptor.
+> +
+> +Following sections provide additional details and references about the
+> +individual steps.
+> +
+> +NX-GZIP Device Node
+> +===================
+> +
+> +There is one /dev/crypto/nx-gzip node in the system and it provides
+> +access to all GZIP engines in the system. The only valid operations on
+> +/dev/crypto/nx-gzip are:
+> +
+> +	* open() the device for read and write.
+> +	* issue VAS_TX_WIN_OPEN ioctl
+> +	* mmap() the engine's request queue into application's virtual
+> +	  address space (i.e. get a paste_address for the co-processor
+> +	  engine).
+> +	* close the device node.
+> +
+> +Other file operations on this device node are undefined.
+> +
+> +Note that the copy and paste operations go directly to the hardware and
+> +do not go through this device. Refer COPY/PASTE document for more
+> +details.
+> +
+> +Although a system may have several instances of the NX co-processor
+> +engines (typically, one per P9 chip) there is just one
+> +/dev/crypto/nx-gzip device node in the system. When the nx-gzip device
+> +node is opened, Kernel opens send window on a suitable instance of NX
+> +accelerator. It finds CPU on which the user process is executing and
+> +determine the NX instance for the corresponding chip on which this CPU
+> +belongs.
+> +
+> +Applications may chose a specific instance of the NX co-processor using
+> +the vas_id field in the VAS_TX_WIN_OPEN ioctl as detailed below.
+> +
+> +A userspace library libnxz is available here but still in development:
+> +	 https://github.com/abalib/power-gzip
+> +
+> +Applications that use inflate / deflate calls can link with libnxz
+> +instead of libz and use NX GZIP compression without any modification.
+> +
+> +Open /dev/crypto/nx-gzip
+> +========================
+> +
+> +The nx-gzip device should be opened for read and write. No special
+> +privileges are needed to open the device. Each window coreesponds to one
 
-I don't understand what this instance->id field does - I can't find any
-other uses of it in these series.
+s/coreesponds/corresponds/
 
-I'm also not sure that this gives you a unique id - you increment it
-here and decrement it in coproc_release, but I'm not sure what prevents
-the same ID being given to multiple instances, e.g. the following
-sequence
+> +file descriptor. So if the userspace process needs multiple windows,
+> +several open calls have to be issued.
+> +
+> +See open(2) system call man pages for other details such as return values,
+> +error codes and restrictions.
+> +codes and restrictions.
 
-coproc_open(inode,    file A) -> instance with id 0, coproc_instid = 1
-coproc_open(inode,    file B) -> instance with id 1, coproc_instid = 2
-coproc_release(inode, file A) -> release id 0, coproc_instid = 1
-coproc_open(inode,    file C) -> instance with id 1, coproc_instid = 2
-
-File B and C both have ID = 1, unless I'm misunderstanding something.
-
-> +
-> +	fp->private_data = instance;
-> +	return 0;
-> +}
-> +
-> +static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
-> +{
-> +	int rc, vasid;
-> +	struct vas_tx_win_attr txattr;
-> +	struct vas_tx_win_open_attr uattr;
-> +	void __user *uptr = (void __user *)arg;
-> +	struct vas_window *txwin;
-> +	struct coproc_instance *nxti = fp->private_data;
-> +
-> +	if (!nxti)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * One window for file descriptor
-> +	 */
-> +	if (nxti->txwin)
-> +		return -EEXIST;
-> +
-> +	rc = copy_from_user(&uattr, uptr, sizeof(uattr));
-> +	if (rc) {
-> +		pr_err("%s(): copy_from_user() returns %d\n", __func__, rc);
-> +		return -EFAULT;
-> +	}
-> +
-> +	if (uattr.version != 1) {
-> +		pr_err("Invalid version\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	vasid = uattr.vas_id;
-> +
-> +	memset(&txattr, 0, sizeof(struct vas_tx_win_attr));
-
-You could define txattr with `struct vas_tx_win_attr txattr = {};` and
-avoid the explicit memset.
-
-> +	vas_init_tx_win_attr(&txattr, VAS_COP_TYPE_GZIP);
-> +
-> +	txattr.lpid = mfspr(SPRN_LPID);
-> +	txattr.pidr = mfspr(SPRN_PID);
-> +	txattr.user_win = true;
-> +	txattr.rsvd_txbuf_count = false;
-> +	txattr.pswid = false;
-> +	/*
-> +	 * txattr.wcreds_max is set to VAS_WCREDS_DEFAULT (1024) in
-> +	 * vas-window.c, but can be changed specific to GZIP depends
-> +	 * on user space need.
-> +	 * If needed to set txattr.wcreds_max here.
-> +	 */
-
-Who could set this? You mention userspace need but it looks like the
-user cannot set this. Is this a message to future kernel developers?
+You have 'codes and restrictions' twice here.
 
 > +
-> +	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
-> +				mfspr(SPRN_PID));
+> +VAS_TX_WIN_OPEN ioctl
+> +=====================
 > +
-> +	txwin = vas_tx_win_open(vasid, VAS_COP_TYPE_GZIP, &txattr);
-> +	if (IS_ERR(txwin)) {
-> +		pr_err("%s() vas_tx_win_open() failed, %ld\n", __func__,
-> +					PTR_ERR(txwin));
-> +		return PTR_ERR(txwin);
-> +	}
+> +Applications should use the VAS_TX_WIN_OPEN ioctl as follows to establish
+> +a connection with NX co-processor engine:
 > +
-> +	nxti->txwin = txwin;
+> +	::
+> +		struct vas_tx_win_open_attr {
+> +			__u32   version;
+> +			__s16   vas_id; /* specific instance of vas or -1
+> +						for default */
+> +			__u16   reserved1;
+> +			__u64   flags;	/* For future use */
+> +			__u64   reserved2[6];
+> +		};
 > +
-> +	return 0;
-> +}
+> +	version: The version field must be currently set to 1.
+> +	vas_id: If '-1' is passed, kernel will make a best-effort attempt
+> +		to assign an optimal instance of NX for the process. To
+> +		select the specific VAS instance, refer
+> +		"Discovery of available VAS engines" section below.
 > +
-> +static int coproc_release(struct inode *inode, struct file *fp)
-> +{
-> +	struct coproc_instance *instance;
+> +	flags, reserved1 and reserved2[6] fields are for future extension
+> +	and must be set to 0.
 > +
-> +	instance = fp->private_data;
+> +	The attributes attr for the VAS_TX_WIN_OPEN ioctl are defined as
+> +	follows:
+> +		#define VAS_MAGIC 'v'
+> +		#define VAS_TX_WIN_OPEN _IOW(VAS_MAGIC, 1,
+> +						struct vas_tx_win_open_attr)
 > +
-> +	if (instance && instance->txwin) {
-> +		vas_win_close(instance->txwin);
-> +		instance->txwin = NULL;
-> +	}
+> +		struct vas_tx_win_open_attr attr;
+> +		rc = ioctl(fd, VAS_TX_WIN_OPEN, &attr);
 > +
-> +	/*
-> +	 * We don't know here if user has other receive windows
-> +	 * open, so we can't really call clear_thread_tidr().
-> +	 * So, once the process calls set_thread_tidr(), the
-> +	 * TIDR value sticks around until process exits, resulting
-> +	 * in an extra copy in restore_sprs().
-> +	 */
+> +	The VAS_TX_WIN_OPEN ioctl returns 0 on success. On errors, it
+> +	returns -1 and sets the errno variable to indicate the error.
 > +
-> +	kfree(instance);
-> +	fp->private_data = NULL;
-> +	atomic_dec(&coproc_instid);
+> +	Error conditions:
+> +		EINVAL	fd does not refer to a valid VAS device.
+> +		EINVAL	Invalid vas ID
+> +		EINVAL	version is not set with proper value
+> +		EEXIST	Window is already opened for the given fd
+> +		ENOMEM	Memory is not available to allocate window
+> +		ENOSPC	System has too many active windows (connections)
+> +			opened
+> +		EINVAL	reserved fields are not set to 0.
 > +
-> +	return 0;
-> +}
+> +	See the ioctl(2) man page for more details, error codes and
+> +	restrictions.
 > +
-> +static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
-> +{
-> +	int rc;
-> +	pgprot_t prot;
-> +	u64 paste_addr;
-> +	unsigned long pfn;
-> +	struct coproc_instance *instance = fp->private_data;
+> +mmap() NX-GZIP device
+> +=====================
 > +
-> +	if ((vma->vm_end - vma->vm_start) > PAGE_SIZE) {
-> +		pr_debug("%s(): size 0x%zx, PAGE_SIZE 0x%zx\n", __func__,
-> +				(vma->vm_end - vma->vm_start), PAGE_SIZE);
-> +		return -EINVAL;
-> +	}
+> +The mmap() system call for a NX-GZIP device fd returns a paste_address
+> +that the application can use to copy/paste its CRB to the hardware engines.
+> +	::
 > +
-> +	/* Ensure instance has an open send window */
-> +	if (!instance->txwin) {
-> +		pr_err("%s(): No send window open?\n", __func__);
-> +		return -EINVAL;
-> +	}
+> +		paste_addr = mmap(addr, size, prot, flags, fd, offset);
 > +
-> +	vas_win_paste_addr(instance->txwin, &paste_addr, NULL);
-> +	pfn = paste_addr >> PAGE_SHIFT;
-> +
-> +	/* flags, page_prot from cxl_mmap(), except we want cachable */
-> +	vma->vm_flags |= VM_IO | VM_PFNMAP;
-> +	vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);
-> +
-> +	prot = __pgprot(pgprot_val(vma->vm_page_prot) | _PAGE_DIRTY);
-> +
-> +	rc = remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
-> +			vma->vm_end - vma->vm_start, prot);
-> +
-> +	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
-> +			paste_addr, vma->vm_start, rc);
-> +
-> +	return rc;
-> +}
-> +
-> +static long coproc_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
-> +{
-> +	switch (cmd) {
-> +	case VAS_TX_WIN_OPEN:
-> +		return coproc_ioc_tx_win_open(fp, arg);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static struct file_operations coproc_fops = {
-> +	.open = coproc_open,
-> +	.release = coproc_release,
-> +	.mmap = coproc_mmap,
-> +	.unlocked_ioctl = coproc_ioctl,
-> +};
-> +
-> +/*
-> + * Supporting only nx-gzip coprocessor type now, but this API code
-> + * extended to other coprocessor types later.
-> + */
-> +int vas_register_coproc_api(struct module *mod)
-> +{
-> +	int rc = -EINVAL;
-> +	dev_t devno;
-> +
-> +	rc = alloc_chrdev_region(&coproc_device.devt, 1, 1, "nx-gzip");
-> +	if (rc) {
-> +		pr_err("Unable to allocate coproc major number: %i\n", rc);
-> +		return rc;
-> +	}
-> +
-> +	pr_devel("NX-GZIP device allocated, dev [%i,%i]\n",
-> +			MAJOR(coproc_device.devt), MINOR(coproc_device.devt));
-> +
-> +	coproc_device.class = class_create(mod, "nx-gzip");
-> +	if (IS_ERR(coproc_device.class)) {
-> +		rc = PTR_ERR(coproc_device.class);
-> +		pr_err("Unable to create NX-GZIP class %d\n", rc);
-> +		goto err_class;
-> +	}
-> +	coproc_device.class->devnode = coproc_devnode;
-> +
-> +	coproc_fops.owner = mod;
-> +	cdev_init(&coproc_device.cdev, &coproc_fops);
+> +	Only restrictions on mmap for a NX-GZIP device fd are:
+> +		* size should be 4K page size
 
-Looking into this coproc_fops thing more:
+Patch 3 seems to allow a 64k page if the system is compiled for 64k
+pages... Should it restrict it to 4K?
 
-I find this API very confusing. The comment at the top of the function
-says it will be extended, but there's only one coproc_fops, so currently
-it can only be instantiated once and owned by one module. Much of the
-rest of that function is also very much based around the nx-gzip
-coprocessor.
+> +		* offset parameter should be 0ULL
+> +
+> +	Refer to mmap(2) man page for additional details/restrictions.
+> +	In addition to the error conditions listed on the mmap(2) man
+> +	page, can also fail with one of the following error codes:
+> +
+> +		EINVAL	fd is not associated with an open window
+> +			(i.e mmap() does not follow a successful call
+> +			to the VAS_TX_WIN_OPEN ioctl).
+> +		EINVAL	offset field is not 0ULL.
+> +
+> +Discovery of available VAS engines
+> +==================================
+> +
+> +Each available VAS instance in the system will have a device tree node
+> +like /proc/device-tree/vas@* or /proc/device-tree/xscom@*/vas@*.
+> +Determine the chip or VAS instance and use the corresponding ibm,vas-id
+> +property value in this node to select specific VAS instance.
+> +
+> +Copy/Paste operations
+> +=====================
+> +
+> +Applications should use the copy and paste instructions defined in the RFC
+> +to copy/paste the CRB.
 
-I'm not fully certain about how this should work, but I think probably
-it either needs to be fully generic or fully nx-gzip only for now. I
-would make it fully nx-gzip only and extend it later, but I'm not fussy.
+In which RFC?
 
 > +
-> +	devno = MKDEV(MAJOR(coproc_device.devt), 0);
-> +	rc = cdev_add(&coproc_device.cdev, devno, 1);
-> +	if (rc) {
-> +		pr_err("cdev_add() failed %d\n", rc);
-> +		goto err_cdev;
-> +	}
+> +CRB Specification and use NX
+> +============================
 > +
-> +	coproc_device.device = device_create(coproc_device.class, NULL,
-> +			devno, NULL, coproc_dev_name, MINOR(devno));
-> +	if (IS_ERR(coproc_device.device)) {
-> +		rc = PTR_ERR(coproc_device.device);
-> +		pr_err("Unable to create coproc-%d %d\n", MINOR(devno), rc);
-> +		goto err;
-> +	}
+> +Applications should format requests to the co-processor using the
+> +co-processor Request Block (CRBs). Refer NX workbook for the format of
+> +CRB and use NX from userspace such as sending requests and checking
+> +request status.
+
+Where would someone find the NX workbook?
+
+Regards,
+Daniel
+
 > +
-> +	pr_devel("%s: Added dev [%d,%d]\n", __func__, MAJOR(devno),
-> +			MINOR(devno));
+> +Simple example
+> +==============
 > +
-> +	return 0;
+> +	::
+> +		int use_nx_gzip()
+> +		{
+> +			int rc, fd;
+> +			void *addr;
+> +			struct vas_setup_attr txattr;
 > +
-> +err:
-> +	cdev_del(&coproc_device.cdev);
-> +err_cdev:
-> +	class_destroy(coproc_device.class);
-> +err_class:
-> +	unregister_chrdev_region(coproc_device.devt, 1);
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(vas_register_coproc_api);
+> +			fd = open("/dev/crypto/nx-gzip", O_RDWR);
+> +			if (fd < 0) {
+> +				fprintf(stderr, "open nx-gzip failed\n");
+> +				return -1;
+> +			}
+> +			memset(&txattr, 0, sizeof(txattr));
+> +			txattr.version = 1;
+> +			txattr.vas_id = -1
+> +			rc = ioctl(fd, VAS_TX_WIN_OPEN,
+> +					(unsigned long)&txattr);
+> +			if (rc < 0) {
+> +				fprintf(stderr, "ioctl() n %d, error %d\n",
+> +						rc, errno);
+> +				return rc;
+> +			}
+> +			addr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
+> +					MAP_SHARED, fd, 0ULL);
+> +			if (addr == MAP_FAILED) {
+> +				fprintf(stderr, "mmap() failed, errno %d\n",
+> +						errno);
+> +				return -errno;
+> +			}
+> +			do {
+> +				//Format CRB request with compression or
+> +				//uncompression
+> +				// Refer tests for vas_copy/vas_paste
+> +				vas_copy((&crb, 0, 1);
+> +				vas_paste(addr, 0, 1);
+> +				// Poll on csb.flags with timeout
+> +				// csb address is listed in CRB
+> +			} while (true)
+> +			close(fd) or window can be closed upon process exit
+> +		}
 > +
-> +void vas_unregister_coproc_api(void)
-> +{
-> +	dev_t devno;
-> +
-> +	cdev_del(&coproc_device.cdev);
-> +	devno = MKDEV(MAJOR(coproc_device.devt), 0);
-> +	device_destroy(coproc_device.class, devno);
-> +
-> +	class_destroy(coproc_device.class);
-> +	unregister_chrdev_region(coproc_device.devt, 1);
-> +}
-> +EXPORT_SYMBOL_GPL(vas_unregister_coproc_api);
-> diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-> index e9ab851..7484296 100644
-> --- a/arch/powerpc/platforms/powernv/vas-window.c
-> +++ b/arch/powerpc/platforms/powernv/vas-window.c
-> @@ -26,7 +26,7 @@
->   * Compute the paste address region for the window @window using the
->   * ->paste_base_addr and ->paste_win_id_shift we got from device tree.
->   */
-> -static void compute_paste_address(struct vas_window *window, u64 *addr, int *len)
-> +void vas_win_paste_addr(struct vas_window *window, u64 *addr, int *len)
->  {
->  	int winid;
->  	u64 base, shift;
-> @@ -80,7 +80,7 @@ static void *map_paste_region(struct vas_window *txwin)
->  		goto free_name;
->  
->  	txwin->paste_addr_name = name;
-> -	compute_paste_address(txwin, &start, &len);
-> +	vas_win_paste_addr(txwin, &start, &len);
->  
->  	if (!request_mem_region(start, len, name)) {
->  		pr_devel("%s(): request_mem_region(0x%llx, %d) failed\n",
-> @@ -138,7 +138,7 @@ static void unmap_paste_region(struct vas_window *window)
->  	u64 busaddr_start;
->  
->  	if (window->paste_kaddr) {
-> -		compute_paste_address(window, &busaddr_start, &len);
-> +		vas_win_paste_addr(window, &busaddr_start, &len);
->  		unmap_region(window->paste_kaddr, busaddr_start, len);
->  		window->paste_kaddr = NULL;
->  		kfree(window->paste_addr_name);
-> diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-> index 8c39a7d..a10abed 100644
-> --- a/arch/powerpc/platforms/powernv/vas.h
-> +++ b/arch/powerpc/platforms/powernv/vas.h
-> @@ -431,6 +431,8 @@ struct vas_winctx {
->  extern void vas_return_credit(struct vas_window *window, bool tx);
->  extern struct vas_window *vas_pswid_to_window(struct vas_instance *vinst,
->  						uint32_t pswid);
-> +extern void vas_win_paste_addr(struct vas_window *window, u64 *addr,
-> +					int *len);
->  
->  static inline int vas_window_pid(struct vas_window *window)
->  {
+> +	Refer https://github.com/abalib/power-gzip for tests or more
+> +	use cases.
 > -- 
 > 1.8.3.1
