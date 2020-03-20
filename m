@@ -1,65 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0E818CF03
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 14:35:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kPt00P7QzDsRQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 00:35:35 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDAD18CFAA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 15:05:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kQWw4b9zzDqMB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 01:05:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=87.98.143.68; helo=2.mo7.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=merlin.20170209 header.b=S+msKOf2; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kNzq5yFSzDrNc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:55:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=9sJuQlZdjTLh4p9vc8U/OzHYsApB7N+ztV93SXfUXTY=; b=S+msKOf2a1fh8blY+Rww+BWM12
- nVEZN4NzwFV6andPM4+8lKK11q/OicWX2iQkylcgiiXoJXlNoBsNsuH3Hsp2RR8RDPZL2TdcCODPS
- uXqwQjWFKzeQTHtaizkhr7Eo97mIjvh21zbrPXi93EqkofUUhGO+C6IK+RNwVwfqauDddv3GldqOZ
- jfFfEHZEnFgz//yhDOiVCZfQldh+E+9GX+YRXaUAVYRX5jQUgr/PHWQVGE7cyWwVF36aIaotjD5Zk
- 0y7RVQesMd3sxQR2DC76m8acC4k0uK2OUV9rbi/RfYT8M2tZQ3jZP6DJGye+lpHGnC+0OB1EyRrvO
- hrIvLsLg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jFHAv-0000xV-Ux; Fri, 20 Mar 2020 12:54:58 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 40E9C305C92;
- Fri, 20 Mar 2020 13:54:55 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 0E42E2858D5B2; Fri, 20 Mar 2020 13:54:55 +0100 (CET)
-Date: Fri, 20 Mar 2020 13:54:55 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Davidlohr Bueso <dave@stgolabs.net>
-Subject: Re: [PATCH 18/15] kvm: Replace vcpu->swait with rcuwait
-Message-ID: <20200320125455.GE20696@hirez.programming.kicks-ass.net>
-References: <20200318204302.693307984@linutronix.de>
- <20200320085527.23861-1-dave@stgolabs.net>
- <20200320085527.23861-3-dave@stgolabs.net>
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 2178 seconds by postgrey-1.36 at bilbo;
+ Fri, 20 Mar 2020 23:59:33 AEDT
+Received: from 2.mo7.mail-out.ovh.net (2.mo7.mail-out.ovh.net [87.98.143.68])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kP4P25MBzDrf6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:59:29 +1100 (AEDT)
+Received: from player728.ha.ovh.net (unknown [10.108.54.67])
+ by mo7.mail-out.ovh.net (Postfix) with ESMTP id 02DE515A163
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 13:23:05 +0100 (CET)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player728.ha.ovh.net (Postfix) with ESMTPSA id 060EF108AE6BD;
+ Fri, 20 Mar 2020 12:22:49 +0000 (UTC)
+Date: Fri, 20 Mar 2020 13:22:48 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH 1/2] KVM: PPC: Book3S HV: check caller of H_SVM_* Hcalls
+Message-ID: <20200320132248.44b81b3b@bahia.lan>
+In-Reply-To: <20200320102643.15516-2-ldufour@linux.ibm.com>
+References: <20200320102643.15516-1-ldufour@linux.ibm.com>
+ <20200320102643.15516-2-ldufour@linux.ibm.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200320085527.23861-3-dave@stgolabs.net>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 13089993795129285060
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudeguddgfeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrvdehfedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejvdekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,41 +55,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rdunlap@infradead.org, linux-pci@vger.kernel.org, bigeasy@linutronix.de,
- linux-kernel@vger.kernel.org, joel@joelfernandes.org, will@kernel.org,
- mingo@kernel.org, arnd@arndb.de, Davidlohr Bueso <dbueso@suse.de>,
- torvalds@linux-foundation.org, paulmck@kernel.org,
- linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bhelgaas@google.com,
- kurt.schwemmer@microsemi.com, kvalo@codeaurora.org, balbi@kernel.org,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, oleg@redhat.com, tglx@linutronix.de,
- netdev@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- logang@deltatee.com, davem@davemloft.net
+Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 20, 2020 at 01:55:26AM -0700, Davidlohr Bueso wrote:
-> -	swait_event_interruptible_exclusive(*wq, ((!vcpu->arch.power_off) &&
-> -				       (!vcpu->arch.pause)));
-> +	rcuwait_wait_event(*wait,
-> +			   (!vcpu->arch.power_off) && (!vcpu->arch.pause),
-> +			   TASK_INTERRUPTIBLE);
+On Fri, 20 Mar 2020 11:26:42 +0100
+Laurent Dufour <ldufour@linux.ibm.com> wrote:
 
-> -	for (;;) {
-> -		prepare_to_swait_exclusive(&vcpu->wq, &wait, TASK_INTERRUPTIBLE);
-> -
-> -		if (kvm_vcpu_check_block(vcpu) < 0)
-> -			break;
-> -
-> -		waited = true;
-> -		schedule();
-> -	}
-> -
-> -	finish_swait(&vcpu->wq, &wait);
-> +	rcuwait_wait_event(&vcpu->wait,
-> +			   (block_check = kvm_vcpu_check_block(vcpu)) < 0,
-> +			   TASK_INTERRUPTIBLE);
+> The Hcall named H_SVM_* are reserved to the Ultravisor. However, nothing
+> prevent a malicious VM or SVM to call them. This could lead to weird result
+> and should be filtered out.
+> 
+> Checking the Secure bit of the calling MSR ensure that the call is coming
+> from either the Ultravisor or a SVM. But any system call made from a SVM
+> are going through the Ultravisor, and the Ultravisor should filter out
+> these malicious call. This way, only the Ultravisor is able to make such a
+> Hcall.
 
-Are these yet more instances that really want to be TASK_IDLE ?
+"Ultravisor should filter" ? And what if it doesn't (eg. because of a bug) ?
+
+Shouldn't we also check the HV bit of the calling MSR as well to
+disambiguate SVM and UV ?
+
+> 
+> Cc: Bharata B Rao <bharata@linux.ibm.com>
+> Cc: Paul Mackerras <paulus@ozlabs.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 32 +++++++++++++++++++++-----------
+>  1 file changed, 21 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 33be4d93248a..43773182a737 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -1074,25 +1074,35 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+>  					 kvmppc_get_gpr(vcpu, 6));
+>  		break;
+>  	case H_SVM_PAGE_IN:
+> -		ret = kvmppc_h_svm_page_in(vcpu->kvm,
+> -					   kvmppc_get_gpr(vcpu, 4),
+> -					   kvmppc_get_gpr(vcpu, 5),
+> -					   kvmppc_get_gpr(vcpu, 6));
+> +		ret = H_UNSUPPORTED;
+> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
+> +			ret = kvmppc_h_svm_page_in(vcpu->kvm,
+> +						   kvmppc_get_gpr(vcpu, 4),
+> +						   kvmppc_get_gpr(vcpu, 5),
+> +						   kvmppc_get_gpr(vcpu, 6));
+
+If calling kvmppc_h_svm_page_in() produces a "weird result" when
+the MSR_S bit isn't set, then I think it should do the checking
+itself, ie. pass vcpu.
+
+This would also prevent adding that many lines in kvmppc_pseries_do_hcall()
+which is a big enough function already. The checking could be done in a
+helper in book3s_hv_uvmem.c and used by all UV specific hcalls.
+
+>  		break;
+>  	case H_SVM_PAGE_OUT:
+> -		ret = kvmppc_h_svm_page_out(vcpu->kvm,
+> -					    kvmppc_get_gpr(vcpu, 4),
+> -					    kvmppc_get_gpr(vcpu, 5),
+> -					    kvmppc_get_gpr(vcpu, 6));
+> +		ret = H_UNSUPPORTED;
+> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
+> +			ret = kvmppc_h_svm_page_out(vcpu->kvm,
+> +						    kvmppc_get_gpr(vcpu, 4),
+> +						    kvmppc_get_gpr(vcpu, 5),
+> +						    kvmppc_get_gpr(vcpu, 6));
+>  		break;
+>  	case H_SVM_INIT_START:
+> -		ret = kvmppc_h_svm_init_start(vcpu->kvm);
+> +		ret = H_UNSUPPORTED;
+> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
+> +			ret = kvmppc_h_svm_init_start(vcpu->kvm);
+>  		break;
+>  	case H_SVM_INIT_DONE:
+> -		ret = kvmppc_h_svm_init_done(vcpu->kvm);
+> +		ret = H_UNSUPPORTED;
+> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
+> +			ret = kvmppc_h_svm_init_done(vcpu->kvm);
+>  		break;
+>  	case H_SVM_INIT_ABORT:
+> -		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
+> +		ret = H_UNSUPPORTED;
+> +		if (kvmppc_get_srr1(vcpu) & MSR_S)
+> +			ret = kvmppc_h_svm_init_abort(vcpu->kvm);
+>  		break;
+>  
+>  	default:
 
