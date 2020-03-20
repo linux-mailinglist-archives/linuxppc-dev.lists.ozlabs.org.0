@@ -1,83 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55F618CED9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 14:29:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kPlD1DSwzDsTL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 00:29:44 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C2718CEDF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 14:32:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kPpT3s7dzDsTV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 00:32:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kNzT5N73zDrNc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:55:17 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kNzf0jZbzDrgs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:55:25 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02KCXNPe149144
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:55:15 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2yu9345e7x-1
+ 02KCYjZ4122957
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:55:23 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yua2dcjge-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:55:15 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:55:23 -0400
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Fri, 20 Mar 2020 12:55:12 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Fri, 20 Mar 2020 12:55:21 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 20 Mar 2020 12:55:08 -0000
+ Fri, 20 Mar 2020 12:55:14 -0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02KCt61R57016542
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02KCsBuS50528660
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Mar 2020 12:55:06 GMT
+ Fri, 20 Mar 2020 12:54:11 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64D024C040;
+ by IMSVA (Postfix) with ESMTP id 87A194C059;
+ Fri, 20 Mar 2020 12:55:12 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6A3C4C044;
  Fri, 20 Mar 2020 12:55:06 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CDBE14C046;
- Fri, 20 Mar 2020 12:55:00 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.35.76])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 20 Mar 2020 12:55:00 +0000 (GMT)
+ Fri, 20 Mar 2020 12:55:06 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
  sukadev@linux.vnet.ibm.com
-Subject: [PATCH v6 06/11] Documentation/ABI: Add ABI documentation for chips
- and sockets
-Date: Fri, 20 Mar 2020 18:24:01 +0530
+Subject: [PATCH v6 07/11] powerpc/hv-24x7: Update post_mobility_fixup() to
+ handle migration
+Date: Fri, 20 Mar 2020 18:24:02 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20200320125406.30995-1-kjain@linux.ibm.com>
 References: <20200320125406.30995-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20032012-0012-0000-0000-000003947A4E
+x-cbid: 20032012-0008-0000-0000-00000360A312
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032012-0013-0000-0000-000021D1639B
-Message-Id: <20200320125406.30995-7-kjain@linux.ibm.com>
+x-cbparentid: 20032012-0009-0000-0000-00004A82044B
+Message-Id: <20200320125406.30995-8-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-20_03:2020-03-20,
  2020-03-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 adultscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=598
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ score=100 lowpriorityscore=0
+ mlxlogscore=475 malwarescore=0 suspectscore=0 clxscore=1015 phishscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2003200055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,40 +102,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add documentation for the following sysfs files:
-/sys/devices/hv_24x7/interface/chips,
-/sys/devices/hv_24x7/interface/sockets
+Function 'read_sys_info_pseries()' is added to get system parameter
+values like number of sockets and chips per socket.
+and it gets these details via rtas_call with token
+"PROCESSOR_MODULE_INFO".
+
+Incase lpar migrate from one system to another, system
+parameter details like chips per sockets or number of sockets might
+change. So, it needs to be re-initialized otherwise, these values
+corresponds to previous system values.
+This patch adds a call to 'read_sys_info_pseries()' from
+'post-mobility_fixup()' to re-init the physsockets and physchips values.
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- .../testing/sysfs-bus-event_source-devices-hv_24x7 | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/powerpc/platforms/pseries/mobility.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7 b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
-index ec27c6c9e737..e17e5b444a1c 100644
---- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
-+++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
-@@ -22,6 +22,20 @@ Description:
- 		Exposes the "version" field of the 24x7 catalog. This is also
- 		extractable from the provided binary "catalog" sysfs entry.
+diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+index b571285f6c14..226accd6218b 100644
+--- a/arch/powerpc/platforms/pseries/mobility.c
++++ b/arch/powerpc/platforms/pseries/mobility.c
+@@ -371,6 +371,18 @@ void post_mobility_fixup(void)
+ 	/* Possibly switch to a new RFI flush type */
+ 	pseries_setup_rfi_flush();
  
-+What:		/sys/devices/hv_24x7/interface/sockets
-+Date:		March 2020
-+Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-+Description:	read only
-+		This sysfs interface exposes the number of sockets present in the
-+		system.
++	/*
++	 * Incase lpar migrate from one system to another, system
++	 * parameter details like chips per sockets and number of sockets
++	 * might change. So, it needs to be re-initialized otherwise these
++	 * values corresponds to previous system.
++	 * Here, adding a call to read_sys_info_pseries() declared in
++	 * platforms/pseries/pseries.h to re-init the physsockets and
++	 * physchips value.
++	 */
++	if (IS_ENABLED(CONFIG_HV_PERF_CTRS) && IS_ENABLED(CONFIG_PPC_RTAS))
++		read_sys_info_pseries();
 +
-+What:		/sys/devices/hv_24x7/interface/chips
-+Date:		March 2020
-+Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-+Description:	read only
-+		This sysfs interface exposes the number of chips per socket
-+		present in the system.
-+
- What:		/sys/bus/event_source/devices/hv_24x7/event_descs/<event-name>
- Date:		February 2014
- Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+ 	return;
+ }
+ 
 -- 
 2.18.1
 
