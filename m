@@ -1,54 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB05B18C7CE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 08:01:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kF7j5jPXzDrfl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:01:53 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8C718C848
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 08:38:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kFy53XjRzDrcd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 18:38:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+e7fddad6f7a51abe8bfe+6053+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
+ helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=YLldNI9a; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-74.mimecast.com
+ (us-smtp-delivery-74.mimecast.com [63.128.21.74])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kF5k5jjZzDrbn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 18:00:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=iZ+tfXP9s+9EAQeQf95cP5ovh7AcQ3rFatDjmNA0Hpo=; b=SS2stUyn7rcx2bDE5sgbJPy234
- X9zm/vp1W32VRiUAiag9wc6+PVqSgvIgsex3vU9E84yi9emMqCBjOL8b7qfPZtQkzzDv+ofwjR/c0
- QqIG4wFoyXYG03dKfZLr/ByjjOnzQZgMIsED/UXA3TjGOpdi16UiLfl7+s/pKrebSwQXNd9u4pstl
- +qXtTUiOQHDVZkhWsyHsqIFLLUunbIQgVzbJEP1S4/2sDgk9ikKUV9u7HOeGT3pSs1gwB2yhFrrPK
- c3xR/dV7sjrTgGqDl4NyeXhuFf9XPfBkHa1DsefnsUIiMYD5W+PnILH3G4rhCIrK0mmmME0frAQvb
- yfAFAVTA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jFBdD-00080q-N8; Fri, 20 Mar 2020 06:59:47 +0000
-Date: Thu, 19 Mar 2020 23:59:47 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Julian Calaby <julian.calaby@gmail.com>
-Subject: Re: [patch V2 11/15] completion: Use simple wait queues
-Message-ID: <20200320065947.GA25206@infradead.org>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.521507446@linutronix.de>
- <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kFwR2bW4zDrbv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 18:37:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1584689827;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=W1gum1vAgnk9ohf+zv7pJnapCaZq6wcMIaHYE+lE4nY=;
+ b=YLldNI9aNF6eZYVqh/9elfdrkL+4Tj6O1M6gPUJzcIz44etgLRM/opfCfMW119GRIjEWkP
+ sqqKxgMf/DT9cpkCB88L6Vx8xXWKyaA1r7VjDwE1vjCssPniV4GxaAERACRPXZPLdYEKRj
+ xq+BuYjowsdvNSCj+YwHQCcP77dNt8s=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-354-3-PS3H37ND6CvYBdStjOow-1; Fri, 20 Mar 2020 03:37:03 -0400
+X-MC-Unique: 3-PS3H37ND6CvYBdStjOow-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 120D88010D9;
+ Fri, 20 Mar 2020 07:37:00 +0000 (UTC)
+Received: from localhost (ovpn-13-97.pek2.redhat.com [10.72.13.97])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 00D1460BF1;
+ Fri, 20 Mar 2020 07:36:56 +0000 (UTC)
+Date: Fri, 20 Mar 2020 15:36:53 +0800
+From: Baoquan He <bhe@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v3 3/8] drivers/base/memory: store mapping between MMOP_*
+ and string in an array
+Message-ID: <20200320073653.GE2987@MiWiFi-R3L-srv>
+References: <20200319131221.14044-1-david@redhat.com>
+ <20200319131221.14044-4-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20200319131221.14044-4-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,36 +72,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb <linux-usb@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
- Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Davidlohr Bueso <dave@stgolabs.net>,
- "Paul E . McKenney" <paulmck@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
- Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Logan Gunthorpe <logang@deltatee.com>, Randy Dunlap <rdunlap@infradead.org>,
- linux-wireless@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 20, 2020 at 10:25:41AM +1100, Julian Calaby wrote:
-> > +++ b/drivers/usb/gadget/function/f_fs.c
-> > @@ -1703,7 +1703,7 @@ static void ffs_data_put(struct ffs_data
-> >                 pr_info("%s(): freeing\n", __func__);
-> >                 ffs_data_clear(ffs);
-> >                 BUG_ON(waitqueue_active(&ffs->ev.waitq) ||
-> > -                      waitqueue_active(&ffs->ep0req_completion.wait) ||
-> > +                      swait_active(&ffs->ep0req_completion.wait) ||
+On 03/19/20 at 02:12pm, David Hildenbrand wrote:
+> Let's use a simple array which we can reuse soon. While at it, move the
+> string->mmop conversion out of the device hotplug lock.
 > 
-> This looks like some code is reaching deep into the dirty dark corners
-> of the completion implementation, should there be some wrapper around
-> this to hide that?
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  drivers/base/memory.c | 38 +++++++++++++++++++++++---------------
+>  1 file changed, 23 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index e7e77cafef80..8a7f29c0bf97 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -28,6 +28,24 @@
+>  
+>  #define MEMORY_CLASS_NAME	"memory"
+>  
+> +static const char *const online_type_to_str[] = {
+> +	[MMOP_OFFLINE] = "offline",
+> +	[MMOP_ONLINE] = "online",
+> +	[MMOP_ONLINE_KERNEL] = "online_kernel",
+> +	[MMOP_ONLINE_MOVABLE] = "online_movable",
+> +};
+> +
+> +static int memhp_online_type_from_str(const char *str)
+> +{
+> +	int i;
 
-Or just remote it entirely..
+I would change it as: 
+
+	for (int i = 0; i < ARRAY_SIZE(online_type_to_str); i++) {
+
+> +
+> +	for (i = 0; i < ARRAY_SIZE(online_type_to_str); i++) {
+> +		if (sysfs_streq(str, online_type_to_str[i]))
+> +			return i;
+> +	}
+> +	return -EINVAL;
+> +}
+> +
+>  #define to_memory_block(dev) container_of(dev, struct memory_block, dev)
+>  
+>  static int sections_per_block;
+> @@ -236,26 +254,17 @@ static int memory_subsys_offline(struct device *dev)
+>  static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+>  			   const char *buf, size_t count)
+>  {
+> +	const int online_type = memhp_online_type_from_str(buf);
+>  	struct memory_block *mem = to_memory_block(dev);
+> -	int ret, online_type;
+> +	int ret;
+> +
+> +	if (online_type < 0)
+> +		return -EINVAL;
+>  
+>  	ret = lock_device_hotplug_sysfs();
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (sysfs_streq(buf, "online_kernel"))
+> -		online_type = MMOP_ONLINE_KERNEL;
+> -	else if (sysfs_streq(buf, "online_movable"))
+> -		online_type = MMOP_ONLINE_MOVABLE;
+> -	else if (sysfs_streq(buf, "online"))
+> -		online_type = MMOP_ONLINE;
+> -	else if (sysfs_streq(buf, "offline"))
+> -		online_type = MMOP_OFFLINE;
+> -	else {
+> -		ret = -EINVAL;
+> -		goto err;
+> -	}
+> -
+>  	switch (online_type) {
+>  	case MMOP_ONLINE_KERNEL:
+>  	case MMOP_ONLINE_MOVABLE:
+> @@ -271,7 +280,6 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+>  		ret = -EINVAL; /* should never happen */
+>  	}
+>  
+> -err:
+>  	unlock_device_hotplug();
+>  
+>  	if (ret < 0)
+> -- 
+> 2.24.1
+> 
+
