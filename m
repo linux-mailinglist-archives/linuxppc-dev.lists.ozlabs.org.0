@@ -2,71 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9139218D314
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5E518D322
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:41:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kScR6QxzzDrTY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 02:39:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kSgW2BMJzDqFZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 02:41:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=nF3Rlbzb; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=nxH7z5Xg; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kSR63fvRzDqWk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 02:30:57 +1100 (AEDT)
-Received: by mail-pj1-x1042.google.com with SMTP id nu11so2605590pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 08:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=OhmoqL/BoUVOpmNRbw/FyFNU6on9qjyGWe9T3X2Iods=;
- b=nF3RlbzbshcVSfb6GoqZIDhlylLK97En/nLhclRfLDj6eed+wy24mJgsJerVo9QReS
- K9BhEqRJ/08/bgILlewRQg+oD9kKTpEamvKmWf4wBrdrCnNUZ1fc069S/pPBXzO/jIzj
- Z17U3DMaxVNML995gyNYBGOn04098aUskln1v6rUwQGwgMW66G0FysLUlL6LdHkUBfmj
- 94JmtjAXT/aSW5ERHP5EEkUkotlVG9OtqLPQFivUQIMONitoIyQJRDseDsSY5c4mU8GI
- FFYxIjD4hqrcNqRd02jR4yPZd+ajN80PTOUjnn6sv9YiBbB7DZsw2iroPPnJaguNPWpr
- 0DCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=OhmoqL/BoUVOpmNRbw/FyFNU6on9qjyGWe9T3X2Iods=;
- b=BHyEsi259OprCrqCKEnR7ozHhzjcHwvVP7KEjTp9EFX1g3b4i3LFsrEJyaYg1mNJAa
- a3FdhsJT8vh/q22rQnAcqwvZymlAgzuzPQ7wgYgwrEhgX2A9E+10VruQG9MDQ3VGUOKY
- HCum5f4SXsqYsg+O6xo8w6QKvyLBP2JcK8SUSCI6hOw41YBvryk8nFWW+byqsFIEHOlm
- xKvhJBQmmjxgEgPj8gMCZ3gQIRUxtSoEP1121i4CpojD16TB9WYudVDofFzFQbmrZgda
- J77UQI24+nxZlHTd2wY+tvewe3VNtKwLl7lLS8BQCSgeOWn6SBVfJWrztHNm7q3/tNHF
- Nipg==
-X-Gm-Message-State: ANhLgQ1E9h9aZ9c3r/HeGjEKAm5y0qi9zbTdD2awcZlpFkAum07Kc5Yp
- X5hhExRl7IRJobhqKe4ZPUMU4RCB
-X-Google-Smtp-Source: ADFU+vskPNzrJz/yrs8U4CVqnAz5I07yD4DRX8dNx0uZhhRexYqo5AOukyu9g+skv0pHk5GbG/NAkw==
-X-Received: by 2002:a17:90a:ad92:: with SMTP id
- s18mr10185502pjq.140.1584718253591; 
- Fri, 20 Mar 2020 08:30:53 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (14-202-190-183.tpgi.com.au.
- [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id g11sm5836801pfm.4.2020.03.20.08.30.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Mar 2020 08:30:53 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: allow rtas to be called in real-mode,
- use this in machine check
-Date: Sat, 21 Mar 2020 01:28:16 +1000
-Message-Id: <20200320152816.1469657-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kSTn6c2gzF0Qh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 02:33:16 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48kSTd6nZVz9v2jx;
+ Fri, 20 Mar 2020 16:33:09 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=nxH7z5Xg; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Vu0yPU3CSadE; Fri, 20 Mar 2020 16:33:09 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48kSTd5nC1z9v2RP;
+ Fri, 20 Mar 2020 16:33:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1584718389; bh=2kFbXb6MvW+7/algV+3TfWr4b/ISn4UV6IoXPE9Nkcw=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=nxH7z5XgNfztOBMaOuaj1boEkP6upyKMsrnbd3PBF/P2Abd6YQwOdePTFsKg0c54U
+ vgF9YyuaHpTuIv3Mik8P/U6pdVx6oq4fI/jNqy381xUp7xDftuDaHeA0ZwjIdaBALs
+ LpYTRAGk2ISVbfpxW6LoJEfJ0a7zalss5LBzFeq8=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3DD4C8B858;
+ Fri, 20 Mar 2020 16:33:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id sfwJAk1CUQqs; Fri, 20 Mar 2020 16:33:11 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 051208B857;
+ Fri, 20 Mar 2020 16:33:10 +0100 (CET)
+Subject: Re: [PATCH] powerpc/pseries: avoid harmless preempt warning
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200320152436.1468651-1-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <6b34ba18-de6b-15c5-1611-fb5c92e065f9@c-s.fr>
+Date: Fri, 20 Mar 2020 16:33:00 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <20200320152436.1468651-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,164 +77,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-rtas_call allocates and uses memory in failure paths, which is
-not safe for RMA. It also calls local_irq_save() which may not be safe
-in all real mode contexts.
 
-Particularly machine check may run with interrupts not "reconciled",
-and it may have hit while it was in tracing code that should not be
-rentered.
 
-Create minimal rtas call that should be usable by guest machine check
-code, use it there to call "ibm,nmi-interlock".
+Le 20/03/2020 à 16:24, Nicholas Piggin a écrit :
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/platforms/pseries/lpar.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+> index 3c3da25b445c..e4ed5317f117 100644
+> --- a/arch/powerpc/platforms/pseries/lpar.c
+> +++ b/arch/powerpc/platforms/pseries/lpar.c
+> @@ -636,8 +636,16 @@ static const struct proc_ops vcpudispatch_stats_freq_proc_ops = {
+>   
+>   static int __init vcpudispatch_stats_procfs_init(void)
+>   {
+> -	if (!lppaca_shared_proc(get_lppaca()))
+> +	/*
+> +	 * Avoid smp_processor_id while preemptible. All CPUs should have
+> +	 * the same value for lppaca_shared_proc.
+> +	 */
+> +	preempt_disable();
+> +	if (!lppaca_shared_proc(get_lppaca())) {
+> +		preempt_enable();
+>   		return 0;
+> +	}
+> +	preempt_enable();
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/rtas.h      |  1 +
- arch/powerpc/kernel/entry_64.S       | 12 ++++++--
- arch/powerpc/kernel/rtas.c           | 43 ++++++++++++++++++++++++++++
- arch/powerpc/platforms/pseries/ras.c |  2 +-
- 4 files changed, 54 insertions(+), 4 deletions(-)
+Can we avoid the double preempt_enable() with something like:
 
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 3c1887351c71..4ffc499ce1ac 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -352,6 +352,7 @@ extern struct rtas_t rtas;
- extern int rtas_token(const char *service);
- extern int rtas_service_present(const char *service);
- extern int rtas_call(int token, int, int, int *, ...);
-+extern int raw_rtas_call(int token, int, int, int *, ...);
- void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
- 			int nret, ...);
- extern void __noreturn rtas_restart(char *cmd);
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index 51c5b681f70c..309abb677788 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -759,6 +759,13 @@ _GLOBAL(enter_rtas)
- 	li	r0,0
- 	mtcr	r0
- 
-+	/* enter_rtas called from real-mode may not have irqs reconciled
-+	 * but will always have interrupts disabled.
-+	 */
-+	mfmsr	r6
-+	andi.	r7,r6,(MSR_IR|MSR_DR)
-+	beq	2f
-+
- #ifdef CONFIG_BUG
- 	/* There is no way it is acceptable to get here with interrupts enabled,
- 	 * check it with the asm equivalent of WARN_ON
-@@ -769,10 +776,10 @@ _GLOBAL(enter_rtas)
- #endif
- 
- 	/* Hard-disable interrupts */
--	mfmsr	r6
- 	rldicl	r7,r6,48,1
- 	rotldi	r7,r7,16
- 	mtmsrd	r7,1
-+2:
- 
- 	/* Unfortunately, the stack pointer and the MSR are also clobbered,
- 	 * so they are saved in the PACA which allows us to restore
-@@ -795,7 +802,6 @@ _GLOBAL(enter_rtas)
- 	ori	r9,r9,MSR_IR|MSR_DR|MSR_FE0|MSR_FE1|MSR_FP|MSR_RI|MSR_LE
- 	andc	r6,r0,r9
- 
--__enter_rtas:
- 	sync				/* disable interrupts so SRR0/1 */
- 	mtmsrd	r0			/* don't get trashed */
- 
-@@ -837,7 +843,7 @@ rtas_return_loc:
- 	mtspr	SPRN_SRR1,r4
- 	RFI_TO_KERNEL
- 	b	.	/* prevent speculative execution */
--_ASM_NOKPROBE_SYMBOL(__enter_rtas)
-+_ASM_NOKPROBE_SYMBOL(enter_rtas)
- _ASM_NOKPROBE_SYMBOL(rtas_return_loc)
- 
- 	.align	3
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c5fa251b8950..a058dcfb6726 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -450,6 +450,8 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 	char *buff_copy = NULL;
- 	int ret;
- 
-+	WARN_ON_ONCE((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR));
-+
- 	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
- 		return -1;
- 
-@@ -483,6 +485,47 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- }
- EXPORT_SYMBOL(rtas_call);
- 
-+/*
-+ * Like rtas_call but no kmalloc or printk etc in error handling, so
-+ * error won't go through log_error. No tracing, may be called in real mode.
-+ */
-+int notrace raw_rtas_call(int token, int nargs, int nret, int *outputs, ...)
-+{
-+	va_list list;
-+	int i;
-+	struct rtas_args *rtas_args;
-+	int ret;
-+
-+	WARN_ON_ONCE((mfmsr() & MSR_EE));
-+
-+	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
-+		return -1;
-+
-+	/*
-+	 * Real mode must have MSR[EE]=0 and we prefer not to touch any
-+	 * irq or preempt state (this may be called in machine check).
-+	 */
-+	preempt_disable_notrace();
-+	arch_spin_lock(&rtas.lock);
-+
-+	/* We use the global rtas args buffer */
-+	rtas_args = &rtas.args;
-+
-+	va_start(list, outputs);
-+	va_rtas_call_unlocked(rtas_args, token, nargs, nret, list);
-+	va_end(list);
-+
-+	if (nret > 1 && outputs != NULL)
-+		for (i = 0; i < nret-1; ++i)
-+			outputs[i] = be32_to_cpu(rtas_args->rets[i+1]);
-+	ret = (nret > 0)? be32_to_cpu(rtas_args->rets[0]): 0;
-+
-+	arch_spin_unlock(&rtas.lock);
-+	preempt_enable_notrace();
-+
-+	return ret;
-+}
-+
- /* For RTAS_BUSY (-2), delay for 1 millisecond.  For an extended busy status
-  * code of 990n, perform the hinted delay of 10^n (last digit) milliseconds.
-  */
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index c74d5e740922..e87f86f02569 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -458,7 +458,7 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
-  */
- static void fwnmi_release_errinfo(void)
- {
--	int ret = rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
-+	int ret = raw_rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
- 	if (ret != 0)
- 		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
- }
--- 
-2.23.0
+	preempt_disable();
+	is_shared = lppaca_shared_proc(get_lppaca());
+	preempt_enable();
+	if (!is_shared)
+		return 0;
 
+
+>   
+>   	if (!proc_create("powerpc/vcpudispatch_stats", 0600, NULL,
+>   					&vcpudispatch_stats_proc_ops))
+> 
+
+Christophe
