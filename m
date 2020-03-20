@@ -1,43 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FE518C73C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 06:52:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kCb33fK6zDrGC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 16:51:59 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A79A218C759
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 07:18:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kD9C30B8zDrQR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 17:18:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=stgolabs.net (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=dave@stgolabs.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=stgolabs.net
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kCHF1T4qzDrfm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 16:38:15 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 3EF15AC42;
- Fri, 20 Mar 2020 05:38:08 +0000 (UTC)
-Date: Thu, 19 Mar 2020 22:36:57 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 06/15] rcuwait: Add @state argument to
- rcuwait_wait_event()
-Message-ID: <20200320053657.ggvcqsjtdotmrl7p@linux-p48b>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.010461877@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kD7J4pJwzDrNr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 17:16:23 +1100 (AEDT)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 3C57286598A0FBBAB9AA;
+ Fri, 20 Mar 2020 14:16:16 +0800 (CST)
+Received: from [127.0.0.1] (10.173.221.195) by DGGEMS406-HUB.china.huawei.com
+ (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0;
+ Fri, 20 Mar 2020 14:16:06 +0800
+Subject: Re: [PATCH v4 0/6] implement KASLR for powerpc/fsl_booke/64
+To: Daniel Axtens <dja@axtens.net>, <mpe@ellerman.id.au>,
+ <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
+ <christophe.leroy@c-s.fr>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <npiggin@gmail.com>, <keescook@chromium.org>,
+ <kernel-hardening@lists.openwall.com>, <oss@buserror.net>
+References: <20200306064033.3398-1-yanaijie@huawei.com>
+ <87imizww4i.fsf@dja-thinkpad.axtens.net>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <6546b653-c7d6-41cf-3954-0587600127e3@huawei.com>
+Date: Fri, 20 Mar 2020 14:16:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200318204408.010461877@linutronix.de>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <87imizww4i.fsf@dja-thinkpad.axtens.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.221.195]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,62 +55,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
- Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Logan Gunthorpe <logang@deltatee.com>,
- "Paul E . McKenney" <paulmck@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 18 Mar 2020, Thomas Gleixner wrote:
 
->--- a/include/linux/rcuwait.h
->+++ b/include/linux/rcuwait.h
->@@ -3,6 +3,7 @@
-> #define _LINUX_RCUWAIT_H_
->
-> #include <linux/rcupdate.h>
->+#include <linux/sched/signal.h>
 
-So this is causing build to fail for me:
+在 2020/3/20 11:19, Daniel Axtens 写道:
+> Hi Jason,
+> 
+> I tried to compile this series and got the following error:
+> 
+> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c: In function ‘kaslr_early_init’:
+> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:357:33: error: ‘linear_sz’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
+>    357 |  regions.pa_end = memstart_addr + linear_sz;
+>        |                   ~~~~~~~~~~~~~~^~~~~~~~~~~
+> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:317:21: note: ‘linear_sz’ was declared here
+>    317 |  unsigned long ram, linear_sz;
+>        |                     ^~~~~~~~~
+> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:187:8: error: ‘ram’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
+>    187 |  ret = parse_crashkernel(boot_command_line, size, &crash_size,
+>        |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    188 |     &crash_base);
+>        |     ~~~~~~~~~~~~
+> /home/dja/dev/linux/linux/arch/powerpc/mm/nohash/kaslr_booke.c:317:16: note: ‘ram’ was declared here
+>    317 |  unsigned long ram, linear_sz;
+>        |                ^~~
+> cc1: all warnings being treated as errors
+> make[4]: *** [/home/dja/dev/linux/linux/scripts/Makefile.build:268: arch/powerpc/mm/nohash/kaslr_booke.o] Error 1
+> make[3]: *** [/home/dja/dev/linux/linux/scripts/Makefile.build:505: arch/powerpc/mm/nohash] Error 2
+> make[2]: *** [/home/dja/dev/linux/linux/scripts/Makefile.build:505: arch/powerpc/mm] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+> 
+> I have attached my .config file.
+> 
 
-  CC      arch/x86/boot/compressed/cmdline.o
-arch/x86/boot/compressed/cmdline.c:5:20: error: conflicting types for =E2=
-=80=98set_fs=E2=80=99
- static inline void set_fs(unsigned long seg)
-                    ^~~~~~
-In file included from ./include/linux/uaccess.h:11:0,
-                 from ./include/linux/sched/task.h:11,
-                 from ./include/linux/sched/signal.h:9,
-                 from ./include/linux/rcuwait.h:6,
-                 from ./include/linux/percpu-rwsem.h:8,
-                 from ./include/linux/fs.h:34,
-                 from ./include/linux/proc_fs.h:9,
-                 from ./include/acpi/acpi_bus.h:83,
-                 from ./include/linux/acpi.h:32,
-                 from arch/x86/boot/compressed/misc.h:28,
-                 from arch/x86/boot/compressed/cmdline.c:2:
-=2E/arch/x86/include/asm/uaccess.h:29:20: note: previous definition of =E2=
-=80=98set_fs=E2=80=99 was here
- static inline void set_fs(mm_segment_t fs)
-                    ^~~~~~
-make[2]: *** [scripts/Makefile.build:268: arch/x86/boot/compressed/cmdline.=
-o] Error 1
-make[1]: *** [arch/x86/boot/Makefile:113: arch/x86/boot/compressed/vmlinux]=
- Error 2
-make: *** [arch/x86/Makefile:285: bzImage] Error 2
+Thanks Daniel,
 
-Right now I'm not sure what the proper fix should be.
+My config had CC_DISABLE_WARN_MAYBE_UNINITIALIZED=y enabled so I missed 
+this warning. I will fix it.
 
-Thanks,
-Davidlohr
+Thanks again.
+
+Jason
+
+> I'm using
+> powerpc64-linux-gnu-gcc (Ubuntu 9.2.1-9ubuntu1) 9.2.1 20191008
+> 
+> Regards,
+> Daniel
+> 
+> 
+> 
+> 
+>> This is a try to implement KASLR for Freescale BookE64 which is based on
+>> my earlier implementation for Freescale BookE32:
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=131718&state=*
+>>
+>> The implementation for Freescale BookE64 is similar as BookE32. One
+>> difference is that Freescale BookE64 set up a TLB mapping of 1G during
+>> booting. Another difference is that ppc64 needs the kernel to be
+>> 64K-aligned. So we can randomize the kernel in this 1G mapping and make
+>> it 64K-aligned. This can save some code to creat another TLB map at
+>> early boot. The disadvantage is that we only have about 1G/64K = 16384
+>> slots to put the kernel in.
+>>
+>>      KERNELBASE
+>>
+>>            64K                     |--> kernel <--|
+>>             |                      |              |
+>>          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
+>>          |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
+>>          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
+>>          |                         |                        1G
+>>          |----->   offset    <-----|
+>>
+>>                                kernstart_virt_addr
+>>
+>> I'm not sure if the slot numbers is enough or the design has any
+>> defects. If you have some better ideas, I would be happy to hear that.
+>>
+>> Thank you all.
+>>
+>> v3->v4:
+>>    Do not define __kaslr_offset as a fixed symbol. Reference __run_at_load and
+>>      __kaslr_offset by symbol instead of magic offsets.
+>>    Use IS_ENABLED(CONFIG_PPC32) instead of #ifdef CONFIG_PPC32.
+>>    Change kaslr-booke32 to kaslr-booke in index.rst
+>>    Switch some instructions to 64-bit.
+>> v2->v3:
+>>    Fix build error when KASLR is disabled.
+>> v1->v2:
+>>    Add __kaslr_offset for the secondary cpu boot up.
+>>
+>> Jason Yan (6):
+>>    powerpc/fsl_booke/kaslr: refactor kaslr_legal_offset() and
+>>      kaslr_early_init()
+>>    powerpc/fsl_booke/64: introduce reloc_kernel_entry() helper
+>>    powerpc/fsl_booke/64: implement KASLR for fsl_booke64
+>>    powerpc/fsl_booke/64: do not clear the BSS for the second pass
+>>    powerpc/fsl_booke/64: clear the original kernel if randomized
+>>    powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to kaslr-booke.rst
+>>      and add 64bit part
+>>
+>>   Documentation/powerpc/index.rst               |  2 +-
+>>   .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 +++++++-
+>>   arch/powerpc/Kconfig                          |  2 +-
+>>   arch/powerpc/kernel/exceptions-64e.S          | 23 +++++
+>>   arch/powerpc/kernel/head_64.S                 | 13 +++
+>>   arch/powerpc/kernel/setup_64.c                |  3 +
+>>   arch/powerpc/mm/mmu_decl.h                    | 23 ++---
+>>   arch/powerpc/mm/nohash/kaslr_booke.c          | 88 +++++++++++++------
+>>   8 files changed, 144 insertions(+), 45 deletions(-)
+>>   rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} (59%)
+>>
+>> -- 
+>> 2.17.2
+
