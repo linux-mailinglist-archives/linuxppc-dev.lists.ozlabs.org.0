@@ -1,50 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C8B18C40C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 01:02:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B65218C3FD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 00:56:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48k3hF4ZJxzDrRr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 10:55:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48k3r06KVkzDrRt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Mar 2020 11:02:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=kiLnA4+H; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48k3fV2L6YzDrHt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 10:54:26 +1100 (AEDT)
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
- helo=nanos.tec.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jF4z5-0002E7-Dg; Fri, 20 Mar 2020 00:53:56 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
- id 4DD6B100375; Fri, 20 Mar 2020 00:53:49 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH -v2] treewide: Rename "unencrypted" to "decrypted"
-In-Reply-To: <20200319174254.GE13073@zn.tnic>
-References: <20200317111822.GA15609@zn.tnic> <20200319101657.GB13073@zn.tnic>
- <20200319102011.GA3617@lst.de> <20200319102834.GC13073@zn.tnic>
- <8d6d3b6c-7e4e-7d9e-3e19-38f7d4477c72@arm.com>
- <20200319112054.GD13073@zn.tnic> <878sjw5k9u.fsf@nanos.tec.linutronix.de>
- <20200319174254.GE13073@zn.tnic>
-Date: Fri, 20 Mar 2020 00:53:49 +0100
-Message-ID: <87pnd752b6.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48k3pK2cLpzDrN7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 11:01:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=vHZuTkIraH0j18C0yesq0h37iJWXExpW0+pRP9wHAFQ=; b=kiLnA4+HBazSxcmaF2vYSeDjTi
+ GZySNj/qYjY7qWPGZkmvHOClubyAs6vb7qNyQfZbboMzJvAC4SHO+rElmWzJ0jHKOLMyU89vHKXK/
+ n1M8PZ7nzbZS/ryrjge0YuJsfT2QgYPpt2RAbDeongoVB9W/tMUNAm/+H2dBMRuDAuWrU0PwbnQ75
+ 54EFHJNVY0SnoWPPNthdT3GTBbdGU8DxgXaRaLjrQZFGUO+ooZjTCdCB5e4iC3O2gyhwvHlCijgXg
+ qdZtqnhJd8ufbtliHGhktsMMJQdKUHbLmcPLdZ0UbErD8gWdNNPnllI27n2u1y0WLcmNSdyDJUoWb
+ Kec+VEjg==;
+Received: from 99-123-7-132.lightspeed.sntcca.sbcglobal.net ([99.123.7.132]
+ helo=[192.168.1.71])
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jF562-0000eU-0Q; Fri, 20 Mar 2020 00:01:06 +0000
+Subject: Re: [patch V2 07/15] powerpc/ps3: Convert half completion to rcuwait
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Christoph Hellwig <hch@infradead.org>, Peter Zijlstra
+ <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.102694393@linutronix.de>
+ <20200319100459.GA18506@infradead.org>
+ <20200319102613.hbwax7zrrvgcde4x@linutronix.de>
+From: Geoff Levand <geoff@infradead.org>
+Message-ID: <efc2378e-cf8e-8bf9-d009-34c6bcf43c8e@infradead.org>
+Date: Thu, 19 Mar 2020 17:01:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
- SHORTCIRCUIT=-0.0001
+In-Reply-To: <20200319102613.hbwax7zrrvgcde4x@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,41 +69,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Vasily Gorbik <gor@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pci@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Logan Gunthorpe <logang@deltatee.com>, Arnd Bergmann <arnd@arndb.de>,
+ Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
+ netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Borislav Petkov <bp@alien8.de> writes:
-> On Thu, Mar 19, 2020 at 06:25:49PM +0100, Thomas Gleixner wrote:
->> TBH, I don't see how
->> 
->> 	if (force_dma_decrypted(dev))
->> 		set_memory_encrypted((unsigned long)cpu_addr, 1 << page_order);
->>
->> makes more sense than the above. It's both non-sensical unless there is
->
-> 9087c37584fb ("dma-direct: Force unencrypted DMA under SME for certain DMA masks")
+Hi,
 
-Reading the changelog again...
+On 3/19/20 3:26 AM, Sebastian Andrzej Siewior wrote:
+> On 2020-03-19 03:04:59 [-0700], Christoph Hellwig wrote:
+>> But I wonder how alive the whole PS3 support is to start with..
+> 
+> OtherOS can only be used on "old" PS3 which do not have have their
+> firmware upgraded past version 3.21, released April 1, 2010 [0].
+> It was not possible to install OtherOS on PS3-slim and I don't remember
+> if it was a successor or a budget version (but it had lower power
+> consumption as per my memory).
+> *I* remember from back then that a few universities bought quite a few
+> of them and used them as a computation cluster. However, whatever broke
+> over the last 10 years is broken.
+> 
+> [0] https://en.wikipedia.org/wiki/OtherOS
+There are still PS3-Linux users out there.  They generally use firmware
+and other tools available through the 'hacker' communities that allow
+Linux to be run on more than just the 'officially supported' platforms.
 
-I have to say that force_dma_unencrypted() makes way more sense in that
-context than force_dma_decrypted(). It still wants a comment.
+Anyway, the change to use rcuwait seems fine if that's needed for the
+completion re-work.  I'll try to do some testing with the patch set
+next week.
 
-Linguistical semantics and correctness matters a lot. Consistency is
-required as well, but not for the price of ambiguous wording.
-
-Thanks,
-
-        tglx
-
-
+-Geoff
