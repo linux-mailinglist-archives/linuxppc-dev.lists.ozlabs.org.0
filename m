@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1DF18DE43
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 07:37:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48krXv1TLnzF0Rt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 17:37:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5A618DE44
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 07:38:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48krZS1L72zF0RH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 17:38:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uXEDPIL1; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=FhghVPqQ; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48krW215pfzF0RF
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 17:35:41 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id j1so1782888pfe.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:35:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48krY0016TzF0dm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 17:37:23 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id nu11so3471451pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Mar 2020 23:37:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
  :message-id:content-transfer-encoding;
- bh=cj5JZH6NLKeR3jp8xSSiPMY0AsvJqWinaGAxtllavYE=;
- b=uXEDPIL15WHAdOTJnCp5nxiUSCfLD5WFd/md1toC4fQSG+6ykXSFdbh4dUEnrAI9vX
- JwlrH1tsx157lQQs2sHioYiEa/MGMMBkwuXG57CuQsVBkv8Szb7HaqZiKJ60upnX7B8a
- X1IvKZCDntyN7pL1B/4pJs7TKLNUhbBLY8IZ9b5TpY07riyWBo1e8Ou3HXQ5WJFwCuG3
- bJVOzlzolJ0kuB8naIV5KIivC9Lfr4cc9rzV+jjdLbzDFZBh+Y/WKCimWClkHBzSn1WR
- HcTikBAC5ccjcGFCbd4ADi9WWSCLsPrlMxaEgQg0n0LA1ARWEM6SMyzsAYH3z9SxrC57
- 3P9Q==
+ bh=VW8k6wVhB4Op/FE3jmyG6qbQEiv6X1rDIwb4jxJeEOI=;
+ b=FhghVPqQMbWSZ7JikO3mFyGJVN34KhP77TYpHh65QxaK5O4h6AEyUjhBxF+eI6D9US
+ s+OxY56UqsvE1EP6hK8FubDqlAg5ZnSYOjndRjeVgiSfPic/Z7rOHkgP8QZRkbe3XyL7
+ dTLTyHmtP8/oWC4NYjjJGU/a13t4DCZFrWzdQBCYBtQp5yzrvgTq1QHnENx3JCqGPc7B
+ enBFrVUorrMRhESctIoGj6vVO7dKyEhrf4hzn6O3lm7gjaqXdI8k82IxG1NA9YhQWt21
+ 8rS6q+r4q8EWzyIKH9XfCA3a3DOh7aWwBwHgrFgc2jp9hkd8UfbxqKgZvdDs47DA/bEG
+ NYCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=cj5JZH6NLKeR3jp8xSSiPMY0AsvJqWinaGAxtllavYE=;
- b=JGA5yzFSfU8yhDiL1c24XdfkPqHFFitXRM2Ir2n3GDh5mzxsypohvY/CnYCKthYQ99
- xr2yaCwagZPjtqj0POWv2LqNScEa2NVk3Y8cUVwWO7VUlCcjaIYBp81NZtUOJ4RnrFc/
- SDfMneRvd1/xgljYGcj17+HO1INwfigrexPUQZL/7A0XLjlBPDZttkewJdB0OauyUFZc
- a3siv4PRKpQeD/cTFI/BRfAIdxqTN65RlIGzzsu1VAgtgd0hPkAu0tCx3NI2BF62zsdW
- D/fO6nO5rqEfv1npE6Z0P+YmZSTdjEdcCIMiD1Hk+9KlakLo6Pmeh6a0GncbMeuHIg79
- NigA==
-X-Gm-Message-State: ANhLgQ0kuXLdYMcIQE2RqU/aPePYA07mzAHVb9Ucj9L6vXGNcZJ7LOm8
- xr2ZIU1UARqH2BYNI0l08vmB/0Tq
-X-Google-Smtp-Source: ADFU+vtX3EUa4XG4Gi0DxyesvYglYazzEZjIE2Wxr1pI4/ekBSSXgOQ1hJqo9mWvXXvUF6JuINDpHA==
-X-Received: by 2002:a65:424b:: with SMTP id d11mr11583323pgq.17.1584772537630; 
- Fri, 20 Mar 2020 23:35:37 -0700 (PDT)
+ bh=VW8k6wVhB4Op/FE3jmyG6qbQEiv6X1rDIwb4jxJeEOI=;
+ b=dkwgfQztqxD2VxkDjz/QIbUXWZLvIfMA0R72O9pWQYv6xkMshTZ7tUqorsvxRYJ08q
+ 2fxrB4mCe0uAYMOLhy5MXjUQf52ExysY/cDopfA4G8JpiGOfKvpKZqa6DKEmlDUZVD0q
+ DfBCVa+Gjr+pjLw2tBq3oY8PFuAC7llX3mStJteXgWHu3tVDCvyiaDC6STe55mB0zZDZ
+ Oewz2Yomh94HdbgWHCChsx8m0eyhb9p3M29qnifYbyb4Jf/Vw1cIwg/kXLEw+h1THyhN
+ 2leDhil3s706qF6pl+z+PggwCKLHTm0hxGJgugg2PM4ViNKnayOeiiySa10XvhBFjf1V
+ Yi0g==
+X-Gm-Message-State: ANhLgQ2wReolEjIfsCzLq423OAXsZRIVWd6fErYBfaLZAv1ZfcNguZ/r
+ bJ1RU4tzXWvXsxtTE021wcs=
+X-Google-Smtp-Source: ADFU+vvXga/oJvC0zt5sQy+2qIWp4hN/IzN2ALKvBG2OAQoVcahiAYxUumvtqWxjNWxtLRJKwMBNKg==
+X-Received: by 2002:a17:90a:2a06:: with SMTP id
+ i6mr12186138pjd.99.1584772640261; 
+ Fri, 20 Mar 2020 23:37:20 -0700 (PDT)
 Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id l2sm6348824pjn.27.2020.03.20.23.35.35
+ by smtp.gmail.com with ESMTPSA id q12sm6708403pgi.86.2020.03.20.23.37.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Mar 2020 23:35:36 -0700 (PDT)
-Date: Sat, 21 Mar 2020 16:32:55 +1000
+ Fri, 20 Mar 2020 23:37:19 -0700 (PDT)
+Date: Sat, 21 Mar 2020 16:34:39 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64: ftrace don't trace real mode
-To: linuxppc-dev@lists.ozlabs.org, "Naveen N. Rao"
- <naveen.n.rao@linux.vnet.ibm.com>
-References: <20200320152551.1468983-1-npiggin@gmail.com>
- <1584728788.91gvyrzbi3.naveen@linux.ibm.com>
-In-Reply-To: <1584728788.91gvyrzbi3.naveen@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: avoid harmless preempt warning
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20200320152436.1468651-1-npiggin@gmail.com>
+ <6b34ba18-de6b-15c5-1611-fb5c92e065f9@c-s.fr>
+In-Reply-To: <6b34ba18-de6b-15c5-1611-fb5c92e065f9@c-s.fr>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584759479.7ueu8qvhgs.astroid@bobo.none>
+Message-Id: <1584772445.f09ly1zhoy.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,106 +85,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao's on March 21, 2020 4:39 am:
-> Hi Nick,
+Christophe Leroy's on March 21, 2020 1:33 am:
 >=20
-> Nicholas Piggin wrote:
->> This warns and prevents tracing attempted in a real-mode context.
 >=20
-> Is this something you're seeing often? Last time we looked at this, KVM=20
-> was the biggest offender and we introduced paca->ftrace_enabled as a way=20
-> to disable ftrace while in KVM code.
-
-Not often but it has a tendancy to blow up the least tested code at the
-worst times :)
-
-Machine check is bad, I'm sure HMI too but I haven't tested that yet.
-
-I've fixed up most of it with annotations, this is obviously an extra
-safety not something to rely on like ftrace_enabled. Probably even the
-WARN_ON here is dangerous here, but I don't want to leave these bugs
-in there.
-
-Although the machine check and hmi code touch a fair bit of stuff and
-annotating is a bit fragile. It might actually be better if the
-paca->ftrace_enabled could be a nesting counter, then we could use it
-in machine checks too and avoid a lot of annotations.
-
-> While this is cheap when handling ftrace_regs_caller() as done in this=20
-> patch, for simple function tracing (see below), we will have to grab the=20
-> MSR which will slow things down slightly.
-
-mfmsr is not too bad these days.=20
-
-
->=20
->>=20
+> Le 20/03/2020 =C3=A0 16:24, Nicholas Piggin a =C3=A9crit=C2=A0:
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>  arch/powerpc/kernel/trace/ftrace.c            |  3 +++
->>  .../powerpc/kernel/trace/ftrace_64_mprofile.S | 19 +++++++++++++++----
->>  2 files changed, 18 insertions(+), 4 deletions(-)
+>>   arch/powerpc/platforms/pseries/lpar.c | 10 +++++++++-
+>>   1 file changed, 9 insertions(+), 1 deletion(-)
 >>=20
->> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/tr=
-ace/ftrace.c
->> index 7ea0ca044b65..ef965815fcb9 100644
->> --- a/arch/powerpc/kernel/trace/ftrace.c
->> +++ b/arch/powerpc/kernel/trace/ftrace.c
->> @@ -949,6 +949,9 @@ unsigned long prepare_ftrace_return(unsigned long pa=
-rent, unsigned long ip,
->>  {
->>  	unsigned long return_hooker;
->>=20
->> +	if (WARN_ON_ONCE((mfmsr() & (MSR_IR|MSR_DR)) !=3D (MSR_IR|MSR_DR)))
->> +		goto out;
->> +
+>> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platfo=
+rms/pseries/lpar.c
+>> index 3c3da25b445c..e4ed5317f117 100644
+>> --- a/arch/powerpc/platforms/pseries/lpar.c
+>> +++ b/arch/powerpc/platforms/pseries/lpar.c
+>> @@ -636,8 +636,16 @@ static const struct proc_ops vcpudispatch_stats_fre=
+q_proc_ops =3D {
+>>  =20
+>>   static int __init vcpudispatch_stats_procfs_init(void)
+>>   {
+>> -	if (!lppaca_shared_proc(get_lppaca()))
+>> +	/*
+>> +	 * Avoid smp_processor_id while preemptible. All CPUs should have
+>> +	 * the same value for lppaca_shared_proc.
+>> +	 */
+>> +	preempt_disable();
+>> +	if (!lppaca_shared_proc(get_lppaca())) {
+>> +		preempt_enable();
+>>   		return 0;
+>> +	}
+>> +	preempt_enable();
 >=20
-> This is called on function entry to redirect function return to a=20
-> trampoline if needed. I am not sure if we have (or will have) too many C=20
-> functions that disable MSR_IR|MSR_DR. Unless the number of such=20
-> functions is large, it might be preferable to mark specific functions as=20
-> notrace.
+> Can we avoid the double preempt_enable() with something like:
 >=20
->>  	if (unlikely(ftrace_graph_is_dead()))
->>  		goto out;
->>=20
->> diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/power=
-pc/kernel/trace/ftrace_64_mprofile.S
->> index f9fd5f743eba..6205f15cb603 100644
->> --- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
->> +++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
->> @@ -51,16 +51,21 @@ _GLOBAL(ftrace_regs_caller)
->>  	SAVE_10GPRS(12, r1)
->>  	SAVE_10GPRS(22, r1)
->>=20
->> -	/* Save previous stack pointer (r1) */
->> -	addi	r8, r1, SWITCH_FRAME_SIZE
->> -	std	r8, GPR1(r1)
->> -
->>  	/* Load special regs for save below */
->>  	mfmsr   r8
->>  	mfctr   r9
->>  	mfxer   r10
->>  	mfcr	r11
->>=20
->> +	/* Shouldn't be called in real mode */
->> +	andi.	r3,r8,(MSR_IR|MSR_DR)
->> +	cmpdi	r3,(MSR_IR|MSR_DR)
->> +	bne	ftrace_bad_realmode
->> +
->> +	/* Save previous stack pointer (r1) */
->> +	addi	r8, r1, SWITCH_FRAME_SIZE
->> +	std	r8, GPR1(r1)
->> +
->=20
-> This stomps on the MSR value in r8, which is saved into pt_regs further=20
-> below.
->=20
-> You'll also have to handle ftrace_caller() which is used for simple=20
-> function tracing. We don't read the MSR there today, but that will be=20
-> needed if we want to suppress tracing.
+> 	preempt_disable();
+> 	is_shared =3D lppaca_shared_proc(get_lppaca());
+> 	preempt_enable();
+> 	if (!is_shared)
+> 		return 0;
 
-Oops, thanks good catch.
+I don't mind too much. Same number of lines.
 
 Thanks,
 Nick
