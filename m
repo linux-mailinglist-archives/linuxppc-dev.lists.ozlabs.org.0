@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E183018DF6F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 11:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 378DC18DF7B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 11:38:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kxj361zDzF0ZM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 21:29:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kxvV3bcpzF0Rs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 21:38:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,60 +17,50 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=tUHJdpw7; dkim-atps=neutral
+ header.s=mail header.b=WvlWrorl; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kxgP1GgCzF0PZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 21:28:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kxsy4Z0wzDrqQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 21:37:26 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48kxgF72twz9v2D7;
- Sat, 21 Mar 2020 11:28:09 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 48kxst1vZdz9v26c;
+ Sat, 21 Mar 2020 11:37:22 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=tUHJdpw7; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=WvlWrorl; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id KSOyuxWAekaG; Sat, 21 Mar 2020 11:28:09 +0100 (CET)
+ with ESMTP id dV6ZTpKe0rJh; Sat, 21 Mar 2020 11:37:22 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48kxgF5gGLz9v2D1;
- Sat, 21 Mar 2020 11:28:09 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48kxst0j1Mz9v26D;
+ Sat, 21 Mar 2020 11:37:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584786489; bh=/IOWVhiwPMCQRgzudKKMRxz9b+oGxzhOIS1ciBnze10=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=tUHJdpw7KMK/9HR8wuUSQZcnGU8xLse/+rfWQcCt7vpyVUqxLj2CGKahX15nix2Fu
- Wbetx+yW8kfHEc8qe4fOZm5rS/Mjkdfwf4d5Ju6qjWTJriSpcZDZl791KdwGttaxBO
- SlkJhPmFiV7k3vuNlWGKcKS1K4+hzLIpui7Hdz0Y=
+ t=1584787042; bh=8dNFekUvF26E/zA1FpkQASGFZrLQ7xw2bJ/GI3qh8iI=;
+ h=From:Subject:To:Cc:Date:From;
+ b=WvlWrorlU+XIPJ9tLAHV0CI4dnTs9hnGB2sYjUE/W9bIQZm0jkCGnau6ejoiTRaOI
+ K8z2yiyMCKYjCfC1WeeKP2R+WbqsWRQZpn28TyHpEVJFW3Gija9CgYT/spm3yitRig
+ cmbjF4ciUZo8cez30CSI5SJgXJlhz1H/DYOEpwzE=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E86CA8B774;
- Sat, 21 Mar 2020 11:28:10 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2571E8B774;
+ Sat, 21 Mar 2020 11:37:18 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mwGAEoGi0FQi; Sat, 21 Mar 2020 11:28:10 +0100 (CET)
+ with ESMTP id zOeJedXCgpaI; Sat, 21 Mar 2020 11:37:18 +0100 (CET)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3368E8B752;
- Sat, 21 Mar 2020 11:28:10 +0100 (CET)
-Subject: Re: [PATCH v5 10/13] powerpc/ptrace: split out ADV_DEBUG_REGS related
- functions.
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, mikey@neuling.org
-References: <cover.1582848567.git.christophe.leroy@c-s.fr>
- <e2bd7d275bd5933d848aad4fee3ca652a14d039b.1582848567.git.christophe.leroy@c-s.fr>
- <87imizdbaz.fsf@mpe.ellerman.id.au>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8CC848B752;
+ Sat, 21 Mar 2020 11:37:17 +0100 (CET)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 2B5BB655CB; Sat, 21 Mar 2020 10:37:17 +0000 (UTC)
+Message-Id: <5558d8c22ff0ed03cb5392798564dd203bd68501.1584787012.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <25a7f050-f241-6035-e778-16b1ca9928f3@c-s.fr>
-Date: Sat, 21 Mar 2020 10:27:59 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
-MIME-Version: 1.0
-In-Reply-To: <87imizdbaz.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH] powerpc/ptrace: Fix ptrace-hwbreak selftest failure
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Sat, 21 Mar 2020 10:37:17 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,58 +77,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Pieces of commit c3f68b0478e7 ("powerpc/watchpoint: Fix ptrace
+code that muck around with address/len") disappeared with
+commit 53387e67d003 ("powerpc/ptrace: split out ADV_DEBUG_REGS
+related functions.").
 
+Restore them.
 
-On 03/20/2020 02:12 AM, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> Move ADV_DEBUG_REGS functions out of ptrace.c, into
->> ptrace-adv.c and ptrace-noadv.c
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->> v4: Leave hw_breakpoint.h for ptrace.c
->> ---
->>   arch/powerpc/kernel/ptrace/Makefile       |   4 +
->>   arch/powerpc/kernel/ptrace/ptrace-adv.c   | 468 ++++++++++++++++
->>   arch/powerpc/kernel/ptrace/ptrace-decl.h  |   5 +
->>   arch/powerpc/kernel/ptrace/ptrace-noadv.c | 236 ++++++++
->>   arch/powerpc/kernel/ptrace/ptrace.c       | 650 ----------------------
->>   5 files changed, 713 insertions(+), 650 deletions(-)
->>   create mode 100644 arch/powerpc/kernel/ptrace/ptrace-adv.c
->>   create mode 100644 arch/powerpc/kernel/ptrace/ptrace-noadv.c
-> 
-> This is somehow breaking the ptrace-hwbreak selftest on Power8:
-> 
->    test: ptrace-hwbreak
->    tags: git_version:v5.6-rc6-892-g7a285a6067d6
->    PTRACE_SET_DEBUGREG, WO, len: 1: Ok
->    PTRACE_SET_DEBUGREG, WO, len: 2: Ok
->    PTRACE_SET_DEBUGREG, WO, len: 4: Ok
->    PTRACE_SET_DEBUGREG, WO, len: 8: Ok
->    PTRACE_SET_DEBUGREG, RO, len: 1: Ok
->    PTRACE_SET_DEBUGREG, RO, len: 2: Ok
->    PTRACE_SET_DEBUGREG, RO, len: 4: Ok
->    PTRACE_SET_DEBUGREG, RO, len: 8: Ok
->    PTRACE_SET_DEBUGREG, RW, len: 1: Ok
->    PTRACE_SET_DEBUGREG, RW, len: 2: Ok
->    PTRACE_SET_DEBUGREG, RW, len: 4: Ok
->    PTRACE_SET_DEBUGREG, RW, len: 8: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RW, len: 6: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, WO, len: 6: Ok
->    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, RO, len: 6: Fail
->    failure: ptrace-hwbreak
-> 
-> I haven't had time to work out why yet.
-> 
+Fixes: 53387e67d003 ("powerpc/ptrace: split out ADV_DEBUG_REGS related functions.")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-A (big) part of commit c3f68b0478e7 ("powerpc/watchpoint: Fix ptrace 
-code that muck around with address/len") was lost during rebase.
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+index cf05fadba0d5..d4170932acb4 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+@@ -153,7 +153,7 @@ long ppc_set_hwdebug(struct task_struct *child, struct ppc_hw_breakpoint *bp_inf
+ 	if ((unsigned long)bp_info->addr >= TASK_SIZE)
+ 		return -EIO;
+ 
+-	brk.address = bp_info->addr & ~7UL;
++	brk.address = bp_info->addr & ~HW_BREAKPOINT_ALIGN;
+ 	brk.type = HW_BRK_TYPE_TRANSLATE;
+ 	brk.len = DABR_MAX_LEN;
+ 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_READ)
+@@ -161,10 +161,6 @@ long ppc_set_hwdebug(struct task_struct *child, struct ppc_hw_breakpoint *bp_inf
+ 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_WRITE)
+ 		brk.type |= HW_BRK_TYPE_WRITE;
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+-	/*
+-	 * Check if the request is for 'range' breakpoints. We can
+-	 * support it if range < 8 bytes.
+-	 */
+ 	if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE)
+ 		len = bp_info->addr2 - bp_info->addr;
+ 	else if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_EXACT)
+@@ -177,7 +173,7 @@ long ppc_set_hwdebug(struct task_struct *child, struct ppc_hw_breakpoint *bp_inf
+ 
+ 	/* Create a new breakpoint request if one doesn't exist already */
+ 	hw_breakpoint_init(&attr);
+-	attr.bp_addr = (unsigned long)bp_info->addr & ~HW_BREAKPOINT_ALIGN;
++	attr.bp_addr = (unsigned long)bp_info->addr;
+ 	attr.bp_len = len;
+ 	arch_bp_generic_fields(brk.type, &attr.bp_type);
+ 
+-- 
+2.25.0
 
-I'll send a fix, up to you to squash it in or commit it as is.
-
-Christophe
