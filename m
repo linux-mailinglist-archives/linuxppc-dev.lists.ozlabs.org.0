@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CC318E0D9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 12:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3B918E0E9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 12:58:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kzWg5mTqzDrg8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 22:51:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kzh01mWYzDrNX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 22:58:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,23 +19,22 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kz886gYkzDr84
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kz886pPzzDr8m
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 22:34:48 +1100 (AEDT)
 Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jFcOQ-0001zH-Br; Sat, 21 Mar 2020 12:34:18 +0100
+ id 1jFcOR-0001zL-1n; Sat, 21 Mar 2020 12:34:19 +0100
 Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
- by nanos.tec.linutronix.de (Postfix) with ESMTP id AC6861039FD;
- Sat, 21 Mar 2020 12:34:17 +0100 (CET)
-Message-Id: <20200321113240.936097534@linutronix.de>
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 36749104084;
+ Sat, 21 Mar 2020 12:34:18 +0100 (CET)
+Message-Id: <20200321113241.150783464@linutronix.de>
 User-Agent: quilt/0.65
-Date: Sat, 21 Mar 2020 12:25:46 +0100
+Date: Sat, 21 Mar 2020 12:25:48 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 02/20] pci/switchtec: Replace completion wait queue usage
- for poll
+Subject: [patch V3 04/20] orinoco_usb: Use the regular completion interfaces
 References: <20200321112544.878032781@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -84,120 +83,95 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-The poll callback is using the completion wait queue and sticks it into
-poll_wait() to wake up pollers after a command has completed.
+The completion usage in this driver is interesting:
 
-This works to some extent, but cannot provide EPOLLEXCLUSIVE support
-because the waker side uses complete_all() which unconditionally wakes up
-all waiters. complete_all() is required because completions internally use
-exclusive wait and complete() only wakes up one waiter by default.
+  - it uses a magic complete function which according to the comment was
+    implemented by invoking complete() four times in a row because
+    complete_all() was not exported at that time.
 
-This mixes conceptually different mechanisms and relies on internal
-implementation details of completions, which in turn puts contraints on
-changing the internal implementation of completions.
+  - it uses an open coded wait/poll which checks completion:done. Only one wait
+    side (device removal) uses the regular wait_for_completion() interface.
 
-Replace it with a regular wait queue and store the state in struct
-switchtec_user.
+The rationale behind this is to prevent that wait_for_completion() consumes
+completion::done which would prevent that all waiters are woken. This is not
+necessary with complete_all() as that sets completion::done to UINT_MAX which
+is left unmodified by the woken waiters.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Replace the magic complete function with complete_all() and convert the
+open coded wait/poll to regular completion interfaces.
+
+This changes the wait to exclusive wait mode. But that does not make any
+difference because the wakers use complete_all() which ignores the
+exclusive mode.
+
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Kurt Schwemmer <kurt.schwemmer@microsemi.com>
-Cc: linux-pci@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
 ---
-V2: Reworded changelog.
+V2: New patch to avoid conversion to swait functions later.
 ---
- drivers/pci/switch/switchtec.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intersil/orinoco/orinoco_usb.c |   21 ++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -52,10 +52,11 @@ struct switchtec_user {
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+@@ -365,17 +365,6 @@ static struct request_context *ezusb_all
+ 	return ctx;
+ }
  
- 	enum mrpc_state state;
+-
+-/* Hopefully the real complete_all will soon be exported, in the mean
+- * while this should work. */
+-static inline void ezusb_complete_all(struct completion *comp)
+-{
+-	complete(comp);
+-	complete(comp);
+-	complete(comp);
+-	complete(comp);
+-}
+-
+ static void ezusb_ctx_complete(struct request_context *ctx)
+ {
+ 	struct ezusb_priv *upriv = ctx->upriv;
+@@ -409,7 +398,7 @@ static void ezusb_ctx_complete(struct re
  
--	struct completion comp;
-+	wait_queue_head_t cmd_comp;
- 	struct kref kref;
- 	struct list_head list;
+ 			netif_wake_queue(dev);
+ 		}
+-		ezusb_complete_all(&ctx->done);
++		complete_all(&ctx->done);
+ 		ezusb_request_context_put(ctx);
+ 		break;
  
-+	bool cmd_done;
- 	u32 cmd;
- 	u32 status;
- 	u32 return_code;
-@@ -77,7 +78,7 @@ static struct switchtec_user *stuser_cre
- 	stuser->stdev = stdev;
- 	kref_init(&stuser->kref);
- 	INIT_LIST_HEAD(&stuser->list);
--	init_completion(&stuser->comp);
-+	init_waitqueue_head(&stuser->cmd_comp);
- 	stuser->event_cnt = atomic_read(&stdev->event_cnt);
- 
- 	dev_dbg(&stdev->dev, "%s: %p\n", __func__, stuser);
-@@ -175,7 +176,7 @@ static int mrpc_queue_cmd(struct switcht
- 	kref_get(&stuser->kref);
- 	stuser->read_len = sizeof(stuser->data);
- 	stuser_set_state(stuser, MRPC_QUEUED);
--	reinit_completion(&stuser->comp);
-+	stuser->cmd_done = false;
- 	list_add_tail(&stuser->list, &stdev->mrpc_queue);
- 
- 	mrpc_cmd_submit(stdev);
-@@ -222,7 +223,8 @@ static void mrpc_complete_cmd(struct swi
- 		memcpy_fromio(stuser->data, &stdev->mmio_mrpc->output_data,
- 			      stuser->read_len);
- out:
--	complete_all(&stuser->comp);
-+	stuser->cmd_done = true;
-+	wake_up_interruptible(&stuser->cmd_comp);
- 	list_del_init(&stuser->list);
- 	stuser_put(stuser);
- 	stdev->mrpc_busy = 0;
-@@ -529,10 +531,11 @@ static ssize_t switchtec_dev_read(struct
- 	mutex_unlock(&stdev->mrpc_mutex);
- 
- 	if (filp->f_flags & O_NONBLOCK) {
--		if (!try_wait_for_completion(&stuser->comp))
-+		if (!stuser->cmd_done)
- 			return -EAGAIN;
- 	} else {
--		rc = wait_for_completion_interruptible(&stuser->comp);
-+		rc = wait_event_interruptible(stuser->cmd_comp,
-+					      stuser->cmd_done);
- 		if (rc < 0)
- 			return rc;
- 	}
-@@ -580,7 +583,7 @@ static __poll_t switchtec_dev_poll(struc
- 	struct switchtec_dev *stdev = stuser->stdev;
- 	__poll_t ret = 0;
- 
--	poll_wait(filp, &stuser->comp.wait, wait);
-+	poll_wait(filp, &stuser->cmd_comp, wait);
- 	poll_wait(filp, &stdev->event_wq, wait);
- 
- 	if (lock_mutex_and_test_alive(stdev))
-@@ -588,7 +591,7 @@ static __poll_t switchtec_dev_poll(struc
- 
- 	mutex_unlock(&stdev->mrpc_mutex);
- 
--	if (try_wait_for_completion(&stuser->comp))
-+	if (stuser->cmd_done)
- 		ret |= EPOLLIN | EPOLLRDNORM;
- 
- 	if (stuser->event_cnt != atomic_read(&stdev->event_cnt))
-@@ -1272,7 +1275,8 @@ static void stdev_kill(struct switchtec_
- 
- 	/* Wake up and kill any users waiting on an MRPC request */
- 	list_for_each_entry_safe(stuser, tmpuser, &stdev->mrpc_queue, list) {
--		complete_all(&stuser->comp);
-+		stuser->cmd_done = true;
-+		wake_up_interruptible(&stuser->cmd_comp);
- 		list_del_init(&stuser->list);
- 		stuser_put(stuser);
- 	}
+@@ -419,7 +408,7 @@ static void ezusb_ctx_complete(struct re
+ 			/* This is normal, as all request contexts get flushed
+ 			 * when the device is disconnected */
+ 			err("Called, CTX not terminating, but device gone");
+-			ezusb_complete_all(&ctx->done);
++			complete_all(&ctx->done);
+ 			ezusb_request_context_put(ctx);
+ 			break;
+ 		}
+@@ -690,11 +679,11 @@ static void ezusb_req_ctx_wait(struct ez
+ 			 * get the chance to run themselves. So we make sure
+ 			 * that we don't sleep for ever */
+ 			int msecs = DEF_TIMEOUT * (1000 / HZ);
+-			while (!ctx->done.done && msecs--)
++
++			while (!try_wait_for_completion(&ctx->done) && msecs--)
+ 				udelay(1000);
+ 		} else {
+-			wait_event_interruptible(ctx->done.wait,
+-						 ctx->done.done);
++			wait_for_completion(&ctx->done);
+ 		}
+ 		break;
+ 	default:
 
 
