@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F1018E11B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 13:18:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D4718E0C1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 12:39:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kzFX3kmqzDrg8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 22:39:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48l06K0mmFzF0gv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 23:18:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,22 +19,23 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kz852nFjzDr7x
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 22:34:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kz8C5b9kzDr9j
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 22:34:51 +1100 (AEDT)
 Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jFcOZ-0002Re-66; Sat, 21 Mar 2020 12:34:27 +0100
+ id 1jFcOQ-0001zG-FR; Sat, 21 Mar 2020 12:34:18 +0100
 Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
- by nanos.tec.linutronix.de (Postfix) with ESMTP id 692651040CC;
- Sat, 21 Mar 2020 12:34:22 +0100 (CET)
-Message-Id: <20200321113242.751182723@linutronix.de>
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 6AF95FFC8D;
+ Sat, 21 Mar 2020 12:34:17 +0100 (CET)
+Message-Id: <20200321113240.841963112@linutronix.de>
 User-Agent: quilt/0.65
-Date: Sat, 21 Mar 2020 12:26:04 +0100
+Date: Sat, 21 Mar 2020 12:25:45 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 20/20] lockdep: Add posixtimer context tracing bits
+Subject: [patch V3 01/20] PCI/switchtec: Fix init_completion race condition
+ with poll_wait()
 References: <20200321112544.878032781@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -83,77 +84,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Logan Gunthorpe <logang@deltatee.com>
 
-Splitting run_posix_cpu_timers() into two parts is work in progress which
-is stuck on other entry code related problems. The heavy lifting which
-involves locking of sighand lock will be moved into task context so the
-necessary execution time is burdened on the task and not on interrupt
-context.
+The call to init_completion() in mrpc_queue_cmd() can theoretically
+race with the call to poll_wait() in switchtec_dev_poll().
 
-Until this work completes lockdep with the spinlock nesting rules enabled
-would emit warnings for this known context.
+  poll()			write()
+    switchtec_dev_poll()   	  switchtec_dev_write()
+      poll_wait(&s->comp.wait);      mrpc_queue_cmd()
+			               init_completion(&s->comp)
+				         init_waitqueue_head(&s->comp.wait)
 
-Prevent it by setting "->irq_config = 1" for the invocation of
-run_posix_cpu_timers() so lockdep does not complain when sighand lock is
-acquried. This will be removed once the split is completed.
+To my knowledge, no one has hit this bug.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fix this by using reinit_completion() instead of init_completion() in
+mrpc_queue_cmd().
+
+Fixes: 080b47def5e5 ("MicroSemi Switchtec management interface driver")
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
----
- include/linux/irqflags.h       |   12 ++++++++++++
- kernel/time/posix-cpu-timers.c |    6 +++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Kurt Schwemmer <kurt.schwemmer@microsemi.com>
+Cc: linux-pci@vger.kernel.org
+Link: https://lkml.kernel.org/r/20200313183608.2646-1-logang@deltatee.com
 
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -69,6 +69,16 @@ do {						\
- 			current->irq_config = 0;	\
- 	  } while (0)
+---
+ drivers/pci/switch/switchtec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
+index a823b4b8ef8a..81dc7ac01381 100644
+--- a/drivers/pci/switch/switchtec.c
++++ b/drivers/pci/switch/switchtec.c
+@@ -175,7 +175,7 @@ static int mrpc_queue_cmd(struct switchtec_user *stuser)
+ 	kref_get(&stuser->kref);
+ 	stuser->read_len = sizeof(stuser->data);
+ 	stuser_set_state(stuser, MRPC_QUEUED);
+-	init_completion(&stuser->comp);
++	reinit_completion(&stuser->comp);
+ 	list_add_tail(&stuser->list, &stdev->mrpc_queue);
  
-+# define lockdep_posixtimer_enter()				\
-+	  do {							\
-+		  current->irq_config = 1;			\
-+	  } while (0)
-+
-+# define lockdep_posixtimer_exit()				\
-+	  do {							\
-+		  current->irq_config = 0;			\
-+	  } while (0)
-+
- # define lockdep_irq_work_enter(__work)					\
- 	  do {								\
- 		  if (!(atomic_read(&__work->flags) & IRQ_WORK_HARD_IRQ))\
-@@ -94,6 +104,8 @@ do {						\
- # define lockdep_softirq_exit()		do { } while (0)
- # define lockdep_hrtimer_enter(__hrtimer)		do { } while (0)
- # define lockdep_hrtimer_exit(__hrtimer)		do { } while (0)
-+# define lockdep_posixtimer_enter()		do { } while (0)
-+# define lockdep_posixtimer_exit()		do { } while (0)
- # define lockdep_irq_work_enter(__work)		do { } while (0)
- # define lockdep_irq_work_exit(__work)		do { } while (0)
- #endif
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -1126,8 +1126,11 @@ void run_posix_cpu_timers(void)
- 	if (!fastpath_timer_check(tsk))
- 		return;
- 
--	if (!lock_task_sighand(tsk, &flags))
-+	lockdep_posixtimer_enter();
-+	if (!lock_task_sighand(tsk, &flags)) {
-+		lockdep_posixtimer_exit();
- 		return;
-+	}
- 	/*
- 	 * Here we take off tsk->signal->cpu_timers[N] and
- 	 * tsk->cpu_timers[N] all the timers that are firing, and
-@@ -1169,6 +1172,7 @@ void run_posix_cpu_timers(void)
- 			cpu_timer_fire(timer);
- 		spin_unlock(&timer->it_lock);
- 	}
-+	lockdep_posixtimer_exit();
- }
- 
- /*
+ 	mrpc_cmd_submit(stdev);
+-- 
+2.20.1
+
+
 
