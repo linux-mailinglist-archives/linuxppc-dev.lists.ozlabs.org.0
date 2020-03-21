@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B17518E0CD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 12:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F8C18E0DF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 12:54:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48kzPX4jvRzF0Rx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 22:46:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48kzZR6wXgzDrH8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 22:54:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,22 +19,22 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48kz876th9zDr80
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 22:34:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48kz8906L9zDr9j
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 22:34:48 +1100 (AEDT)
 Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
  helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1jFcOW-0001zV-KV; Sat, 21 Mar 2020 12:34:24 +0100
+ id 1jFcOS-0001zZ-4Y; Sat, 21 Mar 2020 12:34:20 +0100
 Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
- by nanos.tec.linutronix.de (Postfix) with ESMTP id 0A1D2FFC8D;
+ by nanos.tec.linutronix.de (Postfix) with ESMTP id 4AC801039FF;
  Sat, 21 Mar 2020 12:34:19 +0100 (CET)
-Message-Id: <20200321113241.434999165@linutronix.de>
+Message-Id: <20200321113241.531525286@linutronix.de>
 User-Agent: quilt/0.65
-Date: Sat, 21 Mar 2020 12:25:51 +0100
+Date: Sat, 21 Mar 2020 12:25:52 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 07/20] csky: Remove mm.h from asm/uaccess.h
+Subject: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
 References: <20200321112544.878032781@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -90,7 +90,7 @@ include chain leands to:
 |   CC      kernel/locking/percpu-rwsem.o
 | In file included from include/linux/huge_mm.h:8,
 |                  from include/linux/mm.h:567,
-|                  from arch/csky/include/asm/uaccess.h:,
+|                  from arch/hexagon/include/asm/uaccess.h:,
 |                  from include/linux/uaccess.h:11,
 |                  from include/linux/sched/task.h:11,
 |                  from include/linux/sched/signal.h:9,
@@ -107,26 +107,26 @@ Remove the linux/mm.h include.
 Reported-by: kbuild test robot <lkp@intel.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Guo Ren <guoren@kernel.org>
-Cc: linux-csky@vger.kernel.org
+Cc: Brian Cain <bcain@codeaurora.org>
+Cc: linux-hexagon@vger.kernel.org
 ---
 V3: New patch
 ---
- arch/csky/include/asm/uaccess.h | 1 -
+ arch/hexagon/include/asm/uaccess.h | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/csky/include/asm/uaccess.h b/arch/csky/include/asm/uaccess.h
-index eaa1c3403a424..abefa125b93cf 100644
---- a/arch/csky/include/asm/uaccess.h
-+++ b/arch/csky/include/asm/uaccess.h
-@@ -11,7 +11,6 @@
- #include <linux/errno.h>
- #include <linux/types.h>
- #include <linux/sched.h>
+diff --git a/arch/hexagon/include/asm/uaccess.h b/arch/hexagon/include/asm/uaccess.h
+index 00cb38faad0c4..c1019a736ff13 100644
+--- a/arch/hexagon/include/asm/uaccess.h
++++ b/arch/hexagon/include/asm/uaccess.h
+@@ -10,7 +10,6 @@
+ /*
+  * User space memory access functions
+  */
 -#include <linux/mm.h>
- #include <linux/string.h>
- #include <linux/version.h>
- #include <asm/segment.h>
+ #include <asm/sections.h>
+ 
+ /*
 -- 
 2.26.0.rc2
 
