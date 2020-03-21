@@ -1,68 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6F518E168
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 13:56:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F53518E14D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 13:41:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48l0cX3wC3zDrgw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 23:41:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48l0y31MdGzF0ZM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 23:56:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=andy.shevchenko@gmail.com;
+ smtp.helo=mo6-p00-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5300::7;
+ helo=mo6-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=guZnHeGo; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=NvocYwx0; 
+ dkim-atps=neutral
+X-Greylist: delayed 177 seconds by postgrey-1.36 at bilbo;
+ Sat, 21 Mar 2020 23:53:33 AEDT
+Received: from mo6-p00-ob.smtp.rzone.de (mo6-p00-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5300::7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48l0FC2VGBzDrSK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 23:24:14 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id b72so4754255pfb.11
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 05:24:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Ao4Jy8e8i2H3r6C7mhPUev+j75PjWe4TRVOreHP2VzM=;
- b=guZnHeGo0HvHKP2uIKtZiCtNOUIkrUT7OLzB66Ehtw0EiRz0K0c6LtX4CWuNZp6QIL
- YrUqqmUsqOQIHILQRs1SrnxRO54uRVwILm5bNdlpUGX6dcExdOPMfmuKHkPcvMtu6WbT
- /P7MLfISznzr7ogM6J98U4cpx8/lCga6dEpI2eG7/1joslz9HVe0MCBWrJjlYlA5S7Mc
- eufctIYPsclmo3tJk89MVDURTNM43DP4w2vS8LbbG17swocgZVGzaGEA17iUCtLk8pQy
- WDK9dsn4zUgoCJeFNLPI823x3rR/fKz2B+dGyCO9zePvxDJWWT98LbXkAlCqWcnM1iF7
- hq3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Ao4Jy8e8i2H3r6C7mhPUev+j75PjWe4TRVOreHP2VzM=;
- b=Zf127xze9yTIaTWyxZ/S5TnomtPQpg26mKg+kqtQQDwZ3dZ5Nt/RBc5au8v1CdC7Sh
- Hrf78J1vFE2nGPX/LIOWBeyTk4+zPiU1iWtteCTJ6Lx7jTxF0mLlLq0nqs2zIei1xQ7D
- SLalguXy8V/8ZIvV0djZ42WCGemGsKLM9esB09f0WmkRar7joJujcGigP6t60f/YA0G3
- nzaGxHKQI8l2dVRtjiyZY1HzdFuJNfaHCJ8Pq0EOUzA9nNdEMDJr/ZIBHX1A0LeSyRzF
- qjM8+INnXjPb1Pkg03ZEbYy9XJJfc6b2uPt+JJ2B6dFQaqIBuI9oC9bkRMQ75MXEcxZ2
- L6Zw==
-X-Gm-Message-State: ANhLgQ0cguxeYtuYj4od6Oh9uhUfrQUHSIWq+k6EtLRxUvADsUVsLR5t
- vTpiscdyI91srm/RfO89uU8hFg49oR3YHApIkX0=
-X-Google-Smtp-Source: ADFU+vt9Uo865ldMhbCuXqa1losEi96vNHQ702LMl19aMUCd3u8qFTNaK8m+H4VKt7G9g6ODyA9ZVzAxynAs7rQFJOc=
-X-Received: by 2002:a05:6a00:2b4:: with SMTP id
- q20mr3102817pfs.36.1584793451157; 
- Sat, 21 Mar 2020 05:24:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48l0v14w0KzDrR7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 23:53:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1584795207;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:Cc:From:References:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=ldimWoRLsCAE5JRXdvCkK4s0HAn6/zloCegzZ88k+n0=;
+ b=NvocYwx0dHaxNLEQOMRuH/L/xQIG8WMXJY2HaUV0IcZh6rtX6bixjtGEzTS/ndqSWL
+ azSWHBKNtNnl7i4Cyc+eYNNjAlqFsgyTdZ3RiN/6rF9SX+azmoThwb6mI6/jxESOCjyc
+ ROZrvF67EAWXNM5DYOBFDQEdmR0H5+AdTIrDWChteslaXpUmd3+JLM6h/9Jv5behVim7
+ 1oMCF+mP98byOuQaUR0xJ1PkEasm6PfmdzVf87BQdAc6/DFuic8bzJFlLqRcEPVUfggR
+ URJnMHj2rxgxz9aCx4WmzBhzp1WnCQoXSLP/CD/fFviH4q+Vpbs8BYKwFA1PT/0GBRTu
+ u3aw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhQL/vFUhOeFBFYLgGijN1As3g7WQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:3924:3dd8:fb3f:a8eb]
+ by smtp.strato.de (RZmta 46.2.1 AUTH) with ESMTPSA id c060e4w2LCoNBZf
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sat, 21 Mar 2020 13:50:23 +0100 (CET)
+Subject: FSL P5020/Cyrus+ Board: Poweroff and Restart Support
+To: linuxppc-dev@lists.ozlabs.org
+References: <mailman.1087.1584789896.27067.linuxppc-dev@lists.ozlabs.org>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <fb1762ec-5c08-a92d-0b2a-5e2b48380b29@xenosoft.de>
+Date: Sat, 21 Mar 2020 13:50:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200321112544.878032781@linutronix.de>
- <20200321113241.246190285@linutronix.de>
-In-Reply-To: <20200321113241.246190285@linutronix.de>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 21 Mar 2020 14:23:58 +0200
-Message-ID: <CAHp75VdpXxg4NSSg-jxKc51emJxhJQgLpG1Rv-xq7ouWz+xBuA@mail.gmail.com>
-Subject: Re: [patch V3 05/20] acpi: Remove header dependency
-To: Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <mailman.1087.1584789896.27067.linuxppc-dev@lists.ozlabs.org>
+Content-Type: multipart/mixed; boundary="------------A627FEAA91B13DF283D309DA"
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,112 +69,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: USB <linux-usb@vger.kernel.org>, linux-ia64@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Sebastian Siewior <bigeasy@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
- Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
- Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>, kbuild test robot <lkp@intel.com>,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- "Paul E . McKenney" <paulmck@kernel.org>, linux-hexagon@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
- Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Linux PM <linux-pm@vger.kernel.org>,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>, Greentime Hu <green.hu@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Platform Driver <platform-driver-x86@vger.kernel.org>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Davidlohr Bueso <dbueso@suse.de>,
- netdev <netdev@vger.kernel.org>, Logan Gunthorpe <logang@deltatee.com>,
- "David S. Miller" <davem@davemloft.net>, Andy Shevchenko <andy@infradead.org>
+Cc: Julian Margetson <runaway@candw.ms>,
+ Darren Stevens <darren@stevens-zone.net>,
+ "contact@a-eon.com" <contact@a-eon.com>, mad skateman <madskateman@gmail.com>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 21, 2020 at 1:34 PM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> From: Peter Zijlstra <peterz@infradead.org>
->
-> In order to avoid future header hell, remove the inclusion of
-> proc_fs.h from acpi_bus.h. All it needs is a forward declaration of a
-> struct.
->
+This is a multi-part message in MIME format.
+--------------A627FEAA91B13DF283D309DA
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com> # for PDx86
+Hello,
 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Darren Hart <dvhart@infradead.org>
-> Cc: Andy Shevchenko <andy@infradead.org>
-> Cc: platform-driver-x86@vger.kernel.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Zhang Rui <rui.zhang@intel.com>
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: linux-pm@vger.kernel.org
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> ---
->  drivers/platform/x86/dell-smo8800.c                      |    1 +
->  drivers/platform/x86/wmi.c                               |    1 +
->  drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c |    1 +
->  include/acpi/acpi_bus.h                                  |    2 +-
->  4 files changed, 4 insertions(+), 1 deletion(-)
->
-> --- a/drivers/platform/x86/dell-smo8800.c
-> +++ b/drivers/platform/x86/dell-smo8800.c
-> @@ -16,6 +16,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/miscdevice.h>
->  #include <linux/uaccess.h>
-> +#include <linux/fs.h>
->
->  struct smo8800_device {
->         u32 irq;                     /* acpi device irq */
-> --- a/drivers/platform/x86/wmi.c
-> +++ b/drivers/platform/x86/wmi.c
-> @@ -29,6 +29,7 @@
->  #include <linux/uaccess.h>
->  #include <linux/uuid.h>
->  #include <linux/wmi.h>
-> +#include <linux/fs.h>
->  #include <uapi/linux/wmi.h>
->
->  ACPI_MODULE_NAME("wmi");
-> --- a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
-> +++ b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
-> @@ -19,6 +19,7 @@
->  #include <linux/acpi.h>
->  #include <linux/uaccess.h>
->  #include <linux/miscdevice.h>
-> +#include <linux/fs.h>
->  #include "acpi_thermal_rel.h"
->
->  static acpi_handle acpi_thermal_rel_handle;
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -80,7 +80,7 @@ bool acpi_dev_present(const char *hid, c
->
->  #ifdef CONFIG_ACPI
->
-> -#include <linux/proc_fs.h>
-> +struct proc_dir_entry;
->
->  #define ACPI_BUS_FILE_ROOT     "acpi"
->  extern struct proc_dir_entry *acpi_root_dir;
->
->
+We would like to add poweroff and restart support for the Cyrus+ board 
+[1] [2] to the mainline vanilla kernel.
+There is a patch for adding poweroff and restart support. (attached)
+It works but I am not sure if it is good enough for the mainline vanilla 
+kernel.
+Please post some suggestions and comments about this patch.
+
+Thanks,
+Christian
 
 
--- 
-With Best Regards,
-Andy Shevchenko
+[1] http://wiki.amiga.org/index.php?title=X5000
+[2] https://www.amigaos.net/hardware/133/amigaone-x5000
+
+--------------A627FEAA91B13DF283D309DA
+Content-Type: text/plain; charset=UTF-8;
+ name="cyrus_5.6-2.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="cyrus_5.6-2.txt"
+
+ZGlmZiAtcnVwTiBhL2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wvY3lydXNfcDUwMjAuZHRz
+IGIvYXJjaC9wb3dlcnBjL2Jvb3QvZHRzL2ZzbC9jeXJ1c19wNTAyMC5kdHMKLS0tIGEvYXJj
+aC9wb3dlcnBjL2Jvb3QvZHRzL2ZzbC9jeXJ1c19wNTAyMC5kdHMJMjAyMC0wMi0xMCAwMTow
+ODo0OC4wMDAwMDAwMDAgKzAxMDAKKysrIGIvYXJjaC9wb3dlcnBjL2Jvb3QvZHRzL2ZzbC9j
+eXJ1c19wNTAyMC5kdHMJMjAyMC0wMi0xMCAwODo0OTo0Ny45NTM2ODA5NDcgKzAxMDAKQEAg
+LTE0Niw2ICsxNDYsMjUgQEAKIAkJCQkgIDAgMHgwMDAxMDAwMD47CiAJCX07CiAJfTsKKwor
+CWdwaW8tcG93ZXJvZmYgeworCQljb21wYXRpYmxlID0gImdwaW8tcG93ZXJvZmYiOworCQln
+cGlvcyA9IDwmZ3BpbzAgMyAxPjsKKwl9OworCisJZ3Bpby1yZXN0YXJ0IHsKKwkJY29tcGF0
+aWJsZSA9ICJncGlvLXJlc3RhcnQiOworCQlncGlvcyA9IDwmZ3BpbzAgMiAxPjsKKwl9Owor
+CisJbGVkcyB7CisJCWNvbXBhdGlibGUgPSAiZ3Bpby1sZWRzIjsKKwkJaGRkIHsKKwkJCWxh
+YmVsID0gIkRpc2sgYWN0aXZpdHkiOworCQkJZ3Bpb3MgPSA8JmdwaW8wIDUgMD47CisJCQls
+aW51eCxkZWZhdWx0LXRyaWdnZXIgPSAiZGlzay1hY3Rpdml0eSI7CisJCX07CisJfTsKIH07
+CiAKIC9pbmNsdWRlLyAicDUwMjBzaS1wb3N0LmR0c2kiCmRpZmYgLXJ1cE4gYS9hcmNoL3Bv
+d2VycGMvcGxhdGZvcm1zLzg1eHgvY29yZW5ldF9nZW5lcmljLmMgYi9hcmNoL3Bvd2VycGMv
+cGxhdGZvcm1zLzg1eHgvY29yZW5ldF9nZW5lcmljLmMKLS0tIGEvYXJjaC9wb3dlcnBjL3Bs
+YXRmb3Jtcy84NXh4L2NvcmVuZXRfZ2VuZXJpYy5jCTIwMjAtMDItMTAgMDE6MDg6NDguMDAw
+MDAwMDAwICswMTAwCisrKyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9jb3JlbmV0
+X2dlbmVyaWMuYwkyMDIwLTAyLTEwIDA4OjQ5OjQ3Ljk1MzY4MDk0NyArMDEwMApAQCAtNDYs
+NiArNDYsMTYgQEAgdm9pZCBfX2luaXQgY29yZW5ldF9nZW5fcGljX2luaXQodm9pZCkKIAlt
+cGljX2luaXQobXBpYyk7CiB9CiAKKy8qIElmIHNvbWVvbmUgaGFzIHJlZ2lzdGVyZWQgYSBw
+b3dlcm9mZiBjYWxsYmFjaywgaW52b2tlIGl0ICovCitzdGF0aWMgdm9pZCBfX25vcmV0dXJu
+IGNvcmVuZXRfZ2VuZXJpY19oYWx0KHZvaWQpCit7CisJaWYgKHBtX3Bvd2VyX29mZikKKwlw
+bV9wb3dlcl9vZmYoKTsKKworCS8qIFNob3VsZCBub3QgcmV0dXJuICovCisJZm9yKDs7KTsK
+K30KKwogLyoKICAqIFNldHVwIHRoZSBhcmNoaXRlY3R1cmUKICAqLwpAQCAtOTksNiArMTA5
+LDE1IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIG9mX2RldmkKIAl7CiAJ
+CS5uYW1lCQk9ICJoYW5kbGVzIiwKIAl9LAorCXsKKwkJLm5hbWUJCT0gImdwaW8tcG93ZXJv
+ZmYiLAorCX0sCisJeworCQkubmFtZQkJPSAiZ3Bpby1yZXN0YXJ0IiwKKwl9LAorCXsKKwkJ
+Lm5hbWUJCT0gImxlZHMiLAorCX0sCiAJe30KIH07CiAKQEAgLTE0OSw2ICsxNjgsOCBAQCBz
+dGF0aWMgaW50IF9faW5pdCBjb3JlbmV0X2dlbmVyaWNfcHJvYmUoCiAJZXh0ZXJuIHN0cnVj
+dCBzbXBfb3BzX3Qgc21wXzg1eHhfb3BzOwogI2VuZGlmCiAKKwlwcGNfbWQuaGFsdCA9IGNv
+cmVuZXRfZ2VuZXJpY19oYWx0OworCiAJaWYgKG9mX2RldmljZV9jb21wYXRpYmxlX21hdGNo
+KG9mX3Jvb3QsIGJvYXJkcykpCiAJCXJldHVybiAxOwogCg==
+--------------A627FEAA91B13DF283D309DA--
