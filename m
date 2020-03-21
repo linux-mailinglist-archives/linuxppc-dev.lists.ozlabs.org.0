@@ -1,60 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD2118E34F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 18:25:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48l6wQ0gP5zDrnP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Mar 2020 04:25:10 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA79618E36E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Mar 2020 18:45:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48l7ML3Fn7zDrD1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Mar 2020 04:45:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=ayf6=5g=paulmck-thinkpad-p72.home=paulmck@kernel.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=afzal.mohd.ma@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=0uZasLyY; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=UXIHaUBh; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48l6t45DPLzDrnP
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Mar 2020 04:23:08 +1100 (AEDT)
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
- [50.39.105.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8AE9120767;
- Sat, 21 Mar 2020 17:23:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584811386;
- bh=xECwvu3Zm1NEgzqD5GrnBGLFCYYFmNZsamemFqiM8NY=;
- h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
- b=0uZasLyYOOcy2Jn3NQfpB2UAWhjp74rz1TUNHg9BhAjwPgKnZR60zmujqnihmxQ4W
- 7foxJjnQ0xMcW011TdKCXLYocZvyg8MDtNv8kWqj8WW3VxI5OcNV2Y2TQfkKR5STHK
- tsXIa2UPcdd8dIM4hV5/+BQQoln4Cxe0PVsX+CFA=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
- id 8D6D435226C1; Sat, 21 Mar 2020 10:23:05 -0700 (PDT)
-Date: Sat, 21 Mar 2020 10:23:05 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48l7KL2h98zDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Mar 2020 04:43:16 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id a32so4787387pga.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Mar 2020 10:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=3fStVl9rL3YRgIiAf/TzVVtMNrh3VX50fi0qgiiuA8o=;
+ b=UXIHaUBhFEcnW+OMHvNaZ8x6pk7Kw7xSi1XSqUQ/ypXJwX+/0kjbU9/UcI39UYrFww
+ L4SWYiuz/x5ZDo+euy1EVFm6/xEfsJuGVNtbr58w1aJIyLLbxr5Zvw2YV6+Jz2IFJLx1
+ hSKDnD+ugCfCtYPbwa0qtQZzvaVCFI/U0Hh49Bh/9v4+8cPYNZpxmxPxHCL/ucL4FfPB
+ t55wM9/sifQrsJ2x7qaYOUyTwSXOMqFFX7kbT5BvfLIkW8EyaBXHAHAACDZSlA65LB0e
+ +oYG1mMj2pkG+negyyMWiq2E57sl6r93kYgmOlv5Tvke5FfWZ2pC2/wfVUCgtyT6TaL9
+ 9P/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=3fStVl9rL3YRgIiAf/TzVVtMNrh3VX50fi0qgiiuA8o=;
+ b=tfuhC1JuiCy94JPHlnn4Zvv2kAiUM91KCgIP9T8xYfPhFbcs3H/Ea457OFdq7+Dsq6
+ YVvXf3O9WjufrcvepMCoBmC8Wnp+7HeW9SaA9mI4B1yHr1HfHQ0UosFLXx/ZJh78tHNS
+ 6IykM+a1kWhGr1uj5MKWnzLRA/Tpi+fT31dkdLMF9nRg1wwweT150VobZRyh8Sd22/GO
+ w2+QyAa1wFyObQJDL6a2DvDvLUHYvUhCelSnRQ0tmdhhtuz7PxY8/sDcex22rh0Nbrm0
+ Jsn5ce9bu8O/wk0SEoVRig9aDE8zr9Hx8h/JaiLHvIKI/XOVQhjQhf14OiQUh8H1/z0J
+ Z8fQ==
+X-Gm-Message-State: ANhLgQ39pXG/w7pim7Ev+HobzLnXbRI8va0Ptt+l9a/dLt0u6ZUaY5nh
+ 93ULVFlpLT3VPBKmMsjdhpI=
+X-Google-Smtp-Source: ADFU+vtSB9sj3T3LCfhecLdyVMoQimjNCV0Ow3ys209048E+VImdKW1kqpUYGGvxT4nwaYSYvsoI7Q==
+X-Received: by 2002:a63:e856:: with SMTP id a22mr1215468pgk.283.1584812590871; 
+ Sat, 21 Mar 2020 10:43:10 -0700 (PDT)
+Received: from localhost ([49.207.51.24])
+ by smtp.gmail.com with ESMTPSA id f127sm8973833pfa.9.2020.03.21.10.43.09
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Sat, 21 Mar 2020 10:43:10 -0700 (PDT)
+Date: Sat, 21 Mar 2020 23:13:03 +0530
+From: afzal mohammed <afzal.mohd.ma@gmail.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 08/15] Documentation: Add lock ordering and nesting
- documentation
-Message-ID: <20200321172305.GW3199@paulmck-ThinkPad-P72>
-References: <20200320160145.GN3199@paulmck-ThinkPad-P72>
- <87mu8apzxr.fsf@nanos.tec.linutronix.de>
- <20200320210243.GT3199@paulmck-ThinkPad-P72>
- <874kuipsbw.fsf@nanos.tec.linutronix.de>
- <20200321022930.GU3199@paulmck-ThinkPad-P72>
- <875zeyrold.fsf@nanos.tec.linutronix.de>
+Subject: Re: [PATCH 00/18] genirq: Remove setup_irq()
+Message-ID: <20200321174303.GA7930@afzalpc>
+References: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
+ <87y2somido.fsf@nanos.tec.linutronix.de>
+ <20200227110713.GA5708@afzalpc>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <875zeyrold.fsf@nanos.tec.linutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200227110713.GA5708@afzalpc>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,53 +81,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-pci@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Oleg Nesterov <oleg@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
- Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Logan Gunthorpe <logang@deltatee.com>,
- Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
- Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, x86@kernel.org,
+ Nicolas Palix <nicolas.palix@imag.fr>, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, Julia Lawall <Julia.Lawall@lip6.fr>,
+ linux-m68k@lists.linux-m68k.org, Michal Marek <michal.lkml@markovi.net>,
+ linux-rpi-kernel@lists.infradead.org, linux-alpha@vger.kernel.org,
+ Gilles Muller <Gilles.Muller@lip6.fr>, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 21, 2020 at 11:26:06AM +0100, Thomas Gleixner wrote:
-> "Paul E. McKenney" <paulmck@kernel.org> writes:
-> > On Fri, Mar 20, 2020 at 11:36:03PM +0100, Thomas Gleixner wrote:
-> >> I agree that what I tried to express is hard to parse, but it's at least
-> >> halfways correct :)
-> >
-> > Apologies!  That is what I get for not looking it up in the source.  :-/
-> >
-> > OK, so I am stupid enough not only to get it wrong, but also to try again:
-> >
-> >    ... Other types of wakeups would normally unconditionally set the
-> >    task state to RUNNING, but that does not work here because the task
-> >    must remain blocked until the lock becomes available.  Therefore,
-> >    when a non-lock wakeup attempts to awaken a task blocked waiting
-> >    for a spinlock, it instead sets the saved state to RUNNING.  Then,
-> >    when the lock acquisition completes, the lock wakeup sets the task
-> >    state to the saved state, in this case setting it to RUNNING.
-> >
-> > Is that better?
+Hi Thomas,
+
+On Thu, Feb 27, 2020 at 04:37:13PM +0530, afzal mohammed wrote:
+> On Thu, Feb 27, 2020 at 11:31:15AM +0100, Thomas Gleixner wrote:
+
+> > Vs. merging this series, I suggest the following approach:
+> > 
+> >    - Resubmit the individual changes as single patches or small series
+> >      to the relevant maintainers and subsystem mailing lists. They have
+> >      no dependency on a core change and can be applied where they belong
+> >      to.
+> > 
+> >    - After 5.6-rc6, verify which parts have made their way into
+> >      linux-next and resubmit the ignored ones as a series to me along
+> >      with the removal of the core parts.
+> > 
+> > That way we can avoid conflicting changes between subsystems and the tip
+> > irq/core branch as much as possible.
 > 
-> Definitely!
-> 
-> Thanks for all the editorial work!
+> Okay, i will do accordingly.
 
-NP, and glad you like it!
+i am on it, is delayed due to the reason as mentioned at,
 
-But I felt even more stupid sometime in the middle of the night.  Why on
-earth didn't I work in your nice examples?  :-/
+https://lkml.kernel.org/r/20200321172626.GA6323@afzalpc
 
-I will pull them in later.  Time to go hike!!!
+[ not repeating contents here since other mail was sent just now,
+  cc'ing you ]
 
-							Thanx, Paul
+Regards
+afzal
+
