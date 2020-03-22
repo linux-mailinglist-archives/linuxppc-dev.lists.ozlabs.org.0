@@ -1,71 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C3718E817
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Mar 2020 11:48:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48lZ4d63KSzDqnw
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Mar 2020 21:48:49 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4018718E96B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Mar 2020 15:45:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48lgKD6Y7KzDr1q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 01:45:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
- helo=mail-qk1-x743.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=mg.codeaurora.org (client-ip=104.130.122.27;
+ helo=mail27.static.mailgun.info;
+ envelope-from=bounce+ee6c0f.be9e4a-linuxppc-dev=lists.ozlabs.org@mg.codeaurora.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vfJ1Ktbe; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=codeaurora.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org
+ header.a=rsa-sha256 header.s=smtp header.b=vTbnNMEn; 
+ dkim-atps=neutral
+Received: from mail27.static.mailgun.info (mail27.static.mailgun.info
+ [104.130.122.27])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48lZ3210gHzDrNq
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Mar 2020 21:47:25 +1100 (AEDT)
-Received: by mail-qk1-x743.google.com with SMTP id c145so12084688qke.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Mar 2020 03:47:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=S6yehooPiFA7WFzSiN6iRq3URFGEeFNRubLJGaTKKeg=;
- b=vfJ1KtbeLDw5rFqeb6hIPBm5Sc1u7NaY5cV22O2B6Qr5sj+BUBGQBoxgBnDyG25Uun
- XarmSsEFe+LOGy/CsGvlXp+gB1ey4rj/w4Psk1IdT1KxfgfNvtobd8eTKawz4omDaCAp
- 9Q1QqhexZiCi+puZyxpV4LbWTJuBfTBAcqE1JoZWo+/JFNDLXF0lZPnVSo+5jl0996fB
- IGiNJbsb2PBmJIQOaHcEPBaA6RMSFpgUk6E0F6mA/cK5z1KzcLPQfehaIJPM83S3xcQ/
- LjQj/DgPr2S3dv9JTzva8TGWqrNMpWa3T1ybGhe65sBtgGwJoKR509wm+j/05GFrFu65
- EB9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=S6yehooPiFA7WFzSiN6iRq3URFGEeFNRubLJGaTKKeg=;
- b=srBdnoXnnkUxIDiaVoYoSlwQK5IG3xMzzGNL3e353ZptMkZ0ezIxDi+iFAIa03G6HC
- 8krSFjkLp1NcIbKnL9/11TWQgBu+oQqZwFuFFp6NkOl5oeo7tG1lFf3apdKNm2Iei4Ob
- SGlB3rNZsLw5jdkgmmMzXo5jisK+FzYA6DHTxu3JdmoRgFirS2iLWXmdYycaC/Bth5S4
- 2gjOFA2tbsStcvI5EBcnyGESYXpaTaE2so9pBCmWPq7kkVbzt7c+xU2vjAVAGOB1NrYp
- 3MoOgSG7Dx99xpa+I5+v/yiJ6J3o0cP5r1ECz/z7MTcRkYVPJjU6w6at6FkFAZlbHah4
- H52A==
-X-Gm-Message-State: ANhLgQ15/yywoGsa8yMz/QfVZgZL0627hdFmiDnVh40JSwyhtcM4vUSh
- lzx4g6MQJsUWDaFcWSfDS4ekcssLRzC1UJ/v1jI=
-X-Google-Smtp-Source: ADFU+vtFlqm8k9nbdJLDkTWAYuVNBzwsd2eGqUIfasY6+bquWnBaxo5guuFzQCC/yubJX5XQ8gab/74PHmKPUs49zC4=
-X-Received: by 2002:a37:9683:: with SMTP id
- y125mr16639605qkd.450.1584874041867; 
- Sun, 22 Mar 2020 03:47:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with UTF8SMTPS id 48lgH85VKhzDqdj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 01:43:16 +1100 (AEDT)
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org;
+ q=dns/txt; 
+ s=smtp; t=1584888198; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=8ZrWvNR4lZD7mLPZKWh5kIh2oW3QrCXRdxOVL7dTNX0=;
+ b=vTbnNMEnuWIeG+3Ne5I1AmhndbfvwHKeAUK7K2takb4KnlUwpB8y99rGYxOdUwjEy1P7HRgp
+ 4O8KyjXmMr/0BsN5kqX5L5EXpvqbY/6hf1arzBwUUu/xpR3QlVBXw/ut75C2LhZMbcGIE75v
+ H7RQA4n2+8UCznH3WEuq2KynK5U=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI5ZmEyMiIsICJsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyIsICJiZTllNGEiXQ==
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e777977.7facd49ff1f0-smtp-out-n02;
+ Sun, 22 Mar 2020 14:43:03 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+ id 3A67DC432C2; Sun, 22 Mar 2020 14:43:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+ aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+ URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi
+ [88.114.240.156])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested) (Authenticated sender: kvalo)
+ by smtp.codeaurora.org (Postfix) with ESMTPSA id 4495EC433D2;
+ Sun, 22 Mar 2020 14:42:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4495EC433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
+ dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
+ spf=none smtp.mailfrom=kvalo@codeaurora.org
+From: Kalle Valo <kvalo@codeaurora.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V3 04/20] orinoco_usb: Use the regular completion
+ interfaces
+References: <20200321112544.878032781@linutronix.de>
+ <20200321113241.150783464@linutronix.de>
+Date: Sun, 22 Mar 2020 16:42:46 +0200
+In-Reply-To: <20200321113241.150783464@linutronix.de> (Thomas Gleixner's
+ message of "Sat, 21 Mar 2020 12:25:48 +0100")
+Message-ID: <87pnd4bgd5.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <cover.1583725533.git.shengjiu.wang@nxp.com>
- <24f69c50925b93afd7a706bd888ee25d27247c78.1583725533.git.shengjiu.wang@nxp.com>
- <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
- <20200320173213.GA9093@bogus>
-In-Reply-To: <20200320173213.GA9093@bogus>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sun, 22 Mar 2020 18:47:09 +0800
-Message-ID: <CAA+D8APtW+ZRvJufzhNSw8acTdhGRQNphZcyVYnV-ZLUbtTGew@mail.gmail.com>
-Subject: Re: [PATCH v5 1/7] ASoC: dt-bindings: fsl_asrc: Add new property fsl,
- asrc-format
-To: Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,62 +83,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: , Randy Dunlap <rdunlap@infradead.org>,
+	linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+	linux-pci@vger.kernel.org, Sebastian Siewior <bigeasy@linutronix.de>,
+	tel.com@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>,
+	Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
+	Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Brian Cain <bcain@codeaurora.org>, linux-acpi@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-csky@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
+	kbuild test robot <lkp@in>, linuxppc-dev@lists.ozlabs.org,
+	Greentime Hu <green.hu@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+	platform-driver-x86@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
+	Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+	Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Davidlohr Bueso <dbueso@suse.de>, netdev@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 21, 2020 at 1:34 AM Rob Herring <robh@kernel.org> wrote:
->
-> On Mon, Mar 09, 2020 at 02:19:44PM -0700, Nicolin Chen wrote:
-> > On Mon, Mar 09, 2020 at 11:58:28AM +0800, Shengjiu Wang wrote:
-> > > In order to support new EASRC and simplify the code structure,
-> > > We decide to share the common structure between them. This bring
-> > > a problem that EASRC accept format directly from devicetree, but
-> > > ASRC accept width from devicetree.
-> > >
-> > > In order to align with new ESARC, we add new property fsl,asrc-format.
-> > > The fsl,asrc-format can replace the fsl,asrc-width, then driver
-> > > can accept format from devicetree, don't need to convert it to
-> > > format through width.
-> > >
-> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/sound/fsl,asrc.txt | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > index cb9a25165503..780455cf7f71 100644
-> > > --- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > +++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > @@ -51,6 +51,11 @@ Optional properties:
-> > >                       will be in use as default. Otherwise, the big endian
-> > >                       mode will be in use for all the device registers.
-> > >
-> > > +   - fsl,asrc-format       : Defines a mutual sample format used by DPCM Back
-> > > +                     Ends, which can replace the fsl,asrc-width.
-> > > +                     The value is SNDRV_PCM_FORMAT_S16_LE, or
-> > > +                     SNDRV_PCM_FORMAT_S24_LE
-> >
-> > I am still holding the concern at the DT binding of this format,
-> > as it uses values from ASoC header file instead of a dt-binding
-> > header file -- not sure if we can do this. Let's wait for Rob's
-> > comments.
->
-> I assume those are an ABI as well, so it's okay to copy them unless we
-> already have some format definitions for DT. But it does need to be copy
-> in a header under include/dt-bindings/.
+Thomas Gleixner <tglx@linutronix.de> writes:
 
-Thanks for reviewing. seems it is not a good time to add a new header
-file in include/dt-bindings/ in this patch serial. I will drop this change
-this time, that still using the "fsl,asrc-width".
+> From: Thomas Gleixner <tglx@linutronix.de>
+>
+> The completion usage in this driver is interesting:
+>
+>   - it uses a magic complete function which according to the comment was
+>     implemented by invoking complete() four times in a row because
+>     complete_all() was not exported at that time.
+>
+>   - it uses an open coded wait/poll which checks completion:done. Only one wait
+>     side (device removal) uses the regular wait_for_completion() interface.
+>
+> The rationale behind this is to prevent that wait_for_completion() consumes
+> completion::done which would prevent that all waiters are woken. This is not
+> necessary with complete_all() as that sets completion::done to UINT_MAX which
+> is left unmodified by the woken waiters.
+>
+> Replace the magic complete function with complete_all() and convert the
+> open coded wait/poll to regular completion interfaces.
+>
+> This changes the wait to exclusive wait mode. But that does not make any
+> difference because the wakers use complete_all() which ignores the
+> exclusive mode.
+>
+> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> ---
+> V2: New patch to avoid conversion to swait functions later.
+> ---
+>  drivers/net/wireless/intersil/orinoco/orinoco_usb.c |   21 ++++----------------
+>  1 file changed, 5 insertions(+), 16 deletions(-)
 
-best regards
-wang shengjiu
+I assume this is going via some other than wireless-drivers so:
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
