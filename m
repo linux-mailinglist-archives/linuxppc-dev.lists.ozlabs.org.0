@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CEB18F84E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 16:12:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 465FD18F860
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 16:18:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mHtc1f0SzDqtN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 02:12:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mJ104YV8zDrC5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 02:18:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,28 +17,28 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ZeGpFWEt; dkim-atps=neutral
+ header.s=default header.b=ShNLpgDY; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mHZ16FtBzDrBR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 01:58:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mHbD1jPPzDrBk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 01:59:20 +1100 (AEDT)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 71B7D2072E;
- Mon, 23 Mar 2020 14:58:15 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 03887206F8;
+ Mon, 23 Mar 2020 14:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584975495;
- bh=o33DdNmQWPBPhUYRdT+7SPG8OyCJMrEX1uTgw9FBEGI=;
+ s=default; t=1584975557;
+ bh=B3LghTJMIIy8hvgXBbvqhxGgSdDBVTUcvOCweczl64o=;
  h=Subject:To:Cc:From:Date:From;
- b=ZeGpFWEtS0DMPhNsPkNg8eFUhJFiB4R3id1jHXxdPnXyvTtNELf+khw2XnM+WdX4/
- cE1QlgZh3u1zptUlAE1KiT2duBUoIBxVdYXTzjUYZezcAwnM3v0BqfFj3quIuxuLrr
- ama7fC+K2F4P2RZUhBDI8nMx/xW6hopFW5FsBLVE=
+ b=ShNLpgDY7rdL4cVTsruMT0kyP/J4CoTKMnjwHfcn39yY7HzkcnTVjfr5hCQy0zPXw
+ H5ntKxyUIZJwUDaXHCMLQLS3rSPaXiHtAfKR83S8qCyw+N40sPXCe3Osei4/3fWAE2
+ rJ/y3SErCgthtonwyyQPzQNzk2KRo+BLguF3bC7Y=
 Subject: Patch "mm,
  slub: prevent kmalloc_node crashes and memory leaks" has been added
- to the 4.9-stable tree
+ to the 4.14-stable tree
 To: 088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz,
  20200317092624.GB22538@in.ibm.com, 20200320115533.9604-1-vbabka@suse.cz,
  3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com,
@@ -50,8 +50,8 @@ To: 088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz,
  rientjes@google.com, sachinp@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
  torvalds@linux-foundation.org, vbabka@suse.cz
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 23 Mar 2020 15:57:55 +0100
-Message-ID: <15849754755221@kroah.com>
+Date: Mon, 23 Mar 2020 15:58:18 +0100
+Message-ID: <1584975498232139@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -78,12 +78,12 @@ This is a note to let you know that I've just added the patch titled
 
     mm, slub: prevent kmalloc_node crashes and memory leaks
 
-to the 4.9-stable tree which can be found at:
+to the 4.14-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      mm-slub-prevent-kmalloc_node-crashes-and-memory-leaks.patch
-and it can be found in the queue-4.9 subdirectory.
+and it can be found in the queue-4.14 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -214,7 +214,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -1909,8 +1909,6 @@ static void *get_partial(struct kmem_cac
+@@ -1923,8 +1923,6 @@ static void *get_partial(struct kmem_cac
  
  	if (node == NUMA_NO_NODE)
  		searchnode = numa_mem_id();
@@ -223,7 +223,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
  	if (object || node != NUMA_NO_NODE)
-@@ -2506,17 +2504,27 @@ static void *___slab_alloc(struct kmem_c
+@@ -2521,17 +2519,27 @@ static void *___slab_alloc(struct kmem_c
  	struct page *page;
  
  	page = c->page;
@@ -256,10 +256,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +			goto redo;
 +		} else {
  			stat(s, ALLOC_NODE_MISMATCH);
- 			deactivate_slab(s, page, c->freelist);
- 			c->page = NULL;
+ 			deactivate_slab(s, page, c->freelist, c);
+ 			goto new_slab;
 
 
 Patches currently in stable-queue which might be from vbabka@suse.cz are
 
-queue-4.9/mm-slub-prevent-kmalloc_node-crashes-and-memory-leaks.patch
+queue-4.14/mm-slub-prevent-kmalloc_node-crashes-and-memory-leaks.patch
