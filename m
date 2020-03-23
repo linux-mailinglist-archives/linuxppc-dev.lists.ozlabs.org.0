@@ -1,46 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E732918F5D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 14:36:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA84318F5C0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 14:29:55 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mFc0718WzDqWm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 00:29:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mFlX2Dg3zDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 00:36:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48mFXn5JR4zDq8v
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 00:27:03 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0F071FB;
- Mon, 23 Mar 2020 06:27:00 -0700 (PDT)
-Received: from [10.163.1.71] (unknown [10.163.1.71])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 725DB3F52E;
- Mon, 23 Mar 2020 06:26:51 -0700 (PDT)
-Subject: Re: [PATCH] mm/debug: Add tests validating arch page table helpers
- for core features
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <1582799637-11786-1-git-send-email-anshuman.khandual@arm.com>
- <2be41c29-500c-50af-f915-1493846ae9e5@c-s.fr>
- <4343eda9-7df2-a13c-0125-cf784c81ce14@arm.com>
- <20200302222443.Horde.3Vn7_PzcWbAADKFWloR-kw8@messagerie.si.c-s.fr>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <cd80e950-1185-bc12-f844-295b854d429a@arm.com>
-Date: Mon, 23 Mar 2020 18:56:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=amZIJdm3; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mFg36khczDqDt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 00:32:31 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id r3so5907106pls.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 06:32:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=g5riz8OjOfvjpcTMb5LAWe/mn4WnsMYwvqIMoK6Thxs=;
+ b=amZIJdm3oc70aUO+K4X1/MKKKXwX7maeZJZ7HAf2kMvfk2gzn7Ea8swOeepy4VZF4G
+ Jz7AEjkPdJuFswXdOtZmsYIZAp821MwGhY3kJDPBmVERxsXnYaod6OSD4AZ+tWfJAsbu
+ 5nXnP1pri7XLOLKVZ4xakOYdGJ6Go4ajV5Jtw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=g5riz8OjOfvjpcTMb5LAWe/mn4WnsMYwvqIMoK6Thxs=;
+ b=XRIVReM5TPKItdiRhBVHejUT1K5kXDf5nxMHoWFtAPI2wBvZdDf8/OmeRyWDe2KLh0
+ RUCrTieGS3tXufRZzKgiEBYl1wGzfCtgD/+ebORdZ22FCY5rvwNjak6suoY+zYpliucY
+ yyv5lp5eaOETh9kzYlDcTSgOTiCCRbRLNyk87FBNjZ1N0PWA1Z/3D9ODI1HTvF0l1ZDa
+ qW+R4gL3wJK3dMuo6CP0Q5Bs9J9781GsU4FeTJ2pPx310a88vDzcyMzlH5nJ7LbHUrD7
+ SY3TbSRSX1ZxD0SmjhhvDGd2RWgxsYUrp+2ZVtqBg1+hmNf+BGuEspwQzLiYWDTFQBce
+ puBg==
+X-Gm-Message-State: ANhLgQ0Offigf2p5jQDmUDqoyRDk7BpfXwr6dBJZsKmeZkev1o3SERc3
+ wwo7dD4GHQCkInCsirL4EYuU2w==
+X-Google-Smtp-Source: ADFU+vthijiC+5OEVWd8ZDNJ3tOvh4Sy2+PlMEZZ2OQ4Ldpfb8ODAgtpcD1VzHL7pYBf1Yk1kZBM7A==
+X-Received: by 2002:a17:90a:d081:: with SMTP id
+ k1mr26814556pju.57.1584970348373; 
+ Mon, 23 Mar 2020 06:32:28 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-b01a-4ee1-5a87-afd3.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:b01a:4ee1:5a87:afd3])
+ by smtp.gmail.com with ESMTPSA id 66sm13731522pfb.150.2020.03.23.06.32.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Mar 2020 06:32:27 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Michael Ellerman <mpe@ellerman.id.au>, Haren Myneni <haren@linux.ibm.com>,
+ herbert@gondor.apana.org.au
+Subject: Re: [PATCH v4 3/9] powerpc/vas: Add VAS user space API
+In-Reply-To: <878sjrclmz.fsf@mpe.ellerman.id.au>
+References: <1584934879.9256.15321.camel@hbabu-laptop>
+ <1584936142.9256.15325.camel@hbabu-laptop>
+ <878sjrwm72.fsf@dja-thinkpad.axtens.net> <878sjrclmz.fsf@mpe.ellerman.id.au>
+Date: Tue, 24 Mar 2020 00:32:24 +1100
+Message-ID: <875zevw61j.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <20200302222443.Horde.3Vn7_PzcWbAADKFWloR-kw8@messagerie.si.c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,218 +79,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: mikey@neuling.org, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-
-On 03/03/2020 02:54 AM, Christophe Leroy wrote:
-> Anshuman Khandual <anshuman.khandual@arm.com> a écrit :
-> 
->> On 02/27/2020 04:59 PM, Christophe Leroy wrote:
->>>
->>>
->>> Le 27/02/2020 à 11:33, Anshuman Khandual a écrit :
->>>> This adds new tests validating arch page table helpers for these following
->>>> core memory features. These tests create and test specific mapping types at
->>>> various page table levels.
->>>>
->>>> * SPECIAL mapping
->>>> * PROTNONE mapping
->>>> * DEVMAP mapping
->>>> * SOFTDIRTY mapping
->>>> * SWAP mapping
->>>> * MIGRATION mapping
->>>> * HUGETLB mapping
->>>> * THP mapping
->>>>
->>>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>>> Cc: Mike Rapoport <rppt@linux.ibm.com>
->>>> Cc: Vineet Gupta <vgupta@synopsys.com>
->>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>>> Cc: Will Deacon <will@kernel.org>
->>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->>>> Cc: Paul Mackerras <paulus@samba.org>
->>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
->>>> Cc: Vasily Gorbik <gor@linux.ibm.com>
->>>> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
->>>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>>> Cc: Ingo Molnar <mingo@redhat.com>
->>>> Cc: Borislav Petkov <bp@alien8.de>
->>>> Cc: "H. Peter Anvin" <hpa@zytor.com>
->>>> Cc: Kirill A. Shutemov <kirill@shutemov.name>
->>>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
->>>> Cc: Palmer Dabbelt <palmer@dabbelt.com>
->>>> Cc: linux-snps-arc@lists.infradead.org
->>>> Cc: linux-arm-kernel@lists.infradead.org
->>>> Cc: linuxppc-dev@lists.ozlabs.org
->>>> Cc: linux-s390@vger.kernel.org
->>>> Cc: linux-riscv@lists.infradead.org
->>>> Cc: x86@kernel.org
->>>> Cc: linux-arch@vger.kernel.org
->>>> Cc: linux-kernel@vger.kernel.org
->>>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
->>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>>> ---
->>>> Tested on arm64 and x86 platforms without any test failures. But this has
->>>> only been built tested on several other platforms. Individual tests need
->>>> to be verified on all current enabling platforms for the test i.e s390,
->>>> ppc32, arc etc.
->>>>
->>>> This patch must be applied on v5.6-rc3 after these patches
->>>>
->>>> 1. https://patchwork.kernel.org/patch/11385057/
->>>> 2. https://patchwork.kernel.org/patch/11407715/
->>>>
->>>> OR
->>>>
->>>> This patch must be applied on linux-next (next-20200227) after this patch
->>>>
->>>> 2. https://patchwork.kernel.org/patch/11407715/
->>>>
->>>>   mm/debug_vm_pgtable.c | 310 +++++++++++++++++++++++++++++++++++++++++-
->>>>   1 file changed, 309 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->>>> index 96dd7d574cef..3fb90d5b604e 100644
->>>> --- a/mm/debug_vm_pgtable.c
->>>> +++ b/mm/debug_vm_pgtable.c
->>>> @@ -41,6 +41,44 @@
->>>>    * wrprotect(entry)        = A write protected and not a write entry
->>>>    * pxx_bad(entry)        = A mapped and non-table entry
->>>>    * pxx_same(entry1, entry2)    = Both entries hold the exact same value
->>>> + *
->>>> + * Specific feature operations
->>>> + *
->>>> + * pte_mkspecial(entry)        = Creates a special entry at PTE level
->>>> + * pte_special(entry)        = Tests a special entry at PTE level
->>>> + *
->>>> + * pte_protnone(entry)        = Tests a no access entry at PTE level
->>>> + * pmd_protnone(entry)        = Tests a no access entry at PMD level
->>>> + *
->>>> + * pte_mkdevmap(entry)        = Creates a device entry at PTE level
->>>> + * pmd_mkdevmap(entry)        = Creates a device entry at PMD level
->>>> + * pud_mkdevmap(entry)        = Creates a device entry at PUD level
->>>> + * pte_devmap(entry)        = Tests a device entry at PTE level
->>>> + * pmd_devmap(entry)        = Tests a device entry at PMD level
->>>> + * pud_devmap(entry)        = Tests a device entry at PUD level
->>>> + *
->>>> + * pte_mksoft_dirty(entry)    = Creates a soft dirty entry at PTE level
->>>> + * pmd_mksoft_dirty(entry)    = Creates a soft dirty entry at PMD level
->>>> + * pte_swp_mksoft_dirty(entry)    = Creates a soft dirty swap entry at PTE level
->>>> + * pmd_swp_mksoft_dirty(entry)    = Creates a soft dirty swap entry at PMD level
->>>> + * pte_soft_dirty(entry)    = Tests a soft dirty entry at PTE level
->>>> + * pmd_soft_dirty(entry)    = Tests a soft dirty entry at PMD level
->>>> + * pte_swp_soft_dirty(entry)    = Tests a soft dirty swap entry at PTE level
->>>> + * pmd_swp_soft_dirty(entry)    = Tests a soft dirty swap entry at PMD level
->>>> + * pte_clear_soft_dirty(entry)       = Clears a soft dirty entry at PTE level
->>>> + * pmd_clear_soft_dirty(entry)       = Clears a soft dirty entry at PMD level
->>>> + * pte_swp_clear_soft_dirty(entry) = Clears a soft dirty swap entry at PTE level
->>>> + * pmd_swp_clear_soft_dirty(entry) = Clears a soft dirty swap entry at PMD level
->>>> + *
->>>> + * pte_mkhuge(entry)        = Creates a HugeTLB entry at given level
->>>> + * pte_huge(entry)        = Tests a HugeTLB entry at given level
->>>> + *
->>>> + * pmd_trans_huge(entry)    = Tests a trans huge page at PMD level
->>>> + * pud_trans_huge(entry)    = Tests a trans huge page at PUD level
->>>> + * pmd_present(entry)        = Tests an entry points to memory at PMD level
->>>> + * pud_present(entry)        = Tests an entry points to memory at PUD level
->>>> + * pmd_mknotpresent(entry)    = Invalidates an PMD entry for MMU
->>>> + * pud_mknotpresent(entry)    = Invalidates an PUD entry for MMU
->>>>    */
->>>>   #define VMFLAGS    (VM_READ|VM_WRITE|VM_EXEC)
->>>>   @@ -287,6 +325,233 @@ static void __init pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
->>>>       WARN_ON(pmd_bad(pmd));
->>>>   }
->>>>   +#ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
->>>
->>> Can we avoid ifdefs unless necessary ?
->>>
->>> In mm/memory.c I see things like the following, it means pte_special() always exist and a #ifdef is not necessary.
+> Daniel Axtens <dja@axtens.net> writes:
+>> Haren Myneni <haren@linux.ibm.com> writes:
 >>
->> True, #ifdef here can be dropped here, done.
+>>> On power9, userspace can send GZIP compression requests directly to NX
+>>> once kernel establishes NX channel / window with VAS. This patch provides
+>>> user space API which allows user space to establish channel using open
+>>> VAS_TX_WIN_OPEN ioctl, mmap and close operations.
+>>>
+>>> Each window corresponds to file descriptor and application can open
+>>> multiple windows. After the window is opened, VAS_TX_WIN_OPEN icoctl to
+>>> open a window on specific VAS instance, mmap() system call to map
+>>> the hardware address of engine's request queue into the application's
+>>> virtual address space.
+>>>
+>>> Then the application can then submit one or more requests to the the
+>>> engine by using the copy/paste instructions and pasting the CRBs to
+>>> the virtual address (aka paste_address) returned by mmap().
+>>>
+>>> Only NX GZIP coprocessor type is supported right now and allow GZIP
+>>> engine access via /dev/crypto/nx-gzip device node.
+>>>
+>>> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+>>> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+>>> ---
+>>>  arch/powerpc/include/asm/vas.h              |  11 ++
+>>>  arch/powerpc/platforms/powernv/Makefile     |   2 +-
+>>>  arch/powerpc/platforms/powernv/vas-api.c    | 257 ++++++++++++++++++++++++++++
+>>>  arch/powerpc/platforms/powernv/vas-window.c |   6 +-
+>>>  arch/powerpc/platforms/powernv/vas.h        |   2 +
+>>>  5 files changed, 274 insertions(+), 4 deletions(-)
+>>>  create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
+>>>
+>>> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+>>> index f93e6b0..e064953 100644
+>>> --- a/arch/powerpc/include/asm/vas.h
+>>> +++ b/arch/powerpc/include/asm/vas.h
+>>> @@ -163,4 +163,15 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
+>>>   */
+>>>  int vas_paste_crb(struct vas_window *win, int offset, bool re);
+>>>  
+>>> +/*
+>>> + * Register / unregister coprocessor type to VAS API which will be exported
+>>> + * to user space. Applications can use this API to open / close window
+>>> + * which can be used to send / receive requests directly to cooprcessor.
+>>> + *
+>>> + * Only NX GZIP coprocessor type is supported now, but this API can be
+>>> + * used for others in future.
+>>> + */
+>>> +int vas_register_coproc_api(struct module *mod);
+>>> +void vas_unregister_coproc_api(void);
+>>> +
+>>>  #endif /* __ASM_POWERPC_VAS_H */
+>>> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+>>> index 395789f..fe3f0fb 100644
+>>> --- a/arch/powerpc/platforms/powernv/Makefile
+>>> +++ b/arch/powerpc/platforms/powernv/Makefile
+>>> @@ -17,7 +17,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
+>>>  obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
+>>>  obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
+>>>  obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
+>>> -obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
+>>> +obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o vas-api.o
+>>>  obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
+>>>  obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
+>>>  obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
+>>> diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/powernv/vas-api.c
+>>> new file mode 100644
+>>> index 0000000..7d049af
+>>> --- /dev/null
+>>> +++ b/arch/powerpc/platforms/powernv/vas-api.c
+>>> @@ -0,0 +1,257 @@
+> ...
+>>> +
+>>> +static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+>>> +{
+>>> +	struct vas_window *txwin = fp->private_data;
+>>> +	unsigned long pfn;
+>>> +	u64 paste_addr;
+>>> +	pgprot_t prot;
+>>> +	int rc;
+>>> +
+>>> +	if ((vma->vm_end - vma->vm_start) > PAGE_SIZE) {
 >>
->>>
->>>     if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
->>>         if (likely(!pte_special(pte)))
->>>             goto check_pfn;
->>>         if (vma->vm_ops && vma->vm_ops->find_special_page)
->>>             return vma->vm_ops->find_special_page(vma, addr);
->>>         if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
->>>             return NULL;
->>>         if (is_zero_pfn(pfn))
->>>             return NULL;
->>>         if (pte_devmap(pte))
->>>             return NULL;
->>>
->>>         print_bad_pte(vma, addr, pte, NULL);
->>>         return NULL;
->>>     }
->>>
->>>> +static void __init pte_special_tests(unsigned long pfn, pgprot_t prot)
->>>> +{
->>>> +    pte_t pte = pfn_pte(pfn, prot);
->>>> +
->>>> +    WARN_ON(!pte_special(pte_mkspecial(pte)));
->>>> +}
->>>> +#else
->>>> +static void __init pte_special_tests(unsigned long pfn, pgprot_t prot) { }
->>>> +#endif
->>>> +
->>>> +#ifdef CONFIG_NUMA_BALANCING
->>>
->>> Same here, this ifdef shouldn't be necessary because in /include/asm-generic/pgtable.h we have the following, so a if (IS_ENABLED()) should be enough.
->>>
->>> #ifndef CONFIG_NUMA_BALANCING
->>> /*
->>>  * Technically a PTE can be PROTNONE even when not doing NUMA balancing but
->>>  * the only case the kernel cares is for NUMA balancing and is only ever set
->>>  * when the VMA is accessible. For PROT_NONE VMAs, the PTEs are not marked
->>>  * _PAGE_PROTNONE so by by default, implement the helper as "always no". It
->>>  * is the responsibility of the caller to distinguish between PROT_NONE
->>>  * protections and NUMA hinting fault protections.
->>>  */
->>> static inline int pte_protnone(pte_t pte)
->>> {
->>>     return 0;
->>> }
->>>
->>> static inline int pmd_protnone(pmd_t pmd)
->>> {
->>>     return 0;
->>> }
->>> #endif /* CONFIG_NUMA_BALANCING */
->>
->> True,  #ifdef here can be dropped, done. There is something I had missed
->> before, pfn_pmd() requires #ifdef CONFIG_TRANSPARENT_HUGEPAGE instead. We
->> need a pmd_t here with given prot. We cannot go via pfn_pte() followed by
->> pte_pmd(), as the later is platform specific and not available in general.
-> 
-> As many things require CONFIG_TRANSPARENT_HUGEPAGE,  maybe it would be worth creating an additional C file with the related functions and build it conditionnaly to CONFIG_TRANSPARENT_HUGEPAGE
-> 
+>> I think you said this should be 4096 rather than 64k, regardless of what
+>> PAGE_SIZE you are compiled with?
+>
+> You can't mmap less than a page, a page is PAGE_SIZE bytes.
+>
+> So if that checked for 4K explicitly it would prevent mmap on 64K
+> kernels always, which seems like not what you want?
 
-Apologies for the delayed response here. Any split in the test will break it's
-monolithic structure which is not desirable. Also lack of an explicit dependency
-between HAVE_ARCH_TRANSPARENT_HUGEPAGE and HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-makes it difficult to group together fallback dummy stubs from various THP
-related test functions here. I am planning to re-spin this patch sooner with
-some more tests while also accommodating other previous comments. Hence, will
-probably note down this aspect which can then be discussed further if required.
+Ah. My bad. Carry on then :)
 
-> Christophe
+Regards,
+Daniel
+
+>
+> cheers
