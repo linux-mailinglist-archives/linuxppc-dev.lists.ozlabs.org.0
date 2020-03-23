@@ -1,75 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9036118F0A5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 09:10:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m6WK3j3HzDqVc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 19:10:21 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA3718F139
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 09:51:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m7Qj3bMgzDr0p
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 19:51:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=188.165.48.29; helo=11.mo1.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=t4J1405A; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 11.mo1.mail-out.ovh.net (11.mo1.mail-out.ovh.net
+ [188.165.48.29])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m6Ms0N5QzDqv2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:03:52 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id g9so1649922pjp.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 01:03:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=X9VGstawfsuKwCedA/dcJRRw1tBlA/+3GmTwcGSoDjs=;
- b=t4J1405AUBbf61kpCMOVnk7SZbTFsohbAOcG8npvgO8THflwa+peFR5r96lWoYoGmv
- /+685lC9gpXLrceVABx4aO2Q5XP57yW+3vnSbJgRqgZgb6pHL6wYamexPcUf/c3Wz3ut
- H5WIC2l5EiX6mqNZh21LxgVIjvE0yY9R3fcBmJGI97f/XHL3OcGUiqP66dV2RUNcLaFF
- Pem1FdK1tORRKUDOEzRLTwwT4Eni3/BneUc8E7Fi4I1SfBSoN2za+0qBJN0brfrzJ9PX
- E9b0NSHKcL5X+KcpUShTc7GpLM1v9Il0tCq64H/qYh2WWWiBgiBLFszmp0alL7DIw4ff
- 3oYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=X9VGstawfsuKwCedA/dcJRRw1tBlA/+3GmTwcGSoDjs=;
- b=Y7fvbLuTZPuUBghl1tKINo66QSLR/JvaBZdUnPxdHcDxUjJtLsW47N3ubWaMze308b
- IN1AvxrIfRgJU75VAxj7W//oA45INSf/Fmz6R8IeSGLJ45jlRcP2UvtjhUncpmt/7wsH
- URzCHfuxTBbUjDUqdbscDud3B00jessV86NOZWyd4U2zmO3X75tkLC98OR3s1xvdzLAZ
- PF40BOinKi5S+dCvhATl/q8Wro3WtR2CqaOcTj4mK+BCVxp+PcVqoZ6fi67zk/I8eTIE
- Y41s5+TVv+z51l2qVhqKwoVZRTeQI2HpPQQBpCR/YulXv1qCjFU7g7IQ9VBKm9iO4Os8
- /FDw==
-X-Gm-Message-State: ANhLgQ0nX7NCL2VJ3qpBTQnWSCQSJCMM7FIwapkWPGHQVNwHjY6psPCi
- xkM32MrUEt3nXhsGJg3fCLmOq/Zw
-X-Google-Smtp-Source: ADFU+vtdnHmQLgyWGffbkB160WqBozqoaPcss0Et7byIHnun2Il9GEtGLUnAD0OPVBA1him/XRzAxw==
-X-Received: by 2002:a17:90a:c08f:: with SMTP id
- o15mr24526492pjs.155.1584950630958; 
- Mon, 23 Mar 2020 01:03:50 -0700 (PDT)
-Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id t15sm5200438pgv.61.2020.03.23.01.03.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 01:03:50 -0700 (PDT)
-Date: Mon, 23 Mar 2020 18:00:05 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 09/16] powerpc: Use a function for reading instructions
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-10-jniethe5@gmail.com>
-In-Reply-To: <20200320051809.24332-10-jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m7Np30dbzDqqD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:49:45 +1100 (AEDT)
+Received: from player690.ha.ovh.net (unknown [10.110.115.3])
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id C85631B5A81
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 09:32:31 +0100 (CET)
+Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
+ (Authenticated sender: clg@kaod.org)
+ by player690.ha.ovh.net (Postfix) with ESMTPSA id 9DB741090224A;
+ Mon, 23 Mar 2020 08:32:10 +0000 (UTC)
+Subject: Re: [PATCH v8 01/14] powerpc/xive: Define
+ xive_native_alloc_irq_on_chip()
+To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au
+References: <1584598120.9256.15237.camel@hbabu-laptop>
+ <1584598352.9256.15242.camel@hbabu-laptop>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <a0c47238-91f9-1b0c-208a-7186e331577f@kaod.org>
+Date: Mon, 23 Mar 2020 09:32:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584946118.tw98vo7hqx.astroid@bobo.none>
+In-Reply-To: <1584598352.9256.15242.camel@hbabu-laptop>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 8367406635500211026
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudegjedguddutdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrieeltddrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,72 +57,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, dja@axtens.net, bala24@linux.ibm.com
+Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
+ hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe's on March 20, 2020 3:18 pm:
-> Prefixed instructions will mean there are instructions of different
-> length. As a result dereferencing a pointer to an instruction will not
-> necessarily give the desired result. Introduce a function for reading
-> instructions from memory into the instruction data type.
->=20
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> v4: New to series
-> ---
->  arch/powerpc/include/asm/uprobes.h |  4 ++--
->  arch/powerpc/kernel/kprobes.c      |  8 ++++----
->  arch/powerpc/kernel/mce_power.c    |  2 +-
->  arch/powerpc/kernel/optprobes.c    |  6 +++---
->  arch/powerpc/kernel/trace/ftrace.c | 33 +++++++++++++++++++-----------
->  arch/powerpc/kernel/uprobes.c      |  2 +-
->  arch/powerpc/lib/code-patching.c   | 22 ++++++++++----------
->  arch/powerpc/lib/feature-fixups.c  |  6 +++---
->  arch/powerpc/xmon/xmon.c           |  6 +++---
->  9 files changed, 49 insertions(+), 40 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/uprobes.h b/arch/powerpc/include/as=
-m/uprobes.h
-> index 2bbdf27d09b5..fff3c5fc90b5 100644
-> --- a/arch/powerpc/include/asm/uprobes.h
-> +++ b/arch/powerpc/include/asm/uprobes.h
-> @@ -23,8 +23,8 @@ typedef ppc_opcode_t uprobe_opcode_t;
-> =20
->  struct arch_uprobe {
->  	union {
-> -		u32	insn;
-> -		u32	ixol;
-> +		u8	insn[MAX_UINSN_BYTES];
-> +		u8	ixol[MAX_UINSN_BYTES];
->  	};
->  };
+On 3/19/20 7:12 AM, Haren Myneni wrote:
+> 
+> This function allocates IRQ on a specific chip. VAS needs per chip
+> IRQ allocation and will have IRQ handler per VAS instance.
 
-Hmm. I wonder if this should be a different patch. Not sure if raw
-bytes is a good idea here. ppc probes also has a ppc_opcode_t, maybe
-could be replaced with ppc_insn_t and used here instead?
+The pool of generic interrupt source (IPI) numbers is generally used 
+by user space application which generally do not care on which chip 
+the interrupt is allocated. It's used by the CXL driver and KVM for 
+the guest interrupts. The CPU IPI are the exceptions.
 
-Also can't find where you define ppc_inst_read.
+The underlying FW call will try to allocate on the chip of the CPU 
+first and then on the others. If you specify a chip id, there is no 
+fallback. Is it what you want ? 
 
-> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/tra=
-ce/ftrace.c
-> index 7614a9f537fd..ad451205f268 100644
-> --- a/arch/powerpc/kernel/trace/ftrace.c
-> +++ b/arch/powerpc/kernel/trace/ftrace.c
-> @@ -41,6 +41,12 @@
->  #define	NUM_FTRACE_TRAMPS	8
->  static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
-> =20
-> +static long
-> +read_inst(ppc_inst *inst, const void *src)
-> +{
-> +	return probe_kernel_read((void *)inst, src, MCOUNT_INSN_SIZE);
-> +}
+Why do you need to allocate a generic interrupt source (IPI) from
+a specific chip ? Is it a VAS requirement ? 
 
-Humbly suggest probe_kernel_inst_read.
+Could you explain a bit more how it is used because there might be 
+similar request. 
+
+The code is fine.
 
 Thanks,
-Nick
 
-=
+C.
+
+  
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/xive.h   | 9 ++++++++-
+>  arch/powerpc/sysdev/xive/native.c | 6 +++---
+>  2 files changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
+> index 93f982db..d08ea11 100644
+> --- a/arch/powerpc/include/asm/xive.h
+> +++ b/arch/powerpc/include/asm/xive.h
+> @@ -5,6 +5,8 @@
+>  #ifndef _ASM_POWERPC_XIVE_H
+>  #define _ASM_POWERPC_XIVE_H
+>  
+> +#include <asm/opal-api.h>
+> +
+>  #define XIVE_INVALID_VP	0xffffffff
+>  
+>  #ifdef CONFIG_PPC_XIVE
+> @@ -108,7 +110,6 @@ struct xive_q {
+>  int xive_native_populate_irq_data(u32 hw_irq,
+>  				  struct xive_irq_data *data);
+>  void xive_cleanup_irq_data(struct xive_irq_data *xd);
+> -u32 xive_native_alloc_irq(void);
+>  void xive_native_free_irq(u32 irq);
+>  int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
+>  
+> @@ -137,6 +138,12 @@ int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
+>  				u32 qindex);
+>  int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
+>  bool xive_native_has_queue_state_support(void);
+> +extern u32 xive_native_alloc_irq_on_chip(u32 chip_id);
+> +
+> +static inline u32 xive_native_alloc_irq(void)
+> +{
+> +	return xive_native_alloc_irq_on_chip(OPAL_XIVE_ANY_CHIP);
+> +}
+>  
+>  #else
+>  
+> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
+> index 0ff6b73..14d4406 100644
+> --- a/arch/powerpc/sysdev/xive/native.c
+> +++ b/arch/powerpc/sysdev/xive/native.c
+> @@ -279,12 +279,12 @@ static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
+>  }
+>  #endif /* CONFIG_SMP */
+>  
+> -u32 xive_native_alloc_irq(void)
+> +u32 xive_native_alloc_irq_on_chip(u32 chip_id)
+>  {
+>  	s64 rc;
+>  
+>  	for (;;) {
+> -		rc = opal_xive_allocate_irq(OPAL_XIVE_ANY_CHIP);
+> +		rc = opal_xive_allocate_irq(chip_id);
+>  		if (rc != OPAL_BUSY)
+>  			break;
+>  		msleep(OPAL_BUSY_DELAY_MS);
+> @@ -293,7 +293,7 @@ u32 xive_native_alloc_irq(void)
+>  		return 0;
+>  	return rc;
+>  }
+> -EXPORT_SYMBOL_GPL(xive_native_alloc_irq);
+> +EXPORT_SYMBOL_GPL(xive_native_alloc_irq_on_chip);
+>  
+>  void xive_native_free_irq(u32 irq)
+>  {
+> 
+
