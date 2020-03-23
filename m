@@ -1,76 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFE718F068
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:44:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46AC18F060
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:39:00 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m5q4709VzDr68
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:38:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m5xy1WHqzDr55
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:44:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m2wZ0x4k; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=fE6I+wew; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m5nM5WPNzDqsQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:37:27 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id m15so5696402pje.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:37:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=MYoCOa75KDMm0Oj+C5PQ2Tksj5NTRguHM8xzS77p+DU=;
- b=m2wZ0x4kdCwUrwlvu+wq+3LFrKhDiaj72eEF6VhkFWbE4VR5prYFB8rWKVan55tBu+
- RRrNvG9Kmqf9QvatUWSClBUar/a6YLkVH+JHwJawOCiKVzsCWtoJjV02rX/2mgo5dy93
- BcjL5b8Zz3ygeZRXsnRIcJP/A+LeCzLyai0Y25bZ2OHZ2I9+xmpr3abbZ2dUtOAYFSMM
- Ym591CozslBJ06UPivgGMtfY4aWloijvkGxBLgBeLF/6srBtTxFJ62RyTOIePDgsreBb
- 1GOjl2g7jDvk4T9XSZ6fjphJkO0TPym2QASaeO5a7gGhzXaY2SJI7CsECwX1a/FIVNXd
- LTIQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m5wT5vPDzDqH6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:43:36 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id a23so5594325plm.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=uCGq2qtmlaVwlSaudkxTDRAMTVDYk6bzNjinbA80GS0=;
+ b=fE6I+wewbmLmWOKOOwRdvflIe9fTce7+kGRgtG+nhK36avNnRNypxH5HKGFgqdVKzW
+ 6C89wlDvuEi2ZPguE9Y25z76g/g/pMSBJM4abiu36TBv8IlpZ+4kpnEXITHC2jawEo68
+ XBnG4jEETS8ZK6vr/HPrGsDobb3C2XR8iFpoI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=MYoCOa75KDMm0Oj+C5PQ2Tksj5NTRguHM8xzS77p+DU=;
- b=JRxJulYKWB/JZqEcfLWyb+KV1TZH1R8Fmr7gEzuRTwTh/TpiI4p9Ka0qd3sWkF1XX+
- BjEAFfpUjc0XM5cp12Xau5lHrETmt01WymhVil3+O/PvCj2ARwwi1uB5rtCuuB51+CWq
- 59QXweMDVs8/64MLWhqLAKttl7flDTdNZLy9UUi2vkPQactdsGVfB7QRyAIyZKhKURdQ
- Pm6QOUQVTDRFRQ87kZxoZFamf2n7SJGQe5+OobFNjOPI99+vD53PKmOlHDVR6DIsdvJM
- T32OaBaPARPdwYJrjK5hk5o5kcx50lT1Zc2CwOiVMF6WCG9O3Vm5D//7cXJluda9Z0Uk
- OQFA==
-X-Gm-Message-State: ANhLgQ2NBBbkFqa5VGOgAUnzIYII8l1rgc56qKW7+LXW7KBc1qeYZfJe
- Tqg8PsUSIhZQQxkcfMDkE80=
-X-Google-Smtp-Source: ADFU+vsGdGcE0LC3TJ9G8S9olBGuUkWW9xySESnkPzYuyOCBKvA1EiYp4EyUb8tBGOx9B1I59oBegQ==
-X-Received: by 2002:a17:90a:2226:: with SMTP id
- c35mr24638211pje.2.1584949045357; 
- Mon, 23 Mar 2020 00:37:25 -0700 (PDT)
-Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id w15sm12457656pfj.28.2020.03.23.00.37.23
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=uCGq2qtmlaVwlSaudkxTDRAMTVDYk6bzNjinbA80GS0=;
+ b=DOPVbkkApT+wH/GCM9wx9vZ8Nc+PLReKBvptGyMUf2FQODDQ1t7xr7egInkV5D5lXk
+ RC6A0CALSqIvVF0khKGIfXkEbyx+XO9Xq1wCvCF08ibXZ2pJa5fZEXJ/2hJvxB08RQ50
+ CIFRRj4mBGJYnMmI3cGYZV+lqNKRFqLMdXJg8fz8IOHmaTKJZJhk9VM5lFtLapqpui6Q
+ hbjyE3pOPUAhsXki0vYB+P72KpWiel9fI/Kjpx2XzuO46P5EHw5gsLNoENSSKiGJis8N
+ YbS8B6mVbNdB0wOLsJc3bZKpV5/TO4EzPMcSI9CPXV3ZZzcvMUUE9jTRZpbiS/+miWAW
+ /LQw==
+X-Gm-Message-State: ANhLgQ20LPxH+G09pYxjO3aflxHEFFzxvx8XMv0cDylldwXcJF81CJiG
+ q5Useu345erpkCSrQ70eqgfEbQ==
+X-Google-Smtp-Source: ADFU+vtaVNCUnCWQZ6/gQK/IAU7l33YYnkgkP6WnCnuC5IbxXvW+cqM0xVDBqYm/oohIEf5jZu/65g==
+X-Received: by 2002:a17:90b:4d0b:: with SMTP id
+ mw11mr24194797pjb.45.1584949414709; 
+ Mon, 23 Mar 2020 00:43:34 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-b01a-4ee1-5a87-afd3.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:b01a:4ee1:5a87:afd3])
+ by smtp.gmail.com with ESMTPSA id 11sm12429384pfz.91.2020.03.23.00.43.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 00:37:24 -0700 (PDT)
-Date: Mon, 23 Mar 2020 17:33:39 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 14/16] powerpc64: Add prefixed instructions to
- instruction data type
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-15-jniethe5@gmail.com>
-In-Reply-To: <20200320051809.24332-15-jniethe5@gmail.com>
+ Mon, 23 Mar 2020 00:43:33 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au
+Subject: Re: [PATCH v4 3/9] powerpc/vas: Add VAS user space API
+In-Reply-To: <1584936142.9256.15325.camel@hbabu-laptop>
+References: <1584934879.9256.15321.camel@hbabu-laptop>
+ <1584936142.9256.15325.camel@hbabu-laptop>
+Date: Mon, 23 Mar 2020 18:43:29 +1100
+Message-ID: <878sjrwm72.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584947189.oay6araq0n.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,292 +77,386 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, dja@axtens.net, bala24@linux.ibm.com
+Cc: mikey@neuling.org, npiggin@gmail.com, linux-crypto@vger.kernel.org,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe's on March 20, 2020 3:18 pm:
-> For powerpc64, redefine the ppc_inst type so both word and prefixed
-> instructions can be represented. On powerpc32 the type will remain the
-> same.  Update places which had assumed instructions to be 4 bytes long.
->=20
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Haren Myneni <haren@linux.ibm.com> writes:
+
+> On power9, userspace can send GZIP compression requests directly to NX
+> once kernel establishes NX channel / window with VAS. This patch provides
+> user space API which allows user space to establish channel using open
+> VAS_TX_WIN_OPEN ioctl, mmap and close operations.
+>
+> Each window corresponds to file descriptor and application can open
+> multiple windows. After the window is opened, VAS_TX_WIN_OPEN icoctl to
+> open a window on specific VAS instance, mmap() system call to map
+> the hardware address of engine's request queue into the application's
+> virtual address space.
+>
+> Then the application can then submit one or more requests to the the
+> engine by using the copy/paste instructions and pasting the CRBs to
+> the virtual address (aka paste_address) returned by mmap().
+>
+> Only NX GZIP coprocessor type is supported right now and allow GZIP
+> engine access via /dev/crypto/nx-gzip device node.
+>
+> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
-> v4: New to series
-> ---
->  arch/powerpc/include/asm/code-patching.h | 10 +--
->  arch/powerpc/include/asm/inst.h          | 90 ++++++++++++++++++++++++
->  arch/powerpc/include/asm/kprobes.h       |  2 +-
->  arch/powerpc/include/asm/sstep.h         |  4 ++
->  arch/powerpc/include/asm/uaccess.h       | 22 ++++++
->  arch/powerpc/include/asm/uprobes.h       |  2 +-
->  arch/powerpc/kernel/align.c              |  5 +-
->  arch/powerpc/kernel/hw_breakpoint.c      |  2 +-
->  arch/powerpc/kernel/kprobes.c            |  7 +-
->  arch/powerpc/kernel/optprobes.c          | 42 ++++++-----
->  arch/powerpc/kernel/optprobes_head.S     |  3 +
->  arch/powerpc/kernel/trace/ftrace.c       | 19 ++++-
->  arch/powerpc/kernel/uprobes.c            |  2 +-
->  arch/powerpc/lib/code-patching.c         | 22 ++++--
->  arch/powerpc/lib/sstep.c                 |  4 +-
->  arch/powerpc/xmon/xmon.c                 | 38 +++++++---
->  16 files changed, 221 insertions(+), 53 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/incl=
-ude/asm/code-patching.h
-> index 68bd9db334bd..bd41e1558707 100644
-> --- a/arch/powerpc/include/asm/code-patching.h
-> +++ b/arch/powerpc/include/asm/code-patching.h
-> @@ -25,11 +25,11 @@
->  bool is_offset_in_branch_range(long offset);
->  ppc_inst create_branch(const ppc_inst *addr,
->  			   unsigned long target, int flags);
-> -unsigned int create_cond_branch(const ppc_inst *addr,
-> +ppc_inst create_cond_branch(const void *addr,
->  				unsigned long target, int flags);
-> -int patch_branch(ppc_inst *addr, unsigned long target, int flags);
-> -int patch_instruction(ppc_inst *addr, ppc_inst instr);
-> -int raw_patch_instruction(ppc_inst *addr, ppc_inst instr);
-> +int patch_branch(void *addr, unsigned long target, int flags);
-> +int patch_instruction(void *addr, ppc_inst instr);
-> +int raw_patch_instruction(void *addr, ppc_inst instr);
-> =20
->  static inline unsigned long patch_site_addr(s32 *site)
->  {
-> @@ -60,7 +60,7 @@ static inline int modify_instruction_site(s32 *site, un=
-signed int clr, unsigned
->  int instr_is_relative_branch(ppc_inst instr);
->  int instr_is_relative_link_branch(ppc_inst instr);
->  int instr_is_branch_to_addr(const ppc_inst *instr, unsigned long addr);
-> -unsigned long branch_target(const ppc_inst *instr);
-> +unsigned long branch_target(const void *instr);
->  ppc_inst translate_branch(const ppc_inst *dest,
->  			      const ppc_inst *src);
->  extern bool is_conditional_branch(ppc_inst instr);
-> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/i=
-nst.h
-> index 7c8596ee411e..1a40b0a71128 100644
-> --- a/arch/powerpc/include/asm/inst.h
-> +++ b/arch/powerpc/include/asm/inst.h
-> @@ -6,6 +6,95 @@
->   * Instruction data type for POWER
+>  arch/powerpc/include/asm/vas.h              |  11 ++
+>  arch/powerpc/platforms/powernv/Makefile     |   2 +-
+>  arch/powerpc/platforms/powernv/vas-api.c    | 257 ++++++++++++++++++++++++++++
+>  arch/powerpc/platforms/powernv/vas-window.c |   6 +-
+>  arch/powerpc/platforms/powernv/vas.h        |   2 +
+>  5 files changed, 274 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
+>
+> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+> index f93e6b0..e064953 100644
+> --- a/arch/powerpc/include/asm/vas.h
+> +++ b/arch/powerpc/include/asm/vas.h
+> @@ -163,4 +163,15 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
 >   */
-> =20
-> +#ifdef __powerpc64__
+>  int vas_paste_crb(struct vas_window *win, int offset, bool re);
+>  
+> +/*
+> + * Register / unregister coprocessor type to VAS API which will be exported
+> + * to user space. Applications can use this API to open / close window
+> + * which can be used to send / receive requests directly to cooprcessor.
+> + *
+> + * Only NX GZIP coprocessor type is supported now, but this API can be
+> + * used for others in future.
+> + */
+> +int vas_register_coproc_api(struct module *mod);
+> +void vas_unregister_coproc_api(void);
 > +
-> +typedef struct ppc_inst {
-> +	union {
-> +		struct {
-> +			u32 word;
-> +			u32 pad;
-> +		} __packed;
-> +		struct {
-> +			u32 prefix;
-> +			u32 suffix;
-> +		} __packed;
-> +	};
-> +} ppc_inst;
+>  #endif /* __ASM_POWERPC_VAS_H */
+> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+> index 395789f..fe3f0fb 100644
+> --- a/arch/powerpc/platforms/powernv/Makefile
+> +++ b/arch/powerpc/platforms/powernv/Makefile
+> @@ -17,7 +17,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
+>  obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
+>  obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
+>  obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
+> -obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
+> +obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o vas-api.o
+>  obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
+>  obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
+>  obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
+> diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/powernv/vas-api.c
+> new file mode 100644
+> index 0000000..7d049af
+> --- /dev/null
+> +++ b/arch/powerpc/platforms/powernv/vas-api.c
+> @@ -0,0 +1,257 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * VAS user space API for its accelerators (Only NX-GZIP is supported now)
+> + * Copyright (C) 2019 Haren Myneni, IBM Corp
+> + */
 > +
-> +#define PPC_INST(x) ((ppc_inst) { .word =3D (x), .pad =3D 0 })
-> +#define PPC_INST_PREFIXED(x, y) ((ppc_inst) { .prefix =3D (x), .suffix =
-=3D (y) })
+> +#include <linux/kernel.h>
+> +#include <linux/device.h>
+> +#include <linux/cdev.h>
+> +#include <linux/fs.h>
+> +#include <linux/slab.h>
+> +#include <linux/uaccess.h>
+> +#include <asm/vas.h>
+> +#include <uapi/asm/vas-api.h>
+> +#include "vas.h"
 > +
-> +static inline int ppc_inst_opcode(ppc_inst x)
+> +/*
+> + * The driver creates the device node that can be used as follows:
+> + * For NX-GZIP
+> + *
+> + *	fd = open("/dev/crypto/nx-gzip", O_RDWR);
+> + *	rc = ioctl(fd, VAS_TX_WIN_OPEN, &attr);
+> + *	paste_addr = mmap(NULL, PAGE_SIZE, prot, MAP_SHARED, fd, 0ULL).
+> + *	vas_copy(&crb, 0, 1);
+> + *	vas_paste(paste_addr, 0, 1);
+> + *	close(fd) or exit process to close window.
+> + *
+> + * where "vas_copy" and "vas_paste" are defined in copy-paste.h.
+> + * copy/paste returns to the user space directly. So refer NX hardware
+> + * documententation for exact copy/paste usage and completion / error
+> + * conditions.
+> + */
+> +
+> +static char	*coproc_dev_name = "nx-gzip";
+> +
+> +/*
+> + * Wrapper object for the nx-gzip device - there is just one instance of
+> + * this node for the whole system.
+> + */
+> +static struct coproc_dev {
+> +	struct cdev cdev;
+> +	struct device *device;
+> +	char *name;
+> +	dev_t devt;
+> +	struct class *class;
+> +} coproc_device;
+> +
+> +static char *coproc_devnode(struct device *dev, umode_t *mode)
 > +{
-> +	return x.word >> 26;
+> +	return kasprintf(GFP_KERNEL, "crypto/%s", dev_name(dev));
 > +}
 > +
-> +static inline bool ppc_inst_prefixed(ppc_inst x) {
-> +	return ppc_inst_opcode(x) =3D=3D 1;
+> +static int coproc_open(struct inode *inode, struct file *fp)
+> +{
+> +	/*
+> +	 * vas_window is allocated and assigned to fp->private_data
+> +	 * in ioctl. Nothing to do here for NX GZIP.
+> +	 */
+> +	return 0;
 > +}
 > +
-> +static inline int ppc_inst_len(ppc_inst x)
+> +static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
 > +{
-> +	if (ppc_inst_prefixed(x))
-> +		return 8;
-> +	else
-> +		return 4;
+> +	void __user *uptr = (void __user *)arg;
+> +	struct vas_tx_win_attr txattr = {};
+> +	struct vas_tx_win_open_attr uattr;
+> +	struct vas_window *txwin;
+> +	int rc, vasid;
+> +
+> +	/*
+> +	 * One window for file descriptor
+> +	 */
+> +	if (fp->private_data)
+> +		return -EEXIST;
+> +
+> +	rc = copy_from_user(&uattr, uptr, sizeof(uattr));
+> +	if (rc) {
+> +		pr_err("%s(): copy_from_user() returns %d\n", __func__, rc);
+> +		return -EFAULT;
+> +	}
+> +
+> +	if (uattr.version != 1) {
+> +		pr_err("Invalid version\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	vasid = uattr.vas_id;
+> +
+> +	vas_init_tx_win_attr(&txattr, VAS_COP_TYPE_GZIP);
+> +
+> +	txattr.lpid = mfspr(SPRN_LPID);
+> +	txattr.pidr = mfspr(SPRN_PID);
+> +	txattr.user_win = true;
+> +	txattr.rsvd_txbuf_count = false;
+> +	txattr.pswid = false;
+> +
+> +	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
+> +				mfspr(SPRN_PID));
+> +
+> +	txwin = vas_tx_win_open(vasid, VAS_COP_TYPE_GZIP, &txattr);
+> +	if (IS_ERR(txwin)) {
+> +		pr_err("%s() vas_tx_win_open() failed, %ld\n", __func__,
+> +					PTR_ERR(txwin));
+> +		return PTR_ERR(txwin);
+> +	}
+> +
+> +	fp->private_data = txwin;
+> +
+> +	return 0;
 > +}
 > +
-> +static inline u32 ppc_inst_word(ppc_inst x)
+> +static int coproc_release(struct inode *inode, struct file *fp)
 > +{
-> +	return x.word;
-> +}
-
-I guess a concern could be that code using ppc_inst_word could now get a=20
-prefix unexpectedly and not handle it properly. The reason it should
-generally be okay is that prefix won't match any existing valid
-instruction words, so callers won't match or think it's an unknown
-instruction. Am I right? Possibly a small comment?
-
+> +	struct vas_window *txwin = fp->private_data;
 > +
-> +static inline u32 ppc_inst_prefix(ppc_inst x)
-> +{
-> +	return x.prefix;
-> +}
+> +	if (txwin) {
+> +		vas_win_close(txwin);
+> +		fp->private_data = NULL;
+> +	}
 > +
-> +static inline u32 ppc_inst_suffix(ppc_inst x)
-> +{
-> +	return x.suffix;
+> +	/*
+> +	 * We don't know here if user has other receive windows
+> +	 * open, so we can't really call clear_thread_tidr().
+> +	 * So, once the process calls set_thread_tidr(), the
+> +	 * TIDR value sticks around until process exits, resulting
+> +	 * in an extra copy in restore_sprs().
+> +	 */
+> +
+> +	return 0;
 > +}
 > +
+> +static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+> +{
+> +	struct vas_window *txwin = fp->private_data;
+> +	unsigned long pfn;
+> +	u64 paste_addr;
+> +	pgprot_t prot;
+> +	int rc;
 > +
-> +static inline ppc_inst ppc_inst_read(const void *ptr)
-> +{
-> +	ppc_inst inst;
-> +	inst.word =3D *(u32 *)ptr;
-> +	if (ppc_inst_prefixed(inst))
-> +		inst.suffix =3D *((u32 *)ptr + 1);
-> +	else
-> +		inst.pad =3D 0;
+> +	if ((vma->vm_end - vma->vm_start) > PAGE_SIZE) {
 
-I'm a bit against using partially constructed opaque type for things=20
-like this, even if it is in the code that knows about the type. We
-could modify ppc_inst_prefixed() to assert that pad is equal to zero
-(or some poisoned value) if it's not prefixed. Or do some validation
-on the suffix if it is.
+I think you said this should be 4096 rather than 64k, regardless of what
+PAGE_SIZE you are compiled with?
 
-
-> +static inline bool ppc_inst_equal(ppc_inst x, ppc_inst y)
-> +{
-> +	return !memcmp(&x, &y, sizeof(struct ppc_inst));
-> +}
-
-I guess a variable length memcmp will make terrible code, so you're
-requiring pad to equal 0 to match non-prefixed. Fine.
-
+> +		pr_debug("%s(): size 0x%zx, PAGE_SIZE 0x%zx\n", __func__,
+> +				(vma->vm_end - vma->vm_start), PAGE_SIZE);
+> +		return -EINVAL;
+> +	}
 > +
-> +static inline bool ppc_inst_null(ppc_inst x)
-> +{
-> +	return x.word =3D=3D 0 && x.pad =3D=3D 0;
+> +	/* Ensure instance has an open send window */
+> +	if (!txwin) {
+> +		pr_err("%s(): No send window open?\n", __func__);
+> +		return -EINVAL;
+> +	}
+> +
+> +	vas_win_paste_addr(txwin, &paste_addr, NULL);
+> +	pfn = paste_addr >> PAGE_SHIFT;
+> +
+> +	/* flags, page_prot from cxl_mmap(), except we want cachable */
+> +	vma->vm_flags |= VM_IO | VM_PFNMAP;
+> +	vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);
+> +
+> +	prot = __pgprot(pgprot_val(vma->vm_page_prot) | _PAGE_DIRTY);
+> +
+> +	rc = remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
+> +			vma->vm_end - vma->vm_start, prot);
+> +
+> +	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
+> +			paste_addr, vma->vm_start, rc);
+> +
+> +	return rc;
 > +}
-
-In this case you shouldn't need x.pad =3D=3D 0. If x.word =3D=3D 0, then
-WARN_ON_ONCE(x.pad !=3D 0) ?
-
->  	if ((regs->msr & MSR_LE) !=3D (MSR_KERNEL & MSR_LE)) {
->  		/* We don't handle PPC little-endian any more... */
->  		if (cpu_has_feature(CPU_FTR_PPC_LE))
->  			return -EIO;
-> -		instr =3D PPC_INST(swab32(ppc_inst_word(instr)));
-> +		instr =3D PPC_INST_PREFIXED(swab32(ppc_inst_word(instr)),
-> +					  swab32(ppc_inst_suffix(instr)));
-
-Ugly, don't suppose you'd bother to do a ppc_inst_bswap function for=20
-this one case?
-
-[snip probes stuff]
-
-> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-pat=
-ching.c
-> index fa7f32adf029..3b8277a64b8f 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -24,17 +24,27 @@ static int __patch_instruction(ppc_inst *exec_addr, p=
-pc_inst instr,
+> +
+> +static long coproc_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+> +{
+> +	switch (cmd) {
+> +	case VAS_TX_WIN_OPEN:
+> +		return coproc_ioc_tx_win_open(fp, arg);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static struct file_operations coproc_fops = {
+> +	.open = coproc_open,
+> +	.release = coproc_release,
+> +	.mmap = coproc_mmap,
+> +	.unlocked_ioctl = coproc_ioctl,
+> +};
+> +
+> +/*
+> + * Supporting only nx-gzip coprocessor type now, but this API code
+> + * extended to other coprocessor types later.
+> + */
+> +int vas_register_coproc_api(struct module *mod)
+> +{
+> +	int rc = -EINVAL;
+> +	dev_t devno;
+> +
+> +	rc = alloc_chrdev_region(&coproc_device.devt, 1, 1, coproc_dev_name);
+> +	if (rc) {
+> +		pr_err("Unable to allocate coproc major number: %i\n", rc);
+> +		return rc;
+> +	}
+> +
+> +	pr_devel("%s device allocated, dev [%i,%i]\n", coproc_dev_name,
+> +			MAJOR(coproc_device.devt), MINOR(coproc_device.devt));
+> +
+> +	coproc_device.class = class_create(mod, coproc_dev_name);
+> +	if (IS_ERR(coproc_device.class)) {
+> +		rc = PTR_ERR(coproc_device.class);
+> +		pr_err("Unable to create %s class %d\n", coproc_dev_name, rc);
+> +		goto err_class;
+> +	}
+> +	coproc_device.class->devnode = coproc_devnode;
+> +
+> +	coproc_fops.owner = mod;
+> +	cdev_init(&coproc_device.cdev, &coproc_fops);
+> +
+> +	devno = MKDEV(MAJOR(coproc_device.devt), 0);
+> +	rc = cdev_add(&coproc_device.cdev, devno, 1);
+> +	if (rc) {
+> +		pr_err("cdev_add() failed %d\n", rc);
+> +		goto err_cdev;
+> +	}
+> +
+> +	coproc_device.device = device_create(coproc_device.class, NULL,
+> +			devno, NULL, coproc_dev_name, MINOR(devno));
+> +	if (IS_ERR(coproc_device.device)) {
+> +		rc = PTR_ERR(coproc_device.device);
+> +		pr_err("Unable to create coproc-%d %d\n", MINOR(devno), rc);
+> +		goto err;
+> +	}
+> +
+> +	pr_devel("%s: Added dev [%d,%d]\n", __func__, MAJOR(devno),
+> +			MINOR(devno));
+> +
+> +	return 0;
+> +
+> +err:
+> +	cdev_del(&coproc_device.cdev);
+> +err_cdev:
+> +	class_destroy(coproc_device.class);
+> +err_class:
+> +	unregister_chrdev_region(coproc_device.devt, 1);
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(vas_register_coproc_api);
+> +
+> +void vas_unregister_coproc_api(void)
+> +{
+> +	dev_t devno;
+> +
+> +	cdev_del(&coproc_device.cdev);
+> +	devno = MKDEV(MAJOR(coproc_device.devt), 0);
+> +	device_destroy(coproc_device.class, devno);
+> +
+> +	class_destroy(coproc_device.class);
+> +	unregister_chrdev_region(coproc_device.devt, 1);
+> +}
+> +EXPORT_SYMBOL_GPL(vas_unregister_coproc_api);
+> diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+> index 4ce421f..7b5187b 100644
+> --- a/arch/powerpc/platforms/powernv/vas-window.c
+> +++ b/arch/powerpc/platforms/powernv/vas-window.c
+> @@ -26,7 +26,7 @@
+>   * Compute the paste address region for the window @window using the
+>   * ->paste_base_addr and ->paste_win_id_shift we got from device tree.
+>   */
+> -static void compute_paste_address(struct vas_window *window, u64 *addr, int *len)
+> +void vas_win_paste_addr(struct vas_window *window, u64 *addr, int *len)
 >  {
->  	int err =3D 0;
-> =20
-> -	__put_user_asm(instr, patch_addr, err, "stw");
-> +	__put_user_asm(ppc_inst_word(instr), patch_addr, err, "stw");
->  	if (err)
->  		return err;
-> =20
->  	asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_addr),
->  							    "r" (exec_addr));
-> =20
-> +	if (!ppc_inst_prefixed(instr))
-> +		return 0;
-> +
-> +	__put_user_asm(ppc_inst_suffix(instr), patch_addr + 4, err, "stw");
-> +	if (err)
-> +		return err;
-> +
-> +	asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_addr + 4=
-),
-> +							    "r" (exec_addr + 4));
-
-Although there's proably no real performance or atomicity issues here,
-I'd be pleased if we could do a case for prefixed and a case for non
-prefixed, and store the non-prefixed with "std". Just for the principle
-of not having half-written instructions in the image.
-
-You could skip the dcbst and icbi for the second address if you happen
-to know this future CPU does not store prefix insns across a CL
-boundary. But probably not necessary to make that assumption in non
-perf critical code here, so I'd leave it as you have.
-
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index ee084411f2f5..c5536e1a3356 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -110,7 +110,7 @@ struct bpt {
->  #define BP_DABR		4
-> =20
->  #define NBPTS	256
-> -#define BPT_WORDS	2
-> +#define BPT_WORDS	4
-
-(2 * sizeof(ppc_inst) / sizeof(u32)) ?
-
->  static struct bpt bpts[NBPTS];
->  static struct bpt dabr;
->  static struct bpt *iabr;
-> @@ -118,12 +118,13 @@ static unsigned bpinstr =3D 0x7fe00008;	/* trap */
-> =20
->  #define BP_NUM(bp)	((bp) - bpts + 1)
-> =20
-> -static unsigned int __section(.text.xmon_bpts) bpt_table[NBPTS * BPT_WOR=
-DS];
-> +static unsigned int __section(.text.xmon_bpts) bpt_table[NBPTS * BPT_WOR=
-DS] __aligned(64);
-
-Should have a define somewhere for this magical 64.
-
->  /* Prototypes */
->  static int cmds(struct pt_regs *);
->  static int mread(unsigned long, void *, int);
->  static int mwrite(unsigned long, void *, int);
-> +static int mread_instr(unsigned long, ppc_inst *);
-
-In some cases you've addd helpers like this as separate patches,
-others you've bundled them together. NBD but I liked the prep patches
-which then made the more important changes easier to see.
-
-> @@ -759,8 +760,8 @@ static int xmon_bpt(struct pt_regs *regs)
-> =20
->  	/* Are we at the trap at bp->instr[1] for some bp? */
->  	bp =3D in_breakpoint_table(regs->nip, &offset);
-> -	if (bp !=3D NULL && offset =3D=3D 4) {
-> -		regs->nip =3D bp->address + 4;
-> +	if (bp !=3D NULL && (offset =3D=3D 4 || offset =3D=3D 8)) {
-> +		regs->nip =3D bp->address + offset;
->  		atomic_dec(&bp->ref_count);
->  		return 1;
->  	}
-> @@ -862,7 +863,7 @@ static struct bpt *in_breakpoint_table(unsigned long =
-nip, unsigned long *offp)
->  	if (off >=3D sizeof(bpt_table))
->  		return NULL;
->  	bp_off =3D off % (sizeof(unsigned int) * BPT_WORDS);
-> -	if (bp_off !=3D 0 && bp_off !=3D 4)
-> +	if (bp_off !=3D 0 && bp_off !=3D 4 && bp_off !=3D 8)
->  		return NULL;
->  	*offp =3D bp_off;
->  	return bpts + ((off - bp_off) / (sizeof(unsigned int) * BPT_WORDS));
-> @@ -881,7 +882,6 @@ static struct bpt *new_breakpoint(unsigned long a)
->  		if (!bp->enabled && atomic_read(&bp->ref_count) =3D=3D 0) {
->  			bp->address =3D a;
->  			bp->instr =3D bpt_table + ((bp - bpts) * BPT_WORDS);
-> -			patch_instruction(bp->instr + 1, PPC_INST(bpinstr));
->  			return bp;
->  		}
->  	}
-
-Why is this okay to remove?
-
-Thanks,
-Nick
-
-=
+>  	int winid;
+>  	u64 base, shift;
+> @@ -80,7 +80,7 @@ static void *map_paste_region(struct vas_window *txwin)
+>  		goto free_name;
+>  
+>  	txwin->paste_addr_name = name;
+> -	compute_paste_address(txwin, &start, &len);
+> +	vas_win_paste_addr(txwin, &start, &len);
+>  
+>  	if (!request_mem_region(start, len, name)) {
+>  		pr_devel("%s(): request_mem_region(0x%llx, %d) failed\n",
+> @@ -138,7 +138,7 @@ static void unmap_paste_region(struct vas_window *window)
+>  	u64 busaddr_start;
+>  
+>  	if (window->paste_kaddr) {
+> -		compute_paste_address(window, &busaddr_start, &len);
+> +		vas_win_paste_addr(window, &busaddr_start, &len);
+>  		unmap_region(window->paste_kaddr, busaddr_start, len);
+>  		window->paste_kaddr = NULL;
+>  		kfree(window->paste_addr_name);
+> diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
+> index 8c39a7d..a10abed 100644
+> --- a/arch/powerpc/platforms/powernv/vas.h
+> +++ b/arch/powerpc/platforms/powernv/vas.h
+> @@ -431,6 +431,8 @@ struct vas_winctx {
+>  extern void vas_return_credit(struct vas_window *window, bool tx);
+>  extern struct vas_window *vas_pswid_to_window(struct vas_instance *vinst,
+>  						uint32_t pswid);
+> +extern void vas_win_paste_addr(struct vas_window *window, u64 *addr,
+> +					int *len);
+>  
+>  static inline int vas_window_pid(struct vas_window *window)
+>  {
+> -- 
+> 1.8.3.1
