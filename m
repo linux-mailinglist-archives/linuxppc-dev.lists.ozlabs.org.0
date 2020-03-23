@@ -2,56 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6171518FD38
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E448818FD49
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:06:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mP1S42rhzDr1c
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 06:03:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mP431Pn7zDrC8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 06:06:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=nSW9ZFAT; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mNz45W8dzDqyB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 06:01:52 +1100 (AEDT)
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com
- [209.85.219.46])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 980742072D
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:01:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584990110;
- bh=YRs4mrhPHXIMZTdf5p/iGgRJf9XseZ16wHVCMQiwstk=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=nSW9ZFATDzQa9L/ugTIBDmoYXyYF2+hjU1lnoDQcoHHREd11KSu00kwYGOKJqn4rP
- dZ2Po1tHBKPZYBJvdDGW0vzGbij1uSMqlyhhV6Y/yilfhsTqQnoUKNq0tnC8ypAsRl
- b9RzPvCoYHCkmQ+52eyfDyfc860fWyhwaiNXLwg8=
-Received: by mail-qv1-f46.google.com with SMTP id cy12so7806631qvb.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 12:01:50 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ0DcZLk8eBFYLbKhshekD6u/hsGYusKKNTvXbWuF0xe+8Y8Z6Em
- K/pWX8fEuC9ehxnE2FwMcodL10hkv9lqIxDoHw==
-X-Google-Smtp-Source: ADFU+vtZfj3NsyyYYv7dL45XPEBZ0zGdtc3bidPipH2D4nR8TuLq0fULO/yXaatafS8cwmSLkV6OHdodvClaUapmViI=
-X-Received: by 2002:a0c:f207:: with SMTP id h7mr3649102qvk.20.1584990109723;
- Mon, 23 Mar 2020 12:01:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200320174107.29406-1-lkundrak@v3.sk>
-In-Reply-To: <20200320174107.29406-1-lkundrak@v3.sk>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Mon, 23 Mar 2020 13:01:38 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+JSb3vgRusTu98VH9NVzrWDKEGiY0Rue9P9hUsgxLDgQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+JSb3vgRusTu98VH9NVzrWDKEGiY0Rue9P9hUsgxLDgQ@mail.gmail.com>
-Subject: Re: [PATCH 0/10] NS 8250 UART Device Tree improvements
-To: Lubomir Rintel <lkundrak@v3.sk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mP0X1VgMzDqw4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 06:03:07 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02NJ2OZI065642; Mon, 23 Mar 2020 15:02:49 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ywf2g51h1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Mar 2020 15:02:49 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02NJ2Sc2066132;
+ Mon, 23 Mar 2020 15:02:49 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ywf2g51gq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Mar 2020 15:02:49 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02NJ1RwN009182;
+ Mon, 23 Mar 2020 19:02:48 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02dal.us.ibm.com with ESMTP id 2ywaw1qa9f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Mar 2020 19:02:48 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02NJ2laM45089176
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 Mar 2020 19:02:47 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0BA6F6A051;
+ Mon, 23 Mar 2020 19:02:47 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FA7A6A05D;
+ Mon, 23 Mar 2020 19:02:46 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Mar 2020 19:02:46 +0000 (GMT)
+Subject: Re: [PATCH v8 04/14] powerpc/vas: Alloc and setup IRQ and trigger
+ port address
+From: Haren Myneni <haren@linux.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+In-Reply-To: <bd846a9c-0e21-1d97-0b03-e01c35ff01ae@kaod.org>
+References: <1584598120.9256.15237.camel@hbabu-laptop>
+ <1584598473.9256.15248.camel@hbabu-laptop>
+ <396db62b-5342-a1b3-eade-a219afd98fc7@kaod.org>
+ <bd846a9c-0e21-1d97-0b03-e01c35ff01ae@kaod.org>
 Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 23 Mar 2020 12:02:15 -0700
+Message-ID: <1584990135.9256.15381.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-23_07:2020-03-23,
+ 2020-03-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ malwarescore=0 mlxlogscore=999 clxscore=1011 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2003230094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,44 +95,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Mans Rullgard <mans@mansr.com>, Marc Gonzalez <marc.w.gonzalez@free.fr>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>, Daniel Mack <daniel@zonque.org>
+Cc: mikey@neuling.org, herbert@gondor.apana.org.au,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>, npiggin@gmail.com,
+ hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 20, 2020 at 11:41 AM Lubomir Rintel <lkundrak@v3.sk> wrote:
->
-> Hi,
->
-> this series aims to make it possible to validate NS 8250 compatible serial port
-> nodes in Device Tree. It ultimately ends up converting the 8250.txt binding
-> specification to YAML for json-schema.
->
-> It starts by fixing up a couple of issues that would fail validation of
-> device trees for various boards. Note there might be validation issues in other
-> boards -- I don't have computing power to run "make dtbs_check" with
-> CONFIG_OF_ALL_DTBS=y at the moment. I'm happy to fix up issues if somebody
-> runs the test output to me.
->
-> Unless someone has a different idea, I'd like to submit this to arm-soc once
-> I get the Acks from PXA and Tango maintainers as well as DT reviewers:
->
->   [PATCH 01/10] ARM: dts: pxa*: Don't redeclare phandle references
->   [PATCH 02/10] ARM: dts: pxa*: Fix serial port names
->   [PATCH 03/10] ARM: dts: pxa*: Make the serial ports compatible with
->   [PATCH 04/10] ARM: dts: mmp2-brownstone: Don't redeclare phandle
->   [PATCH 05/10] ARM: dts: mmp*: Fix serial port names
->   [PATCH 06/10] ARM: dts: mmp*: Make the serial ports compatible with
->   [PATCH 07/10] ARM: dts: tango4: Make /serial compatible with ns16550a
+On Mon, 2020-03-23 at 10:27 +0100, Cédric Le Goater wrote:
+> On 3/23/20 10:06 AM, Cédric Le Goater wrote:
+> > On 3/19/20 7:14 AM, Haren Myneni wrote:
+> >>
+> >> Alloc IRQ and get trigger port address for each VAS instance. Kernel
+> >> register this IRQ per VAS instance and sets this port for each send
+> >> window. NX interrupts the kernel when it sees page fault.
+> > 
+> > I don't understand why this is not done by the OPAL driver for each VAS 
+> > of the system. Is the VAS unit very different from OpenCAPI regarding
+> > the fault ? 
+> 
+> I checked the previous patchsets and I see that v3 was more like I expected
+> it: one interrupt for faults allocated by the skiboot driver and exposed  
+> in the DT.
+> 
+> What made you change your mind ? 
+> 
+> This version is hijacking the lowlevel routines of the XIVE irqchip which
+> is not the best approach. OCXL is doing that because it needs to allocate
+> interrupts for the user space processes using the AFU and we should rework 
+> that part. 
+> 
+> However, the translation fault interrupt is allocated by skiboot.
 
-For 1-7:
+Sorry my mistake. I should have CC you earlier. 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Each VAS instance will generate fault interrupt which is per chip. There
+won't be other job completion interrupts. 
+
+Correct, V3 used allocating interrupts per chip in skiboot and exposed
+in DT. Since XIVE code has similar feature, exploited this approach so
+that we do not need skiboot changes. 
+
+Thanks
+Haren
+
+
+> 
+> Sorry for the noise, I would like to understand more how this works. I also
+> have passthrough in mind.
+> 
+> C.
+> 
+
+
