@@ -2,70 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFE718F068
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F05F18F07D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:55:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m5xy1WHqzDr55
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:44:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m6Bh0TnszDqvW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:55:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=fE6I+wew; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m5wT5vPDzDqH6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:43:36 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id a23so5594325plm.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=uCGq2qtmlaVwlSaudkxTDRAMTVDYk6bzNjinbA80GS0=;
- b=fE6I+wewbmLmWOKOOwRdvflIe9fTce7+kGRgtG+nhK36avNnRNypxH5HKGFgqdVKzW
- 6C89wlDvuEi2ZPguE9Y25z76g/g/pMSBJM4abiu36TBv8IlpZ+4kpnEXITHC2jawEo68
- XBnG4jEETS8ZK6vr/HPrGsDobb3C2XR8iFpoI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=uCGq2qtmlaVwlSaudkxTDRAMTVDYk6bzNjinbA80GS0=;
- b=DOPVbkkApT+wH/GCM9wx9vZ8Nc+PLReKBvptGyMUf2FQODDQ1t7xr7egInkV5D5lXk
- RC6A0CALSqIvVF0khKGIfXkEbyx+XO9Xq1wCvCF08ibXZ2pJa5fZEXJ/2hJvxB08RQ50
- CIFRRj4mBGJYnMmI3cGYZV+lqNKRFqLMdXJg8fz8IOHmaTKJZJhk9VM5lFtLapqpui6Q
- hbjyE3pOPUAhsXki0vYB+P72KpWiel9fI/Kjpx2XzuO46P5EHw5gsLNoENSSKiGJis8N
- YbS8B6mVbNdB0wOLsJc3bZKpV5/TO4EzPMcSI9CPXV3ZZzcvMUUE9jTRZpbiS/+miWAW
- /LQw==
-X-Gm-Message-State: ANhLgQ20LPxH+G09pYxjO3aflxHEFFzxvx8XMv0cDylldwXcJF81CJiG
- q5Useu345erpkCSrQ70eqgfEbQ==
-X-Google-Smtp-Source: ADFU+vtaVNCUnCWQZ6/gQK/IAU7l33YYnkgkP6WnCnuC5IbxXvW+cqM0xVDBqYm/oohIEf5jZu/65g==
-X-Received: by 2002:a17:90b:4d0b:: with SMTP id
- mw11mr24194797pjb.45.1584949414709; 
- Mon, 23 Mar 2020 00:43:34 -0700 (PDT)
-Received: from localhost
- (2001-44b8-1113-6700-b01a-4ee1-5a87-afd3.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:b01a:4ee1:5a87:afd3])
- by smtp.gmail.com with ESMTPSA id 11sm12429384pfz.91.2020.03.23.00.43.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 00:43:33 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au
-Subject: Re: [PATCH v4 3/9] powerpc/vas: Add VAS user space API
-In-Reply-To: <1584936142.9256.15325.camel@hbabu-laptop>
-References: <1584934879.9256.15321.camel@hbabu-laptop>
- <1584936142.9256.15325.camel@hbabu-laptop>
-Date: Mon, 23 Mar 2020 18:43:29 +1100
-Message-ID: <878sjrwm72.fsf@dja-thinkpad.axtens.net>
-MIME-Version: 1.0
-Content-Type: text/plain
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (unknown [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48m68f2QDgzDqF7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:54:10 +1100 (AEDT)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 0AE43AE80564;
+ Mon, 23 Mar 2020 03:52:20 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel v2 2/7] powerpc/powernv/ioda: Rework for huge DMA
+ window at 4GB
+Date: Mon, 23 Mar 2020 18:53:49 +1100
+Message-Id: <20200323075354.93825-3-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200323075354.93825-1-aik@ozlabs.ru>
+References: <20200323075354.93825-1-aik@ozlabs.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,386 +40,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com, linux-crypto@vger.kernel.org,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Alistair Popple <alistair@popple.id.au>,
+ kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
+This moves code to make the next patches look simpler. In particular:
 
-> On power9, userspace can send GZIP compression requests directly to NX
-> once kernel establishes NX channel / window with VAS. This patch provides
-> user space API which allows user space to establish channel using open
-> VAS_TX_WIN_OPEN ioctl, mmap and close operations.
->
-> Each window corresponds to file descriptor and application can open
-> multiple windows. After the window is opened, VAS_TX_WIN_OPEN icoctl to
-> open a window on specific VAS instance, mmap() system call to map
-> the hardware address of engine's request queue into the application's
-> virtual address space.
->
-> Then the application can then submit one or more requests to the the
-> engine by using the copy/paste instructions and pasting the CRBs to
-> the virtual address (aka paste_address) returned by mmap().
->
-> Only NX GZIP coprocessor type is supported right now and allow GZIP
-> engine access via /dev/crypto/nx-gzip device node.
->
-> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/vas.h              |  11 ++
->  arch/powerpc/platforms/powernv/Makefile     |   2 +-
->  arch/powerpc/platforms/powernv/vas-api.c    | 257 ++++++++++++++++++++++++++++
->  arch/powerpc/platforms/powernv/vas-window.c |   6 +-
->  arch/powerpc/platforms/powernv/vas.h        |   2 +
->  5 files changed, 274 insertions(+), 4 deletions(-)
->  create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
->
-> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-> index f93e6b0..e064953 100644
-> --- a/arch/powerpc/include/asm/vas.h
-> +++ b/arch/powerpc/include/asm/vas.h
-> @@ -163,4 +163,15 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
->   */
->  int vas_paste_crb(struct vas_window *win, int offset, bool re);
->  
-> +/*
-> + * Register / unregister coprocessor type to VAS API which will be exported
-> + * to user space. Applications can use this API to open / close window
-> + * which can be used to send / receive requests directly to cooprcessor.
-> + *
-> + * Only NX GZIP coprocessor type is supported now, but this API can be
-> + * used for others in future.
-> + */
-> +int vas_register_coproc_api(struct module *mod);
-> +void vas_unregister_coproc_api(void);
-> +
->  #endif /* __ASM_POWERPC_VAS_H */
-> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
-> index 395789f..fe3f0fb 100644
-> --- a/arch/powerpc/platforms/powernv/Makefile
-> +++ b/arch/powerpc/platforms/powernv/Makefile
-> @@ -17,7 +17,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
->  obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
->  obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
->  obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
-> -obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
-> +obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o vas-api.o
->  obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
->  obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
->  obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
-> diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/powernv/vas-api.c
-> new file mode 100644
-> index 0000000..7d049af
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/powernv/vas-api.c
-> @@ -0,0 +1,257 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * VAS user space API for its accelerators (Only NX-GZIP is supported now)
-> + * Copyright (C) 2019 Haren Myneni, IBM Corp
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/device.h>
-> +#include <linux/cdev.h>
-> +#include <linux/fs.h>
-> +#include <linux/slab.h>
-> +#include <linux/uaccess.h>
-> +#include <asm/vas.h>
-> +#include <uapi/asm/vas-api.h>
-> +#include "vas.h"
-> +
-> +/*
-> + * The driver creates the device node that can be used as follows:
-> + * For NX-GZIP
-> + *
-> + *	fd = open("/dev/crypto/nx-gzip", O_RDWR);
-> + *	rc = ioctl(fd, VAS_TX_WIN_OPEN, &attr);
-> + *	paste_addr = mmap(NULL, PAGE_SIZE, prot, MAP_SHARED, fd, 0ULL).
-> + *	vas_copy(&crb, 0, 1);
-> + *	vas_paste(paste_addr, 0, 1);
-> + *	close(fd) or exit process to close window.
-> + *
-> + * where "vas_copy" and "vas_paste" are defined in copy-paste.h.
-> + * copy/paste returns to the user space directly. So refer NX hardware
-> + * documententation for exact copy/paste usage and completion / error
-> + * conditions.
-> + */
-> +
-> +static char	*coproc_dev_name = "nx-gzip";
-> +
-> +/*
-> + * Wrapper object for the nx-gzip device - there is just one instance of
-> + * this node for the whole system.
-> + */
-> +static struct coproc_dev {
-> +	struct cdev cdev;
-> +	struct device *device;
-> +	char *name;
-> +	dev_t devt;
-> +	struct class *class;
-> +} coproc_device;
-> +
-> +static char *coproc_devnode(struct device *dev, umode_t *mode)
-> +{
-> +	return kasprintf(GFP_KERNEL, "crypto/%s", dev_name(dev));
-> +}
-> +
-> +static int coproc_open(struct inode *inode, struct file *fp)
-> +{
-> +	/*
-> +	 * vas_window is allocated and assigned to fp->private_data
-> +	 * in ioctl. Nothing to do here for NX GZIP.
-> +	 */
-> +	return 0;
-> +}
-> +
-> +static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
-> +{
-> +	void __user *uptr = (void __user *)arg;
-> +	struct vas_tx_win_attr txattr = {};
-> +	struct vas_tx_win_open_attr uattr;
-> +	struct vas_window *txwin;
-> +	int rc, vasid;
-> +
-> +	/*
-> +	 * One window for file descriptor
-> +	 */
-> +	if (fp->private_data)
-> +		return -EEXIST;
-> +
-> +	rc = copy_from_user(&uattr, uptr, sizeof(uattr));
-> +	if (rc) {
-> +		pr_err("%s(): copy_from_user() returns %d\n", __func__, rc);
-> +		return -EFAULT;
-> +	}
-> +
-> +	if (uattr.version != 1) {
-> +		pr_err("Invalid version\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	vasid = uattr.vas_id;
-> +
-> +	vas_init_tx_win_attr(&txattr, VAS_COP_TYPE_GZIP);
-> +
-> +	txattr.lpid = mfspr(SPRN_LPID);
-> +	txattr.pidr = mfspr(SPRN_PID);
-> +	txattr.user_win = true;
-> +	txattr.rsvd_txbuf_count = false;
-> +	txattr.pswid = false;
-> +
-> +	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
-> +				mfspr(SPRN_PID));
-> +
-> +	txwin = vas_tx_win_open(vasid, VAS_COP_TYPE_GZIP, &txattr);
-> +	if (IS_ERR(txwin)) {
-> +		pr_err("%s() vas_tx_win_open() failed, %ld\n", __func__,
-> +					PTR_ERR(txwin));
-> +		return PTR_ERR(txwin);
-> +	}
-> +
-> +	fp->private_data = txwin;
-> +
-> +	return 0;
-> +}
-> +
-> +static int coproc_release(struct inode *inode, struct file *fp)
-> +{
-> +	struct vas_window *txwin = fp->private_data;
-> +
-> +	if (txwin) {
-> +		vas_win_close(txwin);
-> +		fp->private_data = NULL;
-> +	}
-> +
-> +	/*
-> +	 * We don't know here if user has other receive windows
-> +	 * open, so we can't really call clear_thread_tidr().
-> +	 * So, once the process calls set_thread_tidr(), the
-> +	 * TIDR value sticks around until process exits, resulting
-> +	 * in an extra copy in restore_sprs().
-> +	 */
-> +
-> +	return 0;
-> +}
-> +
-> +static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
-> +{
-> +	struct vas_window *txwin = fp->private_data;
-> +	unsigned long pfn;
-> +	u64 paste_addr;
-> +	pgprot_t prot;
-> +	int rc;
-> +
-> +	if ((vma->vm_end - vma->vm_start) > PAGE_SIZE) {
+1. Separate locals declaration as we will be allocating a smaller DMA
+window if a TVE1_4GB option (allows a huge DMA windows at 4GB) is enabled;
 
-I think you said this should be 4096 rather than 64k, regardless of what
-PAGE_SIZE you are compiled with?
+2. Pass the bypass offset directly to pnv_pci_ioda2_create_table()
+as it is the only information needed from @pe;
 
-> +		pr_debug("%s(): size 0x%zx, PAGE_SIZE 0x%zx\n", __func__,
-> +				(vma->vm_end - vma->vm_start), PAGE_SIZE);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Ensure instance has an open send window */
-> +	if (!txwin) {
-> +		pr_err("%s(): No send window open?\n", __func__);
-> +		return -EINVAL;
-> +	}
-> +
-> +	vas_win_paste_addr(txwin, &paste_addr, NULL);
-> +	pfn = paste_addr >> PAGE_SHIFT;
-> +
-> +	/* flags, page_prot from cxl_mmap(), except we want cachable */
-> +	vma->vm_flags |= VM_IO | VM_PFNMAP;
-> +	vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);
-> +
-> +	prot = __pgprot(pgprot_val(vma->vm_page_prot) | _PAGE_DIRTY);
-> +
-> +	rc = remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
-> +			vma->vm_end - vma->vm_start, prot);
-> +
-> +	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
-> +			paste_addr, vma->vm_start, rc);
-> +
-> +	return rc;
-> +}
-> +
-> +static long coproc_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
-> +{
-> +	switch (cmd) {
-> +	case VAS_TX_WIN_OPEN:
-> +		return coproc_ioc_tx_win_open(fp, arg);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static struct file_operations coproc_fops = {
-> +	.open = coproc_open,
-> +	.release = coproc_release,
-> +	.mmap = coproc_mmap,
-> +	.unlocked_ioctl = coproc_ioctl,
-> +};
-> +
-> +/*
-> + * Supporting only nx-gzip coprocessor type now, but this API code
-> + * extended to other coprocessor types later.
-> + */
-> +int vas_register_coproc_api(struct module *mod)
-> +{
-> +	int rc = -EINVAL;
-> +	dev_t devno;
-> +
-> +	rc = alloc_chrdev_region(&coproc_device.devt, 1, 1, coproc_dev_name);
-> +	if (rc) {
-> +		pr_err("Unable to allocate coproc major number: %i\n", rc);
-> +		return rc;
-> +	}
-> +
-> +	pr_devel("%s device allocated, dev [%i,%i]\n", coproc_dev_name,
-> +			MAJOR(coproc_device.devt), MINOR(coproc_device.devt));
-> +
-> +	coproc_device.class = class_create(mod, coproc_dev_name);
-> +	if (IS_ERR(coproc_device.class)) {
-> +		rc = PTR_ERR(coproc_device.class);
-> +		pr_err("Unable to create %s class %d\n", coproc_dev_name, rc);
-> +		goto err_class;
-> +	}
-> +	coproc_device.class->devnode = coproc_devnode;
-> +
-> +	coproc_fops.owner = mod;
-> +	cdev_init(&coproc_device.cdev, &coproc_fops);
-> +
-> +	devno = MKDEV(MAJOR(coproc_device.devt), 0);
-> +	rc = cdev_add(&coproc_device.cdev, devno, 1);
-> +	if (rc) {
-> +		pr_err("cdev_add() failed %d\n", rc);
-> +		goto err_cdev;
-> +	}
-> +
-> +	coproc_device.device = device_create(coproc_device.class, NULL,
-> +			devno, NULL, coproc_dev_name, MINOR(devno));
-> +	if (IS_ERR(coproc_device.device)) {
-> +		rc = PTR_ERR(coproc_device.device);
-> +		pr_err("Unable to create coproc-%d %d\n", MINOR(devno), rc);
-> +		goto err;
-> +	}
-> +
-> +	pr_devel("%s: Added dev [%d,%d]\n", __func__, MAJOR(devno),
-> +			MINOR(devno));
-> +
-> +	return 0;
-> +
-> +err:
-> +	cdev_del(&coproc_device.cdev);
-> +err_cdev:
-> +	class_destroy(coproc_device.class);
-> +err_class:
-> +	unregister_chrdev_region(coproc_device.devt, 1);
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(vas_register_coproc_api);
-> +
-> +void vas_unregister_coproc_api(void)
-> +{
-> +	dev_t devno;
-> +
-> +	cdev_del(&coproc_device.cdev);
-> +	devno = MKDEV(MAJOR(coproc_device.devt), 0);
-> +	device_destroy(coproc_device.class, devno);
-> +
-> +	class_destroy(coproc_device.class);
-> +	unregister_chrdev_region(coproc_device.devt, 1);
-> +}
-> +EXPORT_SYMBOL_GPL(vas_unregister_coproc_api);
-> diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-> index 4ce421f..7b5187b 100644
-> --- a/arch/powerpc/platforms/powernv/vas-window.c
-> +++ b/arch/powerpc/platforms/powernv/vas-window.c
-> @@ -26,7 +26,7 @@
->   * Compute the paste address region for the window @window using the
->   * ->paste_base_addr and ->paste_win_id_shift we got from device tree.
->   */
-> -static void compute_paste_address(struct vas_window *window, u64 *addr, int *len)
-> +void vas_win_paste_addr(struct vas_window *window, u64 *addr, int *len)
->  {
->  	int winid;
->  	u64 base, shift;
-> @@ -80,7 +80,7 @@ static void *map_paste_region(struct vas_window *txwin)
->  		goto free_name;
->  
->  	txwin->paste_addr_name = name;
-> -	compute_paste_address(txwin, &start, &len);
-> +	vas_win_paste_addr(txwin, &start, &len);
->  
->  	if (!request_mem_region(start, len, name)) {
->  		pr_devel("%s(): request_mem_region(0x%llx, %d) failed\n",
-> @@ -138,7 +138,7 @@ static void unmap_paste_region(struct vas_window *window)
->  	u64 busaddr_start;
->  
->  	if (window->paste_kaddr) {
-> -		compute_paste_address(window, &busaddr_start, &len);
-> +		vas_win_paste_addr(window, &busaddr_start, &len);
->  		unmap_region(window->paste_kaddr, busaddr_start, len);
->  		window->paste_kaddr = NULL;
->  		kfree(window->paste_addr_name);
-> diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-> index 8c39a7d..a10abed 100644
-> --- a/arch/powerpc/platforms/powernv/vas.h
-> +++ b/arch/powerpc/platforms/powernv/vas.h
-> @@ -431,6 +431,8 @@ struct vas_winctx {
->  extern void vas_return_credit(struct vas_window *window, bool tx);
->  extern struct vas_window *vas_pswid_to_window(struct vas_instance *vinst,
->  						uint32_t pswid);
-> +extern void vas_win_paste_addr(struct vas_window *window, u64 *addr,
-> +					int *len);
->  
->  static inline int vas_window_pid(struct vas_window *window)
->  {
-> -- 
-> 1.8.3.1
+3. Use PAGE_SHIFT for it_map allocation estimate and @tceshift for
+the IOMMU page size; this makes the distinction clear and allows
+easy switching between different IOMMU page size.
+
+These changes should not cause behavioral change.
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+
+I really need 1), 2) makes the code less dependent on the PE struct member
+value (==easier to follow), 3) is to enable 2MB quickly for the default
+DMA window for debugging/performance testing.
+---
+ arch/powerpc/platforms/powernv/pci-ioda.c | 38 ++++++++++++-----------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 52db10ab4fef..f5f1b4e25530 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -2375,15 +2375,10 @@ static void pnv_pci_ioda2_set_bypass(struct pnv_ioda_pe *pe, bool enable)
+ 		pe->tce_bypass_enabled = enable;
+ }
+ 
+-static long pnv_pci_ioda2_create_table(struct iommu_table_group *table_group,
+-		int num, __u32 page_shift, __u64 window_size, __u32 levels,
++static long pnv_pci_ioda2_create_table(int nid, int num, __u64 bus_offset,
++		__u32 page_shift, __u64 window_size, __u32 levels,
+ 		bool alloc_userspace_copy, struct iommu_table **ptbl)
+ {
+-	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
+-			table_group);
+-	int nid = pe->phb->hose->node;
+-	__u64 bus_offset = num ?
+-		pe->table_group.tce64_start : table_group->tce32_start;
+ 	long ret;
+ 	struct iommu_table *tbl;
+ 
+@@ -2410,21 +2405,23 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
+ {
+ 	struct iommu_table *tbl = NULL;
+ 	long rc;
+-	unsigned long res_start, res_end;
++	u64 max_memory, maxblock, window_size;
++	const unsigned int tceshift = PAGE_SHIFT;
++	unsigned long res_start, res_end, tces_order, tcelevel_order, levels;
+ 
+ 	/*
+ 	 * crashkernel= specifies the kdump kernel's maximum memory at
+ 	 * some offset and there is no guaranteed the result is a power
+ 	 * of 2, which will cause errors later.
+ 	 */
+-	const u64 max_memory = __rounddown_pow_of_two(memory_hotplug_max());
++	max_memory = __rounddown_pow_of_two(memory_hotplug_max());
+ 
+ 	/*
+ 	 * In memory constrained environments, e.g. kdump kernel, the
+ 	 * DMA window can be larger than available memory, which will
+ 	 * cause errors later.
+ 	 */
+-	const u64 maxblock = 1UL << (PAGE_SHIFT + MAX_ORDER - 1);
++	maxblock = 1UL << (PAGE_SHIFT + MAX_ORDER - 1);
+ 
+ 	/*
+ 	 * We create the default window as big as we can. The constraint is
+@@ -2434,11 +2431,11 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
+ 	 * to support crippled devices (i.e. not fully 64bit DMAble) only.
+ 	 */
+ 	/* iommu_table::it_map uses 1 bit per IOMMU page, hence 8 */
+-	const u64 window_size = min((maxblock * 8) << PAGE_SHIFT, max_memory);
++	window_size = min((maxblock * 8) << tceshift, max_memory);
+ 	/* Each TCE level cannot exceed maxblock so go multilevel if needed */
+-	unsigned long tces_order = ilog2(window_size >> PAGE_SHIFT);
+-	unsigned long tcelevel_order = ilog2(maxblock >> 3);
+-	unsigned int levels = tces_order / tcelevel_order;
++	tces_order = ilog2(window_size >> tceshift);
++	tcelevel_order = ilog2(maxblock >> 3);
++	levels = tces_order / tcelevel_order;
+ 
+ 	if (tces_order % tcelevel_order)
+ 		levels += 1;
+@@ -2448,8 +2445,8 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
+ 	 */
+ 	levels = max_t(unsigned int, levels, POWERNV_IOMMU_DEFAULT_LEVELS);
+ 
+-	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0, PAGE_SHIFT,
+-			window_size, levels, false, &tbl);
++	rc = pnv_pci_ioda2_create_table(pe->phb->hose->node,
++			0, 0, tceshift, window_size, levels, false, &tbl);
+ 	if (rc) {
+ 		pe_err(pe, "Failed to create 32-bit TCE table, err %ld",
+ 				rc);
+@@ -2551,8 +2548,13 @@ static long pnv_pci_ioda2_create_table_userspace(
+ 		int num, __u32 page_shift, __u64 window_size, __u32 levels,
+ 		struct iommu_table **ptbl)
+ {
+-	long ret = pnv_pci_ioda2_create_table(table_group,
+-			num, page_shift, window_size, levels, true, ptbl);
++	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
++			table_group);
++	__u64 bus_offset = num ?
++		pe->table_group.tce64_start : table_group->tce32_start;
++	long ret = pnv_pci_ioda2_create_table(pe->phb->hose->node,
++			num, bus_offset, page_shift, window_size, levels, true,
++			ptbl);
+ 
+ 	if (!ret)
+ 		(*ptbl)->it_allocated_size = pnv_pci_ioda2_get_table_size(
+-- 
+2.17.1
+
