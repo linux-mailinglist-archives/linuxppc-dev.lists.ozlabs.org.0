@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8745318EFAA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 07:09:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A260618EFA5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 07:07:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m3qq2XzxzDqWs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 17:09:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m3nh0s9QzDqjy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 17:07:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,67 +19,67 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m3m21qKfzDqjy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 17:06:10 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m3lg5gcczDqdh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 17:05:51 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02N63WfE076512
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:06:07 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywd8ax1bp-1
+ 02N62l5b014171
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:05:48 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0kub17-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:06:06 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:05:48 -0400
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
- Mon, 23 Mar 2020 06:06:04 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Mon, 23 Mar 2020 06:05:45 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 23 Mar 2020 06:06:01 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02N660Ag32571790
+ Mon, 23 Mar 2020 06:05:42 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02N65fw555705680
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Mar 2020 06:06:00 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C27D1A406B;
- Mon, 23 Mar 2020 06:06:00 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F179CA4057;
- Mon, 23 Mar 2020 06:05:58 +0000 (GMT)
+ Mon, 23 Mar 2020 06:05:41 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4EFE4AE056;
+ Mon, 23 Mar 2020 06:05:41 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 37750AE053;
+ Mon, 23 Mar 2020 06:05:39 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.199.48.63])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 Mar 2020 06:05:58 +0000 (GMT)
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Mar 2020 06:05:38 +0000 (GMT)
 Subject: Re: [PATCH v4 02/16] xmon: Move out-of-line instructions to text
  section
 From: Balamuruhan S <bala24@linux.ibm.com>
 To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 23 Mar 2020 11:35:37 +0530
 In-Reply-To: <20200320051809.24332-3-jniethe5@gmail.com>
 References: <20200320051809.24332-1-jniethe5@gmail.com>
  <20200320051809.24332-3-jniethe5@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-MIME-Version: 1.0
-Date: Mon, 23 Mar 2020 11:29:42 +0530
 User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 20032306-0012-0000-0000-000003960146
+x-cbid: 20032306-4275-0000-0000-000003B143A2
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032306-0013-0000-0000-000021D2F028
-Message-Id: <f32395e83068538851152c7cf1c7f53856c47d74.camel@linux.ibm.com>
+x-cbparentid: 20032306-4276-0000-0000-000038C678CF
+Message-Id: <2e9df48355d592e1fbeeaff1d19d74c72fc4709f.camel@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-23_01:2020-03-21,
  2020-03-23 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=869 spamscore=0 lowpriorityscore=0 phishscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003230037
+ priorityscore=1501
+ phishscore=0 impostorscore=0 malwarescore=0 mlxlogscore=897 spamscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003230033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,7 +119,7 @@ On Fri, 2020-03-20 at 16:17 +1100, Jordan Niethe wrote:
 > mapping:
 > bpts[n] -> bpt_table[n * words per breakpoint].
 
-Can it separate commits ?
+Can we have it in separate commits ?
 	* introduce the array bpt_table[] and make struct bpt::instr a 
 		pointer to the instructions in bpt_table[].
 	* place the array in text section.
@@ -215,8 +215,8 @@ actual breakpoint offset. Can we have something like,
 #define NBPTS  256
 #define BPT_WORDS      2
 #define BPT_WORDS_SIZE (sizeof(unsigned int) * BPT_WORDS)
-#define BPT_OFFSET(off, bp_word_off) ((off - bp_word_off) / 				BPT_WOR
-DS_SIZE);
+#define BPT_OFFSET(off, bp_word_off) ((off - bp_word_off) / \					BPT_WORDS_SIZE)
+;
 :::
 :::
 :::
@@ -227,24 +227,4 @@ if (bp_word_off != 0 && bp_word_off != 4)
 return bpts + BPT_OFFSET(off, bp_word_off);
 
 -- Bala
->  }
- 
- static struct bpt *new_breakpoint(unsigned long a)
-@@ -876,7
-> +879,8 @@ static struct bpt *new_breakpoint(unsigned long a)
- 	for (bp
-> = bpts; bp < &bpts[NBPTS]; ++bp) {
- 		if (!bp->enabled &&
-> atomic_read(&bp->ref_count) == 0) {
- 			bp->address =
-> a;
--			patch_instruction(&bp->instr[1], bpinstr);
-+	
-> 		bp->instr = bpt_table + ((bp - bpts) * BPT_WORDS);
-+	
-> 		patch_instruction(bp->instr + 1, bpinstr);
- 		
-> 	return bp;
- 		}
- 	}
 
