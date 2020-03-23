@@ -2,76 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE2318EEDC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 05:21:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C11818EEDE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 05:23:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m1RN2CwGzDqZQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 15:21:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m1TS6BV2zDq96
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 15:23:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=q81OyrZj; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m1H25GSTzDqgD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 15:14:22 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id z25so2528851pfa.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Mar 2020 21:14:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
- :message-id:content-transfer-encoding;
- bh=WULtTOCjwyi9QruTZ6fQzlltct+XqJsTkVH8hoKrYsA=;
- b=q81OyrZjkxH5dx800fzz2+eyzeST6Um/5WnzJNquWKZRGOJc1BOM8qwR7lhSGvm3v3
- AyPBiPLxwUw3aG4V2a5/5aEaiqn1qv/K45e+DW5nCPOWpUx2Sx0uheIDlQuMEman2Yxv
- 6D6Kalw36QwjUismWHFMNFqBCNeoJHeToWfxHRFp/zS8sSmtJO1mgs0Ov2u1kx9IhQ52
- M74/WU/u8yBLFyH+qS20l+Ayvs4+gtaQn5t40VwPdGlZ9YP6T542uW+ii47xzJgf4dQO
- kMrwXTzQ7EpiEJ2+eK1icrU7Tfc66EdybHmpLigl8rLR2RpN9q0sFQFaBW9mt7GvhBWV
- qRxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=WULtTOCjwyi9QruTZ6fQzlltct+XqJsTkVH8hoKrYsA=;
- b=H++Drb607MDk7rGn/unPOEB4pH5KpVBxyIjwvgFhYFuYX4QfJYRXfLKqxV5QOQuRNz
- FPFlodE5GZjG2rq3cI6XYHkKcItjf18C+DxNHoMd55O6mg5IlVS5cOG4INut0GYm7LED
- 00U9enZjJrBr8kL9NJf2nZdNsO2ADv7PWAqfd+LfDRSeSRFBEPw/MINNiAA9CX3HJXPY
- vot9bCeDkyV6Mo4U1xnuFS4MKKzdQlx3xySKW7AVNlHFX55TrE36CzrtwKRiIbo7VyRe
- m+1kwEe5eVIJhYab63stu/TEJf0fNm9TiWDGE0pJWFWpI8T/i3J++QhSAm4rMtAFEyxG
- pUDQ==
-X-Gm-Message-State: ANhLgQ1SdbaO0sqNVh0/tpMC1iADatHFKdVgQRQPLyyKBlzKKUPqRtYp
- /QwkU2t46/ijhxqwxIhZQmhEzdDd
-X-Google-Smtp-Source: ADFU+vu+QlH5n10PtxZ3W4I2uZOLyiU0c4YeXkFXf2wrQDddPQ4dC/i2hwN5sD40a3Wjxj+udNykXg==
-X-Received: by 2002:a65:428a:: with SMTP id j10mr16718006pgp.272.1584936857570; 
- Sun, 22 Mar 2020 21:14:17 -0700 (PDT)
-Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id z63sm11013602pgd.12.2020.03.22.21.14.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Mar 2020 21:14:17 -0700 (PDT)
-Date: Mon, 23 Mar 2020 14:10:39 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64: ftrace don't trace real mode
-To: linuxppc-dev@lists.ozlabs.org, "Naveen N. Rao"
- <naveen.n.rao@linux.vnet.ibm.com>
-References: <20200320152551.1468983-1-npiggin@gmail.com>
- <1584728788.91gvyrzbi3.naveen@linux.ibm.com>
- <1584759479.7ueu8qvhgs.astroid@bobo.none>
- <1584893587.qg26sf1ty0.naveen@linux.ibm.com>
-In-Reply-To: <1584893587.qg26sf1ty0.naveen@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m1RB55g1zDqv1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 15:21:26 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02N43OKt039371
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:21:24 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywet16k7f-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:21:23 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Mon, 23 Mar 2020 04:21:22 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 23 Mar 2020 04:21:18 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02N4LI7c54526146
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 Mar 2020 04:21:18 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EFDE4AE045;
+ Mon, 23 Mar 2020 04:21:17 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1AFCAE053;
+ Mon, 23 Mar 2020 04:21:16 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.43.35])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 23 Mar 2020 04:21:16 +0000 (GMT)
+Date: Mon, 23 Mar 2020 09:51:14 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH 2/2] KVM: PPC: Book3S HV: H_SVM_INIT_START must call
+ UV_RETURN
+References: <20200320102643.15516-1-ldufour@linux.ibm.com>
+ <20200320102643.15516-3-ldufour@linux.ibm.com>
+ <20200320112403.GG26049@in.ibm.com>
+ <f6a71da6-6363-8cba-8215-78b23a046443@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584936504.dbruogn3re.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f6a71da6-6363-8cba-8215-78b23a046443@linux.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-TM-AS-GCONF: 00
+x-cbid: 20032304-4275-0000-0000-000003B138A4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032304-4276-0000-0000-000038C66D81
+Message-Id: <20200323042114.GH26049@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-22_08:2020-03-21,
+ 2020-03-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ mlxlogscore=999 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=2
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003230024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,65 +94,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Reply-To: bharata@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao's on March 23, 2020 2:17 am:
-> Nicholas Piggin wrote:
->> Naveen N. Rao's on March 21, 2020 4:39 am:
->>> Hi Nick,
->>>=20
->>> Nicholas Piggin wrote:
->>>> This warns and prevents tracing attempted in a real-mode context.
->>>=20
->>> Is this something you're seeing often? Last time we looked at this, KVM=
-=20
->>> was the biggest offender and we introduced paca->ftrace_enabled as a wa=
-y=20
->>> to disable ftrace while in KVM code.
->>=20
->> Not often but it has a tendancy to blow up the least tested code at the
->> worst times :)
->>=20
->> Machine check is bad, I'm sure HMI too but I haven't tested that yet.
->>=20
->> I've fixed up most of it with annotations, this is obviously an extra
->> safety not something to rely on like ftrace_enabled. Probably even the
->> WARN_ON here is dangerous here, but I don't want to leave these bugs
->> in there.
->=20
-> Ok, makes sense.
->=20
->>=20
->> Although the machine check and hmi code touch a fair bit of stuff and
->> annotating is a bit fragile. It might actually be better if the
->> paca->ftrace_enabled could be a nesting counter, then we could use it
->> in machine checks too and avoid a lot of annotations.
->=20
-> I'm not too familiar with MC/HMI, but I suppose those aren't re-entrant? =
-=20
-> If those have access to an emergency stack, can we save/restore=20
-> ftrace_enabled state across the handlers?
+On Fri, Mar 20, 2020 at 03:36:05PM +0100, Laurent Dufour wrote:
+> Le 20/03/2020 à 12:24, Bharata B Rao a écrit :
+> > On Fri, Mar 20, 2020 at 11:26:43AM +0100, Laurent Dufour wrote:
+> > > When the call to UV_REGISTER_MEM_SLOT is failing, for instance because
+> > > there is not enough free secured memory, the Hypervisor (HV) has to call
+> > > UV_RETURN to report the error to the Ultravisor (UV). Then the UV will call
+> > > H_SVM_INIT_ABORT to abort the securing phase and go back to the calling VM.
+> > > 
+> > > If the kvm->arch.secure_guest is not set, in the return path rfid is called
+> > > but there is no valid context to get back to the SVM since the Hcall has
+> > > been routed by the Ultravisor.
+> > > 
+> > > Move the setting of kvm->arch.secure_guest earlier in
+> > > kvmppc_h_svm_init_start() so in the return path, UV_RETURN will be called
+> > > instead of rfid.
+> > > 
+> > > Cc: Bharata B Rao <bharata@linux.ibm.com>
+> > > Cc: Paul Mackerras <paulus@ozlabs.org>
+> > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > > Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> > > ---
+> > >   arch/powerpc/kvm/book3s_hv_uvmem.c | 3 ++-
+> > >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > index 79b1202b1c62..68dff151315c 100644
+> > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > @@ -209,6 +209,8 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+> > >   	int ret = H_SUCCESS;
+> > >   	int srcu_idx;
+> > > +	kvm->arch.secure_guest = KVMPPC_SECURE_INIT_START;
+> > > +
+> > >   	if (!kvmppc_uvmem_bitmap)
+> > >   		return H_UNSUPPORTED;
+> > > @@ -233,7 +235,6 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+> > >   			goto out;
+> > >   		}
+> > >   	}
+> > > -	kvm->arch.secure_guest |= KVMPPC_SECURE_INIT_START;
+> > 
+> > There is an assumption that memory slots would have been registered with UV
+> > if KVMPPC_SECURE_INIT_START has been done. KVM_PPC_SVM_OFF ioctl will skip
+> > unregistration and other steps during reboot if KVMPPC_SECURE_INIT_START
+> > hasn't been done.
+> > 
+> > Have you checked if that path isn't affected by this change?
+> 
+> I checked that and didn't find any issue there.
+> 
+> My only concern was that block:
+> 	kvm_for_each_vcpu(i, vcpu, kvm) {
+> 		spin_lock(&vcpu->arch.vpa_update_lock);
+> 		unpin_vpa_reset(kvm, &vcpu->arch.dtl);
+> 		unpin_vpa_reset(kvm, &vcpu->arch.slb_shadow);
+> 		unpin_vpa_reset(kvm, &vcpu->arch.vpa);
+> 		spin_unlock(&vcpu->arch.vpa_update_lock);
+> 	}
+> 
+> But that seems to be safe.
 
-Yeah that's true. They're not highly reentrant though, we could just=20
-make it an 8 bit counter, it's nicer than saving / restoring from stack
-(but I guess I could do that too).
+Yes, looks like.
 
->=20
-> We're primarily disabling ftrace across idle/offline/KVM right now. I'm=20
-> not sure if nesting is useful there.
->=20
->>=20
->>> While this is cheap when handling ftrace_regs_caller() as done in this=20
->>> patch, for simple function tracing (see below), we will have to grab th=
-e=20
->>> MSR which will slow things down slightly.
->>=20
->> mfmsr is not too bad these days.=20
->=20
-> That's great!
+> 
+> However I'm not a familiar with the KVM's code, do you think an additional
+> KVMPPC_SECURE_INIT_* value needed here?
 
-Thanks,
-Nick
-=
+May be not as long as UV can handle the unexpected uv_unregister_mem_slot()
+calls, we are good.
+
+Regards,
+Bharata.
+
