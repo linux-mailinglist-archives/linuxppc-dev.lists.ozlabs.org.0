@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5B918F2E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 11:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC1218F303
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 11:41:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m9lJ1HbMzDr27
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 21:35:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m9sk0rh5zDr34
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 21:41:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rzaCj+gK; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20161025 header.b=GwUOdK5X; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m9ht3HnyzDqFp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 21:33:49 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id jz1so690204pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 03:33:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m9r35l5KzDqfc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 21:40:03 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id i13so7325278pfe.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 03:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=2w7jL0ZTZyPL95dyNwt6SF5zDZVsEYRAtpxVZplDx4k=;
- b=rzaCj+gK3+0OW+oEKn4gCGF6nQgRJlKYxdsvzfQMqI7Wr8ZiIp7F15UMc4k8Tghn1v
- sbqWLnmvfpfvVGjb1uYUWMKpTotk08pHO4SU4SL+D3dku7naKvHvX85/b7LelK68sXjJ
- vUnLn/cHMz02lKu1LG2xVOSe4Hl/ZEiX+ktCMPJ31fR2yXh5BlA5tIRKlK+tT1QE4Vhp
- aA9gaajiVf/iQknjsNOeFPoS0ghfVXBpeVvrO2+rZiHWKbs7Ivtqbbo+7TAlAA5cQcQx
- hkdyCGaQSiusmJgzQuTYIASww7k8fi0Lv7tLj2X3kB+s5C/x0R9tiYSLLXEDMeHlmkti
- e3dQ==
+ bh=IuulIYeaHJEeJRP8QUYbv3wsT7vVWcF+/PT5MHRspkw=;
+ b=GwUOdK5XpdWB3+zOofTlQCYqP2+ZQzt2zb3hq2Pd//rwJUqH0bRoJyDttHhMvRt+XW
+ NuXuEwjglLo6eWj2yqtXFyxIWVj6KNnhcwZSSdhiN0wN1yRLPWmuXzm+dQSaLr4po43w
+ ByZM/FFvIEcKUNHJQDlCeVONjbv2g/CNR97hEzorkYb0g5uqjjapmX9wkWhUu6dcajAI
+ YBrzJqvQV9FO4Sn27UBGxEfVLUYlD+fx/PeSiNlrc693hjFXfHo1DPMXQ4yaUgTQFO0g
+ NIiLA/2fEJ1DNXZQ2+wAFdzSBTi04KLd+Ce1YyCBRizirFEo+j/bbVrhM0bbqZX/f8xl
+ LZLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=2w7jL0ZTZyPL95dyNwt6SF5zDZVsEYRAtpxVZplDx4k=;
- b=OopbYdBv/ZBfktQEXWvhVvxEF0qcJdAMIl1SxUoMREkiS5s+vAyzvATfu+//XegZsY
- NvRUFUa9w2YEwhhKQLHU9MuLneYPUh5dBgIzlPcjPT/1DcDrVj7maBPDfXgmX/ReJjqD
- pRmvX2IYP72c9CEZtyiHRK1/37uJ8Cxgl36D+YVSrnKQ8FaEk6sT6X4soUH+RAfbHIO1
- EeOYbi2W/h1y+49uX5aFqpDVa8cRnwhGT+8V9tOfsMSKcSFMz2Q7dzk5f1fOYWsnKRIZ
- IPzbwdvnC+XSd3JdAWSpvDjV/naGD4XbHmxQhkhV8zy7Wu3yOiYrPEIhU1FajmsC5+3c
- EKYw==
-X-Gm-Message-State: ANhLgQ1q38tgPN17K00Bdm/jkeSQK14/6io5DkC9Jr18MUJHN2TqMFMN
- 4sUYreEkEBjGGQCEfHcRcDQ=
-X-Google-Smtp-Source: ADFU+vuH5ZhCkgCludyDTSOkYWiu+j3c9vxmK/gYfwLG7ZMsEAKnWkL2kJDPiq8/rfAvpepXlVzF0w==
-X-Received: by 2002:a17:902:444:: with SMTP id
- 62mr21033948ple.109.1584959627078; 
- Mon, 23 Mar 2020 03:33:47 -0700 (PDT)
+ bh=IuulIYeaHJEeJRP8QUYbv3wsT7vVWcF+/PT5MHRspkw=;
+ b=HAB5CjTuglTdF2wVGDKuoN/h7W8/jOmC9ZzNJbTW457/zc+Aq4FmdhKxqTNup64oxs
+ 4d0Yo1Q+HUKCak56pNa85veaIGHtoQL8t/PKFJT3ptPaudbbwX72RnDXFLpBkc7YTCyk
+ qQ0DT7jq77R3dliBcmcXISN868ky6vpzEYHH9umCkz97HIPJVJXE/jhu1whTdZZu3FuK
+ LrrmqB6q5ROc8D/NIaQ9KR8W8BaPnxoQPgaGZJe2bDv4W6DI8nhPheKRSZHEVk7D6UnO
+ yabwIX8wLOjX0sNza3CEPBxH2ElxGT6x8z8Yi5FGSKDgl8y0+avIscnMMoYkI6Dyyg3C
+ jGAA==
+X-Gm-Message-State: ANhLgQ2XI6Rmcc1lrjp3VdBLmeokcPex13nkm6NXfYjOG23ZuPZwkbXL
+ pO67ognnZmXDTEYQuaBZBoxJa2iL
+X-Google-Smtp-Source: ADFU+vtiE8quLMZSuIjmzIY53hW6vScyNtGTZEQvVSv60SbI2bXKve+T4vd5tyYJ1/vpOd/TNC5TTA==
+X-Received: by 2002:a63:3850:: with SMTP id h16mr6159900pgn.344.1584960001104; 
+ Mon, 23 Mar 2020 03:40:01 -0700 (PDT)
 Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id z16sm11921689pjt.40.2020.03.23.03.33.45
+ by smtp.gmail.com with ESMTPSA id p7sm12502082pjp.1.2020.03.23.03.39.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 03:33:46 -0700 (PDT)
-Date: Mon, 23 Mar 2020 20:29:55 +1000
+ Mon, 23 Mar 2020 03:40:00 -0700 (PDT)
+Date: Mon, 23 Mar 2020 20:36:09 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64: allow rtas to be called in real-mode, use
- this in machine check
-To: Ganesh <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200320152816.1469657-1-npiggin@gmail.com>
- <8435e728-8cb4-c6b2-f228-44ebb0b0cc29@linux.ibm.com>
-In-Reply-To: <8435e728-8cb4-c6b2-f228-44ebb0b0cc29@linux.ibm.com>
+Subject: Re: [PATCH v4 09/16] powerpc: Use a function for reading instructions
+To: Jordan Niethe <jniethe5@gmail.com>
+References: <20200320051809.24332-1-jniethe5@gmail.com>
+ <20200320051809.24332-10-jniethe5@gmail.com>
+ <1584946118.tw98vo7hqx.astroid@bobo.none>
+ <CACzsE9qL6FhFuMbHy1Qz6EvOEeuA-2rjK=nuqwikZEapS9VmNA@mail.gmail.com>
+In-Reply-To: <CACzsE9qL6FhFuMbHy1Qz6EvOEeuA-2rjK=nuqwikZEapS9VmNA@mail.gmail.com>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584959111.ol6yw4itpo.astroid@bobo.none>
+Message-Id: <1584959427.79kdt9w1gm.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,148 +82,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ganesh's on March 23, 2020 8:19 pm:
->=20
->=20
-> On 3/20/20 8:58 PM, Nicholas Piggin wrote:
->> rtas_call allocates and uses memory in failure paths, which is
->> not safe for RMA. It also calls local_irq_save() which may not be safe
->> in all real mode contexts.
+Jordan Niethe's on March 23, 2020 8:09 pm:
+> On Mon, Mar 23, 2020 at 7:03 PM Nicholas Piggin <npiggin@gmail.com> wrote=
+:
 >>
->> Particularly machine check may run with interrupts not "reconciled",
->> and it may have hit while it was in tracing code that should not be
->> rentered.
+>> Jordan Niethe's on March 20, 2020 3:18 pm:
+>> > Prefixed instructions will mean there are instructions of different
+>> > length. As a result dereferencing a pointer to an instruction will not
+>> > necessarily give the desired result. Introduce a function for reading
+>> > instructions from memory into the instruction data type.
+>> >
+>> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>> > ---
+>> > v4: New to series
+>> > ---
+>> >  arch/powerpc/include/asm/uprobes.h |  4 ++--
+>> >  arch/powerpc/kernel/kprobes.c      |  8 ++++----
+>> >  arch/powerpc/kernel/mce_power.c    |  2 +-
+>> >  arch/powerpc/kernel/optprobes.c    |  6 +++---
+>> >  arch/powerpc/kernel/trace/ftrace.c | 33 +++++++++++++++++++----------=
+-
+>> >  arch/powerpc/kernel/uprobes.c      |  2 +-
+>> >  arch/powerpc/lib/code-patching.c   | 22 ++++++++++----------
+>> >  arch/powerpc/lib/feature-fixups.c  |  6 +++---
+>> >  arch/powerpc/xmon/xmon.c           |  6 +++---
+>> >  9 files changed, 49 insertions(+), 40 deletions(-)
+>> >
+>> > diff --git a/arch/powerpc/include/asm/uprobes.h b/arch/powerpc/include=
+/asm/uprobes.h
+>> > index 2bbdf27d09b5..fff3c5fc90b5 100644
+>> > --- a/arch/powerpc/include/asm/uprobes.h
+>> > +++ b/arch/powerpc/include/asm/uprobes.h
+>> > @@ -23,8 +23,8 @@ typedef ppc_opcode_t uprobe_opcode_t;
+>> >
+>> >  struct arch_uprobe {
+>> >       union {
+>> > -             u32     insn;
+>> > -             u32     ixol;
+>> > +             u8      insn[MAX_UINSN_BYTES];
+>> > +             u8      ixol[MAX_UINSN_BYTES];
+>> >       };
+>> >  };
 >>
->> Create minimal rtas call that should be usable by guest machine check
->> code, use it there to call "ibm,nmi-interlock".
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   arch/powerpc/include/asm/rtas.h      |  1 +
->>   arch/powerpc/kernel/entry_64.S       | 12 ++++++--
->>   arch/powerpc/kernel/rtas.c           | 43 ++++++++++++++++++++++++++++
->>   arch/powerpc/platforms/pseries/ras.c |  2 +-
->>   4 files changed, 54 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/=
-rtas.h
->> index 3c1887351c71..4ffc499ce1ac 100644
->> --- a/arch/powerpc/include/asm/rtas.h
->> +++ b/arch/powerpc/include/asm/rtas.h
->> @@ -352,6 +352,7 @@ extern struct rtas_t rtas;
->>   extern int rtas_token(const char *service);
->>   extern int rtas_service_present(const char *service);
->>   extern int rtas_call(int token, int, int, int *, ...);
->> +extern int raw_rtas_call(int token, int, int, int *, ...);
->>   void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
->>   			int nret, ...);
->>   extern void __noreturn rtas_restart(char *cmd);
->> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_=
-64.S
->> index 51c5b681f70c..309abb677788 100644
->> --- a/arch/powerpc/kernel/entry_64.S
->> +++ b/arch/powerpc/kernel/entry_64.S
->> @@ -759,6 +759,13 @@ _GLOBAL(enter_rtas)
->>   	li	r0,0
->>   	mtcr	r0
->>  =20
->> +	/* enter_rtas called from real-mode may not have irqs reconciled
->> +	 * but will always have interrupts disabled.
->> +	 */
->> +	mfmsr	r6
->> +	andi.	r7,r6,(MSR_IR|MSR_DR)
->> +	beq	2f
->> +
->>   #ifdef CONFIG_BUG
->>   	/* There is no way it is acceptable to get here with interrupts enabl=
-ed,
->>   	 * check it with the asm equivalent of WARN_ON
->> @@ -769,10 +776,10 @@ _GLOBAL(enter_rtas)
->>   #endif
->>  =20
->>   	/* Hard-disable interrupts */
->> -	mfmsr	r6
->>   	rldicl	r7,r6,48,1
->>   	rotldi	r7,r7,16
->>   	mtmsrd	r7,1
->> +2:
->>  =20
->>   	/* Unfortunately, the stack pointer and the MSR are also clobbered,
->>   	 * so they are saved in the PACA which allows us to restore
->> @@ -795,7 +802,6 @@ _GLOBAL(enter_rtas)
->>   	ori	r9,r9,MSR_IR|MSR_DR|MSR_FE0|MSR_FE1|MSR_FP|MSR_RI|MSR_LE
->>   	andc	r6,r0,r9
->>  =20
->> -__enter_rtas:
->>   	sync				/* disable interrupts so SRR0/1 */
->>   	mtmsrd	r0			/* don't get trashed */
->>  =20
->> @@ -837,7 +843,7 @@ rtas_return_loc:
->>   	mtspr	SPRN_SRR1,r4
->>   	RFI_TO_KERNEL
->>   	b	.	/* prevent speculative execution */
->> -_ASM_NOKPROBE_SYMBOL(__enter_rtas)
->> +_ASM_NOKPROBE_SYMBOL(enter_rtas)
->>   _ASM_NOKPROBE_SYMBOL(rtas_return_loc)
->>  =20
->>   	.align	3
->> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
->> index c5fa251b8950..a058dcfb6726 100644
->> --- a/arch/powerpc/kernel/rtas.c
->> +++ b/arch/powerpc/kernel/rtas.c
->> @@ -450,6 +450,8 @@ int rtas_call(int token, int nargs, int nret, int *o=
-utputs, ...)
->>   	char *buff_copy =3D NULL;
->>   	int ret;
->>  =20
->> +	WARN_ON_ONCE((mfmsr() & (MSR_IR|MSR_DR)) !=3D (MSR_IR|MSR_DR));
->> +
->>   	if (!rtas.entry || token =3D=3D RTAS_UNKNOWN_SERVICE)
->>   		return -1;
->>  =20
->> @@ -483,6 +485,47 @@ int rtas_call(int token, int nargs, int nret, int *=
-outputs, ...)
->>   }
->>   EXPORT_SYMBOL(rtas_call);
->>  =20
->> +/*
->> + * Like rtas_call but no kmalloc or printk etc in error handling, so
->> + * error won't go through log_error. No tracing, may be called in real =
-mode.
->> + */
->> +int notrace raw_rtas_call(int token, int nargs, int nret, int *outputs,=
- ...)
->> +{
->> +	va_list list;
->> +	int i;
->> +	struct rtas_args *rtas_args;
->> +	int ret;
->> +
->> +	WARN_ON_ONCE((mfmsr() & MSR_EE));
->> +
->> +	if (!rtas.entry || token =3D=3D RTAS_UNKNOWN_SERVICE)
->> +		return -1;
->> +
->> +	/*
->> +	 * Real mode must have MSR[EE]=3D0 and we prefer not to touch any
->> +	 * irq or preempt state (this may be called in machine check).
->> +	 */
->> +	preempt_disable_notrace();
->> +	arch_spin_lock(&rtas.lock);
->=20
-> I wonder, if its ok to attempt for this lock in nested MCE.
+>> Hmm. I wonder if this should be a different patch. Not sure if raw
+>> bytes is a good idea here. ppc probes also has a ppc_opcode_t, maybe
+>> could be replaced with ppc_insn_t and used here instead?
+> You are right this should not really be in this patch. I felt bytes
+> made sense as we have  MAX_UINSN_BYTES, which could be updated once
+> prefixed instructions were introduced.
 
-It's not. It will deadlock if an MCE hits after "ibm,nmi-interlock" is
-called and before the lock is released on the same CPU.
+Okay.
 
-The struct actually isn't even that big, 84 bytes or so, and we're in
-the dedicated machine check stack here so we could just put it on
-stack AFAIKS?
+> By replace do you mean define uprobe_opcode_t as ppc_inst_t instead of
+> ppc_opcode_t? That will not really work with the arch indep code in
+> places like:
+>=20
+> bool __weak is_swbp_insn(uprobe_opcode_t *insn)
+> {
+>     return *insn =3D=3D UPROBE_SWBP_INSN;
+> }
+
+Ah, yeah I did mean that, you probably told me that already.
+
+> Or do you mean something like this:
+>   struct arch_uprobe {
+>        union {
+>  -             u32     insn;
+>  -             u32     ixol;
+>  +             pcc_inst_t     insn;
+>  +             ppc_inst_t     ixol;
+>        };
+>  };
+
+I didn't mean that, but it would be nicer than the change you've got,
+if it works.
+
+>> Also can't find where you define ppc_inst_read.
+>>
+>> > diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/=
+trace/ftrace.c
+>> > index 7614a9f537fd..ad451205f268 100644
+>> > --- a/arch/powerpc/kernel/trace/ftrace.c
+>> > +++ b/arch/powerpc/kernel/trace/ftrace.c
+>> > @@ -41,6 +41,12 @@
+>> >  #define      NUM_FTRACE_TRAMPS       8
+>> >  static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
+>> >
+>> > +static long
+>> > +read_inst(ppc_inst *inst, const void *src)
+>> > +{
+>> > +     return probe_kernel_read((void *)inst, src, MCOUNT_INSN_SIZE);
+>> > +}
+>>
+>> Humbly suggest probe_kernel_inst_read.
+> The other probe_kernel_*  functions were from generic code so I
+> thought it might be misleading to call it that.
+
+It's probably not too bad, you could add a __ or ppc_ prefix if
+it would help?
 
 Thanks,
 Nick
