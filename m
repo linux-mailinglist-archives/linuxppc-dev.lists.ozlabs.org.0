@@ -2,84 +2,156 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C8518F14F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 09:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B185E18F156
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:00:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m7YN3NzNzDqdg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 19:57:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m7d00h9FzDqfN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:00:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=e8g0t5PM; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m7VT2v2zzDqjJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:54:41 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02N8XsZA044615
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 04:54:39 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywe7rfja2-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 04:54:38 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
- Mon, 23 Mar 2020 08:54:36 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 23 Mar 2020 08:54:33 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02N8sWdd44958140
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Mar 2020 08:54:32 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C310811C05B;
- Mon, 23 Mar 2020 08:54:32 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1FF811C052;
- Mon, 23 Mar 2020 08:54:30 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.203.173.30])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 Mar 2020 08:54:30 +0000 (GMT)
-Subject: Re: [PATCH v4 15/16] powerpc sstep: Add support for prefixed
- load/stores
-From: Balamuruhan S <bala24@linux.ibm.com>
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 23 Mar 2020 14:24:29 +0530
-In-Reply-To: <20200320051809.24332-16-jniethe5@gmail.com>
-References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-16-jniethe5@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m7ZW1njszDq9W
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:58:09 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id ng8so5867236pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 01:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Ly0QbCs8gJcXb8NdzxaIZTuHF0vmEKREAcLHCbIw5zk=;
+ b=e8g0t5PMwv09arVpX1p84jbQcUqe5woWwjXg5R2HARyBkFotr+G8QfeePcM0vad95U
+ VQFIEOZFw7UwH/6RvJndt/i7BsYJl+8Ga9Ia6a5pxllJlCgrn2aT2GOTDPID+vW8hi2V
+ r+X6ufujUrvB0rJEaAZdQFvWXeX5NCkF1TlTPkVmm4gSreL+596U4IGXigR67E5G03xO
+ LZJ21cfErh+rqXkygrwHcIibaAGx2AiPOoTdhEOsURNAtR9wDHKyOpZSaFENS7V+l0Ei
+ 9T9NHM1Xmg8HE2HCDly0Jl93wqkl97OV5xBeVHikf8XpFdRh//zXXN9WKuE7dr31RP4c
+ iprA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=Ly0QbCs8gJcXb8NdzxaIZTuHF0vmEKREAcLHCbIw5zk=;
+ b=fwxqSY2JW/ah956hfG46z7iSEMqjMca/Po+jmJhJ2TXVk1G/gNiHuHpfDMhvdq7sua
+ 2IXkVHmWF/FvwBitNk/gvf86JPbzbMn0M3ud9lTW/oEgbfo7J+0YOtDQfpxJLe/lfWA3
+ X2KxNx33Sja0KNc8mTGcy5YwXmcQFdLmKgpZ1hz2I3G1je5yFztMPSgUJQQJdxYurmJE
+ qMy/Vym8u4jJ2qxWwTqiK6eMLdZkA+B8AByYOjct7e0JUzkD0BCuIZEGPcgNcaBDvMLH
+ Dwice5gSGCqsKAj/+mqARnQJEJzu4bDvi5geFXZwg9Kz+QsWJQhBDQEGsBG7jm71FD8N
+ Af4w==
+X-Gm-Message-State: ANhLgQ2g/G0INUKWWtQKE+79alXmImvNGYAvDBkaHassJEN17xMwqEOW
+ nOQAAl/CDylG33sTqc4T+RzqQQ==
+X-Google-Smtp-Source: ADFU+vuxHDjJXUtLB7IGcLuzjOwhuv+0DKdbhCTewwUj2oJf5ETeArZ5h5Kcjf6U57Oll0MpS852UQ==
+X-Received: by 2002:a17:90a:aa0c:: with SMTP id
+ k12mr24714551pjq.193.1584953887518; 
+ Mon, 23 Mar 2020 01:58:07 -0700 (PDT)
+Received: from [192.168.10.21] (ppp121-45-221-81.bras1.cbr2.internode.on.net.
+ [121.45.221.81])
+ by smtp.gmail.com with ESMTPSA id e11sm12823809pfj.95.2020.03.23.01.58.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 Mar 2020 01:58:06 -0700 (PDT)
+Subject: Re: [PATCH 1/2] dma-mapping: add a dma_ops_bypass flag to struct
+ device
+To: Christoph Hellwig <hch@lst.de>
+References: <20200320141640.366360-1-hch@lst.de>
+ <20200320141640.366360-2-hch@lst.de>
+ <2f31d0dd-aa7e-8b76-c8a1-5759fda5afc9@ozlabs.ru>
+ <20200323083705.GA31245@lst.de>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <37ce1b7e-264d-292d-32b1-093b24b3525c@ozlabs.ru>
+Date: Mon, 23 Mar 2020 19:58:01 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <20200323083705.GA31245@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20032308-0012-0000-0000-0000039615E5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032308-0013-0000-0000-000021D3053B
-Message-Id: <94c8eb85fd364b629053fd495636ddc03b7a595e.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-23_02:2020-03-21,
- 2020-03-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- impostorscore=0 bulkscore=0 phishscore=0 spamscore=0 adultscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003230048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,243 +163,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, dja@axtens.net, npiggin@gmail.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-03-20 at 16:18 +1100, Jordan Niethe wrote:
-> This adds emulation support for the following prefixed integer
-> load/stores:
->   * Prefixed Load Byte and Zero (plbz)
->   * Prefixed Load Halfword and Zero (plhz)
->   * Prefixed Load Halfword Algebraic (plha)
->   * Prefixed Load Word and Zero (plwz)
->   * Prefixed Load Word Algebraic (plwa)
->   * Prefixed Load Doubleword (pld)
->   * Prefixed Store Byte (pstb)
->   * Prefixed Store Halfword (psth)
->   * Prefixed Store Word (pstw)
->   * Prefixed Store Doubleword (pstd)
->   * Prefixed Load Quadword (plq)
->   * Prefixed Store Quadword (pstq)
-> 
-> the follow prefixed floating-point load/stores:
->   * Prefixed Load Floating-Point Single (plfs)
->   * Prefixed Load Floating-Point Double (plfd)
->   * Prefixed Store Floating-Point Single (pstfs)
->   * Prefixed Store Floating-Point Double (pstfd)
-> 
-> and for the following prefixed VSX load/stores:
->   * Prefixed Load VSX Scalar Doubleword (plxsd)
->   * Prefixed Load VSX Scalar Single-Precision (plxssp)
->   * Prefixed Load VSX Vector [0|1]  (plxv, plxv0, plxv1)
->   * Prefixed Store VSX Scalar Doubleword (pstxsd)
->   * Prefixed Store VSX Scalar Single-Precision (pstxssp)
->   * Prefixed Store VSX Vector [0|1] (pstxv, pstxv0, pstxv1)
-> 
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
-LGTM,
 
-Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
-
-> ---
-> v2: - Combine all load/store patches
->     - Fix the name of Type 01 instructions
->     - Remove sign extension flag from pstd/pld
->     - Rename sufx -> suffix
-> v3: - Move prefixed loads and stores into the switch statement
-> ---
->  arch/powerpc/lib/sstep.c | 159 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 159 insertions(+)
+On 23/03/2020 19:37, Christoph Hellwig wrote:
+> On Mon, Mar 23, 2020 at 12:28:34PM +1100, Alexey Kardashevskiy wrote:
 > 
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index ab4c71c43c8c..daef70eb8e22 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -187,6 +187,44 @@ static nokprobe_inline unsigned long xform_ea(unsigned
-> int instr,
->  	return ea;
->  }
->  
-> +/*
-> + * Calculate effective address for a MLS:D-form / 8LS:D-form
-> + * prefixed instruction
-> + */
-> +static nokprobe_inline unsigned long mlsd_8lsd_ea(unsigned int instr,
-> +						  unsigned int suffix,
-> +						  const struct pt_regs *regs)
-> +{
-> +	int ra, prefix_r;
-> +	unsigned int  dd;
-> +	unsigned long ea, d0, d1, d;
-> +
-> +	prefix_r = instr & (1ul << 20);
-> +	ra = (suffix >> 16) & 0x1f;
-> +
-> +	d0 = instr & 0x3ffff;
-> +	d1 = suffix & 0xffff;
-> +	d = (d0 << 16) | d1;
-> +
-> +	/*
-> +	 * sign extend a 34 bit number
-> +	 */
-> +	dd = (unsigned int)(d >> 2);
-> +	ea = (signed int)dd;
-> +	ea = (ea << 2) | (d & 0x3);
-> +
-> +	if (!prefix_r && ra)
-> +		ea += regs->gpr[ra];
-> +	else if (!prefix_r && !ra)
-> +		; /* Leave ea as is */
-> +	else if (prefix_r && !ra)
-> +		ea += regs->nip;
-> +	else if (prefix_r && ra)
-> +		; /* Invalid form. Should already be checked for by caller! */
-> +
-> +	return ea;
-> +}
-> +
->  /*
->   * Return the largest power of 2, not greater than sizeof(unsigned long),
->   * such that x is a multiple of it.
-> @@ -1166,6 +1204,7 @@ int analyse_instr(struct instruction_op *op, const
-> struct pt_regs *regs,
->  		  ppc_inst instr)
->  {
->  	unsigned int opcode, ra, rb, rc, rd, spr, u;
-> +	unsigned int suffixopcode, prefixtype, prefix_r;
->  	unsigned long int imm;
->  	unsigned long int val, val2;
->  	unsigned int mb, me, sh;
-> @@ -2652,6 +2691,126 @@ int analyse_instr(struct instruction_op *op, const
-> struct pt_regs *regs,
->  			break;
->  		}
->  		break;
-> +	case 1: /* Prefixed instructions */
-> +		prefix_r = word & (1ul << 20);
-> +		ra = (suffix >> 16) & 0x1f;
-> +		op->update_reg = ra;
-> +		rd = (suffix >> 21) & 0x1f;
-> +		op->reg = rd;
-> +		op->val = regs->gpr[rd];
-> +
-> +		suffixopcode = suffix >> 26;
-> +		prefixtype = (word >> 24) & 0x3;
-> +		switch (prefixtype) {
-> +		case 0: /* Type 00  Eight-Byte Load/Store */
-> +			if (prefix_r && ra)
-> +				break;
-> +			op->ea = mlsd_8lsd_ea(word, suffix, regs);
-> +			switch (suffixopcode) {
-> +			case 41:	/* plwa */
-> +				op->type = MKOP(LOAD, PREFIXED | SIGNEXT, 4);
-> +				break;
-> +			case 42:        /* plxsd */
-> +				op->reg = rd + 32;
-> +				op->type = MKOP(LOAD_VSX, PREFIXED, 8);
-> +				op->element_size = 8;
-> +				op->vsx_flags = VSX_CHECK_VEC;
-> +				break;
-> +			case 43:	/* plxssp */
-> +				op->reg = rd + 32;
-> +				op->type = MKOP(LOAD_VSX, PREFIXED, 4);
-> +				op->element_size = 8;
-> +				op->vsx_flags = VSX_FPCONV | VSX_CHECK_VEC;
-> +				break;
-> +			case 46:	/* pstxsd */
-> +				op->reg = rd + 32;
-> +				op->type = MKOP(STORE_VSX, PREFIXED, 8);
-> +				op->element_size = 8;
-> +				op->vsx_flags = VSX_CHECK_VEC;
-> +				break;
-> +			case 47:	/* pstxssp */
-> +				op->reg = rd + 32;
-> +				op->type = MKOP(STORE_VSX, PREFIXED, 4);
-> +				op->element_size = 8;
-> +				op->vsx_flags = VSX_FPCONV | VSX_CHECK_VEC;
-> +				break;
-> +			case 51:	/* plxv1 */
-> +				op->reg += 32;
-> +
-> +				/* fallthru */
-> +			case 50:	/* plxv0 */
-> +				op->type = MKOP(LOAD_VSX, PREFIXED, 16);
-> +				op->element_size = 16;
-> +				op->vsx_flags = VSX_CHECK_VEC;
-> +				break;
-> +			case 55:	/* pstxv1 */
-> +				op->reg = rd + 32;
-> +
-> +				/* fallthru */
-> +			case 54:	/* pstxv0 */
-> +				op->type = MKOP(STORE_VSX, PREFIXED, 16);
-> +				op->element_size = 16;
-> +				op->vsx_flags = VSX_CHECK_VEC;
-> +				break;
-> +			case 56:        /* plq */
-> +				op->type = MKOP(LOAD, PREFIXED, 16);
-> +				break;
-> +			case 57:	/* pld */
-> +				op->type = MKOP(LOAD, PREFIXED, 8);
-> +				break;
-> +			case 60:        /* stq */
-> +				op->type = MKOP(STORE, PREFIXED, 16);
-> +				break;
-> +			case 61:	/* pstd */
-> +				op->type = MKOP(STORE, PREFIXED, 8);
-> +				break;
-> +			}
-> +			break;
-> +		case 1: /* Type 01 Eight-Byte Register-to-Register */
-> +			break;
-> +		case 2: /* Type 10 Modified Load/Store */
-> +			if (prefix_r && ra)
-> +				break;
-> +			op->ea = mlsd_8lsd_ea(word, suffix, regs);
-> +			switch (suffixopcode) {
-> +			case 32:	/* plwz */
-> +				op->type = MKOP(LOAD, PREFIXED, 4);
-> +				break;
-> +			case 34:	/* plbz */
-> +				op->type = MKOP(LOAD, PREFIXED, 1);
-> +				break;
-> +			case 36:	/* pstw */
-> +				op->type = MKOP(STORE, PREFIXED, 4);
-> +				break;
-> +			case 38:	/* pstb */
-> +				op->type = MKOP(STORE, PREFIXED, 1);
-> +				break;
-> +			case 40:	/* plhz */
-> +				op->type = MKOP(LOAD, PREFIXED, 2);
-> +				break;
-> +			case 42:	/* plha */
-> +				op->type = MKOP(LOAD, PREFIXED | SIGNEXT, 2);
-> +				break;
-> +			case 44:	/* psth */
-> +				op->type = MKOP(STORE, PREFIXED, 2);
-> +				break;
-> +			case 48:        /* plfs */
-> +				op->type = MKOP(LOAD_FP, PREFIXED | FPCONV, 4);
-> +				break;
-> +			case 50:        /* plfd */
-> +				op->type = MKOP(LOAD_FP, PREFIXED, 8);
-> +				break;
-> +			case 52:        /* pstfs */
-> +				op->type = MKOP(STORE_FP, PREFIXED | FPCONV,
-> 4);
-> +				break;
-> +			case 54:        /* pstfd */
-> +				op->type = MKOP(STORE_FP, PREFIXED, 8);
-> +				break;
-> +			}
-> +			break;
-> +		case 3: /* Type 11 Modified Register-to-Register */
-> +			break;
-> +		}
->  #endif /* __powerpc64__ */
->  
->  	}
+> [full quote deleted, please follow proper quoting rules]
+> 
+>>> +static bool dma_alloc_direct(struct device *dev, const struct dma_map_ops *ops)
+>>> +{
+>>> +	if (!ops)
+>>> +		return true;
+>>> +
+>>> +	/*
+>>> +	 * Allows IOMMU drivers to bypass dynamic translations if the DMA mask
+>>> +	 * is large enough.
+>>> +	 */
+>>> +	if (dev->dma_ops_bypass) {
+>>> +		if (min_not_zero(dev->coherent_dma_mask, dev->bus_dma_limit) >=
+>>> +				dma_direct_get_required_mask(dev))
+>>> +			return true;
+>>> +	}
+>>
+>>
+>> Why not do this in dma_map_direct() as well?
+> 
+> Mostly beacuse it is a relatively expensive operation, including a
+> fls64.
 
+Ah, ok.
+
+>> Or simply have just one dma_map_direct()?
+> 
+> What do you mean with that?
+
+I mean use dma_alloc_direct() instead of dma_map_direct() everywhere,
+you explained just above.
+
+> 
+>> And one more general question - we need a way to use non-direct IOMMU
+>> for RAM above certain limit.
+>>
+>> Let's say we have a system with:
+>> 0 .. 0x1.0000.0000
+>> 0x100.0000.0000 .. 0x101.0000.0000
+>>
+>> 2x4G, each is 1TB aligned. And we can map directly only the first 4GB
+>> (because of the maximum IOMMU table size) but not the other. And 1:1 on
+>> that "pseries" is done with offset=0x0800.0000.0000.0000.
+>>
+>> So we want to check every bus address against dev->bus_dma_limit, not
+>> dev->coherent_dma_mask. In the example above I'd set bus_dma_limit to
+>> 0x0800.0001.0000.0000 and 1:1 mapping for the second 4GB would not be
+>> tried. Does this sound reasonable? Thanks,
+> 
+> bus_dma_limit is just another limiting factor applied on top of
+> coherent_dma_mask or dma_mask respectively.
+
+This is not enough for the task: in my example, I'd set bus limit to
+0x0800.0001.0000.0000 but this would disable bypass for all RAM
+addresses - the first and the second 4GB blocks.
+
+
+-- 
+Alexey
