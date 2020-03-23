@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E525E18F1F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:39:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B603318F1ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:37:29 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m8Rp3DfNzDqT8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:37:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m8Tf6YcBzDqdm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:39:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
+ helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m0EHjJxa; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
+ header.s=20161025 header.b=ZFFdc4P4; dkim-atps=neutral
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m8Kk5sVgzDqf0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:32:10 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id k26so12720820otr.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:32:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m8Pk2g72zDrB5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:35:38 +1100 (AEDT)
+Received: by mail-oi1-x242.google.com with SMTP id w2so3079283oic.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:35:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UKxoRUe56NJ8Ku7rl+tuwkJqV/073vwAR0/3YbNfPpI=;
- b=m0EHjJxalRbzDTqAHG+2tuX4I39OzXSc0o8jUL8x2r/JX+3Gll27M7C6FaUYYUTMAT
- 94OZn1858aZ6r1GE7CcW/EG8G2H2X4WDA2mpv16FWlXmBf+KFJpGS5jR2+Q3VmNGLPtJ
- ajKw5Bh4wWg5/2+fhhgxzmo6DZjTlt+G1d6ItOKM6vzt/AE1hlU/5w2xi31Akby+3ufk
- Tfq3phJELLGOp3gLQ8pXaRc8HFicxInS1WUu5XOMEv5YE9t5y00SL3qWvvgGXAzrWQT6
- Q7chKFnW4ME+W5hXXo/wjKAVxNwjkZfDo2yMzAqjfMNma5tYomXJ2y1n0I8KISl8Xjv4
- xS/Q==
+ :cc; bh=xdGr3bgw1Ab5bDc4JlY6XxI90/JB6dJaXTOznBZufB4=;
+ b=ZFFdc4P4yqqrz07hwIX0rqQh5H9k6bi7oa5T4gCfv9H7WJjYWM3wxGcSbl0dtBQ0m+
+ kpkCSzswKF5ydIWdsbNNP2J8VW3OS5ITt8qGjzlSvPxwHRS4EKU9D3ouuVUMAzThB1+Q
+ 8WrGKNli6S7TG6BolgEoSJUW/NCPrn++KSwWl4sEnl1pgbje0gf1pJPNz3/RFfXayvgs
+ t9antJJh74jy+E7huNTpdrCkhvL/yBruzNYIl7vJcDo4tm4vuebkVqBHf9ZEbLbQCD8O
+ x9Gjcu4syB7/yt6G5Gg9/OY6/fx6kwrm9rynNzHhYw1yMhz0Qyz2Fp0Bt+NAJCswXd9A
+ UXXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=UKxoRUe56NJ8Ku7rl+tuwkJqV/073vwAR0/3YbNfPpI=;
- b=l55hGySu8+a77AAcNWX4SFjF5zJs9O1m1e9CQu4yw0CPaHvzLa7gMmvX9ijoqmZ1kT
- MxmHwmrE1lkw132L+xjNm7kOcvM3ZojYPzdK+EmSWpN5tLhZNTWtbWcB3S2ZyVe6e1Lw
- 8aGeL85G9yOTizcn6NZYedzZu7iHYDymMfFQhnB4/InAV+885QwM7gR9GUvOzdjAj3JD
- w21ei+Rr8weFnGfO4qSxs8I1nSPtPHnVxhLQ2S5hePWLrmCHVMiFib3jLJj8nrDXQFe/
- vECgX4nGVivHeZUPm+0JRv9HHN0fr4NRFS1z2lFLGz2NrPGka3iX3TUyhwp41EJs7Oh0
- k5Hw==
-X-Gm-Message-State: ANhLgQ1SyiUaMzLYfsvre409YYPYyxP7yKRKNUP7470QUkE27xyPyiVd
- 6C6Aize8sIkeIfDEdfZU56z6XL+7vRDJFNJeIFQ=
-X-Google-Smtp-Source: ADFU+vsUh0GSV1fmijZM+XR756GX/z1rUZET+lQOxE8PLPedKlNLskTckJepG4QNbDBjGSzQq+NSK0d2t4IcdhIMfC0=
-X-Received: by 2002:a9d:62c2:: with SMTP id z2mr4202066otk.155.1584955927793; 
- Mon, 23 Mar 2020 02:32:07 -0700 (PDT)
+ bh=xdGr3bgw1Ab5bDc4JlY6XxI90/JB6dJaXTOznBZufB4=;
+ b=FiuJSt7s2MfTnlLxugffRyXuNeLbtkoTfyKsWq2bqZrhzijaptB4fNvRhydaYW8zfg
+ K5DIJUucxLykTrXRTV9euNKF4RI2uonKlb3avnBJB28G4l+OHxRq0MydII/B/qBzTHyd
+ Getzzm4j0hFPL94paZzlZ9Abhq1alHFSmtFPR5wS2iSxjXYrmBtHYlwZjo3oI40gN5nI
+ 7oJnRDxoauEufbjyDprOSdwwjmxUdZHYk4njWwX3vS8QzeL/nptkNAzpDo163p7GDZfO
+ 2cnLTLul917iKBN4MpzdJ66kJngOoc6kb50oHSsD+OpFClvE1oTcmem1lQpy48WG9uM+
+ w9hg==
+X-Gm-Message-State: ANhLgQ3MfE/7rtJhIPf72w9YGh2+h4FLctNh329bTKcROPjXW/vXB4fO
+ d2Vota393XJzel3ZpMZ0sbUtm/0aLQPJRTGvOKg=
+X-Google-Smtp-Source: ADFU+vvrsKlpSvlBIBrx2jJ8A/Eqyh8MzVvnoPV5sG7eAiSD1pn78EWWLWtf8VVeQ+ryK1aVnoWHjdGCnYEjo1ahreg=
+X-Received: by 2002:aca:fd48:: with SMTP id b69mr11332713oii.126.1584956135453; 
+ Mon, 23 Mar 2020 02:35:35 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-8-jniethe5@gmail.com>
- <1584945440.a20p67lxd6.astroid@bobo.none>
-In-Reply-To: <1584945440.a20p67lxd6.astroid@bobo.none>
+ <20200320051809.24332-7-jniethe5@gmail.com>
+ <250cbed1e5966c5a740e840b9127ed7964e241d6.camel@linux.ibm.com>
+In-Reply-To: <250cbed1e5966c5a740e840b9127ed7964e241d6.camel@linux.ibm.com>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 23 Mar 2020 20:31:56 +1100
-Message-ID: <CACzsE9rsQA+HD-4zpdeMmBjEjavJUqHXh21cJKDv2Cf4syg0Gw@mail.gmail.com>
-Subject: Re: [PATCH v4 07/16] powerpc: Introduce functions for instruction
- nullity and equality
-To: Nicholas Piggin <npiggin@gmail.com>
+Date: Mon, 23 Mar 2020 20:35:24 +1100
+Message-ID: <CACzsE9oh1x_TRH=5-OJOLC=0YBd3Y+9phoyAHj18RLc3CAH6Mw@mail.gmail.com>
+Subject: Re: [PATCH v4 06/16] powerpc: Use a function for getting the
+ instruction op code
+To: Balamuruhan S <bala24@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,60 +76,68 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Alistair Popple <alistair@popple.id.au>,
- Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
  Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 23, 2020 at 5:46 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+On Mon, Mar 23, 2020 at 5:54 PM Balamuruhan S <bala24@linux.ibm.com> wrote:
 >
-> Jordan Niethe's on March 20, 2020 3:18 pm:
-> > In preparation for an instruction data type that can not be directly
-> > used with the '==' operator use functions for checking equality and
-> > nullity.
+> On Fri, 2020-03-20 at 16:17 +1100, Jordan Niethe wrote:
+> > In preparation for using a data type for instructions that can not be
+> > directly used with the '>>' operator use a function for getting the op
+> > code of an instruction.
+>
+> we need to adopt this in sstep.c and vecemu.c
+Thank you, I had forgotten about vecemu.c.
+>
+> -- Bala
 > >
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> >  arch/powerpc/kernel/optprobes.c      |  2 +-
-> >  arch/powerpc/kernel/trace/ftrace.c   | 33 +++++++++++++++-------------
-> >  arch/powerpc/lib/code-patching.c     | 16 +++++++-------
-> >  arch/powerpc/lib/feature-fixups.c    |  2 +-
-> >  arch/powerpc/lib/test_emulate_step.c |  4 ++--
-> >  arch/powerpc/xmon/xmon.c             |  4 ++--
-> >  6 files changed, 32 insertions(+), 29 deletions(-)
+> > v4: New to series
+> > ---
+> >  arch/powerpc/kernel/align.c      | 4 ++--
+> >  arch/powerpc/lib/code-patching.c | 4 ++--
+> >  2 files changed, 4 insertions(+), 4 deletions(-)
 > >
-> > diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-> > index 1025a7a3b3a8..6027425a85f2 100644
-> > --- a/arch/powerpc/kernel/optprobes.c
-> > +++ b/arch/powerpc/kernel/optprobes.c
-> > @@ -259,7 +259,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
-> >                               (unsigned long)emulate_step_addr,
-> >                               BRANCH_SET_LINK);
+> > diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+> > index 38542fffa179..77c49dfdc1b4 100644
+> > --- a/arch/powerpc/kernel/align.c
+> > +++ b/arch/powerpc/kernel/align.c
+> > @@ -313,8 +313,8 @@ int fix_alignment(struct pt_regs *regs)
+> >       }
 > >
-> > -     if (!branch_op_callback || !branch_emulate_step)
-> > +     if (ppc_inst_null(branch_op_callback) || ppc_inst_null(branch_emulate_step))
+> >  #ifdef CONFIG_SPE
+> > -     if ((instr >> 26) == 0x4) {
+> > -             int reg = (instr >> 21) & 0x1f;
+> > +     if (ppc_inst_opcode(instr) == 0x4) {
+> > +             int reg = (ppc_inst_word(instr) >> 21) & 0x1f;
+> >               PPC_WARN_ALIGNMENT(spe, regs);
+> >               return emulate_spe(regs, reg, instr);
+> >       }
+> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-
+> > patching.c
+> > index e2ba23fd6f4d..04a303c059e2 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+> > @@ -228,7 +228,7 @@ bool is_offset_in_branch_range(long offset)
+> >   */
+> >  bool is_conditional_branch(ppc_inst instr)
+> >  {
+> > -     unsigned int opcode = instr >> 26;
+> > +     unsigned int opcode = ppc_inst_opcode(instr);
+> >
+> >       if (opcode == 16)       /* bc, bca, bcl, bcla */
+> >               return true;
+> > @@ -286,7 +286,7 @@ unsigned int create_cond_branch(const unsigned int *addr,
+> >
+> >  static unsigned int branch_opcode(ppc_inst instr)
+> >  {
+> > -     return (instr >> 26) & 0x3F;
+> > +     return ppc_inst_opcode(instr) & 0x3F;
+> >  }
+> >
+> >  static int instr_is_branch_iform(ppc_inst instr)
 >
-> Is an instruction null, or zeroes?
-ppc_inst_zero() would probably be clearer.
->
-> Oh, most of this comes from create_branch and things. Hmm, would rather
-> see those functions modified to take a &insn and return an int err.
-Good idea.
->
->
-> > @@ -437,7 +438,7 @@ int ftrace_make_nop(struct module *mod,
-> >        * then we had to use a trampoline to make the call.
-> >        * Otherwise just update the call site.
-> >        */
-> > -     if (test_24bit_addr(ip, addr)) {
-> > +     if (!ppc_inst_null(test_24bit_addr(ip, addr))) {
-> >               /* within range */
-> >               old = ftrace_call_replace(ip, addr, 1);
-> >               new = PPC_INST(PPC_INST_NOP);
->
-> test_24bit_addr shouldn't be passing a ppc_inst back, but a bool.
-True.
->
-> Thanks,
-> Nick
