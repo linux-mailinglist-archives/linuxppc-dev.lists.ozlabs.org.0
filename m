@@ -2,55 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C576E18EE34
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 03:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FB818EE96
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 04:43:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48lzYv0k8bzDqsM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 13:57:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m0bd2VDmzDqpM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 14:43:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=v/mr=5i=paulmck-thinkpad-p72.home=paulmck@kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=g9VPl4ea; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48lzWX2dDdzDqVC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 13:55:03 +1100 (AEDT)
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
- [50.39.105.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A325C20722;
- Mon, 23 Mar 2020 02:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1584932101;
- bh=N0k6o8c8KvYw0g3jcUDhN/MPud7VOyTsnr0yHrUxgUw=;
- h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
- b=g9VPl4eajjddjNIOPzBfeSyOtL9KQiSn/FZzz7hTPVSKlmvRnqj3azUI4CLLkZJvc
- uYirLjF1H+fdvZlmKyt2AxGT61givxo81nRhOvH91ViOca/11r46Ug+bKaoJ8lwwc0
- hRh7PEZEFJGW9zuLBEKdZoD1kcl6jFPVucBD+M6Y=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
- id 72D1C35226BE; Sun, 22 Mar 2020 19:55:01 -0700 (PDT)
-Date: Sun, 22 Mar 2020 19:55:01 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V3 13/20] Documentation: Add lock ordering and nesting
- documentation
-Message-ID: <20200323025501.GE3199@paulmck-ThinkPad-P72>
-References: <20200321112544.878032781@linutronix.de>
- <20200321113242.026561244@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200321113242.026561244@linutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m0Yk0yT9zDqkZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 14:42:01 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02N3WUr0057489; Sun, 22 Mar 2020 23:41:51 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0kmekh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 22 Mar 2020 23:41:51 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02N3fps3110632;
+ Sun, 22 Mar 2020 23:41:51 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0kmejv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 22 Mar 2020 23:41:51 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02N3eKnX020103;
+ Mon, 23 Mar 2020 03:41:50 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 2ywawk8xsb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Mar 2020 03:41:50 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02N3fnNg48497000
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 Mar 2020 03:41:49 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 71B02112062;
+ Mon, 23 Mar 2020 03:41:49 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7E67112061;
+ Mon, 23 Mar 2020 03:41:48 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Mar 2020 03:41:48 +0000 (GMT)
+Subject: [PATCH v4 0/9] crypto/nx: Enable GZIP engine and provide userpace API
+From: Haren Myneni <haren@linux.ibm.com>
+To: herbert@gondor.apana.org.au, mpe@ellerman.id.au, dja@axtens.net
+Content-Type: text/plain; charset="UTF-8"
+Date: Sun, 22 Mar 2020 20:41:19 -0700
+Message-ID: <1584934879.9256.15321.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-22_08:2020-03-21,
+ 2020-03-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003230017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,251 +88,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: linux-usb@vger.kernel.org, linux-ia64@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Sebastian Siewior <bigeasy@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
- Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
- Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>, linux-acpi@vger.kernel.org,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-hexagon@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
- Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Greentime Hu <green.hu@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- platform-driver-x86@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
- kbuild test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
- netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
- linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Davidlohr Bueso <dbueso@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Logan Gunthorpe <logang@deltatee.com>, "David S. Miller" <davem@davemloft.net>,
- Andy Shevchenko <andy@infradead.org>
+Cc: mikey@neuling.org, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 21, 2020 at 12:25:57PM +0100, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
-> 
-> The kernel provides a variety of locking primitives. The nesting of these
-> lock types and the implications of them on RT enabled kernels is nowhere
-> documented.
-> 
-> Add initial documentation.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: "Paul E . McKenney" <paulmck@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Davidlohr Bueso <dave@stgolabs.net>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> V3: Addressed review comments from Paul, Jonathan, Davidlohr
-> V2: Addressed review comments from Randy
-> ---
->  Documentation/locking/index.rst     |    1 
->  Documentation/locking/locktypes.rst |  299 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 300 insertions(+)
->  create mode 100644 Documentation/locking/locktypes.rst
-> 
-> --- a/Documentation/locking/index.rst
-> +++ b/Documentation/locking/index.rst
-> @@ -7,6 +7,7 @@ locking
->  .. toctree::
->      :maxdepth: 1
->  
-> +    locktypes
->      lockdep-design
->      lockstat
->      locktorture
-> --- /dev/null
-> +++ b/Documentation/locking/locktypes.rst
-> @@ -0,0 +1,299 @@
 
-[ . . . Adding your example execution sequences . . . ]
+Power9 processor supports Virtual Accelerator Switchboard (VAS) which
+allows kernel and userspace to send compression requests to Nest
+Accelerator (NX) directly. The NX unit comprises of 2 842 compression
+engines and 1 GZIP engine. Linux kernel already has 842 compression
+support on kernel. This patch series adds GZIP compression support
+from user space. The GZIP Compression engine implements the ZLIB and
+GZIP compression algorithms. No plans of adding NX-GZIP compression
+support in kernel right now.
 
-> +PREEMPT_RT kernels preserve all other spinlock_t semantics:
-> +
-> + - Tasks holding a spinlock_t do not migrate.  Non-PREEMPT_RT kernels
-> +   avoid migration by disabling preemption.  PREEMPT_RT kernels instead
-> +   disable migration, which ensures that pointers to per-CPU variables
-> +   remain valid even if the task is preempted.
-> +
-> + - Task state is preserved across spinlock acquisition, ensuring that the
-> +   task-state rules apply to all kernel configurations.  Non-PREEMPT_RT
-> +   kernels leave task state untouched.  However, PREEMPT_RT must change
-> +   task state if the task blocks during acquisition.  Therefore, it saves
-> +   the current task state before blocking and the corresponding lock wakeup
-> +   restores it.
-> +
-> +   Other types of wakeups would normally unconditionally set the task state
-> +   to RUNNING, but that does not work here because the task must remain
-> +   blocked until the lock becomes available.  Therefore, when a non-lock
-> +   wakeup attempts to awaken a task blocked waiting for a spinlock, it
-> +   instead sets the saved state to RUNNING.  Then, when the lock
-> +   acquisition completes, the lock wakeup sets the task state to the saved
-> +   state, in this case setting it to RUNNING.
+Applications can send requests to NX directly with COPY/PASTE
+instructions. But kernel has to establish channel / window on NX-GZIP
+device for the userspace. So userspace access to the GZIP engine is
+provided through /dev/crypto/nx-gzip device with several operations.
 
-In the normal case where the task sleeps through the entire lock
-acquisition, the sequence of events is as follows:
+An application must open the this device to obtain a file descriptor (fd).
+Using the fd, application should issue the VAS_TX_WIN_OPEN ioctl to
+establish a connection to the engine. Once window is opened, should use
+mmap() system call to map the hardware address of engine's request queue
+into the application's virtual address space. Then user space forms the
+request as co-processor Request Block (CRB) and paste this CRB on the
+mapped HW address using COPY/PASTE instructions. Application can poll
+on status flags (part of CRB) with timeout for request completion.
 
-     state = UNINTERRUPTIBLE
-     lock()
-       block()
-         real_state = state
-         state = SLEEPONLOCK
+For VAS_TX_WIN_OPEN ioctl, if user space passes vas_id = -1 (struct
+vas_tx_win_open_attr), kernel determines the VAS instance on the
+corresponding chip based on the CPU on which the process is executing.
+Otherwise, the specified VAS instance is used if application passes the
+proper VAS instance (vas_id listed in /proc/device-tree/vas@*/ibm,vas_id).
 
-                               lock wakeup
-                                 state = real_state == UNINTERRUPTIBLE
+Process can open multiple windows with different FDs or can send several
+requests to NX on the same window at the same time.
 
-This sequence of events can occur when the task acquires spinlocks
-on its way to sleeping, for example, in a call to wait_event().
+A userspace library libnxz is available:
+        https://github.com/abalib/power-gzip
 
-The non-lock wakeup can occur when a wakeup races with this wait_event(),
-which can result in the following sequence of events:
+Applications that use inflate/deflate calls can link with libNXz and use
+NX GZIP compression without any modification.
 
-     state = UNINTERRUPTIBLE
-     lock()
-       block()
-         real_state = state
-         state = SLEEPONLOCK
+Tested the available 842 compression on power8 and power9 system to make
+sure no regression and tested GZIP compression on power9 with tests
+available in the above link.
 
-                             non lock wakeup
-                                 real_state = RUNNING
+Thanks to Bulent Abali for nxz library and tests development.
 
-                               lock wakeup
-                                 state = real_state == RUNNING
+Changelog:
+V2:
+  - Move user space API code to powerpc as suggested. Also this API
+    can be extended to any other coprocessor type that VAS can support
+    in future. Example: Fast thread wakeup feature from VAS
+  - Rebased to 5.6-rc3
 
-Without this real_state subterfuge, the wakeup might be lost.
+V3:
+  - Fix sparse warnings (patches 3&6)
 
-[ . . . and continuing where I left off earlier . . . ]
+V4:
+  - Remove unused coproc_instid and add only window address in
+    fp->private_data.
+  - Add NX User's manual and Copy/paste links in VAS API documentation
+    in patch and other changes as Daniel Axtens suggested
 
-> +bit spinlocks
-> +-------------
-> +
-> +Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
-> +substituted by an RT-mutex based implementation for obvious reasons.
-> +
-> +The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
-> +caveats vs. raw_spinlock_t apply.
-> +
-> +Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
-> +this requires conditional (#ifdef'ed) code changes at the usage site while
-> +the spinlock_t substitution is simply done by the compiler and the
-> +conditionals are restricted to header files and core implementation of the
-> +locking primitives and the usage sites do not require any changes.
+Haren Myneni (9):
+  powerpc/vas: Initialize window attributes for GZIP coprocessor type
+  powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API
+  powerpc/vas: Add VAS user space API
+  crypto/nx: Initialize coproc entry with kzalloc
+  crypto/nx: Rename nx-842-powernv file name to nx-common-powernv
+  crypto/NX: Make enable code generic to add new GZIP compression type
+  crypto/nx: Enable and setup GZIP compresstion type
+  crypto/nx: Remove 'pid' in vas_tx_win_attr struct
+  Documentation/powerpc: VAS API
 
-PREEMPT_RT cannot substitute bit spinlocks because a single bit is
-too small to accommodate an RT-mutex.  Therefore, the semantics of bit
-spinlocks are preserved on PREEMPT_RT kernels, so that the raw_spinlock_t
-caveats also apply to bit spinlocks.
+ Documentation/powerpc/index.rst                    |    1 +
+ Documentation/powerpc/vas-api.rst                  |  249 +++++
+ Documentation/userspace-api/ioctl/ioctl-number.rst |    1 +
+ arch/powerpc/include/asm/vas.h                     |   12 +-
+ arch/powerpc/include/uapi/asm/vas-api.h            |   22 +
+ arch/powerpc/platforms/powernv/Makefile            |    2 +-
+ arch/powerpc/platforms/powernv/vas-api.c           |  257 +++++
+ arch/powerpc/platforms/powernv/vas-window.c        |   23 +-
+ arch/powerpc/platforms/powernv/vas.h               |    2 +
+ drivers/crypto/nx/Makefile                         |    2 +-
+ drivers/crypto/nx/nx-842-powernv.c                 | 1062 ------------------
+ drivers/crypto/nx/nx-common-powernv.c              | 1133 ++++++++++++++++++++
+ 12 files changed, 1693 insertions(+), 1073 deletions(-)
+ create mode 100644 Documentation/powerpc/vas-api.rst
+ create mode 100644 arch/powerpc/include/uapi/asm/vas-api.h
+ create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
+ delete mode 100644 drivers/crypto/nx/nx-842-powernv.c
+ create mode 100644 drivers/crypto/nx/nx-common-powernv.c
 
-Some bit spinlocks are replaced with regular spinlock_t for PREEMPT_RT
-using conditional (#ifdef'ed) code changes at the usage site.
-In contrast, usage-site changes are not needed for the spinlock_t
-substitution.  Instead, conditionals in header files and the core locking
-implemementation enable the compiler to do the substitution transparently.
+-- 
+1.8.3.1
 
 
-> +Lock type nesting rules
-> +=======================
-> +
-> +The most basic rules are:
-> +
-> +  - Lock types of the same lock category (sleeping, spinning) can nest
-> +    arbitrarily as long as they respect the general lock ordering rules to
-> +    prevent deadlocks.
 
-  - Lock types in the same category (sleeping, spinning) can nest
-     arbitrarily as long as they respect the general deadlock-avoidance
-     ordering rules.
-
-[ Give or take lockdep eventually complaining about too-deep nesting,
-  but that is probably not worth mentioning here.  Leave that caveat
-  to the lockdep documentation. ]
-
-> +  - Sleeping lock types cannot nest inside spinning lock types.
-> +
-> +  - Spinning lock types can nest inside sleeping lock types.
-> +
-> +These rules apply in general independent of CONFIG_PREEMPT_RT.
-
-These constraints apply both in CONFIG_PREEMPT_RT and otherwise.
-
-> +As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
-> +spinning to sleeping this has obviously restrictions how they can nest with
-> +raw_spinlock_t.
-> +
-> +This results in the following nest ordering:
-
-The fact that PREEMPT_RT changes the lock category of spinlock_t and
-rwlock_t from spinning to sleeping means that they cannot be acquired
-while holding a raw spinlock.  This results in the following nesting
-ordering:
-
-> +  1) Sleeping locks
-> +  2) spinlock_t and rwlock_t
-> +  3) raw_spinlock_t and bit spinlocks
-> +
-> +Lockdep is aware of these constraints to ensure that they are respected.
-
-Lockdep will complain if these constraints are violated, both in
-CONFIG_PREEMPT_RT and otherwise.
-
-
-> +Owner semantics
-> +===============
-> +
-> +Most lock types in the Linux kernel have strict owner semantics, i.e. the
-> +context (task) which acquires a lock has to release it.
-
-The aforementioned lock types have strict owner semantics: The context
-(task) that acquired the lock must release it.
-
-> +There are two exceptions:
-> +
-> +  - semaphores
-> +  - rwsems
-> +
-> +semaphores have no owner semantics for historical reason, and as such
-> +trylock and release operations can be called from any context. They are
-> +often used for both serialization and waiting purposes. That's generally
-> +discouraged and should be replaced by separate serialization and wait
-> +mechanisms, such as mutexes and completions.
-
-semaphores lack owner semantics for historical reasons, so their trylock
-and release operations may be called from any context. They are often
-used for both serialization and waiting, but new use cases should
-instead use separate serialization and wait mechanisms, such as mutexes
-and completions.
-
-> +rwsems have grown interfaces which allow non owner release for special
-> +purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
-> +substitutes all locking primitives except semaphores with RT-mutex based
-> +implementations to provide priority inheritance for all lock types except
-> +the truly spinning ones. Priority inheritance on ownerless locks is
-> +obviously impossible.
-> +
-> +For now the rwsem non-owner release excludes code which utilizes it from
-> +being used on PREEMPT_RT enabled kernels. In same cases this can be
-> +mitigated by disabling portions of the code, in other cases the complete
-> +functionality has to be disabled until a workable solution has been found.
-
-rwsems have grown special-purpose interfaces that allow non-owner release.
-This non-owner release prevents PREEMPT_RT from substituting RT-mutex
-implementations, for example, by defeating priority inheritance.
-After all, if the lock has no owner, whose priority should be boosted?
-As a result, PREEMPT_RT does not currently support rwsem, which in turn
-means that code using it must therefore be disabled until a workable
-solution presents itself.
-
-[ Note: Not as confident as I would like to be in the above. ]
-
-							Thanx, Paul
