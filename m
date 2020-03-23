@@ -1,75 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD1F18EE15
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 03:50:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48lzQJ6LKXzDqTR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 13:50:32 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C576E18EE34
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 03:57:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48lzYv0k8bzDqsM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 13:57:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=v/mr=5i=paulmck-thinkpad-p72.home=paulmck@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Yae682IE; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=g9VPl4ea; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48lzN20npdzDqTK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 13:48:32 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id mj6so5476372pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Mar 2020 19:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=MejgEVzKm5NsWrT3nEPO4wUVyl7zKSPGNazl/RWRXfY=;
- b=Yae682IEnSWT8g8P1rgvsOtUQJ/WWrw/E33/BtTCDRQwPYRaxDk/PEZYGRKGW5NQGf
- EjzO656XWl6zdihKmoBgerkPDkec5SAihEK6KTDMYp4cbVFeyvnpiFfHxQMlY4jUS/2G
- lGbM8/+0/yL73aJkH6Ic7hKDdZDeG08OVarPbtizap7HiEy6140INdiL3gb8Gi5pjdv9
- pWa049MaiT4yBLwQXeUgPpL1Xk0pU0AAMyN3En0SNE1SREeJ+yAawlUqka2ehVb82/K1
- paFTv9XqmY4S844vQ12iMVy2WOukfp1vEMNYIQcztiZBW+u8BlQQ50Kb6km8bpN1EKhu
- NMag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=MejgEVzKm5NsWrT3nEPO4wUVyl7zKSPGNazl/RWRXfY=;
- b=tYLzcyIABaMDH0iBG/Bt51O2F8zJNSwCMaS02S04PMBHuJ/8yATUHiT6QAofeleJ69
- Myd/lsxHCBh2ZeRC7PpYG0CebEy7SeMDmc+nwBuk4IsZrrcz6xMRiofgGwUh1gU6k/se
- Y3YCX5qrAlVJcNaXIKR8SxRMpMbAIYMWPkBe/0q2phiLGIzprFUi7eiVaBY4vp7pUmxf
- kqSVeL/CvAFM0rV/u2xYNeDLajnJwpbmRHqrxhkOmdiDdQpk4LdZ/eQ9dTiH2YoL9QcI
- qsySSqvuwuQzXhE8Sc2FzewqDwd1I8v9mAQpIqW7vY4Bb0Xh9BLKcqkrf4uAeRp+GF6U
- eiZA==
-X-Gm-Message-State: ANhLgQ0I3tlGqQFnxJeIEaqVbakDs/yw1SnO4P9UG3D51hGReYFeGRCP
- w2OLC+AA2k5se/JqL2LWEmM=
-X-Google-Smtp-Source: ADFU+vveHbKSBWjEz1tID/N19cLpPAHF0CxISgVmDCmynW/PUpUluiPmIEPZmteoSc4tjz9Gpb6h0Q==
-X-Received: by 2002:a17:902:a416:: with SMTP id
- p22mr20001793plq.57.1584931709956; 
- Sun, 22 Mar 2020 19:48:29 -0700 (PDT)
-Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id u14sm10683912pgg.67.2020.03.22.19.48.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Mar 2020 19:48:29 -0700 (PDT)
-Date: Mon, 23 Mar 2020 12:44:54 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v8 12/14] powerpc/vas: Return credits after handling fault
-To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au
-References: <1584598120.9256.15237.camel@hbabu-laptop>
- <1584598755.9256.15264.camel@hbabu-laptop>
-In-Reply-To: <1584598755.9256.15264.camel@hbabu-laptop>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48lzWX2dDdzDqVC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 13:55:03 +1100 (AEDT)
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
+ [50.39.105.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A325C20722;
+ Mon, 23 Mar 2020 02:55:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1584932101;
+ bh=N0k6o8c8KvYw0g3jcUDhN/MPud7VOyTsnr0yHrUxgUw=;
+ h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+ b=g9VPl4eajjddjNIOPzBfeSyOtL9KQiSn/FZzz7hTPVSKlmvRnqj3azUI4CLLkZJvc
+ uYirLjF1H+fdvZlmKyt2AxGT61givxo81nRhOvH91ViOca/11r46Ug+bKaoJ8lwwc0
+ hRh7PEZEFJGW9zuLBEKdZoD1kcl6jFPVucBD+M6Y=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+ id 72D1C35226BE; Sun, 22 Mar 2020 19:55:01 -0700 (PDT)
+Date: Sun, 22 Mar 2020 19:55:01 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V3 13/20] Documentation: Add lock ordering and nesting
+ documentation
+Message-ID: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+References: <20200321112544.878032781@linutronix.de>
+ <20200321113242.026561244@linutronix.de>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584931224.oij3nwbo4z.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200321113242.026561244@linutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,71 +62,251 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, ajd@linux.ibm.com, hch@infradead.org, oohall@gmail.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- herbert@gondor.apana.org.au
+Reply-To: paulmck@kernel.org
+Cc: linux-usb@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Sebastian Siewior <bigeasy@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
+ Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
+ Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, linux-acpi@vger.kernel.org,
+ Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-hexagon@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
+ Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Greentime Hu <green.hu@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ platform-driver-x86@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+ kbuild test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
+ netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Davidlohr Bueso <dbueso@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Logan Gunthorpe <logang@deltatee.com>, "David S. Miller" <davem@davemloft.net>,
+ Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni's on March 19, 2020 4:19 pm:
->=20
-> NX expects OS to return credit for send window after processing each
-> fault. Also credit has to be returned even for fault window.
-
-And this should be merged in the fault handler function.
-
->=20
-> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+On Sat, Mar 21, 2020 at 12:25:57PM +0100, Thomas Gleixner wrote:
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> The kernel provides a variety of locking primitives. The nesting of these
+> lock types and the implications of them on RT enabled kernels is nowhere
+> documented.
+> 
+> Add initial documentation.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: "Paul E . McKenney" <paulmck@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Davidlohr Bueso <dave@stgolabs.net>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
 > ---
->  arch/powerpc/platforms/powernv/vas-fault.c  |  9 +++++++++
->  arch/powerpc/platforms/powernv/vas-window.c | 17 +++++++++++++++++
->  arch/powerpc/platforms/powernv/vas.h        |  1 +
->  3 files changed, 27 insertions(+)
->=20
-> diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/pl=
-atforms/powernv/vas-fault.c
-> index 40e1de4..292f7ba 100644
-> --- a/arch/powerpc/platforms/powernv/vas-fault.c
-> +++ b/arch/powerpc/platforms/powernv/vas-fault.c
-> @@ -238,6 +238,10 @@ irqreturn_t vas_fault_thread_fn(int irq, void *data)
->  		memcpy(crb, fifo, CRB_SIZE);
->  		entry->stamp.nx.pswid =3D cpu_to_be32(FIFO_INVALID_ENTRY);
->  		entry->ccw |=3D cpu_to_be32(CCW0_INVALID);
-> +		/*
-> +		 * Return credit for the fault window.
-> +		 */
+> V3: Addressed review comments from Paul, Jonathan, Davidlohr
+> V2: Addressed review comments from Randy
+> ---
+>  Documentation/locking/index.rst     |    1 
+>  Documentation/locking/locktypes.rst |  299 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 300 insertions(+)
+>  create mode 100644 Documentation/locking/locktypes.rst
+> 
+> --- a/Documentation/locking/index.rst
+> +++ b/Documentation/locking/index.rst
+> @@ -7,6 +7,7 @@ locking
+>  .. toctree::
+>      :maxdepth: 1
+>  
+> +    locktypes
+>      lockdep-design
+>      lockstat
+>      locktorture
+> --- /dev/null
+> +++ b/Documentation/locking/locktypes.rst
+> @@ -0,0 +1,299 @@
 
-None of the comments in this patch are useful.
+[ . . . Adding your example execution sequences . . . ]
 
-> +		vas_return_credit(vinst->fault_win, 0);
+> +PREEMPT_RT kernels preserve all other spinlock_t semantics:
+> +
+> + - Tasks holding a spinlock_t do not migrate.  Non-PREEMPT_RT kernels
+> +   avoid migration by disabling preemption.  PREEMPT_RT kernels instead
+> +   disable migration, which ensures that pointers to per-CPU variables
+> +   remain valid even if the task is preempted.
+> +
+> + - Task state is preserved across spinlock acquisition, ensuring that the
+> +   task-state rules apply to all kernel configurations.  Non-PREEMPT_RT
+> +   kernels leave task state untouched.  However, PREEMPT_RT must change
+> +   task state if the task blocks during acquisition.  Therefore, it saves
+> +   the current task state before blocking and the corresponding lock wakeup
+> +   restores it.
+> +
+> +   Other types of wakeups would normally unconditionally set the task state
+> +   to RUNNING, but that does not work here because the task must remain
+> +   blocked until the lock becomes available.  Therefore, when a non-lock
+> +   wakeup attempts to awaken a task blocked waiting for a spinlock, it
+> +   instead sets the saved state to RUNNING.  Then, when the lock
+> +   acquisition completes, the lock wakeup sets the task state to the saved
+> +   state, in this case setting it to RUNNING.
 
-Can you use true/false for bools?
+In the normal case where the task sleeps through the entire lock
+acquisition, the sequence of events is as follows:
 
->  		mutex_unlock(&vinst->mutex);
-> =20
->  		pr_devel("VAS[%d] fault_fifo %p, fifo %p, fault_crbs %d\n",
-> @@ -267,6 +271,11 @@ irqreturn_t vas_fault_thread_fn(int irq, void *data)
->  		}
-> =20
->  		update_csb(window, crb);
-> +		/*
-> +		 * Return credit for send window after processing
-> +		 * fault CRB.
-> +		 */
+     state = UNINTERRUPTIBLE
+     lock()
+       block()
+         real_state = state
+         state = SLEEPONLOCK
 
-Any chance of a little bit of explanation how the credit system works?
-Or is it in the code somewhere already?
+                               lock wakeup
+                                 state = real_state == UNINTERRUPTIBLE
 
-I don't suppose there is a chance to batch credit updates with multiple
-faults? (maybe the MMIO is insignificant)
+This sequence of events can occur when the task acquires spinlocks
+on its way to sleeping, for example, in a call to wait_event().
 
-> +		vas_return_credit(window, 1);
->  	} while (true);
->  }
-> =20
+The non-lock wakeup can occur when a wakeup races with this wait_event(),
+which can result in the following sequence of events:
 
-Thanks,
-Nick
-=
+     state = UNINTERRUPTIBLE
+     lock()
+       block()
+         real_state = state
+         state = SLEEPONLOCK
+
+                             non lock wakeup
+                                 real_state = RUNNING
+
+                               lock wakeup
+                                 state = real_state == RUNNING
+
+Without this real_state subterfuge, the wakeup might be lost.
+
+[ . . . and continuing where I left off earlier . . . ]
+
+> +bit spinlocks
+> +-------------
+> +
+> +Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
+> +substituted by an RT-mutex based implementation for obvious reasons.
+> +
+> +The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
+> +caveats vs. raw_spinlock_t apply.
+> +
+> +Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
+> +this requires conditional (#ifdef'ed) code changes at the usage site while
+> +the spinlock_t substitution is simply done by the compiler and the
+> +conditionals are restricted to header files and core implementation of the
+> +locking primitives and the usage sites do not require any changes.
+
+PREEMPT_RT cannot substitute bit spinlocks because a single bit is
+too small to accommodate an RT-mutex.  Therefore, the semantics of bit
+spinlocks are preserved on PREEMPT_RT kernels, so that the raw_spinlock_t
+caveats also apply to bit spinlocks.
+
+Some bit spinlocks are replaced with regular spinlock_t for PREEMPT_RT
+using conditional (#ifdef'ed) code changes at the usage site.
+In contrast, usage-site changes are not needed for the spinlock_t
+substitution.  Instead, conditionals in header files and the core locking
+implemementation enable the compiler to do the substitution transparently.
+
+
+> +Lock type nesting rules
+> +=======================
+> +
+> +The most basic rules are:
+> +
+> +  - Lock types of the same lock category (sleeping, spinning) can nest
+> +    arbitrarily as long as they respect the general lock ordering rules to
+> +    prevent deadlocks.
+
+  - Lock types in the same category (sleeping, spinning) can nest
+     arbitrarily as long as they respect the general deadlock-avoidance
+     ordering rules.
+
+[ Give or take lockdep eventually complaining about too-deep nesting,
+  but that is probably not worth mentioning here.  Leave that caveat
+  to the lockdep documentation. ]
+
+> +  - Sleeping lock types cannot nest inside spinning lock types.
+> +
+> +  - Spinning lock types can nest inside sleeping lock types.
+> +
+> +These rules apply in general independent of CONFIG_PREEMPT_RT.
+
+These constraints apply both in CONFIG_PREEMPT_RT and otherwise.
+
+> +As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
+> +spinning to sleeping this has obviously restrictions how they can nest with
+> +raw_spinlock_t.
+> +
+> +This results in the following nest ordering:
+
+The fact that PREEMPT_RT changes the lock category of spinlock_t and
+rwlock_t from spinning to sleeping means that they cannot be acquired
+while holding a raw spinlock.  This results in the following nesting
+ordering:
+
+> +  1) Sleeping locks
+> +  2) spinlock_t and rwlock_t
+> +  3) raw_spinlock_t and bit spinlocks
+> +
+> +Lockdep is aware of these constraints to ensure that they are respected.
+
+Lockdep will complain if these constraints are violated, both in
+CONFIG_PREEMPT_RT and otherwise.
+
+
+> +Owner semantics
+> +===============
+> +
+> +Most lock types in the Linux kernel have strict owner semantics, i.e. the
+> +context (task) which acquires a lock has to release it.
+
+The aforementioned lock types have strict owner semantics: The context
+(task) that acquired the lock must release it.
+
+> +There are two exceptions:
+> +
+> +  - semaphores
+> +  - rwsems
+> +
+> +semaphores have no owner semantics for historical reason, and as such
+> +trylock and release operations can be called from any context. They are
+> +often used for both serialization and waiting purposes. That's generally
+> +discouraged and should be replaced by separate serialization and wait
+> +mechanisms, such as mutexes and completions.
+
+semaphores lack owner semantics for historical reasons, so their trylock
+and release operations may be called from any context. They are often
+used for both serialization and waiting, but new use cases should
+instead use separate serialization and wait mechanisms, such as mutexes
+and completions.
+
+> +rwsems have grown interfaces which allow non owner release for special
+> +purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+> +substitutes all locking primitives except semaphores with RT-mutex based
+> +implementations to provide priority inheritance for all lock types except
+> +the truly spinning ones. Priority inheritance on ownerless locks is
+> +obviously impossible.
+> +
+> +For now the rwsem non-owner release excludes code which utilizes it from
+> +being used on PREEMPT_RT enabled kernels. In same cases this can be
+> +mitigated by disabling portions of the code, in other cases the complete
+> +functionality has to be disabled until a workable solution has been found.
+
+rwsems have grown special-purpose interfaces that allow non-owner release.
+This non-owner release prevents PREEMPT_RT from substituting RT-mutex
+implementations, for example, by defeating priority inheritance.
+After all, if the lock has no owner, whose priority should be boosted?
+As a result, PREEMPT_RT does not currently support rwsem, which in turn
+means that code using it must therefore be disabled until a workable
+solution presents itself.
+
+[ Note: Not as confident as I would like to be in the above. ]
+
+							Thanx, Paul
