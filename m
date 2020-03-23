@@ -1,57 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A488018EEF2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 06:01:06 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E903718EF09
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 06:08:07 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m2Sw6kP2zDqcW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 16:08:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m2Jv037ZzDqkg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 16:01:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m2LC64B1zDqhN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 16:02:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m2GW21fZzDqXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 15:58:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=informatik.wtf
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48m2LB3WVPz9BNK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 16:02:10 +1100 (AEDT)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48m2GV6zxmz8t5m
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 15:58:58 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 48m2L92MlRz9sSK; Mon, 23 Mar 2020 16:02:09 +1100 (AEDT)
+ id 48m2GV5xnWz9sRR; Mon, 23 Mar 2020 15:58:58 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=informatik.wtf (client-ip=131.153.2.42;
- helo=h1.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
+ smtp.mailfrom=informatik.wtf (client-ip=131.153.2.45;
+ helo=h4.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=informatik.wtf
-Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
- [131.153.2.42])
+X-Greylist: delayed 448 seconds by postgrey-1.36 at bilbo;
+ Mon, 23 Mar 2020 15:58:57 AEDT
+Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
+ [131.153.2.45])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48m2L85358z9sRY
- for <linuxppc-dev@ozlabs.org>; Mon, 23 Mar 2020 16:02:08 +1100 (AEDT)
+ by ozlabs.org (Postfix) with ESMTPS id 48m2GT4cZdz9sPk
+ for <linuxppc-dev@ozlabs.org>; Mon, 23 Mar 2020 15:58:57 +1100 (AEDT)
 Received: from MTA-05-3.privateemail.com (mta-05.privateemail.com
  [198.54.127.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id BD566808C9
+ by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id CFB27807F2
  for <linuxppc-dev@ozlabs.org>; Mon, 23 Mar 2020 00:51:26 -0400 (EDT)
 Received: from MTA-05.privateemail.com (localhost [127.0.0.1])
- by MTA-05.privateemail.com (Postfix) with ESMTP id EBDB260051
+ by MTA-05.privateemail.com (Postfix) with ESMTP id EBD506004E
  for <linuxppc-dev@ozlabs.org>; Mon, 23 Mar 2020 00:51:21 -0400 (EDT)
 Received: from geist.attlocal.net (unknown [10.20.151.230])
- by MTA-05.privateemail.com (Postfix) with ESMTPA id 52DFC6004B
+ by MTA-05.privateemail.com (Postfix) with ESMTPA id 987666004C
  for <linuxppc-dev@ozlabs.org>; Mon, 23 Mar 2020 04:51:21 +0000 (UTC)
 From: "Christopher M. Riedl" <cmr@informatik.wtf>
 To: linuxppc-dev@ozlabs.org
-Subject: [RFC PATCH 1/3] powerpc/mm: Introduce temporary mm
-Date: Sun, 22 Mar 2020 23:52:03 -0500
-Message-Id: <20200323045205.20314-2-cmr@informatik.wtf>
+Subject: [RFC PATCH 2/3] powerpc/lib: Initialize a temporary mm for code
+ patching
+Date: Sun, 22 Mar 2020 23:52:04 -0500
+Message-Id: <20200323045205.20314-3-cmr@informatik.wtf>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200323045205.20314-1-cmr@informatik.wtf>
 References: <20200323045205.20314-1-cmr@informatik.wtf>
@@ -73,138 +76,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-x86 supports the notion of a temporary mm which restricts access to
-temporary PTEs to a single CPU. A temporary mm is useful for situations
-where a CPU needs to perform sensitive operations (such as patching a
-STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
-said mappings to other CPUs. A side benefit is that other CPU TLBs do
-not need to be flushed when the temporary mm is torn down.
+When code patching a STRICT_KERNEL_RWX kernel the page containing the
+address to be patched is temporarily mapped with permissive memory
+protections. Currently, a per-cpu vmalloc patch area is used for this
+purpose. While the patch area is per-cpu, the temporary page mapping is
+inserted into the kernel page tables for the duration of the patching.
+The mapping is exposed to CPUs other than the patching CPU - this is
+undesirable from a hardening perspective.
 
-Mappings in the temporary mm can be set in the userspace portion of the
-address-space.
-
-Interrupts must be disabled while the temporary mm is in use. HW
-breakpoints, which may have been set by userspace as watchpoints on
-addresses now within the temporary mm, are saved and disabled when
-loading the temporary mm. The HW breakpoints are restored when unloading
-the temporary mm. All HW breakpoints are indiscriminately disabled while
-the temporary mm is in use.
+Use the `poking_init` init hook to prepare a temporary mm and patching
+address. Initialize the temporary mm by copying the init mm. Choose a
+randomized patching address inside the temporary mm userspace address
+portion. The next patch uses the temporary mm and patching address for
+code patching.
 
 Based on x86 implementation:
 
-commit cefa929c034e
-("x86/mm: Introduce temporary mm structs")
+commit 4fc19708b165
+("x86/alternatives: Initialize temporary mm for patching")
 
 Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
 ---
- arch/powerpc/include/asm/debug.h       |  1 +
- arch/powerpc/include/asm/mmu_context.h | 56 +++++++++++++++++++++++++-
- arch/powerpc/kernel/process.c          |  5 +++
- 3 files changed, 61 insertions(+), 1 deletion(-)
+ arch/powerpc/lib/code-patching.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
-index 7756026b95ca..b945bc16c932 100644
---- a/arch/powerpc/include/asm/debug.h
-+++ b/arch/powerpc/include/asm/debug.h
-@@ -45,6 +45,7 @@ static inline int debugger_break_match(struct pt_regs *regs) { return 0; }
- static inline int debugger_fault_handler(struct pt_regs *regs) { return 0; }
- #endif
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 3345f039a876..18b88ecfc5a8 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -11,6 +11,8 @@
+ #include <linux/cpuhotplug.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
++#include <linux/sched/task.h>
++#include <linux/random.h>
  
-+void __get_breakpoint(struct arch_hw_breakpoint *brk);
- void __set_breakpoint(struct arch_hw_breakpoint *brk);
- bool ppc_breakpoint_available(void);
- #ifdef CONFIG_PPC_ADV_DEBUG_REGS
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index 360367c579de..3e6381d04c28 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -7,9 +7,10 @@
- #include <linux/mm.h>
- #include <linux/sched.h>
- #include <linux/spinlock.h>
--#include <asm/mmu.h>	
-+#include <asm/mmu.h>
- #include <asm/cputable.h>
- #include <asm/cputhreads.h>
-+#include <asm/hw_breakpoint.h>
- 
- /*
-  * Most if the context management is out of line
-@@ -270,5 +271,58 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
- 	return 0;
+ #include <asm/pgtable.h>
+ #include <asm/tlbflush.h>
+@@ -39,6 +41,30 @@ int raw_patch_instruction(unsigned int *addr, unsigned int instr)
  }
  
-+struct temp_mm {
-+	struct mm_struct *temp;
-+	struct mm_struct *prev;
-+	bool is_kernel_thread;
-+	struct arch_hw_breakpoint brk;
-+};
+ #ifdef CONFIG_STRICT_KERNEL_RWX
 +
-+static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_struct *mm)
++__ro_after_init struct mm_struct *patching_mm;
++__ro_after_init unsigned long patching_addr;
++
++void __init poking_init(void)
 +{
-+	temp_mm->temp = mm;
-+	temp_mm->prev = NULL;
-+	temp_mm->is_kernel_thread = false;
-+	memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
-+}
++	spinlock_t *ptl; /* for protecting pte table */
++	pte_t *ptep;
 +
-+static inline void use_temporary_mm(struct temp_mm *temp_mm)
-+{
-+	lockdep_assert_irqs_disabled();
-+
-+	temp_mm->is_kernel_thread = current->mm == NULL;
-+	if (temp_mm->is_kernel_thread)
-+		temp_mm->prev = current->active_mm;
-+	else
-+		temp_mm->prev = current->mm;
++	patching_mm = copy_init_mm();
++	BUG_ON(!patching_mm);
 +
 +	/*
-+	 * Hash requires a non-NULL current->mm to allocate a userspace address
-+	 * when handling a page fault. Does not appear to hurt in Radix either.
++	 * In hash we cannot go above DEFAULT_MAP_WINDOW easily.
++	 * XXX: Do we want additional bits of entropy for radix?
 +	 */
-+	current->mm = temp_mm->temp;
-+	switch_mm_irqs_off(NULL, temp_mm->temp, current);
++	patching_addr = (get_random_long() & PAGE_MASK) %
++		(DEFAULT_MAP_WINDOW - PAGE_SIZE);
 +
-+	if (ppc_breakpoint_available()) {
-+		__get_breakpoint(&temp_mm->brk);
-+		if (temp_mm->brk.type != 0)
-+			hw_breakpoint_disable();
-+	}
++	ptep = get_locked_pte(patching_mm, patching_addr, &ptl);
++	BUG_ON(!ptep);
++	pte_unmap_unlock(ptep, ptl);
 +}
 +
-+static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
-+{
-+	lockdep_assert_irqs_disabled();
-+
-+	if (temp_mm->is_kernel_thread)
-+		current->mm = NULL;
-+	else
-+		current->mm = temp_mm->prev;
-+	switch_mm_irqs_off(NULL, temp_mm->prev, current);
-+
-+	if (ppc_breakpoint_available() && temp_mm->brk.type != 0)
-+		__set_breakpoint(&temp_mm->brk);
-+}
-+
- #endif /* __KERNEL__ */
- #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index fad50db9dcf2..5e5cf33fc358 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -793,6 +793,11 @@ static inline int set_breakpoint_8xx(struct arch_hw_breakpoint *brk)
- 	return 0;
- }
+ static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
  
-+void __get_breakpoint(struct arch_hw_breakpoint *brk)
-+{
-+	memcpy(brk, this_cpu_ptr(&current_brk), sizeof(*brk));
-+}
-+
- void __set_breakpoint(struct arch_hw_breakpoint *brk)
- {
- 	memcpy(this_cpu_ptr(&current_brk), brk, sizeof(*brk));
+ static int text_area_cpu_up(unsigned int cpu)
 -- 
 2.25.1
 
