@@ -1,51 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF38118F0F7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 09:37:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA3718F139
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 09:51:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m7Qj3bMgzDr0p
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 19:51:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m76r09NnzDqpd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 19:37:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.48.29; helo=11.mo1.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 11.mo1.mail-out.ovh.net (11.mo1.mail-out.ovh.net
- [188.165.48.29])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bg5dByMq; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m7Np30dbzDqqD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:49:45 +1100 (AEDT)
-Received: from player690.ha.ovh.net (unknown [10.110.115.3])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id C85631B5A81
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 09:32:31 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player690.ha.ovh.net (Postfix) with ESMTPSA id 9DB741090224A;
- Mon, 23 Mar 2020 08:32:10 +0000 (UTC)
-Subject: Re: [PATCH v8 01/14] powerpc/xive: Define
- xive_native_alloc_irq_on_chip()
-To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au
-References: <1584598120.9256.15237.camel@hbabu-laptop>
- <1584598352.9256.15242.camel@hbabu-laptop>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <a0c47238-91f9-1b0c-208a-7186e331577f@kaod.org>
-Date: Mon, 23 Mar 2020 09:32:01 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m74x49NxzDqn5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:36:01 +1100 (AEDT)
+Received: by mail-pj1-x1042.google.com with SMTP id ck23so5759542pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 01:36:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=jQgBNOBetT+Yt9L1iBVToV2z/HpT1STYDN2GnLPUbZ8=;
+ b=bg5dByMqk4E50hNtbCGMlTCXC+I0n8bJZ9aiwyEplK2n7k9vgIaCOpIo3QClPkMKz/
+ 85ciSI97m1kFKD05Ooad8bX73r+jiCvd0EAaoODmKHv1dABp3eMmND+0KJQTpnQEaiFs
+ +IEUliXpab40z/XgujvQTd47DVYDSCAXLtVNfaEpx31AP9Tc5m0tueizkvs+mktm4I18
+ mvLFQ5GxeLFZVlSgkMiqIgLjNOECvpJWrh5xEb+/I5YREitAWtiunmnjm3EIo5cu+v3u
+ +H/oybtYojuw+y4tVERBq0gOsQ5ZDwxGBDqY2BrUtwYyoSyW4R7d0Ejx6aqufybfYHqb
+ iwMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=jQgBNOBetT+Yt9L1iBVToV2z/HpT1STYDN2GnLPUbZ8=;
+ b=AhHr9xJG9iQtUsNkcukqtcos6rgPDc4BAzv5IdHeCaCVes0ho8cuskUzj98dwX7U7W
+ m0tlNDUR8WRn9pzerQ3cf+dYjB0EUWVSQvGx2LcWfjz5Vd0jp8GETZuSuvZvvWXEDeDw
+ lvQyiihuarJRifktAR/+VGhH9UoJtu4i7hx/6I+6+NzB26u2EURZc55ggQftS+s7Dr1w
+ vefLMM3KrA0Jow2sGdd/paZ99kSb7s2BrfoPkzsRL+Z+yD3+x3DrQcBLDYNV0IS4Ew9f
+ DKoFMaumwfxryrRabp23XGFiPKyU0dAdblAkKqrg3gxOXRaStE9spblFp0zu/ymir8nC
+ +Qxg==
+X-Gm-Message-State: ANhLgQ3w5sqAZoGr2znYq/nG5XgBU8TqGI6emZVGNo/w6BNTB4+R57in
+ DbOezTNM+laEJSWKeacfkDM=
+X-Google-Smtp-Source: ADFU+vtupVzZlv9Wxpzbv3+cZe0iswidB3CHNo7sIqsXoz8TGh6+KBE0yoI525zLJ1j5YLwnlRkUkw==
+X-Received: by 2002:a17:90a:a795:: with SMTP id
+ f21mr23950941pjq.29.1584952559231; 
+ Mon, 23 Mar 2020 01:35:59 -0700 (PDT)
+Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id h132sm12937462pfe.118.2020.03.23.01.35.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Mar 2020 01:35:58 -0700 (PDT)
+Date: Mon, 23 Mar 2020 18:32:12 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 9/9] Documentation/powerpc: VAS API
+To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au
+References: <1583540877.9256.24.camel@hbabu-laptop>
+ <1583541541.9256.50.camel@hbabu-laptop>
+In-Reply-To: <1583541541.9256.50.camel@hbabu-laptop>
 MIME-Version: 1.0
-In-Reply-To: <1584598352.9256.15242.camel@hbabu-laptop>
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1584950507.6q5ilutvon.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 8367406635500211026
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudegjedguddutdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrieeltddrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,107 +81,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
+Cc: mikey@neuling.org, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/19/20 7:12 AM, Haren Myneni wrote:
-> 
-> This function allocates IRQ on a specific chip. VAS needs per chip
-> IRQ allocation and will have IRQ handler per VAS instance.
+Haren Myneni's on March 7, 2020 10:39 am:
+>=20
+> Power9 introduced Virtual Accelerator Switchboard (VAS) which allows
+> userspace to communicate with Nest Accelerator (NX) directly. But
+> kernel has to establish channel to NX for userspace. This document
+> describes user space API that application can use to establish
+> communication channel.
 
-The pool of generic interrupt source (IPI) numbers is generally used 
-by user space application which generally do not care on which chip 
-the interrupt is allocated. It's used by the CXL driver and KVM for 
-the guest interrupts. The CPU IPI are the exceptions.
+Agree with Daniel this is good documentation.
 
-The underlying FW call will try to allocate on the chip of the CPU 
-first and then on the others. If you specify a chip id, there is no 
-fallback. Is it what you want ? 
+But I don't see mention of the word 'signal' anywhere. The signal stuff
+is one of the trickiest parts this code being added. It would be great if
+that could be documented and even with example code or at least a
+description of why it's required and can't be done some other way.
 
-Why do you need to allocate a generic interrupt source (IPI) from
-a specific chip ? Is it a VAS requirement ? 
-
-Could you explain a bit more how it is used because there might be 
-similar request. 
-
-The code is fine.
+Does something like io_uring require signals in such cases?
 
 Thanks,
-
-C.
-
-  
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/xive.h   | 9 ++++++++-
->  arch/powerpc/sysdev/xive/native.c | 6 +++---
->  2 files changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
-> index 93f982db..d08ea11 100644
-> --- a/arch/powerpc/include/asm/xive.h
-> +++ b/arch/powerpc/include/asm/xive.h
-> @@ -5,6 +5,8 @@
->  #ifndef _ASM_POWERPC_XIVE_H
->  #define _ASM_POWERPC_XIVE_H
->  
-> +#include <asm/opal-api.h>
-> +
->  #define XIVE_INVALID_VP	0xffffffff
->  
->  #ifdef CONFIG_PPC_XIVE
-> @@ -108,7 +110,6 @@ struct xive_q {
->  int xive_native_populate_irq_data(u32 hw_irq,
->  				  struct xive_irq_data *data);
->  void xive_cleanup_irq_data(struct xive_irq_data *xd);
-> -u32 xive_native_alloc_irq(void);
->  void xive_native_free_irq(u32 irq);
->  int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
->  
-> @@ -137,6 +138,12 @@ int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
->  				u32 qindex);
->  int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
->  bool xive_native_has_queue_state_support(void);
-> +extern u32 xive_native_alloc_irq_on_chip(u32 chip_id);
-> +
-> +static inline u32 xive_native_alloc_irq(void)
-> +{
-> +	return xive_native_alloc_irq_on_chip(OPAL_XIVE_ANY_CHIP);
-> +}
->  
->  #else
->  
-> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-> index 0ff6b73..14d4406 100644
-> --- a/arch/powerpc/sysdev/xive/native.c
-> +++ b/arch/powerpc/sysdev/xive/native.c
-> @@ -279,12 +279,12 @@ static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
->  }
->  #endif /* CONFIG_SMP */
->  
-> -u32 xive_native_alloc_irq(void)
-> +u32 xive_native_alloc_irq_on_chip(u32 chip_id)
->  {
->  	s64 rc;
->  
->  	for (;;) {
-> -		rc = opal_xive_allocate_irq(OPAL_XIVE_ANY_CHIP);
-> +		rc = opal_xive_allocate_irq(chip_id);
->  		if (rc != OPAL_BUSY)
->  			break;
->  		msleep(OPAL_BUSY_DELAY_MS);
-> @@ -293,7 +293,7 @@ u32 xive_native_alloc_irq(void)
->  		return 0;
->  	return rc;
->  }
-> -EXPORT_SYMBOL_GPL(xive_native_alloc_irq);
-> +EXPORT_SYMBOL_GPL(xive_native_alloc_irq_on_chip);
->  
->  void xive_native_free_irq(u32 irq)
->  {
-> 
-
+Nick
+=
