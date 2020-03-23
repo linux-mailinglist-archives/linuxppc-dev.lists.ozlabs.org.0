@@ -1,53 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA9318F1BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:26:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m8C03v6kzDr9j
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:26:19 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A70A18F1C5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:28:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m8F32w4LzDqRK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:28:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.52.162; helo=2.mo68.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::244;
+ helo=mail-oi1-x244.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 596 seconds by postgrey-1.36 at bilbo;
- Mon, 23 Mar 2020 20:24:27 AEDT
-Received: from 2.mo68.mail-out.ovh.net (2.mo68.mail-out.ovh.net
- [46.105.52.162])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=n2LY028g; dkim-atps=neutral
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m88q0LZHzDqDP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:24:26 +1100 (AEDT)
-Received: from player696.ha.ovh.net (unknown [10.110.208.83])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 56C3414EEC8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 10:06:31 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player696.ha.ovh.net (Postfix) with ESMTPSA id F0ABD10BC12AC;
- Mon, 23 Mar 2020 09:06:08 +0000 (UTC)
-Subject: Re: [PATCH v8 04/14] powerpc/vas: Alloc and setup IRQ and trigger
- port address
-To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au
-References: <1584598120.9256.15237.camel@hbabu-laptop>
- <1584598473.9256.15248.camel@hbabu-laptop>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <396db62b-5342-a1b3-eade-a219afd98fc7@kaod.org>
-Date: Mon, 23 Mar 2020 10:06:01 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m8B85lsHzDqWX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:25:36 +1100 (AEDT)
+Received: by mail-oi1-x244.google.com with SMTP id w2so3055469oic.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=BlNsxbp9HHMniuJM81RM7rBX4vj95s0I3+pOS8kzTBk=;
+ b=n2LY028gZjF5dbavPSnf3Me7QSXBMKqc4sTXZDbx803WWKw0MOEAbYaH32F+89W13F
+ Q965B8NWVzfEQEQMT/3fTQpa7FKd/K0UvSnEG2eXEE3u4ejcp+Al0cEQA8TJuKMLYM+o
+ RD0sq8+em5KmxfKKf56invEOJil0C4wGy2Oc2qTEnPKouXjnNaqFYsuILlmBiPGMIlGT
+ EdvYFXm4TjDdIKUFUq+QLghwuVdk0TyE5CbhWaQ8SA5KTSNOTl8FFRThti2OgFiOl+uY
+ zQy96CdA11VmgoE0aSqdC88YEG8vJcbAY8oXrocMhdaunvO5m8O+Y/PEovfNtwDddduE
+ jfrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=BlNsxbp9HHMniuJM81RM7rBX4vj95s0I3+pOS8kzTBk=;
+ b=fZbbfPwGvPicxWqMX4wEbVIRibGTw97eBCahmY0qHsJFD4f75Y3IrNpTRHcFSxe/Eg
+ 5ArXAHcAJObZMlFR+XvjRg52irKeWuqrV2tHby+UmfYKDBqWzXPCRIwhZcw2VdNdQrUK
+ xQdZI1GhDcajKX/QoNzM0CGGtYLbtJYatNxAGZCBYScgO5i8Kp8F0ukeMXfK9ZKYzwRo
+ Nm3y39WywSIVYFoNKBHjbsim0j2iPnswOazlk6X6JOFloWOFLlDcGaIGUBHkhKOrrKf3
+ 19dhpx9kkjSWsJIJ49DTbb7TpyTu2RhTjkiOuYyER0C9GrrPnsSRCwK7qWwnsYvixQFA
+ Ff+w==
+X-Gm-Message-State: ANhLgQ3kR7/IgNQd5w2AgG9IzYAtgooGPBF3EpcoLf7jCXJ8tUTNF3GE
+ 0uxuYcjR4mfJ2VY4RWQfQJTFp5WZbM23DxrMoLw=
+X-Google-Smtp-Source: ADFU+vsIvWNumvQUeHmbSZ/VsmgUyBeKKV0g91hnVve+x0uvXZbfZYWYJ4ygRYpDlFcZRvkR7rfHGeVUgtvL8Hkila8=
+X-Received: by 2002:aca:d68a:: with SMTP id n132mr16953711oig.40.1584955534069; 
+ Mon, 23 Mar 2020 02:25:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1584598473.9256.15248.camel@hbabu-laptop>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 8941334113687866361
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudegkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrieeliedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
+References: <20200320051809.24332-1-jniethe5@gmail.com>
+ <1584944279.gvl0lg5dde.astroid@bobo.none>
+In-Reply-To: <1584944279.gvl0lg5dde.astroid@bobo.none>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Mon, 23 Mar 2020 20:25:22 +1100
+Message-ID: <CACzsE9r5uvL-zp34VrCqO_RTEsXPbLrt2iu+MHL-apapydOugA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/16] Initial Prefixed Instruction support
+To: Nicholas Piggin <npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,113 +73,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au,
- Frederic Barrat <frederic.barrat@fr.ibm.com>, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/19/20 7:14 AM, Haren Myneni wrote:
-> 
-> Alloc IRQ and get trigger port address for each VAS instance. Kernel
-> register this IRQ per VAS instance and sets this port for each send
-> window. NX interrupts the kernel when it sees page fault.
-
-I don't understand why this is not done by the OPAL driver for each VAS 
-of the system. Is the VAS unit very different from OpenCAPI regarding
-the fault ? 
-
-
-C.
-
-> 
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/powernv/vas.c | 34 ++++++++++++++++++++++++++++------
->  arch/powerpc/platforms/powernv/vas.h |  2 ++
->  2 files changed, 30 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
-> index ed9cc6d..168ab68 100644
-> --- a/arch/powerpc/platforms/powernv/vas.c
-> +++ b/arch/powerpc/platforms/powernv/vas.c
-> @@ -15,6 +15,7 @@
->  #include <linux/of_address.h>
->  #include <linux/of.h>
->  #include <asm/prom.h>
-> +#include <asm/xive.h>
->  
->  #include "vas.h"
->  
-> @@ -25,10 +26,12 @@
->  
->  static int init_vas_instance(struct platform_device *pdev)
->  {
-> -	int rc, cpu, vasid;
-> -	struct resource *res;
-> -	struct vas_instance *vinst;
->  	struct device_node *dn = pdev->dev.of_node;
-> +	struct vas_instance *vinst;
-> +	uint32_t chipid, irq;
-> +	struct resource *res;
-> +	int rc, cpu, vasid;
-> +	uint64_t port;
->  
->  	rc = of_property_read_u32(dn, "ibm,vas-id", &vasid);
->  	if (rc) {
-> @@ -36,6 +39,12 @@ static int init_vas_instance(struct platform_device *pdev)
->  		return -ENODEV;
->  	}
->  
-> +	rc = of_property_read_u32(dn, "ibm,chip-id", &chipid);
-> +	if (rc) {
-> +		pr_err("No ibm,chip-id property for %s?\n", pdev->name);
-> +		return -ENODEV;
-> +	}
-> +
->  	if (pdev->num_resources != 4) {
->  		pr_err("Unexpected DT configuration for [%s, %d]\n",
->  				pdev->name, vasid);
-> @@ -69,9 +78,22 @@ static int init_vas_instance(struct platform_device *pdev)
->  
->  	vinst->paste_win_id_shift = 63 - res->end;
->  
-> -	pr_devel("Initialized instance [%s, %d], paste_base 0x%llx, "
-> -			"paste_win_id_shift 0x%llx\n", pdev->name, vasid,
-> -			vinst->paste_base_addr, vinst->paste_win_id_shift);
-> +	rc = xive_native_alloc_get_irq_info(chipid, &irq, &port);
-> +	if (rc)
-> +		return rc;
-> +
-> +	vinst->virq = irq_create_mapping(NULL, irq);
-> +	if (!vinst->virq) {
-> +		pr_err("Inst%d: Unable to map global irq %d\n",
-> +				vinst->vas_id, irq);
-> +		return -EINVAL;
-> +	}
-> +
-> +	vinst->irq_port = port;
-> +	pr_devel("Initialized instance [%s, %d] paste_base 0x%llx paste_win_id_shift 0x%llx IRQ %d Port 0x%llx\n",
-> +			pdev->name, vasid, vinst->paste_base_addr,
-> +			vinst->paste_win_id_shift, vinst->virq,
-> +			vinst->irq_port);
->  
->  	for_each_possible_cpu(cpu) {
->  		if (cpu_to_chip_id(cpu) == of_get_ibm_chip_id(dn))
-> diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-> index 5574aec..598608b 100644
-> --- a/arch/powerpc/platforms/powernv/vas.h
-> +++ b/arch/powerpc/platforms/powernv/vas.h
-> @@ -313,6 +313,8 @@ struct vas_instance {
->  	u64 paste_base_addr;
->  	u64 paste_win_id_shift;
->  
-> +	u64 irq_port;
-> +	int virq;
->  	struct mutex mutex;
->  	struct vas_window *rxwin[VAS_COP_TYPE_MAX];
->  	struct vas_window *windows[VAS_WINDOWS_PER_CHIP];
-> 
-
+On Mon, Mar 23, 2020 at 5:22 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> Jordan Niethe's on March 20, 2020 3:17 pm:
+> > A future revision of the ISA will introduce prefixed instructions. A
+> > prefixed instruction is composed of a 4-byte prefix followed by a
+> > 4-byte suffix.
+> >
+> > All prefixes have the major opcode 1. A prefix will never be a valid
+> > word instruction. A suffix may be an existing word instruction or a
+> > new instruction.
+> >
+> > This series enables prefixed instructions and extends the instruction
+> > emulation to support them. Then the places where prefixed instructions
+> > might need to be emulated are updated.
+> >
+> > The series is based on top of:
+> > https://patchwork.ozlabs.org/patch/1232619/ as this will effect
+> > kprobes.
+> >
+> > v4 is based on feedback from Nick Piggins, Christophe Leroy and Daniel Axtens.
+> > The major changes:
+> >     - Move xmon breakpoints from data section to text section
+> >     - Introduce a data type for instructions on powerpc
+>
+> Thanks for doing this, looks like a lot of work, I hope it works out :)
+>
+Yes it did end up touching a lot of places. I started thinking that
+that maybe it would be simpler to just use a u64 instead of the struct
+for  instructions.
+If we always keep the word instruction / prefix in the lower bytes,
+all of the current masking should still work and we can use operators
+again instead of ppc_inst_equal(), etc.
+It also makes printing easier. We could just #define INST_FMT %llx or
+#define INST_FMT %x on powerpc32 and use that for printing out
+instructions.
+> Thanks,
+> Nick
