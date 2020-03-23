@@ -1,90 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED27318F72E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 15:48:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mHLf1fyGzDr55
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 01:48:26 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631E418F7D7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 15:59:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mHb21cdJzDqNR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 01:59:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mHH334KhzDqjT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 01:45:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=OafFvJo1; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48mHH269c4z9Bry
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 01:45:18 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48mHH23jVrz9sQt; Tue, 24 Mar 2020 01:45:18 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=OafFvJo1; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=yf5XE0C/; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48mHH16Cjrz9sPk
- for <linuxppc-dev@ozlabs.org>; Tue, 24 Mar 2020 01:45:17 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48mHGs5nxSz9vBTG;
- Mon, 23 Mar 2020 15:45:09 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=OafFvJo1; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1sQPCeOFk3pi; Mon, 23 Mar 2020 15:45:09 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48mHGs4hWFz9vBTD;
- Mon, 23 Mar 2020 15:45:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1584974709; bh=BRedvy12qLbyAM5l9rtPvWiDZLHEyMCdW7M8JSh8nBg=;
- h=Subject:From:To:References:Date:In-Reply-To:From;
- b=OafFvJo1Eu0hwiEL4Qvpn9hV2ZHh5rj6RnaKUvr+uZHSmIJYxlGhA4R3vI2d5SWgj
- J69w0zgWChdWFXWNg0CRiG/y1uHVIUG3U21Zp0IkdAQsu0/wJyMU1PI6yFggbzRJbL
- bwjCJC6Zu/ZwWFCHWtbmiLz85KcqLc7XPGchl7ho=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C72438B779;
- Mon, 23 Mar 2020 15:45:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id x9n7Q2de_hQ7; Mon, 23 Mar 2020 15:45:14 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 85D298B76E;
- Mon, 23 Mar 2020 15:45:14 +0100 (CET)
-Subject: Re: hardcoded SIGSEGV in __die() ?
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
- "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
-References: <73da05c0f54692a36471a2539dbd9b30594b687a.camel@infinera.com>
- <b20d978b-268b-773a-a43e-7ff4c741f2df@c-s.fr>
-Message-ID: <c14de482-6784-f1ac-f675-d771e55ac688@c-s.fr>
-Date: Mon, 23 Mar 2020 15:45:14 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mHWM2YM9zDqjx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 01:55:57 +1100 (AEDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C7BA620735;
+ Mon, 23 Mar 2020 14:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1584975355;
+ bh=jOSKWrpc9ElnZWJ1heLX/GWMUdGjM4M4Xxr1AD4TCqg=;
+ h=Subject:To:Cc:From:Date:From;
+ b=yf5XE0C/tSpGT5p/kD+CauDSczDNi86Ml8XjZLBRatW/XXvzYZZmjNhFdrRGhazW5
+ Di01u1l9Dh08sN0bt3CMQr0DvNl3MeV6tVUWt7Qkrg9ELt6z2KA0+2jwOR9A3dxdLM
+ YgN1t77oG80pJSyBYdbRgDudKbhodg6doR4Lp5+s=
+Subject: Patch "mm,
+ slub: prevent kmalloc_node crashes and memory leaks" has been added
+ to the 5.5-stable tree
+To: 088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz,
+ 20200317092624.GB22538@in.ibm.com, 20200320115533.9604-1-vbabka@suse.cz,
+ 3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com,
+ akpm@linux-foundation.org, bharata@linux.ibm.com, cl@linux.com,
+ fff0e636-4c36-ed10-281c-8cdb0687c839@virtuozzo.com, gregkh@linuxfoundation.org,
+ iamjoonsoo.kim@lge.com, ktkhai@virtuozzo.com, linuxppc-dev@lists.ozlabs.org,
+ mgorman@techsingularity.net, mhocko@kernel.org, mpe@ellerman.id.au,
+ nathanl@linux.ibm.com, penberg@kernel.org, puvichakravarthy@in.ibm.com,
+ rientjes@google.com, sachinp@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
+ torvalds@linux-foundation.org, vbabka@suse.cz
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 23 Mar 2020 15:55:12 +0100
+Message-ID: <1584975312141229@kroah.com>
 MIME-Version: 1.0
-In-Reply-To: <b20d978b-268b-773a-a43e-7ff4c741f2df@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,27 +68,199 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: stable-commits@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+This is a note to let you know that I've just added the patch titled
 
-Le 23/03/2020 à 15:43, Christophe Leroy a écrit :
-> 
-> 
-> Le 23/03/2020 à 15:17, Joakim Tjernlund a écrit :
->> In __die(), see below, there is this call to notify_send() with 
->> SIGSEGV hardcoded, this seems odd
->> to me as the variable "err" holds the true signal(in my case SIGBUS)
->> Should not SIGSEGV be replaced with the true signal no.?
-> 
-> As far as I can see, comes from 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=66fcb1059 
-> 
+    mm, slub: prevent kmalloc_node crashes and memory leaks
 
-And 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ae87221d3ce49d9de1e43756da834fd0bf05a2ad 
-shows it is (was?) similar on x86.
+to the 5.5-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-Christophe
+The filename of the patch is:
+     mm-slub-prevent-kmalloc_node-crashes-and-memory-leaks.patch
+and it can be found in the queue-5.5 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From 0715e6c516f106ed553828a671d30ad9a3431536 Mon Sep 17 00:00:00 2001
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Sat, 21 Mar 2020 18:22:37 -0700
+Subject: mm, slub: prevent kmalloc_node crashes and memory leaks
+
+From: Vlastimil Babka <vbabka@suse.cz>
+
+commit 0715e6c516f106ed553828a671d30ad9a3431536 upstream.
+
+Sachin reports [1] a crash in SLUB __slab_alloc():
+
+  BUG: Kernel NULL pointer dereference on read at 0x000073b0
+  Faulting instruction address: 0xc0000000003d55f4
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in:
+  CPU: 19 PID: 1 Comm: systemd Not tainted 5.6.0-rc2-next-20200218-autotest #1
+  NIP:  c0000000003d55f4 LR: c0000000003d5b94 CTR: 0000000000000000
+  REGS: c0000008b37836d0 TRAP: 0300   Not tainted  (5.6.0-rc2-next-20200218-autotest)
+  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004844  XER: 00000000
+  CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1
+  GPR00: c0000000003d5b94 c0000008b3783960 c00000000155d400 c0000008b301f500
+  GPR04: 0000000000000dc0 0000000000000002 c0000000003443d8 c0000008bb398620
+  GPR08: 00000008ba2f0000 0000000000000001 0000000000000000 0000000000000000
+  GPR12: 0000000024004844 c00000001ec52a00 0000000000000000 0000000000000000
+  GPR16: c0000008a1b20048 c000000001595898 c000000001750c18 0000000000000002
+  GPR20: c000000001750c28 c000000001624470 0000000fffffffe0 5deadbeef0000122
+  GPR24: 0000000000000001 0000000000000dc0 0000000000000002 c0000000003443d8
+  GPR28: c0000008b301f500 c0000008bb398620 0000000000000000 c00c000002287180
+  NIP ___slab_alloc+0x1f4/0x760
+  LR __slab_alloc+0x34/0x60
+  Call Trace:
+    ___slab_alloc+0x334/0x760 (unreliable)
+    __slab_alloc+0x34/0x60
+    __kmalloc_node+0x110/0x490
+    kvmalloc_node+0x58/0x110
+    mem_cgroup_css_online+0x108/0x270
+    online_css+0x48/0xd0
+    cgroup_apply_control_enable+0x2ec/0x4d0
+    cgroup_mkdir+0x228/0x5f0
+    kernfs_iop_mkdir+0x90/0xf0
+    vfs_mkdir+0x110/0x230
+    do_mkdirat+0xb0/0x1a0
+    system_call+0x5c/0x68
+
+This is a PowerPC platform with following NUMA topology:
+
+  available: 2 nodes (0-1)
+  node 0 cpus:
+  node 0 size: 0 MB
+  node 0 free: 0 MB
+  node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+  node 1 size: 35247 MB
+  node 1 free: 30907 MB
+  node distances:
+  node   0   1
+    0:  10  40
+    1:  40  10
+
+  possible numa nodes: 0-31
+
+This only happens with a mmotm patch "mm/memcontrol.c: allocate
+shrinker_map on appropriate NUMA node" [2] which effectively calls
+kmalloc_node for each possible node.  SLUB however only allocates
+kmem_cache_node on online N_NORMAL_MEMORY nodes, and relies on
+node_to_mem_node to return such valid node for other nodes since commit
+a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating
+on memoryless node").  This is however not true in this configuration
+where the _node_numa_mem_ array is not initialized for nodes 0 and 2-31,
+thus it contains zeroes and get_partial() ends up accessing
+non-allocated kmem_cache_node.
+
+A related issue was reported by Bharata (originally by Ramachandran) [3]
+where a similar PowerPC configuration, but with mainline kernel without
+patch [2] ends up allocating large amounts of pages by kmalloc-1k
+kmalloc-512.  This seems to have the same underlying issue with
+node_to_mem_node() not behaving as expected, and might probably also
+lead to an infinite loop with CONFIG_SLUB_CPU_PARTIAL [4].
+
+This patch should fix both issues by not relying on node_to_mem_node()
+anymore and instead simply falling back to NUMA_NO_NODE, when
+kmalloc_node(node) is attempted for a node that's not online, or has no
+usable memory.  The "usable memory" condition is also changed from
+node_present_pages() to N_NORMAL_MEMORY node state, as that is exactly
+the condition that SLUB uses to allocate kmem_cache_node structures.
+The check in get_partial() is removed completely, as the checks in
+___slab_alloc() are now sufficient to prevent get_partial() being
+reached with an invalid node.
+
+[1] https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
+[2] https://lore.kernel.org/linux-mm/fff0e636-4c36-ed10-281c-8cdb0687c839@virtuozzo.com/
+[3] https://lore.kernel.org/linux-mm/20200317092624.GB22538@in.ibm.com/
+[4] https://lore.kernel.org/linux-mm/088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz/
+
+Fixes: a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating on memoryless node")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Reported-by: PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Tested-by: Bharata B Rao <bharata@linux.ibm.com>
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Christopher Lameter <cl@linux.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Link: http://lkml.kernel.org/r/20200320115533.9604-1-vbabka@suse.cz
+Debugged-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ mm/slub.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1954,8 +1954,6 @@ static void *get_partial(struct kmem_cac
+ 
+ 	if (node == NUMA_NO_NODE)
+ 		searchnode = numa_mem_id();
+-	else if (!node_present_pages(node))
+-		searchnode = node_to_mem_node(node);
+ 
+ 	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+ 	if (object || node != NUMA_NO_NODE)
+@@ -2544,17 +2542,27 @@ static void *___slab_alloc(struct kmem_c
+ 	struct page *page;
+ 
+ 	page = c->page;
+-	if (!page)
++	if (!page) {
++		/*
++		 * if the node is not online or has no normal memory, just
++		 * ignore the node constraint
++		 */
++		if (unlikely(node != NUMA_NO_NODE &&
++			     !node_state(node, N_NORMAL_MEMORY)))
++			node = NUMA_NO_NODE;
+ 		goto new_slab;
++	}
+ redo:
+ 
+ 	if (unlikely(!node_match(page, node))) {
+-		int searchnode = node;
+-
+-		if (node != NUMA_NO_NODE && !node_present_pages(node))
+-			searchnode = node_to_mem_node(node);
+-
+-		if (unlikely(!node_match(page, searchnode))) {
++		/*
++		 * same as above but node_match() being false already
++		 * implies node != NUMA_NO_NODE
++		 */
++		if (!node_state(node, N_NORMAL_MEMORY)) {
++			node = NUMA_NO_NODE;
++			goto redo;
++		} else {
+ 			stat(s, ALLOC_NODE_MISMATCH);
+ 			deactivate_slab(s, page, c->freelist, c);
+ 			goto new_slab;
+
+
+Patches currently in stable-queue which might be from vbabka@suse.cz are
+
+queue-5.5/mm-slub-prevent-kmalloc_node-crashes-and-memory-leaks.patch
+queue-5.5/mm-do-not-allow-madv_pageout-for-cow-pages.patch
