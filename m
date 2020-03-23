@@ -2,75 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9132E18F23E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE52718F25C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 11:07:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m8tf56R5zDqQ1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:57:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m9654kH0zDqlF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 21:07:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hUZIWMHk; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m8rY4CxLzDqQ1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:55:25 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id f206so7259889pfa.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=4D1Yk7aV5KUay3khao7Iagf4Ouqb7NPNl0EqVsFX830=;
- b=hUZIWMHkb86D9FPHvxYCvT8dGjbropw7rIwdgU/NuurOpCSIXsRUwvVcBleJ8gO9oF
- hjRu2TXYWeXHWYngMnh0DSd3Fj/T9Q1XkIDlrC0CtNJu1mupG2bupK9Mfg6WjIgX8v4c
- QJyunGxYLkPLPIJcTC5AIxi8gJDyJwobTLuhHLTtQEGvi14/npDdqk6t3MPGgchll81a
- MsAqCNDu0+T2L8y59BDMLa/542FwySoeXUjbaaG3gVg4vQh7Foc5Cp7GMmov3CaPXSes
- 9AOStCrkDJ6URVthXUnAVy3GMIq7Xp/RCCuxH9Hym57729L7row1qM1O1OEbBbZle7jS
- VXRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=4D1Yk7aV5KUay3khao7Iagf4Ouqb7NPNl0EqVsFX830=;
- b=gDLngvbMo8cdUC9DixfX3IgT4mrVcb/KS0YweFcJrasCxS5WzpJTdnunlKIDLaiXtW
- 7Wo8wWg6+AGwg2TmRnLO0b8pEmgusx2hRXSwHeJTTS25GJUjyLD8M5vzViqC7AeZ9PxI
- G1QN21pDF14KDgtebsan2YVQrF9jnskQNGn5HypMIyglYKlscIPq2DoTz1h6YEuOlJ9+
- PpACi94mAdcD4sRjwsXJuFwFpHLhxu5ceixVRv5DjPvLv59YN7TbtwN/tcK9tCiqQ6QA
- M+vDHDo+6dLcT5xLaUUXUUMWV62uLvh4qfeUlRg4yXinOSeB0FRuFHr7wFuku09S93ms
- zteQ==
-X-Gm-Message-State: ANhLgQ2kkh8o2ZvwKd86coVXXFAifU9AgUPP7uHhkuuUKF5ioZu2cj0j
- WGOCg+z/Vh7XbtIwsBZGLTk=
-X-Google-Smtp-Source: ADFU+vvU8kXY8q7lTmjF+JNMvYcV+oWkIjIp55C7+z2LH9/bYl/qyoGMz7ZTAtKOvSrAUl/Wrms9HA==
-X-Received: by 2002:a63:778e:: with SMTP id s136mr3772316pgc.155.1584957322461; 
- Mon, 23 Mar 2020 02:55:22 -0700 (PDT)
-Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id a127sm12835289pfa.111.2020.03.23.02.55.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 02:55:21 -0700 (PDT)
-Date: Mon, 23 Mar 2020 19:51:32 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 03/16] powerpc: Use a datatype for instructions
-To: Jordan Niethe <jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m94B3mTCzDqJs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 21:05:29 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02NA2tS4145545
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 06:05:27 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0mbvdd-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 06:05:27 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
+ Mon, 23 Mar 2020 10:05:24 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 23 Mar 2020 10:05:22 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02NA5Mpj37486886
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 Mar 2020 10:05:22 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 067EDAE051;
+ Mon, 23 Mar 2020 10:05:22 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 77935AE04D;
+ Mon, 23 Mar 2020 10:05:20 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.203.173.30])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Mar 2020 10:05:20 +0000 (GMT)
+Subject: Re: [PATCH v4 16/16] powerpc sstep: Add support for prefixed
+ fixed-point arithmetic
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 23 Mar 2020 15:35:19 +0530
+In-Reply-To: <20200320051809.24332-17-jniethe5@gmail.com>
 References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-4-jniethe5@gmail.com>
- <1584944554.pe2tzckmyl.astroid@bobo.none>
- <CACzsE9qy7dUv+sbcCN-i0EeYiH=DacutULunpBdgV0h8D0m2yQ@mail.gmail.com>
-In-Reply-To: <CACzsE9qy7dUv+sbcCN-i0EeYiH=DacutULunpBdgV0h8D0m2yQ@mail.gmail.com>
+ <20200320051809.24332-17-jniethe5@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584956855.oidzv2r2fr.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20032310-0020-0000-0000-000003B96D64
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032310-0021-0000-0000-00002211E770
+Message-Id: <220675fc78c8ee750a8e89420625f953cc8c1de6.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-23_03:2020-03-21,
+ 2020-03-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003230056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,47 +91,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: alistair@popple.id.au, npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe's on March 23, 2020 7:28 pm:
-> On Mon, Mar 23, 2020 at 5:27 PM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
->>
->> Jordan Niethe's on March 20, 2020 3:17 pm:
->> > Currently unsigned ints are used to represent instructions on powerpc.
->> > This has worked well as instructions have always been 4 byte words.
->> > However, a future ISA version will introduce some changes to
->> > instructions that mean this scheme will no longer work as well. This
->> > change is Prefixed Instructions. A prefixed instruction is made up of =
-a
->> > word prefix followed by a word suffix to make an 8 byte double word
->> > instruction. No matter the endianess of the system the prefix always
->> > comes first. Prefixed instructions are only planned for powerpc64.
->> >
->> > Introduce a ppc_inst type to represent both prefixed and word
->> > instructions on powerpc64 while keeping it possible to exclusively hav=
-e
->> > word instructions on powerpc32, A latter patch will expand the type to
->> > include prefixed instructions but for now just typedef it to a u32.
->> >
->> > Later patches will introduce helper functions and macros for
->> > manipulating the instructions so that powerpc64 and powerpc32 might
->> > maintain separate type definitions.
->>
->> ppc_inst_t I would slightly prefer for a typedef like this.
-> Are _t types meant to be reserved?
+On Fri, 2020-03-20 at 16:18 +1100, Jordan Niethe wrote:
+> This adds emulation support for the following prefixed Fixed-Point
+> Arithmetic instructions:
+>   * Prefixed Add Immediate (paddi)
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
-No, just convention that structs are not normally typedefed unless
-they are a pervasive interface that gets passed around a lot but
-does not get accessed without accessor functions much. When you do
-typedef them, add a _t (or less frequently _s/_u/etc). pte_t,
-cpumask_t, atomic_t.
+Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
 
-Thanks,
-Nick
-=
+> ---
+> v3: Since we moved the prefixed loads/stores into the load/store switch
+> statement it no longer makes sense to have paddi in there, so move it
+> out.
+> ---
+>  arch/powerpc/lib/sstep.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index daef70eb8e22..6862fc019258 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1335,6 +1335,26 @@ int analyse_instr(struct instruction_op *op, const
+> struct pt_regs *regs,
+>  
+>  	switch (opcode) {
+>  #ifdef __powerpc64__
+> +	case 1:
+> +		prefix_r = word & (1ul << 20);
+> +		ra = (suffix >> 16) & 0x1f;
+> +		rd = (suffix >> 21) & 0x1f;
+> +		op->reg = rd;
+> +		op->val = regs->gpr[rd];
+> +		suffixopcode = suffix >> 26;
+> +		prefixtype = (word >> 24) & 0x3;
+> +		switch (prefixtype) {
+> +		case 2:
+> +			if (prefix_r && ra)
+> +				return 0;
+> +			switch (suffixopcode) {
+> +			case 14:	/* paddi */
+> +				op->type = COMPUTE | PREFIXED;
+> +				op->val = mlsd_8lsd_ea(word, suffix, regs);
+> +				goto compute_done;
+> +			}
+> +		}
+> +		break;
+>  	case 2:		/* tdi */
+>  		if (rd & trap_compare(regs->gpr[ra], (short) word))
+>  			goto trap;
+
