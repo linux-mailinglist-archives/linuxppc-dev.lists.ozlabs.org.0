@@ -2,72 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5E618F022
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA32C18F028
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:12:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m59W4lM2zDqcj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:09:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m5DW0PJdzDqdx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:12:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qEPlEuF2; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20161025 header.b=scxhyCr+; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m5601mKxzDqx2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:06:47 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id u12so6719209pgb.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:06:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m5943BpqzDqcj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:09:28 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id b9so5533959pls.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:09:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=jagWdCcnBiybSakfw5PN8Wa6sa3Cmn52hk0EpHATB/I=;
- b=qEPlEuF2JvsL2RsQf7olFsNe6R+IH2TQvW6iNSV3sxovf1phrsCGITGyS5TbZfJ3wk
- We6lbMj6KqQpkM+umo7Awvbi8JSkkJJIojRokdqmmlUxKnSp6e42LcRSlnZRMh8yB/Yi
- ysVEB1+4C/Iiwt6oxXJWdHJPs0d3nNjPmpBKeJib8s97ozJPdzeNRjpXK+mybgpHw6EM
- 0lFWQYeFlB19KjlV7BD2+6UIglFI/R3jSh+3S1AI8lRjbyTt5fvWSRquJ0n3AnyZ/7ac
- 9CexaOrpQ71MikQ18ESIv0IvEqxesvEilctLAJ5zatMqfQCZ9w/1XHH9+hcvswOE1hly
- dXRQ==
+ bh=Fegzw3wehVCScrY4JFXkgGmDCPXn4IYsSCwQJBL8cEQ=;
+ b=scxhyCr+krufFYpoyIz0NhtgeTS+MmcwuFLsryqINQa84Ih6j55C3qnse+rXK5oL0T
+ 8v1uPWeKbwSxTsGbpaGhymb2qHSDgKiR+uW9AQOdbT4mkKIvqs5FbiPATp5RyJtWqfhn
+ IIZdTjpjLIhNO2Ck7eJcN2xw0iC3X5HqXk1ueKc6KCtJilEqMNUNdht93f1oW0tKtc0A
+ g+Syojizr7SPnQKCfJoWU3ktwRyUk4irgojSCKAn4aGoi+xeoycT5y1xD/br+UJw/dAm
+ khClzzDavROtGiRCftkpWsosXMjQlrH9tf0T7TX8CZ16/MnbgHzcay/huMKh/wy98ldo
+ ZN5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=jagWdCcnBiybSakfw5PN8Wa6sa3Cmn52hk0EpHATB/I=;
- b=kj4k00PUIKj2HBzBQI911uRbShoZtLZuFePqwXiGeuAzUFFLlKBly6pbO9qGKB0gLL
- CoCgVDTnKIqcimhsYOgIl1+8MtdCbFKNQ4onGudXDmvujzkj2QSZ1wln8NdOZL0ov1sY
- r1oWxkWti7dCl9d5kMN16ReXtUaUGaT+wde2tnW+/JBuHVQ/AlSoA32KRPX3njf8t8qo
- QldqrpcidUp4xZw/UnaaTOBh6rOd500QDrgHY66c5qzDkAlGp/A2DItV6f8XwcVWEyGI
- Q/3LAJcpml2s7Rft0d0ZPQ0APbn5QVkg5IJYFXgIh2em+0ajffOhGimsJeZYnzmTLgHu
- o/5A==
-X-Gm-Message-State: ANhLgQ3pp74zSADHz15k2EMKB9nuS31/e/qu02oGeBj7Y5UEa+94jL4U
- E7JHyxuXOZ+q7pwtsCUdEZ0=
-X-Google-Smtp-Source: ADFU+vtXcRAzMqHWjUwFZY0cuFIczi/iITTe1SbqXVRCE/wWsvBTZmN5PMlSGUo2Fg3Lpt22AfgplA==
-X-Received: by 2002:a63:7e1a:: with SMTP id z26mr20184546pgc.226.1584947204830; 
- Mon, 23 Mar 2020 00:06:44 -0700 (PDT)
+ bh=Fegzw3wehVCScrY4JFXkgGmDCPXn4IYsSCwQJBL8cEQ=;
+ b=S+YiQ+f4FgyO0zm0riog758X77R7s7Rdz/T5wDYy4m1vgywhb18a4sG1oZY3ELKwyi
+ RzJfecrcVq/Zo/CERUen0ySW1Pt+cMY+81zLCBrs6Nj+yr7JrPvHulRsJMJOuJvWhmRh
+ wARTrjf6zR4luu8BwerzdUTklYJccOttiJSQFyXo+aFR5az1XzLGSk1+bFDPav2hyXZs
+ JU19ntJ4tPQ4/VRv/2yUbE7LeuvKjQZ8U+ldi+gI3cgnD+CVJ6B/VBmdCNQQ7w01OZJ0
+ 6KnFStiUIwRUwOWQfIqYPI/EnST3aUFzF5U20y7pFe1B+L6GKz2VN+iPTrxn2lfxFV+D
+ G/Ug==
+X-Gm-Message-State: ANhLgQ0p4Y09phqn9FFqaBLyQss9kCDghsuKVHQpOInstFMpGV9rv/Eh
+ oQhqRXLBIY5R9rP5zckUqXw=
+X-Google-Smtp-Source: ADFU+vsLd/dZz6982Q6xvhJM3GVPe3frVckajqc1cMwAZPHC+9/E3DWOA+ERxWnj8owFTkYxbi16TQ==
+X-Received: by 2002:a17:90a:1d4:: with SMTP id
+ 20mr22800874pjd.95.1584947366368; 
+ Mon, 23 Mar 2020 00:09:26 -0700 (PDT)
 Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id t186sm685023pgd.43.2020.03.23.00.06.43
+ by smtp.gmail.com with ESMTPSA id 11sm12169651pfv.43.2020.03.23.00.09.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 00:06:44 -0700 (PDT)
-Date: Mon, 23 Mar 2020 17:03:00 +1000
+ Mon, 23 Mar 2020 00:09:26 -0700 (PDT)
+Date: Mon, 23 Mar 2020 17:05:42 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 12/16] powerpc: Define new SRR1 bits for a future ISA
- version
+Subject: Re: [PATCH v4 13/16] powerpc: Support prefixed instructions in
+ alignment handler
 To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-13-jniethe5@gmail.com>
-In-Reply-To: <20200320051809.24332-13-jniethe5@gmail.com>
+ <20200320051809.24332-14-jniethe5@gmail.com>
+In-Reply-To: <20200320051809.24332-14-jniethe5@gmail.com>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584946962.88rdfk4474.astroid@bobo.none>
+Message-Id: <1584947091.jsvdec8of0.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,89 +88,56 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Jordan Niethe's on March 20, 2020 3:18 pm:
-> Add the BOUNDARY SRR1 bit definition for when the cause of an alignment
-> exception is a prefixed instruction that crosses a 64-byte boundary.
-> Add the PREFIXED SRR1 bit definition for exceptions caused by prefixed
-> instructions.
->=20
-> Bit 35 of SRR1 is called SRR1_ISI_N_OR_G. This name comes from it being
-> used to indicate that an ISI was due to the access being no-exec or
-> guarded. A future ISA version adds another purpose. It is also set if
-> there is an access in a cache-inhibited location for prefixed
-> instruction.  Rename from SRR1_ISI_N_OR_G to SRR1_ISI_N_G_OR_CIP.
-
-Seems okay.
-
+> Alignment interrupts can be caused by prefixed instructions accessing
+> memory. Prefixed instructions are not permitted to cross 64-byte
+> boundaries. If they do the alignment interrupt is invoked with SRR1
+> BOUNDARY bit set.  If this occurs send a SIGBUS to the offending process
+> if in user mode.  If in kernel mode call bad_page_fault().
 >=20
 > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > ---
-> v2: Combined all the commits concerning SRR1 bits.
+> v2: - Move __get_user_instr() and __get_user_instr_inatomic() to this
+> commit (previously in "powerpc sstep: Prepare to support prefixed
+> instructions").
+>     - Rename sufx to suffix
+>     - Use a macro for calculating instruction length
+> v3: Move __get_user_{instr(), instr_inatomic()} up with the other
+> get_user definitions and remove nested if.
+> v4: Just do the things for alignment_exception(). Other changes handled
+> elsewhere.
 > ---
->  arch/powerpc/include/asm/reg.h      | 4 +++-
->  arch/powerpc/kvm/book3s_hv_nested.c | 2 +-
->  arch/powerpc/kvm/book3s_hv_rm_mmu.c | 2 +-
->  3 files changed, 5 insertions(+), 3 deletions(-)
+>  arch/powerpc/kernel/traps.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
-g.h
-> index c7758c2ccc5f..173f33df4fab 100644
-> --- a/arch/powerpc/include/asm/reg.h
-> +++ b/arch/powerpc/include/asm/reg.h
-> @@ -762,7 +762,7 @@
->  #endif
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index a4764b039749..cd8b3043c268 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -583,6 +583,10 @@ static inline int check_io_access(struct pt_regs *re=
+gs)
+>  #define REASON_ILLEGAL		(ESR_PIL | ESR_PUO)
+>  #define REASON_PRIVILEGED	ESR_PPR
+>  #define REASON_TRAP		ESR_PTR
+> +#define REASON_PREFIXED		0
+> +#define REASON_BOUNDARY		0
+> +
+> +#define inst_length(reason)	4
 > =20
->  #define   SRR1_ISI_NOPT		0x40000000 /* ISI: Not found in hash */
-> -#define   SRR1_ISI_N_OR_G	0x10000000 /* ISI: Access is no-exec or G */
-> +#define   SRR1_ISI_N_G_OR_CIP	0x10000000 /* ISI: Access is no-exec or G =
-or CI for a prefixed instruction */
->  #define   SRR1_ISI_PROT		0x08000000 /* ISI: Other protection fault */
->  #define   SRR1_WAKEMASK		0x00380000 /* reason for wakeup */
->  #define   SRR1_WAKEMASK_P8	0x003c0000 /* reason for wakeup on POWER8 and=
- 9 */
-> @@ -789,6 +789,8 @@
->  #define   SRR1_PROGADDR		0x00010000 /* SRR0 contains subsequent addr */
-> =20
->  #define   SRR1_MCE_MCP		0x00080000 /* Machine check signal caused interr=
-upt */
-> +#define   SRR1_BOUNDARY		0x10000000 /* Prefixed instruction crosses 64-b=
-yte boundary */
-> +#define   SRR1_PREFIXED		0x20000000 /* Exception caused by prefixed inst=
-ruction */
-> =20
->  #define SPRN_HSRR0	0x13A	/* Save/Restore Register 0 */
->  #define SPRN_HSRR1	0x13B	/* Save/Restore Register 1 */
-> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3=
-s_hv_nested.c
-> index dc97e5be76f6..6ab685227574 100644
-> --- a/arch/powerpc/kvm/book3s_hv_nested.c
-> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
-> @@ -1169,7 +1169,7 @@ static int kvmhv_translate_addr_nested(struct kvm_v=
-cpu *vcpu,
->  		} else if (vcpu->arch.trap =3D=3D BOOK3S_INTERRUPT_H_INST_STORAGE) {
->  			/* Can we execute? */
->  			if (!gpte_p->may_execute) {
-> -				flags |=3D SRR1_ISI_N_OR_G;
-> +				flags |=3D SRR1_ISI_N_G_OR_CIP;
->  				goto forward_to_l1;
->  			}
->  		} else {
-> diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3=
-s_hv_rm_mmu.c
-> index 220305454c23..b53a9f1c1a46 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> +++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> @@ -1260,7 +1260,7 @@ long kvmppc_hpte_hv_fault(struct kvm_vcpu *vcpu, un=
-signed long addr,
->  	status &=3D ~DSISR_NOHPTE;	/* DSISR_NOHPTE =3D=3D SRR1_ISI_NOPT */
->  	if (!data) {
->  		if (gr & (HPTE_R_N | HPTE_R_G))
-> -			return status | SRR1_ISI_N_OR_G;
-> +			return status | SRR1_ISI_N_G_OR_CIP;
->  		if (!hpte_read_permission(pp, slb_v & key))
->  			return status | SRR1_ISI_PROT;
->  	} else if (status & DSISR_ISSTORE) {
-> --=20
-> 2.17.1
->=20
->=20
+>  /* single-step stuff */
+>  #define single_stepping(regs)	(current->thread.debug.dbcr0 & DBCR0_IC)
+> @@ -597,6 +601,10 @@ static inline int check_io_access(struct pt_regs *re=
+gs)
+>  #define REASON_ILLEGAL		SRR1_PROGILL
+>  #define REASON_PRIVILEGED	SRR1_PROGPRIV
+>  #define REASON_TRAP		SRR1_PROGTRAP
+> +#define REASON_PREFIXED		SRR1_PREFIXED
+> +#define REASON_BOUNDARY		SRR1_BOUNDARY
+> +
+> +#define inst_length(reason)	(((reason) & REASON_PREFIXED) ? 8 : 4)
+
+Looks good. If you define REASON_BOUNDARY 0, then this will constant
+fold away so no need to define it twice.
+
+Thanks,
+Nick
 =
