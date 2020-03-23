@@ -1,85 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EF918F5AE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 14:26:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mFWX3JZyzDqkP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 00:26:00 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA84318F5C0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 14:29:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mFc0718WzDqWm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 00:29:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mFS91fzSzDqhb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 00:23:04 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02ND2xrg184302
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 09:23:01 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ywchvmctg-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 09:23:01 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Mon, 23 Mar 2020 13:22:59 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 23 Mar 2020 13:22:57 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02NDLsX043516240
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Mar 2020 13:21:55 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ACA09A4051;
- Mon, 23 Mar 2020 13:22:56 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4FE86A4040;
- Mon, 23 Mar 2020 13:22:56 +0000 (GMT)
-Received: from localhost (unknown [9.85.127.193])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 Mar 2020 13:22:56 +0000 (GMT)
-Date: Mon, 23 Mar 2020 18:52:51 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc xmon: drop the option `i` in cacheflush
-To: Balamuruhan S <bala24@linux.ibm.com>, Segher Boessenkool
- <segher@kernel.crashing.org>
-References: <20200323112548.1077440-1-bala24@linux.ibm.com>
- <20200323124630.GP22482@gate.crashing.org>
-In-Reply-To: <20200323124630.GP22482@gate.crashing.org>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48mFXn5JR4zDq8v
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 00:27:03 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0F071FB;
+ Mon, 23 Mar 2020 06:27:00 -0700 (PDT)
+Received: from [10.163.1.71] (unknown [10.163.1.71])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 725DB3F52E;
+ Mon, 23 Mar 2020 06:26:51 -0700 (PDT)
+Subject: Re: [PATCH] mm/debug: Add tests validating arch page table helpers
+ for core features
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+References: <1582799637-11786-1-git-send-email-anshuman.khandual@arm.com>
+ <2be41c29-500c-50af-f915-1493846ae9e5@c-s.fr>
+ <4343eda9-7df2-a13c-0125-cf784c81ce14@arm.com>
+ <20200302222443.Horde.3Vn7_PzcWbAADKFWloR-kw8@messagerie.si.c-s.fr>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <cd80e950-1185-bc12-f844-295b854d429a@arm.com>
+Date: Mon, 23 Mar 2020 18:56:47 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20032313-4275-0000-0000-000003B17C27
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032313-4276-0000-0000-000038C6B2B7
-Message-Id: <1584968594.gguy53jubt.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-23_04:2020-03-21,
- 2020-03-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=787 impostorscore=0
- suspectscore=0 clxscore=1015 spamscore=0 malwarescore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003230073
+In-Reply-To: <20200302222443.Horde.3Vn7_PzcWbAADKFWloR-kw8@messagerie.si.c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,27 +52,218 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
- sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool wrote:
-> On Mon, Mar 23, 2020 at 04:55:48PM +0530, Balamuruhan S wrote:
->> Data Cache Block Invalidate (dcbi) instruction implemented in 32-bit
->> designs prior to PowerPC architecture version 2.01 and got obsolete
->> from version 2.01.
->=20
-> It was added back in 2.03.  It also exists in 64-bit designs (using
-> category embedded), in 2.07 still even.
-
-Indeed, it has been part of Book3e.
-
-It isn't clear if this is still useful in this context (xmon) though,=20
-since 'dcbf' seems to be equivalent in most respects. At the very least,=20
-we should restrict this to Book3e, if it is of value there.
 
 
-- Naveen
+On 03/03/2020 02:54 AM, Christophe Leroy wrote:
+> Anshuman Khandual <anshuman.khandual@arm.com> a écrit :
+> 
+>> On 02/27/2020 04:59 PM, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 27/02/2020 à 11:33, Anshuman Khandual a écrit :
+>>>> This adds new tests validating arch page table helpers for these following
+>>>> core memory features. These tests create and test specific mapping types at
+>>>> various page table levels.
+>>>>
+>>>> * SPECIAL mapping
+>>>> * PROTNONE mapping
+>>>> * DEVMAP mapping
+>>>> * SOFTDIRTY mapping
+>>>> * SWAP mapping
+>>>> * MIGRATION mapping
+>>>> * HUGETLB mapping
+>>>> * THP mapping
+>>>>
+>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>> Cc: Mike Rapoport <rppt@linux.ibm.com>
+>>>> Cc: Vineet Gupta <vgupta@synopsys.com>
+>>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Cc: Will Deacon <will@kernel.org>
+>>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>>> Cc: Paul Mackerras <paulus@samba.org>
+>>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+>>>> Cc: Vasily Gorbik <gor@linux.ibm.com>
+>>>> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>>> Cc: Ingo Molnar <mingo@redhat.com>
+>>>> Cc: Borislav Petkov <bp@alien8.de>
+>>>> Cc: "H. Peter Anvin" <hpa@zytor.com>
+>>>> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+>>>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>>>> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>>>> Cc: linux-snps-arc@lists.infradead.org
+>>>> Cc: linux-arm-kernel@lists.infradead.org
+>>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>>> Cc: linux-s390@vger.kernel.org
+>>>> Cc: linux-riscv@lists.infradead.org
+>>>> Cc: x86@kernel.org
+>>>> Cc: linux-arch@vger.kernel.org
+>>>> Cc: linux-kernel@vger.kernel.org
+>>>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>> ---
+>>>> Tested on arm64 and x86 platforms without any test failures. But this has
+>>>> only been built tested on several other platforms. Individual tests need
+>>>> to be verified on all current enabling platforms for the test i.e s390,
+>>>> ppc32, arc etc.
+>>>>
+>>>> This patch must be applied on v5.6-rc3 after these patches
+>>>>
+>>>> 1. https://patchwork.kernel.org/patch/11385057/
+>>>> 2. https://patchwork.kernel.org/patch/11407715/
+>>>>
+>>>> OR
+>>>>
+>>>> This patch must be applied on linux-next (next-20200227) after this patch
+>>>>
+>>>> 2. https://patchwork.kernel.org/patch/11407715/
+>>>>
+>>>>   mm/debug_vm_pgtable.c | 310 +++++++++++++++++++++++++++++++++++++++++-
+>>>>   1 file changed, 309 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>>> index 96dd7d574cef..3fb90d5b604e 100644
+>>>> --- a/mm/debug_vm_pgtable.c
+>>>> +++ b/mm/debug_vm_pgtable.c
+>>>> @@ -41,6 +41,44 @@
+>>>>    * wrprotect(entry)        = A write protected and not a write entry
+>>>>    * pxx_bad(entry)        = A mapped and non-table entry
+>>>>    * pxx_same(entry1, entry2)    = Both entries hold the exact same value
+>>>> + *
+>>>> + * Specific feature operations
+>>>> + *
+>>>> + * pte_mkspecial(entry)        = Creates a special entry at PTE level
+>>>> + * pte_special(entry)        = Tests a special entry at PTE level
+>>>> + *
+>>>> + * pte_protnone(entry)        = Tests a no access entry at PTE level
+>>>> + * pmd_protnone(entry)        = Tests a no access entry at PMD level
+>>>> + *
+>>>> + * pte_mkdevmap(entry)        = Creates a device entry at PTE level
+>>>> + * pmd_mkdevmap(entry)        = Creates a device entry at PMD level
+>>>> + * pud_mkdevmap(entry)        = Creates a device entry at PUD level
+>>>> + * pte_devmap(entry)        = Tests a device entry at PTE level
+>>>> + * pmd_devmap(entry)        = Tests a device entry at PMD level
+>>>> + * pud_devmap(entry)        = Tests a device entry at PUD level
+>>>> + *
+>>>> + * pte_mksoft_dirty(entry)    = Creates a soft dirty entry at PTE level
+>>>> + * pmd_mksoft_dirty(entry)    = Creates a soft dirty entry at PMD level
+>>>> + * pte_swp_mksoft_dirty(entry)    = Creates a soft dirty swap entry at PTE level
+>>>> + * pmd_swp_mksoft_dirty(entry)    = Creates a soft dirty swap entry at PMD level
+>>>> + * pte_soft_dirty(entry)    = Tests a soft dirty entry at PTE level
+>>>> + * pmd_soft_dirty(entry)    = Tests a soft dirty entry at PMD level
+>>>> + * pte_swp_soft_dirty(entry)    = Tests a soft dirty swap entry at PTE level
+>>>> + * pmd_swp_soft_dirty(entry)    = Tests a soft dirty swap entry at PMD level
+>>>> + * pte_clear_soft_dirty(entry)       = Clears a soft dirty entry at PTE level
+>>>> + * pmd_clear_soft_dirty(entry)       = Clears a soft dirty entry at PMD level
+>>>> + * pte_swp_clear_soft_dirty(entry) = Clears a soft dirty swap entry at PTE level
+>>>> + * pmd_swp_clear_soft_dirty(entry) = Clears a soft dirty swap entry at PMD level
+>>>> + *
+>>>> + * pte_mkhuge(entry)        = Creates a HugeTLB entry at given level
+>>>> + * pte_huge(entry)        = Tests a HugeTLB entry at given level
+>>>> + *
+>>>> + * pmd_trans_huge(entry)    = Tests a trans huge page at PMD level
+>>>> + * pud_trans_huge(entry)    = Tests a trans huge page at PUD level
+>>>> + * pmd_present(entry)        = Tests an entry points to memory at PMD level
+>>>> + * pud_present(entry)        = Tests an entry points to memory at PUD level
+>>>> + * pmd_mknotpresent(entry)    = Invalidates an PMD entry for MMU
+>>>> + * pud_mknotpresent(entry)    = Invalidates an PUD entry for MMU
+>>>>    */
+>>>>   #define VMFLAGS    (VM_READ|VM_WRITE|VM_EXEC)
+>>>>   @@ -287,6 +325,233 @@ static void __init pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
+>>>>       WARN_ON(pmd_bad(pmd));
+>>>>   }
+>>>>   +#ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
+>>>
+>>> Can we avoid ifdefs unless necessary ?
+>>>
+>>> In mm/memory.c I see things like the following, it means pte_special() always exist and a #ifdef is not necessary.
+>>
+>> True, #ifdef here can be dropped here, done.
+>>
+>>>
+>>>     if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+>>>         if (likely(!pte_special(pte)))
+>>>             goto check_pfn;
+>>>         if (vma->vm_ops && vma->vm_ops->find_special_page)
+>>>             return vma->vm_ops->find_special_page(vma, addr);
+>>>         if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
+>>>             return NULL;
+>>>         if (is_zero_pfn(pfn))
+>>>             return NULL;
+>>>         if (pte_devmap(pte))
+>>>             return NULL;
+>>>
+>>>         print_bad_pte(vma, addr, pte, NULL);
+>>>         return NULL;
+>>>     }
+>>>
+>>>> +static void __init pte_special_tests(unsigned long pfn, pgprot_t prot)
+>>>> +{
+>>>> +    pte_t pte = pfn_pte(pfn, prot);
+>>>> +
+>>>> +    WARN_ON(!pte_special(pte_mkspecial(pte)));
+>>>> +}
+>>>> +#else
+>>>> +static void __init pte_special_tests(unsigned long pfn, pgprot_t prot) { }
+>>>> +#endif
+>>>> +
+>>>> +#ifdef CONFIG_NUMA_BALANCING
+>>>
+>>> Same here, this ifdef shouldn't be necessary because in /include/asm-generic/pgtable.h we have the following, so a if (IS_ENABLED()) should be enough.
+>>>
+>>> #ifndef CONFIG_NUMA_BALANCING
+>>> /*
+>>>  * Technically a PTE can be PROTNONE even when not doing NUMA balancing but
+>>>  * the only case the kernel cares is for NUMA balancing and is only ever set
+>>>  * when the VMA is accessible. For PROT_NONE VMAs, the PTEs are not marked
+>>>  * _PAGE_PROTNONE so by by default, implement the helper as "always no". It
+>>>  * is the responsibility of the caller to distinguish between PROT_NONE
+>>>  * protections and NUMA hinting fault protections.
+>>>  */
+>>> static inline int pte_protnone(pte_t pte)
+>>> {
+>>>     return 0;
+>>> }
+>>>
+>>> static inline int pmd_protnone(pmd_t pmd)
+>>> {
+>>>     return 0;
+>>> }
+>>> #endif /* CONFIG_NUMA_BALANCING */
+>>
+>> True,  #ifdef here can be dropped, done. There is something I had missed
+>> before, pfn_pmd() requires #ifdef CONFIG_TRANSPARENT_HUGEPAGE instead. We
+>> need a pmd_t here with given prot. We cannot go via pfn_pte() followed by
+>> pte_pmd(), as the later is platform specific and not available in general.
+> 
+> As many things require CONFIG_TRANSPARENT_HUGEPAGE,  maybe it would be worth creating an additional C file with the related functions and build it conditionnaly to CONFIG_TRANSPARENT_HUGEPAGE
+> 
 
+Apologies for the delayed response here. Any split in the test will break it's
+monolithic structure which is not desirable. Also lack of an explicit dependency
+between HAVE_ARCH_TRANSPARENT_HUGEPAGE and HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+makes it difficult to group together fallback dummy stubs from various THP
+related test functions here. I am planning to re-spin this patch sooner with
+some more tests while also accommodating other previous comments. Hence, will
+probably note down this aspect which can then be discussed further if required.
+
+> Christophe
