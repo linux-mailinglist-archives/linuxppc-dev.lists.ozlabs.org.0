@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C9618F01C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:07:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m5715f3pzDr4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:07:41 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5E618F022
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 08:09:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m59W4lM2zDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 18:09:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,56 +17,57 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JvXB6i6/; dkim-atps=neutral
+ header.s=20161025 header.b=qEPlEuF2; dkim-atps=neutral
 Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
  [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m54x1npbzDqtN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:05:52 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id b22so6728150pgb.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:05:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m5601mKxzDqx2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:06:47 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id u12so6719209pgb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 00:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=BrAJ3Il5fsSoa36EGbb5otH7Jxi2fT0UcBh22snMC7Y=;
- b=JvXB6i6/O3tw+cQulT1efGYxEY08jhv1/ye+TyNgC+mQ8e/XAA/rnL4JRnmOZtxPuY
- dgajgy3x1QnFC9Aq8yR3jSiwIDC4Pg0YyhMwC6ZuTLHShNuDhlDDvufZE1kiQVB6v63k
- L5muaBh/BzlTD40/zLl1SIpuFDT+1Vaz8XXXz9nvvnRQ6vuZaanf+UTayDOiWgxfsmRb
- V1/aFvKjESi6PQINyzIfMKk0qYOI8IxXkabaBky6cJZifH+kMC1t4uuRX3r9LJobjkoh
- iwnn+3BtxAgw6z/tPcidwOJh8rhi2A0SmNw/iQ1urPBtcxmmkkHgbS/JUWx1qLOsbxNw
- D/YA==
+ bh=jagWdCcnBiybSakfw5PN8Wa6sa3Cmn52hk0EpHATB/I=;
+ b=qEPlEuF2JvsL2RsQf7olFsNe6R+IH2TQvW6iNSV3sxovf1phrsCGITGyS5TbZfJ3wk
+ We6lbMj6KqQpkM+umo7Awvbi8JSkkJJIojRokdqmmlUxKnSp6e42LcRSlnZRMh8yB/Yi
+ ysVEB1+4C/Iiwt6oxXJWdHJPs0d3nNjPmpBKeJib8s97ozJPdzeNRjpXK+mybgpHw6EM
+ 0lFWQYeFlB19KjlV7BD2+6UIglFI/R3jSh+3S1AI8lRjbyTt5fvWSRquJ0n3AnyZ/7ac
+ 9CexaOrpQ71MikQ18ESIv0IvEqxesvEilctLAJ5zatMqfQCZ9w/1XHH9+hcvswOE1hly
+ dXRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=BrAJ3Il5fsSoa36EGbb5otH7Jxi2fT0UcBh22snMC7Y=;
- b=Tdp1H5E6JLWWePbrNuZnxliJ0yU2gYIwxcSlZaNNstRfeilQeogULg1ByUvYWfitAk
- VlzIkrxiUYMC8jrVMTYLkiGqw3bbbysXjJWDJq1TO/8VdsjISIWOyjHPD7tAq4mUGz12
- 7XsQg222Xh+mnJKw9yrlBFA9H1iKVbTDEFCXc08w5L7qOLXG9xFZ4dz5GzAsLBFpNRyC
- wOtFZXyTMB1lEONi64OyzNk9iUsJoNF33XsMJY7IuFFAhcSF5oMOcPGThJfCxmjnk2CQ
- xENO78iUZe/ufWTqBBzxAkcemqNfmLJ16BOh+lVyHeQAFgh4lCmmFiVPhHkewOsEbGQc
- 1PuQ==
-X-Gm-Message-State: ANhLgQ0miCI9zT9uH4+0wogMrl+uLbQkJW2GldTJebhlIGRs8yUaH+df
- eb1T0TpynPZMmNwUmcllf7o=
-X-Google-Smtp-Source: ADFU+vsprKu4RBEhsVcyLUNku1Xc17rhxOtDbyW/AbRGCVXS+hDlgvdiq72BAfo4oPLynA2Jxo6g9g==
-X-Received: by 2002:a62:64c9:: with SMTP id y192mr23018093pfb.26.1584947150826; 
- Mon, 23 Mar 2020 00:05:50 -0700 (PDT)
+ bh=jagWdCcnBiybSakfw5PN8Wa6sa3Cmn52hk0EpHATB/I=;
+ b=kj4k00PUIKj2HBzBQI911uRbShoZtLZuFePqwXiGeuAzUFFLlKBly6pbO9qGKB0gLL
+ CoCgVDTnKIqcimhsYOgIl1+8MtdCbFKNQ4onGudXDmvujzkj2QSZ1wln8NdOZL0ov1sY
+ r1oWxkWti7dCl9d5kMN16ReXtUaUGaT+wde2tnW+/JBuHVQ/AlSoA32KRPX3njf8t8qo
+ QldqrpcidUp4xZw/UnaaTOBh6rOd500QDrgHY66c5qzDkAlGp/A2DItV6f8XwcVWEyGI
+ Q/3LAJcpml2s7Rft0d0ZPQ0APbn5QVkg5IJYFXgIh2em+0ajffOhGimsJeZYnzmTLgHu
+ o/5A==
+X-Gm-Message-State: ANhLgQ3pp74zSADHz15k2EMKB9nuS31/e/qu02oGeBj7Y5UEa+94jL4U
+ E7JHyxuXOZ+q7pwtsCUdEZ0=
+X-Google-Smtp-Source: ADFU+vtXcRAzMqHWjUwFZY0cuFIczi/iITTe1SbqXVRCE/wWsvBTZmN5PMlSGUo2Fg3Lpt22AfgplA==
+X-Received: by 2002:a63:7e1a:: with SMTP id z26mr20184546pgc.226.1584947204830; 
+ Mon, 23 Mar 2020 00:06:44 -0700 (PDT)
 Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id 11sm12312786pfz.91.2020.03.23.00.05.49
+ by smtp.gmail.com with ESMTPSA id t186sm685023pgd.43.2020.03.23.00.06.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 00:05:50 -0700 (PDT)
-Date: Mon, 23 Mar 2020 17:02:06 +1000
+ Mon, 23 Mar 2020 00:06:44 -0700 (PDT)
+Date: Mon, 23 Mar 2020 17:03:00 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 11/16] powerpc: Enable Prefixed Instructions
+Subject: Re: [PATCH v4 12/16] powerpc: Define new SRR1 bits for a future ISA
+ version
 To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-12-jniethe5@gmail.com>
-In-Reply-To: <20200320051809.24332-12-jniethe5@gmail.com>
+ <20200320051809.24332-13-jniethe5@gmail.com>
+In-Reply-To: <20200320051809.24332-13-jniethe5@gmail.com>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1584946911.tca3c5485p.astroid@bobo.none>
+Message-Id: <1584946962.88rdfk4474.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,77 +87,87 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Jordan Niethe's on March 20, 2020 3:18 pm:
-> From: Alistair Popple <alistair@popple.id.au>
+> Add the BOUNDARY SRR1 bit definition for when the cause of an alignment
+> exception is a prefixed instruction that crosses a 64-byte boundary.
+> Add the PREFIXED SRR1 bit definition for exceptions caused by prefixed
+> instructions.
 >=20
-> Prefix instructions have their own FSCR bit which needs to enabled via
-> a CPU feature. The kernel will save the FSCR for problem state but it
-> needs to be enabled initially.
->=20
-> If prefixed instructions are made unavailable by the [H]FSCR, attempting
-> to use them will cause a facility unavailable exception. Add "PREFIX" to
-> the facility_strings[].
->=20
-> Currently there are no prefixed instructions that are actually emulated
-> by emulate_instruction() within facility_unavailable_exception().
-> However, when caused by a prefixed instructions the SRR1 PREFIXED bit is
-> set. Prepare for dealing with emulated prefixed instructions by checking
-> for this bit.
->=20
+> Bit 35 of SRR1 is called SRR1_ISI_N_OR_G. This name comes from it being
+> used to indicate that an ISI was due to the access being no-exec or
+> guarded. A future ISA version adds another purpose. It is also set if
+> there is an access in a cache-inhibited location for prefixed
+> instruction.  Rename from SRR1_ISI_N_OR_G to SRR1_ISI_N_G_OR_CIP.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Seems okay.
 
-> Signed-off-by: Alistair Popple <alistair@popple.id.au>
+>=20
 > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > ---
-> v4:
->     - Squash "Check for prefixed instructions in
->       facility_unavailable_exception()" here
->     - Remove dt parts for now
+> v2: Combined all the commits concerning SRR1 bits.
 > ---
->  arch/powerpc/include/asm/reg.h | 3 +++
->  arch/powerpc/kernel/traps.c    | 1 +
->  2 files changed, 4 insertions(+)
+>  arch/powerpc/include/asm/reg.h      | 4 +++-
+>  arch/powerpc/kvm/book3s_hv_nested.c | 2 +-
+>  arch/powerpc/kvm/book3s_hv_rm_mmu.c | 2 +-
+>  3 files changed, 5 insertions(+), 3 deletions(-)
 >=20
 > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
 g.h
-> index 1aa46dff0957..c7758c2ccc5f 100644
+> index c7758c2ccc5f..173f33df4fab 100644
 > --- a/arch/powerpc/include/asm/reg.h
 > +++ b/arch/powerpc/include/asm/reg.h
-> @@ -397,6 +397,7 @@
->  #define SPRN_RWMR	0x375	/* Region-Weighting Mode Register */
+> @@ -762,7 +762,7 @@
+>  #endif
 > =20
->  /* HFSCR and FSCR bit numbers are the same */
-> +#define FSCR_PREFIX_LG	13	/* Enable Prefix Instructions */
->  #define FSCR_SCV_LG	12	/* Enable System Call Vectored */
->  #define FSCR_MSGP_LG	10	/* Enable MSGP */
->  #define FSCR_TAR_LG	8	/* Enable Target Address Register */
-> @@ -408,11 +409,13 @@
->  #define FSCR_VECVSX_LG	1	/* Enable VMX/VSX  */
->  #define FSCR_FP_LG	0	/* Enable Floating Point */
->  #define SPRN_FSCR	0x099	/* Facility Status & Control Register */
-> +#define   FSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
->  #define   FSCR_SCV	__MASK(FSCR_SCV_LG)
->  #define   FSCR_TAR	__MASK(FSCR_TAR_LG)
->  #define   FSCR_EBB	__MASK(FSCR_EBB_LG)
->  #define   FSCR_DSCR	__MASK(FSCR_DSCR_LG)
->  #define SPRN_HFSCR	0xbe	/* HV=3D1 Facility Status & Control Register */
-> +#define   HFSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
->  #define   HFSCR_MSGP	__MASK(FSCR_MSGP_LG)
->  #define   HFSCR_TAR	__MASK(FSCR_TAR_LG)
->  #define   HFSCR_EBB	__MASK(FSCR_EBB_LG)
-> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index 82a3438300fd..a4764b039749 100644
-> --- a/arch/powerpc/kernel/traps.c
-> +++ b/arch/powerpc/kernel/traps.c
-> @@ -1720,6 +1720,7 @@ void facility_unavailable_exception(struct pt_regs =
-*regs)
->  		[FSCR_TAR_LG] =3D "TAR",
->  		[FSCR_MSGP_LG] =3D "MSGP",
->  		[FSCR_SCV_LG] =3D "SCV",
-> +		[FSCR_PREFIX_LG] =3D "PREFIX",
->  	};
->  	char *facility =3D "unknown";
->  	u64 value;
+>  #define   SRR1_ISI_NOPT		0x40000000 /* ISI: Not found in hash */
+> -#define   SRR1_ISI_N_OR_G	0x10000000 /* ISI: Access is no-exec or G */
+> +#define   SRR1_ISI_N_G_OR_CIP	0x10000000 /* ISI: Access is no-exec or G =
+or CI for a prefixed instruction */
+>  #define   SRR1_ISI_PROT		0x08000000 /* ISI: Other protection fault */
+>  #define   SRR1_WAKEMASK		0x00380000 /* reason for wakeup */
+>  #define   SRR1_WAKEMASK_P8	0x003c0000 /* reason for wakeup on POWER8 and=
+ 9 */
+> @@ -789,6 +789,8 @@
+>  #define   SRR1_PROGADDR		0x00010000 /* SRR0 contains subsequent addr */
+> =20
+>  #define   SRR1_MCE_MCP		0x00080000 /* Machine check signal caused interr=
+upt */
+> +#define   SRR1_BOUNDARY		0x10000000 /* Prefixed instruction crosses 64-b=
+yte boundary */
+> +#define   SRR1_PREFIXED		0x20000000 /* Exception caused by prefixed inst=
+ruction */
+> =20
+>  #define SPRN_HSRR0	0x13A	/* Save/Restore Register 0 */
+>  #define SPRN_HSRR1	0x13B	/* Save/Restore Register 1 */
+> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3=
+s_hv_nested.c
+> index dc97e5be76f6..6ab685227574 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> @@ -1169,7 +1169,7 @@ static int kvmhv_translate_addr_nested(struct kvm_v=
+cpu *vcpu,
+>  		} else if (vcpu->arch.trap =3D=3D BOOK3S_INTERRUPT_H_INST_STORAGE) {
+>  			/* Can we execute? */
+>  			if (!gpte_p->may_execute) {
+> -				flags |=3D SRR1_ISI_N_OR_G;
+> +				flags |=3D SRR1_ISI_N_G_OR_CIP;
+>  				goto forward_to_l1;
+>  			}
+>  		} else {
+> diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3=
+s_hv_rm_mmu.c
+> index 220305454c23..b53a9f1c1a46 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
+> +++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
+> @@ -1260,7 +1260,7 @@ long kvmppc_hpte_hv_fault(struct kvm_vcpu *vcpu, un=
+signed long addr,
+>  	status &=3D ~DSISR_NOHPTE;	/* DSISR_NOHPTE =3D=3D SRR1_ISI_NOPT */
+>  	if (!data) {
+>  		if (gr & (HPTE_R_N | HPTE_R_G))
+> -			return status | SRR1_ISI_N_OR_G;
+> +			return status | SRR1_ISI_N_G_OR_CIP;
+>  		if (!hpte_read_permission(pp, slb_v & key))
+>  			return status | SRR1_ISI_PROT;
+>  	} else if (status & DSISR_ISSTORE) {
 > --=20
 > 2.17.1
 >=20
