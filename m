@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E525E18F1F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:39:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48m8Tf6YcBzDqdm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:39:02 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B119718F204
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 10:41:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48m8Xn6hFPzDqdL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Mar 2020 20:41:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZFFdc4P4; dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
+ header.s=20161025 header.b=OqEv/rk7; dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48m8Pk2g72zDrB5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:35:38 +1100 (AEDT)
-Received: by mail-oi1-x242.google.com with SMTP id w2so3079283oic.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:35:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48m8QD70pfzDqdx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 20:36:04 +1100 (AEDT)
+Received: by mail-oi1-x241.google.com with SMTP id k9so1464477oia.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 02:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=xdGr3bgw1Ab5bDc4JlY6XxI90/JB6dJaXTOznBZufB4=;
- b=ZFFdc4P4yqqrz07hwIX0rqQh5H9k6bi7oa5T4gCfv9H7WJjYWM3wxGcSbl0dtBQ0m+
- kpkCSzswKF5ydIWdsbNNP2J8VW3OS5ITt8qGjzlSvPxwHRS4EKU9D3ouuVUMAzThB1+Q
- 8WrGKNli6S7TG6BolgEoSJUW/NCPrn++KSwWl4sEnl1pgbje0gf1pJPNz3/RFfXayvgs
- t9antJJh74jy+E7huNTpdrCkhvL/yBruzNYIl7vJcDo4tm4vuebkVqBHf9ZEbLbQCD8O
- x9Gjcu4syB7/yt6G5Gg9/OY6/fx6kwrm9rynNzHhYw1yMhz0Qyz2Fp0Bt+NAJCswXd9A
- UXXg==
+ :cc; bh=piRwzaPD3pougSV9RdmSkoAsx0v1P64pV+qgLrRR3X0=;
+ b=OqEv/rk71H9NF3gUCT4pfPDrc7tH0YKDqu+38/oJl8Ch2QjO4ML7QjDsi1JaZLTiKi
+ dNfxvVmwqpJe3F7abvdynaRkk/wQgD3PHr5YeFh1M6Hz1SZ8CU0P/RW777GfHYwcInv+
+ pyKsYYNR8v0rcD0esRVnrg8Bm470mZEaSXhOu2IYn9vH+wkwTB/1EI31/2D3o7dys0bR
+ 6Dt/fCJTh2B/JbE18imUiW3i0OJzegubIiEoS8VB06C1vXeSV/y3eagJTuUCabX9ii+w
+ fQJG1QMDgeZGOU/uVKy2HBPUWvR0AlagrJi+F1uivaaBqIXf02KtkGRtEQJcsoA51IPB
+ gWmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=xdGr3bgw1Ab5bDc4JlY6XxI90/JB6dJaXTOznBZufB4=;
- b=FiuJSt7s2MfTnlLxugffRyXuNeLbtkoTfyKsWq2bqZrhzijaptB4fNvRhydaYW8zfg
- K5DIJUucxLykTrXRTV9euNKF4RI2uonKlb3avnBJB28G4l+OHxRq0MydII/B/qBzTHyd
- Getzzm4j0hFPL94paZzlZ9Abhq1alHFSmtFPR5wS2iSxjXYrmBtHYlwZjo3oI40gN5nI
- 7oJnRDxoauEufbjyDprOSdwwjmxUdZHYk4njWwX3vS8QzeL/nptkNAzpDo163p7GDZfO
- 2cnLTLul917iKBN4MpzdJ66kJngOoc6kb50oHSsD+OpFClvE1oTcmem1lQpy48WG9uM+
- w9hg==
-X-Gm-Message-State: ANhLgQ3MfE/7rtJhIPf72w9YGh2+h4FLctNh329bTKcROPjXW/vXB4fO
- d2Vota393XJzel3ZpMZ0sbUtm/0aLQPJRTGvOKg=
-X-Google-Smtp-Source: ADFU+vvrsKlpSvlBIBrx2jJ8A/Eqyh8MzVvnoPV5sG7eAiSD1pn78EWWLWtf8VVeQ+ryK1aVnoWHjdGCnYEjo1ahreg=
-X-Received: by 2002:aca:fd48:: with SMTP id b69mr11332713oii.126.1584956135453; 
- Mon, 23 Mar 2020 02:35:35 -0700 (PDT)
+ bh=piRwzaPD3pougSV9RdmSkoAsx0v1P64pV+qgLrRR3X0=;
+ b=rZryW0pqOBtqZxTKfluTSJm+CQGr1cLtytryBsSLo/1om6Hj4y0OZ3dPVfAxMovxje
+ OvOY6DuDD6539Fh9MXWtwyPU8g9AbN1BXnPCxcq9G1z8A9gHvAKx6MarNGmE1IUJ59Pp
+ U/Wy/olwXdNxTTD52/NrkM5okzl6ch+ujyI6wxA497I6ejmL1m0wWs0EiQeaPB/oh8YD
+ b/EpQPD60CtywCjqXmO/8y7vKo/zPSaltrnc6JG/QNGSHD8vKrzGDa+7kJhZqk9Mu7u8
+ 9bB+zPgVp1kqlVkvfiAZSIb1j7mrnzRwkPK6ePSdpa+UBgzbki8WBjE4bC72RM+Ao3Qm
+ P52g==
+X-Gm-Message-State: ANhLgQ0CJcC/pF0obd2TDJg/1v12htNcEYIwjlCkJDqoWVkQ3BcGnc2r
+ rp9mdUsbN/GQcDgVpbqkZWLGLySdGF+HxS87UGs=
+X-Google-Smtp-Source: ADFU+vt1fnW6kuqdL1ZrCcGcyh0EQOPlb2XbSk0Z9k/TkHXBg9inWGTvXnb6rGkD7gG8suyD8xgBXKHH9rnRk0bejmA=
+X-Received: by 2002:aca:1913:: with SMTP id l19mr5981707oii.12.1584956162469; 
+ Mon, 23 Mar 2020 02:36:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-7-jniethe5@gmail.com>
- <250cbed1e5966c5a740e840b9127ed7964e241d6.camel@linux.ibm.com>
-In-Reply-To: <250cbed1e5966c5a740e840b9127ed7964e241d6.camel@linux.ibm.com>
+ <20200320051809.24332-14-jniethe5@gmail.com>
+ <1584947091.jsvdec8of0.astroid@bobo.none>
+In-Reply-To: <1584947091.jsvdec8of0.astroid@bobo.none>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 23 Mar 2020 20:35:24 +1100
-Message-ID: <CACzsE9oh1x_TRH=5-OJOLC=0YBd3Y+9phoyAHj18RLc3CAH6Mw@mail.gmail.com>
-Subject: Re: [PATCH v4 06/16] powerpc: Use a function for getting the
- instruction op code
-To: Balamuruhan S <bala24@linux.ibm.com>
+Date: Mon, 23 Mar 2020 20:35:50 +1100
+Message-ID: <CACzsE9poG75tQoT05oBVJP4zs0ZwB2cB+-PNdx-3xrDuEJjyLQ@mail.gmail.com>
+Subject: Re: [PATCH v4 13/16] powerpc: Support prefixed instructions in
+ alignment handler
+To: Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,68 +76,63 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Alistair Popple <alistair@popple.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 23, 2020 at 5:54 PM Balamuruhan S <bala24@linux.ibm.com> wrote:
+On Mon, Mar 23, 2020 at 6:09 PM Nicholas Piggin <npiggin@gmail.com> wrote:
 >
-> On Fri, 2020-03-20 at 16:17 +1100, Jordan Niethe wrote:
-> > In preparation for using a data type for instructions that can not be
-> > directly used with the '>>' operator use a function for getting the op
-> > code of an instruction.
->
-> we need to adopt this in sstep.c and vecemu.c
-Thank you, I had forgotten about vecemu.c.
->
-> -- Bala
+> Jordan Niethe's on March 20, 2020 3:18 pm:
+> > Alignment interrupts can be caused by prefixed instructions accessing
+> > memory. Prefixed instructions are not permitted to cross 64-byte
+> > boundaries. If they do the alignment interrupt is invoked with SRR1
+> > BOUNDARY bit set.  If this occurs send a SIGBUS to the offending process
+> > if in user mode.  If in kernel mode call bad_page_fault().
 > >
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> > v4: New to series
+> > v2: - Move __get_user_instr() and __get_user_instr_inatomic() to this
+> > commit (previously in "powerpc sstep: Prepare to support prefixed
+> > instructions").
+> >     - Rename sufx to suffix
+> >     - Use a macro for calculating instruction length
+> > v3: Move __get_user_{instr(), instr_inatomic()} up with the other
+> > get_user definitions and remove nested if.
+> > v4: Just do the things for alignment_exception(). Other changes handled
+> > elsewhere.
 > > ---
-> >  arch/powerpc/kernel/align.c      | 4 ++--
-> >  arch/powerpc/lib/code-patching.c | 4 ++--
-> >  2 files changed, 4 insertions(+), 4 deletions(-)
+> >  arch/powerpc/kernel/traps.c | 21 ++++++++++++++++++++-
+> >  1 file changed, 20 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-> > index 38542fffa179..77c49dfdc1b4 100644
-> > --- a/arch/powerpc/kernel/align.c
-> > +++ b/arch/powerpc/kernel/align.c
-> > @@ -313,8 +313,8 @@ int fix_alignment(struct pt_regs *regs)
-> >       }
+> > diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> > index a4764b039749..cd8b3043c268 100644
+> > --- a/arch/powerpc/kernel/traps.c
+> > +++ b/arch/powerpc/kernel/traps.c
+> > @@ -583,6 +583,10 @@ static inline int check_io_access(struct pt_regs *regs)
+> >  #define REASON_ILLEGAL               (ESR_PIL | ESR_PUO)
+> >  #define REASON_PRIVILEGED    ESR_PPR
+> >  #define REASON_TRAP          ESR_PTR
+> > +#define REASON_PREFIXED              0
+> > +#define REASON_BOUNDARY              0
+> > +
+> > +#define inst_length(reason)  4
 > >
-> >  #ifdef CONFIG_SPE
-> > -     if ((instr >> 26) == 0x4) {
-> > -             int reg = (instr >> 21) & 0x1f;
-> > +     if (ppc_inst_opcode(instr) == 0x4) {
-> > +             int reg = (ppc_inst_word(instr) >> 21) & 0x1f;
-> >               PPC_WARN_ALIGNMENT(spe, regs);
-> >               return emulate_spe(regs, reg, instr);
-> >       }
-> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-
-> > patching.c
-> > index e2ba23fd6f4d..04a303c059e2 100644
-> > --- a/arch/powerpc/lib/code-patching.c
-> > +++ b/arch/powerpc/lib/code-patching.c
-> > @@ -228,7 +228,7 @@ bool is_offset_in_branch_range(long offset)
-> >   */
-> >  bool is_conditional_branch(ppc_inst instr)
-> >  {
-> > -     unsigned int opcode = instr >> 26;
-> > +     unsigned int opcode = ppc_inst_opcode(instr);
-> >
-> >       if (opcode == 16)       /* bc, bca, bcl, bcla */
-> >               return true;
-> > @@ -286,7 +286,7 @@ unsigned int create_cond_branch(const unsigned int *addr,
-> >
-> >  static unsigned int branch_opcode(ppc_inst instr)
-> >  {
-> > -     return (instr >> 26) & 0x3F;
-> > +     return ppc_inst_opcode(instr) & 0x3F;
-> >  }
-> >
-> >  static int instr_is_branch_iform(ppc_inst instr)
+> >  /* single-step stuff */
+> >  #define single_stepping(regs)        (current->thread.debug.dbcr0 & DBCR0_IC)
+> > @@ -597,6 +601,10 @@ static inline int check_io_access(struct pt_regs *regs)
+> >  #define REASON_ILLEGAL               SRR1_PROGILL
+> >  #define REASON_PRIVILEGED    SRR1_PROGPRIV
+> >  #define REASON_TRAP          SRR1_PROGTRAP
+> > +#define REASON_PREFIXED              SRR1_PREFIXED
+> > +#define REASON_BOUNDARY              SRR1_BOUNDARY
+> > +
+> > +#define inst_length(reason)  (((reason) & REASON_PREFIXED) ? 8 : 4)
 >
+> Looks good. If you define REASON_BOUNDARY 0, then this will constant
+> fold away so no need to define it twice.
+Good point.
+>
+> Thanks,
+> Nick
