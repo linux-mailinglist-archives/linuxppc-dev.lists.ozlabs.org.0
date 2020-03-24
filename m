@@ -1,75 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1142C190C03
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 12:09:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mpR16TGFzDqlw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 22:09:01 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4A3190D31
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 13:19:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mr0H12SyzDqr6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 23:19:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=afzal.mohd.ma@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=46.105.36.172; helo=3.mo177.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oVX4yLyb; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 932 seconds by postgrey-1.36 at bilbo;
+ Tue, 24 Mar 2020 23:16:53 AEDT
+Received: from 3.mo177.mail-out.ovh.net (3.mo177.mail-out.ovh.net
+ [46.105.36.172])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mpNP6hHDzDqjv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 22:06:43 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id hg10so1334075pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 04:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=W2zZIBrFIUdIwJtiA0rHIIgEIRNeZEGmX6yVzyUZvcU=;
- b=oVX4yLyb5aLdnDPwC6UADVmWbjxBpmsWAqZNIVQkDWjtUja3ZmwH6bPKE/lhYj1E+z
- KZHq73DSe3wsRdhB9iQwRmYAzFvLXQW0h9v8Q86SqDWGvMKkJ7p0aN05ttV0BPbHXXmb
- EW56hwB8e8dgWPV2NLU8m0mvyOFwbsTqiyDe/Jie768Nr64T9YbDj5EgYlgPShbhyyhe
- aRaWjSdG+i0mA6veN8WOGvvUr2K8jaxFuLzkz9V51b3ue0nq3qNeCL91Ram/rNqzFdaq
- 9YSADk86aYG33/NL+L6aNw4kyS2HnEhF5skYdNoV87DNAuB+R9diYHZcOzYZ8R7XxaRe
- qNHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=W2zZIBrFIUdIwJtiA0rHIIgEIRNeZEGmX6yVzyUZvcU=;
- b=X1byz+R5rGjgbM6f9j6Ly6hRQpV5MKWyUFp9mjHKaXNx6cPX6kTpZyIlBwpN9liJ3U
- GJxj2sMNZhCt1hJGuZpO11Mgs+BVim03vi/z6SFx2jpvvGs9snei7gSloXfNWAQvJep/
- qpF99kM/7XW2sO2kR5wcZwNiBucsjQ2YzwNMpSSrWmLOS9JefG47Rj+rUkpnYbF9j6eO
- vgyrjCUwKwk31LIEoNNFARVgs7cdD4Md/DVdagI6fpx91kBoNvnvI/bewyc3PaXzKGiD
- P/XermzKGvcfeO9Lm3HewLOKKDnX1Bmy9oYOD/whqLYp5hpNmV7/kbjz2dH4N3hhtR3o
- F3aA==
-X-Gm-Message-State: ANhLgQ2PnMcJ59JHFZG21No6HCYA7l4mm23LMVtI7emNLefFyg2re3lc
- QV3wmyx2cvZTtqiiqXBO6Jg=
-X-Google-Smtp-Source: ADFU+vukAws34i1riRLz0FLNUO0kB8kxFAaHg2peUeXCCNis1uXRRG22cmYupdWicicN+fxtnlNVvA==
-X-Received: by 2002:a17:90a:e003:: with SMTP id
- u3mr2981827pjy.157.1585047999939; 
- Tue, 24 Mar 2020 04:06:39 -0700 (PDT)
-Received: from localhost ([49.207.53.57])
- by smtp.gmail.com with ESMTPSA id g7sm1997709pjl.17.2020.03.24.04.06.38
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 24 Mar 2020 04:06:39 -0700 (PDT)
-Date: Tue, 24 Mar 2020 16:36:37 +0530
-From: afzal mohammed <afzal.mohd.ma@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4] powerpc: Replace setup_irq() by request_irq()
-Message-ID: <20200324110637.GA5836@afzalpc>
-References: <20200304004746.4557-1-afzal.mohd.ma@gmail.com>
- <20200312064256.18735-1-afzal.mohd.ma@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mqxK67R8zDqg4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 23:16:50 +1100 (AEDT)
+Received: from player697.ha.ovh.net (unknown [10.110.103.180])
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id B45AA11C3BE
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 13:01:11 +0100 (CET)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player697.ha.ovh.net (Postfix) with ESMTPSA id 1D7B110BE91A8;
+ Tue, 24 Mar 2020 12:00:53 +0000 (UTC)
+Date: Tue, 24 Mar 2020 13:00:52 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH 1/2] KVM: PPC: Book3S HV: check caller of H_SVM_* Hcalls
+Message-ID: <20200324130052.373fdf89@bahia.lan>
+In-Reply-To: <20200323234323.GA5604@blackberry>
+References: <20200320102643.15516-1-ldufour@linux.ibm.com>
+ <20200320102643.15516-2-ldufour@linux.ibm.com>
+ <20200320132248.44b81b3b@bahia.lan>
+ <20200323234323.GA5604@blackberry>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200312064256.18735-1-afzal.mohd.ma@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 17764167258308712891
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudehuddgtdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrvdehfedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheileejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,46 +58,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael Ellerman,
+On Tue, 24 Mar 2020 10:43:23 +1100
+Paul Mackerras <paulus@ozlabs.org> wrote:
 
-On Thu, Mar 12, 2020 at 12:12:55PM +0530, afzal mohammed wrote:
-
-> request_irq() is preferred over setup_irq(). Invocations of setup_irq()
-> occur after memory allocators are ready.
+> On Fri, Mar 20, 2020 at 01:22:48PM +0100, Greg Kurz wrote:
+> > On Fri, 20 Mar 2020 11:26:42 +0100
+> > Laurent Dufour <ldufour@linux.ibm.com> wrote:
+> > 
+> > > The Hcall named H_SVM_* are reserved to the Ultravisor. However, nothing
+> > > prevent a malicious VM or SVM to call them. This could lead to weird result
+> > > and should be filtered out.
+> > > 
+> > > Checking the Secure bit of the calling MSR ensure that the call is coming
+> > > from either the Ultravisor or a SVM. But any system call made from a SVM
+> > > are going through the Ultravisor, and the Ultravisor should filter out
+> > > these malicious call. This way, only the Ultravisor is able to make such a
+> > > Hcall.
+> > 
+> > "Ultravisor should filter" ? And what if it doesn't (eg. because of a bug) ?
+> > 
+> > Shouldn't we also check the HV bit of the calling MSR as well to
+> > disambiguate SVM and UV ?
 > 
-> Per tglx[1], setup_irq() existed in olden days when allocators were not
-> ready by the time early interrupts were initialized.
+> The trouble with doing that (checking the HV bit) is that KVM does not
+> expect to see the HV bit set on an interrupt that occurred while we
+> were in the guest, and if it is set, it indicates a serious problem,
+> i.e. that an interrupt occurred while we were in the code that
+> transitions from host context to guest context, or from guest context
+> to host context.  In those cases we don't know how much of the
+> transition has been completed and therefore whether we have guest
+> values or host values in the CPU registers (GPRs, FPRs/VSRs, SPRs).
+> If we do see HV set then KVM reports a severe error to userspace which
+> should cause userspace to terminate the guest.
 > 
-> Hence replace setup_irq() by request_irq().
+> Therefore the UV should *always* have the HV bit clear in HSRR1/SRR1
+> when transitioning to KVM.
 > 
-> [1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
-> 
-> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
 
-This patch is seen in next-test branch for last 4-5 days, i don't know
-exactly how powerpc workflow happens, so a question - this would be
-appear in linux-next soon right ? (for last 4-5 days i had been daily
-checking -next, but not appearing there).
+Indeed... thanks for the clarification. So I guess we'll just assume
+that the UV doesn't reflect these SVM specific hcalls if they happened
+to be issued by the guest then.
 
-Sorry for the query for this trivial patch, i am asking because Thomas
-had mentioned [1] to get setup_irq() cleanup thr' respective
-maintainers (earlier it was part of tree-wide series), check -next after
--rc6 & resubmit ignored ones to him, this patch is neither in -next,
-neither ignored, so i am at a loss what to do :(
+Cheers,
 
-And i would prefer to let each patch go thr' respective maintainers so
-that only least patches has to be sent to Thomas. Bigger problem is that
-core removal patch of setup_irq() can be sent to him only after making
-sure that it's tree-wide usage has been removed.
+--
+Greg
 
-Regards
-afzal
+> Paul.
 
-
-[1] https://lkml.kernel.org/r/87y2somido.fsf@nanos.tec.linutronix.de
