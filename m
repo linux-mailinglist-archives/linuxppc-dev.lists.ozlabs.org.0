@@ -2,51 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E899190536
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 06:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC4B190549
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 06:42:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mfzh2pz8zDqrj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 16:33:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mgBX71YMzDqvh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 16:42:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ZwbjcRJi; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mftC2txMzDqmj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 16:28:35 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=DpiFmblg; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48mftB6K2vz9sQt;
- Tue, 24 Mar 2020 16:28:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585027715;
- bh=soQCgidOAvEO7sKr1d1bXMywnVUZ8mtXNcqtK0ngruY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=DpiFmblgTQHdYN+fsW5aGwdxVPu5LvUDediBwy8vK/C8eAKGy6WCFL1iOp6vV/Kf9
- rS/S/zwE4OD6bQn0xKp5TQGLyYZFoMpwnmUC7/APB3g4IRRLTy6u2RIzR0rbAAbFkO
- 1NFsV+yLQcfB1/c1nP1+vSGS1gs8W29IvWWJqMrIUQ5Ku9mkrRMguJRBnlb0KkIovY
- XraVVlhRwZWHr5JwIj6ERSP7+eNX7iPBeR5cazcu8obf2mfbQWhNjSivO9JkzJkf0x
- GFfgmM5QrkJ/Bl/x5O70mEgW0ftg3/k4vh4sQ9TF51DGcWbE+y7UTBgZNO9Sz+pnXU
- NyKvmuGn4mW/g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v3] powerpc/kprobes: Ignore traps that happened in real
- mode
-In-Reply-To: <f28a0219-abf1-07d4-b98b-b19db4af0f12@c-s.fr>
-References: <424331e2006e7291a1bfe40e7f3fa58825f565e1.1582054578.git.christophe.leroy@c-s.fr>
- <f28a0219-abf1-07d4-b98b-b19db4af0f12@c-s.fr>
-Date: Tue, 24 Mar 2020 16:28:42 +1100
-Message-ID: <87o8smxqwl.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mg8g6BjnzDqlw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 16:41:05 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id h11so6947025plk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 22:41:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=hYsqg+zYS87R4jaMqHtWOgsNlEmV/n0zkX0bVS789vI=;
+ b=ZwbjcRJi6BsZ1eEoG/U0oPGOhPIoX3CaEpRM4hwFtRmCllOgDFhyuRd0aZ8cxJY1ko
+ R4uXvAdPD9EuYnFPnFCemJT0uytbWuPnM4728DDVK5nlEan4EBJRWaXjAkSuvTZYcW4w
+ OmfZsdNbgfPbUVCa3xd8UvCCtDJBsQNYE484YjhJ63lWino1Il5PnnmZnN9ecDWL3ONr
+ rBEArP5HRHKDjV3EhU/muRpkfWtwJkyCpawgLtBh+hR0EhEaSDqQwmbyaqR7kzpxrQ4L
+ sM1GLvb44Mptbs9Osd9s5sdXIHjVVLaLops2mnI4kL3FM23nK5jFQzzkXqXHlJZfTLyK
+ pjZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=hYsqg+zYS87R4jaMqHtWOgsNlEmV/n0zkX0bVS789vI=;
+ b=Z8j2Gn96+PkXyDSfkLykSWQ9BNrTBTIzCrUigawNir3cv541DJA6gLLaq200N/whcf
+ rQEFVkHwEoW61MglJkNGsifuzJs5fMHcJLfXHrzmEvS/EkyKva5KRMpN9RNrU6t9zYSd
+ jKv4aePM4nUwnkN7ZU+srK+Qn9OhEcXLGzK3MPR+8pXjPj+JftsYEWScnFjiBTYy2RzX
+ FhABACMmOF9Jt71Un4k7+EJX0RpohTUmYvypcHqoDcbox8751IKe7Azq8tvkMEXQ35LE
+ RGQ9mL89OFnftk+i5W9r7JlDy+gVmWn6x2OXuDSFt4s70KCLY153rJo6t7XkFqYt+1q1
+ j+Fg==
+X-Gm-Message-State: ANhLgQ0P62iiCN4WjDvJCh0RGY5y8r2syfZbIWPVsXPQ1lNG5YwaQXVd
+ orAJMPWlU6BLopIXO4d7V/s=
+X-Google-Smtp-Source: ADFU+vtX7De1LWAG6rrNd92hYINI9RO7dlnf3r5z60vENZTXU5+/XxuSdP3f8Z7H1IOh+O1dWywMAw==
+X-Received: by 2002:a17:90a:30c7:: with SMTP id
+ h65mr3519181pjb.44.1585028462457; 
+ Mon, 23 Mar 2020 22:41:02 -0700 (PDT)
+Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id n29sm10233632pgf.33.2020.03.23.22.41.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Mar 2020 22:41:01 -0700 (PDT)
+Date: Tue, 24 Mar 2020 15:40:56 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 14/16] powerpc64: Add prefixed instructions to
+ instruction data type
+To: Jordan Niethe <jniethe5@gmail.com>
+References: <20200320051809.24332-1-jniethe5@gmail.com>
+ <20200320051809.24332-15-jniethe5@gmail.com>
+ <1584947189.oay6araq0n.astroid@bobo.none>
+ <CACzsE9rbxV6HErxhwseMEJu7APezvRu4pKOx5YkepEnUWtpzqw@mail.gmail.com>
+In-Reply-To: <CACzsE9rbxV6HErxhwseMEJu7APezvRu4pKOx5YkepEnUWtpzqw@mail.gmail.com>
 MIME-Version: 1.0
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1585028271.y7k9vfaaar.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,111 +84,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> ping
->
->
-> Le 18/02/2020 =C3=A0 20:38, Christophe Leroy a =C3=A9crit=C2=A0:
->> When a program check exception happens while MMU translation is
->> disabled, following Oops happens in kprobe_handler() in the following
->> code:
->
-> Michael, we have several traps in assembly while MMU is still disabled=20
-> (TRACE_IRQFLAGS, KUAP DEBUG, syscall from kernel, machine check in RTAS,=
-=20
-> ...).
-> Without this fix, all of them trigger an Oops when CONFIG_KPROBE is set.
+Jordan Niethe's on March 24, 2020 9:45 am:
+> On Mon, Mar 23, 2020 at 6:37 PM Nicholas Piggin <npiggin@gmail.com> wrote=
+:
+>>
+>> Jordan Niethe's on March 20, 2020 3:18 pm:
+>> I'm a bit against using partially constructed opaque type for things
+>> like this, even if it is in the code that knows about the type. We
+>> could modify ppc_inst_prefixed() to assert that pad is equal to zero
+>> (or some poisoned value) if it's not prefixed. Or do some validation
+>> on the suffix if it is.
+> Okay what about something like:
+> +static inline ppc_inst ppc_inst_read(const void *ptr)
+> +{
+> +     u32 prefix, suffix;
+> +     prefix =3D *(u32 *)ptr;
+> +     if (prefix >> 26 =3D=3D 1)
+> +             suffix =3D *((u32 *)ptr + 1);
+> +     else
+> +             suffix =3D 0;
+> +     return PPC_INST_PREFIX(prefix, suffix);
+> +}
 
-Only on 32-bit.
+Sure, if that's the best way to test prefix.
 
-But I guess this fix is good, if someone really wants to handle kprobes
-in real mode they can tell us and do the work to make it solid.
+>> Although there's proably no real performance or atomicity issues here,
+>> I'd be pleased if we could do a case for prefixed and a case for non
+>> prefixed, and store the non-prefixed with "std". Just for the principle
+>> of not having half-written instructions in the image.
+> Do you mean store the prefixed with std?
 
-cheers
+Oops, yes.
 
->> 		} else if (*addr !=3D BREAKPOINT_INSTRUCTION) {
->>=20
->> [   33.098554] BUG: Unable to handle kernel data access on read at 0x000=
-0e268
->> [   33.105091] Faulting instruction address: 0xc000ec34
->> [   33.110010] Oops: Kernel access of bad area, sig: 11 [#1]
->> [   33.115348] BE PAGE_SIZE=3D16K PREEMPT CMPC885
->> [   33.119540] Modules linked in:
->> [   33.122591] CPU: 0 PID: 429 Comm: cat Not tainted 5.6.0-rc1-s3k-dev-0=
-0824-g84195dc6c58a #3267
->> [   33.131005] NIP:  c000ec34 LR: c000ecd8 CTR: c019cab8
->> [   33.136002] REGS: ca4d3b58 TRAP: 0300   Not tainted  (5.6.0-rc1-s3k-d=
-ev-00824-g84195dc6c58a)
->> [   33.144324] MSR:  00001032 <ME,IR,DR,RI>  CR: 2a4d3c52  XER: 00000000
->> [   33.150699] DAR: 0000e268 DSISR: c0000000
->> [   33.150699] GPR00: c000b09c ca4d3c10 c66d0620 00000000 ca4d3c60 00000=
-000 00009032 00000000
->> [   33.150699] GPR08: 00020000 00000000 c087de44 c000afe0 c66d0ad0 100d3=
-dd6 fffffff3 00000000
->> [   33.150699] GPR16: 00000000 00000041 00000000 ca4d3d70 00000000 00000=
-000 0000416d 00000000
->> [   33.150699] GPR24: 00000004 c53b6128 00000000 0000e268 00000000 c07c0=
-000 c07bb6fc ca4d3c60
->> [   33.188015] NIP [c000ec34] kprobe_handler+0x128/0x290
->> [   33.192989] LR [c000ecd8] kprobe_handler+0x1cc/0x290
->> [   33.197854] Call Trace:
->> [   33.200340] [ca4d3c30] [c000b09c] program_check_exception+0xbc/0x6fc
->> [   33.206590] [ca4d3c50] [c000e43c] ret_from_except_full+0x0/0x4
->> [   33.212392] --- interrupt: 700 at 0xe268
->> [   33.270401] Instruction dump:
->> [   33.273335] 913e0008 81220000 38600001 3929ffff 91220000 80010024 bb4=
-10008 7c0803a6
->> [   33.280992] 38210020 4e800020 38600000 4e800020 <813b0000> 6d2a7fe0 2=
-f8a0008 419e0154
->> [   33.288841] ---[ end trace 5b9152d4cdadd06d ]---
->>=20
->> kprobe is not prepared to handle events in real mode and functions
->> running in real mode should have been blacklisted, so kprobe_handler()
->> can safely bail out telling 'this trap is not mine' for any trap that
->> happened while in real-mode.
->>=20
->> If the trap happened with MSR_IR or MSR_DR cleared, return 0 immediately.
->>=20
->> Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
->> Fixes: 6cc89bad60a6 ("powerpc/kprobes: Invoke handlers directly")
->> Cc: stable@vger.kernel.org
->> Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
->> Cc: Masami Hiramatsu <mhiramat@kernel.org>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>=20
->> ---
->> v3: Also bail out if MSR_DR is cleared.
->>=20
->> Resending v2 with a more appropriate name
->>=20
->> v2: bailing out instead of converting real-time address to virtual and c=
-ontinuing.
->>=20
->> The bug might have existed even before that commit from Naveen.
->>=20
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/kernel/kprobes.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>=20
->> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes=
-.c
->> index 2d27ec4feee4..9b340af02c38 100644
->> --- a/arch/powerpc/kernel/kprobes.c
->> +++ b/arch/powerpc/kernel/kprobes.c
->> @@ -264,6 +264,9 @@ int kprobe_handler(struct pt_regs *regs)
->>   	if (user_mode(regs))
->>   		return 0;
->>=20=20=20
->> +	if (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR))
->> +		return 0;
->> +
->>   	/*
->>   	 * We don't want to be preempted for the entire
->>   	 * duration of kprobe processing
->>=20
+>> > @@ -881,7 +882,6 @@ static struct bpt *new_breakpoint(unsigned long a)
+>> >               if (!bp->enabled && atomic_read(&bp->ref_count) =3D=3D 0=
+) {
+>> >                       bp->address =3D a;
+>> >                       bp->instr =3D bpt_table + ((bp - bpts) * BPT_WOR=
+DS);
+>> > -                     patch_instruction(bp->instr + 1, PPC_INST(bpinst=
+r));
+>> >                       return bp;
+>> >               }
+>> >       }
+>>
+>> Why is this okay to remove?
+> When we only had word instructions the bpt was just patched in here
+> once and that was that.
+> With prefixed instructions bp->instr + 1 might be the suffix. So I
+> moved putting the breakpoint to insert_bpts():
+> patch_instruction(bp->instr + ppc_inst_len(instr), PPC_INST(bpinstr));
+
+Ah okay.
+
+Thanks,
+Nick
+=
