@@ -1,88 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042951905E5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 07:48:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mhf96ZgWzDqhn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 17:48:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E13E190613
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 08:09:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mj6n3nxjzDqx4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 18:09:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.74;
+ helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=RpU5Wci5; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-74.mimecast.com
+ (us-smtp-delivery-74.mimecast.com [216.205.24.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mhcV181RzDqcM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 17:46:49 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02O6ZCRP019969
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 02:46:47 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywfe83jq2-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 02:46:47 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Tue, 24 Mar 2020 06:46:43 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 24 Mar 2020 06:46:41 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02O6kfoY59113592
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Mar 2020 06:46:41 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42C4AA4062;
- Tue, 24 Mar 2020 06:46:41 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3427FA405F;
- Tue, 24 Mar 2020 06:46:40 +0000 (GMT)
-Received: from [9.85.116.254] (unknown [9.85.116.254])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 24 Mar 2020 06:46:35 +0000 (GMT)
-Subject: Re: [PATCH] arch/powerpc/mm: Enable compound page check for both THP
- and HugeTLB
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- paulus@ozlabs.org
-References: <20200320103256.229365-1-aneesh.kumar@linux.ibm.com>
- <87eetixnom.fsf@mpe.ellerman.id.au>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Tue, 24 Mar 2020 12:16:35 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mj4s1YZgzDqlw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 18:07:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1585033670;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZaSi0ZO+Ks2DlAc0F4wKniHNa/ruO7TTk/TDQ9gB5fA=;
+ b=RpU5Wci5g9QJgY1D8nJmF+2FTj66rFvc0Mqe4DTRGiRzleBD4e3A3eQzOqHBDIFpNyuzdu
+ uEokDkDOg88wU2rOKP4wCaRbGy47g2liRBsXC+3Vs9piWgFKTTJqtmlGmwtmV3huxXK3rH
+ LUTVlNoS6xZMHpa7/Sx9Su8C0fkXsz8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-91-sHWL7KGCMh2yyJpLJRO4bw-1; Tue, 24 Mar 2020 03:07:46 -0400
+X-MC-Unique: sHWL7KGCMh2yyJpLJRO4bw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 644718017CE;
+ Tue, 24 Mar 2020 07:07:45 +0000 (UTC)
+Received: from localhost (ovpn-12-69.pek2.redhat.com [10.72.12.69])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B7B191C947;
+ Tue, 24 Mar 2020 07:07:44 +0000 (UTC)
+Date: Tue, 24 Mar 2020 15:07:42 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Subject: Re: [5.6.0-rc7] Kernel crash while running ndctl tests
+Message-ID: <20200324070742.GJ2987@MiWiFi-R3L-srv>
+References: <CF20E440-4DCB-4EFD-88B6-0AB98DC7FBD4@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87eetixnom.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20032406-0008-0000-0000-00000362D3F6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032406-0009-0000-0000-00004A843F02
-Message-Id: <51c905dd-ab8a-f0bb-490d-1cebfc71ac48@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-24_01:2020-03-23,
- 2020-03-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0
- suspectscore=0 malwarescore=0 adultscore=0 mlxlogscore=999 clxscore=1015
- bulkscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003240030
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CF20E440-4DCB-4EFD-88B6-0AB98DC7FBD4@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,54 +72,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/24/20 12:08 PM, Michael Ellerman wrote:
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> THP config can result in compound pages. Make sure kernel enables the
->> PageCompound() check when only THP is enabled.
-> 
-> Or else what happens ... nothing, rampant data corruption, something in
-> between?
-> 
+Hi Sachin,
 
-We can get a stale icache that can result in undefined behavior?
+On 03/24/20 at 11:25am, Sachin Sant wrote:
+> While running ndctl[1] tests against 5.6.0-rc7 following crash is encou=
+ntered.
+>=20
+> Bisect leads me to  commit d41e2f3bd546=20
+> mm/hotplug: fix hot remove failure in SPARSEMEM|!VMEMMAP case
+>=20
+> Reverting this commit helps and the tests complete without any crash.
 
+Could you paste your kernel config and the boot log?
 
+If it's confidential, private attachment is also OK.
 
-> And "when only THP is enabled" is not very clear, AFAIK there is no
-> relation between CONFIG_TRANSPARENT_HUGEPAGE and CONFIG_HUGETLB_PAGE.
-> 
+Thanks
+Baoquan
 
-
-yes, there is no relation between them. But the way current code is 
-enabled if we have both enabled, we will find that
-if (PageCompound(page)) check present which will handle THP case too.
-
-Now with current code if we have CONFIG_HUGETLB_PAGE disabled, we 
-compile out if (pageCompound(page)) check and hence don't invalidate 
-compound pages correctly (THP create compound pages here)
-
-> You mean when either or both of THP or HUGETLB is enabled right?
-> 
-> cheers
-> 
-> 
->> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
->> index 9b4f5fb719e0..b03cbddf9054 100644
->> --- a/arch/powerpc/mm/mem.c
->> +++ b/arch/powerpc/mm/mem.c
->> @@ -485,7 +485,7 @@ EXPORT_SYMBOL(flush_dcache_page);
->>   
->>   void flush_dcache_icache_page(struct page *page)
->>   {
->> -#ifdef CONFIG_HUGETLB_PAGE
->> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLB_PAGE)
->>   	if (PageCompound(page)) {
->>   		flush_dcache_icache_hugepage(page);
->>   		return;
->> -- 
->> 2.25.1
+>=20
+> pmem0: detected capacity change from 0 to 10720641024
+> BUG: Kernel NULL pointer dereference on read at 0x00000000
+> Faulting instruction address: 0xc000000000c3447c
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSeries
+> Dumping ftrace buffer:
+>    (ftrace buffer empty)
+> Modules linked in: dm_mod nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 li=
+bcrc32c ip6_tables nft_compat ip_set rfkill nf_tables nfnetlink sunrpc sg=
+ pseries_rng papr_scm uio_pdrv_genirq uio sch_fq_codel ip_tables sd_mod t=
+10_pi ibmvscsi scsi_transport_srp ibmveth
+> CPU: 11 PID: 7519 Comm: lt-ndctl Not tainted 5.6.0-rc7-autotest #1
+> NIP:  c000000000c3447c LR: c000000000088354 CTR: c00000000018e990
+> REGS: c0000006223fb630 TRAP: 0300   Not tainted  (5.6.0-rc7-autotest)
+> MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24048888 =
+ XER: 00000000
+> CFAR: c00000000000dec4 DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 0=
+=20
+> GPR00: c0000000003c5820 c0000006223fb8c0 c000000001684900 0000000004000=
+000=20
+> GPR04: c00c000101000000 0000000007ffffff c00000067ff20900 c00c000000000=
+000=20
+> GPR08: 0000000000000000 c00c000100000000 0000000000000000 c000000003f00=
+000=20
+> GPR12: 0000000000008000 c00000001ec70200 00007fffc102f9e8 000000001002e=
+088=20
+> GPR16: 0000000000000000 0000000010050d88 000000001002f778 000000001002f=
+770=20
+> GPR20: 0000000000000000 0000000000000100 0000000000000001 0000000000001=
+000=20
+> GPR24: 0000000000000008 0000000000000000 0000000004000000 c00c000100004=
+000=20
+> GPR28: c000000003101aa0 c00c000100000000 0000000001000000 0000000004000=
+100=20
+> NIP [c000000000c3447c] vmemmap_populated+0x98/0xc0
+> LR [c000000000088354] vmemmap_free+0x144/0x320
+> Call Trace:
+> [c0000006223fb8c0] [c0000006223fb960] 0xc0000006223fb960 (unreliable)
+> [c0000006223fb980] [c0000000003c5820] section_deactivate+0x220/0x240
+> [c0000006223fba30] [c0000000003dc1d8] __remove_pages+0x118/0x170
+> [c0000006223fba80] [c000000000086e5c] arch_remove_memory+0x3c/0x150
+> [c0000006223fbb00] [c00000000041a3bc] memunmap_pages+0x1cc/0x2f0
+> [c0000006223fbb80] [c0000000007d6d00] devm_action_release+0x30/0x50
+> [c0000006223fbba0] [c0000000007d7de8] release_nodes+0x2f8/0x3e0
+> [c0000006223fbc50] [c0000000007d0b38] device_release_driver_internal+0x=
+168/0x270
+> [c0000006223fbc90] [c0000000007ccf50] unbind_store+0x130/0x170
+> [c0000006223fbcd0] [c0000000007cc0b4] drv_attr_store+0x44/0x60
+> [c0000006223fbcf0] [c00000000051fdb8] sysfs_kf_write+0x68/0x80
+> [c0000006223fbd10] [c00000000051f200] kernfs_fop_write+0x100/0x290
+> [c0000006223fbd60] [c00000000042037c] __vfs_write+0x3c/0x70
+> [c0000006223fbd80] [c00000000042404c] vfs_write+0xcc/0x240
+> [c0000006223fbdd0] [c00000000042442c] ksys_write+0x7c/0x140
+> [c0000006223fbe20] [c00000000000b278] system_call+0x5c/0x68
+> Instruction dump:
+> 2ea80000 4196003c 794a2428 7d685215 41820030 7d48502a 71480002 41820024=
+=20
+> 714a0008 4082002c e90b0008 786adf62 <e8680000> 7c635436 70630001 4c8200=
+20=20
+> ---[ end trace 579b48162da1b890 ]=E2=80=94
+>=20
+> Thanks
+> -Sachin
+>=20
+> [1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/=
+master/memory/ndctl.py
+>=20
 
