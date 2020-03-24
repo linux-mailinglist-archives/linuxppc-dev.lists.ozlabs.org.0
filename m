@@ -2,74 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A961C19034B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 02:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E97C19038F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 03:28:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mYR85BMczDqwD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 12:23:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mZtH5JWNzDqwF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 13:28:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::244;
- helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
+ helo=mail-il1-x144.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=hdG3K0QG; dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ueg72aOi; dkim-atps=neutral
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
+ [IPv6:2607:f8b0:4864:20::144])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mYPN0NWlzDqjW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 12:21:42 +1100 (AEDT)
-Received: by mail-oi1-x244.google.com with SMTP id m14so500502oic.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 18:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mZrg4cdSzDqnK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 13:26:59 +1100 (AEDT)
+Received: by mail-il1-x144.google.com with SMTP id g15so6235380ilj.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:26:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+4Gkwa2G1ZvtAVtLLGAEnxqc8kb/47goUTTzJiwNkCw=;
- b=hdG3K0QGGf0OSVfqsu+FIJ5ZZAFSUtp6tH1qczcvKGNR9xYLbHKOG8boELnc4B1SgD
- d2aUAPTzFxP6R5O+d/Rjd/NhrqxLVARqIt6n5IxywosSeJ3LhNmEkYtaMc2y2fjr6o30
- Gg7M8th80lb65ZijeOO6hmL8DcJVMiPwqK9uryklEKAM/ZpNURuf1UThR01v8QkHj2Vm
- up7m+UTcQbiC7oOmUmKJ4Vhjgr5kjiG5phnPAZXBW7EfUyAWJPGSKQs9SnMRZUdcNSpH
- wKUV7f85qztZrSErNG/BD8aGSTBOugqWu+i86DCV8mM3B+JUZPlHGT8iY9zDrYZrY5hP
- KYsg==
+ :cc:content-transfer-encoding;
+ bh=V9AiNe/pPmynkyaXxdTC0lZxGJp+g0RHI8wCVZYqI3w=;
+ b=ueg72aOiFzN7SyiiA1fNZmTpXaSga+kSY9hWnsZdk3FuQoqPXynye71O/FGnQT6fB5
+ Bq+QXzFKkyRni+cIAgsIuqXS5oMBq07mpG2RWAOmwMLbrKfH8ZIKcGZV3837xkZc4IHU
+ XwFl/75z4SzMHTxafsfgl7lsgIIx5wBe+FoY4fy1iuEok4DoABU2dDqPjff1vzhFP9jr
+ XJnkOaETUzBiEeFbph/GOqspL45v7AY14inhxOWjIogAuFbb/yWBWRkLXJhcNFjDt6CY
+ tcfxTgqGGVmCgIQbvERmjgCy7c7f1I3XNUgwgCh+4exUBVsCicrcbL+MdW0Klmq/DWay
+ jl8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+4Gkwa2G1ZvtAVtLLGAEnxqc8kb/47goUTTzJiwNkCw=;
- b=Z4/6SniJayfAnReYBWEfXdhUDmzV8PkPl4wVaGK1YyNY/BqpB6iSRzf/TRjKr7DS4V
- RpB460QW9Dy/AaJ5iwVYuZzlQk20u4QNOR0JSLIzgUjIg+A1KykQsn45GfNtWPTRjndk
- J0kgSl4wAqIOYJvjDgaTNStqU7ETKymU4sp1aWFxYp9WI82h88aApMgV39HF6HkJ4Soo
- H4l76WD7DtLGg2u4kut3wdfF2prx6bbO7w0125Kuzzy1YHKZxZ2GZZ3/DZAJZN40ViY7
- hO4r0R2yRcyGwwfuLExu2g3Upq1TNHcVVgTYdIYQzHa29VbfG7ukjIdtYmJ+mbVZ+qaF
- FgWg==
-X-Gm-Message-State: ANhLgQ2Wfw+nec/gGNh27d0NjqgWa0xuTqb7KckHOQFYV+Q3E9e9G2yt
- n2HtN8dMFJlIRYpH/7jhvIoIrtQaG+cS7MCB353KxkTZ
-X-Google-Smtp-Source: ADFU+vtR+zfDGu6b9EvlKwPHbaugAQTL77/k93YOHOTwCOIL3riH+keQFZWvZt4YHPs0IL1wVEEMyLWti3Do08G4gIM=
-X-Received: by 2002:aca:ef82:: with SMTP id n124mr1623535oih.73.1585012898928; 
- Mon, 23 Mar 2020 18:21:38 -0700 (PDT)
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=V9AiNe/pPmynkyaXxdTC0lZxGJp+g0RHI8wCVZYqI3w=;
+ b=gkkQXXwxc42Oh5alTLGhT5flFG7jH0g9qFEe9rs8T/pF7ySJ9zpxoK3EtN397uFa+O
+ BVPsIFIh0Qm0pwBeuB26kkuU2YlW0mBbhhag2ruTJxGjtJ97MiNx5u1XW3atdvmyxzqW
+ 39lrriMYfHjxZmowurq2Uefk43URPPsoHnE/S0ZLmqwRmfZMS/furKHMUds64/vFyUNF
+ vZI6nHif6VLr5XhuIEYE1bzOX+8PezmIxhivZRgyorRqzY8Izz1qMVO5URsygJS5TqB4
+ 3gMa4UQtH90tGk3V+d9uNQD2EQ0p4iLxUheIwb7pjSk5ydqvN6olHImWaN4feGerB/Jo
+ /DPA==
+X-Gm-Message-State: ANhLgQ2RUEuOcnvKtM3ERKEtgUuvJuRC7PzUc5cOu8qsMVPWvWE4BYLN
+ vnDUj0VQ2/E5kwRyfKc+41miTk5Yao0RHYIe6qE=
+X-Google-Smtp-Source: ADFU+vvDOHjxzazuRiyJQgLoOkyPWx8dL+6SYXUeNBYvAKcOm7YoHi5muvaGoBmgWXNTlqOeW4hIaEN6cONRGO0k/+g=
+X-Received: by 2002:a92:8993:: with SMTP id w19mr12878452ilk.192.1585016816115; 
+ Mon, 23 Mar 2020 19:26:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200205052056.74604-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hBAk-dwO4=AT7cQm5YUwCBg0AECsZsiCjRJ_ZGWvWUAw@mail.gmail.com>
- <87y2ta8qy7.fsf@linux.ibm.com>
- <CAPcyv4hNV88FJybgoRyM=JuKgrwYaf+CLWfFWt5X3yFMrecU=Q@mail.gmail.com>
- <25eabdd9-410f-e4c3-6b0e-41a5e6daba10@linux.ibm.com>
- <CAPcyv4iFP6_jkocoyv-6zd0Y8FEYFA3Pk6brH5+_XQ9+U896wQ@mail.gmail.com>
- <87k13fnzt8.fsf@linux.ibm.com>
-In-Reply-To: <87k13fnzt8.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 23 Mar 2020 18:21:27 -0700
-Message-ID: <CAPcyv4hfdOUvxDsCrBu05K0pmZ_spCOOiP3YyLLuFWW-HqT+LA@mail.gmail.com>
-Subject: Re: [PATCH v2] libnvdimm: Update persistence domain value for of_pmem
- and papr_scm device
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <1584598120.9256.15237.camel@hbabu-laptop>
+ <1584598473.9256.15248.camel@hbabu-laptop>
+ <396db62b-5342-a1b3-eade-a219afd98fc7@kaod.org>
+ <bd846a9c-0e21-1d97-0b03-e01c35ff01ae@kaod.org>
+In-Reply-To: <bd846a9c-0e21-1d97-0b03-e01c35ff01ae@kaod.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 24 Mar 2020 13:26:45 +1100
+Message-ID: <CAOSf1CFyERZE_am5uXVY2Y65=Vkm=afd39a_2RysKR6nkqvV0A@mail.gmail.com>
+Subject: Re: [PATCH v8 04/14] powerpc/vas: Alloc and setup IRQ and trigger
+ port address
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,58 +78,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Michael Neuling <mikey@neuling.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>,
+ Haren Myneni <haren@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 20, 2020 at 2:25 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
+On Mon, Mar 23, 2020 at 8:28 PM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 >
->
-> Hi Dan,
->
->
-> Dan Williams <dan.j.williams@intel.com> writes:
->
-> ...
->
->
-> >
+> On 3/23/20 10:06 AM, C=C3=A9dric Le Goater wrote:
+> > On 3/19/20 7:14 AM, Haren Myneni wrote:
 > >>
-> >> Or are you suggesting that application should not infer any of those
-> >> details looking at persistence_domain value? If so what is the purpose
-> >> of exporting that attribute?
+> >> Alloc IRQ and get trigger port address for each VAS instance. Kernel
+> >> register this IRQ per VAS instance and sets this port for each send
+> >> window. NX interrupts the kernel when it sees page fault.
 > >
-> > The way the patch was worded I thought it was referring to an explicit
-> > mechanism outside cpu cache flushes, i.e. a mechanism that required a
-> > driver call.
-> >
+> > I don't understand why this is not done by the OPAL driver for each VAS
+> > of the system. Is the VAS unit very different from OpenCAPI regarding
+> > the fault ?
 >
-> This patch is blocked because I am not expressing the details correctly.
-> I updates this as below. Can you suggest if this is ok? If not what
-> alternate wording do you suggest to document "memory controller"
+> I checked the previous patchsets and I see that v3 was more like I expect=
+ed
+> it: one interrupt for faults allocated by the skiboot driver and exposed
+> in the DT.
 >
->
-> commit 329b46e88f8cd30eee4776b0de7913ab4d496bd8
-> Author: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Date:   Wed Dec 18 13:53:16 2019 +0530
->
->     libnvdimm: Update persistence domain value for of_pmem and papr_scm device
->
->     Currently, kernel shows the below values
->             "persistence_domain":"cpu_cache"
->             "persistence_domain":"memory_controller"
->             "persistence_domain":"unknown"
->
->     "cpu_cache" indicates no extra instructions is needed to ensure the persistence
->     of data in the pmem media on power failure.
->
->     "memory_controller" indicates cpu cache flush instructions is required to flush
->     the data. Platform provides mechanisms to automatically flush outstanding
->     write data from memory controler to pmem on system power loss.
->
->     Based on the above use memory_controller for non volatile regions on ppc64.
+> What made you change your mind ?
 
-Looks good to me, want to resend via git-format-patch?
+From init_vas_inst() in arch/powerpc/platforms/powernv/vas.c:
+
+        if (pdev->num_resources !=3D 4) {
+                pr_err("Unexpected DT configuration for [%s, %d]\n",
+                                pdev->name, vasid);
+                return -ENODEV;
+        }
+
+This code should never have been written, but here we are. Due to the
+above adding an interrupt in the DT makes the driver unable to bind on
+older kernels. In an older version of the patches (don't think it was
+posted) Haren was using a non-standard interrupt property and we could
+work around the problem by going back to that.
+
+However, we already have the OPAL calls for allocating / freeing
+hardware interrupt numbers so why not do that? If we ever want to take
+advantage of the job completion interrupts we'd want to have the
+ability to allocate them since the completion interrupts are
+per-window rather than per-VAS.
+
+> This version is hijacking the lowlevel routines of the XIVE irqchip which
+> is not the best approach. OCXL is doing that because it needs to allocate
+> interrupts for the user space processes using the AFU and we should rewor=
+k
+> that part.
+
+What'd you have in mind for the reworking the oxcl interrupt
+allocation? I didn't find it that objectionable since it's more or
+less the same as what happens when allocating IPIs.
+
+> However, the translation fault interrupt is allocated by skiboot.
+>
+> Sorry for the noise, I would like to understand more how this works. I al=
+so
+> have passthrough in mind.
+>
+> C.
