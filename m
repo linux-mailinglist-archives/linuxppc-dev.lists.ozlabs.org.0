@@ -2,70 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953ED1907E7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 09:42:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A6F190814
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 09:50:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ml9R4CsqzDqsJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 19:42:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mlLx0YgqzDqyk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 19:50:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=tzimmermann@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=vA3p3t11; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ml6V0cwzzDqs3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 19:39:29 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 6E501AE85;
- Tue, 24 Mar 2020 08:39:23 +0000 (UTC)
-Subject: Re: [RESEND PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem
- argument (as in generic implementation)
-To: Krzysztof Kozlowski <krzk@kernel.org>
-References: <20200219175007.13627-1-krzk@kernel.org>
- <20200219175007.13627-7-krzk@kernel.org>
- <90baef2d-25fe-fac4-6a7e-b103b4b6721e@suse.de>
- <20200314105944.GA16044@kozik-lap>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <b19bd919-3af5-855f-65a7-fa6f16b07b31@suse.de>
-Date: Tue, 24 Mar 2020 09:39:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mlJt2ZPtzDqs3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 19:48:30 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id nu11so1142250pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 01:48:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=bt3cOsdr0C8cVmPItgi4WdtrPk2V3/FsORYh/CBY/lI=;
+ b=vA3p3t11FbBNkJKydmTaNNK3N5QW4gtpYzmlrgSF1JIT3wXicBoyZQ6X2qPv4Qvl27
+ atW1VCrGbGDlTg1jxwlWdC53pfi5pO12GqKqWwzjPJCi8yZkG6OkVtvJw1OLGhqdMKWJ
+ YVITCgHIF79H5pfiZs2gYUgZSyX4kEOcNHQAOMwGVYaxcpUJsAqTXPerqQZwYHyBEzGP
+ +AvKs5zDXWGhMNjVuH2KjgkSnFMBn/CbVRXP9QCpCiofOD2/GVjOn735K6I/pb/gBuj3
+ IWQbe9lei2ON6VbPeMLYajngQQ1HgV/7UZkMxmMQH9Ng01J1kjTH9anTeMvW0mB2L1lX
+ KhRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=bt3cOsdr0C8cVmPItgi4WdtrPk2V3/FsORYh/CBY/lI=;
+ b=UgDKqw02LBF2EQgkfsOR2+iMi8PYZ2GfRhC7C3SPDjfCyQk8u113IBAL/8EJ7I5pAt
+ jdfuE4wzNFfhdiqa/DUnor9k5SuwO6GHmRWsID7bGPG1VxtRnyzqlGIuNcSpIqvZWlLf
+ tLdlJdYSkzmDIStsXz1MB6Z2ALupa0EkzQH9+VTN1FdaOfikQLKLh1vkjBEhAFxeEbCj
+ xmKlQ2yfBZC08V4Jtud4H+48CfQm6dpcww06dZMHOJsPXEfdxjbEQ6bZ4GKWaepoGjz8
+ naiHultvLfyo2vB7/zo4ys9ZCIftSDFSdUwOfnS9ttqHd/i3sByDB/WGY/J8sabLsu40
+ gblA==
+X-Gm-Message-State: ANhLgQ3ZH/6H7nfbVTlrap3Z032TiDMOASYW2ZxA56fqbMgaug4TsaYH
+ Ml3X/HCd1YIm+odZuUyF2fW/aplJ
+X-Google-Smtp-Source: ADFU+vvkxp5PNoeenVejrf8tpB2gV5C4JXUjlzG5rk+czBLRFZq2ATdOuyQvst6hI/VEssCwU4vvrg==
+X-Received: by 2002:a17:90a:37c4:: with SMTP id
+ v62mr4006668pjb.151.1585039706935; 
+ Tue, 24 Mar 2020 01:48:26 -0700 (PDT)
+Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id f22sm10687021pgl.20.2020.03.24.01.48.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Mar 2020 01:48:26 -0700 (PDT)
+Date: Tue, 24 Mar 2020 18:48:20 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v11 3/8] powerpc/perf: consolidate read_user_stack_32
+To: linuxppc-dev@lists.ozlabs.org, Michal Suchanek <msuchanek@suse.de>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <184347595442b4ca664613008a09e8cea7188c36.1584620202.git.msuchanek@suse.de>
+In-Reply-To: <184347595442b4ca664613008a09e8cea7188c36.1584620202.git.msuchanek@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <20200314105944.GA16044@kozik-lap>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="5JHKoPMDjFIljnahlEBkrPhFBMFaUgU8x"
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1585039473.da4762n2s0.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,135 +82,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "Michael S. Tsirkin" <mst@redhat.com>, David Airlie <airlied@linux.ie>,
- Jason Wang <jasowang@redhat.com>, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-arch@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- linux-sh@vger.kernel.org, Alexey Brodkin <abrodkin@synopsys.com>,
- Ben Skeggs <bskeggs@redhat.com>, nouveau@lists.freedesktop.org,
- Dave Airlie <airlied@redhat.com>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, Nick Kossifidis <mickflemm@gmail.com>,
- Allen Hubbe <allenbh@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-alpha@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Thomas Gleixner <tglx@linutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, Jon Mason <jdmason@kudzu.us>,
- linux-ntb@googlegroups.com, Andrew Morton <akpm@linux-foundation.org>,
- linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---5JHKoPMDjFIljnahlEBkrPhFBMFaUgU8x
-Content-Type: multipart/mixed; boundary="hhPGeJseFbtGrgGh6f1kgq7y0jySVSvgE";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Richard Henderson <rth@twiddle.net>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri Slaby
- <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- "David S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>,
- Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
- Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
- linux-arch@vger.kernel.org
-Message-ID: <b19bd919-3af5-855f-65a7-fa6f16b07b31@suse.de>
-Subject: Re: [RESEND PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem
- argument (as in generic implementation)
-References: <20200219175007.13627-1-krzk@kernel.org>
- <20200219175007.13627-7-krzk@kernel.org>
- <90baef2d-25fe-fac4-6a7e-b103b4b6721e@suse.de>
- <20200314105944.GA16044@kozik-lap>
-In-Reply-To: <20200314105944.GA16044@kozik-lap>
-
---hhPGeJseFbtGrgGh6f1kgq7y0jySVSvgE
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-
-Hi
-
-Am 14.03.20 um 11:59 schrieb Krzysztof Kozlowski:
-> On Thu, Mar 12, 2020 at 11:49:05AM +0100, Thomas Zimmermann wrote:
->> Hi Krzysztof,
->>
->> I just received a resend email from 3 weeks ago :/
->>
->> Do you want me to merge the mgag200 patch into drm-misc-next?
+Michal Suchanek's on March 19, 2020 10:19 pm:
+> There are two almost identical copies for 32bit and 64bit.
 >=20
-> Thanks but it depends on the first patch in the series so either it
-> could go with your ack through other tree or I will send it later (once=
+> The function is used only in 32bit code which will be split out in next
+> patch so consolidate to one function.
+>=20
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+> v6:  new patch
+> v8:  move the consolidated function out of the ifdef block.
+> v11: rebase on top of def0bfdbd603
+> ---
+>  arch/powerpc/perf/callchain.c | 48 +++++++++++++++++------------------
+>  1 file changed, 24 insertions(+), 24 deletions(-)
+>=20
+> diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.=
+c
+> index cbc251981209..c9a78c6e4361 100644
+> --- a/arch/powerpc/perf/callchain.c
+> +++ b/arch/powerpc/perf/callchain.c
+> @@ -161,18 +161,6 @@ static int read_user_stack_64(unsigned long __user *=
+ptr, unsigned long *ret)
+>  	return read_user_stack_slow(ptr, ret, 8);
+>  }
+> =20
+> -static int read_user_stack_32(unsigned int __user *ptr, unsigned int *re=
+t)
+> -{
+> -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> -	    ((unsigned long)ptr & 3))
+> -		return -EFAULT;
+> -
+> -	if (!probe_user_read(ret, ptr, sizeof(*ret)))
+> -		return 0;
+> -
+> -	return read_user_stack_slow(ptr, ret, 4);
+> -}
+> -
+>  static inline int valid_user_sp(unsigned long sp, int is_64)
+>  {
+>  	if (!sp || (sp & 7) || sp > (is_64 ? TASK_SIZE : 0x100000000UL) - 32)
+> @@ -277,19 +265,9 @@ static void perf_callchain_user_64(struct perf_callc=
+hain_entry_ctx *entry,
+>  }
+> =20
+>  #else  /* CONFIG_PPC64 */
+> -/*
+> - * On 32-bit we just access the address and let hash_page create a
+> - * HPTE if necessary, so there is no need to fall back to reading
+> - * the page tables.  Since this is called at interrupt level,
+> - * do_page_fault() won't treat a DSI as a page fault.
+> - */
+> -static int read_user_stack_32(unsigned int __user *ptr, unsigned int *re=
+t)
+> +static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+>  {
+> -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> -	    ((unsigned long)ptr & 3))
+> -		return -EFAULT;
+> -
+> -	return probe_user_read(ret, ptr, sizeof(*ret));
+> +	return 0;
+>  }
+> =20
+>  static inline void perf_callchain_user_64(struct perf_callchain_entry_ct=
+x *entry,
+> @@ -312,6 +290,28 @@ static inline int valid_user_sp(unsigned long sp, in=
+t is_64)
+> =20
+>  #endif /* CONFIG_PPC64 */
+> =20
+> +/*
+> + * On 32-bit we just access the address and let hash_page create a
+> + * HPTE if necessary, so there is no need to fall back to reading
+> + * the page tables.  Since this is called at interrupt level,
+> + * do_page_fault() won't treat a DSI as a page fault.
+> + */
 
-> 1st patch gets to mainline).
+The comment is actually probably better to stay in the 32-bit
+read_user_stack_slow implementation. Is that function defined
+on 32-bit purely so that you can use IS_ENABLED()? In that case
+I would prefer to put a BUG() there which makes it self documenting.
 
-Ok. You're welcome to send it through any tree that works best for you.
-mgag200 sees only little change. I wouldn't expect major merge
-conflicts, if any.
+Thanks,
+Nick
 
-Best regards
-Thomas
-
+> +static int read_user_stack_32(unsigned int __user *ptr, unsigned int *re=
+t)
+> +{
+> +	int rc;
+> +
+> +	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> +	    ((unsigned long)ptr & 3))
+> +		return -EFAULT;
+> +
+> +	rc =3D probe_user_read(ret, ptr, sizeof(*ret));
+> +
+> +	if (IS_ENABLED(CONFIG_PPC64) && rc)
+> +		return read_user_stack_slow(ptr, ret, 4);
+> +
+> +	return rc;
+> +}
+> +
+>  /*
+>   * Layout for non-RT signal frames
+>   */
+> --=20
+> 2.23.0
 >=20
 >=20
-> Best regards,
-> Krzysztof
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---hhPGeJseFbtGrgGh6f1kgq7y0jySVSvgE--
-
---5JHKoPMDjFIljnahlEBkrPhFBMFaUgU8x
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl55xzYACgkQaA3BHVML
-eiNG1wgAnt3qyju9VoZCaXPbgeTj4gxLN24UZYPowzBMiEUgsJRz8b2iRuEoEKGb
-X+o80inBpVTWe/a+HI6wAQWEwidrIXUquQe1fSSpn2+h69aSApCBWBuxTuKZOLWq
-z9ZpyDKo+VD0/zWGgOZttJXPQJYEfckuCoLN9qcVf+CmgXQNC0m6ZVg6kf59xrca
-KEMDM4x2XhouIaoAtLYLQpt3U9YKgTphMMisTdha7xJt4h7CVx1uztnUyD2triFq
-meU3vxWwePFuQF/1reT0Vr5FU18Z88+wOLZyu3oa+GMA5lp/DKlJJmTGH+VsQA9l
-T/IiW9kxcWlBxT0ylEqlmHr82hqCAQ==
-=iz+q
------END PGP SIGNATURE-----
-
---5JHKoPMDjFIljnahlEBkrPhFBMFaUgU8x--
+=
