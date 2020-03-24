@@ -1,77 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B12D191ABA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 21:16:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48n2ZZ3KlwzDqnW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 07:16:22 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B73F2191BBA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 22:09:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48n3lT6lS5zDqBH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 08:09:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::841; helo=mail-qt1-x841.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=CMxrEsAy; dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48n2Wf0pkbzDqng
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 07:13:50 +1100 (AEDT)
-Received: by mail-qt1-x841.google.com with SMTP id 10so165728qtp.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 13:13:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=C9b2EFih07Bol0OhuOp+naFJ2QOu8CjYU0vdzwBlssE=;
- b=CMxrEsAyp8SoMtphK9LTHXEQNe0gvYg1kG4es2vY/Cbot4/a9hWYn5blklz6400FbL
- fjtCKnMWVFyIValqMYpQBcctE+nIM3FCSmEJE9KpwkGnDfyqpU95ejovPi8CN4uN3ujw
- JcZZEOcfqRgyR5sasNtVg6iu0Ng4YM+cAoCXu6ofZTKJqlpxKBCx/7ErtIrZC48JQKeE
- g6OEhLyoSiFv52Hz2QJCkO9Id2bwJbgHfgO+t3X163n3GPhu10dppbSKUaF/6c3JLipw
- 2encQyfW+aPLKWmgHK80Cz0zjSUUD2w/lNtHix4PZ/vJyNA/bIlnYB59B2G8cGTUXrbp
- 6NmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=C9b2EFih07Bol0OhuOp+naFJ2QOu8CjYU0vdzwBlssE=;
- b=axiyhNK80vdZkHKXCOZZfAmNvGMzcA9N46p3MY2RpsRB3Mxkw4/jtyclSefI0MiBvn
- Td1PscBjlMWvPpVe8ZIonHrVYLcvld8txiLloct3jdcRRL9Dd/DyF6V8mnDmaRsWebuF
- vgEgdpvzm24TP5rkcjYHANQqcHkoMX127L4SY0sqBDfvJrH/yIy/SYkz5iAV7Bn0Xvj8
- I9GVgyeFJg0Glnc1VjC41OjqXShVhvP55ViXyG1xPbbTic7Hep2zKk/y1gw6Lfw44i+Y
- 8CGuS7NmaTUe1f6EpehfHOB41lyglnPveuz/SYdF0Lbl5uKec3ttn+UrdFYP/bXeIKDC
- K7mQ==
-X-Gm-Message-State: ANhLgQ2/XAD+Ip9Ajlhw6jB+diAaNuHSWj3CZHzvpeIAen+AQtcI4iF/
- IRECtujYca833To2ywK7fn/bhg==
-X-Google-Smtp-Source: ADFU+vvUb5EPEwWM830GWFC8xZrHZgfn11CiVhdGj190JilNUxrE/jVs5R/tSSA6ED7rCnFbo78KcA==
-X-Received: by 2002:ac8:1968:: with SMTP id g37mr28036704qtk.322.1585080824046; 
- Tue, 24 Mar 2020 13:13:44 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id y127sm13540702qkb.76.2020.03.24.13.13.42
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 24 Mar 2020 13:13:43 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
-Subject: Re: Argh, can't find dcache properties !
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <876a5938fbad9d9e176e5f22f12e6b472d0dc4f7.camel@alliedtelesis.co.nz>
-Date: Tue, 24 Mar 2020 16:13:42 -0400
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <48F1D8CF-13A1-4348-8973-81503782A451@lca.pw>
-References: <be8c123a90f6d1664a902b6ad6c754b9f3d9e567.camel@alliedtelesis.co.nz>
- <87tv2exst1.fsf@mpe.ellerman.id.au>
- <876a5938fbad9d9e176e5f22f12e6b472d0dc4f7.camel@alliedtelesis.co.nz>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-X-Mailer: Apple Mail (2.3608.60.0.2.5)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48n3j31BQrzDqjY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 08:07:02 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02OL4NB8125869; Tue, 24 Mar 2020 17:06:37 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0pfc39-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 17:06:36 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02OL4b4W127722;
+ Tue, 24 Mar 2020 17:06:36 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0pfc2p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 17:06:36 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02OL5lBG009991;
+ Tue, 24 Mar 2020 21:06:35 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02dal.us.ibm.com with ESMTP id 2ywaw237wh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 21:06:35 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02OL6YbN32047558
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Mar 2020 21:06:34 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A49AEAE064;
+ Tue, 24 Mar 2020 21:06:34 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB369AE062;
+ Tue, 24 Mar 2020 21:06:33 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Mar 2020 21:06:33 +0000 (GMT)
+Subject: Re: [PATCH v8 04/14] powerpc/vas: Alloc and setup IRQ and trigger
+ port address
+From: Haren Myneni <haren@linux.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+In-Reply-To: <7793f6d4-770b-5fd0-f177-651130c0ff53@kaod.org>
+References: <1584598120.9256.15237.camel@hbabu-laptop>
+ <1584598473.9256.15248.camel@hbabu-laptop>
+ <7793f6d4-770b-5fd0-f177-651130c0ff53@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 24 Mar 2020 14:06:01 -0700
+Message-ID: <1585083961.10664.1.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-24_07:2020-03-23,
+ 2020-03-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,110 +93,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "paulus@samba.org" <paulus@samba.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: mikey@neuling.org, Frederic Bonnard <FREDERIC@fr.ibm.com>,
+ herbert@gondor.apana.org.au, npiggin@gmail.com, hch@infradead.org,
+ oohall@gmail.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 2020-03-24 at 15:48 +0100, Cédric Le Goater wrote:
+> On 3/19/20 7:14 AM, Haren Myneni wrote:
+> > 
+> > Alloc IRQ and get trigger port address for each VAS instance. Kernel
+> > register this IRQ per VAS instance and sets this port for each send
+> > window. NX interrupts the kernel when it sees page fault.
+> > 
+> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> > ---
+> >  arch/powerpc/platforms/powernv/vas.c | 34 ++++++++++++++++++++++++++++------
+> >  arch/powerpc/platforms/powernv/vas.h |  2 ++
+> >  2 files changed, 30 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
+> > index ed9cc6d..168ab68 100644
+> > --- a/arch/powerpc/platforms/powernv/vas.c
+> > +++ b/arch/powerpc/platforms/powernv/vas.c
+> > @@ -15,6 +15,7 @@
+> >  #include <linux/of_address.h>
+> >  #include <linux/of.h>
+> >  #include <asm/prom.h>
+> > +#include <asm/xive.h>
+> >  
+> >  #include "vas.h"
+> >  
+> > @@ -25,10 +26,12 @@
+> >  
+> >  static int init_vas_instance(struct platform_device *pdev)
+> >  {
+> > -	int rc, cpu, vasid;
+> > -	struct resource *res;
+> > -	struct vas_instance *vinst;
+> >  	struct device_node *dn = pdev->dev.of_node;
+> > +	struct vas_instance *vinst;
+> > +	uint32_t chipid, irq;
+> > +	struct resource *res;
+> > +	int rc, cpu, vasid;
+> > +	uint64_t port;
+> >  
+> >  	rc = of_property_read_u32(dn, "ibm,vas-id", &vasid);
+> >  	if (rc) {
+> > @@ -36,6 +39,12 @@ static int init_vas_instance(struct platform_device *pdev)
+> >  		return -ENODEV;
+> >  	}
+> >  
+> > +	rc = of_property_read_u32(dn, "ibm,chip-id", &chipid);
+> > +	if (rc) {
+> > +		pr_err("No ibm,chip-id property for %s?\n", pdev->name);
+> > +		return -ENODEV;
+> > +	}
+> > +
+> >  	if (pdev->num_resources != 4) {
+> >  		pr_err("Unexpected DT configuration for [%s, %d]\n",
+> >  				pdev->name, vasid);
+> > @@ -69,9 +78,22 @@ static int init_vas_instance(struct platform_device *pdev)
+> >  
+> >  	vinst->paste_win_id_shift = 63 - res->end;
+> >  
+> > -	pr_devel("Initialized instance [%s, %d], paste_base 0x%llx, "
+> > -			"paste_win_id_shift 0x%llx\n", pdev->name, vasid,
+> > -			vinst->paste_base_addr, vinst->paste_win_id_shift);
+> > +	rc = xive_native_alloc_get_irq_info(chipid, &irq, &port);
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	vinst->virq = irq_create_mapping(NULL, irq);
+> > +	if (!vinst->virq) {
+> > +		pr_err("Inst%d: Unable to map global irq %d\n",
+> > +				vinst->vas_id, irq);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	vinst->irq_port = port;
+> 
+> 
+> I would prefer something like this : 
+> 
+> 	hwirq = xive_native_alloc_irq_on_chip(chip_id);
+> 
+> 	vinst->virq = irq_create_mapping(NULL, hwirq);
+>  	if (!vinst->virq) {
+> 		...
+> 	}
+> 
+> 	{
+> 		struct irq_data *d = irq_get_irq_data(vinst->virq);
+> 		struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
+> 
+> 		vinst->irq_port = xd->trig_page;
+> 	}
+> 
+> 
+> and dump xive_native_alloc_get_irq_info().
+
+Thanks Cedric, I will remove patch which adds this function. 
+
+> 
+> C.
+> 
 
 
-> On Mar 24, 2020, at 4:06 PM, Chris Packham =
-<Chris.Packham@alliedtelesis.co.nz> wrote:
->=20
-> On Tue, 2020-03-24 at 15:47 +1100, Michael Ellerman wrote:
->> Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
->>> Hi All,
->>>=20
->>> Just booting up v5.5.11 on a Freescale T2080RDB and I'm seeing the
->>> following mesage.
->>>=20
->>> kern.warning linuxbox kernel: Argh, can't find dcache properties !
->>> kern.warning linuxbox kernel: Argh, can't find icache properties !
->>>=20
->>> This was changed from DBG() to pr_warn() in commit 3b9176e9a874
->>> ("powerpc/setup_64: fix -Wempty-body warnings") but the message
->>> seems
->>> to be much older than that. So it's probably been an issue on the
->>> T2080
->>> (and other QorIQ SoCs) for a while.
->>=20
->> That's an e6500 I think? So 64-bit Book3E.
->>=20
->=20
-> Yes that's correct.
->=20
->> You'll be getting the default values, which is 64 bytes so I guess
->> that
->> works in practice.
->>=20
->>> Looking at the code the t208x doesn't specifiy any of the d-cache-
->>> size/i-cache-size properties. Should I add them to silence the
->>> warning
->>> or switch it to pr_debug()/pr_info()?
->>=20
->> Yeah ideally you'd add them to the device tree(s) for those boards.
->>=20
->=20
-> I think the info I need is in the block diagram[0]. I'll whip up
-> a patch.
->=20
-> --
-> [1] - =
-https://www.nxp.com/products/processors-and-microcontrollers/power-archite=
-cture/qoriq-communication-processors/t-series/qoriq-t2080-and-t2081-multic=
-ore-communications-processors:T2080
-
-BTW, POWER9 PowerNV would have the same thing.=20
-
-[    0.000000][    T0] Setting debug_guardpage_minorder to 1
-[    0.000000][    T0] Reserving 512MB of memory at 128MB for =
-crashkernel (System RAM: 262144MB)
-[    0.000000][    T0] radix-mmu: Page sizes from device-tree:
-[    0.000000][    T0] radix-mmu: Page size shift =3D 12 AP=3D0x0
-[    0.000000][    T0] radix-mmu: Page size shift =3D 16 AP=3D0x5
-[    0.000000][    T0] radix-mmu: Page size shift =3D 21 AP=3D0x1
-[    0.000000][    T0] radix-mmu: Page size shift =3D 30 AP=3D0x2
-[    0.000000][    T0] radix-mmu: Activating Kernel Userspace Execution =
-Prevention
-[    0.000000][    T0] radix-mmu: Activating Kernel Userspace Access =
-Prevention
-[    0.000000][    T0] radix-mmu: Mapped =
-0x0000000000000000-0x0000000001600000 with 2.00 MiB pages (exec)
-[    0.000000][    T0] radix-mmu: Mapped =
-0x0000000001600000-0x0000000040000000 with 2.00 MiB pages
-[    0.000000][    T0] radix-mmu: Mapped =
-0x0000000040000000-0x0000002000000000 with 1.00 GiB pages
-[    0.000000][    T0] radix-mmu: Mapped =
-0x0000200000000000-0x0000202000000000 with 1.00 GiB pages
-[    0.000000][    T0] radix-mmu: Initializing Radix MMU
-[    0.000000][    T0] Linux version 5.6.0-rc7-next-20200324+ =
-(root@ibm-p9wr) (gcc version 8.3.1 20191121 (Red Hat 8.3.1-5) (GCC)) #2 =
-SMP Tue Mar 24 15:52:36 EDT 2020
-[    0.000000][    T0] Argh, can't find dcache properties !
-[    0.000000][    T0] Argh, can't find icache properties !
-[    0.000000][    T0] Found initrd at =
-0xc000000007850000:0xc00000000ad26142
-[    0.000000][    T0] OPAL: Found memory mapped LPC bus on chip 0
-[    0.000000][    T0] Using PowerNV machine description
-[    0.000000][    T0] printk: bootconsole [udbg0] enabled
-[    0.000000][    T0] CPU maps initialized for 4 threads per core
-[    0.000000][    T0] =
------------------------------------------------------
-[    0.000000][    T0] phys_mem_size     =3D 0x4000000000
-[    0.000000][    T0] dcache_bsize      =3D 0x80
-[    0.000000][    T0] icache_bsize      =3D 0x80
-[    0.000000][    T0] cpu_features      =3D 0x0001f86f8f5fb1a7
-[    0.000000][    T0]   possible        =3D 0x0003fbffcf5fb1a7
-[    0.000000][    T0]   always          =3D 0x0000006f8b5c91a1
-[    0.000000][    T0] cpu_user_features =3D 0xdc0065c2 0xaee00000
-[    0.000000][    T0] mmu_features      =3D 0xbc006041
-[    0.000000][    T0] firmware_features =3D 0x0000000010000000
-[    0.000000][    T0] vmalloc start     =3D 0xc008000000000000
-[    0.000000][    T0] IO start          =3D 0xc00a000000000000
-[    0.000000][    T0] vmemmap start     =3D 0xc00c000000000000
-[    0.000000][    T0] =
------------------------------------------------------=
