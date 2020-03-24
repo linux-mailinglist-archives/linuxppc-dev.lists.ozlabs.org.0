@@ -2,64 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B006A190F69
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 14:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9798191100
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 14:39:24 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48msSX2dSgzDqbX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 00:25:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48msmT6hftzDql0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 00:39:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=jolsa@redhat.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=SlgOSHo0; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [216.205.24.74])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=ZjOQ0h8g; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ms910M40zDqkk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 00:12:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1585055521;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bAV0a5EbyjxKEoAhknEvXpmwJ3mEJrJzUIE/or3dQRE=;
- b=SlgOSHo03Dl1QxjR6tNrd+06zkOfEmqoyvpJLzf+IENVIXht/7ihUSI9iPw23HhqBdCGNV
- SYmGNUHrBmyYm6YnIgEYeIUJ03gchjqjQXTtVwGL0ny999xrX2W/vi6ifE3u1yckWDy3mH
- J4yxNgp4P7ULsiVz05fragnT9sMWGxs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-287-xLFoOtpINUi2luA0yLmjIw-1; Tue, 24 Mar 2020 09:11:59 -0400
-X-MC-Unique: xLFoOtpINUi2luA0yLmjIw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48msDR5RvPzDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 00:15:03 +1100 (AEDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D841C1926DA3;
- Tue, 24 Mar 2020 13:11:55 +0000 (UTC)
-Received: from krava (unknown [10.40.192.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A015760BE0;
- Tue, 24 Mar 2020 13:11:43 +0000 (UTC)
-Date: Tue, 24 Mar 2020 14:11:41 +0100
-From: Jiri Olsa <jolsa@redhat.com>
-To: Kajol Jain <kjain@linux.ibm.com>
-Subject: Re: [PATCH v6 09/11] perf/tools: Enhance JSON/metric infrastructure
- to handle "?"
-Message-ID: <20200324131141.GV1534489@krava>
-References: <20200320125406.30995-1-kjain@linux.ibm.com>
- <20200320125406.30995-10-kjain@linux.ibm.com>
+ by mail.kernel.org (Postfix) with ESMTPSA id 63DD2208D5;
+ Tue, 24 Mar 2020 13:14:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1585055698;
+ bh=8TGOz2/lWpkvK7IkZ85KYF1d7FGTRGPT42uO7XQmBnM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=ZjOQ0h8gk79Mm/YiN5vaPP0sdlSVYbDpvtmnQe/E/VF8L019cX/LmA+zXKbKwQd6D
+ 0QJFF1bvWGKZvxnXiZC4iEgJYP5/yjfEbTkA5WetaaYWzqBEKmqZs22f2biGGkfNyc
+ b0VnLER0XuQjFVjs5WlzclfJs34TzO2NuFeIhy40=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 4.19 49/65] mm,
+ slub: prevent kmalloc_node crashes and memory leaks
+Date: Tue, 24 Mar 2020 14:11:10 +0100
+Message-Id: <20200324130803.098515051@linuxfoundation.org>
+X-Mailer: git-send-email 2.25.2
+In-Reply-To: <20200324130756.679112147@linuxfoundation.org>
+References: <20200324130756.679112147@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200320125406.30995-10-kjain@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,83 +60,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
- yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
- ak@linux.intel.com, alexander.shishkin@linux.intel.com,
- anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
- sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, acme@kernel.org,
- jmario@redhat.com, namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ David Rientjes <rientjes@google.com>, linuxppc-dev@lists.ozlabs.org,
+ stable@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ Pekka Enberg <penberg@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Christopher Lameter <cl@linux.com>,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 20, 2020 at 06:24:04PM +0530, Kajol Jain wrote:
-> Patch enhances current metric infrastructure to handle "?" in the metric
-> expression. The "?" can be use for parameters whose value not known while
-> creating metric events and which can be replace later at runtime to
-> the proper value. It also add flexibility to create multiple events out
-> of single metric event added in json file.
-> 
-> Patch adds function 'arch_get_runtimeparam' which is a arch specific
-> function, returns the count of metric events need to be created.
-> By default it return 1.
-> 
-> This infrastructure needed for hv_24x7 socket/chip level events.
-> "hv_24x7" chip level events needs specific chip-id to which the
-> data is requested. Function 'arch_get_runtimeparam' implemented
-> in header.c which extract number of sockets from sysfs file
-> "sockets" under "/sys/devices/hv_24x7/interface/".
-> 
-> 
-> With this patch basically we are trying to create as many metric events
-> as define by runtime_param.
-> 
-> For that one loop is added in function 'metricgroup__add_metric',
-> which create multiple events at run time depend on return value of
-> 'arch_get_runtimeparam' and merge that event in 'group_list'.
-> 
-> To achieve that we are actually passing this parameter value as part of
-> `expr__find_other` function and changing "?" present in metric expression
-> with this value.
-> 
-> As in our json file, there gonna be single metric event, and out of
-> which we are creating multiple events, I am also merging this value
-> to the original metric name to specify parameter value.
-> 
-> For example,
-> command:# ./perf stat  -M PowerBUS_Frequency -C 0 -I 1000
-> #           time             counts unit events
->      1.000101867          9,356,933      hv_24x7/pm_pb_cyc,chip=0/ #      2.3 GHz  PowerBUS_Frequency_0
->      1.000101867          9,366,134      hv_24x7/pm_pb_cyc,chip=1/ #      2.3 GHz  PowerBUS_Frequency_1
->      2.000314878          9,365,868      hv_24x7/pm_pb_cyc,chip=0/ #      2.3 GHz  PowerBUS_Frequency_0
->      2.000314878          9,366,092      hv_24x7/pm_pb_cyc,chip=1/ #      2.3 GHz  PowerBUS_Frequency_1
-> 
-> So, here _0 and _1 after PowerBUS_Frequency specify parameter value.
-> 
-> As after adding this to group_list, again we call expr__parse
-> in 'generic_metric' function present in util/stat-display.c.
-> By this time again we need to pass this parameter value. So, now to get this value
-> actually I am trying to extract it from metric name itself. Because
-> otherwise it gonna point to last updated value present in runtime_param.
-> And gonna match for that value only.
+From: Vlastimil Babka <vbabka@suse.cz>
 
-so why can't we pass that param as integer value through the metric objects?
+commit 0715e6c516f106ed553828a671d30ad9a3431536 upstream.
 
-it get's created in metricgroup__add_metric_param:
-  - as struct egroup *eg
-  - we can add egroup::param and store the param value there
+Sachin reports [1] a crash in SLUB __slab_alloc():
 
-then in metricgroup__setup_events it moves to:
-  - struct metric_expr *expr
-  - we can add metric_expr::param to keep the param
+  BUG: Kernel NULL pointer dereference on read at 0x000073b0
+  Faulting instruction address: 0xc0000000003d55f4
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in:
+  CPU: 19 PID: 1 Comm: systemd Not tainted 5.6.0-rc2-next-20200218-autotest #1
+  NIP:  c0000000003d55f4 LR: c0000000003d5b94 CTR: 0000000000000000
+  REGS: c0000008b37836d0 TRAP: 0300   Not tainted  (5.6.0-rc2-next-20200218-autotest)
+  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004844  XER: 00000000
+  CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1
+  GPR00: c0000000003d5b94 c0000008b3783960 c00000000155d400 c0000008b301f500
+  GPR04: 0000000000000dc0 0000000000000002 c0000000003443d8 c0000008bb398620
+  GPR08: 00000008ba2f0000 0000000000000001 0000000000000000 0000000000000000
+  GPR12: 0000000024004844 c00000001ec52a00 0000000000000000 0000000000000000
+  GPR16: c0000008a1b20048 c000000001595898 c000000001750c18 0000000000000002
+  GPR20: c000000001750c28 c000000001624470 0000000fffffffe0 5deadbeef0000122
+  GPR24: 0000000000000001 0000000000000dc0 0000000000000002 c0000000003443d8
+  GPR28: c0000008b301f500 c0000008bb398620 0000000000000000 c00c000002287180
+  NIP ___slab_alloc+0x1f4/0x760
+  LR __slab_alloc+0x34/0x60
+  Call Trace:
+    ___slab_alloc+0x334/0x760 (unreliable)
+    __slab_alloc+0x34/0x60
+    __kmalloc_node+0x110/0x490
+    kvmalloc_node+0x58/0x110
+    mem_cgroup_css_online+0x108/0x270
+    online_css+0x48/0xd0
+    cgroup_apply_control_enable+0x2ec/0x4d0
+    cgroup_mkdir+0x228/0x5f0
+    kernfs_iop_mkdir+0x90/0xf0
+    vfs_mkdir+0x110/0x230
+    do_mkdirat+0xb0/0x1a0
+    system_call+0x5c/0x68
 
-then in perf_stat__print_shadow_stats there's:
-  - struct metric_expr *mexp loop
-  - calling generic_metric metric - we could call it with mexp::param
-  - and pass the param to expr__parse
+This is a PowerPC platform with following NUMA topology:
 
-jirka
+  available: 2 nodes (0-1)
+  node 0 cpus:
+  node 0 size: 0 MB
+  node 0 free: 0 MB
+  node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+  node 1 size: 35247 MB
+  node 1 free: 30907 MB
+  node distances:
+  node   0   1
+    0:  10  40
+    1:  40  10
+
+  possible numa nodes: 0-31
+
+This only happens with a mmotm patch "mm/memcontrol.c: allocate
+shrinker_map on appropriate NUMA node" [2] which effectively calls
+kmalloc_node for each possible node.  SLUB however only allocates
+kmem_cache_node on online N_NORMAL_MEMORY nodes, and relies on
+node_to_mem_node to return such valid node for other nodes since commit
+a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating
+on memoryless node").  This is however not true in this configuration
+where the _node_numa_mem_ array is not initialized for nodes 0 and 2-31,
+thus it contains zeroes and get_partial() ends up accessing
+non-allocated kmem_cache_node.
+
+A related issue was reported by Bharata (originally by Ramachandran) [3]
+where a similar PowerPC configuration, but with mainline kernel without
+patch [2] ends up allocating large amounts of pages by kmalloc-1k
+kmalloc-512.  This seems to have the same underlying issue with
+node_to_mem_node() not behaving as expected, and might probably also
+lead to an infinite loop with CONFIG_SLUB_CPU_PARTIAL [4].
+
+This patch should fix both issues by not relying on node_to_mem_node()
+anymore and instead simply falling back to NUMA_NO_NODE, when
+kmalloc_node(node) is attempted for a node that's not online, or has no
+usable memory.  The "usable memory" condition is also changed from
+node_present_pages() to N_NORMAL_MEMORY node state, as that is exactly
+the condition that SLUB uses to allocate kmem_cache_node structures.
+The check in get_partial() is removed completely, as the checks in
+___slab_alloc() are now sufficient to prevent get_partial() being
+reached with an invalid node.
+
+[1] https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
+[2] https://lore.kernel.org/linux-mm/fff0e636-4c36-ed10-281c-8cdb0687c839@virtuozzo.com/
+[3] https://lore.kernel.org/linux-mm/20200317092624.GB22538@in.ibm.com/
+[4] https://lore.kernel.org/linux-mm/088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz/
+
+Fixes: a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating on memoryless node")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Reported-by: PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Tested-by: Bharata B Rao <bharata@linux.ibm.com>
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Christopher Lameter <cl@linux.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Link: http://lkml.kernel.org/r/20200320115533.9604-1-vbabka@suse.cz
+Debugged-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ mm/slub.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1906,8 +1906,6 @@ static void *get_partial(struct kmem_cac
+ 
+ 	if (node == NUMA_NO_NODE)
+ 		searchnode = numa_mem_id();
+-	else if (!node_present_pages(node))
+-		searchnode = node_to_mem_node(node);
+ 
+ 	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+ 	if (object || node != NUMA_NO_NODE)
+@@ -2504,17 +2502,27 @@ static void *___slab_alloc(struct kmem_c
+ 	struct page *page;
+ 
+ 	page = c->page;
+-	if (!page)
++	if (!page) {
++		/*
++		 * if the node is not online or has no normal memory, just
++		 * ignore the node constraint
++		 */
++		if (unlikely(node != NUMA_NO_NODE &&
++			     !node_state(node, N_NORMAL_MEMORY)))
++			node = NUMA_NO_NODE;
+ 		goto new_slab;
++	}
+ redo:
+ 
+ 	if (unlikely(!node_match(page, node))) {
+-		int searchnode = node;
+-
+-		if (node != NUMA_NO_NODE && !node_present_pages(node))
+-			searchnode = node_to_mem_node(node);
+-
+-		if (unlikely(!node_match(page, searchnode))) {
++		/*
++		 * same as above but node_match() being false already
++		 * implies node != NUMA_NO_NODE
++		 */
++		if (!node_state(node, N_NORMAL_MEMORY)) {
++			node = NUMA_NO_NODE;
++			goto redo;
++		} else {
+ 			stat(s, ALLOC_NODE_MISMATCH);
+ 			deactivate_slab(s, page, c->freelist, c);
+ 			goto new_slab;
+
 
