@@ -2,64 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E022F191C14
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 22:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7EE191D57
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 00:15:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48n4Xb1VWJzDqnF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 08:44:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48n6Yf5hYbzDqvt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 10:15:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz; envelope-from=chrisp@alliedtelesis.co.nz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=PJ+d9JXL; 
- dkim-atps=neutral
-X-Greylist: delayed 413 seconds by postgrey-1.36 at bilbo;
- Wed, 25 Mar 2020 08:43:09 AEDT
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48n4Vj3ybdzDqf2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 08:43:09 +1100 (AEDT)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EFD3080237;
- Wed, 25 Mar 2020 10:36:14 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1585085774;
- bh=ygbzvsrszuyiwFOJ6DWF6cMbXhOt/OKPVtDodTTPLdQ=;
- h=From:To:Cc:Subject:Date;
- b=PJ+d9JXLbGDYteYWKsRRXzfnrDkOVeWl15ZYMaedcDI7PJYkc6+1k6cLNc74/9Ju2
- dcKfXcM+dZ/xt5xVdbYirqnFKQuJiJXPoGOnx9Qbqsjchr/w78nYURVEwVdeHfSbTx
- xjCmSml6u43crzbmm6Y1yfJtqculaLWl9RQb04Lt5yS+gw3k6Bd20/jKEOvnBtpL9S
- Zy2ls1UfOfnaN4Um8mNUoaxjwFT67GBfgJeqXyJkZsS6I3x2H+ya5zw0Z1V1X+/z7+
- qlR5rFD8QAk1t+9OZPnxd0lewOR0OfVMUKREtsu0sPvsCSPsZRt60SUHTuX9WL7cih
- EBxHAuysnACYQ==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with
- Trustwave SEG (v7, 5, 8, 10121)
- id <B5e7a7d4f0000>; Wed, 25 Mar 2020 10:36:15 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
- by smtp (Postfix) with ESMTP id 419BE13EEB7;
- Wed, 25 Mar 2020 10:36:14 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
- id BEBB428006C; Wed, 25 Mar 2020 10:36:14 +1300 (NZDT)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: mpe@ellerman.id.au, robh+dt@kernel.org, mark.rutland@arm.com,
- paulus@samba.org, benh@kernel.crashing.org
-Subject: [PATCH] powerpc/fsl: Add cache properties for T2080/T2081
-Date: Wed, 25 Mar 2020 10:36:12 +1300
-Message-Id: <20200324213612.31614-1-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48n6Wp640lzDqjd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 10:14:14 +1100 (AEDT)
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11]
+ helo=nanos.tec.linutronix.de)
+ by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+ (Exim 4.80) (envelope-from <tglx@linutronix.de>)
+ id 1jGsjn-0007lV-Qr; Wed, 25 Mar 2020 00:13:36 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+ id DC4A4100C51; Wed, 25 Mar 2020 00:13:34 +0100 (CET)
+From: Thomas Gleixner <tglx@linutronix.de>
+To: paulmck@kernel.org
+Subject: Re: [patch V3 13/20] Documentation: Add lock ordering and nesting
+ documentation
+In-Reply-To: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+Date: Wed, 25 Mar 2020 00:13:34 +0100
+Message-ID: <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
+ SHORTCIRCUIT=-0.0001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,71 +52,330 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org,
- Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-usb@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Sebastian Siewior <bigeasy@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
+ Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
+ Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, linux-acpi@vger.kernel.org,
+ Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-hexagon@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
+ Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Greentime Hu <green.hu@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ platform-driver-x86@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+ kbuild test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
+ netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Davidlohr Bueso <dbueso@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Logan Gunthorpe <logang@deltatee.com>, "David S. Miller" <davem@davemloft.net>,
+ Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add the d-cache/i-cache properties for the T208x SoCs. The L1 cache on
-these SoCs is 32KiB and is split into 64 byte blocks (lines).
+Paul,
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
- arch/powerpc/boot/dts/fsl/t208xsi-pre.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+"Paul E. McKenney" <paulmck@kernel.org> writes:
+> On Sat, Mar 21, 2020 at 12:25:57PM +0100, Thomas Gleixner wrote:
+> In the normal case where the task sleeps through the entire lock
+> acquisition, the sequence of events is as follows:
+>
+>      state = UNINTERRUPTIBLE
+>      lock()
+>        block()
+>          real_state = state
+>          state = SLEEPONLOCK
+>
+>                                lock wakeup
+>                                  state = real_state == UNINTERRUPTIBLE
+>
+> This sequence of events can occur when the task acquires spinlocks
+> on its way to sleeping, for example, in a call to wait_event().
+>
+> The non-lock wakeup can occur when a wakeup races with this wait_event(),
+> which can result in the following sequence of events:
+>
+>      state = UNINTERRUPTIBLE
+>      lock()
+>        block()
+>          real_state = state
+>          state = SLEEPONLOCK
+>
+>                              non lock wakeup
+>                                  real_state = RUNNING
+>
+>                                lock wakeup
+>                                  state = real_state == RUNNING
+>
+> Without this real_state subterfuge, the wakeup might be lost.
 
-diff --git a/arch/powerpc/boot/dts/fsl/t208xsi-pre.dtsi b/arch/powerpc/bo=
-ot/dts/fsl/t208xsi-pre.dtsi
-index 3f745de44284..2ad27e16ac16 100644
---- a/arch/powerpc/boot/dts/fsl/t208xsi-pre.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/t208xsi-pre.dtsi
-@@ -81,6 +81,10 @@ cpus {
- 		cpu0: PowerPC,e6500@0 {
- 			device_type =3D "cpu";
- 			reg =3D <0 1>;
-+			d-cache-line-size =3D <64>;
-+			i-cache-line-size =3D <64>;
-+			d-cache-size =3D <32768>;
-+			i-cache-size =3D <32768>;
- 			clocks =3D <&clockgen 1 0>;
- 			next-level-cache =3D <&L2_1>;
- 			fsl,portid-mapping =3D <0x80000000>;
-@@ -88,6 +92,10 @@ cpu0: PowerPC,e6500@0 {
- 		cpu1: PowerPC,e6500@2 {
- 			device_type =3D "cpu";
- 			reg =3D <2 3>;
-+			d-cache-line-size =3D <64>;
-+			i-cache-line-size =3D <64>;
-+			d-cache-size =3D <32768>;
-+			i-cache-size =3D <32768>;
- 			clocks =3D <&clockgen 1 0>;
- 			next-level-cache =3D <&L2_1>;
- 			fsl,portid-mapping =3D <0x80000000>;
-@@ -95,6 +103,10 @@ cpu1: PowerPC,e6500@2 {
- 		cpu2: PowerPC,e6500@4 {
- 			device_type =3D "cpu";
- 			reg =3D <4 5>;
-+			d-cache-line-size =3D <64>;
-+			i-cache-line-size =3D <64>;
-+			d-cache-size =3D <32768>;
-+			i-cache-size =3D <32768>;
- 			clocks =3D <&clockgen 1 0>;
- 			next-level-cache =3D <&L2_1>;
- 			fsl,portid-mapping =3D <0x80000000>;
-@@ -102,6 +114,10 @@ cpu2: PowerPC,e6500@4 {
- 		cpu3: PowerPC,e6500@6 {
- 			device_type =3D "cpu";
- 			reg =3D <6 7>;
-+			d-cache-line-size =3D <64>;
-+			i-cache-line-size =3D <64>;
-+			d-cache-size =3D <32768>;
-+			i-cache-size =3D <32768>;
- 			clocks =3D <&clockgen 1 0>;
- 			next-level-cache =3D <&L2_1>;
- 			fsl,portid-mapping =3D <0x80000000>;
---=20
-2.25.1
+I added this with a few modifications which reflect the actual
+implementation. Conceptually the same.
+
+> rwsems have grown special-purpose interfaces that allow non-owner release.
+> This non-owner release prevents PREEMPT_RT from substituting RT-mutex
+> implementations, for example, by defeating priority inheritance.
+> After all, if the lock has no owner, whose priority should be boosted?
+> As a result, PREEMPT_RT does not currently support rwsem, which in turn
+> means that code using it must therefore be disabled until a workable
+> solution presents itself.
+>
+> [ Note: Not as confident as I would like to be in the above. ]
+
+I'm not confident either especially not after looking at the actual
+code.
+
+In fact I feel really stupid because the rw_semaphore reader non-owner
+restriction on RT simply does not exist anymore and my history biased
+memory tricked me.
+
+The first rw_semaphore implementation of RT was simple and restricted
+the reader side to a single reader to support PI on both the reader and
+the writer side. That obviosuly did not scale well and made mmap_sem
+heavy use cases pretty unhappy.
+
+The short interlude with multi-reader boosting turned out to be a failed
+experiment - Steven might still disagree though :)
+
+At some point we gave up and I myself (sic!) reimplemented the RT
+variant of rw_semaphore with a reader biased mechanism.
+
+The reader never holds the underlying rt_mutex accross the read side
+critical section. It merily increments the reader count and drops it on
+release.
+
+The only time a reader takes the rt_mutex is when it blocks on a
+writer. Writers hold the rt_mutex across the write side critical section
+to allow incoming readers to boost them. Once the writer releases the
+rw_semaphore it unlocks the rt_mutex which is then handed off to the
+readers. They increment the reader count and then drop the rt_mutex
+before continuing in the read side critical section.
+
+So while I changed the implementation it did obviously not occur to me
+that this also lifted the non-owner release restriction. Nobody else
+noticed either. So we kept dragging this along in both memory and
+implementation. Both will be fixed now :)
+
+The owner semantics of down/up_read() are only enforced by lockdep. That
+applies to both RT and !RT. The up/down_read_non_owner() variants are
+just there to tell lockdep about it.
+
+So, I picked up your other suggestions with slight modifications and
+adjusted the owner, semaphore and rw_semaphore docs accordingly.
+
+Please have a close look at the patch below (applies on tip core/locking).
+
+Thanks,
+
+        tglx, who is searching a brown paperbag
+
+8<----------
+
+ Documentation/locking/locktypes.rst |  148 +++++++++++++++++++++++-------------
+ 1 file changed, 98 insertions(+), 50 deletions(-)
+
+--- a/Documentation/locking/locktypes.rst
++++ b/Documentation/locking/locktypes.rst
+@@ -67,6 +67,17 @@ Spinning locks implicitly disable preemp
+  _irqsave/restore()   Save and disable / restore interrupt disabled state
+  ===================  ====================================================
+ 
++Owner semantics
++===============
++
++The aforementioned lock types except semaphores have strict owner
++semantics:
++
++  The context (task) that acquired the lock must release it.
++
++rw_semaphores have a special interface which allows non-owner release for
++readers.
++
+ 
+ rtmutex
+ =======
+@@ -83,6 +94,51 @@ interrupt handlers and soft interrupts.
+ and rwlock_t to be implemented via RT-mutexes.
+ 
+ 
++sempahore
++=========
++
++semaphore is a counting semaphore implementation.
++
++Semaphores are often used for both serialization and waiting, but new use
++cases should instead use separate serialization and wait mechanisms, such
++as mutexes and completions.
++
++sempahores and PREEMPT_RT
++----------------------------
++
++PREEMPT_RT does not change the sempahore implementation. That's impossible
++due to the counting semaphore semantics which have no concept of owners.
++The lack of an owner conflicts with priority inheritance. After all an
++unknown owner cannot be boosted. As a consequence blocking on semaphores
++can be subject to priority inversion.
++
++
++rw_sempahore
++============
++
++rw_semaphore is a multiple readers and single writer lock mechanism.
++
++On non-PREEMPT_RT kernels the implementation is fair, thus preventing
++writer starvation.
++
++rw_semaphore complies by default with the strict owner semantics, but there
++exist special-purpose interfaces that allow non-owner release for readers.
++These work independent of the kernel configuration.
++
++rw_sempahore and PREEMPT_RT
++---------------------------
++
++PREEMPT_RT kernels map rw_sempahore to a separate rt_mutex-based
++implementation, thus changing the fairness:
++
++ Because an rw_sempaphore writer cannot grant its priority to multiple
++ readers, a preempted low-priority reader will continue holding its lock,
++ thus starving even high-priority writers.  In contrast, because readers
++ can grant their priority to a writer, a preempted low-priority writer will
++ have its priority boosted until it releases the lock, thus preventing that
++ writer from starving readers.
++
++
+ raw_spinlock_t and spinlock_t
+ =============================
+ 
+@@ -140,7 +196,16 @@ On a PREEMPT_RT enabled kernel spinlock_
+    kernels leave task state untouched.  However, PREEMPT_RT must change
+    task state if the task blocks during acquisition.  Therefore, it saves
+    the current task state before blocking and the corresponding lock wakeup
+-   restores it.
++   restores it::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					lock wakeup
++					  task->state = task->saved_state
+ 
+    Other types of wakeups would normally unconditionally set the task state
+    to RUNNING, but that does not work here because the task must remain
+@@ -148,7 +213,22 @@ On a PREEMPT_RT enabled kernel spinlock_
+    wakeup attempts to awaken a task blocked waiting for a spinlock, it
+    instead sets the saved state to RUNNING.  Then, when the lock
+    acquisition completes, the lock wakeup sets the task state to the saved
+-   state, in this case setting it to RUNNING.
++   state, in this case setting it to RUNNING::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					non lock wakeup
++					  task->saved_state = TASK_RUNNING
++
++					lock wakeup
++					  task->state = task->saved_state
++
++   This ensures that the real wakeup cannot be lost.
++
+ 
+ rwlock_t
+ ========
+@@ -228,17 +308,16 @@ while holding normal non-raw spinlocks b
+ bit spinlocks
+ -------------
+ 
+-Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
+-substituted by an RT-mutex based implementation for obvious reasons.
+-
+-The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
+-caveats vs. raw_spinlock_t apply.
+-
+-Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
+-this requires conditional (#ifdef'ed) code changes at the usage site while
+-the spinlock_t substitution is simply done by the compiler and the
+-conditionals are restricted to header files and core implementation of the
+-locking primitives and the usage sites do not require any changes.
++PREEMPT_RT cannot substitute bit spinlocks because a single bit is too
++small to accommodate an RT-mutex.  Therefore, the semantics of bit
++spinlocks are preserved on PREEMPT_RT kernels, so that the raw_spinlock_t
++caveats also apply to bit spinlocks.
++
++Some bit spinlocks are replaced with regular spinlock_t for PREEMPT_RT
++using conditional (#ifdef'ed) code changes at the usage site.  In contrast,
++usage-site changes are not needed for the spinlock_t substitution.
++Instead, conditionals in header files and the core locking implemementation
++enable the compiler to do the substitution transparently.
+ 
+ 
+ Lock type nesting rules
+@@ -254,46 +333,15 @@ Lock type nesting rules
+ 
+   - Spinning lock types can nest inside sleeping lock types.
+ 
+-These rules apply in general independent of CONFIG_PREEMPT_RT.
++These constraints apply both in CONFIG_PREEMPT_RT and otherwise.
+ 
+-As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
+-spinning to sleeping this has obviously restrictions how they can nest with
+-raw_spinlock_t.
+-
+-This results in the following nest ordering:
++The fact that PREEMPT_RT changes the lock category of spinlock_t and
++rwlock_t from spinning to sleeping means that they cannot be acquired while
++holding a raw spinlock.  This results in the following nesting ordering:
+ 
+   1) Sleeping locks
+   2) spinlock_t and rwlock_t
+   3) raw_spinlock_t and bit spinlocks
+ 
+-Lockdep is aware of these constraints to ensure that they are respected.
+-
+-
+-Owner semantics
+-===============
+-
+-Most lock types in the Linux kernel have strict owner semantics, i.e. the
+-context (task) which acquires a lock has to release it.
+-
+-There are two exceptions:
+-
+-  - semaphores
+-  - rwsems
+-
+-semaphores have no owner semantics for historical reason, and as such
+-trylock and release operations can be called from any context. They are
+-often used for both serialization and waiting purposes. That's generally
+-discouraged and should be replaced by separate serialization and wait
+-mechanisms, such as mutexes and completions.
+-
+-rwsems have grown interfaces which allow non owner release for special
+-purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+-substitutes all locking primitives except semaphores with RT-mutex based
+-implementations to provide priority inheritance for all lock types except
+-the truly spinning ones. Priority inheritance on ownerless locks is
+-obviously impossible.
+-
+-For now the rwsem non-owner release excludes code which utilizes it from
+-being used on PREEMPT_RT enabled kernels. In same cases this can be
+-mitigated by disabling portions of the code, in other cases the complete
+-functionality has to be disabled until a workable solution has been found.
++Lockdep will complain if these constraints are violated, both in
++CONFIG_PREEMPT_RT and otherwise.
 
