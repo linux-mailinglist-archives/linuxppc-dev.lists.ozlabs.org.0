@@ -1,51 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3E419133C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 15:31:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mtwh4wdgzDqkS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 01:31:32 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E1B1913E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 16:09:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mvmW5xV2zDqWS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 02:09:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.107.143;
- helo=1.mo177.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=46.105.34.113; helo=3.mo7.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 1.mo177.mail-out.ovh.net (1.mo177.mail-out.ovh.net
- [178.33.107.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mtpk6F9gzDqjX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 01:26:21 +1100 (AEDT)
-Received: from player763.ha.ovh.net (unknown [10.108.54.38])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id 1E1C2128174
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 14:48:54 +0100 (CET)
+X-Greylist: delayed 937 seconds by postgrey-1.36 at bilbo;
+ Wed, 25 Mar 2020 02:05:03 AEDT
+Received: from 3.mo7.mail-out.ovh.net (3.mo7.mail-out.ovh.net [46.105.34.113])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mvgM43HYzDqQ6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 02:04:59 +1100 (AEDT)
+Received: from player778.ha.ovh.net (unknown [10.110.208.115])
+ by mo7.mail-out.ovh.net (Postfix) with ESMTP id C784515A7DB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 15:49:16 +0100 (CET)
 Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
  (Authenticated sender: clg@kaod.org)
- by player763.ha.ovh.net (Postfix) with ESMTPSA id 5D7E210BA8FD9;
- Tue, 24 Mar 2020 13:48:33 +0000 (UTC)
-Subject: Re: [PATCH v8 01/14] powerpc/xive: Define
- xive_native_alloc_irq_on_chip()
+ by player778.ha.ovh.net (Postfix) with ESMTPSA id ED91010C2D8A8;
+ Tue, 24 Mar 2020 14:48:55 +0000 (UTC)
+Subject: Re: [PATCH v8 04/14] powerpc/vas: Alloc and setup IRQ and trigger
+ port address
 To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au
 References: <1584598120.9256.15237.camel@hbabu-laptop>
- <1584598352.9256.15242.camel@hbabu-laptop>
+ <1584598473.9256.15248.camel@hbabu-laptop>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <802e7661-b575-5adf-b56f-4684d3f668f3@kaod.org>
-Date: Tue, 24 Mar 2020 14:48:32 +0100
+Message-ID: <7793f6d4-770b-5fd0-f177-651130c0ff53@kaod.org>
+Date: Tue, 24 Mar 2020 15:48:54 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <1584598352.9256.15242.camel@hbabu-laptop>
+In-Reply-To: <1584598473.9256.15248.camel@hbabu-laptop>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 1136595957639777106
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 2156098321623583599
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudehuddgvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejieefrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudehuddgfeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthejredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjeekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,92 +58,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
+Cc: mikey@neuling.org, Frederic Bonnard <FREDERIC@fr.ibm.com>,
+ herbert@gondor.apana.org.au, npiggin@gmail.com, hch@infradead.org,
+ oohall@gmail.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/19/20 7:12 AM, Haren Myneni wrote:
+On 3/19/20 7:14 AM, Haren Myneni wrote:
 > 
-> This function allocates IRQ on a specific chip. VAS needs per chip
-> IRQ allocation and will have IRQ handler per VAS instance.
+> Alloc IRQ and get trigger port address for each VAS instance. Kernel
+> register this IRQ per VAS instance and sets this port for each send
+> window. NX interrupts the kernel when it sees page fault.
 > 
 > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/powernv/vas.c | 34 ++++++++++++++++++++++++++++------
+>  arch/powerpc/platforms/powernv/vas.h |  2 ++
+>  2 files changed, 30 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
+> index ed9cc6d..168ab68 100644
+> --- a/arch/powerpc/platforms/powernv/vas.c
+> +++ b/arch/powerpc/platforms/powernv/vas.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/of_address.h>
+>  #include <linux/of.h>
+>  #include <asm/prom.h>
+> +#include <asm/xive.h>
+>  
+>  #include "vas.h"
+>  
+> @@ -25,10 +26,12 @@
+>  
+>  static int init_vas_instance(struct platform_device *pdev)
+>  {
+> -	int rc, cpu, vasid;
+> -	struct resource *res;
+> -	struct vas_instance *vinst;
+>  	struct device_node *dn = pdev->dev.of_node;
+> +	struct vas_instance *vinst;
+> +	uint32_t chipid, irq;
+> +	struct resource *res;
+> +	int rc, cpu, vasid;
+> +	uint64_t port;
+>  
+>  	rc = of_property_read_u32(dn, "ibm,vas-id", &vasid);
+>  	if (rc) {
+> @@ -36,6 +39,12 @@ static int init_vas_instance(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+>  
+> +	rc = of_property_read_u32(dn, "ibm,chip-id", &chipid);
+> +	if (rc) {
+> +		pr_err("No ibm,chip-id property for %s?\n", pdev->name);
+> +		return -ENODEV;
+> +	}
+> +
+>  	if (pdev->num_resources != 4) {
+>  		pr_err("Unexpected DT configuration for [%s, %d]\n",
+>  				pdev->name, vasid);
+> @@ -69,9 +78,22 @@ static int init_vas_instance(struct platform_device *pdev)
+>  
+>  	vinst->paste_win_id_shift = 63 - res->end;
+>  
+> -	pr_devel("Initialized instance [%s, %d], paste_base 0x%llx, "
+> -			"paste_win_id_shift 0x%llx\n", pdev->name, vasid,
+> -			vinst->paste_base_addr, vinst->paste_win_id_shift);
+> +	rc = xive_native_alloc_get_irq_info(chipid, &irq, &port);
+> +	if (rc)
+> +		return rc;
+> +
+> +	vinst->virq = irq_create_mapping(NULL, irq);
+> +	if (!vinst->virq) {
+> +		pr_err("Inst%d: Unable to map global irq %d\n",
+> +				vinst->vas_id, irq);
+> +		return -EINVAL;
+> +	}
+> +
+> +	vinst->irq_port = port;
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Thanks,
+I would prefer something like this : 
+
+	hwirq = xive_native_alloc_irq_on_chip(chip_id);
+
+	vinst->virq = irq_create_mapping(NULL, hwirq);
+ 	if (!vinst->virq) {
+		...
+	}
+
+	{
+		struct irq_data *d = irq_get_irq_data(vinst->virq);
+		struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
+
+		vinst->irq_port = xd->trig_page;
+	}
+
+
+and dump xive_native_alloc_get_irq_info().
 
 C.
 
-> ---
->  arch/powerpc/include/asm/xive.h   | 9 ++++++++-
->  arch/powerpc/sysdev/xive/native.c | 6 +++---
->  2 files changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
-> index 93f982db..d08ea11 100644
-> --- a/arch/powerpc/include/asm/xive.h
-> +++ b/arch/powerpc/include/asm/xive.h
-> @@ -5,6 +5,8 @@
->  #ifndef _ASM_POWERPC_XIVE_H
->  #define _ASM_POWERPC_XIVE_H
+
+> +	pr_devel("Initialized instance [%s, %d] paste_base 0x%llx paste_win_id_shift 0x%llx IRQ %d Port 0x%llx\n",
+> +			pdev->name, vasid, vinst->paste_base_addr,
+> +			vinst->paste_win_id_shift, vinst->virq,
+> +			vinst->irq_port);
 >  
-> +#include <asm/opal-api.h>
-> +
->  #define XIVE_INVALID_VP	0xffffffff
+>  	for_each_possible_cpu(cpu) {
+>  		if (cpu_to_chip_id(cpu) == of_get_ibm_chip_id(dn))
+> diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
+> index 5574aec..598608b 100644
+> --- a/arch/powerpc/platforms/powernv/vas.h
+> +++ b/arch/powerpc/platforms/powernv/vas.h
+> @@ -313,6 +313,8 @@ struct vas_instance {
+>  	u64 paste_base_addr;
+>  	u64 paste_win_id_shift;
 >  
->  #ifdef CONFIG_PPC_XIVE
-> @@ -108,7 +110,6 @@ struct xive_q {
->  int xive_native_populate_irq_data(u32 hw_irq,
->  				  struct xive_irq_data *data);
->  void xive_cleanup_irq_data(struct xive_irq_data *xd);
-> -u32 xive_native_alloc_irq(void);
->  void xive_native_free_irq(u32 irq);
->  int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
->  
-> @@ -137,6 +138,12 @@ int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
->  				u32 qindex);
->  int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
->  bool xive_native_has_queue_state_support(void);
-> +extern u32 xive_native_alloc_irq_on_chip(u32 chip_id);
-> +
-> +static inline u32 xive_native_alloc_irq(void)
-> +{
-> +	return xive_native_alloc_irq_on_chip(OPAL_XIVE_ANY_CHIP);
-> +}
->  
->  #else
->  
-> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-> index 0ff6b73..14d4406 100644
-> --- a/arch/powerpc/sysdev/xive/native.c
-> +++ b/arch/powerpc/sysdev/xive/native.c
-> @@ -279,12 +279,12 @@ static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
->  }
->  #endif /* CONFIG_SMP */
->  
-> -u32 xive_native_alloc_irq(void)
-> +u32 xive_native_alloc_irq_on_chip(u32 chip_id)
->  {
->  	s64 rc;
->  
->  	for (;;) {
-> -		rc = opal_xive_allocate_irq(OPAL_XIVE_ANY_CHIP);
-> +		rc = opal_xive_allocate_irq(chip_id);
->  		if (rc != OPAL_BUSY)
->  			break;
->  		msleep(OPAL_BUSY_DELAY_MS);
-> @@ -293,7 +293,7 @@ u32 xive_native_alloc_irq(void)
->  		return 0;
->  	return rc;
->  }
-> -EXPORT_SYMBOL_GPL(xive_native_alloc_irq);
-> +EXPORT_SYMBOL_GPL(xive_native_alloc_irq_on_chip);
->  
->  void xive_native_free_irq(u32 irq)
->  {
+> +	u64 irq_port;
+> +	int virq;
+>  	struct mutex mutex;
+>  	struct vas_window *rxwin[VAS_COP_TYPE_MAX];
+>  	struct vas_window *windows[VAS_WINDOWS_PER_CHIP];
 > 
 
