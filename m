@@ -2,56 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE441905B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 07:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0190B1905C7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 07:32:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mh9k2TrqzDqhb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 17:27:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mhHl1LhqzDqlJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 17:32:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mh5V5rZ2zDqgp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 17:23:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qrweyHTw; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48mh5T3XFyz9sNg;
- Tue, 24 Mar 2020 17:23:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585031005;
- bh=pyXXTSOM4rJiyzQjZhPpy8qmKgXBedErkVyMHCYOl80=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qrweyHTwsbAvl7ERrTWZk38mrgANw/NQhKqMufsiiCAth3EoXC5Ob9kEwnV5jOedS
- iNxbRgJ35iK0SrppQiB7CzsHb9YS/VmMB0LP27lVQMpBKe32Ohzfuj5AA+88nOksyq
- J9Xq//SDVLs6wMYJP3Qb5i/cOPCV2OuZoJc0XIqlOIIHMuLx6bqI3UGdMXvT78cxa7
- 8VmstvqGa6jL29bJ+QHhSArN7ATzJcXc3gCHSlLY9GTWU1TjddRJfLy2GfR2ZT6bqK
- hEi7jRWFO68/gqFSH32r1dnWgAxU1ozpsad4171Sd6ut2q7772RSPXC1paQoPNUM9b
- 6ff411U9oiBPw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, mikey@neuling.org
-Subject: Re: [PATCH v5 10/13] powerpc/ptrace: split out ADV_DEBUG_REGS related
- functions.
-In-Reply-To: <25a7f050-f241-6035-e778-16b1ca9928f3@c-s.fr>
-References: <cover.1582848567.git.christophe.leroy@c-s.fr>
- <e2bd7d275bd5933d848aad4fee3ca652a14d039b.1582848567.git.christophe.leroy@c-s.fr>
- <87imizdbaz.fsf@mpe.ellerman.id.au>
- <25a7f050-f241-6035-e778-16b1ca9928f3@c-s.fr>
-Date: Tue, 24 Mar 2020 17:23:29 +1100
-Message-ID: <87k13axoda.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mhFZ5QRLzDqcq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 17:30:26 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02O64B86078773; Tue, 24 Mar 2020 02:30:16 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2yxw7cxyp7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 02:30:16 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02O6R1cx020237;
+ Tue, 24 Mar 2020 06:30:15 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 2ywaw9bxwb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 06:30:15 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02O6UFad53346570
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Mar 2020 06:30:15 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1180E112064;
+ Tue, 24 Mar 2020 06:30:15 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DAD05112063;
+ Tue, 24 Mar 2020 06:30:11 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.116.254])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Mar 2020 06:30:11 +0000 (GMT)
+X-Mailer: emacs 27.0.90 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 1/2] dma-mapping: add a dma_ops_bypass flag to struct
+ device
+In-Reply-To: <ffce1af6-a215-dee8-7b5c-2111f43accfd@ozlabs.ru>
+References: <20200320141640.366360-1-hch@lst.de>
+ <20200320141640.366360-2-hch@lst.de>
+ <2f31d0dd-aa7e-8b76-c8a1-5759fda5afc9@ozlabs.ru>
+ <20200323083705.GA31245@lst.de> <20200323085059.GA32528@lst.de>
+ <87sghz2ibh.fsf@linux.ibm.com> <20200323172256.GB31269@lst.de>
+ <ffce1af6-a215-dee8-7b5c-2111f43accfd@ozlabs.ru>
+Date: Tue, 24 Mar 2020 12:00:09 +0530
+Message-ID: <87pnd22rke.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-23_10:2020-03-23,
+ 2020-03-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=999
+ mlxscore=0 suspectscore=18 bulkscore=0 priorityscore=1501 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +88,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> On 03/20/2020 02:12 AM, Michael Ellerman wrote:
->> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>> Move ADV_DEBUG_REGS functions out of ptrace.c, into
->>> ptrace-adv.c and ptrace-noadv.c
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+
+> On 24/03/2020 04:22, Christoph Hellwig wrote:
+>> On Mon, Mar 23, 2020 at 09:07:38PM +0530, Aneesh Kumar K.V wrote:
 >>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>> ---
->>> v4: Leave hw_breakpoint.h for ptrace.c
->>> ---
->>>   arch/powerpc/kernel/ptrace/Makefile       |   4 +
->>>   arch/powerpc/kernel/ptrace/ptrace-adv.c   | 468 ++++++++++++++++
->>>   arch/powerpc/kernel/ptrace/ptrace-decl.h  |   5 +
->>>   arch/powerpc/kernel/ptrace/ptrace-noadv.c | 236 ++++++++
->>>   arch/powerpc/kernel/ptrace/ptrace.c       | 650 ----------------------
->>>   5 files changed, 713 insertions(+), 650 deletions(-)
->>>   create mode 100644 arch/powerpc/kernel/ptrace/ptrace-adv.c
->>>   create mode 100644 arch/powerpc/kernel/ptrace/ptrace-noadv.c
+>>> This is what I was trying, but considering I am new to DMA subsystem, I
+>>> am not sure I got all the details correct. The idea is to look at the
+>>> cpu addr and see if that can be used in direct map fashion(is
+>>> bus_dma_limit the right restriction here?) if not fallback to dynamic
+>>> IOMMU mapping.
 >> 
->> This is somehow breaking the ptrace-hwbreak selftest on Power8:
->> 
->>    test: ptrace-hwbreak
->>    tags: git_version:v5.6-rc6-892-g7a285a6067d6
->>    PTRACE_SET_DEBUGREG, WO, len: 1: Ok
->>    PTRACE_SET_DEBUGREG, WO, len: 2: Ok
->>    PTRACE_SET_DEBUGREG, WO, len: 4: Ok
->>    PTRACE_SET_DEBUGREG, WO, len: 8: Ok
->>    PTRACE_SET_DEBUGREG, RO, len: 1: Ok
->>    PTRACE_SET_DEBUGREG, RO, len: 2: Ok
->>    PTRACE_SET_DEBUGREG, RO, len: 4: Ok
->>    PTRACE_SET_DEBUGREG, RO, len: 8: Ok
->>    PTRACE_SET_DEBUGREG, RW, len: 1: Ok
->>    PTRACE_SET_DEBUGREG, RW, len: 2: Ok
->>    PTRACE_SET_DEBUGREG, RW, len: 4: Ok
->>    PTRACE_SET_DEBUGREG, RW, len: 8: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RW, len: 6: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, WO, len: 6: Ok
->>    PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, RO, len: 6: Fail
->>    failure: ptrace-hwbreak
->> 
->> I haven't had time to work out why yet.
->> 
+>> I don't think we can throw all these complications into the dma
+>> mapping code.  At some point I also wonder what the point is,
+>> especially for scatterlist mappings, where the iommu can coalesce.
 >
-> A (big) part of commit c3f68b0478e7 ("powerpc/watchpoint: Fix ptrace 
-> code that muck around with address/len") was lost during rebase.
->
-> I'll send a fix, up to you to squash it in or commit it as is.
+> This is for persistent memory which you can DMA to/from but yet it does
+> not appear in the system as a normal memory and therefore requires
+> special handling anyway (O_DIRECT or DAX, I do not know the exact
+> mechanics). All other devices in the system should just run as usual,
+> i.e. use 1:1 mapping if possible.
 
-Thanks.
+This is O_DIRECT with a user buffer that is actually mmap from a dax
+mounted file system.
 
-cheers
+What we really need is something that will falback to iommu_map_page
+based on dma_addr. ie. Something equivalent to current
+dma_direct_map_page(), but instead of fallback to swiotlb_map page we
+should fallback to iommu_map_page().
+
+Something like?
+
+dma_addr_t dma_direct_map_page(struct device *dev, struct page *page,
+		unsigned long offset, size_t size, enum dma_data_direction dir,
+		unsigned long attrs)
+{
+	phys_addr_t phys = page_to_phys(page) + offset;
+	dma_addr_t dma_addr = phys_to_dma(dev, phys);
+
+	if (unlikely(!dma_capable(dev, dma_addr, size, true))) {
+			return iommu_map(dev, phys, size, dir, attrs);
+
+		return DMA_MAPPING_ERROR;
+	}
+
+....
+...
+
+
+-aneesh
