@@ -2,54 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76701903C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 04:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B91B31903C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 04:04:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mbdD5vXDzDqrm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 14:02:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mbgP3fDHzDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 14:04:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mbYL5Jv6zDqSj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 13:58:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::244;
+ helo=mail-oi1-x244.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RkSyeq37; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=O7ZR7ZDV; dkim-atps=neutral
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48mbYL0THpz9sSH;
- Tue, 24 Mar 2020 13:58:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585018726;
- bh=pnaqBz7SMoS7pSvgsxbi1WyrO4gR9k0CpdIGUOxniwo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RkSyeq37dNPZcWz0cypFRYwcF2tGvvW0waQY72B/meCEufwTOLM1Qu88/i/CYD7i/
- +gzGhXID3yNfxlEySaJADWHv9zklwkQ0dc7bcuUHbPBu5uhChta5cept5NlGSAKHb7
- hz9cgBUX4lMtdnNNXYTI/nd3c8r9PPQbc2Lmz5/XxmNU0pSQkygvlAPZx9zObwouSZ
- VIaDsGBPAKDYFzbH4ogMtXsnzR50yg2bNhbW1dI5VLin8/Xql22c4fygTCOHQLzGey
- Bi14dmz22uX7fzXrMaHb77FfbFghk52uTTap1JJtfk/Je2gMoBoGe5xZ7q8RMrLz+L
- 438AD5gqyPzkw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH v4 03/16] powerpc: Use a datatype for instructions
-In-Reply-To: <1584956855.oidzv2r2fr.astroid@bobo.none>
-References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-4-jniethe5@gmail.com>
- <1584944554.pe2tzckmyl.astroid@bobo.none>
- <CACzsE9qy7dUv+sbcCN-i0EeYiH=DacutULunpBdgV0h8D0m2yQ@mail.gmail.com>
- <1584956855.oidzv2r2fr.astroid@bobo.none>
-Date: Tue, 24 Mar 2020 13:58:51 +1100
-Message-ID: <87369yzces.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mbZL6YmjzDqSW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 13:59:38 +1100 (AEDT)
+Received: by mail-oi1-x244.google.com with SMTP id w2so6121827oic.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 19:59:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jg/wuF54R1lMtZbZkXdwLoqb4GPIfWAHIj18g4l1K64=;
+ b=O7ZR7ZDVd5oOWY3pcgNw2eNGka+9scQEJIdacBp2BjBbRMDHJbN3bmxvlXH9tbKV0J
+ YL/2oLDTxgmQrqXWfNOmSdA1ZiMFVx22gHnbzVKE3LHL7OWLiwUtcCrD7XdDT8PFQboB
+ CbAuiso62c90MJjOZF6F1FDycCCdUVb0JnvzhL8IfUxMD36G2NwXFjBP8jdy2vw0Qztv
+ bkvF8HUZyYvhDekuPrWCze91TRcXBvwkbx3o0fp6D2hjkd6hCLVCH3nP2tmm3Ezq7lF4
+ H62O7U1dULewRItcxR789JXsmrSEPSOAs7YX4471IeX8yARk40n0POdKQyhlgtvdIZgv
+ MRzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jg/wuF54R1lMtZbZkXdwLoqb4GPIfWAHIj18g4l1K64=;
+ b=JtaIW6pHdutL8visVM3IjfE6IphemTnf7p+AAHtBfr0y5XAsXB62mSMDGeFHSzK15o
+ lqQW8Q7tFNMjZbnVZOunzqGVrTrTPWSdJRDoJzjCAmfkbSR1Th4ICcPs9ZcFFJOCmQj5
+ vA9HhIlrILYkhfwMsIdzK8ioBl8ugp862bPI0J8xUgIbqKSL3bE8jrN99lVa26kB1SXq
+ z14/cnSQk31Piu66DEcEwHgZygIb1a1Xj9rbH8xHqwLgeHYe3zTnO6PXsRTeqznqbL90
+ Q9tVvWfOhD/56hPfoCzsQJpxT6LDCJp0esdxif31lprojxyPbCoZ4QXLc0GXLuBS7D6t
+ X3xA==
+X-Gm-Message-State: ANhLgQ14spqrUkpTZgzlzQQHSTWgzj4CI1kh3mqi8wFu/KPXBYK4luHP
+ kUhO3f+emwyIdIgl83rfGEV7eR8FaU43nN9+wgk7xKnQn9w=
+X-Google-Smtp-Source: ADFU+vuAqyYqgNSTpE2ERuBF6p8qzrt6dq4Zh2a0xcpoHirr/B8XgwItrbse9+bvG5y+toYOamDHG8DsxxI1nluphWY=
+X-Received: by 2002:aca:fd48:: with SMTP id b69mr1858105oii.126.1585018773531; 
+ Mon, 23 Mar 2020 19:59:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200320051809.24332-1-jniethe5@gmail.com>
+ <1584944279.gvl0lg5dde.astroid@bobo.none>
+ <CACzsE9r5uvL-zp34VrCqO_RTEsXPbLrt2iu+MHL-apapydOugA@mail.gmail.com>
+ <1584957138.lj5a68bk6x.astroid@bobo.none>
+ <CACzsE9qrNpfvoLKfdeXths4rKJ8jQcUic3=dFZ57ntogdeaMug@mail.gmail.com>
+In-Reply-To: <CACzsE9qrNpfvoLKfdeXths4rKJ8jQcUic3=dFZ57ntogdeaMug@mail.gmail.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Tue, 24 Mar 2020 13:59:22 +1100
+Message-ID: <CACzsE9pXyjK6CGUtwMKY8zr93adFRhi8afzVgATLJPhQsZBn4A@mail.gmail.com>
+Subject: Re: [PATCH v4 00/16] Initial Prefixed Instruction support
+To: Nicholas Piggin <npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,53 +76,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>, Daniel Axtens <dja@axtens.net>,
- linuxppc-dev@lists.ozlabs.org, Balamuruhan S <bala24@linux.ibm.com>
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Balamuruhan S <bala24@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Jordan Niethe's on March 23, 2020 7:28 pm:
->> On Mon, Mar 23, 2020 at 5:27 PM Nicholas Piggin <npiggin@gmail.com> wrote:
->>> Jordan Niethe's on March 20, 2020 3:17 pm:
->>> > Currently unsigned ints are used to represent instructions on powerpc.
->>> > This has worked well as instructions have always been 4 byte words.
->>> > However, a future ISA version will introduce some changes to
->>> > instructions that mean this scheme will no longer work as well. This
->>> > change is Prefixed Instructions. A prefixed instruction is made up of a
->>> > word prefix followed by a word suffix to make an 8 byte double word
->>> > instruction. No matter the endianess of the system the prefix always
->>> > comes first. Prefixed instructions are only planned for powerpc64.
->>> >
->>> > Introduce a ppc_inst type to represent both prefixed and word
->>> > instructions on powerpc64 while keeping it possible to exclusively have
->>> > word instructions on powerpc32, A latter patch will expand the type to
->>> > include prefixed instructions but for now just typedef it to a u32.
->>> >
->>> > Later patches will introduce helper functions and macros for
->>> > manipulating the instructions so that powerpc64 and powerpc32 might
->>> > maintain separate type definitions.
->>>
->>> ppc_inst_t I would slightly prefer for a typedef like this.
->> Are _t types meant to be reserved?
+On Tue, Mar 24, 2020 at 1:54 PM Jordan Niethe <jniethe5@gmail.com> wrote:
 >
-> No, just convention that structs are not normally typedefed unless
-> they are a pervasive interface that gets passed around a lot but
-> does not get accessed without accessor functions much. When you do
-> typedef them, add a _t (or less frequently _s/_u/etc). pte_t,
-> cpumask_t, atomic_t.
+> On Mon, Mar 23, 2020 at 9:21 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> >
+> > Jordan Niethe's on March 23, 2020 7:25 pm:
+> > > On Mon, Mar 23, 2020 at 5:22 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> > >>
+> > >> Jordan Niethe's on March 20, 2020 3:17 pm:
+> > >> > A future revision of the ISA will introduce prefixed instructions. A
+> > >> > prefixed instruction is composed of a 4-byte prefix followed by a
+> > >> > 4-byte suffix.
+> > >> >
+> > >> > All prefixes have the major opcode 1. A prefix will never be a valid
+> > >> > word instruction. A suffix may be an existing word instruction or a
+> > >> > new instruction.
+> > >> >
+> > >> > This series enables prefixed instructions and extends the instruction
+> > >> > emulation to support them. Then the places where prefixed instructions
+> > >> > might need to be emulated are updated.
+> > >> >
+> > >> > The series is based on top of:
+> > >> > https://patchwork.ozlabs.org/patch/1232619/ as this will effect
+> > >> > kprobes.
+> > >> >
+> > >> > v4 is based on feedback from Nick Piggins, Christophe Leroy and Daniel Axtens.
+> > >> > The major changes:
+> > >> >     - Move xmon breakpoints from data section to text section
+> > >> >     - Introduce a data type for instructions on powerpc
+> > >>
+> > >> Thanks for doing this, looks like a lot of work, I hope it works out :)
+> > >>
+> > > Yes it did end up touching a lot of places. I started thinking that
+> > > that maybe it would be simpler to just use a u64 instead of the struct
+> > > for  instructions.
+> > > If we always keep the word instruction / prefix in the lower bytes,
+> > > all of the current masking should still work and we can use operators
+> > > again instead of ppc_inst_equal(), etc.
+> >
+> > Yeah.. I think now that you've done it, I prefer it this way.
+> Sorry, just to be clear which way do you mean?
+> >
+> > > It also makes printing easier. We could just #define INST_FMT %llx or
+> > > #define INST_FMT %x on powerpc32 and use that for printing out
+> > > instructions.
+> >
+> > Well, not sure about that. Would it make endian concerns more
+> > complicated? Print format for prefix might be '%016llx', but we
+> > don't want that for all instructions only prefixed ones, and I
+> > don't know if that is the way to go either.
+> Hm yeah that is true.
+> >
+> > We'll want to adopt some convention for displaying prefixed
+> > instruction bytes, but I don't know what what works best. I wonder
+> > if binutils or any userspace tools have a convention.
+> binutils-gdb upstream has supports disassembling prefixed instructions.
+> Here is what objdump looks like:
+>   44:    00 00 00 60     nop
+>   48:    00 00 00 07     pnop
+>   4c:    00 00 00 00
+>   50:    01 00 20 39     li      r9,1
+>   54:    00 00 00 06     paddi   r4,r9,3
+>   58:    03 00 89 38
+>   5c:    00 00 62 3c     addis   r3,r2,0
+And this is what it looks like if you use objdump with -w
+  44:    00 00 00 60     nop
+  48:    00 00 00 07 00 00 00 00     pnop
+  50:    01 00 20 39                 li      r9,1
+  54:    00 00 00 06 03 00 89 38     paddi   r4,r9,3
+  5c:    00 00 62 3c                 addis   r3,r2,0    5c:
+R_PPC64_TOC16_HA    .toc+0x10
 
-Ideally we wouldn't use a typedef, we'd just have:
-
-struct ppc_inst {
-	u32 val;
-#ifdef CONFIG_PPC64
-        u32 suffix;
-#endif
-};
-
-That may make the conversion harder though, because you more or less
-have to update all usages at once.
-
-cheers
+> >
+> > Which reminds me, you might have missed show_instructions()?
+> > Although maybe you don't need that until we start using them in
+> > the kernel.
+> You are right I missed that here.
+> >
+> > Thanks,
+> > Nick
