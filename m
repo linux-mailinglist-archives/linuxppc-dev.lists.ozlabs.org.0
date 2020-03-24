@@ -1,54 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E31190D64
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 13:29:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mrCN6rCdzDqkK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 23:29:04 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DD1190EDD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 14:18:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48msJ24jtnzDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 00:18:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.50.107; helo=6.mo69.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
+ helo=us-smtp-delivery-74.mimecast.com; envelope-from=jolsa@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 6.mo69.mail-out.ovh.net (6.mo69.mail-out.ovh.net
- [46.105.50.107])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Mz3AaVGy; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-74.mimecast.com
+ (us-smtp-delivery-74.mimecast.com [63.128.21.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mr8x6YMTzDqZj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 23:26:54 +1100 (AEDT)
-Received: from player691.ha.ovh.net (unknown [10.110.103.225])
- by mo69.mail-out.ovh.net (Postfix) with ESMTP id 57BB589078
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 13:21:01 +0100 (CET)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player691.ha.ovh.net (Postfix) with ESMTPSA id 1E5F810D1BF1E;
- Tue, 24 Mar 2020 12:20:40 +0000 (UTC)
-Subject: Re: [PATCH v8 04/14] powerpc/vas: Alloc and setup IRQ and trigger
- port address
-To: Haren Myneni <haren@linux.ibm.com>
-References: <1584598120.9256.15237.camel@hbabu-laptop>
- <1584598473.9256.15248.camel@hbabu-laptop>
- <396db62b-5342-a1b3-eade-a219afd98fc7@kaod.org>
- <bd846a9c-0e21-1d97-0b03-e01c35ff01ae@kaod.org>
- <1584990135.9256.15381.camel@hbabu-laptop>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <475d136f-5b71-6c6c-c206-4a528565e6ff@kaod.org>
-Date: Tue, 24 Mar 2020 13:20:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ms8d5t5czDqfY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 00:11:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1585055501;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cd6KV/emetvr0s6RZCThEP3Rmoq7QiPbyQdz5ZsuYJo=;
+ b=Mz3AaVGyLr2vyI1pSkVCHL/mz2qblEpDtsAosS0MHzDw0fGWxwwTbbdw7M3ZT6WvPb/wPD
+ 8R/ce1e4Wicb4bcQRzFla3FMAk6CoT6lkPs5HyErqYETxx5N3yxcbFIMmwnyefYF90ykvq
+ e79PwC/JWJNujoD8kyWoLk3TCo1h6GY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-154-K2fQwpdFM1ycnE_NYyjqzQ-1; Tue, 24 Mar 2020 09:11:37 -0400
+X-MC-Unique: K2fQwpdFM1ycnE_NYyjqzQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0ADEB801E67;
+ Tue, 24 Mar 2020 13:11:34 +0000 (UTC)
+Received: from krava (unknown [10.40.192.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 859B290CF1;
+ Tue, 24 Mar 2020 13:11:21 +0000 (UTC)
+Date: Tue, 24 Mar 2020 14:11:12 +0100
+From: Jiri Olsa <jolsa@redhat.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+Subject: Re: [PATCH v6 09/11] perf/tools: Enhance JSON/metric infrastructure
+ to handle "?"
+Message-ID: <20200324131112.GU1534489@krava>
+References: <20200320125406.30995-1-kjain@linux.ibm.com>
+ <20200320125406.30995-10-kjain@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <1584990135.9256.15381.camel@hbabu-laptop>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 18099122480320777209
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedugedrudehuddgtdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheiledurdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200320125406.30995-10-kjain@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,56 +71,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au,
- Frederic Barrat <frederic.barrat@fr.ibm.com>, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, acme@kernel.org,
+ jmario@redhat.com, namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/23/20 8:02 PM, Haren Myneni wrote:
-> On Mon, 2020-03-23 at 10:27 +0100, Cédric Le Goater wrote:
->> On 3/23/20 10:06 AM, Cédric Le Goater wrote:
->>> On 3/19/20 7:14 AM, Haren Myneni wrote:
->>>>
->>>> Alloc IRQ and get trigger port address for each VAS instance. Kernel
->>>> register this IRQ per VAS instance and sets this port for each send
->>>> window. NX interrupts the kernel when it sees page fault.
->>>
->>> I don't understand why this is not done by the OPAL driver for each VAS 
->>> of the system. Is the VAS unit very different from OpenCAPI regarding
->>> the fault ? 
->>
->> I checked the previous patchsets and I see that v3 was more like I expected
->> it: one interrupt for faults allocated by the skiboot driver and exposed  
->> in the DT.
->>
->> What made you change your mind ? 
->>
->> This version is hijacking the lowlevel routines of the XIVE irqchip which
->> is not the best approach. OCXL is doing that because it needs to allocate
->> interrupts for the user space processes using the AFU and we should rework 
->> that part. 
->>
->> However, the translation fault interrupt is allocated by skiboot.
-> 
-> Sorry my mistake. I should have CC you earlier. 
-> 
-> Each VAS instance will generate fault interrupt which is per chip. There
-> won't be other job completion interrupts. 
+On Fri, Mar 20, 2020 at 06:24:04PM +0530, Kajol Jain wrote:
 
-That's a very good reason to set everything in the skiboot driver and 
-advertise the interrupt number in the DT. The interrupt will be mapped
-automatically by OF routines and the driver will only have to install
-an interrupt handler. 
+SNIP
 
-> Correct, V3 used allocating interrupts per chip in skiboot and exposed
-> in DT. Since XIVE code has similar feature, exploited this approach so
-> that we do not need skiboot changes. 
+> diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+> index 52fb119d25c8..b4b91d8ad5be 100644
+> --- a/tools/perf/util/metricgroup.c
+> +++ b/tools/perf/util/metricgroup.c
+> @@ -474,8 +474,13 @@ static bool metricgroup__has_constraint(struct pmu_event *pe)
+>  	return false;
+>  }
+>  
+> +int __weak arch_get_runtimeparam(void)
+> +{
+> +	return 1;
+> +}
+> +
+>  static int metricgroup__add_metric_param(struct strbuf *events,
+> -			struct list_head *group_list, struct pmu_event *pe)
+> +		struct list_head *group_list, struct pmu_event *pe, int param)
+>  {
+>  
+>  	const char **ids;
+> @@ -483,7 +488,7 @@ static int metricgroup__add_metric_param(struct strbuf *events,
 
-It's not the same. These are the low level (OPAL) interface used by the 
-XIVE driver. The exception is the KVM XIVE device which needs a finer
-grain. 
+could you please call this function __metricgroup__add_metric instead?
 
-C.
+>  	struct egroup *eg;
+>  	int ret = -EINVAL;
+>  
+> -	if (expr__find_other(pe->metric_expr, NULL, &ids, &idnum) < 0)
+> +	if (expr__find_other(pe->metric_expr, NULL, &ids, &idnum, param) < 0)
+>  		return ret;
+>  
+>  	if (events->len > 0)
+> @@ -502,11 +507,21 @@ static int metricgroup__add_metric_param(struct strbuf *events,
+>  
+>  	eg->ids = ids;
+>  	eg->idnum = idnum;
+> -	eg->metric_name = pe->metric_name;
+> +	if (strstr(pe->metric_expr, "?")) {
+> +		char value[PATH_MAX];
+> +
+> +		sprintf(value, "%s%c%d", pe->metric_name, '_', param);
+> +		eg->metric_name = strdup(value);
+
+how is eg->metric_name getting released?
+
+> +		if (!eg->metric_name) {
+> +			ret = -ENOMEM;
+> +			return ret;
+
+		return -ENOMEM; ??
+
+> +		}
+> +	}
+> +	else
+> +		eg->metric_name = pe->metric_name;
+>  	eg->metric_expr = pe->metric_expr;
+>  	eg->metric_unit = pe->unit;
+>  	list_add_tail(&eg->nd, group_list);
+> -
+>  	return 0;
+>  }
+>  
+
+SNIP
+
+thanks,
+jirka
+
