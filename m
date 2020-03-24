@@ -2,78 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E68191A89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 21:08:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 942D7191AB5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 21:14:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48n2Pm19rszDqpr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 07:08:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48n2X76gTFzDqlY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 07:14:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=u5P74aun; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48n2Ml5TFQzDqkj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 07:06:59 +1100 (AEDT)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EBB9E80237;
- Wed, 25 Mar 2020 09:06:56 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1585080416;
- bh=9WZO0YII+yE1jpC1rDt5VNtWaDHFbuem8lhAdXMMyGs=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=u5P74aunSnA1vulQx557yJbviS1KV6wOdFBxlNbAtiYtqGIXoJJlX6nGY7Zd6bvVL
- 0HapXq5PG7pFE7nZFQqiS0VGSZqR4tq63A3ZcaPA7tjXdTuScAceuCXB+IzL+MSVvs
- 5tBHR+sr1xUL+zxFTGPeXnNFC6X3S82oqdIy6z2cQ1pkMnA68sW0MIg6AzxJ1dJzLI
- S6o61ACUsJbN4uIb6eBJFGrpye2Ekq0/uGFxfjXHwhmn4pbFnvP4mkK+Rec7yffroE
- JsIzzE/lcGwSBl15Hllgp4FhvgRSek4W3iS3Q1P3lpmmDOxXgx31c+HXCczeGT4rWk
- 0+ExFWim3YkJg==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5e7a68610000>; Wed, 25 Mar 2020 09:06:57 +1300
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 25 Mar 2020 09:06:56 +1300
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Wed, 25 Mar 2020 09:06:56 +1300
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>, "paulus@samba.org"
- <paulus@samba.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "benh@kernel.crashing.org" <benh@kernel.crashing.org>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "cai@lca.pw" <cai@lca.pw>
-Subject: Re: Argh, can't find dcache properties !
-Thread-Topic: Argh, can't find dcache properties !
-Thread-Index: AQHWALpiXt3RJnRHvUCUrPyClavMpahWU00AgAEA2QA=
-Date: Tue, 24 Mar 2020 20:06:56 +0000
-Message-ID: <876a5938fbad9d9e176e5f22f12e6b472d0dc4f7.camel@alliedtelesis.co.nz>
-References: <be8c123a90f6d1664a902b6ad6c754b9f3d9e567.camel@alliedtelesis.co.nz>
- <87tv2exst1.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87tv2exst1.fsf@mpe.ellerman.id.au>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.14.96]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AF071371F606CD40ADC6A9539C5E1070@atlnz.lc>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48n2V26vPSzDqlP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 07:12:26 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02OK3X6t083161; Tue, 24 Mar 2020 16:12:19 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywdr6h974-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 16:12:19 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02OK5fnJ031785;
+ Tue, 24 Mar 2020 20:12:18 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 2ywaw22ukx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Mar 2020 20:12:18 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02OKCHLT50987312
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Mar 2020 20:12:18 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DA88DAE062;
+ Tue, 24 Mar 2020 20:12:17 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4FD4AAE060;
+ Tue, 24 Mar 2020 20:12:16 +0000 (GMT)
+Received: from farosas.linux.ibm.com.ibmuc.com (unknown [9.85.129.145])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Mar 2020 20:12:16 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/prom_init: Include the termination message in ibm,
+ os-term RTAS call
+Date: Tue, 24 Mar 2020 17:12:11 -0300
+Message-Id: <20200324201211.1055236-1-farosas@linux.ibm.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-24_07:2020-03-23,
+ 2020-03-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,35 +81,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linuxram@us.ibm.com, paulus@samba.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDIwLTAzLTI0IGF0IDE1OjQ3ICsxMTAwLCBNaWNoYWVsIEVsbGVybWFuIHdyb3Rl
-Og0KPiBDaHJpcyBQYWNraGFtIDxDaHJpcy5QYWNraGFtQGFsbGllZHRlbGVzaXMuY28ubno+IHdy
-aXRlczoNCj4gPiBIaSBBbGwsDQo+ID4gDQo+ID4gSnVzdCBib290aW5nIHVwIHY1LjUuMTEgb24g
-YSBGcmVlc2NhbGUgVDIwODBSREIgYW5kIEknbSBzZWVpbmcgdGhlDQo+ID4gZm9sbG93aW5nIG1l
-c2FnZS4NCj4gPiANCj4gPiBrZXJuLndhcm5pbmcgbGludXhib3gga2VybmVsOiBBcmdoLCBjYW4n
-dCBmaW5kIGRjYWNoZSBwcm9wZXJ0aWVzICENCj4gPiBrZXJuLndhcm5pbmcgbGludXhib3gga2Vy
-bmVsOiBBcmdoLCBjYW4ndCBmaW5kIGljYWNoZSBwcm9wZXJ0aWVzICENCj4gPiANCj4gPiBUaGlz
-IHdhcyBjaGFuZ2VkIGZyb20gREJHKCkgdG8gcHJfd2FybigpIGluIGNvbW1pdCAzYjkxNzZlOWE4
-NzQNCj4gPiAoInBvd2VycGMvc2V0dXBfNjQ6IGZpeCAtV2VtcHR5LWJvZHkgd2FybmluZ3MiKSBi
-dXQgdGhlIG1lc3NhZ2UNCj4gPiBzZWVtcw0KPiA+IHRvIGJlIG11Y2ggb2xkZXIgdGhhbiB0aGF0
-LiBTbyBpdCdzIHByb2JhYmx5IGJlZW4gYW4gaXNzdWUgb24gdGhlDQo+ID4gVDIwODANCj4gPiAo
-YW5kIG90aGVyIFFvcklRIFNvQ3MpIGZvciBhIHdoaWxlLg0KPiANCj4gVGhhdCdzIGFuIGU2NTAw
-IEkgdGhpbms/IFNvIDY0LWJpdCBCb29rM0UuDQo+IA0KDQpZZXMgdGhhdCdzIGNvcnJlY3QuDQoN
-Cj4gWW91J2xsIGJlIGdldHRpbmcgdGhlIGRlZmF1bHQgdmFsdWVzLCB3aGljaCBpcyA2NCBieXRl
-cyBzbyBJIGd1ZXNzDQo+IHRoYXQNCj4gd29ya3MgaW4gcHJhY3RpY2UuDQo+IA0KPiA+IExvb2tp
-bmcgYXQgdGhlIGNvZGUgdGhlIHQyMDh4IGRvZXNuJ3Qgc3BlY2lmaXkgYW55IG9mIHRoZSBkLWNh
-Y2hlLQ0KPiA+IHNpemUvaS1jYWNoZS1zaXplIHByb3BlcnRpZXMuIFNob3VsZCBJIGFkZCB0aGVt
-IHRvIHNpbGVuY2UgdGhlDQo+ID4gd2FybmluZw0KPiA+IG9yIHN3aXRjaCBpdCB0byBwcl9kZWJ1
-ZygpL3ByX2luZm8oKT8NCj4gDQo+IFllYWggaWRlYWxseSB5b3UnZCBhZGQgdGhlbSB0byB0aGUg
-ZGV2aWNlIHRyZWUocykgZm9yIHRob3NlIGJvYXJkcy4NCj4gDQoNCkkgdGhpbmsgdGhlIGluZm8g
-SSBuZWVkIGlzIGluIHRoZSBibG9jayBkaWFncmFtWzBdLiBJJ2xsIHdoaXAgdXANCmEgcGF0Y2gu
-DQoNCi0tDQpbMV0gLSBodHRwczovL3d3dy5ueHAuY29tL3Byb2R1Y3RzL3Byb2Nlc3NvcnMtYW5k
-LW1pY3JvY29udHJvbGxlcnMvcG93ZXItYXJjaGl0ZWN0dXJlL3FvcmlxLWNvbW11bmljYXRpb24t
-cHJvY2Vzc29ycy90LXNlcmllcy9xb3JpcS10MjA4MC1hbmQtdDIwODEtbXVsdGljb3JlLWNvbW11
-bmljYXRpb25zLXByb2Nlc3NvcnM6VDIwODANCg==
+QEMU can now print the ibm,os-term message[1], so let's include it in
+the RTAS call. E.g.:
+
+  qemu-system-ppc64: OS terminated: Switch to secure mode failed.
+
+1- https://git.qemu.org/?p=qemu.git;a=commitdiff;h=a4c3791ae0
+
+Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+---
+ arch/powerpc/kernel/prom_init.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 577345382b23..d543fb6d29c5 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -1773,6 +1773,9 @@ static void __init prom_rtas_os_term(char *str)
+ 	if (token == 0)
+ 		prom_panic("Could not get token for ibm,os-term\n");
+ 	os_term_args.token = cpu_to_be32(token);
++	os_term_args.nargs = cpu_to_be32(1);
++	os_term_args.args[0] = cpu_to_be32(__pa(str));
++
+ 	prom_rtas_hcall((uint64_t)&os_term_args);
+ }
+ #endif /* CONFIG_PPC_SVM */
+-- 
+2.23.0
+
