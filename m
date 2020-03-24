@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC4B190549
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 06:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D9F19054E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 06:45:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48mgBX71YMzDqvh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 16:42:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48mgG94KdLzDqdv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Mar 2020 16:45:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZwbjcRJi; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+ header.s=20161025 header.b=g9lQJ7yQ; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48mg8g6BjnzDqlw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 16:41:05 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id h11so6947025plk.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 22:41:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48mgD96RLGzDqTy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 16:44:09 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id g6so6966808plt.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Mar 2020 22:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=hYsqg+zYS87R4jaMqHtWOgsNlEmV/n0zkX0bVS789vI=;
- b=ZwbjcRJi6BsZ1eEoG/U0oPGOhPIoX3CaEpRM4hwFtRmCllOgDFhyuRd0aZ8cxJY1ko
- R4uXvAdPD9EuYnFPnFCemJT0uytbWuPnM4728DDVK5nlEan4EBJRWaXjAkSuvTZYcW4w
- OmfZsdNbgfPbUVCa3xd8UvCCtDJBsQNYE484YjhJ63lWino1Il5PnnmZnN9ecDWL3ONr
- rBEArP5HRHKDjV3EhU/muRpkfWtwJkyCpawgLtBh+hR0EhEaSDqQwmbyaqR7kzpxrQ4L
- sM1GLvb44Mptbs9Osd9s5sdXIHjVVLaLops2mnI4kL3FM23nK5jFQzzkXqXHlJZfTLyK
- pjZg==
+ bh=BukWmLTZHXf4Ozol6M0yS6iSNddiQFnzKQv942fSrMY=;
+ b=g9lQJ7yQRbQwAg7RagwvvfKtwfUfKxYcGSmxnBFcKnIG0nhzsrigLXqcU3M39H21XQ
+ tQXnKceGFyvrMllp3NIYjlIia/+dGT4hRxOIoGJQp/WyEPUhkWCeN4DK/Sge9ZjLGAp7
+ G/Kv//7ZPmrX/HjGvrDzWkrN2GSr/dJdTK1mx3dfivRb9s/h6Q8npmvGTXJc7hH6rOO6
+ ySzw649zTRGIXyAqaFnRCJm5W3cm/10OKQ2OBY2uL7ZtSRE6AIpVdI3X9ZLrmVRJdGGL
+ BAqUBjwExlrgdgGHyfAk4U/vTlVqaHMu2dsU8hTpqJMhbby4hgxCdZjRzhi3nUI8dDzz
+ yaCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=hYsqg+zYS87R4jaMqHtWOgsNlEmV/n0zkX0bVS789vI=;
- b=Z8j2Gn96+PkXyDSfkLykSWQ9BNrTBTIzCrUigawNir3cv541DJA6gLLaq200N/whcf
- rQEFVkHwEoW61MglJkNGsifuzJs5fMHcJLfXHrzmEvS/EkyKva5KRMpN9RNrU6t9zYSd
- jKv4aePM4nUwnkN7ZU+srK+Qn9OhEcXLGzK3MPR+8pXjPj+JftsYEWScnFjiBTYy2RzX
- FhABACMmOF9Jt71Un4k7+EJX0RpohTUmYvypcHqoDcbox8751IKe7Azq8tvkMEXQ35LE
- RGQ9mL89OFnftk+i5W9r7JlDy+gVmWn6x2OXuDSFt4s70KCLY153rJo6t7XkFqYt+1q1
- j+Fg==
-X-Gm-Message-State: ANhLgQ0P62iiCN4WjDvJCh0RGY5y8r2syfZbIWPVsXPQ1lNG5YwaQXVd
- orAJMPWlU6BLopIXO4d7V/s=
-X-Google-Smtp-Source: ADFU+vtX7De1LWAG6rrNd92hYINI9RO7dlnf3r5z60vENZTXU5+/XxuSdP3f8Z7H1IOh+O1dWywMAw==
-X-Received: by 2002:a17:90a:30c7:: with SMTP id
- h65mr3519181pjb.44.1585028462457; 
- Mon, 23 Mar 2020 22:41:02 -0700 (PDT)
+ bh=BukWmLTZHXf4Ozol6M0yS6iSNddiQFnzKQv942fSrMY=;
+ b=kB2mfHvx4SEs4LEiHg/9EEATpCm2TYQ/0vombNi5MhSwEo8ArftWcgy+RSpbw+qCNv
+ 9lMzxFqDVojamsMbGRkw6te+U4st1vBDMBvjmFBv6vgVbVJEpSqt7xI7ZWvhuBwJOB/z
+ 4xdng2jOgssGF1jLsWk1ok8mpR0w57u8WZ8/+Wkp5tQwIVXL29NXtSPJjWKsANv8v3fi
+ J1BFb3hHjK/OCqwdQXHuLZ++NJ7/ylRmTmitEBiZdRQkjLUuvmvT/squy8x1BC4hEfQu
+ bMVtJSIgwRz7MXjE0D6Wc8NYPnmJ7tXmXRj5CBUHfmCcVZ+yozp1zNG9ZA5ifV+T+zMV
+ ffLw==
+X-Gm-Message-State: ANhLgQ2fsVpsI3Z7ArypiJHGPApxapMlwIO4DnkInPTmIr1Vu/nOJ+fu
+ mH9/qSJT48cUPbLiSZkpiYY=
+X-Google-Smtp-Source: ADFU+vvCjHlln/Wevcw7yw9Fe/w3WNnfMfdv7LaxUwT0pr/GXdodHoUEiaBWq7FCenP9WkypVWXLZg==
+X-Received: by 2002:a17:90a:ba17:: with SMTP id
+ s23mr3225058pjr.162.1585028646737; 
+ Mon, 23 Mar 2020 22:44:06 -0700 (PDT)
 Received: from localhost (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id n29sm10233632pgf.33.2020.03.23.22.41.01
+ by smtp.gmail.com with ESMTPSA id i4sm14909291pfq.82.2020.03.23.22.44.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Mar 2020 22:41:01 -0700 (PDT)
-Date: Tue, 24 Mar 2020 15:40:56 +1000
+ Mon, 23 Mar 2020 22:44:06 -0700 (PDT)
+Date: Tue, 24 Mar 2020 15:44:00 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 14/16] powerpc64: Add prefixed instructions to
- instruction data type
+Subject: Re: [PATCH v4 00/16] Initial Prefixed Instruction support
 To: Jordan Niethe <jniethe5@gmail.com>
 References: <20200320051809.24332-1-jniethe5@gmail.com>
- <20200320051809.24332-15-jniethe5@gmail.com>
- <1584947189.oay6araq0n.astroid@bobo.none>
- <CACzsE9rbxV6HErxhwseMEJu7APezvRu4pKOx5YkepEnUWtpzqw@mail.gmail.com>
-In-Reply-To: <CACzsE9rbxV6HErxhwseMEJu7APezvRu4pKOx5YkepEnUWtpzqw@mail.gmail.com>
+ <1584944279.gvl0lg5dde.astroid@bobo.none>
+ <CACzsE9r5uvL-zp34VrCqO_RTEsXPbLrt2iu+MHL-apapydOugA@mail.gmail.com>
+ <1584957138.lj5a68bk6x.astroid@bobo.none>
+ <CACzsE9qrNpfvoLKfdeXths4rKJ8jQcUic3=dFZ57ntogdeaMug@mail.gmail.com>
+In-Reply-To: <CACzsE9qrNpfvoLKfdeXths4rKJ8jQcUic3=dFZ57ntogdeaMug@mail.gmail.com>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1585028271.y7k9vfaaar.astroid@bobo.none>
+Message-Id: <1585028462.t27rstc2uf.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,58 +91,76 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe's on March 24, 2020 9:45 am:
-> On Mon, Mar 23, 2020 at 6:37 PM Nicholas Piggin <npiggin@gmail.com> wrote=
+Jordan Niethe's on March 24, 2020 12:54 pm:
+> On Mon, Mar 23, 2020 at 9:21 PM Nicholas Piggin <npiggin@gmail.com> wrote=
 :
 >>
->> Jordan Niethe's on March 20, 2020 3:18 pm:
->> I'm a bit against using partially constructed opaque type for things
->> like this, even if it is in the code that knows about the type. We
->> could modify ppc_inst_prefixed() to assert that pad is equal to zero
->> (or some poisoned value) if it's not prefixed. Or do some validation
->> on the suffix if it is.
-> Okay what about something like:
-> +static inline ppc_inst ppc_inst_read(const void *ptr)
-> +{
-> +     u32 prefix, suffix;
-> +     prefix =3D *(u32 *)ptr;
-> +     if (prefix >> 26 =3D=3D 1)
-> +             suffix =3D *((u32 *)ptr + 1);
-> +     else
-> +             suffix =3D 0;
-> +     return PPC_INST_PREFIX(prefix, suffix);
-> +}
-
-Sure, if that's the best way to test prefix.
-
->> Although there's proably no real performance or atomicity issues here,
->> I'd be pleased if we could do a case for prefixed and a case for non
->> prefixed, and store the non-prefixed with "std". Just for the principle
->> of not having half-written instructions in the image.
-> Do you mean store the prefixed with std?
-
-Oops, yes.
-
->> > @@ -881,7 +882,6 @@ static struct bpt *new_breakpoint(unsigned long a)
->> >               if (!bp->enabled && atomic_read(&bp->ref_count) =3D=3D 0=
-) {
->> >                       bp->address =3D a;
->> >                       bp->instr =3D bpt_table + ((bp - bpts) * BPT_WOR=
-DS);
->> > -                     patch_instruction(bp->instr + 1, PPC_INST(bpinst=
-r));
->> >                       return bp;
->> >               }
->> >       }
+>> Jordan Niethe's on March 23, 2020 7:25 pm:
+>> > On Mon, Mar 23, 2020 at 5:22 PM Nicholas Piggin <npiggin@gmail.com> wr=
+ote:
+>> >>
+>> >> Jordan Niethe's on March 20, 2020 3:17 pm:
+>> >> > A future revision of the ISA will introduce prefixed instructions. =
+A
+>> >> > prefixed instruction is composed of a 4-byte prefix followed by a
+>> >> > 4-byte suffix.
+>> >> >
+>> >> > All prefixes have the major opcode 1. A prefix will never be a vali=
+d
+>> >> > word instruction. A suffix may be an existing word instruction or a
+>> >> > new instruction.
+>> >> >
+>> >> > This series enables prefixed instructions and extends the instructi=
+on
+>> >> > emulation to support them. Then the places where prefixed instructi=
+ons
+>> >> > might need to be emulated are updated.
+>> >> >
+>> >> > The series is based on top of:
+>> >> > https://patchwork.ozlabs.org/patch/1232619/ as this will effect
+>> >> > kprobes.
+>> >> >
+>> >> > v4 is based on feedback from Nick Piggins, Christophe Leroy and Dan=
+iel Axtens.
+>> >> > The major changes:
+>> >> >     - Move xmon breakpoints from data section to text section
+>> >> >     - Introduce a data type for instructions on powerpc
+>> >>
+>> >> Thanks for doing this, looks like a lot of work, I hope it works out =
+:)
+>> >>
+>> > Yes it did end up touching a lot of places. I started thinking that
+>> > that maybe it would be simpler to just use a u64 instead of the struct
+>> > for  instructions.
+>> > If we always keep the word instruction / prefix in the lower bytes,
+>> > all of the current masking should still work and we can use operators
+>> > again instead of ppc_inst_equal(), etc.
 >>
->> Why is this okay to remove?
-> When we only had word instructions the bpt was just patched in here
-> once and that was that.
-> With prefixed instructions bp->instr + 1 might be the suffix. So I
-> moved putting the breakpoint to insert_bpts():
-> patch_instruction(bp->instr + ppc_inst_len(instr), PPC_INST(bpinstr));
+>> Yeah.. I think now that you've done it, I prefer it this way.
+> Sorry, just to be clear which way do you mean?
 
-Ah okay.
+With the struct, not u64 scalar. mpe's preferred way is fine by me.
+
+>> We'll want to adopt some convention for displaying prefixed
+>> instruction bytes, but I don't know what what works best. I wonder
+>> if binutils or any userspace tools have a convention.
+> binutils-gdb upstream has supports disassembling prefixed instructions.
+> Here is what objdump looks like:
+>   44:    00 00 00 60     nop
+>   48:    00 00 00 07     pnop
+>   4c:    00 00 00 00
+>   50:    01 00 20 39     li      r9,1
+>   54:    00 00 00 06     paddi   r4,r9,3
+>   58:    03 00 89 38
+>   5c:    00 00 62 3c     addis   r3,r2,0
+>>
+>> Which reminds me, you might have missed show_instructions()?
+>> Although maybe you don't need that until we start using them in
+>> the kernel.
+> You are right I missed that here.
+
+So binutils doesn't do anything special, I guess you can make something
+up.
 
 Thanks,
 Nick
