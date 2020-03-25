@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBCE1925D4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 11:38:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nPjl3SbFzDqTN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 21:38:51 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029421925F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 11:41:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nPmr0lJvzDqC0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 21:41:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tmivXP7w; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20161025 header.b=Ue8rbu8u; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nPd95vrxzDqVp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 21:34:53 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id g18so667894plq.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 03:34:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nPdF2JgDzDqXd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 21:34:57 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id j10so831194pfi.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 03:34:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=6mNj/TlzLnylpgNirn/Uu1rtzilwWmVyXXTASyWvdwM=;
- b=tmivXP7w5oNWxyOxiBOs8WP+wscRC/OuhOt0D0fH4Ip1hhhsCmICdN5vjRCdidoxKP
- oFGX9HDGBurlpubWc28DklTToizX8PhqOJQCW+UlyU8ZU3TfvILrvdynAE2sN6CAVy7/
- gT4kniF0ZpsrdGeTm3tbD3NrWjGm6xZT7VqOfYdWs9YHSlK95J/JoBS7lTL0h5kmz4PS
- DXekfzxN38sK+eOQxeKsUNjPuTo18ysFRzyCaAbiMnoGkAXUfTkgGSq8TXcoz581kF1c
- MvIIJUCKK+uK8X7RFp74Wy1S4cvOTrqkqekcYZmLVsEpvIilW5HRl0yxIWPTeh0HlxPa
- 9cGw==
+ bh=euFpGlX5gFGkw6yKcM2wMWrMIRK+j8lxN5xc0WNJUQU=;
+ b=Ue8rbu8uWlTyDsS+FS6TQxYSUKvS2ZAl/RUhNw6ykwcwA76NIbcohoQtJfE+MobYYy
+ PFOTbUMphb//xiFDv90NNeZCqHVhTezRv1FM9xoayiMV4OU82JWqXhIhA0xWsMO3oXoL
+ PVkr6aVbGfW8kG+03GtLbESWtputM5XGuNhtLxmg+Z1tUhqa4gKrv08zAAwxTnxgG+/K
+ jo2/YZAeRDzL5AykqREkT0cbHrI8S/mVKK9n9WxgD2mDLra70RUNo4uHq+K2EmOZQCMT
+ kS/Uqb+nOSfWH5BCThZCGKMWBeRgIn+GB0E+IOYvthbwlTEssUBOVpfV52y3y0h3IsH1
+ GFEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=6mNj/TlzLnylpgNirn/Uu1rtzilwWmVyXXTASyWvdwM=;
- b=DH1yNXwEiWUUl/iWSrIgMXK7SCdf918zfmvfVKYIJMCU8tnqLGlEFG1dT5AbYjQks5
- FDVV5k3Dvo0fuUqGIMJ9LRmHCUyzEYrfOVB4PkaiE+3DTXlyddViMDLp83US7UAw45qc
- L1ChEwhKeAcmLQeQqqK7OKIMxfVWb0FwyTQfapHrcNYrQoxaQ337sLo/8visJHeEtOkh
- NmuLOc6Kec6j+f6nWk/ECCRoP3D385I3tgoxlBq1ZXp8aMDCQczWmPRaKGuADtiGF6vl
- evOyJLOwQ81UVFav70UDmTq/JV6+iz0Z58nTGlNNUr6Yvd9RNsyDIqG2ljykBBoCfVd6
- u8Hw==
-X-Gm-Message-State: ANhLgQ2dZjehgRj8edc8qDppEl/SAmh8WRj3FosO9LWBGgw82QvbqyDv
- nvkEOuWBd463jnMntNM5JYLqHdL4
-X-Google-Smtp-Source: ADFU+vu0gVgv5aD7/Lt8ns6yfna31it5cvGIb/5q4loaDw1ps9vlEX+yeIy3he6Ek/VFLPGwT9SZ0w==
-X-Received: by 2002:a17:90a:c790:: with SMTP id
- gn16mr2981684pjb.146.1585132491120; 
- Wed, 25 Mar 2020 03:34:51 -0700 (PDT)
+ bh=euFpGlX5gFGkw6yKcM2wMWrMIRK+j8lxN5xc0WNJUQU=;
+ b=sTRRowIV/LPLsjUCiocnRTbsN1fppsMdSFhm81N0hnI5YUCdL0enedqE/AxjVgyYfw
+ 5fhGOdmwwC2WSXFhFFsn+cJLX+bQm1MxPgSdxXgOTs01+9GC/UuJyiT+ulqW7xgclX83
+ 00F8YjgwojsFuWXr4DFc+pw//UgVxV895bRDX0XRSxyXYEK2QZPezF0dzsbOmrFJUbbi
+ Vx46sOnxi4ykC7ZRFum3/q4H7UsbVZ21EcJIcQGLSFg8Qqg1EILdXZMayCOcjLeWVWRl
+ yVIphRe2Fw3yNE70RqrrX67Cr5V3KdEGlEkBcoDmsdDr9IdQz7jv3gz7+LK4ExNeBZEC
+ FMOQ==
+X-Gm-Message-State: ANhLgQ0V7NSWcUCcDGQz+gDJEAlok/NcptgSPFYBWScgJ6hFU0n2VH5Y
+ nVXq2wJWIAcR/kTrecqxJ3MMvIar
+X-Google-Smtp-Source: ADFU+vvXySdArquQ2GUsd7CiXrcWcyXdUdC9aYRPv67+EOYWBeRh0ahS9B5C6u9dZGf2dWBeHxSrBA==
+X-Received: by 2002:a63:f40d:: with SMTP id g13mr2591406pgi.374.1585132494054; 
+ Wed, 25 Mar 2020 03:34:54 -0700 (PDT)
 Received: from bobo.ibm.com (14-202-190-183.tpgi.com.au. [14.202.190.183])
- by smtp.gmail.com with ESMTPSA id b9sm16549701pgi.75.2020.03.25.03.34.48
+ by smtp.gmail.com with ESMTPSA id b9sm16549701pgi.75.2020.03.25.03.34.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Mar 2020 03:34:50 -0700 (PDT)
+ Wed, 25 Mar 2020 03:34:53 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 01/12] powerpc/64s/exceptions: Fix in_mce accounting in
- unrecoverable path
-Date: Wed, 25 Mar 2020 20:33:59 +1000
-Message-Id: <20200325103410.157573-2-npiggin@gmail.com>
+Subject: [PATCH v2 02/12] powerpc/64s/exceptions: Change irq reconcile for
+ NMIs from reusing _DAR to RESULT
+Date: Wed, 25 Mar 2020 20:34:00 +1000
+Message-Id: <20200325103410.157573-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200325103410.157573-1-npiggin@gmail.com>
 References: <20200325103410.157573-1-npiggin@gmail.com>
@@ -86,26 +85,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+A spare interrupt stack slot is needed to save irq state when
+reconciling NMIs (sreset and decrementer soft-nmi). _DAR is used
+for this, but we want to reconcile machine checks as well, which
+do use _DAR. Switch to using RESULT instead, as it's used by
+system calls.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kernel/exceptions-64s.S | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 6a936c9199d6..67cbcb2d0c7f 100644
+index 67cbcb2d0c7f..257d24437130 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1335,6 +1335,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	andc	r10,r10,r3
- 	mtmsrd	r10
+@@ -1011,13 +1011,13 @@ EXC_COMMON_BEGIN(system_reset_common)
+ 	 * the right thing. We do not want to reconcile because that goes
+ 	 * through irq tracing which we don't want in NMI.
+ 	 *
+-	 * Save PACAIRQHAPPENED to _DAR (otherwise unused), and set HARD_DIS
++	 * Save PACAIRQHAPPENED to RESULT (otherwise unused), and set HARD_DIS
+ 	 * as we are running with MSR[EE]=0.
+ 	 */
+ 	li	r10,IRQS_ALL_DISABLED
+ 	stb	r10,PACAIRQSOFTMASK(r13)
+ 	lbz	r10,PACAIRQHAPPENED(r13)
+-	std	r10,_DAR(r1)
++	std	r10,RESULT(r1)
+ 	ori	r10,r10,PACA_IRQ_HARD_DIS
+ 	stb	r10,PACAIRQHAPPENED(r13)
  
-+	lhz	r12,PACA_IN_MCE(r13)
-+	subi	r12,r12,1
-+	sth	r12,PACA_IN_MCE(r13)
-+
- 	/* Invoke machine_check_exception to print MCE event and panic. */
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	machine_check_exception
+@@ -1038,7 +1038,7 @@ EXC_COMMON_BEGIN(system_reset_common)
+ 	/*
+ 	 * Restore soft mask settings.
+ 	 */
+-	ld	r10,_DAR(r1)
++	ld	r10,RESULT(r1)
+ 	stb	r10,PACAIRQHAPPENED(r13)
+ 	ld	r10,SOFTE(r1)
+ 	stb	r10,PACAIRQSOFTMASK(r13)
+@@ -2809,7 +2809,7 @@ EXC_COMMON_BEGIN(soft_nmi_common)
+ 	li	r10,IRQS_ALL_DISABLED
+ 	stb	r10,PACAIRQSOFTMASK(r13)
+ 	lbz	r10,PACAIRQHAPPENED(r13)
+-	std	r10,_DAR(r1)
++	std	r10,RESULT(r1)
+ 	ori	r10,r10,PACA_IRQ_HARD_DIS
+ 	stb	r10,PACAIRQHAPPENED(r13)
+ 
+@@ -2823,7 +2823,7 @@ EXC_COMMON_BEGIN(soft_nmi_common)
+ 	/*
+ 	 * Restore soft mask settings.
+ 	 */
+-	ld	r10,_DAR(r1)
++	ld	r10,RESULT(r1)
+ 	stb	r10,PACAIRQHAPPENED(r13)
+ 	ld	r10,SOFTE(r1)
+ 	stb	r10,PACAIRQSOFTMASK(r13)
 -- 
 2.23.0
 
