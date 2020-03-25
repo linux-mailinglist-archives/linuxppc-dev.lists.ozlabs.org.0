@@ -1,54 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A59D1925C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 11:37:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979A4192571
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 11:24:26 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nPP36rGqzDqsD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 21:24:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nPgc12bSzDqVp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 21:37:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=FAyoRTqG; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nPLk4t3bzDqWw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 21:22:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=r4ccyl6U; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48nPLk01K9z9sR4;
- Wed, 25 Mar 2020 21:22:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585131742;
- bh=h5Vz9jZG3mRLJBK/442MEWiwrL0sm+QQV6Q9zKhPR4c=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=r4ccyl6U2aLYtjIHFH6hL8rKstByfOWJlsMhhhgsUTpL/Cb9U5E/2CY6mFUWGS0er
- An8i62X9qMtAUZcQW4sz4VAB1KarFfTWYsgamqOc7yG0QFrcBhFs55yGLmjv5JK/i2
- m3H/tdNvBk4mV5VWDZ3jMeGQaf8BfV7HDyjGByiorLe/pRjmdfJrMMX8U2tZ+Jceax
- GH/gvmrO1Y9O1xFvBEOcIcejfqRm6ojnfk4kS7h+wnz/2kmWzOGR/bKQLbmdzpdLAf
- 5pGP4RKKBg6yFB2iO8v86iLIVWimfyb28KIln0P+XCWqvKwoNElBodQx1l10pRs7ya
- H8XI5UXiUIAUg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: afzal mohammed <afzal.mohd.ma@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4] powerpc: Replace setup_irq() by request_irq()
-In-Reply-To: <20200324110637.GA5836@afzalpc>
-References: <20200304004746.4557-1-afzal.mohd.ma@gmail.com>
- <20200312064256.18735-1-afzal.mohd.ma@gmail.com>
- <20200324110637.GA5836@afzalpc>
-Date: Wed, 25 Mar 2020 21:22:29 +1100
-Message-ID: <87wo78wx7e.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nPd82hLnzDqVp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 21:34:52 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id g18so667857plq.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 03:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NyrPfQMtuxVfZmf42P+L63vgrz96KmwOJScO9uCxpFk=;
+ b=FAyoRTqGbz12ipzB0K6d3eGk1JPzUOBQj+g65zd9Jbexrjo7o7iuyzdQGIOitNNFP+
+ CCdfVv2eg1gxqiFailHabvq9ci61qVZVGil1HSsCQssTREGIfW6yZP2KLz6PmEc08PaR
+ gZg/7CC6dw1U/wCH5AwvYf2ZG1SXHYL+/D9fKMVRNjLS9vIc28gFdeQta4vEnbalziCY
+ P/1lIDg5UP05OnJK91TzH1gta/jUdlfePGyD92PkCtnctnAm/HO3Gh3gU6zpO4WSmHDe
+ 3xhnNSUKZDuTnhHQir7HmLl3A0DoBkbth2wUHvFvXCvX+Dk0gS+KEGuHpoTaknFVTT0u
+ EbNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NyrPfQMtuxVfZmf42P+L63vgrz96KmwOJScO9uCxpFk=;
+ b=YfCPGP1g8KZL7HYsWeUivC6xCGXhmd5avUg5jFL9eof7l/l/KtuYT1ykKQ5Ow8owkG
+ FABFxKwJHlbopLsLgG7OMlD1G7xecRMpvX82rVadGlzTywJusXoX+goPLUfkhzeX/mi6
+ nCJRMNQMQri/aP8Iob2jPflpcY4KuwK3fF/weGndosnh/2Cx+kYu6sEpaGndDb6YdB1Y
+ 9A0B7veLqbQvwGQpfWa4skOuvm3hfre3m+/ySrOLsbZwSOyQ8XiQKZZnNx4Om6u0/Mx0
+ sfRDGa7sXlhDVxjrwlnhE6DYStKHp3WLZ1HIb3XdLHjKgmiOGsu+UYpURgUBjVUhG9Ia
+ eseA==
+X-Gm-Message-State: ANhLgQ3c9IXAVEsrqqn2J4QfYbqa/cJWfVsAHwd60APdh4mORQ2AX1wO
+ YmC+Fu/Y0okLjm51zLg42xk6TCPb
+X-Google-Smtp-Source: ADFU+vtgnOzoqaKwH1j/loy5pfn8v+DVsmte5X+M0nSA3NNU5WpUPRH81FlXyXKFh+QFWaghkrr8zw==
+X-Received: by 2002:a17:90a:8909:: with SMTP id
+ u9mr2951392pjn.149.1585132488204; 
+ Wed, 25 Mar 2020 03:34:48 -0700 (PDT)
+Received: from bobo.ibm.com (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id b9sm16549701pgi.75.2020.03.25.03.34.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Mar 2020 03:34:47 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/12] powerpc/64: machine check and system reset fixes
+Date: Wed, 25 Mar 2020 20:33:58 +1000
+Message-Id: <20200325103410.157573-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,45 +77,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-afzal mohammed <afzal.mohd.ma@gmail.com> writes:
-> Hi Michael Ellerman,
-> On Thu, Mar 12, 2020 at 12:12:55PM +0530, afzal mohammed wrote:
->> request_irq() is preferred over setup_irq(). Invocations of setup_irq()
->> occur after memory allocators are ready.
->> 
->> Per tglx[1], setup_irq() existed in olden days when allocators were not
->> ready by the time early interrupts were initialized.
->> 
->> Hence replace setup_irq() by request_irq().
->> 
->> [1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
->> 
->> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
->
-> This patch is seen in next-test branch for last 4-5 days, i don't know
-> exactly how powerpc workflow happens, so a question - this would be
-> appear in linux-next soon right ? (for last 4-5 days i had been daily
-> checking -next, but not appearing there).
+There's a bunch of problems we hit bringing up fwnmi sreset and testing
+with mce injection on QEMU. Mostly pseries issues.
 
-Yeah it will appear in next "soon".
+This series of fixes applies on top of next-test, the machine
+check reconcile patch won't apply cleanly to previous kernels but
+it might want to be backported. We can do that after upstreaming.
 
-It's been stuck behind a big series that has hit some bugs during
-testing, so that has delayed me pushing the whole branch.
+This doesn't solve all known problems yet, but fwnmi machine check
+and system reset injection in QEMU is significantly better. There
+will be more to come but these should be ready for review now.
 
-> Sorry for the query for this trivial patch, i am asking because Thomas
-> had mentioned [1] to get setup_irq() cleanup thr' respective
-> maintainers (earlier it was part of tree-wide series), check -next after
-> -rc6 & resubmit ignored ones to him, this patch is neither in -next,
-> neither ignored, so i am at a loss what to do :(
+Thanks,
+Nick
 
-That's OK. I will take this one, you can stop worrying about it.
+Nicholas Piggin (12):
+  powerpc/64s/exceptions: Fix in_mce accounting in unrecoverable path
+  powerpc/64s/exceptions: Change irq reconcile for NMIs from reusing
+    _DAR to RESULT
+  powerpc/64s/exceptions: machine check reconcile irq state
+  powerpc/pseries/ras: avoid calling rtas_token in NMI paths
+  powerpc/pseries/ras: FWNMI_VALID off by one
+  powerpc/pseries/ras: fwnmi avoid modifying r3 in error case
+  powerpc/pseries/ras: fwnmi sreset should not interlock
+  powerpc/pseries: limit machine check stack to 4GB
+  powerpc/pseries: machine check use rtas_call_unlocked with args on
+    stack
+  powerpc/64s: machine check interrupt update NMI accounting
+  powerpc/64s: machine check do not trace real-mode handler
+  powerpc/64s: system reset do not trace
 
-It should appear in next tomorrow or Friday.
+ arch/powerpc/include/asm/firmware.h    |  1 +
+ arch/powerpc/kernel/exceptions-64s.S   | 33 +++++++++++---
+ arch/powerpc/kernel/mce.c              | 13 +++++-
+ arch/powerpc/kernel/process.c          |  2 +-
+ arch/powerpc/kernel/setup_64.c         | 15 ++++++-
+ arch/powerpc/kernel/traps.c            | 18 +++-----
+ arch/powerpc/platforms/pseries/ras.c   | 62 +++++++++++++++++++-------
+ arch/powerpc/platforms/pseries/setup.c | 13 ++++--
+ 8 files changed, 118 insertions(+), 39 deletions(-)
 
-cheers
+-- 
+2.23.0
+
