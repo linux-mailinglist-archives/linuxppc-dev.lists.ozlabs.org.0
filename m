@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A690E191F56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 03:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53095191F77
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 03:51:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nC4s2B5tzDqf9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 13:39:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nCLw18nHzDqth
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 13:51:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
  helo=gate2.alliedtelesis.co.nz;
  envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=alliedtelesis.co.nz
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=ilkOae9L; 
+ header.a=rsa-sha256 header.s=mail181024 header.b=cS1XZJQu; 
  dkim-atps=neutral
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
+ [IPv6:2001:df5:b000:5::4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nC3C05YNzDqfK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 13:38:14 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nCK73dnMzDqPQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 13:50:19 +1100 (AEDT)
 Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 0F6ED80237;
- Wed, 25 Mar 2020 15:38:10 +1300 (NZDT)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id CD64080237;
+ Wed, 25 Mar 2020 15:50:16 +1300 (NZDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1585103890;
- bh=ZzysIO/9RPDV/A3vlTmlFXsSYJO80TeqS/R9s7obePE=;
+ s=mail181024; t=1585104616;
+ bh=tt9AynKZUcSZQVIgxm8HX6HmqX+y292YOuPT3UUI6xs=;
  h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=ilkOae9LxdGbrVW/WD2EbGvKSoIym4cmTHupObqiTYpRhEY/BkStZftFjVqflVCLs
- 7SbyLckNAZuwymM6jGy5UM0ETFXnNgIB52k8S7kMVlx0RV2isSRLKhVGfJoHo38Rca
- ewgDx5ueBXArhY28cv7ENLdIC98Kx0YnCZ8Xz562nZ1UBVM6GECsvVRMQnzrWidTEp
- DB39TCvxQJ3HJyW5tg+wDO+7YD5Y+oHX+sqAJe92Bh2ub1QRwkmapd7GOvdwAeFava
- JfoCUxF+UkpcRF2l9Mmp/1f2/8s/JSJ7AUKXgCZe6k7pxOHh/eQT1hoidjfAqarYMy
- 3+cIS24Hy0XfA==
+ b=cS1XZJQuhQ3k0DPVUUm9ngB/6SQUqxZ5vn13F37/J+op70MmipbPxmoTM0RRMb4NJ
+ u7KSMPhuXZzy3n+B//o1iREjb/VWt7UwdcJc2KUzUOXoMVwZOVbcVXRN3S0hPNx1G5
+ 5So4IePUbk54P1CRPW/WLjS90W4OCR4YTX7nb8p9SrSYEgROo5RPykj1mcgyUhWt/R
+ SRZrkIdlN66rVT1+47xWcx7X/1l+ap4cCvbjOnaZvOF5wo15AW+5+oz2vEZyuQyVce
+ C7EFc3seLflkxGxZCK63H2LR5VwjCtqyizdZUN4XC9n/glursoRDc91d0OZXg65DJJ
+ djiXeq9yRfexQ==
 Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
  mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5e7ac40d0000>; Wed, 25 Mar 2020 15:38:10 +1300
+ id <B5e7ac6e90000>; Wed, 25 Mar 2020 15:50:17 +1300
 Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
  svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Wed, 25 Mar 2020 15:38:04 +1300
+ (TLS) id 15.0.1497.2; Wed, 25 Mar 2020 15:50:16 +1300
 Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
  svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Wed, 25 Mar 2020 15:38:04 +1300
+ 15.00.1497.006; Wed, 25 Mar 2020 15:50:16 +1300
 From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
 To: "mark.rutland@arm.com" <mark.rutland@arm.com>, "oss@buserror.net"
  <oss@buserror.net>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
@@ -56,13 +56,14 @@ To: "mark.rutland@arm.com" <mark.rutland@arm.com>, "oss@buserror.net"
  <robh+dt@kernel.org>, "benh@kernel.crashing.org" <benh@kernel.crashing.org>
 Subject: Re: [PATCH] powerpc/fsl: Add cache properties for T2080/T2081
 Thread-Topic: [PATCH] powerpc/fsl: Add cache properties for T2080/T2081
-Thread-Index: AQHWAiQ+A9/gcoCawUaa9nFTUYpnM6hXs9EAgAACfICAAAhNAA==
-Date: Wed, 25 Mar 2020 02:38:04 +0000
-Message-ID: <ae2930cdc30779ec0c6183e73849b47dcf5d57b0.camel@alliedtelesis.co.nz>
+Thread-Index: AQHWAiQ+A9/gcoCawUaa9nFTUYpnM6hXs9EAgAACfICAAAhNAIAAA2iA
+Date: Wed, 25 Mar 2020 02:50:16 +0000
+Message-ID: <dd342c71e03e654a8786302d82f9662004418c6e.camel@alliedtelesis.co.nz>
 References: <20200324213612.31614-1-chris.packham@alliedtelesis.co.nz>
  <877dz9xkhr.fsf@mpe.ellerman.id.au>
  <81c68751cb89bbff13a09467b94530a555d69552.camel@buserror.net>
-In-Reply-To: <81c68751cb89bbff13a09467b94530a555d69552.camel@buserror.net>
+ <ae2930cdc30779ec0c6183e73849b47dcf5d57b0.camel@alliedtelesis.co.nz>
+In-Reply-To: <ae2930cdc30779ec0c6183e73849b47dcf5d57b0.camel@alliedtelesis.co.nz>
 Accept-Language: en-NZ, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -72,7 +73,7 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-ms-exchange-transport-fromentityheader: Hosted
 x-originating-ip: [10.32.14.96]
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <2AB8EC276708ED4F893AB64140E9BBF0@atlnz.lc>
+Content-ID: <653105C07A0A4244B27198495E9FFC78@atlnz.lc>
 Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -94,42 +95,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDIwLTAzLTI0IGF0IDIxOjA4IC0wNTAwLCBTY290dCBXb29kIHdyb3RlOg0KPiBP
-biBXZWQsIDIwMjAtMDMtMjUgYXQgMTI6NTkgKzExMDAsIE1pY2hhZWwgRWxsZXJtYW4gd3JvdGU6
-DQo+ID4gQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56PiB3
-cml0ZXM6DQo+ID4gPiBBZGQgdGhlIGQtY2FjaGUvaS1jYWNoZSBwcm9wZXJ0aWVzIGZvciB0aGUg
-VDIwOHggU29Dcy4gVGhlIEwxDQo+ID4gPiBjYWNoZSBvbg0KPiA+ID4gdGhlc2UgU29DcyBpcyAz
-MktpQiBhbmQgaXMgc3BsaXQgaW50byA2NCBieXRlIGJsb2NrcyAobGluZXMpLg0KPiA+ID4gDQo+
-ID4gPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBQYWNraGFtIDxjaHJpcy5wYWNraGFtQGFsbGllZHRl
-bGVzaXMuY28ubno+DQo+ID4gPiAtLS0NCj4gPiA+ICBhcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNs
-L3QyMDh4c2ktcHJlLmR0c2kgfCAxNiArKysrKysrKysrKysrKysrDQo+ID4gPiAgMSBmaWxlIGNo
-YW5nZWQsIDE2IGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBMR1RNLg0KPiA+IA0KPiA+IEknbGwg
-d2FpdCBhIGZldyBkYXlzIHRvIHNlZSBpZiBTY290dCB3YW50cyB0byBhY2sgaXQuDQo+ID4gDQo+
-ID4gY2hlZXJzDQo+ID4gDQo+ID4gDQo+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2Jv
-b3QvZHRzL2ZzbC90MjA4eHNpLXByZS5kdHNpDQo+ID4gPiBiL2FyY2gvcG93ZXJwYy9ib290L2R0
-cy9mc2wvdDIwOHhzaS1wcmUuZHRzaQ0KPiA+ID4gaW5kZXggM2Y3NDVkZTQ0Mjg0Li4yYWQyN2Ux
-NmFjMTYgMTAwNjQ0DQo+ID4gPiAtLS0gYS9hcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3QyMDh4
-c2ktcHJlLmR0c2kNCj4gPiA+ICsrKyBiL2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wvdDIwOHhz
-aS1wcmUuZHRzaQ0KPiA+ID4gQEAgLTgxLDYgKzgxLDEwIEBAIGNwdXMgew0KPiA+ID4gIAkJY3B1
-MDogUG93ZXJQQyxlNjUwMEAwIHsNCj4gPiA+ICAJCQlkZXZpY2VfdHlwZSA9ICJjcHUiOw0KPiA+
-ID4gIAkJCXJlZyA9IDwwIDE+Ow0KPiA+ID4gKwkJCWQtY2FjaGUtbGluZS1zaXplID0gPDY0PjsN
-Cj4gPiA+ICsJCQlpLWNhY2hlLWxpbmUtc2l6ZSA9IDw2ND47DQo+ID4gPiArCQkJZC1jYWNoZS1z
-aXplID0gPDMyNzY4PjsNCj4gPiA+ICsJCQlpLWNhY2hlLXNpemUgPSA8MzI3Njg+Ow0KPiA+ID4g
-IAkJCWNsb2NrcyA9IDwmY2xvY2tnZW4gMSAwPjsNCj4gPiA+ICAJCQluZXh0LWxldmVsLWNhY2hl
-ID0gPCZMMl8xPjsNCj4gPiA+ICAJCQlmc2wscG9ydGlkLW1hcHBpbmcgPSA8MHg4MDAwMDAwMD47
-DQo+IA0KPiBVLUJvb3Qgc2hvdWxkIGJlIHNldHRpbmcgZC9pLWNhY2hlLXNpemUgYW5kIGQvaS1j
-YWNoZS1ibG9jay1zaXplIC0tDQo+IGFyZSB5b3UNCj4gdXNpbmcgc29tZXRoaW5nIGVsc2U/DQoN
-Ck5vcGUgaXQgaXMgdS1ib290IHNwZWNpZmljYWxseQ0KDQpVLUJvb3QgMjAxNy4wMS1yYzMtZGly
-dHkNCg0KSSdtIHByZXR0eSBzdXJlIHRoZSAnLWRpcnR5JyBpcyBqdXN0IGEgY2hhbmdlIHRvIHVz
-ZSBhIGRpZmZlcmVudCBjcm9zcy0NCmNvbXBpbGVyIGJ1dCBJIGNhbid0IGNvbmZpcm0gYW5kIEkn
-bSBhIGxpdHRsZSBoZXNpdGFudCB0byB0cnkgdXBkYXRpbmcNCmFzIEkndmUgb25seSBnb3QgcmVt
-b3RlIGFjY2VzcyB0byB0aGUgYm9hcmQgcmlnaHQgbm93Lg0KDQo+IA0KPiBUaGUgbGluZSBzaXpl
-IGlzIHRoZSBzYW1lIGFzIHRoZSBibG9jayBzaXplIHNvIHdlIGRvbid0IG5lZWQgYQ0KPiBzZXBh
-cmF0ZSBkL2ktDQo+IGNhY2hlLWxpbmUtc2l6ZS4NCj4gDQoNCkknbSBub3Qgc3VyZSB0aGF0J2xs
-IHdvcmsgbG9va2luZyBhdCB0aGUgY29kZVsxXS4gSXQgaGFzIGxvZ2ljIHRvIHNldA0KYnNpemVw
-IHRvIGxzaXplcCBpZiBubyBibG9jayBzaXplIGlzIHNldCBidXQgbm90IHRoZSBvdGhlciB3YXkg
-cm91bmQuDQpMb29raW5nIGF0IHRoZSBzcGVjIGZyb20gZGV2aWNldHJlZS5vcmcgdGhpcyBhY3R1
-YWxseSBzZWVtcyB3cm9uZy4NClBlcmhhcHMgdGhhdCBpcyB0aGUgcmVhbCBzb3VyY2Ugb2YgdGhl
-IGVycm9yLg0KDQotLQ0KWzFdIC0gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4
-L2tlcm5lbC9naXQvdG9ydmFsZHMvbGludXguZ2l0L3RyZWUvYXJjaC9wb3dlcnBjL2tlcm5lbC9z
-ZXR1cF82NC5jI241MTANCg0KDQo=
+T24gV2VkLCAyMDIwLTAzLTI1IGF0IDE1OjM4ICsxMzAwLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0K
+PiBPbiBUdWUsIDIwMjAtMDMtMjQgYXQgMjE6MDggLTA1MDAsIFNjb3R0IFdvb2Qgd3JvdGU6DQo+
+ID4gT24gV2VkLCAyMDIwLTAzLTI1IGF0IDEyOjU5ICsxMTAwLCBNaWNoYWVsIEVsbGVybWFuIHdy
+b3RlOg0KPiA+ID4gQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNv
+Lm56PiB3cml0ZXM6DQo+ID4gPiA+IEFkZCB0aGUgZC1jYWNoZS9pLWNhY2hlIHByb3BlcnRpZXMg
+Zm9yIHRoZSBUMjA4eCBTb0NzLiBUaGUgTDENCj4gPiA+ID4gY2FjaGUgb24NCj4gPiA+ID4gdGhl
+c2UgU29DcyBpcyAzMktpQiBhbmQgaXMgc3BsaXQgaW50byA2NCBieXRlIGJsb2NrcyAobGluZXMp
+Lg0KPiA+ID4gPiANCj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMu
+cGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56DQo+ID4gPiA+ID4NCj4gPiA+ID4gLS0tDQo+ID4g
+PiA+ICBhcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3QyMDh4c2ktcHJlLmR0c2kgfCAxNg0KPiA+
+ID4gPiArKysrKysrKysrKysrKysrDQo+ID4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMTYgaW5zZXJ0
+aW9ucygrKQ0KPiA+ID4gDQo+ID4gPiBMR1RNLg0KPiA+ID4gDQo+ID4gPiBJJ2xsIHdhaXQgYSBm
+ZXcgZGF5cyB0byBzZWUgaWYgU2NvdHQgd2FudHMgdG8gYWNrIGl0Lg0KPiA+ID4gDQo+ID4gPiBj
+aGVlcnMNCj4gPiA+IA0KPiA+ID4gDQo+ID4gPiA+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMv
+Ym9vdC9kdHMvZnNsL3QyMDh4c2ktcHJlLmR0c2kNCj4gPiA+ID4gYi9hcmNoL3Bvd2VycGMvYm9v
+dC9kdHMvZnNsL3QyMDh4c2ktcHJlLmR0c2kNCj4gPiA+ID4gaW5kZXggM2Y3NDVkZTQ0Mjg0Li4y
+YWQyN2UxNmFjMTYgMTAwNjQ0DQo+ID4gPiA+IC0tLSBhL2FyY2gvcG93ZXJwYy9ib290L2R0cy9m
+c2wvdDIwOHhzaS1wcmUuZHRzaQ0KPiA+ID4gPiArKysgYi9hcmNoL3Bvd2VycGMvYm9vdC9kdHMv
+ZnNsL3QyMDh4c2ktcHJlLmR0c2kNCj4gPiA+ID4gQEAgLTgxLDYgKzgxLDEwIEBAIGNwdXMgew0K
+PiA+ID4gPiAgCQljcHUwOiBQb3dlclBDLGU2NTAwQDAgew0KPiA+ID4gPiAgCQkJZGV2aWNlX3R5
+cGUgPSAiY3B1IjsNCj4gPiA+ID4gIAkJCXJlZyA9IDwwIDE+Ow0KPiA+ID4gPiArCQkJZC1jYWNo
+ZS1saW5lLXNpemUgPSA8NjQ+Ow0KPiA+ID4gPiArCQkJaS1jYWNoZS1saW5lLXNpemUgPSA8NjQ+
+Ow0KPiA+ID4gPiArCQkJZC1jYWNoZS1zaXplID0gPDMyNzY4PjsNCj4gPiA+ID4gKwkJCWktY2Fj
+aGUtc2l6ZSA9IDwzMjc2OD47DQo+ID4gPiA+ICAJCQljbG9ja3MgPSA8JmNsb2NrZ2VuIDEgMD47
+DQo+ID4gPiA+ICAJCQluZXh0LWxldmVsLWNhY2hlID0gPCZMMl8xPjsNCj4gPiA+ID4gIAkJCWZz
+bCxwb3J0aWQtbWFwcGluZyA9IDwweDgwMDAwMDAwPjsNCj4gPiANCj4gPiBVLUJvb3Qgc2hvdWxk
+IGJlIHNldHRpbmcgZC9pLWNhY2hlLXNpemUgYW5kIGQvaS1jYWNoZS1ibG9jay1zaXplIC0tDQo+
+ID4gYXJlIHlvdQ0KPiA+IHVzaW5nIHNvbWV0aGluZyBlbHNlPw0KPiANCj4gTm9wZSBpdCBpcyB1
+LWJvb3Qgc3BlY2lmaWNhbGx5DQo+IA0KPiBVLUJvb3QgMjAxNy4wMS1yYzMtZGlydHkNCj4gDQo+
+IEknbSBwcmV0dHkgc3VyZSB0aGUgJy1kaXJ0eScgaXMganVzdCBhIGNoYW5nZSB0byB1c2UgYSBk
+aWZmZXJlbnQNCj4gY3Jvc3MtDQo+IGNvbXBpbGVyIGJ1dCBJIGNhbid0IGNvbmZpcm0gYW5kIEkn
+bSBhIGxpdHRsZSBoZXNpdGFudCB0byB0cnkNCj4gdXBkYXRpbmcNCj4gYXMgSSd2ZSBvbmx5IGdv
+dCByZW1vdGUgYWNjZXNzIHRvIHRoZSBib2FyZCByaWdodCBub3cuDQo+IA0KPiA+IA0KPiA+IFRo
+ZSBsaW5lIHNpemUgaXMgdGhlIHNhbWUgYXMgdGhlIGJsb2NrIHNpemUgc28gd2UgZG9uJ3QgbmVl
+ZCBhDQo+ID4gc2VwYXJhdGUgZC9pLQ0KPiA+IGNhY2hlLWxpbmUtc2l6ZS4NCj4gPiANCj4gDQo+
+IEknbSBub3Qgc3VyZSB0aGF0J2xsIHdvcmsgbG9va2luZyBhdCB0aGUgY29kZVsxXS4gSXQgaGFz
+IGxvZ2ljIHRvIHNldA0KPiBic2l6ZXAgdG8gbHNpemVwIGlmIG5vIGJsb2NrIHNpemUgaXMgc2V0
+IGJ1dCBub3QgdGhlIG90aGVyIHdheSByb3VuZC4NCj4gTG9va2luZyBhdCB0aGUgc3BlYyBmcm9t
+IGRldmljZXRyZWUub3JnIHRoaXMgYWN0dWFsbHkgc2VlbXMgd3JvbmcuDQo+IFBlcmhhcHMgdGhh
+dCBpcyB0aGUgcmVhbCBzb3VyY2Ugb2YgdGhlIGVycm9yLg0KDQpTdXJlIGVub3VnaCB3aXRob3V0
+IG15IGNoYW5nZQ0KDQojIGxzIC9zeXMvZmlybXdhcmUvZGV2aWNldHJlZS9iYXNlL2NwdXMvUG93
+ZXJQQyxlNjUwMEAwLw0KYnVzLWZyZXF1ZW5jeSAgICAgICBkLWNhY2hlLXNpemUgICAgICAgIG5h
+bWUNCmNhY2hlLXN0YXNoLWlkICAgICAgZGV2aWNlX3R5cGUgICAgICAgICBuZXh0LWxldmVsLWNh
+Y2hlDQpjbG9jay1mcmVxdWVuY3kgICAgIGVuYWJsZS1tZXRob2QgICAgICAgcGhhbmRsZQ0KY2xv
+Y2tzICAgICAgICAgICAgICBmc2wscG9ydGlkLW1hcHBpbmcgIHJlZw0KY3B1LXJlbGVhc2UtYWRk
+ciAgICBpLWNhY2hlLWJsb2NrLXNpemUgIHN0YXR1cw0KZC1jYWNoZS1ibG9jay1zaXplICBpLWNh
+Y2hlLXNldHMgICAgICAgIHRpbWViYXNlLWZyZXF1ZW5jeQ0KZC1jYWNoZS1zZXRzICAgICAgICBp
+LWNhY2hlLXNpemUNCg0KU28gaXQncyB0aGUgbGFjayBvZiBoYW5kbGluZyB0aGUgb3B0aW9uYWwg
+bGluZS1zaXplLiBEaWZmZXJlbnQgcGF0Y2gNCmluY29tbWluZy4NCg0KPiANCj4gLS0NCj4gWzFd
+IC0gDQo+IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3Rv
+cnZhbGRzL2xpbnV4LmdpdC90cmVlL2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXBfNjQuYyNuNTEw
+DQo+IA0KPiANCg==
