@@ -1,60 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94482192E6C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 17:41:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nYmS0gBfzDqWx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 03:41:44 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DFE192E89
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 17:45:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nYrc2h6WzDqQD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 03:45:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=hi2+=5k=paulmck-thinkpad-p72.home=paulmck@kernel.org;
+ smtp.mailfrom=flex--maskray.bounces.google.com
+ (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com;
+ envelope-from=3oyp7xgckddyeskcjsqyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--maskray.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=APOdz2w7; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=R7PnGgOm; dkim-atps=neutral
+Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com
+ [IPv6:2607:f8b0:4864:20::44a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nYjk2LqdzDqWs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:39:21 +1100 (AEDT)
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
- [50.39.105.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6311D2073E;
- Wed, 25 Mar 2020 16:39:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1585154359;
- bh=A1GPX4wlECfGGG7gTSHHrGt3spoxTdKZ1xy9utwV/BA=;
- h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
- b=APOdz2w7EH+7D58vqGoNgP8mOHfbNma8Ty1WIG8jpBICPSinl9OycWqb0OdtxkciV
- gxpkAVRwhIe+WxIGCYwXBH73yF99ZY9v+QEk7Sp75Ev8c6B1ujrOAxGnV4ZUKw4afx
- Pt8nI6CO51v4M2JmrHTqBAusgH99DwWPqLUsLFTU=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
- id 325E9352094D; Wed, 25 Mar 2020 09:39:19 -0700 (PDT)
-Date: Wed, 25 Mar 2020 09:39:19 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Sebastian Siewior <bigeasy@linutronix.de>
-Subject: Re: Documentation/locking/locktypes: Further clarifications and
- wordsmithing
-Message-ID: <20200325163919.GU19865@paulmck-ThinkPad-P72>
-References: <20200323025501.GE3199@paulmck-ThinkPad-P72>
- <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
- <20200325002811.GO19865@paulmck-ThinkPad-P72>
- <87wo78y5yy.fsf@nanos.tec.linutronix.de>
- <20200325160212.oavrni7gmzudnczv@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200325160212.oavrni7gmzudnczv@linutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nYpq6wHPzDqZj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:43:41 +1100 (AEDT)
+Received: by mail-pf1-x44a.google.com with SMTP id r13so2516806pfr.17
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 09:43:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=W+RJLtrYnjjpgBQ3gpQ7MHIpp5jjX2BBq7fApCfnQBg=;
+ b=R7PnGgOmAt/76/+T2nkV1r1xC59C8Bdemi8JIs5vw+Ye4LdEvxPP7JVv6jC/3v4NCk
+ CZ5Sk9JVEjn7Ez74xCB9YNJu4OHk/R/3OjhkWUC7V6EJHogw1c/xL2WnyBtbbi8YpNi/
+ I+SEyFTn+jOaegYwmJJFLnYMt3nwQuDx2spCHwILmZ5zKe+yGIAKjBrg5F54/ZRzL8YW
+ j4dOm5TztE62KMh+mURTAXERjgjQdti+Gv8+RT1gTeqE/wsUR6+glMQ/VkQyp9AAt/YA
+ hvESOvJIelkUxc9UbAgwaCYzDXEaNLiNaiyPMY4cTy5klyGLEtd5yu/jGRZ1ro1wuMZS
+ zkhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=W+RJLtrYnjjpgBQ3gpQ7MHIpp5jjX2BBq7fApCfnQBg=;
+ b=UwhvrVSWLjNcIhZwHYurEl+Qt6KvZISbPEZSu/G38JvYgPZWIhAaDOUQ2/ibtlMPiQ
+ uRuYRsvLbxevWLhU0H+lA8zn3SPy5gEwjpboFirtJ0RfqQZpRCgfR+AGLB96G5p4ky+E
+ zNhaokqpWJdnzJNCVUqLFUwSoUthMuqDBpzENU/LGFrJvYnovNTlAq6MZl5q7YoS1V/d
+ rXqYMV5y/DK1cEr74szOyzF9fXgNS+A75VuOnkOgyttcyU2Wo0+RXsb9vGOQRkONLH+x
+ gsUljNrea7Ok0q/fONbtDcbU4m5+6FXF419MRGI/xQE+z4tR1TtLdAL5Y599pD/B5Z83
+ Kguw==
+X-Gm-Message-State: ANhLgQ0gkIAgI59HuwDBVcm2VYi71mvkW2ivMkWQu5a6wICX8mEfbD1E
+ 0vIN+nQnuaza1eM/ePese00X5VueEUs3hKNj0yI6aQKhiOOiNYoxyfyp8Gf7nMsEOPv9T/uiD7A
+ zRZfHue9UKrlubwuXifrFH/SIYGQf/EfLSQ1w8U225RY8A3TmIOPJ7YBjqrkZlCnX8Yh+EQ+4rw
+ ==
+X-Google-Smtp-Source: ADFU+vsbvA0bPKZuFuoyiAYYT2MAajBQClBv2FVQWpgTqGSwOk86q1wjxhji3lIrW877UAk2zXeS6eprXZB9
+X-Received: by 2002:a17:90a:d101:: with SMTP id
+ l1mr4885668pju.130.1585154617915; 
+ Wed, 25 Mar 2020 09:43:37 -0700 (PDT)
+Date: Wed, 25 Mar 2020 09:42:57 -0700
+Message-Id: <20200325164257.170229-1-maskray@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.25.1.696.g5e7596f4ac-goog
+Subject: [PATCH v2] powerpc/boot: Delete unneeded .globl _zimage_start
+From: Fangrui Song <maskray@google.com>
+To: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,82 +74,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: linux-usb@vger.kernel.org, linux-ia64@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Oleg Nesterov <oleg@redhat.com>, Guo Ren <guoren@kernel.org>,
- Joel Fernandes <joel@joelfernandes.org>, Vincent Chen <deanbo422@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Davidlohr Bueso <dave@stgolabs.net>,
- linux-acpi@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-hexagon@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>,
- Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
- Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Greentime Hu <green.hu@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- platform-driver-x86@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
- kbuild test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-wireless@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Davidlohr Bueso <dbueso@suse.de>,
- netdev@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
- "David S. Miller" <davem@davemloft.net>, Andy Shevchenko <andy@infradead.org>
+Cc: Fangrui Song <maskray@google.com>, Alan Modra <amodra@gmail.com>,
+ Nick Desaulniers <ndesaulniers@google.com>, clang-built-linux@googlegroups.com,
+ Joel Stanley <joel@jms.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 25, 2020 at 05:02:12PM +0100, Sebastian Siewior wrote:
-> On 2020-03-25 13:27:49 [+0100], Thomas Gleixner wrote:
-> > The documentation of rw_semaphores is wrong as it claims that the non-owner
-> > reader release is not supported by RT. That's just history biased memory
-> > distortion.
-> > 
-> > Split the 'Owner semantics' section up and add separate sections for
-> > semaphore and rw_semaphore to reflect reality.
-> > 
-> > Aside of that the following updates are done:
-> > 
-> >  - Add pseudo code to document the spinlock state preserving mechanism on
-> >    PREEMPT_RT
-> > 
-> >  - Wordsmith the bitspinlock and lock nesting sections
-> > 
-> > Co-developed-by: Paul McKenney <paulmck@kernel.org>
-> > Signed-off-by: Paul McKenney <paulmck@kernel.org>
-> > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> > --- a/Documentation/locking/locktypes.rst
-> > +++ b/Documentation/locking/locktypes.rst
-> …
-> > +rw_semaphore
-> > +============
-> > +
-> > +rw_semaphore is a multiple readers and single writer lock mechanism.
-> > +
-> > +On non-PREEMPT_RT kernels the implementation is fair, thus preventing
-> > +writer starvation.
-> > +
-> > +rw_semaphore complies by default with the strict owner semantics, but there
-> > +exist special-purpose interfaces that allow non-owner release for readers.
-> > +These work independent of the kernel configuration.
-> 
-> This reads funny, could be my English. "This works independent …" maybe?
+.globl sets the symbol binding to STB_GLOBAL while .weak sets the
+binding to STB_WEAK. GNU as let .weak override .globl since binutils-gdb
+5ca547dc2399a0a5d9f20626d4bf5547c3ccfddd (1996). Clang integrated
+assembler let the last win but it may error in the future.
 
-The "These" refers to "interfaces", which is plural, so "These" rather
-than "This".  But yes, it is a bit awkward, because you have to skip
-back past "readers", "release", and "non-owner" to find the implied
-subject of that last sentence.
+Since it is a convention that only one binding directive is used, just
+delete .globl.
 
-So how about this instead, making the implied subject explicit?
+Fixes: cd197ffcf10b "[POWERPC] zImage: Cleanup and improve zImage entry point"
+Fixes: ee9d21b3b358 "powerpc/boot: Ensure _zimage_start is a weak symbol"
+Link: https://github.com/ClangBuiltLinux/linux/issues/937
+Signed-off-by: Fangrui Song <maskray@google.com>
+Cc: Alan Modra <amodra@gmail.com>
+Cc: Joel Stanley <joel@jms.id.au>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Segher Boessenkool <segher@kernel.crashing.org>
+Cc: clang-built-linux@googlegroups.com
+---
+ arch/powerpc/boot/crt0.S | 3 ---
+ 1 file changed, 3 deletions(-)
 
-rw_semaphore complies by default with the strict owner semantics, but there
-exist special-purpose interfaces that allow non-owner release for readers.
-These interfaces work independent of the kernel configuration.
+diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
+index 92608f34d312..1d83966f5ef6 100644
+--- a/arch/powerpc/boot/crt0.S
++++ b/arch/powerpc/boot/crt0.S
+@@ -44,9 +44,6 @@ p_end:		.long	_end
+ p_pstack:	.long	_platform_stack_top
+ #endif
+ 
+-	.globl	_zimage_start
+-	/* Clang appears to require the .weak directive to be after the symbol
+-	 * is defined. See https://bugs.llvm.org/show_bug.cgi?id=38921  */
+ 	.weak	_zimage_start
+ _zimage_start:
+ 	.globl	_zimage_start_lib
+-- 
+2.25.1.696.g5e7596f4ac-goog
 
-							Thanx, Paul
