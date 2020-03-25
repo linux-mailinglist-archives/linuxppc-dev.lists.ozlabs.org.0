@@ -2,62 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7044192068
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 06:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F93B1920E0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 07:03:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nGkd45GdzDqJ7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 16:24:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nHbl0Qq4zDqx6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 17:03:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
- helo=mail-qt1-x844.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=gNq40aGl; dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nGj60gSlzDqDt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 16:22:48 +1100 (AEDT)
-Received: by mail-qt1-x844.google.com with SMTP id c14so1279992qtp.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Mar 2020 22:22:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=4vuy5iMbkWzUJjs5KXWHmrZOeilRi4q9EUgRXcNEaaU=;
- b=gNq40aGlGB4hsfq2Di6iLMdX1ZaqtpB1gnUdRWPKpWP6lxhRZi+o02yFp1wBV9yTCA
- rxFAJdeUKlK/ySZJz0n+78TCOM1asqTGu3DE/o/nic0ORqN09M+4g9KNnNvbreLiGHl2
- nbEbvj7fZ/Q1PmDHzOy86czR1J2yT7lQOrIM8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=4vuy5iMbkWzUJjs5KXWHmrZOeilRi4q9EUgRXcNEaaU=;
- b=bFJcL69pOoy/MBjK0ki7Sn29hArjbkKNZJZBsKHKrUOlZOrRFv7LQ1pDTELOsVDvfL
- Ayj0/VuHMz310ZMIV1U1S9v6ffeeiaD3giC9CvOFrxl60caQv641Gg/DM0r77X4CmDY5
- /GD9E4O44QKn50rC4KZp8kiaBrpV+rHbeus9mdjgJk3K9UOyyGCwbGY7A2/f3Jl2Wim+
- Cp+NBjVBIlb4joU+YwVpxHgAYwqPzptXo8thqxVH9XsbuIx1xJpZz2A3B5UVdNeH3uRX
- UFvNERbLXJxBz8z/Q/pJfqhgMVk3Au6y7TIsv3BWDg6kTJ7ryc/lddWkEk52QkvbWTww
- 0N2Q==
-X-Gm-Message-State: ANhLgQ22UtYsWG3v9zhLOgoQr/dO55c0k7zNFzh9jKsXBbllskpHN2Pg
- fhObzjFZxoat7UWTVgBSRm3n8yizAZ4S2iQkcRg=
-X-Google-Smtp-Source: ADFU+vvMWQ1p60Vc3tJK855J5SWCk9Vtt3xGC3RWhBtm1eodZiPaWSl2uuZmi5tzzkSd7OsPgHrn5MEaWbf0Y3b+hac=
-X-Received: by 2002:ac8:18a4:: with SMTP id s33mr1369964qtj.220.1585113763638; 
- Tue, 24 Mar 2020 22:22:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nHZ311j8zDqW5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 17:01:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=mlgmtSbp; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48nHZ11LxCz9sPk;
+ Wed, 25 Mar 2020 17:01:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1585116106;
+ bh=jliOT/ryxznSbhEYa1PbM2oL6orVsTIvLgvub5p0cl0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=mlgmtSbp3t1aiYmI26R1gmVLtLZqurVPcUoVGs+O3fMCzj3bXywssN1ZL23e8yfJn
+ cAcs52jV26RqBt/1W++BOIhPWQIj717Zl6pTPUX8XqdntnOAB860PpyekIEgSKrvzv
+ BMjYN36jjsjizk190Jls/EfunP3zuJb+zJg0m3Zw/ZDACMsBL3e6Em0OCeD0E5mzYs
+ LuvWRAeUwWqmB/1kSPus0cuUenP1NfYoMAwNviNh+/t+/k/zmOYKs6rCYoheCP9Zoj
+ 3SYJMJZD4/VbjR9N/oiC6ozYXeORIxMkoUL1SZsURMejEEIwVTltVhEzPngnmNz9z7
+ uTOWhi4ZwhvxA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Qian Cai <cai@lca.pw>, Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Subject: Re: Argh, can't find dcache properties !
+In-Reply-To: <48F1D8CF-13A1-4348-8973-81503782A451@lca.pw>
+References: <be8c123a90f6d1664a902b6ad6c754b9f3d9e567.camel@alliedtelesis.co.nz>
+ <87tv2exst1.fsf@mpe.ellerman.id.au>
+ <876a5938fbad9d9e176e5f22f12e6b472d0dc4f7.camel@alliedtelesis.co.nz>
+ <48F1D8CF-13A1-4348-8973-81503782A451@lca.pw>
+Date: Wed, 25 Mar 2020 17:01:49 +1100
+Message-ID: <87369xx99u.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200325051820.163253-1-maskray@google.com>
-In-Reply-To: <20200325051820.163253-1-maskray@google.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 25 Mar 2020 05:22:31 +0000
-Message-ID: <CACPK8Xf70Yq2szW110G_2f2Q3J6inVqQY4Y-y0tggkVmT7tmfw@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/boot: Delete unneeded .globl _zimage_start
-To: Fangrui Song <maskray@google.com>, Alan Modra <amodra@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,56 +60,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org,
- clang-built-linux@googlegroups.com
+Cc: Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "paulus@samba.org" <paulus@samba.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 25 Mar 2020 at 05:19, Fangrui Song <maskray@google.com> wrote:
+Qian Cai <cai@lca.pw> writes:
+>> On Mar 24, 2020, at 4:06 PM, Chris Packham <Chris.Packham@alliedtelesis.co.nz> wrote:
+>> On Tue, 2020-03-24 at 15:47 +1100, Michael Ellerman wrote:
+>>> Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
+>>>> Hi All,
+>>>> 
+>>>> Just booting up v5.5.11 on a Freescale T2080RDB and I'm seeing the
+>>>> following mesage.
+>>>> 
+>>>> kern.warning linuxbox kernel: Argh, can't find dcache properties !
+>>>> kern.warning linuxbox kernel: Argh, can't find icache properties !
+...
 >
-> .globl sets the symbol binding to STB_GLOBAL while .weak sets the
-> binding to STB_WEAK. They should not be used together. It is accidetal
-> rather then intentional that GNU as let .weak override .globl while
-> clang integrated assembler let the last win.
->
-> Fixes: cd197ffcf10b "[POWERPC] zImage: Cleanup and improve zImage entry point"
-> Fixes: ee9d21b3b358 "powerpc/boot: Ensure _zimage_start is a weak symbol"
-> Link: https://github.com/ClangBuiltLinux/linux/issues/937
-> Signed-off-by: Fangrui Song <maskray@google.com>
-> Cc: Joel Stanley <joel@jms.id.au>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nick Desaulniers <ndesaulniers@google.com>
-> Cc: clang-built-linux@googlegroups.com
-> ---
->  arch/powerpc/boot/crt0.S | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-> index 92608f34d312..1d83966f5ef6 100644
-> --- a/arch/powerpc/boot/crt0.S
-> +++ b/arch/powerpc/boot/crt0.S
-> @@ -44,9 +44,6 @@ p_end:                .long   _end
->  p_pstack:      .long   _platform_stack_top
->  #endif
->
-> -       .globl  _zimage_start
-> -       /* Clang appears to require the .weak directive to be after the symbol
-> -        * is defined. See https://bugs.llvm.org/show_bug.cgi?id=38921  */
->         .weak   _zimage_start
->  _zimage_start:
+> BTW, POWER9 PowerNV would have the same thing. 
 
-Your explanation makes sense to me. I've added Alan to cc for his review.
+Ugh, you're right.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+Because we're missing the cache-line-size properties, even though they
+are optional when the block & line size are the same.
 
-Thanks for the patch.
+  # find /proc/device-tree/cpus/PowerPC\,POWER9@0/ -name '*cache*'
+  /proc/device-tree/cpus/PowerPC,POWER9@0/l2-cache
+  /proc/device-tree/cpus/PowerPC,POWER9@0/d-cache-block-size
+  /proc/device-tree/cpus/PowerPC,POWER9@0/d-cache-size
+  /proc/device-tree/cpus/PowerPC,POWER9@0/i-cache-size
+  /proc/device-tree/cpus/PowerPC,POWER9@0/d-cache-sets
+  /proc/device-tree/cpus/PowerPC,POWER9@0/i-cache-block-size
+  /proc/device-tree/cpus/PowerPC,POWER9@0/i-cache-sets
 
-Cheers,
+skiboot even explicitly omits them:
 
-Joel
+	if (cache->icache_line_size != cache->icache_block_size)
+		dt_add_property_cells(cpu, "i-cache-line-size",
+				      be32_to_cpu(cache->icache_line_size));
+	if (cache->l1_dcache_line_size != cache->dcache_block_size)
+		dt_add_property_cells(cpu, "d-cache-line-size",
+				      be32_to_cpu(cache->l1_dcache_line_size));
 
->         .globl  _zimage_start_lib
-> --
-> 2.25.1.696.g5e7596f4ac-goog
->
+
+Looks like it was broken ~3 years ago, in:
+  bd067f83b084 ("powerpc/64: Fix naming of cache block vs. cache line")
+
+
+Previously we did:
+			lsizep = of_get_property(np, "d-cache-block-size",
+						 NULL);
+			/* fallback if block size missing */
+			if (lsizep == NULL)
+				lsizep = of_get_property(np,
+							 "d-cache-line-size",
+							 NULL);
+			if (lsizep != NULL)
+				lsize = be32_to_cpu(*lsizep);
+			if (sizep == NULL || lsizep == NULL)
+				DBG("Argh, can't find dcache properties ! "
+				    "sizep: %p, lsizep: %p\n", sizep, lsizep);
+
+ie. fallback from block size to line size, and only print if both are missing.
+
+That commit changed the names and the logic, but not in a consistent
+fashion, making "d-cache-line-size" required to avoid the Argh:
+
+			bsizep = of_get_property(np, "d-cache-block-size",
+						 NULL);
+			lsizep = of_get_property(np, "d-cache-line-size",
+						 NULL);
+			if (bsizep == NULL)
+				bsizep = lsizep;
+			if (lsizep != NULL)
+				lsize = be32_to_cpu(*lsizep);
+			if (bsizep != NULL)
+				bsize = be32_to_cpu(*bsizep);
+			if (sizep == NULL || bsizep == NULL || lsizep == NULL)
+				DBG("Argh, can't find dcache properties ! "
+				    "sizep: %p, bsizep: %p, lsizep: %p\n",
+				    sizep, bsizep, lsizep);
+
+Back then we fell back to cur_cpu_spec->dcache_bsize, which should be
+correct. But since then we introduced the device tree CPU features
+parsing, which does:
+
+static struct cpu_spec __initdata base_cpu_spec = {
+	...
+	.icache_bsize		= 32, /* minimum block size, fixed by */
+	.dcache_bsize		= 32, /* cache info init.             */
+
+So on systems with new enough skiboot we now default to 32, which is
+wrong on Power9.
+
+
+Luckily this info is not used by the sysfs cache files, because that
+code doesn't use the values we parse here, it goes and looks at the
+device tree itself. Which is pretty gross but actually saves us in this
+case.
+
+These values do end up in the vdso_data, and I can see the wrong values
+in the vdso_data:
+
+1c:mon> d4 c000000002390000
+c000000002390000 54535953 46434d45 50503a47 00343643	eyecatcher
+c000000002390010 00000001 00000001 00000100 004e1202	major		minor	platform	processor
+c000000002390020 000000b0 00000000 00000000 0000003c	processorCount		physicalMemorySize
+c000000002390030 57b7623f 0000ac10 1e848000 00000000	tb_orig_stamp		tb_ticks_per_sec
+c000000002390040 de6d9e42 008637af 8de66bca 0005e7ae	tb_to_xs		stamp_xsec
+c000000002390050 000ff730 00000000 00000000 00000000	tb_update_count		tz_minuteswest	tz_dsttime
+c000000002390060 00008000 00000020 00008000 00000020	dcache_size	line_size	icache_size	icache_line_size
+                                ^
+                                32 != 128
+
+And that appears to flow through to glibc, ie. I see:
+
+_SC_LEVEL1_ICACHE_LINESIZE = 32
+_SC_LEVEL1_DCACHE_LINESIZE = 32
+_SC_LEVEL2_CACHE_LINESIZE = 32
+_SC_LEVEL3_CACHE_LINESIZE = 32
+
+
+So excuse me while I go and swear at something.
+
+cheers
