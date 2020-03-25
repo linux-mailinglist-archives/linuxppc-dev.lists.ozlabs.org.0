@@ -2,76 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307B91929B8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 14:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61080192DC8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 17:04:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nTYv3W9kzDqhH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 00:32:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nXy03rWYzDqfB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 03:04:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=linutronix.de
+ (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
+ envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linutronix.de
+Received: from Galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nTNw40w9zDqgP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 00:24:32 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02PDILAN107496; Wed, 25 Mar 2020 09:24:26 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywd8ef53x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Mar 2020 09:24:25 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02PDDKbS006813;
- Wed, 25 Mar 2020 13:24:24 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma04wdc.us.ibm.com with ESMTP id 2ywaw91h42-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Mar 2020 13:24:24 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02PDOODD45416940
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Mar 2020 13:24:24 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62EF1AE062;
- Wed, 25 Mar 2020 13:24:24 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4256DAE060;
- Wed, 25 Mar 2020 13:24:23 +0000 (GMT)
-Received: from localhost (unknown [9.85.139.123])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Wed, 25 Mar 2020 13:24:22 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/prom_init: Include the termination message in ibm,
- os-term RTAS call
-In-Reply-To: <87zhc4wxy9.fsf@mpe.ellerman.id.au>
-References: <20200324201211.1055236-1-farosas@linux.ibm.com>
- <87zhc4wxy9.fsf@mpe.ellerman.id.au>
-Date: Wed, 25 Mar 2020 10:24:20 -0300
-Message-ID: <87sghwh8jf.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nXvl63f9zDqQM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:02:59 +1100 (AEDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+ (envelope-from <bigeasy@linutronix.de>)
+ id 1jH8Ts-0005AG-4C; Wed, 25 Mar 2020 17:02:12 +0100
+Date: Wed, 25 Mar 2020 17:02:12 +0100
+From: Sebastian Siewior <bigeasy@linutronix.de>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: Documentation/locking/locktypes: Further clarifications and
+ wordsmithing
+Message-ID: <20200325160212.oavrni7gmzudnczv@linutronix.de>
+References: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+ <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
+ <20200325002811.GO19865@paulmck-ThinkPad-P72>
+ <87wo78y5yy.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-25_05:2020-03-24,
- 2020-03-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0 phishscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003250110
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87wo78y5yy.fsf@nanos.tec.linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,50 +50,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, paulus@samba.org, kvm-ppc@vger.kernel.org
+Cc: linux-usb@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Oleg Nesterov <oleg@redhat.com>, Guo Ren <guoren@kernel.org>,
+ Joel Fernandes <joel@joelfernandes.org>, Vincent Chen <deanbo422@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ linux-acpi@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-hexagon@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
+ Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
+ paulmck@kernel.org, linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Greentime Hu <green.hu@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ platform-driver-x86@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+ kbuild test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-wireless@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Davidlohr Bueso <dbueso@suse.de>,
+ Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>, "David S. Miller" <davem@davemloft.net>,
+ Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+On 2020-03-25 13:27:49 [+0100], Thomas Gleixner wrote:
+> The documentation of rw_semaphores is wrong as it claims that the non-own=
+er
+> reader release is not supported by RT. That's just history biased memory
+> distortion.
+>=20
+> Split the 'Owner semantics' section up and add separate sections for
+> semaphore and rw_semaphore to reflect reality.
+>=20
+> Aside of that the following updates are done:
+>=20
+>  - Add pseudo code to document the spinlock state preserving mechanism on
+>    PREEMPT_RT
+>=20
+>  - Wordsmith the bitspinlock and lock nesting sections
+>=20
+> Co-developed-by: Paul McKenney <paulmck@kernel.org>
+> Signed-off-by: Paul McKenney <paulmck@kernel.org>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-> Fabiano Rosas <farosas@linux.ibm.com> writes:
->
->> QEMU can now print the ibm,os-term message[1], so let's include it in
->> the RTAS call. E.g.:
->>
->>   qemu-system-ppc64: OS terminated: Switch to secure mode failed.
->>
->> 1- https://git.qemu.org/?p=qemu.git;a=commitdiff;h=a4c3791ae0
->>
->> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
->> ---
->>  arch/powerpc/kernel/prom_init.c | 3 +++
->>  1 file changed, 3 insertions(+)
->
-> I have this queued:
->   https://patchwork.ozlabs.org/patch/1253390/
->
-> Which I think does the same thing?
->
+> --- a/Documentation/locking/locktypes.rst
+> +++ b/Documentation/locking/locktypes.rst
+=E2=80=A6
+> +rw_semaphore
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +rw_semaphore is a multiple readers and single writer lock mechanism.
+> +
+> +On non-PREEMPT_RT kernels the implementation is fair, thus preventing
+> +writer starvation.
+> +
+> +rw_semaphore complies by default with the strict owner semantics, but th=
+ere
+> +exist special-purpose interfaces that allow non-owner release for reader=
+s.
+> +These work independent of the kernel configuration.
 
-Ah, all good then. Nothing to see here... =)
+This reads funny, could be my English. "This works independent =E2=80=A6" m=
+aybe?
 
-> cheers
->
->> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
->> index 577345382b23..d543fb6d29c5 100644
->> --- a/arch/powerpc/kernel/prom_init.c
->> +++ b/arch/powerpc/kernel/prom_init.c
->> @@ -1773,6 +1773,9 @@ static void __init prom_rtas_os_term(char *str)
->>  	if (token == 0)
->>  		prom_panic("Could not get token for ibm,os-term\n");
->>  	os_term_args.token = cpu_to_be32(token);
->> +	os_term_args.nargs = cpu_to_be32(1);
->> +	os_term_args.args[0] = cpu_to_be32(__pa(str));
->> +
->>  	prom_rtas_hcall((uint64_t)&os_term_args);
->>  }
->>  #endif /* CONFIG_PPC_SVM */
->> -- 
->> 2.23.0
+Sebastian
