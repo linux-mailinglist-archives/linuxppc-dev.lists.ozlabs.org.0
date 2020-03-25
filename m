@@ -2,73 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930D6192E4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 17:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94482192E6C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 17:41:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nYfS25ZjzDqfL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 03:36:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nYmS0gBfzDqWx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 03:41:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=maskray@google.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=hi2+=5k=paulmck-thinkpad-p72.home=paulmck@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=ln7nrqHL; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=APOdz2w7; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nYcS6j1NzDqWH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:34:42 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id d25so1291115pfn.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 09:34:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=53I1ZUmEkX7E7kUoNR7ym1JpMnqNwdwGnZNoPknk3Xw=;
- b=ln7nrqHLHy6dQu6F3HCJYejvXyWvZ89N7CRtDZpN6ntlu9MaP+NQ61i5ZnTLaY4pR2
- K5W+KmjYOtqEd5qt+6quDmRXfIfk3Wt6ovI0TjI81LJ8w2u37+085yw2frTX+Cah7VNb
- dPSfKK7Oibn+tltPQD0rLvS2Gp8pIEsBYob5GG1ySFvoPQly/qhIyCgW70+gNx4eUAs1
- 4hXsP88cifwt3f2Abo0NGenqIirC3am4PNdqjvG5541OmwrPp00MGdRgI/lo793Ha4xx
- Ue97xLtx83lu94Na/JMZkVZsHtQ8+JY7/z+pv5j/6LY95M2PrQFhSe54vMQ+FNuKZ8Fl
- sKZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=53I1ZUmEkX7E7kUoNR7ym1JpMnqNwdwGnZNoPknk3Xw=;
- b=Wvk5DMNLs7wIeuApUHDiApm3VKv7IXg6PZNT/TiGEakr3tq/fpKi+BDF4W3nznGM+x
- LlNf1VqxcWSrKTtn8F7/NEdVMGcP2neDl3ZjFl5SPmQcwsb44cMywoLznXWtj7K+c/Go
- c+lgs7tlGgXkZpu0N4IXE5pkilds7xT0PQ0ldl4eF3/D27Bul3AnAUGz25NteW3GK8b7
- Axfk8twnuZWmMh/eu3EdR00SzOyrZmbwLtGj1LPsP3/mmJfniqxpFEY38p+IKLl1zH+t
- VxP3VbDwID99SEGZkFINfRDdYnB9wdR+sJGTHpD7BbWu61lSyyItM7eIQJUliMFRH7HL
- DZ/Q==
-X-Gm-Message-State: ANhLgQ2evPZvBbQcdtoZ9nAT7u//rKcMaYnaOrX+wownjKWq+9Rju5mp
- e2efXJWPKh+Xk8Ljc0uRZdJYjw==
-X-Google-Smtp-Source: ADFU+vsLYAo8klC7QlmicZX3EG3H1XzuXymz176S5+bMSHi/yRxFeuwxKu/bHHrzu/8+WVbJ54oq8A==
-X-Received: by 2002:aa7:96c8:: with SMTP id h8mr4181269pfq.49.1585154078900;
- Wed, 25 Mar 2020 09:34:38 -0700 (PDT)
-Received: from google.com ([2620:15c:2ce:0:9efe:9f1:9267:2b27])
- by smtp.gmail.com with ESMTPSA id g14sm18477470pfb.131.2020.03.25.09.34.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Mar 2020 09:34:38 -0700 (PDT)
-Date: Wed, 25 Mar 2020 09:34:34 -0700
-From: Fangrui Song <maskray@google.com>
-To: Alan Modra <amodra@gmail.com>
-Subject: Re: [PATCH] powerpc/boot: Delete unneeded .globl _zimage_start
-Message-ID: <20200325163434.qvm3h57slivq52eu@google.com>
-References: <20200325051820.163253-1-maskray@google.com>
- <CACPK8Xf70Yq2szW110G_2f2Q3J6inVqQY4Y-y0tggkVmT7tmfw@mail.gmail.com>
- <20200325083702.GE4583@bubble.grove.modra.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nYjk2LqdzDqWs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:39:21 +1100 (AEDT)
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
+ [50.39.105.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6311D2073E;
+ Wed, 25 Mar 2020 16:39:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1585154359;
+ bh=A1GPX4wlECfGGG7gTSHHrGt3spoxTdKZ1xy9utwV/BA=;
+ h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+ b=APOdz2w7EH+7D58vqGoNgP8mOHfbNma8Ty1WIG8jpBICPSinl9OycWqb0OdtxkciV
+ gxpkAVRwhIe+WxIGCYwXBH73yF99ZY9v+QEk7Sp75Ev8c6B1ujrOAxGnV4ZUKw4afx
+ Pt8nI6CO51v4M2JmrHTqBAusgH99DwWPqLUsLFTU=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+ id 325E9352094D; Wed, 25 Mar 2020 09:39:19 -0700 (PDT)
+Date: Wed, 25 Mar 2020 09:39:19 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Sebastian Siewior <bigeasy@linutronix.de>
+Subject: Re: Documentation/locking/locktypes: Further clarifications and
+ wordsmithing
+Message-ID: <20200325163919.GU19865@paulmck-ThinkPad-P72>
+References: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+ <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
+ <20200325002811.GO19865@paulmck-ThinkPad-P72>
+ <87wo78y5yy.fsf@nanos.tec.linutronix.de>
+ <20200325160212.oavrni7gmzudnczv@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200325083702.GE4583@bubble.grove.modra.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200325160212.oavrni7gmzudnczv@linutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,107 +66,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
- clang-built-linux@googlegroups.com, Joel Stanley <joel@jms.id.au>,
- linuxppc-dev@lists.ozlabs.org
+Reply-To: paulmck@kernel.org
+Cc: linux-usb@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Oleg Nesterov <oleg@redhat.com>, Guo Ren <guoren@kernel.org>,
+ Joel Fernandes <joel@joelfernandes.org>, Vincent Chen <deanbo422@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Davidlohr Bueso <dave@stgolabs.net>,
+ linux-acpi@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-hexagon@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>,
+ Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
+ Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Greentime Hu <green.hu@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ platform-driver-x86@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+ kbuild test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Nick Hu <nickhu@andestech.com>, Geoff Levand <geoff@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-wireless@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Davidlohr Bueso <dbueso@suse.de>,
+ netdev@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+ "David S. Miller" <davem@davemloft.net>, Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-03-25, Alan Modra wrote:
->On Wed, Mar 25, 2020 at 05:22:31AM +0000, Joel Stanley wrote:
->> On Wed, 25 Mar 2020 at 05:19, Fangrui Song <maskray@google.com> wrote:
->> >
->> > .globl sets the symbol binding to STB_GLOBAL while .weak sets the
->> > binding to STB_WEAK. They should not be used together. It is accidetal
->> > rather then intentional that GNU as let .weak override .globl while
->> > clang integrated assembler let the last win.
->
->No, it isn't accidental.  gas deliberately lets .weak override .globl.
->Since 1996-07-26, git commit 5ca547dc239
+On Wed, Mar 25, 2020 at 05:02:12PM +0100, Sebastian Siewior wrote:
+> On 2020-03-25 13:27:49 [+0100], Thomas Gleixner wrote:
+> > The documentation of rw_semaphores is wrong as it claims that the non-owner
+> > reader release is not supported by RT. That's just history biased memory
+> > distortion.
+> > 
+> > Split the 'Owner semantics' section up and add separate sections for
+> > semaphore and rw_semaphore to reflect reality.
+> > 
+> > Aside of that the following updates are done:
+> > 
+> >  - Add pseudo code to document the spinlock state preserving mechanism on
+> >    PREEMPT_RT
+> > 
+> >  - Wordsmith the bitspinlock and lock nesting sections
+> > 
+> > Co-developed-by: Paul McKenney <paulmck@kernel.org>
+> > Signed-off-by: Paul McKenney <paulmck@kernel.org>
+> > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> 
+> > --- a/Documentation/locking/locktypes.rst
+> > +++ b/Documentation/locking/locktypes.rst
+> …
+> > +rw_semaphore
+> > +============
+> > +
+> > +rw_semaphore is a multiple readers and single writer lock mechanism.
+> > +
+> > +On non-PREEMPT_RT kernels the implementation is fair, thus preventing
+> > +writer starvation.
+> > +
+> > +rw_semaphore complies by default with the strict owner semantics, but there
+> > +exist special-purpose interfaces that allow non-owner release for readers.
+> > +These work independent of the kernel configuration.
+> 
+> This reads funny, could be my English. "This works independent …" maybe?
 
-Fair. I am sadded by this commit.
+The "These" refers to "interfaces", which is plural, so "These" rather
+than "This".  But yes, it is a bit awkward, because you have to skip
+back past "readers", "release", and "non-owner" to find the implied
+subject of that last sentence.
 
-% sed -n 'N;/.globl.*\n.*.weak/p;D' binutils-gdb/gas/testsuite/**/*(.)
+So how about this instead, making the implied subject explicit?
 
-I checked all occurrences and none is a real test excercising the behavior (.weak override .globl).
-All seem accidental.
+rw_semaphore complies by default with the strict owner semantics, but there
+exist special-purpose interfaces that allow non-owner release for readers.
+These interfaces work independent of the kernel configuration.
 
-
-It is unclear that clang integrated assembler should copy this
-behavior, though. For the record, I asked on binutils@sourceware.org
-whether the assembler should error when .weak/.local can override a
-previous binding directive. It was rejected
-https://sourceware.org/pipermail/binutils/2020-March/110376.html
-
-On the clang integrated assembler side, we may try building things with
-an error or leave the overriding behavior as is.
-
->I'm fine with the patch so far as it is true that there is no need for
->both .globl and .weak (and it looks silly to have both), but the
->explanation isn't true.  The patch is needed because the clang
->assembler is incompatible with gas in this detail.
-
-Since using one of .weak|.globl is nearly well-known, I'll send PATCH v2 with
-the description updated.
-
-On 2020-03-25, Segher Boessenkool wrote:
->Nothing is "overridden".
->
->The as manual says (.weak):
->
->  This directive sets the weak attribute on the comma separated list of
->  symbol 'names'.  If the symbols do not already exist, they will be
->  created.
->
->so this behaviour is obviously as intended (or was later documented in
->any case), so LLVM has a bug to fix (whether you like this (much saner)
->behaviour or not).
-
-I will probably not call this a bug. I have recently discovered other
-discrepancy for which I think copying gas behaviors can just clutter up the
-code. We may need our own assembler documentation at some point.
-
->> > Fixes: cd197ffcf10b "[POWERPC] zImage: Cleanup and improve zImage entry point"
->> > Fixes: ee9d21b3b358 "powerpc/boot: Ensure _zimage_start is a weak symbol"
->> > Link: https://github.com/ClangBuiltLinux/linux/issues/937
->> > Signed-off-by: Fangrui Song <maskray@google.com>
->> > Cc: Joel Stanley <joel@jms.id.au>
->> > Cc: Michael Ellerman <mpe@ellerman.id.au>
->> > Cc: Nick Desaulniers <ndesaulniers@google.com>
->> > Cc: clang-built-linux@googlegroups.com
->> > ---
->> >  arch/powerpc/boot/crt0.S | 3 ---
->> >  1 file changed, 3 deletions(-)
->> >
->> > diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
->> > index 92608f34d312..1d83966f5ef6 100644
->> > --- a/arch/powerpc/boot/crt0.S
->> > +++ b/arch/powerpc/boot/crt0.S
->> > @@ -44,9 +44,6 @@ p_end:                .long   _end
->> >  p_pstack:      .long   _platform_stack_top
->> >  #endif
->> >
->> > -       .globl  _zimage_start
->> > -       /* Clang appears to require the .weak directive to be after the symbol
->> > -        * is defined. See https://bugs.llvm.org/show_bug.cgi?id=38921  */
->> >         .weak   _zimage_start
->> >  _zimage_start:
->>
->> Your explanation makes sense to me. I've added Alan to cc for his review.
->>
->> Reviewed-by: Joel Stanley <joel@jms.id.au>
->>
->> Thanks for the patch.
->>
->> Cheers,
->>
->> Joel
->>
->> >         .globl  _zimage_start_lib
->> > --
->> > 2.25.1.696.g5e7596f4ac-goog
->
->-- 
->Alan Modra
->Australia Development Lab, IBM
+							Thanx, Paul
