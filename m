@@ -2,72 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB13192311
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 09:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 775F5192430
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 10:34:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48nMBY2PbVzDqcq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 19:45:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48nNHr3bJbzDqkL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Mar 2020 20:34:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::541;
- helo=mail-ed1-x541.google.com; envelope-from=balbif@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=atWEsClA; dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
+ header.s=20161025 header.b=RhKlCZmY; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48nM8m15tjzDq9T
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 19:43:34 +1100 (AEDT)
-Received: by mail-ed1-x541.google.com with SMTP id i16so394678edy.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 01:43:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48nNCK2RNRzDqRh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 20:30:50 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id d37so378255pgl.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Mar 2020 02:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=u1JHVU3RAXWpWzxoEBTeSB/vNLewo28StJEFtqtyLoU=;
- b=atWEsClArOzGKdLN4osuAk7d+XSEIi82gzITfDKHYSAZ1c+WEd3Ip/J9eETstflnDX
- LqQd2q6Qz/8hg3HTYMLWyI1r/uM72eIqZfUXxCdkYr7yZws3ErK2kSKYsVGHg9Cm/mtf
- X32RT6WFx/DxNfiiCaK5OWiM6W7e7JeJWoOEDUpgi05XVpNAtJvKJtyzJhblBES6Z/65
- eVjEoRNppJWoaSaLMrUSnZYRRo6sbYBlTHOOD7K3R3s4Elu3PeBJ5C7L2ulwEL9qqsKz
- nUa//b6Qd9KEX8nStmeRXzWQurXqzw+nAWyASHspx5uRQOtfM4KAnUAZ5r+BnFZwaD/D
- axHw==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LKekQCsu3DJG++ydeijKnSaG/w4KaX7b6s1q7GFe/hw=;
+ b=RhKlCZmYpHGxZTE29eK+OOOvhFgvTBRyvUAmgf71d/YEWz6ZFerOEfpu/H7aXpSXJE
+ n+t8YJSHo5Jg2G5kw6sIWGJykqn4CS2i9sraNk1vtnP69r82ILXRVlX1QOJEFa74C20R
+ Pc2GcwVWqQxJjki8XSkZYojM4MRLfxRTfDzL5OKZkgZD1vhG9K6Bl1tqliN3cssbBaxq
+ HjVa73KAWZbU4l3DfIIz5MgvG9bZMzW8RyRgkWqgKO1oSlCCKftjsentXZ+/SroFK2ON
+ HO+t4FEKMeVOTt7MyNrc3oYlW7Bxt9Vd6x7iu/3xhYK8dQPqFe4yKvR494pDmyfjrw47
+ sIdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
- :date:message-id:mime-version;
- bh=u1JHVU3RAXWpWzxoEBTeSB/vNLewo28StJEFtqtyLoU=;
- b=Z6gXY4OleSgWnUDkz7nRysV6Ng+fM6DpsniQKRak2M1RfgYVg3A31L25W/nZ/L4iVN
- nidIq3/TTi+mJkVPTVfGc08j8U3jeus0Mti2clQjIQJPnAIRHDO8+dADSPWyHq7RQIPN
- w/79BwWAL0rodtxjIrnOTmWVTWcQ3NOp13UNwmz5K9Hb14MwucApxXG2YhBzw/P62P3x
- EO2Sef/JFn7XdAlKbnVlixfMhHbltbsXlCoaGPG8JXmAx0b7vlGuse31GvciEcQD1Gij
- Y3bjqqKSD0WazYcKXP35LNGCQrRx6knvAdbrSp3wl361lKfqCrHT1gU7dHpx7J56JE6F
- +CCQ==
-X-Gm-Message-State: ANhLgQ0AwRfSBibyknFo/xZggYQMbEv5uU55ltTzxWiS7iPKOqSY3Wko
- HgiBjmlJZQLKczOKRTenQlcvuzEKssY=
-X-Google-Smtp-Source: APiQypL8bMjMZDQevXNQgwWPs9QVjiJXOb2ocQYyMJ5E3G+qtV0tyxn/wNi26nCLubp8d+GA3TyEPA==
-X-Received: by 2002:a2e:9797:: with SMTP id y23mr1235851lji.183.1585125484852; 
- Wed, 25 Mar 2020 01:38:04 -0700 (PDT)
-Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
- by smtp.gmail.com with ESMTPSA id f7sm522142ljj.4.2020.03.25.01.38.01
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 25 Mar 2020 01:38:03 -0700 (PDT)
-From: Felipe Balbi <balbi@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [patch V3 03/20] usb: gadget: Use completion interface instead of
- open coding it
-In-Reply-To: <20200321113241.043380271@linutronix.de>
-References: <20200321112544.878032781@linutronix.de>
- <20200321113241.043380271@linutronix.de>
-Date: Wed, 25 Mar 2020 10:37:57 +0200
-Message-ID: <87blokde3e.fsf@kernel.org>
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LKekQCsu3DJG++ydeijKnSaG/w4KaX7b6s1q7GFe/hw=;
+ b=sorU6TsBLNlrij6n+yZm+G2x8gU7IQ/Uw86dPf1Ad6ME8tub/iH507lc2degSh4hH4
+ wJj28ilt2CWBm6Rc4uL8HJInnP632sOq81S/EArEI3s4B5miIQZtRjNSpjD7yAVnxyQB
+ Ekg07WNBl1Rj02LZ0BZc9PeZ60FwM3SVrAR+fF4L8iWsF012+WHOEBIc2vxlAaI1kAHQ
+ Zonc+48gM53JuNFYFcRN7+RVgTgSDnKhwDCYSce/V7rn/sHyX/8ah6rL5W3ZhRnwf+MW
+ kkcdmY12gSUGaLV0B6VOV1BE/JDSJi9SWpqh3LDQA6gUiAxyeJN6B4p+6HsAIVq8O0tk
+ OPtw==
+X-Gm-Message-State: ANhLgQ1EyGnc+7eWA5q0CR51cM2dsBOPqtxiZLSxCX1BBLXNd6L6b2gx
+ jp9id6G+utRKziJAWAzGba5KdFuF
+X-Google-Smtp-Source: ADFU+vu/GLlvpFUEQV5H/Icti8tAA/syhUxWo+ERw1qrEz//X5SOKP1t2eCt+wCOjc050rAB1yIuGg==
+X-Received: by 2002:a63:4282:: with SMTP id p124mr2343160pga.59.1585128647934; 
+ Wed, 25 Mar 2020 02:30:47 -0700 (PDT)
+Received: from bobo.ibm.com (14-202-190-183.tpgi.com.au. [14.202.190.183])
+ by smtp.gmail.com with ESMTPSA id b124sm831904pfa.34.2020.03.25.02.30.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Mar 2020 02:30:47 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] Fix 2 "[v3,
+ 25/32] powerpc/64: system call implement entry/exit logic in C"
+Date: Wed, 25 Mar 2020 19:30:13 +1000
+Message-Id: <20200325093014.149962-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,90 +77,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Sebastian Siewior <bigeasy@linutronix.de>, platform-driver-x86@vger.kernel.org,
- Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
- Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Davidlohr Bueso <dave@stgolabs.net>,
- kbuild test robot <lkp@intel.com>, Brian Cain <bcain@codeaurora.org>,
- linux-acpi@vger.kernel.org, "Paul E . McKenney" <paulmck@kernel.org>,
- linux-hexagon@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
- Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Greentime Hu <green.hu@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Michal Simek <monstr@monstr.eu>,
- Tony Luck <tony.luck@intel.com>, Nick Hu <nickhu@andestech.com>,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
- Davidlohr Bueso <dbueso@suse.de>, netdev@vger.kernel.org,
- Logan Gunthorpe <logang@deltatee.com>, "David S.
- Miller" <davem@davemloft.net>, Andy Shevchenko <andy@infradead.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+This fixes 4 issues caught by TM selftests. First was a tm-syscall bug
+that hit due to tabort_syscall being called after interrupts were reconciled
+(in a subsequent patch), which led to interrupts being enabled before
+tabort_syscall was called. Rather than going through an un-reconciling
+interrupts for the return, I just go back to putting the test early in
+asm, the C-ification of that wasn't a big win anyway.
 
-Thomas Gleixner <tglx@linutronix.de> writes:
+Second is the syscall return _TIF_USER_WORK_MASK check would go into an
+infinite loop if _TIF_RESTORE_TM became set. The asm code uses
+_TIF_USER_WORK_MASK to brach to slowpath which includes restore_tm_state.
 
-> From: Thomas Gleixner <tglx@linutronix.de>
->
-> ep_io() uses a completion on stack and open codes the waiting with:
->
->   wait_event_interruptible (done.wait, done.done);
-> and
->   wait_event (done.wait, done.done);
->
-> This waits in non-exclusive mode for complete(), but there is no reason to
-> do so because the completion can only be waited for by the task itself and
-> complete() wakes exactly one exlusive waiter.
->
-> Replace the open coded implementation with the corresponding
-> wait_for_completion*() functions.
->
-> No functional change.
->
-> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Felipe Balbi <balbi@kernel.org>
-> Cc: linux-usb@vger.kernel.org
+Third is system call return was not calling restore_tm_state, I missed
+this completely (alhtough it's in the return from interrupt C conversion
+because when the asm syscall code encountered problems it would branch
+to the interrupt return code.
 
-Do you want to carry it via your tree? If so:
+Fourth is MSR_VEC missing from restore_math, which was caught by
+tm-unavailable selftest taking an unexpected facility unavailable
+interrupt when testing VSX unavailble exception with MSR.FP=1 MSR.VEC=1.
+Fourth case also has a fixup in a subsequent patch.
 
-Acked-by: Felipe Balbi <balbi@kernel.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/entry_64.S   | 12 +++++++++---
+ arch/powerpc/kernel/syscall_64.c | 25 +++++++++++++------------
+ 2 files changed, 22 insertions(+), 15 deletions(-)
 
-Otherwise, let me know and I'll pick this patch.
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index dc7fd3196d20..403224acdaa8 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -64,6 +64,12 @@ exception_marker:
+ 
+ 	.globl system_call_common
+ system_call_common:
++#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
++BEGIN_FTR_SECTION
++	extrdi.	r10, r12, 1, (63-MSR_TS_T_LG) /* transaction active? */
++	bne	.Ltabort_syscall
++END_FTR_SECTION_IFSET(CPU_FTR_TM)
++#endif
+ _ASM_NOKPROBE_SYMBOL(system_call_common)
+ 	mr	r10,r1
+ 	ld	r1,PACAKSAVE(r13)
+@@ -179,7 +185,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	b	.Lsyscall_restore_regs_cont
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+-_GLOBAL(tabort_syscall) /* (unsigned long nip, unsigned long msr) */
++.Ltabort_syscall:
+ 	/* Firstly we need to enable TM in the kernel */
+ 	mfmsr	r10
+ 	li	r9, 1
+@@ -199,8 +205,8 @@ _GLOBAL(tabort_syscall) /* (unsigned long nip, unsigned long msr) */
+ 	li	r9, MSR_RI
+ 	andc	r10, r10, r9
+ 	mtmsrd	r10, 1
+-	mtspr	SPRN_SRR0, r3
+-	mtspr	SPRN_SRR1, r4
++	mtspr	SPRN_SRR0, r11
++	mtspr	SPRN_SRR1, r12
+ 	RFI_TO_USER
+ 	b	.	/* prevent speculative execution */
+ #endif
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index ffd601d87065..56533a26f3b7 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -15,8 +15,6 @@
+ #include <asm/time.h>
+ #include <asm/unistd.h>
+ 
+-extern void __noreturn tabort_syscall(unsigned long nip, unsigned long msr);
+-
+ typedef long (*syscall_fn)(long, long, long, long, long, long);
+ 
+ /* Has to run notrace because it is entered "unreconciled" */
+@@ -32,10 +30,6 @@ notrace long system_call_exception(long r3, long r4, long r5, long r6, long r7,
+ 	BUG_ON(!FULL_REGS(regs));
+ 	BUG_ON(regs->softe != IRQS_ENABLED);
+ 
+-	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+-	    unlikely(regs->msr & MSR_TS_T))
+-		tabort_syscall(regs->nip, regs->msr);
+-
+ 	account_cpu_user_entry();
+ 
+ #ifdef CONFIG_PPC_SPLPAR
+@@ -161,7 +155,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ again:
+ 	local_irq_disable();
+ 	ti_flags = READ_ONCE(*ti_flagsp);
+-	while (unlikely(ti_flags & _TIF_USER_WORK_MASK)) {
++	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+ 		local_irq_enable();
+ 		if (ti_flags & _TIF_NEED_RESCHED) {
+ 			schedule();
+@@ -180,13 +174,20 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
+-		unsigned long mathflags = MSR_FP;
++		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
++				unlikely((ti_flags & _TIF_RESTORE_TM))) {
++			restore_tm_state(regs);
++		} else {
++			unsigned long mathflags = MSR_FP;
+ 
+-		if (IS_ENABLED(CONFIG_ALTIVEC))
+-			mathflags |= MSR_VEC;
++			if (cpu_has_feature(CPU_FTR_VSX))
++				mathflags |= MSR_VEC | MSR_VSX;
++			else if (cpu_has_feature(CPU_FTR_ALTIVEC))
++				mathflags |= MSR_VEC;
+ 
+-		if ((regs->msr & mathflags) != mathflags)
+-			restore_math(regs);
++			if ((regs->msr & mathflags) != mathflags)
++				restore_math(regs);
++		}
+ 	}
+ 
+ 	/* This must be done with RI=1 because tracing may touch vmaps */
+-- 
+2.23.0
 
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl57GGUACgkQzL64meEa
-mQY/phAAyKS/jK6b1hVevAPsOBS5Zyk+RBQmkmps/3C2lTyyturSmqT3TAMZyTZo
-/HPtsvyUYn8RBI5Pa62mvcnGi+/Lmk76YzmUqn/VJRe+J8kjuFI6IoyT4uDxdUsB
-qGTiuQ5qbV7Ft3fvLoEEbuyPZeDc/pbfFyK78ajdAYec4MGS8r12tWzhRZTRyRAG
-4fb/PjPcfk8/9eTkdgnjgINZTiwT9YN7HWpEfajl3MhlYK9pZh/J7swRaYwZULBo
-+eVd6a6ZYt0YLC8wVQ/kJ9Q3EttmWBwPJB4FIXMzYDkXx2Z898ZUKeIJ8IXlwKSh
-CynbYGL7rNJQ+UDpVA8/y5Mqqnu3pAht/csgfrBxm/ukjkMphIDjpzuUaODgH5W3
-Eb4EXNgvgspzEMgz6pv9INgPPh2tWRmBQex8qOLrs1xups+ZmhFSHGKCUs8hxlDj
-Zk0U6Mce6mopXiCf2iVgrv9ItHlp4myA/HwWEub+LwOJi8tCt+vCjzXloWMx4Ha+
-TNyxLHrqLaeTQoYgl1wJQMjIhmcrb9UMBaJ5FhKdaXAGfAeicPSzVqVHG/yl6nds
-Z2cTMhW5kIxJDMAOuemeYZLY8PMzXrG5xHT7Da3yOzurIOmp2rhvhjpt9TpjKDLE
-3qsBCaxpICoolHqV8bAov175RPtyVvv5zdyXWulMD/1c2kVYiiY=
-=IAgh
------END PGP SIGNATURE-----
---=-=-=--
