@@ -1,61 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B29C193D4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 11:52:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48p1z25w0czDqrq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 21:52:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBA0193DDA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 12:30:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48p2pG1S4gzDqLr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 22:29:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.68; helo=mail-wr1-f68.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com
- [209.85.221.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.8.59; helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ envelope-from=peter.chen@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=McsYNAFO; 
+ dkim-atps=neutral
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com
+ (mail-eopbgr80059.outbound.protection.outlook.com [40.107.8.59])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48p1wx4D8szDqPQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 21:50:40 +1100 (AEDT)
-Received: by mail-wr1-f68.google.com with SMTP id w10so7170890wrm.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:50:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=fIDalzpcD8dABfU2gkMMLisEURz4uVPkV63E+3HwQn4=;
- b=I0iRcbbXxCH0Uc9lhFFsdpkcX441j+v2qhOwoh6DKIYDe+vqtjeRUSbZ7/tfuLasON
- /avGHSCQJluR8T6QL9rmZPmE6yk0WX/RYKj8GrJ0T5iEReKvMm/ktx6xdF6NAX66buCU
- n8/tQTcQwHJutebUGuX9g8s9cT1H8cfkoIGWYyl9BmbPbn5B6f3SLtHpKav7Wb1ro6mr
- Sckb/pBexAZhY9j9tb5MGHGgQ7DVxtk7j4SVYUHr0T6Gd9yFuIuDN+flTcy2k5x3Xt3J
- fljWZoCYO7oh/w5MmAJKSuC1y42srdIPeuaBvUlf4AyWa7ur3U8Y/a4HM98wFMBCO7QN
- x1UA==
-X-Gm-Message-State: ANhLgQ2CAmDi8FAvAinNx65hocEi7hDZaqtMrIeop44VKXqUWoKMTm9w
- ooscg9yTyPtEsx2gy7osLrs=
-X-Google-Smtp-Source: ADFU+vvFG1k0XSUywnU+P8ccTbMl2E5UoReBqVpzEQk9W51MyjLqABotwk1CEQ7o7p/Jcjs0kvrz4w==
-X-Received: by 2002:adf:a18b:: with SMTP id u11mr9129088wru.390.1585219838144; 
- Thu, 26 Mar 2020 03:50:38 -0700 (PDT)
-Received: from localhost (ip-37-188-135-150.eurotel.cz. [37.188.135.150])
- by smtp.gmail.com with ESMTPSA id t12sm3432621wrm.0.2020.03.26.03.50.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Mar 2020 03:50:37 -0700 (PDT)
-Date: Thu, 26 Mar 2020 11:50:36 +0100
-From: Michal Hocko <mhocko@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] mm/sparse: Fix kernel crash with pfn_section_valid check
-Message-ID: <20200326105036.GK27965@dhcp22.suse.cz>
-References: <20200325031914.107660-1-aneesh.kumar@linux.ibm.com>
- <20200326094023.GG27965@dhcp22.suse.cz>
- <6ef554a6-313d-2b17-cee0-14078ed225f6@linux.ibm.com>
- <20200326101631.GJ27965@dhcp22.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48p2ln21lczDqKZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 22:27:44 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hcE0t/+P/ROT7bJqhMuRE+o/8HkX5ukQtoBcR2LkKrwaeZtKuBrueU1/cdBe+GjeVxBuTmRFoh6Fa+jIP0HsmLR7Srs/ta3cx42SC8g7SIV6d/+4Z9myU4Sr2IxzYUQ57KlLG6IalH3Ss15m/IVspJhtnKynGet58aPM1/VpTm1TbTsW3kGOYfGrjBy43ifeT+6Cd+U0f1rdcbF2yqDkLi/uVna7IS46Y1iSpfH1dAZf4V2464IRSnoFR+eZDrgqRfSNKlgdlYh6uhJUf4UsEII1N9pGvPpLK1ssAc8KZvOOe0NZdVn6WgZDWT4C+Z8gBH0MO8tbKRJqsZud7Oc/OQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=881QD6+SCFjpQD28jCSSQPDg3w4/ooncGEL1dHSZSYY=;
+ b=RFgfKUtTsyLm0aze/i/S8/WqO7Kkr4aH4pE+UDt3xbA2Ytl3nw9Wl1OdF+554z7Ws9CMVV7p5CNbazuJIZ8RRvKOgNKrOZEWX2e/WlH3eCjUEiL6pDpZ/GXelYFOkSYHZfFr6v/wlv//KiK8M7+hfyHas8Y5XxQP7Wx3V7xG0ZwSobIAHJ1xSIOEPVtZwwAvgn2s0jhm0VrntK/khbjEqs//esrabAkbBi5MwXNEsQ9Jx6vcsW7lBt9Ofd5uMGZjWnUb3eh0WCfiiaAMdVpjcz2P8GmlfRCLOke+cV7ME0CFvE24VfqTSfVdxrPPMNEcXvz5pCxCkB1TpDEWPkULvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=881QD6+SCFjpQD28jCSSQPDg3w4/ooncGEL1dHSZSYY=;
+ b=McsYNAFOdo+N/U4JywO14dPPqsrsofvjYmeQl0RNJhTqW2Y64AVLKdCugzh4rtOGsYsmf3sFN0JZ5EoZ6CDfLKAGZxS3ASGfz9fu1fENMJD3dfK4cMSYgNGPY9y5ZGKYNq8G4xxy605pLkXSklkDLU0kO6rLUylDqo7VHaapkPg=
+Received: from AM7PR04MB7157.eurprd04.prod.outlook.com (52.135.57.84) by
+ AM7PR04MB7109.eurprd04.prod.outlook.com (52.135.57.10) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2856.19; Thu, 26 Mar 2020 11:27:39 +0000
+Received: from AM7PR04MB7157.eurprd04.prod.outlook.com
+ ([fe80::902c:71:6377:4273]) by AM7PR04MB7157.eurprd04.prod.outlook.com
+ ([fe80::902c:71:6377:4273%5]) with mapi id 15.20.2835.023; Thu, 26 Mar 2020
+ 11:27:39 +0000
+From: Peter Chen <peter.chen@nxp.com>
+To: YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH -next] usb: gadget: fsl: remove unused variable
+ 'driver_desc'
+Thread-Topic: [PATCH -next] usb: gadget: fsl: remove unused variable
+ 'driver_desc'
+Thread-Index: AQHWAz46AEx9LC9yH0mnhgCbnlg976havLiA
+Date: Thu, 26 Mar 2020 11:27:38 +0000
+Message-ID: <20200326112759.GB23632@b29397-desktop>
+References: <20200326071419.19240-1-yuehaibing@huawei.com>
+In-Reply-To: <20200326071419.19240-1-yuehaibing@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=peter.chen@nxp.com; 
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 88ca04b9-f938-41dc-d988-08d7d178b0ed
+x-ms-traffictypediagnostic: AM7PR04MB7109:|AM7PR04MB7109:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM7PR04MB71094A505D179E5D93EEFEA18BCF0@AM7PR04MB7109.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1360;
+x-forefront-prvs: 0354B4BED2
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(7916004)(4636009)(136003)(376002)(396003)(39860400002)(346002)(366004)(54906003)(5660300002)(6506007)(53546011)(8676002)(33656002)(478600001)(2906002)(44832011)(8936002)(26005)(6916009)(71200400001)(1076003)(66476007)(66556008)(64756008)(66446008)(4744005)(4326008)(91956017)(6512007)(86362001)(66946007)(76116006)(9686003)(316002)(33716001)(6486002)(81166006)(186003)(81156014);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:AM7PR04MB7109;
+ H:AM7PR04MB7157.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: NB4n2WwV6gNRhhBlHxuRWIgH/M+O6LqeznisGC5xQxg9XRq0TecnWQcfwN1tpQkfKaHZPVua9+BfVGN8LdmKMgfvcvSFUQEz/MrEnRCO2X22bpcKPiXtqvdkmVkT0qFISN484wHV0bA6PTGe2imh+ZE6x+Yec+gCWLGgz8a169E30+bYs1PeaxcI//025CNB5sxI4Y9v4znY+hmp6RUtdw05QkouU5Yk1T0K7KhKZNtLMk7ckVWGEmDcANxjEgarJr4N7k5lzgeD8bzS70H+GdBmPdIjDNKui8+X/SDVC1kd1FeodKYhmzNTR7Iu/NRDccv0MGuXKyPOyg+2ufrKz2uwNY7M6dWvQPVTWvYjGo7J1t+8GVegvpbeDJD+k7uk3Mb2UG8U/5TiZmU129RUtW/zAEex49sXzEjPX+0kGMsv8xw8n/z9jDJhAlY0ZZ/h
+x-ms-exchange-antispam-messagedata: t6a5bzMGvRmlYW7adR0kSacCBiShuQbMoUI8Woh7NEJvtEbyrGHoUB7c+L8g4spFPFCQ4WpJbKskVmCw+kccnUH/IkCSpNheaKHrhnogSph2lfEvWMgbBQx5DClblVI3gPGI7KwanRi0N9nwqBypoQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4243D766E89A814D926F964C91D19B01@eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200326101631.GJ27965@dhcp22.suse.cz>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88ca04b9-f938-41dc-d988-08d7d178b0ed
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Mar 2020 11:27:39.0325 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: bIYnYNPCxCaDSRWn0xoz/r9T+/BYdpQ6sjwEm/oSqj92ir95Xss3TgGKkdTEQC42v9skXe/nSFJ+6nfan9zJTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,91 +107,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Baoquan He <bhe@redhat.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: "balbi@kernel.org" <balbi@kernel.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 26-03-20 11:16:33, Michal Hocko wrote:
-> On Thu 26-03-20 15:26:22, Aneesh Kumar K.V wrote:
-> > On 3/26/20 3:10 PM, Michal Hocko wrote:
-> > > On Wed 25-03-20 08:49:14, Aneesh Kumar K.V wrote:
-> > > > Fixes the below crash
-> > > > 
-> > > > BUG: Kernel NULL pointer dereference on read at 0x00000000
-> > > > Faulting instruction address: 0xc000000000c3447c
-> > > > Oops: Kernel access of bad area, sig: 11 [#1]
-> > > > LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> > > > CPU: 11 PID: 7519 Comm: lt-ndctl Not tainted 5.6.0-rc7-autotest #1
-> > > > ...
-> > > > NIP [c000000000c3447c] vmemmap_populated+0x98/0xc0
-> > > > LR [c000000000088354] vmemmap_free+0x144/0x320
-> > > > Call Trace:
-> > > >   section_deactivate+0x220/0x240
-> > > 
-> > > It would be great to match this to the specific source code.
-> > 
-> > The crash is due to NULL dereference at
-> > 
-> > test_bit(idx, ms->usage->subsection_map); due to ms->usage = NULL;
-> 
-> It would be nice to call that out here as well
-> 
-> [...]
-> > > Why do we have to free usage before deactivaing section memmap? Now that
-> > > we have a late section_mem_map reset shouldn't we tear down the usage in
-> > > the same branch?
-> > > 
-> > 
-> > We still need to make the section invalid before we call into
-> > depopulate_section_memmap(). Because architecture like powerpc can share
-> > vmemmap area across sections (16MB mapping of vmemmap area) and we use
-> > vmemmap_popluated() to make that decision.
-> 
-> This should be noted in a comment as well.
-> 
-> > > > Fixes: d41e2f3bd546 ("mm/hotplug: fix hot remove failure in SPARSEMEM|!VMEMMAP case")
-> > > > Cc: Baoquan He <bhe@redhat.com>
-> > > > Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> > > > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > > > ---
-> > > >   mm/sparse.c | 2 ++
-> > > >   1 file changed, 2 insertions(+)
-> > > > 
-> > > > diff --git a/mm/sparse.c b/mm/sparse.c
-> > > > index aadb7298dcef..3012d1f3771a 100644
-> > > > --- a/mm/sparse.c
-> > > > +++ b/mm/sparse.c
-> > > > @@ -781,6 +781,8 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
-> > > >   			ms->usage = NULL;
-> > > >   		}
-> > > >   		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
-> > > > +		/* Mark the section invalid */
-> > > > +		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
-> > > 
-> > > Btw. this comment is not really helping at all.
-> > 
-> > That is marking the section invalid so that
-> > 
-> > static inline int valid_section(struct mem_section *section)
-> > {
-> > 	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
-> > }
-> > 
-> > 
-> > returns false.
-> 
-> Yes that is obvious once you are clear where to look. I was really
-> hoping for a comment that would simply point you to the right
-> direcection without chasing SECTION_HAS_MEM_MAP usage. This code is
-> subtle and useful comments, even when they state something that is
-> obvious to you _right_now_, can be really helpful.
+On 20-03-26 15:14:19, YueHaibing wrote:
+> drivers/usb/gadget/udc/fsl_udc_core.c:56:19:
+>  warning: 'driver_desc' defined but not used [-Wunused-const-variable=3D]
+>=20
+> It is never used, so remove it.
+>=20
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/usb/gadget/udc/fsl_udc_core.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/u=
+dc/fsl_udc_core.c
+> index ec6eda426223..febabde62f71 100644
+> --- a/drivers/usb/gadget/udc/fsl_udc_core.c
+> +++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+> @@ -53,7 +53,6 @@
+>  #define	DMA_ADDR_INVALID	(~(dma_addr_t)0)
+> =20
+>  static const char driver_name[] =3D "fsl-usb2-udc";
+> -static const char driver_desc[] =3D DRIVER_DESC;
+> =20
+>  static struct usb_dr_device __iomem *dr_regs;
+> =20
+> --=20
+> 2.17.1
+>=20
+>=20
 
-Btw. forgot to add. With the improved comment feel free to add
-Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Peter Chen <peter.chen@nxp.com>
 
--- 
-Michal Hocko
-SUSE Labs
+--=20
+
+Thanks,
+Peter Chen=
