@@ -2,65 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4090193CC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 11:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D82193CD8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 11:18:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48p17X645pzDqmC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 21:14:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48p1C96lkrzDqw9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 21:17:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+ [209.85.221.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48p15X2pr2zDqhm
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 21:13:03 +1100 (AEDT)
-Received: from mail-qt1-f173.google.com ([209.85.160.173]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1M3DFj-1jEN9r0CFx-003cSU for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar
- 2020 11:07:46 +0100
-Received: by mail-qt1-f173.google.com with SMTP id m33so4731485qtb.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:07:45 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ2+RkFWJDNWTRDPKrorJJe7OYwnRApxvlu/O8tUqFOHMZgKto+F
- x05KSZWNqu7rphGgn1WmPqoTzlJAUN7mbukHhOg=
-X-Google-Smtp-Source: ADFU+vtn4zzbgXz0JiR+4r/VnSMlC2pOUeyfguA66WQGjarHPZXvLUyw5ij+hMENKb2uojnLZ7CO+lHSprkkhHJr/VE=
-X-Received: by 2002:aed:20e3:: with SMTP id 90mr7165503qtb.142.1585217264913; 
- Thu, 26 Mar 2020 03:07:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48p19f01VvzDqQR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 21:16:36 +1100 (AEDT)
+Received: by mail-wr1-f66.google.com with SMTP id s1so7017860wrv.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 03:16:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=vMy/PQ+ITtl8Oam8bs7Aqt9RXzUHCecRP8udelEpwUQ=;
+ b=C86asBB412v49W3v2E6aD9rf/hktbJMvpWwmEzGt+Swciki1mVQzpHOWpQqZkU5NXI
+ /QPmhRGvU6IFU2XNx6wCs7/6ouEVNHvAzSs5n6zoGrpZRhaLFEGFKjDQaKQM4AgT7pP7
+ tIw35cwjNbKyTkYGgVgtwWYubc3l4tNEoVFAOnMAK/AMARB+CwJAN7TljgBjXQENElhe
+ 2alx616sE+Os4LLItfeK/zS2S5FlNt8xv8u1LygyxZJuC6pbUObSWjGjdHQpMF5j75JG
+ qDfp2VLF2j9Y0MGxEaeviy2OtAsftgW30b6X5J+IzMYftSvDe9gN+s9Ya3NcnErWWLm+
+ TOUA==
+X-Gm-Message-State: ANhLgQ19nlKuVhSt6QCy0MTiTPPkLL7NI4CnDgtn7a2gA1y0XyqczIwb
+ KpT9LAH+xSp/JlsJRUZG3h8=
+X-Google-Smtp-Source: ADFU+vtKi1ZhDFDWo9LbSV3RPeDQcM9EQGKR5wMjVNPm5S16Gh5Vh4Dgz3gQRLSPaf9dfo6a+rFnBg==
+X-Received: by 2002:adf:83c4:: with SMTP id 62mr9011356wre.105.1585217793341; 
+ Thu, 26 Mar 2020 03:16:33 -0700 (PDT)
+Received: from localhost (ip-37-188-135-150.eurotel.cz. [37.188.135.150])
+ by smtp.gmail.com with ESMTPSA id y200sm2857062wmc.20.2020.03.26.03.16.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Mar 2020 03:16:32 -0700 (PDT)
+Date: Thu, 26 Mar 2020 11:16:31 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] mm/sparse: Fix kernel crash with pfn_section_valid check
+Message-ID: <20200326101631.GJ27965@dhcp22.suse.cz>
+References: <20200325031914.107660-1-aneesh.kumar@linux.ibm.com>
+ <20200326094023.GG27965@dhcp22.suse.cz>
+ <6ef554a6-313d-2b17-cee0-14078ed225f6@linux.ibm.com>
 MIME-Version: 1.0
-References: <1576170032-3124-1-git-send-email-youri.querry_1@nxp.com>
- <1576170032-3124-3-git-send-email-youri.querry_1@nxp.com>
-In-Reply-To: <1576170032-3124-3-git-send-email-youri.querry_1@nxp.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 26 Mar 2020 11:07:28 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a11TJvNZ=uibXe8v6aHc3E8YTPeReN43=OW=3V7Rd7MNw@mail.gmail.com>
-Message-ID: <CAK8P3a11TJvNZ=uibXe8v6aHc3E8YTPeReN43=OW=3V7Rd7MNw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] soc: fsl: dpio: QMAN performance improvement.
- Function pointer indirection.
-To: Youri Querry <youri.querry_1@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:jdSFvq4dLZCWWFAK814h8DO4IiK8TqAoSF6vQUAlAjw9SHqmb6B
- IwE8QYyPdGXVWwC0KNjo2cnQ0sHFLu8wWnMnhDm76Ae+r1luQIjGbl/riN9lrPa/OXmxiSx
- NELNHBIqL82OGi8F2MUU0S7OZleUgDrQ8+Edou9ssb/PwUvPr5Vmd7BJdLQ5bMyqtRwfIWU
- e894LVE5ZT0YB1FfGE8CA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:g63kPKWKwqQ=:atjoKvW77+zHCUhlr/xe6N
- Ih4lY16Pp1XVBEwibeu1G4IWdollBtfeJxRIx5uYmhQ8Q3vlZsSZjRw+jKvy7zd9YT5PL+txa
- xL03Q6LPL6sn05+WJ9a7MHTxVNVyIMRWzUAZq5OAqBh31ePo6gD9F+YIqFw27Kk3CCqj+XfEZ
- 0oJFb0Ef3QBzoMflQYv3TsrW+IQKjmBiD3PP3YAEgzJJL7/VMJq5biC27cCcSbx79yECtU3BA
- Q8B6wSwbVDm9TEPdjJAEOtxENhmrIq5iPVL+FRCQo38IU81NjAKzosJ+5/Aaz3dQ4u7coWNcf
- G+s48edJqgjLS8evqaQZocIco3KaSVIwQvnKEMzAJNgCNY/eFu7TAge4AX4PUBxzWEhCdxXAr
- r/5NLYgKDkaLg7/xP9ossOj3J0dAm1XppXP+eRMPRiXXB77PRFWYQCRKj/BOXzD0W58Lh5ksC
- CTNywPITzflhh//MxqFruyTLyM7X5VYEY31U0qf2HNtr868uG3eeew28W9uW2XPMf3Idkd10M
- MjKwwzE8mo+By96Ugn1e9z2uWZ0QYw5k0RNTT/SfDwFMQd1WtgGFJDNbY8VOZtoa2FOeb3CNk
- +rfsep5oX8P0AjwYW4BSfcgWw8iYBAVhm79SJhmglSFH1WBZ/GHu+bGeokNMczoLPQlEgXZtG
- Jcr2uDih565U79bI27E86cUUSnaTjnjuR0XPI0FTtj4zR5K1jHDlkdJeB5FIiOh7IsMR623IX
- f0qI5X9eV9UK8pwVzkgACoTxkANJ8qUtCKq6wIBOOUpDwSwUpkyIKgs0vR+05JSwQyNT8+ycG
- q7QupVVnVPobKIdllRwIxNS3s10P1SU2z+iaXbyx8J9OU24Sho=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ef554a6-313d-2b17-cee0-14078ed225f6@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,91 +66,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Pledge <roy.pledge@nxp.com>,
- Alexandru Marginean <alexandru.marginean@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Baoquan He <bhe@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 12, 2019 at 6:02 PM Youri Querry <youri.querry_1@nxp.com> wrote:
->
-> We are making the access decision in the initialization and
-> setting the function pointers accordingly.
->
-> Signed-off-by: Youri Querry <youri.querry_1@nxp.com>
-> ---
->  drivers/soc/fsl/dpio/qbman-portal.c | 451 +++++++++++++++++++++++++++++++-----
->  drivers/soc/fsl/dpio/qbman-portal.h | 129 ++++++++++-
->  2 files changed, 507 insertions(+), 73 deletions(-)
+On Thu 26-03-20 15:26:22, Aneesh Kumar K.V wrote:
+> On 3/26/20 3:10 PM, Michal Hocko wrote:
+> > On Wed 25-03-20 08:49:14, Aneesh Kumar K.V wrote:
+> > > Fixes the below crash
+> > > 
+> > > BUG: Kernel NULL pointer dereference on read at 0x00000000
+> > > Faulting instruction address: 0xc000000000c3447c
+> > > Oops: Kernel access of bad area, sig: 11 [#1]
+> > > LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> > > CPU: 11 PID: 7519 Comm: lt-ndctl Not tainted 5.6.0-rc7-autotest #1
+> > > ...
+> > > NIP [c000000000c3447c] vmemmap_populated+0x98/0xc0
+> > > LR [c000000000088354] vmemmap_free+0x144/0x320
+> > > Call Trace:
+> > >   section_deactivate+0x220/0x240
+> > 
+> > It would be great to match this to the specific source code.
+> 
+> The crash is due to NULL dereference at
+> 
+> test_bit(idx, ms->usage->subsection_map); due to ms->usage = NULL;
 
-While merging pull requests, I came across some style issues with this driver.
-I'm pulling it anyway, but please have another look and fix these for the next
-release, or send a follow-up patch for the coming merge window.
+It would be nice to call that out here as well
 
->
-> diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
-> index 5a37ac8..0ffe018 100644
-> --- a/drivers/soc/fsl/dpio/qbman-portal.c
-> +++ b/drivers/soc/fsl/dpio/qbman-portal.c
-> @@ -83,6 +83,82 @@ enum qbman_sdqcr_fc {
->         qbman_sdqcr_fc_up_to_3 = 1
->  };
->
-> +/* Internal Function declaration */
-> +static int qbman_swp_enqueue_direct(struct qbman_swp *s,
-> +                                   const struct qbman_eq_desc *d,
-> +                                   const struct dpaa2_fd *fd);
-> +static int qbman_swp_enqueue_mem_back(struct qbman_swp *s,
-> +                                     const struct qbman_eq_desc *d,
-> +                                     const struct dpaa2_fd *fd);
-> +static int qbman_swp_enqueue_multiple_direct(struct qbman_swp *s,
-> +                                            const struct qbman_eq_desc *d,
-> +                                            const struct dpaa2_fd *fd,
-> +                                            uint32_t *flags,
-> +                                            int num_frames);
-> +static int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
-> +                                              const struct qbman_eq_desc *d,
-> +                                              const struct dpaa2_fd *fd,
-> +                                              uint32_t *flags,
-> +                                              int num_frames);
+[...]
+> > Why do we have to free usage before deactivaing section memmap? Now that
+> > we have a late section_mem_map reset shouldn't we tear down the usage in
+> > the same branch?
+> > 
+> 
+> We still need to make the section invalid before we call into
+> depopulate_section_memmap(). Because architecture like powerpc can share
+> vmemmap area across sections (16MB mapping of vmemmap area) and we use
+> vmemmap_popluated() to make that decision.
 
-Please try to avoid all static forward declarations. The coding style for the
-kernel generally mandates that you define the functions in the order they
-are used in, and have no such declarations, unless there is a recursion
-that requires it. If you do have recursion, then please add a comment that
-explains how you limit it to avoid overrunning the kernel stack.
+This should be noted in a comment as well.
 
-> +const struct dpaa2_dq *qbman_swp_dqrr_next_direct(struct qbman_swp *s);
-> +const struct dpaa2_dq *qbman_swp_dqrr_next_mem_back(struct qbman_swp *s);
+> > > Fixes: d41e2f3bd546 ("mm/hotplug: fix hot remove failure in SPARSEMEM|!VMEMMAP case")
+> > > Cc: Baoquan He <bhe@redhat.com>
+> > > Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> > > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> > > ---
+> > >   mm/sparse.c | 2 ++
+> > >   1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/mm/sparse.c b/mm/sparse.c
+> > > index aadb7298dcef..3012d1f3771a 100644
+> > > --- a/mm/sparse.c
+> > > +++ b/mm/sparse.c
+> > > @@ -781,6 +781,8 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+> > >   			ms->usage = NULL;
+> > >   		}
+> > >   		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+> > > +		/* Mark the section invalid */
+> > > +		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
+> > 
+> > Btw. this comment is not really helping at all.
+> 
+> That is marking the section invalid so that
+> 
+> static inline int valid_section(struct mem_section *section)
+> {
+> 	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
+> }
+> 
+> 
+> returns false.
 
-Forward declarations for non-static functions in C code are much
-worse, you should
-never need these. If a function is shared between files, then put the
-declaration
-into a header file that is included by both, to ensure the prototypes match, and
-if it's only used here, then make it 'static'.
+Yes that is obvious once you are clear where to look. I was really
+hoping for a comment that would simply point you to the right
+direcection without chasing SECTION_HAS_MEM_MAP usage. This code is
+subtle and useful comments, even when they state something that is
+obvious to you _right_now_, can be really helpful.
 
-> +/* Function pointers */
-> +int (*qbman_swp_enqueue_ptr)(struct qbman_swp *s,
-> +                            const struct qbman_eq_desc *d,
-> +                            const struct dpaa2_fd *fd)
-> +       = qbman_swp_enqueue_direct;
-> +
-> +int (*qbman_swp_enqueue_multiple_ptr)(struct qbman_swp *s,
-> +                                     const struct qbman_eq_desc *d,
-> +                                     const struct dpaa2_fd *fd,
-> +                                     uint32_t *flags,
-> +                                            int num_frames)
-> +       = qbman_swp_enqueue_multiple_direct;
-
-This looks like you just have an indirect function pointer with a
-single possible
-implementation. This is less of a problem, but until you have a way to safely
-override these at runtime, it may be better to simplify this by using direct
-function calls.
-
-       Arnd
+Thanks!
+-- 
+Michal Hocko
+SUSE Labs
