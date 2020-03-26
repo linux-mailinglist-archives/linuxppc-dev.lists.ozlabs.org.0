@@ -2,32 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E204193F5E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 13:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95102193F6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 14:06:39 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48p4mQ38ybzDqL4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:58:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48p4xm6525zDqMx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 00:06:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48p3cx2ZydzDqdX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:06:57 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48p3d44wsgzDqSL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:07:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 48p3cz22zcz9sSx; Thu, 26 Mar 2020 23:06:59 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48p3cw3lcxz9sT3; Thu, 26 Mar 2020 23:06:55 +1100 (AEDT)
+ id 48p3cy3fx0z9sSL; Thu, 26 Mar 2020 23:06:57 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 850507f30c38dff21ed557cb98ab16db26c32bbc
-In-Reply-To: <20200318060004.10685-1-po-hsu.lin@canonical.com>
-To: Po-Hsu Lin <po-hsu.lin@canonical.com>, linux-kselftest@vger.kernel.org
+X-powerpc-patch-commit: d4a8e98621543d5798421eed177978bf2b3cdd11
+In-Reply-To: <20200320032116.1024773-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCHv2] selftests/powerpc: Turn off timeout setting for
- benchmarks, dscr, signal, tm
-Message-Id: <48p3cw3lcxz9sT3@ozlabs.org>
-Date: Thu, 26 Mar 2020 23:06:55 +1100 (AEDT)
+Subject: Re: [PATCH v6 1/2] powerpc/64: Setup a paca before parsing device
+ tree etc.
+Message-Id: <48p3cy3fx0z9sSL@ozlabs.org>
+Date: Thu, 26 Mar 2020 23:06:57 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,32 +42,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, shuah@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-03-18 at 06:00:04 UTC, Po-Hsu Lin wrote:
-> Some specific tests in powerpc can take longer than the default 45
-> seconds that added in commit 852c8cbf34d3 ("selftests/kselftest/runner.sh:
-> Add 45 second timeout per test") to run, the following test result was
-> collected across 2 Power8 nodes and 1 Power9 node in our pool:
->   powerpc/benchmarks/futex_bench - 52s
->   powerpc/dscr/dscr_sysfs_test - 116s
->   powerpc/signal/signal_fuzzer - 88s
->   powerpc/tm/tm_unavailable_test - 168s
->   powerpc/tm/tm-poison - 240s
+On Fri, 2020-03-20 at 03:21:15 UTC, Michael Ellerman wrote:
+> From: Daniel Axtens <dja@axtens.net>
 > 
-> Thus they will fail with TIMEOUT error. Disable the timeout setting
-> for these sub-tests to allow them finish properly.
+> Currently we set up the paca after parsing the device tree for CPU
+> features. Prior to that, r13 contains random data, which means there
+> is random data in r13 while we're running the generic dt parsing code.
 > 
-> https://bugs.launchpad.net/bugs/1864642
-> Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+> This random data varies depending on whether we boot through a vmlinux
+> or a zImage: for the vmlinux case it's usually around zero, but for
+> zImages we see random values like 912a72603d420015.
+> 
+> This is poor practice, and can also lead to difficult-to-debug
+> crashes. For example, when kcov is enabled, the kcov instrumentation
+> attempts to read preempt_count out of the current task, which goes via
+> the paca. This then crashes in the zImage case.
+> 
+> Similarly stack protector can cause crashes if r13 is bogus, by
+> reading from the stack canary in the paca.
+> 
+> To resolve this:
+> 
+>  - move the paca setup to before the CPU feature parsing.
+> 
+>  - because we no longer have access to CPU feature flags in paca
+>  setup, change the HV feature test in the paca setup path to consider
+>  the actual value of the MSR rather than the CPU feature.
+> 
+> Translations get switched on once we leave early_setup, so I think
+> we'd already catch any other cases where the paca or task aren't set
+> up.
+> 
+> Boot tested on a P9 guest and host.
+> 
+> Fixes: fb0b0a73b223 ("powerpc: Enable kcov")
+> Fixes: 06ec27aea9fc ("powerpc/64: add stack protector support")
+> Cc: stable@vger.kernel.org # v4.20+
+> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> [mpe: Reword comments & change log a bit to mention stack protector]
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Applied to powerpc next, thanks.
+Series applied to powerpc next.
 
-https://git.kernel.org/powerpc/c/850507f30c38dff21ed557cb98ab16db26c32bbc
+https://git.kernel.org/powerpc/c/d4a8e98621543d5798421eed177978bf2b3cdd11
 
 cheers
