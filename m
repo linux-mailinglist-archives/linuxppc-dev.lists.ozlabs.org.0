@@ -1,35 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2AA193EFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 13:38:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48p4K569x4zDqBg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:38:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB6D193F01
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 13:40:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48p4Mj0ZNdzDqNs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:40:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48p3cf2wKszDqpL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:06:42 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48p3cg3BDBzDqSL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:06:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48p3cd3rbBz9sRY; Thu, 26 Mar 2020 23:06:41 +1100 (AEDT)
+ id 48p3cf5f7yz9sSL; Thu, 26 Mar 2020 23:06:42 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 697ece78f8f749aeea40f2711389901f0974017a
-In-Reply-To: <c4d6c18a7f8d9d3b899bc492f55fbc40ef38896a.1583861325.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+X-powerpc-patch-commit: addf3727ad28bd159ae2da433b48daf2ffb339f7
+In-Reply-To: <03073a9a269010ca439e9e658629c44602b0cc9f.1583896348.git.joe@perches.com>
+To: Joe Perches <joe@perches.com>, Jeremy Kerr <jk@ozlabs.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3] powerpc/32s: reorder Linux PTE bits to better match
- Hash PTE bits.
-Message-Id: <48p3cd3rbBz9sRY@ozlabs.org>
-Date: Thu, 26 Mar 2020 23:06:41 +1100 (AEDT)
+Subject: Re: [PATCH -next 017/491] CELL BROADBAND ENGINE ARCHITECTURE: Use
+ fallthrough; 
+Message-Id: <48p3cf5f7yz9sSL@ozlabs.org>
+Date: Thu, 26 Mar 2020 23:06:42 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,35 +39,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-03-10 at 17:29:12 UTC, Christophe Leroy wrote:
-> Reorder Linux PTE bits to (almost) match Hash PTE bits.
+On Wed, 2020-03-11 at 04:51:31 UTC, Joe Perches wrote:
+> Convert the various uses of fallthrough comments to fallthrough;
 > 
-> RW Kernel : PP = 00
-> RO Kernel : PP = 00
-> RW User   : PP = 01
-> RO User   : PP = 11
+> Done via script
+> Link: https://lore.kernel.org/lkml/b56602fcf79f849e733e7b521bb0e17895d390fa.1582230379.git.joe.com/
 > 
-> So naturally, we should have
-> _PAGE_USER = 0x001
-> _PAGE_RW   = 0x002
-> 
-> Today 0x001 and 0x002 and _PAGE_PRESENT and _PAGE_HASHPTE which
-> both are software only bits.
-> 
-> Switch _PAGE_USER and _PAGE_PRESET
-> Switch _PAGE_RW and _PAGE_HASHPTE
-> 
-> This allows to remove a few insns.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Joe Perches <joe@perches.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/697ece78f8f749aeea40f2711389901f0974017a
+https://git.kernel.org/powerpc/c/addf3727ad28bd159ae2da433b48daf2ffb339f7
 
 cheers
