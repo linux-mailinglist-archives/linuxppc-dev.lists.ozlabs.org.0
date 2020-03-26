@@ -1,94 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33466194B3A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:08:03 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF819194B38
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:06:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pJwf0fQLzDqSn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 09:06:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pJyS0GWXzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 09:08:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=DkZIPKkv; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pJtT3ShBzDqNw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 09:04:32 +1100 (AEDT)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02QLn98F086088;
- Thu, 26 Mar 2020 21:56:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=jJlpHWqDgAaQnn+x/AibIAVJw425RNnEJVeE/H96C6Q=;
- b=DkZIPKkvMhi7MgJ7A6372ctDD6ur875QCwmr9LjM6f/gcN5OLsYztXi/9wp7FD338Eh1
- BcpAaYJlJsPca1+YzPWnvyZLl0/l9jzlAO26D9M2lRz/YnxIOtavH2bdzDl78rbNS7QS
- w/70j06rpqsxG+rvW1byAPFer6qmmn6ntz8ZtvxuNNNNHPQ6CcnDnqC0fhG48N9veZVg
- BCfsiKmD0CdRGaJja5RXf7JXI4W1+6Wfb9/4o4noftsF2yrL4eKSp0J70hpbbeGCvHbP
- j84RfZbN8C8lsTDgCFGpBO0ICKX/8T12IimZxxtb9mIqtc54TXgPLYw1Bv1mXgDOPyi2 vQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by aserp2120.oracle.com with ESMTP id 2ywavmjcja-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Mar 2020 21:56:24 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02QLpI7M027652;
- Thu, 26 Mar 2020 21:56:24 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by userp3030.oracle.com with ESMTP id 2yxw4ufgb2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Mar 2020 21:56:23 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 02QLuAlh008996;
- Thu, 26 Mar 2020 21:56:10 GMT
-Received: from [192.168.1.206] (/71.63.128.209)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 26 Mar 2020 14:56:10 -0700
-Subject: Re: [PATCH 1/4] hugetlbfs: add arch_hugetlb_valid_size
-To: Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20200318220634.32100-1-mike.kravetz@oracle.com>
- <20200318220634.32100-2-mike.kravetz@oracle.com>
- <831a0773-1ba6-4d72-44b9-7472123b8528@intel.com>
- <5aceea6a-8dc0-a44b-80c6-94511b5c75ca@oracle.com>
- <1c8b16c7-248e-b75f-96c6-eabc953c5066@intel.com>
-From: Mike Kravetz <mike.kravetz@oracle.com>
-Message-ID: <530e6e11-ad1a-55bc-e61e-9da6eb7fea21@oracle.com>
-Date: Thu, 26 Mar 2020 14:56:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pJvf3znJzDqRN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 09:05:34 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02QM4pYo003294; Thu, 26 Mar 2020 18:05:22 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 300jeununj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Mar 2020 18:05:22 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02QM3AUC020255;
+ Thu, 26 Mar 2020 22:05:21 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2ywaw2ra6v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Mar 2020 22:05:20 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02QM5KIb11076308
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 26 Mar 2020 22:05:20 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 18E20AC311;
+ Thu, 26 Mar 2020 22:05:20 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6BCBDAC2E7;
+ Thu, 26 Mar 2020 22:05:11 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.162.45])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 26 Mar 2020 22:05:10 +0000 (GMT)
+Message-ID: <f86aa1672b447bd09a214bc8682a70934dcee82f.camel@linux.ibm.com>
+Subject: Re: [RFC PATCH 1/1] ppc/smp: Replace unnecessary 'while' by 'if'
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Paul Mackerras <paulus@ozlabs.org>
+Date: Thu, 26 Mar 2020 19:05:03 -0300
+In-Reply-To: <20200326214005.GB9894@blackberry>
+References: <20200326203752.497029-1-leonardo@linux.ibm.com>
+ <20200326214005.GB9894@blackberry>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-GTdlyedGwk3mGYQKKQZt"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <1c8b16c7-248e-b75f-96c6-eabc953c5066@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9572
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- suspectscore=2
- spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003260159
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9572
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- malwarescore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 clxscore=1011 impostorscore=0
- phishscore=0 suspectscore=2 mlxlogscore=999 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003260159
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-26_13:2020-03-26,
+ 2020-03-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=838 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003260160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,51 +84,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Jonathan Corbet <corbet@lwn.net>, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- Longpeng <longpeng2@huawei.com>, Will Deacon <will@kernel.org>,
- "David S.Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/18/20 4:36 PM, Dave Hansen wrote:
-> On 3/18/20 3:52 PM, Mike Kravetz wrote:
->> Sounds good.  I'll incorporate those changes into a v2, unless someone
->> else with has a different opinion.
->>
->> BTW, this patch should not really change the way the code works today.
->> It is mostly a movement of code.  Unless I am missing something, the
->> existing code will always allow setup of PMD_SIZE hugetlb pages.
-> 
-> Hah, I totally skipped over the old code in the diff.
-> 
-> It looks like we'll disable hugetblfs *entirely* if PSE isn't supported.
->  I think this is actually wrong, but nobody ever noticed.  I think you'd
-> have to be running as a guest under a hypervisor that's lying about PSE
-> not being supported *and* care about 1GB pages.  Nobody does that.
 
-Actually, !PSE will disable hugetlbfs a little later in the boot process.
-You are talking about hugepages_supported() correct?
+--=-GTdlyedGwk3mGYQKKQZt
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I think something really bad could happen in this situation (!PSE and
-X86_FEATURE_GBPAGES).  When parsing 'hugepages=' for gigantic pages we
-immediately allocate from bootmem.  This happens before later checks in
-hugetlb_init for hugepages_supported().  So, I think we would end up
-allocating GB pages from bootmem and not be able to use or free them. :(
+On Fri, 2020-03-27 at 08:40 +1100, Paul Mackerras wrote:
+> On Thu, Mar 26, 2020 at 05:37:52PM -0300, Leonardo Bras wrote:
+> > spin_until_cond() will wait until nmi_ipi_busy =3D=3D false, and
+> > nmi_ipi_lock_start() does not seem to change nmi_ipi_busy, so there is
+> > no way this while will ever repeat.
+> >=20
+> > Replace this 'while' by an 'if', so it does not look like it can repeat=
+.
+>=20
+> Nack, it can repeat.  The scenario is that cpu A is in this code,
+> inside spin_until_cond(); cpu B has previously set nmi_ipi_busy, and
+> cpu C is also waiting for nmi_ipi_busy to be cleared, like cpu A.
+> When cpu B clears nmi_ipi_busy, both cpu A and cpu C will see that and
+> will race inside nmi_ipi_lock_start().  One of them, say cpu C, will
+> take the lock and proceed to set nmi_ipi_busy and then call
+> nmi_ipi_unlock().  Then the other cpu (cpu A) will then take the lock
+> and return from nmi_ipi_lock_start() and find nmi_ipi_busy =3D=3D true.
+> At that point it needs to go through the while loop body once more.
+>=20
+> Paul.
 
-Perhaps it would be best to check hugepages_supported() when parsing
-hugetlb command line options.  If not enabled, throw an error.  This
-will be much easier to do after moving all command line parsing to
-arch independent code.
+Ok, got it.
 
-Is that a sufficient way to address this concern?  I think it is a good
-change in any case.
--- 
-Mike Kravetz
+Thanks for explaining Paul!
+
+--=-GTdlyedGwk3mGYQKKQZt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl59JxAACgkQlQYWtz9S
+ttTSdRAAttveHAUp1FuyI8cjRY3YA64LGrCYQ/GJZfAZljGAMyg78+BO1orF0p7b
+n+wYBDvQzqmLMgL5fUxeHG+CQzPX7unA/9n+rn7y4j+BVZbupjLHOnPXswoDda3Y
+Ycs5eFcEJ2d5Fs0psXJs/aOVtF6cd8uKNzdpk0tVGM3VMkoB509DtJqdkjY96n1g
+Oi7+eDKF+yUNIxmOjEeTaJwR9fSrzLRJhdnLLpOmR0/42QvOcGeh8q3p2qtCyfgo
+H6qEXVCq5E1nYLGuvJskD46vaRRXGZ29myCPzFDTUpaP5JMH36sUw4Ei6UjNgz8x
+DhXNqoqSKQ4/mP91fMXgfyBGER2l4f4dTn1fmkXRC6IAt49XIFzRTVHf7GxS3i2z
+jHQQHrkWmCnFeRjzbGZDZUeNU/XmNMXKponwH7Q2KvPmtiaG9YDsPnB5cKGfFyKN
+uOGH0fjq1yHDq3O4epERX+o+2qTxKcEUQOakkQ4chpJ6eC/EgM2KPEwadZdZ1BAf
+DQM4nCzsPQP+zptJO+LjJqDjZ1JXBwoeJYfPJBfB8pAw8VgvIXcnXVfHwoSH7WGf
+1JRmT583BLGzc3cqD89kyzZ2NbL+XEGNTWcEAEHzg6Nf+2t4AQQY3T7U4Cluj2Fl
+cXrBonqlCQPiR7ShKkwkYgQ7ZuYeuV1JdKsDjVXy85WBnxcAugI=
+=iE5j
+-----END PGP SIGNATURE-----
+
+--=-GTdlyedGwk3mGYQKKQZt--
+
