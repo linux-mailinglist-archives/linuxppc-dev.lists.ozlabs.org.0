@@ -2,67 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1BE194995
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 21:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722CF194958
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 21:40:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pHJC0vH9zDr3f
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 07:53:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pH1w5pnCzDqmC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 07:40:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--courbet.bounces.google.com
- (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com;
- envelope-from=3wqj8xgckdisr396qt8v33v0t.r310x29c44r-sta0x787.3e0pq7.36v@flex--courbet.bounces.google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=cz8v/be9; dkim-atps=neutral
-Received: from mail-wm1-x34a.google.com (mail-wm1-x34a.google.com
- [IPv6:2a00:1450:4864:20::34a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48p4Ky0gM5zDqKb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:38:54 +1100 (AEDT)
-Received: by mail-wm1-x34a.google.com with SMTP id w12so2112266wmc.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 05:38:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:subject:from:cc;
- bh=8yqBrfdJM+UOOeS4se8770yNMpiUTGHQoT5T8DP4qB8=;
- b=cz8v/be9ZLdMPE+hQeq2vnACmD7uqiN8Lq6TKluF0QZdRurVUMGO/Nkjigif91QwY5
- 3olUJsW79QJtQwo5MICQlAayampaZfYhnd5DOxSPhJlu6zUUdJM4An/CEtBX5syjwFrG
- bFnI62fgBXnQKzFiADNm0p+P0J0/oahYLaUiZInfTgRUpLv+HtnQmtyNYbeQ+PWoZQQK
- IYDBtpV7vZAFYxyrL9CbgSFM7vWPsht7QzsRMnfxoDLktjlvax679zqjDQ4VWW+T+eBz
- 0A3H7eBt/5Jv9KIkWdE4h5ZCPUq39MtsDrxg0UgLD53g4NY0vJV698NDiz7G7dKZr725
- 4Qgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:subject:from:cc;
- bh=8yqBrfdJM+UOOeS4se8770yNMpiUTGHQoT5T8DP4qB8=;
- b=FoaxnSgXM5LdmXG+b7GxaTAHG3Dvgdv5kVUyE4MqIANsQTZjo+iNCllgKbN7qfdehW
- fdn2ZQqORVFdmx2d0DCHKYg98hBYHPqACcyxvhL/BqqI0Zvol6SLIpb4l4PSIkHO4CeC
- 8mVmtMym2nKVGPtyHhYZWTxWECk3iHjWFn6rbfxZBfxO1JcDIR2Femz8ayYykZCfRBta
- Yr6CM46KPRKGAm92xH2xYILhfeTcVPoauUqAa3bMr0DyXN1NBoBWJOjjlBKSN2LFcC6L
- mDxvDfEoAcoc0jTjjKYtpouPCApWg4FSfx+zDInnvZQxlyazAzcwWAG7HJtHE7PWwrm2
- GSaA==
-X-Gm-Message-State: ANhLgQ2Ke+JuND6RokJnUk4QaeY16GyoNIt6PWUNh8QVdGEDQUuc/K9V
- zZ6v89lcDFwg3bJR6MU/lupf8QJGR4bj
-X-Google-Smtp-Source: ADFU+vtfeWdsMSn3bw0z8r9AjHsg1/TKeAFFpdNBrMjpIkIssmcXGEq6QCd9HvQD+cKah5CpMN25OCh4DKvH
-X-Received: by 2002:adf:a2d8:: with SMTP id t24mr9044184wra.366.1585226330006; 
- Thu, 26 Mar 2020 05:38:50 -0700 (PDT)
-Date: Thu, 26 Mar 2020 13:38:39 +0100
-In-Reply-To: <20200323114207.222412-1-courbet@google.com>
-Message-Id: <20200326123841.134068-1-courbet@google.com>
-Mime-Version: 1.0
-References: <20200323114207.222412-1-courbet@google.com>
-X-Mailer: git-send-email 2.25.1.696.g5e7596f4ac-goog
-Subject: [PATCH]     x86: Alias memset to __builtin_memset.
-From: Clement Courbet <courbet@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Fri, 27 Mar 2020 07:51:41 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pGzc5dt4zDqD3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 07:38:52 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02QKWO9Q008292; Thu, 26 Mar 2020 16:38:39 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywewx5wjs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Mar 2020 16:38:39 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02QKbqpA012173;
+ Thu, 26 Mar 2020 20:38:39 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04wdc.us.ibm.com with ESMTP id 2ywaw9cjsm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Mar 2020 20:38:39 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02QKccO954329848
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 26 Mar 2020 20:38:38 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE881AC05E;
+ Thu, 26 Mar 2020 20:38:38 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5CCFFAC059;
+ Thu, 26 Mar 2020 20:38:26 +0000 (GMT)
+Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.85.162.45])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 26 Mar 2020 20:38:25 +0000 (GMT)
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Leonardo Bras <leonardo@linux.ibm.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+Subject: [RFC PATCH 1/1] ppc/smp: Replace unnecessary 'while' by 'if'
+Date: Thu, 26 Mar 2020 17:37:52 -0300
+Message-Id: <20200326203752.497029-1-leonardo@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-26_11:2020-03-26,
+ 2020-03-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ bulkscore=0 phishscore=0 mlxscore=0 adultscore=0 mlxlogscore=660
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003260146
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,59 +85,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Kees Cook <keescook@chromium.org>,
- Borislav Petkov <bp@alien8.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Nick Desaulniers <ndesaulniers@google.com>,
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Clement Courbet <courbet@google.com>, Joe Perches <joe@perches.com>,
- Bernd Petrovitsch <bernd@petrovitsch.priv.at>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I discussed with the original authors who added freestanding to our
-build. It turns out that it was added globally but this was just to
-to workaround powerpc not compiling under clang, but they felt the
-fix was appropriate globally.
+spin_until_cond() will wait until nmi_ipi_busy == false, and
+nmi_ipi_lock_start() does not seem to change nmi_ipi_busy, so there is
+no way this while will ever repeat.
 
-Now Nick has dug up https://lkml.org/lkml/2019/8/29/1300, which
-advises against freestanding. Also, I've did some research and
-discovered that the original reason for using freestanding for
-powerpc has been fixed here:
-https://lore.kernel.org/linuxppc-dev/20191119045712.39633-3-natechancellor@gmail.com/
+Replace this 'while' by an 'if', so it does not look like it can repeat.
 
-I'm going to remove -ffreestanding from downstream, so we don't really need
-this anymore, sorry for waisting people's time.
+Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+---
+ arch/powerpc/kernel/smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I wonder if the freestanding fix from the aforementioned patch is really needed
-though. I think that clang is actually right to point out the issue.
-I don't see any reason why setjmp()/longjmp() are declared as taking longs
-rather than ints. The implementation looks like it only ever propagates the
-value (in longjmp) or sets it to 1 (in setjmp), and we only ever call longjmp
-with integer parameters. But I'm not a PowerPC expert, so I might
-be misreading the code.
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index ea6adbf6a221..7c904d6fb4d2 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -473,7 +473,7 @@ static int __smp_send_nmi_ipi(int cpu, void (*fn)(struct pt_regs *),
+ 		return 0;
+ 
+ 	nmi_ipi_lock_start(&flags);
+-	while (nmi_ipi_busy) {
++	if (nmi_ipi_busy) {
+ 		nmi_ipi_unlock_end(&flags);
+ 		spin_until_cond(!nmi_ipi_busy);
+ 		nmi_ipi_lock_start(&flags);
+-- 
+2.24.1
 
-
-So it seems that we could just remove freestanding altogether and rewrite the
-code to:
-
-diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
-index 279d03a1eec6..7941ae68fe21 100644
---- a/arch/powerpc/include/asm/setjmp.h
-+++ b/arch/powerpc/include/asm/setjmp.h
-@@ -12,7 +12,9 @@
-
- #define JMP_BUF_LEN    23
--extern long setjmp(long *);
--extern void longjmp(long *, long);
-+typedef long * jmp_buf;
-+
-+extern int setjmp(jmp_buf);
-+extern void longjmp(jmp_buf, int);
-
-I'm happy to send a patch for this, and get rid of more -ffreestanding.
-Opinions ?
