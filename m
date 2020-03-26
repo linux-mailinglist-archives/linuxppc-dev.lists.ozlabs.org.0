@@ -2,77 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33466194B3A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84636194B57
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Mar 2020 23:14:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pJyS0GWXzDqRm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 09:08:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pK631bNwzDqgx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 09:14:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=richard.weiyang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VZKU2EoS; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pJvf3znJzDqRN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 09:05:34 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02QM4pYo003294; Thu, 26 Mar 2020 18:05:22 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 300jeununj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Mar 2020 18:05:22 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02QM3AUC020255;
- Thu, 26 Mar 2020 22:05:21 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2ywaw2ra6v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Mar 2020 22:05:20 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02QM5KIb11076308
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Mar 2020 22:05:20 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18E20AC311;
- Thu, 26 Mar 2020 22:05:20 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6BCBDAC2E7;
- Thu, 26 Mar 2020 22:05:11 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.162.45])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 26 Mar 2020 22:05:10 +0000 (GMT)
-Message-ID: <f86aa1672b447bd09a214bc8682a70934dcee82f.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH 1/1] ppc/smp: Replace unnecessary 'while' by 'if'
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Paul Mackerras <paulus@ozlabs.org>
-Date: Thu, 26 Mar 2020 19:05:03 -0300
-In-Reply-To: <20200326214005.GB9894@blackberry>
-References: <20200326203752.497029-1-leonardo@linux.ibm.com>
- <20200326214005.GB9894@blackberry>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-GTdlyedGwk3mGYQKKQZt"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pK3z2ZV2zDqTN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 09:12:45 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id a9so9817532wmj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 15:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=XV8ONxrhzLm1XRXAjklwNAD/3fXBeH2tcYtEjG9QsSY=;
+ b=VZKU2EoSY8ifMMoVJmBY3z5r8LkOjG1oNvQZZUNdXTAjo6+/rbR+N3AhkJwd8B+m4e
+ 9sleYSqmzyPDtmd1MeTgwKf3VE8rN2qLPUpc5+SiaWOfPhjifQ2stsCJ8p4Qb3lQ7JQj
+ aACSd1WRQTwVEcwb8etKAq1hCr/+NohylSJoSGQukTfP5R770VjV4bBlHYcjUgEqwamX
+ j9q483MQjuIg4kYAmLz36XSg7EIWchn66kA0R9c7O3XWO7E+NQBKsm2blO0aB3H/mqOi
+ z6YKwPOHp/urIF3lcl+MaT768OZDjCIPbOUwtGvPa7DiQ38WnNyia80ysHOmYbPxdLPo
+ ZIbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=XV8ONxrhzLm1XRXAjklwNAD/3fXBeH2tcYtEjG9QsSY=;
+ b=VHt8QPrshOpQ3P7gE/SnbSJFlirtPQvne1Ya8pEMtwtDvdyDYNiL3VAVJPqpleZnM0
+ lYuGzBvwmZSuUBrQdia0Hh/5rOaTgJmMbQKQT3Sp1qvGBO1jxt3mprq5ppzS2JXS/we1
+ 0qDEKoddGMK4Qk4S9BxHbznA8AKeYIPfCl15lgRBszcviJjjrkHMTtXRTrLiEntyhYCr
+ bmifz/ZWEKaR5Vs5wsTGf6igOPCMTQqoHjbIRgoUH7t2mvOSk3GskzrSwnwVjjhTYTF4
+ o+w/EEFr4QCMlcQFMnlRbXBNR+Y1I295T1j6hb6/7SlDEOrxNxOecCQpJl8gyNnWuwbT
+ lnGg==
+X-Gm-Message-State: ANhLgQ2SGKtS6dou0g1FQE+zblQik2xX+Z4dxMZhi9cHpAKeZKWtnNFy
+ 7Bv+kFFKVUh8MTecSkEBtWk=
+X-Google-Smtp-Source: ADFU+vt6ZLuyioBcFjmo9C2azZJw71RH9CqKsiPptR5/A2XORNRp5r6KHCHmmVX7iu5aUcM/sO7bzA==
+X-Received: by 2002:a1c:b105:: with SMTP id a5mr2007926wmf.57.1585260759713;
+ Thu, 26 Mar 2020 15:12:39 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+ by smtp.gmail.com with ESMTPSA id 195sm5500455wmb.8.2020.03.26.15.12.38
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 26 Mar 2020 15:12:38 -0700 (PDT)
+Date: Thu, 26 Mar 2020 22:12:37 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v2] mm/sparse: Fix kernel crash with pfn_section_valid
+ check
+Message-ID: <20200326221237.fttur7yyfl7nrdsj@master>
+References: <20200326133235.343616-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-26_13:2020-03-26,
- 2020-03-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=838 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003260160
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200326133235.343616-1-aneesh.kumar@linux.ibm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,65 +80,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Allison Randal <allison@lohutok.net>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Baoquan He <bhe@redhat.com>, David Hildenbrand <david@redhat.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
+ Wei Yang <richardw.yang@linux.intel.com>, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Mar 26, 2020 at 07:02:35PM +0530, Aneesh Kumar K.V wrote:
+>Fixes the below crash
+>
+>BUG: Kernel NULL pointer dereference on read at 0x00000000
+>Faulting instruction address: 0xc000000000c3447c
+>Oops: Kernel access of bad area, sig: 11 [#1]
+>LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+>CPU: 11 PID: 7519 Comm: lt-ndctl Not tainted 5.6.0-rc7-autotest #1
+>...
+>NIP [c000000000c3447c] vmemmap_populated+0x98/0xc0
+>LR [c000000000088354] vmemmap_free+0x144/0x320
+>Call Trace:
+> section_deactivate+0x220/0x240
+> __remove_pages+0x118/0x170
+> arch_remove_memory+0x3c/0x150
+> memunmap_pages+0x1cc/0x2f0
+> devm_action_release+0x30/0x50
+> release_nodes+0x2f8/0x3e0
+> device_release_driver_internal+0x168/0x270
+> unbind_store+0x130/0x170
+> drv_attr_store+0x44/0x60
+> sysfs_kf_write+0x68/0x80
+> kernfs_fop_write+0x100/0x290
+> __vfs_write+0x3c/0x70
+> vfs_write+0xcc/0x240
+> ksys_write+0x7c/0x140
+> system_call+0x5c/0x68
+>
+>The crash is due to NULL dereference at
+>
+>test_bit(idx, ms->usage->subsection_map); due to ms->usage = NULL; in pfn_section_valid()
+>
+>With commit: d41e2f3bd546 ("mm/hotplug: fix hot remove failure in SPARSEMEM|!VMEMMAP case")
+>section_mem_map is set to NULL after depopulate_section_mem(). This
+>was done so that pfn_page() can work correctly with kernel config that disables
+>SPARSEMEM_VMEMMAP. With that config pfn_to_page does
+>
+>	__section_mem_map_addr(__sec) + __pfn;
+>where
+>
+>static inline struct page *__section_mem_map_addr(struct mem_section *section)
+>{
+>	unsigned long map = section->section_mem_map;
+>	map &= SECTION_MAP_MASK;
+>	return (struct page *)map;
+>}
+>
+>Now with SPASEMEM_VMEMAP enabled, mem_section->usage->subsection_map is used to
+>check the pfn validity (pfn_valid()). Since section_deactivate release
+>mem_section->usage if a section is fully deactivated, pfn_valid() check after
+>a subsection_deactivate cause a kernel crash.
+>
+>static inline int pfn_valid(unsigned long pfn)
+>{
+>...
+>	return early_section(ms) || pfn_section_valid(ms, pfn);
+>}
+>
+>where
+>
+>static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+>{
+>	int idx = subsection_map_index(pfn);
+>
+>	return test_bit(idx, ms->usage->subsection_map);
+>}
+>
+>Avoid this by clearing SECTION_HAS_MEM_MAP when mem_section->usage is freed.
+>For architectures like ppc64 where large pages are used for vmmemap mapping (16MB),
+>a specific vmemmap mapping can cover multiple sections. Hence before a vmemmap
+>mapping page can be freed, the kernel needs to make sure there are no valid sections
+>within that mapping. Clearing the section valid bit before
+>depopulate_section_memap enables this.
+>
+>Fixes: d41e2f3bd546 ("mm/hotplug: fix hot remove failure in SPARSEMEM|!VMEMMAP case")
+>Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+>Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+>Cc: Baoquan He <bhe@redhat.com>
+>Cc: Michael Ellerman <mpe@ellerman.id.au>
+>Cc: Dan Williams <dan.j.williams@intel.com>
+>Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+>Cc: David Hildenbrand <david@redhat.com>
+>Cc: Michal Hocko <mhocko@suse.com>
+>Cc: Wei Yang <richardw.yang@linux.intel.com>
+>Cc: Oscar Salvador <osalvador@suse.de>
+>Cc: Mike Rapoport <rppt@linux.ibm.com>
+>Cc: <stable@vger.kernel.org>
+>Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
---=-GTdlyedGwk3mGYQKKQZt
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-On Fri, 2020-03-27 at 08:40 +1100, Paul Mackerras wrote:
-> On Thu, Mar 26, 2020 at 05:37:52PM -0300, Leonardo Bras wrote:
-> > spin_until_cond() will wait until nmi_ipi_busy =3D=3D false, and
-> > nmi_ipi_lock_start() does not seem to change nmi_ipi_busy, so there is
-> > no way this while will ever repeat.
-> >=20
-> > Replace this 'while' by an 'if', so it does not look like it can repeat=
-.
->=20
-> Nack, it can repeat.  The scenario is that cpu A is in this code,
-> inside spin_until_cond(); cpu B has previously set nmi_ipi_busy, and
-> cpu C is also waiting for nmi_ipi_busy to be cleared, like cpu A.
-> When cpu B clears nmi_ipi_busy, both cpu A and cpu C will see that and
-> will race inside nmi_ipi_lock_start().  One of them, say cpu C, will
-> take the lock and proceed to set nmi_ipi_busy and then call
-> nmi_ipi_unlock().  Then the other cpu (cpu A) will then take the lock
-> and return from nmi_ipi_lock_start() and find nmi_ipi_busy =3D=3D true.
-> At that point it needs to go through the while loop body once more.
->=20
-> Paul.
-
-Ok, got it.
-
-Thanks for explaining Paul!
-
---=-GTdlyedGwk3mGYQKKQZt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl59JxAACgkQlQYWtz9S
-ttTSdRAAttveHAUp1FuyI8cjRY3YA64LGrCYQ/GJZfAZljGAMyg78+BO1orF0p7b
-n+wYBDvQzqmLMgL5fUxeHG+CQzPX7unA/9n+rn7y4j+BVZbupjLHOnPXswoDda3Y
-Ycs5eFcEJ2d5Fs0psXJs/aOVtF6cd8uKNzdpk0tVGM3VMkoB509DtJqdkjY96n1g
-Oi7+eDKF+yUNIxmOjEeTaJwR9fSrzLRJhdnLLpOmR0/42QvOcGeh8q3p2qtCyfgo
-H6qEXVCq5E1nYLGuvJskD46vaRRXGZ29myCPzFDTUpaP5JMH36sUw4Ei6UjNgz8x
-DhXNqoqSKQ4/mP91fMXgfyBGER2l4f4dTn1fmkXRC6IAt49XIFzRTVHf7GxS3i2z
-jHQQHrkWmCnFeRjzbGZDZUeNU/XmNMXKponwH7Q2KvPmtiaG9YDsPnB5cKGfFyKN
-uOGH0fjq1yHDq3O4epERX+o+2qTxKcEUQOakkQ4chpJ6eC/EgM2KPEwadZdZ1BAf
-DQM4nCzsPQP+zptJO+LjJqDjZ1JXBwoeJYfPJBfB8pAw8VgvIXcnXVfHwoSH7WGf
-1JRmT583BLGzc3cqD89kyzZ2NbL+XEGNTWcEAEHzg6Nf+2t4AQQY3T7U4Cluj2Fl
-cXrBonqlCQPiR7ShKkwkYgQ7ZuYeuV1JdKsDjVXy85WBnxcAugI=
-=iE5j
------END PGP SIGNATURE-----
-
---=-GTdlyedGwk3mGYQKKQZt--
-
+-- 
+Wei Yang
+Help you, Help me
