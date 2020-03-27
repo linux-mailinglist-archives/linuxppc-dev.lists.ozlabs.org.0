@@ -1,85 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635AF195674
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 12:36:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568F119556C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 11:39:30 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pddT1rZZzDrBx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 21:39:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pfvL1KzPzDrB3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 22:36:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pdLb2l3TzDr5h
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 21:26:30 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02RA1EWa142769
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 06:26:28 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ywd2v3vs5-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 06:26:27 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Fri, 27 Mar 2020 10:26:22 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 27 Mar 2020 10:26:16 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02RAQHZu45940744
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pfqJ3t5PzDr75
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 22:32:59 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02RB4A11003703; Fri, 27 Mar 2020 07:32:52 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywet7cg9q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 27 Mar 2020 07:32:52 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02RBUI9N022646;
+ Fri, 27 Mar 2020 11:32:51 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 2ywawn9tfe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 27 Mar 2020 11:32:51 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02RBWpoC54985032
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Mar 2020 10:26:17 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C26D0A4060;
- Fri, 27 Mar 2020 10:26:17 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4828BA405B;
- Fri, 27 Mar 2020 10:26:11 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.79.180.159])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 27 Mar 2020 10:26:11 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- sukadev@linux.vnet.ibm.com
-Subject: [PATCH v7 6/6] perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip
- level metric events
-Date: Fri, 27 Mar 2020 15:55:28 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20200327102528.4267-1-kjain@linux.ibm.com>
-References: <20200327102528.4267-1-kjain@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ Fri, 27 Mar 2020 11:32:51 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4FFF52805A;
+ Fri, 27 Mar 2020 11:32:51 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A332E28059;
+ Fri, 27 Mar 2020 11:32:50 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.72.108])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 27 Mar 2020 11:32:50 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 383B82E3408; Fri, 27 Mar 2020 17:02:45 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: [PATCH v4 0/6] [PATCH v4 0/6] Track and expose idle PURR and SPURR
+ ticks
+Date: Fri, 27 Mar 2020 17:02:34 +0530
+Message-Id: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
-x-cbid: 20032710-0012-0000-0000-000003990757
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032710-0013-0000-0000-000021D608CF
-Message-Id: <20200327102528.4267-7-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-27_02:2020-03-26,
+ definitions=2020-03-27_03:2020-03-27,
  2020-03-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 impostorscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 mlxlogscore=540 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270087
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ mlxlogscore=999 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003270102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,72 +86,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
- yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
- ak@linux.intel.com, alexander.shishkin@linux.intel.com,
- anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
- ravi.bangoria@linux.ibm.com, kjain@linux.ibm.com, jmario@redhat.com,
- namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hv_24×7 feature in IBM® POWER9™ processor-based servers provide the
-facility to continuously collect large numbers of hardware performance
-metrics efficiently and accurately.
-This patch adds hv_24x7  metric file for different Socket/chip
-resources.
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-Result:
+Hi,
 
-power9 platform:
+This is the fourth version of the patches to track and expose idle PURR
+and SPURR ticks. These patches are required by tools such as lparstat
+to compute system utilization for capacity planning purposes.
 
-command:# ./perf stat --metric-only -M Memory_RD_BW_Chip -C 0 -I 1000
+The previous versions can be found here:
+v3: https://lkml.org/lkml/2020/3/11/331
+v2: https://lkml.org/lkml/2020/2/21/21
+v1: https://lore.kernel.org/patchwork/cover/1159341/
 
-     1.000096188                      0.9                      0.3
-     2.000285720                      0.5                      0.1
-     3.000424990                      0.4                      0.1
+They key changes from v3 are:
 
-command:# ./perf stat --metric-only -M PowerBUS_Frequency -C 0 -I 1000
+   - Fixed the build errors on !CONFIG_PPC64 and !CONFIG_PPC_PSERIES
+     configurations notified by the kbuild bot.
 
-     1.000097981                        2.3                        2.3
-     2.000291713                        2.3                        2.3
-     3.000421719                        2.3                        2.3
-     4.000550912                        2.3                        2.3
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- .../arch/powerpc/power9/nest_metrics.json     | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
- create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
+Motivation:
+===========
+On PSeries LPARs, the data centers planners desire a more accurate
+view of system utilization per resource such as CPU to plan the system
+capacity requirements better. Such accuracy can be obtained by reading
+PURR/SPURR registers for CPU resource utilization.
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-new file mode 100644
-index 000000000000..c121e526442a
---- /dev/null
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
-@@ -0,0 +1,19 @@
-+[
-+    {
-+        "MetricExpr": "(hv_24x7@PM_MCS01_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_RD_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_RD_DISP_PORT23\\,chip\\=?@)",
-+        "MetricName": "Memory_RD_BW_Chip",
-+        "MetricGroup": "Memory_BW",
-+        "ScaleUnit": "1.6e-2MB"
-+    },
-+    {
-+	"MetricExpr": "(hv_24x7@PM_MCS01_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS01_128B_WR_DISP_PORT23\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT01\\,chip\\=?@ + hv_24x7@PM_MCS23_128B_WR_DISP_PORT23\\,chip\\=?@ )",
-+        "MetricName": "Memory_WR_BW_Chip",
-+        "MetricGroup": "Memory_BW",
-+        "ScaleUnit": "1.6e-2MB"
-+    },
-+    {
-+	"MetricExpr": "(hv_24x7@PM_PB_CYC\\,chip\\=?@ )",
-+        "MetricName": "PowerBUS_Frequency",
-+        "ScaleUnit": "2.5e-7GHz"
-+    }
-+]
+Tools such as lparstat which are used to compute the utilization need
+to know [S]PURR ticks when the cpu was busy or idle. The [S]PURR
+counters are already exposed through sysfs.  We already account for
+PURR ticks when we go to idle so that we can update the VPA area. This
+patchset extends support to account for SPURR ticks when idle, and
+expose both via per-cpu sysfs files.
+
+This patch series also introduces a patch (Patch 6/6) to send an IPI
+in order to read and cache the values of purr, spurr, idle_purr and
+idle_spurr of the target CPU when any one of them is read via
+sysfs. These cached values will be presented if any of these sysfs are
+read within the next 10ms. If these sysfs files are read after 10ms
+from the earlier IPI, a fresh IPI is issued to read and cache the
+values again. This minimizes the number of IPIs required to be sent
+when these values are read back-to-back via the sysfs interface.
+
+    Without patch 6/6 (Without caching): 
+                 16 [XICS 2 Edge IPI] = 422 times
+                 DBL [Doorbell interrupts] = 13 times
+                 Total : 435 IPIs.
+    
+    With patch 6/6 (With caching):
+                  16 [XICS 2 Edge IPI] = 111 times
+                  DBL [Doorbell interrupts] = 17 times
+                  Total : 128 IPIs.
+
+These patches are required for enhancement to the lparstat utility
+that compute the CPU utilization based on PURR and SPURR which can be
+found here :
+https://groups.google.com/forum/#!topic/powerpc-utils-devel/fYRo69xO9r4
+
+
+With the patches, when lparstat is run on a LPAR running CPU-Hogs,
+=========================================================================
+sudo ./src/lparstat -E 1 3
+System Configuration
+type=Dedicated mode=Capped smt=8 lcpu=2 mem=4834176 kB cpus=0 ent=2.00 
+---Actual---                 -Normalized-
+%busy  %idle   Frequency     %busy  %idle
+------ ------  ------------- ------ ------
+ 99.99   0.00  3.35GHz[111%] 110.99   0.00
+100.00   0.00  3.35GHz[111%] 111.00   0.00
+100.00   0.00  3.35GHz[111%] 111.00   0.00
+
+With patches, when lparstat is run on and idle LPAR
+=========================================================================
+---Actual---                 -Normalized-
+%busy  %idle   Frequency     %busy  %idle
+------ ------  ------------- ------ ------
+0.20  99.81  2.17GHz[ 72%]   0.19  71.82
+0.42  99.58  2.11GHz[ 70%]   0.31  69.69
+0.41  99.59  2.11GHz[ 70%]   0.31  69.69
+
+Gautham R. Shenoy (6):
+  powerpc: Move idle_loop_prolog()/epilog() functions to header file
+  powerpc/idle: Add accessor function to always read latest idle PURR
+  powerpc/pseries: Account for SPURR ticks on idle CPUs
+  powerpc/sysfs: Show idle_purr and idle_spurr for every CPU
+  Documentation: Document sysfs interfaces purr, spurr, idle_purr,
+    idle_spurr
+  pseries/sysfs: Minimise IPI noise while reading [idle_][s]purr
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |  39 +++++
+ arch/powerpc/include/asm/idle.h                    |  93 ++++++++++++
+ arch/powerpc/kernel/sysfs.c                        | 167 ++++++++++++++++++++-
+ arch/powerpc/platforms/pseries/setup.c             |   8 +-
+ drivers/cpuidle/cpuidle-pseries.c                  |  39 +----
+ 5 files changed, 305 insertions(+), 41 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/idle.h
+
 -- 
-2.18.1
+1.9.4
 
