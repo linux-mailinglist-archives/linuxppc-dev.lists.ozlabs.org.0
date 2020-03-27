@@ -1,58 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635AF195674
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 12:36:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pfvL1KzPzDrB3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 22:36:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 864FF195687
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 12:45:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pg5V1wCTzDr6y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 22:45:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pfqJ3t5PzDr75
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pfqJ3r9JzDr5N
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 22:32:59 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02RB4A11003703; Fri, 27 Mar 2020 07:32:52 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywet7cg9q-1
+ 02RB3Qsi108906; Fri, 27 Mar 2020 07:32:53 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 300jev806y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Mar 2020 07:32:52 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02RBUI9N022646;
- Fri, 27 Mar 2020 11:32:51 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 2ywawn9tfe-1
+ Fri, 27 Mar 2020 07:32:53 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02RBVuMo006341;
+ Fri, 27 Mar 2020 11:32:52 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02dal.us.ibm.com with ESMTP id 2ywaw2x8q2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Mar 2020 11:32:51 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02RBWpoC54985032
+ Fri, 27 Mar 2020 11:32:52 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02RBWp9A57409982
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Fri, 27 Mar 2020 11:32:51 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4FFF52805A;
- Fri, 27 Mar 2020 11:32:51 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A332E28059;
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F05286E04C;
+ Fri, 27 Mar 2020 11:32:50 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CC736E052;
  Fri, 27 Mar 2020 11:32:50 +0000 (GMT)
 Received: from sofia.ibm.com (unknown [9.85.72.108])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
  Fri, 27 Mar 2020 11:32:50 +0000 (GMT)
 Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 383B82E3408; Fri, 27 Mar 2020 17:02:45 +0530 (IST)
+ id 438DE2E33D2; Fri, 27 Mar 2020 17:02:45 +0530 (IST)
 From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 To: Nathan Lynch <nathanl@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>,
@@ -60,20 +61,22 @@ To: Nathan Lynch <nathanl@linux.ibm.com>,
  Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
  "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
  Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: [PATCH v4 0/6] [PATCH v4 0/6] Track and expose idle PURR and SPURR
- ticks
-Date: Fri, 27 Mar 2020 17:02:34 +0530
-Message-Id: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
+Subject: [PATCH v4 1/6] powerpc: Move idle_loop_prolog()/epilog() functions to
+ header file
+Date: Fri, 27 Mar 2020 17:02:35 +0530
+Message-Id: <1585308760-28792-2-git-send-email-ego@linux.vnet.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
+References: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
  definitions=2020-03-27_03:2020-03-27,
  2020-03-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- mlxlogscore=999 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
- malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 malwarescore=0
+ adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2003270102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,100 +97,201 @@ Sender: "Linuxppc-dev"
 
 From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-Hi,
+Currently prior to entering an idle state on a Linux Guest, the
+pseries cpuidle driver implement an idle_loop_prolog() and
+idle_loop_epilog() functions which ensure that idle_purr is correctly
+computed, and the hypervisor is informed that the CPU cycles have been
+donated.
 
-This is the fourth version of the patches to track and expose idle PURR
-and SPURR ticks. These patches are required by tools such as lparstat
-to compute system utilization for capacity planning purposes.
+These prolog and epilog functions are also required in the default
+idle call, i.e pseries_lpar_idle(). Hence move these accessor
+functions to a common header file and call them from
+pseries_lpar_idle(). Since the existing header files such as
+asm/processor.h have enough clutter, create a new header file
+asm/idle.h. Finally rename idle_loop_prolog() and idle_loop_epilog()
+to pseries_idle_prolog() and pseries_idle_epilog() as they are only
+relavent for on pseries guests.
 
-The previous versions can be found here:
-v3: https://lkml.org/lkml/2020/3/11/331
-v2: https://lkml.org/lkml/2020/2/21/21
-v1: https://lore.kernel.org/patchwork/cover/1159341/
-
-They key changes from v3 are:
-
-   - Fixed the build errors on !CONFIG_PPC64 and !CONFIG_PPC_PSERIES
-     configurations notified by the kbuild bot.
-
-
-Motivation:
-===========
-On PSeries LPARs, the data centers planners desire a more accurate
-view of system utilization per resource such as CPU to plan the system
-capacity requirements better. Such accuracy can be obtained by reading
-PURR/SPURR registers for CPU resource utilization.
-
-Tools such as lparstat which are used to compute the utilization need
-to know [S]PURR ticks when the cpu was busy or idle. The [S]PURR
-counters are already exposed through sysfs.  We already account for
-PURR ticks when we go to idle so that we can update the VPA area. This
-patchset extends support to account for SPURR ticks when idle, and
-expose both via per-cpu sysfs files.
-
-This patch series also introduces a patch (Patch 6/6) to send an IPI
-in order to read and cache the values of purr, spurr, idle_purr and
-idle_spurr of the target CPU when any one of them is read via
-sysfs. These cached values will be presented if any of these sysfs are
-read within the next 10ms. If these sysfs files are read after 10ms
-from the earlier IPI, a fresh IPI is issued to read and cache the
-values again. This minimizes the number of IPIs required to be sent
-when these values are read back-to-back via the sysfs interface.
-
-    Without patch 6/6 (Without caching): 
-                 16 [XICS 2 Edge IPI] = 422 times
-                 DBL [Doorbell interrupts] = 13 times
-                 Total : 435 IPIs.
-    
-    With patch 6/6 (With caching):
-                  16 [XICS 2 Edge IPI] = 111 times
-                  DBL [Doorbell interrupts] = 17 times
-                  Total : 128 IPIs.
-
-These patches are required for enhancement to the lparstat utility
-that compute the CPU utilization based on PURR and SPURR which can be
-found here :
-https://groups.google.com/forum/#!topic/powerpc-utils-devel/fYRo69xO9r4
-
-
-With the patches, when lparstat is run on a LPAR running CPU-Hogs,
-=========================================================================
-sudo ./src/lparstat -E 1 3
-System Configuration
-type=Dedicated mode=Capped smt=8 lcpu=2 mem=4834176 kB cpus=0 ent=2.00 
----Actual---                 -Normalized-
-%busy  %idle   Frequency     %busy  %idle
------- ------  ------------- ------ ------
- 99.99   0.00  3.35GHz[111%] 110.99   0.00
-100.00   0.00  3.35GHz[111%] 111.00   0.00
-100.00   0.00  3.35GHz[111%] 111.00   0.00
-
-With patches, when lparstat is run on and idle LPAR
-=========================================================================
----Actual---                 -Normalized-
-%busy  %idle   Frequency     %busy  %idle
------- ------  ------------- ------ ------
-0.20  99.81  2.17GHz[ 72%]   0.19  71.82
-0.42  99.58  2.11GHz[ 70%]   0.31  69.69
-0.41  99.59  2.11GHz[ 70%]   0.31  69.69
-
-Gautham R. Shenoy (6):
-  powerpc: Move idle_loop_prolog()/epilog() functions to header file
-  powerpc/idle: Add accessor function to always read latest idle PURR
-  powerpc/pseries: Account for SPURR ticks on idle CPUs
-  powerpc/sysfs: Show idle_purr and idle_spurr for every CPU
-  Documentation: Document sysfs interfaces purr, spurr, idle_purr,
-    idle_spurr
-  pseries/sysfs: Minimise IPI noise while reading [idle_][s]purr
-
- Documentation/ABI/testing/sysfs-devices-system-cpu |  39 +++++
- arch/powerpc/include/asm/idle.h                    |  93 ++++++++++++
- arch/powerpc/kernel/sysfs.c                        | 167 ++++++++++++++++++++-
- arch/powerpc/platforms/pseries/setup.c             |   8 +-
- drivers/cpuidle/cpuidle-pseries.c                  |  39 +----
- 5 files changed, 305 insertions(+), 41 deletions(-)
+Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+---
+ arch/powerpc/include/asm/idle.h        | 31 +++++++++++++++++++++++++++++
+ arch/powerpc/platforms/pseries/setup.c |  7 +++++--
+ drivers/cpuidle/cpuidle-pseries.c      | 36 +++++++---------------------------
+ 3 files changed, 43 insertions(+), 31 deletions(-)
  create mode 100644 arch/powerpc/include/asm/idle.h
 
+diff --git a/arch/powerpc/include/asm/idle.h b/arch/powerpc/include/asm/idle.h
+new file mode 100644
+index 0000000..32064a4c
+--- /dev/null
++++ b/arch/powerpc/include/asm/idle.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef _ASM_POWERPC_IDLE_H
++#define _ASM_POWERPC_IDLE_H
++#include <asm/runlatch.h>
++#include <asm/paca.h>
++
++#ifdef CONFIG_PPC_PSERIES
++static inline void pseries_idle_prolog(unsigned long *in_purr)
++{
++	ppc64_runlatch_off();
++	*in_purr = mfspr(SPRN_PURR);
++	/*
++	 * Indicate to the HV that we are idle. Now would be
++	 * a good time to find other work to dispatch.
++	 */
++	get_lppaca()->idle = 1;
++}
++
++static inline void pseries_idle_epilog(unsigned long in_purr)
++{
++	u64 wait_cycles;
++
++	wait_cycles = be64_to_cpu(get_lppaca()->wait_state_cycles);
++	wait_cycles += mfspr(SPRN_PURR) - in_purr;
++	get_lppaca()->wait_state_cycles = cpu_to_be64(wait_cycles);
++	get_lppaca()->idle = 0;
++
++	ppc64_runlatch_on();
++}
++#endif /* CONFIG_PPC_PSERIES */
++#endif
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 0c8421d..2f53e6b 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -68,6 +68,7 @@
+ #include <asm/isa-bridge.h>
+ #include <asm/security_features.h>
+ #include <asm/asm-const.h>
++#include <asm/idle.h>
+ #include <asm/swiotlb.h>
+ #include <asm/svm.h>
+ 
+@@ -319,6 +320,8 @@ static int alloc_dispatch_log_kmem_cache(void)
+ 
+ static void pseries_lpar_idle(void)
+ {
++	unsigned long in_purr;
++
+ 	/*
+ 	 * Default handler to go into low thread priority and possibly
+ 	 * low power mode by ceding processor to hypervisor
+@@ -328,7 +331,7 @@ static void pseries_lpar_idle(void)
+ 		return;
+ 
+ 	/* Indicate to hypervisor that we are idle. */
+-	get_lppaca()->idle = 1;
++	pseries_idle_prolog(&in_purr);
+ 
+ 	/*
+ 	 * Yield the processor to the hypervisor.  We return if
+@@ -339,7 +342,7 @@ static void pseries_lpar_idle(void)
+ 	 */
+ 	cede_processor();
+ 
+-	get_lppaca()->idle = 0;
++	pseries_idle_epilog(in_purr);
+ }
+ 
+ /*
+diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+index 74c2479..46d5e05 100644
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -19,6 +19,7 @@
+ #include <asm/machdep.h>
+ #include <asm/firmware.h>
+ #include <asm/runlatch.h>
++#include <asm/idle.h>
+ #include <asm/plpar_wrappers.h>
+ 
+ struct cpuidle_driver pseries_idle_driver = {
+@@ -31,29 +32,6 @@ struct cpuidle_driver pseries_idle_driver = {
+ static u64 snooze_timeout __read_mostly;
+ static bool snooze_timeout_en __read_mostly;
+ 
+-static inline void idle_loop_prolog(unsigned long *in_purr)
+-{
+-	ppc64_runlatch_off();
+-	*in_purr = mfspr(SPRN_PURR);
+-	/*
+-	 * Indicate to the HV that we are idle. Now would be
+-	 * a good time to find other work to dispatch.
+-	 */
+-	get_lppaca()->idle = 1;
+-}
+-
+-static inline void idle_loop_epilog(unsigned long in_purr)
+-{
+-	u64 wait_cycles;
+-
+-	wait_cycles = be64_to_cpu(get_lppaca()->wait_state_cycles);
+-	wait_cycles += mfspr(SPRN_PURR) - in_purr;
+-	get_lppaca()->wait_state_cycles = cpu_to_be64(wait_cycles);
+-	get_lppaca()->idle = 0;
+-
+-	ppc64_runlatch_on();
+-}
+-
+ static int snooze_loop(struct cpuidle_device *dev,
+ 			struct cpuidle_driver *drv,
+ 			int index)
+@@ -63,7 +41,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 
+ 	set_thread_flag(TIF_POLLING_NRFLAG);
+ 
+-	idle_loop_prolog(&in_purr);
++	pseries_idle_prolog(&in_purr);
+ 	local_irq_enable();
+ 	snooze_exit_time = get_tb() + snooze_timeout;
+ 
+@@ -87,7 +65,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 
+ 	local_irq_disable();
+ 
+-	idle_loop_epilog(in_purr);
++	pseries_idle_epilog(in_purr);
+ 
+ 	return index;
+ }
+@@ -115,7 +93,7 @@ static int dedicated_cede_loop(struct cpuidle_device *dev,
+ {
+ 	unsigned long in_purr;
+ 
+-	idle_loop_prolog(&in_purr);
++	pseries_idle_prolog(&in_purr);
+ 	get_lppaca()->donate_dedicated_cpu = 1;
+ 
+ 	HMT_medium();
+@@ -124,7 +102,7 @@ static int dedicated_cede_loop(struct cpuidle_device *dev,
+ 	local_irq_disable();
+ 	get_lppaca()->donate_dedicated_cpu = 0;
+ 
+-	idle_loop_epilog(in_purr);
++	pseries_idle_epilog(in_purr);
+ 
+ 	return index;
+ }
+@@ -135,7 +113,7 @@ static int shared_cede_loop(struct cpuidle_device *dev,
+ {
+ 	unsigned long in_purr;
+ 
+-	idle_loop_prolog(&in_purr);
++	pseries_idle_prolog(&in_purr);
+ 
+ 	/*
+ 	 * Yield the processor to the hypervisor.  We return if
+@@ -147,7 +125,7 @@ static int shared_cede_loop(struct cpuidle_device *dev,
+ 	check_and_cede_processor();
+ 
+ 	local_irq_disable();
+-	idle_loop_epilog(in_purr);
++	pseries_idle_epilog(in_purr);
+ 
+ 	return index;
+ }
 -- 
 1.9.4
 
