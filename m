@@ -1,65 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F471957C4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 14:13:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6E11957B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 14:05:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48phtP0KVbzDrBk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 00:05:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pj3631N0zDr9S
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 00:13:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.135; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48phlr2VnkzDr6q
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 00:00:06 +1100 (AEDT)
-Received: from mail-io1-f44.google.com ([209.85.166.44]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1M59am-1jGi2y1pPo-0016jo for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar
- 2020 13:54:52 +0100
-Received: by mail-io1-f44.google.com with SMTP id d15so9690523iog.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 05:54:51 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ0DOvi7UR7Hr+MmbxiwhOWDOQdT+s6HUcB+ZIhXfj0un55iEdLD
- frhRp4jSKOqPq8OrL6bYvi+H6QgGbUvnFKrsbq8=
-X-Google-Smtp-Source: ADFU+vueKMRRVnX6uqbtv+2n6jxNH6u3YPxdn23XTrFSuAqIloIPBnaq1uinFAYZzt7R/58hOnRiuYU6bptE3XgXqoc=
-X-Received: by 2002:ac8:d8e:: with SMTP id s14mr13725256qti.204.1585313689290; 
- Fri, 27 Mar 2020 05:54:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1585311091.git.michal.simek@xilinx.com>
-In-Reply-To: <cover.1585311091.git.michal.simek@xilinx.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 27 Mar 2020 13:54:33 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
-Message-ID: <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pj062JG2zDqXw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 00:10:42 +1100 (AEDT)
+IronPort-SDR: Sx+xJm49L/u/yJFbl87OEngepuCqBrR3eQoMX1IqQRh4BiwEkrgfm9IWn8lhimWE8uFI9/bMTo
+ YdRWf08kwlyw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2020 06:10:38 -0700
+IronPort-SDR: 01DQWEntcsTieV1v0S6V/sY9ShqDcoMrznK10hItJrV+oim4RQtBGob7Qwhfvr2JWRktq2DtYe
+ ipgDMq/JyBdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,312,1580803200"; d="scan'208";a="236630169"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+ by orsmga007.jf.intel.com with ESMTP; 27 Mar 2020 06:10:26 -0700
+Received: from andy by smile with local (Exim 4.93)
+ (envelope-from <andriy.shevchenko@linux.intel.com>)
+ id 1jHokk-00DQE2-2b; Fri, 27 Mar 2020 15:10:26 +0200
+Date: Fri, 27 Mar 2020 15:10:26 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Arnd Bergmann <arnd@arndb.de>
 Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
  platforms
-To: Michal Simek <michal.simek@xilinx.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:aF8ggkZ95udVzStDpmmoPbVUxMTWZ3vpxA/S+DxPL/pDGnreVrv
- U5Q+rjwbf7g0t4QEgYb8ACi7USELVVLAqIYNx9QLmPVU6Zp1qTB5ym6ErTitR+kWg+g5Je2
- 57II6D7ljGhpJlsTGowoHoN+SOy9Pyp3PzQ8VnSEyHQTxJydJ9PctacnZ94k02EvWsFlTeJ
- WhHHwoCpfaPkZjBah+6qw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qZF1xxC1Ppk=:U1iOsdMB7sbgUAi7CMmXds
- 0FWJj6d7hVGTGPhUYTlkPgTCCBX29B6GQgGzQXnPgEZVEpjheGqTLDv2fHYU0PtLCJVhsWus3
- XrwebKQ8RItiAhZi9pxqwM882g7kh3YZ/mWMTJB4FfSSyELJKE/do2OL4OP4BZcothHMpOi6i
- aknriyASnejn+Gv6LKXfqAmBqBXanCb29TYlJBkhpeqhs4/uTI8Q0gbsA/y0YPrmaxlVLIThB
- WHdkRcpVsus/21MT45W4JLV7cuTTYU7iWT9ufEfPCRO1AmRReztoAseTQSAwkrWHzhhIGwBOU
- uKt1uPZG4tTDk+O8tXnt+0f/bcqXnUry+1gMf9RT+naOO5xzzcNkq2fBzLrE7+Isd4ldIrPpS
- iSb0GKYABhBZqxTCSRjXeWyLV6SF7yPOAxWLTyqpzmFzsLTSH2hpiAAoGD0EL8uXSlwOZP04G
- CsY4tYS9L/RhP0egfsm0l8fTUqaN5EPHx1U6T3TlRXWW9VPBuXY4Gy5WCGQQ0mHrkrkqdE2bM
- YYnPW+aDqeZvahp2TvyAxEsaayw4Nov2WjbyxGY6U9JzxM9XzJJd3pdgSYjvpV48QDZjY3XsK
- QnPjgysUYwmppTJiOH2//bE1uEYEpJ0Davq2Y0H0edwU29SJHGE/4bFgQGnsnqH86fEX4JLrh
- yKY8o2WBa0Vf3OnElFupoICVtgKIKFyT12yJ7D9mB+7WzMSnNBuhQG4NTA02depdX6jWueLN5
- VBMNUG5AhdBFjLNXMUXjydS9yRjZjxl1eMTIjLol9jYkxEAgKulrRA3ftvz3/uqG/4kKW6hKY
- J1hdUx2JWKMZI7siIU1dLfNUVnRSg7IEVdpPEx2gIIQ4nCteI4=
+Message-ID: <20200327131026.GT1922688@smile.fi.intel.com>
+References: <cover.1585311091.git.michal.simek@xilinx.com>
+ <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,7 +73,8 @@ Cc: Kate Stewart <kstewart@linuxfoundation.org>,
  Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
  Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
  Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
  Linux ARM <linux-arm-kernel@lists.infradead.org>,
  Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
  Andrew Donnellan <ajd@linux.ibm.com>,
@@ -95,10 +85,9 @@ Cc: Kate Stewart <kstewart@linuxfoundation.org>,
  Mark Brown <broonie@kernel.org>, git@xilinx.com,
  Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Allison Randal <allison@lohutok.net>, Michal Simek <monstr@monstr.eu>,
- Wei Hu <weh@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
+ Michal Simek <monstr@monstr.eu>, Wei Hu <weh@microsoft.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Nick Desaulniers <ndesaulniers@google.com>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
@@ -108,44 +97,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 27, 2020 at 1:12 PM Michal Simek <michal.simek@xilinx.com> wrote:
->
-> recently we wanted to update xilinx intc driver and we found that function
-> which we wanted to remove is still wired by ancient Xilinx PowerPC
-> platforms. Here is the thread about it.
-> https://lore.kernel.org/linux-next/48d3232d-0f1d-42ea-3109-f44bbabfa2e8@xilinx.com/
->
-> I have been talking about it internally and there is no interest in these
-> platforms and it is also orphan for quite a long time. None is really
-> running/testing these platforms regularly that's why I think it makes sense
-> to remove them also with drivers which are specific to this platform.
->
-> U-Boot support was removed in 2017 without anybody complain about it
-> https://github.com/Xilinx/u-boot-xlnx/commit/98f705c9cefdfdba62c069821bbba10273a0a8ed
->
-> Based on current ppc/next.
->
-> If anyone has any objection about it, please let me know.
+On Fri, Mar 27, 2020 at 01:54:33PM +0100, Arnd Bergmann wrote:
+> On Fri, Mar 27, 2020 at 1:12 PM Michal Simek <michal.simek@xilinx.com> wrote:
+> >
+> > recently we wanted to update xilinx intc driver and we found that function
+> > which we wanted to remove is still wired by ancient Xilinx PowerPC
+> > platforms. Here is the thread about it.
+> > https://lore.kernel.org/linux-next/48d3232d-0f1d-42ea-3109-f44bbabfa2e8@xilinx.com/
+> >
+> > I have been talking about it internally and there is no interest in these
+> > platforms and it is also orphan for quite a long time. None is really
+> > running/testing these platforms regularly that's why I think it makes sense
+> > to remove them also with drivers which are specific to this platform.
+> >
+> > U-Boot support was removed in 2017 without anybody complain about it
+> > https://github.com/Xilinx/u-boot-xlnx/commit/98f705c9cefdfdba62c069821bbba10273a0a8ed
+> >
+> > Based on current ppc/next.
+> >
+> > If anyone has any objection about it, please let me know.
+> 
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> This looks reasonable to me as well, in particular as the code only
+> supports the two
+> ppc44x virtex developer boards and no commercial products.
+> 
+> It does raise a follow-up question about ppc40x though: is it time to
+> retire all of it?
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Who knows?
 
-This looks reasonable to me as well, in particular as the code only
-supports the two
-ppc44x virtex developer boards and no commercial products.
+I have in possession nice WD My Book Live, based on this architecture, and I
+won't it gone from modern kernel support. OTOH I understand that amount of real
+users not too big.
 
-It does raise a follow-up question about ppc40x though: is it time to
-retire all of it?
-The other ppc405 machines appear to have seen even fewer updates after the
-OpenBlockS 600 got added in 2011, so it's possible nobody is using them any more
-with modern kernels.
+Ah, and I have Amiga board, but that one is being used only for testing, so,
+I don't care much.
 
-I see that OpenWRT removed both ppc40x and ppc44x exactly a year ago after
-they had not been maintained for years.
+> The other ppc405 machines appear to have seen even fewer updates after the
+> OpenBlockS 600 got added in 2011, so it's possible nobody is using them any more
+> with modern kernels.
+> 
+> I see that OpenWRT removed both ppc40x and ppc44x exactly a year ago after
+> they had not been maintained for years.
+> 
+> However, 44x (in its ppc476 incarnation) is clearly still is used
+> through the fsp2 platform,
+> and can not be deprecated at least until that is known to have stopped
+> getting kernel
+> updates.
+> 
+>         Arnd
 
-However, 44x (in its ppc476 incarnation) is clearly still is used
-through the fsp2 platform,
-and can not be deprecated at least until that is known to have stopped
-getting kernel
-updates.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-        Arnd
+
