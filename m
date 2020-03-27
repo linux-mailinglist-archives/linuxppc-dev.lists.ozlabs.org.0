@@ -1,76 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8216C195EEB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 20:42:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48psgs2BrczDr3l
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 06:42:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3157195FB1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 21:28:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ptjF2WFCzDrKV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 07:28:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=UmPB4mYQ; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48psdq6tKLzDr27
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 06:40:29 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48psdj6FPtz9v9tm;
- Fri, 27 Mar 2020 20:40:25 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=UmPB4mYQ; dkim-adsp=pass;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=BqA+8GVz; 
  dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id pXv00MUVG3Es; Fri, 27 Mar 2020 20:40:25 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48psdj51pZz9v1ZZ;
- Fri, 27 Mar 2020 20:40:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585338025; bh=DCSv8DbnGpn5aHFahSgwtsGtomty11eRaVBE6Ew/W4w=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=UmPB4mYQrpklxPYdwFyOATEr2PEK5OWQRm36B09UXtSOtmAPzwnKNp/MEdKTCTue8
- 1vA+NEeOpytBZiL1/g1bQesmKBGB1ZiDUipM1J0MxqHrZwuzgIZiXdA4zish0TOcBm
- +CE5Y6+prBe9g6GjDQ/PW0QwRgoiUzY1g6Oi/F9E=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B488E8B829;
- Fri, 27 Mar 2020 20:40:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id POAV7JQ6fC-J; Fri, 27 Mar 2020 20:40:25 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B15B8B822;
- Fri, 27 Mar 2020 20:40:24 +0100 (CET)
-Subject: Re: [PATCH v2] powerpc xmon: use `dcbf` inplace of `dcbi` instruction
- for 64bit Book3S
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20200326061522.33123-1-bala24@linux.ibm.com>
- <caf285b1-172e-7116-b2ed-3645f36264ed@c-s.fr>
- <a0d623ad8347c6b88ef25c4de1ac5ed736037025.camel@linux.ibm.com>
- <9a3c084a-9e86-ff37-111c-6f1a8f0989fc@c-s.fr>
- <20200327181928.GJ22482@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3e7e5431-e7e4-1a53-fbd8-2449d1e42b49@c-s.fr>
-Date: Fri, 27 Mar 2020 20:40:10 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-In-Reply-To: <20200327181928.GJ22482@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ptg70SdqzDrJs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 07:26:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
+ In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=KsC+SFzQg4vskBoE0lvjIZxP3fG7h7vOVL81m2MRoFM=; b=BqA+8GVzzRNsl+cmj33JBRW+7w
+ 2Xvh3AspNSG4ewWWpjnML83EPMl8MSne8uwZDi1bqEltrT5cCele8AkI2W2K7s7bnmZmM3p0B4DA9
+ 5/2OIszR/bMfZWSLslp4pN2Ai2FWx7SAZuEgWMtWngLXeNiZ1qHsf6k8+uEqZ41460XEk1lx5MRZE
+ Zo2dBI1BgrRGowfEQ56YCCMOPGn3SMvjLBWaUxu4otMYoMGU6bccdjR6rQx9WAZqfVjwNtMV3j3iH
+ aCKvDDvxRlPP76rfiPZkh51hSskO1ggHyYNp1kdusgjozyqAV6/vt35TTXTO4Sx6dtBIMck0b5h5U
+ x/ohjWOw==;
+Received: from geoff by merlin.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1jHvYd-0003IV-6A; Fri, 27 Mar 2020 20:26:23 +0000
+Message-Id: <1bc5a16a22c487c478a204ebb7b80a22d2ad9cd0.1585340156.git.geoff@infradead.org>
+In-Reply-To: <cover.1585340156.git.geoff@infradead.org>
+References: <cover.1585340156.git.geoff@infradead.org>
+From: Geoff Levand <geoff@infradead.org>
+Patch-Date: Tue, 17 Oct 2017 20:00:31 +0200
+Subject: [PATCH 1/9] powerpc/ps3: Remove duplicate error messages
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 27 Mar 2020 20:26:23 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,42 +57,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Balamuruhan S <bala24@linux.ibm.com>,
- paulus@samba.org, sandipan@linux.ibm.com, jniethe5@gmail.com,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Markus Elfring <elfring@users.sourceforge.net>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ Emmanuel Nicolet <emmanuel.nicolet@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Markus Elfring <elfring@users.sourceforge.net>
+
+Remove duplicate memory allocation failure error messages.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Geoff Levand <geoff@infradead.org>
+---
+ arch/powerpc/platforms/ps3/os-area.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/platforms/ps3/os-area.c b/arch/powerpc/platforms/ps3/os-area.c
+index cbddd63caf2d..e8530371aed6 100644
+--- a/arch/powerpc/platforms/ps3/os-area.c
++++ b/arch/powerpc/platforms/ps3/os-area.c
+@@ -613,10 +613,8 @@ static int update_flash_db(void)
+ 	/* Read in header and db from flash. */
+ 
+ 	header = kmalloc(buf_len, GFP_KERNEL);
+-	if (!header) {
+-		pr_debug("%s: kmalloc failed\n", __func__);
++	if (!header)
+ 		return -ENOMEM;
+-	}
+ 
+ 	count = os_area_flash_read(header, buf_len, 0);
+ 	if (count < 0) {
+-- 
+2.20.1
 
 
-Le 27/03/2020 à 19:19, Segher Boessenkool a écrit :
-> On Fri, Mar 27, 2020 at 04:12:13PM +0100, Christophe Leroy wrote:
->> Maybe you could also change invalidate_dcache_range():
->>
->> 	for (i = 0; i < size >> shift; i++, addr += bytes) {
->> 		if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
->> 			dcbf(addr);
->> 		else
->> 			dcbi(addr);
->> 	}
-> 
-> But please note that flushing is pretty much the opposite from
-> invalidating (a flush (dcbf) makes sure that what is in the cache now
-> ends up in memory, while an invalidate (dcbi) makes sure it will *not*
-> end up in memory).  (Both will remove the addressed cache line from the
-> data caches).
-> 
-> So you cannot blindly replace them; in all cases you need to look and
-> see if it does what you need here.
-> 
-> (dcbi is much harder to use correctly -- it can race very easily -- so
-> in practice you will be fine most of the time; but be careful around
-> startup code and the like).
-> 
-
-At the time being, invalidate_dcache_range() is used in only one place, 
-and that's a place for PPC32 only. So I was just suggesting that just in 
-case. Maybe there is no point in bothering with that at the time being.
-
-Christophe
